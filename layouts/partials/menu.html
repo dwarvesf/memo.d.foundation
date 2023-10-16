@@ -1,0 +1,46 @@
+<nav class="menu">
+  <details open>
+    <summary>
+      Menu
+    </summary>
+    <section class="site-nav">
+      <section>
+        <ul>
+        {{ $currentPage := .Sites.First.Home }}
+        {{ range .Site.Menus.main }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active"{{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+        {{ end }}
+        </ul>
+      </section>
+
+      <section>
+        <h2>experiments</h2>
+        <ul>
+        {{ $currentPage := .Sites.First.Home }}
+        {{ range .Site.Menus.experiments }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active"{{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+        {{ end }}
+        </ul>
+      </section>
+      <section>
+        <h2>blog</h2>
+        <ul>
+        {{ $currentPage := .Sites.First.Home }}
+        {{ range .Site.Menus.blog }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active"{{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+        {{ end }}
+        </ul>
+      </section>
+      <section>
+        <h2>playbook</h2>
+        <ul>
+        {{ $currentPage := .Sites.First.Home }}
+        {{ range .Site.Menus.playbook }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active"{{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+        {{ end }}
+        </ul>
+      </section>
+
+    </section>
+  </details>
+</nav>
