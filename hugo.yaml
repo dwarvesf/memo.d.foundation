@@ -1,0 +1,53 @@
+baseURL: https://log.console.so/
+languageCode: "en-us"
+title: Console Labs
+author:
+  email: han@console.so
+  name: Han Ngo
+copyright: © 2023 ConsoleLabs.
+module:
+  imports:
+  - path: github.com/alex-shpak/hugo-book
+    disable: true
+  - path: github.com/adityatelange/hugo-PaperMod
+    disable: true
+
+outputs:
+  home:
+  - html
+  - rss
+  - json
+  section:
+  - html
+  - rss
+  - json
+  taxonomy:
+  - html
+  - rss
+  - json
+  term:
+  - html
+  - rss
+  - json
+markup:
+  highlight:
+    anchorLineNos: false
+    codeFences: false
+    guessSyntax: false
+    hl_Lines: 1
+    lineAnchors: ""
+    lineNoStart: 1
+    lineNos: false
+    lineNumbersInTable: false
+    noClasses: true
+    tabWidth: 1
+  frontmatter:
+    publishDate: ["publishDate", "date"]
+    authors: ["authors"]
+  goldmark:
+    renderer:
+      unsafe: true
+  tableOfContents:
+    endLevel: 2
+    ordered: false
+    startLevel: 2

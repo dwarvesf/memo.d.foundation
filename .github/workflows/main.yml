@@ -1,0 +1,62 @@
+name: Deploy Hugo from Obsidian notes
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish_job:
+    runs-on: ubuntu-latest
+    name: Publish Obsidian notes to Github pages
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DWARVES_PAT }}
+
+      - name: Checkout contents repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DWARVES_PAT }}
+          repository: dwarvesf/content
+          path: vault
+
+      - name: Cache cargo plugins
+        id: cache-obsidian-export
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/bin/
+          key: ${{ runner.os }}-cargo-plugins
+
+      - name: Install obsidian-export
+        if: steps.cache-obsidian-export.outputs.cache-hit != 'true'
+        uses: actions-rs/install@v0.1
+        with:
+          crate: obsidian-export
+          version: latest
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Create content dir if not exists
+        shell: bash
+        run: mkdir -p ./content
+
+      - name: Export Vault
+        shell: bash
+        run: obsidian-export ./vault ./content
+
+      - name: Build Hugo
+        shell: bash
+        run: hugo --minify
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
