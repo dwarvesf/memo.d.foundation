@@ -1,0 +1,135 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content><meta name=description property="og:description" content><meta name=keywords content><meta property="og:type" content="website"><meta property="og:url" content="https://log.console.so/playbook/engineering/blockchain/external-calls/"><meta property="og:image" content="https://log.console.so/img/ConsoleLabs_logo_1.jpg"><link rel=icon type=image/x-icon href=https://log.console.so/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://log.console.so/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://log.console.so/favicon-32x32.png><link rel=apple-touch-icon href=https://log.console.so/apple-touch-icon.png><title>| Console Labs</title><meta name=description content><link rel=canonical href=https://log.console.so/playbook/engineering/blockchain/external-calls/><link rel="shortcut icon" type=image/png href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="><script defer data-domain=log.console.so src=https://plausible.io/js/script.js></script><style>:root{--primary-color:#45f1a6;--primary-color-light:#2ea370;--nav-sidebar-width:200px;--nav-sidebar-offset:40px;--main-padding:45px;--column-gap:20px}body{font:16px sans-serif;color:#000;text-rendering:optimizeLegibility;padding:2rem;max-width:100%;margin:0;padding:0;background-color:#fff;line-height:25px;min-height:100vh;display:flex;flex-direction:column;overflow-wrap:break-word;hyphens:auto}h1,h2,h3,h4{color:var(--primary-color)}h1{font-size:45px;display:none}h2{font-size:30px}h3{font-size:20px}h4{font-size:15px}q{font-size:20px;max-width:500px;display:block;margin-left:30px}pre{font-family:monospace;background:#000;color:#fff;padding:15px;border-radius:2px;overflow-x:scroll;width:100%;box-sizing:border-box}pre>code{display:block;text-indent:0;white-space:inherit;font-weight:400}code{font-family:monospace;font-size:12px;background:#000;color:#fff;padding:2px 5px;white-space:wrap;border-radius:2px;font-weight:700;display:inline-block;line-height:16px;overflow-x:scroll}code comment{color:#777}code.button{background:#fff;color:#000;font-size:smaller;display:inline-block;padding:0 6px;font-weight:700;border-radius:2px;line-height:22px}a[href*="#"]{text-decoration:none}nav.menu{float:left;padding:var(--main-padding);max-width:var(--nav-sidebar-width);line-height:22px;margin-top:-2px;white-space:nowrap}nav .site-nav{margin:20px 0;display:block}nav .site-nav section{float:left;margin-top:-2px}nav .site-nav section h2{margin:20px 0;font-size:24px;text-transform:lowercase}nav.menu details summary{margin-bottom:30px}nav.menu ul{padding:0 10px 10px 0;margin:0;list-style-type:none;line-height:22px}main{padding:var(--main-padding);max-width:100%;box-sizing:border-box;float:left}main>ul{line-height:25px;margin:0}main>ul>li>a{text-decoration:underline}.dual-list>ul{columns:2}.single-list>ul{columns:2}.profile img{width:100px;height:100px;object-fit:cover;aspect-ratio:1/1}.profile object{width:100px;height:100px;object-fit:cover;aspect-ratio:1/1}table,th,td{border:1px solid;border-collapse:collapse;border-spacing:0}tr{max-height:100px;max-width:100px}td{padding:0 20px;max-width:300px;max-height:100px;overflow:hidden;text-overflow:ellipsis}td:has(img){padding:0;line-height:0}#TableOfContents>ul>li>a{text-decoration:underline}#TableOfContents>ul{display:grid;column-gap:var(--column-gap);box-sizing:border-box;grid-template-columns:repeat(auto-fill,minmax(var(--nav-sidebar-width),calc(50% - var(--column-gap))));line-height:20px}#TableOfContents li{white-space:nowrap;list-style-type:decimal-leading-zero;list-style-position:inside;overflow:hidden;text-overflow:ellipsis}.notice{padding:20px;border:2px solid #000}main>blockquote{padding:20px;border:2px solid #000}main>*{max-width:600px;margin-bottom:30px}header{padding:var(--main-padding);border-bottom:1px solid #222}header a img{filter:invert(0)}header h1{display:inline}footer{margin-top:auto;padding:var(--main-padding);clear:both}nav .site-nav ul li{list-style-type:none;display:flex;font-variant-numeric:tabular-nums}li:has(input[type=checkbox]){display:block;list-style-type:none}ul:has(li input[type=checkbox]){padding:0}ul li a{overflow:hidden;text-overflow:ellipsis;width:calc(var(--nav-sidebar-width) + var(--nav-sidebar-offset));background-color:#fff}ul li a:hover{white-space:nowrap;width:100%;z-index:10}ul li p{margin-block-end:0;margin-block-start:0}time{padding-right:1rem}blockquote{margin:1em 0;padding:0 2em;border-left:3px solid #eee}img{max-width:100%}a,a:visited{color:#000}@media(prefers-color-scheme:dark){a,a:visited{color:#fff}body{background:#000;color:#fff}header a img{filter:invert(1)}body a{color:#fff}pre{background:#fff;color:#000}code{background:#fff;color:#000}body select{color:#000;background-color:#fff}.project{border-left:2px solid #fff}.notice{border-color:#fff}.mono{filter:invert(1)}.progress>div{background-color:#fff}.progress>div>span{color:#000}main>blockquote{border-color:#fff}ul li a{background-color:inherit}section>ul li a{background-color:inherit}}@media(prefers-color-scheme:light){h1,h2,h3,h4{color:var(--primary-color-light)}}@media only screen and (max-width:1100px){:root{--nav-sidebar-width:140px;--nav-sidebar-offset:0px}nav{width:100%}nav .site-nav section{float:left;margin:0 10px 10px 0}nav.menu{max-width:100%;box-sizing:border-box;display:inline-block}nav .site-nav{display:grid;column-gap:var(--column-gap);grid-template-columns:repeat(auto-fill,minmax(var(--nav-sidebar-width),1fr))}main{display:inline-block;width:unset}main>*{max-width:100%}ul li a{width:var(--nav-sidebar-width)}}</style><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"playbook","name":"","headline":"","alternativeHeadline":"","description":"Use caution when making external calls Calls to untrusted contracts can introduce several unexpected risks or errors. External calls may execute malicious code in that contract or any other contract that it depends upon. As such, every external call should be treated as a potential security risk. When it is not possible, or undesirable to remove external calls, use the recommendations in the rest of this section to minimize the danger.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/log.console.so\/playbook\/engineering\/blockchain\/external-calls\/"},"author":{"@type":"Person","name":"Han Ngo"},"creator":{"@type":"Person","name":"Han Ngo"},"accountablePerson":{"@type":"Person","name":"Han Ngo"},"copyrightHolder":"Console Labs","copyrightYear":"0001","date":"0001-01-01T00:00:00.00Z","dateCreated":"0001-01-01T00:00:00.00Z","datePublished":"0001-01-01T00:00:00.00Z","dateModified":"0001-01-01T00:00:00.00Z","publisher":{"@type":"Organization","name":"Console Labs","url":"https://log.console.so/","logo":{"@type":"ImageObject","url":"https:\/\/log.console.so\/","width":"32","height":"32"}},"image":"https://log.console.so/","url":"https:\/\/log.console.so\/playbook\/engineering\/blockchain\/external-calls\/","wordCount":"934","genre":[],"keywords":[]}</script><style>body{visibility:hidden;opacity:0}</style><noscript><style>body{visibility:visible;opacity:1}</style></noscript><script type=text/javascript>window.addEventListener("DOMContentLoaded",function(){document.body.style.visibility="visible",document.body.style.opacity=1})</script></head><body class=playbook><header><a href=/><img src=https://log.console.so/img/ConsoleLabs_logo.png alt=ConsoleLabs height=103px style="margin:-28px -26px"></a></header><div><nav class=menu><details open><summary>Menu</summary><section class=site-nav><section><ul><li><a href=/site-index/>Index</a></li></ul></section><section><h2>experiments</h2><ul></ul></section><section><h2>blog</h2><ul></ul></section><section><h2>playbook</h2><ul></ul></section></section></details></nav><main><h4 id=use-caution-when-making-external-calls><a href=#use-caution-when-making-external-calls>Use caution when making external calls <a href=#use-caution-when-making-external-calls></a></a></h4><p>Calls to untrusted contracts can introduce several unexpected risks or errors. External calls may
+execute malicious code in that contract <em>or</em> any other contract that it depends upon. As such,
+every external call should be treated as a potential security risk. When it is not possible, or
+undesirable to remove external calls, use the recommendations in the rest of this section to
+minimize the danger.</p><hr><h4 id=mark-untrusted-contracts><a href=#mark-untrusted-contracts>Mark untrusted contracts <a href=#mark-untrusted-contracts></a></a></h4><p>When interacting with external contracts, name your variables, methods, and contract interfaces in
+a way that makes it clear that interacting with them is potentially unsafe. This applies to your
+own functions that call external contracts.</p><pre><code class=language-sol>// bad
+Bank.withdraw(100); // Unclear whether trusted or untrusted
+
+function makeWithdrawal(uint amount) { // Isn't clear that this function is potentially unsafe
+    Bank.withdraw(amount);
+}
+
+// good
+UntrustedBank.withdraw(100); // untrusted external call
+TrustedBank.withdraw(100); // external but trusted bank contract maintained by XYZ Corp
+
+function makeUntrustedWithdrawal(uint amount) {
+    UntrustedBank.withdraw(amount);
+}
+</code></pre><hr><h4 id=avoid-state-changes-after-external-calls><a href=#avoid-state-changes-after-external-calls>Avoid state changes after external calls <a href=#avoid-state-changes-after-external-calls></a></a></h4><p>Whether using <em>raw calls</em> (of the form <code>someAddress.call()</code>) or <em>contract calls</em> (of the form
+<code>ExternalContract.someMethod()</code>), assume that malicious code might execute. Even if
+<code>ExternalContract</code> is not malicious, malicious code can be executed by any contracts <em>it</em> calls.</p><p>One particular danger is malicious code may hijack the control flow, leading to vulnerabilities due
+to reentrancy.</p><p>If you are making a call to an untrusted external contract, <em>avoid state changes after the call</em>.
+This pattern is also sometimes known as the
+<a href="http://solidity.readthedocs.io/en/develop/security-considerations.html?highlight=check%20effects#use-the-checks-effects-interactions-pattern">checks-effects-interactions pattern</a>.</p><p>See <a href=https://swcregistry.io/docs/SWC-107>SWC-107</a></p><hr><h4 id=dont-use-transfer-or-send><a href=#dont-use-transfer-or-send>Don&rsquo;t use <code>transfer()</code> or <code>send()</code>. <a href=#dont-use-transfer-or-send></a></a></h4><p><code>.transfer()</code> and <code>.send()</code> forward exactly 2,300 gas to the recipient. The goal of this hardcoded
+gas stipend was to prevent, but this only
+makes sense under the assumption that gas costs are constant. Recently
+<a href=https://eips.ethereum.org/EIPS/eip-1884>EIP 1884</a> was included in the Istanbul hard fork. One of
+the changes included in EIP 1884 is an increase to the gas cost of the <code>SLOAD</code> operation, causing a
+contract&rsquo;s fallback function to cost more than 2300 gas.</p><p>It&rsquo;s recommended to stop using <code>.transfer()</code> and <code>.send()</code> and instead use <code>.call()</code>.</p><pre><code>// bad
+contract Vulnerable {
+    function withdraw(uint256 amount) external {
+        // This forwards 2300 gas, which may not be enough if the recipient
+        // is a contract and gas costs change.
+        msg.sender.transfer(amount);
+    }
+}
+
+// good
+contract Fixed {
+    function withdraw(uint256 amount) external {
+        // This forwards all available gas. Be sure to check the return value!
+        (bool success, ) = msg.sender.call.value(amount)(&quot;&quot;);
+        require(success, &quot;Transfer failed.&quot;);
+    }
+}
+</code></pre><p>Note that <code>.call()</code> does nothing to mitigate reentrancy attacks, so other precautions must be
+taken. To prevent reentrancy attacks, it is recommended that you use the
+<a href="https://solidity.readthedocs.io/en/develop/security-considerations.html?highlight=check%20effects#use-the-checks-effects-interactions-pattern">checks-effects-interactions pattern</a>.</p><hr><h4 id=handle-errors-in-external-calls><a href=#handle-errors-in-external-calls>Handle errors in external calls <a href=#handle-errors-in-external-calls></a></a></h4><p>Solidity offers low-level call methods that work on raw addresses: <code>address.call()</code>,
+<code>address.callcode()</code>, <code>address.delegatecall()</code>, and <code>address.send()</code>. These low-level methods never
+throw an exception, but will return <code>false</code> if the call encounters an exception. On the other hand,
+<em>contract calls</em> (e.g., <code>ExternalContract.doSomething()</code>) will automatically propagate a throw (for
+example, <code>ExternalContract.doSomething()</code> will also <code>throw</code> if <code>doSomething()</code> throws).</p><p>If you choose to use the low-level call methods, make sure to handle the possibility that the call
+will fail, by checking the return value.</p><pre><code class=language-sol>// bad
+someAddress.send(55);
+someAddress.call.value(55)(&quot;&quot;); // this is doubly dangerous, as it will forward all remaining gas and doesn't check for result
+someAddress.call.value(100)(bytes4(sha3(&quot;deposit()&quot;))); // if deposit throws an exception, the raw call() will only return false and transaction will NOT be reverted
+
+// good
+(bool success, ) = someAddress.call.value(55)(&quot;&quot;);
+if(!success) {
+    // handle failure code
+}
+
+ExternalContract(someAddress).deposit.value(100)();
+</code></pre><p>See <a href=https://swcregistry.io/docs/SWC-104>SWC-104</a></p><hr><h4 id=favor-pull-over-push-for-external-calls><a href=#favor-pull-over-push-for-external-calls>Favor <em>pull</em> over <em>push</em> for external calls <a href=#favor-pull-over-push-for-external-calls></a></a></h4><p>External calls can fail accidentally or deliberately. To minimize the damage caused by such
+failures, it is often better to isolate each external call into its own transaction that can be
+initiated by the recipient of the call. This is especially relevant for payments, where it is
+better to let users withdraw funds rather than push funds to them automatically. (This also reduces
+the chance of problems with gas limits.) Avoid
+combining multiple ether transfers in a single transaction.</p><pre><code class=language-sol>// bad
+contract auction {
+    address highestBidder;
+    uint highestBid;
+
+    function bid() payable {
+        require(msg.value &gt;= highestBid);
+
+        if (highestBidder != address(0)) {
+            (bool success, ) = highestBidder.call.value(highestBid)(&quot;&quot;);
+            require(success); // if this call consistently fails, no one else can bid
+        }
+
+       highestBidder = msg.sender;
+       highestBid = msg.value;
+    }
+}
+
+// good
+contract auction {
+    address highestBidder;
+    uint highestBid;
+    mapping(address =&gt; uint) refunds;
+
+    function bid() payable external {
+        require(msg.value &gt;= highestBid);
+
+        if (highestBidder != address(0)) {
+            refunds[highestBidder] += highestBid; // record the refund that this user can claim
+        }
+
+        highestBidder = msg.sender;
+        highestBid = msg.value;
+    }
+
+    function withdrawRefund() external {
+        uint refund = refunds[msg.sender];
+        refunds[msg.sender] = 0;
+        (bool success, ) = msg.sender.call.value(refund)(&quot;&quot;);
+        require(success);
+    }
+}
+</code></pre><p>See <a href=https://swcregistry.io/docs/SWC-128>SWC-128</a></p><hr><h4 id=dont-delegatecall-to-untrusted-code><a href=#dont-delegatecall-to-untrusted-code>Don&rsquo;t delegatecall to untrusted code <a href=#dont-delegatecall-to-untrusted-code></a></a></h4><p>The <code>delegatecall</code> function is used to call functions from other contracts as if they belong to the
+caller contract. Thus the callee may change the state of the calling address. This may be insecure.
+An example below shows how using <code>delegatecall</code> can lead to the destruction of the contract and
+loss of its balance.</p><pre><code class=language-sol>contract Destructor
+{
+    function doWork() external
+    {
+        selfdestruct(0);
+    }
+}
+
+contract Worker
+{
+    function doWork(address _internalWorker) public
+    {
+        // unsafe
+        _internalWorker.delegatecall(bytes4(keccak256(&quot;doWork()&quot;)));
+    }
+}
+</code></pre><p>If <code>Worker.doWork()</code> is called with the address of the deployed <code>Destructor</code> contract as an
+argument, the <code>Worker</code> contract will self-destruct. Delegate execution only to trusted contracts,
+and <strong>never to a user supplied address</strong>.</p><p>!!! Warning</p><ul><li>Don&rsquo;t assume contracts are created with zero balance An attacker can send ether to the address of a contract before it is created. Contracts should not assume that their initial state contains a zero balance.</li><li>See <a href=https://github.com/ConsenSys/smart-contract-best-practices/issues/61>issue 61</a> for more details.</li><li>See <a href=https://swcregistry.io/docs/SWC-112>SWC-112</a></li></ul></main></div></body></html><footer><hr><span style=float:right>Edited on Jan 1, 0001<br></span><b>Console Labs</b> © 2023 — <a href=https://github.com/consolelabs/consolelabs.github.io/blob/main/LICENSE.by-nc-sa-4.0.md target=_blank>BY-NC-SA 4.0</a></footer>

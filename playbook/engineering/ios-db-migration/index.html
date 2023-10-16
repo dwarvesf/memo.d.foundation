@@ -1,0 +1,349 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content><meta name=description property="og:description" content><meta name=keywords content><meta property="og:type" content="website"><meta property="og:url" content="https://log.console.so/playbook/engineering/ios-db-migration/"><meta property="og:image" content="https://log.console.so/img/ConsoleLabs_logo_1.jpg"><link rel=icon type=image/x-icon href=https://log.console.so/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://log.console.so/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://log.console.so/favicon-32x32.png><link rel=apple-touch-icon href=https://log.console.so/apple-touch-icon.png><title>| Console Labs</title><meta name=description content><link rel=canonical href=https://log.console.so/playbook/engineering/ios-db-migration/><link rel="shortcut icon" type=image/png href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="><script defer data-domain=log.console.so src=https://plausible.io/js/script.js></script><style>:root{--primary-color:#45f1a6;--primary-color-light:#2ea370;--nav-sidebar-width:200px;--nav-sidebar-offset:40px;--main-padding:45px;--column-gap:20px}body{font:16px sans-serif;color:#000;text-rendering:optimizeLegibility;padding:2rem;max-width:100%;margin:0;padding:0;background-color:#fff;line-height:25px;min-height:100vh;display:flex;flex-direction:column;overflow-wrap:break-word;hyphens:auto}h1,h2,h3,h4{color:var(--primary-color)}h1{font-size:45px;display:none}h2{font-size:30px}h3{font-size:20px}h4{font-size:15px}q{font-size:20px;max-width:500px;display:block;margin-left:30px}pre{font-family:monospace;background:#000;color:#fff;padding:15px;border-radius:2px;overflow-x:scroll;width:100%;box-sizing:border-box}pre>code{display:block;text-indent:0;white-space:inherit;font-weight:400}code{font-family:monospace;font-size:12px;background:#000;color:#fff;padding:2px 5px;white-space:wrap;border-radius:2px;font-weight:700;display:inline-block;line-height:16px;overflow-x:scroll}code comment{color:#777}code.button{background:#fff;color:#000;font-size:smaller;display:inline-block;padding:0 6px;font-weight:700;border-radius:2px;line-height:22px}a[href*="#"]{text-decoration:none}nav.menu{float:left;padding:var(--main-padding);max-width:var(--nav-sidebar-width);line-height:22px;margin-top:-2px;white-space:nowrap}nav .site-nav{margin:20px 0;display:block}nav .site-nav section{float:left;margin-top:-2px}nav .site-nav section h2{margin:20px 0;font-size:24px;text-transform:lowercase}nav.menu details summary{margin-bottom:30px}nav.menu ul{padding:0 10px 10px 0;margin:0;list-style-type:none;line-height:22px}main{padding:var(--main-padding);max-width:100%;box-sizing:border-box;float:left}main>ul{line-height:25px;margin:0}main>ul>li>a{text-decoration:underline}.dual-list>ul{columns:2}.single-list>ul{columns:2}.profile img{width:100px;height:100px;object-fit:cover;aspect-ratio:1/1}.profile object{width:100px;height:100px;object-fit:cover;aspect-ratio:1/1}table,th,td{border:1px solid;border-collapse:collapse;border-spacing:0}tr{max-height:100px;max-width:100px}td{padding:0 20px;max-width:300px;max-height:100px;overflow:hidden;text-overflow:ellipsis}td:has(img){padding:0;line-height:0}#TableOfContents>ul>li>a{text-decoration:underline}#TableOfContents>ul{display:grid;column-gap:var(--column-gap);box-sizing:border-box;grid-template-columns:repeat(auto-fill,minmax(var(--nav-sidebar-width),calc(50% - var(--column-gap))));line-height:20px}#TableOfContents li{white-space:nowrap;list-style-type:decimal-leading-zero;list-style-position:inside;overflow:hidden;text-overflow:ellipsis}.notice{padding:20px;border:2px solid #000}main>blockquote{padding:20px;border:2px solid #000}main>*{max-width:600px;margin-bottom:30px}header{padding:var(--main-padding);border-bottom:1px solid #222}header a img{filter:invert(0)}header h1{display:inline}footer{margin-top:auto;padding:var(--main-padding);clear:both}nav .site-nav ul li{list-style-type:none;display:flex;font-variant-numeric:tabular-nums}li:has(input[type=checkbox]){display:block;list-style-type:none}ul:has(li input[type=checkbox]){padding:0}ul li a{overflow:hidden;text-overflow:ellipsis;width:calc(var(--nav-sidebar-width) + var(--nav-sidebar-offset));background-color:#fff}ul li a:hover{white-space:nowrap;width:100%;z-index:10}ul li p{margin-block-end:0;margin-block-start:0}time{padding-right:1rem}blockquote{margin:1em 0;padding:0 2em;border-left:3px solid #eee}img{max-width:100%}a,a:visited{color:#000}@media(prefers-color-scheme:dark){a,a:visited{color:#fff}body{background:#000;color:#fff}header a img{filter:invert(1)}body a{color:#fff}pre{background:#fff;color:#000}code{background:#fff;color:#000}body select{color:#000;background-color:#fff}.project{border-left:2px solid #fff}.notice{border-color:#fff}.mono{filter:invert(1)}.progress>div{background-color:#fff}.progress>div>span{color:#000}main>blockquote{border-color:#fff}ul li a{background-color:inherit}section>ul li a{background-color:inherit}}@media(prefers-color-scheme:light){h1,h2,h3,h4{color:var(--primary-color-light)}}@media only screen and (max-width:1100px){:root{--nav-sidebar-width:140px;--nav-sidebar-offset:0px}nav{width:100%}nav .site-nav section{float:left;margin:0 10px 10px 0}nav.menu{max-width:100%;box-sizing:border-box;display:inline-block}nav .site-nav{display:grid;column-gap:var(--column-gap);grid-template-columns:repeat(auto-fill,minmax(var(--nav-sidebar-width),1fr))}main{display:inline-block;width:unset}main>*{max-width:100%}ul li a{width:var(--nav-sidebar-width)}}</style><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"playbook","name":"","headline":"","alternativeHeadline":"","description":"Database migration in iOS development Database migration is one of the most important aspects of software development in general and of iOS development in specific. If we do not handle it correctly, it would cause some bad user experiences, such as data loss, app crashing, etc. And finally, lead to the bad reputation for the company. So, we MUST handle it correctly. And this post is a lighthouse which lead you to the right path.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/log.console.so\/playbook\/engineering\/ios-db-migration\/"},"author":{"@type":"Person","name":"Han Ngo"},"creator":{"@type":"Person","name":"Han Ngo"},"accountablePerson":{"@type":"Person","name":"Han Ngo"},"copyrightHolder":"Console Labs","copyrightYear":"0001","date":"0001-01-01T00:00:00.00Z","dateCreated":"0001-01-01T00:00:00.00Z","datePublished":"0001-01-01T00:00:00.00Z","dateModified":"0001-01-01T00:00:00.00Z","publisher":{"@type":"Organization","name":"Console Labs","url":"https://log.console.so/","logo":{"@type":"ImageObject","url":"https:\/\/log.console.so\/","width":"32","height":"32"}},"image":"https://log.console.so/","url":"https:\/\/log.console.so\/playbook\/engineering\/ios-db-migration\/","wordCount":"2433","genre":[],"keywords":[]}</script><style>body{visibility:hidden;opacity:0}</style><noscript><style>body{visibility:visible;opacity:1}</style></noscript><script type=text/javascript>window.addEventListener("DOMContentLoaded",function(){document.body.style.visibility="visible",document.body.style.opacity=1})</script></head><body class=playbook><header><a href=/><img src=https://log.console.so/img/ConsoleLabs_logo.png alt=ConsoleLabs height=103px style="margin:-28px -26px"></a></header><div><nav class=menu><details open><summary>Menu</summary><section class=site-nav><section><ul><li><a href=/site-index/>Index</a></li></ul></section><section><h2>experiments</h2><ul></ul></section><section><h2>blog</h2><ul></ul></section><section><h2>playbook</h2><ul></ul></section></section></details></nav><main><h1 id=database-migration-in-ios-development><a href=#database-migration-in-ios-development>Database migration in iOS development <a href=#database-migration-in-ios-development></a></a></h1><p>Database migration is one of the most important aspects of software development in general and of iOS development in specific. If we do not handle it correctly, it would cause some bad user experiences, such as data loss, app crashing, etc. And finally, lead to the bad reputation for the company. So, we <strong>MUST</strong> handle it correctly. And this post is a lighthouse which lead you to the right path.</p><h2 id=summary><a href=#summary>Summary <a href=#summary></a></a></h2><ul><li><a href=#the-tool>We use the Core Data as a database framework.</a></li><li><a href=#when-not>You can skip the migration if you just use the storage as an offline cache.</a></li><li><a href=#progressive-migration>We follow the <strong>Progressive migration</strong> method to model the migration steps.</a></li></ul><h2 id=the-tool><a href=#the-tool>The tool <a href=#the-tool></a></a></h2><p>There are many database frameworks out there (Realm, Couchbase, or YapDatabase). But we want to stick to Apple&rsquo;s eco-system so Core Data is our only choice here. And Core Data is also a very powerful tool, as it gives us an inferred migration mechanism for free. You can choose any underlying persistent store type, such as SQLite, Atomic (binary store) or In-Memory for using with Core Data. It&rsquo;s up to you, as long as you think it&rsquo;s suitable for the application.</p><h2 id=when-not><a href=#when-not>When NOT <a href=#when-not></a></a></h2><p>There are some cases in which you can avoid a migration. If an app is using Core Data merely as an offline cache, when you update the app, you can simply delete and rebuild the data store. This is only possible if the source of truth for your user’s data isn’t in the data store. In all other cases, you’ll need to safeguard your user’s data.</p><h2 id=techniques><a href=#techniques>Techniques <a href=#techniques></a></a></h2><p>Migrations in Core Data can be handled using one of two techniques:</p><ul><li><p><a href=#lightweight-migration>Lightweight Migration</a> - when Core Data can automatically infer how the migration should happen and creates the mapping model on the fly.</p></li><li><p><a href=https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/vmMappingOverview.html###//apple_ref/doc/uid/TP40004399-CH5-SW1>Standard Migration</a> - when Core Data cannot infer how the migration should happen and so we must write a custom migration by providing a mapping model (<code>xcmappingmodel</code>) and/or a migration policy (<code>NSEntityMigrationPolicy</code>).</p></li></ul><h2 id=the-default-migration-process><a href=#the-default-migration-process>The default migration process <a href=#the-default-migration-process></a></a></h2><p>By default, Core Data will attempt to perform a migration automatically when it detects a mismatch between the model used in the persistent store and the bundle&rsquo;s current model. When this happens, Core Data will first attempt to perform a Standard migration by searching in the app&rsquo;s bundle for a mapping model that maps from the persistent store model to the current bundle model. If a custom mapping model isn&rsquo;t found, Core Data will then attempt to perform a Lightweight migration. If neither form of migration is possible an exception is thrown.</p><p>Core Data will follow this migration process:</p><ol><li><p>Core Data detects a mismatch between the model used in the persistent store and the bundle&rsquo;s <strong>current</strong> model</p></li><li><p>Attempt to perform a Standard migration by searching in the app&rsquo;s bundle for a <strong>mapping model</strong> that maps from the persistent store model to the current bundle model. If a custom mapping model isn&rsquo;t found, go to next step.</p></li><li><p>Core Data will then attempt to perform a Lightweight migration.</p></li><li><p>Throw exception if it cannot perform the migration.</p></li></ol><h3 id=problem><a href=#problem>Problem <a href=#problem></a></a></h3><p>These automatic migrations are performed as one-step migrations; directly from the source to destination model. So if we support 4 model versions, mapping models would exist for 1 to 4, 2 to 4 and 3 to 4. While this is the most efficient migration approach from a device performance point-of-view, it can actually be quite wasteful from a development point-of-view. For example if we added a new model version (5) we would need to create 4 new mapping models from 1 to 5, 2 to 5, 3 to 5 and 4 to 5 which as you can see doesn&rsquo;t reuse any of the mapping models for migrating to version 4. With a one-step migration approach, each newly added model version requires n-1 mapping models (where n is the number of supported model versions) to be created.</p><h2 id=progressive-migration><a href=#progressive-migration>Progressive migration <a href=#progressive-migration></a></a></h2><p>It&rsquo;s possible to reduce the amount of work required to perform a Core Data migration by disabling automatic migrations and so break the requirement to perform migrations in one-step. With a manual migration approach, we can perform the full migration by chaining multiple smaller migrations together. As the full migration is split into smaller migrations when adding a new model version we only need to handle migrating to the new model version from its direct predecessor rather than all it&rsquo;s predecessors e.g. 4 to 5 because we can reuse the existing 1 to 2, 2 to 3 and 3 to 4 mapping models. Not only do manual migrations reduce the amount of work involved they also help to reduce the complexity of the migration as the conceptional distance between the source and destination version is reduced when compared to one-step migrations i.e. version 4 is much nearer to the structure of version 5 than version 1 is - this should make it easier spot any issues with the migration.</p><p>We follow the method called <strong>Progressive Core Data Migration</strong>. It gives us the clear way to structure the migration steps.</p><p>In order to support progressive migrations we&rsquo;ll need to answer a few questions:</p><ol><li><a href=#which-model-version-comes-after-version-x?>Which model version comes after version X?</a></li><li><a href=#what-is-a-migration-step?>What is a migration step?</a></li><li><a href=#how-can-we-combine-the-migration-steps-into-a-migration-path?>How can we combine the migration steps into a migration path?</a></li><li><a href=#how-do-we-trigger-a-migration?>How do we trigger a migration?</a></li></ol><p>These questions will be answered with the help of 4 separate types:</p><ol><li><code>CoreDataMigrationVersion</code></li><li><code>CoreDataMigrationStep</code></li><li><code>CoreDataMigrator</code></li><li><code>CoreDataManager</code></li></ol><p>These types will come together in the following class structure:</p><p><img src=/playbook/engineering/./img/progressive-migration.png alt="progresive migration" onerror='this.onerror=null,this.src="/images/experiments/neko/neko-first-version.jpeg"'></p><p>Directory structure:</p><pre><code class=language-shell>CoreData
+├── CoreDataManager.swift
+├── Migration
+│   ├── CoreDataMigrationStep.swift
+│   ├── CoreDataMigrationVersion.swift
+│   ├── CoreDataMigrator.swift
+│   ├── Mappings
+│   │   └── Migration2to3ModelMapping.xcmappingmodel
+│   └── Policies
+│       └── Post2ToPost3MigrationPolicy.swift
+└── Model
+    └── CoreDataMigration_Example.xcdatamodeld
+        ├── CoreDataMigration_Example\ 2.xcdatamodel
+        ├── CoreDataMigration_Example\ 3.xcdatamodel
+        ├── CoreDataMigration_Example\ 4.xcdatamodel
+        └── CoreDataMigration_Example.xcdatamodel
+</code></pre><h3 id=which-model-version-comes-after-version-x><a href=#which-model-version-comes-after-version-x>Which model version comes after version X? <a href=#which-model-version-comes-after-version-x></a></a></h3><p>Each <code>CoreDataMigrationVersion</code> instance will represent a Core Data model version. As each Core Data model version is unique and known at compile time they can be perfectly represented as enum cases, with the raw value of each case being the Core Data model name:</p><pre><code class=language-Swift>enum CoreDataMigrationVersion: String, CaseIterable {
+    case version1 = &quot;CoreDataMigration_Example&quot;
+    case version2 = &quot;CoreDataMigration_Example 2&quot;
+
+    // MARK: - Current
+
+    static var current: CoreDataMigrationVersion {
+        guard let latest = allCases.last else {
+            fatalError(&quot;no model versions found&quot;)
+        }
+
+        return latest
+    }
+
+    // MARK: - Migration
+
+    func nextVersion() -&gt; CoreDataMigrationVersion? {
+        switch self {
+        case .version1:
+            return .version2
+        case .version2:
+            return nil
+        }
+    }
+}
+
+</code></pre><p>Even if you don&rsquo;t have any existing migrations, it&rsquo;s possible that at some point in the future a broken model version is released that corrupts your user&rsquo;s data upon migration. In order to minimise to the impact of this mistake, nextVersion could be configured to bypass that broken model version so that any currently unaffected user are never impacted:</p><pre><code class=language-Swift>func nextVersion() -&gt; CoreDataMigrationVersion? {
+    switch self {
+    case .version1:
+        return .version2
+    case .version2:
+        return .version4 // skipping corrupted .version3
+    case .version3:
+        return .version4
+    case .version4:
+        return nil
+    }
+}
+</code></pre><h2 id=what-is-a-migration-step><a href=#what-is-a-migration-step>What is a migration step? <a href=#what-is-a-migration-step></a></a></h2><p>A migration happens between 2 model versions by having a mapping from the entities, attributes and relationships of the source model and their counterpoints in the destination model. As such CoreDataMigrationStep needs to contain 3 properties:</p><ol><li>Source version model.</li><li>Destination version model.</li><li>Mapping model.</li></ol><pre><code class=language-Swift>struct CoreDataMigrationStep {
+
+    let sourceModel: NSManagedObjectModel
+    let destinationModel: NSManagedObjectModel
+    let mappingModel: NSMappingModel
+
+    // MARK: Init
+
+    init(sourceVersion: CoreDataMigrationVersion, destinationVersion: CoreDataMigrationVersion) {
+        let sourceModel = NSManagedObjectModel.managedObjectModel(forResource: sourceVersion.rawValue)
+        let destinationModel = NSManagedObjectModel.managedObjectModel(forResource: destinationVersion.rawValue)
+
+        guard let mappingModel = CoreDataMigrationStep.mappingModel(fromSourceModel: sourceModel, toDestinationModel: destinationModel) else {
+            fatalError(&quot;Expected modal mapping not present&quot;)
+        }
+
+        self.sourceModel = sourceModel
+        self.destinationModel = destinationModel
+        self.mappingModel = mappingModel
+    }
+
+    // MARK: - Mapping
+
+    private static func mappingModel(fromSourceModel sourceModel: NSManagedObjectModel, toDestinationModel destinationModel: NSManagedObjectModel) -&gt; NSMappingModel? {
+        guard let customMapping = customMappingModel(fromSourceModel: sourceModel, toDestinationModel: destinationModel) else {
+            return inferredMappingModel(fromSourceModel:sourceModel, toDestinationModel: destinationModel)
+        }
+
+        return customMapping
+    }
+
+    private static func inferredMappingModel(fromSourceModel sourceModel: NSManagedObjectModel, toDestinationModel destinationModel: NSManagedObjectModel) -&gt; NSMappingModel? {
+        return try? NSMappingModel.inferredMappingModel(forSourceModel: sourceModel, destinationModel: destinationModel)
+    }
+
+    private static func customMappingModel(fromSourceModel sourceModel: NSManagedObjectModel, toDestinationModel destinationModel: NSManagedObjectModel) -&gt; NSMappingModel? {
+        return NSMappingModel(from: [Bundle.main], forSourceModel: sourceModel, destinationModel: destinationModel)
+    }
+}
+</code></pre><blockquote><p><em>It&rsquo;s possible to have multiple mapping models between versions, (this can be especially useful when migrating large data sets) in this post in an attempt to keep things simple I assume only one mapping model.</em></p></blockquote><h3 id=how-can-we-combine-the-migration-steps-into-a-migration-path><a href=#how-can-we-combine-the-migration-steps-into-a-migration-path>How can we combine the migration steps into a migration path? <a href=#how-can-we-combine-the-migration-steps-into-a-migration-path></a></a></h3><p>CoreDataMigrator is at the heart of our migration solution and has 3 tasks:</p><ol><li>Determining if there needs to be a migration.</li><li>Ensuring the persistent store is ready to be migrated.</li><li>Performing the migration.</li></ol><p>As CoreDataManager holds a reference to CoreDataMigrator (we will see this later) we can make our lives easier by wrapping CoreDataMigrator in a protocol so that it&rsquo;s easier to mock when writing tests for CoreDataManager:</p><pre><code class=language-Swift>protocol CoreDataMigratorProtocol {
+    func requiresMigration(at storeURL: URL, toVersion version: CoreDataMigrationVersion) -&gt; Bool
+    func migrateStore(at storeURL: URL, toVersion version: CoreDataMigrationVersion)
+}
+</code></pre><p>Now that we have that protocol lets look at how CoreDataMigrator implements those protocol methods:</p><pre><code class=language-Swift>class CoreDataMigrator: CoreDataMigratorProtocol {
+
+    // MARK: - Check
+
+    func requiresMigration(at storeURL: URL, toVersion version: CoreDataMigrationVersion) -&gt; Bool {
+        guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL) else {
+            return false
+        }
+
+        return (CoreDataMigrationVersion.compatibleVersionForStoreMetadata(metadata) != version)
+    }
+
+    // MARK: - Migration
+
+    func migrateStore(at storeURL: URL, toVersion version: CoreDataMigrationVersion) {
+        forceWALCheckpointingForStore(at: storeURL)
+
+        var currentURL = storeURL
+        let migrationSteps = self.migrationStepsForStore(at: storeURL, toVersion: version)
+
+        for migrationStep in migrationSteps {
+            let manager = NSMigrationManager(sourceModel: migrationStep.sourceModel, destinationModel: migrationStep.destinationModel)
+            let destinationURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString)
+
+            do {
+                try manager.migrateStore(from: currentURL, sourceType: NSSQLiteStoreType, options: nil, with: migrationStep.mappingModel, toDestinationURL: destinationURL, destinationType: NSSQLiteStoreType, destinationOptions: nil)
+            } catch let error {
+                fatalError(&quot;failed attempting to migrate from \(migrationStep.sourceModel) to \(migrationStep.destinationModel), error: \(error)&quot;)
+            }
+
+            if currentURL != storeURL {
+                //Destroy intermediate step's store
+                NSPersistentStoreCoordinator.destroyStore(at: currentURL)
+            }
+
+            currentURL = destinationURL
+        }
+
+        NSPersistentStoreCoordinator.replaceStore(at: storeURL, withStoreAt: currentURL)
+
+        if (currentURL != storeURL) {
+            NSPersistentStoreCoordinator.destroyStore(at: currentURL)
+        }
+    }
+
+    private func migrationStepsForStore(at storeURL: URL, toVersion destinationVersion: CoreDataMigrationVersion) -&gt; [CoreDataMigrationStep] {
+        guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL), let sourceVersion = CoreDataMigrationVersion.compatibleVersionForStoreMetadata(metadata) else {
+            fatalError(&quot;unknown store version at URL \(storeURL)&quot;)
+        }
+
+        return migrationSteps(fromSourceVersion: sourceVersion, toDestinationVersion: destinationVersion)
+    }
+
+    private func migrationSteps(fromSourceVersion sourceVersion: CoreDataMigrationVersion, toDestinationVersion destinationVersion: CoreDataMigrationVersion) -&gt; [CoreDataMigrationStep] {
+        var sourceVersion = sourceVersion
+        var migrationSteps = [CoreDataMigrationStep]()
+
+        while sourceVersion != destinationVersion, let nextVersion = sourceVersion.nextVersion() {
+            let migrationStep = CoreDataMigrationStep(sourceVersion: sourceVersion, destinationVersion: nextVersion)
+            migrationSteps.append(migrationStep)
+
+            sourceVersion = nextVersion
+        }
+
+        return migrationSteps
+    }
+
+    // MARK: - WAL
+
+    func forceWALCheckpointingForStore(at storeURL: URL) {
+        guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL), let currentModel = NSManagedObjectModel.compatibleModelForStoreMetadata(metadata) else {
+            return
+        }
+
+        do {
+            let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: currentModel)
+
+            let options = [NSSQLitePragmasOption: [&quot;journal_mode&quot;: &quot;DELETE&quot;]]
+            let store = persistentStoreCoordinator.addPersistentStore(at: storeURL, options: options)
+            try persistentStoreCoordinator.remove(store)
+        } catch let error {
+            fatalError(&quot;failed to force WAL checkpointing, error: \(error)&quot;)
+        }
+    }
+}
+
+private extension CoreDataMigrationVersion {
+
+    // MARK: - Compatible
+
+    static func compatibleVersionForStoreMetadata(_ metadata: [String : Any]) -&gt; CoreDataMigrationVersion? {
+        let compatibleVersion = CoreDataMigrationVersion.allCases.first {
+            let model = NSManagedObjectModel.managedObjectModel(forResource: $0.rawValue)
+
+            return model.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
+        }
+
+        return compatibleVersion
+    }
+}
+</code></pre><p>Some helper extensions:</p><pre><code class=language-Swift>extension NSPersistentStoreCoordinator {
+
+    // MARK: - Destroy
+
+    static func destroyStore(at storeURL: URL) {
+        do {
+            let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: NSManagedObjectModel())
+            try persistentStoreCoordinator.destroyPersistentStore(at: storeURL, ofType: NSSQLiteStoreType, options: nil)
+        } catch let error {
+            fatalError(&quot;failed to destroy persistent store at \(storeURL), error: \(error)&quot;)
+        }
+    }
+
+    // MARK: - Replace
+
+    static func replaceStore(at targetURL: URL, withStoreAt sourceURL: URL) {
+        do {
+            let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: NSManagedObjectModel())
+            try persistentStoreCoordinator.replacePersistentStore(at: targetURL, destinationOptions: nil, withPersistentStoreFrom: sourceURL, sourceOptions: nil, ofType: NSSQLiteStoreType)
+        } catch let error {
+            fatalError(&quot;failed to replace persistent store at \(targetURL) with \(sourceURL), error: \(error)&quot;)
+        }
+    }
+
+    // MARK: - Meta
+
+    static func metadata(at storeURL: URL) -&gt; [String : Any]?  {
+        return try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: nil)
+    }
+
+    // MARK: - Add
+
+    func addPersistentStore(at storeURL: URL, options: [AnyHashable : Any]) -&gt; NSPersistentStore {
+        do {
+            return try addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
+        } catch let error {
+            fatalError(&quot;failed to add persistent store to coordinator, error: \(error)&quot;)
+        }
+    }
+}
+
+extension NSManagedObjectModel {
+
+    // MARK: - Resource
+
+    static func managedObjectModel(forResource resource: String) -&gt; NSManagedObjectModel {
+        let mainBundle = Bundle.main
+        let subdirectory = &quot;CoreDataMigration_Example.momd&quot;
+        let omoURL = mainBundle.url(forResource: resource, withExtension: &quot;omo&quot;, subdirectory: subdirectory) // optimised model file
+        let momURL = mainBundle.url(forResource: resource, withExtension: &quot;mom&quot;, subdirectory: subdirectory)
+
+        guard let url = omoURL ?? momURL else {
+            fatalError(&quot;unable to find model in bundle&quot;)
+        }
+
+        guard let model = NSManagedObjectModel(contentsOf: url) else {
+            fatalError(&quot;unable to load model in bundle&quot;)
+        }
+
+        return model
+    }
+}
+</code></pre><h3 id=how-do-we-trigger-a-migration><a href=#how-do-we-trigger-a-migration>How do we trigger a migration? <a href=#how-do-we-trigger-a-migration></a></a></h3><p>CoreDataManager handles both setting up the Core Data stack and triggering a migration (if needed):</p><pre><code class=language-Swift>class CoreDataManager {
+
+    let migrator: CoreDataMigratorProtocol
+    private let storeType: String
+
+    lazy var persistentContainer: NSPersistentContainer = {
+        let persistentContainer = NSPersistentContainer(name: &quot;CoreDataMigration_Example&quot;)
+        let description = persistentContainer.persistentStoreDescriptions.first
+        description?.shouldInferMappingModelAutomatically = false //inferred mapping will be handled else where
+        description?.shouldMigrateStoreAutomatically = false
+        description?.type = storeType
+
+        return persistentContainer
+    }()
+
+    lazy var backgroundContext: NSManagedObjectContext = {
+        let context = self.persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
+        return context
+    }()
+
+    lazy var mainContext: NSManagedObjectContext = {
+        let context = self.persistentContainer.viewContext
+        context.automaticallyMergesChangesFromParent = true
+
+        return context
+    }()
+
+    // MARK: - Singleton
+
+    static let shared = CoreDataManager()
+
+    // MARK: - Init
+
+    init(storeType: String = NSSQLiteStoreType, migrator: CoreDataMigratorProtocol = CoreDataMigrator()) {
+        self.storeType = storeType
+        self.migrator = migrator
+    }
+
+    // MARK: - SetUp
+
+    func setup(completion: @escaping () -&gt; Void) {
+        loadPersistentStore {
+            completion()
+        }
+    }
+
+    // MARK: - Loading
+
+    private func loadPersistentStore(completion: @escaping () -&gt; Void) {
+        migrateStoreIfNeeded {
+            self.persistentContainer.loadPersistentStores { description, error in
+                guard error == nil else {
+                    fatalError(&quot;was unable to load store \(error!)&quot;)
+                }
+
+                completion()
+            }
+        }
+    }
+
+    private func migrateStoreIfNeeded(completion: @escaping () -&gt; Void) {
+        guard let storeURL = persistentContainer.persistentStoreDescriptions.first?.url else {
+            fatalError(&quot;persistentContainer was not set up properly&quot;)
+        }
+
+        if migrator.requiresMigration(at: storeURL, toVersion: CoreDataMigrationVersion.current) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.migrator.migrateStore(at: storeURL, toVersion: CoreDataMigrationVersion.current)
+
+                DispatchQueue.main.async {
+                    completion()
+                }
+            }
+        } else {
+            completion()
+        }
+    }
+}
+</code></pre><p>This setup method is called in the AppDelegate:</p><pre><code class=language-Swift>func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -&gt; Bool {
+    CoreDataManager.shared.setup {
+        self.presentMainUI()
+    }
+
+    return true
+}
+</code></pre><h2 id=misc><a href=#misc>Misc <a href=#misc></a></a></h2><h3 id=lightweight-migration><a href=#lightweight-migration>Lightweight migration <a href=#lightweight-migration></a></a></h3><p>Core Data frees developers from error-prone, routine work and improves their performance by doing a lot of things under the hood. Out of the box, Core Data lets developers apply minor changes to the Model without creating a database from scratch.</p><p>For Attributes:</p><ul><li>Add, remove.</li><li>Rename (by providing a Renaming ID).</li><li>Mark an Attribute as optional.</li><li>Mark an Attribute as required (by defining a default value).</li></ul><p> 
+For Relationships:</p><ul><li>Add, remove.</li><li>Rename (by providing a Renaming ID).</li><li>Change a Relationship from one-to-one to one-to-many, unordered to ordered, and vice versa
+ </li></ul><p>For Entities:</p><ul><li>Add, remove.</li><li>Rename (by providing a Renaming ID).</li><li>Change (add to or remove from) an inheritance hierarchy and pull or push properties</li></ul><h3 id=example-project><a href=#example-project>Example project: <a href=#example-project></a></a></h3><ul><li><a href=https://github.com/dwarvesf/CoreDataMigrationRevised-Example>Progressive Core Data migration example</a></li></ul><h3 id=references><a href=#references>References: <a href=#references></a></a></h3><ul><li><a href=https://yalantis.com/blog/few-tips-on-coredata-migration/>Few tips on Core Data migration</a></li><li><a href=https://williamboles.me/progressive-core-data-migration/>Progressive Core Data migration</a></li><li><a href=https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html#//apple_ref/doc/uid/TP40001075-CH2-SW1>Core Data programming guide</a></li><li><a href=https://developer.apple.com/documentation/coredata/using_lightweight_migration>Using Lightweight migration</a></li><li><a href=https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/vmLightweightMigration.html>Lightweight migration</a></li><li><a href=https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/vmMappingOverview.html#%23%23//apple_ref/doc/uid/TP40004399-CH5-SW1>Standard migration</a></li><li><a href=https://stackoverflow.com/questions/40647764/swift-coredata-migration-set-new-attribute-value-according-to-old-attribute/40662940#40662940>Migration Policy</a></li></ul></main></div></body></html><footer><hr><span style=float:right>Edited on Jan 1, 0001<br></span><b>Console Labs</b> © 2023 — <a href=https://github.com/consolelabs/consolelabs.github.io/blob/main/LICENSE.by-nc-sa-4.0.md target=_blank>BY-NC-SA 4.0</a></footer>

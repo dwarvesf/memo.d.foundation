@@ -1,0 +1,395 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content><meta name=description property="og:description" content><meta name=keywords content><meta property="og:type" content="website"><meta property="og:url" content="https://log.console.so/playbook/engineering/blockchain/general/"><meta property="og:image" content="https://log.console.so/img/ConsoleLabs_logo_1.jpg"><link rel=icon type=image/x-icon href=https://log.console.so/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://log.console.so/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://log.console.so/favicon-32x32.png><link rel=apple-touch-icon href=https://log.console.so/apple-touch-icon.png><title>| Console Labs</title><meta name=description content><link rel=canonical href=https://log.console.so/playbook/engineering/blockchain/general/><link rel="shortcut icon" type=image/png href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="><script defer data-domain=log.console.so src=https://plausible.io/js/script.js></script><style>:root{--primary-color:#45f1a6;--primary-color-light:#2ea370;--nav-sidebar-width:200px;--nav-sidebar-offset:40px;--main-padding:45px;--column-gap:20px}body{font:16px sans-serif;color:#000;text-rendering:optimizeLegibility;padding:2rem;max-width:100%;margin:0;padding:0;background-color:#fff;line-height:25px;min-height:100vh;display:flex;flex-direction:column;overflow-wrap:break-word;hyphens:auto}h1,h2,h3,h4{color:var(--primary-color)}h1{font-size:45px;display:none}h2{font-size:30px}h3{font-size:20px}h4{font-size:15px}q{font-size:20px;max-width:500px;display:block;margin-left:30px}pre{font-family:monospace;background:#000;color:#fff;padding:15px;border-radius:2px;overflow-x:scroll;width:100%;box-sizing:border-box}pre>code{display:block;text-indent:0;white-space:inherit;font-weight:400}code{font-family:monospace;font-size:12px;background:#000;color:#fff;padding:2px 5px;white-space:wrap;border-radius:2px;font-weight:700;display:inline-block;line-height:16px;overflow-x:scroll}code comment{color:#777}code.button{background:#fff;color:#000;font-size:smaller;display:inline-block;padding:0 6px;font-weight:700;border-radius:2px;line-height:22px}a[href*="#"]{text-decoration:none}nav.menu{float:left;padding:var(--main-padding);max-width:var(--nav-sidebar-width);line-height:22px;margin-top:-2px;white-space:nowrap}nav .site-nav{margin:20px 0;display:block}nav .site-nav section{float:left;margin-top:-2px}nav .site-nav section h2{margin:20px 0;font-size:24px;text-transform:lowercase}nav.menu details summary{margin-bottom:30px}nav.menu ul{padding:0 10px 10px 0;margin:0;list-style-type:none;line-height:22px}main{padding:var(--main-padding);max-width:100%;box-sizing:border-box;float:left}main>ul{line-height:25px;margin:0}main>ul>li>a{text-decoration:underline}.dual-list>ul{columns:2}.single-list>ul{columns:2}.profile img{width:100px;height:100px;object-fit:cover;aspect-ratio:1/1}.profile object{width:100px;height:100px;object-fit:cover;aspect-ratio:1/1}table,th,td{border:1px solid;border-collapse:collapse;border-spacing:0}tr{max-height:100px;max-width:100px}td{padding:0 20px;max-width:300px;max-height:100px;overflow:hidden;text-overflow:ellipsis}td:has(img){padding:0;line-height:0}#TableOfContents>ul>li>a{text-decoration:underline}#TableOfContents>ul{display:grid;column-gap:var(--column-gap);box-sizing:border-box;grid-template-columns:repeat(auto-fill,minmax(var(--nav-sidebar-width),calc(50% - var(--column-gap))));line-height:20px}#TableOfContents li{white-space:nowrap;list-style-type:decimal-leading-zero;list-style-position:inside;overflow:hidden;text-overflow:ellipsis}.notice{padding:20px;border:2px solid #000}main>blockquote{padding:20px;border:2px solid #000}main>*{max-width:600px;margin-bottom:30px}header{padding:var(--main-padding);border-bottom:1px solid #222}header a img{filter:invert(0)}header h1{display:inline}footer{margin-top:auto;padding:var(--main-padding);clear:both}nav .site-nav ul li{list-style-type:none;display:flex;font-variant-numeric:tabular-nums}li:has(input[type=checkbox]){display:block;list-style-type:none}ul:has(li input[type=checkbox]){padding:0}ul li a{overflow:hidden;text-overflow:ellipsis;width:calc(var(--nav-sidebar-width) + var(--nav-sidebar-offset));background-color:#fff}ul li a:hover{white-space:nowrap;width:100%;z-index:10}ul li p{margin-block-end:0;margin-block-start:0}time{padding-right:1rem}blockquote{margin:1em 0;padding:0 2em;border-left:3px solid #eee}img{max-width:100%}a,a:visited{color:#000}@media(prefers-color-scheme:dark){a,a:visited{color:#fff}body{background:#000;color:#fff}header a img{filter:invert(1)}body a{color:#fff}pre{background:#fff;color:#000}code{background:#fff;color:#000}body select{color:#000;background-color:#fff}.project{border-left:2px solid #fff}.notice{border-color:#fff}.mono{filter:invert(1)}.progress>div{background-color:#fff}.progress>div>span{color:#000}main>blockquote{border-color:#fff}ul li a{background-color:inherit}section>ul li a{background-color:inherit}}@media(prefers-color-scheme:light){h1,h2,h3,h4{color:var(--primary-color-light)}}@media only screen and (max-width:1100px){:root{--nav-sidebar-width:140px;--nav-sidebar-offset:0px}nav{width:100%}nav .site-nav section{float:left;margin:0 10px 10px 0}nav.menu{max-width:100%;box-sizing:border-box;display:inline-block}nav .site-nav{display:grid;column-gap:var(--column-gap);grid-template-columns:repeat(auto-fill,minmax(var(--nav-sidebar-width),1fr))}main{display:inline-block;width:unset}main>*{max-width:100%}ul li a{width:var(--nav-sidebar-width)}}</style><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"playbook","name":"","headline":"","alternativeHeadline":"","description":"1. Abstract-vs-interfaces Be aware of the tradeoffs between abstract contracts and interfaces. Both interfaces and abstract contracts provide one with a customizable and re-usable approach for smart contracts. Interfaces, which were introduced in Solidity 0.4.11, are similar to abstract contracts but cannot have any functions implemented. Interfaces also have limitations such as not being able to access storage or inherit from other interfaces which generally makes abstract contracts more practical.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/log.console.so\/playbook\/engineering\/blockchain\/general\/"},"author":{"@type":"Person","name":"Han Ngo"},"creator":{"@type":"Person","name":"Han Ngo"},"accountablePerson":{"@type":"Person","name":"Han Ngo"},"copyrightHolder":"Console Labs","copyrightYear":"0001","date":"0001-01-01T00:00:00.00Z","dateCreated":"0001-01-01T00:00:00.00Z","datePublished":"0001-01-01T00:00:00.00Z","dateModified":"0001-01-01T00:00:00.00Z","publisher":{"@type":"Organization","name":"Console Labs","url":"https://log.console.so/","logo":{"@type":"ImageObject","url":"https:\/\/log.console.so\/","width":"32","height":"32"}},"image":"https://log.console.so/","url":"https:\/\/log.console.so\/playbook\/engineering\/blockchain\/general\/","wordCount":"3016","genre":[],"keywords":[]}</script><style>body{visibility:hidden;opacity:0}</style><noscript><style>body{visibility:visible;opacity:1}</style></noscript><script type=text/javascript>window.addEventListener("DOMContentLoaded",function(){document.body.style.visibility="visible",document.body.style.opacity=1})</script></head><body class=playbook><header><a href=/><img src=https://log.console.so/img/ConsoleLabs_logo.png alt=ConsoleLabs height=103px style="margin:-28px -26px"></a></header><div><nav class=menu><details open><summary>Menu</summary><section class=site-nav><section><ul><li><a href=/site-index/>Index</a></li></ul></section><section><h2>experiments</h2><ul></ul></section><section><h2>blog</h2><ul></ul></section><section><h2>playbook</h2><ul></ul></section></section></details></nav><main><h3 id=1-abstract-vs-interfaces><a href=#1-abstract-vs-interfaces>1. Abstract-vs-interfaces <a href=#1-abstract-vs-interfaces></a></a></h3><p>Be aware of the tradeoffs between abstract contracts and interfaces.
+Both interfaces and abstract contracts provide one with a customizable and re-usable approach for smart contracts. Interfaces, which were introduced in Solidity 0.4.11, are similar to abstract contracts but cannot have any functions implemented. Interfaces also have limitations such as not being able to access storage or inherit from other interfaces which generally makes abstract contracts more practical. Although, interfaces are certainly useful for designing contracts prior to implementation. Additionally, it is important to keep in mind that if a contract inherits from an abstract contract it must implement all non-implemented functions via overriding or it will be abstract as well.</p><h3 id=2-assert-require-revert><a href=#2-assert-require-revert>2. assert require revert <a href=#2-assert-require-revert></a></a></h3><h4 id=enforce-invariants-with-assert><a href=#enforce-invariants-with-assert>Enforce invariants with <code>assert()</code> <a href=#enforce-invariants-with-assert></a></a></h4><p>An assert guard triggers when an assertion fails - such as an invariant property changing. For
+example, the token to ether issuance ratio, in a token issuance contract, may be fixed. You can
+verify that this is the case at all times with an <code>assert()</code>. Assert guards should often be
+combined with other techniques, such as pausing the contract and allowing upgrades. (Otherwise, you
+may end up stuck, with an assertion that is always failing.)</p><p>Example:</p><pre><code class=language-sol>contract Token {
+    mapping(address =&gt; uint) public balanceOf;
+    uint public totalSupply;
+
+    function deposit() public payable {
+        balanceOf[msg.sender] += msg.value;
+        totalSupply += msg.value;
+        assert(address(this).balance &gt;= totalSupply);
+    }
+}
+</code></pre><p>Note that the assertion is <em>not</em> a strict equality of the balance because the contract can be
+<a href=#remember-that-ether-can-be-forcibly-sent-to-an-account>forcibly sent ether</a> without going
+through the <code>deposit()</code> function!</p><h4 id=use-assert-require-revert-properly><a href=#use-assert-require-revert-properly>Use <code>assert()</code>, <code>require()</code>, <code>revert()</code> properly <a href=#use-assert-require-revert-properly></a></a></h4><p>!!! Info
+The convenience functions <strong>assert</strong> and <strong>require</strong> can be used to check for conditions and throw an exception if the condition is not met.</p><p>The <strong>assert</strong> function should only be used to test for internal errors, and to check invariants.</p><p>The <strong>require</strong> function should be used to ensure valid conditions, such as inputs, or contract state variables are met, or to validate return values from calls to external contracts. <sup><a href=https://solidity.readthedocs.io/en/latest/control-structures.html#error-handling-assert-require-revert-and-exceptions>*</a></sup></p><p>Following this paradigm allows formal analysis tools to verify that the invalid opcode can never be
+reached: meaning no invariants in the code are violated and that the code is formally verified.</p><pre><code class=language-sol>pragma solidity ^0.5.0;
+
+contract Sharer {
+    function sendHalf(address payable addr) public payable returns (uint balance) {
+        require(msg.value % 2 == 0, &quot;Even value required.&quot;); //Require() can have an optional message string
+        uint balanceBeforeTransfer = address(this).balance;
+        (bool success, ) = addr.call.value(msg.value / 2)(&quot;&quot;);
+        require(success);
+        // Since we reverted if the transfer failed, there should be
+        // no way for us to still have half of the money.
+        assert(address(this).balance == balanceBeforeTransfer - msg.value / 2); // used for internal error checking
+        return address(this).balance;
+    }
+}
+</code></pre><p>See <a href=https://swcregistry.io/docs/SWC-110>SWC-110</a> & <a href=https://swcregistry.io/docs/SWC-123>SWC-123</a></p><h2 id=3complex-inheritance><a href=#3complex-inheritance>3.Complex inheritance <a href=#3complex-inheritance></a></a></h2><p>When utilizing multiple inheritance in Solidity, it is important to understand how the compiler
+composes the inheritance graph.</p><pre><code class=language-sol>
+contract Final {
+    uint public a;
+    function Final(uint f) public {
+        a = f;
+    }
+}
+
+contract B is Final {
+    int public fee;
+
+    function B(uint f) Final(f) public {
+    }
+    function setFee() public {
+        fee = 3;
+    }
+}
+
+contract C is Final {
+    int public fee;
+
+    function C(uint f) Final(f) public {
+    }
+    function setFee() public {
+        fee = 5;
+    }
+}
+
+contract A is B, C {
+  function A() public B(3) C(5) {
+      setFee();
+  }
+}
+</code></pre><p>When a contract is deployed, the compiler will <em>linearize</em> the inheritance from right to left
+(after the keyword <em>is</em> the parents are listed from the most base-like to the most derived). Here
+is contract A&rsquo;s linearization:</p><p><strong>Final &lt;- B &lt;- C &lt;- A</strong></p><p>The consequence of the linearization will yield a <code>fee</code> value of 5, since C is the most derived
+contract. This may seem obvious, but imagine scenarios where C is able to shadow crucial functions,
+reorder boolean clauses, and cause the developer to write exploitable contracts. Static analysis
+currently does not raise issue with overshadowed functions, so it must be manually inspected.</p><p>For more on security and inheritance, check out this
+<a href=https://pdaian.com/blog/solidity-anti-patterns-fun-with-inheritance-dag-abuse/>article</a></p><p>To help contribute, Solidity&rsquo;s Github has a
+<a href=https://github.com/ethereum/solidity/projects/9#card-8027020>project</a> with all
+inheritance-related issues.</p><p>See <a href=https://swcregistry.io/docs/SWC-125>SWC-125</a></p><h2 id=4-event-monitoring><a href=#4-event-monitoring>4. Event monitoring <a href=#4-event-monitoring></a></a></h2><p>It can be useful to have a way to monitor the contract&rsquo;s activity after it was deployed. One way to
+accomplish this is to look at all transactions of the contract, however that may be insufficient,
+as message calls between contracts are not recorded in the blockchain. Moreover, it shows only the
+input parameters, not the actual changes being made to the state. Also, events could be used to
+trigger functions in the user interface.</p><pre><code class=language-sol>contract Charity {
+    mapping(address =&gt; uint) balances;
+
+    function donate() payable public {
+        balances[msg.sender] += msg.value;
+    }
+}
+
+contract Game {
+    function buyCoins() payable public {
+        // 5% goes to charity
+        charity.donate.value(msg.value / 20)();
+    }
+}
+</code></pre><p>Here, <code>Game</code> contract will make an internal call to <code>Charity.donate()</code>. This transaction won&rsquo;t
+appear in the external transaction list of <code>Charity</code>, but only visible in the internal
+transactions.</p><p>An event is a convenient way to log something that happened in the contract. Events that were
+emitted stay in the blockchain along with the other contract data and they are available for future
+audit. Here is an improvement to the example above, using events to provide a history of the
+Charity&rsquo;s donations.</p><pre><code class=language-sol>contract Charity {
+    // define event
+    event LogDonate(uint _amount);
+
+    mapping(address =&gt; uint) balances;
+
+    function donate() payable public {
+        balances[msg.sender] += msg.value;
+        // emit event
+        emit LogDonate(msg.value);
+    }
+}
+
+contract Game {
+    function buyCoins() payable public {
+        // 5% goes to charity
+        charity.donate.value(msg.value / 20)();
+    }
+}
+
+</code></pre><p>Here, all transactions that go through the <code>Charity</code> contract, either directly or not, will show up
+in the event list of that contract along with the amount of donated money.</p><hr><p>!!! Note &ldquo;Prefer newer Solidity constructs&rdquo;
+Prefer constructs/aliases such as <code>selfdestruct</code> (over <code>suicide</code>) and <code>keccak256</code> (over <code>sha3</code>). Patterns like <code>require(msg.sender.send(1 ether))</code> can also be simplified to using <code>transfer()</code>, as in <code>msg.sender.transfer(1 ether)</code>. Check out <a href=https://github.com/ethereum/solidity/blob/develop/Changelog.md>Solidity Change log</a> for more similar changes.</p><h2 id=5-extcodesize-checks><a href=#5-extcodesize-checks>5. Extcodesize checks <a href=#5-extcodesize-checks></a></a></h2><p>Avoid using <code>extcodesize</code> to check for Externally Owned Accounts.</p><p>The following modifier (or a similar check) is often used to verify whether a call was made from an
+externally owned account (EOA) or a contract account:</p><pre><code class=language-sol>// bad
+modifier isNotContract(address _a) {
+  uint size;
+  assembly {
+    size := extcodesize(_a)
+  }
+    require(size == 0);
+     _;
+}
+</code></pre><p>The idea is straightforward: if an address contains code, it&rsquo;s not an EOA but a contract account.
+However, <strong>a contract does not have source code available during construction</strong>. This means that
+while the constructor is running, it can make calls to other contracts, but <code>extcodesize</code> for its
+address returns zero. Below is a minimal example that shows how this check can be circumvented:</p><pre><code class=language-sol>contract OnlyForEOA {    
+    uint public flag;
+
+    // bad
+    modifier isNotContract(address _a){
+        uint len;
+        assembly { len := extcodesize(_a) }
+        require(len == 0);
+        _;
+    }
+
+    function setFlag(uint i) public isNotContract(msg.sender){
+        flag = i;
+    }
+}
+
+contract FakeEOA {
+    constructor(address _a) public {
+        OnlyForEOA c = OnlyForEOA(_a);
+        c.setFlag(1);
+    }
+}
+</code></pre><p>Because contract addresses can be pre-computed, this check could also fail if it checks an address
+which is empty at block <code>n</code>, but which has a contract deployed to it at some block greater than
+<code>n</code>.</p><p>!!! Warning &ldquo;This issue is nuanced.&rdquo;
+If your goal is to prevent other contracts from being able to call your contract, the <code>extcodesize</code> check is probably sufficient. An alternative approach is to check the value of <code>(tx.origin == msg.sender)</code>, though this also has drawbacks.</p><pre><code>There may be other situations in which the `extcodesize` check serves your purpose. Describing all of them here is out of scope. Understand the underlying behaviors of the EVM and use your Judgement.
+</code></pre><h2 id=6-fallback-functions><a href=#6-fallback-functions>6. Fallback functions <a href=#6-fallback-functions></a></a></h2><h4 id=keep-fallback-functions-simple><a href=#keep-fallback-functions-simple>Keep fallback functions simple <a href=#keep-fallback-functions-simple></a></a></h4><p><a href=http://solidity.readthedocs.io/en/latest/contracts.html#fallback-function>Fallback functions</a> are
+called when a contract is sent a message with no arguments (or when no function matches), and only
+has access to 2,300 gas when called from a <code>.send()</code> or <code>.transfer()</code>. If you wish to be able to
+receive Ether from a <code>.send()</code> or <code>.transfer()</code>, the most you can do in a fallback function is log
+an event. Use a proper function if a computation of more gas is required.</p><pre><code class=language-sol>// bad
+function() payable { balances[msg.sender] += msg.value; }
+
+// good
+function deposit() payable external { balances[msg.sender] += msg.value; }
+
+function() payable { require(msg.data.length == 0); emit LogDepositReceived(msg.sender); }
+</code></pre><h4 id=check-data-length-in-fallback-functions><a href=#check-data-length-in-fallback-functions>Check data length in fallback functions <a href=#check-data-length-in-fallback-functions></a></a></h4><p>Since the
+<a href=http://solidity.readthedocs.io/en/latest/contracts.html#fallback-function>fallback functions</a> is
+not only called for plain ether transfers (without data) but also when no other function matches,
+you should check that the data is empty if the fallback function is intended to be used only for
+the purpose of logging received Ether. Otherwise, callers will not notice if your contract is used
+incorrectly and functions that do not exist are called.</p><pre><code class=language-sol>// bad
+function() payable { emit LogDepositReceived(msg.sender); }
+
+// good
+function() payable { require(msg.data.length == 0); emit LogDepositReceived(msg.sender); }
+</code></pre><h2 id=7-integer-division><a href=#7-integer-division>7. Integer Division <a href=#7-integer-division></a></a></h2><p>All integer division rounds down to the nearest integer. If you need more precision, consider using
+a multiplier, or store both the numerator and denominator.</p><p>(In the future, Solidity will have a
+<a href=https://solidity.readthedocs.io/en/develop/types.html#fixed-point-numbers>fixed-point</a> type,
+which will make this easier.)</p><pre><code class=language-sol>// bad
+uint x = 5 / 2; // Result is 2, all integer division rounds DOWN to the nearest integer
+</code></pre><p>Using a multiplier prevents rounding down, this multiplier needs to be accounted for when working
+with x in the future:</p><pre><code class=language-sol>// good
+uint multiplier = 10;
+uint x = (5 * multiplier) / 2;
+</code></pre><p>Storing the numerator and denominator means you can calculate the result of <code>numerator/denominator</code>
+off-chain:</p><pre><code class=language-sol>// good
+uint numerator = 5;
+uint denominator = 2;
+</code></pre><h2 id=8-interface-types><a href=#8-interface-types>8. interface types <a href=#8-interface-types></a></a></h2><p>When a function takes a contract address as an argument, it is better to pass an interface or
+contract type rather than a raw <code>address</code>. If the function is called elsewhere within the source
+code, the compiler will provide additional type safety guarantees.</p><p>Here we see two alternatives:</p><pre><code class=language-sol>contract Validator {
+    function validate(uint) external returns(bool);
+}
+
+contract TypeSafeAuction {
+    // good
+    function validateBet(Validator _validator, uint _value) internal returns(bool) {
+        bool valid = _validator.validate(_value);
+        return valid;
+    }
+}
+
+contract TypeUnsafeAuction {
+    // bad
+    function validateBet(address _addr, uint _value) internal returns(bool) {
+        Validator validator = Validator(_addr);
+        bool valid = validator.validate(_value);
+        return valid;
+    }
+}
+</code></pre><p>The benefits of using the <code>TypeSafeAuction</code> contract above can then be seen from the following
+example. If <code>validateBet()</code> is called with an <code>address</code> argument, or a contract type other than
+<code>Validator</code>, the compiler will throw this error:</p><pre><code class=language-sol>contract NonValidator{}
+
+contract Auction is TypeSafeAuction {
+    NonValidator nonValidator;
+
+    function bet(uint _value) {
+        bool valid = validateBet(nonValidator, _value); // TypeError: Invalid type for argument in function call.
+                                                        // Invalid implicit conversion from contract NonValidator
+                                                        // to contract Validator requested.
+    }
+}
+</code></pre><h2 id=9-locking-pragmas><a href=#9-locking-pragmas>9. Locking pragmas <a href=#9-locking-pragmas></a></a></h2><p>Contracts should be deployed with the same compiler version and flags that they have been tested
+the most with. Locking the pragma helps ensure that contracts do not accidentally get deployed
+using, for example, the latest compiler which may have higher risks of undiscovered bugs. Contracts
+may also be deployed by others and the pragma indicates the compiler version intended by the
+original authors.</p><pre><code class=language-sol>// bad
+pragma solidity ^0.4.4;
+
+
+// good
+pragma solidity 0.4.4;
+</code></pre><p>Note: a floating pragma version (ie. <code>^0.4.25</code>) will compile fine with <code>0.4.26-nightly.2018.9.25</code>,
+however nightly builds should never be used to compile code for production.</p><p>!!! Warning
+Pragma statements can be allowed to float when a contract is intended for consumption
+by other developers, as in the case with contracts in a library or EthPM package. Otherwise, the
+developer would need to manually update the pragma in order to compile locally.</p><pre><code>See [SWC-103](https://swcregistry.io/docs/SWC-103)
+</code></pre><h2 id=10-modifier><a href=#10-modifier>10. Modifier <a href=#10-modifier></a></a></h2><p>The code inside a modifier is usually executed before the function body, so any state changes or
+external calls will violate the
+<a href=https://solidity.readthedocs.io/en/develop/security-considerations.html#use-the-checks-effects-interactions-pattern>Checks-Effects-Interactions</a>
+pattern. Moreover, these statements may also remain unnoticed by the developer, as the code for
+modifier may be far from the function declaration. For example, an external call in modifier can
+lead to the reentrancy attack:</p><pre><code class=language-sol>contract Registry {
+    address owner;
+
+    function isVoter(address _addr) external returns(bool) {
+        // Code
+    }
+}
+
+contract Election {
+    Registry registry;
+
+    modifier isEligible(address _addr) {
+        require(registry.isVoter(_addr));
+        _;
+    }
+
+    function vote() isEligible(msg.sender) public {
+        // Code
+    }
+}
+</code></pre><p>In this case, the <code>Registry</code> contract can make a reentrancy attack by calling <code>Election.vote()</code>
+inside <code>isVoter()</code>.</p><p>!!! Note
+Use <a href=https://solidity.readthedocs.io/en/develop/contracts.html#function-modifiers>modifiers</a> to
+replace duplicate condition checks in multiple functions, such as <code>isOwner()</code>, otherwise use
+<code>require</code> or <code>revert</code> inside the function. This makes your smart contract code more readable and
+easier to audit.</p><h2 id=11-payability><a href=#11-payability>11. payability <a href=#11-payability></a></a></h2><p>Starting from Solidity <code>0.4.0</code>, every function that is receiving ether must use <code>payable</code> modifier,
+otherwise if the transaction has <code>msg.value > 0</code> will revert
+(except when forced).</p><p>!!! Note
+Something that might not be obvious: The <code>payable</code> modifier only applies to calls from <em>external</em> contracts. If I call a non-payable function in the payable function in the same contract, the non-payable function won&rsquo;t fail, though <code>msg.value</code> is still set.</p><h2 id=12-shadowing><a href=#12-shadowing>12. Shadowing <a href=#12-shadowing></a></a></h2><p>It is currently possible to <a href=https://en.wikipedia.org/wiki/Variable_shadowing>shadow</a> built-in
+globals in Solidity. This allows contracts to override the functionality of built-ins such as <code>msg</code>
+and <code>revert()</code>. Although this <a href=https://github.com/ethereum/solidity/issues/1249>is intended</a>, it
+can mislead users of a contract as to the contract&rsquo;s true behavior.</p><pre><code class=language-sol>contract PretendingToRevert {
+    function revert() internal constant {}
+}
+
+contract ExampleContract is PretendingToRevert {
+    function somethingBad() public {
+        revert();
+    }
+}
+</code></pre><p>Contract users (and auditors) should be aware of the full smart contract source code of any
+application they intend to use.</p><h2 id=13-timestamp-dependence><a href=#13-timestamp-dependence>13. timestamp-dependence <a href=#13-timestamp-dependence></a></a></h2><p>There are three main considerations when using a timestamp to execute a critical function in a
+contract, especially when actions involve fund transfer.</p><h4 id=timestamp-manipulation><a href=#timestamp-manipulation>Timestamp Manipulation <a href=#timestamp-manipulation></a></a></h4><p>Be aware that the timestamp of the block can be manipulated by a miner. Consider this
+<a href=https://etherscan.io/address/0xcac337492149bdb66b088bf5914bedfbf78ccc18#code>contract</a>:</p><pre><code class=language-sol>
+uint256 constant private salt =  block.timestamp;
+
+function random(uint Max) constant private returns (uint256 result){
+    //get the best seed for randomness
+    uint256 x = salt * 100/Max;
+    uint256 y = salt * block.number/(salt % 5) ;
+    uint256 seed = block.number/3 + (salt % 300) + Last_Payout + y;
+    uint256 h = uint256(block.blockhash(seed));
+
+    return uint256((h / x)) % Max + 1; //random number between 1 and Max
+}
+</code></pre><p>When the contract uses the timestamp to seed a random number, the miner can actually post a
+timestamp within 15 seconds of the block being validated, effectively allowing the miner to
+precompute an option more favorable to their chances in the lottery. Timestamps are not random and
+should not be used in that context.</p><h4 id=the-15-second-rule><a href=#the-15-second-rule>The 15-second Rule <a href=#the-15-second-rule></a></a></h4><p>The <a href=https://ethereum.github.io/yellowpaper/paper.pdf>Yellow Paper</a> (Ethereum&rsquo;s reference
+specification) does not specify a constraint on how much blocks can drift in time, but
+<a href=https://ethereum.stackexchange.com/a/5926/46821>it does specify</a> that each timestamp should be
+bigger than the timestamp of its parent. Popular Ethereum protocol implementations
+<a href=https://github.com/ethereum/go-ethereum/blob/4e474c74dc2ac1d26b339c32064d0bac98775e77/consensus/ethash/consensus.go#L45>Geth</a>
+and
+<a href=https://github.com/paritytech/parity-ethereum/blob/73db5dda8c0109bb6bc1392624875078f973be14/ethcore/src/verification/verification.rs#L296-L307>Parity</a>
+both reject blocks with timestamp more than 15 seconds in future. Therefore, a good rule of thumb
+in evaluating timestamp usage is:</p><p>!!! Note
+If the scale of your time-dependent event can vary by 15 seconds and maintain integrity,
+it is safe to use a <code>block.timestamp</code>.</p><h4 id=avoid-using-blocknumber-as-a-timestamp><a href=#avoid-using-blocknumber-as-a-timestamp>Avoid using <code>block.number</code> as a timestamp <a href=#avoid-using-blocknumber-as-a-timestamp></a></a></h4><p>It is possible to estimate a time delta using the <code>block.number</code> property and
+<a href=https://etherscan.io/chart/blocktime>average block time</a>, however this is not future proof as
+block times may change (such as
+<a href=https://blog.ethereum.org/2015/08/08/chain-reorganisation-depth-expectations/>fork reorganisations</a>
+and the <a href=https://github.com/ethereum/EIPs/issues/649>difficulty bomb</a>). In a sale spanning days,
+the 15-second rule allows one to achieve a more reliable estimate of time.</p><p>See <a href=https://swcregistry.io/docs/SWC-116>SWC-116</a></p><h2 id=14-tx-origin><a href=#14-tx-origin>14. tx-origin <a href=#14-tx-origin></a></a></h2><p>Never use <code>tx.origin</code> for authorization, another contract can have a method which will call your
+contract (where the user has some funds for instance) and your contract will authorize that
+transaction as your address is in <code>tx.origin</code>.</p><pre><code class=language-sol>contract MyContract {
+
+    address owner;
+
+    function MyContract() public {
+        owner = msg.sender;
+    }
+
+    function sendTo(address receiver, uint amount) public {
+        require(tx.origin == owner);
+        (bool success, ) = receiver.call.value(amount)(&quot;&quot;);
+        require(success);
+    }
+
+}
+
+contract AttackingContract {
+
+    MyContract myContract;
+    address attacker;
+
+    function AttackingContract(address myContractAddress) public {
+        myContract = MyContract(myContractAddress);
+        attacker = msg.sender;
+    }
+
+    function() public {
+        myContract.sendTo(attacker, msg.sender.balance);
+    }
+
+}
+</code></pre><p>You should use <code>msg.sender</code> for authorization (if another contract calls your contract <code>msg.sender</code>
+will be the address of the contract and not the address of the user who called the contract).</p><p>You can read more about it here:
+<a href=https://solidity.readthedocs.io/en/develop/security-considerations.html#tx-origin>Solidity docs</a></p><p>!!! Warning
+Besides the issue with authorization, there is a chance that <code>tx.origin</code> will be
+removed from the Ethereum protocol in the future, so code that uses <code>tx.origin</code> won&rsquo;t be compatible
+with future releases
+<a href=https://ethereum.stackexchange.com/questions/196/how-do-i-make-my-dapp-serenity-proof/200#200>Vitalik: &lsquo;Do NOT assume that tx.origin will continue to be usable or meaningful.&rsquo;</a></p><pre><code>It's also worth mentioning that by using `tx.origin` you're limiting interoperability between
+contracts because the contract that uses tx.origin cannot be used by another contract as a contract
+can't be the `tx.origin`.
+
+See [SWC-115](https://swcregistry.io/docs/SWC-115)
+</code></pre><h2 id=15-visibility><a href=#15-visibility>15. Visibility <a href=#15-visibility></a></a></h2><p>Explicitly label the visibility of functions and state variables. Functions can be specified as
+being <code>external</code>, <code>public</code>, <code>internal</code> or <code>private</code>. Please understand the differences between
+them, for example, <code>external</code> may be sufficient instead of <code>public</code>. For state variables,
+<code>external</code> is not possible. Labeling the visibility explicitly will make it easier to catch
+incorrect assumptions about who can call the function or access the variable.</p><ul><li><code>External</code> functions are part of the contract interface. An external function <code>f</code> cannot be
+called internally (i.e. <code>f()</code> does not work, but <code>this.f()</code> works). External functions are
+sometimes more efficient when they receive large arrays of data.</li><li><code>Public</code> functions are part of the contract interface and can be either called internally or via
+messages. For public state variables, an automatic getter function (see below) is generated.</li><li><code>Internal</code> functions and state variables can only be accessed internally, without using <code>this</code>.</li><li><code>Private</code> functions and state variables are only visible for the contract they are defined in and
+not in derived contracts. <strong>Note</strong>: Everything that is inside a contract is visible to all
+observers external to the blockchain, even <code>Private</code>
+variables.<sup><a href=https://solidity.readthedocs.io/en/develop/contracts.html?#visibility-and-getters>*</a></sup></li></ul><pre><code class=language-sol>// bad
+uint x; // the default is internal for state variables, but it should be made explicit
+function buy() { // the default is public
+    // public code
+}
+
+// good
+uint private y;
+function buy() external {
+    // only callable externally or using this.buy()
+}
+
+function utility() public {
+    // callable externally, as well as internally: changing this code requires thinking about both cases.
+}
+
+function internalAction() internal {
+    // internal code
+}
+</code></pre><h3 id=see><a href=#see>See <a href=#see></a></a></h3><ul><li><a href=https://swcregistry.io/docs/SWC-100>SWC-100</a> and</li><li><a href=https://swcregistry.io/docs/SWC-108>SWC-108</a></li></ul></main></div></body></html><footer><hr><span style=float:right>Edited on Jan 1, 0001<br></span><b>Console Labs</b> © 2023 — <a href=https://github.com/consolelabs/consolelabs.github.io/blob/main/LICENSE.by-nc-sa-4.0.md target=_blank>BY-NC-SA 4.0</a></footer>

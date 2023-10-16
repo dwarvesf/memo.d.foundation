@@ -1,0 +1,244 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content><meta name=description property="og:description" content><meta name=keywords content><meta property="og:type" content="website"><meta property="og:url" content="https://log.console.so/playbook/engineering/blockchain/precautions/"><meta property="og:image" content="https://log.console.so/img/ConsoleLabs_logo_1.jpg"><link rel=icon type=image/x-icon href=https://log.console.so/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://log.console.so/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://log.console.so/favicon-32x32.png><link rel=apple-touch-icon href=https://log.console.so/apple-touch-icon.png><title>| Console Labs</title><meta name=description content><link rel=canonical href=https://log.console.so/playbook/engineering/blockchain/precautions/><link rel="shortcut icon" type=image/png href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="><script defer data-domain=log.console.so src=https://plausible.io/js/script.js></script><style>:root{--primary-color:#45f1a6;--primary-color-light:#2ea370;--nav-sidebar-width:200px;--nav-sidebar-offset:40px;--main-padding:45px;--column-gap:20px}body{font:16px sans-serif;color:#000;text-rendering:optimizeLegibility;padding:2rem;max-width:100%;margin:0;padding:0;background-color:#fff;line-height:25px;min-height:100vh;display:flex;flex-direction:column;overflow-wrap:break-word;hyphens:auto}h1,h2,h3,h4{color:var(--primary-color)}h1{font-size:45px;display:none}h2{font-size:30px}h3{font-size:20px}h4{font-size:15px}q{font-size:20px;max-width:500px;display:block;margin-left:30px}pre{font-family:monospace;background:#000;color:#fff;padding:15px;border-radius:2px;overflow-x:scroll;width:100%;box-sizing:border-box}pre>code{display:block;text-indent:0;white-space:inherit;font-weight:400}code{font-family:monospace;font-size:12px;background:#000;color:#fff;padding:2px 5px;white-space:wrap;border-radius:2px;font-weight:700;display:inline-block;line-height:16px;overflow-x:scroll}code comment{color:#777}code.button{background:#fff;color:#000;font-size:smaller;display:inline-block;padding:0 6px;font-weight:700;border-radius:2px;line-height:22px}a[href*="#"]{text-decoration:none}nav.menu{float:left;padding:var(--main-padding);max-width:var(--nav-sidebar-width);line-height:22px;margin-top:-2px;white-space:nowrap}nav .site-nav{margin:20px 0;display:block}nav .site-nav section{float:left;margin-top:-2px}nav .site-nav section h2{margin:20px 0;font-size:24px;text-transform:lowercase}nav.menu details summary{margin-bottom:30px}nav.menu ul{padding:0 10px 10px 0;margin:0;list-style-type:none;line-height:22px}main{padding:var(--main-padding);max-width:100%;box-sizing:border-box;float:left}main>ul{line-height:25px;margin:0}main>ul>li>a{text-decoration:underline}.dual-list>ul{columns:2}.single-list>ul{columns:2}.profile img{width:100px;height:100px;object-fit:cover;aspect-ratio:1/1}.profile object{width:100px;height:100px;object-fit:cover;aspect-ratio:1/1}table,th,td{border:1px solid;border-collapse:collapse;border-spacing:0}tr{max-height:100px;max-width:100px}td{padding:0 20px;max-width:300px;max-height:100px;overflow:hidden;text-overflow:ellipsis}td:has(img){padding:0;line-height:0}#TableOfContents>ul>li>a{text-decoration:underline}#TableOfContents>ul{display:grid;column-gap:var(--column-gap);box-sizing:border-box;grid-template-columns:repeat(auto-fill,minmax(var(--nav-sidebar-width),calc(50% - var(--column-gap))));line-height:20px}#TableOfContents li{white-space:nowrap;list-style-type:decimal-leading-zero;list-style-position:inside;overflow:hidden;text-overflow:ellipsis}.notice{padding:20px;border:2px solid #000}main>blockquote{padding:20px;border:2px solid #000}main>*{max-width:600px;margin-bottom:30px}header{padding:var(--main-padding);border-bottom:1px solid #222}header a img{filter:invert(0)}header h1{display:inline}footer{margin-top:auto;padding:var(--main-padding);clear:both}nav .site-nav ul li{list-style-type:none;display:flex;font-variant-numeric:tabular-nums}li:has(input[type=checkbox]){display:block;list-style-type:none}ul:has(li input[type=checkbox]){padding:0}ul li a{overflow:hidden;text-overflow:ellipsis;width:calc(var(--nav-sidebar-width) + var(--nav-sidebar-offset));background-color:#fff}ul li a:hover{white-space:nowrap;width:100%;z-index:10}ul li p{margin-block-end:0;margin-block-start:0}time{padding-right:1rem}blockquote{margin:1em 0;padding:0 2em;border-left:3px solid #eee}img{max-width:100%}a,a:visited{color:#000}@media(prefers-color-scheme:dark){a,a:visited{color:#fff}body{background:#000;color:#fff}header a img{filter:invert(1)}body a{color:#fff}pre{background:#fff;color:#000}code{background:#fff;color:#000}body select{color:#000;background-color:#fff}.project{border-left:2px solid #fff}.notice{border-color:#fff}.mono{filter:invert(1)}.progress>div{background-color:#fff}.progress>div>span{color:#000}main>blockquote{border-color:#fff}ul li a{background-color:inherit}section>ul li a{background-color:inherit}}@media(prefers-color-scheme:light){h1,h2,h3,h4{color:var(--primary-color-light)}}@media only screen and (max-width:1100px){:root{--nav-sidebar-width:140px;--nav-sidebar-offset:0px}nav{width:100%}nav .site-nav section{float:left;margin:0 10px 10px 0}nav.menu{max-width:100%;box-sizing:border-box;display:inline-block}nav .site-nav{display:grid;column-gap:var(--column-gap);grid-template-columns:repeat(auto-fill,minmax(var(--nav-sidebar-width),1fr))}main{display:inline-block;width:unset}main>*{max-width:100%}ul li a{width:var(--nav-sidebar-width)}}</style><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"playbook","name":"","headline":"","alternativeHeadline":"","description":"As we discussed in the General Philosophy section, it is not enough to protect yourself against the known attacks. Since the cost of failure on a blockchain can be very high, you must also adapt the way you write software, to account for that risk.\nThe approach we advocate is to \u0026ldquo;prepare for failure\u0026rdquo;. It is impossible to know in advance whether your code is secure. However, you can architect your contracts in a way that allows them to fail gracefully, and with minimal damage.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/log.console.so\/playbook\/engineering\/blockchain\/precautions\/"},"author":{"@type":"Person","name":"Han Ngo"},"creator":{"@type":"Person","name":"Han Ngo"},"accountablePerson":{"@type":"Person","name":"Han Ngo"},"copyrightHolder":"Console Labs","copyrightYear":"0001","date":"0001-01-01T00:00:00.00Z","dateCreated":"0001-01-01T00:00:00.00Z","datePublished":"0001-01-01T00:00:00.00Z","dateModified":"0001-01-01T00:00:00.00Z","publisher":{"@type":"Organization","name":"Console Labs","url":"https://log.console.so/","logo":{"@type":"ImageObject","url":"https:\/\/log.console.so\/","width":"32","height":"32"}},"image":"https://log.console.so/","url":"https:\/\/log.console.so\/playbook\/engineering\/blockchain\/precautions\/","wordCount":"2082","genre":[],"keywords":[]}</script><style>body{visibility:hidden;opacity:0}</style><noscript><style>body{visibility:visible;opacity:1}</style></noscript><script type=text/javascript>window.addEventListener("DOMContentLoaded",function(){document.body.style.visibility="visible",document.body.style.opacity=1})</script></head><body class=playbook><header><a href=/><img src=https://log.console.so/img/ConsoleLabs_logo.png alt=ConsoleLabs height=103px style="margin:-28px -26px"></a></header><div><nav class=menu><details open><summary>Menu</summary><section class=site-nav><section><ul><li><a href=/site-index/>Index</a></li></ul></section><section><h2>experiments</h2><ul></ul></section><section><h2>blog</h2><ul></ul></section><section><h2>playbook</h2><ul></ul></section></section></details></nav><main><p>As we discussed in the General Philosophy section, it is not enough to protect yourself against the known attacks. Since the cost of failure on a blockchain can be very high, you must also adapt the way you write software, to account for that risk.</p><p>The approach we advocate is to &ldquo;prepare for failure&rdquo;. It is impossible to know in advance whether your code is secure. However, you can architect your contracts in a way that allows them to fail gracefully, and with minimal damage. This section presents a variety of techniques that will help you prepare for failure.</p><p>Note: There&rsquo;s always a risk when you add a new component to your system. A badly designed fail-safe could itself become a vulnerability - as can the interaction between a number of well-designed fail-safes. Be thoughtful about each technique you use in your contracts, and consider carefully how they work together to create a robust system.</p><h2 id=deployment><a href=#deployment>Deployment <a href=#deployment></a></a></h2><p>Contracts should have a substantial and prolonged testing period - before substantial money is put
+at risk.</p><p>At minimum, you should:</p><ul><li>Have a full test suite with 100% test coverage (or close to it)</li><li>Deploy on your own testnet</li><li>Deploy on the public testnet with substantial testing and bug bounties</li><li>Exhaustive testing should allow various players to interact with the contract at volume</li><li>Deploy on the mainnet in beta, with limits to the amount at risk</li></ul><h5 id=automatic-deprecation><a href=#automatic-deprecation>Automatic Deprecation <a href=#automatic-deprecation></a></a></h5><p>During testing, you can force an automatic deprecation by preventing any actions, after a certain
+time period. For example, an alpha contract may work for several weeks and then automatically shut
+down all actions, except for the final withdrawal.</p><pre><code class=language-sol>modifier isActive() {
+    require(block.number &lt;= SOME_BLOCK_NUMBER);
+    _;
+}
+
+function deposit() public isActive {
+    // some code
+}
+
+function withdraw() public {
+    // some code
+}
+</code></pre><h5 id=restrict-amount-of-ether-per-usercontract><a href=#restrict-amount-of-ether-per-usercontract>Restrict amount of Ether per user/contract <a href=#restrict-amount-of-ether-per-usercontract></a></a></h5><p>In the early stages, you can restrict the amount of Ether for any user (or for the entire contract)</p><ul><li>reducing the risk.</li></ul><h2 id=circuit-breakers><a href=#circuit-breakers>Circuit breakers <a href=#circuit-breakers></a></a></h2><p>Circuit breakers stop execution if certain conditions are met, and can be useful when new errors
+are discovered. For example, most actions may be suspended in a contract if a bug is discovered,
+and the only action now active is a withdrawal. You can either give certain trusted parties the
+ability to trigger the circuit breaker or else have programmatic rules that automatically trigger
+the certain breaker when certain conditions are met.</p><p>Example:</p><pre><code class=language-sol>bool private stopped = false;
+address private owner;
+
+modifier isAdmin() {
+    require(msg.sender == owner);
+    _;
+}
+
+function toggleContractActive() isAdmin public {
+    // You can add an additional modifier that restricts stopping a contract to be based on another action, such as a vote of users
+    stopped = !stopped;
+}
+
+modifier stopInEmergency { if (!stopped) _; }
+modifier onlyInEmergency { if (stopped) _; }
+
+function deposit() stopInEmergency public {
+    // some code
+}
+
+function withdraw() onlyInEmergency public {
+    // some code
+}
+</code></pre><h2 id=rate-limit><a href=#rate-limit>Rate limit <a href=#rate-limit></a></a></h2><p>Rate limiting halts or requires approval for substantial changes. For example, a depositor may only
+be allowed to withdraw a certain amount or percentage of total deposits over a certain time period
+(e.g., max 100 ether over 1 day) - additional withdrawals in that time period may fail or require
+some sort of special approval. Or the rate limit could be at the contract level, with only a
+certain amount of tokens issued by the contract over a time period.</p><p>Example:</p><pre><code class=language-sol>uint internal period; // how many blocks before limit resets
+uint internal limit; // max ether to withdraw per period
+uint internal currentPeriodEnd; // block which the current period ends at
+uint internal currentPeriodAmount; // amount already withdrawn this period
+
+constructor(uint _period, uint _limit) public {
+    period = _period;
+    limit = _limit;
+
+    currentPeriodEnd = block.number + period;
+}
+
+function withdraw(uint amount) public {
+    // Update period before proceeding
+    updatePeriod();
+
+    // Prevent overflow
+    uint totalAmount = currentPeriodAmount + amount;
+    require(totalAmount &gt;= currentPeriodAmount, 'overflow');
+
+    // Disallow withdraws that exceed current rate limit
+    require(currentPeriodAmount + amount &lt; limit, 'exceeds period limit');
+    currentPeriodAmount += amount;
+    msg.sender.transfer(amount);
+}
+
+function updatePeriod() internal {
+    if(currentPeriodEnd &lt; block.number) {
+        currentPeriodEnd = block.number + period;
+        currentPeriodAmount = 0;
+    }
+}
+</code></pre><p>Some tips for running bounty programs:</p><ul><li>Decide which currency bounties will be distributed in (BTC and/or ETH)</li><li>Decide on an estimated total budget for bounty rewards</li><li>From the budget, determine three tiers of rewards:<ul><li>smallest reward you are willing to give out</li><li>highest reward that&rsquo;s usually awardable</li><li>an extra range to be awarded in case of very severe vulnerabilities</li></ul></li><li>Determine who the bounty judges are (3 may be ideal typically)</li><li>Lead developer should probably be one of the bounty judges</li><li>When a bug report is received, the lead developer, with advice from judges, should evaluate the
+severity of the bug</li><li>Work at this stage should be in a private repo, and the issue filed on Github</li><li>If it&rsquo;s a bug that should be fixed, in the private repo, a developer should write a test case,
+which should fail and thus confirm the bug</li><li>Developer should implement the fix and ensure the test now passes; writing additional tests as
+needed</li><li>Show the bounty hunter the fix; merge the fix back to the public repo is one way</li><li>Determine if bounty hunter has any other feedback about the fix</li><li>Bounty judges determine the size of the reward, based on their evaluation of both the
+<em>likelihood</em> and <em>impact</em> of the bug.</li><li>Keep bounty participants informed throughout the process, and then strive to avoid delays in
+sending them their reward</li></ul><p>For an example of the three tiers of rewards, see
+<a href=https://bounty.ethereum.org>Ethereum&rsquo;s Bounty Program</a>:</p><blockquote><p>The value of rewards paid out will vary depending on severity of impact. Rewards for minor
+&lsquo;harmless&rsquo; bugs start at 0.05 BTC. Major bugs, for example leading to consensus issues, will be
+rewarded up to 5 BTC. Much higher rewards are possible (up to 25 BTC) in case of very severe
+vulnerabilities.</p></blockquote><h2 id=speed-bumps><a href=#speed-bumps>Speed bumps <a href=#speed-bumps></a></a></h2><p>Speed bumps slow down actions, so that if malicious actions occur, there is time to recover. For
+example, <a href=https://github.com/slockit/DAO/>The DAO</a> required 27 days between a successful request
+to split the DAO and the ability to do so. This ensured the funds were kept within the contract,
+increasing the likelihood of recovery. In the case of the DAO, there was no effective action that
+could be taken during the time given by the speed bump, but in combination with our other
+techniques, they can be quite effective.</p><p>Example:</p><pre><code class=language-sol>struct RequestedWithdrawal {
+    uint amount;
+    uint time;
+}
+
+mapping (address =&gt; uint) private balances;
+mapping (address =&gt; RequestedWithdrawal) private requestedWithdrawals;
+uint constant withdrawalWaitPeriod = 28 days; // 4 weeks
+
+function requestWithdrawal() public {
+    if (balances[msg.sender] &gt; 0) {
+        uint amountToWithdraw = balances[msg.sender];
+        balances[msg.sender] = 0; // for simplicity, we withdraw everything;
+        // presumably, the deposit function prevents new deposits when withdrawals are in progress
+
+        requestedWithdrawals[msg.sender] = RequestedWithdrawal({
+            amount: amountToWithdraw,
+            time: block.timestamp
+        });
+    }
+}
+
+function withdraw() public {
+    if(requestedWithdrawals[msg.sender].amount &gt; 0 &amp;&amp; block.timestamp &gt; requestedWithdrawals[msg.sender].time + withdrawalWaitPeriod) {
+        uint amountToWithdraw = requestedWithdrawals[msg.sender].amount;
+        requestedWithdrawals[msg.sender].amount = 0;
+
+        require(msg.sender.send(amountToWithdraw));
+    }
+}
+</code></pre><h2 id=upgradeability><a href=#upgradeability>Upgradeability <a href=#upgradeability></a></a></h2><p>!!! warning
+Smart Contract upgradeability is an active area of research. There are many important
+questions, and risks related to smart contract upgradeability. Do your research into the state of
+the art. We welcome discussion on the
+<a href=https://github.com/ConsenSys/smart-contract-best-practices/issues/164>related issue</a>.</p><p>Code will need to be changed if errors are discovered or if improvements need to be made. It is no
+good to discover a bug, but have no way to deal with it.</p><p>Designing an effective upgrade system for smart contracts is an area of active research, and we
+won&rsquo;t be able to cover all of the complications in this document. However, two basic approaches are
+most commonly used. The simpler of the two is to have a registry contract that holds the address of
+the latest version of the contract. A more seamless approach for contract users is to have a
+contract that forwards calls and data onto the latest version of the contract.</p><p>Whatever the technique, it&rsquo;s important to have modularization and good separation between
+components, so that code changes do not break functionality, orphan data, or require substantial
+costs to port. In particular, it is usually beneficial to separate complex logic from your data
+storage, so that you do not have to recreate all of the data in order to change the functionality.</p><p>It&rsquo;s also critical to have a secure way for parties to decide to upgrade the code. Depending on
+your contract, code changes may need to be approved by a single trusted party, a group of members,
+or a vote of the full set of stakeholders. If this process can take some time, you will want to
+consider if there are other ways to react more quickly in case of an attack, such as an
+emergency stop or circuit-breaker.</p><p>Regardless of your approach, it is important to have some way to upgrade your contracts, or they
+will become unusable when the inevitable bugs are discovered in them.</p><h4 id=example-1-use-a-registry-contract-to-store-the-latest-version-of-a-contract><a href=#example-1-use-a-registry-contract-to-store-the-latest-version-of-a-contract>Example 1: Use a registry contract to store the latest version of a contract <a href=#example-1-use-a-registry-contract-to-store-the-latest-version-of-a-contract></a></a></h4><p>In this example, the calls aren&rsquo;t forwarded, so users should fetch the current address each time
+before interacting with it.</p><pre><code class=language-sol>pragma solidity ^0.5.0;
+
+contract SomeRegister {
+    address backendContract;
+    address[] previousBackends;
+    address owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner)
+        _;
+    }
+
+    function changeBackend(address newBackend) public
+    onlyOwner()
+    returns (bool)
+    {
+        if(newBackend != address(0) &amp;&amp; newBackend != backendContract) {
+            previousBackends.push(backendContract);
+            backendContract = newBackend;
+            return true;
+        }
+
+        return false;
+    }
+}
+</code></pre><p>There are two main disadvantages to this approach:</p><ol><li>Users must always look up the current address, and anyone who fails to do so risks using an old
+version of the contract</li><li>You will need to think carefully about how to deal with the contract data when you replace the
+contract</li></ol><p>The alternate approach is to have a contract forward calls and data to the latest version of the
+contract:</p><h4 id=example-2-use-a-delegatecallhttpethereumstackexchangecomquestions2404upgradeable-contracts-to-forward-data-and-calls><a href=#example-2-use-a-delegatecallhttpethereumstackexchangecomquestions2404upgradeable-contracts-to-forward-data-and-calls>Example 2: <a href=http://ethereum.stackexchange.com/questions/2404/upgradeable-contracts>Use a <code>DELEGATECALL</code></a> to forward data and calls <a href=#example-2-use-a-delegatecallhttpethereumstackexchangecomquestions2404upgradeable-contracts-to-forward-data-and-calls></a></a></h4><p>This approach relies on using the
+<a href=https://solidity.readthedocs.io/en/latest/contracts.html#fallback-function>fallback function</a> (in
+<code>Relay</code> contract) to forward the calls to a target contract (<code>LogicContract</code>) using
+<a href=https://solidity.readthedocs.io/en/latest/introduction-to-smart-contracts.html#delegatecall-callcode-and-libraries>delegatecall</a>.
+Remember that <code>delegatecall</code> is a special function in Solidity that executes the logic of the
+called address (<code>LogicContract</code>) in the context of the calling contract (<code>Relay</code>), so <em>&ldquo;storage,
+current address and balance still refer to the calling contract , only the code is taken from the
+called address&rdquo;</em>.</p><pre><code class=language-sol>pragma solidity ^0.5.0;
+
+contract Relay {
+    address public currentVersion;
+    address public owner;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+
+    constructor(address initAddr) {
+        require(initAddr != address(0));
+        currentVersion = initAddr;
+        owner = msg.sender; // this owner may be another contract with multisig, not a single contract owner
+    }
+
+    function changeContract(address newVersion) public
+    onlyOwner()
+    {
+        require(newVersion != address(0));
+        currentVersion = newVersion;
+    }
+
+    fallback() external payable {
+        (bool success, ) = address(currentVersion).delegatecall(msg.data);
+        require(success);
+    }
+}
+</code></pre><pre><code class=language-sol>contract LogicContract {
+    address public currentVersion;
+    address public owner;
+    uint public counter;
+
+    function incrementCounter() {
+        counter++;
+    }
+}
+</code></pre><p>This simple version of the pattern cannot return values from <code>LogicContract</code>&rsquo;s functions, only
+forward them, which limits its applicability. More complex implementations attempt to solve this
+with in-line assembly code and a registry of return sizes. They are commonly referred to as
+<a href=https://blog.openzeppelin.com/proxy-patterns/>Proxy Patterns</a>, but are also known as
+<a href=https://github.com/PeterBorah/ether-router>Router</a>,
+<a href=https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f>Dispatcher</a> and Relay. Each
+implementation variant introduces a different set of complexity, risks and limitations.</p><p>You must be extremely careful with how you store data with this method. If your new contract has a
+different storage layout than the first, your data may end up corrupted. When using more complex
+implementations of <code>delegatecall</code>, you should carefully consider and understand*:</p><ul><li>How the EVM handles the
+<a href=https://docs.soliditylang.org/en/latest/internals/layout_in_storage.html>layout of state variables in storage</a>,
+including packing multiple variables into a single storage slot if possible</li><li>How and why
+<a href=https://github.com/OpenZeppelin/openzeppelin-sdk/issues/37>the order of inheritance</a> impacts
+the storage layout</li><li>Why the called contract (<code>LogicContract</code>) must have the same storage layout of the calling
+contract (<code>Relay</code>), and only append new variables to the storage (see
+<a href=https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/>Background on delegatecall</a>)</li><li>Why a new version of the called contract (<code>LogicContract</code>)
+<a href=https://github.com/OpenZeppelin/openzeppelin-sdk/issues/37>must have the same storage layout as the previous version</a>,
+and only append new variables to the storage</li><li><a href=https://blog.openzeppelin.com/towards-frictionless-upgradeability/>How a contract&rsquo;s constructor can affect upgradeability</a></li><li>How the ABI specifies
+<a href="https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html?highlight=signature#function-selector">function selectors</a>
+and how
+<a href=https://medium.com/nomic-labs-blog/malicious-backdoors-in-ethereum-proxies-62629adf3357>function-name collision</a>
+can be used to exploit a contract that uses <code>delegatecall</code></li><li>How <code>delegatecall</code> to a non-existent contract will return true even if the called contract does
+not exist. For more details see
+<a href=https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/>Breaking the proxy pattern</a>
+and Solidity docs on
+<a href=https://solidity.readthedocs.io/en/latest/control-structures.html#error-handling-assert-require-revert-and-exceptions>Error handling</a>.</li><li>Remember the
+<a href=https://diligence.consensys.net/blog/2019/01/upgradeability-is-a-bug/>importance of immutability to achieve truslessness</a></li></ul><p>* <em>Extended from
+<a href=https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/>Proxy pattern recommendations section</a></em></p></main></div></body></html><footer><hr><span style=float:right>Edited on Jan 1, 0001<br></span><b>Console Labs</b> © 2023 — <a href=https://github.com/consolelabs/consolelabs.github.io/blob/main/LICENSE.by-nc-sa-4.0.md target=_blank>BY-NC-SA 4.0</a></footer>
