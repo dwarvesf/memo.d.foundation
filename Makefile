@@ -2,17 +2,23 @@ setup:
 	@brew install rust
 	@brew install hugo
 	@cargo install obsidian-export
-	@if [ ! -d "./vault" ]; then git clone git@github.com:dwarvesf/content.git vault; \
-	else pushd vault && git pull && popd; fi
+	@git clone git@github.com:dwarvesf/content.git vault
 	@mkdir -p ./content
 
 build:
-	@cd vault && git pull
 	@obsidian-export ./vault ./content
 	@hugo --minify
 
 run:
+	@obsidian-export ./vault ./content
 	hugo server
+
+watch-run:
+	@rm -rf ./content
+	@mkdir -p content
+	@obsidian-export ./vault ./content
+	@./inotify.sh ./vault obsidian-export ./vault ./content &
+	@hugo server
 
 build-target:
 	@mkdir -p vault content
