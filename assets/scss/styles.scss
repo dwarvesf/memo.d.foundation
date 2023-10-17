@@ -1,9 +1,7 @@
 :root {
-  --primary-color: #45f1a6;
+  --primary-color: #dadada;
   --primary-color-light: #2ea370;
-  --nav-sidebar-width: 200px;
-  --nav-sidebar-offset: 40px;
-  --main-padding: 45px;
+  --main-padding: 48px;
   --column-gap: 20px;
 }
 
@@ -42,7 +40,7 @@ h2 {
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 h4 {
@@ -59,7 +57,7 @@ q {
 pre {
   font-family: monospace;
   background: black;
-  color: white;
+  color: #dadada;
   padding: 15px;
   border-radius: 2px;
   overflow-x: scroll;
@@ -67,7 +65,7 @@ pre {
   box-sizing: border-box;
 }
 
-pre > code {
+pre>code {
   display: block;
   text-indent: 0;
   white-space: inherit;
@@ -78,7 +76,7 @@ code {
   font-family: monospace;
   font-size: 12px;
   background: black;
-  color: white;
+  color: #dadada;
   padding: 2px 5px;
   white-space: wrap;
   border-radius: 2px;
@@ -107,14 +105,69 @@ a[href*="#"] {
   text-decoration: none;
 }
 
+.grid {
+  display: inline-grid;
+  grid-template-areas:
+    "nav content"
+    "nav content";
+  grid-template-rows: 1fr 100vh;
+  grid-template-columns: 325px 1fr;
+}
+
 /* Navigation Menu */
 nav.menu {
-  float: left;
-  padding: var(--main-padding);
+  padding: 29px 0px 0px 45px;
   max-width: var(--nav-sidebar-width);
   line-height: 22px;
   margin-top: -2px;
   white-space: nowrap;
+  border-right: 1px solid #363636;
+  grid-area: nav;
+}
+
+details {
+  margin-left: -7px;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+summary {
+  padding: 5px;
+  display: block;
+  padding-left: 24px;
+  position: relative;
+  cursor: pointer;
+}
+
+summary:before {
+  content: '';
+  border-width: .4rem;
+  border-style: solid;
+  border-color: transparent transparent transparent #fff;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  transform: rotate(0);
+  transform-origin: 0.2rem 50%;
+  transition: 0.25s transform ease;
+}
+
+
+details[open]>summary:before {
+  transform: rotate(90deg);
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details>ul {
+  margin-bottom: 0;
+}
+
+hr {
+  margin-left: 0px;
 }
 
 nav .site-nav {
@@ -123,7 +176,6 @@ nav .site-nav {
 }
 
 nav .site-nav section {
-  float: left;
   margin-top: -2px;
 }
 
@@ -131,10 +183,6 @@ nav .site-nav section h2 {
   margin: 20px 0 20px 0;
   font-size: 24px;
   text-transform: lowercase;
-}
-
-nav.menu details summary {
-  margin-bottom: 30px;
 }
 
 nav.menu ul {
@@ -146,26 +194,26 @@ nav.menu ul {
 
 /* Header, main and footer */
 main {
+  grid-area: content;
   padding: var(--main-padding);
   max-width: 100%;
   box-sizing: border-box;
-  float: left;
 }
 
-main > ul {
+main>ul {
   line-height: 25px;
   margin: 0;
 }
 
-main > ul > li > a {
+main>ul>li>a {
   text-decoration: underline;
 }
 
-.dual-list > ul {
+.dual-list>ul {
   columns: 2;
 }
 
-.single-list > ul {
+.single-list>ul {
   columns: 2;
 }
 
@@ -184,7 +232,9 @@ main > ul > li > a {
   aspect-ratio: 1 / 1;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid;
   border-collapse: collapse;
   border-spacing: 0px;
@@ -208,11 +258,11 @@ td:has(img) {
   line-height: 0px;
 }
 
-#TableOfContents > ul > li > a {
+#TableOfContents>ul>li>a {
   text-decoration: underline;
 }
 
-#TableOfContents > ul {
+#TableOfContents>ul {
   display: grid;
   column-gap: var(--column-gap);
   box-sizing: border-box;
@@ -233,19 +283,19 @@ td:has(img) {
   border: 2px solid black;
 }
 
-main > blockquote {
+main>blockquote {
   padding: 20px;
   border: 2px solid black;
 }
 
-main > * {
+main>* {
   max-width: 600px;
   margin-bottom: 30px;
 }
 
 header {
   padding: var(--main-padding);
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid #363636;
 }
 
 header h1 {
@@ -262,6 +312,8 @@ nav .site-nav ul li {
   list-style-type: none;
   display: flex;
   font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  padding-left: 20px;
 }
 
 li:has(input[type="checkbox"]) {
@@ -312,28 +364,29 @@ a:visited {
 
 /* Theme */
 @media (prefers-color-scheme: dark) {
+
   a,
   a:visited {
-    color: white;
+    color: #dadada;
   }
 
   body {
-    background: #000;
-    color: white;
+    background: #1e1e1e;
+    color: #dadada;
   }
 
   body a {
-    color: white;
+    color: #dadada;
   }
 
   pre {
     background: white;
-    color: #000;
+    color: #1e1e1e;
   }
 
   code {
     background: white;
-    color: #000;
+    color: #1e1e1e;
   }
 
   body select {
@@ -353,15 +406,15 @@ a:visited {
     filter: invert(1);
   }
 
-  .progress > div {
+  .progress>div {
     background-color: white;
   }
 
-  .progress > div > span {
+  .progress>div>span {
     color: black;
   }
 
-  main > blockquote {
+  main>blockquote {
     border-color: white;
   }
 
@@ -369,12 +422,13 @@ a:visited {
     background-color: inherit;
   }
 
-  section > ul li a {
+  section>ul li a {
     background-color: inherit;
   }
 }
 
 @media (prefers-color-scheme: light) {
+
   h1,
   h2,
   h3,
@@ -395,7 +449,6 @@ a:visited {
   }
 
   nav .site-nav section {
-    float: left;
     margin: 0 10px 10px 0;
   }
 
@@ -416,7 +469,7 @@ a:visited {
     width: unset;
   }
 
-  main > * {
+  main>* {
     max-width: 100%;
   }
 

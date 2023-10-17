@@ -1,46 +1,45 @@
 <nav class="menu">
-  <details open>
-    <summary>
-      Menu
-    </summary>
-    <section class="site-nav">
-      <section>
-        <ul>
+  <h3>
+    Dwarves Notes
+  </h3>
+  <section class="site-nav">
+    <details>
+      <summary>home</summary>
+      <ul>
         {{ $currentPage := .Sites.First.Home }}
         {{ range .Site.Menus.main }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active"{{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-        {{ end }}
-        </ul>
-      </section>
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+      </ul>
+    </details>
 
-      <section>
-        <h2>experiments</h2>
-        <ul>
+    <details>
+      <summary>earn</summary>
+      <ul>
         {{ $currentPage := .Sites.First.Home }}
-        {{ range .Site.Menus.experiments }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active"{{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-        {{ end }}
-        </ul>
-      </section>
-      <section>
-        <h2>blog</h2>
-        <ul>
+        {{ range .Site.Menus.earn }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+      </ul>
+    </details>
+    <details>
+      <summary>hiring</summary>
+      <ul>
         {{ $currentPage := .Sites.First.Home }}
-        {{ range .Site.Menus.blog }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active"{{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-        {{ end }}
-        </ul>
-      </section>
-      <section>
-        <h2>playbook</h2>
-        <ul>
+        {{ range .Site.Menus.hiring }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+      </ul>
+    </details>
+    <details>
+      <summary>memo</summary>
+      <ul>
         {{ $currentPage := .Sites.First.Home }}
-        {{ range .Site.Menus.playbook }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active"{{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-        {{ end }}
-        </ul>
-      </section>
+        {{ range .Site.Menus.memo }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+      </ul>
+    </details>
 
-    </section>
-  </details>
+  </section>
 </nav>

@@ -18,7 +18,7 @@
   {{- with .Title }} title="{{ . | safeHTML }}"{{- end -}}
   {{- with .Text }} alt="{{ . | safeHTML }}"
   {{- end -}}
-  onerror="this.onerror = null; this.src = '/images/experiments/neko/neko-first-version.jpeg'"
+  onerror="this.onerror = null"
 />
 
 {{- /* whitespace stripped here to avoid trailing newline in rendered result caused by file EOL */ -}}
