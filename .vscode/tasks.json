@@ -1,0 +1,30 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "make watch-run",
+      "type": "shell",
+      "command": "make watch-run",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "line": 1,
+            "column": 1,
+            "location": 1,
+            "message": 1
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Watching",
+          "endsPattern": "Web Server is available at http://localhost:1313/"
+        }
+      }
+    }
+  ]
+}
