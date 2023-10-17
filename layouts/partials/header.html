@@ -5,7 +5,7 @@
     {{ $favicon16 := resources.Get "favicon-16x16.png" }}
     {{ $favicon32 := resources.Get "favicon-32x32.png" }}
     {{ $appleTouchIcon := resources.Get "apple-touch-icon.png" }}
-    {{ $whiteImage := resources.Get "img/ConsoleLabs_logo_1.jpg" }}
+    {{ $whiteImage := resources.Get "img/LOGO.png" }}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}" />
@@ -122,9 +122,9 @@
 
     <body class="{{ if .IsHome }}home{{ else }}{{ $.Scratch.Get "section" }}{{ end }}">
         <header>
-            {{ $image := resources.Get "img/ConsoleLabs_logo.png" }}
+            {{ $image := resources.Get "img/LOGO.png" }}
             <a href="/">
-                <img src="{{ $image.Permalink }}" alt="ConsoleLabs" height="103px" style="margin:-28px -26px;">
+                <img src="{{ $image.Permalink }}" alt="ConsoleLabs" height="103px" style="margin:-28px -26px;border-radius:10px;clip-path:inset(10px 12px 10px 8px round 50px);">
             </a>
         </header>
 
