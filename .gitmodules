@@ -1,0 +1,3 @@
+[submodule "vault"]
+	path = vault
+	url = git@github.com:dwarvesf/content.git
