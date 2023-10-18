@@ -21,10 +21,17 @@
       ]
     }
   },
+  // Use 'features' to configure features.
+  "features": {
+    // add desktop-lite to allow Obsidian GUI over VNC web & desktop
+    // https://github.com/devcontainers/features/tree/main/src/desktop-lite
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [
     1313,
-    2345
+    6080,
+    5901
   ],
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "make setup",

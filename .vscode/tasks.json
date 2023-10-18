@@ -25,6 +25,29 @@
           "endsPattern": "Web Server is available at http://localhost:1313/"
         }
       }
+    },
+    {
+      "label": "run obsidian",
+      "type": "shell",
+      "command": "obsidian",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "line": 1,
+            "column": 1,
+            "location": 1,
+            "message": 1
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Loading main app package",
+          "endsPattern": "Success."
+        }
+      }
     }
   ]
 }
