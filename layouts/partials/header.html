@@ -122,12 +122,18 @@
 
     <body class="{{ if .IsHome }}home{{ else }}{{ $.Scratch.Get "section" }}{{ end }}">
         <div class="grid">
+            <h1 class="title"><a style="color: inherit; text-decoration: none" href="/site-index">Dwarves Notes</a></h1>
+            <div class="subtitle">A collection of notes for everything we do and operate at Dwarves.</div>
+
+            {{ partial "tab-menu.html" . }}
             {{ partial "menu.html" . }}
 
             <main>
                 <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
-
-                {{ if not .IsHome }}
+                <div class="note-title">
+                    <h1 class="pagetitle">{{ .Title }}</h1>
+                    <div class="date">{{ .Date.Format "Jan 2, 2006" }}</div>
+                    <div class="tags">Tags: {{ if .Params.tags }}{{ delimit .Params.tags ", " }} {{ end }}</div>
                     {{ if .Params.authors -}}
                     <aside class="authors">
                         by
@@ -137,7 +143,8 @@
                         {{ end }}
                     </aside>
                     {{ end }}
-                {{ end }}
+                </div>
+                <hr>
 
                 {{ if .Params.notice -}}
                 <div class="notice">{{ .Params.notice }}</div>
