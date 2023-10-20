@@ -1,0 +1,23 @@
+<nav class="tab-menu">
+  <ul>
+    <li{{ if eq .RelPermalink "/" }} class="active" {{ end }}>
+      <a href="/">Home</a>
+    </li>
+    <li{{ if or (eq .RelPermalink "/guild/") (strings.Contains .RelPermalink "hiring") (strings.Contains .RelPermalink "earn") }} class="active" {{ end }}>
+      <a href="/guild">Guild</a>
+    </li>
+    <li{{ if or (eq .RelPermalink "/memo/") (strings.Contains .RelPermalink "memo") }} class="active" {{ end }}>
+      <a href="/memo">Memo</a>
+    </li>
+    <li>
+      <a href="https://brain.d.foundation/">Brainery</a>
+    </li>
+    <li{{ if or (eq .RelPermalink "/newsletter/") (strings.Contains .RelPermalink "newsletter") }} class="active" {{ end }}>
+      <a href="/newsletter">Newsletter</a>
+    </li>
+    <li{{ if eq .RelPermalink "/site-index/" }} class="active" {{ end }}>
+      <a href="/site-index">Index</a>
+    </li>
+  </ul>
+  </details>
+</nav>
