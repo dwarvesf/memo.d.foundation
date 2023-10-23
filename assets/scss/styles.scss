@@ -118,7 +118,6 @@ a[href*="#"] {
 
   .pagetitle {
     grid-area: pagetitle;
-    color: #000 !important;
   }
 
   .date {
@@ -448,6 +447,10 @@ a:visited {
 @media (prefers-color-scheme: dark) {
   summary:before {
     border-color: transparent transparent transparent #fff;
+  }
+
+  nav.tab-menu {
+    border-bottom: 1px solid #3d3d3d;
   }
 
   a,
