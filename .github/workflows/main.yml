@@ -63,7 +63,7 @@ jobs:
 
       - name: Build Hugo
         shell: bash
-        run: hugo --minify
+        run: hugo -E -F --minify
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
