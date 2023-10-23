@@ -17,18 +17,6 @@ outputs:
   - html
   - rss
   - json
-  section:
-  - html
-  - rss
-  - json
-  taxonomy:
-  - html
-  - rss
-  - json
-  term:
-  - html
-  - rss
-  - json
 markup:
   highlight:
     anchorLineNos: false
@@ -42,7 +30,7 @@ markup:
     noClasses: true
     tabWidth: 1
   frontmatter:
-    publishDate: ["publishDate", "date"]
+    publishDate: ["date"]
     authors: ["authors"]
   goldmark:
     renderer:
