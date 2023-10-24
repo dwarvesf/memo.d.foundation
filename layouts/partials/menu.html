@@ -2,9 +2,8 @@
 <nav class="menu">
   <section class="site-nav">
     {{ if or (eq .RelPermalink "/earn/") (strings.Contains .RelPermalink "earn") }}
-    <a class="section-home" href="/earn">guild</a>
     <details open>
-      <summary>earn</summary>
+      <summary>Listings</summary>
       <ul>
         {{ range .Site.Menus.earn }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
@@ -15,7 +14,7 @@
 
     {{ if or (eq .RelPermalink "/hiring/") (strings.Contains .RelPermalink "hiring") }}
     <details open>
-      <summary>hiring</summary>
+      <summary>Listings</summary>
       <ul>
         {{ range .Site.Menus.hiring }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
@@ -25,9 +24,8 @@
     {{ end }}
 
     {{ if or (eq .RelPermalink "/memo/") (strings.Contains .RelPermalink "memo") }}
-    <a class="section-home" href="/memo">memo</a>
     <details open>
-      <summary>memo</summary>
+      <summary>Posts</summary>
       <ul>
         {{ range .Site.Menus.memo }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
@@ -37,9 +35,8 @@
     {{ end }}
 
     {{ if or (eq .RelPermalink "/radar/") (strings.Contains .RelPermalink "radar") }}
-    <a class="section-home" href="/radar">memo</a>
     <details open>
-      <summary>radar</summary>
+      <summary>Tech</summary>
       <ul>
         {{ range .Site.Menus.radar }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
@@ -49,9 +46,8 @@
     {{ end }}
 
     {{ if or (eq .RelPermalink "/newsletter/") (strings.Contains .RelPermalink "newsletter") }}
-    <a class="section-home" href="/newsletter">memo</a>
     <details open>
-      <summary>newsletter</summary>
+      <summary>Posts</summary>
       <ul>
         {{ range .Site.Menus.newsletter }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>

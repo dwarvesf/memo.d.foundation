@@ -224,18 +224,12 @@ details {
   font-weight: 500;
 }
 
-.section-home {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 4;
-}
-
 summary {
-  padding: 5px;
   display: block;
-  padding-left: 24px;
+  padding: 5px 5px 12px 24px;
   position: relative;
   cursor: pointer;
+  font-size: 18px;
 }
 
 summary:before {
