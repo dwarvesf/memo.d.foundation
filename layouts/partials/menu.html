@@ -1,143 +1,72 @@
 {{ $currentPage := .Sites.First.Home }}
-<script type="text/javascript">
-  function loadMore(identifier) {
-    const mergedUrls = identifier.getAttribute("data-menu").split("\\n").slice(0, -1);
-    const urls = mergedUrls.map((mergedUrl) => mergedUrl.split("\\r"));
-    const urlElements = urls.map(([path, name]) => {
-      const item = document.createElement('li');
-      const link = document.createElement('a');
-      link.href = path;
-      link.title = name;
-      link.innerHTML = name;
-
-      item.append(link);
-      identifier.parentElement.parentElement.insertBefore(item, identifier.parentElement);
-    })
-    identifier.innerHTML = "Load Less..."
-    identifier.onclick = () => loadLess(identifier);
-  }
-
-  function loadLess(identifier) {
-    const list = identifier.parentElement.parentElement;
-
-    while (list.childNodes.length > 6) {
-      list.removeChild(list.lastChild);
-    }
-    identifier.innerHTML = "Load More..."
-    identifier.onclick = () => loadMore(identifier);
-    list.append(identifier.parentElement);
-  }
-</script>
 
 <nav class="menu">
-  <section class="site-nav">
-    {{ if or (eq .RelPermalink "/earn/") (strings.Contains .RelPermalink "earn") }}
-    <details open>
-      <summary>Listings</summary>
-      <ul>
-        {{ $posts := .Site.Menus.earn }}
-        {{ if $posts }}
-        {{ range first 3 $posts }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-          {{ end }}
-          <li>
-            {{ if gt (len $posts) 3}}
-            {{ $rest := $posts | symdiff (first 3 $posts) }}
-            {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
-              onclick="loadMore(this)">Load more...</div>
-            {{ end }}
-          </li>
-          {{ end }}
-      </ul>
-    </details>
+  {{ $menus := .Site.Menus }}
+  {{ $data := slice }}
+  {{ $menuNames := slice "earn" "hiring" "memo" "radar" }}
+  {{ range $menuNames }}
+    {{ $menuName := . }}
+    {{ $posts := index $menus $menuName }}
+    {{ if $posts }}
+      {{ range $posts }}
+        {{ $data = $data | append (dict "url" .URL "name" .Name "menu" $menuName) }}
+      {{ end }}
     {{ end }}
+  {{ end }}
 
-    {{ if or (eq .RelPermalink "/hiring/") (strings.Contains .RelPermalink "hiring") }}
-    <details open>
-      <summary>Listings</summary>
-      <ul>
-        {{ $posts := .Site.Menus.hiring }}
-        {{ if $posts }}
-        {{ range first 3 $posts }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-          {{ end }}
-          <li>
-            {{ if gt (len $posts) 3}}
-            {{ $rest := $posts | symdiff (first 3 $posts) }}
-            {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
-              onclick="loadMore(this)">Load more...</div>
-            {{ end }}
-          </li>
-          {{ end }}
-      </ul>
-    </details>
-    {{ end }}
-
-    {{ if or (eq .RelPermalink "/memo/") (strings.Contains .RelPermalink "memo") }}
-    <details open>
-      <summary>Listings</summary>
-      <ul>
-        {{ $posts := .Site.Menus.memo }}
-        {{ if $posts }}
-        {{ range first 3 $posts }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-          {{ end }}
-          <li>
-            {{ if gt (len $posts) 3}}
-            {{ $rest := $posts | symdiff (first 3 $posts) }}
-            {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
-              onclick="loadMore(this)">Load more...</div>
-            {{ end }}
-          </li>
-          {{ end }}
-      </ul>
-    </details>
-    {{ end }}
-
-    {{ if or (eq .RelPermalink "/radar/") (strings.Contains .RelPermalink "radar") }}
-    <details open>
-      <summary>Listings</summary>
-      <ul>
-        {{ $posts := .Site.Menus.radar }}
-        {{ if $posts }}
-        {{ range first 3 $posts }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-          {{ end }}
-          <li>
-            {{ if gt (len $posts) 3}}
-            {{ $rest := $posts | symdiff (first 3 $posts) }}
-            {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
-              onclick="loadMore(this)">Load more...</div>
-            {{ end }}
-          </li>
-          {{ end }}
-      </ul>
-    </details>
-    {{ end }}
-
-    {{ if or (eq .RelPermalink "/newsletter/") (strings.Contains .RelPermalink "newsletter") }}
-    <details open>
-      <summary>Listings</summary>
-      <ul>
-        {{ $posts := .Site.Menus.newsletter }}
-        {{ range first 3 $posts }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-          {{ end }}
-          <li>
-            {{ if gt (len $posts) 3}}
-            {{ $rest := $posts | symdiff (first 3 $posts) }}
-            {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
-              onclick="loadMore(this)">Load more...</div>
-            {{ end }}
-          </li>
-      </ul>
-    </details>
-    {{ end }}
-
+  <section
+    class="site-nav"
+    x-data="{
+      currentUrl: `{{ .RelPermalink }}`,
+      start: 0,
+      end: 12,
+      loaded: false,
+      loadText: 'Load More...',
+      get value() {
+        const dataString = `{{ $data | jsonify }}`;
+        const data = JSON.parse(dataString);
+        const mappedData = data.reduce((acc, value) => {
+          if (!acc[value.menu]) acc[value.menu] = [];
+          acc[value.menu].push(value);
+          return acc;
+        }, {});
+        return mappedData;
+      },
+      isSameGroupUrl(menu) {
+        return this.currentUrl.includes(menu);
+      },
+      partialValue(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = -1;
+          this.loaded = true;
+          this.loadText = 'Load Less...'
+        } else {
+          this.end = 12;
+          this.loaded = false;
+          this.loadText = 'Load More...'
+        }
+      },
+    }"
+  >
+    <template x-for="menu in Object.keys(value)" x-bind:key="menu">
+      <template x-if="isSameGroupUrl(menu)">
+        <details open>
+          <summary>Posts</summary>
+          <ul>
+            <template x-for="items in partialValue(value[menu], start, end)">
+              <li>
+                <a x-bind:href="items.url" x-text="items.name"></a>
+              </li>
+            </template>
+            <template x-if="value[menu].length > end">
+              <li class="load-more" @click="toggleLoad(loaded)" x-text="loadText"></li>
+            </template>
+          </ul>
+        </details>
+      </template>
+    </template>
   </section>
 </nav>

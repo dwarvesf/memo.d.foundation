@@ -1,155 +1,163 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}">
-  <head>
-    {{ $favicon := resources.Get "favicon.ico" }}
-    {{ $favicon16 := resources.Get "favicon-16x16.png" }}
-    {{ $favicon32 := resources.Get "favicon-32x32.png" }}
-    {{ $appleTouchIcon := resources.Get "apple-touch-icon.png" }}
-    {{ $whiteImage := resources.Get "img/LOGO.png" }}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}" />
-    <meta name="description" property="og:description" content="{{ .Site.Params.description }}" />
-    <meta name="keywords" content="{{ .Site.Params.tags }}">
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="{{ .Permalink }}" />
-    <meta property="og:image" content="{{ $whiteImage.Permalink }}" />
-    <link rel="icon" type="image/x-icon" href="{{ $favicon.Permalink }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ $favicon16.Permalink }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ $favicon32.Permalink }}">
-    <link rel="apple-touch-icon" href="{{ $appleTouchIcon.Permalink }}">
-    <title>{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-    <meta name="description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-    <link rel="canonical" href="{{ .Permalink | absURL }}">
-    {{ with .OutputFormats.Get "rss" -}}
-        {{ printf `<link rel=%q type=%q href=%q title=%q>` .Rel .MediaType.Type .Permalink site.Title | safeHTML }}
-    {{ end }}
-    <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=">
-    <script defer data-domain="note.d.foundation" src="https://plausible.io/js/script.js"></script>
-    {{ $styles := resources.Get "scss/styles.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
-    <style>{{ $styles.Content | safeCSS }}</style>
 
-    {{ if .IsHome -}}
-        <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@type": "WebSite",
-            "name": "{{ .Site.Title }}",
-            "url": "{{ .Site.BaseURL }}",
-            "description": "{{ .Site.Params.description }}",
-            "thumbnailUrl": "{{ .Site.Params.Logo | absURL }}",
-            "license": "{{ .Site.Params.Copyright }}"
+<head>
+  {{ $favicon := resources.Get "favicon.ico" }}
+  {{ $favicon16 := resources.Get "favicon-16x16.png" }}
+  {{ $favicon32 := resources.Get "favicon-32x32.png" }}
+  {{ $appleTouchIcon := resources.Get "apple-touch-icon.png" }}
+  {{ $whiteImage := resources.Get "img/LOGO.png" }}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}" />
+  <meta name="description" property="og:description" content="{{ .Site.Params.description }}" />
+  <meta name="keywords" content="{{ .Site.Params.tags }}">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ .Permalink }}" />
+  <meta property="og:image" content="{{ $whiteImage.Permalink }}" />
+  <link rel="icon" type="image/x-icon" href="{{ $favicon.Permalink }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ $favicon16.Permalink }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ $favicon32.Permalink }}">
+  <link rel="apple-touch-icon" href="{{ $appleTouchIcon.Permalink }}">
+  <title>{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+  <meta name="description"
+    content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <link rel="canonical" href="{{ .Permalink | absURL }}">
+  {{ with .OutputFormats.Get "rss" -}}
+  {{ printf `
+  <link rel=%q type=%q href=%q title=%q>` .Rel .MediaType.Type .Permalink site.Title | safeHTML }}
+  {{ end }}
+  <link rel="shortcut icon" type="image/png"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=">
+  <script defer data-domain="note.d.foundation" src="https://plausible.io/js/script.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  {{ $styles := resources.Get "scss/styles.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
+  <style>
+    {{ $styles.Content | safeCSS }}
+  </style>
+
+  {{ if .IsHome -}}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "{{ .Site.Title }}",
+      "url": "{{ .Site.BaseURL }}",
+      "description": "{{ .Site.Params.description }}",
+      "thumbnailUrl": "{{ .Site.Params.Logo | absURL }}",
+      "license": "{{ .Site.Params.Copyright }}"
+    }
+    </script>
+  {{ else if .IsPage }}
+  {{ $author := or (.Params.author) (.Site.Author.name) }}
+  {{ $org_name := .Site.Title }}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "BlogPosting",
+      "articleSection": "{{ .Section }}",
+      "name": "{{ .Title | safeJS }}",
+      "headline": "{{ .Title | safeJS }}",
+      "alternativeHeadline": "{{ .Params.lead }}",
+      "description": "{{ if .Description }}{{ .Description | safeJS }}{{ else }}{{if .IsPage}}{{ .Summary  }}{{ end }}{{ end }}",
+      "inLanguage": {{ .Site.LanguageCode | default "en-us" }},
+      "isFamilyFriendly": "true",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ .Permalink }}"
+      },
+      "author" : {
+        "@type": "Person",
+        "name": "{{ $author }}"
+      },
+      "creator" : {
+        "@type": "Person",
+        "name": "{{ $author }}"
+      },
+      "accountablePerson" : {
+        "@type": "Person",
+        "name": "{{ $author }}"
+      },
+      "copyrightHolder" : "{{ $org_name }}",
+      "copyrightYear" : "{{ .Date.Format "2006" }}",
+      "date": "{{ .Date.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
+      "dateCreated": "{{ .Date.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
+      "datePublished": "{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
+      "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
+      "publisher":{
+        "@type":"Organization",
+        "name": {{ $org_name }},
+        "url": {{ .Site.BaseURL }},
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ .Site.Params.logo | absURL }}",
+          "width":"32",
+          "height":"32"
         }
-        </script>
-        {{ else if .IsPage }}
-        {{ $author :=  or (.Params.author) (.Site.Author.name) }}
-        {{ $org_name :=  .Site.Title }}
-        <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@type": "BlogPosting",
-            "articleSection": "{{ .Section }}",
-            "name": "{{ .Title | safeJS }}",
-            "headline": "{{ .Title | safeJS }}",
-            "alternativeHeadline": "{{ .Params.lead }}",
-            "description": "{{ if .Description }}{{ .Description | safeJS }}{{ else }}{{if .IsPage}}{{ .Summary  }}{{ end }}{{ end }}",
-            "inLanguage": {{ .Site.LanguageCode | default "en-us" }},
-            "isFamilyFriendly": "true",
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "{{ .Permalink }}"
-            },
-            "author" : {
-                "@type": "Person",
-                "name": "{{ $author }}"
-            },
-            "creator" : {
-                "@type": "Person",
-                "name": "{{ $author }}"
-            },
-            "accountablePerson" : {
-                "@type": "Person",
-                "name": "{{ $author }}"
-            },
-            "copyrightHolder" : "{{ $org_name }}",
-            "copyrightYear" : "{{ .Date.Format "2006" }}",
-            "date": "{{ .Date.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
-            "dateCreated": "{{ .Date.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
-            "datePublished": "{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
-            "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
-            "publisher":{
-                "@type":"Organization",
-                "name": {{ $org_name }},
-                "url": {{ .Site.BaseURL }},
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "{{ .Site.Params.logo | absURL }}",
-                    "width":"32",
-                    "height":"32"
-                }
-            },
-            "image": {{ if .Params.images }}[{{ range $i, $e := .Params.images }}{{ if $i }}, {{ end }}{{ $e | absURL }}{{ end }}]{{ else}}{{.Site.Params.logo | absURL }}{{ end }},
-            "url" : "{{ .Permalink }}",
-            "wordCount" : "{{ .WordCount }}",
-            "genre" : [ {{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}" {{ end }}],
-            "keywords" : [ {{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}" {{ end }}]
-        }
-        </script>
+      },
+      "image": {{ if .Params.images }}[{{ range $i, $e := .Params.images }}{{ if $i }}, {{ end }}{{ $e | absURL }}{{ end }}]{{ else}}{{.Site.Params.logo | absURL }}{{ end }},
+      "url" : "{{ .Permalink }}",
+      "wordCount" : "{{ .WordCount }}",
+      "genre" : [ {{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}" {{ end }}],
+      "keywords" : [ {{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}" {{ end }}]
+    }
+  </script>
+  {{ end }}
+  <style>
+    body {
+      visibility: hidden;
+      opacity: 0;
+    }
+  </style>
+  <noscript>
+    <style>
+      body {
+        visibility: visible;
+        opacity: 1;
+      }
+    </style>
+  </noscript>
+  <script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function () {
+      document.body.style.visibility = 'visible';
+      document.body.style.opacity = 1;
+    });
+  </script>
+</head>
+
+{{ $.Scratch.Set "section" (replaceRE "^/([^/]+)/.*" "$1" .RelPermalink) }}
+
+<body class="{{ if .IsHome }}home{{ else }}{{ $.Scratch.Get " section" }}{{ end }}">
+  <div class="grid">
+    <h1 class="title"><a style="color: inherit; text-decoration: none" href="/site-index">Dwarves Notes</a></h1>
+    <div class="subtitle">A collection of notes for everything we do and operate at Dwarves.</div>
+
+    {{ partial "tab-menu.html" . }}
+    {{ partial "menu.html" . }}
+
+    <main>
+      <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
+      <div class="note-title">
+        <h1 class="pagetitle">{{ .Title }}</h1>
+        <div class="date">{{ .Date.Format "Jan 2, 2006" }}</div>
+        <div class="tags">Tags: {{ if .Params.tags }}{{ delimit .Params.tags ", " }} {{ end }}</div>
+        {{ if .Params.authors -}}
+        <aside class="authors">
+          by
+          {{ $authorsLen := sub (len $.Params.authors) 1}}
+          {{ range $i, $e := .Params.authors }}
+          <a href="/members/{{ $e }}">{{ $e }}</a>{{ if (gt $authorsLen $i) }},{{end}}
+          {{ end }}
+        </aside>
         {{ end }}
-        <style>
-            body {
-              visibility: hidden;
-              opacity: 0;
-            }
-        </style>
-        <noscript>
-            <style>
-              body {
-                visibility: visible;
-                opacity: 1;
-              }
-            </style>
-          </noscript>
-        <script type="text/javascript">
-            window.addEventListener('DOMContentLoaded', function () {
-                document.body.style.visibility = 'visible';
-                document.body.style.opacity = 1;
-            });
-        </script>
-    </head>
+      </div>
+      <hr>
 
-    {{ $.Scratch.Set "section" (replaceRE "^/([^/]+)/.*" "$1" .RelPermalink) }}
+      {{ if .Params.notice -}}
+      <div class="notice">{{ .Params.notice }}</div>
+      {{ end }}
 
-    <body class="{{ if .IsHome }}home{{ else }}{{ $.Scratch.Get "section" }}{{ end }}">
-        <div class="grid">
-            <h1 class="title"><a style="color: inherit; text-decoration: none" href="/site-index">Dwarves Notes</a></h1>
-            <div class="subtitle">A collection of notes for everything we do and operate at Dwarves.</div>
-
-            {{ partial "tab-menu.html" . }}
-            {{ partial "menu.html" . }}
-
-            <main>
-                <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
-                <div class="note-title">
-                    <h1 class="pagetitle">{{ .Title }}</h1>
-                    <div class="date">{{ .Date.Format "Jan 2, 2006" }}</div>
-                    <div class="tags">Tags: {{ if .Params.tags }}{{ delimit .Params.tags ", " }} {{ end }}</div>
-                    {{ if .Params.authors -}}
-                    <aside class="authors">
-                        by
-                        {{ $authorsLen := sub (len $.Params.authors) 1}}
-                        {{ range $i, $e := .Params.authors }}
-                        <a href="/members/{{ $e }}">{{ $e }}</a>{{ if (gt $authorsLen $i) }},{{end}}
-                        {{ end }}
-                    </aside>
-                    {{ end }}
-                </div>
-                <hr>
-
-                {{ if .Params.notice -}}
-                <div class="notice">{{ .Params.notice }}</div>
-                {{ end }}
-
-                {{ if .Params.toc -}}
-                <aside class="toc">{{ .TableOfContents }}</aside>
-                {{ end }}
+      {{ if .Params.toc -}}
+      <aside class="toc">{{ .TableOfContents }}</aside>
+      {{ end }}
