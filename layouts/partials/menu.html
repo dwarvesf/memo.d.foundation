@@ -1,20 +1,11 @@
+{{ $currentPage := .Sites.First.Home }}
 <nav class="menu">
   <section class="site-nav">
-    {{ if or (eq .RelPermalink "/guild/") (strings.Contains .RelPermalink "hiring") (strings.Contains .RelPermalink "earn") }}
-    <a class="section-home" href="/guild">guild</a>
-    <details open>
-      <summary>hiring</summary>
-      <ul>
-        {{ $currentPage := .Sites.First.Home }}
-        {{ range .Site.Menus.hiring }}
-        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
-          {{ end }}
-      </ul>
-    </details>
+    {{ if or (eq .RelPermalink "/earn/") (strings.Contains .RelPermalink "earn") }}
+    <a class="section-home" href="/earn">guild</a>
     <details open>
       <summary>earn</summary>
       <ul>
-        {{ $currentPage := .Sites.First.Home }}
         {{ range .Site.Menus.earn }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
@@ -22,13 +13,47 @@
     </details>
     {{ end }}
 
-    {{ if or (eq .RelPermalink "/guild/") (strings.Contains .RelPermalink "hiring") (strings.Contains .RelPermalink "earn") }}
+    {{ if or (eq .RelPermalink "/hiring/") (strings.Contains .RelPermalink "hiring") }}
+    <details open>
+      <summary>hiring</summary>
+      <ul>
+        {{ range .Site.Menus.hiring }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+      </ul>
+    </details>
+    {{ end }}
+
+    {{ if or (eq .RelPermalink "/memo/") (strings.Contains .RelPermalink "memo") }}
     <a class="section-home" href="/memo">memo</a>
     <details open>
       <summary>memo</summary>
       <ul>
-        {{ $currentPage := .Sites.First.Home }}
         {{ range .Site.Menus.memo }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+      </ul>
+    </details>
+    {{ end }}
+
+    {{ if or (eq .RelPermalink "/radar/") (strings.Contains .RelPermalink "radar") }}
+    <a class="section-home" href="/radar">memo</a>
+    <details open>
+      <summary>radar</summary>
+      <ul>
+        {{ range .Site.Menus.radar }}
+        <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+      </ul>
+    </details>
+    {{ end }}
+
+    {{ if or (eq .RelPermalink "/newsletter/") (strings.Contains .RelPermalink "newsletter") }}
+    <a class="section-home" href="/newsletter">memo</a>
+    <details open>
+      <summary>newsletter</summary>
+      <ul>
+        {{ range .Site.Menus.newsletter }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
       </ul>
