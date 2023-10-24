@@ -3,20 +3,20 @@
     <li{{ if eq .RelPermalink "/" }} class="active" {{ end }}>
       <a href="/">Home</a>
     </li>
-    <li{{ if or (eq .RelPermalink "/guild/") (strings.Contains .RelPermalink "hiring") (strings.Contains .RelPermalink "earn") }} class="active" {{ end }}>
-      <a href="/guild">Guild</a>
+    <li{{ if or (eq .RelPermalink "/earn/") (strings.Contains .RelPermalink "earn") }} class="active" {{ end }}>
+      <a href="/earn">Earn</a>
     </li>
     <li{{ if or (eq .RelPermalink "/memo/") (strings.Contains .RelPermalink "memo") }} class="active" {{ end }}>
       <a href="/memo">Memo</a>
     </li>
-    <li>
-      <a href="https://brain.d.foundation/">Brainery</a>
+    <li{{ if or (eq .RelPermalink "/radar/") (strings.Contains .RelPermalink "radar") }} class="active" {{ end }}>
+      <a href="/radar">Radar</a>
+    </li>
+    <li{{ if or (eq .RelPermalink "/hiring/") (strings.Contains .RelPermalink "hiring")  }} class="active" {{ end }}>
+      <a href="/hiring">Hiring</a>
     </li>
     <li{{ if or (eq .RelPermalink "/newsletter/") (strings.Contains .RelPermalink "newsletter") }} class="active" {{ end }}>
       <a href="/newsletter">Newsletter</a>
-    </li>
-    <li{{ if eq .RelPermalink "/site-index/" }} class="active" {{ end }}>
-      <a href="/site-index">Index</a>
     </li>
   </ul>
   </details>
