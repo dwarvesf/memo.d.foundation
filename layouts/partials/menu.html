@@ -1,13 +1,51 @@
 {{ $currentPage := .Sites.First.Home }}
+<script type="text/javascript">
+  function loadMore(identifier) {
+    const mergedUrls = identifier.getAttribute("data-menu").split("\\n").slice(0, -1);
+    const urls = mergedUrls.map((mergedUrl) => mergedUrl.split("\\r"));
+    const urlElements = urls.map(([path, name]) => {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = path;
+      link.title = name;
+      link.innerHTML = name;
+
+      item.append(link);
+      identifier.parentElement.parentElement.insertBefore(item, identifier.parentElement);
+    })
+    identifier.innerHTML = "Load Less..."
+    identifier.onclick = () => loadLess(identifier);
+  }
+
+  function loadLess(identifier) {
+    const list = identifier.parentElement.parentElement;
+
+    while (list.childNodes.length > 6) {
+      list.removeChild(list.lastChild);
+    }
+    identifier.innerHTML = "Load More..."
+    identifier.onclick = () => loadMore(identifier);
+    list.append(identifier.parentElement);
+  }
+</script>
+
 <nav class="menu">
   <section class="site-nav">
     {{ if or (eq .RelPermalink "/earn/") (strings.Contains .RelPermalink "earn") }}
     <details open>
       <summary>Listings</summary>
       <ul>
-        {{ range .Site.Menus.earn }}
+        {{ $posts := .Site.Menus.earn }}
+        {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
+        <li>
+          {{ if gt (len $posts) 3}}
+            {{ $rest := $posts | symdiff (first 3 $posts) }}
+            {{ $loadMore := false }}
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+          {{ end }}
+        </li>
       </ul>
     </details>
     {{ end }}
@@ -16,42 +54,74 @@
     <details open>
       <summary>Listings</summary>
       <ul>
-        {{ range .Site.Menus.hiring }}
+        {{ $posts := .Site.Menus.hiring }}
+        {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
+        <li>
+          {{ if gt (len $posts) 3}}
+            {{ $rest := $posts | symdiff (first 3 $posts) }}
+            {{ $loadMore := false }}
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+          {{ end }}
+        </li>
       </ul>
     </details>
     {{ end }}
 
     {{ if or (eq .RelPermalink "/memo/") (strings.Contains .RelPermalink "memo") }}
     <details open>
-      <summary>Posts</summary>
+      <summary>Listings</summary>
       <ul>
-        {{ range .Site.Menus.memo }}
+        {{ $posts := .Site.Menus.memo }}
+        {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
+        <li>
+          {{ if gt (len $posts) 3}}
+            {{ $rest := $posts | symdiff (first 3 $posts) }}
+            {{ $loadMore := false }}
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+          {{ end }}
+        </li>
       </ul>
     </details>
     {{ end }}
 
     {{ if or (eq .RelPermalink "/radar/") (strings.Contains .RelPermalink "radar") }}
     <details open>
-      <summary>Tech</summary>
+      <summary>Listings</summary>
       <ul>
-        {{ range .Site.Menus.radar }}
+        {{ $posts := .Site.Menus.radar }}
+        {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
+        <li>
+          {{ if gt (len $posts) 3}}
+            {{ $rest := $posts | symdiff (first 3 $posts) }}
+            {{ $loadMore := false }}
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+          {{ end }}
+        </li>
       </ul>
     </details>
     {{ end }}
 
     {{ if or (eq .RelPermalink "/newsletter/") (strings.Contains .RelPermalink "newsletter") }}
     <details open>
-      <summary>Posts</summary>
+      <summary>Listings</summary>
       <ul>
-        {{ range .Site.Menus.newsletter }}
+        {{ $posts := .Site.Menus.newsletter }}
+        {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
+        <li>
+          {{ if gt (len $posts) 3}}
+            {{ $rest := $posts | symdiff (first 3 $posts) }}
+            {{ $loadMore := false }}
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+          {{ end }}
+        </li>
       </ul>
     </details>
     {{ end }}
