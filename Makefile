@@ -7,7 +7,7 @@ setup:
 
 build:
 	@obsidian-export ./vault ./content
-	@hugo --minify
+	@hugo -D -E -F --minify
 
 run:
 	@obsidian-export ./vault ./content
@@ -18,16 +18,16 @@ watch-run:
 	@mkdir -p content
 	@obsidian-export ./vault ./content
 	@./inotify.sh ./vault obsidian-export ./vault ./content &
-	@hugo server
+	@hugo -D server
 
 build-target:
 	@mkdir -p vault content
 	@rsync -avh $(path) ./vault/ --delete
 	@obsidian-export ./vault/ ./content/
-	@hugo --minify
+	@hugo -D -E -F --minify
 
 run-target:
 	@mkdir -p vault content
 	@rsync -avh $(path) ./vault/ --delete
 	@obsidian-export ./vault/ ./content/
-	@hugo server
+	@hugo -D server
