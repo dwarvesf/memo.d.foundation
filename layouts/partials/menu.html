@@ -36,16 +36,19 @@
       <summary>Listings</summary>
       <ul>
         {{ $posts := .Site.Menus.earn }}
+        {{ if $posts }}
         {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
-        <li>
-          {{ if gt (len $posts) 3}}
+          <li>
+            {{ if gt (len $posts) 3}}
             {{ $rest := $posts | symdiff (first 3 $posts) }}
             {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
+              onclick="loadMore(this)">Load more...</div>
+            {{ end }}
+          </li>
           {{ end }}
-        </li>
       </ul>
     </details>
     {{ end }}
@@ -55,16 +58,19 @@
       <summary>Listings</summary>
       <ul>
         {{ $posts := .Site.Menus.hiring }}
+        {{ if $posts }}
         {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
-        <li>
-          {{ if gt (len $posts) 3}}
+          <li>
+            {{ if gt (len $posts) 3}}
             {{ $rest := $posts | symdiff (first 3 $posts) }}
             {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
+              onclick="loadMore(this)">Load more...</div>
+            {{ end }}
+          </li>
           {{ end }}
-        </li>
       </ul>
     </details>
     {{ end }}
@@ -74,16 +80,19 @@
       <summary>Listings</summary>
       <ul>
         {{ $posts := .Site.Menus.memo }}
+        {{ if $posts }}
         {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
-        <li>
-          {{ if gt (len $posts) 3}}
+          <li>
+            {{ if gt (len $posts) 3}}
             {{ $rest := $posts | symdiff (first 3 $posts) }}
             {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
+              onclick="loadMore(this)">Load more...</div>
+            {{ end }}
+          </li>
           {{ end }}
-        </li>
       </ul>
     </details>
     {{ end }}
@@ -93,16 +102,19 @@
       <summary>Listings</summary>
       <ul>
         {{ $posts := .Site.Menus.radar }}
+        {{ if $posts }}
         {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
-        <li>
-          {{ if gt (len $posts) 3}}
+          <li>
+            {{ if gt (len $posts) 3}}
             {{ $rest := $posts | symdiff (first 3 $posts) }}
             {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
+              onclick="loadMore(this)">Load more...</div>
+            {{ end }}
+          </li>
           {{ end }}
-        </li>
       </ul>
     </details>
     {{ end }}
@@ -115,13 +127,14 @@
         {{ range first 3 $posts }}
         <li{{ if eq .URL $currentPage.RelPermalink }} class="active" {{ end }}><a href="{{ .URL }}">{{ .Name }}</a></li>
           {{ end }}
-        <li>
-          {{ if gt (len $posts) 3}}
+          <li>
+            {{ if gt (len $posts) 3}}
             {{ $rest := $posts | symdiff (first 3 $posts) }}
             {{ $loadMore := false }}
-            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}" onclick="loadMore(this)">Load more...</div>
-          {{ end }}
-        </li>
+            <div class="load-more" data-menu="{{ range $rest }}{{ .URL }}\r{{ .Name }}\n{{ end }}"
+              onclick="loadMore(this)">Load more...</div>
+            {{ end }}
+          </li>
       </ul>
     </details>
     {{ end }}
