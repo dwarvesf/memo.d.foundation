@@ -299,7 +299,7 @@ main {
   grid-area: content;
   display: inline-block;
   padding: var(--main-padding);
-  max-width: 700px;
+  width: 700px;
   box-sizing: border-box;
   justify-self: center;
 }
@@ -542,7 +542,6 @@ a:visited {
 }
 
 @media (prefers-color-scheme: light) {
-
   h1,
   h2,
   h3,
@@ -552,6 +551,12 @@ a:visited {
 }
 
 /* Mobile */
+@media only screen and (max-width: 700px) {
+  main {
+    width: 100%;
+  }
+}
+
 @media only screen and (max-width: 1100px) {
   .grid {
     display: inline-grid;
