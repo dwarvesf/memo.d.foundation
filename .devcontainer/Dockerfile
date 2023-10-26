@@ -1,6 +1,6 @@
 # [Choice] Go version (use -bullseye variants on local arm64/Apple Silicon): 1, 1.18, 1.17, 1-bullseye, 1.18-bullseye, 1.17-bullseye, 1-buster, 1.18-buster, 1.17-buster
 ARG VARIANT="1.21-bookworm"
-FROM --platform=amd64 mcr.microsoft.com/vscode/devcontainers/go:${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/go:${VARIANT}
 
 # [Choice] Node.js version: none, lts/*, 16, 14, 12, 10
 ARG NODE_VERSION="none"
@@ -13,8 +13,11 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # Download and install Obsidian
 ARG OBSIDIAN_VERSION=1.4.16
-RUN curl --location --output obsidian.deb "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/obsidian_${OBSIDIAN_VERSION}_amd64.deb"
-RUN apt install -y ./obsidian.deb
+RUN curl -LO "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/obsidian-${OBSIDIAN_VERSION}-arm64.tar.gz"
+RUN tar -xvf obsidian-${OBSIDIAN_VERSION}-arm64.tar.gz \
+    && cd obsidian-${OBSIDIAN_VERSION}-arm64 \
+    && chmod +x obsidian \
+    && sudo ln -s $(pwd)/obsidian /usr/bin/obsidian
 
 # [Optional] Uncomment the next lines to use go get to install anything else you need
 USER vscode
