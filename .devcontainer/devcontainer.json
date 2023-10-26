@@ -18,7 +18,9 @@
       "extensions": [
         "golang.Go",
         "bierner.color-info",
-        "adrianwilczynski.alpine-js-intellisense"
+        "adrianwilczynski.alpine-js-intellisense",
+        "budparr.language-hugo-vscode",
+        "shd101wyy.markdown-preview-enhanced"
       ]
     }
   },
