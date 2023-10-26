@@ -12,6 +12,8 @@ module:
   - path: github.com/adityatelange/hugo-PaperMod
     disable: true
 
+taxonomies:
+  tag: tags
 outputs:
   home:
   - html

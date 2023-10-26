@@ -133,13 +133,36 @@ a[href*="#"] {
   }
 
   .tags {
+    display: inline-flex;
+    max-width: 200px;
+    flex-wrap: wrap;
+    gap: 6px;
     grid-area: tags;
     justify-self: right;
+    justify-content: right;
+
+    .tag:not(:last-child)::after {
+      content: ',';
+    }
   }
 
   .authors {
     grid-area: authors;
   }
+}
+
+.tags-title {
+  grid-template-areas:
+    "pagetitle pagetitle"
+    "authors authors";
+
+    .date {
+      display: none;
+    }
+
+    .tags {
+      display: none;
+    }
 }
 
 .grid {

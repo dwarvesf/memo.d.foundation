@@ -1,28 +1,40 @@
 {{ $currentPage := .Sites.First.Home }}
-
-<nav class="menu">
-  {{ $menus := .Site.Menus }}
-  {{ $data := slice }}
-  {{ $menuNames := slice "earn" "hiring" "memo" "radar" }}
-  {{ range $menuNames }}
-    {{ $menuName := . }}
-    {{ $posts := index $menus $menuName }}
-    {{ if $posts }}
-      {{ range $posts }}
-        {{ $data = $data | append (dict "url" .URL "name" .Name "menu" $menuName) }}
-      {{ end }}
+{{ $menus := .Site.Menus }}
+{{ $data := slice }}
+{{ $menuNames := slice "earn" "hiring" "memo" "radar" }}
+{{ range $menuNames }}
+  {{ $menuName := . }}
+  {{ $posts := index $menus $menuName }}
+  {{ if $posts }}
+    {{ range $posts }}
+      {{ $data = $data | append (dict "url" .URL "name" .Name "menu" $menuName) }}
     {{ end }}
   {{ end }}
+{{ end }}
 
+{{ $tags := slice }}
+{{ range .Site.Pages }}
+  {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink) }}
+{{ end }}
+
+<nav class="menu">
   <section
     class="site-nav"
     x-data="{
       currentUrl: `{{ .RelPermalink }}`,
-      start: 0,
-      end: 12,
       loaded: false,
-      loadText: 'Load More...',
-      get value() {
+      get tagsData() {
+        const dataString = `{{ $tags | jsonify }}`;
+        const data = JSON.parse(dataString);
+        const mappedData = data.reduce((acc, value) => {
+          if (value.tags) {
+            value.tags.forEach((item) => acc.add(item));
+          }
+          return acc;
+        }, new Set());
+        return [...mappedData];
+      },
+      get menuData() {
         const dataString = `{{ $data | jsonify }}`;
         const data = JSON.parse(dataString);
         const mappedData = data.reduce((acc, value) => {
@@ -35,6 +47,9 @@
       isSameGroupUrl(menu) {
         return this.currentUrl.includes(menu);
       },
+      isHomePage() {
+        return this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+      },
       partialValue(items, start, end) {
         return items.slice(start, end);
       },
@@ -44,24 +59,38 @@
           this.loaded = true;
           this.loadText = 'Load Less...'
         } else {
-          this.end = 12;
+          this.end = 5;
           this.loaded = false;
           this.loadText = 'Load More...'
         }
       },
     }"
   >
-    <template x-for="menu in Object.keys(value)" x-bind:key="menu">
-      <template x-if="isSameGroupUrl(menu)">
-        <details open>
-          <summary>Posts</summary>
+    <details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open>
+      <summary>Tags</summary>
+      <ul>
+        <template x-for="tag in partialValue(tagsData, start, end)" x-bind:key="tag">
+          <li>
+            <a x-bind:href="`/tags/${tag}`" x-text="tag"></a>
+          </li>
+        </template>
+        <template x-if="tagsData.length > end">
+          <li class="load-more" @click="toggleLoad(loaded)" x-text="loadText"></li>
+        </template>
+      </ul>
+    </details>
+
+    <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
+      <template x-if="isSameGroupUrl(menu) || isHomePage()">
+        <details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open>
+          <summary x-text="menu"></summary>
           <ul>
-            <template x-for="items in partialValue(value[menu], start, end)">
+            <template x-for="items in partialValue(menuData[menu], start, end)">
               <li>
                 <a x-bind:href="items.url" x-text="items.name"></a>
               </li>
             </template>
-            <template x-if="value[menu].length > end">
+            <template x-if="menuData[menu].length > end">
               <li class="load-more" @click="toggleLoad(loaded)" x-text="loadText"></li>
             </template>
           </ul>
