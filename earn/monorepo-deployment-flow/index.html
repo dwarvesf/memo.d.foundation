@@ -59,6 +59,7 @@
       },
     }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
       currentUrl: `/earn/monorepo-deployment-flow/`,
+      title: `Monorepo deployment flow with Vercel`,
       get tagsData() {
         const dataString = `[{"tags":["r\u0026d"],"url":"/earn/monorepo-deployment-flow/"}]`;
         const data = JSON.parse(dataString);
@@ -66,7 +67,10 @@
       },
       isHomePage() {
         return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+      },
+      isTagPage() {
+        return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><h1 class=pagetitle>Monorepo deployment flow with Vercel</h1><div class=date>Jun 20, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jun 20, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template><aside class=authors>by
 <a href=/members/antran>antran</a></aside></div><hr><p><strong>Output:</strong></p><ul><li>Brainery / Memo</li><li>Improve deployment process for NgheNhan</li></ul><p>NgheNhan painpoint</p><p><img src="https://earn.d.foundation/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd94c5847-f19f-44a9-80c8-b6a46e78da0f%2FUntitled-2022-07-13-1437.png?table=block&amp;id=24c4df97-3f98-4b9d-a7a1-5d6ddc91186a&amp;spaceId=498ebd7b-383c-459f-a9ad-b74073208ddd&amp;width=2000&amp;userId=&amp;cache=v2" alt=example onerror="this.onerror=null"></p><p>Case studies:</p><ul><li>Remote caching</li><li>Ignore build step</li><li>turbo-ignore</li><li>git flow: vercel cli</li></ul><p>Goal: Deployment flow in one click</p></main></div></body></html>

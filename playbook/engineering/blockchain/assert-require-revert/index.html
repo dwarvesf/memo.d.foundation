@@ -57,17 +57,21 @@
           this.loadText = &#39;Load More...&#39;
         }
       },
-    }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
+    }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data="{
       currentUrl: `/playbook/engineering/blockchain/assert-require-revert/`,
+      title: ``,
       get tagsData() {
-        const dataString = `[{"tags":null,"url":"/playbook/engineering/blockchain/assert-require-revert/"}]`;
+        const dataString = `[{&#34;tags&#34;:null,&#34;url&#34;:&#34;/playbook/engineering/blockchain/assert-require-revert/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
       isHomePage() {
-        return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+      },
+      isTagPage() {
+        return this.currentUrl.includes('tags');
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><h1 class=pagetitle></h1><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }"><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><h4 id=enforce-invariants-with-assert><a href=#enforce-invariants-with-assert>Enforce invariants with <code>assert()</code> <a href=#enforce-invariants-with-assert></a></a></h4><p>An assert guard triggers when an assertion fails - such as an invariant property changing. For
 example, the token to ether issuance ratio, in a token issuance contract, may be fixed. You can
 verify that this is the case at all times with an <code>assert()</code>. Assert guards should often be

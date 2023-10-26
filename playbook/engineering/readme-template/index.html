@@ -57,17 +57,21 @@
           this.loadText = &#39;Load More...&#39;
         }
       },
-    }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
+    }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data="{
       currentUrl: `/playbook/engineering/readme-template/`,
+      title: ``,
       get tagsData() {
-        const dataString = `[{"tags":null,"url":"/playbook/engineering/readme-template/"}]`;
+        const dataString = `[{&#34;tags&#34;:null,&#34;url&#34;:&#34;/playbook/engineering/readme-template/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
       isHomePage() {
-        return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+      },
+      isTagPage() {
+        return this.currentUrl.includes('tags');
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><h1 class=pagetitle></h1><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }"><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><h1 id=project-title><a href=#project-title>Project Title <a href=#project-title></a></a></h1><p>One Paragraph of project description goes here</p><h2 id=getting-started><a href=#getting-started>Getting Started <a href=#getting-started></a></a></h2><p>These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.</p><h3 id=prerequisites><a href=#prerequisites>Prerequisites <a href=#prerequisites></a></a></h3><p>What things you need to install the software and how to install them</p><pre><code>Give examples
 </code></pre><h3 id=installing><a href=#installing>Installing <a href=#installing></a></a></h3><p>A step by step series of examples that tell you how to get a development env running</p><p>Say what the step will be</p><pre><code>Give the example
 </code></pre><p>And repeat</p><pre><code>until finished

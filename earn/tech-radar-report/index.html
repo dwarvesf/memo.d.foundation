@@ -59,6 +59,7 @@
       },
     }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
       currentUrl: `/earn/tech-radar-report/`,
+      title: `Tech radar status report`,
       get tagsData() {
         const dataString = `[{"tags":["tooling"],"url":"/earn/tech-radar-report/"}]`;
         const data = JSON.parse(dataString);
@@ -66,7 +67,10 @@
       },
       isHomePage() {
         return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+      },
+      isTagPage() {
+        return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><h1 class=pagetitle>Tech radar status report</h1><div class=date>Oct 17, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Oct 17, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template><aside class=authors>by
 <a href=/members/thanh>thanh</a></aside></div><hr><p>Create a Discord bot to send notification to a channel when status of a radar item change or a new research or experiment has been made for the blip.</p><h3 id=acceptance-criteria><a href=#acceptance-criteria>Acceptance criteria <a href=#acceptance-criteria></a></a></h3><ul><li>Only apply for item with priority <code>FOCUS</code> or <code>NEW</code></li><li>Send the message <code>[Radar item]'s status has changed from [status A] to [status B]. Check out [link].</code> when a radar item has changed its status</li><li>Send the message <code>[Radar item] [status]: [User] did [Task's name] at [Link]</code> when a new research or experiment has added to a radar timeline</li><li>This bot can be easily embedded to any channel</li></ul><p>Relevant links:</p><ul><li>Radar: <a href=https://radar.d.foundation/>https://radar.d.foundation/</a></li><li>Adoption timeline: <a href="https://www.notion.so/dwarves/5870379592444a1b9d220f391eefa80d?v=ba229f279ac546f39c1bb11e7317481d">https://www.notion.so/dwarves/5870379592444a1b9d220f391eefa80d?v=ba229f279ac546f39c1bb11e7317481d</a></li></ul></main></div></body></html>

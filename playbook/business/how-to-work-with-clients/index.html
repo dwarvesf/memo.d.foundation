@@ -59,6 +59,7 @@
       },
     }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
       currentUrl: `/playbook/business/how-to-work-with-clients/`,
+      title: `how-to-work-with-clients`,
       get tagsData() {
         const dataString = `[{"tags":["dwarves","work"],"url":"/playbook/business/how-to-work-with-clients/"}]`;
         const data = JSON.parse(dataString);
@@ -66,7 +67,10 @@
       },
       isHomePage() {
         return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+      },
+      isTagPage() {
+        return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><h1 class=pagetitle>how-to-work-with-clients</h1><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><h1 id=training-course-how-to-work-with-client><a href=#training-course-how-to-work-with-client>TRAINING COURSE: HOW TO WORK WITH CLIENT <a href=#training-course-how-to-work-with-client></a></a></h1><p>What skills that an engineer should have in order to work with client effectively?</p><ol><li>Strong technical skills: includes</li></ol><ul><li>Basics of testing: Unit, Integration, System</li><li>Software testing and debugging</li></ul><ol start=2><li><p>Attention to details</p></li><li><p>Communication skills: good English skills (both written and verbal)
 -> require somewhere Intermediate - Upper Intermediate level</p></li><li><p>Problem solving and logical thinking</p></li><li><p>Work planning</p></li><li><p>Teamwork</p></li><li><p>Project Management</p></li><li><p>Consistency in delivering work result</p></li></ol><p>What are the issues that our engineers currently facing when working with clients?</p><ol><li><p>Verbal and written English</p></li><li><p>Attention to details: many times not able to deliver clean works</p></li><li><p>Work planning</p></li><li><p>Consistency in delivering work result</p></li><li><p>Teamwork (i.e: Dong Nguyen case when working with Ukraine team, could not synchronize with the rest of the FE team very well, mostly due to not being able to communicate very well)</p></li><li><p>Lack in EQ</p></li></ol></main></div></body></html>

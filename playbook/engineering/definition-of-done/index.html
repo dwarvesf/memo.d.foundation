@@ -57,15 +57,19 @@
           this.loadText = &#39;Load More...&#39;
         }
       },
-    }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
+    }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data="{
       currentUrl: `/playbook/engineering/definition-of-done/`,
+      title: ``,
       get tagsData() {
-        const dataString = `[{"tags":null,"url":"/playbook/engineering/definition-of-done/"}]`;
+        const dataString = `[{&#34;tags&#34;:null,&#34;url&#34;:&#34;/playbook/engineering/definition-of-done/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
       isHomePage() {
-        return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+      },
+      isTagPage() {
+        return this.currentUrl.includes('tags');
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><h1 class=pagetitle></h1><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }"><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><p>Definition of done also known as <strong>DoD</strong> is a list of criteria which must be met before a product increment (story) is considered &ldquo;done&rdquo;.</p><p><strong>In software, Done means</strong></p><ul><li><input disabled type=checkbox> coded to standards</li><li><input disabled type=checkbox> reviewed</li><li><input disabled type=checkbox> implemented with unit test</li><li><input disabled type=checkbox> well documented</li></ul><p><strong>In a services context, Done means</strong></p><ul><li><input disabled type=checkbox> every task under the User Story has been completed</li><li><input disabled type=checkbox> and any work created is attached to the User Story</li><li><input disabled type=checkbox> so the Product Owner can review it</li><li><input disabled type=checkbox> and it meets his or her expectations.</li></ul><p>The Definition of Done ensures everyone on the Team knows exactly what is expected of everything the Team delivers. It ensures transparency and quality fit for the purpose of the product and organization. Getting stories done can double a Teams Velocity.</p></main></div></body></html>

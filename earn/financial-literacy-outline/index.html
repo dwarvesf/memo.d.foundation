@@ -59,6 +59,7 @@
       },
     }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
       currentUrl: `/earn/financial-literacy-outline/`,
+      title: `Financial Literacy outline: Phổ cập Kiến thức Tài chính`,
       get tagsData() {
         const dataString = `[{"tags":["r\u0026d"],"url":"/earn/financial-literacy-outline/"}]`;
         const data = JSON.parse(dataString);
@@ -66,7 +67,10 @@
       },
       isHomePage() {
         return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+      },
+      isTagPage() {
+        return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><h1 class=pagetitle>Financial Literacy outline: Phổ cập Kiến thức Tài chính</h1><div class=date>Jun 14, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jun 14, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template><aside class=authors>by
 <a href=/members/hnh>hnh</a></aside></div><hr><ul><li>Pls provide topic outline in gsheet</li><li>It will give us a rough idea on what to explore and what to teach financial newbies.</li><li>We accept multiple submissions. Top 3 wins.</li><li>Reward: 20 30 45 $icy</li></ul></main></div></body></html>

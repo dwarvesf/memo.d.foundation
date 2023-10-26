@@ -56,15 +56,19 @@
           this.loadText = &#39;Load More...&#39;
         }
       },
-    }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
+    }'><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data="{
       currentUrl: `/tags/`,
+      title: `Tags`,
       get tagsData() {
-        const dataString = `[{"tags":null,"url":"/tags/"}]`;
+        const dataString = `[{&#34;tags&#34;:null,&#34;url&#34;:&#34;/tags/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
       isHomePage() {
-        return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+      },
+      isTagPage() {
+        return this.currentUrl.includes('tags');
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><h1 class=pagetitle>Tags</h1><div class=date>Oct 26, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }"><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Oct 26, 2023</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><ul class=terms><li><a href=/tags/community>community</a> (4)</li><li><a href=/tags/dwarves>dwarves</a> (43)</li><li><a href=/tags/earn>earn</a> (4)</li><li><a href=/tags/fortress>fortress</a> (2)</li><li><a href=/tags/home>home</a> (1)</li><li><a href=/tags/oss>oss</a> (2)</li><li><a href=/tags/rd>rd</a> (14)</li><li><a href=/tags/tooling>tooling</a> (16)</li><li><a href=/tags/work>work</a> (42)</li></ul></main></div></body></html>
