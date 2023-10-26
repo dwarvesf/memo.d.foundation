@@ -37,6 +37,9 @@
     {{ $styles.Content | safeCSS }}
   </style>
 
+  {{ $processComments := resources.Get "js/process-comments.js" }}
+  <script defer src="{{ $processComments.RelPermalink }}"></script>
+
   {{ if .IsHome -}}
   <script type="application/ld+json">
     {

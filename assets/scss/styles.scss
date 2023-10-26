@@ -112,7 +112,9 @@ a[href*="#"] {
 .note-title {
   display: inline-grid;
   width: 100%;
+  row-gap: 12px;
   max-width: 600px;
+  margin: 0px;
   grid-template-areas:
     "pagetitle pagetitle"
     "date tags"
@@ -122,6 +124,7 @@ a[href*="#"] {
 
   .pagetitle {
     grid-area: pagetitle;
+    margin: 0px;
   }
 
   .date {
@@ -150,24 +153,24 @@ a[href*="#"] {
   grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
   grid-template-columns: 1fr 2fr 1fr;
   padding-bottom: 48px;
+  row-gap: 16px;
 
   > * {
-    padding: 16px 4.5%;
-  }
-
-  > h1 {
-    margin: 0px;
+    padding-right: 4.5%;
+    padding-left: 4.5%;
   }
 
   .title {
     grid-area: title;
+    margin: 32px 0px 0px 0px !important;
     color: var(--primary-color);
   }
 
   .subtitle {
     grid-area: subtitle;
     font-size: 18px;
-    padding-top: 16px;
+    padding-top: 0px;
+    padding-bottom: 16px;
   }
 }
 
@@ -574,7 +577,6 @@ a:visited {
   }
 
   .note-title {
-    display: inline-grid;
     width: 100%;
     grid-template-areas:
       "pagetitle"
@@ -606,4 +608,11 @@ a:visited {
     box-sizing: border-box;
     display: inline-block;
   }
+}
+
+/* Components from comments */
+.col-2 {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
 }
