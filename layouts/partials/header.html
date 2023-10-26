@@ -139,12 +139,34 @@
     {{ partial "tab-menu.html" . }}
     {{ partial "menu.html" . }}
 
-    <main>
+    {{ $tags := slice }}
+    {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink) }}
+
+    <main x-data="{
+      currentUrl: `{{ .RelPermalink }}`,
+      get tagsData() {
+        const dataString = `{{ $tags | jsonify }}`;
+        const data = JSON.parse(dataString);
+        return data;
+      },
+      isHomePage() {
+        return this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+      }
+    }">
       <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
-      <div class="note-title">
+      <div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }">
         <h1 class="pagetitle">{{ .Title }}</h1>
         <div class="date">{{ .Date.Format "Jan 2, 2006" }}</div>
-        <div class="tags">Tags: {{ if .Params.tags }}{{ delimit .Params.tags ", " }} {{ end }}</div>
+        <template x-for="data in tagsData">
+          <template x-if="data.tags.length > 0">
+            <div class="tags">
+              Tags:
+              <template x-for="tag in data.tags">
+                <a class="tag" x-bind:href="`/tags/${tag}`" x-text="tag"></a>
+              </template>
+            </div>
+          </template>
+        </template>
         {{ if .Params.authors -}}
         <aside class="authors">
           by

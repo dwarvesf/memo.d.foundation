@@ -5,7 +5,7 @@
   <li>
      <a href="{{ (print "/" $.Data.Plural "/" $key | urlize) | relURL }}">
       {{ $key }}
-    </a> ({{ len $value }})  
+    </a> ({{ len $value }})
   </li>
   {{ end }}
 </ul>
