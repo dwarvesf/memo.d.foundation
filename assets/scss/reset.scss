@@ -140,3 +140,22 @@ code comment {
         color: var(--primary-font-color-light);
     }
 }
+
+@media screen and (max-width: 1100px) {
+
+    h1 {
+        font-size: calc(1.45rem + 2vw);
+    }
+
+    h2 {
+        font-size: calc(1rem + 1.5vw);
+    }
+
+    h3 {
+        font-size: calc(1rem + 1vw);
+    }
+
+    h4 {
+        font-size: calc(1rem + 0.5vw);
+    }
+}
