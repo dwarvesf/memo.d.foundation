@@ -1,0 +1,341 @@
+.note-title {
+    display: inline-grid;
+    width: 100%;
+    row-gap: 12px;
+    margin: 0px;
+    grid-template-areas:
+        "pagetitle pagetitle"
+        "date tags"
+        "authors authors";
+    grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
+    ;
+    grid-template-columns: repeat(2, 1fr);
+
+    .pagetitle {
+        grid-area: pagetitle;
+        margin: 0px;
+    }
+
+    .date {
+        grid-area: date;
+        color: #636466;
+    }
+
+    .tags {
+        display: inline-flex;
+        max-width: 200px;
+        flex-wrap: wrap;
+        gap: 6px;
+        grid-area: tags;
+        justify-self: right;
+        justify-content: right;
+
+        .tag {
+            padding: 1px 6px;
+            border-radius: 4px;
+            background-color: var(--secondary-background-color-light);
+            text-decoration: none;
+            color: var(--secondary-font-color-light)
+        }
+    }
+
+    .authors {
+        grid-area: authors;
+    }
+}
+
+.tags-title {
+    grid-template-areas:
+        "pagetitle pagetitle"
+        "authors authors";
+    gap: 0;
+
+    .date {
+        display: none;
+    }
+
+    .tags {
+        display: none;
+    }
+}
+
+code.button {
+    background: var(--primary-background-color-light);
+    color: black;
+    font-size: smaller;
+    display: inline-block;
+    padding: 0px 6px;
+    font-weight: bold;
+    border-radius: 2px;
+    line-height: 22px;
+}
+
+.grid {
+    display: inline-grid;
+    grid-template-areas:
+        "title title title"
+        "subtitle subtitle subtitle"
+        "tabmenu tabmenu tabmenu"
+        "nav content pagenav"
+        "nav content pagenav";
+    grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
+    grid-template-columns: 1fr 2fr 1fr;
+
+    >* {
+        padding-right: 4.5%;
+        padding-left: 4.5%;
+    }
+}
+
+main {
+    grid-area: content;
+    display: inline-block;
+    padding: var(--main-padding);
+    width: 700px;
+    box-sizing: border-box;
+    justify-self: center;
+}
+
+main>ul {
+    line-height: 25px;
+    margin: 0;
+}
+
+main>ul>li>a {
+    text-decoration: underline;
+}
+
+.dual-list>ul {
+    columns: 2;
+}
+
+.single-list>ul {
+    columns: 2;
+}
+
+/* Tables and Profile */
+.profile img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+}
+
+.profile object {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    border-color: var(--border-color-light);
+}
+
+thead * {
+    text-transform: uppercase;
+    padding: 4px 12px;
+    background-color: var(--secondary-background-color-light);
+}
+
+tr {
+    max-height: 100px;
+    max-width: 100px;
+}
+
+td {
+    padding: 0px 20px;
+    max-width: 300px;
+    max-height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+td:has(img) {
+    padding: 0px;
+    line-height: 0px;
+}
+
+#TableOfContents>ul>li>a {
+    text-decoration: underline;
+}
+
+#TableOfContents>ul {
+    display: grid;
+    column-gap: var(--column-gap);
+    box-sizing: border-box;
+    grid-template-columns: repeat(auto-fill, minmax(0, calc(50% - var(--column-gap))));
+    line-height: 20px;
+}
+
+#TableOfContents li {
+    white-space: nowrap;
+    list-style-type: decimal-leading-zero;
+    list-style-position: inside;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notice {
+    padding: 20px;
+    border: 2px solid black;
+}
+
+main>blockquote {
+    padding: 20px;
+    border: 2px solid black;
+}
+
+main>* {
+    max-width: inherit;
+    margin-bottom: 30px;
+}
+
+li:has(input[type="checkbox"]) {
+    display: block;
+    list-style-type: none;
+}
+
+ul:has(li input[type="checkbox"]) {
+    padding: 0px;
+}
+
+ul li a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--secondary-font-color-light);
+    text-decoration: none;
+    transition: white-space 0.25s;
+}
+
+ul li a:hover {
+    white-space: normal;
+    overflow: visible;
+    color: var(--primary-color);
+    width: 100%;
+    z-index: 10;
+}
+
+ul li p {
+    margin-block-end: 0px;
+    margin-block-start: 0px;
+}
+
+/* Theme */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: var(--primary-background-color);
+        color: #dadada;
+    }
+
+    body a {
+        color: #dadada;
+    }
+
+    body select {
+        color: black;
+        background-color: white;
+    }
+
+    .project {
+        border-left: 2px solid white;
+    }
+
+    .notice {
+        border-color: white;
+    }
+
+    .mono {
+        filter: invert(1);
+    }
+
+    .progress>div {
+        background-color: white;
+    }
+
+    .progress>div>span {
+        color: black;
+    }
+
+    main>blockquote {
+        border-color: white;
+    }
+
+    ul li a {
+        background-color: inherit;
+    }
+
+    section>ul li a {
+        background-color: inherit;
+    }
+
+    .note-title {
+        .tags {
+            .tag {
+                background-color: var(--secondary-background-color);
+                color: var(--secondary-font-color)
+            }
+        }
+    }
+
+    table,
+    th,
+    td {
+        border-color: var(--border-color);
+    }
+
+    thead * {
+        background-color: var(--secondary-background-color);
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: 700px) {
+    main {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    .grid {
+        display: inline-grid;
+        grid-template-areas:
+            "title"
+            "subtitle"
+            "tabmenu"
+            "content"
+            "pagenav"
+            "nav";
+        grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
+        grid-template-columns: 1fr;
+    }
+
+    .note-title {
+        width: 100%;
+        grid-template-areas:
+            "pagetitle"
+            "date"
+            "tags"
+            "authors";
+        grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
+        grid-template-columns: 1fr;
+
+        .tags {
+            max-width: max-content;
+            justify-self: left;
+            justify-content: flex-start;
+        }
+    }
+}
+
+/* Components from comments */
+.col-2 {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+}
