@@ -112,6 +112,24 @@ code comment {
     color: #777;
 }
 
+span {
+    a, a:visited {
+        color: inherit;
+    }
+}
+
+[style*="color:yellow"] {
+    color: gold !important;
+}
+
+[style*="color:blue"] {
+    color: cornflowerblue !important;
+}
+
+[style*="color:red"] {
+    color: crimson !important;
+}
+
 /* Theme */
 @media (prefers-color-scheme: dark) {
 
