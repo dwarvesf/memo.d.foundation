@@ -1,21 +1,10 @@
-{{ $currentPage := .Sites.First.Home }}
-{{ $menus := .Site.Menus }}
-{{ $data := slice }}
-{{ $menuNames := slice "earn" "hiring" "memo" "radar" }}
-{{ range $menuNames }}
-  {{ $menuName := . }}
-  {{ $posts := index $menus $menuName }}
-  {{ if $posts }}
-    {{ range $posts }}
-      {{ $data = $data | append (dict "url" .URL "name" .Name "menu" $menuName) }}
-    {{ end }}
-  {{ end }}
-{{ end }}
-
-{{ $tags := slice }}
-{{ range .Site.Pages }}
-  {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink) }}
-{{ end }}
+{{ $currentPage := .Sites.First.Home }} {{ $menus := .Site.Menus }} {{ $data :=
+slice }} {{ $menuNames := slice "earn" "hiring" "memo" "radar" }} {{ range
+$menuNames }} {{ $menuName := . }} {{ $posts := index $menus $menuName }} {{ if
+$posts }} {{ range $posts }} {{ $data = $data | append (dict "url" .URL "name"
+.Name "menu" $menuName) }} {{ end }} {{ end }} {{ end }} {{ $tags := slice }} {{
+range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
+.RelPermalink) }} {{ end }}
 
 <nav class="menu">
   <section
@@ -61,28 +50,35 @@
         } else {
           this.end = 5;
           this.loaded = false;
-          this.loadText = 'Load More...'
+          this.loadText = 'Load more...'
         }
       },
     }"
   >
-    <details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open>
+    <details x-data="{ start: 0, end: 5, loadText: 'Load more...', }" open>
       <summary>Tags</summary>
       <ul>
-        <template x-for="tag in partialValue(tagsData, start, end)" x-bind:key="tag">
+        <template
+          x-for="tag in partialValue(tagsData, start, end)"
+          x-bind:key="tag"
+        >
           <li>
             <a x-bind:href="`/tags/${tag}`" x-text="tag"></a>
           </li>
         </template>
         <template x-if="tagsData.length > end">
-          <li class="load-more" @click="toggleLoad(loaded)" x-text="loadText"></li>
+          <li
+            class="load-more"
+            @click="toggleLoad(loaded)"
+            x-text="loadText"
+          ></li>
         </template>
       </ul>
     </details>
 
     <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
       <template x-if="isSameGroupUrl(menu) || isHomePage()">
-        <details x-data="{ start: 0, end: 5, loadText: 'Load More...', }" open>
+        <details x-data="{ start: 0, end: 5, loadText: 'Load more...', }" open>
           <summary x-text="menu"></summary>
           <ul>
             <template x-for="items in partialValue(menuData[menu], start, end)">
@@ -91,7 +87,11 @@
               </li>
             </template>
             <template x-if="menuData[menu].length > end">
-              <li class="load-more" @click="toggleLoad(loaded)" x-text="loadText"></li>
+              <li
+                class="load-more"
+                @click="toggleLoad(loaded)"
+                x-text="loadText"
+              ></li>
             </template>
           </ul>
         </details>

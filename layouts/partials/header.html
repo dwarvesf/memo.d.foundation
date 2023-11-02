@@ -40,6 +40,9 @@
   {{ $processComments := resources.Get "js/process-comments.js" }}
   <script defer src="{{ $processComments.RelPermalink }}"></script>
 
+  {{ $tabMenu := resources.Get "js/tab-menu.js" }}
+  <script defer src="{{ $tabMenu.RelPermalink }}"></script>
+
   {{ if .IsHome -}}
   <script type="application/ld+json">
     {

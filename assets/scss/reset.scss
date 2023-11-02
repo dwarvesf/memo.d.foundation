@@ -1,0 +1,142 @@
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    color: black;
+    text-rendering: optimizeLegibility;
+    padding: 2rem;
+    max-width: 100%;
+    margin: 0px;
+    padding: 0px;
+    background-color: var(--primary-background-color-light);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: var(--primary-font-color);
+    word-break: break-word;
+    line-height: 1.24;
+}
+
+h1 {
+    font-size: 45px;
+}
+
+h2 {
+    font-size: 30px;
+}
+
+h3 {
+    font-size: 22px;
+}
+
+h4 {
+    font-size: 15px;
+}
+
+a[href*="#"] {
+    text-decoration: none;
+}
+
+time {
+    padding-right: 1rem;
+}
+
+blockquote {
+    margin: 1em 0;
+    padding: 0 2em;
+    border-left: 3px solid #eee;
+}
+
+img {
+    max-width: 100%;
+}
+
+video {
+    max-width: 100%;
+}
+
+a,
+a:visited {
+    color: black;
+}
+
+q {
+    font-size: 20px;
+    max-width: 500px;
+    display: block;
+    margin-left: 30px;
+}
+
+pre {
+    font-family: monospace;
+    background: black;
+    color: #dadada;
+    padding: 15px;
+    border-radius: 2px;
+    overflow-x: scroll;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+pre>code {
+    display: block;
+    text-indent: 0;
+    white-space: inherit;
+    font-weight: normal;
+}
+
+code {
+    font-family: monospace;
+    font-size: 12px;
+    background: black;
+    color: #dadada;
+    padding: 2px 5px;
+    white-space: wrap;
+    border-radius: 2px;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 16px;
+    overflow-x: scroll;
+    margin-bottom: -4px;
+}
+
+code comment {
+    color: #777;
+}
+
+/* Theme */
+@media (prefers-color-scheme: dark) {
+
+    a,
+    a:visited {
+        color: #dadada;
+    }
+
+    pre {
+        background: white;
+        color: var(--primary-background-color);
+    }
+
+    code {
+        background: white;
+        color: var(--primary-background-color);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        color: var(--primary-font-color-light);
+    }
+}
