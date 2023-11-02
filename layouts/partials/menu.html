@@ -1,5 +1,5 @@
 {{ $currentPage := .Sites.First.Home }} {{ $menus := .Site.Menus }} {{ $data :=
-slice }} {{ $menuNames := slice "earn" "hiring" "memo" "radar" }} {{ range
+slice }} {{ $menuNames := slice "earn" "hiring" "memo" "radar" "newsletter" }} {{ range
 $menuNames }} {{ $menuName := . }} {{ $posts := index $menus $menuName }} {{ if
 $posts }} {{ range $posts }} {{ $data = $data | append (dict "url" .URL "name"
 .Name "menu" $menuName) }} {{ end }} {{ end }} {{ end }} {{ $tags := slice }} {{
@@ -37,7 +37,10 @@ range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
         return this.currentUrl.includes(menu);
       },
       isHomePage() {
-        return this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+        return this.currentUrl.includes('home') ||
+          this.currentUrl.includes('tags') ||
+          this.currentUrl.includes('site-index') ||
+          location.pathname == '/';
       },
       partialValue(items, start, end) {
         return items.slice(start, end);
