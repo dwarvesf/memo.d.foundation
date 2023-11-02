@@ -40,7 +40,10 @@
         return this.currentUrl.includes(menu);
       },
       isHomePage() {
-        return this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return this.currentUrl.includes(&#39;home&#39;) ||
+          this.currentUrl.includes(&#39;tags&#39;) ||
+          this.currentUrl.includes(&#39;site-index&#39;) ||
+          location.pathname == &#39;/&#39;;
       },
       partialValue(items, start, end) {
         return items.slice(start, end);
