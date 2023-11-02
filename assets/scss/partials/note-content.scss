@@ -79,11 +79,12 @@ code.button {
         "nav content pagenav"
         "nav content pagenav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 325px 2fr 1fr;
+    column-gap: var(--column-gap);
 
     >* {
-        padding-right: 4.5%;
-        padding-left: 4.5%;
+        padding-right: calc(var(--main-padding) - 12px);
+        padding-left: calc(var(--main-padding) + 12px);
     }
 }
 
@@ -93,7 +94,7 @@ main {
     padding: var(--main-padding);
     width: 700px;
     box-sizing: border-box;
-    justify-self: center;
+    justify-self: left;
 }
 
 main>ul {
@@ -308,11 +309,16 @@ ul li p {
             "title"
             "subtitle"
             "tabmenu"
+            "nav"
             "content"
-            "pagenav"
-            "nav";
+            "pagenav";
         grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
         grid-template-columns: 1fr;
+
+        >* {
+            padding-right: 4.5%;
+            padding-left: 4.5%;
+        }
     }
 
     .note-title {
@@ -330,6 +336,10 @@ ul li p {
             justify-self: left;
             justify-content: flex-start;
         }
+    }
+
+    main {
+        justify-self: center;
     }
 }
 
