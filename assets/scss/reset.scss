@@ -76,25 +76,29 @@ q {
 }
 
 pre {
-    font-family: monospace;
+    font-family: monospace !important;
     background: black;
     color: #dadada;
-    padding: 15px;
+    padding: 0 !important;
+    margin: 0 !important;
     border-radius: 2px;
     overflow-x: scroll;
     width: 100%;
+    max-width: 100vw !important;
     box-sizing: border-box;
 }
 
 pre>code {
+    background: black;
     display: block;
     text-indent: 0;
     white-space: inherit;
     font-weight: normal;
+    padding: 15px !important;
 }
 
 code {
-    font-family: monospace;
+    font-family: monospace !important;
     font-size: 12px;
     background: black;
     color: #dadada;
@@ -113,7 +117,9 @@ code comment {
 }
 
 span {
-    a, a:visited {
+
+    a,
+    a:visited {
         color: inherit;
     }
 }
