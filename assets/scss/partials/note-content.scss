@@ -94,6 +94,7 @@ main {
     width: 700px;
     box-sizing: border-box;
     justify-self: left;
+    margin: 0 auto;
 }
 
 main>ul {
@@ -103,6 +104,7 @@ main>ul {
 
 main>ul>li>a {
     text-decoration: underline;
+    word-break: break-word;
 }
 
 .dual-list>ul {

@@ -29,8 +29,10 @@
   {{ end }}
   <link rel="shortcut icon" type="image/png"
     href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-okaidia.min.css" integrity="sha512-5HvW0a7ihK3ro2KhwEksDHXgIezsTeZybZDIn8d8Y015Ny+t7QWSIjnlCTjFzlK7Klb604HLGjsNqU/i5mJLjQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script defer data-domain="note.d.foundation" src="https://plausible.io/js/script.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
 
   {{ $styles := resources.Get "scss/styles.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
   <style>
@@ -42,6 +44,9 @@
 
   {{ $tabMenu := resources.Get "js/tab-menu.js" }}
   <script defer src="{{ $tabMenu.RelPermalink }}"></script>
+
+  {{ $markdownEntities := resources.Get "js/markdown-entities.js" }}
+  <script defer src="{{ $markdownEntities.RelPermalink }}"></script>
 
   {{ if .IsHome -}}
   <script type="application/ld+json">
