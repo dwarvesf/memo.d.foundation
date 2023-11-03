@@ -77,6 +77,7 @@ q {
 
 pre {
     font-family: monospace !important;
+    background: black;
     color: #dadada;
     padding: 0 !important;
     margin: 0 !important;
@@ -100,7 +101,8 @@ pre>code {
 
 code {
     font-family: monospace !important;
-    font-size: 12px;
+    font-size: 12px !important;
+    background: black;
     color: #dadada;
     padding: 2px 5px;
     white-space: wrap;
@@ -147,10 +149,12 @@ span {
     }
 
     pre {
+        background: white;
         color: var(--primary-background-color);
     }
 
     code {
+        background: white;
         color: var(--primary-background-color);
     }
 }
