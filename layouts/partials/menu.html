@@ -65,8 +65,16 @@ range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
           x-for="tag in partialValue(tagsData, start, end)"
           x-bind:key="tag"
         >
-          <li>
-            <a x-bind:href="`/tags/${tag}`" x-text="tag"></a>
+          <li x-data="{
+            toKebabCase(tag) {
+              return tag && tag
+                .replace('&', '')
+                .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+                .map(x => x.toLowerCase())
+                .join('-');
+            }
+          }">
+            <a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="tag"></a>
           </li>
         </template>
         <template x-if="tagsData.length > end">
