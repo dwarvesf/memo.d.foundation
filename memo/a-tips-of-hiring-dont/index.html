@@ -59,7 +59,15 @@
           this.loadText = &#39;Load more...&#39;
         }
       },
-    }'><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
+    }'><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+            toKebabCase(tag) {
+              return tag && tag
+                .replace('&', '')
+                .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+                .map(x => x.toLowerCase())
+                .join('-');
+            }
+          }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
       currentUrl: `/memo/a-tips-of-hiring-dont/`,
       title: `A Tips Of Hiring Dont`,
       get tagsData() {
@@ -73,7 +81,7 @@
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jul 28, 2020</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jul 28, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><p>Many companies out there get lured by the vision of &ldquo;<span style=color:pink_background>scaling up</span>&rdquo;. An unwritten rule of &rsquo;the more man we have, the better output we create&rsquo;. But no, hiring with no motivation only leads to one thing: A waste of resource.</p><p>Hire without plan bored talent people out. There&rsquo;s no good to put people in a place where they can&rsquo;t create any impact. And we? We tend to fall for creating unnecessary job, which results in a waste of money and training resource. For the sake of that, don&rsquo;t hire because you feel to.
 Unless you&rsquo;re reaching out for help, hiring is the last thing you should keep in mind.</p><p><img src=/memo/assets/a-tips-of-hiring-dont/da9b94aa8e48a237d59aebc14e95e07d_MD5.webp alt=da9b94aa8e48a237d59aebc14e95e07d_MD5.webp onerror="this.onerror=null"></p><p>Before posting advertisements for open positions, make sure you understand every damn thing in the job description. Do it yourself. Understand the struggle. Automate the process. Optimize the method.
 That&rsquo;s when you write the job description yourself. Knowing how the job operates gives you the proactivity to response whenever a question comes up. And most importantly, you have an actual expectation for them to meet, not some crap they can learn online.</p><p>We do believe in hard working. In fact, we urge the team to discover their limit in any possible way. But for the love of God, don&rsquo;t misunderstand it with the state of burying your head in the sand. It trims off the quality, and things end up worse than they should have been just because we try to reach things that are way over our head. Success doesn&rsquo;t work that way.

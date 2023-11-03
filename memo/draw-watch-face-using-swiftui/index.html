@@ -59,7 +59,15 @@
           this.loadText = &#39;Load more...&#39;
         }
       },
-    }'><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
+    }'><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+            toKebabCase(tag) {
+              return tag && tag
+                .replace('&', '')
+                .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+                .map(x => x.toLowerCase())
+                .join('-');
+            }
+          }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
       currentUrl: `/memo/draw-watch-face-using-swiftui/`,
       title: `Draw Watch Face Using Swiftui`,
       get tagsData() {
@@ -73,7 +81,7 @@
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Mar 23, 2020</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Mar 23, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><p>SwiftUI are nice and fun to working with. You can read my previous article to get a bit knowledge about create circular control, it will make you easy to working with this article. This article also use Shape and Path, if you have worked with CoreGraphic before you will find it similar With CALayer, CAShapeLayer and UIBezierPath.</p><blockquote><p>Create Circular Text using SwiftUI</p></blockquote><p>First of all, let split watch to small components for easy coding. A watch has these following parts:</p><ul><li><em>Circular Bezel</em></li><li><em>Ticks-Markers</em></li><li><em>Hour, Minus, Second hands.</em></li><li><em>Number markers. from 1 to 12</em></li></ul><p>As usual, open Xcode and create new project, don’t forget to choose SwiftUI, add new SwiftUI file and named it Watch.</p><h3 id=draw-circular-bezel><a href=#draw-circular-bezel>Draw Circular Bezel <a href=#draw-circular-bezel></a></a></h3><p>Path is similar to BenzierPath, you can draw Oval, rectangle, line, arc using Path.
 I choose Arc for now. Later on we can using Arc, Oval or Circle to make different watch face style.
 Add a new struct and named it Arc conform to Shape protocol.

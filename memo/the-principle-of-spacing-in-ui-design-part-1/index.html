@@ -59,7 +59,15 @@
           this.loadText = &#39;Load more...&#39;
         }
       },
-    }'><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li><a x-bind:href="`/tags/${tag}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
+    }'><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary>Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+            toKebabCase(tag) {
+              return tag && tag
+                .replace('&', '')
+                .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+                .map(x => x.toLowerCase())
+                .join('-');
+            }
+          }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text=tag></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><template x-if="isSameGroupUrl(menu) || isHomePage()"><details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template></template></section></nav><main x-data='{
       currentUrl: `/memo/the-principle-of-spacing-in-ui-design-part-1/`,
       title: `The Principle Of Spacing In Ui Design Part 1`,
       get tagsData() {
@@ -73,5 +81,5 @@
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 18, 2018</div><template x-for="data in tagsData"><template x-if="data.tags.length > 0"><div class=tags>Tags:
+    }'><div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 18, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><h2 id=why-is-spacing-important><a href=#why-is-spacing-important>Why is spacing important? <a href=#why-is-spacing-important></a></a></h2><p>Before I talk about spacing principle, you should know how spacing important is with our design.</p><p>In design have four main factors in such as:</p><ul><li>Content</li><li>Graphic</li><li>Navigation</li><li>Identify</li></ul><p>Spacing has not only an impact directly on this factors but also on aesthetics design. Even more, it gives the page a united harmonic look. It decides you want them to pay attention to what. If you know the principle of spacing, you can use it in all your products. And you have a power strength of designers.</p><p>Now let’s check the below example:</p><p><img src=/memo/assets/the-principle-of-spacing-in-ui-design-part-1/cdf0d4d3eccb21431ec5e9c04b336c24_MD5.webp alt=cdf0d4d3eccb21431ec5e9c04b336c24_MD5.webp onerror="this.onerror=null"></p></main></div><footer><span><b>Dwarves, LLC</b> © 2015 - 2023 All rights reserved.</span></footer><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
