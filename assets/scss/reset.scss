@@ -76,7 +76,7 @@ q {
 }
 
 pre {
-    font-family: monospace;
+    font-family: monospace !important;
     background: black;
     color: #dadada;
     padding: 0 !important;
@@ -98,7 +98,7 @@ pre>code {
 }
 
 code {
-    font-family: monospace;
+    font-family: monospace !important;
     font-size: 12px;
     background: black;
     color: #dadada;
