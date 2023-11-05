@@ -71,7 +71,7 @@ nav.menu {
 }
 
 nav .site-nav {
-    display: block;
+    display: inline-block;
 }
 
 nav .site-nav section {
@@ -116,7 +116,6 @@ nav .site-nav ul li {
         background-color: var(--secondary-background-color);
     }
 }
-
 
 @media only screen and (max-width: 1100px) {
     nav.menu {
