@@ -11,7 +11,6 @@ range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
     class="site-nav"
     x-data="{
       currentUrl: `{{ .RelPermalink }}`,
-      loaded: false,
       get tagsData() {
         const dataString = `{{ $tags | jsonify }}`;
         const data = JSON.parse(dataString);
@@ -58,7 +57,7 @@ range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
       },
     }"
   >
-    <details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open>
+    <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
       <summary>Tags</summary>
       <ul>
         <template
@@ -89,7 +88,7 @@ range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
 
     <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
       <template x-if="isSameGroupUrl(menu) || isHomePage()">
-        <details x-data="{ start: 0, end: 10, loadText: 'Load more...', }" open>
+        <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
           <summary x-text="menu"></summary>
           <ul>
             <template x-for="items in partialValue(menuData[menu], start, end)">
