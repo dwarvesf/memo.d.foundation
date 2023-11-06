@@ -163,7 +163,7 @@
         return data;
       },
       isClearPage() {
-        const showFrontmatter = `{{ .Params.show_frontmatter }}`;
+        const showFrontmatter = (/true/i).test(`{{ .Params.show_frontmatter }}`);
         return !showFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
