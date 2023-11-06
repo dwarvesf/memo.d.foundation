@@ -17,7 +17,7 @@ watch-run:
 	@sudo rm -rf ./content
 	@mkdir -p content
 	@obsidian-export ./vault ./content
-	@./inotify.sh ./vault obsidian-export ./vault ./content &
+	@fswatch -o ./vault | xargs -n1 -I{} obsidian-export ./vault ./content &
 	@hugo -D server
 
 build-target:

@@ -9,4 +9,4 @@ RUN sudo chown -R "${DEVBOX_USER}:${DEVBOX_USER}" /code
 
 RUN devbox run -- echo "Installed Packages."
 
-RUN devbox shellenv --init-hook >> ~/.profile
+CMD ["devbox", "shell"]
