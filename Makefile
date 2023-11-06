@@ -14,7 +14,7 @@ run:
 	hugo server
 
 watch-run:
-	@rm -rf ./content
+	@sudo rm -rf ./content
 	@mkdir -p content
 	@obsidian-export ./vault ./content
 	@./inotify.sh ./vault obsidian-export ./vault ./content &
