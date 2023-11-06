@@ -77,7 +77,7 @@ q {
 
 pre {
     font-family: monospace !important;
-    background: black;
+    background: black !important;
     color: #dadada;
     padding: 0 !important;
     margin: 0 !important;
@@ -90,7 +90,6 @@ pre {
 }
 
 pre>code {
-    display: block;
     text-indent: 0;
     white-space: inherit;
     font-weight: normal;
@@ -100,16 +99,16 @@ pre>code {
 }
 
 code {
+    line-height: 1.5 !important;
     font-family: monospace !important;
     font-size: 12px !important;
-    background: black;
+    background: black !important;
     color: #dadada;
     padding: 2px 5px;
     white-space: wrap;
     border-radius: 2px;
     font-weight: bold;
     display: inline-block;
-    line-height: 16px;
     overflow-x: scroll;
     margin-bottom: -4px;
     box-sizing: border-box;
@@ -149,12 +148,14 @@ span {
     }
 
     pre {
-        background: white;
+        font-family: monospace !important;
+        background: white !important;
         color: var(--primary-background-color);
     }
 
     code {
-        background: white;
+        font-family: monospace !important;
+        background: white !important;
         color: var(--primary-background-color);
     }
 }
