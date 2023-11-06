@@ -8,7 +8,6 @@
         "date tags"
         "authors authors";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    ;
     grid-template-columns: repeat(2, 1fr);
 
     .pagetitle {
@@ -43,10 +42,8 @@
     }
 }
 
-.tags-title {
-    grid-template-areas:
-        "pagetitle pagetitle"
-        "authors authors";
+.clear-title {
+    grid-template-areas: "pagetitle pagetitle";
     gap: 0;
 
     .date {
@@ -54,6 +51,10 @@
     }
 
     .tags {
+        display: none;
+    }
+
+    .authors {
         display: none;
     }
 }
@@ -91,7 +92,7 @@ main {
     grid-area: content;
     display: inline-block;
     padding: var(--main-padding);
-    width: 700px;
+    width: 1fr;
     box-sizing: border-box;
     justify-self: left;
 }
