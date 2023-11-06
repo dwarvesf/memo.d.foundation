@@ -93,7 +93,7 @@ main {
     display: inline-block;
     padding: var(--main-padding);
     width: calc(100vw - 325px - 72px);
-    max-width: 1200px;
+    max-width: var(--container-max-width);
     box-sizing: border-box;
     justify-self: left;
 }
