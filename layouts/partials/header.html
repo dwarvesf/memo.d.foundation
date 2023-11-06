@@ -162,15 +162,16 @@
         const data = JSON.parse(dataString);
         return data;
       },
-      isHomePage() {
-        return this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+      isClearPage() {
+        const showFrontmatter = `{{ .Params.show_frontmatter }}`;
+        return !showFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
         return this.currentUrl.includes('tags');
       }
     }">
       <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
-      <div x-bind:class="{ 'note-title': true, 'tags-title': isHomePage() }">
+      <div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
         <template x-if="isTagPage()"><h1 class="pagetitle" x-text="`tag: ${title}`"></h1></template>
         <template x-if="!isTagPage()"><h1 class="pagetitle" x-text="title"></h1></template>
         <div class="date">{{ .Date.Format "Jan 2, 2006" }}</div>
@@ -185,13 +186,13 @@
           </template>
         </template>
         {{ if .Params.authors -}}
-        <aside class="authors">
-          by
-          {{ $authorsLen := sub (len $.Params.authors) 1}}
-          {{ range $i, $e := .Params.authors }}
-          <a href="/members/{{ $e }}">{{ $e }}</a>{{ if (gt $authorsLen $i) }},{{end}}
-          {{ end }}
-        </aside>
+          <aside class="authors">
+            by
+            {{ $authorsLen := sub (len $.Params.authors) 1}}
+            {{ range $i, $e := .Params.authors }}
+            <a href="/members/{{ $e }}">{{ $e }}</a>{{ if (gt $authorsLen $i) }},{{end}}
+            {{ end }}
+          </aside>
         {{ end }}
       </div>
       <hr>
