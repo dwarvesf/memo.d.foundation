@@ -95,18 +95,6 @@ main {
     width: 100%;
     box-sizing: border-box;
     justify-self: left;
-
-    ol~p {
-        padding-left: 40px;
-    }
-
-    ol~ul {
-        padding-left: 56px;
-    }
-
-    ol~p+ul {
-        padding-left: 72px;
-    }
 }
 
 main>ul {
