@@ -79,7 +79,7 @@ code.button {
         "nav content pagenav"
         "nav content pagenav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 325px 2fr 1fr;
+    grid-template-columns: 325px 3fr 1fr;
     column-gap: var(--column-gap);
 
     >* {
@@ -92,7 +92,7 @@ main {
     grid-area: content;
     display: inline-block;
     padding: var(--main-padding);
-    width: 1fr;
+    width: 100%;
     box-sizing: border-box;
     justify-self: left;
 }
@@ -337,6 +337,7 @@ ul li p {
 
     main {
         justify-self: center;
+        width: 700px;
     }
 }
 
