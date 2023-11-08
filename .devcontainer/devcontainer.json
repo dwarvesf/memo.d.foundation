@@ -1,21 +1,25 @@
 {
-  "name": "Hugo",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "app",
-  "workspaceFolder": "/workspace",
-  // Configure tool-specific properties.
+  "name": "Devbox Remote Container",
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": ".."
+  },
+  "runArgs": [
+    "--shm-size=1g"
+  ],
   "customizations": {
-    // Configure properties specific to VS Code.
     "vscode": {
       // Set *default* container specific settings.json values on container create.
       "settings": {
         "go.toolsManagement.checkForUpdates": "local",
         "go.useLanguageServer": true,
         "go.gopath": "/go",
-        "go.goroot": "/usr/local/go"
+        "go.goroot": "/usr/local/go",
+        "devbox.autoShellOnTerminal": false
       },
       // Add the IDs of extensions you want installed when the container is created.
       "extensions": [
+        "jetpack-io.devbox",
         "golang.Go",
         "bierner.color-info",
         "adrianwilczynski.alpine-js-intellisense",
@@ -42,8 +46,7 @@
   "postStartCommand": {
     "safeDir": "git config --global --add safe.directory ${containerWorkspaceFolder}",
     "initSubmodules": "git submodule update --init --remote --recursive"
-
   },
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-  "remoteUser": "vscode"
+  "remoteUser": "devbox"
 }
