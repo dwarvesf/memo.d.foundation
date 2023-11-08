@@ -59,7 +59,7 @@ jobs:
 
       - name: Export Vault
         shell: bash
-        run: obsidian-export ./vault ./content
+        run: obsidian-export --hard-linebreaks ./vault ./content
 
       - name: Build Hugo
         shell: bash
