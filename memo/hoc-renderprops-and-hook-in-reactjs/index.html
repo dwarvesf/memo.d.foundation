@@ -150,8 +150,7 @@ class App extends Component {
 
 export default App;
 view rawApp.js hosted with ❤ by GitHub
-</code></pre><p>This work but it’s not DRY. We gonna refactor the code with some methods above that help us write code that doesn’t violate DRY principle.</p><h2 id=refactor-the-component-with-render-props><a href=#refactor-the-component-with-render-props>Refactor the component with Render props: <a href=#refactor-the-component-with-render-props></a></a></h2><p>The term “<a href=https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce>render prop</a>” refers to a technique for sharing code between React components using a prop whose value is a function.
-A component with a render prop takes a function that returns a React element and calls it instead of implementing its own render logic.</p><pre><code class=language-javascript>import React, {Component} from 'react'
+</code></pre><p>This work but it’s not DRY. We gonna refactor the code with some methods above that help us write code that doesn’t violate DRY principle.</p><h2 id=refactor-the-component-with-render-props><a href=#refactor-the-component-with-render-props>Refactor the component with Render props: <a href=#refactor-the-component-with-render-props></a></a></h2><p>The term “<a href=https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce>render prop</a>” refers to a technique for sharing code between React components using a prop whose value is a function.<br>A component with a render prop takes a function that returns a React element and calls it instead of implementing its own render logic.</p><pre><code class=language-javascript>import React, {Component} from 'react'
 
 class Toggle extends Component {
   constructor() {
@@ -203,9 +202,7 @@ class App extends Component {
 
 export default App;
 view rawApp.js hosted with ❤ by GitHub
-</code></pre><p>The cons of this approach is only component inside it’s scope which is its child component has access to its passed data to it’s child components</p><h2 id=refactor-the-component-using-hoc-component><a href=#refactor-the-component-using-hoc-component>Refactor the component using HOC component <a href=#refactor-the-component-using-hoc-component></a></a></h2><p>A higher-order component (HOC) is an advanced technique in React for reusing component logic. HOCs are not part of the React API,. The are a pattern that emerges from React’s compositional nature.
-Concretely, <strong>a higher-order component is a function that takes a component and returns a new component.</strong>
-Component return by HOC Component is freely to modified it’s params components by actions such as:</p><ul><li>Wrap it inside different component</li><li>Pass props to it</li><li>…etc</li></ul><p>Let’s create HOC component that modify our main component by pass it’s state and.</p><pre><code class=language-javascript>import React, {Component} from 'react'
+</code></pre><p>The cons of this approach is only component inside it’s scope which is its child component has access to its passed data to it’s child components</p><h2 id=refactor-the-component-using-hoc-component><a href=#refactor-the-component-using-hoc-component>Refactor the component using HOC component <a href=#refactor-the-component-using-hoc-component></a></a></h2><p>A higher-order component (HOC) is an advanced technique in React for reusing component logic. HOCs are not part of the React API,. The are a pattern that emerges from React’s compositional nature.<br>Concretely, <strong>a higher-order component is a function that takes a component and returns a new component.</strong><br>Component return by HOC Component is freely to modified it’s params components by actions such as:</p><ul><li>Wrap it inside different component</li><li>Pass props to it</li><li>…etc</li></ul><p>Let’s create HOC component that modify our main component by pass it’s state and.</p><pre><code class=language-javascript>import React, {Component} from 'react'
 
 const withToggle = (C, field) =&gt; (
   class C extends Component {
@@ -233,8 +230,7 @@ const withToggle = (C, field) =&gt; (
 
 export default withToggle
 view rawwithToggle.js hosted with ❤ by GitHub
-</code></pre><p>Component created by withToggle will have state <strong>{field}</strong> which is second parameter passes to withToggle function and method
-that will toggle field pass in our component.</p><pre><code class=language-javascript>import React, { Component } from 'react';
+</code></pre><p>Component created by withToggle will have state <strong>{field}</strong> which is second parameter passes to withToggle function and method<br>that will toggle field pass in our component.</p><pre><code class=language-javascript>import React, { Component } from 'react';
 import Toggle from './Toggle'
 import withToggle from './withToggle'
 

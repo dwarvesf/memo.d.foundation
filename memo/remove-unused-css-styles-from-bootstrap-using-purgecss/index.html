@@ -158,8 +158,7 @@ module.exports = {
     })
   ]
 };
-</code></pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code>// Import CSS Grid min CSS</code></p><p><code>import 'bootstrap/dist/css/bootstrap-grid.min.css'</code></p><p>Here is the build output which includes CSS grid file</p><p><img src=/memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss/429bb8c82f4e38465293c6f79d782394_MD5.webp alt=429bb8c82f4e38465293c6f79d782394_MD5.webp onerror="this.onerror=null"></p><p>To use PurgeCss with Webpack simply install this Webpack plugin:
-<code>npm i purgecss-webpack-plugin -D</code></p><p>Then add it to plugin section in Webpack config file</p><pre><code class=language-javascript>var UglifyJsPlugin = require(&quot;uglifyjs-webpack-plugin&quot;);
+</code></pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code>// Import CSS Grid min CSS</code></p><p><code>import 'bootstrap/dist/css/bootstrap-grid.min.css'</code></p><p>Here is the build output which includes CSS grid file</p><p><img src=/memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss/429bb8c82f4e38465293c6f79d782394_MD5.webp alt=429bb8c82f4e38465293c6f79d782394_MD5.webp onerror="this.onerror=null"></p><p>To use PurgeCss with Webpack simply install this Webpack plugin:<br><code>npm i purgecss-webpack-plugin -D</code></p><p>Then add it to plugin section in Webpack config file</p><pre><code class=language-javascript>var UglifyJsPlugin = require(&quot;uglifyjs-webpack-plugin&quot;);
 var HtmlWebpackPlugin = require(&quot;html-webpack-plugin&quot;);
 const MiniCssExtractPlugin = require(&quot;mini-css-extract-plugin&quot;);
 const PurgecssPlugin = require('purgecss-webpack-plugin')

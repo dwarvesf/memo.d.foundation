@@ -117,8 +117,7 @@ Get detailed command description with 'dcos &lt;command&gt; --help'.
         }
     }
 }
-</code></pre><p><strong>Note</strong>
-By default, applications will be deployed to <code>private node</code>, so if you want to deploy to <code>public node</code>, you can add <code>"acceptedResourceRoles": ["slave_public"]</code> to <code>my-app.json</code></p><ol><li>Add your app to Marathon:</li></ol><pre><code class=language-javascript>$ dcos marathon app add &lt;my-app.json&gt;
+</code></pre><p><strong>Note</strong><br>By default, applications will be deployed to <code>private node</code>, so if you want to deploy to <code>public node</code>, you can add <code>"acceptedResourceRoles": ["slave_public"]</code> to <code>my-app.json</code></p><ol><li>Add your app to Marathon:</li></ol><pre><code class=language-javascript>$ dcos marathon app add &lt;my-app.json&gt;
 </code></pre><p>If this is added successfully, output will be something like this:</p><pre><code class=language-javascript>Created deployment d562b50a-17b0-44ce-b7d2-02a0c3cc799e
 </code></pre><ol><li>Verify that the app is added with this command:</li></ol><pre><code class=language-javascript>$ dcos marathon app list
 </code></pre><p>The output can be look like this:</p><pre><code class=language-javascript>ID      MEM  CPUS  TASKS  HEALTH  DEPLOYMENT  CONTAINER  CMD
