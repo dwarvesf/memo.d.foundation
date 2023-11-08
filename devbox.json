@@ -1,0 +1,21 @@
+{
+  "packages": {
+    "go": "1.21.3",
+    "rustup": "1.26.0",
+    "libiconv": "2.38",
+    "gcc": "13.2.0",
+    "hugo": "0.120.2",
+    "obsidian": "1.4.16",
+    "fswatch": "1.17.1"
+  },
+  "shell": {
+    "init_hook": [
+      "export PATH=$PATH:$HOME/.cargo/bin",
+      "rustup default stable",
+      "cargo install obsidian-export"
+    ],
+    "scripts": {
+      "watch-run": "make watch-run"
+    }
+  }
+}
