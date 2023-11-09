@@ -41,6 +41,26 @@
         }
       }
     },
+    "git@2.42.0": {
+      "last_modified": "2023-10-25T20:49:13Z",
+      "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#git",
+      "source": "devbox-search",
+      "version": "2.42.0",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/0ifwlmw97aq4ic4l69j3kh677lay4kmx-git-2.42.0"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/6hvc2kldsbs1dpg7nrpf6bfkcnhl9pjr-git-2.42.0"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/hcvfxifqrxjp4vqb1yrczq3y78afjpv1-git-2.42.0"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/whwwhd6ns271bj0ff86ap37i9r9kzi9c-git-2.42.0"
+        }
+      }
+    },
     "go@1.21.3": {
       "last_modified": "2023-10-25T20:49:13Z",
       "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#go",
