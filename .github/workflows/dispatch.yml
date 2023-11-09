@@ -7,20 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Pull and update submodules
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.DWARVES_PAT }}
-
       - name: Checkout contents repo
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.DWARVES_PAT }}
-          submodules: 'true'
-
-      - name: Pull & update submodules recursively
-        run: |
-          git submodule update --init --recursive
-          git submodule update --recursive --remote
+          submodules: recursive
 
       - name: Commit
         run: |
