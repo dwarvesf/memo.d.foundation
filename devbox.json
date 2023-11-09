@@ -15,7 +15,9 @@
       "cargo install obsidian-export"
     ],
     "scripts": {
-      "watch-run": "make watch-run"
+      "watch-run": "make watch-run",
+      "build-target": "make build-target",
+      "run-target": "make build-target"
     }
   }
 }
