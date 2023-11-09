@@ -7,27 +7,27 @@ setup:
 
 build:
 	@obsidian-export --hard-linebreaks ./vault ./content
-	@hugo -D -E -F --minify
+	@hugo -DEF --minify
 
 run:
 	@obsidian-export --hard-linebreaks ./vault ./content
-	hugo server
+	hugo -DEF server
 
 watch-run:
 	@sudo rm -rf ./content
 	@mkdir -p content
 	@obsidian-export --hard-linebreaks ./vault ./content
 	@fswatch -o ./vault | xargs -n1 -I{} obsidian-export --hard-linebreaks ./vault ./content &
-	@hugo -D server
+	@hugo -DEF server
 
 build-target:
 	@mkdir -p vault content
 	@rsync -avh $(path) ./vault/ --delete
 	@obsidian-export --hard-linebreaks ./vault/ ./content/
-	@hugo -D -E -F --minify
+	@hugo -DEF --minify
 
 run-target:
 	@mkdir -p vault content
 	@rsync -avh $(path) ./vault/ --delete
 	@obsidian-export --hard-linebreaks ./vault/ ./content/
-	@hugo -D server
+	@hugo -DEF server
