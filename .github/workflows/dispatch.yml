@@ -8,7 +8,7 @@ jobs:
     name: Pull and update submodules
     steps:
       - name: Debounce 1 minute
-        uses: zachary95/github-actions-debounce@0.1.0
+        uses: zachary95/github-actions-debounce@v0.1.0
         with:
           wait: 60
 
