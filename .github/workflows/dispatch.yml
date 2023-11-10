@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Pull and update submodules
     steps:
-    - name: Debounce 1 minute
+      - name: Debounce 1 minute
         uses: zachary95/github-actions-debounce
         with:
           wait: 60
