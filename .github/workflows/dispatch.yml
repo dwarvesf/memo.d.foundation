@@ -7,6 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Pull and update submodules
     steps:
+    - name: Debounce 1 minute
+        uses: zachary95/github-actions-debounce
+        with:
+          wait: 60
+
       - name: Checkout contents repo
         uses: actions/checkout@v4
         with:
