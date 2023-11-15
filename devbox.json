@@ -9,9 +9,9 @@
     "fswatch":               "1.17.1",
     "git":                   "2.42.0",
     "pipenv":                "2023.2.4",
-    "python":                "3.10.0",
     "python310Packages.pip": "23.2.1",
-    "duckdb":                "0.9.1"
+    "duckdb":                "0.9.1",
+    "python":                "3.10.13"
   },
   "shell": {
     "init_hook": [
