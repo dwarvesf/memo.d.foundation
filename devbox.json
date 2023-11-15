@@ -1,13 +1,17 @@
 {
   "packages": {
-    "go":       "1.21.3",
-    "rustup":   "1.26.0",
-    "libiconv": "2.38",
-    "gcc":      "13.2.0",
-    "hugo":     "0.120.2",
-    "obsidian": "1.4.16",
-    "fswatch":  "1.17.1",
-    "git":      "2.42.0"
+    "go":                    "1.21.3",
+    "rustup":                "1.26.0",
+    "libiconv":              "2.38",
+    "gcc":                   "13.2.0",
+    "hugo":                  "0.120.2",
+    "obsidian":              "1.4.16",
+    "fswatch":               "1.17.1",
+    "git":                   "2.42.0",
+    "pipenv":                "2023.2.4",
+    "python":                "3.10.0",
+    "python310Packages.pip": "latest",
+    "duckdb":                "0.9.1"
   },
   "shell": {
     "init_hook": [
@@ -15,7 +19,9 @@
       "git pull --recurse-submodules",
       "export PATH=$PATH:$HOME/.cargo/bin",
       "rustup default stable",
-      "cargo install obsidian-export"
+      "cargo install obsidian-export",
+      ". $VENV_DIR/bin/activate",
+      "pip install -r requirements.txt"
     ],
     "scripts": {
       "watch-run":    "make watch-run",
