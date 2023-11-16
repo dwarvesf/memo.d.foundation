@@ -11,17 +11,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}" />
   <meta name="keywords" content="{{ .Site.Params.tags }}">
+  <meta name="title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
+  <meta property="og:description" content="{{ .Site.Params.description }}" />
   
   <!-- Facebook Meta -->
-  <meta property="og:title" name="title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
-  <meta property="og:description" name="description" content="{{ .Site.Params.description }}" />
+  <meta property="og:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
+  <meta property="og:description" content="{{ .Site.Params.description }}" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="{{ .Permalink }}" />
   <meta property="og:image" content="{{ $whiteImage.Permalink }}" />
 
   <!-- Twitter Meta -->
-  <meta property="twitter:title" name="title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
-  <meta property="twitter:description" name="description" content="{{ .Site.Params.description }}" />
+  <meta property="twitter:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
+  <meta property="twitter:description" content="{{ .Site.Params.description }}" />
   <meta property="twitter:type" content="article" />
   <meta property="twitter:url" content="{{ .Permalink }}" />
   <meta property="twitter:image" content="{{ $whiteImage.Permalink }}" />
