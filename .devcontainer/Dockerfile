@@ -4,6 +4,7 @@ FROM jetpackio/devbox:latest
 WORKDIR /code
 COPY devbox.json devbox.json
 COPY devbox.lock devbox.lock
+COPY requirements.txt requirements.txt
 RUN sudo chown -R "${DEVBOX_USER}:${DEVBOX_USER}" /code
 
 

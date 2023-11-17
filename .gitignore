@@ -26,3 +26,6 @@ resources
 public/*
 !public/CNAME
 content/
+
+# duckdb related files
+*.parquet
