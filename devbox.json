@@ -15,8 +15,6 @@
   },
   "shell": {
     "init_hook": [
-      "git submodule update --init --recursive",
-      "git pull --recurse-submodules",
       "export PATH=$PATH:$HOME/.cargo/bin",
       "rustup default stable",
       "cargo install obsidian-export",
