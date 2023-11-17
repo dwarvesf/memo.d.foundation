@@ -1,5 +1,6 @@
 const MARKDOWN_BOLD_PATTERN = /^\*\*.*\*\*$/;
 const MARKDOWN_BLOCKQUOTE_PATTERN = /(&gt;)+(.*)/;
+const MARKDOWN_LINK_PATTERN = /\[(.*)\]\((.*)\)/g;
 
 const boldPatternSelectors = ['code', 'span', 'a'];
 
@@ -44,6 +45,18 @@ blockquotePatternSelectors.forEach(selector => {
             }, '')
 
             element.innerHTML = codeWithBlockquotes;
+        }
+    })
+})
+
+const markdownLinkPatternSelectors = ['span', 'b', 'main'];
+
+markdownLinkPatternSelectors.forEach(selector => {
+    Array.from(document.querySelectorAll(selector) || []).forEach(element => {
+        if (MARKDOWN_LINK_PATTERN.test(element.innerHTML.trim())) {
+            const link = element.innerHTML.replace(MARKDOWN_LINK_PATTERN, '<a href="$2">$1</a>');
+
+            element.innerHTML = link;
         }
     })
 })
