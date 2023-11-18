@@ -95,6 +95,8 @@ main {
     width: calc(100vw - 325px - 72px);
     max-width: var(--container-max-width);
     box-sizing: border-box;
+    overflow-wrap: break-word;
+    hyphens: none;
     justify-self: left;
 }
 
@@ -105,7 +107,6 @@ main>ul {
 
 main>ul>li>a {
     text-decoration: underline;
-    word-break: break-word;
 }
 
 .dual-list>ul {
