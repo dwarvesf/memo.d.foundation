@@ -9,33 +9,30 @@
   {{ $whiteImage := resources.Get "img/LOGO.png" }}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}" />
+  <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}">
   <meta name="keywords" content="{{ .Site.Params.tags }}">
-  <meta name="title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
-  <meta name="description" content="{{ .Site.Params.description }}" />
+  <meta name="title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
+  <meta name="description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
   
   <!-- Facebook Meta -->
-  <meta property="og:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
-  <meta property="og:description" content="{{ .Site.Params.description }}" />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="{{ .Permalink }}" />
-  <meta property="og:image" content="{{ $whiteImage.Permalink }}" />
+  <meta property="og:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
+  <meta property="og:description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:image" content="{{ $whiteImage.Permalink }}">
 
   <!-- Twitter Meta -->
-  <meta property="twitter:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
-  <meta property="twitter:description" content="{{ .Site.Params.description }}" />
-  <meta property="twitter:type" content="article" />
-  <meta property="twitter:url" content="{{ .Permalink }}" />
-  <meta property="twitter:image" content="{{ $whiteImage.Permalink }}" />
-
+  <meta property="twitter:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
+  <meta property="twitter:description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta property="twitter:type" content="article">
+  <meta property="twitter:url" content="{{ .Permalink }}">
+  <meta property="twitter:image" content="{{ $whiteImage.Permalink }}">
 
   <link rel="icon" type="image/x-icon" href="{{ $favicon.Permalink }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ $favicon16.Permalink }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ $favicon32.Permalink }}">
   <link rel="apple-touch-icon" href="{{ $appleTouchIcon.Permalink }}">
   <title>{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-  <meta name="description"
-    content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
   <link rel="canonical" href="{{ .Permalink | absURL }}">
   {{ with .OutputFormats.Get "rss" -}}
   {{ printf `
@@ -52,6 +49,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   <!-- Algolia -->
+  <link rel="preconnect" href="https://B0BWKXLVM9-dsn.algolia.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
@@ -84,7 +82,7 @@
       "@type": "WebSite",
       "name": "{{ .Site.Title }}",
       "url": "{{ .Site.BaseURL }}",
-      "description": "{{ .Site.Params.description }}",
+      "description": "{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}",
       "thumbnailUrl": "{{ .Site.Params.Logo | absURL }}",
       "license": "{{ .Site.Params.Copyright }}"
     }
