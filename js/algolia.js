@@ -1,6 +1,6 @@
 (() => {
   // ns-params:@params
-  var api_key = "310d8f7559c289385c624e31e65543b3";
+  var api_key = "be44f3385e07c7db6a2847dd1ae97c0e";
   var application_id = "B0BWKXLVM9";
 
   // <stdin>
