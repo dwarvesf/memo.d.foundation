@@ -12,7 +12,7 @@
   <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}" />
   <meta name="keywords" content="{{ .Site.Params.tags }}">
   <meta name="title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
-  <meta property="og:description" content="{{ .Site.Params.description }}" />
+  <meta name="description" content="{{ .Site.Params.description }}" />
   
   <!-- Facebook Meta -->
   <meta property="og:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}" />
