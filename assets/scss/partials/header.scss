@@ -11,6 +11,21 @@
         padding-top: 16px;
         padding-bottom: 32px;
     }
+
+    #docsearch {
+        grid-area: docsearch;
+        
+        > button {
+            width: 90%;
+            height: 75%;
+            border-radius: 0px;
+            
+            > span {
+                padding-left: 12px;
+                font-family: 'IBM Plex Sans', sans-serif;
+            }
+        }
+    }
 }
 
 .active {
