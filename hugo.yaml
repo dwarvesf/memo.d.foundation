@@ -12,6 +12,14 @@ module:
   - path: github.com/adityatelange/hugo-PaperMod
     disable: true
 
+security:
+  funcs:
+    getenv:
+    - ^HUGO_
+    - ^CI$
+    - ^USER$
+    - ^HOME$
+    - ^ALGOLIA_
 taxonomies:
   tag: tags
 outputs:

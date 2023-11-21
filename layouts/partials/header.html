@@ -69,7 +69,9 @@
   {{ $markdownEntities := resources.Get "js/markdown-entities.js" }}
   <script defer src="{{ $markdownEntities.RelPermalink }}"></script>
   
-  {{ $algolia := resources.Get "js/algolia.js" }}
+  {{ $algoliaApiKey := getenv "ALGOLIA_API_KEY" }}
+  {{ $algoliaApplicationId := getenv "ALGOLIA_APPLICATION_ID" }}
+  {{ $algolia := resources.Get "js/algolia.js" | js.Build (dict "params" (dict "api_key" $algoliaApiKey "application_id" $algoliaApplicationId))  }}
   <script defer src="{{ $algolia.RelPermalink }}"></script>
 
   {{ $systemAppearance := resources.Get "js/dark-light-check.js" }}
