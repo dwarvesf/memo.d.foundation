@@ -54,7 +54,7 @@ jobs:
 
       - name: Build Hugo
         shell: bash
-        run: ALGOLIA_API_KEY=$ALGOLIA_API_KEY ALGOLIA_APPLICATION_ID=$ALGOLIA_APPLICATION_ID hugo -DEF --minify
+        run: hugo -DEF --minify
         env:
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           ALGOLIA_APPLICATION_ID: ${{ secrets.ALGOLIA_APPLICATION_ID }}
