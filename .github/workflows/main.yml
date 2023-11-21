@@ -55,6 +55,9 @@ jobs:
       - name: Build Hugo
         shell: bash
         run: hugo -DEF --minify
+        env:
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_APPLICATION_ID: ${{ secrets.ALGOLIA_APPLICATION_ID }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
