@@ -77,3 +77,12 @@ nav.tab-menu {
         border-bottom: 1px solid var(--border-color);
     }
 }
+
+@media only screen and (max-width: 1100px) {
+    .DocSearch {
+        width: 100% !important;
+        height: 50px !important;
+        padding: 0px;
+        margin: 0px;
+    }
+}
