@@ -1,6 +1,8 @@
+import * as params from '@params';
+
 window.docsearch({
   container: '#docsearch',
-  appId: '',
+  appId: params.application_id,
   indexName: 'note.d.foundation',
-  apiKey: '',
+  apiKey: params.api_key,
 });
