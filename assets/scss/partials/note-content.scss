@@ -73,19 +73,23 @@ code.button {
 .grid {
     display: inline-grid;
     grid-template-areas:
-        "title title title"
-        "subtitle subtitle subtitle"
-        "tabmenu tabmenu tabmenu"
-        "nav content pagenav"
-        "nav content pagenav";
+        "title title title title"
+        "subtitle subtitle docsearch docsearch"
+        "tabmenu tabmenu tabmenu tabmenu"
+        "nav content content pagenav"
+        "nav content content pagenav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 325px 3fr 1fr;
+    grid-template-columns: 325px 2fr 2fr 1fr;
     column-gap: var(--column-gap);
 
     >* {
         padding-right: calc(var(--main-padding) - 12px);
         padding-left: calc(var(--main-padding) + 12px);
     }
+}
+
+#docsearch {
+    grid-area: docsearch;
 }
 
 main {
@@ -232,6 +236,10 @@ ul li p {
 
 /* Theme */
 @media (prefers-color-scheme: dark) {
+    html[data-theme=dark] {
+        --docsearch-searchbox-background: #222;
+    }
+
     body {
         background: var(--primary-background-color);
         color: #dadada;
@@ -301,6 +309,7 @@ ul li p {
         grid-template-areas:
             "title"
             "subtitle"
+            "docsearch"
             "tabmenu"
             "content"
             "nav"
