@@ -203,6 +203,7 @@
           <template x-if="data.tags && data.tags.length > 0">
             <div class="tags">
               Tags:
+              <div class="tags-index" x-text="data.tags" style="display: none;"></div>
               <template x-for="tag in data.tags">
                 <a class="tag" x-bind:href="`/tags/${tag}`" x-text="tag"></a>
               </template>
