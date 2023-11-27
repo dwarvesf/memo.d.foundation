@@ -203,7 +203,7 @@
           <template x-if="data.tags && data.tags.length > 0">
             <div class="tags">
               Tags:
-              <div class="tags-index">{{ index (index $tags 0) "tags" }}</div>
+              <div class="tags-index" style="display: none;">{{ index (index $tags 0) "tags" }}</div>
               <template x-for="tag in data.tags">
                 <a class="tag" x-bind:href="`/tags/${tag}`" x-text="tag"></a>
               </template>
