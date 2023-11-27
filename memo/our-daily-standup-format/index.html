@@ -81,7 +81,7 @@
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Our Daily Standup Format</h1></template><div class=date>Jul 23, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:<div class=tags-index x-text=data.tags style=display:none></div><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><h2 id=report-template><a href=#report-template>Report Template <a href=#report-template></a></a></h2><pre><code class=language-plain_text>Team: Your team
+    }'><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Our Daily Standup Format</h1></template><div class=date>Jul 23, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:<div class=tags-index>[scrum]</div><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template></div><hr><h2 id=report-template><a href=#report-template>Report Template <a href=#report-template></a></a></h2><pre><code class=language-plain_text>Team: Your team
 
 Yesterday
 + [Task ID] : What did you work on the task yesterday and what is the status of the task
