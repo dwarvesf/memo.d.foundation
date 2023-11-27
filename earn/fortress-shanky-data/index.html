@@ -81,8 +81,7 @@
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Fortress Shanky Data</h1></template><div class=date>Oct 4, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template><aside class=authors>by
+    }'><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><template x-if=isTagPage()><h1 class=pagetitle x-text="`tag: ${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Fortress Shanky Data</h1></template><div class=date>Oct 4, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:<div class=tags-index x-text=data.tags style=display:none></div><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag}`" x-text=tag></a></template></div></template></template><aside class=authors>by
 <a href=/members/hnh>hnh</a></aside></div><hr><p>generate & render something as above</p><p>with following syntax data:</p><p>source | amount | target</p><p>sample:</p><pre><code class=language-jsx>Wages [1500] Budget
 Other [250] Budget
 
