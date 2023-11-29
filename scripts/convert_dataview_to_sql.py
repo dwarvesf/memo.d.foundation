@@ -9,7 +9,7 @@ rparen = Literal(')')
 lbracket = Literal('[')
 rbracket = Literal(']')
 
-keywords = ['LIST', 'TASK', 'FROM', 'TABLE', 'WHERE', 'AND', 'FLATTEN', 'LIMIT', 'CHOICE', 'NOT', 'AS', 'OR']
+keywords = ['LIST', 'TASK', 'FROM', 'TABLE', 'WHERE', 'AND', 'FLATTEN', 'LIMIT', 'CHOICE', 'NOT', 'AS', 'OR', 'WITHOUT ID']
 keyword_objects = map(lambda x: Keyword(x, caseless=True), keywords)
 list_kw = Keyword('LIST', caseless=True)
 task_kw = Keyword('TASK', caseless=True)
@@ -35,7 +35,7 @@ reserved_words = Or(keyword_objects)
 common_word = Word(alphas + '-_#.()/', alphanums + '-_#.()/')
 wikilink = Combine(Optional(lparen) + lbracket + lbracket + delimitedList(Word(alphas + "-_#.()/ ", alphanums + "-_#.()/ "), delim=" ") + rbracket + rbracket + Optional(rparen))
 
-ident = ~reserved_words + (common_word + Optional(wikilink) | dblQuotedString.setParseAction(removeQuotes) | sglQuotedString.setParseAction(removeQuotes))
+ident = ~reserved_words + (common_word + Optional(wikilink) | quotedString)
 table = Forward()
 nested_delim = and_kw | rparen + or_kw + lparen | or_kw
 table_list = delimitedList(table, delim=nested_delim)
