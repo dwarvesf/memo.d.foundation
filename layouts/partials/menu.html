@@ -1,10 +1,22 @@
-{{ $currentPage := .Sites.First.Home }} {{ $menus := .Site.Menus }} {{ $data :=
-slice }} {{ $menuNames := slice "earn" "labs" "memo" "newsletter" }} {{ range
-$menuNames }} {{ $menuName := . }} {{ $posts := index $menus $menuName }} {{ if
-$posts }} {{ range $posts }} {{ $data = $data | append (dict "url" .URL "name"
-.Name "menu" $menuName) }} {{ end }} {{ end }} {{ end }} {{ $tags := slice }} {{
-range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
-.RelPermalink) }} {{ end }}
+{{ $currentPage := .Sites.First.Home }}
+{{ $menus := .Site.Menus }}
+{{ $data := slice }}
+{{ $menuNames := slice "earn" "labs" "memo" "newsletter" }}
+
+{{ range $menuNames }}
+  {{ $menuName := . }}
+  {{ $posts := index $menus $menuName }}
+  {{ if $posts }}
+    {{ range $posts }}
+      {{ $data = $data | append (dict "url" .URL "name" .Name "menu" $menuName "date" .Page.Params.Date) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $tags := slice }}
+{{ range .Site.Pages }}
+  {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink "date" .Page.Params.Date) }}
+{{ end }}
 
 <nav class="menu">
   <section
@@ -14,6 +26,8 @@ range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
       get tagsData() {
         const dataString = `{{ $tags | jsonify }}`;
         const data = JSON.parse(dataString);
+        data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+
         const mappedData = data.reduce((acc, value) => {
           if (value.tags) {
             value.tags.forEach((item) => acc.add(item));
@@ -25,6 +39,8 @@ range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
       get menuData() {
         const dataString = `{{ $data | jsonify }}`;
         const data = JSON.parse(dataString);
+        data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+
         const mappedData = data.reduce((acc, value) => {
           if (!acc[value.menu]) acc[value.menu] = [];
           acc[value.menu].push(value);
