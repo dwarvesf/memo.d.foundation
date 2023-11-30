@@ -223,6 +223,26 @@
           "store_path": "/nix/store/0cn8dalwkmdark0zhpyn05453vb2lnds-rustup-1.26.0"
         }
       }
+    },
+    "trash-cli@0.23.11.10": {
+      "last_modified": "2023-11-26T05:37:23Z",
+      "resolved": "github:NixOS/nixpkgs/abbe047fb8a5a7074b6de24cced0dbdb27ea0ea8#trash-cli",
+      "source": "devbox-search",
+      "version": "0.23.11.10",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/nncasjsbbj55ga2xzn084hx3rdd15fp4-trash-cli-0.23.11.10"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/29p1dsbc0z3pailshjdcfxjpf9ylmhgx-trash-cli-0.23.11.10"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/b70zz4hi2n539x95dzmql2rrjspskqk3-trash-cli-0.23.11.10"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/lch5p7bxgwwprjmz0isq0arzbwn2ndwl-trash-cli-0.23.11.10"
+        }
+      }
     }
   }
 }
