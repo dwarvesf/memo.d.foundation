@@ -212,7 +212,9 @@ ul:has(li input[type="checkbox"]) {
 }
 
 ul li a {
+    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     text-decoration: none;
     transition: all 0.25s ease;
 }
