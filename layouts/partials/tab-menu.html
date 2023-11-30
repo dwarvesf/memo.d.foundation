@@ -11,8 +11,12 @@
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
     ],
+    activeUrl: '',
     isActiveUrl(url) {
-      return this.currentUrl.startsWith(url);
+      if (!this.activeUrl) {
+        this.activeUrl = this.currentUrl.startsWith(url);
+        return this.activeUrl;
+      }
     },
   }"
 >
