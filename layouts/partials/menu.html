@@ -1,5 +1,5 @@
 {{ $currentPage := .Sites.First.Home }} {{ $menus := .Site.Menus }} {{ $data :=
-slice }} {{ $menuNames := slice "earn" "hiring" "memo" "radar" "newsletter" }} {{ range
+slice }} {{ $menuNames := slice "earn" "labs" "memo" "newsletter" }} {{ range
 $menuNames }} {{ $menuName := . }} {{ $posts := index $menus $menuName }} {{ if
 $posts }} {{ range $posts }} {{ $data = $data | append (dict "url" .URL "name"
 .Name "menu" $menuName) }} {{ end }} {{ end }} {{ end }} {{ $tags := slice }} {{
@@ -87,25 +87,23 @@ range .Site.Pages }} {{ $tags = $tags | append (dict "tags" .Params.Tags "url"
     </details>
 
     <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
-      <template x-if="isSameGroupUrl(menu) || isHomePage()">
-        <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
-          <summary x-text="menu"></summary>
-          <ul>
-            <template x-for="items in partialValue(menuData[menu], start, end)">
-              <li>
-                <a x-bind:href="items.url" x-text="items.name"></a>
-              </li>
-            </template>
-            <template x-if="menuData[menu].length > end">
-              <li
-                class="load-more"
-                @click="toggleLoad(loaded)"
-                x-text="loadText"
-              ></li>
-            </template>
-          </ul>
-        </details>
-      </template>
+      <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
+        <summary x-text="menu"></summary>
+        <ul>
+          <template x-for="items in partialValue(menuData[menu], start, end)">
+            <li>
+              <a x-bind:href="items.url" x-text="items.name"></a>
+            </li>
+          </template>
+          <template x-if="menuData[menu].length > end">
+            <li
+              class="load-more"
+              @click="toggleLoad(loaded)"
+              x-text="loadText"
+            ></li>
+          </template>
+        </ul>
+      </details>
     </template>
   </section>
 </nav>
