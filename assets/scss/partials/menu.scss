@@ -103,7 +103,7 @@ nav .site-nav ul li {
     font-variant-numeric: tabular-nums;
     font-size: 14px;
     padding-left: 20px;
-    width: fit-content;
+    max-width: fit-content;
 
     a {
         padding: 0px 4px;
