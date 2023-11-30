@@ -68,6 +68,11 @@ nav.tab-menu {
                 color: inherit;
             }
 
+            a:hover {
+                background-color: var(--primary-background-color);
+                padding: 0px;
+            }
+
             &:last-of-type {
                 margin-right: 30px !important;
             }
