@@ -100,7 +100,7 @@ code {
     line-height: 1.5 !important;
     font-family: monospace !important;
     font-size: 12px !important;
-    background: black !important;
+    background: #333 !important;
     color: #dadada;
     padding: 2px 5px;
     white-space: wrap;
@@ -114,6 +114,13 @@ code {
 
 code comment {
     color: #777;
+}
+
+table code {
+    margin: 6px 3px 6px 0px;
+    background: var(--secondary-background-color-light) !important;
+    color: var(--secondary-font-color-light);
+    border: 0.5px solid var(--secondary-font-color-light);
 }
 
 span {
@@ -152,8 +159,14 @@ span {
 
     code {
         font-family: monospace !important;
-        background: white !important;
+        background: #ddd !important;
         color: var(--primary-background-color);
+    }
+
+
+    table code {
+        background: var(--secondary-background-color) !important;
+        color: var(--secondary-font-color);
     }
 }
 

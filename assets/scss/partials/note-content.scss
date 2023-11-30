@@ -6,7 +6,7 @@
     grid-template-areas:
         "pagetitle pagetitle"
         "date tags"
-        "authors authors";
+        "authors tags";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
     grid-template-columns: repeat(2, 1fr);
 
@@ -32,6 +32,7 @@
             padding: 1px 6px;
             border-radius: 4px;
             background-color: var(--secondary-background-color-light);
+            height: fit-content;
             text-decoration: none;
             color: var(--secondary-font-color-light)
         }
@@ -189,6 +190,7 @@ td:has(img) {
 .notice {
     padding: 20px;
     border: 2px solid black;
+    margin-bottom: 16px;
 }
 
 main>blockquote {
@@ -210,17 +212,17 @@ ul:has(li input[type="checkbox"]) {
 }
 
 ul li a {
-    overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--secondary-font-color-light);
     text-decoration: none;
-    transition: white-space 0.25s;
+    transition: all 0.25s ease;
 }
 
 ul li a:hover {
-    white-space: normal;
-    overflow: visible;
-    color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: white;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 4px;
     width: 100%;
     z-index: 10;
 }

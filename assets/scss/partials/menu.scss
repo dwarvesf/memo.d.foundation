@@ -64,6 +64,7 @@ hr {
     margin: 20px 0px !important;
     width: 100%;
     max-width: inherit;
+    border-color: var(--secondary-background-color-light);
 }
 
 nav.menu {
@@ -102,6 +103,11 @@ nav .site-nav ul li {
     font-variant-numeric: tabular-nums;
     font-size: 14px;
     padding-left: 20px;
+    width: fit-content;
+
+    a {
+        padding: 0px 4px;
+    }
 }
 
 .load-more {
@@ -115,6 +121,10 @@ nav .site-nav ul li {
 @media (prefers-color-scheme: dark) {
     nav.menu {
         background-color: var(--secondary-background-color);
+    }
+
+    hr {
+        border-color: var(--secondary-background-color);
     }
 }
 
