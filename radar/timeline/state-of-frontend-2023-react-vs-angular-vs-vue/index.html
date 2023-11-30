@@ -10,8 +10,12 @@
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
     ],
+    activeUrl: '',
     isActiveUrl(url) {
-      return this.currentUrl.startsWith(url);
+      if (!this.activeUrl) {
+        this.activeUrl = this.currentUrl.startsWith(url);
+        return this.activeUrl;
+      }
     },
   }"><ul><template x-for="item in links"><li x-bind:class="{ 'active': isActiveUrl(item.url) }"><a x-bind:href=item.url x-text=item.title></a></li></template></ul></nav><nav class=menu><section class=site-nav x-data='{
       currentUrl: `/radar/timeline/state-of-frontend-2023-react-vs-angular-vs-vue/`,
