@@ -19,6 +19,7 @@ watch-run:
 	@obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null
 	@fswatch ./vault | awk -F 'vault' '{ system("obsidian-export --hard-linebreaks ./vault" $2 " ./content" $2 " 2>/dev/null") }' &
 	@hugo -DEF server
+	@trap 'killall -9 $$' SIGINT
 
 build-target:
 	@mkdir -p vault content
