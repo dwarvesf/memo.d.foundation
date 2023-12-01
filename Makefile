@@ -5,6 +5,11 @@ setup:
 	@git clone git@github.com:dwarvesf/content.git vault
 	@mkdir -p ./content
 
+fetch:
+	@git submodule update --init --recursive
+	@git submodule update --recursive --remote
+	@git pull --recurse-submodules
+
 build:
 	@obsidian-export --hard-linebreaks ./vault ./content
 	@hugo -DEF --minify
