@@ -108,6 +108,16 @@ main {
 main>ul {
     line-height: 25px;
     margin: 0;
+    padding: 0;
+    overflow: hidden; /* Hide overflowing content */
+}
+
+
+main>ul>li {
+    max-width: 700px;
+    white-space: pre-line;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 main>ul>li>a {
@@ -308,6 +318,18 @@ ul li p {
 }
 
 /* Mobile */
+@media only screen and (max-width: 360) {
+    main>ul>li {
+        max-width: 300px;
+    }
+}
+
+@media only screen and (min-width: 361px) and (max-width: 480px) {
+    main>ul>li {
+        max-width: 360px;
+    }
+}
+
 @media only screen and (max-width: 1100px) {
     .grid {
         display: inline-grid;
