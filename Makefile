@@ -19,7 +19,7 @@ run:
 	hugo -DEF server
 
 watch-run:
-	@trash ./content
+	@trash -f ./content
 	@mkdir -p content
 	@obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null
 	@fswatch ./vault | awk -F 'vault' '{ system("obsidian-export --hard-linebreaks ./vault" $2 " ./content" $2 " 2>/dev/null") }' &
