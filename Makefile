@@ -1,8 +1,6 @@
 setup:
-	@brew install rust
-	@brew install hugo
-	@cargo install obsidian-export
-	@git clone git@github.com:dwarvesf/content.git vault
+	@if ! command -v devbox >/dev/null 2>&1; then curl -fsSL https://get.jetpack.io/devbox | bash; fi
+	@devbox install
 	@mkdir -p ./content
 
 fetch:
@@ -16,14 +14,14 @@ build:
 
 run:
 	@obsidian-export --hard-linebreaks ./vault ./content
-	hugo -DEF server
+	hugo -DEF --logLevel error server --poll 250ms
 
 watch-run:
 	@trash -f ./content
 	@mkdir -p content
 	@obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null
-	@fswatch ./vault | awk -F 'vault' '{ system("obsidian-export --hard-linebreaks ./vault" $2 " ./content" $2 " 2>/dev/null") }' &
-	@hugo -DEF server
+	@fswatch -o ./vault | xargs -n1 -I{} obsidian-export --hard-linebreaks ./vault ./content &
+	@hugo -DEF --logLevel error server --poll 250ms
 	@trap 'killall -9 $$' SIGINT
 
 build-target:
@@ -36,4 +34,4 @@ run-target:
 	@mkdir -p vault content
 	@rsync -avh $(path) ./vault/ --delete
 	@obsidian-export --hard-linebreaks ./vault/ ./content/
-	@hugo -DEF server
+	@hugo -DEF --logLevel error server --poll 250ms
