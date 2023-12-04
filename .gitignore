@@ -29,3 +29,9 @@ content/
 
 # duckdb related files
 *.parquet
+
+# MacOS files
+.DS_Store
+.DocumentRevisions-V100
+.Spotlight-V100
+.Trash*
