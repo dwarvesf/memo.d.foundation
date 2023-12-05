@@ -12,6 +12,11 @@ module:
   - path: github.com/adityatelange/hugo-PaperMod
     disable: true
 
+minify:
+  tdewolff:
+    html:
+      keepComments: true
+
 security:
   funcs:
     getenv:
