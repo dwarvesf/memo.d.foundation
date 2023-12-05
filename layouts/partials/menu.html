@@ -89,7 +89,7 @@
                 .join('-');
             }
           }">
-            <a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="tag"></a>
+            <a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a>
           </li>
         </template>
         <template x-if="tagsData.length > end">
