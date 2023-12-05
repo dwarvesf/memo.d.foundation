@@ -60,3 +60,12 @@ markdownLinkPatternSelectors.forEach(selector => {
         }
     })
 })
+
+const wrappedElements = document.querySelectorAll('table, ul, ol');
+
+wrappedElements.forEach((table) => {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('scrollable');
+    table.parentNode.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+});

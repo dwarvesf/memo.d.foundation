@@ -39,7 +39,7 @@ h4 {
     font-size: 12pt;
 }
 
-a[href*="#"] {
+a[href^="#"] {
     text-decoration: none;
 }
 
@@ -55,6 +55,7 @@ blockquote {
 
 img {
     max-width: 100%;
+    object-fit: cover;
 }
 
 video {
@@ -117,7 +118,7 @@ code comment {
 }
 
 table code {
-    margin: 6px 3px 6px 0px;
+    margin: 0px;
     background: var(--secondary-background-color-light) !important;
     color: var(--secondary-font-color-light);
     border: 0.5px solid var(--secondary-font-color-light);
