@@ -105,23 +105,19 @@ main {
     justify-self: left;
 }
 
-main>ul {
+main ul {
     line-height: 25px;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Hide overflowing content */
+    padding-inline-start: 40px;
 }
 
-
-main>ul>li {
-    max-width: 700px;
-    white-space: pre-line;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-main>ul>li>a {
+main ul>li>a {
     text-decoration: underline;
+}
+
+.scrollable {
+    overflow: scroll;
 }
 
 .dual-list>ul {
@@ -157,24 +153,53 @@ td {
 }
 
 thead * {
-    padding: 4px 12px;
+    padding: 6px 12px;
     background-color: var(--secondary-background-color-light);
 }
 
-tr {
-    max-height: 100px;
-}
-
-td {
-    padding: 0px 20px;
-    max-height: 100px;
+th,td {
+    padding: 6px 12px;
     overflow: hidden;
     text-overflow: ellipsis;
+    vertical-align: top;
+    text-align: left;
 }
 
 td:has(img) {
-    padding: 0px;
+    padding: 12px;
     line-height: 0px;
+}
+
+table {
+    table-layout: fixed;
+}
+
+table:has(th:empty) {
+    border: none;
+
+    th {
+        border: none;
+        padding: 0px;
+        line-height: 0px;
+    }
+
+    td {
+        border: none;
+    }
+}
+
+table:has(img) {
+    width: 100%;
+    height: 100%;
+    
+    td {
+        min-width: 200px;
+    }
+
+    img {
+        width: 100% !important;
+        height: 100% !important;
+    }
 }
 
 #TableOfContents>ul>li>a {
@@ -224,7 +249,7 @@ ul:has(li input[type="checkbox"]) {
 ul li a {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: wrap;
     text-decoration: none;
     transition: all 0.25s ease;
 }
@@ -318,18 +343,6 @@ ul li p {
 }
 
 /* Mobile */
-@media only screen and (max-width: 360) {
-    main>ul>li {
-        max-width: 300px;
-    }
-}
-
-@media only screen and (min-width: 361px) and (max-width: 480px) {
-    main>ul>li {
-        max-width: 360px;
-    }
-}
-
 @media only screen and (max-width: 1100px) {
     .grid {
         display: inline-grid;
@@ -377,6 +390,11 @@ ul li p {
 /* Components from comments */
 .col-2 {
     display: inline-grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 16px;
+    column-gap: 36px;
+    grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+
+    > * {
+        overflow-wrap: break-word;
+        overflow-x: scroll;
+    }
 }
