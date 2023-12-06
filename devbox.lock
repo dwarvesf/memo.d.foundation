@@ -163,7 +163,7 @@
     },
     "python310Packages.pip@23.2.1": {
       "last_modified": "2023-10-25T20:49:13Z",
-      "plugin_version": "0.0.1",
+      "plugin_version": "0.0.2",
       "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#python310Packages.pip",
       "source": "devbox-search",
       "version": "23.2.1",
@@ -184,7 +184,7 @@
     },
     "python@3.10.13": {
       "last_modified": "2023-10-25T20:49:13Z",
-      "plugin_version": "0.0.1",
+      "plugin_version": "0.0.3",
       "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#python310",
       "source": "devbox-search",
       "version": "3.10.13",
