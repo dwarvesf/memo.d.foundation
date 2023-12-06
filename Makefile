@@ -35,3 +35,12 @@ run-target:
 	@rsync -avh $(path) ./vault/ --delete
 	@obsidian-export --hard-linebreaks ./vault/ ./content/
 	@hugo -DEF --logLevel error server --poll 250ms
+
+backup-all:
+	@python ./scripts/export.py vault/memo
+	@python ./scripts/export.py vault/earn
+	@python ./scripts/export.py vault/playbook
+	@python ./scripts/export.py vault/members
+	@python ./scripts/export.py vault/hiring
+	@python ./scripts/export.py vault/newsletter
+	@python ./scripts/export.py vault/radar
