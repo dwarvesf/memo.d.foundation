@@ -10,7 +10,6 @@ while(nodeIterator.nextNode()) {
   const name = commentNode.data.trim();
   const splitName = name.split("/")[1];
   let pairValue = pairs.get(name);
-  console.log(name);
 
   if (splitName) {
     pairValue = pairs.get(splitName);
@@ -26,7 +25,6 @@ while(nodeIterator.nextNode()) {
   }
 }
 
-console.log(pairs);
 pairs.forEach(([start, end]) => {
   if (start.nodeType === Node.COMMENT_NODE) {
     const div = document.createElement("div");
