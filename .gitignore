@@ -29,6 +29,7 @@ content/
 
 # duckdb related files
 *.parquet
+db/
 
 # MacOS files
 .DS_Store
