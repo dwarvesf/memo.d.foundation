@@ -1,6 +1,26 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "awscli@latest": {
+      "last_modified": "2023-11-17T14:14:56Z",
+      "resolved": "github:NixOS/nixpkgs/a71323f68d4377d12c04a5410e214495ec598d4c#awscli",
+      "source": "devbox-search",
+      "version": "1.30.2",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/gxki4qg9lyipgyxfwdb0h4nj42k1k3cm-awscli-1.30.2"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/yicnsmzq0lj0slc64xx63j9ym08j92kx-awscli-1.30.2"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/p3ccwc6pikz5lhvs0vm8n6w5ps9fm1kl-awscli-1.30.2"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/gnlwp8gdispsma23v4k9zwjk3vg9liyi-awscli-1.30.2"
+        }
+      }
+    },
     "duckdb@0.9.1": {
       "last_modified": "2023-10-25T20:49:13Z",
       "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#duckdb",
