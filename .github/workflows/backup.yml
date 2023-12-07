@@ -8,7 +8,7 @@ on:
 jobs:
   backup:
     runs-on: ubuntu-latest
-    name: Publish Obsidian notes to Github pages
+    name: Backup DB
     steps:
       - name: Checkout contents repo
         uses: actions/checkout@v4
