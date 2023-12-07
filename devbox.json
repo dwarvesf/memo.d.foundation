@@ -12,7 +12,8 @@
     "python310Packages.pip": "23.2.1",
     "duckdb":                "0.9.1",
     "python":                "3.10.13",
-    "trash-cli":             "0.23.11.10"
+    "trash-cli":             "0.23.11.10",
+    "awscli":                "latest"
   },
   "shell": {
     "init_hook": [
@@ -26,7 +27,7 @@
       "watch-run":    "make watch-run",
       "build-target": "make build-target",
       "run-target":   "make run-target",
-      "backup-all": "make backup-all"
+      "backup-all":   "make backup-all"
     }
   }
 }

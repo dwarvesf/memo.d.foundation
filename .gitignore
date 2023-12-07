@@ -36,3 +36,6 @@ db/
 .DocumentRevisions-V100
 .Spotlight-V100
 .Trash*
+
+# secrets
+.secrets
