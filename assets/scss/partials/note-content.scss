@@ -396,6 +396,6 @@ ul li p {
 
     > * {
         overflow-wrap: break-word;
-        overflow-x: scroll;
+        overflow: auto;
     }
 }
