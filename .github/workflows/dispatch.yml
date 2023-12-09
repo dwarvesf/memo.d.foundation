@@ -11,6 +11,9 @@ jobs:
         uses: zachary95/github-actions-debounce@v0.1.0
         with:
           wait: 10
+      
+      - name: Set SSH URL for GitHub
+        run: git config --global url."git@github.com:".insteadOf "https://github.com/"
 
       - name: Checkout contents repo
         uses: actions/checkout@v4
