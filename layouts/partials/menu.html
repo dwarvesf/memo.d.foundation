@@ -18,7 +18,6 @@
         const dataString = `{{ $data | jsonify }}`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
     }"
@@ -26,7 +25,7 @@
     <details open>
       <summary>Pinned Notes</summary>
       <ul>
-        <template x-for="item in data" x-bind:key="item">
+        <template x-for="item in data" x-bind:key="item.url">
           <li>
             <a x-bind:href="item.url" x-text="item.title"></a>
           </li>
