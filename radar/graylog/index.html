@@ -35,7 +35,7 @@
         return data;
       },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(`true`);
+        const showFrontmatter = (/true/i).test(``);
         return !showFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
