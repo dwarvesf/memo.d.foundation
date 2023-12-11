@@ -392,6 +392,7 @@ ul li p {
 .col-2 {
     display: inline-grid;
     column-gap: 36px;
+    padding-bottom: 36px;
     grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
 
     > * {
