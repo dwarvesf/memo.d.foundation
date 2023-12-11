@@ -52,14 +52,13 @@ nav.tab-menu {
         display: inline-grid;
         grid-auto-flow: column;
         grid-template-rows: 1fr;
-        grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
-        row-gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
+        column-gap: 48px;
 
         li {
             font-size: 16px;
             font-weight: 500;
             display: inline-block;
-            margin-right: 48px;
             padding: 0px 0px 16px 0px;
             width: min-content;
 

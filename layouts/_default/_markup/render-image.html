@@ -37,7 +37,6 @@
     altText: `{{- with .Text }}{{ . | safeHTML }}{{- end -}}`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
-      console.log(this.altText);
       return this.altText.match(widthHeightRegex) ?? [];
     },
   }"

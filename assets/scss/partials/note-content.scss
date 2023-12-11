@@ -393,7 +393,7 @@ ul li p {
     display: inline-grid;
     column-gap: 36px;
     padding-bottom: 36px;
-    grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
 
     > * {
         overflow-wrap: break-word;
