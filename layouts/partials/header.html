@@ -186,16 +186,20 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(`{{ .Params.hide_title }}`);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(`{{ .Params.show_frontmatter }}`);
-        return !showFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+        const hideFrontmatter = (/true/i).test(`{{ .Params.hide_frontmatter }}`);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
         return this.currentUrl.includes('tags');
       }
     }">
       <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
-      <template x-if="!!title">
+      <template x-if="!hideTitle">
         <div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
           <!-- docsearch indices -->
           <div class="title-index" style="display: none;">{{ .Title }}</div>
@@ -224,7 +228,10 @@
             </aside>
           {{ end }}
         </div>
-      <hr>
+      </template>
+
+      <template x-if="!hideTitle">
+        <hr>
       </template>
 
       {{ if .Params.notice -}}
