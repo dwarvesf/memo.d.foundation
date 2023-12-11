@@ -17,16 +17,16 @@
         return this.activeUrl;
       }
     },
-  }"><ul><template x-for="item in links"><li x-bind:class="{ 'active': isActiveUrl(item.url) }"><a x-bind:href=item.url x-text=item.title></a></li></template></ul></nav><nav class=menu><section class=site-nav x-data="{
+  }"><ul><template x-for="item in links"><li x-bind:class="{ 'active': isActiveUrl(item.url) }"><a x-bind:href=item.url x-text=item.title></a></li></template></ul></nav><nav class=menu><section class=site-nav x-data='{
       currentUrl: `/tags/home/`,
       get data() {
-        const dataString = `[]`;
+        const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
         console.log(data);
         return data;
       },
-    }"><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
       currentUrl: `/tags/home/`,
       title: `home`,
       get tagsData() {
@@ -42,4 +42,4 @@
         return this.currentUrl.includes('tags');
       }
     }"><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>home</div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>home</h1></template><div class=date>Dec 11, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><ul><li><a href=/_base_home/></a></li><li><a href=/></a></li><li><a href=/home/></a></li><li><a href=/memo/labs/>Labs Team</a></li></ul></main></div><footer><span><b>Dwarves, LLC</b> © 2015 - 2023 All rights reserved.</span></footer><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><ul><li><a href=/></a></li><li><a href=/home/></a></li><li><a href=/memo/labs/>Labs Team</a></li></ul></main></div><footer><span><b>Dwarves, LLC</b> © 2015 - 2023 All rights reserved.</span></footer><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

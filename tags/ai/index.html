@@ -17,16 +17,16 @@
         return this.activeUrl;
       }
     },
-  }"><ul><template x-for="item in links"><li x-bind:class="{ 'active': isActiveUrl(item.url) }"><a x-bind:href=item.url x-text=item.title></a></li></template></ul></nav><nav class=menu><section class=site-nav x-data="{
+  }"><ul><template x-for="item in links"><li x-bind:class="{ 'active': isActiveUrl(item.url) }"><a x-bind:href=item.url x-text=item.title></a></li></template></ul></nav><nav class=menu><section class=site-nav x-data='{
       currentUrl: `/tags/ai/`,
       get data() {
-        const dataString = `[]`;
+        const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
         console.log(data);
         return data;
       },
-    }"><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
       currentUrl: `/tags/ai/`,
       title: `AI`,
       get tagsData() {
