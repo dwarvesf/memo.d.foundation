@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/go-concurrency/`,
       title: `Go Concurrency`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Go Concurrency</div><div class=tags-index style=display:none>tags: go</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Go Concurrency</h1></template><div class=date>Dec 4, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><h1 id=golang-concurrency><a href=#golang-concurrency>Golang concurrency <a href=#golang-concurrency></a></a></h1><p>When we talk about Golang, its most basic and popular characteristic is concurrency-support. Unlike other languages what is quite complex to build an concurrency system, Go concurrency primitives via Goroutines and channels make concurrent programming easy. So i am going to talk about Goroutines and similar things in other programming languages.</p><p>Firstly, we need to know Go is a concurrent language and not a parallel one. So what is the difference from concurrency and parallelism?</p><h2 id=concurrency-vs-parallelism><a href=#concurrency-vs-parallelism>Concurrency vs Parallelism <a href=#concurrency-vs-parallelism></a></a></h2><p>Concurrency means “out of order” execution. Another concept talk about concurrency as the capability to deal with lots of things at once. It&rsquo;s best explained with an example in real life: During playing Dota 2, let’s say, my mom asked me to buy something. Now i stop playing, go to the grocery and then starts playing again with rebuke of my team. This is a basic example of concurrency. In computing, concurrency is represented by the state when two or more tasks can start, run, and complete in overlapping time periods. It doesn&rsquo;t necessarily mean they&rsquo;ll ever both be running at the same time. Multitasking on a single-core machine is an example.</p><p>Parallelism is doing lots of things at the same time like other running tasks on a multicore processor. Let’s come back with the example above. Instead of taking order my mother, I play the game and listen to music at once freely. In this case, playing game and listening to music is &ldquo;lots of things&rdquo;.</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Go Concurrency</div><div class=tags-index style=display:none>tags: go</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Go Concurrency</h1></template><div class=date>Dec 4, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=golang-concurrency><a href=#golang-concurrency>Golang concurrency <a href=#golang-concurrency></a></a></h1><p>When we talk about Golang, its most basic and popular characteristic is concurrency-support. Unlike other languages what is quite complex to build an concurrency system, Go concurrency primitives via Goroutines and channels make concurrent programming easy. So i am going to talk about Goroutines and similar things in other programming languages.</p><p>Firstly, we need to know Go is a concurrent language and not a parallel one. So what is the difference from concurrency and parallelism?</p><h2 id=concurrency-vs-parallelism><a href=#concurrency-vs-parallelism>Concurrency vs Parallelism <a href=#concurrency-vs-parallelism></a></a></h2><p>Concurrency means “out of order” execution. Another concept talk about concurrency as the capability to deal with lots of things at once. It&rsquo;s best explained with an example in real life: During playing Dota 2, let’s say, my mom asked me to buy something. Now i stop playing, go to the grocery and then starts playing again with rebuke of my team. This is a basic example of concurrency. In computing, concurrency is represented by the state when two or more tasks can start, run, and complete in overlapping time periods. It doesn&rsquo;t necessarily mean they&rsquo;ll ever both be running at the same time. Multitasking on a single-core machine is an example.</p><p>Parallelism is doing lots of things at the same time like other running tasks on a multicore processor. Let’s come back with the example above. Instead of taking order my mother, I play the game and listen to music at once freely. In this case, playing game and listening to music is &ldquo;lots of things&rdquo;.</p><p><img x-data="{
     altText: `9cb01cacb1edc3373acd7570cc280cd7_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/life-at-dwarves-with-an-tran-the-more-you-challenge-yourself-the-more-exciting-it-gets/`,
       title: `Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets</div><div class=tags-index style=display:none>tags: dwarves</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets</h1></template><div class=date>Aug 9, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><span style=color:red>***“Anh nghiệm ra rằng trong hành trình trở thành Senior Software Engineer, càng thử thách bản thân, mọi thứ sẽ càng thú vị.”***</span><hr><p>Life at Dwarves lần này là một nhân vật khá kín tiếng ở Dwarves với đời sống lành mạnh và tính cách nhẹ nhàng. Anh An Trần, Senior Software Engineer với 7 năm kinh nghiệm làm nghề từ các start-up đến Project Lead tại Dwarves Foundation.</p><p>Trước khi tham gia cùng team Dwarves, An từng đảm nhận vị trí Tech Lead ở một start-up và Frontend Lead remote cho công ty ở Mỹ. Sau khi cho mình 3 tháng nghỉ ngơi, An tham gia vào project Gravity của Dwarves, trở thành full-time engineer và lead builder của dự án.</p><p>Với An, mọi thứ sẽ rất nhàm chán nếu chỉ xoay quanh Frontend. Nếu đã quá quen với một thứ cố định mà không mở rộng ra nhiều khía cạnh khác thì công việc sẽ không còn thú vị nữa. An từng làm qua nhiều vai trò, từ Android đến Web, từ Backend đến Frontend. Thế nên title Full-stack Engineer phần nào đó vẫn đúng với người Senior này.</p><span style=color:red>**Vậy với An, làm Senior sẽ cần có gì?**</span><!-- column_list 0860f9e3-6778-433c-a7be-2f7c0b3f109f --><!-- column aa3d4f33-7533-4690-8a11-ed2a548f3b9f --><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets</div><div class=tags-index style=display:none>tags: dwarves</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets</h1></template><div class=date>Aug 9, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><span style=color:red>***“Anh nghiệm ra rằng trong hành trình trở thành Senior Software Engineer, càng thử thách bản thân, mọi thứ sẽ càng thú vị.”***</span><hr><p>Life at Dwarves lần này là một nhân vật khá kín tiếng ở Dwarves với đời sống lành mạnh và tính cách nhẹ nhàng. Anh An Trần, Senior Software Engineer với 7 năm kinh nghiệm làm nghề từ các start-up đến Project Lead tại Dwarves Foundation.</p><p>Trước khi tham gia cùng team Dwarves, An từng đảm nhận vị trí Tech Lead ở một start-up và Frontend Lead remote cho công ty ở Mỹ. Sau khi cho mình 3 tháng nghỉ ngơi, An tham gia vào project Gravity của Dwarves, trở thành full-time engineer và lead builder của dự án.</p><p>Với An, mọi thứ sẽ rất nhàm chán nếu chỉ xoay quanh Frontend. Nếu đã quá quen với một thứ cố định mà không mở rộng ra nhiều khía cạnh khác thì công việc sẽ không còn thú vị nữa. An từng làm qua nhiều vai trò, từ Android đến Web, từ Backend đến Frontend. Thế nên title Full-stack Engineer phần nào đó vẫn đúng với người Senior này.</p><span style=color:red>**Vậy với An, làm Senior sẽ cần có gì?**</span><!-- column_list 0860f9e3-6778-433c-a7be-2f7c0b3f109f --><!-- column aa3d4f33-7533-4690-8a11-ed2a548f3b9f --><p><img x-data="{
     altText: `9e2ac4cd6681cdf0a45399021f20a4cd_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

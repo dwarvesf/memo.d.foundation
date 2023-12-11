@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/considering-factors-for-performance-evaluating/`,
       title: `Considering Factors For Performance Evaluating`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Considering Factors For Performance Evaluating</div><div class=tags-index style=display:none>tags: performance, people</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Considering Factors For Performance Evaluating</h1></template><div class=date>Apr 2, 2016</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><h2 id=fire-quickly><a href=#fire-quickly>Fire quickly <a href=#fire-quickly></a></a></h2><ul><li>False positives: people who you thought fit your values, but don’t once they’re hired</li><li>False negatives: people who you thought would not fit your values, but would have if you had hired them</li></ul><p>If you get some false positives anyway, the solution is to fire quickly. To follow the &ldquo;No Asshole Rule&rdquo;, we need to strictly apply this despite the common excuses:</p><ul><li>for that one bad trait, he has four good traits going for him.</li><li>[data scientists/engineers/product managers] are hard to replace, so we’ll make do.</li><li>We’ve decided that we’re not going to fire him because he’s a high performer.</li></ul><p>Other excuses we made:</p><ul><li>For ineffective employee</li></ul><p>We rationalize this behavior with “lies we tell ourselves.” Here are a few lies people use to keep an ineffective employee:</p><ul><li>He is trying really hard.</li><li>She deserves another chance.</li><li>People really like her.</li><li>I feel bad for him.</li><li>He’s good at other things.</li><li>He has stuff going on in his personal life</li><li>She is in the wrong role.</li><li>For <a href=/088bc25f8e8c4fb9822a885033f265d5>10x employee</a></li></ul><p>Conversely, we should dramatically expand the responsibility of 20x performers. Most don’t and rationalize limiting their most effective employees by saying:</p><ul><li>She’s great but not ready for a promotion</li><li>He’s good but I’m not blown away</li><li>She doesn’t have the right background</li><li>He’s never done this job before</li><li>If we promote and she doesn’t work out, what then?</li></ul><h2 id=evaluating><a href=#evaluating>Evaluating <a href=#evaluating></a></a></h2><p>Using Performance-Values Matrix. All the sample metrics are included in</p><p><a href="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/bfd4f308-9c8b-4368-8963-9d45be5c13f0/Careers_by_design_short.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231031%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20231031T202348Z&amp;X-Amz-Expires=3600&amp;X-Amz-Signature=c05a9fc51d923c3e7a42dd87d63451b76168ce743d8625b4c22301e1895b5abb&amp;X-Amz-SignedHeaders=host&amp;x-id=GetObject">📎 Careers_by_design_short.pdf</a></p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Considering Factors For Performance Evaluating</div><div class=tags-index style=display:none>tags: performance, people</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Considering Factors For Performance Evaluating</h1></template><div class=date>Apr 2, 2016</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=fire-quickly><a href=#fire-quickly>Fire quickly <a href=#fire-quickly></a></a></h2><ul><li>False positives: people who you thought fit your values, but don’t once they’re hired</li><li>False negatives: people who you thought would not fit your values, but would have if you had hired them</li></ul><p>If you get some false positives anyway, the solution is to fire quickly. To follow the &ldquo;No Asshole Rule&rdquo;, we need to strictly apply this despite the common excuses:</p><ul><li>for that one bad trait, he has four good traits going for him.</li><li>[data scientists/engineers/product managers] are hard to replace, so we’ll make do.</li><li>We’ve decided that we’re not going to fire him because he’s a high performer.</li></ul><p>Other excuses we made:</p><ul><li>For ineffective employee</li></ul><p>We rationalize this behavior with “lies we tell ourselves.” Here are a few lies people use to keep an ineffective employee:</p><ul><li>He is trying really hard.</li><li>She deserves another chance.</li><li>People really like her.</li><li>I feel bad for him.</li><li>He’s good at other things.</li><li>He has stuff going on in his personal life</li><li>She is in the wrong role.</li><li>For <a href=/088bc25f8e8c4fb9822a885033f265d5>10x employee</a></li></ul><p>Conversely, we should dramatically expand the responsibility of 20x performers. Most don’t and rationalize limiting their most effective employees by saying:</p><ul><li>She’s great but not ready for a promotion</li><li>He’s good but I’m not blown away</li><li>She doesn’t have the right background</li><li>He’s never done this job before</li><li>If we promote and she doesn’t work out, what then?</li></ul><h2 id=evaluating><a href=#evaluating>Evaluating <a href=#evaluating></a></a></h2><p>Using Performance-Values Matrix. All the sample metrics are included in</p><p><a href="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/bfd4f308-9c8b-4368-8963-9d45be5c13f0/Careers_by_design_short.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231031%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20231031T202348Z&amp;X-Amz-Expires=3600&amp;X-Amz-Signature=c05a9fc51d923c3e7a42dd87d63451b76168ce743d8625b4c22301e1895b5abb&amp;X-Amz-SignedHeaders=host&amp;x-id=GetObject">📎 Careers_by_design_short.pdf</a></p><p><img x-data="{
     altText: `memo/assets/considering-factors-for-performance-evaluating/c4defc89db73b3ffe140319a420998c1_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

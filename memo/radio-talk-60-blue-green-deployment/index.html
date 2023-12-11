@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/radio-talk-60-blue-green-deployment/`,
       title: `Radio Talk 60 Blue Green Deployment`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Radio Talk 60 Blue Green Deployment</div><div class=tags-index style=display:none>tags: radar, devops, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Radio Talk 60 Blue Green Deployment</h1></template><div class=date>Mar 10, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>Blue-green deployment has become an important topic in modern software development, and this deployment strategy has become our focus on the <a href=https://radar.d.foundation/Blue-green-deployment-a93ea5c3d4d8439ba8701aec57d7ea3c>tech radar</a>. In a recent <a href="https://www.youtube.com/watch?v=R0FwoGw9raU">radio talk</a>, Quang Le, one of our DevOps engineers, presented the significance of blue-green deployment and its benefits. This memo is a quick recap of the talk.</p><h2 id=a-brief><a href=#a-brief><strong>A brief</strong> <a href=#a-brief></a></a></h2><p>Blue-green deployment is a software deployment strategy that involves creating two identical environments: one that is live and serving user traffic (blue) and one that is not (green). The new version of the software is deployed to the green environment, and once the deployment is complete, traffic is switched from the blue to the green environment. This strategy allows for a seamless transition between versions, with reduced downtime, and the ability to roll back to the previous version if needed.</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Radio Talk 60 Blue Green Deployment</div><div class=tags-index style=display:none>tags: radar, devops, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Radio Talk 60 Blue Green Deployment</h1></template><div class=date>Mar 10, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>Blue-green deployment has become an important topic in modern software development, and this deployment strategy has become our focus on the <a href=https://radar.d.foundation/Blue-green-deployment-a93ea5c3d4d8439ba8701aec57d7ea3c>tech radar</a>. In a recent <a href="https://www.youtube.com/watch?v=R0FwoGw9raU">radio talk</a>, Quang Le, one of our DevOps engineers, presented the significance of blue-green deployment and its benefits. This memo is a quick recap of the talk.</p><h2 id=a-brief><a href=#a-brief><strong>A brief</strong> <a href=#a-brief></a></a></h2><p>Blue-green deployment is a software deployment strategy that involves creating two identical environments: one that is live and serving user traffic (blue) and one that is not (green). The new version of the software is deployed to the green environment, and once the deployment is complete, traffic is switched from the blue to the green environment. This strategy allows for a seamless transition between versions, with reduced downtime, and the ability to roll back to the previous version if needed.</p><p><img x-data="{
     altText: `memo/assets/radio-talk-60-blue-green-deployment/3e12057cf9cee4df856d0720a11e0fc7_MD5.gif`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/labs/labs-x-consulting-workflow/`,
       title: `Labs x Consulting Workflow`,
       get tagsData() {
@@ -34,16 +33,20 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Labs x Consulting Workflow</div><div class=tags-index style=display:none>tags: dwarves, work, consulting, labs, planning, internal</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Labs x Consulting Workflow</h1></template><div class=date>Nov 21, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Labs x Consulting Workflow</div><div class=tags-index style=display:none>tags: dwarves, work, consulting, labs, planning, internal</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Labs x Consulting Workflow</h1></template><div class=date>Nov 21, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template><aside class=authors>by
-<a href=/members/thanh>thanh</a></aside></div><hr></template><p>This workflow consolidates how new tech is introduced through the Labs team and how it gets processed to Consulting team to apply for projects and bring awareness of our tech expertise.</p><p><strong><strong><strong><strong><strong>Labs:</strong></strong></strong></strong></strong></p><ul><li>Be able to introduce new tech to help enrich our engineers’ expertise</li><li>Be able to understand what tech is trending and how we can use them</li></ul><p><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>Consulting:</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p><ul><li>Be able understand landscape of tech expertise across engineers</li><li>Be able to use our engineer’s tech expertise in helping to get new deals</li></ul><p><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>Operations:</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p><ul><li>Be able to understand our company’s journey on tech for our objective statements</li><li>Be able to understand tech resources across the company</li></ul><p>This workflow summarizes the <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>three recommended meetings</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong> we must have to be able to take advantage of our engineer’s expertise:</p><ol><li><strong>Weekly Catch-Up Meetings</strong>: Conducted by the Labs team, these meetings focus on the progress of technology adoption, potentially including demos.</li><li><strong>Ranking and Feedback with Labs & Consulting Team</strong>: A monthly joint meeting between Labs and Consulting teams to review tech adoption progress, suggest topics, and gather feedback.</li><li><strong>Planning/Retro for Labs</strong>: Organized by the Labs team to reflect on past decisions, plan future reports, and publications for our community, like &ldquo;Forward Engineering&rdquo;.</li></ol><blockquote><p>To ensure these meetings are productive, it&rsquo;s vital to have a clear agenda outlining the topics and presenters. Participants should review the agenda in advance and prepare questions, fostering an environment of open discussion.</p></blockquote><p><img x-data="{
+<a href=/members/thanh>thanh</a></aside></div></template><template x-if=!hideTitle><hr></template><p>This workflow consolidates how new tech is introduced through the Labs team and how it gets processed to Consulting team to apply for projects and bring awareness of our tech expertise.</p><p><strong><strong><strong><strong><strong>Labs:</strong></strong></strong></strong></strong></p><ul><li>Be able to introduce new tech to help enrich our engineers’ expertise</li><li>Be able to understand what tech is trending and how we can use them</li></ul><p><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>Consulting:</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p><ul><li>Be able understand landscape of tech expertise across engineers</li><li>Be able to use our engineer’s tech expertise in helping to get new deals</li></ul><p><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>Operations:</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p><ul><li>Be able to understand our company’s journey on tech for our objective statements</li><li>Be able to understand tech resources across the company</li></ul><p>This workflow summarizes the <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>three recommended meetings</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong> we must have to be able to take advantage of our engineer’s expertise:</p><ol><li><strong>Weekly Catch-Up Meetings</strong>: Conducted by the Labs team, these meetings focus on the progress of technology adoption, potentially including demos.</li><li><strong>Ranking and Feedback with Labs & Consulting Team</strong>: A monthly joint meeting between Labs and Consulting teams to review tech adoption progress, suggest topics, and gather feedback.</li><li><strong>Planning/Retro for Labs</strong>: Organized by the Labs team to reflect on past decisions, plan future reports, and publications for our community, like &ldquo;Forward Engineering&rdquo;.</li></ol><blockquote><p>To ensure these meetings are productive, it&rsquo;s vital to have a clear agenda outlining the topics and presenters. Participants should review the agenda in advance and prepare questions, fostering an environment of open discussion.</p></blockquote><p><img x-data="{
     altText: `Labs x Consulting Workflow-20231121174237957.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/sol-travel-planning-app---part-3/`,
       title: `Sol Travel Planning App Part 3`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Sol Travel Planning App Part 3</div><div class=tags-index style=display:none>tags: design, case study</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Sol Travel Planning App Part 3</h1></template><div class=date>Oct 9, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><h1 id=introduction><a href=#introduction>Introduction <a href=#introduction></a></a></h1><p>Today we shall continue our series of designing “Sol-Travel Planning” app. As we mentioned our process on UX research and UI design in the last two articles, Sol’s target users are the young so keeping the app fun with interaction is a must.</p><h1 id=main-motions><a href=#main-motions>Main Motions <a href=#main-motions></a></a></h1><p>According to Issara Willenskomer from UxinMotion, motion implementation in UX design can greatly help improving usability in four noticeable ways: fulfilling expectation from the users, maintaining continuity among a set of scenes, inventing narrative — story-telling flow throughout the user experience.</p><h2 id=onboarding><a href=#onboarding>Onboarding <a href=#onboarding></a></a></h2><p>For first-time users, we create an onboarding flow which comprises of Paging animation, enhancing a natural experience while using. The bottom button keeps the experience familiar and enables the users to get to the Sign-up button as soon as they are pleased.</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Sol Travel Planning App Part 3</div><div class=tags-index style=display:none>tags: design, case study</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Sol Travel Planning App Part 3</h1></template><div class=date>Oct 9, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=introduction><a href=#introduction>Introduction <a href=#introduction></a></a></h1><p>Today we shall continue our series of designing “Sol-Travel Planning” app. As we mentioned our process on UX research and UI design in the last two articles, Sol’s target users are the young so keeping the app fun with interaction is a must.</p><h1 id=main-motions><a href=#main-motions>Main Motions <a href=#main-motions></a></a></h1><p>According to Issara Willenskomer from UxinMotion, motion implementation in UX design can greatly help improving usability in four noticeable ways: fulfilling expectation from the users, maintaining continuity among a set of scenes, inventing narrative — story-telling flow throughout the user experience.</p><h2 id=onboarding><a href=#onboarding>Onboarding <a href=#onboarding></a></a></h2><p>For first-time users, we create an onboarding flow which comprises of Paging animation, enhancing a natural experience while using. The bottom button keeps the experience familiar and enables the users to get to the Sign-up button as soon as they are pleased.</p><p><img x-data="{
     altText: `14d9f9541aaeb26c871f4fa91825dd71_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

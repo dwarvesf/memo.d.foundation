@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/grid-and-layout/`,
       title: `Grid And Layout`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Grid And Layout</div><div class=tags-index style=display:none>tags: design, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Grid And Layout</h1></template><div class=date>Aug 17, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>To almost fresher who started in Graphic design and Digital design, who wants to make our model look beautiful and right. When we - fresher receive brief directly from the client or leader, we start to search online for ideas. Honestly, those projects look pretty good, super clean, and all you want is your project look the same way as them, but you just CAN’T. That’s because you don’t do the same way they did. You might forget or skip the step called: “Build Layout.”</p><h1 id=what-is-a-layout-and-why-its-so-important><a href=#what-is-a-layout-and-why-its-so-important>What is a layout and why it’s so important? <a href=#what-is-a-layout-and-why-its-so-important></a></a></h1><p>Here are some definitions I read online:</p><ul><li><strong>The layout</strong> is the universal design tool. To layout, a page means to use photos, typography, space, icon, and ingredients to make a design own its story.</li><li><strong>Layout</strong> refers to the arrangement of elements on a page usually referring to the specific placement of image, text, and style. Understanding the <strong>layout</strong> of <strong>designs</strong> is very important. &mldr; Proper <strong>layout</strong> enhances the look of the particular object and the objects as a whole piece of <strong>design</strong> in order to create a strong composition</li></ul><p>Let’s make it simple.</p><p>Either you want your design looks like this:</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Grid And Layout</div><div class=tags-index style=display:none>tags: design, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Grid And Layout</h1></template><div class=date>Aug 17, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>To almost fresher who started in Graphic design and Digital design, who wants to make our model look beautiful and right. When we - fresher receive brief directly from the client or leader, we start to search online for ideas. Honestly, those projects look pretty good, super clean, and all you want is your project look the same way as them, but you just CAN’T. That’s because you don’t do the same way they did. You might forget or skip the step called: “Build Layout.”</p><h1 id=what-is-a-layout-and-why-its-so-important><a href=#what-is-a-layout-and-why-its-so-important>What is a layout and why it’s so important? <a href=#what-is-a-layout-and-why-its-so-important></a></a></h1><p>Here are some definitions I read online:</p><ul><li><strong>The layout</strong> is the universal design tool. To layout, a page means to use photos, typography, space, icon, and ingredients to make a design own its story.</li><li><strong>Layout</strong> refers to the arrangement of elements on a page usually referring to the specific placement of image, text, and style. Understanding the <strong>layout</strong> of <strong>designs</strong> is very important. &mldr; Proper <strong>layout</strong> enhances the look of the particular object and the objects as a whole piece of <strong>design</strong> in order to create a strong composition</li></ul><p>Let’s make it simple.</p><p>Either you want your design looks like this:</p><p><img x-data="{
     altText: `3bdce6d13717bd0834f92c4a79970069_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

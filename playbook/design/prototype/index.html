@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/playbook/design/prototype/`,
       title: `prototype`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(``);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>prototype</div><div class=tags-index style=display:none>tags: dwarves, work</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>prototype</h1></template><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><h2 id=low-fidelity-prototype-ui-design><a href=#low-fidelity-prototype-ui-design>Low-fidelity prototype: UI Design <a href=#low-fidelity-prototype-ui-design></a></a></h2><h3 id=research><a href=#research>Research <a href=#research></a></a></h3><h4 id=1-understand-prospect><a href=#1-understand-prospect>1. Understand prospect <a href=#1-understand-prospect></a></a></h4><p>Understanding stakeholder, company, business model, goals and challenges of the product in order to set mindset, define style, color palette, and typography, iconography, illustration, and photography.</p><h4 id=2-define-product><a href=#2-define-product>2. Define product <a href=#2-define-product></a></a></h4><ul><li>Style</li></ul><p>Based on the target user and product’s requirement, we define layout style. Make references from Dribbble, Behance and other showcase sites to catch up with the current design trends.</p><ul><li>Color</li></ul><p>Define primary and secondary based on the logo and branding of the product. In case the client does not have a logo or verify their color palette, we can use Milanote app to create a moodboard that is a great way to set a visual direction from the client’s ideas.</p><p>Using 2 principles color to combine color in UI design:</p><pre><code>- 6:3:1 rule
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>prototype</div><div class=tags-index style=display:none>tags: dwarves, work</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>prototype</h1></template><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=low-fidelity-prototype-ui-design><a href=#low-fidelity-prototype-ui-design>Low-fidelity prototype: UI Design <a href=#low-fidelity-prototype-ui-design></a></a></h2><h3 id=research><a href=#research>Research <a href=#research></a></a></h3><h4 id=1-understand-prospect><a href=#1-understand-prospect>1. Understand prospect <a href=#1-understand-prospect></a></a></h4><p>Understanding stakeholder, company, business model, goals and challenges of the product in order to set mindset, define style, color palette, and typography, iconography, illustration, and photography.</p><h4 id=2-define-product><a href=#2-define-product>2. Define product <a href=#2-define-product></a></a></h4><ul><li>Style</li></ul><p>Based on the target user and product’s requirement, we define layout style. Make references from Dribbble, Behance and other showcase sites to catch up with the current design trends.</p><ul><li>Color</li></ul><p>Define primary and secondary based on the logo and branding of the product. In case the client does not have a logo or verify their color palette, we can use Milanote app to create a moodboard that is a great way to set a visual direction from the client’s ideas.</p><p>Using 2 principles color to combine color in UI design:</p><pre><code>- 6:3:1 rule
 - Max 3 primary colors
 </code></pre><p>Delivering a harmonious color scheme is clean and eye-friendly.</p><ul><li>Typography</li></ul><p>Define typeface, font-size, font weight of each style (header, subheader, body text, etc.)</p><ul><li>Iconography</li></ul><p>Define icon style based on elements’ style and branding characteristics. Icon color is defined following the color palette of the product.</p><ul><li>Illustration & Image</li></ul><p>Illustration and image are used in accordance with content and style<br>You should apply a mask to bitmaps image when you export to an image file.</p><ul><li>Platform</li></ul><p>Specify a particular screen (Desktop, Mobile or Tablet); divide into grid layout to align elements into columns, rows.</p><ul><li>Grid Layout</li></ul><p>Grids are a framework that speeds up the designer-to-developer workflow by allowing developers to pre-set classes in their code that correspond to column sizes.</p><pre><code>  - Select a suitable grid (we generally use 12 columns)
   - Use a baseline grid to align elements

@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/passing-the-probation-get-3-upvotes/`,
       title: `Passing The Probation Get 3 Upvotes`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Passing The Probation Get 3 Upvotes</div><div class=tags-index style=display:none>tags: team</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Passing The Probation Get 3 Upvotes</h1></template><div class=date>Aug 26, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><h2 id=span-stylecolorredthe-talent-poolspan><a href=#span-stylecolorredthe-talent-poolspan><span style=color:red>The talent pool</span> <a href=#span-stylecolorredthe-talent-poolspan></a></a></h2><p>Dwarves are backed by the talent pool. We’re selective for those that are in the funnel. Like-minded people and their unique values stay above everything. Therefore, we run a significant adjustment on the admission principle: To pass the probation means the current Dwarves accept you.</p><h2 id=span-stylecolorredthe-3-out-of-4-principlespan><a href=#span-stylecolorredthe-3-out-of-4-principlespan><span style=color:red>The 3 out of 4 principle</span> <a href=#span-stylecolorredthe-3-out-of-4-principlespan></a></a></h2><p>We’re divided into 4 kinds of association:</p><ul><li>Project member: The people you are directly working with.</li><li>In the chapter: The career track you belong in. i.g: Backend, Frontend, Design,… etc</li><li>Mentor: The upper layer that provides advice, suggestion & feedback</li><li>Social: Your friends at work.</li></ul><p>When the time comes, we will require you to submit the 3 upvotes/ reviews from these mentioned kinds. By having this, you’re stepping into the door of becoming a Dwarves. It requires you to get along with your peers, knowing you are both running toward the mutual target, and working on the engine of innovation.</p><p>More to be found at: <span style=color:red>
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Passing The Probation Get 3 Upvotes</div><div class=tags-index style=display:none>tags: team</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Passing The Probation Get 3 Upvotes</h1></template><div class=date>Aug 26, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=span-stylecolorredthe-talent-poolspan><a href=#span-stylecolorredthe-talent-poolspan><span style=color:red>The talent pool</span> <a href=#span-stylecolorredthe-talent-poolspan></a></a></h2><p>Dwarves are backed by the talent pool. We’re selective for those that are in the funnel. Like-minded people and their unique values stay above everything. Therefore, we run a significant adjustment on the admission principle: To pass the probation means the current Dwarves accept you.</p><h2 id=span-stylecolorredthe-3-out-of-4-principlespan><a href=#span-stylecolorredthe-3-out-of-4-principlespan><span style=color:red>The 3 out of 4 principle</span> <a href=#span-stylecolorredthe-3-out-of-4-principlespan></a></a></h2><p>We’re divided into 4 kinds of association:</p><ul><li>Project member: The people you are directly working with.</li><li>In the chapter: The career track you belong in. i.g: Backend, Frontend, Design,… etc</li><li>Mentor: The upper layer that provides advice, suggestion & feedback</li><li>Social: Your friends at work.</li></ul><p>When the time comes, we will require you to submit the 3 upvotes/ reviews from these mentioned kinds. By having this, you’re stepping into the door of becoming a Dwarves. It requires you to get along with your peers, knowing you are both running toward the mutual target, and working on the engine of innovation.</p><p>More to be found at: <span style=color:red>
 <strong><a href=https://github.com/dwarvesf/handbook/blob/master/routine.md#the-second-period>The Second Period</a></strong></span><span style=color:red>.</span></p><!-- column_list bcd75248-0159-43c2-b441-b28163331313 --><!-- column 4b60b447-3353-43d9-8f59-70198e67f15a --><p><img x-data="{
     altText: `memo/assets/passing-the-probation-get-3-upvotes/f3d04cda19cc5bfc2126f840d4dddf1d_MD5.webp`,
     get altWidthHeight() {

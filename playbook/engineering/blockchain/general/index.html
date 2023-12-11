@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
       currentUrl: `/playbook/engineering/blockchain/general/`,
       title: ``,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+        const hideFrontmatter = (/true/i).test(``);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
         return this.currentUrl.includes('tags');
       }
-    }"><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none></div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><h3 id=1-abstract-vs-interfaces><a href=#1-abstract-vs-interfaces>1. Abstract-vs-interfaces <a href=#1-abstract-vs-interfaces></a></a></h3><p>Be aware of the tradeoffs between abstract contracts and interfaces.<br>Both interfaces and abstract contracts provide one with a customizable and re-usable approach for smart contracts. Interfaces, which were introduced in Solidity 0.4.11, are similar to abstract contracts but cannot have any functions implemented. Interfaces also have limitations such as not being able to access storage or inherit from other interfaces which generally makes abstract contracts more practical. Although, interfaces are certainly useful for designing contracts prior to implementation. Additionally, it is important to keep in mind that if a contract inherits from an abstract contract it must implement all non-implemented functions via overriding or it will be abstract as well.</p><h3 id=2-assert-require-revert><a href=#2-assert-require-revert>2. assert require revert <a href=#2-assert-require-revert></a></a></h3><h4 id=enforce-invariants-with-assert><a href=#enforce-invariants-with-assert>Enforce invariants with <code>assert()</code> <a href=#enforce-invariants-with-assert></a></a></h4><p>An assert guard triggers when an assertion fails - such as an invariant property changing. For<br>example, the token to ether issuance ratio, in a token issuance contract, may be fixed. You can<br>verify that this is the case at all times with an <code>assert()</code>. Assert guards should often be<br>combined with other techniques, such as pausing the contract and allowing upgrades. (Otherwise, you<br>may end up stuck, with an assertion that is always failing.)</p><p>Example:</p><pre><code class=language-sol>contract Token {
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none></div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h3 id=1-abstract-vs-interfaces><a href=#1-abstract-vs-interfaces>1. Abstract-vs-interfaces <a href=#1-abstract-vs-interfaces></a></a></h3><p>Be aware of the tradeoffs between abstract contracts and interfaces.<br>Both interfaces and abstract contracts provide one with a customizable and re-usable approach for smart contracts. Interfaces, which were introduced in Solidity 0.4.11, are similar to abstract contracts but cannot have any functions implemented. Interfaces also have limitations such as not being able to access storage or inherit from other interfaces which generally makes abstract contracts more practical. Although, interfaces are certainly useful for designing contracts prior to implementation. Additionally, it is important to keep in mind that if a contract inherits from an abstract contract it must implement all non-implemented functions via overriding or it will be abstract as well.</p><h3 id=2-assert-require-revert><a href=#2-assert-require-revert>2. assert require revert <a href=#2-assert-require-revert></a></a></h3><h4 id=enforce-invariants-with-assert><a href=#enforce-invariants-with-assert>Enforce invariants with <code>assert()</code> <a href=#enforce-invariants-with-assert></a></a></h4><p>An assert guard triggers when an assertion fails - such as an invariant property changing. For<br>example, the token to ether issuance ratio, in a token issuance contract, may be fixed. You can<br>verify that this is the case at all times with an <code>assert()</code>. Assert guards should often be<br>combined with other techniques, such as pausing the contract and allowing upgrades. (Otherwise, you<br>may end up stuck, with an assertion that is always failing.)</p><p>Example:</p><pre><code class=language-sol>contract Token {
     mapping(address =&gt; uint) public balanceOf;
     uint public totalSupply;
 

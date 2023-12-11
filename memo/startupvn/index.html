@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/startupvn/`,
       title: `Startupvn`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Startupvn</div><div class=tags-index style=display:none>tags: case study, csr</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Startupvn</h1></template><div class=date>Jul 29, 2021</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><!-- column_list 22e28440-fa65-4113-821f-0539bad6a86c --><!-- column 510c01eb-77c1-4706-b64f-57969062d587 --><span style=color:red>[startup.vn](http://startup.vn/)</span> was founded 10 years ago, when the concept of "startups" was still fairly new in Vietnam. A handful of people from diverse backgrounds joined hands to create a homeland for Vietnamese who aim at building and growing their own businesses.<!-- column 5773cd81-ff60-45e2-bf00-d4d86fbc4751 --><p>💡 <span style=color:red><strong>Fostering innovation and entrepreneurship in Vietnam since 2011.</strong></span></p><p>What started out as a weekend passion project quickly progressed into a strong, proud, aspiring community. 10 years in, <span style=color:red><a href=http://startup.vn/>startup.vn</a></span> is now one of the fast-growing entrepreneurial ecosystems in Vietnam, representing Vietnam at Startups Nation (<a href=https://www.genglobal.org/>Global Entrepreneurship Network</a>).</p><p>With the true intention of community goodwill, we&rsquo;re honored to have joined forces with the <span style=color:red><a href=http://startup.vn/>startup.vn</a></span> team to bring the ecosystem to the next level. The first initiative is a complete revamp of <span style=color:red><a href=http://startup.vn/>startup.vn</a></span>&rsquo;s official site, announcing the community&rsquo;s long-awaited digital footprint.</p><!-- column_list 6f58a75e-ce1e-452e-86c1-5a67546c09e8 --><!-- column 3afe4d99-95f4-4dff-b686-54f08f81bbc6 --><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Startupvn</div><div class=tags-index style=display:none>tags: case study, csr</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Startupvn</h1></template><div class=date>Jul 29, 2021</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><!-- column_list 22e28440-fa65-4113-821f-0539bad6a86c --><!-- column 510c01eb-77c1-4706-b64f-57969062d587 --><span style=color:red>[startup.vn](http://startup.vn/)</span> was founded 10 years ago, when the concept of "startups" was still fairly new in Vietnam. A handful of people from diverse backgrounds joined hands to create a homeland for Vietnamese who aim at building and growing their own businesses.<!-- column 5773cd81-ff60-45e2-bf00-d4d86fbc4751 --><p>💡 <span style=color:red><strong>Fostering innovation and entrepreneurship in Vietnam since 2011.</strong></span></p><p>What started out as a weekend passion project quickly progressed into a strong, proud, aspiring community. 10 years in, <span style=color:red><a href=http://startup.vn/>startup.vn</a></span> is now one of the fast-growing entrepreneurial ecosystems in Vietnam, representing Vietnam at Startups Nation (<a href=https://www.genglobal.org/>Global Entrepreneurship Network</a>).</p><p>With the true intention of community goodwill, we&rsquo;re honored to have joined forces with the <span style=color:red><a href=http://startup.vn/>startup.vn</a></span> team to bring the ecosystem to the next level. The first initiative is a complete revamp of <span style=color:red><a href=http://startup.vn/>startup.vn</a></span>&rsquo;s official site, announcing the community&rsquo;s long-awaited digital footprint.</p><!-- column_list 6f58a75e-ce1e-452e-86c1-5a67546c09e8 --><!-- column 3afe4d99-95f4-4dff-b686-54f08f81bbc6 --><p><img x-data="{
     altText: `ea2ffe136a0c7d8ccd7e9dd9c6919b62_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

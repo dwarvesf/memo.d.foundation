@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/dwarves-community-bounty/`,
       title: `Community Bounty`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Community Bounty</div><div class=tags-index style=display:none>tags: community, bounty, updates</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Community Bounty</h1></template><div class=date>Jun 21, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>As you may know, Dwarves Discord network is where we connect with our friends, alumni, and like-minded people.</p><p>Bounties are rewards (in ICY - Dwarves’ token) given out to community members for work that encourages community developers to get more involved in the development outside of their core skills.</p><h2 id=span-stylecolorred><a href=#span-stylecolorred><span style=color:red><a href=#span-stylecolorred></a></a></h2><p><strong>Who can join</strong></span></p><hr><p>We offer a platform for those seeking development work and a dynamic environment to connect with skilled developers capable of building new tools, new features.</p><ul><li>It is open to anyone who has the required skills and knowledge.</li><li>Bounties commonly require skills such as writing, design, research, development, and finance.</li></ul><h2 id=span-stylecolorredhow-it-works-span><a href=#span-stylecolorredhow-it-works-span><span style=color:red>**How It Works **</span> <a href=#span-stylecolorredhow-it-works-span></a></a></h2><hr><p>After joining Dwarves Network’s Discord, introduce yourself in 😀**・arrival**, then don’t forget to:</p><ol><li>Check the bounties board: <a href=https://earn.d.foundation/>https://earn.d.foundation/</a>. Choose the bounty which you want to work on.</li><li>Claim a bounty via **⁠🎫・support-ticket. **</li><li>Deliver bounty, get $ICY in return</li></ol><h2 id=span-stylecolorred-1><a href=#span-stylecolorred-1><span style=color:red><a href=#span-stylecolorred-1></a></a></h2><p><strong>Reward</strong></span></p><hr><p>Each month, a pool of 1700 ICY (~2.5k USD) is reserved for the bounty system. You can use $ICY to exchange for Dwarves’ exclusive swag, or swap into USDC for your own use.</p><p>Please note that the bounties will only be reward after the Pull Request (PR) has been accepted and successfully merged into the Dwarves GitHub.</p><p>We hope to provide a welcoming community for those who do. Bounties are here for that. 🔥</p><p>📍 Should you have any questions, feel free to reach us at: <a href="https://discord.gg/dwarvesv?fbclid=IwAR3wR35TreTn6PbTDSAVg4Kd2NMZzytlvqnoZj2xOxew73PoW0TSBYFklpA">discord.gg/dwarvesv</a></p><p>💰 More bounties are coming soon at: <a href=https://earn.d.foundation/>https://earn.d.foundation/</a></p><p>🤖 Give @smod or @hnh a ping if you want to take any todo</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Community Bounty</div><div class=tags-index style=display:none>tags: community, bounty, updates</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Community Bounty</h1></template><div class=date>Jun 21, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>As you may know, Dwarves Discord network is where we connect with our friends, alumni, and like-minded people.</p><p>Bounties are rewards (in ICY - Dwarves’ token) given out to community members for work that encourages community developers to get more involved in the development outside of their core skills.</p><h2 id=span-stylecolorred><a href=#span-stylecolorred><span style=color:red><a href=#span-stylecolorred></a></a></h2><p><strong>Who can join</strong></span></p><hr><p>We offer a platform for those seeking development work and a dynamic environment to connect with skilled developers capable of building new tools, new features.</p><ul><li>It is open to anyone who has the required skills and knowledge.</li><li>Bounties commonly require skills such as writing, design, research, development, and finance.</li></ul><h2 id=span-stylecolorredhow-it-works-span><a href=#span-stylecolorredhow-it-works-span><span style=color:red>**How It Works **</span> <a href=#span-stylecolorredhow-it-works-span></a></a></h2><hr><p>After joining Dwarves Network’s Discord, introduce yourself in 😀**・arrival**, then don’t forget to:</p><ol><li>Check the bounties board: <a href=https://earn.d.foundation/>https://earn.d.foundation/</a>. Choose the bounty which you want to work on.</li><li>Claim a bounty via **⁠🎫・support-ticket. **</li><li>Deliver bounty, get $ICY in return</li></ol><h2 id=span-stylecolorred-1><a href=#span-stylecolorred-1><span style=color:red><a href=#span-stylecolorred-1></a></a></h2><p><strong>Reward</strong></span></p><hr><p>Each month, a pool of 1700 ICY (~2.5k USD) is reserved for the bounty system. You can use $ICY to exchange for Dwarves’ exclusive swag, or swap into USDC for your own use.</p><p>Please note that the bounties will only be reward after the Pull Request (PR) has been accepted and successfully merged into the Dwarves GitHub.</p><p>We hope to provide a welcoming community for those who do. Bounties are here for that. 🔥</p><p>📍 Should you have any questions, feel free to reach us at: <a href="https://discord.gg/dwarvesv?fbclid=IwAR3wR35TreTn6PbTDSAVg4Kd2NMZzytlvqnoZj2xOxew73PoW0TSBYFklpA">discord.gg/dwarvesv</a></p><p>💰 More bounties are coming soon at: <a href=https://earn.d.foundation/>https://earn.d.foundation/</a></p><p>🤖 Give @smod or @hnh a ping if you want to take any todo</p><p><img x-data="{
     altText: `64ec467481612369df3f5cff12c2e5e9_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

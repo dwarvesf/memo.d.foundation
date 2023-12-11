@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
       currentUrl: `/playbook/engineering/user-story/`,
       title: ``,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+        const hideFrontmatter = (/true/i).test(``);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
         return this.currentUrl.includes('tags');
       }
-    }"><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none></div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><h1 id=agile-requirement---user-story><a href=#agile-requirement---user-story>Agile requirement - User Story <a href=#agile-requirement---user-story></a></a></h1><h2 id=what-is-user-story><a href=#what-is-user-story>What is User Story? <a href=#what-is-user-story></a></a></h2><p>In the traditional software development method, requirements are noted as a handful of documentations, specifications&mldr;</p><p>In Agile, they are User Story is requirement. User Story is:</p><ul><li>A convenient format for expressing the desired business value</li><li>Crafted in a way that makes them understandable to both business people and technical people</li><li>Used to provide a great placeholder for a conversation</li><li>Written at various levels of granularity and are easy to refine</li><li>Often used with the template:<br><code>As a &lt;role>, I want &lt;feature> so that &lt;reason></code></li></ul><p>Example:</p><ul><li>As a <strong>User</strong>, I want to <strong>login into the system</strong> so that <strong>I can use other useful features</strong></li><li>As an <strong>Admin</strong>, I want <strong>the system to log the login information</strong> so that <strong>I can monitor who accesses the system</strong></li></ul><p><strong>Epic</strong>: A very large user story that will not fit into a single iteration, does not pass the test for inclusion in an iteration, and will need to be subdivided to be considered.</p><p><strong>Theme</strong>: A collection of features, epics, & stories that describe a broad business purpose.</p><h2 id=what-else-does-user-story-have><a href=#what-else-does-user-story-have>What else does User Story have? <a href=#what-else-does-user-story-have></a></a></h2><p><img x-data="{
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none></div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=agile-requirement---user-story><a href=#agile-requirement---user-story>Agile requirement - User Story <a href=#agile-requirement---user-story></a></a></h1><h2 id=what-is-user-story><a href=#what-is-user-story>What is User Story? <a href=#what-is-user-story></a></a></h2><p>In the traditional software development method, requirements are noted as a handful of documentations, specifications&mldr;</p><p>In Agile, they are User Story is requirement. User Story is:</p><ul><li>A convenient format for expressing the desired business value</li><li>Crafted in a way that makes them understandable to both business people and technical people</li><li>Used to provide a great placeholder for a conversation</li><li>Written at various levels of granularity and are easy to refine</li><li>Often used with the template:<br><code>As a &lt;role>, I want &lt;feature> so that &lt;reason></code></li></ul><p>Example:</p><ul><li>As a <strong>User</strong>, I want to <strong>login into the system</strong> so that <strong>I can use other useful features</strong></li><li>As an <strong>Admin</strong>, I want <strong>the system to log the login information</strong> so that <strong>I can monitor who accesses the system</strong></li></ul><p><strong>Epic</strong>: A very large user story that will not fit into a single iteration, does not pass the test for inclusion in an iteration, and will need to be subdivided to be considered.</p><p><strong>Theme</strong>: A collection of features, epics, & stories that describe a broad business purpose.</p><h2 id=what-else-does-user-story-have><a href=#what-else-does-user-story-have>What else does User Story have? <a href=#what-else-does-user-story-have></a></a></h2><p><img x-data="{
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

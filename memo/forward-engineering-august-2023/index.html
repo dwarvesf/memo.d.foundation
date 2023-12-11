@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/forward-engineering-august-2023/`,
       title: `Forward Engineering August 2023`,
       get tagsData() {
@@ -34,17 +33,21 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Forward Engineering August 2023</div><div class=tags-index style=display:none>tags: engineering, performance, updates, team, forward-engineering, dwarves</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Forward Engineering August 2023</h1></template><div class=date>Aug 30, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Forward Engineering August 2023</div><div class=tags-index style=display:none>tags: engineering, performance, updates, team, forward-engineering, dwarves</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Forward Engineering August 2023</h1></template><div class=date>Aug 30, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template><aside class=authors>by
 <a href=/members/thanh>thanh</a>,
-<a href=/members/monotykamary>monotykamary</a></aside></div><hr></template><p>As we step into the exciting opportunities of August, we are at a crucial point in the ever-changing world of technology. Our adventure until now has been incredibly thrilling, with a strong focus on &lsquo;LLM in Production.&rsquo; Now, we shift our attention to a topic that is always important and never outdated: <strong>Fullstack Engineering</strong>.</p><p>In a world where new businesses and product teams are always changing, there is a high demand for engineers who are skilled in many areas and can handle both sides of the development process. The rise of AI-powered development tools has blurred the lines between front-end and back-end development, making it essential for engineers to know a wide range of technologies and methods.</p><h1 id=span-stylecolorgreentech-radarspan><a href=#span-stylecolorgreentech-radarspan><span style=color:green>Tech Radar</span> <a href=#span-stylecolorgreentech-radarspan></a></a></h1><hr><p>Step into the latest edition of the Dwarves Foundation Tech Radar Report, where we shed light on the technologies steering our engineering team&rsquo;s growth and success. In this report, we illuminate the technologies shaping our path forward, from evaluating new methodologies to embracing tools that amplify our efficiency.</p><p><video x-data="{
+<a href=/members/monotykamary>monotykamary</a></aside></div></template><template x-if=!hideTitle><hr></template><p>As we step into the exciting opportunities of August, we are at a crucial point in the ever-changing world of technology. Our adventure until now has been incredibly thrilling, with a strong focus on &lsquo;LLM in Production.&rsquo; Now, we shift our attention to a topic that is always important and never outdated: <strong>Fullstack Engineering</strong>.</p><p>In a world where new businesses and product teams are always changing, there is a high demand for engineers who are skilled in many areas and can handle both sides of the development process. The rise of AI-powered development tools has blurred the lines between front-end and back-end development, making it essential for engineers to know a wide range of technologies and methods.</p><h1 id=span-stylecolorgreentech-radarspan><a href=#span-stylecolorgreentech-radarspan><span style=color:green>Tech Radar</span> <a href=#span-stylecolorgreentech-radarspan></a></a></h1><hr><p>Step into the latest edition of the Dwarves Foundation Tech Radar Report, where we shed light on the technologies steering our engineering team&rsquo;s growth and success. In this report, we illuminate the technologies shaping our path forward, from evaluating new methodologies to embracing tools that amplify our efficiency.</p><p><video x-data="{
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

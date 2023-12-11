@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
       currentUrl: `/radar/svelte/`,
       title: `Svelte`,
       get tagsData() {
@@ -34,12 +33,16 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
         return this.currentUrl.includes('tags');
       }
-    }"><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Svelte</div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Svelte</h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><!-- table_of_contents b5b27abc-1254-4e0c-b3a1-e35942966a58 --><h3 id=description><a href=#description>Description <a href=#description></a></a></h3><p>Svelte is a modern front-end JavaScript framework that allows developers to build reactive web applications using a simple and concise syntax. It provides a range of powerful features, such as declarative state management, reusable components, and efficient DOM updates, that make it easy to build fast and responsive user interfaces.</p><h3 id=whats-better-about-this-library><a href=#whats-better-about-this-library>What’s better about this library <a href=#whats-better-about-this-library></a></a></h3><p>One of the key benefits of Svelte is its approach to building web applications. Unlike other front-end frameworks, Svelte compiles components at build time rather than at runtime. This means that Svelte applications are typically faster and more efficient than those built using other frameworks, as there is less code to download and execute.</p><h3 id=what-can-we-do-with-it><a href=#what-can-we-do-with-it>What can we do with it <a href=#what-can-we-do-with-it></a></a></h3><p>Svelte can be used for a wide range of applications, from building simple websites to complex web applications. Its fast load times and optimized performance make it an ideal choice for applications that require high performance.</p><h3 id=how-should-we-adopt-it><a href=#how-should-we-adopt-it>How should we adopt it <a href=#how-should-we-adopt-it></a></a></h3><p>TBD</p><!-- child_database 38ebbb5a-3b98-4eb7-bad4-ff125282b956 --></main></div><footer><span><b>Dwarves, LLC</b> © 2015 - 2023 All rights reserved.</span></footer><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Svelte</div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Svelte</h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><!-- table_of_contents b5b27abc-1254-4e0c-b3a1-e35942966a58 --><h3 id=description><a href=#description>Description <a href=#description></a></a></h3><p>Svelte is a modern front-end JavaScript framework that allows developers to build reactive web applications using a simple and concise syntax. It provides a range of powerful features, such as declarative state management, reusable components, and efficient DOM updates, that make it easy to build fast and responsive user interfaces.</p><h3 id=whats-better-about-this-library><a href=#whats-better-about-this-library>What’s better about this library <a href=#whats-better-about-this-library></a></a></h3><p>One of the key benefits of Svelte is its approach to building web applications. Unlike other front-end frameworks, Svelte compiles components at build time rather than at runtime. This means that Svelte applications are typically faster and more efficient than those built using other frameworks, as there is less code to download and execute.</p><h3 id=what-can-we-do-with-it><a href=#what-can-we-do-with-it>What can we do with it <a href=#what-can-we-do-with-it></a></a></h3><p>Svelte can be used for a wide range of applications, from building simple websites to complex web applications. Its fast load times and optimized performance make it an ideal choice for applications that require high performance.</p><h3 id=how-should-we-adopt-it><a href=#how-should-we-adopt-it>How should we adopt it <a href=#how-should-we-adopt-it></a></a></h3><p>TBD</p><!-- child_database 38ebbb5a-3b98-4eb7-bad4-ff125282b956 --></main></div><footer><span><b>Dwarves, LLC</b> © 2015 - 2023 All rights reserved.</span></footer><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/how-a-design-system-work/`,
       title: `How A Design System Work`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How A Design System Work</div><div class=tags-index style=display:none>tags: design, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>How A Design System Work</h1></template><div class=date>May 9, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>This talk is created from my experiences & lesson learnt, the rule and self-code I&rsquo;ve built and believe to be applicable. So I can guarantee you may not find some of it in any other places on the internet.</p><h3 id=table-of-content><a href=#table-of-content>Table of Content <a href=#table-of-content></a></a></h3><ul><li>Color Style & Text Style Naming Convention</li><li>Component Naming Convention & Component Structure</li><li>Auto Layout Application</li><li>Description of Design System</li></ul><h1 id=naming-convention><a href=#naming-convention>Naming Convention <a href=#naming-convention></a></a></h1><h2 id=color-style-naming-convention><a href=#color-style-naming-convention>Color Style Naming Convention <a href=#color-style-naming-convention></a></a></h2><p>There are 2 types of color: Flat & Gradient. We use a slash to categorize the color styles. Here are a few types we may go through:</p><ul><li>Main color</li><li>Text color</li><li>Background/ Base</li><li>Status/ alert/ label background</li><li>Alert/ notification</li><li>Social network brand color</li><li>Table</li><li>Gradient</li></ul><h2 id=text-style-naming-convention><a href=#text-style-naming-convention>Text Style Naming Convention <a href=#text-style-naming-convention></a></a></h2><p>Text Style Generator is a tool in Figma that helps to create text style easier using plugins. Naming convention for Text Style will be based on a front-end method - the Common Weight Name Mapping.</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How A Design System Work</div><div class=tags-index style=display:none>tags: design, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>How A Design System Work</h1></template><div class=date>May 9, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>This talk is created from my experiences & lesson learnt, the rule and self-code I&rsquo;ve built and believe to be applicable. So I can guarantee you may not find some of it in any other places on the internet.</p><h3 id=table-of-content><a href=#table-of-content>Table of Content <a href=#table-of-content></a></a></h3><ul><li>Color Style & Text Style Naming Convention</li><li>Component Naming Convention & Component Structure</li><li>Auto Layout Application</li><li>Description of Design System</li></ul><h1 id=naming-convention><a href=#naming-convention>Naming Convention <a href=#naming-convention></a></a></h1><h2 id=color-style-naming-convention><a href=#color-style-naming-convention>Color Style Naming Convention <a href=#color-style-naming-convention></a></a></h2><p>There are 2 types of color: Flat & Gradient. We use a slash to categorize the color styles. Here are a few types we may go through:</p><ul><li>Main color</li><li>Text color</li><li>Background/ Base</li><li>Status/ alert/ label background</li><li>Alert/ notification</li><li>Social network brand color</li><li>Table</li><li>Gradient</li></ul><h2 id=text-style-naming-convention><a href=#text-style-naming-convention>Text Style Naming Convention <a href=#text-style-naming-convention></a></a></h2><p>Text Style Generator is a tool in Figma that helps to create text style easier using plugins. Naming convention for Text Style will be based on a front-end method - the Common Weight Name Mapping.</p><p><img x-data="{
     altText: `eb3f1f53df6e5919ae30528c764a27ee_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/architecture-decision-record/`,
       title: `Architecture Decision Record`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Architecture Decision Record</div><div class=tags-index style=display:none>tags: engineering, architecture</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Architecture Decision Record</h1></template><div class=date>Mar 27, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>There is an issue that every team will inevitably bump into. Newbies might get confused when a project is being developed. They wonder how that code was written, how we ended up choosing that architecture. It somehow leads to finger-point, and even the decision-maker himself can&rsquo;t remember how that decision was taken.</p><p>That happens in a long-term project, and that&rsquo;s fine. We believe we&rsquo;re not the only one who gets that, so we&rsquo;d like to gather you all and tackle this today by a practice called Architecture Decision Record (ADR)</p><h3 id=so-the-main-list-item-would-be><a href=#so-the-main-list-item-would-be>So the main list item would be <a href=#so-the-main-list-item-would-be></a></a></h3><ul><li>Why ADR?</li><li>What it contains</li><li>Demo of ADR and example</li><li>Support tools for ADR</li></ul><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Architecture Decision Record</div><div class=tags-index style=display:none>tags: engineering, architecture</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Architecture Decision Record</h1></template><div class=date>Mar 27, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>There is an issue that every team will inevitably bump into. Newbies might get confused when a project is being developed. They wonder how that code was written, how we ended up choosing that architecture. It somehow leads to finger-point, and even the decision-maker himself can&rsquo;t remember how that decision was taken.</p><p>That happens in a long-term project, and that&rsquo;s fine. We believe we&rsquo;re not the only one who gets that, so we&rsquo;d like to gather you all and tackle this today by a practice called Architecture Decision Record (ADR)</p><h3 id=so-the-main-list-item-would-be><a href=#so-the-main-list-item-would-be>So the main list item would be <a href=#so-the-main-list-item-would-be></a></a></h3><ul><li>Why ADR?</li><li>What it contains</li><li>Demo of ADR and example</li><li>Support tools for ADR</li></ul><p><img x-data="{
     altText: `4d815bb79330db7c753064e343bbf411_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

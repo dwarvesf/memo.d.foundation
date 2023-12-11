@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/data-analyst-in-retail-trading/`,
       title: `Data Analyst In Retail Trading`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Data Analyst In Retail Trading</div><div class=tags-index style=display:none>tags: engineering, practice, radar</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Data Analyst In Retail Trading</h1></template><div class=date>Aug 29, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p><em>I am Bach Phuong and I work at Dwarves Foundation as a Data Analyst, helping partner companies realize insights and understand their business better.</em></p><h2 id=what-does-a-data-analyst-do><a href=#what-does-a-data-analyst-do>What does a Data Analyst do? <a href=#what-does-a-data-analyst-do></a></a></h2><p>A Data Analyst is a gatekeeper for an organization’s data. They are tasked to explore, transform, aggregate data to create business insights from that data to then create reports to stakeholders. Thanks to these reports, companies can make more informed business decisions.</p><h2 id=what-tools-do-i-use><a href=#what-tools-do-i-use>What tools do I use? <a href=#what-tools-do-i-use></a></a></h2><p>I use tools ranging from ETL Tools, Query layer Tools, and BI Tools. For ETL Tools, I have experience in using Oracle Data Integrator (ODI) and Apache Airflow in the past. Using these tools do not require programming skills, but does require you to understand the system behind it.</p><p>After data is transferred to a data warehouse, I use query layer tools such as Dremio to explore data. Dremio is an SQL engine that also allows us to compose virtual datasets from many sources.</p><p>For BI tools, I am familiar with Power BI, Tableau and Google Data Studio for making reports. All tools have their advantages and disadvantages. For instance, Power BI is good for portability, Tableau is often easy to use, and Google Data Studio has features specific to their ecosystem to help generate diagrams or consolidate data sources on Google Cloud.</p><h2 id=data-science-hierarchy-of-needs><a href=#data-science-hierarchy-of-needs>Data Science Hierarchy of Needs <a href=#data-science-hierarchy-of-needs></a></a></h2><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Data Analyst In Retail Trading</div><div class=tags-index style=display:none>tags: engineering, practice, radar</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Data Analyst In Retail Trading</h1></template><div class=date>Aug 29, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p><em>I am Bach Phuong and I work at Dwarves Foundation as a Data Analyst, helping partner companies realize insights and understand their business better.</em></p><h2 id=what-does-a-data-analyst-do><a href=#what-does-a-data-analyst-do>What does a Data Analyst do? <a href=#what-does-a-data-analyst-do></a></a></h2><p>A Data Analyst is a gatekeeper for an organization’s data. They are tasked to explore, transform, aggregate data to create business insights from that data to then create reports to stakeholders. Thanks to these reports, companies can make more informed business decisions.</p><h2 id=what-tools-do-i-use><a href=#what-tools-do-i-use>What tools do I use? <a href=#what-tools-do-i-use></a></a></h2><p>I use tools ranging from ETL Tools, Query layer Tools, and BI Tools. For ETL Tools, I have experience in using Oracle Data Integrator (ODI) and Apache Airflow in the past. Using these tools do not require programming skills, but does require you to understand the system behind it.</p><p>After data is transferred to a data warehouse, I use query layer tools such as Dremio to explore data. Dremio is an SQL engine that also allows us to compose virtual datasets from many sources.</p><p>For BI tools, I am familiar with Power BI, Tableau and Google Data Studio for making reports. All tools have their advantages and disadvantages. For instance, Power BI is good for portability, Tableau is often easy to use, and Google Data Studio has features specific to their ecosystem to help generate diagrams or consolidate data sources on Google Cloud.</p><h2 id=data-science-hierarchy-of-needs><a href=#data-science-hierarchy-of-needs>Data Science Hierarchy of Needs <a href=#data-science-hierarchy-of-needs></a></a></h2><p><img x-data="{
     altText: `b51792aac952213b495c5a808756aaea_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

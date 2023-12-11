@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/earn/trend-command/`,
       title: `Trend Command`,
       get tagsData() {
@@ -34,16 +33,20 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`true`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Trend Command</div><div class=tags-index style=display:none>tags: tooling</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Trend Command</h1></template><div class=date>Aug 17, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Trend Command</div><div class=tags-index style=display:none>tags: tooling</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Trend Command</h1></template><div class=date>Aug 17, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template><aside class=authors>by
-<a href=/members/thanh>thanh</a></aside></div><hr></template><h2 id=requirements><a href=#requirements>Requirements <a href=#requirements></a></a></h2><h3 id=trend-command><a href=#trend-command><code>?trend</code> command <a href=#trend-command></a></a></h3><p>The idea is to create a <code>?trend</code> Discord command that will list the top 15 trending repositories on GitHub.</p><p>We can reference <a href=https://github.com/trending>https://github.com/trending</a> to make our list. Otherwise, we will need to identify what should count as trending on our end (stars/day, commits/day, etc).</p><p>There are no particular design requirements for this command, but it should use an embed and look similar to the outputs of our other commands.</p><p><img x-data="{
+<a href=/members/thanh>thanh</a></aside></div></template><template x-if=!hideTitle><hr></template><h2 id=requirements><a href=#requirements>Requirements <a href=#requirements></a></a></h2><h3 id=trend-command><a href=#trend-command><code>?trend</code> command <a href=#trend-command></a></a></h3><p>The idea is to create a <code>?trend</code> Discord command that will list the top 15 trending repositories on GitHub.</p><p>We can reference <a href=https://github.com/trending>https://github.com/trending</a> to make our list. Otherwise, we will need to identify what should count as trending on our end (stars/day, commits/day, etc).</p><p>There are no particular design requirements for this command, but it should use an embed and look similar to the outputs of our other commands.</p><p><img x-data="{
     altText: `d0b559649b02683978bb96cfc06b1569_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/agile-how-to-create-clickup-tickets/`,
       title: `Agile How To Create Clickup Tickets`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Agile How To Create Clickup Tickets</div><div class=tags-index style=display:none>tags: agile</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Agile How To Create Clickup Tickets</h1></template><div class=date>May 4, 2016</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>To make sure everyone in the hood can understand the state of company task, the below fields are required to be filled:</p><h1 id=task-creation><a href=#task-creation>Task Creation <a href=#task-creation></a></a></h1><p>The task is in progress, it has to be <strong>assigned to an assignee</strong>.</p><p>The task is in progress, it has be specified the <strong>due date</strong>.</p><h2 id=template><a href=#template>Template <a href=#template></a></a></h2><p>CONTEXT</p><ul><li>Why we need the ticket</li><li>What goal to achieve?</li><li>What results of the ticket fits in the picture</li></ul><p>DESCRIPTION</p><ul><li>Detailed description of what needs to be done</li><li>How to do it</li></ul><p>Checklist: EXPECTED OUTPUT</p><p><strong>Definition of DONE</strong></p><p>OUTPUT</p><p>The real output after the ticket is closed</p><p>The output could be one of these</p><ul><li>Output files put in Google Drive</li><li>Log or Knowledge recorded in Notion</li><li>Reported and Reviewed in ClickUp ticket</li></ul><h2 id=optional><a href=#optional>Optional <a href=#optional></a></a></h2><p>SUBTASK</p><p>Activities: How to get it done</p><h1 id=task-review><a href=#task-review>Task Review <a href=#task-review></a></a></h1><p>We need a person in charge to review</p><ul><li><input disabled type=checkbox> Please assign a reviewer to the task</li><li><input disabled type=checkbox> The reviewer has to leave comments to the task to confirm that the task meets the expectations and close it. If the task does not meet the expectation, the reviewer has to leave comments as feedbacks in the task so that the assignee would revise the work.</li></ul><h1 id=example><a href=#example>Example <a href=#example></a></a></h1><p>Task: Intern Program</p><p>In charge: Minh, Huy, An</p><p>Created on: May 10th, 2018</p><p>Due Date: May 20th, 2018</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Agile How To Create Clickup Tickets</div><div class=tags-index style=display:none>tags: agile</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Agile How To Create Clickup Tickets</h1></template><div class=date>May 4, 2016</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>To make sure everyone in the hood can understand the state of company task, the below fields are required to be filled:</p><h1 id=task-creation><a href=#task-creation>Task Creation <a href=#task-creation></a></a></h1><p>The task is in progress, it has to be <strong>assigned to an assignee</strong>.</p><p>The task is in progress, it has be specified the <strong>due date</strong>.</p><h2 id=template><a href=#template>Template <a href=#template></a></a></h2><p>CONTEXT</p><ul><li>Why we need the ticket</li><li>What goal to achieve?</li><li>What results of the ticket fits in the picture</li></ul><p>DESCRIPTION</p><ul><li>Detailed description of what needs to be done</li><li>How to do it</li></ul><p>Checklist: EXPECTED OUTPUT</p><p><strong>Definition of DONE</strong></p><p>OUTPUT</p><p>The real output after the ticket is closed</p><p>The output could be one of these</p><ul><li>Output files put in Google Drive</li><li>Log or Knowledge recorded in Notion</li><li>Reported and Reviewed in ClickUp ticket</li></ul><h2 id=optional><a href=#optional>Optional <a href=#optional></a></a></h2><p>SUBTASK</p><p>Activities: How to get it done</p><h1 id=task-review><a href=#task-review>Task Review <a href=#task-review></a></a></h1><p>We need a person in charge to review</p><ul><li><input disabled type=checkbox> Please assign a reviewer to the task</li><li><input disabled type=checkbox> The reviewer has to leave comments to the task to confirm that the task meets the expectations and close it. If the task does not meet the expectation, the reviewer has to leave comments as feedbacks in the task so that the assignee would revise the work.</li></ul><h1 id=example><a href=#example>Example <a href=#example></a></a></h1><p>Task: Intern Program</p><p>In charge: Minh, Huy, An</p><p>Created on: May 10th, 2018</p><p>Due Date: May 20th, 2018</p><p><img x-data="{
     altText: `0a0e01fd89063d645b741fc4020c6a5b_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

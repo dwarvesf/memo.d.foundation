@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/df-protocol-icy-dfg/`,
       title: `💠 df protocol, $icy and $dfg`,
       get tagsData() {
@@ -34,16 +33,20 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>💠 df protocol, $icy and $dfg</div><div class=tags-index style=display:none>tags: dwarves, work, icy, protocol, dfg, internal</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>💠 df protocol, $icy and $dfg</h1></template><div class=date>Nov 22, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>💠 df protocol, $icy and $dfg</div><div class=tags-index style=display:none>tags: dwarves, work, icy, protocol, dfg, internal</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>💠 df protocol, $icy and $dfg</h1></template><div class=date>Nov 22, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
 <template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template><aside class=authors>by
-<a href=/members/han>han</a></aside></div><hr></template><p>Here&rsquo;s our draft internal map/v0 for 🧊 $icy play, based on our current activities at this borderless software firm.</p><p>Context:</p><ol start=0><li><p>Back in 2018, when i envisioned doing something unconventional with our setup, we introduced 💎 $dfg.</p><p>It came with a dream that everyone on the team can help build next generation software, stay cool making money and own something. I planned to step down and give more ownership to those who actually implement our projects by gradually distributing $dfg to our grind chads.</p></li><li><p>In 2020, we intro 🧊 $icy as a loyalty point system, so we can use it to tip/recognize others and encourage the culture of appreciation.</p></li><li><p>Now in 2023, the thing we are doing is so called building a protocol with its economics.</p></li></ol><p>There are more concept like proposal, voting, automated workflow will be introduced sooner or later.</p><p>Hopefully the Dwarves brand could continue to thrive and we will all benefit from it.</p><p>Enjoy the play 💻</p><p><img x-data="{
+<a href=/members/han>han</a></aside></div></template><template x-if=!hideTitle><hr></template><p>Here&rsquo;s our draft internal map/v0 for 🧊 $icy play, based on our current activities at this borderless software firm.</p><p>Context:</p><ol start=0><li><p>Back in 2018, when i envisioned doing something unconventional with our setup, we introduced 💎 $dfg.</p><p>It came with a dream that everyone on the team can help build next generation software, stay cool making money and own something. I planned to step down and give more ownership to those who actually implement our projects by gradually distributing $dfg to our grind chads.</p></li><li><p>In 2020, we intro 🧊 $icy as a loyalty point system, so we can use it to tip/recognize others and encourage the culture of appreciation.</p></li><li><p>Now in 2023, the thing we are doing is so called building a protocol with its economics.</p></li></ol><p>There are more concept like proposal, voting, automated workflow will be introduced sooner or later.</p><p>Hopefully the Dwarves brand could continue to thrive and we will all benefit from it.</p><p>Enjoy the play 💻</p><p><img x-data="{
     altText: `💠 df protocol, $icy and $dfg-20231122144733966.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

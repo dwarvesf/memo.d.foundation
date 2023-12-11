@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/introduce-to-dwarves-memo/`,
       title: `Introduce To Dwarves Memo`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Introduce To Dwarves Memo</div><div class=tags-index style=display:none>tags: updates</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Introduce To Dwarves Memo</h1></template><div class=date>May 17, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><hr><p>Every company has a story. We just decide to have more than one.</p><p>As the years go by, our stories get piled up. A story of how we build a team from scratch. A story of how we live, how we work, or how we survive the first milestone and get ready for the next chapter.<br>The purpose of every story is to bring the audience a little closer to the author, to feel related at some kind of level. This is what we do here, to make you understand more about this woodland, in a variety of ways, on a platform called Memo.</p><h2 id=what-is-memo><a href=#what-is-memo>What is Memo <a href=#what-is-memo></a></a></h2><p>Memo is our medium, takes place as the 3rd tab on our current <a href=https://dwarves.foundation/memo/>Dwarves Website</a>. In other words, it&rsquo;s a blog for team researches, company updates, case studies, podcast transcript. Everything about us, in document form.</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Introduce To Dwarves Memo</div><div class=tags-index style=display:none>tags: updates</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Introduce To Dwarves Memo</h1></template><div class=date>May 17, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><hr><p>Every company has a story. We just decide to have more than one.</p><p>As the years go by, our stories get piled up. A story of how we build a team from scratch. A story of how we live, how we work, or how we survive the first milestone and get ready for the next chapter.<br>The purpose of every story is to bring the audience a little closer to the author, to feel related at some kind of level. This is what we do here, to make you understand more about this woodland, in a variety of ways, on a platform called Memo.</p><h2 id=what-is-memo><a href=#what-is-memo>What is Memo <a href=#what-is-memo></a></a></h2><p>Memo is our medium, takes place as the 3rd tab on our current <a href=https://dwarves.foundation/memo/>Dwarves Website</a>. In other words, it&rsquo;s a blog for team researches, company updates, case studies, podcast transcript. Everything about us, in document form.</p><p><img x-data="{
     altText: `239c060cb55e40fa10443ecf782af86b_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

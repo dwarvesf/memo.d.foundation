@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/dcos-series-part-2---deploy-simple-applications/`,
       title: `Dcos Series Part 2 Deploy Simple Applications`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Dcos Series Part 2 Deploy Simple Applications</div><div class=tags-index style=display:none>tags: dcos</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Dcos Series Part 2 Deploy Simple Applications</h1></template><div class=date>May 5, 2017</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>There are so many interesting things in DC/OS GUI (<code>Dashboard</code> with useful metrics/status from all nodes, <code>Services</code> tab help us to know which application/service is running on which node, its status, etc.).</p><p>In this article, we will try to deploy applications to DC/OS and run it.</p><h1 id=universe-packages><a href=#universe-packages>Universe packages <a href=#universe-packages></a></a></h1><p>The Universe tab shows all of the available DC/OS services from package repositories. You can install packages from the DC/OS Universe with a single click. The packages can be installed with defaults or customized directly in the web interface</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Dcos Series Part 2 Deploy Simple Applications</div><div class=tags-index style=display:none>tags: dcos</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Dcos Series Part 2 Deploy Simple Applications</h1></template><div class=date>May 5, 2017</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>There are so many interesting things in DC/OS GUI (<code>Dashboard</code> with useful metrics/status from all nodes, <code>Services</code> tab help us to know which application/service is running on which node, its status, etc.).</p><p>In this article, we will try to deploy applications to DC/OS and run it.</p><h1 id=universe-packages><a href=#universe-packages>Universe packages <a href=#universe-packages></a></a></h1><p>The Universe tab shows all of the available DC/OS services from package repositories. You can install packages from the DC/OS Universe with a single click. The packages can be installed with defaults or customized directly in the web interface</p><p><img x-data="{
     altText: `e84b0a38362cbe07380b58ee7adae02d_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

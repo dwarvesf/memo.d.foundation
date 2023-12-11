@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/focus-on-software-delivery/`,
       title: `Focus On Software Delivery`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Focus On Software Delivery</div><div class=tags-index style=display:none>tags: engineering</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Focus On Software Delivery</h1></template><div class=date>Feb 4, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>Focus on shipping when you are struggling with what to do next to be better as a software engineer. When you ship something new, users will try out your build and give you feedback. It may contain bugs. It may ship with the wrong flow implemented. It may ship with known issues. You may feel bad but and frustrated but those emotions will save you ton of time. The point is: Users will let you know.</p><p>Stop overthinking. All the myths about software quality and stuff will reveal when someone uses your product. The workflow your team applies, and stop thinking about the architecture, new library, or framework you saw on hacker news last week, etc. doesn’t matter.</p><p>Quality comes after. They come later after you ship the product to the user&rsquo;s hands. Just ask yourself</p><ul><li>What are we gonna ship?</li><li>What is the end product look like?</li><li>What is the user gonna think about it?</li><li>What do they expect?</li><li>Are they gonna use it?</li><li>Is it helpful?</li></ul><p>It&rsquo;s all about delivery. Know what to build and focus on shipping!</p><p>Again, software quality can only measure after you ship.</p><p>Stop overthinking or overreacting to the process.</p><p>Ship the right thing to your users.</p><p>p.s. If anyone blocks you from delivery, they block your way to success.</p><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Focus On Software Delivery</div><div class=tags-index style=display:none>tags: engineering</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Focus On Software Delivery</h1></template><div class=date>Feb 4, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>Focus on shipping when you are struggling with what to do next to be better as a software engineer. When you ship something new, users will try out your build and give you feedback. It may contain bugs. It may ship with the wrong flow implemented. It may ship with known issues. You may feel bad but and frustrated but those emotions will save you ton of time. The point is: Users will let you know.</p><p>Stop overthinking. All the myths about software quality and stuff will reveal when someone uses your product. The workflow your team applies, and stop thinking about the architecture, new library, or framework you saw on hacker news last week, etc. doesn’t matter.</p><p>Quality comes after. They come later after you ship the product to the user&rsquo;s hands. Just ask yourself</p><ul><li>What are we gonna ship?</li><li>What is the end product look like?</li><li>What is the user gonna think about it?</li><li>What do they expect?</li><li>Are they gonna use it?</li><li>Is it helpful?</li></ul><p>It&rsquo;s all about delivery. Know what to build and focus on shipping!</p><p>Again, software quality can only measure after you ship.</p><p>Stop overthinking or overreacting to the process.</p><p>Ship the right thing to your users.</p><p>p.s. If anyone blocks you from delivery, they block your way to success.</p><p><img x-data="{
     altText: `b34c705f1ff97b2dceb3556cfeecf6a0_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

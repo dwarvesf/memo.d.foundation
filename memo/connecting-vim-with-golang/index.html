@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/connecting-vim-with-golang/`,
       title: `Connecting Vim With Golang`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Connecting Vim With Golang</div><div class=tags-index style=display:none>tags: go, vim</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Connecting Vim With Golang</h1></template><div class=date>Oct 16, 2015</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><h2 id=an-introduction-to-vim-and-how-to-use-vim-with-golang><a href=#an-introduction-to-vim-and-how-to-use-vim-with-golang>An introduction to Vim and how to use Vim with Golang <a href=#an-introduction-to-vim-and-how-to-use-vim-with-golang></a></a></h2><ul><li>Vim is a powerful text-editor, usually used server environments with no graphical interfaces. In this post, I will layer a basic foundation of Vim and show you how to use Vim as an IDE for Go.</li></ul><h2 id=what-is-vim><a href=#what-is-vim>What is Vim <a href=#what-is-vim></a></a></h2><p>Vim is a highly configurable text editor built to enable efficient text editing, the next version of Vi (Vim = Vi Improved), written by Bram Moolenaar, first released in 1991.</p><ul><li>Vim is often called a &ldquo;programmer&rsquo;s editor,&rdquo;</li><li>Vim can be used as IDE for its plugins.</li><li>Vim can support for many platforms.</li></ul><h2 id=install-and-config><a href=#install-and-config>Install and Config <a href=#install-and-config></a></a></h2><ul><li>Vim can be downloaded at <a href=https://www.vim.org/download.php>vim homepage</a> or set up by <a href=https://brew.sh/>brew</a></li></ul><p><code>brew install vim</code></p><ul><li>Since some plugins can be in needed of lua, you should set up with this command line<code>brew install vim --with-lua</code></li><li>After finished setting, create a.vimrc file. This file is where you store every config, plugins or bundle, as well as other Vim related function.</li><li>Next, set up vim plugins manager. Currently, I’m using <a href=https://github.com/VundleVim/Vundle.vim>Vundle</a>, you can use <a href=https://github.com/tpope/vim-pathogen>panthogen</a> if you like. Vundle will help in config those plugins in .vimrc, install or update and other tasks. In order to set up, clone vundle in the folder ~/.vim/bundle/ (folder .vim will appear when you finish installed vim)<code>git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</code></li></ul><p>Copy some configs and basic plugins into .vimrc (please note that the “ in vim is comment)</p><pre><code class=language-javascript>set nocompatible              &quot; be iMproved, required
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Connecting Vim With Golang</div><div class=tags-index style=display:none>tags: go, vim</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Connecting Vim With Golang</h1></template><div class=date>Oct 16, 2015</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=an-introduction-to-vim-and-how-to-use-vim-with-golang><a href=#an-introduction-to-vim-and-how-to-use-vim-with-golang>An introduction to Vim and how to use Vim with Golang <a href=#an-introduction-to-vim-and-how-to-use-vim-with-golang></a></a></h2><ul><li>Vim is a powerful text-editor, usually used server environments with no graphical interfaces. In this post, I will layer a basic foundation of Vim and show you how to use Vim as an IDE for Go.</li></ul><h2 id=what-is-vim><a href=#what-is-vim>What is Vim <a href=#what-is-vim></a></a></h2><p>Vim is a highly configurable text editor built to enable efficient text editing, the next version of Vi (Vim = Vi Improved), written by Bram Moolenaar, first released in 1991.</p><ul><li>Vim is often called a &ldquo;programmer&rsquo;s editor,&rdquo;</li><li>Vim can be used as IDE for its plugins.</li><li>Vim can support for many platforms.</li></ul><h2 id=install-and-config><a href=#install-and-config>Install and Config <a href=#install-and-config></a></a></h2><ul><li>Vim can be downloaded at <a href=https://www.vim.org/download.php>vim homepage</a> or set up by <a href=https://brew.sh/>brew</a></li></ul><p><code>brew install vim</code></p><ul><li>Since some plugins can be in needed of lua, you should set up with this command line<code>brew install vim --with-lua</code></li><li>After finished setting, create a.vimrc file. This file is where you store every config, plugins or bundle, as well as other Vim related function.</li><li>Next, set up vim plugins manager. Currently, I’m using <a href=https://github.com/VundleVim/Vundle.vim>Vundle</a>, you can use <a href=https://github.com/tpope/vim-pathogen>panthogen</a> if you like. Vundle will help in config those plugins in .vimrc, install or update and other tasks. In order to set up, clone vundle in the folder ~/.vim/bundle/ (folder .vim will appear when you finish installed vim)<code>git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</code></li></ul><p>Copy some configs and basic plugins into .vimrc (please note that the “ in vim is comment)</p><pre><code class=language-javascript>set nocompatible              &quot; be iMproved, required
 filetype off                  &quot; required
 
 &quot; set the runtime path to include Vundle and initialize

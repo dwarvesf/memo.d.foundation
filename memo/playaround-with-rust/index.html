@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/playaround-with-rust/`,
       title: `Playaround With Rust`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Playaround With Rust</div><div class=tags-index style=display:none>tags: rust</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Playaround With Rust</h1></template><div class=date>Aug 30, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>Mozilla intends to use Rust as a platform for prototyping experimental browser architectures.</p><p>Specifically, the hope is to develop a browser that is more amenable to safe and parallel than the existing ones, while also being less prone to common C++ coding errors.</p><h1 id=what-makes-rust-special><a href=#what-makes-rust-special>What makes Rust special <a href=#what-makes-rust-special></a></a></h1><h2 id=ownership><a href=#ownership>Ownership <a href=#ownership></a></a></h2><ul><li>Each value in Rust has a variable that&rsquo;s called its <strong>owner,</strong> there can only be one owner at a time</li><li>When the owner goes out of scope, the value will be dropped</li><li>Variable scope is a range within a program for which an item is valid</li></ul><p>Let’s take this example:</p><pre><code class=language-javascript>let x = String::from(&quot;hello&quot;);
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Playaround With Rust</div><div class=tags-index style=display:none>tags: rust</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Playaround With Rust</h1></template><div class=date>Aug 30, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>Mozilla intends to use Rust as a platform for prototyping experimental browser architectures.</p><p>Specifically, the hope is to develop a browser that is more amenable to safe and parallel than the existing ones, while also being less prone to common C++ coding errors.</p><h1 id=what-makes-rust-special><a href=#what-makes-rust-special>What makes Rust special <a href=#what-makes-rust-special></a></a></h1><h2 id=ownership><a href=#ownership>Ownership <a href=#ownership></a></a></h2><ul><li>Each value in Rust has a variable that&rsquo;s called its <strong>owner,</strong> there can only be one owner at a time</li><li>When the owner goes out of scope, the value will be dropped</li><li>Variable scope is a range within a program for which an item is valid</li></ul><p>Let’s take this example:</p><pre><code class=language-javascript>let x = String::from(&quot;hello&quot;);
 
     let y = x;
 </code></pre><p>It creates variable <code>x</code> in the stack, len 5, cap 5, ptr to heap contain content. When assigning <code>y = x</code>, Rust disable the <code>x in the stack(no longer usable), and create new y</code> have ptr to ptr of <code>x</code></p><p>Let&rsquo;s take another example</p><pre><code class=language-javascript>let x = 5;

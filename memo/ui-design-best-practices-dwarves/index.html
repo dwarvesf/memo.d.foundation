@@ -4,7 +4,7 @@
     links: [
       { title: 'Home', url: '/home/' },
       { title: 'Consulting', url: '/memo/consulting/' },
-      { title: 'Labs', url: '/memo/labs' },
+      { title: 'Labs', url: '/memo/labs/' },
       { title: 'Earn', url: '/earn/' },
       { title: 'Hiring', url: '/hiring/' },
       { title: 'Newsletter', url: '/newsletter/' },
@@ -23,10 +23,9 @@
         const dataString = `[{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-11-23T00:00:00Z","tags":["dwarves","work","duckdb","internal","workshop","discussion","demo","event","labs"],"title":"DuckDB demo and showcase","url":"/memo/labs/events/duckdb-demo-and-showcase/"}]`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        console.log(data);
         return data;
       },
-    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/ui-design-best-practices-dwarves/`,
       title: `Ui Design Best Practices Dwarves`,
       get tagsData() {
@@ -34,15 +33,19 @@
         const data = JSON.parse(dataString);
         return data;
       },
+      get hideTitle() {
+        const hideTitle = (/true/i).test(``);
+        return hideTitle;
+      },
       isClearPage() {
-        const showFrontmatter = (/true/i).test(``);
-        return !showFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        const hideFrontmatter = (/true/i).test(`false`);
+        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
       }
-    }'><template x-if=!!title><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Ui Design Best Practices Dwarves</div><div class=tags-index style=display:none>tags: design, process</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Ui Design Best Practices Dwarves</h1></template><div class=date>Nov 24, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
-<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div><hr></template><p>One of the factors that could make or break a project is the process of communication between designers and developers. Designers and developers have their own working “<em>languages</em>.”</p><p>It’s important to find a protocol in which a mutual language can bridge the gap between designers and developers.  This protocol helps everyone in the team understand the ultimate objective of the project, minimize the guesswork, save time and effort, ensuring the high-quality standard outcomes we promised to deliver to clients.</p><p>This article covers practices designers are required to follow at Dwarves Foundation for smooth handovers to developers.</p><p>Each convention is written in a compact format so that designers can easily read and follow. New conventions are added over time each time a designer discovers a new problem in the course of working with devs.</p><ul><li>Versions & File Organizations</li><li>Manage releases</li><li>Manage layers</li><li>Practical, context-conscious data</li><li>Naming conventions</li><li>Components</li><li>Colors</li><li>General Figma tips</li></ul><h1 id=versions--file-organizations><a href=#versions--file-organizations><strong>Versions & File Organizations</strong> <a href=#versions--file-organizations></a></a></h1><h2 id=manage-versions-by-releases><a href=#manage-versions-by-releases>Manage versions by releases <a href=#manage-versions-by-releases></a></a></h2><p><img x-data="{
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Ui Design Best Practices Dwarves</div><div class=tags-index style=display:none>tags: design, process</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Ui Design Best Practices Dwarves</h1></template><div class=date>Nov 24, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags>Tags:
+<template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>One of the factors that could make or break a project is the process of communication between designers and developers. Designers and developers have their own working “<em>languages</em>.”</p><p>It’s important to find a protocol in which a mutual language can bridge the gap between designers and developers.  This protocol helps everyone in the team understand the ultimate objective of the project, minimize the guesswork, save time and effort, ensuring the high-quality standard outcomes we promised to deliver to clients.</p><p>This article covers practices designers are required to follow at Dwarves Foundation for smooth handovers to developers.</p><p>Each convention is written in a compact format so that designers can easily read and follow. New conventions are added over time each time a designer discovers a new problem in the course of working with devs.</p><ul><li>Versions & File Organizations</li><li>Manage releases</li><li>Manage layers</li><li>Practical, context-conscious data</li><li>Naming conventions</li><li>Components</li><li>Colors</li><li>General Figma tips</li></ul><h1 id=versions--file-organizations><a href=#versions--file-organizations><strong>Versions & File Organizations</strong> <a href=#versions--file-organizations></a></a></h1><h2 id=manage-versions-by-releases><a href=#manage-versions-by-releases>Manage versions by releases <a href=#manage-versions-by-releases></a></a></h2><p><img x-data="{
     altText: `1c3f1857f449f57c470ce40efff1bd01_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
