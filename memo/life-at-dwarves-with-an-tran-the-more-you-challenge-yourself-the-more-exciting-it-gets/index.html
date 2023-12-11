@@ -26,7 +26,7 @@
         console.log(data);
         return data;
       },
-    }"><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
+    }"><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data='{
       currentUrl: `/memo/life-at-dwarves-with-an-tran-the-more-you-challenge-yourself-the-more-exciting-it-gets/`,
       title: `Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets`,
       get tagsData() {

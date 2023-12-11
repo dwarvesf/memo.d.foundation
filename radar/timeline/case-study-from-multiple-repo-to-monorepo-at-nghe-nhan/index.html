@@ -26,7 +26,7 @@
         console.log(data);
         return data;
       },
-    }"><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
+    }"><details open><summary>Pinned Notes</summary><ul><template x-for="item in data" x-bind:key=item><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details></section></nav><main x-data="{
       currentUrl: `/radar/timeline/case-study-from-multiple-repo-to-monorepo-at-nghe-nhan/`,
       title: `Case Study From Multiple Repo To Monorepo At Nghe Nhan`,
       get tagsData() {
