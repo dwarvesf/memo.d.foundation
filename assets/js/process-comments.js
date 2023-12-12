@@ -34,8 +34,10 @@ pairs.forEach(([start, end]) => {
     start.parentNode.replaceChild(div, start);
     start = div;
   }
-  while (start.nextSibling != end) {
-    start.appendChild(start.nextSibling);
+  if (end) {
+    while (start.nextSibling != end) {
+      start.appendChild(start.nextSibling);
+    }
+    end.parentElement.removeChild(end);
   }
-  end.parentElement.removeChild(end);
 })
