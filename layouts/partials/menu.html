@@ -1,12 +1,21 @@
 {{ $currentPage := .Sites.First.Home }}
 {{ $menus := .Site.Menus }}
 {{ $data := slice }}
+{{ $menuNames := slice "earn" "labs" "memo" "newsletter" }}
 
-{{ $data := slice }}
-{{ range .Site.Pages }}
-  {{ if .Params.pinned }}
-    {{ $data = $data | append (dict "title" .Params.Title "tags" .Params.Tags "url" .RelPermalink "date" .Page.Params.Date) }}
+{{ range $menuNames }}
+  {{ $menuName := . }}
+  {{ $posts := index $menus $menuName }}
+  {{ if $posts }}
+    {{ range $posts }}
+      {{ $data = $data | append (dict "url" .URL "name" .Name "menu" $menuName "date" .Page.Params.Date) }}
+    {{ end }}
   {{ end }}
+{{ end }}
+
+{{ $tags := slice }}
+{{ range .Site.Pages }}
+  {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink "date" .Page.Params.Date) }}
 {{ end }}
 
 <nav class="menu">
@@ -14,23 +23,103 @@
     class="site-nav"
     x-data="{
       currentUrl: `{{ .RelPermalink }}`,
-      get data() {
+      get tagsData() {
+        const dataString = `{{ $tags | jsonify }}`;
+        const data = JSON.parse(dataString);
+        data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+
+        const mappedData = data.reduce((acc, value) => {
+          if (value.tags) {
+            value.tags.forEach((item) => acc.add(item));
+          }
+          return acc;
+        }, new Set());
+        return [...mappedData];
+      },
+      get menuData() {
         const dataString = `{{ $data | jsonify }}`;
         const data = JSON.parse(dataString);
         data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-        return data;
+
+        const mappedData = data.reduce((acc, value) => {
+          if (!acc[value.menu]) acc[value.menu] = [];
+          acc[value.menu].push(value);
+          return acc;
+        }, {});
+        return mappedData;
+      },
+      isSameGroupUrl(menu) {
+        return this.currentUrl.includes(menu);
+      },
+      isHomePage() {
+        return this.currentUrl.includes('home') ||
+          this.currentUrl.includes('tags') ||
+          this.currentUrl.includes('site-index') ||
+          location.pathname == '/';
+      },
+      partialValue(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = -1;
+          this.loaded = true;
+          this.loadText = 'Load Less...'
+        } else {
+          this.end = 10;
+          this.loaded = false;
+          this.loadText = 'Load more...'
+        }
       },
     }"
   >
-    <details open>
-      <summary>Pinned Notes</summary>
+    <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
+      <summary>Tags</summary>
       <ul>
-        <template x-for="item in data" x-bind:key="item.url">
-          <li>
-            <a x-bind:href="item.url" x-text="item.title"></a>
+        <template
+          x-for="tag in partialValue(tagsData, start, end)"
+          x-bind:key="tag"
+        >
+          <li x-data="{
+            toKebabCase(tag) {
+              return tag && tag
+                .replace('&', '')
+                .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+                .map(x => x.toLowerCase())
+                .join('-');
+            }
+          }">
+            <a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a>
           </li>
+        </template>
+        <template x-if="tagsData.length > end">
+          <li
+            class="load-more"
+            @click="toggleLoad(loaded)"
+            x-text="loadText"
+          ></li>
         </template>
       </ul>
     </details>
+
+    <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
+      <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
+        <summary x-text="menu"></summary>
+        <ul>
+          <template x-for="items in partialValue(menuData[menu], start, end)">
+            <li>
+              <a x-bind:href="items.url" x-text="items.name"></a>
+            </li>
+          </template>
+          <template x-if="menuData[menu].length > end">
+            <li
+              class="load-more"
+              @click="toggleLoad(loaded)"
+              x-text="loadText"
+            ></li>
+          </template>
+        </ul>
+      </details>
+    </template>
   </section>
 </nav>
