@@ -1,7 +1,20 @@
 footer {
-    padding: var(--main-padding);
+    position: sticky;
+    padding: 16px 12px;
+    bottom: -12px;
+    margin: 0 -5px;
+    left: 0;
+    right: 0;
     clear: both;
     border-top: 1px solid var(--border-color-light);
+    background-color: var(--primary-background-color-light);
+    z-index: 10;
+    white-space: wrap;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: -0.0125rem;
 }
 
 footer span {
@@ -9,9 +22,10 @@ footer span {
 }
 
 /* Theme */
-@media (prefers-color-scheme: dark) {
+html[data-theme=dark] {
     footer {
         border-top: 1px solid var(--border-color);
+        background-color: var(--primary-background-color);
     }
 
     footer span {

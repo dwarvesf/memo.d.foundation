@@ -1,0 +1,31 @@
+a{
+  display: inline;
+  position: relative;
+  padding: 0px 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  white-space: wrap;
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    height: 0%;
+    bottom: 0%;
+    left: 0;
+    right: 0;
+    background: var(--primary-color);
+    opacity: .15;
+    transition: all .12s ease-in-out;
+  }
+
+  &:hover {
+    color: var(--primary-color) !important;
+    
+    &::before {
+      height: 100%;
+      bottom: 0;
+    }
+  }
+}

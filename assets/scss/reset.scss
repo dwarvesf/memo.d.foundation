@@ -144,7 +144,7 @@ span {
 }
 
 /* Theme */
-@media (prefers-color-scheme: dark) {
+html[data-theme=dark] {
 
     a,
     a:visited {
@@ -175,7 +175,7 @@ iframe {
     max-width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
+html[data-theme=light] {
 
     h1,
     h2,
@@ -202,4 +202,8 @@ iframe {
     h4 {
         font-size: calc(1rem + 0.5vw);
     }
+}
+
+.relative {
+    position: relative;
 }

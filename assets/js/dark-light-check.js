@@ -10,6 +10,17 @@ const runColorMode = (fn) => {
 }
 
 runColorMode((isDarkMode) => {
-  if (isDarkMode) root.setAttribute("data-theme", "dark");
-  else root.setAttribute("data-theme", "light");
+  const preferenceTheme = localStorage.getItem("df.note.theme");
+  console.log("preferenceTheme", preferenceTheme);
+  if (preferenceTheme === 'dark' || preferenceTheme === "light") {
+    isDarkMode = preferenceTheme === "dark";
+  }
+
+  if (isDarkMode) {
+    root.setAttribute("data-theme", "dark");
+    this._theme = "dark";
+  } else {
+    root.setAttribute("data-theme", "light");
+    this._theme = "light";
+  }
 })
