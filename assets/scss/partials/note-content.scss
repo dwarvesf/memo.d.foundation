@@ -4,11 +4,11 @@
     row-gap: 12px;
     margin: 0px;
     grid-template-areas:
-        "pagetitle pagetitle"
-        "date tags"
-        "authors tags";
+        "pagetitle pagetitle pagetitle"
+        "date authors tags";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: max-content 1fr;
+    column-gap: 6px;
 
     .pagetitle {
         grid-area: pagetitle;
@@ -29,17 +29,21 @@
         justify-content: right;
 
         .tag {
-            padding: 1px 6px;
-            border-radius: 4px;
-            background-color: var(--secondary-background-color-light);
+            padding: 1px 12px;
+            border-radius: 50px;
+            background-color: var(--secondary-tag-color-light);
             height: fit-content;
             text-decoration: none;
-            color: var(--secondary-font-color-light)
+            color: var(--primary-font-color-light)
         }
     }
 
     .authors {
         grid-area: authors;
+        color: #636466;
+        a {
+            color: inherit;
+        }
     }
 }
 
@@ -74,18 +78,23 @@ code.button {
 .grid {
     display: inline-grid;
     grid-template-areas:
-        "title title title title"
-        "subtitle subtitle docsearch docsearch"
+        "tabheader tabheader tabheader tabheader"
         "tabmenu tabmenu tabmenu tabmenu"
         "nav content content pagenav"
         "nav content content pagenav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
     grid-template-columns: 325px 2fr 2fr 1fr;
     column-gap: var(--column-gap);
-
-    >* {
-        padding-right: calc(var(--main-padding) - 12px);
-        padding-left: calc(var(--main-padding) + 12px);
+    
+    .tab-header {
+        grid-area: tabheader;
+        display: inline-grid;
+        grid-template-areas: "title tabmenu tabmenu tabmenu docsearch";
+        grid-template-rows: 56px;
+        grid-template-columns: max-content 1fr 1fr 1fr 1fr;
+        align-items: center;
+        padding-right: 20px;
+        padding-left: 20px;
     }
 }
 

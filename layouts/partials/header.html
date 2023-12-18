@@ -41,6 +41,11 @@
   <link rel="shortcut icon" type="image/png"
     href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=">
 
+    <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <!-- Prism Themes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vs.min.css" integrity="sha512-Jn4HzkCnzA7Bc+lbSQHAMeen0EhSTy71o9yJbXZtQx9VvozKVBV/2zfR3VyuDFIxGvHgbOMMNvb80l+jxFBC1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: dark)" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vsc-dark-plus.min.css" integrity="sha512-ML8rkwYTFNcblPFx+VLgFIT2boa6f8DDP6p6go4+FT0/mJ8DCbCgi6S0UdjtzB3hKCr1zhU+YVB0AHhIloZP8Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: light)" />
@@ -168,13 +173,13 @@
 
 <body class="{{ if .IsHome }}home{{ else }}{{ $.Scratch.Get " section" }}{{ end }}">
   <div class="grid">
-    <h1 class="title"><a style="color: inherit; text-decoration: none" href="/site-index">Dwarves Notes</a></h1>
-    <div class="subtitle">A collection of notes for everything we do and operate at Dwarves.</div>
-    <div id="docsearch"></div>
+    <div class="tab-header">
+      <span class="title"><a style="color: inherit; font-weight: 600; text-decoration: none" href="/site-index">Dwarves Notes</a></span>
+      <div id="docsearch"></div>
+      {{ partial "tab-menu.html" . }}
+    </div>
 
-    {{ partial "tab-menu.html" . }}
     {{ partial "menu.html" . }}
-
     {{ $tags := slice }}
     {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink) }}
 
@@ -211,7 +216,6 @@
           <template x-for="data in tagsData">
             <template x-if="data.tags && data.tags.length > 0">
               <div class="tags">
-                Tags:
                 <template x-for="tag in data.tags">
                   <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a>
                 </template>
