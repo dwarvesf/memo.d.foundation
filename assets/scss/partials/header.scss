@@ -1,28 +1,32 @@
 .grid {
-    .title {
-        grid-area: title;
-        margin: 32px 0px 0px 0px !important;
-        color: var(--primary-color);
-    }
+    .tab-header {
+        border-bottom: 1px solid var(--primary-border-color-light);
 
-    .subtitle {
-        grid-area: subtitle;
-        font-size: 18px;
-        padding-top: 16px;
-        padding-bottom: 32px;
-    }
-
-    #docsearch {
-        grid-area: docsearch;
+        .title {
+            grid-area: title;
+            font-size: 22px;
+            border-spacing: 20px;
+            border-right: 1px solid var(--primary-border-color-light);
+            padding-right: 16px;
+            height: 16px;
+            line-height: 16px;
+        }
         
-        > button {
-            width: 90%;
-            height: 75%;
-            border-radius: 0px;
+        .tab-menu {
+            padding-left: 16px;
+        }
+
+        #docsearch {
+            grid-area: docsearch;
             
-            > span {
-                padding-left: 12px;
-                font-family: 'IBM Plex Sans', sans-serif;
+            > button {
+                width: 90%;
+                border-radius: 0px;
+                
+                > span {
+                    padding-left: 12px;
+                    font-family: Inter, sans-serif;
+                }
             }
         }
     }
@@ -32,16 +36,29 @@
     box-shadow: none;
 }
 
+.DocSearch-Button {
+   background: var(--primary-background-color-light); 
+}
+
+.DocSearch-Button .DocSearch-Search-Icon {
+    color: var(--secondary-font-color-light);
+}
+
+.DocSearch-Button-Key {
+    background: #EEEDEC;
+    color: var(--primary-font-color-light);
+    box-shadow: 0 4px 2px -2px #D4D3D0;
+}
+
 .active {
     color: var(--primary-color);
     line-height: 1;
-    border-bottom: 2px solid var(--primary-color);
     padding-top: 4px !important;
 }
 
 nav.tab-menu {
     grid-area: tabmenu;
-    border-bottom: 1px solid var(--border-color-light);
+    align-self: center;
     padding-bottom: 0px;
     overflow: auto;
 
@@ -53,7 +70,7 @@ nav.tab-menu {
         grid-auto-flow: column;
         grid-template-rows: 1fr;
         grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
-        column-gap: 48px;
+        column-gap: 32px;
 
         li {
             font-size: 16px;
@@ -81,8 +98,18 @@ nav.tab-menu {
 
 /* Theme */
 @media (prefers-color-scheme: dark) {
-    nav.tab-menu {
-        border-bottom: 1px solid var(--border-color);
+    .DocSearch-Button {
+       background: var(--primary-background-color); 
+    }
+
+    .grid {
+        .tab-header {
+            border-bottom: 1px solid var(--primary-border-color);
+
+            .title {
+                border-right: 1px solid var(--primary-border-color);
+            }
+        }
     }
 }
 

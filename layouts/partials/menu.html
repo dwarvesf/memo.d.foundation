@@ -18,11 +18,37 @@
   {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink "date" .Page.Params.Date) }}
 {{ end }}
 
+{{ $pinned := slice }}
+{{ range .Site.Pages }}
+  {{ if .Params.pinned }}
+    {{ $pinned = $pinned | append (dict "title" .Params.Title "tags" .Params.Tags "url" .RelPermalink "date" .Page.Params.Date) }}
+  {{ end }}
+{{ end }}
+
 <nav class="menu">
   <section
     class="site-nav"
     x-data="{
       currentUrl: `{{ .RelPermalink }}`,
+      get pinnedData() {
+        const dataString = `{{ $pinned | jsonify }}`;
+        const data = JSON.parse(dataString);
+        data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+        return data;
+      },
+      get tagsData() {
+        const dataString = `{{ $tags | jsonify }}`;
+        const data = JSON.parse(dataString);
+        data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+
+        const mappedData = data.reduce((acc, value) => {
+          if (value.tags) {
+            value.tags.forEach((item) => acc.add(item));
+          }
+          return acc;
+        }, new Set());
+        return [...mappedData];
+      },
       get tagsData() {
         const dataString = `{{ $tags | jsonify }}`;
         const data = JSON.parse(dataString);
@@ -73,8 +99,39 @@
       },
     }"
   >
+    <details open>
+      <summary>Pinned Notes</summary>
+      <ul>
+        <template x-for="item in pinnedData" x-bind:key="item.url">
+          <li>
+            <a x-bind:href="item.url" x-text="item.title"></a>
+          </li>
+        </template>
+      </ul>
+    </details>
+
+    <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
+      <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
+        <summary x-text="menu"></summary>
+        <ul>
+          <template x-for="items in partialValue(menuData[menu], start, end)">
+            <li>
+              <a x-bind:href="items.url" x-text="items.name"></a>
+            </li>
+          </template>
+          <template x-if="menuData[menu].length > end">
+            <li
+              class="load-more"
+              @click="toggleLoad(loaded)"
+              x-text="loadText"
+            ></li>
+          </template>
+        </ul>
+      </details>
+    </template>
+
     <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
-      <summary>Tags</summary>
+      <summary>Popular Tags</summary>
       <ul>
         <template
           x-for="tag in partialValue(tagsData, start, end)"
@@ -102,24 +159,5 @@
       </ul>
     </details>
 
-    <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
-      <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
-        <summary x-text="menu"></summary>
-        <ul>
-          <template x-for="items in partialValue(menuData[menu], start, end)">
-            <li>
-              <a x-bind:href="items.url" x-text="items.name"></a>
-            </li>
-          </template>
-          <template x-if="menuData[menu].length > end">
-            <li
-              class="load-more"
-              @click="toggleLoad(loaded)"
-              x-text="loadText"
-            ></li>
-          </template>
-        </ul>
-      </details>
-    </template>
   </section>
 </nav>
