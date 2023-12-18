@@ -8,6 +8,7 @@
     container: "#docsearch",
     appId: application_id.trim(),
     indexName: "note.d.foundation",
-    apiKey: api_key.trim()
+    apiKey: api_key.trim(),
+    placeholder: "Search notes"
   });
 })();
