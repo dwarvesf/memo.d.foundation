@@ -356,8 +356,7 @@ ul li p {
     .grid {
         display: inline-grid;
         grid-template-areas:
-            "title"
-            "subtitle"
+            "tabheader"
             "docsearch"
             "tabmenu"
             "content"
@@ -365,10 +364,13 @@ ul li p {
             "pagenav";
         grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
         grid-template-columns: 1fr;
-
-        >* {
-            padding-right: 4.5%;
-            padding-left: 4.5%;
+        
+        .tab-header {
+            grid-template-areas: "tabmenu tabmenu tabmenu tabmenu docsearch";
+            
+            .title {
+                display: none;
+            }
         }
     }
 

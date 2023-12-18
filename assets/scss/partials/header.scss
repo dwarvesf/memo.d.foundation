@@ -102,6 +102,12 @@ nav.tab-menu {
        background: var(--primary-background-color); 
     }
 
+    .DocSearch-Button-Key {
+        background: #746e67;
+        color: var(--primary-font-color);
+        box-shadow: 0 4px 2px -2px #151514;
+    }
+
     .grid {
         .tab-header {
             border-bottom: 1px solid var(--primary-border-color);
