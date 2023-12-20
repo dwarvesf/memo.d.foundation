@@ -1,6 +1,4 @@
-<nav
-  class="tab-menu"
-  x-data="{
+<nav class="tab-menu" x-data="{
     currentUrl: `{{ .RelPermalink }}`,
     links: [
       { title: 'Home', url: '/home/' },
@@ -18,8 +16,7 @@
         return this.activeUrl;
       }
     },
-  }"
->
+  }">
   <ul>
     <template x-for="item in links">
       <li x-bind:class="{ 'active': isActiveUrl(item.url) }">
