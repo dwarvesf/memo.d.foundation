@@ -89,7 +89,7 @@ code.button {
     .tab-header {
         grid-area: tabheader;
         display: inline-grid;
-        grid-template-areas: "title tabmenu tabmenu tabmenu docsearch";
+        grid-template-areas: "title tabmenu tabmenu tabmenu docsearch themetoggler";
         grid-template-rows: 56px;
         grid-template-columns: max-content 1fr 1fr 1fr 1fr;
         align-items: center;
@@ -119,10 +119,30 @@ main ul {
     margin: 0;
     padding: 0;
     padding-inline-start: 40px;
+    > li > a{
+        padding: 0;
+        &::before {
+            height: 15%;
+            bottom: 0%;
+        }
+    }
 }
 
-main ul>li>a {
-    text-decoration: underline;
+
+main>h2 {
+    // :first-child {
+        // padding: 0;
+        // &::before {
+        //     height: 10%;
+        //     bottom: 0%;
+        // }
+        // &:hover::before {
+        //     height: 100%;
+        // }
+    // }
+    :not(:first-child) { // fix duplicate render same link
+        display: none;
+    }
 }
 
 .scrollable {
@@ -255,39 +275,20 @@ ul:has(li input[type="checkbox"]) {
     padding: 0px;
 }
 
-ul li a {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: wrap;
-    text-decoration: none;
-    transition: all 0.25s ease;
-}
-
-ul li a:hover {
-    background-color: var(--primary-color);
-    color: white;
-    padding-left: 4px;
-    padding-right: 4px;
-    border-radius: 4px;
-    width: 100%;
-    z-index: 10;
-}
-
 ul li p {
     margin-block-end: 0px;
     margin-block-start: 0px;
 }
 
 /* Theme */
-@media (prefers-color-scheme: dark) {
-    html[data-theme=dark] {
-        --docsearch-searchbox-background: var(--secondary-background-color);
-        --docsearch-modal-background: var(--secondary-background-color);
-        --docsearch-footer-background: var(--secondary-background-color);
-        --docsearch-key-gradient: linear-gradient(-26.5deg, #555, var(--secondary-background-color));
-        --docsearch-muted-color: #777;
-        --docsearch-key-shadow: inset 0 -2px 0 0 var(--secondary-background-color),inset 0 0 1px 1px #555,0 2px 2px 0 rgba(3,4,9,0.3);
-    }
+html[data-theme=dark] {
+    --docsearch-searchbox-background: var(--secondary-background-color);
+    --docsearch-modal-background: var(--secondary-background-color);
+    --docsearch-footer-background: var(--secondary-background-color);
+    --docsearch-key-gradient: linear-gradient(-26.5deg, #555, var(--secondary-background-color));
+    --docsearch-muted-color: #777;
+    --docsearch-key-shadow: inset 0 -2px 0 0 var(--secondary-background-color),inset 0 0 1px 1px #555,0 2px 2px 0 rgba(3,4,9,0.3);
+
 
     body {
         background: var(--primary-background-color);
@@ -366,10 +367,14 @@ ul li p {
         grid-template-columns: 1fr;
         
         .tab-header {
-            grid-template-areas: "tabmenu tabmenu tabmenu tabmenu docsearch";
+            grid-template-areas: "tabmenu tabmenu tabmenu tabmenu docsearch themetoggler";
             
             .title {
                 display: none;
+            }
+
+            .tab-menu > .scrollable {
+                padding: 6px 0;
             }
         }
     }
