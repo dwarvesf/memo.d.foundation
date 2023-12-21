@@ -4,10 +4,10 @@
     row-gap: 12px;
     margin: 0px;
     grid-template-areas:
-        "pagetitle pagetitle pagetitle"
-        "date authors tags";
+        "pagetitle pagetitle pagetitle pagetitle"
+        "date authors . tags";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: max-content max-content 0.1fr 1fr;
     column-gap: 6px;
 
     .pagetitle {
@@ -43,6 +43,7 @@
         color: #636466;
         a {
             color: inherit;
+            padding: 0px;
         }
     }
 }
@@ -78,12 +79,12 @@ code.button {
 .grid {
     display: inline-grid;
     grid-template-areas:
-        "tabheader tabheader tabheader tabheader"
-        "tabmenu tabmenu tabmenu tabmenu"
-        "nav content content pagenav"
-        "nav content content pagenav";
+        "tabheader tabheader tabheader"
+        "tabmenu tabmenu tabmenu"
+        "nav content pagenav"
+        "nav content pagenav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 325px 2fr 2fr 1fr;
+    grid-template-columns: 248px 1fr 248px;
     column-gap: var(--column-gap);
     
     .tab-header {
@@ -91,10 +92,14 @@ code.button {
         display: inline-grid;
         grid-template-areas: "title tabmenu tabmenu tabmenu docsearch themetoggler";
         grid-template-rows: 56px;
-        grid-template-columns: max-content 1fr 1fr 1fr 1fr;
+        grid-template-columns: max-content 1fr 1fr 1fr 1fr 36px;
         align-items: center;
         padding-right: 20px;
         padding-left: 20px;
+    }
+    
+    .pagenav {
+        grid-area: pagenav;
     }
 }
 
@@ -106,7 +111,6 @@ main {
     grid-area: content;
     display: inline-block;
     padding: var(--main-padding);
-    width: calc(100vw - 325px - 72px);
     max-width: var(--container-max-width);
     box-sizing: border-box;
     overflow-wrap: break-word;
@@ -360,9 +364,9 @@ html[data-theme=dark] {
             "tabheader"
             "docsearch"
             "tabmenu"
+            "pagenav"
             "content"
-            "nav"
-            "pagenav";
+            "nav";
         grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
         grid-template-columns: 1fr;
         
@@ -382,12 +386,11 @@ html[data-theme=dark] {
     .note-title {
         width: 100%;
         grid-template-areas:
-            "pagetitle"
-            "date"
-            "tags"
-            "authors";
+            "pagetitle pagetitle"
+            "date authors"
+            "tags tags";
         grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-        grid-template-columns: 1fr;
+        grid-template-columns: max-content 1fr;
 
         .tags {
             max-width: max-content;

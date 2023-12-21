@@ -241,6 +241,8 @@
     {{ $tags := slice }}
     {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink) }}
 
+    <div class="pagenav">
+    </div>
     <main x-data="{
       currentUrl: `{{ .RelPermalink }}`,
       title: `{{ .Title }}`,
