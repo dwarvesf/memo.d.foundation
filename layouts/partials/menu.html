@@ -48,19 +48,6 @@
           }, new Set());
           return [...mappedData];
         },
-        get tagsData() {
-          const dataString = `{{ $tags | jsonify }}`;
-          const data = JSON.parse(dataString);
-          data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-
-          const mappedData = data.reduce((acc, value) => {
-            if (value.tags) {
-              value.tags.forEach((item) => acc.add(item));
-            }
-            return acc;
-          }, new Set());
-          return [...mappedData];
-        },
         get menuData() {
           const dataString = `{{ $data | jsonify }}`;
           const data = JSON.parse(dataString);
