@@ -3,11 +3,11 @@ footer {
     padding: 16px 12px;
     bottom: 0px;
     margin: 0 -5px;
-    left: 0;
+    left: 0px;
     right: 0;
     clear: both;
     border-top: 1px solid var(--border-color-light);
-    background-color: var(--primary-background-color-light);
+    background-color: var(--secondary-background-color-light);
     z-index: 10;
     white-space: wrap;
     font-size: 0.75rem;
@@ -15,6 +15,7 @@ footer {
     font-weight: 400;
     line-height: 140%;
     letter-spacing: -0.0125rem;
+    align-self: center;
 }
 
 footer span {
@@ -25,7 +26,7 @@ footer span {
 html[data-theme=dark] {
     footer {
         border-top: 1px solid var(--border-color);
-        background-color: var(--primary-background-color);
+        background-color: var(--secondary-background-color-var2);
     }
 
     footer span {

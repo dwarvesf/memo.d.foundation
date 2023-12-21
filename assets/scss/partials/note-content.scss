@@ -17,7 +17,7 @@
 
     .date {
         grid-area: date;
-        color: #636466;
+        color: var(--secondary-font-color-light-var2);
     }
 
     .tags {
@@ -40,7 +40,7 @@
 
     .authors {
         grid-area: authors;
-        color: #636466;
+        color: var(--secondary-font-color-light-var2);
         a {
             color: inherit;
             padding: 0px;
@@ -100,6 +100,7 @@ code.button {
     
     .pagenav {
         grid-area: pagenav;
+        justify-self: center;
     }
 }
 
@@ -235,24 +236,39 @@ table:has(img) {
     }
 }
 
+#TableOfContents {
+    padding-top: 24px;
+    padding-right: 24px;
+    position: sticky;
+    top: 56px;
+}
+
 #TableOfContents>ul>li>a {
     text-decoration: underline;
 }
 
-#TableOfContents>ul {
-    display: grid;
-    column-gap: var(--column-gap);
-    box-sizing: border-box;
-    grid-template-columns: repeat(auto-fill, minmax(0, calc(50% - var(--column-gap))));
-    line-height: 20px;
+#TableOfContents ul {
+    display: inline-grid;
+    padding-inline-start: 0px;
 }
 
 #TableOfContents li {
     white-space: nowrap;
-    list-style-type: decimal-leading-zero;
-    list-style-position: inside;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 36px;
+    padding-inline-start: 16px;
+}
+
+#TableOfContents a {
+    color: var(--secondary-font-color-light-var2);
+    width: max-content;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#TableOfContents > ul > li > a:active {
+    color: var(--primary-color) !important;
 }
 
 .notice {
@@ -354,6 +370,10 @@ html[data-theme=dark] {
     thead * {
         background-color: var(--secondary-background-color);
     }
+
+    #TableOfContents a {
+        color: var(--secondary-font-color);
+    }
 }
 
 /* Mobile */
@@ -403,6 +423,28 @@ html[data-theme=dark] {
         justify-self: center;
         width: 100%;
         max-width: 700px;
+    }
+    
+    #TableOfContents {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    
+    #TableOfContents>.scrollable>ul {
+        display: inline-grid;
+        grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+        justify-self: center;
+        width: 100%;
+        min-width: 248px;
+        max-width: 700px;
+    }
+
+    #TableOfContents>.scrollable {
+        display: inline-grid;
+    }
+
+    #TableOfContents a {
+        display: inline-block;
     }
 }
 

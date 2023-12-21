@@ -6,7 +6,7 @@ nav.menu {
     white-space: nowrap;
     grid-area: nav;
     height: calc(100vh - 81px);
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     white-space: wrap;
 }
@@ -108,10 +108,12 @@ nav .site-nav ul li {
     font-variant-numeric: tabular-nums;
     font-size: 14px;
     padding-left: 20px;
-    max-width: fit-content;
 
     a {
         padding: 0px 4px;
+        width: max-content;
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
 
@@ -125,7 +127,7 @@ nav .site-nav ul li {
 /* Theme */
 html[data-theme=dark] {
     nav.menu {
-        background-color: var(--secondary-background-color);
+        background-color: var(--secondary-background-color-var2);
     }
 
     hr {
@@ -146,6 +148,7 @@ html[data-theme=dark] {
 
     nav.menu {
         max-width: 100%;
+        height: 100%;
         box-sizing: border-box;
         display: inline-block;
     }

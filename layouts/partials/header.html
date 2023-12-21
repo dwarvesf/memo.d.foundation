@@ -242,6 +242,7 @@
     {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink) }}
 
     <div class="pagenav">
+      {{ .TableOfContents }}
     </div>
     <main x-data="{
       currentUrl: `{{ .RelPermalink }}`,
