@@ -297,7 +297,7 @@
                 <template x-for="tag in slice(data.tags, start, end)">
                   <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a>
                 </template>
-                <template x-if="!!loadText && slice(data.tags, start, end).length > 4">
+                <template x-if="!!loadText && data.tags.slice(2).length > 4">
                   <a class="tag" href x-text="loadText" @click.prevent="toggleLoad(loaded)"></a>
                 </template>
               </div>
