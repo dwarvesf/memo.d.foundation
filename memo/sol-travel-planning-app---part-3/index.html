@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#onboarding>Onboarding</a></li><li><a href=#walkthrough>Walkthrough</a></li><li><a href=#switch-between-segments>Switch between segments</a></li><li><a href=#changing-the-location-order>Changing the location order</a></li><li><a href=#tracking-a-member>Tracking a member</a></li><li><a href=#deleting-a-device>Deleting a device</a></li></ul><ul><li><a href=#why-we-choose-protopie>Why we choose Protopie</a></li></ul><ul><li><a href=#switching-between-segments>Switching between segments</a></li><li><a href=#tracking-a-members-lcoation>Tracking a member&rsquo;s lcoation</a></li><li><a href=#reference>Reference</a></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#onboarding>Onboarding</a></li><li><a href=#walkthrough>Walkthrough</a></li><li><a href=#switch-between-segments>Switch between segments</a></li><li><a href=#changing-the-location-order>Changing the location order</a></li><li><a href=#tracking-a-member>Tracking a member</a></li><li><a href=#deleting-a-device>Deleting a device</a></li></ul><ul><li><a href=#why-we-choose-protopie>Why we choose Protopie</a></li></ul><ul><li><a href=#switching-between-segments>Switching between segments</a></li><li><a href=#tracking-a-members-lcoation>Tracking a member&rsquo;s lcoation</a></li><li><a href=#reference>Reference</a></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/sol-travel-planning-app---part-3/`,
       title: `Sol Travel Planning App Part 3`,
       get tagsData() {
-        const dataString = `[{"tags":["design","case study"],"url":"/memo/sol-travel-planning-app---part-3/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;design&#34;,&#34;case study&#34;],&#34;url&#34;:&#34;/memo/sol-travel-planning-app---part-3/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Sol Travel Planning App Part 3</div><div class=tags-index style=display:none>tags: design, case study</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Sol Travel Planning App Part 3</h1></template><div class=date>Oct 9, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=introduction><a href=#introduction>Introduction <a href=#introduction></a></a></h1><p>Today we shall continue our series of designing “Sol-Travel Planning” app. As we mentioned our process on UX research and UI design in the last two articles, Sol’s target users are the young so keeping the app fun with interaction is a must.</p><h1 id=main-motions><a href=#main-motions>Main Motions <a href=#main-motions></a></a></h1><p>According to Issara Willenskomer from UxinMotion, motion implementation in UX design can greatly help improving usability in four noticeable ways: fulfilling expectation from the users, maintaining continuity among a set of scenes, inventing narrative — story-telling flow throughout the user experience.</p><h2 id=onboarding><a href=#onboarding>Onboarding <a href=#onboarding></a></a></h2><p>For first-time users, we create an onboarding flow which comprises of Paging animation, enhancing a natural experience while using. The bottom button keeps the experience familiar and enables the users to get to the Sign-up button as soon as they are pleased.</p><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Sol Travel Planning App Part 3</div><div class=tags-index style=display:none>tags: design, case study</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Sol Travel Planning App Part 3</h1></template><div class=date>Oct 9, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=introduction><a href=#introduction>Introduction <a href=#introduction></a></a></h1><p>Today we shall continue our series of designing “Sol-Travel Planning” app. As we mentioned our process on UX research and UI design in the last two articles, Sol’s target users are the young so keeping the app fun with interaction is a must.</p><h1 id=main-motions><a href=#main-motions>Main Motions <a href=#main-motions></a></a></h1><p>According to Issara Willenskomer from UxinMotion, motion implementation in UX design can greatly help improving usability in four noticeable ways: fulfilling expectation from the users, maintaining continuity among a set of scenes, inventing narrative — story-telling flow throughout the user experience.</p><h2 id=onboarding><a href=#onboarding>Onboarding <a href=#onboarding></a></a></h2><p>For first-time users, we create an onboarding flow which comprises of Paging animation, enhancing a natural experience while using. The bottom button keeps the experience familiar and enables the users to get to the Sign-up button as soon as they are pleased.</p><p><img x-data="{
     altText: `14d9f9541aaeb26c871f4fa91825dd71_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents></nav></div><main x-data="{
       currentUrl: `/playbook/business/service-feedbacks/`,
       title: `service-feedbacks`,
       get tagsData() {
-        const dataString = `[{"tags":["dwarves","work"],"url":"/playbook/business/service-feedbacks/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;dwarves&#34;,&#34;work&#34;],&#34;url&#34;:&#34;/playbook/business/service-feedbacks/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,9 +128,23 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(``);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>service-feedbacks</div><div class=tags-index style=display:none>tags: dwarves, work</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>service-feedbacks</h1></template><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=general-questions-for-service-feedbacks><a href=#general-questions-for-service-feedbacks>GENERAL QUESTIONS FOR SERVICE FEEDBACKS <a href=#general-questions-for-service-feedbacks></a></a></h1><ol><li><p>Engineer performances</p><ul><li><p>a. Communication</p><ul><li>How did the engineer interact with your team?</li><li>How was the communication between the engineer and your team?</li><li>Was our engineer proactive in communicating with you?</li><li>Did our engineer ask lots of questions?</li><li>On which aspect our engineer should improve to provide better communication?</li></ul></li><li><p>b. Work ethic, delivery</p><ul><li>Have our engineers “coming to work” on time?</li><li>Have you ever had to wait too long to get a response from our engineer?</li><li>Was our engineer able to deliver good work consistently?</li><li>Was our engineer able to deliver clean, good code?</li><li>Was there a lot of bugs that arose from our engineer’s work?</li><li>Were these bugs considered as “rookie mistakes”?</li><li>What can our engineer do in order to provide better code?</li><li>Have our engineers been able to discuss work planning before starting on the coding?</li><li>What should our engineer do to improve the synchronization with other members?</li></ul></li></ul></li><li><p>Team management</p><ul><li>What are your opinions for the team management?</li><li>Was our Team Lead able to help you co-manage the team efficiently and effectively?</li><li>Was there anytime that you cannot contact our team members in a timely manner? If yes, please specify.</li><li>When you are unhappy with the engineer’s work, who would make you feel comfortable to contact and discuss?</li><li>Was it easy for you to contact our Account Manager?</li><li>Was our Account Manager able to note down your request thoroughly?</li><li>In the end, was our Account Manager able to help you solve the problems?</li><li>What should our Account Manager do in order to improve the collaboration between two parties?</li></ul></li><li><p>Opportunity</p><ul><li>Would Dwarves Foundation be your first choice when it comes to hiring outsources? If not, why?</li><li>What should the Dwarves Foundation do to improve its credibility to you?</li><li>Do you have any further comments for the Dwarves Foundation?</li></ul></li></ol></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>service-feedbacks</div><div class=tags-index style=display:none>tags: dwarves, work</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>service-feedbacks</h1></template><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=general-questions-for-service-feedbacks><a href=#general-questions-for-service-feedbacks>GENERAL QUESTIONS FOR SERVICE FEEDBACKS <a href=#general-questions-for-service-feedbacks></a></a></h1><ol><li><p>Engineer performances</p><ul><li><p>a. Communication</p><ul><li>How did the engineer interact with your team?</li><li>How was the communication between the engineer and your team?</li><li>Was our engineer proactive in communicating with you?</li><li>Did our engineer ask lots of questions?</li><li>On which aspect our engineer should improve to provide better communication?</li></ul></li><li><p>b. Work ethic, delivery</p><ul><li>Have our engineers “coming to work” on time?</li><li>Have you ever had to wait too long to get a response from our engineer?</li><li>Was our engineer able to deliver good work consistently?</li><li>Was our engineer able to deliver clean, good code?</li><li>Was there a lot of bugs that arose from our engineer’s work?</li><li>Were these bugs considered as “rookie mistakes”?</li><li>What can our engineer do in order to provide better code?</li><li>Have our engineers been able to discuss work planning before starting on the coding?</li><li>What should our engineer do to improve the synchronization with other members?</li></ul></li></ul></li><li><p>Team management</p><ul><li>What are your opinions for the team management?</li><li>Was our Team Lead able to help you co-manage the team efficiently and effectively?</li><li>Was there anytime that you cannot contact our team members in a timely manner? If yes, please specify.</li><li>When you are unhappy with the engineer’s work, who would make you feel comfortable to contact and discuss?</li><li>Was it easy for you to contact our Account Manager?</li><li>Was our Account Manager able to note down your request thoroughly?</li><li>In the end, was our Account Manager able to help you solve the problems?</li><li>What should our Account Manager do in order to improve the collaboration between two parties?</li></ul></li><li><p>Opportunity</p><ul><li>Would Dwarves Foundation be your first choice when it comes to hiring outsources? If not, why?</li><li>What should the Dwarves Foundation do to improve its credibility to you?</li><li>Do you have any further comments for the Dwarves Foundation?</li></ul></li></ol></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents></nav></div><main x-data="{
       currentUrl: `/memo/well-crafted-software/`,
       title: `Well Crafted Software`,
       get tagsData() {
-        const dataString = `[{"tags":["engineering"],"url":"/memo/well-crafted-software/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;engineering&#34;],&#34;url&#34;:&#34;/memo/well-crafted-software/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Well Crafted Software</div><div class=tags-index style=display:none>tags: engineering</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Well Crafted Software</h1></template><div class=date>Jan 19, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><hr><p>This post ain&rsquo;t gonna be a speech of Uncle Bob&rsquo;s Software Craftsmanship Manifesto. We&rsquo;ve all known that. And to people who don&rsquo;t, for God&rsquo;s sake. Google.</p><blockquote><span style=color:gray></blockquote><p><em>Well crafted software means that regardless how old the application is, developers can understand it easily, side effects are well known and controlled, high test coverage, clean design, business language well expressed in the code and adding or changing features does not take longer than it used to take at the beginning of the project when the codebase was small.</em></span></p><p>Software craftsmanship, by all means, is an approach to software development. It features and highlights the coding skills of the developers themselves.</p><p>Craftsmanship plays a vital part in engineering excellence, and it&rsquo;s not a low hanging fruit to grab within a day. It takes time to master, it reveals a lifestyle that developers choose to be responsible for their career path. It&rsquo;s about improving the crafts and be the best version you can. A craftsman takes pride in his work and strives to turn the best into better.</p><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Well Crafted Software</div><div class=tags-index style=display:none>tags: engineering</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Well Crafted Software</h1></template><div class=date>Jan 19, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><hr><p>This post ain&rsquo;t gonna be a speech of Uncle Bob&rsquo;s Software Craftsmanship Manifesto. We&rsquo;ve all known that. And to people who don&rsquo;t, for God&rsquo;s sake. Google.</p><blockquote><span style=color:gray></blockquote><p><em>Well crafted software means that regardless how old the application is, developers can understand it easily, side effects are well known and controlled, high test coverage, clean design, business language well expressed in the code and adding or changing features does not take longer than it used to take at the beginning of the project when the codebase was small.</em></span></p><p>Software craftsmanship, by all means, is an approach to software development. It features and highlights the coding skills of the developers themselves.</p><p>Craftsmanship plays a vital part in engineering excellence, and it&rsquo;s not a low hanging fruit to grab within a day. It takes time to master, it reveals a lifestyle that developers choose to be responsible for their career path. It&rsquo;s about improving the crafts and be the best version you can. A craftsman takes pride in his work and strives to turn the best into better.</p><p><img x-data="{
     altText: `871104804c16cbc9ea337a0b8c851035_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

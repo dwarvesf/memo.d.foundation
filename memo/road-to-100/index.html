@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><ul><li><a href=#span-stylecolorredcalculationspan><span style=color:red>Calculation</span></a></li></ul></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><ul><li><a href=#span-stylecolorredcalculationspan><span style=color:red>Calculation</span></a></li></ul></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/road-to-100/`,
       title: `Road To 100`,
       get tagsData() {
-        const dataString = `[{"tags":["team"],"url":"/memo/road-to-100/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;team&#34;],&#34;url&#34;:&#34;/memo/road-to-100/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Road To 100</div><div class=tags-index style=display:none>tags: team</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Road To 100</h1></template><div class=date>Aug 26, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>2022 matched us with the 80th Dwarves. A notable highlight, and we&rsquo;re ready to have more. It&rsquo;s not easy to find people that has the same value. It takes true & solid seeks.</p><p>On our way to meet the 81th and onward, we&rsquo;re launching a mechanism to help us find like-minded DNAs, and co-create our future using tech.</p><h1 id=span-stylecolorredthe-dwarves-referral-programspan><a href=#span-stylecolorredthe-dwarves-referral-programspan><span style=color:red>The Dwarves Referral Program</span> <a href=#span-stylecolorredthe-dwarves-referral-programspan></a></a></h1><p>We usually hire and keep the quality bar. The Dwarves are encouraged to recommend friends they think might be a good match for the team. The suggestion, then, appears more valuable that you already know who the missing piece is. A quick suggestion on the talent pool</p><ul><li>Ex-colleagues</li><li>University acquaintance</li><li>High school peeps</li></ul><p>We want to spend the bonus on you rather than the headhunting agency. Once the referral gets successfully converted into a full-time position and deployed to a project, the referrer will receive <span style=color:red>
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Road To 100</div><div class=tags-index style=display:none>tags: team</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Road To 100</h1></template><div class=date>Aug 26, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>2022 matched us with the 80th Dwarves. A notable highlight, and we&rsquo;re ready to have more. It&rsquo;s not easy to find people that has the same value. It takes true & solid seeks.</p><p>On our way to meet the 81th and onward, we&rsquo;re launching a mechanism to help us find like-minded DNAs, and co-create our future using tech.</p><h1 id=span-stylecolorredthe-dwarves-referral-programspan><a href=#span-stylecolorredthe-dwarves-referral-programspan><span style=color:red>The Dwarves Referral Program</span> <a href=#span-stylecolorredthe-dwarves-referral-programspan></a></a></h1><p>We usually hire and keep the quality bar. The Dwarves are encouraged to recommend friends they think might be a good match for the team. The suggestion, then, appears more valuable that you already know who the missing piece is. A quick suggestion on the talent pool</p><ul><li>Ex-colleagues</li><li>University acquaintance</li><li>High school peeps</li></ul><p>We want to spend the bonus on you rather than the headhunting agency. Once the referral gets successfully converted into a full-time position and deployed to a project, the referrer will receive <span style=color:red>
 <strong>2.5%</strong></span> of the project service fee. <span style=color:red>This ratio is applicable until Jan 01/ 2023</span>.</p><h3 id=span-stylecolorredcalculationspan><a href=#span-stylecolorredcalculationspan><span style=color:red>Calculation</span> <a href=#span-stylecolorredcalculationspan></a></a></h3><p>This bonus is paid upon completion of the project invoice. The referrer must still be employed with the company when the bonus is to be given.</p><p>Let&rsquo;s take this for example:</p><ul><li>A refers B to Dwarves Foundation</li><li>B works on project C, with a monthly service fee of $5000</li><li>Every time clients finish the monthly invoice for project C, A will receive a referral bonus of $125</li></ul><p>📍 Thus, for <span style=color:red><strong>5</strong></span> referral cases, you’ve just grown the passive income to <span style=color:red><strong>$625/ month</strong></span>.</p><h1 id=span-stylecolorredbacked-by-the-automationspan><a href=#span-stylecolorredbacked-by-the-automationspan><span style=color:red>Backed by the automation</span> <a href=#span-stylecolorredbacked-by-the-automationspan></a></a></h1><p>If there&rsquo;s one amongst the things we stay proud of, is that whenever the situation calls for ad-hoc solutions, the team is ready to provide. Folks, meet the <span style=color:red><strong>Dwarves&rsquo; Referral Dashboard of 2022</strong></span>.</p><p>The latest stats on our current referral bonus & the top leaderboard. A huge thanks to Huy Nguyen & Khoi Le for helping making this happened.</p><p><img x-data="{
     altText: `95d0da92d70d9f9296c5f6272250ad6f_MD5.webp`,
     get altWidthHeight() {

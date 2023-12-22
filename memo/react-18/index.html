@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -132,8 +132,22 @@
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>React 18</div><div class=tags-index style=display:none>tags: engineering, frontend, radio</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>React 18</h1></template><div class=date>Jun 6, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>React 18 was released in March 2022. This release focuses on performance improvements and updating the rendering engine.</p><h2 id=react-18-feature-quick-guide><a href=#react-18-feature-quick-guide>React 18 Feature Quick Guide <a href=#react-18-feature-quick-guide></a></a></h2><p>Now let&rsquo;s look at each of these updates in more detail.</p><h2 id=concurrency-in-react><a href=#concurrency-in-react>Concurrency in React <a href=#concurrency-in-react></a></a></h2><ul><li>Concurrency is not a feature, per se. It’s a new behind-the-scenes mechanism that enables React to prepare multiple versions of your UI at the same time.</li><li>A key property of Concurrent React is that rendering is interruptible. React may start rendering an update, pause in the middle, then continue later. It may even abandon an in-progress render altogether.</li><li>Another example is the reusable state. Concurrent React can remove sections of the UI from the screen, then add them back later while reusing the previous state.</li></ul><h2 id=new-react-18-features><a href=#new-react-18-features>New React 18 Features <a href=#new-react-18-features></a></a></h2><h3 id=automatic-batching><a href=#automatic-batching>Automatic Batching <a href=#automatic-batching></a></a></h3><ul><li>Batching is when React groups multiple state updates into a single re-render for better performance. For example, if you have two state updates inside of the same click event, React has always batched these into one re-render.</li></ul><pre><code class=language-plain_text>function App() {
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = &#39;&#39;
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = &#39;...&#39;
+        }
+      },
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>React 18</div><div class=tags-index style=display:none>tags: engineering, frontend, radio</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>React 18</h1></template><div class=date>Jun 6, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>React 18 was released in March 2022. This release focuses on performance improvements and updating the rendering engine.</p><h2 id=react-18-feature-quick-guide><a href=#react-18-feature-quick-guide>React 18 Feature Quick Guide <a href=#react-18-feature-quick-guide></a></a></h2><p>Now let&rsquo;s look at each of these updates in more detail.</p><h2 id=concurrency-in-react><a href=#concurrency-in-react>Concurrency in React <a href=#concurrency-in-react></a></a></h2><ul><li>Concurrency is not a feature, per se. It’s a new behind-the-scenes mechanism that enables React to prepare multiple versions of your UI at the same time.</li><li>A key property of Concurrent React is that rendering is interruptible. React may start rendering an update, pause in the middle, then continue later. It may even abandon an in-progress render altogether.</li><li>Another example is the reusable state. Concurrent React can remove sections of the UI from the screen, then add them back later while reusing the previous state.</li></ul><h2 id=new-react-18-features><a href=#new-react-18-features>New React 18 Features <a href=#new-react-18-features></a></a></h2><h3 id=automatic-batching><a href=#automatic-batching>Automatic Batching <a href=#automatic-batching></a></a></h3><ul><li>Batching is when React groups multiple state updates into a single re-render for better performance. For example, if you have two state updates inside of the same click event, React has always batched these into one re-render.</li></ul><pre><code class=language-plain_text>function App() {
   const [count, setCount] = useState(0);
   const [flag, setFlag] = useState(false);
 

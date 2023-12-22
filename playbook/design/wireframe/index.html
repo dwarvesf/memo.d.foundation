@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#wireframe-workflow-design>Wireframe: Workflow Design</a><ul><li><a href=#tools>Tools</a></li></ul></li><li><a href=#information-architecture>Information Architecture</a><ul><li><a href=#how-we-do>How we do</a></li><li><a href=#tools-1>Tools</a></li></ul></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#wireframe-workflow-design>Wireframe: Workflow Design</a><ul><li><a href=#tools>Tools</a></li></ul></li><li><a href=#information-architecture>Information Architecture</a><ul><li><a href=#how-we-do>How we do</a></li><li><a href=#tools-1>Tools</a></li></ul></li></ul></nav></div><main x-data="{
       currentUrl: `/playbook/design/wireframe/`,
       title: `wireframe`,
       get tagsData() {
-        const dataString = `[{"tags":["dwarves","work"],"url":"/playbook/design/wireframe/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;dwarves&#34;,&#34;work&#34;],&#34;url&#34;:&#34;/playbook/design/wireframe/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(``);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>wireframe</div><div class=tags-index style=display:none>tags: dwarves, work</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>wireframe</h1></template><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=wireframe-workflow-design><a href=#wireframe-workflow-design>Wireframe: Workflow Design <a href=#wireframe-workflow-design></a></a></h2><p>Created on scraps of paper, a whiteboard, or in a software program, serve to establish relationships between elements in a project such as navigation, imagery, and calls to action.<br>Often, a wireframe has 3 core goals:</p><ul><li>To show the content and functionality of the pages before any further designs.</li><li>To help designers communicate with clients about the design concept.</li><li>To establish the information hierarchy of the site.</li></ul><h3 id=tools><a href=#tools>Tools <a href=#tools></a></a></h3><ul><li>Paper & Pencil</li><li>Balsamiq</li><li>Whimsical</li></ul><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>wireframe</div><div class=tags-index style=display:none>tags: dwarves, work</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>wireframe</h1></template><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=wireframe-workflow-design><a href=#wireframe-workflow-design>Wireframe: Workflow Design <a href=#wireframe-workflow-design></a></a></h2><p>Created on scraps of paper, a whiteboard, or in a software program, serve to establish relationships between elements in a project such as navigation, imagery, and calls to action.<br>Often, a wireframe has 3 core goals:</p><ul><li>To show the content and functionality of the pages before any further designs.</li><li>To help designers communicate with clients about the design concept.</li><li>To establish the information hierarchy of the site.</li></ul><h3 id=tools><a href=#tools>Tools <a href=#tools></a></a></h3><ul><li>Paper & Pencil</li><li>Balsamiq</li><li>Whimsical</li></ul><p><img x-data="{
     altText: `Wireframe by Balsamiq`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -101,7 +101,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -115,7 +115,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -141,8 +141,22 @@
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>DuckDB demo and showcase</div><div class=tags-index style=display:none>tags: dwarves, work, duckdb, internal, workshop, discussion, demo, event, labs</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>DuckDB demo and showcase</h1></template><div class=date>Nov 23, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template><aside class=authors>by
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = &#39;&#39;
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = &#39;...&#39;
+        }
+      },
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>DuckDB demo and showcase</div><div class=tags-index style=display:none>tags: dwarves, work, duckdb, internal, workshop, discussion, demo, event, labs</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>DuckDB demo and showcase</h1></template><div class=date>Nov 23, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/members/monotykamary>monotykamary</a></aside></div></template><template x-if=!hideTitle><hr></template><div class=notice>This is an internal event demo workshop and showcase of DuckDB for evaluation and use for data science and analytical use-cases at our company.</div><table><thead><tr><th>Event Date</th><th>Discord Channel</th><th>Type</th></tr></thead><tbody><tr><td><a href="http://www.google.com/calendar/event?action=TEMPLATE&text=DuckDB%20demo%20and%20showcase&dates=20231130T090000Z/20231130T103000Z&details=DuckDB%20is%20a%20great%20starting%20point%20for%20modern%20stacks%20that%20don't%20need%20to%20worry%20about%20scalability,%20but%20want%20to%20derive%20hard%20analytics%20from%20the%20data%20that%20they%20have.%20This%20meeting%20will%20do%20a%203-part%20demo%20of%20DuckDB%20(15%20minutes%20total):%0A•%20Consolidate%20NYC%20taxi%20data%20in%20parallel%20(through%20map-reduce)%20over%20HTTPS%0A•%20Aggregate%20IBM%20AML%20transactions%20(Anti-Money%20Laundering)%0A•%20Some%20examples%20of%20how%20it%20is%20used%20to%20consolidate%20and%20do%20basic%20analytics%20on%20note.d%20and%20log.console.so&location=Online">23/11/2023</a></td><td>🎙・labs-stage</td><td>Internal</td></tr></tbody></table><p>DuckDB has been an emerging OLAP database for analytical needs. Use cases for analytics usually use around 1GB-10GB of data, not enough to take advantage of the full potential of databases in data warehouses. The use case of analyzing data in small chunks is enough to pop up startups such as MotherDuck.</p><h3 id=agenda><a href=#agenda>Agenda: <a href=#agenda></a></a></h3><p>DuckDB is a great starting point for modern stacks that don&rsquo;t need to worry about scalability, but want to derive hard analytics from the data that they have. This meeting will do a 3-part demo of DuckDB (15 minutes total):<br>• Consolidate NYC taxi data in parallel (through map-reduce) over HTTPS<br>• Aggregate IBM AML transactions (Anti-Money Laundering)<br>• Some examples of how it is used to consolidate and do basic analytics on note.d and log.console.so<br>In between, this meeting hopes to show some use-cases, possibilities, as well as costs and benefits of using DuckDB for introductory and advanced analytics.</p><h3 id=output><a href=#output>Output: <a href=#output></a></a></h3><p>• Evaluate DuckDB and evaluating whether it is appropriate for the projects we do now or for future projects moving forward<br>• Have a format for demos for other new tech moving forward</p><hr><h2 id=workshop-screenshots><a href=#workshop-screenshots>Workshop Screenshots <a href=#workshop-screenshots></a></a></h2><p><em>This demo is from our pilot project, <code>note.d.foundation</code>, where we aggregate metadata from markdown notes imported from Notion into a parquet file to query data.</em></p><p><img x-data="{
     altText: `November Forward Engineering 2023-20231130164855761.webp`,
     get altWidthHeight() {

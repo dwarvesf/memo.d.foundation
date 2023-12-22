@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -132,8 +132,22 @@
       },
       isTagPage() {
         return this.currentUrl.includes('tags');
-      }
-    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none></div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h4 id=use-caution-when-making-external-calls><a href=#use-caution-when-making-external-calls>Use caution when making external calls <a href=#use-caution-when-making-external-calls></a></a></h4><p>Calls to untrusted contracts can introduce several unexpected risks or errors. External calls may<br>execute malicious code in that contract <em>or</em> any other contract that it depends upon. As such,<br>every external call should be treated as a potential security risk. When it is not possible, or<br>undesirable to remove external calls, use the recommendations in the rest of this section to<br>minimize the danger.</p><hr><h4 id=mark-untrusted-contracts><a href=#mark-untrusted-contracts>Mark untrusted contracts <a href=#mark-untrusted-contracts></a></a></h4><p>When interacting with external contracts, name your variables, methods, and contract interfaces in<br>a way that makes it clear that interacting with them is potentially unsafe. This applies to your<br>own functions that call external contracts.</p><pre><code class=language-sol>// bad
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none></div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h4 id=use-caution-when-making-external-calls><a href=#use-caution-when-making-external-calls>Use caution when making external calls <a href=#use-caution-when-making-external-calls></a></a></h4><p>Calls to untrusted contracts can introduce several unexpected risks or errors. External calls may<br>execute malicious code in that contract <em>or</em> any other contract that it depends upon. As such,<br>every external call should be treated as a potential security risk. When it is not possible, or<br>undesirable to remove external calls, use the recommendations in the rest of this section to<br>minimize the danger.</p><hr><h4 id=mark-untrusted-contracts><a href=#mark-untrusted-contracts>Mark untrusted contracts <a href=#mark-untrusted-contracts></a></a></h4><p>When interacting with external contracts, name your variables, methods, and contract interfaces in<br>a way that makes it clear that interacting with them is potentially unsafe. This applies to your<br>own functions that call external contracts.</p><pre><code class=language-sol>// bad
 Bank.withdraw(100); // Unclear whether trusted or untrusted
 
 function makeWithdrawal(uint amount) { // Isn't clear that this function is potentially unsafe

@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><ul><li><a href=#english-below-d4073d96d29e4d46a963e9e87e561bb5b551812252b54a9293ab359c92080dde><em><a href=/d4073d96d29e4d46a963e9e87e561bb5#b551812252b54a9293ab359c92080dde>English below ↓</a></em></a></li><li><a href=#span-stylecolorredpython-java-hay-nodejs-golangspan><span style=color:red>Python, Java hay NodeJS? Golang!</span></a></li><li><a href=#span-stylecolorrednỗi-sợ-chưa-có-kinh-nghiệm-là-chuyện-rất-bình-thườngspan><span style=color:red>Nỗi sợ “chưa có kinh nghiệm” là chuyện rất bình thường.</span></a></li><li><a href=#span-stylecolorredteammate-là-điều-giữ-mình-ở-lạispanspan-stylecolorred-dwarvesspan><span style=color:red>Teammate là điều giữ mình ở lại</span><span style=color:red>** Dwarves.**</span></a></li><li><a href=#english-version>ENGLISH VERSION</a></li><li><a href=#span-stylecolorredpython-java-or-nodejs-golangspan><span style=color:red>Python, Java or NodeJS? Golang!</span></a></li><li><a href=#span-stylecolorredits-normal-to-be-inexperiencedspan><span style=color:red>It’s normal to be ‘inexperienced’.</span></a></li><li><a href=#span-stylecolorredits-the-people-and-its-culture-that-keep-me-at-dwarvesspan><span style=color:red>It&rsquo;s the people and its culture that keep me at Dwarves.</span></a></li></ul></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><ul><li><a href=#english-below-d4073d96d29e4d46a963e9e87e561bb5b551812252b54a9293ab359c92080dde><em><a href=/d4073d96d29e4d46a963e9e87e561bb5#b551812252b54a9293ab359c92080dde>English below ↓</a></em></a></li><li><a href=#span-stylecolorredpython-java-hay-nodejs-golangspan><span style=color:red>Python, Java hay NodeJS? Golang!</span></a></li><li><a href=#span-stylecolorrednỗi-sợ-chưa-có-kinh-nghiệm-là-chuyện-rất-bình-thườngspan><span style=color:red>Nỗi sợ “chưa có kinh nghiệm” là chuyện rất bình thường.</span></a></li><li><a href=#span-stylecolorredteammate-là-điều-giữ-mình-ở-lạispanspan-stylecolorred-dwarvesspan><span style=color:red>Teammate là điều giữ mình ở lại</span><span style=color:red>** Dwarves.**</span></a></li><li><a href=#english-version>ENGLISH VERSION</a></li><li><a href=#span-stylecolorredpython-java-or-nodejs-golangspan><span style=color:red>Python, Java or NodeJS? Golang!</span></a></li><li><a href=#span-stylecolorredits-normal-to-be-inexperiencedspan><span style=color:red>It’s normal to be ‘inexperienced’.</span></a></li><li><a href=#span-stylecolorredits-the-people-and-its-culture-that-keep-me-at-dwarvesspan><span style=color:red>It&rsquo;s the people and its culture that keep me at Dwarves.</span></a></li></ul></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/life-at-dwarves-with-hieu-vu/`,
       title: `Life At Dwarves With Hieu Vu`,
       get tagsData() {
-        const dataString = `[{"tags":["dwarves"],"url":"/memo/life-at-dwarves-with-hieu-vu/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;dwarves&#34;],&#34;url&#34;:&#34;/memo/life-at-dwarves-with-hieu-vu/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Life At Dwarves With Hieu Vu</div><div class=tags-index style=display:none>tags: dwarves</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Life At Dwarves With Hieu Vu</h1></template><div class=date>Aug 24, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h3 id=english-below-d4073d96d29e4d46a963e9e87e561bb5b551812252b54a9293ab359c92080dde><a href=#english-below-d4073d96d29e4d46a963e9e87e561bb5b551812252b54a9293ab359c92080dde><em><a href=/d4073d96d29e4d46a963e9e87e561bb5#b551812252b54a9293ab359c92080dde>English below ↓</a></em> <a href=#english-below-d4073d96d29e4d46a963e9e87e561bb5b551812252b54a9293ab359c92080dde></a></a></h3><!-- column_list a370754f-e153-4ecf-84d7-cc98827e4682 --><!-- column fdff1ecf-e258-4b2b-8803-fc2ecf5fc87a --><span style=color:red>**Life at Dwarves #6**</span>, là những chia sẻ của Hiếu Vũ về hành trình pick up và yêu thích Golang, quá trình gắn bó từ dự án đến con người tại Dwarves. Những trải nghiệm đó để lại cho Hiếu nhiều bài học và lời khuyên cho các bạn trẻ muốn theo đuổi công việc lập trình viên.<p>Hiếu Vũ từng là thực tập sinh ở tập đoàn công nghệ KMS, và hiện tại là Backend Engineer tại Dwarves. Dự án Aharooms, ngoài việc giúp Hiếu nhận ra niềm yêu thích với Golang, cũng là dự án đầu tiên Hiếu làm cùng với Dwarves Team và trở thành full-time member không lâu sau đó.</p><!-- column 57a08984-9a9b-4899-a581-89c10e53c7e9 --><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Life At Dwarves With Hieu Vu</div><div class=tags-index style=display:none>tags: dwarves</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Life At Dwarves With Hieu Vu</h1></template><div class=date>Aug 24, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h3 id=english-below-d4073d96d29e4d46a963e9e87e561bb5b551812252b54a9293ab359c92080dde><a href=#english-below-d4073d96d29e4d46a963e9e87e561bb5b551812252b54a9293ab359c92080dde><em><a href=/d4073d96d29e4d46a963e9e87e561bb5#b551812252b54a9293ab359c92080dde>English below ↓</a></em> <a href=#english-below-d4073d96d29e4d46a963e9e87e561bb5b551812252b54a9293ab359c92080dde></a></a></h3><!-- column_list a370754f-e153-4ecf-84d7-cc98827e4682 --><!-- column fdff1ecf-e258-4b2b-8803-fc2ecf5fc87a --><span style=color:red>**Life at Dwarves #6**</span>, là những chia sẻ của Hiếu Vũ về hành trình pick up và yêu thích Golang, quá trình gắn bó từ dự án đến con người tại Dwarves. Những trải nghiệm đó để lại cho Hiếu nhiều bài học và lời khuyên cho các bạn trẻ muốn theo đuổi công việc lập trình viên.<p>Hiếu Vũ từng là thực tập sinh ở tập đoàn công nghệ KMS, và hiện tại là Backend Engineer tại Dwarves. Dự án Aharooms, ngoài việc giúp Hiếu nhận ra niềm yêu thích với Golang, cũng là dự án đầu tiên Hiếu làm cùng với Dwarves Team và trở thành full-time member không lâu sau đó.</p><!-- column 57a08984-9a9b-4899-a581-89c10e53c7e9 --><p><img x-data="{
     altText: `a9601721f5d8394ce510d39c585b40a9_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

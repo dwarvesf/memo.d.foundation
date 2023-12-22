@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#grid-in-web-and-app-design>Grid in web and app design</a><ul><li><a href=#field-elements>Field elements</a></li><li><a href=#columns>Columns</a></li><li><a href=#gutters>Gutters</a></li><li><a href=#side-margins>Side margins</a></li></ul></li></ul><ul><li><a href=#field-elements-must-sit-on-some-number-of-columns>Field elements must sit on some number of columns</a></li><li><a href=#do-not-leave-field-elements-in-the-gutters>Do not leave field elements in the gutters</a></li><li><a href=#its-okay-to-nest-elements-inside-fields-that-dont-align-to-the-grid-as-long-as-the-parent-field-itself-sits-on-columns>It’s okay to nest elements inside fields that don’t align to the grid, as long as the parent field itself sits on columns</a></li><li><a href=#do-not-use-a-column-as-outside-padding-unless-intentional>Do not use a column as outside padding unless intentional</a></li></ul><ul><li><a href=#fixed-grid>Fixed grid</a></li><li><a href=#fluid-grid>Fluid grid</a></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#grid-in-web-and-app-design>Grid in web and app design</a><ul><li><a href=#field-elements>Field elements</a></li><li><a href=#columns>Columns</a></li><li><a href=#gutters>Gutters</a></li><li><a href=#side-margins>Side margins</a></li></ul></li></ul><ul><li><a href=#field-elements-must-sit-on-some-number-of-columns>Field elements must sit on some number of columns</a></li><li><a href=#do-not-leave-field-elements-in-the-gutters>Do not leave field elements in the gutters</a></li><li><a href=#its-okay-to-nest-elements-inside-fields-that-dont-align-to-the-grid-as-long-as-the-parent-field-itself-sits-on-columns>It’s okay to nest elements inside fields that don’t align to the grid, as long as the parent field itself sits on columns</a></li><li><a href=#do-not-use-a-column-as-outside-padding-unless-intentional>Do not use a column as outside padding unless intentional</a></li></ul><ul><li><a href=#fixed-grid>Fixed grid</a></li><li><a href=#fluid-grid>Fluid grid</a></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/grid-and-layout/`,
       title: `Grid And Layout`,
       get tagsData() {
-        const dataString = `[{"tags":["design","technique"],"url":"/memo/grid-and-layout/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;design&#34;,&#34;technique&#34;],&#34;url&#34;:&#34;/memo/grid-and-layout/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Grid And Layout</div><div class=tags-index style=display:none>tags: design, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Grid And Layout</h1></template><div class=date>Aug 17, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>To almost fresher who started in Graphic design and Digital design, who wants to make our model look beautiful and right. When we - fresher receive brief directly from the client or leader, we start to search online for ideas. Honestly, those projects look pretty good, super clean, and all you want is your project look the same way as them, but you just CAN’T. That’s because you don’t do the same way they did. You might forget or skip the step called: “Build Layout.”</p><h1 id=what-is-a-layout-and-why-its-so-important><a href=#what-is-a-layout-and-why-its-so-important>What is a layout and why it’s so important? <a href=#what-is-a-layout-and-why-its-so-important></a></a></h1><p>Here are some definitions I read online:</p><ul><li><strong>The layout</strong> is the universal design tool. To layout, a page means to use photos, typography, space, icon, and ingredients to make a design own its story.</li><li><strong>Layout</strong> refers to the arrangement of elements on a page usually referring to the specific placement of image, text, and style. Understanding the <strong>layout</strong> of <strong>designs</strong> is very important. &mldr; Proper <strong>layout</strong> enhances the look of the particular object and the objects as a whole piece of <strong>design</strong> in order to create a strong composition</li></ul><p>Let’s make it simple.</p><p>Either you want your design looks like this:</p><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Grid And Layout</div><div class=tags-index style=display:none>tags: design, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Grid And Layout</h1></template><div class=date>Aug 17, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>To almost fresher who started in Graphic design and Digital design, who wants to make our model look beautiful and right. When we - fresher receive brief directly from the client or leader, we start to search online for ideas. Honestly, those projects look pretty good, super clean, and all you want is your project look the same way as them, but you just CAN’T. That’s because you don’t do the same way they did. You might forget or skip the step called: “Build Layout.”</p><h1 id=what-is-a-layout-and-why-its-so-important><a href=#what-is-a-layout-and-why-its-so-important>What is a layout and why it’s so important? <a href=#what-is-a-layout-and-why-its-so-important></a></a></h1><p>Here are some definitions I read online:</p><ul><li><strong>The layout</strong> is the universal design tool. To layout, a page means to use photos, typography, space, icon, and ingredients to make a design own its story.</li><li><strong>Layout</strong> refers to the arrangement of elements on a page usually referring to the specific placement of image, text, and style. Understanding the <strong>layout</strong> of <strong>designs</strong> is very important. &mldr; Proper <strong>layout</strong> enhances the look of the particular object and the objects as a whole piece of <strong>design</strong> in order to create a strong composition</li></ul><p>Let’s make it simple.</p><p>Either you want your design looks like this:</p><p><img x-data="{
     altText: `3bdce6d13717bd0834f92c4a79970069_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

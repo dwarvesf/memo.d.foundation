@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#preface>Preface</a></li><li><a href=#prompting-techniques>Prompting techniques</a><ul><li><a href=#instruction-prompting>Instruction prompting</a></li><li><a href=#least-to-most-prompting>Least-to-most prompting</a></li><li><a href=#prompting-for-use-with-tools>Prompting for use with tools</a></li><li><a href=#pre-context-to-fix-mistakes-and-errors>Pre-context to fix mistakes and errors</a></li></ul></li><li><a href=#risks-of-adversarial-prompting>Risks of Adversarial Prompting</a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#preface>Preface</a></li><li><a href=#prompting-techniques>Prompting techniques</a><ul><li><a href=#instruction-prompting>Instruction prompting</a></li><li><a href=#least-to-most-prompting>Least-to-most prompting</a></li><li><a href=#prompting-for-use-with-tools>Prompting for use with tools</a></li><li><a href=#pre-context-to-fix-mistakes-and-errors>Pre-context to fix mistakes and errors</a></li></ul></li><li><a href=#risks-of-adversarial-prompting>Risks of Adversarial Prompting</a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/easy-prompt-engineering-for-business-use-and-mitigating-risks-in-llms/`,
       title: `Easy Prompt Engineering For Business Use And Mitigating Risks In Llms`,
       get tagsData() {
-        const dataString = `[{"tags":["engineering","LLM"],"url":"/memo/easy-prompt-engineering-for-business-use-and-mitigating-risks-in-llms/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;engineering&#34;,&#34;LLM&#34;],&#34;url&#34;:&#34;/memo/easy-prompt-engineering-for-business-use-and-mitigating-risks-in-llms/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Easy Prompt Engineering For Business Use And Mitigating Risks In Llms</div><div class=tags-index style=display:none>tags: engineering, LLM</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Easy Prompt Engineering For Business Use And Mitigating Risks In Llms</h1></template><div class=date>May 22, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=preface><a href=#preface>Preface <a href=#preface></a></a></h2><p>At Dwarves, we&rsquo;ve begun creating apps with ChatGPT for some of our clients. One common problem we face is what techniques of prompt engineering should we use for cases like avoiding political interactions and defending against data leaks. We have been exposed to jailbreaks for ChatGPT such as <a href=https://github.com/0xk1h0/ChatGPT_DAN>DAN</a> and Mango Tom, but only recently have figured out how to engineer these kinds of prompts for our research. There are quite a lot of prompt engineering techniques, but below is a collection of common techniques we think you might need the most when creating business apps.</p><h2 id=prompting-techniques><a href=#prompting-techniques>Prompting techniques <a href=#prompting-techniques></a></a></h2><p>Prompt engineering involves creating prompts that guide the model to generate a desired output. This is needed for LLMs to increase the accuracy of a particular input prompt or avoid common risk factors when opening the app to users.</p><p>The examples below are complementary and scratch the surface of the types of prompts you can make on LLMs. If you would like to learn more about different prompting types, I highly recommend visiting <a href=https://learnprompting.org/>https://learnprompting.org/</a>.</p><h3 id=instruction-prompting><a href=#instruction-prompting>Instruction prompting <a href=#instruction-prompting></a></a></h3><p>The most basic and important type of prompt will most likely come in the form of an instruction. Instruct prompts are very useful for guiding a target output prompt from any given context and input prompt. For instance, organizing Vietnamese first and last names:</p><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Easy Prompt Engineering For Business Use And Mitigating Risks In Llms</div><div class=tags-index style=display:none>tags: engineering, LLM</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Easy Prompt Engineering For Business Use And Mitigating Risks In Llms</h1></template><div class=date>May 22, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=preface><a href=#preface>Preface <a href=#preface></a></a></h2><p>At Dwarves, we&rsquo;ve begun creating apps with ChatGPT for some of our clients. One common problem we face is what techniques of prompt engineering should we use for cases like avoiding political interactions and defending against data leaks. We have been exposed to jailbreaks for ChatGPT such as <a href=https://github.com/0xk1h0/ChatGPT_DAN>DAN</a> and Mango Tom, but only recently have figured out how to engineer these kinds of prompts for our research. There are quite a lot of prompt engineering techniques, but below is a collection of common techniques we think you might need the most when creating business apps.</p><h2 id=prompting-techniques><a href=#prompting-techniques>Prompting techniques <a href=#prompting-techniques></a></a></h2><p>Prompt engineering involves creating prompts that guide the model to generate a desired output. This is needed for LLMs to increase the accuracy of a particular input prompt or avoid common risk factors when opening the app to users.</p><p>The examples below are complementary and scratch the surface of the types of prompts you can make on LLMs. If you would like to learn more about different prompting types, I highly recommend visiting <a href=https://learnprompting.org/>https://learnprompting.org/</a>.</p><h3 id=instruction-prompting><a href=#instruction-prompting>Instruction prompting <a href=#instruction-prompting></a></a></h3><p>The most basic and important type of prompt will most likely come in the form of an instruction. Instruct prompts are very useful for guiding a target output prompt from any given context and input prompt. For instance, organizing Vietnamese first and last names:</p><p><img x-data="{
     altText: `0bc255e4a07a280fe6e0a1c879e008a3_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

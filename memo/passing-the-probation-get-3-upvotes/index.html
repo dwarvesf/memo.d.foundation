@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#span-stylecolorredthe-talent-poolspan><span style=color:red>The talent pool</span></a></li><li><a href=#span-stylecolorredthe-3-out-of-4-principlespan><span style=color:red>The 3 out of 4 principle</span></a></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#span-stylecolorredthe-talent-poolspan><span style=color:red>The talent pool</span></a></li><li><a href=#span-stylecolorredthe-3-out-of-4-principlespan><span style=color:red>The 3 out of 4 principle</span></a></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/passing-the-probation-get-3-upvotes/`,
       title: `Passing The Probation Get 3 Upvotes`,
       get tagsData() {
-        const dataString = `[{"tags":["team"],"url":"/memo/passing-the-probation-get-3-upvotes/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;team&#34;],&#34;url&#34;:&#34;/memo/passing-the-probation-get-3-upvotes/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Passing The Probation Get 3 Upvotes</div><div class=tags-index style=display:none>tags: team</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Passing The Probation Get 3 Upvotes</h1></template><div class=date>Aug 26, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=span-stylecolorredthe-talent-poolspan><a href=#span-stylecolorredthe-talent-poolspan><span style=color:red>The talent pool</span> <a href=#span-stylecolorredthe-talent-poolspan></a></a></h2><p>Dwarves are backed by the talent pool. We’re selective for those that are in the funnel. Like-minded people and their unique values stay above everything. Therefore, we run a significant adjustment on the admission principle: To pass the probation means the current Dwarves accept you.</p><h2 id=span-stylecolorredthe-3-out-of-4-principlespan><a href=#span-stylecolorredthe-3-out-of-4-principlespan><span style=color:red>The 3 out of 4 principle</span> <a href=#span-stylecolorredthe-3-out-of-4-principlespan></a></a></h2><p>We’re divided into 4 kinds of association:</p><ul><li>Project member: The people you are directly working with.</li><li>In the chapter: The career track you belong in. i.g: Backend, Frontend, Design,… etc</li><li>Mentor: The upper layer that provides advice, suggestion & feedback</li><li>Social: Your friends at work.</li></ul><p>When the time comes, we will require you to submit the 3 upvotes/ reviews from these mentioned kinds. By having this, you’re stepping into the door of becoming a Dwarves. It requires you to get along with your peers, knowing you are both running toward the mutual target, and working on the engine of innovation.</p><p>More to be found at: <span style=color:red>
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Passing The Probation Get 3 Upvotes</div><div class=tags-index style=display:none>tags: team</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Passing The Probation Get 3 Upvotes</h1></template><div class=date>Aug 26, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=span-stylecolorredthe-talent-poolspan><a href=#span-stylecolorredthe-talent-poolspan><span style=color:red>The talent pool</span> <a href=#span-stylecolorredthe-talent-poolspan></a></a></h2><p>Dwarves are backed by the talent pool. We’re selective for those that are in the funnel. Like-minded people and their unique values stay above everything. Therefore, we run a significant adjustment on the admission principle: To pass the probation means the current Dwarves accept you.</p><h2 id=span-stylecolorredthe-3-out-of-4-principlespan><a href=#span-stylecolorredthe-3-out-of-4-principlespan><span style=color:red>The 3 out of 4 principle</span> <a href=#span-stylecolorredthe-3-out-of-4-principlespan></a></a></h2><p>We’re divided into 4 kinds of association:</p><ul><li>Project member: The people you are directly working with.</li><li>In the chapter: The career track you belong in. i.g: Backend, Frontend, Design,… etc</li><li>Mentor: The upper layer that provides advice, suggestion & feedback</li><li>Social: Your friends at work.</li></ul><p>When the time comes, we will require you to submit the 3 upvotes/ reviews from these mentioned kinds. By having this, you’re stepping into the door of becoming a Dwarves. It requires you to get along with your peers, knowing you are both running toward the mutual target, and working on the engine of innovation.</p><p>More to be found at: <span style=color:red>
 <strong><a href=https://github.com/dwarvesf/handbook/blob/master/routine.md#the-second-period>The Second Period</a></strong></span><span style=color:red>.</span></p><!-- column_list bcd75248-0159-43c2-b441-b28163331313 --><!-- column 4b60b447-3353-43d9-8f59-70198e67f15a --><p><img x-data="{
     altText: `memo/assets/passing-the-probation-get-3-upvotes/f3d04cda19cc5bfc2126f840d4dddf1d_MD5.webp`,
     get altWidthHeight() {

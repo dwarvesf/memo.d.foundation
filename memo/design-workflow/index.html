@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#1-project-research>1. <strong>Project Research</strong></a></li><li><a href=#2-job-story--scenario>2. Job Story & Scenario</a></li><li><a href=#3-guerrilla-usability-testing>3. Guerrilla Usability Testing</a></li><li><a href=#4-identifying-and-prioritizing-pain-points>4. Identifying and Prioritizing Pain Points</a></li><li><a href=#5-flowchart>5. Flowchart</a></li><li><a href=#6-design-decisions>6. Design Decisions</a></li><li><a href=#7-ui-design>7. UI Design</a></li><li><a href=#8-delivery>8. <strong>Delivery</strong></a></li><li><a href=#9-review-feedback>9. <strong>Review, Feedback</strong></a></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#1-project-research>1. <strong>Project Research</strong></a></li><li><a href=#2-job-story--scenario>2. Job Story & Scenario</a></li><li><a href=#3-guerrilla-usability-testing>3. Guerrilla Usability Testing</a></li><li><a href=#4-identifying-and-prioritizing-pain-points>4. Identifying and Prioritizing Pain Points</a></li><li><a href=#5-flowchart>5. Flowchart</a></li><li><a href=#6-design-decisions>6. Design Decisions</a></li><li><a href=#7-ui-design>7. UI Design</a></li><li><a href=#8-delivery>8. <strong>Delivery</strong></a></li><li><a href=#9-review-feedback>9. <strong>Review, Feedback</strong></a></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/design-workflow/`,
       title: `Design Workflow`,
       get tagsData() {
-        const dataString = `[{"tags":["design"],"url":"/memo/design-workflow/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;design&#34;],&#34;url&#34;:&#34;/memo/design-workflow/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Design Workflow</div><div class=tags-index style=display:none>tags: design</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Design Workflow</h1></template><div class=date>Mar 22, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=1-project-research><a href=#1-project-research>1. <strong>Project Research</strong> <a href=#1-project-research></a></a></h2><p>The goal of this step is to figure what the problems you need to solve using your design from asking the people involved such as our customers (businesses owners) and the users, the people who will use your design outcome directly. We don&rsquo;t guess or assume things.</p><p>There are 2 types of research you can do to figure this out:</p><ul><li><strong>Quantitative:</strong> These are the things we can measure. Examples include analytics that communicate customer behavioral patterns and aggregate stats about customer cohorts.</li><li><strong>Qualitative:</strong> These are things that tell us about the qualities of a product or experience. Customer interviews, for example, give us insights about how a customer feels, which can provide a lot of insight into what motivates their behavior.</li></ul><p>You can create a provisional persona of potential user base on your research and people around you who you think they are able to your object of study.</p><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Design Workflow</div><div class=tags-index style=display:none>tags: design</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Design Workflow</h1></template><div class=date>Mar 22, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=1-project-research><a href=#1-project-research>1. <strong>Project Research</strong> <a href=#1-project-research></a></a></h2><p>The goal of this step is to figure what the problems you need to solve using your design from asking the people involved such as our customers (businesses owners) and the users, the people who will use your design outcome directly. We don&rsquo;t guess or assume things.</p><p>There are 2 types of research you can do to figure this out:</p><ul><li><strong>Quantitative:</strong> These are the things we can measure. Examples include analytics that communicate customer behavioral patterns and aggregate stats about customer cohorts.</li><li><strong>Qualitative:</strong> These are things that tell us about the qualities of a product or experience. Customer interviews, for example, give us insights about how a customer feels, which can provide a lot of insight into what motivates their behavior.</li></ul><p>You can create a provisional persona of potential user base on your research and people around you who you think they are able to your object of study.</p><p><img x-data="{
     altText: `aad2cd76d88ab384bd09ba16793dab87_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

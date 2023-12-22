@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -132,8 +132,22 @@
       },
       isTagPage() {
         return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Consulting - How we work</div><div class=tags-index style=display:none>tags: dwarves, work, consulting</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Consulting - How we work</h1></template><div class=date>Dec 21, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template><aside class=authors>by
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = &#39;&#39;
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = &#39;...&#39;
+        }
+      },
+    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Consulting - How we work</div><div class=tags-index style=display:none>tags: dwarves, work, consulting</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Consulting - How we work</h1></template><div class=date>Dec 21, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/members/nikki>nikki</a></aside></div></template><template x-if=!hideTitle><hr></template><h3 id=our-approach-collaborative-expertise><a href=#our-approach-collaborative-expertise>Our Approach: Collaborative Expertise <a href=#our-approach-collaborative-expertise></a></a></h3><ul><li><strong>Team of Specialists</strong>: we favor collective expertise, encouraging knowledge sharing and collaboration, to craft innovative solutions that exceed expectations.</li><li><strong>Innovative Mindset:</strong> we encourage out-of-the-box thinking, experimentation, and creative problem-solving</li><li><strong>Transparent Communication</strong>: we lay everything out on the open, fostering a collaborative environment that promotes trust, clarity, and alignment</li></ul><p><strong>Because we function based on real life demands, we recommend at least the following appointments</strong></p><ul><li><strong>Weekly note:</strong> written record consists of 3 main components; current project health & issues, potential project / deal, market signal report</li><li><strong>Monthly report:</strong> wins, losses & lessons learned collected from weekly notes</li><li><strong>Monthly planning / retro:</strong> conducted by Consulting team to reflect on our performance metrics, planning for the next period</li><li>Monthly demo/showcase: team-wise event to show off what we built / learned</li><li><strong>Monthly calibration:</strong> a joint appointment between Consulting, Labs and Ops to review individual / team performance</li></ul><p><strong>Information Flow</strong></p><p><img x-data="{
     altText: `Consulting - How We work-20231221144114271.webp`,
     get altWidthHeight() {

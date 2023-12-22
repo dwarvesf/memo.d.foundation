@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#what-is-devops-actually><strong>What is DevOps actually?</strong></a></li><li><a href=#top-core-devops-attributes>Top core DevOps attributes</a></li><li><a href=#sre-table>SRE Table</a></li><li><a href=#role-definitions>Role definitions</a></li><li><a href=#what-will-you-do>What will you do</a></li><li><a href=#roadmap-2018>Roadmap 2018</a></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#what-is-devops-actually><strong>What is DevOps actually?</strong></a></li><li><a href=#top-core-devops-attributes>Top core DevOps attributes</a></li><li><a href=#sre-table>SRE Table</a></li><li><a href=#role-definitions>Role definitions</a></li><li><a href=#what-will-you-do>What will you do</a></li><li><a href=#roadmap-2018>Roadmap 2018</a></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/about-devops/`,
       title: `About Devops`,
       get tagsData() {
-        const dataString = `[{"tags":["devops"],"url":"/memo/about-devops/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;devops&#34;],&#34;url&#34;:&#34;/memo/about-devops/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>About Devops</div><div class=tags-index style=display:none>tags: devops</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>About Devops</h1></template><div class=date>Jul 23, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=what-is-devops-actually><a href=#what-is-devops-actually><strong>What is DevOps actually?</strong> <a href=#what-is-devops-actually></a></a></h2><p>DevOps is a culture with only one goal which is &ldquo;improving the software lifecycle&rdquo; (bug fixes, features, configurations) to end-users more frequently but still keep software&rsquo;s reliable.</p><p>It is a continuous process and contains various stages such as :</p><ul><li>Continuous Integration</li><li>Continuous Development</li><li>Continuous Testing</li><li>Continuous Deployment</li><li>Continuous Monitoring</li></ul><p>The main role of DevOps is to increase the quality of product to a great extent and to increase the collaboration of Development and Operation team as well so that the workflow within the organization becomes smoother.</p><h2 id=top-core-devops-attributes><a href=#top-core-devops-attributes>Top core DevOps attributes <a href=#top-core-devops-attributes></a></a></h2><ul><li>Ability to code and script (Go, Python, Shell script)</li><li>Process re-engineering</li><li>Communicating and collaborating with other</li><li>Comfortable working with distributed teams</li><li>Ability to use a wide variety of open source technologies and tools</li><li>Networking / system admin skills</li><li>Comfort with frequent, incremental code testing and deployment</li><li>Strong grasp of automation tools</li><li>Data management skills</li><li>A strong focus on business outcomes</li></ul><p>Process re-engineering is probably the most telling skill. Engineers are not being hired to write code from scratch as much, but to find the best open source tools that can function with a company’s current platform and operating systems.</p><h2 id=sre-table><a href=#sre-table>SRE Table <a href=#sre-table></a></a></h2><p>Availability is generally calculated based on how long a service was unavailable over some period. Assuming no planned downtime, Table 1-1 indicates how much downtime is permitted to reach a given availability level.</p><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>About Devops</div><div class=tags-index style=display:none>tags: devops</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>About Devops</h1></template><div class=date>Jul 23, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=what-is-devops-actually><a href=#what-is-devops-actually><strong>What is DevOps actually?</strong> <a href=#what-is-devops-actually></a></a></h2><p>DevOps is a culture with only one goal which is &ldquo;improving the software lifecycle&rdquo; (bug fixes, features, configurations) to end-users more frequently but still keep software&rsquo;s reliable.</p><p>It is a continuous process and contains various stages such as :</p><ul><li>Continuous Integration</li><li>Continuous Development</li><li>Continuous Testing</li><li>Continuous Deployment</li><li>Continuous Monitoring</li></ul><p>The main role of DevOps is to increase the quality of product to a great extent and to increase the collaboration of Development and Operation team as well so that the workflow within the organization becomes smoother.</p><h2 id=top-core-devops-attributes><a href=#top-core-devops-attributes>Top core DevOps attributes <a href=#top-core-devops-attributes></a></a></h2><ul><li>Ability to code and script (Go, Python, Shell script)</li><li>Process re-engineering</li><li>Communicating and collaborating with other</li><li>Comfortable working with distributed teams</li><li>Ability to use a wide variety of open source technologies and tools</li><li>Networking / system admin skills</li><li>Comfort with frequent, incremental code testing and deployment</li><li>Strong grasp of automation tools</li><li>Data management skills</li><li>A strong focus on business outcomes</li></ul><p>Process re-engineering is probably the most telling skill. Engineers are not being hired to write code from scratch as much, but to find the best open source tools that can function with a company’s current platform and operating systems.</p><h2 id=sre-table><a href=#sre-table>SRE Table <a href=#sre-table></a></a></h2><p>Availability is generally calculated based on how long a service was unavailable over some period. Assuming no planned downtime, Table 1-1 indicates how much downtime is permitted to reach a given availability level.</p><p><img x-data="{
     altText: `9332ba5aa78b621a63f04a098e8ff602_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

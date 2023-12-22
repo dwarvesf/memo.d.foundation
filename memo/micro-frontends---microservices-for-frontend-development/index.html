@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#what-is-micro-frontend->What is Micro-frontend ?</a></li><li><a href=#benefits>Benefits</a></li><li><a href=#micro-frontends-in-actions>Micro frontends in actions</a><ul><li><a href=#build-time-integration>Build-time integration</a></li><li><a href=#cons>Cons</a></li></ul></li><li><a href=#run-time-integration-via-iframes>Run-time integration via iframes</a></li><li><a href=#run-time-integration-via-web-componentshttpsdevelopermozillaorgen-usdocswebweb_components>Run-time integration via <a href=https://developer.mozilla.org/en-US/docs/Web/Web_Components>Web Components</a></a><ul><li><a href=#cons-1>Cons</a></li></ul></li><li><a href=#cross-application-communication>Cross-application communication</a></li><li><a href=#serverside-rendering--universal-rendering>Serverside Rendering / Universal Rendering</a></li></ul><ul><li><a href=#references>References</a></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#what-is-micro-frontend->What is Micro-frontend ?</a></li><li><a href=#benefits>Benefits</a></li><li><a href=#micro-frontends-in-actions>Micro frontends in actions</a><ul><li><a href=#build-time-integration>Build-time integration</a></li><li><a href=#cons>Cons</a></li></ul></li><li><a href=#run-time-integration-via-iframes>Run-time integration via iframes</a></li><li><a href=#run-time-integration-via-web-componentshttpsdevelopermozillaorgen-usdocswebweb_components>Run-time integration via <a href=https://developer.mozilla.org/en-US/docs/Web/Web_Components>Web Components</a></a><ul><li><a href=#cons-1>Cons</a></li></ul></li><li><a href=#cross-application-communication>Cross-application communication</a></li><li><a href=#serverside-rendering--universal-rendering>Serverside Rendering / Universal Rendering</a></li></ul><ul><li><a href=#references>References</a></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/micro-frontends---microservices-for-frontend-development/`,
       title: `Micro Frontends Microservices For Frontend Development`,
       get tagsData() {
-        const dataString = `[{"tags":["micro-frontend"],"url":"/memo/micro-frontends---microservices-for-frontend-development/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;micro-frontend&#34;],&#34;url&#34;:&#34;/memo/micro-frontends---microservices-for-frontend-development/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Micro Frontends Microservices For Frontend Development</div><div class=tags-index style=display:none>tags: micro-frontend</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Micro Frontends Microservices For Frontend Development</h1></template><div class=date>Jul 9, 2021</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=micro-frontend><a href=#micro-frontend>Micro-frontend <a href=#micro-frontend></a></a></h1><h2 id=what-is-micro-frontend-><a href=#what-is-micro-frontend->What is Micro-frontend ? <a href=#what-is-micro-frontend-></a></a></h2><blockquote><p>An architectural style where independently deliverable frontend applications are composed into a greater whole</p></blockquote><h2 id=benefits><a href=#benefits>Benefits <a href=#benefits></a></a></h2><ul><li>Smaller, more cohesive, and maintainable codebases</li><li>More scalable organizations with decoupled, autonomous teams</li><li>The ability to upgrade, update, or even rewrite parts of the frontend in a more incremental fashion than was previously possible</li><li>Easier maintenance: Keeping frontend repositories small and specialized allows them to be more easily understood, and this simplifies long-term maintenance and testing.</li></ul><h2 id=micro-frontends-in-actions><a href=#micro-frontends-in-actions>Micro frontends in actions <a href=#micro-frontends-in-actions></a></a></h2><h3 id=build-time-integration><a href=#build-time-integration>Build-time integration <a href=#build-time-integration></a></a></h3><ul><li>Publish each micro frontend as a package and have the container application include them all as library dependencies.</li></ul><pre><code class=language-javascript>{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Micro Frontends Microservices For Frontend Development</div><div class=tags-index style=display:none>tags: micro-frontend</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Micro Frontends Microservices For Frontend Development</h1></template><div class=date>Jul 9, 2021</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=micro-frontend><a href=#micro-frontend>Micro-frontend <a href=#micro-frontend></a></a></h1><h2 id=what-is-micro-frontend-><a href=#what-is-micro-frontend->What is Micro-frontend ? <a href=#what-is-micro-frontend-></a></a></h2><blockquote><p>An architectural style where independently deliverable frontend applications are composed into a greater whole</p></blockquote><h2 id=benefits><a href=#benefits>Benefits <a href=#benefits></a></a></h2><ul><li>Smaller, more cohesive, and maintainable codebases</li><li>More scalable organizations with decoupled, autonomous teams</li><li>The ability to upgrade, update, or even rewrite parts of the frontend in a more incremental fashion than was previously possible</li><li>Easier maintenance: Keeping frontend repositories small and specialized allows them to be more easily understood, and this simplifies long-term maintenance and testing.</li></ul><h2 id=micro-frontends-in-actions><a href=#micro-frontends-in-actions>Micro frontends in actions <a href=#micro-frontends-in-actions></a></a></h2><h3 id=build-time-integration><a href=#build-time-integration>Build-time integration <a href=#build-time-integration></a></a></h3><ul><li>Publish each micro frontend as a package and have the container application include them all as library dependencies.</li></ul><pre><code class=language-javascript>{
 
   &quot;name&quot;: &quot;@shop/container&quot;,
 

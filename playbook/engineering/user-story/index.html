@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -132,8 +132,22 @@
       },
       isTagPage() {
         return this.currentUrl.includes('tags');
-      }
-    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none></div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=agile-requirement---user-story><a href=#agile-requirement---user-story>Agile requirement - User Story <a href=#agile-requirement---user-story></a></a></h1><h2 id=what-is-user-story><a href=#what-is-user-story>What is User Story? <a href=#what-is-user-story></a></a></h2><p>In the traditional software development method, requirements are noted as a handful of documentations, specifications&mldr;</p><p>In Agile, they are User Story is requirement. User Story is:</p><ul><li>A convenient format for expressing the desired business value</li><li>Crafted in a way that makes them understandable to both business people and technical people</li><li>Used to provide a great placeholder for a conversation</li><li>Written at various levels of granularity and are easy to refine</li><li>Often used with the template:<br><code>As a &lt;role>, I want &lt;feature> so that &lt;reason></code></li></ul><p>Example:</p><ul><li>As a <strong>User</strong>, I want to <strong>login into the system</strong> so that <strong>I can use other useful features</strong></li><li>As an <strong>Admin</strong>, I want <strong>the system to log the login information</strong> so that <strong>I can monitor who accesses the system</strong></li></ul><p><strong>Epic</strong>: A very large user story that will not fit into a single iteration, does not pass the test for inclusion in an iteration, and will need to be subdivided to be considered.</p><p><strong>Theme</strong>: A collection of features, epics, & stories that describe a broad business purpose.</p><h2 id=what-else-does-user-story-have><a href=#what-else-does-user-story-have>What else does User Story have? <a href=#what-else-does-user-story-have></a></a></h2><p><img x-data="{
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none></div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title></h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=agile-requirement---user-story><a href=#agile-requirement---user-story>Agile requirement - User Story <a href=#agile-requirement---user-story></a></a></h1><h2 id=what-is-user-story><a href=#what-is-user-story>What is User Story? <a href=#what-is-user-story></a></a></h2><p>In the traditional software development method, requirements are noted as a handful of documentations, specifications&mldr;</p><p>In Agile, they are User Story is requirement. User Story is:</p><ul><li>A convenient format for expressing the desired business value</li><li>Crafted in a way that makes them understandable to both business people and technical people</li><li>Used to provide a great placeholder for a conversation</li><li>Written at various levels of granularity and are easy to refine</li><li>Often used with the template:<br><code>As a &lt;role>, I want &lt;feature> so that &lt;reason></code></li></ul><p>Example:</p><ul><li>As a <strong>User</strong>, I want to <strong>login into the system</strong> so that <strong>I can use other useful features</strong></li><li>As an <strong>Admin</strong>, I want <strong>the system to log the login information</strong> so that <strong>I can monitor who accesses the system</strong></li></ul><p><strong>Epic</strong>: A very large user story that will not fit into a single iteration, does not pass the test for inclusion in an iteration, and will need to be subdivided to be considered.</p><p><strong>Theme</strong>: A collection of features, epics, & stories that describe a broad business purpose.</p><h2 id=what-else-does-user-story-have><a href=#what-else-does-user-story-have>What else does User Story have? <a href=#what-else-does-user-story-have></a></a></h2><p><img x-data="{
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#t1-retail-20>T1: Retail 2.0</a><ul><li><a href=#personalized-exp>Personalized Exp</a></li><li><a href=#simplified-authentication>Simplified Authentication</a></li><li><a href=#retail-30>Retail 3.0</a></li><li><a href=#retail-40>Retail 4.0</a></li><li><a href=#o2o---online-to-offline>O2O - Online to Offline</a></li></ul></li><li><a href=#t2-open-banking>T2: Open Banking</a></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><a href=#t1-retail-20>T1: Retail 2.0</a><ul><li><a href=#personalized-exp>Personalized Exp</a></li><li><a href=#simplified-authentication>Simplified Authentication</a></li><li><a href=#retail-30>Retail 3.0</a></li><li><a href=#retail-40>Retail 4.0</a></li><li><a href=#o2o---online-to-offline>O2O - Online to Offline</a></li></ul></li><li><a href=#t2-open-banking>T2: Open Banking</a></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/domain-glossary/`,
       title: `Domain Glossary`,
       get tagsData() {
-        const dataString = `[{"tags":["design"],"url":"/memo/domain-glossary/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;design&#34;],&#34;url&#34;:&#34;/memo/domain-glossary/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Domain Glossary</div><div class=tags-index style=display:none>tags: design</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Domain Glossary</h1></template><div class=date>Apr 19, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=t1-retail-20><a href=#t1-retail-20>T1: Retail 2.0 <a href=#t1-retail-20></a></a></h2><p><em>Definition</em></p><ul><li>Enhancing consumer engagement within brick and mortar - online/using mobile devices, moving beyond simply blending in the online and the mobile experience, all driven at the heart by sophisticated big data tools that truly enable contextual, personalized and real-time conversations between brands, retailers and consumers. [1]</li><li>Made up of AR (augmented reality), VR (virtual reality), in-store apps, new payment methods and artificial intelligence.</li></ul><h3 id=personalized-exp><a href=#personalized-exp>Personalized Exp <a href=#personalized-exp></a></a></h3><p>Designing or producing services and products to meet customer&rsquo;s individual requirements. You’re most likely already familiar with marketing personalization</p><h3 id=simplified-authentication><a href=#simplified-authentication>Simplified Authentication <a href=#simplified-authentication></a></a></h3><p>Authentication can be one of the most significant sources of friction for your application’s users. This usability barrier can impact adoption of your product, increase the burden on support operations or product administrators and, in some cases, degrade security.</p><h3 id=retail-30><a href=#retail-30>Retail 3.0 <a href=#retail-30></a></a></h3><p>Haravan: Support offline shop on online selling to trigger O2O (standardize data structure) ––> Create the foundation for big data and 4.0</p><h3 id=retail-40><a href=#retail-40>Retail 4.0 <a href=#retail-40></a></a></h3><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Domain Glossary</div><div class=tags-index style=display:none>tags: design</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Domain Glossary</h1></template><div class=date>Apr 19, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h2 id=t1-retail-20><a href=#t1-retail-20>T1: Retail 2.0 <a href=#t1-retail-20></a></a></h2><p><em>Definition</em></p><ul><li>Enhancing consumer engagement within brick and mortar - online/using mobile devices, moving beyond simply blending in the online and the mobile experience, all driven at the heart by sophisticated big data tools that truly enable contextual, personalized and real-time conversations between brands, retailers and consumers. [1]</li><li>Made up of AR (augmented reality), VR (virtual reality), in-store apps, new payment methods and artificial intelligence.</li></ul><h3 id=personalized-exp><a href=#personalized-exp>Personalized Exp <a href=#personalized-exp></a></a></h3><p>Designing or producing services and products to meet customer&rsquo;s individual requirements. You’re most likely already familiar with marketing personalization</p><h3 id=simplified-authentication><a href=#simplified-authentication>Simplified Authentication <a href=#simplified-authentication></a></a></h3><p>Authentication can be one of the most significant sources of friction for your application’s users. This usability barrier can impact adoption of your product, increase the burden on support operations or product administrators and, in some cases, degrade security.</p><h3 id=retail-30><a href=#retail-30>Retail 3.0 <a href=#retail-30></a></a></h3><p>Haravan: Support offline shop on online selling to trigger O2O (standardize data structure) ––> Create the foundation for big data and 4.0</p><h3 id=retail-40><a href=#retail-40>Retail 4.0 <a href=#retail-40></a></a></h3><p><img x-data="{
     altText: `9c8390ea196dd16d4d3dd5a56311ba94_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

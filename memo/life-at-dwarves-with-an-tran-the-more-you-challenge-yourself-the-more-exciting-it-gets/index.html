@@ -92,7 +92,7 @@
             this.currentUrl.includes(&#39;site-index&#39;) ||
             location.pathname == &#39;/&#39;;
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -106,7 +106,7 @@
             this.loadText = &#39;Load more...&#39;
           }
         },
-      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in partialValue(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
+      }'><details open><summary>Pinned Notes</summary><ul><template x-for="item in pinnedData" x-bind:key=item.url><li><a x-bind:href=item.url x-text=item.title></a></li></template></ul></details><template x-for="menu in Object.keys(menuData)" x-bind:key=menu><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary x-text=menu></summary><ul><template x-for="items in slice(menuData[menu], start, end)"><li><a x-bind:href=items.url x-text=items.name></a></li></template><template x-if="menuData[menu].length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></template><details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open><summary>Popular Tags</summary><ul><template x-for="tag in partialValue(tagsData, start, end)" x-bind:key=tag><li x-data="{
               toKebabCase(tag) {
                 return tag && tag
                   .replace('&', '')
@@ -114,11 +114,11 @@
                   .map(x => x.toLowerCase())
                   .join('-');
               }
-            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><ul><li><a href=#span-stylecolorredtheo-an-spanspan-stylecolorred><span style=color:red>Theo An, </span><span style=color:red></a></li><li><a href=#span-stylecolorred><span style=color:red></a></li><li><a href=#span-stylecolorredkspanspan-stylecolorredhía-cạnh-quan-trọng-mà-developers-nên-học-nếu-họ-muốn-trở-thành-senior-là-gì-span><span style=color:red>K</span><span style=color:red>**hía cạnh quan trọng mà developers nên học nếu họ muốn trở thành senior là gì? **</span></a></li><li><a href=#span-stylecolorred-1><span style=color:red></a></li><li><a href=#span-stylecolorred-2><span style=color:red></a></li></ul></li></ul></nav></div><main x-data='{
+            }"><a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a></li></template><template x-if="tagsData.length > end"><li class=load-more @click=toggleLoad(loaded) x-text=loadText></li></template></ul></details></section><footer><span><b>Dwarves Notes.</b> A collection of notes for everything we do and operate at Dwarves.</span></footer></nav><div class=pagenav><nav id=TableOfContents><ul><li><ul><li><a href=#span-stylecolorredtheo-an-spanspan-stylecolorred><span style=color:red>Theo An, </span><span style=color:red></a></li><li><a href=#span-stylecolorred><span style=color:red></a></li><li><a href=#span-stylecolorredkspanspan-stylecolorredhía-cạnh-quan-trọng-mà-developers-nên-học-nếu-họ-muốn-trở-thành-senior-là-gì-span><span style=color:red>K</span><span style=color:red>**hía cạnh quan trọng mà developers nên học nếu họ muốn trở thành senior là gì? **</span></a></li><li><a href=#span-stylecolorred-1><span style=color:red></a></li><li><a href=#span-stylecolorred-2><span style=color:red></a></li></ul></li></ul></nav></div><main x-data="{
       currentUrl: `/memo/life-at-dwarves-with-an-tran-the-more-you-challenge-yourself-the-more-exciting-it-gets/`,
       title: `Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets`,
       get tagsData() {
-        const dataString = `[{"tags":["dwarves"],"url":"/memo/life-at-dwarves-with-an-tran-the-more-you-challenge-yourself-the-more-exciting-it-gets/"}]`;
+        const dataString = `[{&#34;tags&#34;:[&#34;dwarves&#34;],&#34;url&#34;:&#34;/memo/life-at-dwarves-with-an-tran-the-more-you-challenge-yourself-the-more-exciting-it-gets/&#34;}]`;
         const data = JSON.parse(dataString);
         return data;
       },
@@ -128,12 +128,26 @@
       },
       isClearPage() {
         const hideFrontmatter = (/true/i).test(`false`);
-        return hideFrontmatter || this.currentUrl.includes(&#39;home&#39;) || this.currentUrl.includes(&#39;tags&#39;);
+        return hideFrontmatter || this.currentUrl.includes('home') || this.currentUrl.includes('tags');
       },
       isTagPage() {
-        return this.currentUrl.includes(&#39;tags&#39;);
-      }
-    }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets</div><div class=tags-index style=display:none>tags: dwarves</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets</h1></template><div class=date>Aug 9, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags><template x-for="tag in data.tags"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><span style=color:red>***“Anh nghiệm ra rằng trong hành trình trở thành Senior Software Engineer, càng thử thách bản thân, mọi thứ sẽ càng thú vị.”***</span><hr><p>Life at Dwarves lần này là một nhân vật khá kín tiếng ở Dwarves với đời sống lành mạnh và tính cách nhẹ nhàng. Anh An Trần, Senior Software Engineer với 7 năm kinh nghiệm làm nghề từ các start-up đến Project Lead tại Dwarves Foundation.</p><p>Trước khi tham gia cùng team Dwarves, An từng đảm nhận vị trí Tech Lead ở một start-up và Frontend Lead remote cho công ty ở Mỹ. Sau khi cho mình 3 tháng nghỉ ngơi, An tham gia vào project Gravity của Dwarves, trở thành full-time engineer và lead builder của dự án.</p><p>Với An, mọi thứ sẽ rất nhàm chán nếu chỉ xoay quanh Frontend. Nếu đã quá quen với một thứ cố định mà không mở rộng ra nhiều khía cạnh khác thì công việc sẽ không còn thú vị nữa. An từng làm qua nhiều vai trò, từ Android đến Web, từ Backend đến Frontend. Thế nên title Full-stack Engineer phần nào đó vẫn đúng với người Senior này.</p><span style=color:red>**Vậy với An, làm Senior sẽ cần có gì?**</span><!-- column_list 0860f9e3-6778-433c-a7be-2f7c0b3f109f --><!-- column aa3d4f33-7533-4690-8a11-ed2a548f3b9f --><p><img x-data="{
+        return this.currentUrl.includes('tags');
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets</div><div class=tags-index style=display:none>tags: dwarves</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Life At Dwarves With An Tran The More You Challenge Yourself The More Exciting It Gets</h1></template><div class=date>Aug 9, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && slice(data.tags, start, end).length > 3"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><span style=color:red>***“Anh nghiệm ra rằng trong hành trình trở thành Senior Software Engineer, càng thử thách bản thân, mọi thứ sẽ càng thú vị.”***</span><hr><p>Life at Dwarves lần này là một nhân vật khá kín tiếng ở Dwarves với đời sống lành mạnh và tính cách nhẹ nhàng. Anh An Trần, Senior Software Engineer với 7 năm kinh nghiệm làm nghề từ các start-up đến Project Lead tại Dwarves Foundation.</p><p>Trước khi tham gia cùng team Dwarves, An từng đảm nhận vị trí Tech Lead ở một start-up và Frontend Lead remote cho công ty ở Mỹ. Sau khi cho mình 3 tháng nghỉ ngơi, An tham gia vào project Gravity của Dwarves, trở thành full-time engineer và lead builder của dự án.</p><p>Với An, mọi thứ sẽ rất nhàm chán nếu chỉ xoay quanh Frontend. Nếu đã quá quen với một thứ cố định mà không mở rộng ra nhiều khía cạnh khác thì công việc sẽ không còn thú vị nữa. An từng làm qua nhiều vai trò, từ Android đến Web, từ Backend đến Frontend. Thế nên title Full-stack Engineer phần nào đó vẫn đúng với người Senior này.</p><span style=color:red>**Vậy với An, làm Senior sẽ cần có gì?**</span><!-- column_list 0860f9e3-6778-433c-a7be-2f7c0b3f109f --><!-- column aa3d4f33-7533-4690-8a11-ed2a548f3b9f --><p><img x-data="{
     altText: `9e2ac4cd6681cdf0a45399021f20a4cd_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
