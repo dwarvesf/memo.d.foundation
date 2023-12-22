@@ -435,8 +435,7 @@ html[data-theme=dark] {
         grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
         grid-template-rows: 1fr;
         justify-self: center;
-        grid-auto-flow: column dense;
-        grid-auto-columns: 248px;
+        grid-auto-flow: row dense;
         width: 100%;
         min-width: 248px;
         max-width: 700px;
