@@ -265,7 +265,21 @@
       },
       isTagPage() {
         return this.currentUrl.includes('tags');
-      }
+      },
+      slice(items, start, end) {
+        return items.slice(start, end);
+      },
+      toggleLoad(isLoaded) {
+        if (!isLoaded) {
+          this.end = 100;
+          this.loaded = true;
+          this.loadText = ''
+        } else {
+          this.end = 6;
+          this.loaded = false;
+          this.loadText = '...'
+        }
+      },
     }">
       <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
       <template x-if="!hideTitle">
@@ -279,9 +293,12 @@
           <div class="date">{{ .Date.Format "Jan 2, 2006" }}</div>
           <template x-for="data in tagsData">
             <template x-if="data.tags && data.tags.length > 0">
-              <div class="tags">
-                <template x-for="tag in data.tags">
+              <div class="tags" x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }">
+                <template x-for="tag in slice(data.tags, start, end)">
                   <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a>
+                </template>
+                <template x-if="!!loadText && slice(data.tags, start, end).length > 3">
+                  <a class="tag" href x-text="loadText" @click.prevent="toggleLoad(loaded)"></a>
                 </template>
               </div>
             </template>

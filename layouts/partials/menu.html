@@ -69,7 +69,7 @@
             this.currentUrl.includes('site-index') ||
             location.pathname == '/';
         },
-        partialValue(items, start, end) {
+        slice(items, start, end) {
           return items.slice(start, end);
         },
         toggleLoad(isLoaded) {
@@ -100,7 +100,7 @@
         <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" open>
           <summary x-text="menu"></summary>
           <ul>
-            <template x-for="items in partialValue(menuData[menu], start, end)">
+            <template x-for="items in slice(menuData[menu], start, end)">
               <li>
                 <a x-bind:href="items.url" x-text="items.name"></a>
               </li>
