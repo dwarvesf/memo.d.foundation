@@ -120,7 +120,7 @@
         <summary>Popular Tags</summary>
         <ul>
           <template
-            x-for="tag in partialValue(tagsData, start, end)"
+            x-for="tag in slice(tagsData, start, end)"
             x-bind:key="tag"
           >
             <li x-data="{
