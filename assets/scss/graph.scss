@@ -1,0 +1,85 @@
+.graph-container {
+  // width: 100%;
+  z-index: 0;
+  height: 200px;
+  position: sticky;
+  top: 57px;
+  right: 0;
+  z-index: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+
+  &.fullscreen {
+    position: fixed;
+    padding: 0px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    margin: auto;
+    background-color: rgba($color: #000000, $alpha: 0.8);
+    
+    > svg {
+      width: 90%;
+      height: 90%;
+      background-color: white;
+    }
+    button {
+      top: 4%;
+      right: 4.5%;
+    }
+  }
+  
+  > svg {
+    background-color: var(--primary-background-color-light);
+    border: 1px solid var(--primary-border-color-light);
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    inset: 0;
+    z-index: 0;
+  }
+
+  button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    margin: 8px;
+    cursor: pointer;
+  }
+}
+
+html[data-theme="dark"] {
+  .svg-label {
+    fill: var(--primary-background-color-light) !important;
+  }
+
+  .graph-container {
+    > svg {
+      background-color: var(--primary-background-color);
+      border: 1px solid var(--primary-border-color-light);
+    }
+
+    button {
+      color: var(--primary-background-color-light);
+    }
+    
+    &.fullscreen {
+      button {
+        > svg {
+          fill: var(--primary-background-color-light);
+          color: var(--primary-background-color-light);
+        }
+      }
+    }
+  }
+}
