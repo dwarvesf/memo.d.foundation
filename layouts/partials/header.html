@@ -273,9 +273,7 @@
           toggleFullScreen() {
             this.fullScreen = !this.fullScreen;
             if (window.$graphCenterNodes) {
-              setTimeout(() => {
-                window.$graphCenterNodes();
-              }, 100);
+              window.$graphCenterNodes();
             }
           },
       }">

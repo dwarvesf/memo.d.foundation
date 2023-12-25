@@ -33,8 +33,7 @@ function renderGraph() {
   const HOVER_SCALE_RATIO = 1.1;
   const SHOW_TEXT_AT_SCALE = 1.1;
   const DEFAULT_ZOOM_LEVEL = 0.5;
-  const AUTO_HIDE_LABEL_THRESHOLD = 50 // 50 nodes
-
+  const AUTO_HIDE_LABEL_THRESHOLD = 50; // 50 nodes
 
   // state
   let dragging = false;
@@ -42,8 +41,10 @@ function renderGraph() {
 
   // get container size
   const graphContainer = document.querySelector(".graph-container");
-  const h = graphContainer.clientHeight;
-  const w = graphContainer.clientWidth;
+  const isFullscreen = graphContainer.classList.contains("fullscreen");
+  const h = graphContainer.clientHeight / 2;
+  const w = graphContainer.clientWidth / 2;
+
   // utilities
   function uniqBy(arr, prop) {
     const uniqueObjects = {};
@@ -122,7 +123,7 @@ function renderGraph() {
     return pages.filter((page) => page.url === slug)[0];
   }
 
-  function groupPagesByTags(allPages=[]) {
+  function groupPagesByTags(allPages = []) {
     const groupedPages = {};
     allPages.forEach((page) => {
       (page.tags || []).forEach((tag) => {
@@ -204,15 +205,15 @@ function renderGraph() {
           target: tag,
         })),
       );
-      console.log(`>>>nodeLinks`, nodeLinks)
+      console.log(`>>>nodeLinks`, nodeLinks);
     }
   }
   gNodes = uniqBy(gNodes, "id");
 
   if (!gNodes.length) {
-    document.querySelector(".graph-container").classList.add('hidden')
-    document.querySelector("#TableOfContents").style.top = '56px'
-    return
+    document.querySelector(".graph-container").classList.add("hidden");
+    document.querySelector("#TableOfContents").style.top = "56px";
+    return;
   }
 
   let canShowAllLabels = gNodes.length < AUTO_HIDE_LABEL_THRESHOLD;
@@ -247,12 +248,9 @@ function renderGraph() {
             const dynamicDistance = getRandomNumberInRange(
               MIN_DISTANCE,
               MAX_DISTANCE +
-                (referenceCount > 50 ? referenceCount * 2 : referenceCount  * 3),
+                (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3),
             );
-            return Math.min(
-              dynamicDistance,
-              MAX_DISTANCE + referenceCount * 5,
-            );
+            return Math.min(dynamicDistance, MAX_DISTANCE + referenceCount * 5);
           }),
       )
       .force("center", d3.forceCenter(w, h));
@@ -311,13 +309,13 @@ function renderGraph() {
   function zoomed(event) {
     const transform = event.transform;
     container.attr("transform", transform);
-    
+
     if (transform.k > SHOW_TEXT_AT_SCALE) {
-      forceShowLabel = true
-      label.style("visibility",  "visible");
+      forceShowLabel = true;
+      label.style("visibility", "visible");
     } else {
       label.style("visibility", canShowAllLabels ? "visible" : "hidden");
-      forceShowLabel = false
+      forceShowLabel = false;
     }
 
     label.style(
@@ -449,7 +447,11 @@ function renderGraph() {
 
   node.call(drag);
 
-  // expose manual center nodes
+  // Attach click event listener to nodes
+  node.on("click", function (event, d) {
+    // Redirect to the URL associated with the node when clicked
+    window.location.href = d.id;
+  });
 };
 
 
@@ -459,7 +461,18 @@ setTimeout(() => {
 }, 150);
 
 window.$graphCenterNodes = function () {
-  d3.select(".graph-container > svg").selectAll("*").remove();
+   const svg = d3.select(".graph-container > svg");
+   svg.selectAll("*").remove();
 
-  renderGraph()
+   // Reset zoom behavior and transform
+   const zoom = d3.zoom().on("zoom", null);
+   svg.call(zoom.transform, d3.zoomIdentity);
+
+   // Reset drag behavior
+   const drag = d3.drag().on("start", null).on("drag", null).on("end", null);
+   svg.selectAll("circle").call(drag);
+
+  setTimeout(() => {
+    renderGraph();
+  }, 150);
 };
