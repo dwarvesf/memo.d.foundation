@@ -32,7 +32,7 @@ function renderGraph() {
   const HOVER_COLOR_OPACITY = 0.15;
   const HOVER_SCALE_RATIO = 1.1;
   const SHOW_TEXT_AT_SCALE = 1.1;
-  const DEFAULT_ZOOM_LEVEL = 0.5;
+  const DEFAULT_ZOOM_LEVEL = 0.2;
   const AUTO_HIDE_LABEL_THRESHOLD = 50; // 50 nodes
 
   // state
