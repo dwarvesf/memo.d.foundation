@@ -163,11 +163,13 @@ function renderGraph() {
         id: currentPage.url,
         title: currentPage.name,
         references: MIN_REF_COUNT + relatedPages.length + MENU_COUNT_BUFFER,
+        url: currentPage.url
       },
       ...relatedPages.map((pg) => ({
         id: pg.url,
         title: pg.name,
         references: MIN_REF_COUNT,
+        url: pg.url
       })),
     ];
 
@@ -191,11 +193,13 @@ function renderGraph() {
           id: tag,
           title: `#${tag}`,
           references: MIN_REF_COUNT + tags[tag].length + TAG_COUNT_BUFFER,
+          url: `/tags/${tag}`
         },
         ...tags[tag].map((pg) => ({
           id: pg.url,
           title: pg.name,
           references: MIN_REF_COUNT,
+          url: pg.url,
         })),
       );
 
@@ -248,7 +252,7 @@ function renderGraph() {
             const dynamicDistance = getRandomNumberInRange(
               MIN_DISTANCE,
               MAX_DISTANCE +
-                (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3),
+              (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3),
             );
             return Math.min(dynamicDistance, MAX_DISTANCE + referenceCount * 5);
           }),
@@ -450,7 +454,7 @@ function renderGraph() {
   // Attach click event listener to nodes
   node.on("click", function (event, d) {
     // Redirect to the URL associated with the node when clicked
-    window.location.href = d.id;
+    window.location.href = d.url;
   });
 };
 
@@ -461,16 +465,16 @@ setTimeout(() => {
 }, 150);
 
 window.$graphCenterNodes = function () {
-   const svg = d3.select(".graph-container > svg");
-   svg.selectAll("*").remove();
+  const svg = d3.select(".graph-container > svg");
+  svg.selectAll("*").remove();
 
-   // Reset zoom behavior and transform
-   const zoom = d3.zoom().on("zoom", null);
-   svg.call(zoom.transform, d3.zoomIdentity);
+  // Reset zoom behavior and transform
+  const zoom = d3.zoom().on("zoom", null);
+  svg.call(zoom.transform, d3.zoomIdentity);
 
-   // Reset drag behavior
-   const drag = d3.drag().on("start", null).on("drag", null).on("end", null);
-   svg.selectAll("circle").call(drag);
+  // Reset drag behavior
+  const drag = d3.drag().on("start", null).on("drag", null).on("end", null);
+  svg.selectAll("circle").call(drag);
 
   setTimeout(() => {
     renderGraph();
