@@ -209,5 +209,9 @@ html[data-theme=light] {
 }
 
 .relative {
-    position: relative;
+    position: relative !important;
+}
+
+.hidden {
+    display: none !important;
 }

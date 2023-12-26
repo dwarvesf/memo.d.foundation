@@ -61,6 +61,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
   {{ $styles := resources.Get "scss/styles.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
   <style>
     {{ $styles.Content | safeCSS }}
@@ -85,6 +88,9 @@
 
   {{ $systemAppearance := resources.Get "js/dark-light-check.js" }}
   <script defer src="{{ $systemAppearance.RelPermalink }}"></script>
+
+  {{ $graph := resources.Get "js/graph.js" }}
+  <script defer src="{{ $graph.RelPermalink }}"></script>
 
   {{ if .IsHome -}}
   <script type="application/ld+json">
@@ -244,7 +250,52 @@
     {{ $tags := slice }}
     {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink) }}
 
-    <div class="pagenav">
+    {{ $menus := .Site.Menus }}
+    {{ $data := slice }}
+    {{ $menuNames := slice "earn" "labs" "consulting" "memo" "newsletter" }}
+    
+    {{ range $menuNames }}
+      {{ $menuName := . }}
+        {{ $posts := index $menus $menuName }}
+          {{ if $posts }}
+            {{ range $posts }}
+              {{ $data = $data | append (dict "url" .URL "name" .Name "menu" $menuName "date" .Page.Params.Date "tags" .Page.Params.Tags) }}
+          {{ end }}
+      {{ end }}
+    {{ end }}
+    <div class="pagenav" x-data="{{ $data | jsonify }}"
+    >
+      <div 
+        class="graph-container" 
+        x-bind:class="{ 'fullscreen': fullScreen }"
+        x-data="{
+          fullScreen: false,
+          toggleFullScreen() {
+            this.fullScreen = !this.fullScreen;
+            if (window.$graphCenterNodes) {
+              window.$graphCenterNodes();
+            }
+          },
+      }">
+        <svg></svg>
+        <button type="button" x-on:click="toggleFullScreen">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            x-bind:class="{ 'hidden': fullScreen }"
+          >
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+          
+          <svg height="24" width="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" x-bind:class="{ 'hidden': !fullScreen }">
+            <path
+              d="M289.94,256l95-95A24,24,0,0,0,351,127l-95,95-95-95A24,24,0,0,0,127,161l95,95-95,95A24,24,0,1,0,161,385l95-95,95,95A24,24,0,0,0,385,351Z" 
+            />
+          </svg>
+        </button>
+      </div>
+
+
       {{ .TableOfContents }}
     </div>
     <main x-data="{
