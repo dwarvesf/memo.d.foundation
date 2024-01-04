@@ -18,43 +18,11 @@ details {
 
 summary {
     display: block;
-    padding: 5px 5px 12px 20px;
+    padding: 20px 5px 12px 20px;
     position: relative;
     cursor: pointer;
-    font-size: 20px;
-    font-weight: 600;
     text-transform: capitalize;
     user-select: none;
-}
-
-nav section details:not(:last-of-type) ul {
-    margin-bottom: 24px;
-}
-
-summary:before {
-    content: '\25B8';
-    position: absolute;
-    top: 7px;
-    left: 0;
-    transform: rotate(0);
-    transform-origin: 50% 50%;
-    transition: 0.25s transform ease;
-    font-size: 16px;
-    height: 16px;
-    width: 16px;
-    font-weight: 200;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-summary:before>* {
-    height: 4px;
-    width: 4px;
-}
-
-details[open]>summary:before {
-    transform: rotate(90deg);
 }
 
 details summary::-webkit-details-marker {
@@ -63,6 +31,19 @@ details summary::-webkit-details-marker {
 
 details>ul {
     margin-bottom: 0;
+}
+
+.site-nav>details>details>summary {
+    padding-bottom: 4px;
+    padding-top: 4px;
+    padding-left: 48px;
+    
+}
+
+.site-nav>details>details {
+    ul>li {
+        padding-left: 60px;
+    }
 }
 
 hr {
@@ -107,7 +88,9 @@ nav .site-nav ul li {
     display: flex;
     font-variant-numeric: tabular-nums;
     font-size: 14px;
-    padding-left: 20px;
+    padding-left: 36px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 
     a {
         padding: 0px 4px;
