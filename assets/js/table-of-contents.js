@@ -1,6 +1,9 @@
 const initScroller = () => {
 	const pagenav = document.querySelectorAll('.pagenav a');
 	const headers = Array.from(pagenav).map(link => document.querySelector(`#${link.href.split('#')[1]}`));
+	if (!pagenav.length) {
+		document.querySelectorAll(".nav-label")[1].classList.add("hidden");
+	}
 
 	const addClassToFirstLink = () => pagenav[0].classList.add('text-active');
 	const addTransitionClasses = () => pagenav.forEach(link => link.classList.add('transition', 'duration-200'));
@@ -14,6 +17,7 @@ const initScroller = () => {
 			ticking = true;
 		}
 	};
+
 
 	const update = () => {
 		const activeHeader = headers.find(header => header.getBoundingClientRect().top > 160) || headers[0];
@@ -30,7 +34,7 @@ const initScroller = () => {
 	let ticking = false;
 	let currentActiveHeader = headers[0];
 
-	window.addEventListener('scroll', onScroll);
+	document.querySelector('.grid').addEventListener('scroll', onScroll);
 };
 
 document.addEventListener('DOMContentLoaded', initScroller);
