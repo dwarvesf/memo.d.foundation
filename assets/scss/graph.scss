@@ -1,34 +1,51 @@
 .graph-container {
-  height: 200px;
+  height: 260px;
   margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 16px 16px 0;
+  padding: 8px 16px 16px 0;
 
   &.fullscreen {
     position: fixed;
     padding: 0px;
-    top: 0;
+    top: 57px;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 57px);
     z-index: 1000;
     margin: auto;
     background-color: rgba($color: #000000, $alpha: 0.8);
     
-    > svg {
+    .relative {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    svg.graph {
       width: 90%;
       height: 90%;
       background-color: white;
     }
+
     button {
-      top: 4%;
-      right: 4.5%;
+      top: 5%;
+      right: 5%;
     }
   }
-  
-  > svg {
+
+  .relative {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+
+  svg.graph {
     background-color: var(--primary-background-color-light);
     border: 1px solid var(--primary-border-color-light);
     border-radius: 4px;
@@ -41,13 +58,12 @@
 
   button {
     position: absolute;
-    top: 18px;
+    top: 0;
     right: 0;
     z-index: 1;
     background-color: transparent;
     border: none;
-    padding: 8px;
-    margin: 8px;
+    padding: 4px;
     cursor: pointer;
   }
 }
@@ -57,12 +73,12 @@ html[data-theme="dark"] {
     fill: var(--primary-background-color-light) !important;
   }
 
+  svg.graph {
+    background-color: var(--primary-background-color);
+    border: 1px solid var(--primary-border-color-light);
+  }
+  
   .graph-container {
-    > svg {
-      background-color: var(--primary-background-color);
-      border: 1px solid var(--primary-border-color-light);
-    }
-
     button {
       color: var(--primary-background-color-light);
     }
