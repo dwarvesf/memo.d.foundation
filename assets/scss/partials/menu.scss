@@ -1,6 +1,6 @@
 nav.menu {
     position: sticky;
-    top: 0;
+    top: 56px;
     padding: 1.5rem 0.5rem 0rem 0.5rem;
     line-height: 22px;
     white-space: nowrap;
@@ -92,7 +92,6 @@ nav.menu {
 nav .site-nav {
     display: inline-block;
     width: 100%;
-    // height: calc(100vh - 83.66px - 57px - 26px);
 }
 
 nav .site-nav section {
@@ -181,7 +180,7 @@ html[data-theme=dark] {
 
     nav.menu {
         max-width: 100%;
-        height: fit-content;
+        height: 100%;
         box-sizing: border-box;
         display: inline-block;
     }
