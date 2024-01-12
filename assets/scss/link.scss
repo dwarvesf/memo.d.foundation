@@ -1,4 +1,4 @@
-a{
+a {
   display: inline;
   position: relative;
   padding: 0px 4px;
@@ -43,7 +43,9 @@ main {
     }
   }
   h1 {
-    border-bottom: 1px solid var(--Neutral-200);
+    :not(.pagetitle) {
+      border-bottom: 1px solid var(--Neutral-200);
+    }
     font-size: 2rem;
     font-style: normal;
     font-weight: 600;
