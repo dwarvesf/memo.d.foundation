@@ -1,6 +1,6 @@
 footer {
     position: sticky;
-    padding: 12px 16px;
+    padding: 16px 12px;
     bottom: 0px;
     margin: 0 -5px;
     left: 0px;
@@ -10,7 +10,7 @@ footer {
     background-color: var(--secondary-background-color-light);
     z-index: 10;
     white-space: normal;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     font-style: normal;
     font-weight: 400;
     line-height: 140%;
@@ -21,12 +21,10 @@ footer {
         display: flex;
         justify-content: start;
         align-items: center;
-        margin-top: 8px;
+        margin-top: 16px;
 
         a {
             cursor: pointer;
-            padding: 0;
-            margin-right: 6px;
         }
     }
 }

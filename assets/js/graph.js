@@ -215,14 +215,13 @@ function renderGraph() {
 
   if (!gNodes.length) {
     document.querySelector(".graph-container").classList.add("hidden");
-    document.querySelector(".nav-label").classList.add("hidden");
     return;
   }
 
   let canShowAllLabels = gNodes.length < AUTO_HIDE_LABEL_THRESHOLD;
 
   // ============================================ GRAPH DRAWING  =========================================== //
-  const svg = d3.select("svg.graph");
+  const svg = d3.select(".graph-container>svg");
   const container = svg.append("g");
 
   // Scale for node size based on references
@@ -464,7 +463,7 @@ setTimeout(() => {
 }, 150);
 
 window.$graphCenterNodes = function () {
-  const svg = d3.select("svg.graph");
+  const svg = d3.select(".graph-container > svg");
   svg.selectAll("*").remove();
 
   // Reset zoom behavior and transform
