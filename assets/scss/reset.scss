@@ -17,6 +17,7 @@ body {
     display: flex;
     flex-direction: column;
     hyphens: auto;
+    overscroll-behavior: none;
 }
 
 h1,
