@@ -2,7 +2,7 @@ const initScroller = () => {
 	const pagenav = document.querySelectorAll('.pagenav a');
 	const headers = Array.from(pagenav).map(link => document.querySelector(`#${link.href.split('#')[1]}`));
 
-	const addClassToFirstLink = () => pagenav[0].classList.add('text-active');
+	const addClassToFirstLink = () => pagenav[0]?.classList.add('text-active');
 	const addTransitionClasses = () => pagenav.forEach(link => link.classList.add('transition', 'duration-200'));
 
 	addClassToFirstLink();
