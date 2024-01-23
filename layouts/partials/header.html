@@ -92,6 +92,9 @@
   {{ $graph := resources.Get "js/graph.js" }}
   <script defer src="{{ $graph.RelPermalink }}"></script>
 
+  {{ $scroll := resources.Get "js/scroll.js" }}
+  <script src="{{ $scroll.RelPermalink }}"></script>
+
   {{ if .IsHome -}}
   <script type="application/ld+json">
     {
