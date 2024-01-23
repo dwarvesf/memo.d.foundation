@@ -15,6 +15,10 @@
  * @property {number} references - number of realted pages
  *
  */
+
+let zoom;
+let svg;
+
 function renderGraph() {
   // Configs
   const NODE_COLOR = "#e13F5e";
@@ -215,13 +219,14 @@ function renderGraph() {
 
   if (!gNodes.length) {
     document.querySelector(".graph-container").classList.add("hidden");
+    document.querySelector(".nav-label").classList.add("hidden");
     return;
   }
 
   let canShowAllLabels = gNodes.length < AUTO_HIDE_LABEL_THRESHOLD;
 
   // ============================================ GRAPH DRAWING  =========================================== //
-  const svg = d3.select(".graph-container>svg");
+  svg = d3.select(".graph-container>svg");
   const container = svg.append("g");
 
   // Scale for node size based on references
@@ -329,7 +334,7 @@ function renderGraph() {
     );
   }
 
-  const zoom = d3
+  zoom = d3
     .zoom()
     .scaleExtent([MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL])
     .on("zoom", zoomed);
@@ -462,19 +467,12 @@ setTimeout(() => {
   renderGraph();
 }, 150);
 
-window.$graphCenterNodes = function () {
-  const svg = d3.select(".graph-container > svg");
-  svg.selectAll("*").remove();
-
+window.$graphCenterNodes = function (fullscreen = false) {
   // Reset zoom behavior and transform
-  const zoom = d3.zoom().on("zoom", null);
-  svg.call(zoom.transform, d3.zoomIdentity);
+  if (fullscreen) svg.call(zoom.transform, d3.zoomIdentity.translate(450, 300).scale(0.5));
+  else svg.call(zoom.transform, d3.zoomIdentity.translate(100, 75).scale(0.2));
 
   // Reset drag behavior
   const drag = d3.drag().on("start", null).on("drag", null).on("end", null);
   svg.selectAll("circle").call(drag);
-
-  setTimeout(() => {
-    renderGraph();
-  }, 150);
 };

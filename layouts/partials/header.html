@@ -274,7 +274,7 @@
           toggleFullScreen() {
             this.fullScreen = !this.fullScreen;
             if (window.$graphCenterNodes) {
-              window.$graphCenterNodes();
+              window.$graphCenterNodes(this.fullScreen);
             }
           },
         }">
