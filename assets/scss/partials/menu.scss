@@ -49,15 +49,6 @@ details>ul {
     height: 24px;
 }
 
-details[open] summary ~ * {
-    animation: sweep .5s ease-in-out;
-}
-
-@keyframes sweep {
-    0%    {opacity: 0.4}
-    100%  {opacity: 1}
-}
-
 .site-nav>details {
     >details>summary::before {
         display: inline-block;

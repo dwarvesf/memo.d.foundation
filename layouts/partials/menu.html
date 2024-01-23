@@ -100,8 +100,21 @@
         <summary>Home</summary>
 
         <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
-          <details x-data="{ start: 0, end: 10, loaded: false, loadText: 'Load more...', }" closed>
-            <summary x-text="menu"></summary>
+          <details
+            x-data="{
+              start: 0,
+              end: 10,
+              loaded: false,
+              loadText: 'Load more...',
+              open: sessionStorage.getItem(`${menu}-details`) === 'true',
+            }"
+            x-init="$watch('open', (val) => sessionStorage.setItem(`${menu}-details`, open))"
+            x-bind:open="open"
+          >
+            <summary
+              x-text="menu"
+              @click.prevent="open = !open"
+            ></summary>
             <ul>
               <template x-for="items in slice(menuData[menu], start, end)">
                 <li>
