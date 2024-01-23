@@ -2,8 +2,6 @@
 
 {{ .Content }}
 
-<div>test</div>
-
 <ul>
    {{ range (.Paginate ( where .Site.RegularPages "Section" "writing" ).ByDate.Reverse).Pages }}
       {{ if ne .Kind "section" }}
