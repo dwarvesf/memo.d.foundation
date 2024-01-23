@@ -87,6 +87,20 @@ hr {
 
 nav.menu {
     background-color: var(--secondary-background-color-light);
+    display: inline-grid;
+    grid-template-rows: 1fr min-content;
+    grid-template-areas:
+        "site-nav"
+        "footer";
+
+    .site-nav {
+        grid-area: site-nav;
+        overflow: auto;
+    }
+
+    .footer {
+        grid-area: footer;
+    }
 }
 
 nav .site-nav {
