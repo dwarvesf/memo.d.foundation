@@ -1,11 +1,38 @@
 {{ partial "header.html" . }}
 
-<ul>
-  {{ range .Data.Pages }}
-  <li>
-    <a href="{{.RelPermalink}}">{{ .Title }}</a>
-  </li>
-  {{ end }}
-</ul>
+<!-- Sort through page's .Data.Terms alphabetically -->
+{{ $pages := (sort .Data.Pages "Title" "asc") }}
 
-{{ partial "footer.html" . }}
+<!-- Create an array of alphanumeric characters -->
+{{ $symbols := slice "$" "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" }}
+
+<!-- Range through each alphanumeric character -->
+{{ range $symbols }}
+  <!-- Set the current character in a variable -->
+  {{ $symbol := . }}
+
+  <!-- Create a slice to hold the terms that match the current iteration of $symbol -->
+  {{ $terms := slice }}
+
+  <!-- Range through each page in the sorted .Data.Pages slice -->
+  {{ range $pages }}
+    <!-- Get current term's name -->
+		{{ $term := .Name }}
+
+		<!-- If the current term's preFix matches the current iteration of $symbol, then add the term to the $terms slice -->
+		{{ if hasPrefix $term ($symbol | upper) }}
+			{{ $terms = $terms | append . }}
+		{{ end }}
+  {{ end }}
+
+  <!-- Once every term whose preFix matches the current $symbol has been added to the $terms slice, range over the $terms slice. If the $terms slice is greater than 0 (meaning the current symbol has .Data.Terms associated with it, then display a proper heading, and list out each term -->
+  {{ if gt $terms 0 }}
+		<h2 class="heading">{{ $symbol | upper }}</h2>
+		<ul class="term-list">
+		{{ range $terms }}
+			<li class="term"><a href="{{ .Page.RelPermalink }}">{{ .Page.Name }}</a></li>
+		{{ end }}
+		</ul>
+	{{ else }}
+  {{ end }}
+{{ end }}
