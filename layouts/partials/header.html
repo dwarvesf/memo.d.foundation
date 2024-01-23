@@ -347,7 +347,7 @@
           <div class="date">{{ .Date.Format "Jan 2, 2006" }}</div>
           <template x-for="data in tagsData">
             <template x-if="data.tags && data.tags.length > 0">
-              <div class="tags" x-data="{ start: 2, end: 6, loaded: false, loadText: '...', }">
+              <div class="tags" x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }">
                 <template x-for="tag in slice(data.tags, start, end)">
                   <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a>
                 </template>
