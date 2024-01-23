@@ -1,23 +1,8 @@
-<script type="text/javascript">
-  const currentUrl = window.location.href;
-  window.location.replace(currentUrl + "/home");
-</script>
-
 {{ partial "header.html" . }}
 
 {{ $homepage := .Site.GetPage "/home" }}
 
 {{ with $homepage }}
-  {{ if $homepage.Params.authors -}}
-  <aside class="authors">
-    by
-    {{ $authorsLen := sub (len $homepage.Params.authors) 1}}
-    {{ range $i, $e := $homepage.Params.authors }}
-    <a href="/members/{{ $e }}">{{ $e }}</a>{{ if (gt $authorsLen $i) }},{{end}}
-    {{ end }}
-  </aside>
-  {{ end }}
-
   {{ if $homepage.Params.notice -}}
     <div class="notice">{{ .Params.notice }}</div>
   {{ end }}
