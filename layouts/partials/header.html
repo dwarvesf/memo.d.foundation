@@ -54,15 +54,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vsc-dark-plus.min.css" integrity="sha512-ML8rkwYTFNcblPFx+VLgFIT2boa6f8DDP6p6go4+FT0/mJ8DCbCgi6S0UdjtzB3hKCr1zhU+YVB0AHhIloZP8Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: light)" />
 
   <script defer data-domain="note.d.foundation" src="https://plausible.io/js/script.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.4/dist/cdn.min.js"></script>
 
   <!-- Algolia -->
   <link rel="preconnect" href="https://B0BWKXLVM9-dsn.algolia.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
-  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
   <!-- D3 -->
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script defer src="https://d3js.org/d3.v7.min.js"></script>
 
   {{ $styles := resources.Get "scss/styles.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
   <style>
@@ -93,7 +93,7 @@
   <script defer src="{{ $graph.RelPermalink }}"></script>
 
   {{ $scroll := resources.Get "js/scroll.js" }}
-  <script src="{{ $scroll.RelPermalink }}"></script>
+  <script defer src="{{ $scroll.RelPermalink }}"></script>
 
   {{ if .IsHome -}}
   <script type="application/ld+json">
