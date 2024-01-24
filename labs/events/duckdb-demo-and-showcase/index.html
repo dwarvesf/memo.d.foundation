@@ -19,12 +19,10 @@
       { title: 'Newsletter', url: '/newsletter/' },
       { title: 'Events', url: '/events/' },
     ],
-    activeUrl: '',
     isActiveUrl(url) {
-      if (!this.activeUrl) {
-        this.activeUrl = this.currentUrl.startsWith(url);
-        return this.activeUrl;
-      }
+      const linkUrlRoot = url.split('/')[1];
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      return linkUrlRoot === currentUrlRoot;
     },
   }"><ul><template x-for="item in links"><li x-bind:class="{ 'active': isActiveUrl(item.url) }"><a x-bind:href=item.url x-text=item.title></a></li></template></ul></nav><div id=docsearch></div><div id=themetoggler><button class=btn-theme-toggler x-data="{
           theme: 'System',
