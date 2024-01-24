@@ -52,6 +52,7 @@
         currentUrl: `/radar/react-server-component/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
+          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
