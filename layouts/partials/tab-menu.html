@@ -9,12 +9,10 @@
       { title: 'Newsletter', url: '/newsletter/' },
       { title: 'Events', url: '/events/' },
     ],
-    activeUrl: '',
     isActiveUrl(url) {
-      if (!this.activeUrl) {
-        this.activeUrl = this.currentUrl.startsWith(url);
-        return this.activeUrl;
-      }
+      const linkUrlRoot = url.split('/')[1];
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      return linkUrlRoot === currentUrlRoot;
     },
   }">
   <ul>
