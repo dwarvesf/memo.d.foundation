@@ -52,7 +52,6 @@
         currentUrl: `/brainery/google-dataproc/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -163,7 +162,7 @@
         }
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Google Dataproc</div><div class=tags-index style=display:none>tags: brainery, engineering/data, data, data-engineering, google-dataproc, hadoop, streaming, ETL</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Google Dataproc</h1></template><div class=date>Jan 24, 2024</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
-<a href=/members/mickwan1234>mickwan1234</a></aside></div></template><template x-if=!hideTitle><hr></template><h2 id=introduction><a href=#introduction>Introduction <a href=#introduction></a></a></h2><p><img x-data="{
+<a href=/members/mickwan1234>mickwan1234</a></aside></div></template><template x-if=!hideTitle><hr></template><h2 id=introduction><a href=#introduction>Introduction <a href=#introduction></a></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Google Dataproc-20240124162722161.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -177,43 +176,43 @@ gcloud dataproc clusters create CLUSTER_NAME \\
   --master-machine-type MASTER_MACHINE_TYPE
 </code></pre><p>Replace the placeholders (<strong><code>CLUSTER_NAME</code></strong>, <strong><code>REGION</code></strong>, <strong><code>NUM_WORKERS</code></strong>, <strong><code>MACHINE_TYPE</code></strong>, <strong><code>MASTER_MACHINE_TYPE</code></strong>) with your desired values.</p></li></ul></li><li><p><strong>Access the Cluster:</strong></p><ul><li>Once the cluster is created, you can access the master node using SSH. You can find the SSH command in the Dataproc cluster details in the GCP Console.</li></ul></li><li><p><strong>Run Jobs:</strong></p><ul><li>Submit jobs to your Dataproc cluster using tools like Apache Spark or Hadoop. You can submit jobs using the <strong><code>gcloud dataproc jobs submit</code></strong> command.</li></ul></li><li><p><strong>Delete the Cluster:</strong></p><ul><li><p>When you&rsquo;re done with the cluster, remember to delete it to avoid incurring unnecessary costs.</p><pre><code class=language-bash>bashCopy code
 gcloud dataproc clusters delete CLUSTER_NAME --region REGION
-</code></pre><p>Replace the placeholders with your cluster&rsquo;s name and region.</p></li></ul></li></ol><h2 id=how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console><a href=#how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console>How to deploy a Spark job on Dataproc (Using Google cloud console) <a href=#how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console></a></a></h2><h3 id=step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen><a href=#step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen>Step 1: In the created cluster click on <code>Submit Job</code> button on the top right of the main console screen <a href=#step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen></a></a></h3><p><img x-data="{
+</code></pre><p>Replace the placeholders with your cluster&rsquo;s name and region.</p></li></ul></li></ol><h2 id=how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console><a href=#how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console>How to deploy a Spark job on Dataproc (Using Google cloud console) <a href=#how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console></a></a></h2><h3 id=step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen><a href=#step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen>Step 1: In the created cluster click on <code>Submit Job</code> button on the top right of the main console screen <a href=#step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen></a></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Google Dataproc-20240124134755469.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/brainery/assets/Google%20Dataproc-20240124134755469.webp alt="Google Dataproc-20240124134755469.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><h3 id=step-2-fill-all-necessary-field-in-the-job-creation-modal><a href=#step-2-fill-all-necessary-field-in-the-job-creation-modal>Step 2: Fill all necessary field in the job creation modal: <a href=#step-2-fill-all-necessary-field-in-the-job-creation-modal></a></a></h3><p><img x-data="{
+  }" src=/brainery/assets/Google%20Dataproc-20240124134755469.webp alt="Google Dataproc-20240124134755469.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><h3 id=step-2-fill-all-necessary-field-in-the-job-creation-modal><a href=#step-2-fill-all-necessary-field-in-the-job-creation-modal>Step 2: Fill all necessary field in the job creation modal: <a href=#step-2-fill-all-necessary-field-in-the-job-creation-modal></a></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Google Dataproc-20240124134755545.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/brainery/assets/Google%20Dataproc-20240124134755545.webp alt="Google Dataproc-20240124134755545.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><ul><li><p>Job ID: job unique name across the cluster</p></li><li><p>Job Type: the type of the job that you submit to Dataproc including (in this demo we’ll use PySpark):<br><img x-data="{
+  }" src=/brainery/assets/Google%20Dataproc-20240124134755545.webp alt="Google Dataproc-20240124134755545.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><ul><li><p>Job ID: job unique name across the cluster</p></li><li><p>Job Type: the type of the job that you submit to Dataproc including (in this demo we’ll use PySpark):<br><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Google Dataproc-20240124134755561.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/brainery/assets/Google%20Dataproc-20240124134755561.webp alt="Google Dataproc-20240124134755561.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p></li><li><p>Main file: the directory of main job file from GCS or HDFS or inside the compute engine.</p></li><li><p>All others field is optional.</p></li><li><p>After you fill in the necessary input i should be something like this:<br><img x-data="{
+  }" src=/brainery/assets/Google%20Dataproc-20240124134755561.webp alt="Google Dataproc-20240124134755561.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p></li><li><p>Main file: the directory of main job file from GCS or HDFS or inside the compute engine.</p></li><li><p>All others field is optional.</p></li><li><p>After you fill in the necessary input i should be something like this:<br><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Google Dataproc-20240124134755653.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/brainery/assets/Google%20Dataproc-20240124134755653.webp alt="Google Dataproc-20240124134755653.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p></li><li><p>Then press <code>Submit</code> to submit the job</p></li></ul><h3 id=step-3><a href=#step-3>Step 3: <a href=#step-3></a></a></h3><p>After submitting the job you should be able to similar screen to this:<br><img x-data="{
+  }" src=/brainery/assets/Google%20Dataproc-20240124134755653.webp alt="Google Dataproc-20240124134755653.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p></li><li><p>Then press <code>Submit</code> to submit the job</p></li></ul><h3 id=step-3><a href=#step-3>Step 3: <a href=#step-3></a></a></h3><p>After submitting the job you should be able to similar screen to this:<br><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Google Dataproc-20240124134755759.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/brainery/assets/Google%20Dataproc-20240124134755759.webp alt="Google Dataproc-20240124134755759.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Wait for the job status change to succeeded (or failed):<br><img x-data="{
+  }" src=/brainery/assets/Google%20Dataproc-20240124134755759.webp alt="Google Dataproc-20240124134755759.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Wait for the job status change to succeeded (or failed):<br><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Google Dataproc-20240124134755832.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/brainery/assets/Google%20Dataproc-20240124134755832.webp alt="Google Dataproc-20240124134755832.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>And that is how you run a Spark ( or Hadoop) job on Google Cloud Dataproc.<br>Full video step by step:<br><video x-data="{
+  }" src=/brainery/assets/Google%20Dataproc-20240124134755832.webp alt="Google Dataproc-20240124134755832.webp" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>And that is how you run a Spark ( or Hadoop) job on Google Cloud Dataproc.<br>Full video step by step:<br><script src=/js/pdf-js/pdf.mjs type=module></script><video x-data="{
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

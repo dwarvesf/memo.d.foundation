@@ -52,7 +52,6 @@
         currentUrl: `/common-component/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -172,7 +171,7 @@
    &lt;head&gt;
      &lt;title&gt;Test&lt;/title&gt;
    &lt;/head&gt;
-</code></pre></li><li><p>Update the title to match the name of your website.</p></li></ol><p>Images</p><ol><li><p>Open the file containing the Linux mascot.</p></li><li><p>Marvel at its beauty.</p><p><img x-data="{
+</code></pre></li><li><p>Update the title to match the name of your website.</p></li></ol><p>Images</p><ol><li><p>Open the file containing the Linux mascot.</p></li><li><p>Marvel at its beauty.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Tux, the Linux mascot`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -186,31 +185,31 @@
 </code></pre><hr><pre><code>Horizontal components section
 </code></pre><p>Horizonal</p><hr><p>Example</p><hr><pre><code>Link components section
 </code></pre><p>Adding titles</p><ul><li>Link <a href=https://www.google.com>example</a></li></ul><p>URLs and Email Address</p><ul><li>&lt;https//www.google.com></li><li><a href=mailto:nhuthm@d.foundation>nhuthm@d.foundation</a></li></ul><p>Formatting Links</p><ul><li>With bold example: <strong><a href=https://www.google.com>Bold Example</a></strong></li><li>With italic example: <em><a href=https://www.google.com>Italic Example</a></em></li><li>With code example: <a href=#code><code>Code example</code></a></li><li>With in-style link with title: <a href=https://www.google.com title="Google's Homepage">Inline-style link with title</a></li></ul><hr><pre><code>Image components section
-</code></pre><p>Inline-style:<br><img x-data="{
+</code></pre><p>Inline-style:<br><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `alt text`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png title="Logo Title Text 1" alt="alt text" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Reference-style:<br><img x-data="{
+  }" src=https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png title="Logo Title Text 1" alt="alt text" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Reference-style:<br><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `alt text`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png title="Logo Title Text 2" alt="alt text" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png title="Logo Title Text 2" alt="alt text" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Minion`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=https://octodex.github.com/images/minion.png alt=Minion x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"><br><img x-data="{
+  }" src=https://octodex.github.com/images/minion.png alt=Minion x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"><br><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Stormtroopocat`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=https://octodex.github.com/images/stormtroopocat.jpg title="The Stormtroopocat" alt=Stormtroopocat x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Like links, Images also have a footnote style syntax</p><p><img x-data="{
+  }" src=https://octodex.github.com/images/stormtroopocat.jpg title="The Stormtroopocat" alt=Stormtroopocat x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Like links, Images also have a footnote style syntax</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Alt text`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

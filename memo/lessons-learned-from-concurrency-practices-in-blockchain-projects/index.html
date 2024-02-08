@@ -52,7 +52,6 @@
         currentUrl: `/memo/lessons-learned-from-concurrency-practices-in-blockchain-projects/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -192,7 +191,7 @@ TryXactLock:
 
    ...
 }
-</code></pre><p><img x-data="{
+</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `d24c06b91424a0367b9728cd76f4c3fc_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

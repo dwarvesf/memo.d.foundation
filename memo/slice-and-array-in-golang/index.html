@@ -52,7 +52,6 @@
         currentUrl: `/memo/slice-and-array-in-golang/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -162,7 +161,7 @@
           this.loadText = '...'
         }
       },
-    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Slice And Array In Golang</div><div class=tags-index style=display:none>tags: go</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Slice And Array In Golang</h1></template><div class=date>Mar 13, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h3 id=array><a href=#array>Array <a href=#array></a></a></h3><p>In Go language, the terminology <code>Array</code> has a bit different from another language like C, JS, &mldr; In Go, the <code>array has a fixed length and type </code>Take a look of array implementation in Go.</p><p><img x-data="{
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Slice And Array In Golang</div><div class=tags-index style=display:none>tags: go</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Slice And Array In Golang</h1></template><div class=date>Mar 13, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h3 id=array><a href=#array>Array <a href=#array></a></a></h3><p>In Go language, the terminology <code>Array</code> has a bit different from another language like C, JS, &mldr; In Go, the <code>array has a fixed length and type </code>Take a look of array implementation in Go.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `a650b13e6028a391f8acdc858b08c372_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -186,7 +185,7 @@ b := [3]int{1,1,1}
 // each other
 
 fmt.Println(a == b) // true
-</code></pre><p>For representation for an array of [4]int in memory is for integer value laid out <code>sequentially</code></p><p><img x-data="{
+</code></pre><p>For representation for an array of [4]int in memory is for integer value laid out <code>sequentially</code></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `8327bf995dd32badeef1e1d0eb4eeda5_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -228,19 +227,19 @@ fmt.Println(cap(a)) // 8
 	len int
 	cap int
 }
-</code></pre><p>For example, if we create a slice by using make([]byte,5), the slice will be structured like this:</p><p><img x-data="{
+</code></pre><p>For example, if we create a slice by using make([]byte,5), the slice will be structured like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `f18621d9bf057f8c2ea818ca438379c3_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/slice-and-array-in-golang/f18621d9bf057f8c2ea818ca438379c3_MD5.webp alt=f18621d9bf057f8c2ea818ca438379c3_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>A slice cannot be grown beyond its capacity. Attempting to do so will cause a runtime panic, just as when indexing outside the bounds of a slice or array. Similarly, slices cannot be re-sliced below zero to access earlier elements in the array.</p><p><strong>So the question is, What if we <strong><code>**append**</code></strong> an element to a slice which has reached its capacity?</strong></p><h3 id=append><a href=#append>Append <a href=#append></a></a></h3><p>Let&rsquo;s dig into a source code (go/src/reflect/value)</p><p><img x-data="{
+  }" src=/memo/assets/slice-and-array-in-golang/f18621d9bf057f8c2ea818ca438379c3_MD5.webp alt=f18621d9bf057f8c2ea818ca438379c3_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>A slice cannot be grown beyond its capacity. Attempting to do so will cause a runtime panic, just as when indexing outside the bounds of a slice or array. Similarly, slices cannot be re-sliced below zero to access earlier elements in the array.</p><p><strong>So the question is, What if we <strong><code>**append**</code></strong> an element to a slice which has reached its capacity?</strong></p><h3 id=append><a href=#append>Append <a href=#append></a></a></h3><p>Let&rsquo;s dig into a source code (go/src/reflect/value)</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `1f1383e462f5fa432205e471759c4051_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/slice-and-array-in-golang/1f1383e462f5fa432205e471759c4051_MD5.webp alt=1f1383e462f5fa432205e471759c4051_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>so the <code>append</code> built in function do a few things here:</p><p>First, it will check an input value, if it&rsquo;s not a <code>Slice</code> the program will throw a panic, then the interesting things here is <code>grow</code> function , it will take an old slice and length of the new slice we want to append. Let take a look at <code>grow</code> function:</p><p><img x-data="{
+  }" src=/memo/assets/slice-and-array-in-golang/1f1383e462f5fa432205e471759c4051_MD5.webp alt=1f1383e462f5fa432205e471759c4051_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>so the <code>append</code> built in function do a few things here:</p><p>First, it will check an input value, if it&rsquo;s not a <code>Slice</code> the program will throw a panic, then the interesting things here is <code>grow</code> function , it will take an old slice and length of the new slice we want to append. Let take a look at <code>grow</code> function:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `de7599e21a9ed4cf0e4a9d31169129e2_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

@@ -52,7 +52,6 @@
         currentUrl: `/memo/docker-microcontainers/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -180,19 +179,19 @@ COPY views views
 EXPOSE 8080
 
 ENTRYPOINT [&quot;/web/web&quot;]
-</code></pre><ul><li>Build source by command: <code>go build</code></li><li>And link library by:<code>CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o web .</code></li><li>Build with docker: <code>docker build -t beego-web .</code></li></ul><p><img x-data="{
+</code></pre><ul><li>Build source by command: <code>go build</code></li><li>And link library by:<code>CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o web .</code></li><li>Build with docker: <code>docker build -t beego-web .</code></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `9f15d2c4686cfe88873b99b117d8f372_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/docker-microcontainers/9f15d2c4686cfe88873b99b117d8f372_MD5.webp alt=9f15d2c4686cfe88873b99b117d8f372_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><ul><li>Creating an image only takes 17.5MB</li></ul><p><img x-data="{
+  }" src=/memo/assets/docker-microcontainers/9f15d2c4686cfe88873b99b117d8f372_MD5.webp alt=9f15d2c4686cfe88873b99b117d8f372_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><ul><li>Creating an image only takes 17.5MB</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `6e719ca68d6f109ffe4061996ee21aa6_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/docker-microcontainers/6e719ca68d6f109ffe4061996ee21aa6_MD5.webp alt=6e719ca68d6f109ffe4061996ee21aa6_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><ul><li>Your laptop had an image, which is beego-web</li></ul><p><img x-data="{
+  }" src=/memo/assets/docker-microcontainers/6e719ca68d6f109ffe4061996ee21aa6_MD5.webp alt=6e719ca68d6f109ffe4061996ee21aa6_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><ul><li>Your laptop had an image, which is beego-web</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `ae0b817a27464a31365a74e65dc37101_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

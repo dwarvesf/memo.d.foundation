@@ -52,7 +52,6 @@
         currentUrl: `/memo/remove-unused-css-styles-from-bootstrap-using-purgecss/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -162,7 +161,7 @@
           this.loadText = '...'
         }
       },
-    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Remove Unused Css Styles From Bootstrap Using Purgecss</div><div class=tags-index style=display:none>tags: css</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Remove Unused Css Styles From Bootstrap Using Purgecss</h1></template><div class=date>Feb 1, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p><img x-data="{
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Remove Unused Css Styles From Bootstrap Using Purgecss</div><div class=tags-index style=display:none>tags: css</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Remove Unused Css Styles From Bootstrap Using Purgecss</h1></template><div class=date>Feb 1, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `50067f1125ee42d2d68068bd93443235_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -187,14 +186,14 @@
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre><p>Now look at</p><pre><code class=language-javascript>bootstrap-grid.min.css
-</code></pre><p><img x-data="{
+</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `50067f1125ee42d2d68068bd93443235_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
   }" src=/memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss/50067f1125ee42d2d68068bd93443235_MD5.webp alt=50067f1125ee42d2d68068bd93443235_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Quite huge isn’t it? Thanks to PurgeCss here is the CSS file after being purged will only contain parts of the CSS file (only used selectors), as you can see horizontal scrollbar is not very long:</p><h1 id=usage><a href=#usage>Usage <a href=#usage></a></a></h1><p>PurgeCSS can be installed with npm package</p><pre><code class=language-javascript>npm i --save-dev purgecss
-</code></pre><p>Basically, you run it against your CSS files and your HTML/JavaScript files. It will parse and analyze which CSS content will be used and remove unused CSS content.</p><p>PurgeCSS can be used as a CLI. This is our project structure, we gonna need to transform CSS files so we have to download bootstrap distro and get file we want to transform.</p><p><img x-data="{
+</code></pre><p>Basically, you run it against your CSS files and your HTML/JavaScript files. It will parse and analyze which CSS content will be used and remove unused CSS content.</p><p>PurgeCSS can be used as a CLI. This is our project structure, we gonna need to transform CSS files so we have to download bootstrap distro and get file we want to transform.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `a903c03602f38038a2c4e4eb4344e0b9_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -212,13 +211,13 @@
     &quot;build&quot;: &quot;purgecss --css bootstrap-grid.min.css --content index.html --out dist/&quot;
   }
 }
-</code></pre><p>Then run npm run build, you should see new bootstrap-grid.min.css in dist folder with unused CSS content being removed</p><p><img x-data="{
+</code></pre><p>Then run npm run build, you should see new bootstrap-grid.min.css in dist folder with unused CSS content being removed</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `04ee21f4b60188ce76c21df96695e6cf_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss/04ee21f4b60188ce76c21df96695e6cf_MD5.webp alt=04ee21f4b60188ce76c21df96695e6cf_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=/memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss/04ee21f4b60188ce76c21df96695e6cf_MD5.webp alt=04ee21f4b60188ce76c21df96695e6cf_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `dd640e027b4421ee74d88c2864f0c9ed_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -268,7 +267,7 @@ module.exports = {
     })
   ]
 };
-</code></pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code>// Import CSS Grid min CSS</code></p><p><code>import 'bootstrap/dist/css/bootstrap-grid.min.css'</code></p><p>Here is the build output which includes CSS grid file</p><p><img x-data="{
+</code></pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code>// Import CSS Grid min CSS</code></p><p><code>import 'bootstrap/dist/css/bootstrap-grid.min.css'</code></p><p>Here is the build output which includes CSS grid file</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `429bb8c82f4e38465293c6f79d782394_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -324,7 +323,7 @@ module.exports = {
     }),
   ]
 };
-</code></pre><p><img x-data="{
+</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `97c7bfa1adf49d7c225f00976d99eb8c_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

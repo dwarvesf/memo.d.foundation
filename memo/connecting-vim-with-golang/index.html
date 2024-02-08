@@ -52,7 +52,6 @@
         currentUrl: `/memo/connecting-vim-with-golang/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -204,7 +203,7 @@ filetype plugin indent on    &quot; required
 &quot;
 &quot; see :h vundle for more details or wiki for FAQ
 &quot; Put your non-Plugin stuff after this line
-</code></pre><p>Next, to install plugins, open vim and run this command line below (by pressing Esc)</p><p><code>:PluginInstall</code></p><p>To up date plugins, use<br><code>:PluginUpdate</code></p><p>That’s enough for you to pick Vim up from the ground.</p><h2 id=basic-usage-instruction><a href=#basic-usage-instruction>Basic Usage Instruction <a href=#basic-usage-instruction></a></a></h2><p>Vim is a text-editor program first built on UNIX, in order to work in non-user interface environment. At this time, the keyboard hasn’t been upgraded completely, which is why the action on Vim is still different from today.</p><p><img x-data="{
+</code></pre><p>Next, to install plugins, open vim and run this command line below (by pressing Esc)</p><p><code>:PluginInstall</code></p><p>To up date plugins, use<br><code>:PluginUpdate</code></p><p>That’s enough for you to pick Vim up from the ground.</p><h2 id=basic-usage-instruction><a href=#basic-usage-instruction>Basic Usage Instruction <a href=#basic-usage-instruction></a></a></h2><p>Vim is a text-editor program first built on UNIX, in order to work in non-user interface environment. At this time, the keyboard hasn’t been upgraded completely, which is why the action on Vim is still different from today.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `5ca1828b88d41d78ead1d47ac32aeabd_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -226,13 +225,13 @@ filetype plugin indent on    &quot; required
     neocomplete.vim
     neosnippet.vim
     auto-pairs
-</code></pre><p>In these:</p><ul><li>nerdtree: Help you organize the folders in vim in folder structure, which makes it easier to open file and folder. After finished setting up:</li></ul><p><img x-data="{
+</code></pre><p>In these:</p><ul><li>nerdtree: Help you organize the folders in vim in folder structure, which makes it easier to open file and folder. After finished setting up:</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `ac42721e6ddb17d3204d4596f55f96ce_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/connecting-vim-with-golang/ac42721e6ddb17d3204d4596f55f96ce_MD5.webp alt=ac42721e6ddb17d3204d4596f55f96ce_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Thanks to plugin of git, you can know which file is under editing, which one has just been added up, and which one has not been committed yet.</p><ul><li>neocomplete: Support auto complete vim</li></ul><p><img x-data="{
+  }" src=/memo/assets/connecting-vim-with-golang/ac42721e6ddb17d3204d4596f55f96ce_MD5.webp alt=ac42721e6ddb17d3204d4596f55f96ce_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Thanks to plugin of git, you can know which file is under editing, which one has just been added up, and which one has not been committed yet.</p><ul><li>neocomplete: Support auto complete vim</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `db43f35dc945a8dde4b51e4b97221c86_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

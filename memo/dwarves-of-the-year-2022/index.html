@@ -52,7 +52,6 @@
         currentUrl: `/memo/dwarves-of-the-year-2022/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -162,37 +161,37 @@
           this.loadText = '...'
         }
       },
-    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Dwarves Of The Year 2022</div><div class=tags-index style=display:none>tags: dwarves, team</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Dwarves Of The Year 2022</h1></template><div class=date>Jan 19, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=dwarves-of-the-year-2022---wins-to-celebrate><a href=#dwarves-of-the-year-2022---wins-to-celebrate>Dwarves of The Year 2022 - Wins to Celebrate <a href=#dwarves-of-the-year-2022---wins-to-celebrate></a></a></h1><p><img x-data="{
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Dwarves Of The Year 2022</div><div class=tags-index style=display:none>tags: dwarves, team</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Dwarves Of The Year 2022</h1></template><div class=date>Jan 19, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><h1 id=dwarves-of-the-year-2022---wins-to-celebrate><a href=#dwarves-of-the-year-2022---wins-to-celebrate>Dwarves of The Year 2022 - Wins to Celebrate <a href=#dwarves-of-the-year-2022---wins-to-celebrate></a></a></h1><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `038461ddb3ecb054f60e25c96da7cf64_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dwarves-of-the-year-2022/038461ddb3ecb054f60e25c96da7cf64_MD5.webp alt=038461ddb3ecb054f60e25c96da7cf64_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><hr><p>It&rsquo;s been a long journey, but we&rsquo;ve finally made it to 2022 and what a year it&rsquo;s been for our team of Dwarves. Countless hours of hard work and it&rsquo;s all paid off with our big wins of the year. Honored for all and huge congratulations for our Dwarves of 2022.</p><p>A total of <strong>~$18,000 awarded and rewarded by ****<a href="https://www.facebook.com/photo.php?fbid=860144451875324&amp;set=pb.100036393316096.-2207520000.&amp;type=3">$ICY - Dwarves official token</a></strong>, with a few names appearing several times. We congratulated the Dwarves who went above and beyond to make 2022 an unforgettable year for everyone.</p><p><img x-data="{
+  }" src=/memo/assets/dwarves-of-the-year-2022/038461ddb3ecb054f60e25c96da7cf64_MD5.webp alt=038461ddb3ecb054f60e25c96da7cf64_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><hr><p>It&rsquo;s been a long journey, but we&rsquo;ve finally made it to 2022 and what a year it&rsquo;s been for our team of Dwarves. Countless hours of hard work and it&rsquo;s all paid off with our big wins of the year. Honored for all and huge congratulations for our Dwarves of 2022.</p><p>A total of <strong>~$18,000 awarded and rewarded by ****<a href="https://www.facebook.com/photo.php?fbid=860144451875324&amp;set=pb.100036393316096.-2207520000.&amp;type=3">$ICY - Dwarves official token</a></strong>, with a few names appearing several times. We congratulated the Dwarves who went above and beyond to make 2022 an unforgettable year for everyone.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `f133d96b54c29c89c7540afefc02d1fd_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dwarves-of-the-year-2022/f133d96b54c29c89c7540afefc02d1fd_MD5.webp alt=f133d96b54c29c89c7540afefc02d1fd_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=/memo/assets/dwarves-of-the-year-2022/f133d96b54c29c89c7540afefc02d1fd_MD5.webp alt=f133d96b54c29c89c7540afefc02d1fd_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `978c0887fb897fa0b19aa242574fa696_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dwarves-of-the-year-2022/978c0887fb897fa0b19aa242574fa696_MD5.webp alt=978c0887fb897fa0b19aa242574fa696_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=/memo/assets/dwarves-of-the-year-2022/978c0887fb897fa0b19aa242574fa696_MD5.webp alt=978c0887fb897fa0b19aa242574fa696_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `05bc5b71fadb7dab867513f1b90afca5_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dwarves-of-the-year-2022/05bc5b71fadb7dab867513f1b90afca5_MD5.webp alt=05bc5b71fadb7dab867513f1b90afca5_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=/memo/assets/dwarves-of-the-year-2022/05bc5b71fadb7dab867513f1b90afca5_MD5.webp alt=05bc5b71fadb7dab867513f1b90afca5_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `a22db2100ab5212b6915104c338a38c3_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dwarves-of-the-year-2022/a22db2100ab5212b6915104c338a38c3_MD5.webp alt=a22db2100ab5212b6915104c338a38c3_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=/memo/assets/dwarves-of-the-year-2022/a22db2100ab5212b6915104c338a38c3_MD5.webp alt=a22db2100ab5212b6915104c338a38c3_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `80b88b130a9f3616cf530d6c5219afbf_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

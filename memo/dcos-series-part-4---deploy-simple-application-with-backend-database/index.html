@@ -52,7 +52,6 @@
         currentUrl: `/memo/dcos-series-part-4---deploy-simple-application-with-backend-database/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -213,49 +212,49 @@ $ CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 // build image and push it to docker hub
 $ docker build -t &lt;namespace&gt;/todolist .
 $ docker push &lt;namespace&gt;/todolist
-</code></pre><h2 id=setting-up-database-on-dcos><a href=#setting-up-database-on-dcos>#=Setting up database on DC/OS <a href=#setting-up-database-on-dcos></a></a></h2><p>Let’s go to our DC/OS and create a <code>postgres</code> service</p><p>Go to DC/OS and choose package tab, then find <code>postgres</code>:</p><p><img x-data="{
+</code></pre><h2 id=setting-up-database-on-dcos><a href=#setting-up-database-on-dcos>#=Setting up database on DC/OS <a href=#setting-up-database-on-dcos></a></a></h2><p>Let’s go to our DC/OS and create a <code>postgres</code> service</p><p>Go to DC/OS and choose package tab, then find <code>postgres</code>:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `7274a46eb1cff2f39783f79ef6352709_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/7274a46eb1cff2f39783f79ef6352709_MD5.webp alt=7274a46eb1cff2f39783f79ef6352709_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Customize your configuration after click <code>Advance setting</code> from pop-up page:</p><p><img x-data="{
+  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/7274a46eb1cff2f39783f79ef6352709_MD5.webp alt=7274a46eb1cff2f39783f79ef6352709_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Customize your configuration after click <code>Advance setting</code> from pop-up page:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `efe59623d7bf4e6f6112c0d8b5fc2385_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/efe59623d7bf4e6f6112c0d8b5fc2385_MD5.webp alt=efe59623d7bf4e6f6112c0d8b5fc2385_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/efe59623d7bf4e6f6112c0d8b5fc2385_MD5.webp alt=efe59623d7bf4e6f6112c0d8b5fc2385_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `d235654ef8f0f428f5ecad332edb6148_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/d235654ef8f0f428f5ecad332edb6148_MD5.webp alt=d235654ef8f0f428f5ecad332edb6148_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Finally, you need to wait a few minutes and get the result like this:</p><p><img x-data="{
+  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/d235654ef8f0f428f5ecad332edb6148_MD5.webp alt=d235654ef8f0f428f5ecad332edb6148_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Finally, you need to wait a few minutes and get the result like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `b987a78c85ca24c80127c39227dc905f_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/b987a78c85ca24c80127c39227dc905f_MD5.webp alt=b987a78c85ca24c80127c39227dc905f_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>You also need to config more a little bit to be able to backup data:</p><p><img x-data="{
+  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/b987a78c85ca24c80127c39227dc905f_MD5.webp alt=b987a78c85ca24c80127c39227dc905f_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>You also need to config more a little bit to be able to backup data:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `bd74914f8224427cee07a129310fbe15_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/bd74914f8224427cee07a129310fbe15_MD5.webp alt=bd74914f8224427cee07a129310fbe15_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>A very important thing is sharing volumes. You will need to set a specific node with public IP to make sure if service restart, it will only be deployed to a node that you have specified before. There are 2 things need to be config:</p><ol><li>Set a specific node in <code>Service</code> tab:</li></ol><p><img x-data="{
+  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/bd74914f8224427cee07a129310fbe15_MD5.webp alt=bd74914f8224427cee07a129310fbe15_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>A very important thing is sharing volumes. You will need to set a specific node with public IP to make sure if service restart, it will only be deployed to a node that you have specified before. There are 2 things need to be config:</p><ol><li>Set a specific node in <code>Service</code> tab:</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `fb4564d4758af4cc151fca604136180f_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/fb4564d4758af4cc151fca604136180f_MD5.webp alt=fb4564d4758af4cc151fca604136180f_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><ol><li>Share volumes</li></ol><p><img x-data="{
+  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/fb4564d4758af4cc151fca604136180f_MD5.webp alt=fb4564d4758af4cc151fca604136180f_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><ol><li>Share volumes</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `3d03a4c6a74681114944d4f0cc0ca683_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/3d03a4c6a74681114944d4f0cc0ca683_MD5.webp alt=3d03a4c6a74681114944d4f0cc0ca683_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>For me, I usually share volumes inside container to <code>/srv</code> in node: <code>/srv/todolist/postgresql:/var/lib/postgresql/data</code></p><p>Then, you also need to enable <code>LOAD BALANCED SERVICE ADDRESS</code>, it will allow your application connect to <code>postgres</code></p><p><img x-data="{
+  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/3d03a4c6a74681114944d4f0cc0ca683_MD5.webp alt=3d03a4c6a74681114944d4f0cc0ca683_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>For me, I usually share volumes inside container to <code>/srv</code> in node: <code>/srv/todolist/postgresql:/var/lib/postgresql/data</code></p><p>Then, you also need to enable <code>LOAD BALANCED SERVICE ADDRESS</code>, it will allow your application connect to <code>postgres</code></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `07ae10e7b5195c92905e0901562cb533_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -303,13 +302,13 @@ $ docker push &lt;namespace&gt;/todolist
   }
 }
 </code></pre><p>OK, we can deploy now !</p><pre><code class=language-plain_text>$ dcos marathon app add marathon.json
-</code></pre><p>As my expectation, it will be like this:</p><p><img x-data="{
+</code></pre><p>As my expectation, it will be like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `b85d3535f4be0d3605d8d61ef3fcd21a_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/b85d3535f4be0d3605d8d61ef3fcd21a_MD5.webp alt=b85d3535f4be0d3605d8d61ef3fcd21a_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Everything is available now. Let’s check it:</p><p><img x-data="{
+  }" src=/memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database/b85d3535f4be0d3605d8d61ef3fcd21a_MD5.webp alt=b85d3535f4be0d3605d8d61ef3fcd21a_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Everything is available now. Let’s check it:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `91935fc991d145d9dec0c0a5a1703c2e_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

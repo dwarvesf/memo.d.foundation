@@ -52,7 +52,6 @@
         currentUrl: `/playbook/engineering/git/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -206,7 +205,7 @@ git commit --amend
 # * d update git practice with commit sha changed
 # * b rename /Testing to /qa
 # * a add documents for QA (#47)
-</code></pre><ul><li><strong>Merge</strong></li></ul><blockquote><p>The <code>git merge</code> command lets you take the independent lines of development created by <code>git branch</code> and integrate them into a single branch.</p><p>Ref: <a href=https://www.atlassian.com/git/tutorials/using-branches/git-merge>https://www.atlassian.com/git/tutorials/using-branches/git-merge</a></p></blockquote><p><img x-data="{
+</code></pre><ul><li><strong>Merge</strong></li></ul><blockquote><p>The <code>git merge</code> command lets you take the independent lines of development created by <code>git branch</code> and integrate them into a single branch.</p><p>Ref: <a href=https://www.atlassian.com/git/tutorials/using-branches/git-merge>https://www.atlassian.com/git/tutorials/using-branches/git-merge</a></p></blockquote><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -220,7 +219,7 @@ git fetch
 git merge origin/master # to update with master on the origin
 # sample 2
 git merge feat/feature-2 # merge feature-2 into the current branch
-</code></pre><ul><li><strong>Rebase</strong></li></ul><blockquote><p>Rebasing is the process of moving or combining a sequence of commits to a new base commit</p><p>Ref: <a href=https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase>https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase</a></p></blockquote><p><img x-data="{
+</code></pre><ul><li><strong>Rebase</strong></li></ul><blockquote><p>Rebasing is the process of moving or combining a sequence of commits to a new base commit</p><p>Ref: <a href=https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase>https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase</a></p></blockquote><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `playbook/engineering/assets/git/584a1f36a68a3fb68b4c7bb10bd72eb0_MD5.svg`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

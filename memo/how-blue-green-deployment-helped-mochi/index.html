@@ -52,7 +52,6 @@
         currentUrl: `/memo/how-blue-green-deployment-helped-mochi/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -282,7 +281,7 @@ spec:
 </code></pre><h2 id=applying-resources-to-the-cluster-and-testing><a href=#applying-resources-to-the-cluster-and-testing>Applying Resources to the Cluster and Testing <a href=#applying-resources-to-the-cluster-and-testing></a></a></h2><p>We applied the resource files to the Kubernetes cluster using <code>**kubectl apply**</code> commands. The application was deployed to the active environment and could be viewed on the production domain - <code>mochiapp.bluegreen.domain</code>.</p><pre><code class=language-bash>kubectl apply -f app/bluegreen-rollout.yaml
 kubectl apply -f app/service.yaml
 kubectl apply -f app/ingress.yaml
-</code></pre><p><img x-data="{
+</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `f711c252bf191800d3184c8839221899_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -294,19 +293,19 @@ containers:
 	  image: argoproj/rollouts-demo:green
 </code></pre><pre><code class=language-bash>kubectl apply -f app/bluegreen-rollout.yaml
 </code></pre><p>Once the updated application version was thoroughly tested, we promoted it to the active environment using a specific command. The updated application was then accessible on the active environment in the blue domain.</p><pre><code class=language-bash>kubectl argo rollouts promote mochi
-</code></pre><p>With the deployment complete, the updated application was accessible on the active environment in the blue domain - <code>mochiapp.bluegreen.domain</code>.</p><p><img x-data="{
+</code></pre><p>With the deployment complete, the updated application was accessible on the active environment in the blue domain - <code>mochiapp.bluegreen.domain</code>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `dbebe30b5e9fa94fd865c1c66b41c5f6_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/how-blue-green-deployment-helped-mochi/dbebe30b5e9fa94fd865c1c66b41c5f6_MD5.webp alt=dbebe30b5e9fa94fd865c1c66b41c5f6_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>An alternative would be to utilize the ArgoCD UI for the promotion, as it could prove to be exceptionally helpful for those who may not be able to operate the CLI, including QC, during the release rollout. Additionally, any issues that may arise can quickly be reverted with just the click of the &ldquo;Rollback&rdquo; button.</p><p><img x-data="{
+  }" src=/memo/assets/how-blue-green-deployment-helped-mochi/dbebe30b5e9fa94fd865c1c66b41c5f6_MD5.webp alt=dbebe30b5e9fa94fd865c1c66b41c5f6_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>An alternative would be to utilize the ArgoCD UI for the promotion, as it could prove to be exceptionally helpful for those who may not be able to operate the CLI, including QC, during the release rollout. Additionally, any issues that may arise can quickly be reverted with just the click of the &ldquo;Rollback&rdquo; button.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `8a98dc8c92776e0f68f1db43bf3b4a9a_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/how-blue-green-deployment-helped-mochi/8a98dc8c92776e0f68f1db43bf3b4a9a_MD5.webp alt=8a98dc8c92776e0f68f1db43bf3b4a9a_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=/memo/assets/how-blue-green-deployment-helped-mochi/8a98dc8c92776e0f68f1db43bf3b4a9a_MD5.webp alt=8a98dc8c92776e0f68f1db43bf3b4a9a_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `8ee42dc2d4a9b07dbfc76db9b009a8cc_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

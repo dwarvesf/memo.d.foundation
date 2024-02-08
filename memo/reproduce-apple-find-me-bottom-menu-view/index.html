@@ -52,7 +52,6 @@
         currentUrl: `/memo/reproduce-apple-find-me-bottom-menu-view/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -162,55 +161,55 @@
           this.loadText = '...'
         }
       },
-    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Reproduce Apple Find Me Bottom Menu View</div><div class=tags-index style=display:none>tags: swift</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Reproduce Apple Find Me Bottom Menu View</h1></template><div class=date>Jun 29, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>Today we are going to recreate Find Me Bottom Menu view in few lines of code.</p><p>Device list Bottom Menu has three states: Collapsed, HalfExpanded and Expanded like images below</p><p><img x-data="{
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Reproduce Apple Find Me Bottom Menu View</div><div class=tags-index style=display:none>tags: swift</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Reproduce Apple Find Me Bottom Menu View</h1></template><div class=date>Jun 29, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p>Today we are going to recreate Find Me Bottom Menu view in few lines of code.</p><p>Device list Bottom Menu has three states: Collapsed, HalfExpanded and Expanded like images below</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `da7e32fb18ad8af53dffd592a0e683f5_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/da7e32fb18ad8af53dffd592a0e683f5_MD5.webp alt=da7e32fb18ad8af53dffd592a0e683f5_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>What we should do:</p><ol><li>Bottom View can update itself height follow user finger position when dragging (Pan Gesture)</li><li>Bottom View can automatically resize its height base on the direction of dragging and position compare to “half position”</li></ol><p>Create an XCode project, add a new UIView and named it to BottomMenuView.</p><p>Add a PanView as a subview of BottomMenuView and set constrain leading, trailing, top equal to superview, set height constrain to 44.0, PanView using to tracking user finger using UIPanGestureReconizer</p><p><img x-data="{
+  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/da7e32fb18ad8af53dffd592a0e683f5_MD5.webp alt=da7e32fb18ad8af53dffd592a0e683f5_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>What we should do:</p><ol><li>Bottom View can update itself height follow user finger position when dragging (Pan Gesture)</li><li>Bottom View can automatically resize its height base on the direction of dragging and position compare to “half position”</li></ol><p>Create an XCode project, add a new UIView and named it to BottomMenuView.</p><p>Add a PanView as a subview of BottomMenuView and set constrain leading, trailing, top equal to superview, set height constrain to 44.0, PanView using to tracking user finger using UIPanGestureReconizer</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `memo/assets/reproduce-apple-find-me-bottom-menu-view/dabaf075b757602a5af2c6bfcead3283_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/dabaf075b757602a5af2c6bfcead3283_MD5.webp alt=memo/assets/reproduce-apple-find-me-bottom-menu-view/dabaf075b757602a5af2c6bfcead3283_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Add a bottom constraint for PanView, make outlet for our PanView and bottom constraint. (don’t worry if Xcode warning ⚠️ conflict constraint)</p><p><img x-data="{
+  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/dabaf075b757602a5af2c6bfcead3283_MD5.webp alt=memo/assets/reproduce-apple-find-me-bottom-menu-view/dabaf075b757602a5af2c6bfcead3283_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Add a bottom constraint for PanView, make outlet for our PanView and bottom constraint. (don’t worry if Xcode warning ⚠️ conflict constraint)</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `memo/assets/reproduce-apple-find-me-bottom-menu-view/8fbb0902507f83afa2b0ef1bc5f830a0_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/8fbb0902507f83afa2b0ef1bc5f830a0_MD5.webp alt=memo/assets/reproduce-apple-find-me-bottom-menu-view/8fbb0902507f83afa2b0ef1bc5f830a0_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Now let&rsquo;s coding.</p><p>Define some variables to set menu height</p><p><img x-data="{
+  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/8fbb0902507f83afa2b0ef1bc5f830a0_MD5.webp alt=memo/assets/reproduce-apple-find-me-bottom-menu-view/8fbb0902507f83afa2b0ef1bc5f830a0_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Now let&rsquo;s coding.</p><p>Define some variables to set menu height</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `8a481af07dd3642e0a3001689f596f77_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/8a481af07dd3642e0a3001689f596f77_MD5.webp alt=8a481af07dd3642e0a3001689f596f77_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Add pan gesture to panView and handle pan event</p><p><img x-data="{
+  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/8a481af07dd3642e0a3001689f596f77_MD5.webp alt=8a481af07dd3642e0a3001689f596f77_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Add pan gesture to panView and handle pan event</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `ab8aae75b6f84f7d28901126d81f38d0_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/ab8aae75b6f84f7d28901126d81f38d0_MD5.webp alt=ab8aae75b6f84f7d28901126d81f38d0_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Update height of menu base on user dragging direction and position</p><p><img x-data="{
+  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/ab8aae75b6f84f7d28901126d81f38d0_MD5.webp alt=ab8aae75b6f84f7d28901126d81f38d0_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Update height of menu base on user dragging direction and position</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `e66f07cbd639a062efd2fc0a52315a9c_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/e66f07cbd639a062efd2fc0a52315a9c_MD5.webp alt=e66f07cbd639a062efd2fc0a52315a9c_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Setup our UI and init heigh for menu in aweakFromNib</p><p><img x-data="{
+  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/e66f07cbd639a062efd2fc0a52315a9c_MD5.webp alt=e66f07cbd639a062efd2fc0a52315a9c_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Setup our UI and init heigh for menu in aweakFromNib</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `11c6fff8357d4f0172bb2ecf6a315d63_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/11c6fff8357d4f0172bb2ecf6a315d63_MD5.webp alt=11c6fff8357d4f0172bb2ecf6a315d63_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Finally, test out the menu</p><p>by add to the view controller</p><p><img x-data="{
+  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/11c6fff8357d4f0172bb2ecf6a315d63_MD5.webp alt=11c6fff8357d4f0172bb2ecf6a315d63_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Finally, test out the menu</p><p>by add to the view controller</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `memo/assets/reproduce-apple-find-me-bottom-menu-view/f864eb297f5f2ff0a55adc3876a07a3c_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/f864eb297f5f2ff0a55adc3876a07a3c_MD5.webp alt=memo/assets/reproduce-apple-find-me-bottom-menu-view/f864eb297f5f2ff0a55adc3876a07a3c_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><img x-data="{
+  }" src=/memo/assets/reproduce-apple-find-me-bottom-menu-view/f864eb297f5f2ff0a55adc3876a07a3c_MD5.webp alt=memo/assets/reproduce-apple-find-me-bottom-menu-view/f864eb297f5f2ff0a55adc3876a07a3c_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `097b369938a9fd77abad168060e62307_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;

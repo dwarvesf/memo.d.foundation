@@ -52,7 +52,6 @@
         currentUrl: `/memo/create-circular-text-using-swiftui/`,
         get pinnedData() {
           const dataString = `[{"date":"2024-02-07T00:00:00Z","tags":["newsletter","consulting","year-end-party","donation","bounty","tech-report","performance","community"],"title":"What&#39;s New in January 2024","url":"/newsletter/whats-new-january-2024/"},{"date":"2024-01-26T00:00:00Z","tags":["labs","market-report","AI","rust","frontend","htmx","LLM","cybersecurity"],"title":"Market Report Jan 2024","url":"/labs/market-report-jan-2024/"},{"date":"2024-01-03T00:00:00Z","tags":["newsletter","consulting","performance-review","doty"],"title":"What&#39;s New in December 2023","url":"/newsletter/whats-new-december-2023/"},{"date":"2023-12-29T00:00:00Z","tags":["labs","market-report"],"title":"Market Report Dec 2023","url":"/labs/market-report-dec-2023/"},{"date":"2023-11-30T00:00:00Z","tags":["dwarves","forward-engineering","labs","duckdb","AI","rust","ui-practices","passwordless"],"title":"November Forward Engineering 2023","url":"/memo/forward-engineering-november-2023/"},{"date":"2023-01-19T00:00:00Z","tags":["dwarves","work","forward-engineering","labs","AI","rust","passwordless","passkeys","LLM","object-detection"],"title":"December Forward Engineering 2023","url":"/memo/forward-engineering-december-2023/"}]`;
-          console.log(dataString);
           const data = JSON.parse(dataString);
           data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
           return data;
@@ -162,73 +161,73 @@
           this.loadText = '...'
         }
       },
-    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Create Circular Text Using Swiftui</div><div class=tags-index style=display:none>tags: swift</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Create Circular Text Using Swiftui</h1></template><div class=date>Mar 23, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p><img x-data="{
+    }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Create Circular Text Using Swiftui</div><div class=tags-index style=display:none>tags: swift</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Create Circular Text Using Swiftui</h1></template><div class=date>Mar 23, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `6872696f92cc278214818c3e90f67383_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/6872696f92cc278214818c3e90f67383_MD5.webp alt=6872696f92cc278214818c3e90f67383_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>This is what we have when finished.</p><p>Fire up your Xcode and create new SwiftUI Project.</p><p>Create new SwiftUI file and named it CircularText.</p><p>The first two attributes for our control of course is String and Radius for our circular.</p><p>Add 2 Attribute named</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/6872696f92cc278214818c3e90f67383_MD5.webp alt=6872696f92cc278214818c3e90f67383_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>This is what we have when finished.</p><p>Fire up your Xcode and create new SwiftUI Project.</p><p>Create new SwiftUI file and named it CircularText.</p><p>The first two attributes for our control of course is String and Radius for our circular.</p><p>Add 2 Attribute named</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `9b6a81fbaea69fbc04804680517f7628_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/9b6a81fbaea69fbc04804680517f7628_MD5.webp alt=9b6a81fbaea69fbc04804680517f7628_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>To make a circle text we split out string to array of character, each character will have it own Text control then we going to rotate the text to match circle.</p><p>Define computer property to split string to array of character:</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/9b6a81fbaea69fbc04804680517f7628_MD5.webp alt=9b6a81fbaea69fbc04804680517f7628_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>To make a circle text we split out string to array of character, each character will have it own Text control then we going to rotate the text to match circle.</p><p>Define computer property to split string to array of character:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `46724b5601eab5c6899e4444f5729480_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/46724b5601eab5c6899e4444f5729480_MD5.webp alt=46724b5601eab5c6899e4444f5729480_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Using enumerated to get offset using later.<br>To calculate angle using to make rotation later we need 2 things: perimeter of circle and width of each character.</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/46724b5601eab5c6899e4444f5729480_MD5.webp alt=46724b5601eab5c6899e4444f5729480_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Using enumerated to get offset using later.<br>To calculate angle using to make rotation later we need 2 things: perimeter of circle and width of each character.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `d850c4e1905c1fe203887a585b99beb0_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/d850c4e1905c1fe203887a585b99beb0_MD5.webp alt=d850c4e1905c1fe203887a585b99beb0_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Later we will use it as radius.perimeter</p><p>For Width of each character is a bit complicate. We need place it in some control and get size of that control somehow. Text is the best candidate for this case.</p><p>Embed Text and Spacer in Vstack we have a custom control as tall as parent view and the text at top of control, this make us easy to make rotation later because we just need rotation at center of control.</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/d850c4e1905c1fe203887a585b99beb0_MD5.webp alt=d850c4e1905c1fe203887a585b99beb0_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Later we will use it as radius.perimeter</p><p>For Width of each character is a bit complicate. We need place it in some control and get size of that control somehow. Text is the best candidate for this case.</p><p>Embed Text and Spacer in Vstack we have a custom control as tall as parent view and the text at top of control, this make us easy to make rotation later because we just need rotation at center of control.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `c8ece1efb4286be7223bcb132a0e1257_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/c8ece1efb4286be7223bcb132a0e1257_MD5.webp alt=c8ece1efb4286be7223bcb132a0e1257_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Now we have List of Text, the next thing is get it width value. SwiftUI let us get size from control using GeometryReader, and we send it to outside using PreferenceKey</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/c8ece1efb4286be7223bcb132a0e1257_MD5.webp alt=c8ece1efb4286be7223bcb132a0e1257_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Now we have List of Text, the next thing is get it width value. SwiftUI let us get size from control using GeometryReader, and we send it to outside using PreferenceKey</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `1f272824a0e403cad5a4d5a45fe5c91f_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/1f272824a0e403cad5a4d5a45fe5c91f_MD5.webp alt=1f272824a0e403cad5a4d5a45fe5c91f_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>We going to place custom Sizeable View as background of Text, because Sizable View actually a Color, it going to fill the parent (which is background of Text)so we got exactly size of Text<br>To store that sizes let add a Dictionary to save it, the key will be the position of Character. Add a dictionary named textSizes</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/1f272824a0e403cad5a4d5a45fe5c91f_MD5.webp alt=1f272824a0e403cad5a4d5a45fe5c91f_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>We going to place custom Sizeable View as background of Text, because Sizable View actually a Color, it going to fill the parent (which is background of Text)so we got exactly size of Text<br>To store that sizes let add a Dictionary to save it, the key will be the position of Character. Add a dictionary named textSizes</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `9f748f21526907df2f65cfa50b2b3526_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/9f748f21526907df2f65cfa50b2b3526_MD5.webp alt=9f748f21526907df2f65cfa50b2b3526_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Update our VStacks to save sizes when preference changed</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/9f748f21526907df2f65cfa50b2b3526_MD5.webp alt=9f748f21526907df2f65cfa50b2b3526_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Update our VStacks to save sizes when preference changed</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `068016d599ac0fe7ebeb1c320496fea9_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/068016d599ac0fe7ebeb1c320496fea9_MD5.webp alt=068016d599ac0fe7ebeb1c320496fea9_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>We have perimeter and with of each character, now calculate angle of each character by it position</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/068016d599ac0fe7ebeb1c320496fea9_MD5.webp alt=068016d599ac0fe7ebeb1c320496fea9_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>We have perimeter and with of each character, now calculate angle of each character by it position</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `62ae3eea7d36359b7e26f8840a74dd3d_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/62ae3eea7d36359b7e26f8840a74dd3d_MD5.webp alt=62ae3eea7d36359b7e26f8840a74dd3d_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>This function simple calculate how many percentages of size.with compare to perimeter of circular, then figure out angle by that percent.</p><p>We have angle, now make rotation and see results:</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/62ae3eea7d36359b7e26f8840a74dd3d_MD5.webp alt=62ae3eea7d36359b7e26f8840a74dd3d_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>This function simple calculate how many percentages of size.with compare to perimeter of circular, then figure out angle by that percent.</p><p>We have angle, now make rotation and see results:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `f9fb1ddc68ddef8e0c9f6f321e34aaeb_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/f9fb1ddc68ddef8e0c9f6f321e34aaeb_MD5.webp alt=f9fb1ddc68ddef8e0c9f6f321e34aaeb_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Look like the space between characters have problem. This because of it just fit enough for horizontal Text, when we make circle, the rotation angle make it close together. Luckily the building kerning Modifier make us easily to adjust it.</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/f9fb1ddc68ddef8e0c9f6f321e34aaeb_MD5.webp alt=f9fb1ddc68ddef8e0c9f6f321e34aaeb_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>Look like the space between characters have problem. This because of it just fit enough for horizontal Text, when we make circle, the rotation angle make it close together. Luckily the building kerning Modifier make us easily to adjust it.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `fdd18ae3a8fd903729c18eda97d7ae1f_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/create-circular-text-using-swiftui/fdd18ae3a8fd903729c18eda97d7ae1f_MD5.webp alt=fdd18ae3a8fd903729c18eda97d7ae1f_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>If you want to make it center, simple ask the angle of last character divide by 2 then rotation it anticlockwise.</p><p><img x-data="{
+  }" src=/memo/assets/create-circular-text-using-swiftui/fdd18ae3a8fd903729c18eda97d7ae1f_MD5.webp alt=fdd18ae3a8fd903729c18eda97d7ae1f_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></p><p>If you want to make it center, simple ask the angle of last character divide by 2 then rotation it anticlockwise.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `1f24f4e09d557c69ef6b57fcc4e0ab66_MD5.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
