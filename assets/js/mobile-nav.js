@@ -2,8 +2,8 @@ window.onload = function() {
   const mobileNavBtn = document.querySelector("#mobile-nav-btn");
   const icons = document.querySelectorAll(".mobile-nav-btn-icon");
   const sidebar = document.querySelector("nav.menu");
-
-  console.log(sidebar);
+  const body = document.body;
+  let lockScroll = false;
 
   mobileNavBtn.addEventListener("click", () => {
     for (const icon of icons) {
@@ -11,5 +11,9 @@ window.onload = function() {
     }
 
     sidebar.classList.toggle("show");
+
+    lockScroll = !lockScroll;
+
+    body.style.overflow = lockScroll ? "hidden" : "";
   });
 };
