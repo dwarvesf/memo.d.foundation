@@ -16,7 +16,7 @@
     z-index: 1000;
     margin: auto;
     background-color: rgba($color: #000000, $alpha: 0.8);
-    
+
     > svg {
       top: 30px;
       width: 80%;
@@ -28,7 +28,7 @@
       right: 10%;
     }
   }
-  
+
   > svg {
     background-color: var(--primary-background-color-light);
     border: 1px solid var(--primary-border-color-light);
@@ -67,7 +67,7 @@ html[data-theme="dark"] {
     button {
       color: var(--primary-background-color-light);
     }
-    
+
     &.fullscreen {
       button {
         > svg {
