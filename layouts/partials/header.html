@@ -95,6 +95,9 @@
   {{ $scroll := resources.Get "js/scroll.js" }}
   <script defer src="{{ $scroll.RelPermalink }}"></script>
 
+  {{ $mobileNav := resources.Get "js/mobile-nav.js" }}
+  <script defer src="{{ $mobileNav.RelPermalink }}"></script>
+
   {{ if .IsHome -}}
   <script type="application/ld+json">
     {
@@ -188,6 +191,14 @@
 
 <body class="{{ if .IsHome }}home{{ else }}{{ $.Scratch.Get " section" }}{{ end }}">
   <div class="tab-header">
+    <button id="mobile-nav-btn" class="mobile-nav-btn">
+      <svg class="mobile-nav-btn-icon mobile-nav-btn-icon-show" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 20H29M11 14H29M11 26H29" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <svg class="mobile-nav-btn-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.3993 14.0148C15.1064 13.7219 14.6316 13.7219 14.3387 14.0148C14.0458 14.3077 14.0458 14.7826 14.3387 15.0755L19.2632 20L14.3387 24.9245C14.0458 25.2174 14.0458 25.6923 14.3387 25.9851C14.6316 26.278 15.1064 26.278 15.3993 25.9851L20.3238 21.0607L25.2483 25.9851C25.5412 26.278 26.0161 26.278 26.309 25.9851C26.6019 25.6923 26.6019 25.2174 26.309 24.9245L21.3845 20L26.309 15.0755C26.6019 14.7826 26.6019 14.3077 26.309 14.0148C26.0161 13.7219 25.5412 13.7219 25.2483 14.0148L20.3238 18.9393L15.3993 14.0148Z" fill="currentColor"/>
+      </svg>
+    </button>
     <span class="title"><a style="color: inherit; font-weight: 600; text-decoration: none" href="/site-index">Dwarves Notes</a></span>
     {{ partial "tab-menu.html" . }}
     <div id="docsearch"></div>

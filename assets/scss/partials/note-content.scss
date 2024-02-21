@@ -398,12 +398,9 @@ html[data-theme=dark] {
 /* Mobile */
 @media only screen and (max-width: 1100px) {
     .tab-header {
-        .title {
-            display: none;
-        }
-
+        padding: 8px 20px 8px 4px;
         .tab-menu>.scrollable {
-            padding: 6px 0;
+            display: none;
         }
     }
 
@@ -478,6 +475,10 @@ html[data-theme=dark] {
 
     #TableOfContents li {
         line-height: 24px;
+    }
+
+    #docsearch {
+      display: none;
     }
 }
 

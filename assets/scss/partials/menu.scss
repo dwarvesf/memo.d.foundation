@@ -184,9 +184,20 @@ html[data-theme=dark] {
     }
 
     nav.menu {
+        display: none;
         max-width: 100%;
         height: 100%;
         box-sizing: border-box;
-        display: inline-block;
+    }
+
+    nav.menu.show {
+      padding-top: 0px;
+      display: inline-block;
+      position: fixed;
+      z-index: 999;
+      top: 57px;
+      left: 0px;
+      height: calc(100svh - 57px);
+      width: 100%;
     }
 }
