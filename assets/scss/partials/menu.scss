@@ -38,6 +38,10 @@ summary {
     user-select: none;
 }
 
+summary::-webkit-details-marker {
+  display: none !important;
+}
+
 details>ul {
     margin-bottom: 0;
 }
@@ -192,12 +196,17 @@ html[data-theme=dark] {
 
     nav.menu.show {
       padding-top: 0px;
-      display: inline-block;
+      display: flex;
+      flex-direction: column;
       position: fixed;
       z-index: 999;
       top: 57px;
       left: 0px;
-      height: calc(100svh - 57px);
+      height: calc(100% - 57px);
       width: 100%;
+    }
+
+    nav.menu > section.site-nav {
+      flex-shrink: 0;
     }
 }

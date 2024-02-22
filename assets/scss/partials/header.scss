@@ -133,6 +133,17 @@ html[data-theme=dark] {
     .mobile-nav-btn-icon {
       color: white;
     }
+
+    .mobile-nav-btn {
+      :active {
+        background-color: #303030;
+      }
+    }
+
+    .mobile-nav-btn:focus {
+        outline: 3px solid #303030;
+        outline-offset: 0px;
+    }
 }
 
 @media only screen and (max-width: 1100px) {
@@ -216,7 +227,9 @@ nav.menu > .tab-menu {
     }
 
     nav.menu > .tab-menu {
+      width: 100%;
       display: block;
+      flex-shrink: 0 !important;
 
       ul {
         align-items: flex-start;
