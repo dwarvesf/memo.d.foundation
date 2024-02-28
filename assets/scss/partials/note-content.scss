@@ -298,7 +298,7 @@ table:has(img) {
 
 main>blockquote {
     padding: 20px;
-    border: 2px solid black;
+    border: 2px solid var(--primary-border-color-light);
 }
 
 main>* {
@@ -360,7 +360,7 @@ html[data-theme=dark] {
     }
 
     main>blockquote {
-        border-color: white;
+        border-color: var(--primary-border-color);
     }
 
     ul li a {
