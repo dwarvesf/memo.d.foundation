@@ -91,7 +91,7 @@
         <ul>
           <template x-for="item in pinnedData" x-bind:key="item.url">
             <li>
-              <a x-bind:href="item.url" x-text="item.title"></a>
+            <a x-bind:class="{ 'text-active': location.pathname === item.url }" x-bind:href="item.url" x-text="item.title"></a>
             </li>
           </template>
         </ul>
@@ -119,7 +119,7 @@
             <ul>
               <template x-for="items in slice(menuData[menu], start, end)">
                 <li>
-                  <a x-bind:href="items.url" x-text="items.name"></a>
+                  <a x-bind:class="{ 'text-active': location.pathname === items.url }" x-bind:href="items.url" x-text="items.name"></a>
                 </li>
               </template>
               <template x-if="menuData[menu].length > end">
@@ -151,7 +151,7 @@
                   .join('-');
               }
             }">
-              <a x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a>
+            <a x-bind:class="{ 'text-active': location.pathname === `/tags/${toKebabCase(tag)}` }" x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a>
             </li>
           </template>
           <template x-if="tagsData.length > end">
