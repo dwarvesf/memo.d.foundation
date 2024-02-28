@@ -53,12 +53,24 @@
 
 .DocSearch-Button .DocSearch-Search-Icon {
     color: var(--secondary-font-color-light);
+    padding: 2px;
+    box-sizing: border-box;
 }
 
 .DocSearch-Button-Key {
+    font-size: 10px;
     background: #EEEDEC;
     color: var(--primary-font-color-light);
-    box-shadow: 0 4px 2px -2px #D4D3D0;
+    box-shadow: 0 1.5px 0px 0px #D4D3D0;
+    height: 16px;
+    width: 16px;
+    padding: 0;
+    font-weight: 500;
+}
+
+.DocSearch-Button-Placeholder {
+    font-size: 14px;
+    padding: 0px 40px 0px 10px;
 }
 
 .active {
