@@ -36,6 +36,7 @@ summary {
     cursor: pointer;
     text-transform: capitalize;
     user-select: none;
+    font-weight: 500;
 }
 
 summary::-webkit-details-marker {
@@ -51,6 +52,7 @@ details>ul {
     padding-top: 4px;
     padding-left: 24px;
     height: 24px;
+    font-weight: 500;
 }
 
 .site-nav>details {
@@ -74,10 +76,13 @@ details>ul {
 }
 
 hr {
+    all: initial;
+    height: 1px;
+    display: block;
     margin: 20px 0px !important;
     width: 100%;
     max-width: inherit;
-    border-color: var(--secondary-background-color-light);
+    background-color: var(--primary-border-color-light);
 }
 
 nav.menu {
@@ -155,7 +160,7 @@ html[data-theme=dark] {
     }
 
     hr {
-        border-color: var(--secondary-background-color);
+        background-color: var(--primary-border-color);
     }
 
     details {

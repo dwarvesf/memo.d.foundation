@@ -227,18 +227,29 @@ nav.menu > .tab-menu {
         outline-offset: 0px;
     }
 
-    nav.menu > .tab-menu {
-      width: 100%;
-      display: block;
-      flex-shrink: 0 !important;
+    nav.menu {
+      nav.tab-menu {
+        * {
+          font-size: 15px;
+        }
+        width: 100%;
+        display: block;
+        flex-shrink: 0 !important;
 
-      ul {
-        align-items: flex-start;
-        display: flex;
-        flex-direction: column;
-        row-gap: 10px;
-        padding: 15px 5px 20px;
-        border-bottom: 1px solid #EAECF0;
+        ul {
+          align-items: flex-start;
+          display: flex;
+          flex-direction: column;
+          row-gap: 10px;
+          padding: 15px 5px 20px;
+          border-bottom: 1px solid #EAECF0;
+        }
+      }
+
+      section.site-nav {
+        * {
+          font-size: 15px;
+        }
       }
     }
 }
