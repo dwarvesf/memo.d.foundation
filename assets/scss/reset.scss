@@ -23,25 +23,36 @@ body {
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5 {
     color: var(--primary-font-color);
     line-height: 1.24;
+    padding: 0px !important;
 }
 
 h1 {
-    font-size: 32pt;
+    font-size: 41px !important;
+    margin: 16px 0px 32px !important;
 }
 
 h2 {
-    font-size: 24pt;
+    font-size: 25px !important;
+    margin: 40px 0px 16px !important;
 }
 
 h3 {
-    font-size: 16pt;
+    font-size: 22px !important;
+    margin: 24px 0px 8px !important;
 }
 
 h4 {
-    font-size: 12pt;
+    font-size: 20px !important;
+    margin: 16px 0px 8px !important;
+}
+
+h5 {
+    font-size: 16px !important;
+    margin: 12px 0px 6px !important;
 }
 
 a[href^="#"] {
