@@ -226,6 +226,7 @@ td:has(img) {
 
 table {
     table-layout: fixed;
+    width: 100%;
 }
 
 table:has(th:empty) {
@@ -484,10 +485,12 @@ html[data-theme=dark] {
 
 /* Components from comments */
 .col-2 {
+    width: 100%;
     display: inline-grid;
-    column-gap: 36px;
-    padding-bottom: 36px;
-    grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+    column-gap: 16px;
+    grid-auto-flow: column;
+    grid-template-rows: min-content min-content;
+    grid-auto-columns: 1fr;
 
     > * {
         overflow-wrap: break-word;
