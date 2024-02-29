@@ -18,9 +18,11 @@ footer {
         justify-content: start;
         align-items: center;
         margin-top: 16px;
+        column-gap: 10px;
 
         a {
             cursor: pointer;
+            aspect-ratio: 1;
         }
     }
 }
