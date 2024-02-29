@@ -20,6 +20,10 @@ body {
     overscroll-behavior: none;
 }
 
+strong {
+  font-weight: 600;
+}
+
 h1,
 h2,
 h3,
@@ -28,6 +32,7 @@ h5 {
     color: var(--primary-font-color);
     line-height: 1.24;
     padding: 0px !important;
+    font-weight: 600;
 }
 
 h1 {
