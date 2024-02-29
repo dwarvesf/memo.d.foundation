@@ -8,7 +8,7 @@ a {
   white-space: wrap;
 
   &:hover {
-    color: black;
+    color: #23242C;
   }
 }
 
@@ -48,7 +48,6 @@ main {
     }
     font-size: 2rem;
     font-style: normal;
-    font-weight: 600;
     line-height: 120%;
     letter-spacing: -0.0625rem;
     padding: 0.5rem 0rem;
@@ -57,7 +56,6 @@ main {
   h2 {
     font-size: 1.5rem;
     font-style: normal;
-    font-weight: 600;
     line-height: 140%;
     /* 2.1rem */
     letter-spacing: -0.0125rem;
@@ -66,7 +64,6 @@ main {
   h3 {
     font-size: 1.125rem;
     font-style: normal;
-    font-weight: 600;
     line-height: 140%;
     letter-spacing: -0.0125rem;
   }

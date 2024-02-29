@@ -97,8 +97,14 @@
         </ul>
       </details>
       
-      <details open>
-        <summary>Home</summary>
+      <details
+        x-data="{
+          open: sessionStorage.getItem('details-home') === 'true',
+        }"
+        x-init="$watch('open', (val) => sessionStorage.setItem(`${menu}-details-home`, open))"
+        x-bind:open="open"
+      >
+        <summary @click.prevent="open = !open">Home</summary>
 
         <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
           <details
