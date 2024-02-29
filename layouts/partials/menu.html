@@ -90,7 +90,7 @@
         <summary>Pinned Notes</summary>
         <ul>
           <template x-for="item in pinnedData" x-bind:key="item.url">
-            <li>
+            <li x-bind:class="{ 'text-active': location.pathname === item.url }">
             <a x-bind:class="{ 'text-active': location.pathname === item.url }" x-bind:href="item.url" x-text="item.title"></a>
             </li>
           </template>
@@ -101,7 +101,7 @@
         x-data="{
           open: sessionStorage.getItem('details-home') === 'true',
         }"
-        x-init="$watch('open', (val) => sessionStorage.setItem(`${menu}-details-home`, open))"
+        x-init="$watch('open', (val) => sessionStorage.setItem(`details-home`, open))"
         x-bind:open="open"
       >
         <summary @click.prevent="open = !open">Home</summary>
@@ -124,7 +124,7 @@
             ></summary>
             <ul>
               <template x-for="items in slice(menuData[menu], start, end)">
-                <li>
+                <li x-bind:class="{ 'text-active': location.pathname === items.url }">
                   <a x-bind:class="{ 'text-active': location.pathname === items.url }" x-bind:href="items.url" x-text="items.name"></a>
                 </li>
               </template>
@@ -137,7 +137,7 @@
               </template>
             </ul>
           </details>
-      </template>
+        </template>
 
       </details>
 
@@ -148,16 +148,19 @@
             x-for="tag in slice(tagsData, start, end)"
             x-bind:key="tag"
           >
-            <li x-data="{
-              toKebabCase(tag) {
-                return tag && tag
-                  .replace('&', '')
-                  .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
-                  .map(x => x.toLowerCase())
-                  .join('-');
-              }
-            }">
-            <a x-bind:class="{ 'text-active': location.pathname === `/tags/${toKebabCase(tag)}` }" x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a>
+            <li
+              x-data="{
+                toKebabCase(tag) {
+                  return tag && tag
+                    .replace('&', '')
+                    .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+                    .map(x => x.toLowerCase())
+                    .join('-');
+                }
+              }"
+              x-bind:class="{ 'text-active': location.pathname === `/tags/${toKebabCase(tag)}/` }"
+            >
+            <a x-bind:class="{ 'text-active': location.pathname === `/tags/${toKebabCase(tag)}/` }" x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a>
             </li>
           </template>
           <template x-if="tagsData.length > end">

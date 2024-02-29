@@ -31,7 +31,7 @@ details {
 
 summary {
     display: block;
-    padding: 20px 5px 12px 20px;
+    padding: 5px;
     position: relative;
     cursor: pointer;
     text-transform: capitalize;
@@ -48,16 +48,47 @@ details>ul {
 }
 
 .site-nav>details>details>summary {
-    padding-bottom: 4px;
-    padding-top: 4px;
+    padding: 5px 0px;
     padding-left: 24px;
     font-weight: 500;
 }
 
 .site-nav>details {
+    padding-bottom: 5px;
+
+    &:has(details) > details {
+      position: relative;
+
+      &::before {
+        content: '';
+        height: 100%;
+        width: 1px;
+        position: absolute;
+        top: 0;
+        left: 14px;
+        background-color: var(--Neutral-200);
+      }
+    }
+
     >summary {
       display: flex;
       column-gap: 5px;
+    }
+
+    ul>li {
+      ::before {
+        content: '';
+        height: 100%;
+        width: 1px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: var(--Neutral-200);
+      }
+
+      &.text-active>::before {
+        background-color: var(--primary-color);
+      }
     }
 
     &[open]>summary::before {
@@ -91,7 +122,27 @@ details>ul {
 
 .site-nav>details>details {
     ul>li {
-        padding-left: 36px;
+        padding: 0px;
+        padding-left: 34px;
+        position: relative;
+
+        a {
+          padding: 5px 5px 5px 12px;
+        }
+
+        ::before {
+          content: '';
+          height: 100%;
+          width: 1px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: var(--Neutral-200);
+        }
+
+        &.text-active>::before {
+          background-color: var(--primary-color);
+        }
     }
 }
 
@@ -142,7 +193,8 @@ nav.menu ul {
     display: inline-grid;
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
     grid-template-columns: repeat(auto-fill, minmax(var(--nav-sidebar-width), 1fr));
-    padding: 0px 10px 10px 0px;
+    padding: 0px;
+    padding-bottom: 5px;
     margin: 0px;
     list-style-type: none;
     line-height: 22px;
@@ -154,12 +206,11 @@ nav .site-nav ul li {
     display: flex;
     font-variant-numeric: tabular-nums;
     font-size: 14px;
-    padding-left: 36px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 0px;
+    padding-left: 14px;
 
     a {
-        padding: 0px 4px;
+        padding: 5px 5px 5px 12px;
         width: max-content;
         white-space: nowrap;
         overflow: hidden;
@@ -233,5 +284,9 @@ html[data-theme=dark] {
 
     nav.menu > section.site-nav {
       flex-shrink: 0;
+    }
+
+    .site-nav {
+      padding-top:16px
     }
 }
