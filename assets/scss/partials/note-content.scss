@@ -122,6 +122,12 @@ code.button {
                 display: block;
                 text-transform: uppercase;
                 position: relative;
+                color: var(--Secondary-Black, #23252C);
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 18.2px; /* 18.2px */
+                letter-spacing: 0.8px;
             }
         }
     }
