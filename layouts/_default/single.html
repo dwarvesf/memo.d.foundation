@@ -1,3 +1,12 @@
 {{ partial "header.html" . }}
-{{ .Content | replaceRE "(<h[1-6]\\sid=\"([^\"]+)\"\\s?>)(.+)(</h[1-6]+>)" "${1}<a href=\"#${2}\">${3}</a>${4}" | replaceRE `&lt;:(\w+):(\d+)&gt;` "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>" | safeHTML }}
+{{ .Content 
+   | replaceRE "(<h[1-6]\\sid=\"([^\"]+)\"\\s?>)(.+)(</h[1-6]+>)" "${1}<a href=\"#${2}\">${3}</a>${4}" 
+   | replaceRE 
+      `&lt;a:(\w+):(\d+)&gt;` 
+      "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.gif?size=44&quality=lossless\" alt=\":${1}:\"/>" 
+   | replaceRE 
+      `&lt;:(\w+):(\d+)&gt;` 
+      "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>" 
+   | safeHTML
+}}
 {{ partial "footer.html" . }}
