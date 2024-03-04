@@ -233,3 +233,9 @@ html[data-theme=light] {
         display: none;
     }
 }
+
+html[data-reading-mode="true"] {
+    .scrollbar-hidden {
+        visibility: hidden;
+    }
+}
