@@ -11,7 +11,7 @@
     <aside class="toc">{{ .TableOfContents }}</aside>
   {{ end }}
 
-  {{ .Content }}
+  {{ .Content | replaceRE `&lt;:(\w+):(\d+)&gt;` "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>" | safeHTML }}
 {{ end }}
 
 {{ partial "footer.html" . }}

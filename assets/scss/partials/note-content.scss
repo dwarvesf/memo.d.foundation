@@ -513,3 +513,11 @@ html[data-theme=dark] {
         overflow: auto;
     }
 }
+
+.emoji {
+  width: 1.375em;
+  height: 1.375em;
+  line-height: 1.375;
+  object-fit: contain;
+  vertical-align: bottom;
+}
