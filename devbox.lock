@@ -181,6 +181,26 @@
         }
       }
     },
+    "pre-commit@3.6.1": {
+      "last_modified": "2024-02-24T23:06:34Z",
+      "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#pre-commit",
+      "source": "devbox-search",
+      "version": "3.6.1",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/z02qsxbka1x8s1gm05fpnbwvxmq2akrn-pre-commit-3.6.1"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/ynb360fgbwgn7knmv493ygifr1rykhga-pre-commit-3.6.1"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/wy0a2dsw6322pyljd1vc8yzd9cffzi3j-pre-commit-3.6.1"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/g7vqxkmfy6s5j4642cgmfvkdfa0dgjqk-pre-commit-3.6.1"
+        }
+      }
+    },
     "python310Packages.pip@23.2.1": {
       "last_modified": "2023-10-25T20:49:13Z",
       "plugin_version": "0.0.2",
