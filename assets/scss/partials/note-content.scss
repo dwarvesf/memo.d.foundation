@@ -133,6 +133,16 @@ code.button {
     }
 }
 
+html[data-reading-mode="true"] {
+    .pagenav {
+        visibility: hidden;
+    }
+
+    .graph-container {
+        display: none;
+    }
+}
+
 #docsearch {
     grid-area: docsearch;
 }
