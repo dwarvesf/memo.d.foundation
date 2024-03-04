@@ -12,6 +12,14 @@ a {
   }
 }
 
+html[data-theme=dark] {
+  a {
+    &:hover {
+      color: #c2c2c2;
+    }
+  }
+}
+
 .text-active {
   color: var(--primary-color) !important;
 }
