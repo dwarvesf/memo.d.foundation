@@ -13,7 +13,8 @@
     "duckdb":                "0.9.1",
     "python":                "3.10.13",
     "trash-cli":             "0.23.11.10",
-    "awscli":                "1.32.21"
+    "awscli":                "1.32.21",
+    "pre-commit":            "3.6.1"
   },
   "shell": {
     "init_hook": [
@@ -21,7 +22,8 @@
       "rustup default stable",
       "cargo install obsidian-export",
       ". $VENV_DIR/bin/activate",
-      "pip install -r requirements.txt"
+      "pip install -r requirements.txt",
+      "pre-commit install"
     ],
     "scripts": {
       "watch-run":    "make watch-run",
