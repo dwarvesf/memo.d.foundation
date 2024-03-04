@@ -86,8 +86,14 @@
         },
       }"
     >
-      <details open>
-        <summary>Pinned Notes</summary>
+      <details 
+        x-data="{
+          open: sessionStorage.getItem('details-pinned-notes') === 'true',
+        }"
+        x-init="$watch('open', (val) => sessionStorage.setItem(`details-pinned-notes`, open))"
+        x-bind:open="open"
+      >
+        <summary @click.prevent="open = !open">Pinned Notes</summary>
         <ul>
           <template x-for="item in pinnedData" x-bind:key="item.url">
             <li x-bind:class="{ 'text-active': location.pathname === item.url }">
@@ -141,8 +147,18 @@
 
       </details>
 
-      <details x-data="{ start: 2, end: 12, loaded: false, loadText: 'Load more...', }" open>
-        <summary>Popular Tags</summary>
+      <details
+        x-data="{
+          start: 2,
+          end: 12,
+          loaded: false,
+          loadText: 'Load more...',
+          open: sessionStorage.getItem('details-popular-tags') === 'true',
+        }"
+        x-init="$watch('open', (val) => sessionStorage.setItem(`details-popular-tags`, open))"
+        x-bind:open="open"
+      >
+        <summary @click.prevent="open = !open">Popular Tags</summary>
         <ul>
           <template
             x-for="tag in slice(tagsData, start, end)"
