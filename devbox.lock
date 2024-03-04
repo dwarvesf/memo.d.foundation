@@ -1,23 +1,23 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "awscli@latest": {
-      "last_modified": "2023-11-17T14:14:56Z",
-      "resolved": "github:NixOS/nixpkgs/a71323f68d4377d12c04a5410e214495ec598d4c#awscli",
+    "awscli@1.32.21": {
+      "last_modified": "2024-02-29T18:14:35Z",
+      "resolved": "github:NixOS/nixpkgs/b5f6e3881acf8ca8a35b8cdb8d4021e5bd469a4e#awscli",
       "source": "devbox-search",
-      "version": "1.30.2",
+      "version": "1.32.21",
       "systems": {
         "aarch64-darwin": {
-          "store_path": "/nix/store/gxki4qg9lyipgyxfwdb0h4nj42k1k3cm-awscli-1.30.2"
+          "store_path": "/nix/store/09j3njrg20rrbh9ddw7z27av9hkxi1d6-awscli-1.32.21"
         },
         "aarch64-linux": {
-          "store_path": "/nix/store/yicnsmzq0lj0slc64xx63j9ym08j92kx-awscli-1.30.2"
+          "store_path": "/nix/store/0kn3yk6qgv02rmp4pra14xj0manvvlwl-awscli-1.32.21"
         },
         "x86_64-darwin": {
-          "store_path": "/nix/store/p3ccwc6pikz5lhvs0vm8n6w5ps9fm1kl-awscli-1.30.2"
+          "store_path": "/nix/store/vyz1s09ja6999agy5wxvsjiyc0qnl192-awscli-1.32.21"
         },
         "x86_64-linux": {
-          "store_path": "/nix/store/gnlwp8gdispsma23v4k9zwjk3vg9liyi-awscli-1.30.2"
+          "store_path": "/nix/store/2vvrl3ky14v1kajwvr9jijxd65bwk4vh-awscli-1.32.21"
         }
       }
     },
