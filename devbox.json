@@ -13,7 +13,7 @@
     "duckdb":                "0.9.1",
     "python":                "3.10.13",
     "trash-cli":             "0.23.11.10",
-    "awscli":                "latest"
+    "awscli":                "1.32.21"
   },
   "shell": {
     "init_hook": [
