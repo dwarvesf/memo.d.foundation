@@ -93,7 +93,10 @@
         x-init="$watch('open', (val) => sessionStorage.setItem(`details-pinned-notes`, open))"
         x-bind:open="open"
       >
-        <summary @click.prevent="open = !open">Pinned Notes</summary>
+        <summary @click.prevent="open = !open">
+          <div class="chevron"></div>
+          Pinned Notes
+        </summary>
         <ul>
           <template x-for="item in pinnedData" x-bind:key="item.url">
             <li x-bind:class="{ 'text-active': location.pathname === item.url }">
@@ -110,7 +113,10 @@
         x-init="$watch('open', (val) => sessionStorage.setItem(`details-home`, open))"
         x-bind:open="open"
       >
-        <summary @click.prevent="open = !open">Home</summary>
+        <summary @click.prevent="open = !open">
+          <div class="chevron"></div>
+          Home
+        </summary>
 
         <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
           <details
@@ -125,9 +131,11 @@
             x-bind:open="open"
           >
             <summary
-              x-text="menu"
               @click.prevent="open = !open"
-            ></summary>
+            >
+              <div class="chevron"></div>
+              <span x-text="menu"></span>
+            </summary>
             <ul>
               <template x-for="items in slice(menuData[menu], start, end)">
                 <li x-bind:class="{ 'text-active': location.pathname === items.url }">
@@ -158,7 +166,10 @@
         x-init="$watch('open', (val) => sessionStorage.setItem(`details-popular-tags`, open))"
         x-bind:open="open"
       >
-        <summary @click.prevent="open = !open">Popular Tags</summary>
+        <summary @click.prevent="open = !open">
+          <div class="chevron"></div>
+          Popular Tags
+        </summary>
         <ul>
           <template
             x-for="tag in slice(tagsData, start, end)"

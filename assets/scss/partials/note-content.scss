@@ -114,7 +114,7 @@ code.button {
         
         div.container {
             position: sticky;
-            top: 68px;
+            top: 81px;
             right: 0;
             z-index: 10;
 
@@ -151,6 +151,8 @@ main {
     grid-area: content;
     display: inline-block;
     padding: var(--main-padding);
+    width: 100%;
+    min-width: 0;
     max-width: var(--container-max-width);
     box-sizing: border-box;
     overflow-wrap: break-word;
@@ -408,6 +410,10 @@ html[data-theme=dark] {
 
     #TableOfContents a {
         color: var(--secondary-font-color);
+    }
+
+    .nav-label {
+      color: var(--primary-font-color) !important;
     }
 }
 
