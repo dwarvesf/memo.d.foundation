@@ -24,6 +24,10 @@ html[data-theme=dark] {
   color: var(--primary-color) !important;
 }
 
+.text-bold {
+  font-weight: 600;
+}
+
 main {
   a {
     color: var(--primary-color);
