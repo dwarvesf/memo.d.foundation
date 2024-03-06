@@ -24,7 +24,7 @@
     {{ $pinned = $pinned | append (dict "title" .Params.Title "tags" .Params.Tags "url" .RelPermalink "date" .Page.Params.Date) }}
   {{ end }}
 {{ end }}
-  <nav class="menu scrollbar-hidden">
+  <nav class="menu mobile-menu scrollbar-hidden">
     {{ partial "tab-menu.html" . }}
     <section
       class="site-nav"
