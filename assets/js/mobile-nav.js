@@ -1,7 +1,7 @@
 window.onload = function() {
   const mobileNavBtn = document.querySelector("#mobile-nav-btn");
   const icons = document.querySelectorAll(".mobile-nav-btn-icon");
-  const sidebar = document.querySelector("nav.menu");
+  const sidebar = document.querySelector("nav.mobile-menu");
   const body = document.body;
   let lockScroll = false;
 
