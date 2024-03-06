@@ -39,6 +39,14 @@
   }
 }
 
+html[data-reading-mode='true'] {
+    .title {
+      border-right: 0px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+}
+
 .reading-mode-menu-container {
   position: absolute;
   top: 40px;
@@ -185,7 +193,7 @@ html[data-theme='dark'] {
 }
 
 .btn-theme-toggler {
-  min-width: 86px;
+  min-width: 60px;
   margin-right: 20px;
   display: flex;
   justify-items: center;
@@ -217,6 +225,7 @@ html[data-theme='dark'] {
   cursor: pointer;
   background-color: transparent;
   border: none;
+  padding: 0px;
 
   svg {
     height: 28px;
@@ -238,6 +247,16 @@ html[data-reading-mode='false'] {
   }
 }
 
+html[data-reading-mode='true'] {
+  #docsearch {
+    visibility: hidden;
+  }
+
+  .tab-menu {
+    visibility: hidden
+  }
+}
+
 .btn-reading-mode-toggler {
   min-width: 48px;
   display: flex;
@@ -249,8 +268,8 @@ html[data-reading-mode='false'] {
   border: none;
 
   svg {
-    height: 20px;
-    width: 48px;
+    height: 28px;
+    width: 56px;
   }
 
   :hover {
