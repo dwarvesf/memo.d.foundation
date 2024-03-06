@@ -13,6 +13,7 @@ nav.menu {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    border-right: 1px solid var(--border-color-light);
 }
 
 details {
@@ -254,6 +255,7 @@ nav .site-nav ul li {
 /* Theme */
 html[data-theme=dark] {
     nav.menu {
+        border-right: 1px solid var(--border-color);
         background-color: var(--secondary-background-color-var2);
     }
 
