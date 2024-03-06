@@ -300,6 +300,11 @@ table:has(img) {
     width: max-content;
     white-space: nowrap;
     overflow: hidden;
+    font-weight: 400;
+}
+
+#TableOfContents a[active='true'] {
+  font-weight: 500;
 }
 
 #TableOfContents > ul > li > a:active {
@@ -315,7 +320,7 @@ table:has(img) {
 
 main>blockquote {
     padding: 20px;
-    border: 2px solid var(--primary-border-color-light);
+    border: 2px solid var(--border-color-light);
 }
 
 main>* {
@@ -377,7 +382,7 @@ html[data-theme=dark] {
     }
 
     main>blockquote {
-        border-color: var(--primary-border-color);
+        border-color: var(--border-color);
     }
 
     ul li a {
