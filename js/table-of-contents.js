@@ -4,8 +4,10 @@ const initScroller = () => {
     document.querySelector(`#${link.href.split("#")[1]}`)
   );
 
-  const addClassToFirstLink = () =>
-    pagenav[0]?.classList.add("text-active", "text-bold");
+  const addClassToFirstLink = () => {
+    pagenav[0]?.classList.add("text-active");
+    pagenav[0]?.setAttribute("active", "true");
+  };
   const addTransitionClasses = () =>
     pagenav.forEach((link) => link.classList.add("transition", "duration-200"));
 
@@ -27,10 +29,12 @@ const initScroller = () => {
 
     if (activeHeader !== currentActiveHeader) {
       currentActiveHeader = activeHeader;
-      pagenav.forEach((link) =>
-        link.classList.remove("text-active", "text-bold")
-      );
-      pagenav[activeIndex].classList.add("text-active", "text-bold");
+      pagenav.forEach((link) => {
+        link.classList.remove("text-active");
+        link.setAttribute("active", "false");
+      });
+      pagenav[activeIndex].classList.add("text-active");
+      pagenav[activeIndex].setAttribute("active", "true");
     }
     ticking = false;
   };
