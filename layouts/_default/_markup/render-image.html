@@ -184,6 +184,7 @@
   {{- with .Text }} alt="{{ . | safeHTML }}"  x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }"
   {{- end -}}
   onerror="this.onerror = null"
+  class="content-img"
 />
 {{- end -}}
 
