@@ -50,6 +50,7 @@ html[data-reading-mode="true"] {
   }
 }
 
+
 .reading-mode-menu-container {
   position: absolute;
   top: 40px;
@@ -183,6 +184,14 @@ html[data-theme="dark"] {
   .mobile-nav-btn:focus {
     outline: 3px solid #303030;
     outline-offset: 0px;
+  }
+
+  &[data-reading-mode="true"] {
+    .title {
+      border-right: 0px;
+      font-size: 16px;
+      font-weight: 500;
+    }
   }
 }
 
