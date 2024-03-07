@@ -3,24 +3,32 @@
 # Update submodules recursively (in case they're not up-to-date)
 git submodule update --init --recursive
 
-# Function to check if the submodule is on 'main' or 'master' 
-function is_on_main_or_master() {
-  cd $1  # Navigate into the submodule directory
+# Set the GIT_INDEX_FILE environment variable to the index file of the main repository
+GIT_INDEX_FILE=$(pwd)/$(git rev-parse --git-dir)/index
+
+# Function to switch a submodule to either 'main' or 'master'
+function switch_submodule_branch() {
+  pushd $1  # Navigate into the submodule directory
   current_branch=$(git rev-parse --abbrev-ref HEAD)
-  if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
-    return 0  # Success  
-  else
-    return 1  # Failure
+
+  if [[ "$current_branch" != "main" && "$current_branch" != "master" ]]; then
+    # Attempt to switch to 'main' first
+    if git checkout main > /dev/null; then
+      echo "Submodule '$submodule' switched to 'main'"
+    else 
+      # If 'main' doesn't exist, try 'master'
+      if git checkout master > /dev/null; then
+         echo "Submodule '$submodule' switched to 'master'"
+      else 
+        echo "Error: Submodule '$submodule' could not be switched to 'main' or 'master'"
+      fi
+    fi
   fi
-  cd ..  # Navigate back to the main repository
+
+  popd  # Navigate back to the main repository
 }
 
-# Iterate over submodules and check their branches
+# Iterate over submodules and switch branches if necessary
 for submodule in $(git submodule status | awk '{ print $2 }'); do
-  if ! is_on_main_or_master $submodule; then
-    echo "Error: Submodule '$submodule' is not on 'main' or 'master'. Please switch branches."
-    exit 1
-  fi
+  switch_submodule_branch $submodule
 done
-
-echo "All submodules are on 'main' or 'master'. Ready to commit."
