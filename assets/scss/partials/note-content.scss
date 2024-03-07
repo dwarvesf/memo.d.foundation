@@ -112,6 +112,7 @@ code.button {
         letter-spacing: -0.0125rem;
         width: 100%;
         max-width: 700px;
+        transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
         
         div.container {
             position: sticky;
@@ -136,15 +137,9 @@ code.button {
 
 html[data-reading-mode="true"] {
     .pagenav {
-        visibility: hidden;
-    }
-
-    .graph-container {
-        display: none;
-    }
-
-    main {
-        font-size: 1.125rem;
+      transform: translateX(5%);
+      opacity: 0;
+      pointer-events: none;
     }
 }
 
@@ -168,6 +163,7 @@ main {
     font-weight: 400;
     line-height: 160%;
     letter-spacing: -0.0125rem;
+    transition: font-size 0.1s ease-in-out;
 }
 
 main ul {
