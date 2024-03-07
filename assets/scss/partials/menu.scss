@@ -185,7 +185,7 @@ hr {
 }
 
 nav.menu {
-    background-color: var(--secondary-background-color-light);
+    background-color: var(--primary-background-color-light);
     display: inline-grid;
     grid-template-rows: 1fr min-content;
     grid-template-areas:
@@ -256,7 +256,7 @@ nav .site-nav ul li {
 html[data-theme=dark] {
     nav.menu {
         border-right: 1px solid var(--border-color);
-        background-color: var(--secondary-background-color-var2);
+        background-color: var(--primary-background-color);
     }
 
     hr {

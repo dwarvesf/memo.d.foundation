@@ -98,8 +98,9 @@ code.button {
         "nav content pagenav"
         "nav content pagenav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 248px 1fr 248px;
+    grid-template-columns: 248px minmax(auto, var(--container-max-width)) 248px;
     column-gap: var(--column-gap);
+    justify-content: center;
     
     .pagenav {
         grid-area: pagenav;
@@ -140,6 +141,10 @@ html[data-reading-mode="true"] {
 
     .graph-container {
         display: none;
+    }
+
+    main {
+        font-size: 1.125rem;
     }
 }
 
