@@ -1,0 +1,12 @@
+.sc-row {
+  &:not(:first-of-type) {
+    margin-top: 24px;
+  }
+
+  display: flex;
+  column-gap: 32px;
+}
+
+.sc-col {
+  flex: 1;
+}
