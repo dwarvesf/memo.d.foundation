@@ -14,6 +14,7 @@ nav.menu {
     font-weight: 500;
     line-height: normal;
     border-right: 1px solid var(--border-color-light);
+    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
 }
 
 details {
@@ -349,4 +350,12 @@ html[data-theme=dark] {
     .reading-mode-menu {
       display: none;
     }
+}
+
+html[data-reading-mode="true"] {
+  nav.menu {
+    transform: translateX(-5%);
+    opacity: 0;
+    pointer-events: none;
+  }
 }
