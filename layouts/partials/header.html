@@ -227,7 +227,7 @@
     </span>
     {{ partial "tab-menu.html" . }}
     <div id="docsearch"></div>
-    <div id="readingModeToggler">
+    <div>
       <button 
       class="btn-reading-mode-toggler"
       x-data="{
@@ -236,91 +236,32 @@
             this.readingMode = !this.readingMode;
 
             // backup theme
-            localStorage.setItem('df.note.readingMode', this.readingMode);
+            localStorage.setItem('df.note.reading-mode', this.readingMode);
 
             document.documentElement.setAttribute('data-reading-mode', this.readingMode);
           },
           init() {
-            let readingMode = localStorage.getItem('df.note.readingMode') || this.readingMode;
+            let readingMode = localStorage.getItem('df.note.reading-mode') || this.readingMode;
             this.readingMode = readingMode === 'true'
-            localStorage.setItem('df.note.readingMode', readingMode);
+            localStorage.setItem('df.note.reading-mode', readingMode);
             document.documentElement.setAttribute('data-reading-mode', readingMode);
           }
         }" 
         x-init="init()" 
         x-on:click="toggleReadingMode()" 
+        x-bind:reading-mode="readingMode"
       >
-        <svg width="62" height="36" viewBox="0 0 62 34" fill="none" x-bind:class="{'hidden': readingMode === true}" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_187_4635)">
+        <svg width="62" height="36" viewBox="0 0 62 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g>
             <rect width="62" height="34" rx="17" fill="#E7E7E7" />
-            <g filter="url(#filter0_dd_187_4635)">
-              <circle cx="17" cy="17" r="14" fill="white" />
-            </g>
-            <g clip-path="url(#clip1_187_4635)">
-              <path d="M17 23.898V18.3265C17 17.9747 17.1398 17.6373 17.3885 17.3885C17.6373 17.1398 17.9747 17 18.3265 17C18.6783 17 19.0158 17.1398 19.2645 17.3885C19.5133 17.6373 19.6531 17.9747 19.6531 18.3265V21.2449H21.7755C22.3384 21.2449 22.8782 21.4685 23.2763 21.8666C23.6744 22.2646 23.898 22.8045 23.898 23.3673V23.898" stroke="#333639" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M16.2119 12.8561C14.8891 11.4004 13.114 10.4334 11.1736 10.1113C11.0416 10.0926 10.9071 10.1022 10.7791 10.1395C10.6511 10.1768 10.5324 10.2409 10.4311 10.3275C10.3279 10.4158 10.245 10.5253 10.1883 10.6487C10.1315 10.772 10.1021 10.9062 10.1021 11.0419V18.6088C10.1007 18.8411 10.1854 19.0658 10.3399 19.2394C10.4944 19.413 10.7077 19.5232 10.9386 19.5487C12.4542 19.7543 13.8794 20.354 15.0774 21.276" stroke="#333639" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M16.2124 15.7885V12.8561" stroke="#333639" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M21.4852 19.5487C21.7161 19.5232 21.9295 19.413 22.084 19.2394C22.2385 19.0658 22.3232 18.8411 22.3218 18.6088V11.0419C22.3218 10.9062 22.2924 10.772 22.2356 10.6487C22.1788 10.5253 22.096 10.4158 21.9928 10.3275C21.8915 10.2409 21.7728 10.1768 21.6447 10.1395C21.5167 10.1022 21.3823 10.0926 21.2502 10.1113C19.3098 10.4334 17.5347 11.4004 16.2119 12.8561" stroke="#333639" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <g>
+              <circle cx="17" cy="17" r="14" />
+              <path d="M17 23.898V18.3265C17 17.9747 17.1398 17.6373 17.3885 17.3885C17.6373 17.1398 17.9747 17 18.3265 17C18.6783 17 19.0158 17.1398 19.2645 17.3885C19.5133 17.6373 19.6531 17.9747 19.6531 18.3265V21.2449H21.7755C22.3384 21.2449 22.8782 21.4685 23.2763 21.8666C23.6744 22.2646 23.898 22.8045 23.898 23.3673V23.898" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M16.2119 12.8561C14.8891 11.4004 13.114 10.4334 11.1736 10.1113C11.0416 10.0926 10.9071 10.1022 10.7791 10.1395C10.6511 10.1768 10.5324 10.2409 10.4311 10.3275C10.3279 10.4158 10.245 10.5253 10.1883 10.6487C10.1315 10.772 10.1021 10.9062 10.1021 11.0419V18.6088C10.1007 18.8411 10.1854 19.0658 10.3399 19.2394C10.4944 19.413 10.7077 19.5232 10.9386 19.5487C12.4542 19.7543 13.8794 20.354 15.0774 21.276" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M16.2124 15.7885V12.8561" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21.4852 19.5487C21.7161 19.5232 21.9295 19.413 22.084 19.2394C22.2385 19.0658 22.3232 18.8411 22.3218 18.6088V11.0419C22.3218 10.9062 22.2924 10.772 22.2356 10.6487C22.1788 10.5253 22.096 10.4158 21.9928 10.3275C21.8915 10.2409 21.7728 10.1768 21.6447 10.1395C21.5167 10.1022 21.3823 10.0926 21.2502 10.1113C19.3098 10.4334 17.5347 11.4004 16.2119 12.8561" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </g>
           </g>
-          <defs>
-            <filter id="filter0_dd_187_4635" x="0" y="1" width="34" height="34" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-              <feOffset dy="1" />
-              <feGaussianBlur stdDeviation="1" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.06 0" />
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_187_4635" />
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-              <feOffset dy="1" />
-              <feGaussianBlur stdDeviation="1.5" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.1 0" />
-              <feBlend mode="normal" in2="effect1_dropShadow_187_4635" result="effect2_dropShadow_187_4635" />
-              <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_187_4635" result="shape" />
-            </filter>
-            <clipPath id="clip0_187_4635">
-              <rect width="62" height="34" rx="17" fill="white" />
-            </clipPath>
-            <clipPath id="clip1_187_4635">
-              <rect width="16" height="16" fill="white" transform="translate(9 9)" />
-            </clipPath>
-          </defs>
-        </svg>
-        <svg width="62" height="34" viewBox="0 0 62 34" fill="none" x-bind:class="{'hidden': readingMode === false}" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_187_4593)">
-            <rect width="62" height="34" rx="17" fill="#E7E7E7" />
-            <g filter="url(#filter0_dd_187_4593)">
-              <circle cx="45" cy="17" r="14" fill="#23252C" />
-            </g>
-            <g clip-path="url(#clip1_187_4593)">
-              <path d="M45 23.898V18.3265C45 17.9747 45.1398 17.6373 45.3885 17.3885C45.6373 17.1398 45.9747 17 46.3265 17C46.6783 17 47.0158 17.1398 47.2645 17.3885C47.5133 17.6373 47.6531 17.9747 47.6531 18.3265V21.2449H49.7755C50.3384 21.2449 50.8782 21.4685 51.2763 21.8666C51.6744 22.2646 51.898 22.8045 51.898 23.3673V23.898" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M44.2119 12.8561C42.8891 11.4004 41.114 10.4334 39.1736 10.1113C39.0416 10.0926 38.9071 10.1022 38.7791 10.1395C38.6511 10.1768 38.5324 10.2409 38.4311 10.3275C38.3279 10.4158 38.245 10.5253 38.1883 10.6487C38.1315 10.772 38.1021 10.9062 38.1021 11.0419V18.6088C38.1007 18.8411 38.1854 19.0658 38.3399 19.2394C38.4944 19.413 38.7077 19.5232 38.9386 19.5487C40.4542 19.7543 41.8794 20.354 43.0774 21.276" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M44.2124 15.7885V12.8561" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M49.4852 19.5487C49.7161 19.5232 49.9295 19.413 50.084 19.2394C50.2385 19.0658 50.3232 18.8411 50.3218 18.6088V11.0419C50.3218 10.9062 50.2924 10.772 50.2356 10.6487C50.1788 10.5253 50.096 10.4158 49.9928 10.3275C49.8915 10.2409 49.7728 10.1768 49.6447 10.1395C49.5167 10.1022 49.3823 10.0926 49.2502 10.1113C47.3098 10.4334 45.5347 11.4004 44.2119 12.8561" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </g>
-          </g>
-          <defs>
-            <filter id="filter0_dd_187_4593" x="28" y="1" width="34" height="34" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-              <feOffset dy="1" />
-              <feGaussianBlur stdDeviation="1" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.06 0" />
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_187_4593" />
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-              <feOffset dy="1" />
-              <feGaussianBlur stdDeviation="1.5" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.1 0" />
-              <feBlend mode="normal" in2="effect1_dropShadow_187_4593" result="effect2_dropShadow_187_4593" />
-              <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_187_4593" result="shape" />
-            </filter>
-            <clipPath id="clip0_187_4593">
-              <rect width="62" height="34" rx="17" fill="white" />
-            </clipPath>
-            <clipPath id="clip1_187_4593">
-              <rect width="16" height="16" fill="white" transform="translate(37 9)" />
-            </clipPath>
-          </defs>
         </svg>
       </button>
     </div>
