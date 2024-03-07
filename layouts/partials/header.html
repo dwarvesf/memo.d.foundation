@@ -231,19 +231,19 @@
       <button 
       class="btn-reading-mode-toggler"
       x-data="{
-          readingMode: false,
+          readingMode: true,
           toggleReadingMode() {
             this.readingMode = !this.readingMode;
 
             // backup theme
-            localStorage.setItem('df.note.reading-mode', this.readingMode);
+            sessionStorage.setItem('df.note.reading-mode', this.readingMode);
 
             document.documentElement.setAttribute('data-reading-mode', this.readingMode);
           },
           init() {
-            let readingMode = localStorage.getItem('df.note.reading-mode') || this.readingMode;
-            this.readingMode = readingMode === 'true'
-            localStorage.setItem('df.note.reading-mode', readingMode);
+            let readingMode = sessionStorage.getItem('df.note.reading-mode') || this.readingMode;
+            this.readingMode = String(readingMode) === 'true'
+            sessionStorage.setItem('df.note.reading-mode', readingMode);
             document.documentElement.setAttribute('data-reading-mode', readingMode);
           }
         }" 
