@@ -514,6 +514,7 @@ html[data-theme="dark"] {
 
 /* Components from comments */
 .col-2 {
+  margin-top: 16px;
   width: 100%;
   display: inline-grid;
   column-gap: 16px;
@@ -544,4 +545,19 @@ html[data-theme="dark"] {
 
 .content-img {
   border-radius: 4px;
+}
+
+.col-3 {
+    margin-top: 16px;
+    width: 100%;
+    display: inline-grid;
+    column-gap: 16px;
+    grid-auto-flow: column;
+    grid-template-rows: min-content min-content min-content;
+    grid-auto-columns: 1fr;
+
+    > * {
+        overflow-wrap: break-word;
+        overflow: auto;
+    }
 }
