@@ -3,7 +3,7 @@ footer {
     margin: auto -5px 0px;
     clear: both;
     border-top: 1px solid var(--border-color-light);
-    background-color: var(--secondary-background-color-light);
+    background-color: var(--primary-background-color-light);
     z-index: 10;
     white-space: normal;
     font-size: 0.75rem;
@@ -35,7 +35,7 @@ footer span {
 html[data-theme=dark] {
     footer {
         border-top: 1px solid var(--border-color);
-        background-color: var(--secondary-background-color-var2);
+        background-color: var(--primary-background-color);
     }
 
     footer span {
