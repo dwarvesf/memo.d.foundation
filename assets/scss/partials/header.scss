@@ -20,7 +20,7 @@
     line-height: 16px;
     display: flex;
     align-items: center;
-    column-gap: 8px
+    column-gap: 8px;
   }
 
   .tab-menu {
@@ -42,12 +42,12 @@
   }
 }
 
-html[data-reading-mode='true'] {
-    .title {
-      border-right: 0px;
-      font-size: 16px;
-      font-weight: 500;
-    }
+html[data-reading-mode="true"] {
+  .title {
+    border-right: 0px;
+    font-size: 16px;
+    font-weight: 500;
+  }
 }
 
 .reading-mode-menu-container {
@@ -150,7 +150,7 @@ nav.tab-menu {
 }
 
 /* Theme */
-html[data-theme='dark'] {
+html[data-theme="dark"] {
   .DocSearch-Button {
     background: var(--primary-background-color);
   }
@@ -166,7 +166,7 @@ html[data-theme='dark'] {
     background: var(--primary-background-color);
 
     .title {
-      border-right: 1px solid var(--border-color)
+      border-right: 1px solid var(--border-color);
     }
   }
 
@@ -244,19 +244,19 @@ html[data-theme='dark'] {
   }
 }
 
-html[data-reading-mode='false'] {
+html[data-reading-mode="false"] {
   .btn-menu-reading-mode {
     display: none;
   }
 }
 
-html[data-reading-mode='true'] {
+html[data-reading-mode="true"] {
   #docsearch {
     visibility: hidden;
   }
 
   .tab-menu {
-    visibility: hidden
+    visibility: hidden;
   }
 }
 
@@ -273,10 +273,40 @@ html[data-reading-mode='true'] {
   svg {
     height: 28px;
     width: 56px;
+    g > g {
+      transition: all 0.15s ease-in-out;
+
+      circle {
+        fill: white;
+        transition: fill 0.15s ease-in-out;
+      }
+
+      path {
+        stroke: #333639;
+        transition: stroke 0.15s ease-in-out;
+      }
+    }
+  }
+
+  &[reading-mode] {
+    svg > g > g {
+      transform: translateX(45%);
+      circle {
+        fill: #23252c;
+      }
+
+      path {
+        stroke: white;
+      }
+    }
   }
 
   :hover {
-    opacity: 0.8;
+    opacity: 0.95;
+  }
+
+  :active {
+    opacity: 1;
   }
 
   .hidden {

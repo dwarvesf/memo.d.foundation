@@ -234,12 +234,6 @@ html[data-theme=light] {
     }
 }
 
-html[data-reading-mode="true"] {
-  .scrollbar-hidden {
-    visibility: hidden;
-  }
-}
-
 ::-webkit-scrollbar {
   display: none;
 }
