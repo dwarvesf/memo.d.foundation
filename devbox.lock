@@ -81,6 +81,26 @@
         }
       }
     },
+    "git-credential-manager@2.4.1": {
+      "last_modified": "2024-02-24T23:06:34Z",
+      "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#git-credential-manager",
+      "source": "devbox-search",
+      "version": "2.4.1",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/k4gqvq87wbalz2jmpx09islbki19n5b8-git-credential-manager-2.4.1"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/1njalbg05bnwnk6qf1pkp1qqxjlyjzg7-git-credential-manager-2.4.1"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/piab4l429ahl8yhdm11cygydv2rrzc4v-git-credential-manager-2.4.1"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/4pnz1m1ws3kamb9lawpkz0csmdpwk99f-git-credential-manager-2.4.1"
+        }
+      }
+    },
     "git@2.42.0": {
       "last_modified": "2023-10-25T20:49:13Z",
       "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#git",
