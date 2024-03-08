@@ -5,7 +5,8 @@ window.onload = function() {
   const body = document.body;
   let lockScroll = false;
 
-  mobileNavBtn.addEventListener("click", () => {
+  mobileNavBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     for (const icon of icons) {
       icon.classList.toggle("mobile-nav-btn-icon-show");
     }
@@ -16,4 +17,14 @@ window.onload = function() {
 
     body.style.overflow = lockScroll ? "hidden" : "";
   });
+  
+  sidebar.addEventListener("click", (e) => {
+    e.preventDefault()
+  })
+  
+  body.addEventListener("click", (e) => {
+    console.log(e.defaultPrevented);
+    if (e.defaultPrevented || !sidebar.classList.contains("show")) return;
+    mobileNavBtn.click()
+  })
 };
