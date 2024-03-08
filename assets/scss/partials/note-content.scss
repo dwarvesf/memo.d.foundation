@@ -510,6 +510,14 @@ html[data-theme="dark"] {
   #docsearch {
     display: none;
   }
+  
+  .col-2 {
+    grid-template-rows: auto;
+  }
+
+  .col-3 {
+    grid-template-rows: auto;
+  }
 }
 
 /* Components from comments */
