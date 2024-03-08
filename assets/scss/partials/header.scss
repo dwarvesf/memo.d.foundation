@@ -9,6 +9,8 @@
   max-width: 100vw;
   top: 0;
   background: var(--primary-background-color-light);
+  box-sizing: border-box;
+  column-gap: 10px;
 
   .title {
     grid-area: title;
@@ -48,6 +50,57 @@ html[data-reading-mode="true"] {
     font-size: 16px;
     font-weight: 500;
   }
+
+  #docsearch {
+    visibility: hidden;
+  }
+
+  .tab-menu {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mobile-nav-btn {
+    all: initial;
+    width: 40px;
+    height: 40px;
+
+    border-radius: 8px;
+    overflow: hidden;
+
+    :active {
+      background-color: #f4f3f2;
+    }
+
+    .mobile-nav-btn-icon {
+      display: none;
+    }
+
+    .mobile-nav-btn-icon-show {
+      display: block !important;
+    }
+  }
+
+  .mobile-nav-btn:focus {
+    outline: 3px solid #f4f3f2;
+    outline-offset: 0px;
+  }
+}
+
+
+.reading-mode-menu-container {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  z-index: 100;
+  width: 250px;
+  height: 500px;
+  overflow-y: scroll;
+  border: 1px solid #eaecf0;
+  /* Shadow/dropdown */
+  box-shadow: 0px 12px 16px -4px rgba(23, 24, 29, 0.08),
+    0px 4px 6px -2px rgba(23, 24, 29, 0.1);
+  border-radius: 4px;
 }
 
 .DocSearch-Footer {
@@ -173,8 +226,6 @@ html[data-theme="dark"] {
   &[data-reading-mode="true"] {
     .title {
       border-right: 0px;
-      font-size: 16px;
-      font-weight: 500;
     }
   }
 }
@@ -189,8 +240,8 @@ html[data-theme="dark"] {
 }
 
 .btn-theme-toggler {
-  min-width: 60px;
-  margin-right: 20px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-items: center;
   justify-content: center;
@@ -210,12 +261,6 @@ html[data-theme="dark"] {
 
   .hidden {
     display: none;
-  }
-}
-
-html[data-reading-mode="true"] {
-  #docsearch {
-    visibility: hidden;
   }
 }
 
@@ -279,60 +324,6 @@ html[data-reading-mode="true"] {
 
 nav.menu > .tab-menu {
   display: none;
-}
-
-html[data-reading-mode="true"]  {
-  .mobile-nav-btn {
-    all: initial;
-    width: 40px;
-    height: 40px;
-
-    border-radius: 8px;
-    overflow: hidden;
-
-    :active {
-      background-color: #f4f3f2;
-    }
-
-    .mobile-nav-btn-icon {
-      display: none;
-    }
-
-    .mobile-nav-btn-icon-show {
-      display: block !important;
-    }
-  }
-
-  .mobile-nav-btn:focus {
-    outline: 3px solid #f4f3f2;
-    outline-offset: 0px;
-  }
-
-  nav.menu {
-    nav.tab-menu {
-      * {
-        font-size: 15px;
-      }
-      width: 100%;
-      display: block;
-      flex-shrink: 0 !important;
-
-      ul {
-        align-items: flex-start;
-        display: flex;
-        flex-direction: column;
-        row-gap: 10px;
-        padding: 15px 5px 20px;
-        border-bottom: 1px solid #eaecf0;
-      }
-    }
-
-    section.site-nav {
-      * {
-        font-size: 15px;
-      }
-    }
-  }
 }
 
 @media only screen and (max-width: 1100px) {

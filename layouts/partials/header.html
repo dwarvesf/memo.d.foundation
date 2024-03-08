@@ -98,6 +98,8 @@
   {{ $mobileNav := resources.Get "js/mobile-nav.js" }}
   <script defer src="{{ $mobileNav.RelPermalink }}"></script>
 
+  <script defer src="https://unpkg.com/@popperjs/core@2"></script>
+
   {{ if .IsHome -}}
   <script type="application/ld+json">
     {

@@ -5,28 +5,32 @@ window.onload = function() {
   const body = document.body;
   let lockScroll = false;
 
-  mobileNavBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    for (const icon of icons) {
-      icon.classList.toggle("mobile-nav-btn-icon-show");
+  document.body.addEventListener("click", (e) => {
+    if (sidebar.contains(e.target)) return;
+
+    if (mobileNavBtn.contains(e.target)) {
+      for (const icon of icons) {
+        icon.classList.toggle("mobile-nav-btn-icon-show");
+      }
+
+      const isReadingMode =
+        document.documentElement.getAttribute("data-reading-mode") === "true";
+
+      sidebar.classList.toggle("show");
+      if (isReadingMode) {
+        sidebar.classList.add("menu-reading-mode");
+      } else {
+        sidebar.classList.remove("menu-reading-mode");
+      }
+
+      lockScroll = !lockScroll;
+
+      body.style.overflow = lockScroll ? "hidden" : "";
+      return;
     }
 
-    sidebar.classList.toggle("show");
-
-    lockScroll = !lockScroll;
-
-    body.style.overflow = lockScroll ? "hidden" : "";
+    sidebar.classList.remove("show");
+    icons[0].classList.add("mobile-nav-btn-icon-show");
+    icons[1].classList.remove("mobile-nav-btn-icon-show");
   });
-  
-  sidebar.addEventListener("click", (e) => {
-    if (e.target.tagName === "A") return;
-    e.preventDefault()
-  })
-  
-  body.addEventListener("click", (e) => {
-    if (e.target.tagName === "A") return;
-    console.log(e.defaultPrevented);
-    if (e.defaultPrevented || !sidebar.classList.contains("show")) return;
-    mobileNavBtn.click()
-  })
 };
