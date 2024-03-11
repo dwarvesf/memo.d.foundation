@@ -187,6 +187,14 @@ nav.tab-menu {
   color: black;
 }
 
+nav.menu {
+  nav.tab-menu {
+    ul {
+      border-bottom: 1px solid var(--border-color-light);
+    }
+  }
+}
+
 /* Theme */
 html[data-theme="dark"] {
   .DocSearch-Button {
@@ -397,7 +405,6 @@ nav.menu > .tab-menu {
         flex-direction: column;
         row-gap: 10px;
         padding: 5px;
-        border-bottom: 1px solid var(--border-color-light);
       }
     }
 
