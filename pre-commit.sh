@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Initialize any uninitialized submodules
+git submodule update --init 
+
 # Update submodules recursively (in case they're not up-to-date)
-git submodule update --init --recursive
+git submodule update --remote --recursive
 
 # Set the GIT_INDEX_FILE environment variable to the index file of the main repository
 GIT_INDEX_FILE=$(pwd)/$(git rev-parse --git-dir)/index
