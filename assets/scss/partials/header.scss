@@ -200,7 +200,7 @@ html[data-theme="dark"] {
   }
 
   .tab-header {
-    border-bottom: 1px solid var(--primary-border-color);
+    border-bottom: 1px solid var(--border-color);
     background: var(--primary-background-color);
 
     .title {
@@ -235,6 +235,10 @@ html[data-theme="dark"] {
         border-bottom: 1px solid var(--border-color);
       }
     }
+  }
+
+  .btn-reading-mode-toggler svg g rect {
+    fill: var(--border-color);
   }
 }
 
@@ -285,6 +289,9 @@ html[data-theme="dark"] {
   svg {
     height: 28px;
     width: 56px;
+    g > rect {
+      fill: var(--border-color-light);
+    }
     g > g {
       transition: all 0.15s ease-in-out;
 

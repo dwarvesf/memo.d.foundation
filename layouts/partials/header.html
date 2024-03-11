@@ -242,7 +242,7 @@
       >
         <svg width="62" height="36" viewBox="0 0 62 34" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g>
-            <rect width="62" height="34" rx="17" fill="#E7E7E7" />
+            <rect width="62" height="34" rx="17" />
             <g>
               <circle cx="17" cy="17" r="14" />
               <path d="M17 23.898V18.3265C17 17.9747 17.1398 17.6373 17.3885 17.3885C17.6373 17.1398 17.9747 17 18.3265 17C18.6783 17 19.0158 17.1398 19.2645 17.3885C19.5133 17.6373 19.6531 17.9747 19.6531 18.3265V21.2449H21.7755C22.3384 21.2449 22.8782 21.4685 23.2763 21.8666C23.6744 22.2646 23.898 22.8045 23.898 23.3673V23.898" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -313,6 +313,7 @@
     
   </div>
   <div class="grid">
+   <div id="overlay"></div>
 
     {{ partial "menu.html" . }}
     {{ $tags := slice }}
