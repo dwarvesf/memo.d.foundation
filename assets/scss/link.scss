@@ -12,31 +12,23 @@ a {
   }
 }
 
-html[data-theme=dark] {
-  a {
-    &:hover {
-      color: #c2c2c2;
-    }
-  }
-}
-
 .text-active {
   color: var(--primary-color) !important;
 }
 
 main {
   a {
-    color: var(--primary-color);
-    // text-decoration: underline;
+    color: #23252c;
+
+    &:hover {
+      color: var(--primary-color) !important;
+    }
   }
 
   // list link has no underline
   li {
     a {
       text-decoration: none;
-      // &:hover {
-      //   text-decoration: underline;
-      // }
     }
   }
 
@@ -103,6 +95,9 @@ html[data-theme=dark] {
   }
 
   main {
+    a {
+      color: #dadada;
+    }
     h1, h2, h3 {
       a {
         color: var(--secondary-font-color);
