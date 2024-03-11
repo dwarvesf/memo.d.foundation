@@ -97,7 +97,7 @@ code.button {
         "nav content pagenav"
         "nav content pagenav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 248px minmax(auto, var(--container-max-width)) 248px;
+    grid-template-columns: 270px minmax(auto, var(--container-max-width)) 248px;
     column-gap: var(--column-gap);
     justify-content: center;
     
@@ -524,7 +524,7 @@ html[data-theme="dark"] {
     justify-self: center;
     width: 100%;
     max-width: 100vw;
-    padding: 1.2rem;
+    padding: 0 1.2rem 2rem;
   }
 
   #TableOfContents {
