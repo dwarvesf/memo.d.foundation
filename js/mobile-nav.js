@@ -1,32 +1,24 @@
 window.onload = function() {
   const mobileNavBtn = document.querySelector("#mobile-nav-btn");
   const icons = document.querySelectorAll(".mobile-nav-btn-icon");
-  const sidebar = document.querySelector("nav.mobile-menu");
-  const body = document.body;
-  let lockScroll = false;
+  const sidebar = document.querySelector("#sidebar");
 
-  mobileNavBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    for (const icon of icons) {
-      icon.classList.toggle("mobile-nav-btn-icon-show");
+  document.body.addEventListener("click", (e) => {
+    if (sidebar.contains(e.target)) return;
+
+    if (mobileNavBtn.contains(e.target)) {
+      for (const icon of icons) {
+        icon.classList.toggle("mobile-nav-btn-icon-show");
+      }
+
+      sidebar.classList.toggle("show");
+      sidebar.classList.add("menu-reading-mode");
+      return;
     }
 
-    sidebar.classList.toggle("show");
-
-    lockScroll = !lockScroll;
-
-    body.style.overflow = lockScroll ? "hidden" : "";
+    sidebar.classList.remove("show");
+    /* sidebar.classList.remove("menu-reading-mode"); */
+    icons[0].classList.add("mobile-nav-btn-icon-show");
+    icons[1].classList.remove("mobile-nav-btn-icon-show");
   });
-  
-  sidebar.addEventListener("click", (e) => {
-    if (e.target.tagName === "A") return;
-    e.preventDefault()
-  })
-  
-  body.addEventListener("click", (e) => {
-    if (e.target.tagName === "A") return;
-    console.log(e.defaultPrevented);
-    if (e.defaultPrevented || !sidebar.classList.contains("show")) return;
-    mobileNavBtn.click()
-  })
 };
