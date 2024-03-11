@@ -1,7 +1,6 @@
 footer {
     padding: 16px 12px;
     margin: auto -5px 0px;
-    clear: both;
     border-top: 1px solid var(--border-color-light);
     background-color: var(--primary-background-color-light);
     z-index: 10;
@@ -11,13 +10,18 @@ footer {
     font-weight: 400;
     line-height: 140%;
     letter-spacing: -0.0125rem;
-    align-self: center;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    & > span {
+      align-self: center;
+    }
 
     .socials {
         display: flex;
         justify-content: start;
         align-items: center;
-        margin-top: 16px;
         column-gap: 10px;
 
         a {
@@ -25,6 +29,14 @@ footer {
             aspect-ratio: 1;
         }
     }
+}
+
+@media screen and (max-width: 1100px) {
+  footer {
+    .socials {
+      align-self: center;
+    }
+  }
 }
 
 footer span {

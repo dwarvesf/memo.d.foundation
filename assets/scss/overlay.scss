@@ -6,6 +6,7 @@
   height: 100vh;
   transition: all 0.16s ease-in-out;
   backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
   background-color: transparent;
   z-index: 1;
   pointer-events: none;
@@ -14,14 +15,16 @@
 html[data-reading-mode="true"] {
   #overlay:has(+ #sidebar:is(.show)) {
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     background-color: rgba(0, 0, 0, 0.10);
     pointer-events: auto;
   }
 }
 
-@media query and (max-width: 1100px) {
+@media screen and (max-width: 1100px) {
   #overlay:has(+ #sidebar:is(.show)) {
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     background-color: rgba(0, 0, 0, 0.10);
     pointer-events: auto;
   }
