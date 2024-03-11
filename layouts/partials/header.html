@@ -430,7 +430,7 @@
               by
               {{ $authorsLen := sub (len $.Params.authors) 1}}
               {{ range $i, $e := .Params.authors }}
-              <a href="/members/{{ $e }}">{{ $e }}</a>{{ if (gt $authorsLen $i) }},{{end}}
+              <a href="/contributor/{{ $e }}">{{ $e }}</a>{{ if (gt $authorsLen $i) }},{{end}}
               {{ end }}
             </aside>
           {{ end }}
