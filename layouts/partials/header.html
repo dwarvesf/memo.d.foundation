@@ -98,6 +98,9 @@
   {{ $mobileNav := resources.Get "js/mobile-nav.js" }}
   <script defer src="{{ $mobileNav.RelPermalink }}"></script>
 
+  {{ $readingMode := resources.Get "js/reading-mode.js" }}
+  <script defer src="{{ $readingMode.RelPermalink }}"></script>
+
   <script defer src="https://unpkg.com/@popperjs/core@2"></script>
 
   {{ if .IsHome -}}
@@ -214,6 +217,7 @@
     <div id="docsearch"></div>
     <div>
       <button 
+      id="btn-reading-mode-toggler"
       class="btn-reading-mode-toggler"
       x-data="{
           readingMode: true,

@@ -55,7 +55,7 @@ html[data-reading-mode="true"] {
     visibility: hidden;
   }
 
-  .tab-menu {
+  .tab-header > .tab-menu {
     opacity: 0;
     pointer-events: none;
   }
@@ -228,6 +228,14 @@ html[data-theme="dark"] {
       border-right: 0px;
     }
   }
+
+  nav.menu {
+    nav.tab-menu {
+      ul {
+        border-bottom: 1px solid var(--border-color);
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 1100px) {
@@ -381,8 +389,8 @@ nav.menu > .tab-menu {
         display: flex;
         flex-direction: column;
         row-gap: 10px;
-        padding: 15px 5px 20px;
-        border-bottom: 1px solid #eaecf0;
+        padding: 5px;
+        border-bottom: 1px solid var(--border-color-light);
       }
     }
 
