@@ -261,9 +261,6 @@ table:has(th:empty) {
 }
 
 table:has(img) {
-  width: 100%;
-  height: 100%;
-
   td {
     min-width: 200px;
   }
