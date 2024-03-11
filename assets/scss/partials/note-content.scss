@@ -253,6 +253,16 @@ td:has(img) {
 
 table {
   table-layout: fixed;
+  margin-top: 18px;
+  font-family: monospace, sans-serif;
+
+  th, td {
+    white-space: nowrap;
+
+    * {
+      white-space: nowrap;
+    }
+  }
 }
 
 table:has(th:empty) {
