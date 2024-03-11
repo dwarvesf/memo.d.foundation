@@ -9,7 +9,7 @@
       "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>" 
    | replaceRE
       `@([\d\w_\-\.]+)`
-      "<a href=\"/members/${1}\">@${1}</a>"
+      "<a href=\"/contributor/${1}\">@${1}</a>"
    | safeHTML
 }}
 {{ partial "footer.html" . }}
