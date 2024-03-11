@@ -524,7 +524,7 @@ extension NSManagedObjectModel {
 
     // MARK: - SetUp
 
-    func setup(completion: <a href=/members/escaping>@escaping</a> () -&gt; Void) {
+    func setup(completion: <a href=/contributor/escaping>@escaping</a> () -&gt; Void) {
         loadPersistentStore {
             completion()
         }
@@ -532,7 +532,7 @@ extension NSManagedObjectModel {
 
     // MARK: - Loading
 
-    private func loadPersistentStore(completion: <a href=/members/escaping>@escaping</a> () -&gt; Void) {
+    private func loadPersistentStore(completion: <a href=/contributor/escaping>@escaping</a> () -&gt; Void) {
         migrateStoreIfNeeded {
             self.persistentContainer.loadPersistentStores { description, error in
                 guard error == nil else {
@@ -544,7 +544,7 @@ extension NSManagedObjectModel {
         }
     }
 
-    private func migrateStoreIfNeeded(completion: <a href=/members/escaping>@escaping</a> () -&gt; Void) {
+    private func migrateStoreIfNeeded(completion: <a href=/contributor/escaping>@escaping</a> () -&gt; Void) {
         guard let storeURL = persistentContainer.persistentStoreDescriptions.first?.url else {
             fatalError(&quot;persistentContainer was not set up properly&quot;)
         }

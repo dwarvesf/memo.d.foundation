@@ -269,10 +269,10 @@ struct ContentView: View {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/swiftui/015727996aa07cf040f8fe04573a0ab8_MD5.webp alt=015727996aa07cf040f8fe04573a0ab8_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>There are 3 steps to process the above layout.</p><ol><li><p>Calculate space for child view after subtracting internal spacing.</p></li><li><p>Divide the remaining space left equally, and propose available size for their child.</p></li><li><p>All children have sizes. The stack lines them up with the spacing and aligns them according to the specified alignment.</p></li></ol><h3 id=the-state-management><a href=#the-state-management>The State Management <a href=#the-state-management></a></a></h3><p>In order to help us manage the state in the app, Apple gave us another power called Property Wrapper. Property wrapper is a new feature in Swift 5.1, which delegates the setter and getter logic of a property to another object.</p><p>There are five property wrappers that SwiftUI gives us for default to manage the app’s state.</p><ul><li><a href=/members/State>@State</a></li><li><a href=/members/Binding>@Binding</a></li><li><a href=/members/ObservedObject>@ObservedObject</a></li><li><a href=/members/EnvironmentObject>@EnvironmentObject</a></li><li><a href=/members/Environment>@Environment</a></li></ul><p><strong><a href=/members/State>@State</a></strong></p><pre><code class=language-javascript>struct ProductsView: View {
+  }" src=/memo/assets/swiftui/015727996aa07cf040f8fe04573a0ab8_MD5.webp alt=015727996aa07cf040f8fe04573a0ab8_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>There are 3 steps to process the above layout.</p><ol><li><p>Calculate space for child view after subtracting internal spacing.</p></li><li><p>Divide the remaining space left equally, and propose available size for their child.</p></li><li><p>All children have sizes. The stack lines them up with the spacing and aligns them according to the specified alignment.</p></li></ol><h3 id=the-state-management><a href=#the-state-management>The State Management <a href=#the-state-management></a></a></h3><p>In order to help us manage the state in the app, Apple gave us another power called Property Wrapper. Property wrapper is a new feature in Swift 5.1, which delegates the setter and getter logic of a property to another object.</p><p>There are five property wrappers that SwiftUI gives us for default to manage the app’s state.</p><ul><li><a href=/contributor/State>@State</a></li><li><a href=/contributor/Binding>@Binding</a></li><li><a href=/contributor/ObservedObject>@ObservedObject</a></li><li><a href=/contributor/EnvironmentObject>@EnvironmentObject</a></li><li><a href=/contributor/Environment>@Environment</a></li></ul><p><strong><a href=/contributor/State>@State</a></strong></p><pre><code class=language-javascript>struct ProductsView: View {
     let products: [Product]
 
-    <a href=/members/State>@State</a> private var showFavorited: Bool = false
+    <a href=/contributor/State>@State</a> private var showFavorited: Bool = false
 
     var body: some View {
         List {
@@ -289,8 +289,8 @@ struct ContentView: View {
         }
     }
 }
-</code></pre><p><strong><a href=/members/State>@State</a></strong> is a Property Wrapper which we can use to describe View’s state. SwiftUI will store it in special internal memory outside of View struct. Only the related View can access it. As soon as the value of <strong><a href=/members/State>@State</a></strong> property changes SwiftUI rebuilds View to respect state changes. Here is a simple example.</p><p><strong><a href=/members/Binding>@Binding</a></strong></p><pre><code class=language-javascript>struct FilterView: View {
-    <a href=/members/Binding>@Binding</a> var showFavorited: Bool
+</code></pre><p><strong><a href=/contributor/State>@State</a></strong> is a Property Wrapper which we can use to describe View’s state. SwiftUI will store it in special internal memory outside of View struct. Only the related View can access it. As soon as the value of <strong><a href=/contributor/State>@State</a></strong> property changes SwiftUI rebuilds View to respect state changes. Here is a simple example.</p><p><strong><a href=/contributor/Binding>@Binding</a></strong></p><pre><code class=language-javascript>struct FilterView: View {
+    <a href=/contributor/Binding>@Binding</a> var showFavorited: Bool
 
     var body: some View {
         Toggle(isOn: $showFavorited) {
@@ -302,7 +302,7 @@ struct ContentView: View {
 struct ProductsView: View {
     let products: [Product]
 
-    <a href=/members/State>@State</a> private var showFavorited: Bool = false
+    <a href=/contributor/State>@State</a> private var showFavorited: Bool = false
 
     var body: some View {
         List {
@@ -316,11 +316,11 @@ struct ProductsView: View {
         }
     }
 }
-</code></pre><p><strong><a href=/members/Binding>@Binding</a></strong> provides reference like access for a value type. Sometimes we need to make the state of our View accessible for its children. But we can’t simply pass that value because it is a value type and Swift will pass the copy of that value. And this is where we can use **<a href=/members/Binding>@Binding</a> **Property Wrapper.</p><p><strong><a href=/members/ObserveObject>@ObserveObject</a></strong></p><pre><code class=language-javascript>import Combine
+</code></pre><p><strong><a href=/contributor/Binding>@Binding</a></strong> provides reference like access for a value type. Sometimes we need to make the state of our View accessible for its children. But we can’t simply pass that value because it is a value type and Swift will pass the copy of that value. And this is where we can use **<a href=/contributor/Binding>@Binding</a> **Property Wrapper.</p><p><strong><a href=/contributor/ObserveObject>@ObserveObject</a></strong></p><pre><code class=language-javascript>import Combine
 
 final class PodcastPlayer: ObservableObject {
     
-    <a href=/members/Published>@Published</a> private(set) var isPlaying: Bool = false
+    <a href=/contributor/Published>@Published</a> private(set) var isPlaying: Bool = false
 
     func play() {
         isPlaying = true
@@ -332,7 +332,7 @@ final class PodcastPlayer: ObservableObject {
 }
 
 struct EpisodesView: View {
-    <a href=/members/ObservedObject>@ObservedObject</a> var player: PodcastPlayer
+    <a href=/contributor/ObservedObject>@ObservedObject</a> var player: PodcastPlayer
     let episodes: [Episode]
 
     var body: some View {
@@ -354,8 +354,8 @@ struct EpisodesView: View {
         }
     }
 }
-</code></pre><p><strong><a href=/members/ObservedObject>@ObservedObject</a></strong> work very similarly to <strong><a href=/members/State>@State</a></strong> Property Wrapper, but the main difference is that we can share it between multiple independent Views which can subscribe and observe changes on that object, and as soon as changes appear SwiftUI rebuilds all Views bound to this object.</p><p>Remember, we can share <strong>ObservableObject</strong> between multiple views, that’s why <strong>it must be a reference type/class.</strong></p><p><strong><a href=/members/EnvironmentObject>@EnvironmentObject</a></strong></p><pre><code class=language-javascript>struct EpisodesView: View {
-    <a href=/members/EnvironmentObject>@EnvironmentObject</a> var player: PodcastPlayer
+</code></pre><p><strong><a href=/contributor/ObservedObject>@ObservedObject</a></strong> work very similarly to <strong><a href=/contributor/State>@State</a></strong> Property Wrapper, but the main difference is that we can share it between multiple independent Views which can subscribe and observe changes on that object, and as soon as changes appear SwiftUI rebuilds all Views bound to this object.</p><p>Remember, we can share <strong>ObservableObject</strong> between multiple views, that’s why <strong>it must be a reference type/class.</strong></p><p><strong><a href=/contributor/EnvironmentObject>@EnvironmentObject</a></strong></p><pre><code class=language-javascript>struct EpisodesView: View {
+    <a href=/contributor/EnvironmentObject>@EnvironmentObject</a> var player: PodcastPlayer
     let episodes: [Episode]
 
     var body: some View {
@@ -377,16 +377,16 @@ struct EpisodesView: View {
         }
     }
 }
-</code></pre><p>As you can see, we have to pass PodcastPlayer object via environmentObject modifier of our View. By doing this, we can easily access PodcastPlayer by defining it with <strong><a href=/members/EnvironmentObject>@EnvironmentObject</a></strong> Property Wrapper. <strong><a href=/members/EnvironmentObject>@EnvironmentObject</a></strong> uses dynamic member lookup feature to find PodcastPlayer class instance in the Environment, that’s why you don’t need to pass it via init method of EpisodesView. The Environment is the right way of Dependency Injection in SwiftUI. It works like magic.</p><p>**<a href=/members/Environment>@Environment</a> **</p><pre><code class=language-javascript>struct CalendarView: View {
-    <a href=/members/Environment>@Environment</a>(\.calendar) var calendar: Calendar
-    <a href=/members/Environment>@Environment</a>(\.locale) var locale: Locale
-    <a href=/members/Environment>@Environment</a>(\.colorScheme) var colorScheme: ColorScheme
+</code></pre><p>As you can see, we have to pass PodcastPlayer object via environmentObject modifier of our View. By doing this, we can easily access PodcastPlayer by defining it with <strong><a href=/contributor/EnvironmentObject>@EnvironmentObject</a></strong> Property Wrapper. <strong><a href=/contributor/EnvironmentObject>@EnvironmentObject</a></strong> uses dynamic member lookup feature to find PodcastPlayer class instance in the Environment, that’s why you don’t need to pass it via init method of EpisodesView. The Environment is the right way of Dependency Injection in SwiftUI. It works like magic.</p><p>**<a href=/contributor/Environment>@Environment</a> **</p><pre><code class=language-javascript>struct CalendarView: View {
+    <a href=/contributor/Environment>@Environment</a>(\.calendar) var calendar: Calendar
+    <a href=/contributor/Environment>@Environment</a>(\.locale) var locale: Locale
+    <a href=/contributor/Environment>@Environment</a>(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
         return Text(locale.identifier)
     }
 }
-</code></pre><p>SwiftUI already has an Environment populated with system-wide settings. We can easily access them with <strong><a href=/members/Environment>@Environment</a></strong> Property Wrapper.</p><p>As soon as Locale, Calendar, or ColorScheme of the system change, SwiftUI recreates our CalendarView.</p><h2 id=however><a href=#however><strong>However</strong> <a href=#however></a></a></h2><p>Besides the advanced features for UI processing, SwiftUI still has some downside.</p><h3 id=limited-api-coverage><a href=#limited-api-coverage><strong>Limited API Coverage</strong> <a href=#limited-api-coverage></a></a></h3><p>SwiftUI does not currently have the same broad API coverage as UIKit. For example, if you want to show items in a grid, you would use UICollectionView in UIKit, but SwiftUI has no equivalent.</p><h3 id=limited-adoption><a href=#limited-adoption><strong>Limited Adoption</strong> <a href=#limited-adoption></a></a></h3><p>SwiftUI was only announced at WWDC2019, and is available in iOS 13 devices or later. This immediately means that:</p><ul><li>Almost every app written to date uses UIKit.</li><li>Any app that needs to support iOS n-1 or n-2 (e.g. iOS 12 and iOS 11) cannot even begin to switch to SwiftUI for a year or more.</li></ul><h3 id=limited-support><a href=#limited-support><strong>Limited Support</strong> <a href=#limited-support></a></a></h3><p>UIKit has been around over ten years now, which means:</p><ul><li>Almost every problem you might face has probably already been faced and solved by others</li><li>There are lots of libraries out there that provide extensions and customizations.</li></ul><h3 id=default-behavior><a href=#default-behavior><strong>Default Behavior</strong> <a href=#default-behavior></a></a></h3><p>There are many things Apple gives us by default. This will cause some confusion when we look at the code. Sometimes, I believe that explicit is better than implicit. The default padding in HStack is one example of this.</p><p>NoneBashCSSCC#HTMLJavaJavaScriptJSONPHPPowershellPythonRubyTypeScriptCopy</p><pre><code class=language-plain_text>HStack {
+</code></pre><p>SwiftUI already has an Environment populated with system-wide settings. We can easily access them with <strong><a href=/contributor/Environment>@Environment</a></strong> Property Wrapper.</p><p>As soon as Locale, Calendar, or ColorScheme of the system change, SwiftUI recreates our CalendarView.</p><h2 id=however><a href=#however><strong>However</strong> <a href=#however></a></a></h2><p>Besides the advanced features for UI processing, SwiftUI still has some downside.</p><h3 id=limited-api-coverage><a href=#limited-api-coverage><strong>Limited API Coverage</strong> <a href=#limited-api-coverage></a></a></h3><p>SwiftUI does not currently have the same broad API coverage as UIKit. For example, if you want to show items in a grid, you would use UICollectionView in UIKit, but SwiftUI has no equivalent.</p><h3 id=limited-adoption><a href=#limited-adoption><strong>Limited Adoption</strong> <a href=#limited-adoption></a></a></h3><p>SwiftUI was only announced at WWDC2019, and is available in iOS 13 devices or later. This immediately means that:</p><ul><li>Almost every app written to date uses UIKit.</li><li>Any app that needs to support iOS n-1 or n-2 (e.g. iOS 12 and iOS 11) cannot even begin to switch to SwiftUI for a year or more.</li></ul><h3 id=limited-support><a href=#limited-support><strong>Limited Support</strong> <a href=#limited-support></a></a></h3><p>UIKit has been around over ten years now, which means:</p><ul><li>Almost every problem you might face has probably already been faced and solved by others</li><li>There are lots of libraries out there that provide extensions and customizations.</li></ul><h3 id=default-behavior><a href=#default-behavior><strong>Default Behavior</strong> <a href=#default-behavior></a></a></h3><p>There are many things Apple gives us by default. This will cause some confusion when we look at the code. Sometimes, I believe that explicit is better than implicit. The default padding in HStack is one example of this.</p><p>NoneBashCSSCC#HTMLJavaJavaScriptJSONPHPPowershellPythonRubyTypeScriptCopy</p><pre><code class=language-plain_text>HStack {
     Text(&quot;★★★★★&quot;)
     Text(&quot;Avocado Toast&quot;).font(.title)
 }

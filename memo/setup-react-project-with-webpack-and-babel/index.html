@@ -229,7 +229,7 @@
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/memo/assets/setup-react-project-with-webpack-and-babel/0eb458d1be6d0f37210105e714a1a304_MD5.webp alt=0eb458d1be6d0f37210105e714a1a304_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=webpack-development-config><a href=#webpack-development-config>Webpack development config <a href=#webpack-development-config></a></a></h2><p>In your webpack.config.js we will need to install babel to transpile javascript ES6 into ES5 and transpile react.js and jsx into javascript. You will also need to install css-loader to resolve import and style-loader to load your css into style tag in head tag.</p><p>You will also need to install webpack-dev-server which automatically reload your content in the</p><pre><code class=language-javascript>yarn add -D babel-loader <a href=/members/babel>@babel</a>/core <a href=/members/babel>@babel</a>/preset-react webpack webpack-cli css-loader style-loader
+  }" src=/memo/assets/setup-react-project-with-webpack-and-babel/0eb458d1be6d0f37210105e714a1a304_MD5.webp alt=0eb458d1be6d0f37210105e714a1a304_MD5.webp x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=webpack-development-config><a href=#webpack-development-config>Webpack development config <a href=#webpack-development-config></a></a></h2><p>In your webpack.config.js we will need to install babel to transpile javascript ES6 into ES5 and transpile react.js and jsx into javascript. You will also need to install css-loader to resolve import and style-loader to load your css into style tag in head tag.</p><p>You will also need to install webpack-dev-server which automatically reload your content in the</p><pre><code class=language-javascript>yarn add -D babel-loader <a href=/contributor/babel>@babel</a>/core <a href=/contributor/babel>@babel</a>/preset-react webpack webpack-cli css-loader style-loader
 </code></pre><p>In your webpack.config.js specify entry in webpack config to point to index.js file then configure babel-loader to run with js file extension. Loader in webpack is a optimizer, transformer that run against some specific file type. Specify file type with use key(which use regular express) and loaders which specify which loader run with that type of file.</p><pre><code class=language-javascript>const webpack = require('webpack')
 const path = require('path')
 
@@ -266,7 +266,7 @@ module.exports = {
   }
 }
 </code></pre><p>Then add some babel preset. Which babel preset include bunch of babel plugin.</p><ul><li>babel-present: will automatically transpile es6 code into es5 code</li><li>babel-react: will transpile react code into es5 javascript code</li></ul><pre><code class=language-javascript>{
-  &quot;presets&quot;: [&quot;<a href=/members/babel>@babel</a>/preset-env&quot;, &quot;<a href=/members/babel>@babel</a>/preset-react&quot;]
+  &quot;presets&quot;: [&quot;<a href=/contributor/babel>@babel</a>/preset-env&quot;, &quot;<a href=/contributor/babel>@babel</a>/preset-react&quot;]
 }
 </code></pre><p>Create App component and remember to wrap it with hot import by react-hot-loader when exported to make react work with HMR:</p><pre><code class=language-javascript>import { hot } from 'react-hot-loader/root'
 const App = () =&gt; &lt;div&gt;Hello World!&lt;/div&gt;
