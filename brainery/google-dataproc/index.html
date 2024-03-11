@@ -218,7 +218,7 @@
         }
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Google Dataproc</div><div class=tags-index style=display:none>tags: brainery, engineering/data, data, data-engineering, google-dataproc, hadoop, streaming, ETL</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Google Dataproc</h1></template><div class=date>Jan 24, 2024</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
-<a href=/members/mickwan1234>mickwan1234</a></aside></div></template><template x-if=!hideTitle><hr></template><h2 id=introduction><a href=#introduction>Introduction <a href=#introduction></a></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+<a href=/contributor/mickwan1234>mickwan1234</a></aside></div></template><template x-if=!hideTitle><hr></template><h2 id=introduction><a href=#introduction>Introduction <a href=#introduction></a></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: `Google Dataproc-20240124162722161.webp`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
