@@ -298,6 +298,7 @@ html[data-theme=dark] {
 
 #sidebar {
   width: 270px;
+  z-index: 2;
 
   & > div {
     overflow-y: auto;
@@ -400,4 +401,3 @@ body:has(#sidebar:is(.show)) {
     }
   }
 }
-
