@@ -1,6 +1,6 @@
 .sc-row {
   &:not(:first-of-type) {
-    margin-top: 24px;
+    margin-top: 18px;
   }
 
   display: flex;
@@ -9,4 +9,8 @@
 
 .sc-col {
   flex: 1;
+
+  & > p {
+    margin: 0;
+  }
 }

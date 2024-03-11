@@ -158,7 +158,7 @@ main {
     overflow-wrap: break-word;
     hyphens: none;
     justify-self: left;
-    font-size: 1rem;
+    font-size: 1.125rem;
     font-style: normal;
     font-weight: 400;
     line-height: 160%;
@@ -170,6 +170,10 @@ main ul {
   margin: 0;
   padding: 0;
   padding-inline-start: 40px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+
   > li > a {
     padding: 0;
     &::before {
@@ -177,6 +181,10 @@ main ul {
       bottom: 0%;
     }
   }
+}
+
+p + div > ul {
+  margin-top: 18px;
 }
 
 main {
