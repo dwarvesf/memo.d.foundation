@@ -19,10 +19,12 @@ window.onload = function() {
   });
   
   sidebar.addEventListener("click", (e) => {
+    if (e.target.tagName === "A") return;
     e.preventDefault()
   })
   
   body.addEventListener("click", (e) => {
+    if (e.target.tagName === "A") return;
     console.log(e.defaultPrevented);
     if (e.defaultPrevented || !sidebar.classList.contains("show")) return;
     mobileNavBtn.click()
