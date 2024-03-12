@@ -24,7 +24,8 @@
       "cargo install obsidian-export",
       ". $VENV_DIR/bin/activate",
       "pip install -r requirements.txt",
-      "pre-commit install"
+      "pre-commit install",
+      "git config credential.helper $(which git-credential-manager)"
     ],
     "scripts": {
       "watch-run":    "make watch-run",
