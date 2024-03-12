@@ -90,57 +90,49 @@ code.button {
 }
 
 .grid {
+  position: relative;
+  margin-top: 57px;
+  display: inline-grid;
+  grid-template-areas:
+    "tabmenu tabmenu tabmenu"
+    "nav content pagenav"
+    "nav content pagenav";
+  grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
+  grid-template-columns: 270px minmax(auto, var(--container-max-width)) 248px;
+  column-gap: var(--column-gap);
+  justify-content: center;
+
+  .pagenav {
+    grid-area: pagenav;
+    justify-self: center;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    letter-spacing: -0.0125rem;
+    width: 100%;
+    max-width: 700px;
     position: relative;
-    margin-top: 57px;
-    display: inline-grid;
-    grid-template-areas:
-        "tabmenu tabmenu tabmenu"
-        "nav content pagenav"
-        "nav content pagenav";
-    grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 270px minmax(auto, var(--container-max-width)) 248px;
-    column-gap: var(--column-gap);
-    justify-content: center;
-    
-    .pagenav {
-        grid-area: pagenav;
-        justify-self: center;
-        font-size: 0.875rem;
+
+    div.container {
+      position: sticky;
+      top: 90px;
+      right: 0;
+      z-index: 10;
+
+      .nav-label {
+        display: block;
+        text-transform: uppercase;
+        position: relative;
+        color: var(--Secondary-Black, #23252c);
+        font-size: 13px;
         font-style: normal;
-        font-weight: 500;
-        line-height: 140%;
-        letter-spacing: -0.0125rem;
-        width: 100%;
-        max-width: 700px;
-        transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-
-        div.container {
-          position: sticky;
-          top: 81px;
-          right: 0;
-          z-index: 10;
-
-          .nav-label {
-            display: block;
-            text-transform: uppercase;
-            position: relative;
-            color: var(--Secondary-Black, #23252c);
-            font-size: 13px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: 18.2px; /* 18.2px */
-            letter-spacing: 0.8px;
-          }
-        }
+        font-weight: 600;
+        line-height: 18.2px; /* 18.2px */
+        letter-spacing: 0.8px;
+      }
     }
-}
-
-html[data-reading-mode="true"] {
-    .pagenav {
-      transform: translateX(5%);
-      opacity: 0;
-      pointer-events: none;
-    }
+  }
 }
 
 #docsearch {
@@ -148,21 +140,21 @@ html[data-reading-mode="true"] {
 }
 
 main {
-    grid-area: content;
-    display: inline-block;
-    padding: var(--main-padding);
-    width: 100%;
-    min-width: 0;
-    max-width: var(--container-max-width);
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    hyphens: none;
-    justify-self: left;
-    font-size: 1.125rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 160%;
-    letter-spacing: -0.0125rem;
+  grid-area: content;
+  display: inline-block;
+  padding: var(--main-padding);
+  width: 100%;
+  min-width: 0;
+  max-width: var(--container-max-width);
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  hyphens: none;
+  justify-self: left;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+  letter-spacing: -0.0125rem;
 }
 
 main ul {
@@ -256,7 +248,8 @@ table {
   margin-top: 18px;
   font-family: monospace, sans-serif;
 
-  th, td {
+  th,
+  td {
     white-space: nowrap;
 
     * {
@@ -290,8 +283,22 @@ table:has(img) {
   }
 }
 
+html[data-reading-mode="true"] {
+  label:has(+ #TableOfContents),
+  #TableOfContents {
+    transform: translateY(-300px);
+    transition-delay: 0.15s;
+  }
+}
+
 #TableOfContents {
   padding-right: 16px;
+}
+
+label:has(+ #TableOfContents),
+#TableOfContents {
+  transition: transform 0.3s ease-in-out;
+  transition-delay: 0s;
 }
 
 #TableOfContents > ul > li > a {
@@ -477,18 +484,18 @@ html[data-theme="dark"] {
 }
 
 .col-3 {
-    margin-top: 16px;
-    width: 100%;
-    display: inline-grid;
-    column-gap: 16px;
-    grid-auto-flow: column;
-    grid-template-rows: min-content min-content min-content;
-    grid-auto-columns: 1fr;
+  margin-top: 16px;
+  width: 100%;
+  display: inline-grid;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  grid-template-rows: min-content min-content min-content;
+  grid-auto-columns: 1fr;
 
-    > * {
-        overflow-wrap: break-word;
-        overflow: auto;
-    }
+  > * {
+    overflow-wrap: break-word;
+    overflow: auto;
+  }
 }
 
 /* Mobile */
@@ -576,7 +583,7 @@ html[data-theme="dark"] {
   #docsearch {
     display: none;
   }
-  
+
   .col-2 {
     grid-template-rows: auto;
   }

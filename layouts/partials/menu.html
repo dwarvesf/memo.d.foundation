@@ -24,7 +24,7 @@
     {{ $pinned = $pinned | append (dict "title" .Params.Title "tags" .Params.Tags "url" .RelPermalink "date" .Page.Params.Date) }}
   {{ end }}
 {{ end }}
-  <nav id="sidebar" class="menu scrollbar-hidden">
+<nav x-data id="sidebar" :class="{ 'menu scrollbar-hidden': true, 'show': $store.sidebar.open }">
     <div>
       {{ partial "tab-menu.html" . }}
       <section

@@ -44,6 +44,34 @@
   }
 }
 
+#sidebar-toggle {
+  all: initial;
+  width: 40px;
+  height: 40px;
+  display: none;
+
+  border-radius: 8px;
+  overflow: hidden;
+
+  :active {
+    background-color: #f4f3f2;
+  }
+
+  &:focus {
+    outline: 3px solid #f4f3f2;
+    outline-offset: 0px;
+  }
+
+  svg.icon {
+    display: none;
+    color: black;
+  }
+
+  svg.icon[show="true"] {
+    display: block;
+  }
+}
+
 html[data-reading-mode="true"] {
   .title {
     border-right: 0px;
@@ -60,33 +88,10 @@ html[data-reading-mode="true"] {
     pointer-events: none;
   }
 
-  .mobile-nav-btn {
-    all: initial;
-    width: 40px;
-    height: 40px;
-
-    border-radius: 8px;
-    overflow: hidden;
-
-    :active {
-      background-color: #f4f3f2;
-    }
-
-    .mobile-nav-btn-icon {
-      display: none;
-    }
-
-    .mobile-nav-btn-icon-show {
-      display: block !important;
-    }
-  }
-
-  .mobile-nav-btn:focus {
-    outline: 3px solid #f4f3f2;
-    outline-offset: 0px;
+  #sidebar-toggle {
+    display: block;
   }
 }
-
 
 .reading-mode-menu-container {
   position: absolute;
@@ -165,6 +170,7 @@ nav.tab-menu {
       padding: 0px 10px;
 
       a {
+        font-weight: 400;
         font-size: 14px;
         text-decoration: none;
         color: inherit;
@@ -181,10 +187,6 @@ nav.tab-menu {
       }
     }
   }
-}
-
-.mobile-nav-btn-icon {
-  color: black;
 }
 
 nav.menu {
@@ -220,15 +222,19 @@ html[data-theme="dark"] {
     color: white;
   }
 
-  .mobile-nav-btn {
+  #sidebar-toggle {
     :active {
       background-color: #303030;
     }
-  }
 
-  .mobile-nav-btn:focus {
-    outline: 3px solid #303030;
-    outline-offset: 0px;
+    &:focus {
+      outline: 3px solid #303030;
+      outline-offset: 0px;
+    }
+
+    svg.icon {
+      color: var(--secondary-font-color);
+    }
   }
 
   &[data-reading-mode="true"] {
@@ -364,30 +370,8 @@ nav.menu > .tab-menu {
     }
   }
 
-  .mobile-nav-btn {
-    all: initial;
-    width: 40px;
-    height: 40px;
-
-    border-radius: 8px;
-    overflow: hidden;
-
-    :active {
-      background-color: #f4f3f2;
-    }
-
-    .mobile-nav-btn-icon {
-      display: none;
-    }
-
-    .mobile-nav-btn-icon-show {
-      display: block !important;
-    }
-  }
-
-  .mobile-nav-btn:focus {
-    outline: 3px solid #f4f3f2;
-    outline-offset: 0px;
+  #sidebar-toggle {
+    display: block;
   }
 
   nav.menu {
