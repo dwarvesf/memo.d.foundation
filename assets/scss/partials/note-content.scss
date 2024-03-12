@@ -294,6 +294,11 @@ html[data-reading-mode="true"] {
   }
 }
 
+// if ToC is empty, hide the label before it
+label:has(+ #TableOfContents:empty) {
+  display: none;
+}
+
 #TableOfContents {
   padding-right: 16px;
 }

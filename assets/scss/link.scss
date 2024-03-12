@@ -8,7 +8,7 @@ a {
   white-space: wrap;
 
   &:hover {
-    color: #23242C;
+    color: #23242c;
   }
 }
 
@@ -18,6 +18,8 @@ a {
 
 main {
   a {
+    text-decoration: underline var(--primary-color);
+    text-decoration-skip-ink: auto;
     color: #23252c;
 
     &:hover {
@@ -25,14 +27,9 @@ main {
     }
   }
 
-  // list link has no underline
-  li {
-    a {
-      text-decoration: none;
-    }
-  }
-
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     a {
       padding: 0px;
       color: var(--Neutral-900);
@@ -67,7 +64,6 @@ main {
     line-height: 140%;
     letter-spacing: -0.0125rem;
   }
-
 }
 
 .authors {
@@ -79,8 +75,7 @@ main {
   }
 }
 
-
-html[data-theme=dark] {
+html[data-theme="dark"] {
   .note-title {
     .date {
       color: var(--secondary-font-color-light);
@@ -98,7 +93,9 @@ html[data-theme=dark] {
     a {
       color: #dadada;
     }
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       a {
         color: var(--secondary-font-color);
       }
