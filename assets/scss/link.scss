@@ -12,6 +12,10 @@ a {
   }
 }
 
+.title > a:hover {
+  color: inherit;
+}
+
 .text-active {
   color: var(--primary-color) !important;
 }
