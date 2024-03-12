@@ -1,10 +1,14 @@
 .graph-container {
-  height: 200px;
+  aspect-ratio: 1;
+  width: 100%;
   margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 16px 16px 0;
+  margin: 16px 0px;
+  min-height: 0;
+  box-sizing: border-box;
+  position: relative;
 
   &.fullscreen {
     position: fixed;
@@ -42,13 +46,12 @@
 
   button {
     position: absolute;
-    top: 18px;
-    right: 0;
+    top: 0px;
+    right: 0px;
     z-index: 1;
     background-color: transparent;
     border: none;
-    padding: 8px;
-    margin: 8px;
+    padding: 4px;
     cursor: pointer;
   }
 }
@@ -76,6 +79,22 @@ html[data-theme="dark"] {
         }
       }
     }
+  }
+}
+
+label:has(+ .graph-container),
+.graph-container {
+  transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+  transition-delay: 0.25s;
+}
+
+html[data-reading-mode="true"] {
+  label:has(+ .graph-container),
+  .graph-container {
+    transform: translate(5%);
+    opacity: 0;
+    pointer-events: none;
+    transition-delay: 0s;
   }
 }
 
