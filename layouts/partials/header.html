@@ -316,7 +316,7 @@
     {{ end }}
     <div class="pagenav" x-data="{{ $data | jsonify }}">
       <div class="container">
-        <label class="nav-label">Interactive graph</label>
+        <label id="graph-title" class="nav-label">Interactive graph</label>
         <div 
         class="graph-container" 
         x-bind:class="{ 'fullscreen': fullScreen }"
