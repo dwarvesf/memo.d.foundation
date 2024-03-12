@@ -11,7 +11,7 @@
   {{- else -}}
     {{- .Destination | safeURL -}}
   {{- end -}}"
-  {{- with .Title }} title="{{ . | safeHTML }}"{{- end -}}>
+  {{- with .Title }} class="{{ . }}"{{- end -}}>
   {{- .Text | safeHTML -}}
 </a>
 

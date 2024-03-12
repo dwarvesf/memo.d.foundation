@@ -14,15 +14,21 @@
 
   .title {
     grid-area: title;
-    font-size: 22px;
     border-spacing: 20px;
     border-right: 1px solid var(--border-color-light);
     padding-right: 16px;
     height: 16px;
-    line-height: 16px;
     display: flex;
     align-items: center;
     column-gap: 8px;
+    text-transform: uppercase;
+
+    a {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: left;
+    }
   }
 
   .tab-menu {
