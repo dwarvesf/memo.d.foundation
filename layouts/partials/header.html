@@ -102,6 +102,9 @@
   {{ $keyboardShortcuts := resources.Get "js/keyboard-shortcuts.js" }}
   <script defer src="{{ $keyboardShortcuts.RelPermalink }}"></script>
 
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  {{ $readingTooltip := resources.Get "js/reading-tooltip.js" }}
+  <script defer src="{{ $readingTooltip.RelPermalink }}"></script>
 
   {{ if .IsHome -}}
   <script type="application/ld+json">
@@ -235,6 +238,10 @@
           </g>
         </svg>
       </button>
+      <div class="btn-reading-mode-toggler-tooltip" role="tooltip">
+        Reading Mode
+        <div class="arrow" data-popper-arrow></div>
+      </div>
     </div>
     <div id="themetoggler">
       <button 
