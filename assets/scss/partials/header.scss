@@ -314,6 +314,28 @@ html[data-theme="dark"] {
     }
     g > g {
       transition: all 0.15s ease-in-out;
+      transform: translateX(45%);
+
+      circle {
+        fill: #23252c;
+        transition: fill 0.15s ease-in-out;
+      }
+
+      path {
+        stroke: white;
+        transition: stroke 0.15s ease-in-out;
+      }
+    }
+  }
+
+  &[disable-transition] {
+    transition: none !important;
+  }
+
+  &:is(:not([reading-mode])) {
+    svg > g > g {
+      transition: all 0.15s ease-in-out;
+      transform: translateX(0%);
 
       circle {
         fill: white;
@@ -323,19 +345,6 @@ html[data-theme="dark"] {
       path {
         stroke: #333639;
         transition: stroke 0.15s ease-in-out;
-      }
-    }
-  }
-
-  &[reading-mode] {
-    svg > g > g {
-      transform: translateX(45%);
-      circle {
-        fill: #23252c;
-      }
-
-      path {
-        stroke: white;
       }
     }
   }

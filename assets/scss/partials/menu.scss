@@ -324,35 +324,41 @@ html[data-theme="dark"] {
   }
 }
 
-html[data-reading-mode="true"] {
+#sidebar {
+  transform: translateX(-5%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#sidebar:is(:not(.show)):is(.menu-reading-mode) {
+  position: fixed !important;
+  left: 0 !important;
+}
+
+#sidebar:is(.show) {
+  position: fixed !important;
+  left: 0 !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  transform: translateX(0%) !important;
+}
+
+.menu-reading-mode {
+  padding: 0.5rem;
+  .tab-menu {
+    display: block !important;
+  }
+
+  .site-nav {
+    padding-top: 10px;
+  }
+}
+
+html[data-reading-mode="false"] {
   #sidebar {
-    transform: translateX(-5%);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .menu-reading-mode {
-    padding: 0.5rem;
-    .tab-menu {
-      display: block !important;
-    }
-
-    .site-nav {
-      padding-top: 10px;
-    }
-  }
-
-  #sidebar:is(:not(.show)):is(.menu-reading-mode) {
-    position: fixed !important;
-    left: 0 !important;
-  }
-
-  #sidebar:is(.show) {
-    position: fixed !important;
-    left: 0 !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-    transform: translateX(0%) !important;
+    transform: translateX(0%);
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 

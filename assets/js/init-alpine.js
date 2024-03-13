@@ -26,6 +26,7 @@ document.addEventListener("alpine:init", () => {
   });
 
   Alpine.store("readingMode", {
+    disableTransition: true,
     on: true,
     init() {
       const isOff = sessionStorage.getItem("df.note.reading-mode") === "false";
@@ -36,6 +37,7 @@ document.addEventListener("alpine:init", () => {
       }
       sessionStorage.setItem("df.note.reading-mode", "true");
       document.documentElement.setAttribute("data-reading-mode", "true");
+      this.disableTransition = false;
     },
     toggle() {
       const currentState =
