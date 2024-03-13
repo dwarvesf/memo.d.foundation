@@ -4,7 +4,7 @@ title: Dwarves Foundation
 author:
   email: han@d.foundation
   name: Han Ngo
-copyright: © 2023 Dwarves Foundation.
+copyright: © 2024 Dwarves Foundation.
 module:
   imports:
   - path: github.com/alex-shpak/hugo-book
