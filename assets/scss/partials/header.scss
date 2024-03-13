@@ -212,7 +212,7 @@ html[data-theme="dark"] {
   .DocSearch-Button-Key {
     background: #746e67;
     color: var(--primary-font-color);
-    box-shadow: 0 4px 2px -2px #151514;
+    box-shadow: 0 1.5px 0px 0px #151514;
   }
 
   .tab-header {
@@ -363,7 +363,31 @@ html[data-theme="dark"] {
   display: none;
 
   &[data-show] {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  & > div {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    column-gap: 2px;
+
+    kbd {
+      font-size: 10px;
+      background: #eeedec;
+      color: var(--primary-font-color-light);
+      box-shadow: 0 1.5px 0px 0px #d4d3d0;
+      height: 16px;
+      padding: 0;
+      font-weight: 500;
+      border-radius: 3px;
+      padding: 0px 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .arrow,
@@ -385,19 +409,19 @@ html[data-theme="dark"] {
   }
 
   &[data-popper-placement^="top"] > .arrow {
-    bottom: -4px;
+    bottom: -8px;
   }
 
   &[data-popper-placement^="bottom"] > .arrow {
-    top: -4px;
+    top: -8px;
   }
 
   &[data-popper-placement^="left"] > .arrow {
-    right: -4px;
+    right: -8px;
   }
 
   &[data-popper-placement^="right"] > .arrow {
-    left: -4px;
+    left: -8px;
   }
 }
 
@@ -405,6 +429,12 @@ html[data-theme="dark"] {
   .btn-reading-mode-toggler-tooltip {
     background: var(--border-color);
     color: #dadada;
+
+    & > div kbd {
+      background: #746e67;
+      color: var(--primary-font-color);
+      box-shadow: 0 1.5px 0px 0px #151514;
+    }
   }
 }
 

@@ -239,7 +239,10 @@
         </svg>
       </button>
       <div class="btn-reading-mode-toggler-tooltip" role="tooltip">
-        Reading Mode
+        <span>Reading Mode</span>
+        <div x-data="{ modifier: window.navigator.userAgent.includes('Macintosh') ? '⌘':'ctrl'}">
+          <kbd x-text="modifier"></kbd>+<kbd>shift</kbd>+<kbd>f</kbd>
+        </div>
         <div class="arrow" data-popper-arrow></div>
       </div>
     </div>
