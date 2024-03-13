@@ -359,8 +359,31 @@ label:has(+ #TableOfContents),
 }
 
 main > blockquote {
-  padding: 20px;
-  border: 2px solid var(--border-color-light);
+  padding: 16px 12px;
+  border-radius: 8px;
+  background: var(--primary-color-lighten);
+  font-size: 16px;
+  line-height: 1.5;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  grid-auto-rows: auto;
+  grid-auto-flow: column;
+  grid-column-gap: 10px;
+
+  &::before {
+    content: var(--diamond-icon);
+    aspect-ratio: 1;
+    grid-row: 1/-1;
+    grid-column: 1/1;
+  }
+
+  * {
+    grid-column: 2/2;
+    grid-row: auto;
+    &:first-child {
+      margin: 0;
+    }
+  }
 }
 
 main > * {

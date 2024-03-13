@@ -1,40 +1,42 @@
 :root {
-    --primary-color: #e13F5e;
-    --docsearch-primary-color: #e13F5e;
-    --docsearch-primary-color: #e13F5e;
+  --primary-color: #e13f5e;
+  --primary-color-lighten: rgba(255, 160, 179, 0.125);
+  --docsearch-primary-color: #e13f5e;
+  --docsearch-primary-color: #e13f5e;
 
-    --primary-font-color: #ddd;
-    --primary-font-color-light: #2C2D32;
+  --primary-font-color: #ddd;
+  --primary-font-color-light: #2c2d32;
 
-    --secondary-font-color: #e8e8e8;
-    --secondary-font-color-light: #9B9B9B;
-    --secondary-font-color-light-var2: #636466;
+  --secondary-font-color: #e8e8e8;
+  --secondary-font-color-light: #9b9b9b;
+  --secondary-font-color-light-var2: #636466;
 
-    --primary-background-color: #1e1e1e;
-    --primary-background-color-light: #fff;
+  --primary-background-color: #1e1e1e;
+  --primary-background-color-light: #fff;
 
-    --secondary-background-color: #282828;
-    --secondary-background-color-light: #FCFCFC;
-    --secondary-background-color-var2: #202020;
-    
-    --primary-border-color: #282828;
-    --primary-border-color-light: #EDEDED;
-    
-    --secondary-tag-color: #282828;
-    --secondary-tag-color-light: #F4F3F2;
+  --secondary-background-color: #282828;
+  --secondary-background-color-light: #fcfcfc;
+  --secondary-background-color-var2: #202020;
 
-    --border-color: #3d3d3d;
-    --border-color-light: #e7e7e7;
+  --primary-border-color: #282828;
+  --primary-border-color-light: #ededed;
 
-    --container-max-width: 770px;
-    --main-padding: 16px 18px 150px 4px;
-    --column-gap: 24px;
-    --nav-sidebar-width: 200px;
-    --nav-sidebar-offset: 0px;
+  --secondary-tag-color: #282828;
+  --secondary-tag-color-light: #f4f3f2;
 
-    --Neutral-900: #141518;
-    --Neutral-500: #363636;
-    --Neutral-200: #EAECF0;
+  --border-color: #3d3d3d;
+  --border-color-light: #e7e7e7;
 
-    --chevron-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23a3a3a3' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m10 7l5 5l-5 5'/%3E%3C/svg%3E");
-  }
+  --container-max-width: 770px;
+  --main-padding: 16px 18px 150px 4px;
+  --column-gap: 24px;
+  --nav-sidebar-width: 200px;
+  --nav-sidebar-offset: 0px;
+
+  --Neutral-900: #141518;
+  --Neutral-500: #363636;
+  --Neutral-200: #eaecf0;
+
+  --chevron-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23a3a3a3' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m10 7l5 5l-5 5'/%3E%3C/svg%3E");
+  --diamond-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.00034 23.3156C8.00034 23.3289 8.00214 23.3431 8.00481 23.3564C8.01366 23.4025 8.03497 23.447 8.06788 23.4843L8.34847 23.8057L29.2842 47.7341L29.4618 47.9374C29.5337 48.02 29.6616 48.0208 29.7344 47.9401L29.7575 47.9143L29.8659 47.7953H29.8667L51.5404 23.9123L51.9284 23.4852L51.9292 23.4844C51.9621 23.4471 51.9843 23.4036 51.994 23.3573C51.9967 23.344 51.9994 23.3298 51.9994 23.3156L51.3609 23.1549L30.0007 17.7684L8.5481 23.1779L8.00034 23.3156Z' fill='url(%23paint0_linear_510_25)'/%3E%3Cpath d='M8.00033 23.3156C8.00033 23.3289 8.00214 23.3431 8.0048 23.3564L8.44437 23.5038L18.9979 27.0495H41.0294L51.4525 23.5394L51.9941 23.3574C51.9968 23.344 51.9994 23.3299 51.9994 23.3156C52.003 23.2623 51.9896 23.2082 51.9613 23.1602C51.9613 23.1594 51.9604 23.1575 51.9595 23.1567L51.8236 22.9356L47.8348 16.4329H12.1667L8.20899 22.885L8.04029 23.1602C8.01099 23.2082 7.99767 23.2623 8.00033 23.3156Z' fill='url(%23paint1_linear_510_25)'/%3E%3Cpath d='M18.9979 27.0496L29.4237 47.7491L29.5471 47.9924C29.5809 48.0022 29.6172 48.0022 29.651 47.9924L29.7637 47.7846L41.0295 27.0496H18.9979Z' fill='url(%23paint2_linear_510_25)'/%3E%3Cpath d='M21.1405 20.8826L38.832 20.8826C38.8745 20.8826 38.9165 20.8727 38.9546 20.8537L47.8072 16.4328L38.8967 11.9831L21.0758 11.9831L12.1654 16.4328L21.018 20.8537C21.056 20.8727 21.098 20.8826 21.1405 20.8826Z' fill='%23F6B1BF'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_510_25' x1='77.0027' y1='43.4833' x2='17.8929' y2='89.4373' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FBA4B5'/%3E%3Cstop offset='1' stop-color='%23E3486A'/%3E%3C/linearGradient%3E%3ClinearGradient id='paint1_linear_510_25' x1='77.0039' y1='25.4633' x2='60.9329' y2='61.0424' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23F6B4C2'/%3E%3Cstop offset='1' stop-color='%23F6708E'/%3E%3C/linearGradient%3E%3ClinearGradient id='paint2_linear_510_25' x1='53.5494' y1='44.8697' x2='17.4528' y2='65.1468' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23F6B4C2'/%3E%3Cstop offset='1' stop-color='%23F6708E'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+}
