@@ -23,6 +23,7 @@ a {
 main {
   a {
     text-decoration: underline var(--primary-color);
+    -webkit-text-decoration: underline var(--primary-color);
     text-decoration-skip-ink: auto;
     color: #23252c;
 
@@ -31,18 +32,6 @@ main {
     }
   }
 
-  h1,
-  h2,
-  h3 {
-    a {
-      padding: 0px;
-      color: var(--Neutral-900);
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
   h1 {
     :not(.pagetitle) {
       border-bottom: 1px solid var(--Neutral-200);

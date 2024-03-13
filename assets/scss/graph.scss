@@ -84,17 +84,21 @@ html[data-theme="dark"] {
 
 label:has(+ .graph-container),
 .graph-container {
+  transform: translate(5%);
+  opacity: 0;
+  pointer-events: none;
   transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-  transition-delay: 0.25s;
+  transition-delay: 0s;
 }
 
-html[data-reading-mode="true"] {
+html[data-reading-mode="false"] {
   label:has(+ .graph-container),
   .graph-container {
-    transform: translate(5%);
-    opacity: 0;
-    pointer-events: none;
-    transition-delay: 0s;
+    transform: translate(0%);
+    opacity: 1;
+    pointer-events: auto;
+    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    transition-delay: 0.25s;
   }
 }
 

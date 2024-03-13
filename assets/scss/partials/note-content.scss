@@ -292,13 +292,22 @@ table:has(img) {
   }
 }
 
-html[data-reading-mode="true"] {
+.pagenav
+  .container
+  > #graph-title:is(:not(.hidden))
+  ~ label:has(+ #TableOfContents),
+.pagenav .container > #graph-title:is(:not(.hidden)) ~ #TableOfContents {
+  transform: translateY(-300px);
+  transition-delay: 0.15s;
+}
+
+html[data-reading-mode="false"] {
   .pagenav
     .container
     > #graph-title:is(:not(.hidden))
     ~ label:has(+ #TableOfContents),
   .pagenav .container > #graph-title:is(:not(.hidden)) ~ #TableOfContents {
-    transform: translateY(-300px);
+    transform: translateY(0);
     transition-delay: 0.15s;
   }
 }
@@ -310,10 +319,12 @@ label:has(+ #TableOfContents:empty) {
 
 #TableOfContents {
   padding-right: 16px;
+  max-height: calc(100svh - 200px);
+  overflow-y: auto;
 }
 
-label:has(+ #TableOfContents),
-#TableOfContents {
+#graph-container:has(> svg:is(:not(:empty))) ~ label:has(+ #TableOfContents),
+#graph-container:has(> svg:is(:not(:empty))) ~ #TableOfContents {
   transition: transform 0.3s ease-in-out;
   transition-delay: 0s;
 }
