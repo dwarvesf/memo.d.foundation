@@ -472,7 +472,7 @@ html[data-theme="dark"] {
   display: inline-grid;
   column-gap: 16px;
   grid-auto-flow: column;
-  grid-template-rows: min-content min-content;
+  grid-template-rows: fit-content fit-content;
   grid-auto-columns: 1fr;
 
   > * {
@@ -506,7 +506,7 @@ html[data-theme="dark"] {
   display: inline-grid;
   column-gap: 16px;
   grid-auto-flow: column;
-  grid-template-rows: min-content min-content min-content;
+  grid-template-rows: fit-content fit-content fit-content;
   grid-auto-columns: 1fr;
 
   > * {
