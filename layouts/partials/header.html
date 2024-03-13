@@ -325,28 +325,22 @@
       <div class="container">
         <label id="graph-title" class="nav-label">Interactive graph</label>
         <div 
-        class="graph-container" 
-        x-bind:class="{ 'fullscreen': fullScreen }"
-        x-data="{
-          fullScreen: false,
-          toggleFullScreen() {
-            this.fullScreen = !this.fullScreen;
-            if (window.$graphCenterNodes) {
-              window.$graphCenterNodes(this.fullScreen);
-            }
-          },
-        }">
+          id="graph-container"
+          class="graph-container" 
+          :class="{ 'fullscreen': $store.graphFullScreen.on }"
+          x-data
+        >
           <svg></svg>
-          <button type="button" x-on:click="toggleFullScreen">
+          <button type="button" @click="$store.graphFullScreen.toggle()">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              x-bind:class="{ 'hidden': fullScreen }"
+              x-bind:class="{ 'hidden': $store.graphFullScreen.on }"
             >
               <line x1="7" y1="17" x2="17" y2="7"></line>
               <polyline points="7 7 17 7 17 17"></polyline>
             </svg>
             
-            <svg height="24" width="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" x-bind:class="{ 'hidden': !fullScreen }">
+            <svg height="24" width="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" x-bind:class="{ 'hidden': !$store.graphFullScreen.on }">
               <path
                 d="M289.94,256l95-95A24,24,0,0,0,351,127l-95,95-95-95A24,24,0,0,0,127,161l95,95-95,95A24,24,0,1,0,161,385l95-95,95,95A24,24,0,0,0,385,351Z" 
               />
