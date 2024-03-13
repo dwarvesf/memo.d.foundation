@@ -9,6 +9,22 @@ document.addEventListener("alpine:init", () => {
     },
   });
 
+  Alpine.store("graphFullScreen", {
+    on: false,
+    close() {
+      this.on = false;
+      if (window.$graphCenterNodes) {
+        window.$graphCenterNodes(this.on);
+      }
+    },
+    toggle() {
+      this.on = !this.on;
+      if (window.$graphCenterNodes) {
+        window.$graphCenterNodes(this.on);
+      }
+    },
+  });
+
   Alpine.store("readingMode", {
     on: true,
     init() {
@@ -52,4 +68,10 @@ document.addEventListener("click", (e) => {
   }
 
   Alpine.store("sidebar").close();
+
+  const graphContainer = document.querySelector("#graph-container");
+  const svg = graphContainer.querySelector("svg");
+  const graphBtn = graphContainer.querySelector("button");
+  if (svg.contains(e.target) || graphBtn.contains(e.target)) return;
+  Alpine.store("graphFullScreen").close();
 });
