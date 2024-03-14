@@ -6,6 +6,7 @@ setup:
 fetch:
 	@git submodule update --init --recursive
 	@git submodule update --recursive --remote
+	@git submodule foreach --recursive 'git checkout main || git checkout master'
 	@git pull --recurse-submodules
 
 build:

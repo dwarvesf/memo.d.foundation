@@ -31,7 +31,8 @@
       "watch-run":    "make watch-run",
       "build-target": "make build-target",
       "run-target":   "make run-target",
-      "backup-all":   "make backup-all"
+      "backup-all":   "make backup-all",
+      "fetch":        "make fetch"
     }
   }
 }
