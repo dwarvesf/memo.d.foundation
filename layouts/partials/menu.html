@@ -62,29 +62,6 @@
             }, {});
             return mappedData;
           },
-          isSameGroupUrl(menu) {
-            return this.currentUrl.includes(menu);
-          },
-          isHomePage() {
-            return this.currentUrl.includes('home') ||
-              this.currentUrl.includes('tags') ||
-              this.currentUrl.includes('site-index') ||
-              location.pathname == '/';
-          },
-          slice(items, start, end) {
-            return items.slice(start, end);
-          },
-          toggleLoad(isLoaded) {
-            if (!isLoaded) {
-              this.end = -1;
-              this.loaded = true;
-              this.loadText = 'Load Less...'
-            } else {
-              this.end = 10;
-              this.loaded = false;
-              this.loadText = 'Load more...'
-            }
-          },
         }"
       >
         <details 
@@ -122,10 +99,6 @@
           <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
             <details
               x-data="{
-                start: 0,
-                end: 10,
-                loaded: false,
-                loadText: 'Load more...',
                 open: sessionStorage.getItem(`${menu}-details`) === 'true',
               }"
               x-init="$watch('open', (val) => sessionStorage.setItem(`${menu}-details`, open))"
@@ -138,17 +111,10 @@
                 <span x-text="menu"></span>
               </summary>
               <ul>
-                <template x-for="items in slice(menuData[menu], start, end)">
+                <template x-for="items in menuData[menu]">
                   <li x-bind:class="{ 'text-active': location.pathname === items.url }">
                     <a x-bind:class="{ 'text-active': location.pathname === items.url }" x-bind:href="items.url" x-text="items.name"></a>
                   </li>
-                </template>
-                <template x-if="menuData[menu].length > end">
-                  <li
-                    class="load-more"
-                    @click="toggleLoad(loaded)"
-                    x-text="loadText"
-                  ></li>
                 </template>
               </ul>
             </details>
@@ -158,10 +124,6 @@
 
         <details
           x-data="{
-            start: 2,
-            end: 12,
-            loaded: false,
-            loadText: 'Load more...',
             open: sessionStorage.getItem('details-popular-tags') === 'true',
           }"
           x-init="$watch('open', (val) => sessionStorage.setItem(`details-popular-tags`, open))"
@@ -173,7 +135,7 @@
           </summary>
           <ul>
             <template
-              x-for="tag in slice(tagsData, start, end)"
+              x-for="tag in tagsData"
               x-bind:key="tag"
             >
               <li
@@ -190,13 +152,6 @@
               >
               <a x-bind:class="{ 'text-active': location.pathname === `/tags/${toKebabCase(tag)}/` }" x-bind:href="`/tags/${toKebabCase(tag)}`" x-text="`#${tag}`"></a>
               </li>
-            </template>
-            <template x-if="tagsData.length > end">
-              <li
-                class="load-more"
-                @click="toggleLoad(loaded)"
-                x-text="loadText"
-              ></li>
             </template>
           </ul>
         </details>
