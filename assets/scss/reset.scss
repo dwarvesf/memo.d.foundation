@@ -231,3 +231,7 @@ html[data-theme="light"] {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.no-transition * {
+  transition: none !important;
+}

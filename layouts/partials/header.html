@@ -69,8 +69,8 @@
     {{ $styles.Content | safeCSS }}
   </style>
 
-  {{ $initAlpine := resources.Get "js/init-alpine.js" }}
-  <script src="{{ $initAlpine.RelPermalink }}"></script>
+  {{ $init := resources.Get "js/init.js" }}
+  <script src="{{ $init.RelPermalink }}"></script>
 
   {{ $processComments := resources.Get "js/process-comments.js" }}
   <script defer src="{{ $processComments.RelPermalink }}"></script>
@@ -197,7 +197,7 @@
 
 {{ $.Scratch.Set "section" (replaceRE "^/([^/]+)/.*" "$1" .RelPermalink) }}
 
-<body class="{{ if .IsHome }}home{{ else }}{{ $.Scratch.Get " section" }}{{ end }}">
+<body class="no-transition {{ if .IsHome }}home{{ else }}{{ $.Scratch.Get " section" }}{{ end }}">
   <div class="tab-header">
     <button x-data @click="$store.sidebar.toggle()" id="sidebar-toggle" class="mobile-nav-btn">
       <svg :show="!$store.sidebar.open" class="icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
