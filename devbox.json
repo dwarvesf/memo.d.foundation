@@ -25,7 +25,8 @@
       ". $VENV_DIR/bin/activate",
       "pip install -r requirements.txt",
       "pre-commit install",
-      "git config credential.helper $(which git-credential-manager)"
+      "git config credential.helper $(which git-credential-manager)",
+      "./git-credential-manager.sh"
     ],
     "scripts": {
       "watch-run":    "make watch-run",
