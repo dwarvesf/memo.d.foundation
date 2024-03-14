@@ -1,0 +1,151 @@
+{
+  "main": {
+    "id": "eb7be77d66407d75",
+    "type": "split",
+    "children": [
+      {
+        "id": "ee6f26a6ede9e0c8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a94a9be95c0b6658",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "vault/changelog/2022-dwarves-renaissance-a-year-end-rewind.md",
+                "mode": "source",
+                "source": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "753f4cd3b7dfdcc3",
+    "type": "split",
+    "children": [
+      {
+        "id": "c2686d647b61a47d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3ca365811791c0ff",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "514b26a62eb1b9de",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9d759c06e2e97349",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "056b23e5fd0e2e04",
+    "type": "split",
+    "children": [
+      {
+        "id": "65a08b147ef1f893",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c8c5b91ef3cc59f0",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "vault/changelog/2022-dwarves-renaissance-a-year-end-rewind.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "80b539fec07b32fc",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "vault/changelog/2022-dwarves-renaissance-a-year-end-rewind.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "0d2329e56af078b4",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "8212cdb83c59f662",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "vault/changelog/2022-dwarves-renaissance-a-year-end-rewind.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "a94a9be95c0b6658",
+  "lastOpenFiles": []
+}
