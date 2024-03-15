@@ -312,8 +312,9 @@ html[data-reading-mode="false"] {
   }
 }
 
-// if ToC is empty, hide the label before it
-label:has(+ #TableOfContents:empty) {
+// if ToC is empty or there is no ToC, hide the label before it
+label:nth-of-type(2):has(+ #TableOfContents:empty),
+label:nth-of-type(2):not(:has(+ #TableOfContents)) {
   display: none;
 }
 

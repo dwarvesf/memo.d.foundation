@@ -4,6 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100%;
+  min-height: 100svh;
   transition: all 0.16s ease-in-out;
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
@@ -16,7 +17,7 @@ html[data-reading-mode="true"] {
   #overlay:has(+ #sidebar:is(.show)) {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    background-color: rgba(0, 0, 0, 0.10);
+    background-color: rgba(0, 0, 0, 0.1);
     pointer-events: auto;
   }
 }
@@ -25,7 +26,7 @@ html[data-reading-mode="true"] {
   #overlay:has(+ #sidebar:is(.show)) {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    background-color: rgba(0, 0, 0, 0.10);
+    background-color: rgba(0, 0, 0, 0.1);
     pointer-events: auto;
   }
 }
