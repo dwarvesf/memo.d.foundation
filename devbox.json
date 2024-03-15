@@ -26,7 +26,8 @@
       "pip install -r requirements.txt",
       "pre-commit install",
       "git config credential.helper $(which git-credential-manager)",
-      "./git-credential-manager.exp"
+      "./git-credential-manager.exp",
+      "./git-submodule-fetch-init.sh"
     ],
     "scripts": {
       "watch-run":    "make watch-run",
