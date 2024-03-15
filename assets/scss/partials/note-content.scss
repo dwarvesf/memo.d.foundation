@@ -381,10 +381,14 @@ main > blockquote {
   grid-auto-rows: auto;
   grid-auto-flow: column;
   grid-column-gap: 10px;
+  position: relative;
+  overflow: hidden;
 
   &::before {
     content: var(--diamond-icon);
     aspect-ratio: 1;
+    width: 32px;
+    height: 32px;
     grid-row: 1/-1;
     grid-column: 1/1;
   }
@@ -392,9 +396,32 @@ main > blockquote {
   * {
     grid-column: 2/2;
     grid-row: auto;
+    padding-inline-start: 0px;
+    list-style-position: inside;
+  }
+
+  & > p {
+    margin: auto 0px !important;
+  }
+
+  & > * {
     &:first-child {
       margin: 0;
     }
+  }
+
+  &::after {
+    content: var(--dwarves-icon);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    max-width: 50%;
+    object-fit: contain;
+    z-index: -1;
+    aspect-ratio: 4/3;
+    transform: translate3d(30%, 10%, 0);
+    opacity: 0.4;
   }
 }
 
