@@ -1,3 +1,15 @@
+{{ $pages := where .Site.RegularPages "Params.featured" true}}
+
 <ul class="featured-posts">
-  {{ .Inner }}
+{{ range $pages }}
+
+<a href="{{ .RelPermalink }}">
+  <li>
+    <span class="featured-post-title">{{ .Title }}</span>
+    <p class="featured-post-summary">{{ .Summary }}</p>
+    {{ if .Params.Authors }}<span class="featured-post-authors">⎯ {{ delimit .Params.Authors ", " " & " }}</span> {{ end }}
+  </li>
+</a>
+
+{{ end }}
 </ul>
