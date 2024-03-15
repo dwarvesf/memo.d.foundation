@@ -12,6 +12,8 @@ module:
   - path: github.com/adityatelange/hugo-PaperMod
     disable: true
 
+summaryLength: 20
+
 minify:
   tdewolff:
     html:
