@@ -2,6 +2,7 @@
 
 <!-- Sort through page's .Data.Terms alphabetically -->
 {{ $pages := (sort .Data.Pages "Title" "asc") }}
+{{ $currentTag := .Title }}
 
 <!-- Create an array of alphanumeric characters -->
 {{ $symbols := slice "$" "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" }}
@@ -30,7 +31,15 @@
 		<h2 class="heading">{{ $symbol | upper }}</h2>
 		<ul class="term-list">
 		{{ range $terms }}
-			<li class="term"><a href="{{ .Page.RelPermalink }}">{{ .Page.Name }}</a></li>
+			<li class="term">
+        <a href="{{ .Page.RelPermalink }}">{{ .Page.Name }}</a>
+        {{ $tags := .Page.Params.Tags }}
+        {{ range $tags }}
+          {{ if ne . $currentTag }}
+            <span class="tag">{{ . }}</span>
+          {{ end }}
+        {{ end }}
+      </li>
 		{{ end }}
 		</ul>
 	{{ else }}
