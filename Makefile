@@ -14,8 +14,10 @@ build:
 	@hugo -DEF --minify
 
 run:
+	@trash -f ./content
+	@mkdir -p content
 	@obsidian-export --hard-linebreaks ./vault ./content
-	hugo -DEF --logLevel error server --poll 250ms
+	@hugo -DEF --logLevel error server --poll 250ms
 
 watch-run:
 	@trash -f ./content
