@@ -9,7 +9,7 @@ if [[ -n "$uninitialized_submodules" ]]; then
 
 	git submodule update --init --recursive
 	git submodule update --recursive --remote
-	git submodule foreach --recursive 'git checkout main || git checkout master'
+	git submodule foreach --recursive 'git checkout $(git config -f "$toplevel/.gitmodules" submodule."$(basename `pwd`)"."branch")'
 	git pull --recurse-submodules
 
     echo "All uninitialized submodules initialized."
