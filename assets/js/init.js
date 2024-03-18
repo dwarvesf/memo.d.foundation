@@ -60,6 +60,22 @@ document.addEventListener("alpine:init", () => {
       document.documentElement.setAttribute("data-reading-mode", this.on);
     },
   });
+
+  const main = document.querySelector("main");
+  let content = main.innerHTML;
+  if (!content) return;
+
+  const results = [...content.matchAll(/(?<!spawn|team)@([\d\w_\-\.]+)/gm)];
+
+  for (const res of results) {
+    const [g1, g2] = res;
+    content = content.replace(
+      new RegExp(g1, "gm"),
+      `<a href='/contributor/${g2}'>${g1}</a>`
+    );
+  }
+
+  main.innerHTML = content;
 });
 
 document.addEventListener("click", (e) => {

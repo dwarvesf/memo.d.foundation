@@ -387,6 +387,7 @@ main > blockquote {
   grid-column-gap: 10px;
   position: relative;
   overflow: hidden;
+  place-items: center flex-start;
 
   &::before {
     content: var(--diamond-icon);
@@ -402,16 +403,8 @@ main > blockquote {
     grid-row: auto;
     padding-inline-start: 0px;
     list-style-position: inside;
-  }
-
-  & > p {
-    margin: auto 0px !important;
-  }
-
-  & > * {
-    &:first-child {
-      margin: 0;
-    }
+    margin: 0;
+    padding: 0;
   }
 
   &::after {
