@@ -1,6 +1,6 @@
-window.onload = function() {
+window.addEventListener("load", function() {
   document.body.classList.remove("no-transition");
-};
+});
 
 document.addEventListener("alpine:init", () => {
   Alpine.store("sidebar", {
