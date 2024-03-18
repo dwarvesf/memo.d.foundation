@@ -322,6 +322,18 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
   padding-right: 16px;
   max-height: calc(100svh - 200px);
   overflow-y: auto;
+
+  li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 36px;
+    padding-inline-start: 16px;
+  }
+
+  & > div > ul > li {
+    padding-inline-start: 0;
+  }
 }
 
 #graph-container:has(> svg:is(:not(:empty))) ~ label:has(+ #TableOfContents),
@@ -337,14 +349,6 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
 #TableOfContents ul {
   display: inline-grid;
   padding-inline-start: 0px;
-}
-
-#TableOfContents li {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 36px;
-  padding-inline-start: 16px;
 }
 
 #TableOfContents a {
