@@ -292,23 +292,28 @@ table:has(img) {
   }
 }
 
-.pagenav
-  .container
-  > #graph-title:is(:not(.hidden))
-  ~ label:has(+ #TableOfContents),
-.pagenav .container > #graph-title:is(:not(.hidden)) ~ #TableOfContents {
+.pagenav .container > #graph-title ~ label:has(+ #TableOfContents),
+.pagenav .container > #graph-title ~ #TableOfContents {
   transform: translateY(-300px);
   transition-delay: 0.15s;
 }
 
 html[data-reading-mode="false"] {
-  .pagenav
-    .container
-    > #graph-title:is(:not(.hidden))
-    ~ label:has(+ #TableOfContents),
-  .pagenav .container > #graph-title:is(:not(.hidden)) ~ #TableOfContents {
+  .pagenav .container > #graph-title ~ label:has(+ #TableOfContents),
+  .pagenav .container > #graph-title ~ #TableOfContents {
     transform: translateY(0);
     transition-delay: 0.15s;
+  }
+
+  #graph-container:has(> svg:empty) ~ label:has(+ #TableOfContents),
+  #graph-container:has(> svg:empty) ~ #TableOfContents {
+    transform: translateY(-300px) !important;
+  }
+
+  #graph-title:has(~ div > svg:empty),
+  #graph-container:has(> svg:empty) {
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 }
 
@@ -336,8 +341,8 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
   }
 }
 
-#graph-container:has(> svg:is(:not(:empty))) ~ label:has(+ #TableOfContents),
-#graph-container:has(> svg:is(:not(:empty))) ~ #TableOfContents {
+#graph-container ~ label:has(+ #TableOfContents),
+#graph-container ~ #TableOfContents {
   transition: transform 0.3s ease-in-out;
   transition-delay: 0s;
 }

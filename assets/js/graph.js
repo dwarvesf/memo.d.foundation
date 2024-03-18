@@ -86,7 +86,7 @@ function renderGraph() {
    * @type {Page[]}
    */
   const pages = JSON.parse(
-    document.querySelector(".pagenav").attributes["x-data"]?.value || "",
+    document.querySelector(".pagenav").attributes["x-data"]?.value || ""
   );
 
   const currentSlug = window.location.pathname;
@@ -110,7 +110,7 @@ function renderGraph() {
 
     // Remove the current page from the related pages, if it exists in the list
     const currentPageIndex = relatedPages.findIndex(
-      (page) => page.tags === currentTags,
+      (page) => page.tags === currentTags
     );
     if (currentPageIndex !== -1) {
       relatedPages.splice(currentPageIndex, 1);
@@ -167,13 +167,13 @@ function renderGraph() {
         id: currentPage.url,
         title: currentPage.name,
         references: MIN_REF_COUNT + relatedPages.length + MENU_COUNT_BUFFER,
-        url: currentPage.url
+        url: currentPage.url,
       },
       ...relatedPages.map((pg) => ({
         id: pg.url,
         title: pg.name,
         references: MIN_REF_COUNT,
-        url: pg.url
+        url: pg.url,
       })),
     ];
 
@@ -197,31 +197,25 @@ function renderGraph() {
           id: tag,
           title: `#${tag}`,
           references: MIN_REF_COUNT + tags[tag].length + TAG_COUNT_BUFFER,
-          url: `/tags/${tag}`
+          url: `/tags/${tag}`,
         },
         ...tags[tag].map((pg) => ({
           id: pg.url,
           title: pg.name,
           references: MIN_REF_COUNT,
           url: pg.url,
-        })),
+        }))
       );
 
       nodeLinks = nodeLinks.concat(
         tags[tag].map((pg) => ({
           source: pg.url,
           target: tag,
-        })),
+        }))
       );
     }
   }
   gNodes = uniqBy(gNodes, "id");
-
-  if (!gNodes.length) {
-    document.querySelector(".graph-container").classList.add("hidden");
-    document.querySelector(".nav-label").classList.add("hidden");
-    return;
-  }
 
   let canShowAllLabels = gNodes.length < AUTO_HIDE_LABEL_THRESHOLD;
 
@@ -242,7 +236,7 @@ function renderGraph() {
         "charge",
         d3
           .forceManyBody()
-          .strength((d) => -50 * sizeScale(d.references || MIN_REF_COUNT)),
+          .strength((d) => -50 * sizeScale(d.references || MIN_REF_COUNT))
       )
       .force(
         "link",
@@ -255,10 +249,10 @@ function renderGraph() {
             const dynamicDistance = getRandomNumberInRange(
               MIN_DISTANCE,
               MAX_DISTANCE +
-              (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3),
+              (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
             );
             return Math.min(dynamicDistance, MAX_DISTANCE + referenceCount * 5);
-          }),
+          })
       )
       .force("center", d3.forceCenter(w, h));
   }
@@ -329,8 +323,8 @@ function renderGraph() {
       "font-size",
       `${Math.max(
         MAX_FONT_SIZE / (transform.k > 0.4 ? transform.k : 0.4),
-        MIN_FONT_SIZE,
-      )}px`,
+        MIN_FONT_SIZE
+      )}px`
     );
   }
 
@@ -347,7 +341,7 @@ function renderGraph() {
     return nodeLinks.some(
       (link) =>
         (link.source === a && link.target === b) ||
-        (link.source === b && link.target === a),
+        (link.source === b && link.target === a)
     );
   }
 
@@ -356,12 +350,12 @@ function renderGraph() {
       return;
     }
     const connectedLinks = link.filter(
-      (link) => link.source === d || link.target === d,
+      (link) => link.source === d || link.target === d
     );
 
     d3.select(this).attr(
       "r",
-      sizeScale(d.references || MIN_REF_COUNT) * HOVER_SCALE_RATIO,
+      sizeScale(d.references || MIN_REF_COUNT) * HOVER_SCALE_RATIO
     );
     d3.select(this.nextElementSibling).style("visibility", "visible");
     // Highlight the hovered node
@@ -371,7 +365,7 @@ function renderGraph() {
     label.filter((nodeData) => nodeData !== d).style("visibility", "hidden");
 
     // Show titles of connected nodes
-    connectedLinks.each(function (linkData) {
+    connectedLinks.each(function(linkData) {
       const connectedNode =
         linkData.source === d ? linkData.target : linkData.source;
       label
@@ -455,21 +449,21 @@ function renderGraph() {
   node.call(drag);
 
   // Attach click event listener to nodes
-  node.on("click", function (event, d) {
+  node.on("click", function(event, d) {
     // Redirect to the URL associated with the node when clicked
     window.location.href = d.url;
   });
-};
-
+}
 
 // initial render graph
 setTimeout(() => {
   renderGraph();
 }, 150);
 
-window.$graphCenterNodes = function (fullscreen = false) {
+window.$graphCenterNodes = function(fullscreen = false) {
   // Reset zoom behavior and transform
-  if (fullscreen) svg.call(zoom.transform, d3.zoomIdentity.translate(450, 300).scale(0.5));
+  if (fullscreen)
+    svg.call(zoom.transform, d3.zoomIdentity.translate(450, 300).scale(0.5));
   else svg.call(zoom.transform, d3.zoomIdentity.translate(100, 75).scale(0.2));
 
   // Reset drag behavior
