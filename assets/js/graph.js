@@ -45,6 +45,7 @@ function renderGraph() {
 
   // get container size
   const graphContainer = document.querySelector(".graph-container");
+  const parent = graphContainer.parentElement;
   const isFullscreen = graphContainer.classList.contains("fullscreen");
   const h = graphContainer.clientHeight / 2;
   const w = graphContainer.clientWidth / 2;
@@ -216,6 +217,8 @@ function renderGraph() {
     }
   }
   gNodes = uniqBy(gNodes, "id");
+
+  if (!gNodes.length) return;
 
   let canShowAllLabels = gNodes.length < AUTO_HIDE_LABEL_THRESHOLD;
 
@@ -453,6 +456,9 @@ function renderGraph() {
     // Redirect to the URL associated with the node when clicked
     window.location.href = d.url;
   });
+
+  if (!parent) return;
+  parent.classList.remove("no-transition");
 }
 
 // initial render graph
