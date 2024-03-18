@@ -401,6 +401,7 @@ main > blockquote {
     height: 32px;
     grid-row: 1/-1;
     grid-column: 1/1;
+    place-self: flex-start;
   }
 
   * {
