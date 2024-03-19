@@ -21,19 +21,20 @@
     margin: auto;
     background-color: rgba($color: #000000, $alpha: 0.8);
 
-    > svg {
-      top: 30px;
+    > div {
       width: 80%;
       height: 80%;
       background-color: white;
     }
-    button {
-      top: 15%;
-      right: 10.2%;
-    }
+
+    // button {
+    //   top: 0px;
+    //   right: 0px;
+    // }
   }
 
-  > svg {
+  > div {
+    position: relative;
     background-color: var(--primary-background-color-light);
     border: 1px solid var(--border-color-light);
     border-radius: 4px;
@@ -43,12 +44,17 @@
     inset: 0;
     z-index: 0;
 
-    * {
-      transition: fill-opacity 0.2s ease-in-out, stroke-opacity 0.2s ease-in-out;
-    }
+    > svg {
+      width: 100%;
+      height: 100%;
+      * {
+        transition: fill-opacity 0.2s ease-in-out,
+          stroke-opacity 0.2s ease-in-out;
+      }
 
-    circle {
-      cursor: pointer;
+      circle {
+        cursor: pointer;
+      }
     }
   }
 
@@ -70,7 +76,7 @@ html[data-theme="dark"] {
   }
 
   .graph-container {
-    > svg {
+    > div {
       background-color: var(--primary-background-color);
       border: 1px solid var(--border-color);
     }
