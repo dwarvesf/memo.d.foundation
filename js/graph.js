@@ -46,7 +46,6 @@ function renderGraph() {
   // get container size
   const graphContainer = document.querySelector(".graph-container");
   const parent = graphContainer.parentElement;
-  const isFullscreen = graphContainer.classList.contains("fullscreen");
   const h = graphContainer.clientHeight / 2;
   const w = graphContainer.clientWidth / 2;
 
@@ -73,15 +72,6 @@ function renderGraph() {
       return acc;
     }, {});
   }
-
-  const isInDardMod = (fn) => {
-    if (!window.matchMedia) return;
-
-    const query = window.matchMedia("(prefers-color-scheme: dark)");
-    fn(query.matches);
-
-    query.addEventListener("change", (event) => fn(event.matches));
-  };
 
   /**
    * @type {Page[]}
@@ -154,6 +144,21 @@ function renderGraph() {
   // ============================================ DATA PROCESS LOGIC =========================================== //
 
   const currentPage = findPageBySlug(currentSlug);
+  const rawLinks = Array.from(document.body.querySelectorAll("main a") || []);
+  const links = rawLinks
+    .filter((l) => {
+      const url = new URL(l.href);
+      if (
+        l.textContent === "..." ||
+        !l.textContent ||
+        url.pathname.startsWith("/tags") ||
+        !url.protocol.startsWith("http") ||
+        url.host !== location.host
+      )
+        return false;
+      return true;
+    })
+    .map((l) => ({ title: l.textContent, url: l.href }));
 
   // Data for render
   /**
@@ -170,20 +175,43 @@ function renderGraph() {
         references: MIN_REF_COUNT + relatedPages.length + MENU_COUNT_BUFFER,
         url: currentPage.url,
       },
-      ...relatedPages.map((pg) => ({
-        id: pg.url,
-        title: pg.name,
+      ...links.map((l) => ({
+        id: l.url,
+        title: l.title,
         references: MIN_REF_COUNT,
-        url: pg.url,
+        url: l.url,
       })),
+      ...currentPage.tags.map((t) => ({
+        id: `/tags/${t}`,
+        title: t,
+        references: MIN_REF_COUNT,
+        url: `/tags/${t}`,
+      })),
+      /* ...relatedPages.map((pg) => ({ */
+      /*   id: pg.url, */
+      /*   title: pg.name, */
+      /*   references: MIN_REF_COUNT, */
+      /*   url: pg.url, */
+      /* })), */
     ];
 
     gNodes = uniqBy(gNodes, "id");
 
-    nodeLinks = relatedPages.map((pg) => ({
-      source: pg.url,
-      target: currentPage.url,
-    }));
+    nodeLinks = [
+      ...links.map((l) => ({
+        source: l.url,
+        target: currentPage.url,
+      })),
+      ...currentPage.tags.map((t) => ({
+        source: `/tags/${t}`,
+        target: currentPage.url,
+      })),
+    ];
+
+    /* nodeLinks = relatedPages.map((pg) => ({ */
+    /*   source: pg.url, */
+    /*   target: currentPage.url, */
+    /* })); */
   } else {
     // sub pages
     const subPages = pagesByMenus[currentMenu];
