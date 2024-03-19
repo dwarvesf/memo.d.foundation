@@ -16,14 +16,14 @@ build:
 run:
 	@trash -f ./content
 	@mkdir -p content
-	@obsidian-export --hard-linebreaks ./vault ./content
+	@obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null
 	@hugo -DEF --logLevel error server --poll 250ms
 
 watch-run:
 	@trash -f ./content
 	@mkdir -p content
 	@obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null
-	@fswatch -o ./vault | xargs -n1 -I{} obsidian-export --hard-linebreaks ./vault ./content &
+	@fswatch -o ./vault | xargs -n1 -I{} obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null &
 	@hugo -DEF --logLevel error server --poll 250ms
 	@trap 'killall -9 $$' SIGINT
 
