@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/img/LOGO.png" width="200px" align="center" style="border-radius: 8px;" />
+  <img src="./assets/img/LOGO.png" width="200px" align="center" style="border-radius: 8px;" />
   <h1 align="center">Dwarves Memo</h1>
   <p align="center">
     ✍ <a href="https://memo.d.foundation">https://memo.d.foundation</a> ✍
