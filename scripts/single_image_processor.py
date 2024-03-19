@@ -19,7 +19,10 @@ def process_markdown_file(file_path):
 	os.makedirs(assets_dir, exist_ok=True)
 
 	def replace_image_link(match):
-		image_name = match.group(1)
+		source_image_path = match.group(1)
+		
+		# Get the trailing image name from source_image_path
+		image_name = os.path.basename(urllib.parse.urlparse(source_image_path).path)
 
 		# Search for the image recursively
 		for root, _, files in os.walk(file_dir):
@@ -34,6 +37,7 @@ def process_markdown_file(file_path):
 		new_image_path = os.path.join(assets_dir, new_filename)
 
 		os.rename(image_path, new_image_path)
+		print(f"Moved '{image_path}' to '{new_image_path}'")
 		return "![](assets/" + new_filename + ")"
 
 	# Update image links (both Obsidian and standard Markdown syntax)
