@@ -153,12 +153,18 @@ function renderGraph() {
         !l.textContent ||
         url.pathname.startsWith("/tags") ||
         !url.protocol.startsWith("http") ||
-        url.host !== location.host
+        url.host !== location.host ||
+        url.pathname === location.pathname
       )
         return false;
       return true;
     })
-    .map((l) => ({ title: l.textContent, url: l.href }));
+    .map((l) => ({
+      title: new URL(l.href).pathname.startsWith("/contributor")
+        ? `@${l.textContent}`
+        : l.textContent,
+      url: l.href,
+    }));
 
   // Data for render
   /**
@@ -183,7 +189,7 @@ function renderGraph() {
       })),
       ...currentPage.tags.map((t) => ({
         id: `/tags/${t}`,
-        title: t,
+        title: `#${t}`,
         references: MIN_REF_COUNT,
         url: `/tags/${t}`,
       })),
@@ -251,7 +257,7 @@ function renderGraph() {
   let canShowAllLabels = gNodes.length < AUTO_HIDE_LABEL_THRESHOLD;
 
   // ============================================ GRAPH DRAWING  =========================================== //
-  svg = d3.select(".graph-container>svg");
+  svg = d3.select(".graph-container>div>svg");
   const container = svg.append("g");
 
   // Scale for node size based on references
@@ -280,7 +286,7 @@ function renderGraph() {
             const dynamicDistance = getRandomNumberInRange(
               MIN_DISTANCE,
               MAX_DISTANCE +
-                (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
+              (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
             );
             return Math.min(dynamicDistance, MAX_DISTANCE + referenceCount * 5);
           })
@@ -396,7 +402,7 @@ function renderGraph() {
     label.filter((nodeData) => nodeData !== d).style("visibility", "hidden");
 
     // Show titles of connected nodes
-    connectedLinks.each(function (linkData) {
+    connectedLinks.each(function(linkData) {
       const connectedNode =
         linkData.source === d ? linkData.target : linkData.source;
       label
@@ -480,7 +486,7 @@ function renderGraph() {
   node.call(drag);
 
   // Attach click event listener to nodes
-  node.on("click", function (event, d) {
+  node.on("click", function(event, d) {
     // Redirect to the URL associated with the node when clicked
     window.location.href = d.url;
   });
@@ -494,7 +500,7 @@ setTimeout(() => {
   renderGraph();
 }, 150);
 
-window.$graphCenterNodes = function (fullscreen = false) {
+window.$graphCenterNodes = function(fullscreen = false) {
   if (!svg) return;
   // Reset zoom behavior and transform
   if (fullscreen)
