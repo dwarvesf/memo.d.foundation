@@ -330,7 +330,7 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
 
 #TableOfContents {
   padding-right: 16px;
-  max-height: calc(100svh - 200px);
+  max-height: calc(100svh - 500px);
   overflow-y: auto;
 
   li {

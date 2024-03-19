@@ -42,6 +42,14 @@
     position: relative;
     inset: 0;
     z-index: 0;
+
+    * {
+      transition: fill-opacity 0.2s ease-in-out, stroke-opacity 0.2s ease-in-out;
+    }
+
+    circle {
+      cursor: pointer;
+    }
   }
 
   button {
