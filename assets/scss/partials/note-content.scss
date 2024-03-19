@@ -310,13 +310,13 @@ html[data-reading-mode="false"] {
     transition-delay: 0.15s;
   }
 
-  #graph-container:has(> svg:empty) ~ label:has(+ #TableOfContents),
-  #graph-container:has(> svg:empty) ~ #TableOfContents {
+  #graph-container:has(> div > svg:empty) ~ label:has(+ #TableOfContents),
+  #graph-container:has(> div > svg:empty) ~ #TableOfContents {
     transform: translateY(-300px) !important;
   }
 
-  #graph-title:has(~ div > svg:empty),
-  #graph-container:has(> svg:empty) {
+  #graph-title:has(~ div > div > svg:empty),
+  #graph-container:has(> div > svg:empty) {
     opacity: 0 !important;
     pointer-events: none !important;
   }
@@ -331,6 +331,7 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
 #TableOfContents {
   padding-right: 16px;
   max-height: calc(100svh - 500px);
+  min-height: 200px;
   overflow-y: auto;
 
   li {

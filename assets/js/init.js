@@ -65,7 +65,9 @@ document.addEventListener("alpine:init", () => {
   let content = main.innerHTML;
   if (!content) return;
 
-  const results = [...content.matchAll(/(?<!spawn|team)@([\d\w_\-\.]+)/gm)];
+  const results = [
+    ...content.matchAll(/(?<!spawn|team|nikki)@([\d\w_\-\.]+)/gm),
+  ];
 
   for (const res of results) {
     const [g1, g2] = res;
