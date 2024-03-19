@@ -114,6 +114,11 @@ code.button {
     max-width: 700px;
     position: relative;
 
+    a,
+    a:focus {
+      outline: none;
+    }
+
     &:has(div.graph-container.fullscreen) {
       z-index: 2;
     }

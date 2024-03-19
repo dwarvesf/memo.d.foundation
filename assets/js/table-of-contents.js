@@ -1,48 +1,47 @@
 const initScroller = () => {
   const pagenav = document.querySelectorAll(".pagenav a");
-  const headers = Array.from(pagenav).map((link) =>
-    document.querySelector(`#${link.href.split("#")[1]}`)
-  );
 
-  const addClassToFirstLink = () => {
-    pagenav[0]?.classList.add("text-active");
-    pagenav[0]?.setAttribute("active", "true");
+  const update = (nav) => {
+    pagenav.forEach((nav) => {
+      nav.classList.remove("text-active");
+      nav.setAttribute("active", "false");
+    });
+    nav.classList.add("text-active");
+    nav.setAttribute("active", "true");
+    nav.focus();
   };
-  const addTransitionClasses = () =>
-    pagenav.forEach((link) => link.classList.add("transition", "duration-200"));
 
-  addClassToFirstLink();
-  addTransitionClasses();
+  const cb = (entries) => {
+    const [entry] = entries;
+    const { isIntersecting, target } = entry;
+    if (!isIntersecting) return;
 
-  const onScroll = () => {
-    if (!ticking) {
-      requestAnimationFrame(update);
-      ticking = true;
+    const id = target.id;
+    if (!id) return;
+
+    const nav = document.querySelector(`.pagenav a[href='#${id}']`);
+    if (!nav) return;
+
+    update(nav);
+  };
+
+  const ob = new IntersectionObserver(cb, {
+    rootMargin: "-10% 0px -50% 0px",
+    threshold: 0.5,
+  });
+  for (const [i, nav] of pagenav.entries()) {
+    if (!nav) continue;
+    if (i === 0) {
+      nav.classList.add("text-active");
+      nav.setAttribute("active", "true");
     }
-  };
-
-  const update = () => {
-    const activeHeader =
-      headers.find((header) => header.getBoundingClientRect().top > 160) ||
-      headers[0];
-    const activeIndex = headers.indexOf(activeHeader);
-
-    if (activeHeader !== currentActiveHeader) {
-      currentActiveHeader = activeHeader;
-      pagenav.forEach((link) => {
-        link.classList.remove("text-active");
-        link.setAttribute("active", "false");
-      });
-      pagenav[activeIndex].classList.add("text-active");
-      pagenav[activeIndex].setAttribute("active", "true");
-    }
-    ticking = false;
-  };
-
-  let ticking = false;
-  let currentActiveHeader = headers[0];
-
-  window.addEventListener("scroll", onScroll);
+    nav.addEventListener("click", () => {
+      update(nav);
+    });
+    nav.classList.add("transition", "duration-200");
+    const el = document.getElementById(`${nav.href.split("#")[1]}`);
+    ob.observe(el);
+  }
 };
 
 document.addEventListener("DOMContentLoaded", initScroller);
