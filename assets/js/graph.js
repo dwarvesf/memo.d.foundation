@@ -62,17 +62,6 @@ function renderGraph() {
     return result;
   }
 
-  function groupBy(array, property) {
-    return array.reduce((acc, obj) => {
-      const key = obj[property];
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(obj);
-      return acc;
-    }, {});
-  }
-
   /**
    * @type {Page[]}
    */
@@ -81,12 +70,10 @@ function renderGraph() {
   );
 
   const currentSlug = window.location.pathname;
-  const currentMenu = currentSlug.split("/").filter(Boolean)[0];
 
   /**
    * @type {Record<string, Page[]}
    */
-  const pagesByMenus = groupBy(pages, "menu");
 
   /**
    * Find related pages based on tags.
@@ -118,20 +105,6 @@ function renderGraph() {
     return pages.filter((page) => page.url === slug)[0];
   }
 
-  function groupPagesByTags(allPages = []) {
-    const groupedPages = {};
-    allPages.forEach((page) => {
-      (page.tags || []).forEach((tag) => {
-        if (!groupedPages[tag]) {
-          groupedPages[tag] = [];
-        }
-        groupedPages[tag].push(page);
-      });
-    });
-
-    return groupedPages;
-  }
-
   /**
    * Get a random number within a specific range.
    * @param {number} min - The minimum value of the range.
@@ -159,12 +132,19 @@ function renderGraph() {
         return false;
       return true;
     })
-    .map((l) => ({
-      title: new URL(l.href).pathname.startsWith("/contributor")
-        ? `@${l.textContent}`
-        : l.textContent,
-      url: l.href,
-    }));
+    .map((l) => {
+      let title = l.getAttribute("data-title");
+      if (!title)
+        title =
+          new URL(l.href).pathname.startsWith("/contributor") &&
+            !l.textContent.startsWith("@")
+            ? `@${l.textContent}`
+            : l.textContent;
+      return {
+        title,
+        url: l.href,
+      };
+    });
 
   // Data for render
   /**
@@ -193,15 +173,7 @@ function renderGraph() {
         references: MIN_REF_COUNT,
         url: `/tags/${t}`,
       })),
-      /* ...relatedPages.map((pg) => ({ */
-      /*   id: pg.url, */
-      /*   title: pg.name, */
-      /*   references: MIN_REF_COUNT, */
-      /*   url: pg.url, */
-      /* })), */
     ];
-
-    gNodes = uniqBy(gNodes, "id");
 
     nodeLinks = [
       ...links.map((l) => ({
@@ -213,42 +185,30 @@ function renderGraph() {
         target: currentPage.url,
       })),
     ];
-
-    /* nodeLinks = relatedPages.map((pg) => ({ */
-    /*   source: pg.url, */
-    /*   target: currentPage.url, */
-    /* })); */
   } else {
-    // sub pages
-    const subPages = pagesByMenus[currentMenu];
-    const tags = groupPagesByTags(subPages);
+    // this is an overview page
 
     // make sure to reset nodes data
-    gNodes = [];
-    nodeLinks = [];
-    for (let tag in tags) {
-      gNodes = gNodes.concat(
-        {
-          id: tag,
-          title: `#${tag}`,
-          references: MIN_REF_COUNT + tags[tag].length + TAG_COUNT_BUFFER,
-          url: `/tags/${tag}`,
-        },
-        ...tags[tag].map((pg) => ({
-          id: pg.url,
-          title: pg.name,
-          references: MIN_REF_COUNT,
-          url: pg.url,
-        }))
-      );
-
-      nodeLinks = nodeLinks.concat(
-        tags[tag].map((pg) => ({
-          source: pg.url,
-          target: tag,
-        }))
-      );
-    }
+    gNodes = [
+      {
+        id: location.pathname,
+        title: document.title,
+        references: MIN_REF_COUNT + MENU_COUNT_BUFFER,
+        url: location.pathname,
+      },
+      ...links.map((l) => ({
+        id: l.url,
+        title: l.title,
+        references: MIN_REF_COUNT,
+        url: l.url,
+      })),
+    ];
+    nodeLinks = [
+      ...links.map((l) => ({
+        source: l.url,
+        target: location.pathname,
+      })),
+    ];
   }
   gNodes = uniqBy(gNodes, "id");
 
@@ -264,7 +224,7 @@ function renderGraph() {
   const sizeScale = d3
     .scaleLinear()
     .domain([1, d3.max(gNodes, (d) => d.references || MIN_REF_COUNT)])
-    .range([4, 24]);
+    .range([20, 40]);
 
   function forceSimulation() {
     return d3

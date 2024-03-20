@@ -3,7 +3,7 @@
 <ul class="featured-posts">
 {{ range $pages }}
 
-<a href="{{ .RelPermalink }}">
+<a data-title="{{ .Title }}" href="{{ .RelPermalink }}">
   <li>
     <span class="featured-post-title">{{ .Title }}</span>
     <p class="featured-post-summary">{{ .Summary }}</p>
