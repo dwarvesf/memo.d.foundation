@@ -117,8 +117,9 @@ function renderGraph() {
   // ============================================ DATA PROCESS LOGIC =========================================== //
 
   const currentPage = findPageBySlug(currentSlug);
+  currentPage.tags ||= [];
   const rawLinks = Array.from(document.body.querySelectorAll("main a") || []);
-  const links = rawLinks
+  const outboundLinks = rawLinks
     .filter((l) => {
       const url = new URL(l.href);
       if (
@@ -137,7 +138,7 @@ function renderGraph() {
       if (!title)
         title =
           new URL(l.href).pathname.startsWith("/contributor") &&
-            !l.textContent.startsWith("@")
+          !l.textContent.startsWith("@")
             ? `@${l.textContent}`
             : l.textContent;
       return {
@@ -161,7 +162,7 @@ function renderGraph() {
         references: MIN_REF_COUNT + relatedPages.length + MENU_COUNT_BUFFER,
         url: currentPage.url,
       },
-      ...links.map((l) => ({
+      ...outboundLinks.map((l) => ({
         id: l.url,
         title: l.title,
         references: MIN_REF_COUNT,
@@ -176,7 +177,7 @@ function renderGraph() {
     ];
 
     nodeLinks = [
-      ...links.map((l) => ({
+      ...outboundLinks.map((l) => ({
         source: l.url,
         target: currentPage.url,
       })),
@@ -186,8 +187,6 @@ function renderGraph() {
       })),
     ];
   } else {
-    // this is an overview page
-
     // make sure to reset nodes data
     gNodes = [
       {
@@ -196,7 +195,7 @@ function renderGraph() {
         references: MIN_REF_COUNT + MENU_COUNT_BUFFER,
         url: location.pathname,
       },
-      ...links.map((l) => ({
+      ...outboundLinks.map((l) => ({
         id: l.url,
         title: l.title,
         references: MIN_REF_COUNT,
@@ -204,7 +203,7 @@ function renderGraph() {
       })),
     ];
     nodeLinks = [
-      ...links.map((l) => ({
+      ...outboundLinks.map((l) => ({
         source: l.url,
         target: location.pathname,
       })),
@@ -246,7 +245,7 @@ function renderGraph() {
             const dynamicDistance = getRandomNumberInRange(
               MIN_DISTANCE,
               MAX_DISTANCE +
-              (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
+                (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
             );
             return Math.min(dynamicDistance, MAX_DISTANCE + referenceCount * 5);
           })
@@ -362,7 +361,7 @@ function renderGraph() {
     label.filter((nodeData) => nodeData !== d).style("visibility", "hidden");
 
     // Show titles of connected nodes
-    connectedLinks.each(function(linkData) {
+    connectedLinks.each(function (linkData) {
       const connectedNode =
         linkData.source === d ? linkData.target : linkData.source;
       label
@@ -446,7 +445,7 @@ function renderGraph() {
   node.call(drag);
 
   // Attach click event listener to nodes
-  node.on("click", function(event, d) {
+  node.on("click", function (event, d) {
     // Redirect to the URL associated with the node when clicked
     window.location.href = d.url;
   });
@@ -460,7 +459,7 @@ setTimeout(() => {
   renderGraph();
 }, 150);
 
-window.$graphCenterNodes = function(fullscreen = false) {
+window.$graphCenterNodes = function (fullscreen = false) {
   if (!svg) return;
   // Reset zoom behavior and transform
   if (fullscreen)
