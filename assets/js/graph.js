@@ -117,7 +117,6 @@ function renderGraph() {
   // ============================================ DATA PROCESS LOGIC =========================================== //
 
   const currentPage = findPageBySlug(currentSlug);
-  currentPage.tags ||= [];
   const rawLinks = Array.from(document.body.querySelectorAll("main a") || []);
   const outboundLinks = rawLinks
     .filter((l) => {
@@ -154,6 +153,7 @@ function renderGraph() {
   let gNodes = [];
   let nodeLinks = [];
   if (currentPage) {
+    currentPage.tags ||= [];
     const relatedPages = findRelatedPages(currentPage.tags);
     gNodes = [
       {
