@@ -33,8 +33,12 @@ document.addEventListener("alpine:init", () => {
     disableTransition: true,
     on: true,
     init() {
+      const pathname = location.pathname;
+      const isWhitelisted = ["/", "/consulting/", "/careers/hiring/"].includes(
+        pathname
+      );
       const isOff = sessionStorage.getItem("df.note.reading-mode") === "false";
-      if (isOff) {
+      if (isOff || isWhitelisted) {
         this.on = false;
         document.documentElement.setAttribute("data-reading-mode", "false");
         return;
