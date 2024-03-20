@@ -69,6 +69,12 @@ main {
 }
 
 html[data-theme="dark"] {
+  a {
+    &:hover {
+      color: #dadada;
+    }
+  }
+
   .note-title {
     .date {
       color: var(--secondary-font-color-light);

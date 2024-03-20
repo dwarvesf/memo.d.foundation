@@ -7,6 +7,7 @@
   {{ $favicon32 := resources.Get "favicon-32x32.png" }}
   {{ $appleTouchIcon := resources.Get "apple-touch-icon.png" }}
   {{ $whiteImage := resources.Get "img/LOGO.png" }}
+  {{ $yggdrasilImage := resources.Get "img/footer-bg.svg" }}
   {{ $darkIcon := resources.Get "img/theme/dark.svg" }}
   {{ $lightIcon := resources.Get "img/theme/light.svg" }}
   {{ $autoThemeIcon := resources.Get "img/theme/system.svg" }}
@@ -438,3 +439,4 @@
       {{ if .Params.toc -}}
       <aside class="toc">{{ .TableOfContents }}</aside>
       {{ end }}
+      <img class="yggdrasil-tree" src="{{ $yggdrasilImage.Permalink }}" />
