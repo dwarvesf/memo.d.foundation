@@ -333,6 +333,7 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
   max-height: calc(100svh - 100px);
   min-height: 200px;
   overflow-y: auto;
+  padding-bottom: 500px;
 
   li {
     white-space: nowrap;

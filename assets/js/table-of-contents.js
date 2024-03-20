@@ -8,7 +8,7 @@ const initScroller = () => {
     });
     nav.classList.add("text-active");
     nav.setAttribute("active", "true");
-    nav.focus();
+    nav.focus({ preventScroll: true });
   };
 
   const cb = (entries) => {
