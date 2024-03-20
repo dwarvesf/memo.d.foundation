@@ -62,17 +62,6 @@ function renderGraph() {
     return result;
   }
 
-  function groupBy(array, property) {
-    return array.reduce((acc, obj) => {
-      const key = obj[property];
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(obj);
-      return acc;
-    }, {});
-  }
-
   /**
    * @type {Page[]}
    */
@@ -81,12 +70,10 @@ function renderGraph() {
   );
 
   const currentSlug = window.location.pathname;
-  const currentMenu = currentSlug.split("/").filter(Boolean)[0];
 
   /**
    * @type {Record<string, Page[]}
    */
-  const pagesByMenus = groupBy(pages, "menu");
 
   /**
    * Find related pages based on tags.
@@ -118,20 +105,6 @@ function renderGraph() {
     return pages.filter((page) => page.url === slug)[0];
   }
 
-  function groupPagesByTags(allPages = []) {
-    const groupedPages = {};
-    allPages.forEach((page) => {
-      (page.tags || []).forEach((tag) => {
-        if (!groupedPages[tag]) {
-          groupedPages[tag] = [];
-        }
-        groupedPages[tag].push(page);
-      });
-    });
-
-    return groupedPages;
-  }
-
   /**
    * Get a random number within a specific range.
    * @param {number} min - The minimum value of the range.
@@ -144,8 +117,9 @@ function renderGraph() {
   // ============================================ DATA PROCESS LOGIC =========================================== //
 
   const currentPage = findPageBySlug(currentSlug);
+  currentPage.tags ||= [];
   const rawLinks = Array.from(document.body.querySelectorAll("main a") || []);
-  const links = rawLinks
+  const outboundLinks = rawLinks
     .filter((l) => {
       const url = new URL(l.href);
       if (
@@ -159,12 +133,19 @@ function renderGraph() {
         return false;
       return true;
     })
-    .map((l) => ({
-      title: new URL(l.href).pathname.startsWith("/contributor")
-        ? `@${l.textContent}`
-        : l.textContent,
-      url: l.href,
-    }));
+    .map((l) => {
+      let title = l.getAttribute("data-title");
+      if (!title)
+        title =
+          new URL(l.href).pathname.startsWith("/contributor") &&
+          !l.textContent.startsWith("@")
+            ? `@${l.textContent}`
+            : l.textContent;
+      return {
+        title,
+        url: l.href,
+      };
+    });
 
   // Data for render
   /**
@@ -181,7 +162,7 @@ function renderGraph() {
         references: MIN_REF_COUNT + relatedPages.length + MENU_COUNT_BUFFER,
         url: currentPage.url,
       },
-      ...links.map((l) => ({
+      ...outboundLinks.map((l) => ({
         id: l.url,
         title: l.title,
         references: MIN_REF_COUNT,
@@ -193,18 +174,10 @@ function renderGraph() {
         references: MIN_REF_COUNT,
         url: `/tags/${t}`,
       })),
-      /* ...relatedPages.map((pg) => ({ */
-      /*   id: pg.url, */
-      /*   title: pg.name, */
-      /*   references: MIN_REF_COUNT, */
-      /*   url: pg.url, */
-      /* })), */
     ];
 
-    gNodes = uniqBy(gNodes, "id");
-
     nodeLinks = [
-      ...links.map((l) => ({
+      ...outboundLinks.map((l) => ({
         source: l.url,
         target: currentPage.url,
       })),
@@ -213,42 +186,28 @@ function renderGraph() {
         target: currentPage.url,
       })),
     ];
-
-    /* nodeLinks = relatedPages.map((pg) => ({ */
-    /*   source: pg.url, */
-    /*   target: currentPage.url, */
-    /* })); */
   } else {
-    // sub pages
-    const subPages = pagesByMenus[currentMenu];
-    const tags = groupPagesByTags(subPages);
-
     // make sure to reset nodes data
-    gNodes = [];
-    nodeLinks = [];
-    for (let tag in tags) {
-      gNodes = gNodes.concat(
-        {
-          id: tag,
-          title: `#${tag}`,
-          references: MIN_REF_COUNT + tags[tag].length + TAG_COUNT_BUFFER,
-          url: `/tags/${tag}`,
-        },
-        ...tags[tag].map((pg) => ({
-          id: pg.url,
-          title: pg.name,
-          references: MIN_REF_COUNT,
-          url: pg.url,
-        }))
-      );
-
-      nodeLinks = nodeLinks.concat(
-        tags[tag].map((pg) => ({
-          source: pg.url,
-          target: tag,
-        }))
-      );
-    }
+    gNodes = [
+      {
+        id: location.pathname,
+        title: document.title,
+        references: MIN_REF_COUNT + MENU_COUNT_BUFFER,
+        url: location.pathname,
+      },
+      ...outboundLinks.map((l) => ({
+        id: l.url,
+        title: l.title,
+        references: MIN_REF_COUNT,
+        url: l.url,
+      })),
+    ];
+    nodeLinks = [
+      ...outboundLinks.map((l) => ({
+        source: l.url,
+        target: location.pathname,
+      })),
+    ];
   }
   gNodes = uniqBy(gNodes, "id");
 
@@ -264,7 +223,7 @@ function renderGraph() {
   const sizeScale = d3
     .scaleLinear()
     .domain([1, d3.max(gNodes, (d) => d.references || MIN_REF_COUNT)])
-    .range([4, 24]);
+    .range([20, 40]);
 
   function forceSimulation() {
     return d3
@@ -286,7 +245,7 @@ function renderGraph() {
             const dynamicDistance = getRandomNumberInRange(
               MIN_DISTANCE,
               MAX_DISTANCE +
-              (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
+                (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
             );
             return Math.min(dynamicDistance, MAX_DISTANCE + referenceCount * 5);
           })
@@ -402,7 +361,7 @@ function renderGraph() {
     label.filter((nodeData) => nodeData !== d).style("visibility", "hidden");
 
     // Show titles of connected nodes
-    connectedLinks.each(function(linkData) {
+    connectedLinks.each(function (linkData) {
       const connectedNode =
         linkData.source === d ? linkData.target : linkData.source;
       label
@@ -486,7 +445,7 @@ function renderGraph() {
   node.call(drag);
 
   // Attach click event listener to nodes
-  node.on("click", function(event, d) {
+  node.on("click", function (event, d) {
     // Redirect to the URL associated with the node when clicked
     window.location.href = d.url;
   });
@@ -500,7 +459,7 @@ setTimeout(() => {
   renderGraph();
 }, 150);
 
-window.$graphCenterNodes = function(fullscreen = false) {
+window.$graphCenterNodes = function (fullscreen = false) {
   if (!svg) return;
   // Reset zoom behavior and transform
   if (fullscreen)
