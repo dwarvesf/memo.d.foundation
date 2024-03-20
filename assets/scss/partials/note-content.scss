@@ -569,7 +569,9 @@ html[data-theme="dark"] {
 }
 
 .content-img {
-  border-radius: 4px;
+  border-radius: 5px;
+
+  filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.3));
 }
 
 .col-3 {
