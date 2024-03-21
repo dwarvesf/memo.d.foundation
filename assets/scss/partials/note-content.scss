@@ -311,17 +311,6 @@ html[data-reading-mode="false"] {
     transform: translateY(0);
     transition-delay: 0.15s;
   }
-
-  #graph-container:has(> div > svg:empty) ~ label:has(+ #TableOfContents),
-  #graph-container:has(> div > svg:empty) ~ #TableOfContents {
-    transform: translateY(-300px) !important;
-  }
-
-  #graph-title:has(~ div > div > svg:empty),
-  #graph-container:has(> div > svg:empty) {
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
 }
 
 // if ToC is empty or there is no ToC, hide the label before it
@@ -572,8 +561,10 @@ html[data-theme="dark"] {
 
 .content-img {
   border-radius: 5px;
-
-  filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.3));
+  box-shadow: 0px 0px 1.25px 0px rgba(255, 255, 255, 0.1) inset,
+    0px 0px 1.25px 0px rgba(0, 0, 0, 0.25),
+    0px 15px 16.667px 0px rgba(0, 0, 0, 0.08);
+  // filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.3));
 }
 
 .col-3 {
