@@ -19,11 +19,11 @@ def process_markdown_file(file_path):
 	os.makedirs(assets_dir, exist_ok=True)
 
 	def replace_image_link(match):
-		source_image_path = match.group(1)
+		source_image_path = match.group(1) if match.group(1) else match.group(2)
 		
 		# Get the trailing image name from source_image_path
 		image_name = os.path.basename(urllib.parse.urlparse(source_image_path).path)
-
+		
 		# Search for the image recursively
 		for root, _, files in os.walk(file_dir):
 			if image_name in files:
@@ -32,16 +32,30 @@ def process_markdown_file(file_path):
 		else:  # If the image is not found
 			return match.group(0)  # Return the original link
 
+		# Convert image_filename to lower kebab-case
 		image_filename = os.path.basename(image_path)
-		new_filename = os.path.splitext(os.path.basename(file_path))[0] + "_" + image_filename
-		new_image_path = os.path.join(assets_dir, new_filename)
+		image_filename = image_filename.lower().replace(" ", "-")
 
-		os.rename(image_path, new_image_path)
-		print(f"Moved '{image_path}' to '{new_image_path}'")
+		# Get the note filename
+		note_filename = os.path.splitext(os.path.basename(file_path))[0]
+		
+		# Check if the image_filename already starts with the note_filename
+		if image_filename.startswith(note_filename):
+			new_filename = image_filename
+		else:
+			new_filename = note_filename + "_" + image_filename
+
+		new_image_path = os.path.join(assets_dir, new_filename)
+		
+		# Check if the image is not in the assets folder
+		if image_path != new_image_path:
+			os.rename(image_path, new_image_path)
+			print(f"Moved '{image_path}' to '{new_image_path}'")
+
 		return "![](assets/" + new_filename + ")"
 
 	# Update image links (both Obsidian and standard Markdown syntax)
-	content = re.sub(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)", lambda x: replace_image_link(x) if x.group(1) else replace_image_link(x), content)
+	content = re.sub(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)", lambda x: replace_image_link(x), content)
 
 	with open(file_path, 'w') as file:
 		file.write(content)
