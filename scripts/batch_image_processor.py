@@ -23,7 +23,6 @@ def process_markdown_file(file_path):
 		
 		# Get the trailing image name from source_image_path
 		image_name = os.path.basename(urllib.parse.urlparse(source_image_path).path)
-		print(image_name)
 
 		# Search for the image recursively
 		for root, _, files in os.walk(file_dir):
@@ -42,8 +41,7 @@ def process_markdown_file(file_path):
 		return "![](assets/" + new_filename + ")"
 
 	# Update image links (both Obsidian and standard Markdown syntax)
-	content = re.sub(r"!\[\[(.*?)\]\]", replace_image_link, content)
-	content = re.sub(r"!\[.*?\]\((.*?)\)", replace_image_link, content)
+	content = re.sub(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)", lambda x: replace_image_link(x) if x.group(1) else replace_image_link(x), content)
 
 	with open(file_path, 'w') as file:
 		file.write(content)
