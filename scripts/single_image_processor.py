@@ -41,8 +41,7 @@ def process_markdown_file(file_path):
 		return "![](assets/" + new_filename + ")"
 
 	# Update image links (both Obsidian and standard Markdown syntax)
-	content = re.sub(r"!\[\[(.*?)\]\]", replace_image_link, content)
-	content = re.sub(r"!\[.*?\]\((.*?)\)", replace_image_link, content)
+	content = re.sub(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)", lambda x: replace_image_link(x) if x.group(1) else replace_image_link(x), content)
 
 	with open(file_path, 'w') as file:
 		file.write(content)
