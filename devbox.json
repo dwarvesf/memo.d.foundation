@@ -15,7 +15,8 @@
     "awscli":                 "1.32.21",
     "pre-commit":             "3.6.1",
     "duckdb":                 "0.10.0",
-    "git-credential-manager": "2.4.1"
+    "git-credential-manager": "2.4.1",
+    "expect":                 "5.45.4"
   },
   "shell": {
     "init_hook": [

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Check for uninitialized submodules
 uninitialized_submodules=$(git submodule status --cached | grep '^-')

@@ -6,5 +6,6 @@
       "args": []
     }
   },
-  "terminal.integrated.defaultProfile.osx": "devboxCompatibleShell"
+  "terminal.integrated.defaultProfile.osx": "devboxCompatibleShell",
+  "terminal.integrated.shellIntegration.enabled": false
 }
