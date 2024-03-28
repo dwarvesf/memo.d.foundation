@@ -16,7 +16,7 @@ def has_frontmatter_properties(content):
 
     title = frontmatter_properties.get("title", "")
     description = frontmatter_properties.get("description", "")
-    tags = frontmatter_properties.get("tags", "")
+    tags = frontmatter_properties.get("tags", [])
 
     # return if tags is not a list
     if not isinstance(tags, list):
