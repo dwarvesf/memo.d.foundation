@@ -33,6 +33,10 @@ def process_markdown_file(file_path, export_path):
     title = frontmatter_properties.get("title", "")
     description = frontmatter_properties.get("description", "")
     tags = frontmatter_properties.get("tags", "")
+    
+    # make sure tags is a list
+    if not isinstance(tags, str):
+        return content, linked_files
 
     # if any of the frontmatter properties are empty, exit the function
     if not all([title, description, tags]):
