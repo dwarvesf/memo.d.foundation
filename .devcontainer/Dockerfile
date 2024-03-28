@@ -2,10 +2,13 @@ FROM jetpackio/devbox:latest
 
 # Installing your devbox project
 WORKDIR /code
-COPY devbox.json devbox.json
-COPY devbox.lock devbox.lock
-COPY requirements.txt requirements.txt
-RUN sudo chown -R "${DEVBOX_USER}:${DEVBOX_USER}" /code
+USER root:root
+RUN mkdir -p /code && chown ${DEVBOX_USER}:${DEVBOX_USER} /code
+USER ${DEVBOX_USER}:${DEVBOX_USER}
+COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} devbox.json devbox.json
+COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} devbox.lock devbox.lock
+COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} requirements.txt requirements.txt
+
 
 
 RUN devbox run -- echo "Installed Packages."
