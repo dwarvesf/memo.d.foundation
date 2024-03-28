@@ -24,12 +24,6 @@ jobs:
           git commit -m "chore: update submodules" || echo "No changes to commit"
           git push
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: 'latest'
-          extended: true
-            
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.8.0
 
