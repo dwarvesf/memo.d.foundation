@@ -220,7 +220,7 @@ fn main() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/assets/playaround-with-rust_8b2e8ecd35a0b2b6be39e220dcb4c333_md5.webp onerror="this.onerror=null" class=content-img></p><p>In order to correct the function, we just put the lifetime in parameter like:</p><pre><code class=language-javascript>fn largest(x: &amp;i64, y: &amp;i64) -&gt; &amp;i64 {
+  }" src=/playground/_memo/assets/playaround-with-rust_8b2e8ecd35a0b2b6be39e220dcb4c333_md5.webp onerror="this.onerror=null" class=content-img></p><p>In order to correct the function, we just put the lifetime in parameter like:</p><pre><code class=language-javascript>fn largest(x: &amp;i64, y: &amp;i64) -&gt; &amp;i64 {
    if x &gt; y {
        x
    } else {

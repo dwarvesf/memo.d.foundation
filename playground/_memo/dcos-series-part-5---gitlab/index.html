@@ -170,25 +170,25 @@
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/assets/dcos-series-part-5---gitlab_4a171771af9dd3725d809a02f3cbd80a_md5.webp onerror="this.onerror=null" class=content-img></p><ol><li>Setting up email client</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" src=/playground/_memo/assets/dcos-series-part-5---gitlab_4a171771af9dd3725d809a02f3cbd80a_md5.webp onerror="this.onerror=null" class=content-img></p><ol><li>Setting up email client</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/assets/dcos-series-part-5---gitlab_0a331d4343f65dc0f3d0a1d28fcd08a6_md5.webp onerror="this.onerror=null" class=content-img></p><ol><li>Set a specific private node IP, so when we need to restart or upgrade new gitlab version, we wont lost data</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" src=/playground/_memo/assets/dcos-series-part-5---gitlab_0a331d4343f65dc0f3d0a1d28fcd08a6_md5.webp onerror="this.onerror=null" class=content-img></p><ol><li>Set a specific private node IP, so when we need to restart or upgrade new gitlab version, we wont lost data</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/assets/dcos-series-part-5---gitlab_07cb48f22769c4bdb7555e122aa2c24c_md5.webp onerror="this.onerror=null" class=content-img></p><p>After all, we can do <code>Review and Install</code>. If everything is OK, Gitlab service will be like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" src=/playground/_memo/assets/dcos-series-part-5---gitlab_07cb48f22769c4bdb7555e122aa2c24c_md5.webp onerror="this.onerror=null" class=content-img></p><p>After all, we can do <code>Review and Install</code>. If everything is OK, Gitlab service will be like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/assets/dcos-series-part-5---gitlab_1293c7d7f3ddd11d274b6a78461f93a5_md5.webp onerror="this.onerror=null" class=content-img></p><h2 id=setting-https>Setting HTTPS <a href=#setting-https></a></h2><p>By default, Gitlab on DC/OS doesn’t supprt <code>HTTPS</code>, but we can customize a bit to make it more secure. To do that, we need to do a few things below to enable <code>HTTPS</code>, ok let’s do it now:</p><ol><li><code>Edit</code> service Gitlab and add below setting to env <code>GITLAB_OMNIBUS_CONFIG</code> then <code>Review & Run</code> it:</li></ol><pre><code class=language-plain_text>nginx['proxy_set_headers'] = {   \&quot;X-Forwarded-Proto\&quot; =&gt; \&quot;https\&quot;,   \&quot;X-Forwarded-Ssl\&quot; =&gt; \&quot;on\&quot;  }
+  }" src=/playground/_memo/assets/dcos-series-part-5---gitlab_1293c7d7f3ddd11d274b6a78461f93a5_md5.webp onerror="this.onerror=null" class=content-img></p><h2 id=setting-https>Setting HTTPS <a href=#setting-https></a></h2><p>By default, Gitlab on DC/OS doesn’t supprt <code>HTTPS</code>, but we can customize a bit to make it more secure. To do that, we need to do a few things below to enable <code>HTTPS</code>, ok let’s do it now:</p><ol><li><code>Edit</code> service Gitlab and add below setting to env <code>GITLAB_OMNIBUS_CONFIG</code> then <code>Review & Run</code> it:</li></ol><pre><code class=language-plain_text>nginx['proxy_set_headers'] = {   \&quot;X-Forwarded-Proto\&quot; =&gt; \&quot;https\&quot;,   \&quot;X-Forwarded-Ssl\&quot; =&gt; \&quot;on\&quot;  }
 </code></pre><ol><li>Copy your <code>.pem</code> files to public node which is running <code>marathon-lb</code>. For me, I will copy and paste it to<code>/srv/marathon-lb/domains/example-git-domain.com</code></li></ol><pre><code class=language-plain_text>$ scp cert.pem core@public-ip:~
 $ ssh core@public-ip
 $ sudo mkdir -p /srv/marathon-lb/domains/ssl/example-git-domain.com
@@ -204,4 +204,4 @@ $ sudo mv cert.pem /srv/marathon-lb/domains/ssl/example-git-domain.com
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/assets/dcos-series-part-5---gitlab_6d0a8c8c9d3f0ea69d31fd97da4de9b1_md5.webp onerror="this.onerror=null" class=content-img></p><p>3.3. <code>Review & Run</code> marathon-lb again to update new changes</p><p>After updating those settings, you now can go to <code>your-gitlab-domain.com</code> to enjoy your result.</p><p>If you face anything weird while setting up your Gitlab, you can contact me via <code>quang@dwarvesf.com.</code></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+  }" src=/playground/_memo/assets/dcos-series-part-5---gitlab_6d0a8c8c9d3f0ea69d31fd97da4de9b1_md5.webp onerror="this.onerror=null" class=content-img></p><p>3.3. <code>Review & Run</code> marathon-lb again to update new changes</p><p>After updating those settings, you now can go to <code>your-gitlab-domain.com</code> to enjoy your result.</p><p>If you face anything weird while setting up your Gitlab, you can contact me via <code>quang@dwarvesf.com.</code></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
