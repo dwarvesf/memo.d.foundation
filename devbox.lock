@@ -352,15 +352,43 @@
       "version": "1.21.3",
       "systems": {
         "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/1fxz1flmv4a4m5pvjmmzxlaznjzybjcp-go-1.21.3",
+              "default": true
+            }
+          ],
           "store_path": "/nix/store/1fxz1flmv4a4m5pvjmmzxlaznjzybjcp-go-1.21.3"
         },
         "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/iyaywzzkhm1pi5ysd83ai9pdpic9b9ny-go-1.21.3",
+              "default": true
+            }
+          ],
           "store_path": "/nix/store/iyaywzzkhm1pi5ysd83ai9pdpic9b9ny-go-1.21.3"
         },
         "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/yqqhrzr15819draxsyqrn2hf5c22ffhk-go-1.21.3",
+              "default": true
+            }
+          ],
           "store_path": "/nix/store/yqqhrzr15819draxsyqrn2hf5c22ffhk-go-1.21.3"
         },
         "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/dwmb0qcai52d0zkgpm6f5ifx2a8yvsdg-go-1.21.3",
+              "default": true
+            }
+          ],
           "store_path": "/nix/store/dwmb0qcai52d0zkgpm6f5ifx2a8yvsdg-go-1.21.3"
         }
       }
@@ -664,70 +692,6 @@
             }
           ],
           "store_path": "/nix/store/bj6brw67kppcpdk2gb92l1rf3zirx5jc-python3-3.10.13"
-        }
-      }
-    },
-    "trash-cli@0.23.11.10": {
-      "last_modified": "2024-03-22T11:26:23Z",
-      "resolved": "github:NixOS/nixpkgs/a3ed7406349a9335cb4c2a71369b697cecd9d351#trash-cli",
-      "source": "devbox-search",
-      "version": "0.23.11.10",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/5mlyzwk8f3ynzsca02vvp76x15fzbj3w-trash-cli-0.23.11.10",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/i03447r78vyg7d06x2q0l66svsxx0xf9-trash-cli-0.23.11.10-dist"
-            }
-          ],
-          "store_path": "/nix/store/5mlyzwk8f3ynzsca02vvp76x15fzbj3w-trash-cli-0.23.11.10"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/29fvshbaxw4mk8vk50ladfzqm4icfap1-trash-cli-0.23.11.10",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/brxya41ixkdyc5073l1cvjzrilkl3300-trash-cli-0.23.11.10-dist"
-            }
-          ],
-          "store_path": "/nix/store/29fvshbaxw4mk8vk50ladfzqm4icfap1-trash-cli-0.23.11.10"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/2vzaas3s1vf75gvca71ysg1fa46nmv5a-trash-cli-0.23.11.10",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/p6ssbs18ffh76f9y4pjfms3y02gv9n0q-trash-cli-0.23.11.10-dist"
-            }
-          ],
-          "store_path": "/nix/store/2vzaas3s1vf75gvca71ysg1fa46nmv5a-trash-cli-0.23.11.10"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/z9wnzcy1cki7vhhgsha4yc8qd3qm93ia-trash-cli-0.23.11.10",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/pn3d9b1sf6qiza1kmmqmhjx2zrai689d-trash-cli-0.23.11.10-dist"
-            }
-          ],
-          "store_path": "/nix/store/z9wnzcy1cki7vhhgsha4yc8qd3qm93ia-trash-cli-0.23.11.10"
         }
       }
     }
