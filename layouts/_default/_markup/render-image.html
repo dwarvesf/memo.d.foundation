@@ -15,9 +15,9 @@
       {{- relref .Page .Destination | safeURL -}}
     {{- else -}}
       {{ if strings.HasPrefix .Page.File.Dir "/" }}
-        {{- printf "%s" .Destination | safeURL -}}
+        {{- printf "%s" .Page.File.Dir .Destination | safeURL -}}
       {{- else -}}
-        {{- printf "/%s" .Destination | safeURL -}}
+        {{- printf "/%s%s" .Page.File.Dir .Destination | safeURL -}}
       {{- end -}}
     {{- end -}}
   {{- else -}}
@@ -144,9 +144,9 @@
       {{- relref .Page .Destination | safeURL -}}
     {{- else -}}
       {{ if strings.HasPrefix .Page.File.Dir "/" }}
-        {{- printf "%s" .Destination | safeURL -}}
+        {{- printf "%s" .Page.File.Dir .Destination | safeURL -}}
       {{- else -}}
-        {{- printf "/%s" .Destination | safeURL -}}
+        {{- printf "/%s%s" .Page.File.Dir .Destination | safeURL -}}
       {{- end -}}
     {{- end -}}
   {{- else -}}
@@ -172,9 +172,9 @@
       {{- relref .Page .Destination | safeURL -}}
     {{- else -}}
       {{ if strings.HasPrefix .Page.File.Dir "/" }}
-        {{- printf "%s" .Destination | safeURL -}}
+        {{- printf "%s%s" .Page.File.Dir .Destination | safeURL -}}
       {{- else -}}
-        {{- printf "/%s" .Destination | safeURL -}}
+        {{- printf "/%s%s" .Page.File.Dir .Destination | safeURL -}}
       {{- end -}}
     {{- end -}}
   {{- else -}}
