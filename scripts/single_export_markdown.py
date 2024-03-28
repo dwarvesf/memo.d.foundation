@@ -7,6 +7,7 @@ import shutil
 
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
+
 def has_frontmatter_properties(content):
     # check if markdown file has frontmatter properties, title, description, tags, and author
     frontmatter_properties = frontmatter.loads(content)
@@ -15,19 +16,14 @@ def has_frontmatter_properties(content):
     if not frontmatter_properties.keys():
         return False
 
-    title = frontmatter_properties.get("title", "")
-    description = frontmatter_properties.get("description", "")
-    tags = frontmatter_properties.get("tags", [])
-
-    # return if tags is not a list
-    if not isinstance(tags, list):
-        return False
-
-    # if any of the frontmatter properties are empty, exit the function
-    if not all([title, description, tags]):
+    # check if `title` and `description` exist in the frontmatter properties
+    if not all(
+        [key in frontmatter_properties.keys() for key in ["title", "description"]]
+    ):
         return False
 
     return True
+
 
 def process_markdown_file(file_path, export_path):
     """Processes a Markdown file, moving local images to an 'assets' folder and updating links.
@@ -53,13 +49,13 @@ def process_markdown_file(file_path, export_path):
 
         source_note = sources[0]
         source_name = sources[1] if len(sources) > 1 else source_note
-        
+
         # Search for the note recursively
         note_path = ""
         for root, _, files in os.walk(root_dir):
             # get the path of the each file relative to the root directory, but don't include the root directory itself
             files = [os.path.relpath(os.path.join(root, f), root_dir) for f in files]
-            
+
             # for each file, check if the source note name string is in the file
             for file in files:
                 if source_note in file:
@@ -73,7 +69,7 @@ def process_markdown_file(file_path, export_path):
 
                     linked_files.append(file)
                     break
-            
+
             # if note_path is not empty
             if note_path:
                 break
@@ -86,10 +82,8 @@ def process_markdown_file(file_path, export_path):
         return f"[{source_name}]({note_path})"
 
     # Update Obsidian links to markdown
-    content = re.sub(
-        obsidian_link_regex_compiled, lambda x: replace_link(x), content
-    )
-    
+    content = re.sub(obsidian_link_regex_compiled, lambda x: replace_link(x), content)
+
     # move all linked files to the export path if they don't exist in the export path
     for linked_file in linked_files:
         linked_file_path = os.path.join(file_path.split("/")[0], linked_file)
@@ -115,4 +109,6 @@ if __name__ == "__main__":
         export_path = sys.argv[2]
         process_markdown_file(markdown_file_path, export_path)
     else:
-        print("Please provide the path to the Markdown file as an argument as well as an export path.")
+        print(
+            "Please provide the path to the Markdown file as an argument as well as an export path."
+        )

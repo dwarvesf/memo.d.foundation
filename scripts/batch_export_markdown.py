@@ -20,16 +20,10 @@ def has_frontmatter_properties(content):
     if not frontmatter_properties.keys():
         return False
 
-    title = frontmatter_properties.get("title", "")
-    description = frontmatter_properties.get("description", "")
-    tags = frontmatter_properties.get("tags", [])
-
-    # return if tags is not a list
-    if not isinstance(tags, list):
-        return False
-
-    # if any of the frontmatter properties are empty, exit the function
-    if not all([title, description, tags]):
+    # check if `title` and `description` exist in the frontmatter properties
+    if not all(
+        [key in frontmatter_properties.keys() for key in ["title", "description"]]
+    ):
         return False
 
     return True

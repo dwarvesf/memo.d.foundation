@@ -169,8 +169,32 @@
       "image": {{ if .Params.images }}[{{ range $i, $e := .Params.images }}{{ if $i }}, {{ end }}{{ $e | absURL }}{{ end }}]{{ else}}{{.Site.Params.logo | absURL }}{{ end }},
       "url" : "{{ .Permalink }}",
       "wordCount" : "{{ .WordCount }}",
-      "genre" : [ {{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}" {{ end }}],
-      "keywords" : [ {{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}" {{ end }}]
+      "genre" : [
+        {{ if and (isset .Params "tags") (not (eq .Params.tags nil)) }}
+          {{ $tags := slice }}
+          {{ if (eq (printf "%T" .Params.tags) "string") }}
+            {{ $tags = append $tags .Params.tags }}
+          {{ else }}
+            {{ $tags = .Params.tags }}
+          {{ end }}
+          {{ range $index, $tag := $tags }}
+            {{ if $index }}, {{ end }}"{{ $tag }}"
+          {{ end }}
+        {{ end }}
+      ],
+      "keywords" : [
+        {{ if and (isset .Params "tags") (not (eq .Params.tags nil)) }}
+          {{ $tags := slice }}
+          {{ if (eq (printf "%T" .Params.tags) "string") }}
+            {{ $tags = append $tags .Params.tags }}
+          {{ else }}
+            {{ $tags = .Params.tags }}
+          {{ end }}
+          {{ range $index, $tag := $tags }}
+            {{ if $index }}, {{ end }}"{{ $tag }}"
+          {{ end }}
+        {{ end }}
+      ]
     }
   </script>
   {{ end }}
