@@ -1,6 +1,5 @@
 {
   "packages": {
-    "go":       "1.21.3",
     "hugo":     "0.124.0",
     "obsidian": {
       "version":        "1.4.16",
@@ -10,7 +9,6 @@
     "git":                    "2.42.0",
     "python310Packages.pip":  "23.2.1",
     "python":                 "3.10.13",
-    "trash-cli":              "0.23.11.10",
     "awscli":                 "1.32.21",
     "pre-commit":             "3.6.1",
     "duckdb":                 "0.10.0",
