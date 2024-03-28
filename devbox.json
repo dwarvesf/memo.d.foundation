@@ -1,5 +1,6 @@
 {
   "packages": {
+    "go":       "1.21.3",
     "hugo":     "0.124.0",
     "obsidian": {
       "version":        "1.4.16",
