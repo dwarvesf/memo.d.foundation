@@ -6,6 +6,28 @@ import frontmatter
 
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
+def has_frontmatter_properties(content):
+    # check if markdown file has frontmatter properties, title, description, tags, and author
+    frontmatter_properties = frontmatter.loads(content)
+
+    # check if frontmatter properties exist
+    if not frontmatter_properties.keys():
+        return False
+
+    title = frontmatter_properties.get("title", "")
+    description = frontmatter_properties.get("description", "")
+    tags = frontmatter_properties.get("tags", "")
+
+    # return if tags is not a list
+    if not isinstance(tags, list):
+        return False
+
+    # if any of the frontmatter properties are empty, exit the function
+    if not all([title, description, tags]):
+        return False
+
+    return True
+
 def process_markdown_file(file_path, export_path):
     """Processes a Markdown file, moving local images to an 'assets' folder and updating links.
 
@@ -17,22 +39,8 @@ def process_markdown_file(file_path, export_path):
     with open(file_path, "r") as file:
         content = file.read()
 
-    frontmatter_properties = frontmatter.loads(content)
-    
-    # check if frontmatter properties exist
-    if not frontmatter_properties.keys():
-        return content, linked_files
-
-    title = frontmatter_properties.get("title", "")
-    description = frontmatter_properties.get("description", "")
-    tags = frontmatter_properties.get("tags", "")
-
-    # make sure tags is a list
-    if not isinstance(tags, list):
-        return content, linked_files
-
-    # if any of the frontmatter properties are empty, exit the function
-    if not all([title, description, tags]):
+    # check if markdown file has frontmatter properties
+    if not has_frontmatter_properties(content):
         return content, linked_files
 
     file_dir = os.path.dirname(file_path)
@@ -55,6 +63,13 @@ def process_markdown_file(file_path, export_path):
             for file in files:
                 if source_note in file:
                     note_path = file
+
+                    # check if the file is a markdown file
+                    if note_path.endswith(".md"):
+                        # check if markdown file has frontmatter properties
+                        if not has_frontmatter_properties(content):
+                            break
+
                     linked_files.append(file)
                     break
             
