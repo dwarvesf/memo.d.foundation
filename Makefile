@@ -11,6 +11,7 @@ fetch:
 
 build:
 	@python scripts/batch_export_markdown.py vault content
+	@tree -d content
 	@hugo -DEF --minify
 
 run:
