@@ -23,7 +23,8 @@ def has_frontmatter_properties(content):
     title = frontmatter_properties.get("title", "")
     description = frontmatter_properties.get("description", "")
     tags = frontmatter_properties.get("tags", [])
-    
+    print(tags)
+
     # return if tags is not a list
     if not isinstance(tags, list):
         return False
@@ -48,7 +49,7 @@ def process_markdown_file(file_path, export_path):
 
     # check if markdown file has frontmatter properties
     if not has_frontmatter_properties(content):
-        return content, linked_files
+        return None, linked_files
 
     file_dir = os.path.dirname(file_path)
     root_dir = file_path.split("/")[0]
