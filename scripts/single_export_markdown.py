@@ -3,6 +3,7 @@ import re
 import urllib.parse
 import sys
 import frontmatter
+import shutil
 
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
@@ -41,7 +42,7 @@ def process_markdown_file(file_path, export_path):
 
     # check if markdown file has frontmatter properties
     if not has_frontmatter_properties(content):
-        return content, linked_files
+        return
 
     file_dir = os.path.dirname(file_path)
     root_dir = file_path.split("/")[0]
