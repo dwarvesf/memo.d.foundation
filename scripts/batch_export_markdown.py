@@ -2,10 +2,12 @@ import os
 import re
 import urllib.parse
 import sys
-from distutils.dir_util import copy_tree, remove_tree
+import shutil
 import fnmatch
+import pathspec
 import asyncio
 import aiofiles
+import frontmatter
 
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
@@ -17,8 +19,24 @@ def process_markdown_file(file_path, export_path):
             file_path (str): Path to the Markdown file.
     """
 
+    linked_files = []
     with open(file_path, "r") as file:
         content = file.read()
+
+    # check if markdown file has frontmatter properties, title, description, tags, and author
+    frontmatter_properties = frontmatter.loads(content)
+
+    # check if frontmatter properties exist
+    if not frontmatter_properties.keys():
+        return content, linked_files
+
+    title = frontmatter_properties.get("title", "")
+    description = frontmatter_properties.get("description", "")
+    tags = frontmatter_properties.get("tags", "")
+
+    # if any of the frontmatter properties are empty, exit the function
+    if not all([title, description, tags]):
+        return content, linked_files
 
     file_dir = os.path.dirname(file_path)
     root_dir = file_path.split("/")[0]
@@ -36,13 +54,11 @@ def process_markdown_file(file_path, export_path):
             # get the path of the each file relative to the root directory, but don't include the root directory itself
             files = [os.path.relpath(os.path.join(root, f), root_dir) for f in files]
 
-            # process only markdown files
-            files = [f for f in files if f.endswith(".md")]
-
             # for each file, check if the source note name is in the file
             for file in files:
                 if source_note in file:
                     note_path = file
+                    linked_files.append(file)
                     break
 
             # if note_path is not empty
@@ -51,44 +67,63 @@ def process_markdown_file(file_path, export_path):
         else:  # If the note is not found
             return match.group(0)  # Return the original link
 
+        # make the note_path url safe
+        note_path = urllib.parse.quote(note_path)
+        
         return f"[{source_name}]({note_path})"
+        
 
     # Update Obsidian links to markdown
     content = re.sub(obsidian_link_regex_compiled, lambda x: replace_link(x), content)
 
-    # create a new file matching the directory structure of the file_path to the export_path using the new content
-    export_file_path = file_path.replace(file_path.split("/")[0], export_path)
-    os.makedirs(os.path.dirname(export_file_path), exist_ok=True)
-    with open(export_file_path, "w") as file:
-        file.write(content)
-    print(f"Exported '{file_path}' to '{export_file_path}'")
-
+    return content, linked_files
 
 def read_ignore_patterns(root):
-    """Read ignore patterns from .export-ignore file in the given directory."""
-    ignore_patterns = []
-    ignore_file = os.path.join(root, ".export-ignore")
-    if os.path.exists(ignore_file):
-        with open(ignore_file, "r") as file:
-            ignore_patterns = file.read().splitlines()
-    return ignore_patterns
+    """Read ignore patterns from .export-ignore file in the given directory, returns a pathspec object."""
+    ignore_file_path = os.path.join(root, ".export-ignore")
+    if os.path.exists(ignore_file_path):
+        with open(ignore_file_path, "r") as file:
+            spec = pathspec.PathSpec.from_lines("gitwildmatch", file)
+        return spec
+    return None
 
 
-def is_ignored(path, ignore_patterns):
-    """Check if the given path matches any of the ignore patterns."""
-    for pattern in ignore_patterns:
-        if fnmatch.fnmatch(os.path.basename(path), pattern):
-            return True
-    return False
+def is_ignored(filepath, ignore_spec, folder_path):
+    """Check if the given path matches any of the ignore patterns using pathspec.
+
+    Args:
+        filepath (str): Absolute path of the file or directory to check.
+        ignore_spec (pathspec.PathSpec): The compiled pathspec object.
+        folder_path (str): The root directory to make paths relative.
+
+    Returns:
+        bool: True if the file or directory should be ignored, False otherwise.
+    """
+    if ignore_spec is None:
+        return False
+
+    # Make the path relative to the folder_path to correctly match .export-ignore rules
+    if filepath.startswith(folder_path):
+        rel_path = os.path.relpath(filepath, folder_path)
+    else:
+        rel_path = filepath
+
+    # Match against pathspec
+    return ignore_spec.match_file(rel_path)
 
 
 def get_files(folder_path):
     """Yield all files in folder_path that are not ignored by a .export-ignore file."""
-    ignore_patterns = read_ignore_patterns(folder_path)
-    for root, _, files in os.walk(folder_path):
+    ignore_spec = read_ignore_patterns(folder_path)
+    for root, dirs, files in os.walk(folder_path, topdown=True):
+        dirs[:] = [
+            d
+            for d in dirs
+            if not is_ignored(os.path.join(root, d), ignore_spec, folder_path)
+        ]
         for file in files:
             file_path = os.path.join(root, file)
-            if not is_ignored(file_path, ignore_patterns):
+            if not is_ignored(file_path, ignore_spec, folder_path):
                 yield file_path
 
 
@@ -97,8 +132,21 @@ async def process_markdown_file_async(file_path, export_path):
     async with aiofiles.open(file_path, "r") as file:
         content = await file.read()
 
-    # Your existing synchronous processing logic here...
-    # Since regex and path operations are CPU-bound and not IO-bound, they remain synchronous.
+    content, linked_files = process_markdown_file(file_path, export_path)
+    
+    # check if content is a string
+    if not isinstance(content, str):
+        return
+
+    # move all linked files to the export path if they don't exist in the export path
+    for linked_file in linked_files:
+        linked_file_path = os.path.join(file_path.split("/")[0], linked_file)
+        export_linked_file_path = linked_file_path.replace(
+            file_path.split("/")[0], export_path
+        )
+        if not os.path.exists(export_linked_file_path):
+            os.makedirs(os.path.dirname(export_linked_file_path), exist_ok=True)
+            shutil.copy2(linked_file_path, export_linked_file_path)
 
     # Async file write
     export_file_path = file_path.replace(file_path.split("/")[0], export_path)
@@ -109,13 +157,28 @@ async def process_markdown_file_async(file_path, export_path):
     print(f"Exported '{file_path}' to '{export_file_path}'")
 
 
+def copy_directory(src, dst, ignore_pattern):
+    """Copy a directory recursively, ignoring files that match the ignore_pattern."""
+    if not os.path.exists(dst):
+        os.makedirs(dst)
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            copy_directory(s, d, ignore_pattern)
+        elif not fnmatch.fnmatch(item, ignore_pattern):
+            shutil.copy2(s, d)
+
+
 async def process_markdown_folder_async(folder_path, export_path):
     """Processes all markdown files within a folder asynchronously."""
     if os.path.exists(export_path):
-        remove_tree(export_path)
-    copy_tree(folder_path, export_path)
+        shutil.rmtree(export_path)
 
-    # Replace get_files() with an async version if fetching files can be async
+    # copy all files from the folder_path to the export_path except the .md files
+    copy_directory(folder_path, export_path, "*.md")
+
+    # Map files to their export paths and process only markdown files
     markdown_files = [
         (file_path, export_path)
         for file_path in get_files(folder_path)
