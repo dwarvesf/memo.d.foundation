@@ -5,3 +5,5 @@ fastparquet
 pyarrow
 pyparsing
 sqlparse
+asyncio
+aiofiles

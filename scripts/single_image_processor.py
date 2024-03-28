@@ -3,6 +3,7 @@ import re
 import urllib.parse
 import sys
 
+obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
 
 def process_markdown_file(file_path):
     """Processes a Markdown file, moving local images to an 'assets' folder and updating links.

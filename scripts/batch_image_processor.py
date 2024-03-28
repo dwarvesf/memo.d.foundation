@@ -2,6 +2,9 @@ import os
 import re
 import urllib.parse
 import sys
+import concurrent.futures
+
+obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
 
 
 def process_markdown_file(file_path):
@@ -57,31 +60,49 @@ def process_markdown_file(file_path):
 
     # Update image links (both Obsidian and standard Markdown syntax)
     content = re.sub(
-        r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)", lambda x: replace_image_link(x), content
+        obsidian_image_link_regex_compiled, lambda x: replace_image_link(x), content
     )
 
     with open(file_path, "w") as file:
         file.write(content)
 
 
-def process_markdown_folder(folder_path):
-    """Processes all markdown files within a folder.
+def process_markdown_folder_parallel(folder_path, max_workers=4):
+    """Processes all markdown files within a folder in parallel.
 
     Args:
-            folder_path (str): Path to the folder containing Markdown files.
+        folder_path (str): Path to the folder containing Markdown files.
+        max_workers (int): Maximum number of worker processes.
     """
+    markdown_files = []  # List to keep track of all markdown file paths
+
+    # Walk through the directory to find all markdown files
     for root, _, files in os.walk(folder_path):
         for filename in files:
             if filename.endswith(".md"):
                 file_path = os.path.join(root, filename)
-                process_markdown_file(file_path)
+                markdown_files.append(file_path)
+
+    # Use ProcessPoolExecutor to process files in parallel
+    with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
+        futures = [
+            executor.submit(process_markdown_file, file_path)
+            for file_path in markdown_files
+        ]
+
+        # Optional: You can monitor the completion of tasks as follows
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()  # If needed, handle result or catch exceptions
+            except Exception as exc:
+                print(f"File processing generated an exception: {exc}")
 
 
 # Get the folder path from the user (assuming it's the first argument)
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         folder_path = sys.argv[1]
-        process_markdown_folder(folder_path)
+        process_markdown_folder_parallel(folder_path)
     else:
         print(
             "Please provide the path to the folder containing Markdown files as an argument."
