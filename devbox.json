@@ -1,11 +1,14 @@
 {
   "packages": {
-    "go":                     "1.21.3",
-    "rustup":                 "1.26.0",
-    "libiconv":               "2.38",
-    "gcc":                    "13.2.0",
-    "hugo":                   "0.124.0",
-    "obsidian":               "1.4.16",
+    "go":       "1.21.3",
+    "rustup":   "1.26.0",
+    "libiconv": "2.38",
+    "gcc":      "13.2.0",
+    "hugo":     "0.124.0",
+    "obsidian": {
+      "version":        "1.4.16",
+      "allow_insecure": ["electron-25.9.0"]
+    },
     "fswatch":                "1.17.1",
     "git":                    "2.42.0",
     "pipenv":                 "2023.2.4",
