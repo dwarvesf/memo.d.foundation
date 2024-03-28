@@ -10,6 +10,8 @@ fetch:
 	@git pull --recurse-submodules
 
 build:
+	@rm -rf public
+	@git checkout -- public
 	@python scripts/batch_export_markdown.py vault content
 	@hugo -DEF --minify
 
