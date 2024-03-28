@@ -23,7 +23,6 @@ def has_frontmatter_properties(content):
     title = frontmatter_properties.get("title", "")
     description = frontmatter_properties.get("description", "")
     tags = frontmatter_properties.get("tags", [])
-    print(tags)
 
     # return if tags is not a list
     if not isinstance(tags, list):
@@ -59,7 +58,7 @@ def process_markdown_file(file_path, export_path):
         sources = re.split(r"[\\]?\|", source_path)
 
         source_note = sources[0]
-        source_name = sources[1] if len(sources) > 1 else ""
+        source_name = sources[1] if len(sources) > 1 else source_note
 
         # Search for the note recursively
         note_path = ""
