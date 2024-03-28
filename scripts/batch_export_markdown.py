@@ -69,14 +69,14 @@ def process_markdown_file(file_path, export_path):
 
         # make the note_path url safe
         note_path = urllib.parse.quote(note_path)
-        
+
         return f"[{source_name}]({note_path})"
-        
 
     # Update Obsidian links to markdown
     content = re.sub(obsidian_link_regex_compiled, lambda x: replace_link(x), content)
 
     return content, linked_files
+
 
 def read_ignore_patterns(root):
     """Read ignore patterns from .export-ignore file in the given directory, returns a pathspec object."""
@@ -133,7 +133,7 @@ async def process_markdown_file_async(file_path, export_path):
         content = await file.read()
 
     content, linked_files = process_markdown_file(file_path, export_path)
-    
+
     # check if content is a string
     if not isinstance(content, str):
         return
@@ -170,6 +170,11 @@ def copy_directory(src, dst, ignore_pattern):
             shutil.copy2(s, d)
 
 
+async def worker(semaphore, file_path, export_path):
+    async with semaphore:
+        await process_markdown_file_async(file_path, export_path)
+
+
 async def process_markdown_folder_async(folder_path, export_path):
     """Processes all markdown files within a folder asynchronously."""
     if os.path.exists(export_path):
@@ -185,13 +190,13 @@ async def process_markdown_folder_async(folder_path, export_path):
         if file_path.endswith(".md")
     ]
 
-    # Process files asynchronously
-    await asyncio.gather(
-        *[
-            process_markdown_file_async(file_path, export_path)
-            for file_path, export_path in markdown_files
-        ]
-    )
+    # Create a Semaphore to limit concurrent tasks
+    semaphore = asyncio.Semaphore(10)
+
+    tasks = [worker(semaphore, file_path, export_path) for file_path, export_path in markdown_files]
+
+    # Use asyncio.gather() to run tasks concurrently with semaphores managing the concurrency limit
+    await asyncio.gather(*tasks)
 
 
 # Get the Markdown file path from the user (assuming it's the first argument)
