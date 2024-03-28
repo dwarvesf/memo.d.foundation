@@ -31,6 +31,7 @@
       "./git-submodule-fetch-init.sh"
     ],
     "scripts": {
+      "build":        "make build",
       "watch-run":    "make watch-run",
       "build-target": "make build-target",
       "run-target":   "make run-target",

@@ -10,20 +10,16 @@ fetch:
 	@git pull --recurse-submodules
 
 build:
-	@obsidian-export --hard-linebreaks ./vault ./content
+	@python scripts/batch_export_markdown.py vault content
 	@hugo -DEF --minify
 
 run:
-	@trash -f ./content
-	@mkdir -p content
-	@obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null
+	@python scripts/batch_export_markdown.py vault content
 	@hugo -DEF --logLevel error server --poll 250ms
 
 watch-run:
-	@trash -f ./content
-	@mkdir -p content
-	@obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null
-	@fswatch -o ./vault | xargs -n1 -I{} obsidian-export --hard-linebreaks ./vault ./content 2>/dev/null &
+	@python scripts/batch_export_markdown.py vault content
+	@-fswatch -0 vault | xargs -0 -I "{}" sh -c 'echo "{}" | awk -v pwd="$$PWD/" "{sub(pwd, \"\"); print}" | xargs -I "{}" python scripts/single_export_markdown.py "{}" content' &
 	@hugo -DEF --logLevel error server --poll 250ms
 	@trap 'killall -9 $$' SIGINT
 

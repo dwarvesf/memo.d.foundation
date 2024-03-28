@@ -24,37 +24,17 @@ jobs:
           git commit -m "chore: update submodules" || echo "No changes to commit"
           git push
 
-      - name: Cache cargo plugins
-        id: cache-obsidian-export
-        uses: actions/cache@v1
-        with:
-          path: ~/.cargo/bin/
-          key: ${{ runner.os }}-cargo-plugins
-
-      - name: Install obsidian-export
-        if: steps.cache-obsidian-export.outputs.cache-hit != 'true'
-        uses: actions-rs/install@v0.1
-        with:
-          crate: obsidian-export
-          version: latest
-
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
           extended: true
+            
+      - name: Install devbox
+        uses: jetpack-io/devbox-install-action@v0.8.0
 
-      - name: Create content dir if not exists
-        shell: bash
-        run: mkdir -p ./content
-
-      - name: Export Vault
-        shell: bash
-        run: obsidian-export --hard-linebreaks ./vault ./content
-
-      - name: Build Hugo
-        shell: bash
-        run: hugo -DEF --minify
+      - name: Run Build
+        run: devbox run build
         env:
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           ALGOLIA_APPLICATION_ID: ${{ secrets.ALGOLIA_APPLICATION_ID }}
