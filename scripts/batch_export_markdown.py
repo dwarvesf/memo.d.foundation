@@ -187,7 +187,6 @@ def copy_directory(src, dst, ignore_pattern):
             copy_directory(s, d, ignore_pattern)
         elif not fnmatch.fnmatch(item.lower(), ignore_pattern.lower()):  # Ensure comparison is case-insensitive
             shutil.copy2(s, d)
-            print(f"Copied '{s}' to '{d}'")
 
 
 async def worker(semaphore, file_path, export_path):
