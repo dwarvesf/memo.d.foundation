@@ -177,7 +177,7 @@ async def process_markdown_file_async(file_path, export_path):
 
 
 def copy_directory(src, dst, ignore_pattern):
-    """Copy a directory recursively, ignoring files that match the ignore_pattern."""
+    """Copy a directory recursively, ignoring files that match the ignore_pattern in a case-insensitive manner."""
     if not os.path.exists(dst):
         os.makedirs(dst)
     for item in os.listdir(src):
@@ -185,7 +185,7 @@ def copy_directory(src, dst, ignore_pattern):
         d = os.path.join(dst, item)
         if os.path.isdir(s):
             copy_directory(s, d, ignore_pattern)
-        elif not fnmatch.fnmatch(item, ignore_pattern):
+        elif not fnmatch.fnmatch(item.lower(), ignore_pattern.lower()):  # Ensure comparison is case-insensitive
             shutil.copy2(s, d)
 
 
