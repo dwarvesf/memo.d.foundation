@@ -8,6 +8,11 @@ import shutil
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
 
+def slugify(value):
+    value = str(value).lower().strip().replace(" ", "-")
+    return value
+
+
 def has_frontmatter_properties(content):
     # check if markdown file has frontmatter properties, title, description, tags, and author
     frontmatter_properties = frontmatter.loads(content)
@@ -77,6 +82,7 @@ def process_markdown_file(file_path, export_path):
             return match.group(0)  # Return the original link
 
         # make the note_path url safe
+        note_path = slugify(note_path)
         note_path = urllib.parse.quote(note_path)
 
         return f"[{source_name}]({note_path})"
@@ -90,12 +96,19 @@ def process_markdown_file(file_path, export_path):
         export_linked_file_path = linked_file_path.replace(
             file_path.split("/")[0], export_path
         )
+        export_linked_file_path = export_linked_file_path.replace(
+            os.path.basename(export_linked_file_path),
+            slugify(os.path.basename(export_linked_file_path)),
+        )
         if not os.path.exists(export_linked_file_path):
             os.makedirs(os.path.dirname(export_linked_file_path), exist_ok=True)
             shutil.copy2(linked_file_path, export_linked_file_path)
 
     # create a new file matching the directory structure of the file_path to the export_path using the new content
     export_file_path = file_path.replace(file_path.split("/")[0], export_path)
+    export_file_path = export_file_path.replace(
+        os.path.basename(export_file_path), slugify(os.path.basename(export_file_path))
+    )
     os.makedirs(os.path.dirname(export_file_path), exist_ok=True)
     with open(export_file_path, "w") as file:
         file.write(content)
