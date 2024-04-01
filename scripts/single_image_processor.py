@@ -32,7 +32,7 @@ def process_markdown_file(file_path):
         sources = re.split(r"[\\]?\|", source_image_path)
 
         source_note = sources[0] if len(sources) > 0 else match.group(1)
-        source_name = sources[1] if len(sources) > 1 else source_note
+        source_name = sources[1] if len(sources) > 1 else ""
 
         # Get the trailing image name from source_image_path
         image_name = os.path.basename(urllib.parse.urlparse(source_image_path).path)
