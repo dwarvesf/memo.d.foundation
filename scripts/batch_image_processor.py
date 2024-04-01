@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 from moviepy.editor import VideoFileClip
 import requests
+from io import BytesIO
 
 obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
 
@@ -47,10 +48,15 @@ def process_markdown_file(file_path):
             except requests.exceptions.RequestException as e:
                 return match.group(0)
 
-            # Check if the image is downloaded successfully and is an image
-            if not response.ok or not response.headers.get(
-                "Content-Type", ""
-            ).startswith("image"):
+            # Check if the image is downloaded successfully
+            if not response.ok:
+                return match.group(0)
+
+            # Check if it's an image by trying to open it with PIL
+            try:
+                Image.open(BytesIO(response.content))
+            except IOError:
+                # If it's not an image, return the original match
                 return match.group(0)
 
             # Get a unique image name from the parsed URL
@@ -60,6 +66,9 @@ def process_markdown_file(file_path):
             # if the image_name does not have a file extension, add one based on the content-type
             if not os.path.splitext(image_name)[1]:
                 image_name += "." + response.headers["Content-Type"].split("/")[1]
+            # if the image_name does have a file extension, but it is not a valid image extension, add one based on the content-type
+            elif os.path.splitext(image_name)[1] not in [".png", ".jpg", ".jpeg", ".webp"]:
+                image_name = os.path.splitext(image_name)[0] + "." + response.headers["Content-Type"].split("/")[1]
 
             with open(os.path.join(assets_dir, image_name), "wb") as f:
                 f.write(response.content)
@@ -95,26 +104,31 @@ def process_markdown_file(file_path):
 
             # remove image_path old extension and add .webp
             new_image_path = os.path.splitext(new_image_path)[0] + ".webp"
+            new_filename = os.path.splitext(new_filename)[0] + ".webp"
+
             print(f"Compressing image '{new_image_path}'...")
             img.save(new_image_path, "WEBP", quality=75)
+            os.remove(image_path)
         # If it's a video, compress it if it hasn't been compressed already
         elif image_path.lower().endswith((".mp4", ".avi", ".mov")):
             if "compressed" in image_path:
-                print(f"Video '{image_path}' has already been compressed.")
                 return f"![{source_name}](assets/{new_filename})"
             else:
                 clip = VideoFileClip(image_path)
 
                 # remove image_path old extension and add _compressed.mp4
                 new_image_path = os.path.splitext(new_image_path)[0] + "_compressed.mp4"
+                new_filename = os.path.splitext(new_filename)[0] + "_compressed.mp4"
+
                 print(f"Compressing video '{new_image_path}'...")
                 clip.write_videofile(
                     new_image_path, codec="libx264", bitrate="700k", logger=None
                 )
-
-        # Check if the image is not in the assets folder
-        if image_path != new_image_path:
-            os.rename(image_path, new_image_path)
+                os.remove(image_path)
+        else:
+            # Check if the image is not in the assets folder
+            if image_path != new_image_path:
+                os.rename(image_path, new_image_path)
 
         return f"![{source_name}](assets/{new_filename})"
 

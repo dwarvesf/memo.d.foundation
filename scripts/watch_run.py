@@ -15,42 +15,45 @@ class FileChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
         if event.is_directory:
             return
+        
+        try:
+            # Get the file path and relative path
+            file_path = event.src_path
+            relative_path = os.path.join(directory, os.path.relpath(file_path, directory))
 
-		# Get the file path and relative path
-        file_path = event.src_path
-        relative_path = os.path.join(directory, os.path.relpath(file_path, directory))
-		
-		# Get the current modified time of the file
-        current_modified_time = os.path.getmtime(file_path)
+            # Get the current modified time of the file
+            current_modified_time = os.path.getmtime(file_path)
 
-        if relative_path.endswith(".md") and (
-            relative_path not in self.last_modified_time
-            or self.last_modified_time[relative_path] != current_modified_time
-        ):
-            self.last_modified_time[relative_path] = current_modified_time
-
-			# Check if the file has been processed in the last second
-            if (
-                relative_path in self.processed_files
-                and time.time() - self.processed_files[relative_path] < 1
+            if relative_path.endswith(".md") and (
+                relative_path not in self.last_modified_time
+                or self.last_modified_time[relative_path] != current_modified_time
             ):
-                return
-			
-			# Update the processed_files dictionary
-            self.processed_files[relative_path] = time.time()
+                self.last_modified_time[relative_path] = current_modified_time
 
-			# Run the image processor and markdown exporter
-            subprocess.run(
-                ["python", "scripts/single_image_processor.py", relative_path]
-            )
-            subprocess.run(
-                [
-                    "python",
-                    "scripts/single_export_markdown.py",
-                    relative_path,
-                    export_directory,
-                ]
-            )
+                # Check if the file has been processed in the last second
+                if (
+                    relative_path in self.processed_files
+                    and time.time() - self.processed_files[relative_path] < 1
+                ):
+                    return
+
+                # Run the image processor and markdown exporter
+                subprocess.run(
+                    ["python", "scripts/single_image_processor.py", relative_path]
+                )
+                subprocess.run(
+                    [
+                        "python",
+                        "scripts/single_export_markdown.py",
+                        relative_path,
+                        export_directory,
+                    ]
+                )
+
+                # Update the processed_files dictionary
+                self.processed_files[relative_path] = time.time()
+        except FileNotFoundError:
+            pass
 
 
 if __name__ == "__main__":
