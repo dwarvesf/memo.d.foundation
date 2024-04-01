@@ -27,7 +27,7 @@ watch-run:
 	@killall -15 fswatch 2>/dev/null | true
 	@python scripts/batch_image_processor.py vault
 	@python scripts/batch_export_markdown.py vault content
-	@fswatch -0 vault | xargs -0 -I "{}" sh -c 'echo "{}" | awk -v pwd="$$PWD/" "{sub(pwd, \"\"); print}" | xargs -I "{}" python scripts/single_export_markdown.py "{}" content' &
+	@fswatch -0 vault | xargs -0 -I "{}" sh -c 'echo "{}" | awk -v pwd="$$PWD/" "{sub(pwd, \"\"); print}" | xargs -I "{}" sh -c 'python scripts/single_image_processor.py "{}"; python scripts/single_export_markdown.py "{}" content' &
 	@hugo -DEF --logLevel error server --poll 250ms
 	@trap 'killall -15 $$' SIGINT
 
