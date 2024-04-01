@@ -5,6 +5,7 @@ import sys
 import concurrent.futures
 from PIL import Image
 from moviepy.editor import VideoFileClip
+import requests
 
 obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
 
@@ -30,17 +31,44 @@ def process_markdown_file(file_path):
 
         source_note = sources[0] if len(sources) > 0 else match.group(1)
         source_name = sources[1] if len(sources) > 1 else ""
-        
+
         # Get the trailing image name from source_image_path
         image_name = os.path.basename(urllib.parse.urlparse(source_image_path).path)
 
-        # Search for the image recursively
-        for root, _, files in os.walk(root_dir):
-            if image_name in files:
-                image_path = os.path.join(root, image_name)
-                break  # Stop if we find the image
-        else:  # If the image is not found
-            return match.group(0)  # Return the original link
+        # Check if the source_image_path is a URL
+        parsed_url = urllib.parse.urlparse(source_image_path)
+        if parsed_url.scheme in ["http", "https"]:
+            # Download the image and save it to the assets directory
+            try:
+                response = requests.get(source_image_path)
+            except requests.exceptions.RequestException as e:
+                return match.group(0)
+
+            # Check if the image is downloaded successfully and is an image
+            if not response.ok or not response.headers.get(
+                "Content-Type", ""
+            ).startswith("image"):
+                return match.group(0)
+
+            # Get a unique image name from the parsed URL
+            print(f"Downloading image '{source_image_path}'...")
+            image_name = os.path.basename(parsed_url.path)
+            
+            # if the image_name does not have a file extension, add one based on the content-type
+            if not os.path.splitext(image_name)[1]:
+                image_name += "." + response.headers["Content-Type"].split("/")[1]
+
+            with open(os.path.join(assets_dir, image_name), "wb") as f:
+                f.write(response.content)
+            image_path = os.path.join(assets_dir, image_name)
+        else:
+            # Search for the image recursively
+            for root, _, files in os.walk(root_dir):
+                if image_name in files:
+                    image_path = os.path.join(root, image_name)
+                    break  # Stop if we find the image
+            else:  # If the image is not found
+                return match.group(0)  # Return the original link
 
         # Convert image_filename to lower kebab-case
         image_filename = os.path.basename(image_path)
@@ -59,25 +87,27 @@ def process_markdown_file(file_path):
         new_image_path = os.path.join(assets_dir, new_filename)
 
         # If it's an image, compress and convert to .webp
-        if image_path.lower().endswith(('.png', '.jpg', '.jpeg')):
-            print(f"Compressing image '{image_path}'...")
+        if image_path.lower().endswith((".png", ".jpg", ".jpeg")):
             img = Image.open(image_path)
 
             # remove image_path old extension and add .webp
-            new_image_path = os.path.splitext(new_image_path)[0] + '.webp'
-            img.save(new_image_path, 'WEBP', quality=75)
+            new_image_path = os.path.splitext(new_image_path)[0] + ".webp"
+            print(f"Compressing image '{new_image_path}'...")
+            img.save(new_image_path, "WEBP", quality=75)
         # If it's a video, compress it if it hasn't been compressed already
-        elif image_path.lower().endswith(('.mp4', '.avi', '.mov')):
-            if 'compressed' in image_path:
+        elif image_path.lower().endswith((".mp4", ".avi", ".mov")):
+            if "compressed" in image_path:
                 print(f"Video '{image_path}' has already been compressed.")
                 return f"![{source_name}](assets/{new_filename})"
             else:
-                print(f"Compressing video '{image_path}'...")
                 clip = VideoFileClip(image_path)
-                
+
                 # remove image_path old extension and add _compressed.mp4
-                new_image_path = os.path.splitext(new_image_path)[0] + '_compressed.mp4'
-                clip.write_videofile(new_image_path, codec='libx264', bitrate='700k', logger=None)
+                new_image_path = os.path.splitext(new_image_path)[0] + "_compressed.mp4"
+                print(f"Compressing video '{new_image_path}'...")
+                clip.write_videofile(
+                    new_image_path, codec="libx264", bitrate="700k", logger=None
+                )
 
         # Check if the image is not in the assets folder
         if image_path != new_image_path:
@@ -90,11 +120,11 @@ def process_markdown_file(file_path):
         obsidian_image_link_regex_compiled, lambda x: replace_image_link(x), content
     )
 
-    with open(file_path, "w", encoding="utf-8") as file:
+    with open(file_path, "w") as file:
         file.write(content)
 
 
-def process_markdown_folder_parallel(folder_path, max_workers=4):
+def process_markdown_folder_parallel(folder_path, max_workers=os.cpu_count()):
     """Processes all markdown files within a folder in parallel.
 
     Args:
