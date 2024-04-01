@@ -16,14 +16,11 @@ jobs:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
 
-      - name: Cache devbox
-        uses: actions/cache@v4
-        with:
-          path: ./.devbox
-          key: ${{ runner.os }}-devbox-${{ hashFiles('./.devbox/**') }}
-
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.8.0
+        with:
+          enable-cache: true
+          devbox-version: 0.10.1
 
       - name: Run Build
         run: devbox run build
