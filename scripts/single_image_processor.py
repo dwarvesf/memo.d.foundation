@@ -2,6 +2,7 @@ import os
 import re
 import urllib.parse
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 from moviepy.editor import VideoFileClip
 import requests
@@ -39,7 +40,9 @@ def process_markdown_file(file_path):
         if parsed_url.scheme in ["http", "https"]:
             # Download the image and save it to the assets directory
             try:
-                response = requests.get(source_image_path)
+                with ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
+                    future = executor.submit(requests.get, source_image_path)
+                    response = future.result()
             except requests.exceptions.RequestException as e:
                 return match.group(0)
 
