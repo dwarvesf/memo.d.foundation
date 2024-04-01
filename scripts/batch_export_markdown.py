@@ -93,6 +93,7 @@ def process_markdown_file(file_path, export_path):
 
     # Update Obsidian links to markdown
     content = re.sub(obsidian_link_regex_compiled, lambda x: replace_link(x), content)
+    content = content.encode("utf-8").decode("utf-8")
 
     return content, linked_files
 
@@ -148,6 +149,18 @@ def get_files(folder_path):
 
 async def process_markdown_file_async(file_path, export_path):
     """Processes a Markdown file asynchronously, moving local images to an 'assets' folder."""
+    
+    # Get the export file path
+    export_file_path = file_path.replace(file_path.split("/")[0], export_path)
+    export_file_path = export_file_path.replace(
+        os.path.basename(export_file_path), slugify(os.path.basename(export_file_path))
+    )
+    os.makedirs(os.path.dirname(export_file_path), exist_ok=True)
+
+    # Check if the export file already exists and return early
+    if os.path.exists(export_file_path):
+        return
+
     async with aiofiles.open(file_path, "r") as file:
         content = await file.read()
 
@@ -172,15 +185,9 @@ async def process_markdown_file_async(file_path, export_path):
             shutil.copy2(linked_file_path, export_linked_file_path)
 
     # Async file write
-    export_file_path = file_path.replace(file_path.split("/")[0], export_path)
-    export_file_path = export_file_path.replace(
-        os.path.basename(export_file_path), slugify(os.path.basename(export_file_path))
-    )
-    os.makedirs(os.path.dirname(export_file_path), exist_ok=True)
-    async with aiofiles.open(export_file_path, "w") as file:
+    async with aiofiles.open(export_file_path, "w", encoding="utf-8") as file:
         await file.write(content)
-
-    print(f"Exported '{file_path}' to '{export_file_path}'")
+        print(f"Exported '{file_path}' to '{export_file_path}'")
 
 
 def copy_directory(src, dst, ignore_pattern):
@@ -206,8 +213,6 @@ async def worker(semaphore, file_path, export_path):
 
 async def process_markdown_folder_async(folder_path, export_path):
     """Processes all markdown files within a folder asynchronously."""
-    if os.path.exists(export_path):
-        shutil.rmtree(export_path)
 
     # copy all files from the folder_path to the export_path except the .md files
     copy_directory(folder_path, export_path, "*.md")
@@ -219,8 +224,8 @@ async def process_markdown_folder_async(folder_path, export_path):
         if file_path.endswith(".md")
     ]
 
-    # Create a Semaphore to limit concurrent tasks
-    semaphore = asyncio.Semaphore(10)
+    # Create a Semaphore to limit concurrent tasks and match the number of CPU cores
+    semaphore = asyncio.Semaphore(os.cpu_count())
 
     tasks = [
         worker(semaphore, file_path, export_path)
@@ -236,6 +241,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 2:
         markdown_file_path = sys.argv[1]
         export_path = sys.argv[2]
+        print(
+            f"Exporting Markdown files from '{markdown_file_path}' to '{export_path}'"
+        )
         asyncio.run(process_markdown_folder_async(markdown_file_path, export_path))
     else:
         print(

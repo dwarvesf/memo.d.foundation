@@ -23,6 +23,7 @@
     ],
     "scripts": {
       "build":        "make build",
+      "clear-build":  "make clear-build",
       "watch-run":    "make watch-run",
       "build-target": "make build-target",
       "run-target":   "make run-target",

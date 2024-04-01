@@ -68,7 +68,7 @@ def process_markdown_file(file_path):
         obsidian_image_link_regex_compiled, lambda x: replace_image_link(x), content
     )
 
-    with open(file_path, "w") as file:
+    with open(file_path, "w", encoding="utf-8") as file:
         file.write(content)
 
 
@@ -107,6 +107,7 @@ def process_markdown_folder_parallel(folder_path, max_workers=4):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         folder_path = sys.argv[1]
+        print(f"Processing images in folder: {folder_path}")
         process_markdown_folder_parallel(folder_path)
     else:
         print(

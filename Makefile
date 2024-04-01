@@ -13,13 +13,18 @@ build:
 	@python scripts/batch_export_markdown.py vault content
 	@hugo -DEF --minify
 
+clear-build:
+	@rm -rf public
+	@git checkout -- public
+	@rm -rf content
+
 run:
 	@python scripts/batch_image_processor.py vault
 	@python scripts/batch_export_markdown.py vault content
 	@hugo -DEF --logLevel error server --poll 250ms
-
+	
 watch-run:
-	@killall -15 fswatch | true
+	@killall -15 fswatch 2>/dev/null | true
 	@python scripts/batch_image_processor.py vault
 	@python scripts/batch_export_markdown.py vault content
 	@fswatch -0 vault | xargs -0 -I "{}" sh -c 'echo "{}" | awk -v pwd="$$PWD/" "{sub(pwd, \"\"); print}" | xargs -I "{}" python scripts/single_export_markdown.py "{}" content' &
