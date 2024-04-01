@@ -10,3 +10,4 @@ aiofiles
 pathspec
 pillow
 moviepy
+watchdog

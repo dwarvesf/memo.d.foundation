@@ -93,7 +93,6 @@ def process_markdown_file(file_path, export_path):
 
     # Update Obsidian links to markdown
     content = re.sub(obsidian_link_regex_compiled, lambda x: replace_link(x), content)
-    content = content.encode("utf-8").decode("utf-8")
 
     return content, linked_files
 
@@ -185,7 +184,7 @@ async def process_markdown_file_async(file_path, export_path):
             shutil.copy2(linked_file_path, export_linked_file_path)
 
     # Async file write
-    async with aiofiles.open(export_file_path, "w", encoding="utf-8") as file:
+    async with aiofiles.open(export_file_path, "w") as file:
         await file.write(content)
         print(f"Exported '{file_path}' to '{export_file_path}'")
 
