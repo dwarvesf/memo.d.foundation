@@ -3,6 +3,7 @@ repos:
   hooks:
   - id: submodule-branch-check
     name: Check Submodule Branches
-    entry: ./pre-commit.sh
+    entry: make fetch
     language: system  
+    pass_filenames: false
     verbose: true

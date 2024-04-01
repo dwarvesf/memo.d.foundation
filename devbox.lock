@@ -113,70 +113,6 @@
         }
       }
     },
-    "expect@5.45.4": {
-      "last_modified": "2024-03-22T11:26:23Z",
-      "resolved": "github:NixOS/nixpkgs/a3ed7406349a9335cb4c2a71369b697cecd9d351#expect",
-      "source": "devbox-search",
-      "version": "5.45.4",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/kfyqn8hi99z91wbhhgsjas4726gnvn0y-expect-5.45.4",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/nhr7nll5kfj9zh57wcf1iica4bnx78p0-expect-5.45.4-dev"
-            }
-          ],
-          "store_path": "/nix/store/kfyqn8hi99z91wbhhgsjas4726gnvn0y-expect-5.45.4"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/ag2g50dl1i5bfk897l00d1nwszb9k3gz-expect-5.45.4",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/j27higlizdp1v8vh0wqj4yai2214gqgq-expect-5.45.4-dev"
-            }
-          ],
-          "store_path": "/nix/store/ag2g50dl1i5bfk897l00d1nwszb9k3gz-expect-5.45.4"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/p075zfcyc1a0pf4zfskvvbjwxdr5x4hc-expect-5.45.4",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/ha0ka1yfyyf58acaa97lsni6ylzlkf2n-expect-5.45.4-dev"
-            }
-          ],
-          "store_path": "/nix/store/p075zfcyc1a0pf4zfskvvbjwxdr5x4hc-expect-5.45.4"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/fj20kzinsc5kajan2ixbgcv0bfgiqq7r-expect-5.45.4",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/qfjng0sda5ily840viwwd8a0w57xzsq0-expect-5.45.4-dev"
-            }
-          ],
-          "store_path": "/nix/store/fj20kzinsc5kajan2ixbgcv0bfgiqq7r-expect-5.45.4"
-        }
-      }
-    },
     "fswatch@1.17.1": {
       "last_modified": "2024-03-22T11:26:23Z",
       "resolved": "github:NixOS/nixpkgs/a3ed7406349a9335cb4c2a71369b697cecd9d351#fswatch",
@@ -222,54 +158,6 @@
             }
           ],
           "store_path": "/nix/store/fwr23dnpan05xz5iyi3q95gg6icshnxq-fswatch-1.17.1"
-        }
-      }
-    },
-    "git-credential-manager@2.4.1": {
-      "last_modified": "2024-03-23T13:32:18Z",
-      "resolved": "github:NixOS/nixpkgs/20bc93ca7b2158ebc99b8cef987a2173a81cde35#git-credential-manager",
-      "source": "devbox-search",
-      "version": "2.4.1",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/hdavbg3nql8av5wqklxfg6h8d9hlp5mh-git-credential-manager-2.4.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/hdavbg3nql8av5wqklxfg6h8d9hlp5mh-git-credential-manager-2.4.1"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/gg46z0p8mn9v0xvyvnvh33aylz9393qs-git-credential-manager-2.4.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/gg46z0p8mn9v0xvyvnvh33aylz9393qs-git-credential-manager-2.4.1"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/513b3ql9s6r8xpgwi9cs8syd7gjq5wjj-git-credential-manager-2.4.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/513b3ql9s6r8xpgwi9cs8syd7gjq5wjj-git-credential-manager-2.4.1"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/bvc8zgln4mhqdnv0vh4ik3xx5lhhijc0-git-credential-manager-2.4.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/bvc8zgln4mhqdnv0vh4ik3xx5lhhijc0-git-credential-manager-2.4.1"
         }
       }
     },
