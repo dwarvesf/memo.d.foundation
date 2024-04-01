@@ -1,18 +1,18 @@
 {
   "packages": {
-    "go":       "1.21.3",
-    "hugo":     "0.124.0",
+    "go":   "1.21.3",
+    "hugo": "0.124.0",
     "obsidian": {
       "version":        "1.4.16",
       "allow_insecure": ["electron-25.9.0"]
     },
-    "fswatch":                "1.17.1",
-    "git":                    "2.42.0",
-    "python310Packages.pip":  "23.2.1",
-    "python":                 "3.10.13",
-    "awscli":                 "1.32.21",
-    "pre-commit":             "3.6.1",
-    "duckdb":                 "0.10.0",
+    "fswatch":               "1.17.1",
+    "git":                   "2.42.0",
+    "python310Packages.pip": "23.2.1",
+    "python":                "3.10.13",
+    "awscli":                "1.32.21",
+    "pre-commit":            "3.6.1",
+    "duckdb":                "0.10.1"
   },
   "shell": {
     "init_hook": [
