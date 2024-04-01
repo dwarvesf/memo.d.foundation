@@ -65,51 +65,83 @@
         }
       }
     },
-    "duckdb@0.10.0": {
-      "last_modified": "2024-03-08T13:51:52Z",
-      "resolved": "github:NixOS/nixpkgs/a343533bccc62400e8a9560423486a3b6c11a23b#duckdb",
+    "duckdb@0.10.1": {
+      "last_modified": "2024-03-29T03:06:03Z",
+      "resolved": "github:NixOS/nixpkgs/9b09bde6e3fc9493b6a8b2a5702ac87c66505c64#duckdb",
       "source": "devbox-search",
-      "version": "0.10.0",
+      "version": "0.10.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/cbcw87p8b47lrrad9qx3y21gwyx9jfl2-duckdb-0.10.0",
+              "path": "/nix/store/cwx2ph0p9xrqs9645c0df31lyh1kaqxr-duckdb-0.10.1",
               "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/7xb77c76npfir5qhwpaj2z23cj20dpi0-duckdb-0.10.1-dev"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/rijbr9xsi998cjggmifbqhb7xal6p1a9-duckdb-0.10.1-lib"
             }
           ],
-          "store_path": "/nix/store/cbcw87p8b47lrrad9qx3y21gwyx9jfl2-duckdb-0.10.0"
+          "store_path": "/nix/store/cwx2ph0p9xrqs9645c0df31lyh1kaqxr-duckdb-0.10.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/wsivlqcylgsff56204djg3yjzk647l7i-duckdb-0.10.0",
+              "path": "/nix/store/x83yvf4n8bcb30igxx303hhil05g46fd-duckdb-0.10.1",
               "default": true
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/cyadqjlm0lj0b0ngkdrf7a27qa04w4xv-duckdb-0.10.1-lib"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/ayvs65x2pkwlz4v00wbjvk6yshxfg1vl-duckdb-0.10.1-dev"
             }
           ],
-          "store_path": "/nix/store/wsivlqcylgsff56204djg3yjzk647l7i-duckdb-0.10.0"
+          "store_path": "/nix/store/x83yvf4n8bcb30igxx303hhil05g46fd-duckdb-0.10.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ywfzm68r9mwhq5yhzw7i528128wfwpiq-duckdb-0.10.0",
+              "path": "/nix/store/ngygqbhxy0xgdxnisakk399jynw34wff-duckdb-0.10.1",
               "default": true
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/9k6d5wjna51j1h6zfvlhlzmb1khbkf4p-duckdb-0.10.1-lib"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/49b9gbb9z6b5rhr5128n65k54wixsirl-duckdb-0.10.1-dev"
             }
           ],
-          "store_path": "/nix/store/ywfzm68r9mwhq5yhzw7i528128wfwpiq-duckdb-0.10.0"
+          "store_path": "/nix/store/ngygqbhxy0xgdxnisakk399jynw34wff-duckdb-0.10.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/08dp856ih15cjdfvk5mw9ynw3bdmnvmd-duckdb-0.10.0",
+              "path": "/nix/store/g97758w29bryq4327fcah1kbfrad81c5-duckdb-0.10.1",
               "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/0pqz70rv0gz1hrb0mn9par7dlxck1drw-duckdb-0.10.1-dev"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/wnm3n8rhgq48kjd07db29w8r71v8yhi2-duckdb-0.10.1-lib"
             }
           ],
-          "store_path": "/nix/store/08dp856ih15cjdfvk5mw9ynw3bdmnvmd-duckdb-0.10.0"
+          "store_path": "/nix/store/g97758w29bryq4327fcah1kbfrad81c5-duckdb-0.10.1"
         }
       }
     },
