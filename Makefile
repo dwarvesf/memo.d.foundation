@@ -4,10 +4,8 @@ setup:
 	@mkdir -p ./content
 
 fetch:
-	@git submodule update --init --recursive
-	@git submodule update --recursive --remote
+	@git submodule update --recursive --init --filter=blob:none
 	@git submodule foreach --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo main)'
-	@git pull --recurse-submodules
 
 build:
 	@rm -rf public
