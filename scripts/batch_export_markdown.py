@@ -65,7 +65,7 @@ def process_markdown_file(file_path, export_path):
             # get the path of the each file relative to the root directory, but don't include the root directory itself
             files = [os.path.relpath(os.path.join(root, f), root_dir) for f in files]
 
-            # for each file, check if the source note name is in the file
+            # for each file, check if the source note name string is in the file
             for file in files:
                 if source_note in file:
                     note_path = file
@@ -149,25 +149,7 @@ def get_files(folder_path):
 async def process_markdown_file_async(file_path, export_path):
     """Processes a Markdown file asynchronously, moving local images to an 'assets' folder."""
     
-    # Get the export file path
-    export_file_path = file_path.replace(file_path.split("/")[0], export_path)
-    export_file_path = export_file_path.replace(
-        os.path.basename(export_file_path), slugify(os.path.basename(export_file_path))
-    )
-    os.makedirs(os.path.dirname(export_file_path), exist_ok=True)
-
-    # Check if the export file already exists and return early
-    if os.path.exists(export_file_path):
-        return
-
-    async with aiofiles.open(file_path, "r") as file:
-        content = await file.read()
-
     content, linked_files = process_markdown_file(file_path, export_path)
-
-    # check if content is a string
-    if not isinstance(content, str):
-        return
 
     # move all linked files to the export path if they don't exist in the export path
     for linked_file in linked_files:
@@ -183,7 +165,16 @@ async def process_markdown_file_async(file_path, export_path):
             os.makedirs(os.path.dirname(export_linked_file_path), exist_ok=True)
             shutil.copy2(linked_file_path, export_linked_file_path)
 
+    # check if content is a string
+    if not isinstance(content, str):
+        return
+
     # Async file write
+    export_file_path = file_path.replace(file_path.split("/")[0], export_path)
+    export_file_path = export_file_path.replace(
+        os.path.basename(export_file_path), slugify(os.path.basename(export_file_path))
+    )
+    os.makedirs(os.path.dirname(export_file_path), exist_ok=True)
     async with aiofiles.open(export_file_path, "w") as file:
         await file.write(content)
         print(f"Exported '{file_path}' to '{export_file_path}'")
@@ -212,6 +203,10 @@ async def worker(semaphore, file_path, export_path):
 
 async def process_markdown_folder_async(folder_path, export_path):
     """Processes all markdown files within a folder asynchronously."""
+
+    # Check if the export file already exists and return early
+    if os.path.exists(export_path):
+        return
 
     # copy all files from the folder_path to the export_path except the .md files
     copy_directory(folder_path, export_path, "*.md")

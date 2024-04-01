@@ -104,6 +104,23 @@ def process_markdown_file(file_path, export_path):
             os.makedirs(os.path.dirname(export_linked_file_path), exist_ok=True)
             shutil.copy2(linked_file_path, export_linked_file_path)
 
+    # copy all relative assets to the export path
+    assets_dir = os.path.join(file_dir, "assets")
+    export_assets_dir = os.path.join(export_path, "assets")
+    if os.path.exists(assets_dir):
+        os.makedirs(export_assets_dir, exist_ok=True)
+        for root, _, files in os.walk(assets_dir):
+            for file in files:
+                asset_path = os.path.join(root, file)
+                export_asset_path = asset_path.replace(
+                    file_path.split("/")[0], export_path
+                )
+                export_asset_path = export_asset_path.replace(
+                    os.path.basename(export_asset_path),
+                    slugify(os.path.basename(export_asset_path)),
+                )
+                shutil.copy2(asset_path, export_asset_path)
+
     # create a new file matching the directory structure of the file_path to the export_path using the new content
     export_file_path = file_path.replace(file_path.split("/")[0], export_path)
     export_file_path = export_file_path.replace(
@@ -112,7 +129,7 @@ def process_markdown_file(file_path, export_path):
     os.makedirs(os.path.dirname(export_file_path), exist_ok=True)
     with open(export_file_path, "w") as file:
         file.write(content)
-    print(f"Exported '{file_path}' to '{export_file_path}'")
+        print(f"Exported '{file_path}' to '{export_file_path}'")
 
 
 # Get the Markdown file path from the user (assuming it's the first argument)
