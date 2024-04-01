@@ -2,6 +2,8 @@ import os
 import re
 import urllib.parse
 import sys
+from PIL import Image
+from moviepy.editor import VideoFileClip
 
 obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
 
@@ -54,10 +56,30 @@ def process_markdown_file(file_path):
 
         new_image_path = os.path.join(assets_dir, new_filename)
 
+        # If it's an image, compress and convert to .webp
+        if image_path.lower().endswith(('.png', '.jpg', '.jpeg')):
+            print(f"Compressing image '{image_path}'...")
+            img = Image.open(image_path)
+
+            # remove image_path old extension and add .webp
+            new_image_path = os.path.splitext(new_image_path)[0] + '.webp'
+            img.save(new_image_path, 'WEBP', quality=75)
+        # If it's a video, compress it if it hasn't been compressed already
+        elif image_path.lower().endswith(('.mp4', '.avi', '.mov')):
+            if 'compressed' in image_path:
+                print(f"Video '{image_path}' has already been compressed.")
+                return f"![{source_name}](assets/{new_filename})"
+            else:
+                print(f"Compressing video '{image_path}'...")
+                clip = VideoFileClip(image_path)
+                
+                # remove image_path old extension and add _compressed.mp4
+                new_image_path = os.path.splitext(new_image_path)[0] + '_compressed.mp4'
+                clip.write_videofile(new_image_path, codec='libx264', bitrate='700k', logger=None)
+
         # Check if the image is not in the assets folder
         if image_path != new_image_path:
             os.rename(image_path, new_image_path)
-            print(f"Moved '{image_path}' to '{new_image_path}'")
 
         return f"![{source_name}](assets/{new_filename})"
 

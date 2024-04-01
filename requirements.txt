@@ -8,3 +8,5 @@ sqlparse
 asyncio
 aiofiles
 pathspec
+pillow
+moviepy
