@@ -7,30 +7,40 @@ from watchdog.events import FileSystemEventHandler
 import threading
 
 
-def debounce(wait):
-    """ Decorator that will postpone a functions
-        execution until after wait seconds
-        have elapsed since the last time it was invoked. """
-    def decorator(fn):
-        def debounced(*args, **kwargs):
-            def call_it():
-                fn(*args, **kwargs)
-            try:
-                debounced.t.cancel()
-            except AttributeError:
-                pass
-            debounced.t = threading.Timer(wait, call_it)
-            debounced.t.start()
-        return debounced
-    return decorator
-
 class FileChangeHandler(FileSystemEventHandler):
     def __init__(self):
         super().__init__()
         self.last_modified_time = {}
         self.processed_files = {}
+        self.locks = {}
+        self.release_events = {}
 
-    @debounce(1)
+        
+    def synchronized(fn):
+        def wrapper(self, event):
+            file_path = event.src_path
+            if file_path not in self.locks:
+                self.locks[file_path] = threading.Lock()
+                self.release_events[file_path] = threading.Event()
+                fn(self, event)
+
+            lock = self.locks[file_path]
+            release_event = self.release_events[file_path]
+            
+            def release_and_clear():
+                if lock.locked():
+                    release_event.clear()
+                    lock.release()
+
+            with lock:
+                if not release_event.is_set():
+                    release_event.set()
+                    threading.Timer(5, release_and_clear).start()
+                return
+
+        return wrapper
+
+    @synchronized
     def on_modified(self, event):
         if event.is_directory:
             return
@@ -71,6 +81,7 @@ class FileChangeHandler(FileSystemEventHandler):
 
                 # Update the processed_files dictionary
                 self.processed_files[relative_path] = time.time()
+
         except FileNotFoundError:
             pass
 
