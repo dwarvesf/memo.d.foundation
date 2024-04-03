@@ -15,7 +15,6 @@ class FileChangeHandler(FileSystemEventHandler):
         self.locks = {}
         self.release_events = {}
 
-        
     def synchronized(fn):
         def wrapper(self, event):
             file_path = event.src_path
@@ -26,7 +25,7 @@ class FileChangeHandler(FileSystemEventHandler):
 
             lock = self.locks[file_path]
             release_event = self.release_events[file_path]
-            
+
             def release_and_clear():
                 if lock.locked():
                     release_event.clear()
@@ -44,11 +43,13 @@ class FileChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
         if event.is_directory:
             return
-        
+
         try:
             # Get the file path and relative path
             file_path = event.src_path
-            relative_path = os.path.join(directory, os.path.relpath(file_path, directory))
+            relative_path = os.path.join(
+                directory, os.path.relpath(file_path, directory)
+            )
 
             # Get the current modified time of the file
             current_modified_time = os.path.getmtime(file_path)
