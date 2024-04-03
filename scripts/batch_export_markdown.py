@@ -4,10 +4,10 @@ import urllib.parse
 import sys
 import shutil
 import fnmatch
-import pathspec
 import asyncio
 import aiofiles
 import frontmatter
+import gitignore_parser
 
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
@@ -101,48 +101,32 @@ def read_ignore_patterns(root):
     """Read ignore patterns from .export-ignore file in the given directory, returns a pathspec object."""
     ignore_file_path = os.path.join(root, ".export-ignore")
     if os.path.exists(ignore_file_path):
-        with open(ignore_file_path, "r") as file:
-            spec = pathspec.PathSpec.from_lines("gitwildmatch", file)
+        spec = gitignore_parser.parse_gitignore(ignore_file_path)
         return spec
     return None
 
 
-def is_ignored(filepath, ignore_spec, folder_path):
-    """Check if the given path matches any of the ignore patterns using pathspec.
-
-    Args:
-        filepath (str): Absolute path of the file or directory to check.
-        ignore_spec (pathspec.PathSpec): The compiled pathspec object.
-        folder_path (str): The root directory to make paths relative.
-
-    Returns:
-        bool: True if the file or directory should be ignored, False otherwise.
-    """
+def is_ignored(filepath, ignore_spec):
+    """Check if the given path matches any of the ignore patterns using gitignore_parser."""
     if ignore_spec is None:
         return False
+        
+    # get the absolute path
+    absolute_filepath = os.path.abspath(filepath)
 
-    # Make the path relative to the folder_path to correctly match .export-ignore rules
-    if filepath.startswith(folder_path):
-        rel_path = os.path.relpath(filepath, folder_path)
-    else:
-        rel_path = filepath
-
-    # Match against pathspec
-    return ignore_spec.match_file(rel_path)
+    # Match against ignore_spec
+    return ignore_spec(absolute_filepath)
 
 
 def get_files(folder_path):
     """Yield all files in folder_path that are not ignored by a .export-ignore file."""
     ignore_spec = read_ignore_patterns(folder_path)
     for root, dirs, files in os.walk(folder_path, topdown=True):
-        dirs[:] = [
-            d
-            for d in dirs
-            if not is_ignored(os.path.join(root, d), ignore_spec, folder_path)
-        ]
+        # Removing ignored directories in place
+        dirs[:] = [d for d in dirs if not is_ignored(os.path.join(root, d), ignore_spec)]
         for file in files:
             file_path = os.path.join(root, file)
-            if not is_ignored(file_path, ignore_spec, folder_path):
+            if not is_ignored(file_path, ignore_spec):
                 yield file_path
 
 
