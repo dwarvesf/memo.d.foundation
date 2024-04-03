@@ -145,51 +145,151 @@
         }
       }
     },
-    "fswatch@1.17.1": {
-      "last_modified": "2024-03-22T11:26:23Z",
-      "resolved": "github:NixOS/nixpkgs/a3ed7406349a9335cb4c2a71369b697cecd9d351#fswatch",
+    "ffmpeg@6.1.1": {
+      "last_modified": "2024-03-29T03:06:03Z",
+      "resolved": "github:NixOS/nixpkgs/9b09bde6e3fc9493b6a8b2a5702ac87c66505c64#ffmpeg",
       "source": "devbox-search",
-      "version": "1.17.1",
+      "version": "6.1.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
-              "name": "out",
-              "path": "/nix/store/27w25x08nmz0wca00d721kk17dfyvpnb-fswatch-1.17.1",
+              "name": "bin",
+              "path": "/nix/store/qfngijfaa9hrsp84jbclxczbpqwwwrfz-ffmpeg-6.1.1-bin",
               "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/b8iz31nw072baskchqblg5vx2lxnj8ss-ffmpeg-6.1.1-man",
+              "default": true
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/is3vzpa5m7pbzafl7gbr1ckhxwjm5c5f-ffmpeg-6.1.1"
+            },
+            {
+              "name": "data",
+              "path": "/nix/store/s8z89sf32xw52d2w2zpgzfygk08bcxlm-ffmpeg-6.1.1-data"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/qqgxzkp3x632a5znnmwdy8wnm77ma6rd-ffmpeg-6.1.1-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/9a4p5nlqswkmq0d08m6slav5l54848mz-ffmpeg-6.1.1-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/zkdmnrvy15ifdsil0fa6wziy5nv5jqz1-ffmpeg-6.1.1-lib"
             }
           ],
-          "store_path": "/nix/store/27w25x08nmz0wca00d721kk17dfyvpnb-fswatch-1.17.1"
+          "store_path": "/nix/store/qfngijfaa9hrsp84jbclxczbpqwwwrfz-ffmpeg-6.1.1-bin"
         },
         "aarch64-linux": {
           "outputs": [
             {
-              "name": "out",
-              "path": "/nix/store/5wpy1gga0bj454srljwmjcwx70055xj6-fswatch-1.17.1",
+              "name": "bin",
+              "path": "/nix/store/qhmnckwrx8nqpyi12y1zsn19a0xzk43r-ffmpeg-6.1.1-bin",
               "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/h3503k9n3h945by9c717kjlf7q0vqsvy-ffmpeg-6.1.1-man",
+              "default": true
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/85ic17zaqi9fdss4kz7j2qj1w0886zd5-ffmpeg-6.1.1"
+            },
+            {
+              "name": "data",
+              "path": "/nix/store/mnr5k422saw4sa5jsdi2106i1xszdi6i-ffmpeg-6.1.1-data"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/j4bpw3h1mnxwl7sr3ci61g47zncm7nlj-ffmpeg-6.1.1-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/947k3qnw8k1fckvxk4nzcsb91p4bdzbv-ffmpeg-6.1.1-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/j3dycimqbcdz1rpkcbqdchh051f3gw1c-ffmpeg-6.1.1-lib"
             }
           ],
-          "store_path": "/nix/store/5wpy1gga0bj454srljwmjcwx70055xj6-fswatch-1.17.1"
+          "store_path": "/nix/store/qhmnckwrx8nqpyi12y1zsn19a0xzk43r-ffmpeg-6.1.1-bin"
         },
         "x86_64-darwin": {
           "outputs": [
             {
-              "name": "out",
-              "path": "/nix/store/2xkw38jbja0cn6m7691wb14z5j3gv7pf-fswatch-1.17.1",
+              "name": "bin",
+              "path": "/nix/store/sx062326y2yn9hsfmdf9qzad80wvisz8-ffmpeg-6.1.1-bin",
               "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/6cjv52binhcj7p1z7s31v56qswby5r5i-ffmpeg-6.1.1-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/ihfpbp4ddggz39g2x1g1qj877fdbyih2-ffmpeg-6.1.1-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/qqfgdddqahvypwf5daz76ca284lmqdcz-ffmpeg-6.1.1-lib"
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/iw7dy1z862f040rlgjgj6ssk03zl8wbr-ffmpeg-6.1.1"
+            },
+            {
+              "name": "data",
+              "path": "/nix/store/c1b65ylpdpckfc040ldldd7ldikq445c-ffmpeg-6.1.1-data"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/lnp61j6f6w8ssw4k7jn2jsc1askqngix-ffmpeg-6.1.1-dev"
             }
           ],
-          "store_path": "/nix/store/2xkw38jbja0cn6m7691wb14z5j3gv7pf-fswatch-1.17.1"
+          "store_path": "/nix/store/sx062326y2yn9hsfmdf9qzad80wvisz8-ffmpeg-6.1.1-bin"
         },
         "x86_64-linux": {
           "outputs": [
             {
-              "name": "out",
-              "path": "/nix/store/fwr23dnpan05xz5iyi3q95gg6icshnxq-fswatch-1.17.1",
+              "name": "bin",
+              "path": "/nix/store/bx8hrilibaczjdmci6k35fkbvjl7bjzn-ffmpeg-6.1.1-bin",
               "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/44jw6z9hvx94gg4mic5xz9mn9xi8fxcn-ffmpeg-6.1.1-man",
+              "default": true
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/5a517lngmfpxdkcl7xxhqis0apbqiivv-ffmpeg-6.1.1"
+            },
+            {
+              "name": "data",
+              "path": "/nix/store/4ksjkm8j2gjb7mczxsj4jfx8b08f274k-ffmpeg-6.1.1-data"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/m6rgn86v2xkirkid13wmk5x9dzxpfbp8-ffmpeg-6.1.1-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/mnvw5zj8gmf0n9gjdjvasarx5h3ncs56-ffmpeg-6.1.1-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/acbnmbypm3chs3ich1x99if4z0wnvr23-ffmpeg-6.1.1-lib"
             }
           ],
-          "store_path": "/nix/store/fwr23dnpan05xz5iyi3q95gg6icshnxq-fswatch-1.17.1"
+          "store_path": "/nix/store/bx8hrilibaczjdmci6k35fkbvjl7bjzn-ffmpeg-6.1.1-bin"
         }
       }
     },

@@ -11,7 +11,8 @@
     "python":                "3.10.13",
     "awscli":                "1.32.21",
     "pre-commit":            "3.6.1",
-    "duckdb":                "0.10.1"
+    "duckdb":                "0.10.1",
+    "ffmpeg":                "6.1.1"
   },
   "shell": {
     "init_hook": [
