@@ -682,3 +682,31 @@ p:has(img) {
   flex-direction: column;
   align-items: center;
 }
+
+pre[class*="language-"] {
+  position: relative;
+
+  .copy-btn {
+    all: initial;
+    opacity: 0;
+    padding: 5px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.065);
+    }
+  }
+
+  &:hover > .copy-btn {
+    opacity: 100;
+  }
+}

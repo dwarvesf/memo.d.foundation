@@ -8,59 +8,15 @@
       "version": "1.32.21",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/yvancx7d1ncrrzsgm092cjjbl4w5bkdj-awscli-1.32.21",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/5kfmygn55fw197f0jh9sm12i36fmkisg-awscli-1.32.21-dist"
-            }
-          ],
           "store_path": "/nix/store/yvancx7d1ncrrzsgm092cjjbl4w5bkdj-awscli-1.32.21"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/462cnvzkdpsj3lgpjkc49mi8g4zpm96g-awscli-1.32.21",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/rym8w5q5cci1sm4jjckq259jyibkr14b-awscli-1.32.21-dist"
-            }
-          ],
           "store_path": "/nix/store/462cnvzkdpsj3lgpjkc49mi8g4zpm96g-awscli-1.32.21"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/sf6khfnvkccfrb3v29naddjnhigmfpkp-awscli-1.32.21",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/9r5672xywlr9ka7akjwk1a7prk05jglm-awscli-1.32.21-dist"
-            }
-          ],
           "store_path": "/nix/store/sf6khfnvkccfrb3v29naddjnhigmfpkp-awscli-1.32.21"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/l7bmlv4q1knl8svn5bicwyvjh2q1nysr-awscli-1.32.21",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/c78ncf1vmzs4vkg07cn7vap9s8adv7sf-awscli-1.32.21-dist"
-            }
-          ],
           "store_path": "/nix/store/l7bmlv4q1knl8svn5bicwyvjh2q1nysr-awscli-1.32.21"
         }
       }
@@ -72,75 +28,15 @@
       "version": "0.10.1",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/cwx2ph0p9xrqs9645c0df31lyh1kaqxr-duckdb-0.10.1",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/7xb77c76npfir5qhwpaj2z23cj20dpi0-duckdb-0.10.1-dev"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/rijbr9xsi998cjggmifbqhb7xal6p1a9-duckdb-0.10.1-lib"
-            }
-          ],
           "store_path": "/nix/store/cwx2ph0p9xrqs9645c0df31lyh1kaqxr-duckdb-0.10.1"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/x83yvf4n8bcb30igxx303hhil05g46fd-duckdb-0.10.1",
-              "default": true
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/cyadqjlm0lj0b0ngkdrf7a27qa04w4xv-duckdb-0.10.1-lib"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/ayvs65x2pkwlz4v00wbjvk6yshxfg1vl-duckdb-0.10.1-dev"
-            }
-          ],
           "store_path": "/nix/store/x83yvf4n8bcb30igxx303hhil05g46fd-duckdb-0.10.1"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/ngygqbhxy0xgdxnisakk399jynw34wff-duckdb-0.10.1",
-              "default": true
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/9k6d5wjna51j1h6zfvlhlzmb1khbkf4p-duckdb-0.10.1-lib"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/49b9gbb9z6b5rhr5128n65k54wixsirl-duckdb-0.10.1-dev"
-            }
-          ],
           "store_path": "/nix/store/ngygqbhxy0xgdxnisakk399jynw34wff-duckdb-0.10.1"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/g97758w29bryq4327fcah1kbfrad81c5-duckdb-0.10.1",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/0pqz70rv0gz1hrb0mn9par7dlxck1drw-duckdb-0.10.1-dev"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/wnm3n8rhgq48kjd07db29w8r71v8yhi2-duckdb-0.10.1-lib"
-            }
-          ],
           "store_path": "/nix/store/g97758w29bryq4327fcah1kbfrad81c5-duckdb-0.10.1"
         }
       }
@@ -152,143 +48,15 @@
       "version": "6.1.1",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "bin",
-              "path": "/nix/store/qfngijfaa9hrsp84jbclxczbpqwwwrfz-ffmpeg-6.1.1-bin",
-              "default": true
-            },
-            {
-              "name": "man",
-              "path": "/nix/store/b8iz31nw072baskchqblg5vx2lxnj8ss-ffmpeg-6.1.1-man",
-              "default": true
-            },
-            {
-              "name": "out",
-              "path": "/nix/store/is3vzpa5m7pbzafl7gbr1ckhxwjm5c5f-ffmpeg-6.1.1"
-            },
-            {
-              "name": "data",
-              "path": "/nix/store/s8z89sf32xw52d2w2zpgzfygk08bcxlm-ffmpeg-6.1.1-data"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/qqgxzkp3x632a5znnmwdy8wnm77ma6rd-ffmpeg-6.1.1-dev"
-            },
-            {
-              "name": "doc",
-              "path": "/nix/store/9a4p5nlqswkmq0d08m6slav5l54848mz-ffmpeg-6.1.1-doc"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/zkdmnrvy15ifdsil0fa6wziy5nv5jqz1-ffmpeg-6.1.1-lib"
-            }
-          ],
           "store_path": "/nix/store/qfngijfaa9hrsp84jbclxczbpqwwwrfz-ffmpeg-6.1.1-bin"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "bin",
-              "path": "/nix/store/qhmnckwrx8nqpyi12y1zsn19a0xzk43r-ffmpeg-6.1.1-bin",
-              "default": true
-            },
-            {
-              "name": "man",
-              "path": "/nix/store/h3503k9n3h945by9c717kjlf7q0vqsvy-ffmpeg-6.1.1-man",
-              "default": true
-            },
-            {
-              "name": "out",
-              "path": "/nix/store/85ic17zaqi9fdss4kz7j2qj1w0886zd5-ffmpeg-6.1.1"
-            },
-            {
-              "name": "data",
-              "path": "/nix/store/mnr5k422saw4sa5jsdi2106i1xszdi6i-ffmpeg-6.1.1-data"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/j4bpw3h1mnxwl7sr3ci61g47zncm7nlj-ffmpeg-6.1.1-dev"
-            },
-            {
-              "name": "doc",
-              "path": "/nix/store/947k3qnw8k1fckvxk4nzcsb91p4bdzbv-ffmpeg-6.1.1-doc"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/j3dycimqbcdz1rpkcbqdchh051f3gw1c-ffmpeg-6.1.1-lib"
-            }
-          ],
           "store_path": "/nix/store/qhmnckwrx8nqpyi12y1zsn19a0xzk43r-ffmpeg-6.1.1-bin"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "bin",
-              "path": "/nix/store/sx062326y2yn9hsfmdf9qzad80wvisz8-ffmpeg-6.1.1-bin",
-              "default": true
-            },
-            {
-              "name": "man",
-              "path": "/nix/store/6cjv52binhcj7p1z7s31v56qswby5r5i-ffmpeg-6.1.1-man",
-              "default": true
-            },
-            {
-              "name": "doc",
-              "path": "/nix/store/ihfpbp4ddggz39g2x1g1qj877fdbyih2-ffmpeg-6.1.1-doc"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/qqfgdddqahvypwf5daz76ca284lmqdcz-ffmpeg-6.1.1-lib"
-            },
-            {
-              "name": "out",
-              "path": "/nix/store/iw7dy1z862f040rlgjgj6ssk03zl8wbr-ffmpeg-6.1.1"
-            },
-            {
-              "name": "data",
-              "path": "/nix/store/c1b65ylpdpckfc040ldldd7ldikq445c-ffmpeg-6.1.1-data"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/lnp61j6f6w8ssw4k7jn2jsc1askqngix-ffmpeg-6.1.1-dev"
-            }
-          ],
           "store_path": "/nix/store/sx062326y2yn9hsfmdf9qzad80wvisz8-ffmpeg-6.1.1-bin"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "bin",
-              "path": "/nix/store/bx8hrilibaczjdmci6k35fkbvjl7bjzn-ffmpeg-6.1.1-bin",
-              "default": true
-            },
-            {
-              "name": "man",
-              "path": "/nix/store/44jw6z9hvx94gg4mic5xz9mn9xi8fxcn-ffmpeg-6.1.1-man",
-              "default": true
-            },
-            {
-              "name": "out",
-              "path": "/nix/store/5a517lngmfpxdkcl7xxhqis0apbqiivv-ffmpeg-6.1.1"
-            },
-            {
-              "name": "data",
-              "path": "/nix/store/4ksjkm8j2gjb7mczxsj4jfx8b08f274k-ffmpeg-6.1.1-data"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/m6rgn86v2xkirkid13wmk5x9dzxpfbp8-ffmpeg-6.1.1-dev"
-            },
-            {
-              "name": "doc",
-              "path": "/nix/store/mnvw5zj8gmf0n9gjdjvasarx5h3ncs56-ffmpeg-6.1.1-doc"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/acbnmbypm3chs3ich1x99if4z0wnvr23-ffmpeg-6.1.1-lib"
-            }
-          ],
           "store_path": "/nix/store/bx8hrilibaczjdmci6k35fkbvjl7bjzn-ffmpeg-6.1.1-bin"
         }
       }
@@ -300,67 +68,15 @@
       "version": "2.42.0",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/q7avibx4c00h7zl3jfh3r5mc4xs6wsnj-git-2.42.0",
-              "default": true
-            },
-            {
-              "name": "doc",
-              "path": "/nix/store/ls2bkd8sbjfzaj2sqnjifxp0kpj5ppi7-git-2.42.0-doc"
-            }
-          ],
           "store_path": "/nix/store/q7avibx4c00h7zl3jfh3r5mc4xs6wsnj-git-2.42.0"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/v7f1fag7w6ifk9cg1p5xhnnzy7mf0kmv-git-2.42.0",
-              "default": true
-            },
-            {
-              "name": "debug",
-              "path": "/nix/store/5fzw7d7k24nyhl0gblxxs94df4d9kx92-git-2.42.0-debug"
-            },
-            {
-              "name": "doc",
-              "path": "/nix/store/zfggmkpg5a8cyjcp6fkg031k40m4jm1z-git-2.42.0-doc"
-            }
-          ],
           "store_path": "/nix/store/v7f1fag7w6ifk9cg1p5xhnnzy7mf0kmv-git-2.42.0"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/hhf2cldbfcndgilsak5x8dxphgj1y3id-git-2.42.0",
-              "default": true
-            },
-            {
-              "name": "doc",
-              "path": "/nix/store/z0azxav2x0w3a3cr9nmnphqfrixqv366-git-2.42.0-doc"
-            }
-          ],
           "store_path": "/nix/store/hhf2cldbfcndgilsak5x8dxphgj1y3id-git-2.42.0"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/31ypk253113v59lslsx8nbqpx794rlan-git-2.42.0",
-              "default": true
-            },
-            {
-              "name": "debug",
-              "path": "/nix/store/7izvmmglis343586glv4bb6l0s8r5dnp-git-2.42.0-debug"
-            },
-            {
-              "name": "doc",
-              "path": "/nix/store/bhjmxbvkilffv986l0wxdk54dvng63fp-git-2.42.0-doc"
-            }
-          ],
           "store_path": "/nix/store/31ypk253113v59lslsx8nbqpx794rlan-git-2.42.0"
         }
       }
@@ -372,43 +88,15 @@
       "version": "1.21.3",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/1fxz1flmv4a4m5pvjmmzxlaznjzybjcp-go-1.21.3",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/1fxz1flmv4a4m5pvjmmzxlaznjzybjcp-go-1.21.3"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/iyaywzzkhm1pi5ysd83ai9pdpic9b9ny-go-1.21.3",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/iyaywzzkhm1pi5ysd83ai9pdpic9b9ny-go-1.21.3"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/yqqhrzr15819draxsyqrn2hf5c22ffhk-go-1.21.3",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/yqqhrzr15819draxsyqrn2hf5c22ffhk-go-1.21.3"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/dwmb0qcai52d0zkgpm6f5ifx2a8yvsdg-go-1.21.3",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/dwmb0qcai52d0zkgpm6f5ifx2a8yvsdg-go-1.21.3"
         }
       }
@@ -420,43 +108,15 @@
       "version": "0.124.0",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/wdcwqw0qim2dzq3bj08jx37whx43wyb5-hugo-0.124.0",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/wdcwqw0qim2dzq3bj08jx37whx43wyb5-hugo-0.124.0"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/gaj6f8ia7ir3f8sd6rfna51s0bm1av2p-hugo-0.124.0",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/gaj6f8ia7ir3f8sd6rfna51s0bm1av2p-hugo-0.124.0"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/4cd06vgyc38fm45hp0w119fcqph294li-hugo-0.124.0",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/4cd06vgyc38fm45hp0w119fcqph294li-hugo-0.124.0"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/5f2lfh5ymqgx7wv5a9jx8h10srh2pdfv-hugo-0.124.0",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/5f2lfh5ymqgx7wv5a9jx8h10srh2pdfv-hugo-0.124.0"
         }
       }
@@ -468,43 +128,15 @@
       "version": "1.4.16",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/l3nw3nndh69k8f866kihh64g9qgn9i54-obsidian-1.4.16",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/l3nw3nndh69k8f866kihh64g9qgn9i54-obsidian-1.4.16"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/07ms3g6zdvr8d0r5narkys52rbvm5r9v-obsidian-1.4.16",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/07ms3g6zdvr8d0r5narkys52rbvm5r9v-obsidian-1.4.16"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/s7j0wrzcm3v58w6zx41hjmrncmf4fc88-obsidian-1.4.16",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/s7j0wrzcm3v58w6zx41hjmrncmf4fc88-obsidian-1.4.16"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/ixc5072pz32grgklkr5xq0mxr948apmi-obsidian-1.4.16",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/ixc5072pz32grgklkr5xq0mxr948apmi-obsidian-1.4.16"
         }
       }
@@ -516,59 +148,15 @@
       "version": "3.6.1",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/z02qsxbka1x8s1gm05fpnbwvxmq2akrn-pre-commit-3.6.1",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/phq3dxmlwnia3b0yji4v5s5abscqdyh2-pre-commit-3.6.1-dist"
-            }
-          ],
           "store_path": "/nix/store/z02qsxbka1x8s1gm05fpnbwvxmq2akrn-pre-commit-3.6.1"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/ynb360fgbwgn7knmv493ygifr1rykhga-pre-commit-3.6.1",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/smv0aqk1v574xqkgs6qnvq0q154iw4vg-pre-commit-3.6.1-dist"
-            }
-          ],
           "store_path": "/nix/store/ynb360fgbwgn7knmv493ygifr1rykhga-pre-commit-3.6.1"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/wy0a2dsw6322pyljd1vc8yzd9cffzi3j-pre-commit-3.6.1",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/42f2jhljx8n76zln81xfix1y4czbpssz-pre-commit-3.6.1-dist"
-            }
-          ],
           "store_path": "/nix/store/wy0a2dsw6322pyljd1vc8yzd9cffzi3j-pre-commit-3.6.1"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/g7vqxkmfy6s5j4642cgmfvkdfa0dgjqk-pre-commit-3.6.1",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/768aa50yk1npnsgwiv55127v2pydvsl4-pre-commit-3.6.1-dist"
-            }
-          ],
           "store_path": "/nix/store/g7vqxkmfy6s5j4642cgmfvkdfa0dgjqk-pre-commit-3.6.1"
         }
       }
@@ -581,79 +169,15 @@
       "version": "23.2.1",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/vjyrxbxqsadvr9g6mzig6y406dhwcrqi-python3.10-pip-23.2.1",
-              "default": true
-            },
-            {
-              "name": "man",
-              "path": "/nix/store/2ra46imgas5srgxx8mgs424akh5j1msv-python3.10-pip-23.2.1-man",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/xjj6xjh21k08rkyg6hnkbyrygqhqgn8y-python3.10-pip-23.2.1-dist"
-            }
-          ],
           "store_path": "/nix/store/vjyrxbxqsadvr9g6mzig6y406dhwcrqi-python3.10-pip-23.2.1"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/j8pxwv7vyjm8z2fqglijjvabbkmxbv9r-python3.10-pip-23.2.1",
-              "default": true
-            },
-            {
-              "name": "man",
-              "path": "/nix/store/bcfliw00z123ddyi8hsfxvfn2npdcpdq-python3.10-pip-23.2.1-man",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/2326b2sr9p2z9bsghd2pzs346g2qjn7f-python3.10-pip-23.2.1-dist"
-            }
-          ],
           "store_path": "/nix/store/j8pxwv7vyjm8z2fqglijjvabbkmxbv9r-python3.10-pip-23.2.1"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/7lyvqf8wl47wzgsqmlcz39ycmwxyg9zx-python3.10-pip-23.2.1",
-              "default": true
-            },
-            {
-              "name": "man",
-              "path": "/nix/store/0j02s5hbsdhfxvvay5dm9j68nhalm39v-python3.10-pip-23.2.1-man",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/8dvqh9ai83lqaaixs3bhmf1n4jxgp4v7-python3.10-pip-23.2.1-dist"
-            }
-          ],
           "store_path": "/nix/store/7lyvqf8wl47wzgsqmlcz39ycmwxyg9zx-python3.10-pip-23.2.1"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/gdhvfi5zaqzpa5l3kk0spmv71r549slf-python3.10-pip-23.2.1",
-              "default": true
-            },
-            {
-              "name": "man",
-              "path": "/nix/store/p37y2fhm6l3nd624jmr2r680wf4p0544-python3.10-pip-23.2.1-man",
-              "default": true
-            },
-            {
-              "name": "dist",
-              "path": "/nix/store/r4qj7psryk532rkh0srhn25ygv8yk541-python3.10-pip-23.2.1-dist"
-            }
-          ],
           "store_path": "/nix/store/gdhvfi5zaqzpa5l3kk0spmv71r549slf-python3.10-pip-23.2.1"
         }
       }
@@ -666,51 +190,15 @@
       "version": "3.10.13",
       "systems": {
         "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/p6fpa9wj3a4g2r0is803z35gvb00vrqh-python3-3.10.13",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/p6fpa9wj3a4g2r0is803z35gvb00vrqh-python3-3.10.13"
         },
         "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/h3i2nr5lij71z112sh0j368gd8idqhyd-python3-3.10.13",
-              "default": true
-            },
-            {
-              "name": "debug",
-              "path": "/nix/store/rw8pxxh7gc95iplzs98g9dzgmm9qh017-python3-3.10.13-debug"
-            }
-          ],
           "store_path": "/nix/store/h3i2nr5lij71z112sh0j368gd8idqhyd-python3-3.10.13"
         },
         "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/a1j6kh88inyisjbbvkkhxx3c7xbfwmlf-python3-3.10.13",
-              "default": true
-            }
-          ],
           "store_path": "/nix/store/a1j6kh88inyisjbbvkkhxx3c7xbfwmlf-python3-3.10.13"
         },
         "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/bj6brw67kppcpdk2gb92l1rf3zirx5jc-python3-3.10.13",
-              "default": true
-            },
-            {
-              "name": "debug",
-              "path": "/nix/store/4r4gxff34w58gan55jgna0jfjqav0xga-python3-3.10.13-debug"
-            }
-          ],
           "store_path": "/nix/store/bj6brw67kppcpdk2gb92l1rf3zirx5jc-python3-3.10.13"
         }
       }

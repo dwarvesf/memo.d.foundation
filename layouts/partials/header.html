@@ -99,6 +99,9 @@
   {{ $scroll := resources.Get "js/scroll.js" }}
   <script defer src="{{ $scroll.RelPermalink }}"></script>
 
+  {{ $codeblockCopy := resources.Get "js/codeblock-copy.js" }}
+  <script defer src="{{ $codeblockCopy.RelPermalink }}"></script>
+
   <script src="https://unpkg.com/mousetrap@1.6.5/mousetrap.min.js"></script>
   {{ $keyboardShortcuts := resources.Get "js/keyboard-shortcuts.js" }}
   <script defer src="{{ $keyboardShortcuts.RelPermalink }}"></script>
