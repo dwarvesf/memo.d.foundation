@@ -167,7 +167,8 @@ main {
   letter-spacing: -0.0125rem;
 }
 
-main ul {
+main ul,
+ol {
   line-height: 25px;
   margin: 0;
   padding: 0;
@@ -185,7 +186,8 @@ main ul {
   }
 }
 
-div > ul {
+div > ul,
+ol {
   margin-top: 18px;
 }
 
@@ -681,6 +683,7 @@ p:has(img) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  row-gap: 1rem;
 }
 
 pre[class*="language-"] {
@@ -709,4 +712,9 @@ pre[class*="language-"] {
   &:hover > .copy-btn {
     opacity: 100;
   }
+}
+
+canvas[id$=".pdf"] {
+  border: 1px solid #c7c7c7;
+  border-radius: 4px;
 }
