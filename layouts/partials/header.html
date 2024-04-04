@@ -102,6 +102,9 @@
   {{ $codeblockCopy := resources.Get "js/codeblock-copy.js" }}
   <script defer src="{{ $codeblockCopy.RelPermalink }}"></script>
 
+  {{ $processImage := resources.Get "js/process-image.js" }}
+  <script defer src="{{ $processImage.RelPermalink }}"></script>
+
   <script src="https://unpkg.com/mousetrap@1.6.5/mousetrap.min.js"></script>
   {{ $keyboardShortcuts := resources.Get "js/keyboard-shortcuts.js" }}
   <script defer src="{{ $keyboardShortcuts.RelPermalink }}"></script>
