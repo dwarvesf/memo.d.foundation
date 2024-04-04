@@ -11,7 +11,7 @@ a {
     color: #23242c;
   }
 
-  &:not([href^="https://memo.d.foundation"], [href^="/"], [href^="#"])
+  &:not([href^="https://memo.d.foundation"], [href^="/"], [href^="#"], :has(> svg))
   {
     &::after {
       position: relative;
