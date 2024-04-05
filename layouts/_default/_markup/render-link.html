@@ -11,6 +11,9 @@
   {{- else -}}
     {{- .Destination | safeURL -}}
   {{- end -}}"
+  {{- if and (strings.HasPrefix .Destination "http") (not (strings.HasPrefix .Destination "https://memo.d.foundation")) -}}
+    target="_blank" 
+  {{- end -}}
   {{- with .Title }} class="{{ . }}"{{- end -}}>
   {{- .Text | safeHTML -}}
 </a>
