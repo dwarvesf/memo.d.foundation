@@ -9,6 +9,7 @@ import aiofiles
 import frontmatter
 import gitignore_parser
 
+
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
 
@@ -17,9 +18,14 @@ def slugify(value):
     return value
 
 
-def has_frontmatter_properties(content):
+def has_frontmatter_properties(content, file_path, export_path):
     # check if markdown file has frontmatter properties, title, description, tags, and author
     frontmatter_properties = frontmatter.loads(content)
+    
+    # remove the root directory from file path
+    root_dir = file_path.split("/")[0]
+    url_path = file_path.replace(f"{root_dir}/", "")
+    url_path = url_path.replace(".md", "")
 
     # check if frontmatter properties exist
     if not frontmatter_properties.keys():
@@ -30,6 +36,21 @@ def has_frontmatter_properties(content):
         [key in frontmatter_properties.keys() for key in ["title", "description"]]
     ):
         return False
+    
+    # check if `hiring` is false
+    if 'hiring' in frontmatter_properties and frontmatter_properties['hiring'] == False:
+        # if robots.txt does not exist, create it and write to it
+        robots_file_path = os.path.join(export_path, "robots.txt")
+        
+        # check if robots.txt exists
+        if not os.path.exists(robots_file_path):
+            with open(robots_file_path, 'w'): pass
+
+        # write to robots.txt
+        with open(robots_file_path, 'r') as robots_file:
+            if 'Disallow: /' + url_path + '\n' not in robots_file.readlines():
+                    with open(robots_file_path, 'a') as robots_file:
+                        robots_file.write('Disallow: /' + url_path + '\n')
 
     return True
 
@@ -45,12 +66,13 @@ def process_markdown_file(file_path, export_path):
     with open(file_path, "r") as file:
         content = file.read()
 
-    # check if markdown file has frontmatter properties
-    if not has_frontmatter_properties(content):
-        return None, linked_files
-
     file_dir = os.path.dirname(file_path)
     root_dir = file_path.split("/")[0]
+    
+    # check if markdown file has frontmatter properties
+    if not has_frontmatter_properties(content, file_path, export_path):
+        return None, linked_files
+
 
     def replace_link(match):
         source_path = match.group(1)
@@ -73,7 +95,7 @@ def process_markdown_file(file_path, export_path):
                     # check if the file is a markdown file
                     if note_path.endswith(".md"):
                         # check if markdown file has frontmatter properties
-                        if not has_frontmatter_properties(content):
+                        if not has_frontmatter_properties(content, file_path, export_path):
                             break
 
                     linked_files.append(file)
