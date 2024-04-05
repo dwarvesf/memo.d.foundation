@@ -44,7 +44,8 @@ def has_frontmatter_properties(content, file_path, export_path):
         
         # check if robots.txt exists
         if not os.path.exists(robots_file_path):
-            with open(robots_file_path, 'w'): pass
+            with open(robots_file_path, 'w') as robots_file:
+                robots_file.write("User-agent: *\n")
 
         # write to robots.txt
         with open(robots_file_path, 'r') as robots_file:
