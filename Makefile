@@ -4,6 +4,7 @@ setup:
 	@mkdir -p ./content
 
 fetch:
+	@python scripts/exclude-git-fetch.py
 	@./git-fetch.sh
 
 build:
