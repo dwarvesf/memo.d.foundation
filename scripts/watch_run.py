@@ -11,7 +11,6 @@ class FileChangeHandler(FileSystemEventHandler):
     def __init__(self):
         super().__init__()
         self.last_modified_time = {}
-        self.processed_files = {}
         self.locks = {}
         self.release_events = {}
 
@@ -21,21 +20,19 @@ class FileChangeHandler(FileSystemEventHandler):
             if file_path not in self.locks:
                 self.locks[file_path] = threading.Lock()
                 self.release_events[file_path] = threading.Event()
-                fn(self, event)
 
             lock = self.locks[file_path]
             release_event = self.release_events[file_path]
-
-            def release_and_clear():
-                if lock.locked():
-                    release_event.clear()
-                    lock.release()
-
-            with lock:
+            
+            try:
+                if not lock.locked():
+                    lock.acquire()
+                    fn(self, event)
+            finally:
                 if not release_event.is_set():
                     release_event.set()
-                    threading.Timer(5, release_and_clear).start()
-                return
+                    threading.Timer(5, lock.release).start()
+                    threading.Timer(5, release_event.clear).start()
 
         return wrapper
 
@@ -60,13 +57,6 @@ class FileChangeHandler(FileSystemEventHandler):
             ):
                 self.last_modified_time[relative_path] = current_modified_time
 
-                # Check if the file has been processed in the last second
-                if (
-                    relative_path in self.processed_files
-                    and time.time() - self.processed_files[relative_path] < 1
-                ):
-                    return
-
                 # Run the image processor and markdown exporter
                 subprocess.run(
                     ["python", "scripts/single_image_processor.py", relative_path]
@@ -79,9 +69,6 @@ class FileChangeHandler(FileSystemEventHandler):
                         export_directory,
                     ]
                 )
-
-                # Update the processed_files dictionary
-                self.processed_files[relative_path] = time.time()
 
         except FileNotFoundError:
             pass
