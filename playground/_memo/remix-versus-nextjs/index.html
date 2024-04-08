@@ -206,9 +206,19 @@ export default function App() {
   )
 }
 </code></pre><h3 id=error-handling><strong>Error Handling</strong> <a href=#error-handling></a></h3><p>Next.js define some custom pages for certain status errors like 404 or 500 errors. However, some errors around data and rendering are not supported.</p><p>Remix has an error boundary for handling errors. When we create a route component, we can also define an error boundary for catching any errors that occur in the route component. It likes having two components in a route file, with one being the actual route component and one being the fallback when errors happen in the former. One noteworthy thing is when there is an error in a nested component route and this route has no error boundary, the error bubbles up the nested tree until caught by a parent’s error boundary.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/remix-versus-nextjs_a7d49c4d71418c892f72a5c2a7dbee19_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/remix-versus-nextjs_a7d49c4d71418c892f72a5c2a7dbee19_md5.webp onerror="this.onerror=null" class=content-img></p><h2 id=conclusion><strong>Conclusion</strong> <a href=#conclusion></a></h2><p>For React developers, Next.js is obviously the prior choice when it comes to server-side rendering for its familiar concepts and larger community. Has been around for a while, it seems like a steady pedestal and is not easy to be replaced in a short period.</p><p>Even so, Remix looks like a shiny new thing. It also provides a higher level of abstraction. Routing system might be confusing but it is a remarkable feature too. Other built-in features such as data loading, data mutations, error boundary, etc. actually improve the developer experience.</p><p>Overall, Remix is a new framework, and it will definitely become more powerful and widespread in the future.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=conclusion><strong>Conclusion</strong> <a href=#conclusion></a></h2><p>For React developers, Next.js is obviously the prior choice when it comes to server-side rendering for its familiar concepts and larger community. Has been around for a while, it seems like a steady pedestal and is not easy to be replaced in a short period.</p><p>Even so, Remix looks like a shiny new thing. It also provides a higher level of abstraction. Routing system might be confusing but it is a remarkable feature too. Other built-in features such as data loading, data mutations, error boundary, etc. actually improve the developer experience.</p><p>Overall, Remix is a new framework, and it will definitely become more powerful and widespread in the future.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

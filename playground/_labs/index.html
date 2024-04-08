@@ -169,9 +169,19 @@
 • Consolidate NYC taxi data in parallel (through map-reduce) over HTTPS
 • Aggregate IBM AML transactions (Anti-Money Laundering)
 • Some examples of how it is used to consolidate and do basic analytics on note.d and log.console.so</li></ul><!-- /events --><!-- /col-2 #2 --><hr><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/_index__base-20231130183110925.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_labs/assets/_index__base-20231130183110925.webp onerror="this.onerror=null" class=content-img></p><ul></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

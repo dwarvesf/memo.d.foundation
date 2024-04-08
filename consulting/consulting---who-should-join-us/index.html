@@ -166,15 +166,35 @@
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Consulting - Who should join us</div><div class=tags-index style=display:none>tags: dwarves, work, consulting</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Consulting - Who should join us</h1></template><div class=date>Dec 21, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/nikki>nikki</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p><strong>Consulting teams consists of anyone who&rsquo;s hungry for more than just coding; those who are curious about the trends, the market, who can introduce new projects / challenges, who care about providing sensible solutions, and who take great care of projects.</strong></p><p>When assessing new members, we have a few qualities that we look for. Those qualities can be something that you have already possess, or can be something you are growing toward.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/consulting---who-should-join-us-20231221144422875.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/consulting/assets/consulting---who-should-join-us-20231221144422875.webp onerror="this.onerror=null" class=content-img></p><h2 id=to-become-a-consultant-you-canwant-to>To become a consultant, you can/want to: <a href=#to-become-a-consultant-you-canwant-to></a></h2><h3 id=tech-proficiency>Tech proficiency <a href=#tech-proficiency></a></h3><ul><li>highly skill in programming languages and tools</li><li>have a strong understanding and foundation about software products</li></ul><h3 id=analytic>Analytic <a href=#analytic></a></h3><ul><li>analyze the situation, break down problems, develop and present effective solutions</li></ul><h3 id=client-focused>Client-focused <a href=#client-focused></a></h3><ul><li>get on the same level with clients about business needs, then align them with tech solutions, and via versa</li><li>understand industry dynamics, competitions, and business models</li><li>build and maintain relationship with clients</li><li>can explain complex technical concepts in simple terms</li></ul><h3 id=project-focused>Project focused <a href=#project-focused></a></h3><ul><li>oversee / take part in the entire cycle of software consulting and delivery from ideation to deployment</li><li>work on multiple projects simultaneously</li><li>manage time and priorities effectively</li><li>plan and execute projects efficiently, meeting deadlines and staying within budget</li></ul><h3 id=learning-focused>Learning focused <a href=#learning-focused></a></h3><ul><li>stay updated on industry trends and advancements</li><li>apply the latest technology from Labs to solve client problems</li></ul><h3 id=distribution>Distribution <a href=#distribution></a></h3><ul><li>frequently participates on tech seminars, events</li><li>spread the knowledge of our team</li></ul><h2 id=member-journey>Member Journey <a href=#member-journey></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=to-become-a-consultant-you-canwant-to>To become a consultant, you can/want to: <a href=#to-become-a-consultant-you-canwant-to></a></h2><h3 id=tech-proficiency>Tech proficiency <a href=#tech-proficiency></a></h3><ul><li>highly skill in programming languages and tools</li><li>have a strong understanding and foundation about software products</li></ul><h3 id=analytic>Analytic <a href=#analytic></a></h3><ul><li>analyze the situation, break down problems, develop and present effective solutions</li></ul><h3 id=client-focused>Client-focused <a href=#client-focused></a></h3><ul><li>get on the same level with clients about business needs, then align them with tech solutions, and via versa</li><li>understand industry dynamics, competitions, and business models</li><li>build and maintain relationship with clients</li><li>can explain complex technical concepts in simple terms</li></ul><h3 id=project-focused>Project focused <a href=#project-focused></a></h3><ul><li>oversee / take part in the entire cycle of software consulting and delivery from ideation to deployment</li><li>work on multiple projects simultaneously</li><li>manage time and priorities effectively</li><li>plan and execute projects efficiently, meeting deadlines and staying within budget</li></ul><h3 id=learning-focused>Learning focused <a href=#learning-focused></a></h3><ul><li>stay updated on industry trends and advancements</li><li>apply the latest technology from Labs to solve client problems</li></ul><h3 id=distribution>Distribution <a href=#distribution></a></h3><ul><li>frequently participates on tech seminars, events</li><li>spread the knowledge of our team</li></ul><h2 id=member-journey>Member Journey <a href=#member-journey></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/consulting---who-should-join-us-20231221144430130.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/consulting/assets/consulting---who-should-join-us-20231221144430130.webp onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -165,44 +165,104 @@
         }
       },
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Augmented Begroup Team To Deliver Becorporate Services</div><div class=tags-index style=display:none>tags: case-study</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Augmented Begroup Team To Deliver Becorporate Services</h1></template><div class=date>Nov 18, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/augmented-begroup-team-to-deliver-becorporate-services_ca0b190a9c3b5efdcee6b76a84de9c5f_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/consulting/case-study/assets/augmented-begroup-team-to-deliver-becorporate-services_ca0b190a9c3b5efdcee6b76a84de9c5f_md5.webp onerror="this.onerror=null" class=content-img></p><h3 id=in-brief>In brief <a href=#in-brief></a></h3><ul><li>Getting the early funding for over 40M US dollar, <strong>beGroup</strong> focuses to roll out all 4 products by the end of 2018. By that time, there were only 6 months before the debut.</li><li><strong>beCorporate</strong> is a module to manage and optimize in-house business transports for employee.</li><li>They look to ship in short timeline. The current engineering team was working on the 1st release of ride-hailing app. Wrap-up beCorporate adds a step in perfecting their service.</li><li>We augmented them with 6 Dwarves, working collaboratively to speed up the product development.</li></ul><h3 id=technical-highlight>Technical Highlight <a href=#technical-highlight></a></h3><ul><li>Golang-backend system for team-scale support</li><li>System design: Microservice architecture</li><li>System integration with new module development</li><li>Business logic adjustment</li></ul><h3 id=the-context>The Context <a href=#the-context></a></h3><p><strong>beCorporate</strong> is tailored for enterprises. Employees can register, schedule and book vehicle for business transports via <strong>beApp</strong>, either as a group or as an individual. The initial launch gained a lot of traction and traffics. It drives the development team to their busiest stage.
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=in-brief>In brief <a href=#in-brief></a></h3><ul><li>Getting the early funding for over 40M US dollar, <strong>beGroup</strong> focuses to roll out all 4 products by the end of 2018. By that time, there were only 6 months before the debut.</li><li><strong>beCorporate</strong> is a module to manage and optimize in-house business transports for employee.</li><li>They look to ship in short timeline. The current engineering team was working on the 1st release of ride-hailing app. Wrap-up beCorporate adds a step in perfecting their service.</li><li>We augmented them with 6 Dwarves, working collaboratively to speed up the product development.</li></ul><h3 id=technical-highlight>Technical Highlight <a href=#technical-highlight></a></h3><ul><li>Golang-backend system for team-scale support</li><li>System design: Microservice architecture</li><li>System integration with new module development</li><li>Business logic adjustment</li></ul><h3 id=the-context>The Context <a href=#the-context></a></h3><p><strong>beCorporate</strong> is tailored for enterprises. Employees can register, schedule and book vehicle for business transports via <strong>beApp</strong>, either as a group or as an individual. The initial launch gained a lot of traction and traffics. It drives the development team to their busiest stage.
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/augmented-begroup-team-to-deliver-becorporate-services_3407a5c0fbbe296de86c5b0802a6872f_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/consulting/case-study/assets/augmented-begroup-team-to-deliver-becorporate-services_3407a5c0fbbe296de86c5b0802a6872f_md5.webp onerror="this.onerror=null" class=content-img></p><p>Their release timeline for <strong>beCorporate</strong> couldn&rsquo;t change due to the business roadmap. The market was welcoming <strong>beApp</strong>, and was ready to see more.</p><p>Back in 2018, it was challenge to build an in-house team of experienced Golang developers. With that timeline, <strong>be</strong> needs a team partner to get things done fast. Hiring for more hands wasn&rsquo;t an option. There was no time for recruitment, onboarding, or tech stacks training.</p><p>🔑 We were one of the first teams in Vietnam that picked up Golang as the strategic language. That&rsquo;s how our partnership began.</p><h3 id=engagement-model>Engagement Model <a href=#engagement-model></a></h3><p><strong>beCorporate</strong> was sketched up with 2 ideals architectures. We must find where to input the module. Would it better be stand alone, or integrated as a service within be&rsquo;s Cloud ecosystem?</p><ul><li>The stand alone: Modern enterprise solutions without compromising stability and reliable.</li><li>The ecosystem: Ensures how beCorp fits into the big picture of the current infrastructure.</li></ul><p>We figured integrating <strong>beCorporate</strong> into the ecosystem was more reasonable. Users are capable of experience other services. Hence, microservice was the final option for system architecture.
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Their release timeline for <strong>beCorporate</strong> couldn&rsquo;t change due to the business roadmap. The market was welcoming <strong>beApp</strong>, and was ready to see more.</p><p>Back in 2018, it was challenge to build an in-house team of experienced Golang developers. With that timeline, <strong>be</strong> needs a team partner to get things done fast. Hiring for more hands wasn&rsquo;t an option. There was no time for recruitment, onboarding, or tech stacks training.</p><p>🔑 We were one of the first teams in Vietnam that picked up Golang as the strategic language. That&rsquo;s how our partnership began.</p><h3 id=engagement-model>Engagement Model <a href=#engagement-model></a></h3><p><strong>beCorporate</strong> was sketched up with 2 ideals architectures. We must find where to input the module. Would it better be stand alone, or integrated as a service within be&rsquo;s Cloud ecosystem?</p><ul><li>The stand alone: Modern enterprise solutions without compromising stability and reliable.</li><li>The ecosystem: Ensures how beCorp fits into the big picture of the current infrastructure.</li></ul><p>We figured integrating <strong>beCorporate</strong> into the ecosystem was more reasonable. Users are capable of experience other services. Hence, microservice was the final option for system architecture.
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/augmented-begroup-team-to-deliver-becorporate-services_ea8665d018277b323545f81180d583b2_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/consulting/case-study/assets/augmented-begroup-team-to-deliver-becorporate-services_ea8665d018277b323545f81180d583b2_md5.webp onerror="this.onerror=null" class=content-img></p><p><strong>Tech stacks</strong></p><ul><li>Backend: Golang</li><li>Frontend: ReactJS, Tailwind</li><li>Logging/Monitoring</li><li>Automated CI pipeline</li></ul><p><strong>Collaboration</strong></p><ul><li>Slack chat & GSuites document storage</li><li>Jira task management</li><li>Scrum Process</li><li>Bi-weekly release iteration & Weekly tech discussion</li></ul><h3 id=outcome>Outcome <a href=#outcome></a></h3><p><strong>beCorporate</strong> first MVP was released after 3 months, expanded the market coverage, enabled <strong>be</strong> to lay its name on Vietnam transportation industry.</p><p>The augmentation allows them to reduce recruitment and training cost.</p><p>Instead, their effort was fully invest in product development and maintaining current resources, marketing strategy and branding activities.</p><p>See the full version at: <a href=https://be.com.vn/khach-hang-doanh-nghiep/becorporate/>be.com.vn/khach-hang-doanh-nghiep/becorporate/</a>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Tech stacks</strong></p><ul><li>Backend: Golang</li><li>Frontend: ReactJS, Tailwind</li><li>Logging/Monitoring</li><li>Automated CI pipeline</li></ul><p><strong>Collaboration</strong></p><ul><li>Slack chat & GSuites document storage</li><li>Jira task management</li><li>Scrum Process</li><li>Bi-weekly release iteration & Weekly tech discussion</li></ul><h3 id=outcome>Outcome <a href=#outcome></a></h3><p><strong>beCorporate</strong> first MVP was released after 3 months, expanded the market coverage, enabled <strong>be</strong> to lay its name on Vietnam transportation industry.</p><p>The augmentation allows them to reduce recruitment and training cost.</p><p>Instead, their effort was fully invest in product development and maintaining current resources, marketing strategy and branding activities.</p><p>See the full version at: <a href=https://be.com.vn/khach-hang-doanh-nghiep/becorporate/>be.com.vn/khach-hang-doanh-nghiep/becorporate/</a>
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/augmented-begroup-team-to-deliver-becorporate-services_05af781fc86209505eb928d390fb7595_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/consulting/case-study/assets/augmented-begroup-team-to-deliver-becorporate-services_05af781fc86209505eb928d390fb7595_md5.webp onerror="this.onerror=null" class=content-img>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img>
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/augmented-begroup-team-to-deliver-becorporate-services_98b3be37936cc22032f52d776aa4c211_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/consulting/case-study/assets/augmented-begroup-team-to-deliver-becorporate-services_98b3be37936cc22032f52d776aa4c211_md5.webp onerror="this.onerror=null" class=content-img>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img>
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/augmented-begroup-team-to-deliver-becorporate-services_69537f10e0a7c768d1c85a6f15ff5ecd_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/consulting/case-study/assets/augmented-begroup-team-to-deliver-becorporate-services_69537f10e0a7c768d1c85a6f15ff5ecd_md5.webp onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

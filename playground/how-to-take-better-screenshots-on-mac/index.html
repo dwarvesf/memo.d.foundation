@@ -166,36 +166,86 @@
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How To Take Better Screenshots On Mac</div><div class=tags-index style=display:none>tags: community, instructions, guideline</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>How To Take Better Screenshots On Mac</h1></template><div class=date>Mar 13, 2024</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/innno_>innno_</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p>I grab screenshots pretty often. Although macOS’s native screenshot tool is decent for most cases, it’s still a very basic one. Here are a few tips on how to take great-looking screenshots with a simple tool and in less time.</p><h2 id=installation-and-setup>Installation and Setup <a href=#installation-and-setup></a></h2><p>CleanShot X is actually an app I downloaded as part of my Setapp subscription. I use CleanShot every single day. The app offers a wide range of features, from capturing screenshots and recording your screen to annotating and quick editing.</p><ol><li>Sign up subscription on Setapp</li><li>Download and install CleanShot X</li><li>Once installed, the app is going to ask if you want CleanShot to be your default screenshot tool.</li><li>You will find various commands under the CleanShot X Extension by clicking the CleanShot shortcut in the Control Center.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-take-better-screenshots-on-mac_menu-bar-shortcut.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/assets/how-to-take-better-screenshots-on-mac_menu-bar-shortcut.webp onerror="this.onerror=null" class=content-img></p><h2 id=using-cleanshot-x>Using CleanShot X <a href=#using-cleanshot-x></a></h2><p><strong>Added keyboard shortcuts to Quick Access Overlay</strong>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=using-cleanshot-x>Using CleanShot X <a href=#using-cleanshot-x></a></h2><p><strong>Added keyboard shortcuts to Quick Access Overlay</strong>
 You can spend time figuring out what workflow and keyboard shortcuts are best for you. Open settings, here’s what I found works best for my setup.</p><ul><li><code>Command Shift 4</code>: capturse an area / a part of the screen</li><li><code>Command Shift 3</code>: captures full screen</li><li><code>Command Shift 5</code>: captures all-in-one</li><li><code>Command Shift 5</code>: captures window</li><li><code>⌘C</code>: Copy to clipboard</li><li><code>⌘S</code>: Save</li><li><code>⌘W</code>: Close</li><li><code>⌘U</code>: Upload to Cloud</li><li><code>⌘E</code>: Open annotation tool</li></ul><p>CleanShot is highly customizable — you can adjust nearly every behavior and tweak settings for your needs.</p><p><strong>Annotation and Editing Tools</strong></p><ul><li><strong>Annotate</strong>: Annotate your screenshots with various tools. Highlight or hide specific parts of your screenshots, crop, and add necessary annotations.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-take-better-screenshots-on-mac_annotation-tool.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/assets/how-to-take-better-screenshots-on-mac_annotation-tool.webp onerror="this.onerror=null" class=content-img></p><ul><li><p><strong>Background Tool in Annotate:</strong> easily create beautiful social media posts that stand out from others. You can even change the padding, shadow, alignment, and border-radius of your screenshot. The Auto Balance option will make your screenshot look perfectly aligned by adjusting the space around the content.</p></li><li><p><strong>Using Dwarves color scheme in Background Tool:</strong> when editing your cropped screenshot in Cleanshot, you have the option to place it on a blank canvas or use Dwarves’ branding color scheme. It&rsquo;s also possible to easily customize the screenshot.</p></li></ul><ol><li><strong>Customization at Pain Color:</strong> choose a custom color using the RGB sliders then enter a Hex code <strong><code>F8F8F8</code></strong>.</li><li><strong>Dwarves&rsquo; Branding Scheme:</strong> Set Dwarves&rsquo; branding colors as the background wallpaper (if different from Pain Color).</li><li><strong>Alignment:</strong> center your screenshot on the canvas for a balanced look.</li><li><strong>Padding:</strong> adjust the padding to 76 for optimal spacing around your content.</li><li><strong>Shadow:</strong> apply a shadow effect with a strength of 28 to enhance the depth of your screenshot.</li><li><strong>Dwarves Logo:</strong> add the Dwarves logo in the top left corner</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p><strong>Background Tool in Annotate:</strong> easily create beautiful social media posts that stand out from others. You can even change the padding, shadow, alignment, and border-radius of your screenshot. The Auto Balance option will make your screenshot look perfectly aligned by adjusting the space around the content.</p></li><li><p><strong>Using Dwarves color scheme in Background Tool:</strong> when editing your cropped screenshot in Cleanshot, you have the option to place it on a blank canvas or use Dwarves’ branding color scheme. It&rsquo;s also possible to easily customize the screenshot.</p></li></ul><ol><li><strong>Customization at Pain Color:</strong> choose a custom color using the RGB sliders then enter a Hex code <strong><code>F8F8F8</code></strong>.</li><li><strong>Dwarves&rsquo; Branding Scheme:</strong> Set Dwarves&rsquo; branding colors as the background wallpaper (if different from Pain Color).</li><li><strong>Alignment:</strong> center your screenshot on the canvas for a balanced look.</li><li><strong>Padding:</strong> adjust the padding to 76 for optimal spacing around your content.</li><li><strong>Shadow:</strong> apply a shadow effect with a strength of 28 to enhance the depth of your screenshot.</li><li><strong>Dwarves Logo:</strong> add the Dwarves logo in the top left corner</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-take-better-screenshots-on-mac_df-color-scheme.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/assets/how-to-take-better-screenshots-on-mac_df-color-scheme.webp onerror="this.onerror=null" class=content-img>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img>
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-take-better-screenshots-on-mac_rgb-df.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/assets/how-to-take-better-screenshots-on-mac_rgb-df.webp onerror="this.onerror=null" class=content-img></p><p><strong>Screen Capture Features</strong></p><ul><li><strong>Scrolling capture</strong>: refers to taking a screenshot of a webpage while scrolling down. Select the Scrolling screenshot, start scrolling slowly, or use auto-scrolling.
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Screen Capture Features</strong></p><ul><li><strong>Scrolling capture</strong>: refers to taking a screenshot of a webpage while scrolling down. Select the Scrolling screenshot, start scrolling slowly, or use auto-scrolling.
 This feature is used when using VSCode to write articles/publications and will submit screenshots to the manager for feedback on both content and visual.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><video x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-take-better-screenshots-on-mac_scrolling-capture_compressed.mp4`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" controls autoplay src=/playground/assets/how-to-take-better-screenshots-on-mac_scrolling-capture_compressed.mp4 onerror="this.onerror=null"></video></p><ul><li><p><strong>Capture Text (OCR)</strong>: use OCR to capture text from your screen. Simply select an area that contains the text, and it will be copied to your clipboard.</p></li><li><p><strong>All-In-One mode</strong>: this mode allows you to specify the size and lock the aspect ratio for your screenshots. It also saves your last selection, making it easier to retake your last screenshot.</p></li><li><p><strong>Recording Features</strong>: choose between recording a video or a GIF, whether to capture a specific window, custom dimensions, a part of the screen, or fullscreen. With our built-in video editor, you will be able to prepare a screen recording for sharing, by reducing its file size or changing the audio settings.</p></li><li><p><strong>Open History</strong>: access your screenshot history. You can remove files from the Capture History or restore recent captures if you ever need them again.</p></li></ul><h2 id=overall>Overall <a href=#overall></a></h2><p>This guide will help you quickly make great screenshots with this tool. It does exactly what we need it to do, and I think you&rsquo;ll love it, too. Keep practicing with these tools—they&rsquo;re like the cherry on top, adding that extra something to your work.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" controls autoplay :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></video></p><ul><li><p><strong>Capture Text (OCR)</strong>: use OCR to capture text from your screen. Simply select an area that contains the text, and it will be copied to your clipboard.</p></li><li><p><strong>All-In-One mode</strong>: this mode allows you to specify the size and lock the aspect ratio for your screenshots. It also saves your last selection, making it easier to retake your last screenshot.</p></li><li><p><strong>Recording Features</strong>: choose between recording a video or a GIF, whether to capture a specific window, custom dimensions, a part of the screen, or fullscreen. With our built-in video editor, you will be able to prepare a screen recording for sharing, by reducing its file size or changing the audio settings.</p></li><li><p><strong>Open History</strong>: access your screenshot history. You can remove files from the Capture History or restore recent captures if you ever need them again.</p></li></ul><h2 id=overall>Overall <a href=#overall></a></h2><p>This guide will help you quickly make great screenshots with this tool. It does exactly what we need it to do, and I think you&rsquo;ll love it, too. Keep practicing with these tools—they&rsquo;re like the cherry on top, adding that extra something to your work.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

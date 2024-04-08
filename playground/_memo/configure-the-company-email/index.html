@@ -165,39 +165,99 @@
         }
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Configure The Company Email</div><div class=tags-index style=display:none>tags: dwarves, team, process, updates</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Configure The Company Email</h1></template><div class=date>Nov 29, 2022</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><h3 id=1-make-sure-you-have-2fa-enabled>1. <strong>Make sure you have 2FA enabled</strong> <a href=#1-make-sure-you-have-2fa-enabled></a></h3><p>For this method to work, you need to have <a href=https://www.google.com/landing/2step/>two factor authentification</a> enabled for your Google account. If it’s not, follow the link below and set it up.</p><p><a href=https://www.google.com/landing/2step/>https://www.google.com/landing/2step/</a></p><h3 id=2-create-an-app-password>2. <strong>Create an App Password</strong> <a href=#2-create-an-app-password></a></h3><p>Google will verify your ownership with this app password. Select “Mail” under app, and “Mac” under device. Hit “Generate”. Copy and keep for later!</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/configure-the-company-email_75bba213e343be0d54245f70f1bb00b8_md5.gif`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/configure-the-company-email_75bba213e343be0d54245f70f1bb00b8_md5.gif onerror="this.onerror=null" class=content-img></p><h3 id=3-add-your-email-to-gmail>3. <strong>Add your email to Gmail</strong> <a href=#3-add-your-email-to-gmail></a></h3><p>Go to Gmail -> Settings -> Accounts and Import. Then, select “Add another email address you own” under Aliases.</p><p><a href=https://security.google.com/settings/security/apppasswords>https://security.google.com/settings/security/apppasswords</a></p><h3 id=4-fill-in-your-senders-information>4. <strong>Fill in your sender’s information</strong> <a href=#4-fill-in-your-senders-information></a></h3><p>Set your forwarded email (<a href=mailto:example@d.foundation>example@d.foundation</a>) and your sender’s name. Untick “treat as an alias”.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=3-add-your-email-to-gmail>3. <strong>Add your email to Gmail</strong> <a href=#3-add-your-email-to-gmail></a></h3><p>Go to Gmail -> Settings -> Accounts and Import. Then, select “Add another email address you own” under Aliases.</p><p><a href=https://security.google.com/settings/security/apppasswords>https://security.google.com/settings/security/apppasswords</a></p><h3 id=4-fill-in-your-senders-information>4. <strong>Fill in your sender’s information</strong> <a href=#4-fill-in-your-senders-information></a></h3><p>Set your forwarded email (<a href=mailto:example@d.foundation>example@d.foundation</a>) and your sender’s name. Untick “treat as an alias”.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/configure-the-company-email_e40460b7c3bb0a5b24d84d2916ef058a_md5.gif`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/configure-the-company-email_e40460b7c3bb0a5b24d84d2916ef058a_md5.gif onerror="this.onerror=null" class=content-img></p><h3 id=5-fill-in-your-email-informations>5. <strong>Fill in your email informations</strong> <a href=#5-fill-in-your-email-informations></a></h3><p>SMTP is <strong>smtp.gmail.com</strong>, port is right already.</p><p>Username is <strong>your gmail address</strong> (incl. @gmail.com).</p><p>Password is the password you generated on Step 2.</p><p>Leave TLS enabled as is</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=5-fill-in-your-email-informations>5. <strong>Fill in your email informations</strong> <a href=#5-fill-in-your-email-informations></a></h3><p>SMTP is <strong>smtp.gmail.com</strong>, port is right already.</p><p>Username is <strong>your gmail address</strong> (incl. @gmail.com).</p><p>Password is the password you generated on Step 2.</p><p>Leave TLS enabled as is</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/configure-the-company-email_a0083c2a2c03b49be443442fd9b9d388_md5.gif`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/configure-the-company-email_a0083c2a2c03b49be443442fd9b9d388_md5.gif onerror="this.onerror=null" class=content-img></p><h3 id=6-confirm-ownership>6. <strong>Confirm Ownership</strong> <a href=#6-confirm-ownership></a></h3><p>You will receive an email from GMail asking you to confirm ownership with a code. Fill in the code in the popup modal, and you are all set!</p><h3 id=7-send-emails-from-your-alias>7. <strong>Send emails from your alias</strong> <a href=#7-send-emails-from-your-alias></a></h3><p>Now you can just select your alias in the list when you compose a new message.</p><h3 id=8-to-send-emails-from-your-mac-client-optional>8. <strong>To send emails from your Mac client (optional)</strong> <a href=#8-to-send-emails-from-your-mac-client-optional></a></h3><ul><li>Go to Mail client -> Settings -> Choose your individual email which added alias -> Edit Email Addresses</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=6-confirm-ownership>6. <strong>Confirm Ownership</strong> <a href=#6-confirm-ownership></a></h3><p>You will receive an email from GMail asking you to confirm ownership with a code. Fill in the code in the popup modal, and you are all set!</p><h3 id=7-send-emails-from-your-alias>7. <strong>Send emails from your alias</strong> <a href=#7-send-emails-from-your-alias></a></h3><p>Now you can just select your alias in the list when you compose a new message.</p><h3 id=8-to-send-emails-from-your-mac-client-optional>8. <strong>To send emails from your Mac client (optional)</strong> <a href=#8-to-send-emails-from-your-mac-client-optional></a></h3><ul><li>Go to Mail client -> Settings -> Choose your individual email which added alias -> Edit Email Addresses</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/configure-the-company-email_c636f82d2c678d9d015131573a8bd8e2_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/configure-the-company-email_c636f82d2c678d9d015131573a8bd8e2_md5.webp onerror="this.onerror=null" class=content-img></p><ul><li>Fill your alias information</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Fill your alias information</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/configure-the-company-email_5ae2d96d24c6e58a28b97536eb54364e_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/configure-the-company-email_5ae2d96d24c6e58a28b97536eb54364e_md5.webp onerror="this.onerror=null" class=content-img></p><ul><li>Now you can just select your alias in the list when you compose a new message in your Mac client.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Now you can just select your alias in the list when you compose a new message in your Mac client.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/configure-the-company-email_a064fb3d515cf37f25f840c5fc850689_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/configure-the-company-email_a064fb3d515cf37f25f840c5fc850689_md5.webp onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

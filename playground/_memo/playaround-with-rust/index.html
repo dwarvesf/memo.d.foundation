@@ -215,12 +215,22 @@ fn main() {
         }
 }
 </code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/playaround-with-rust_8b2e8ecd35a0b2b6be39e220dcb4c333_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/playaround-with-rust_8b2e8ecd35a0b2b6be39e220dcb4c333_md5.webp onerror="this.onerror=null" class=content-img></p><p>In order to correct the function, we just put the lifetime in parameter like:</p><pre><code class=language-javascript>fn largest(x: &amp;i64, y: &amp;i64) -&gt; &amp;i64 {
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In order to correct the function, we just put the lifetime in parameter like:</p><pre><code class=language-javascript>fn largest(x: &amp;i64, y: &amp;i64) -&gt; &amp;i64 {
    if x &gt; y {
        x
    } else {

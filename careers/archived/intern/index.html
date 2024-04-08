@@ -165,21 +165,51 @@
         }
       },
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Intern</div><div class=tags-index style=display:none>tags:</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Intern</h1></template><div class=date>Jan 1, 0001</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `/images/internship.png`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/careers/archived//images/internship.png onerror="this.onerror=null" class=content-img></p><h1 id=the-program>The Program <a href=#the-program></a></h1><p>In 2018, we launched the first Summer Internship Program for students with or without Engineering background from top universities. The program was designed with the purpose to give an opportunity for candidates to experience the real world projects. No coffee runs here. We love watching talented people learn and explore their skills.</p><p>We strive to create a generation of new tech enthusiasts who possess the <a href=/careers/additional-info/what-we-value/>same DNA</a> with us, to generate a solid groundwork and go along with the company’s triumph.</p><ul><li>Collect an outline vision with the team leader&rsquo;s mentorship for you career roadmap.</li><li>Live your value and foster your skills through the code of craftsmanship.</li><li>You get paid for your experience with an allowance worths $300/month.</li><li>Expand your network and boost your competencies.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h1 id=the-program>The Program <a href=#the-program></a></h1><p>In 2018, we launched the first Summer Internship Program for students with or without Engineering background from top universities. The program was designed with the purpose to give an opportunity for candidates to experience the real world projects. No coffee runs here. We love watching talented people learn and explore their skills.</p><p>We strive to create a generation of new tech enthusiasts who possess the <a href=/careers/additional-info/what-we-value/>same DNA</a> with us, to generate a solid groundwork and go along with the company’s triumph.</p><ul><li>Collect an outline vision with the team leader&rsquo;s mentorship for you career roadmap.</li><li>Live your value and foster your skills through the code of craftsmanship.</li><li>You get paid for your experience with an allowance worths $300/month.</li><li>Expand your network and boost your competencies.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/internship-program-01.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/careers/archived/assets/internship-program-01.webp onerror="this.onerror=null" class=content-img></p><h1 id=about-us>About Us <a href=#about-us></a></h1><p>Found in 2014, Dwarves Foundation is an innovation service firm. <a href=/careers/additional-info/what-we-stand-for/>We stand for the craftsmanship</a> in software development. Our woodland is a sum of great technology, engineering culture, and smart people. The numbers speak for themselves:</p><ul><li>5 years in the market</li><li>40 talented members</li><li>10 common team size per deployments</li><li>3 Vietnam Development Communities Influenced</li></ul><h1 id=the-syllabus>The Syllabus <a href=#the-syllabus></a></h1><p>To make sure your time with us is well-spent, we offer you real projects with our adepts and the chance to work with global customers. Bring your best curiosity and initial to make your way in these open doors:</p><ul><li>Apply basic DevOps: Containerized, Docker, Continuous Integration, Continuous Delivery</li><li>Speaking multiple languages at once: You will be taught to use Golang as the primary backend language; Agile and Scrum process to manage your work.</li><li>Use GIT for tracking file changes and version control system</li><li>We have Swift for Apple fans to build your iOS applications, and for those who choose to go with Android, we got you covered with Kotlin.</li><li>Be a Vim user or master another editor. Become a CLI user</li></ul><p>We want to help you become the product person. We know that things take steps to learn and we will help you persuit the <strong>can-do-everything</strong> mindset. The problems solving skill is the key and lifetime skill that you also need to learn.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h1 id=about-us>About Us <a href=#about-us></a></h1><p>Found in 2014, Dwarves Foundation is an innovation service firm. <a href=/careers/additional-info/what-we-stand-for/>We stand for the craftsmanship</a> in software development. Our woodland is a sum of great technology, engineering culture, and smart people. The numbers speak for themselves:</p><ul><li>5 years in the market</li><li>40 talented members</li><li>10 common team size per deployments</li><li>3 Vietnam Development Communities Influenced</li></ul><h1 id=the-syllabus>The Syllabus <a href=#the-syllabus></a></h1><p>To make sure your time with us is well-spent, we offer you real projects with our adepts and the chance to work with global customers. Bring your best curiosity and initial to make your way in these open doors:</p><ul><li>Apply basic DevOps: Containerized, Docker, Continuous Integration, Continuous Delivery</li><li>Speaking multiple languages at once: You will be taught to use Golang as the primary backend language; Agile and Scrum process to manage your work.</li><li>Use GIT for tracking file changes and version control system</li><li>We have Swift for Apple fans to build your iOS applications, and for those who choose to go with Android, we got you covered with Kotlin.</li><li>Be a Vim user or master another editor. Become a CLI user</li></ul><p>We want to help you become the product person. We know that things take steps to learn and we will help you persuit the <strong>can-do-everything</strong> mindset. The problems solving skill is the key and lifetime skill that you also need to learn.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/internship-program-02.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/careers/archived/assets/internship-program-02.webp onerror="this.onerror=null" class=content-img></p><h2 id=how-to-be-a-mining-intern>How to be a mining intern? <a href=#how-to-be-a-mining-intern></a></h2><p>You can <a href=https://internship.dwarves.foundation><strong>apply for the program</strong></a> on March or July. Or you can send us your <strong>short CV</strong> or any similar piece of information at <a href=mailto:spawn@d.foundation>spawn@d.foundation</a> with</p><blockquote><p>Subject: Mining Intern - Be an awesome dwarf</p></blockquote><p>Honestly, we don&rsquo;t really care about your level of formal education, math skill, or so on. We want to see that you are potential to do something.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=how-to-be-a-mining-intern>How to be a mining intern? <a href=#how-to-be-a-mining-intern></a></h2><p>You can <a href=https://internship.dwarves.foundation><strong>apply for the program</strong></a> on March or July. Or you can send us your <strong>short CV</strong> or any similar piece of information at <a href=mailto:spawn@d.foundation>spawn@d.foundation</a> with</p><blockquote><p>Subject: Mining Intern - Be an awesome dwarf</p></blockquote><p>Honestly, we don&rsquo;t really care about your level of formal education, math skill, or so on. We want to see that you are potential to do something.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

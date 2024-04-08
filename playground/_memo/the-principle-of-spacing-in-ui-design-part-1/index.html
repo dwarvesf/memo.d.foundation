@@ -165,9 +165,19 @@
         }
       },
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>The Principle Of Spacing In Ui Design Part 1</div><div class=tags-index style=display:none>tags: design, technique</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>The Principle Of Spacing In Ui Design Part 1</h1></template><div class=date>Jan 18, 2018</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><h2 id=why-is-spacing-important>Why is spacing important? <a href=#why-is-spacing-important></a></h2><p>Before I talk about spacing principle, you should know how spacing important is with our design.</p><p>In design have four main factors in such as:</p><ul><li>Content</li><li>Graphic</li><li>Navigation</li><li>Identify</li></ul><p>Spacing has not only an impact directly on this factors but also on aesthetics design. Even more, it gives the page a united harmonic look. It decides you want them to pay attention to what. If you know the principle of spacing, you can use it in all your products. And you have a power strength of designers.</p><p>Now let’s check the below example:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/the-principle-of-spacing-in-ui-design-part-1_cdf0d4d3eccb21431ec5e9c04b336c24_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/the-principle-of-spacing-in-ui-design-part-1_cdf0d4d3eccb21431ec5e9c04b336c24_md5.webp onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

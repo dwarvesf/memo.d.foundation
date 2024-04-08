@@ -166,33 +166,83 @@
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Project Delivery Schedule and Guidelines</div><div class=tags-index style=display:none>tags: delivery, consulting, internal</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Project Delivery Schedule and Guidelines</h1></template><div class=date>Dec 5, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/huytq>huytq</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><h2 id=weekly-activities>Weekly Activities <a href=#weekly-activities></a></h2><h3 id=1-weekly-pointseffort-report>1. Weekly Points/Effort Report <a href=#1-weekly-pointseffort-report></a></h3><p><strong>Every Friday</strong></p><ul><li><strong>Action</strong>: Fill out the weekly points/effort report.</li><li><strong>Link</strong>: <a href="https://docs.google.com/spreadsheets/d/1KXUVyDrC9199Dp6wpT6ovIkIvZRtf455eaqwZmvTAFU/edit#gid=0">Weekly Report Spreadsheet</a>.</li><li><strong>Deadline for Data Sync</strong>: Data is sync by EOD next Tuesday.</li><li><strong>Outcome</strong>: Weekly leaderboard on delivery.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20231205231343953.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/operations/assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20231205231343953.webp onerror="this.onerror=null" class=content-img></p><h3 id=2-sync-up-between-project-lead-and-delivery-manager>2. Sync-Up Between Project Lead and Delivery Manager <a href=#2-sync-up-between-project-lead-and-delivery-manager></a></h3><p><strong>Every Friday at 2:30 PM</strong></p><ul><li><strong>Topics</strong>:<ul><li>Project Health: Wins, Losses, Future Plans.</li><li>Milestone Progress.</li><li>Changelog for the week (will be sent out the following Monday.)</li></ul></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=2-sync-up-between-project-lead-and-delivery-manager>2. Sync-Up Between Project Lead and Delivery Manager <a href=#2-sync-up-between-project-lead-and-delivery-manager></a></h3><p><strong>Every Friday at 2:30 PM</strong></p><ul><li><strong>Topics</strong>:<ul><li>Project Health: Wins, Losses, Future Plans.</li><li>Milestone Progress.</li><li>Changelog for the week (will be sent out the following Monday.)</li></ul></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20231205231409927.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/operations/assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20231205231409927.webp onerror="this.onerror=null" class=content-img></p><hr><h2 id=bi-weekly-and-monthly-activities>Bi-Weekly and Monthly Activities <a href=#bi-weekly-and-monthly-activities></a></h2><h3 id=3-project-demoshowcase>3. Project Demo/Showcase: <a href=#3-project-demoshowcase></a></h3><p><strong>Every 3rd Wednesday</strong></p><ul><li><strong>Audience</strong>: Consulting and Labs team.</li><li><strong>Goals</strong>:<ul><li>Update on current projects.</li><li>Insights about the market and real projects.</li><li>Celebrate monthly wins.</li></ul></li><li><strong>Recap</strong>: Sent out the following week and highlighted in the monthly community call.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><hr><h2 id=bi-weekly-and-monthly-activities>Bi-Weekly and Monthly Activities <a href=#bi-weekly-and-monthly-activities></a></h2><h3 id=3-project-demoshowcase>3. Project Demo/Showcase: <a href=#3-project-demoshowcase></a></h3><p><strong>Every 3rd Wednesday</strong></p><ul><li><strong>Audience</strong>: Consulting and Labs team.</li><li><strong>Goals</strong>:<ul><li>Update on current projects.</li><li>Insights about the market and real projects.</li><li>Celebrate monthly wins.</li></ul></li><li><strong>Recap</strong>: Sent out the following week and highlighted in the monthly community call.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20231205231433316.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/operations/assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20231205231433316.webp onerror="this.onerror=null" class=content-img></p><h3 id=4-community-call>4. Community Call <a href=#4-community-call></a></h3><p><strong>Last Friday of the Month</strong></p><ul><li><strong>Contents</strong>:<ul><li>Delivery Monthly Report.</li><li>Demo/Showcase Recap.</li><li>Monthly Leaderboard of Delivery.</li></ul></li><li><strong>Rewards</strong>: ICY reward and NFT Badge benefiting the holder&rsquo;s achievements.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=4-community-call>4. Community Call <a href=#4-community-call></a></h3><p><strong>Last Friday of the Month</strong></p><ul><li><strong>Contents</strong>:<ul><li>Delivery Monthly Report.</li><li>Demo/Showcase Recap.</li><li>Monthly Leaderboard of Delivery.</li></ul></li><li><strong>Rewards</strong>: ICY reward and NFT Badge benefiting the holder&rsquo;s achievements.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20231205231500387.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/operations/assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20231205231500387.webp onerror="this.onerror=null" class=content-img></p><h3 id=5-project-collect-feedback>5. Project Collect Feedback <a href=#5-project-collect-feedback></a></h3><p>For every 3 or 6 months, by <strong>Monday of the 1st week from the 1st month</strong>, Delivery team or Project Leader will send out an email to client to gather feedbacks for our Dwarves members through this form: <a href=https://docs.google.com/forms/d/e/1FAIpQLScVkRDy9w5_j_Tkj2MXs2Yi_n8yTUqNNBqy8w1-E3Beauodsw/viewform>Feedback Form</a></p><p><strong>What we can collect from this form?</strong></p><ul><li>Metrics: to evaluate our members if they are working effectively or not.</li><li>Start Stop Continue doing feedback model: to understand how we can improve our delivery better.</li><li>Leadership metrics: how effectiveness on the management from our Team Leader and Team Members.</li></ul><hr><h2 id=important-reminders>Important Reminders <a href=#important-reminders></a></h2><ul><li><strong>Weekly Report Completion</strong>: Complete the report every Friday. For estimation help, check <a href=/playbook/business/estimation-guidelines/>Estimation Guidelines</a>.</li><li><strong>Project Achievements</strong>: If you have significant milestones or cool aspects of your project, notify the Consulting team for potential demo/showcase inclusion. Recognition is guaranteed.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=5-project-collect-feedback>5. Project Collect Feedback <a href=#5-project-collect-feedback></a></h3><p>For every 3 or 6 months, by <strong>Monday of the 1st week from the 1st month</strong>, Delivery team or Project Leader will send out an email to client to gather feedbacks for our Dwarves members through this form: <a href=https://docs.google.com/forms/d/e/1FAIpQLScVkRDy9w5_j_Tkj2MXs2Yi_n8yTUqNNBqy8w1-E3Beauodsw/viewform>Feedback Form</a></p><p><strong>What we can collect from this form?</strong></p><ul><li>Metrics: to evaluate our members if they are working effectively or not.</li><li>Start Stop Continue doing feedback model: to understand how we can improve our delivery better.</li><li>Leadership metrics: how effectiveness on the management from our Team Leader and Team Members.</li></ul><hr><h2 id=important-reminders>Important Reminders <a href=#important-reminders></a></h2><ul><li><strong>Weekly Report Completion</strong>: Complete the report every Friday. For estimation help, check <a href=/playbook/business/estimation-guidelines/>Estimation Guidelines</a>.</li><li><strong>Project Achievements</strong>: If you have significant milestones or cool aspects of your project, notify the Consulting team for potential demo/showcase inclusion. Recognition is guaranteed.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20240122161522695.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/operations/assets/project-schedule-delivery-guidelines_project-delivery-schedule-and-guidelines-20240122161522695.webp onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

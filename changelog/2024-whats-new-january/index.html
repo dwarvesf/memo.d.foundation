@@ -170,7 +170,13 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
 <script src=/js/pdf-js/pdf.mjs type=module></script><script type=module>
   
   
-  const url = "\/changelog\/assets\/2024-whats-new-january_doty2023.pdf";
+  let url = `assets\/2024-whats-new-january_doty2023.pdf`;
+  const currentUrlRoot = window.location.href.split('/')[3];
+  if (url.match(/^assets/)) {
+      url = `/${currentUrlRoot}/${url}`;
+  } else {
+      url = `/${url}`;
+  }
 
   
   const { pdfjsLib } = globalThis;

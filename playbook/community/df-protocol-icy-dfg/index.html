@@ -166,15 +166,35 @@
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>💠 df protocol, $icy and $dfg</div><div class=tags-index style=display:none>tags: dwarves, work, icy, protocol, dfg, internal</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>💠 df protocol, $icy and $dfg</h1></template><div class=date>Nov 22, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/han>han</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p>Here&rsquo;s our draft internal map/v0 for 🧊 $icy play, based on our current activities at this borderless software firm.</p><p>Context:</p><ol start=0><li><p>Back in 2018, when i envisioned doing something unconventional with our setup, we introduced 💎 $dfg.</p><p>It came with a dream that everyone on the team can help build next generation software, stay cool making money and own something. I planned to step down and give more ownership to those who actually implement our projects by gradually distributing $dfg to our grind chads.</p></li><li><p>In 2020, we intro 🧊 $icy as a loyalty point system, so we can use it to tip/recognize others and encourage the culture of appreciation.</p></li><li><p>Now in 2023, the thing we are doing is so called building a protocol with its economics.</p></li></ol><p>There are more concept like proposal, voting, automated workflow will be introduced sooner or later.</p><p>Hopefully the Dwarves brand could continue to thrive and we will all benefit from it.</p><p>Enjoy the play 💻</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/df-protocol-icy-dfg_💠-df-protocol,-$icy-and-$dfg-20231122144733966.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/df-protocol-icy-dfg_%f0%9f%92%a0-df-protocol,-$icy-and-$dfg-20231122144733966.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/df-protocol-icy-dfg_💠-df-protocol,-$icy-and-$dfg-20231122144740106.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/df-protocol-icy-dfg_%f0%9f%92%a0-df-protocol,-$icy-and-$dfg-20231122144740106.webp onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

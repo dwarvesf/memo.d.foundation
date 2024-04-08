@@ -167,217 +167,567 @@
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How to withdraw ICY</div><div class=tags-index style=display:none>tags: icy, web3, payment, instructions, guideline</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>How to withdraw ICY</h1></template><div class=date>Mar 13, 2024</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/minhcloud>minhcloud</a>,
 <a href=/contributor/monotykamary>monotykamary</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><h2 id=a-set-up>A. Set up: <a href=#a-set-up></a></h2><h3 id=create-an-on-chain-crypto-wallet>Create an on-chain crypto wallet <a href=#create-an-on-chain-crypto-wallet></a></h3><p><strong>Install the extension on your browser</strong></p><!-- col-2 #1 --><ul><li>Go to <a href=https://metamask.io/download/>https://metamask.io/download/</a> and Click “Install Metamask for Chromium”</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313132819285.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313132819285.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #1 --><!-- col-2 #2 --><ul><li>Add the wallet extension to the Chrome on Firefox Browser (DO NOT use Safari)</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #1 --><!-- col-2 #2 --><ul><li>Add the wallet extension to the Chrome on Firefox Browser (DO NOT use Safari)</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313132855655.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313132855655.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #2 --><p><strong>Follow guideline to create a wallet</strong></p><!-- col-2 #3 --><ul><li>Click to the Metamask Icon to use the wallet</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #2 --><p><strong>Follow guideline to create a wallet</strong></p><!-- col-2 #3 --><ul><li>Click to the Metamask Icon to use the wallet</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313143503939.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313143503939.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #3 --><!-- col-2 #4 --><ul><li>For those who haven’t had any wallet, please click “Create a new wallet”</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #3 --><!-- col-2 #4 --><ul><li>For those who haven’t had any wallet, please click “Create a new wallet”</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313143524973.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313143524973.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #4 --><!-- col-2 #5 --><ul><li>Enter the password for the wallet</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #4 --><!-- col-2 #5 --><ul><li>Enter the password for the wallet</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313143710295.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313143710295.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #5 --><!-- col-2 #6 --><ul><li>Read the instruction of Wallet security and Choose “Secure my wallet”</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #5 --><!-- col-2 #6 --><ul><li>Read the instruction of Wallet security and Choose “Secure my wallet”</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313143732060.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313143732060.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #6 --><!-- col-2 #7 --><ul><li>Reveal and copy the seed phrase, the save it at a safe place. It will be use to log in or import wallet when you don’t remember password, lose data on your computer, or reinstall the wallet on different platform or browser. <strong>DO NOT SHARE WITH OTHERS</strong> about the seed phrase.</li><li>Then Confirm the seed phrase in step 3, you will have to re-enter the provided seed phrase.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #6 --><!-- col-2 #7 --><ul><li>Reveal and copy the seed phrase, the save it at a safe place. It will be use to log in or import wallet when you don’t remember password, lose data on your computer, or reinstall the wallet on different platform or browser. <strong>DO NOT SHARE WITH OTHERS</strong> about the seed phrase.</li><li>Then Confirm the seed phrase in step 3, you will have to re-enter the provided seed phrase.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313143849627.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313143849627.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #7 --><h3 id=add-network>Add Network <a href=#add-network></a></h3><!-- col-3 #8 --><p>Add Polygon network. Because ICY is on Polygon, therefore, to receive and swap ICY to USDT, you need to add the network to your wallet.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #7 --><h3 id=add-network>Add Network <a href=#add-network></a></h3><!-- col-3 #8 --><p>Add Polygon network. Because ICY is on Polygon, therefore, to receive and swap ICY to USDT, you need to add the network to your wallet.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144057277.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144057277.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144103209.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144103209.webp onerror="this.onerror=null" class=content-img></p><!-- /col-3 #8 --><p><strong>You have 2 ways to to add the network:</strong></p><ol><li>Add by shortcut on the network list</li></ol><!-- col-2 #9 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-3 #8 --><p><strong>You have 2 ways to to add the network:</strong></p><ol><li>Add by shortcut on the network list</li></ol><!-- col-2 #9 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144120524.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144120524.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144142293.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144142293.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #9 --><ol start=2><li><p>Add manually (if you can’t find the shortcut on the above list), by using these information and filling in the form manually</p><p><strong>Network name:</strong> Polygon Mainnet</p><p><strong>Network URL:</strong> <a href=https://polygon-mainnet.infura.io>https://polygon-mainnet.infura.io</a></p><p><strong>Chain ID:</strong> 137</p><p><strong>Currency symbol:</strong> MATIC</p><p><strong>Block explorer URL:</strong> <a href=https://polygonscan.com/>https://polygonscan.com/</a></p></li></ol><!-- col-2 #10 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #9 --><ol start=2><li><p>Add manually (if you can’t find the shortcut on the above list), by using these information and filling in the form manually</p><p><strong>Network name:</strong> Polygon Mainnet</p><p><strong>Network URL:</strong> <a href=https://polygon-mainnet.infura.io>https://polygon-mainnet.infura.io</a></p><p><strong>Chain ID:</strong> 137</p><p><strong>Currency symbol:</strong> MATIC</p><p><strong>Block explorer URL:</strong> <a href=https://polygonscan.com/>https://polygonscan.com/</a></p></li></ol><!-- col-2 #10 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144212466.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144212466.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144220528.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144220528.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #10 --><h3 id=import-icy-token>Import ICY token <a href=#import-icy-token></a></h3><ul><li>Copy and paste this address to import ICY into your wallet: <code>0x8D57d71B02d71e1e449a0E459DE40473Eb8f4a90</code></li><li>Copy and paste this address to import USDT into your wallet: <code>0xc2132D05D31c914a87C6611C10748AEb04B58e8F</code></li></ul><!-- col-2 #10 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #10 --><h3 id=import-icy-token>Import ICY token <a href=#import-icy-token></a></h3><ul><li>Copy and paste this address to import ICY into your wallet: <code>0x8D57d71B02d71e1e449a0E459DE40473Eb8f4a90</code></li><li>Copy and paste this address to import USDT into your wallet: <code>0xc2132D05D31c914a87C6611C10748AEb04B58e8F</code></li></ul><!-- col-2 #10 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144251314.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144251314.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144301936.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144301936.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #10 --><h3 id=create-a-binance-account>Create a Binance account <a href=#create-a-binance-account></a></h3><p>Follow Binance guidelines and create a verified account.</p><ul><li>Go to this link and install Binance on your mobile: <a href=https://www.binance.com/en/download>https://www.binance.com/en/download</a></li></ul><!-- col-2 #11 --><ol><li><p>After install, follow the guideline of “Crypto Novice” mode
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #10 --><h3 id=create-a-binance-account>Create a Binance account <a href=#create-a-binance-account></a></h3><p>Follow Binance guidelines and create a verified account.</p><ul><li>Go to this link and install Binance on your mobile: <a href=https://www.binance.com/en/download>https://www.binance.com/en/download</a></li></ul><!-- col-2 #11 --><ol><li><p>After install, follow the guideline of “Crypto Novice” mode
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144410171.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144410171.webp onerror="this.onerror=null" class=content-img></p></li><li><p>Confirm to create your account
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Confirm to create your account
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144425125.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144425125.webp onerror="this.onerror=null" class=content-img></p></li></ol><!-- /col-2 #11 --><!-- col-3 #12 --><ol start=3><li>Add the passkey to log in without password</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li></ol><!-- /col-2 #11 --><!-- col-3 #12 --><ol start=3><li>Add the passkey to log in without password</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144450367.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144450367.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144456227.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144456227.webp onerror="this.onerror=null" class=content-img></p><!-- /col-3 #12 --><!-- col-3 #13 --><ol start=4><li>Fill in your information and verify the ID document</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-3 #12 --><!-- col-3 #13 --><ol start=4><li>Fill in your information and verify the ID document</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144633452.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144633452.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144637789.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144637789.webp onerror="this.onerror=null" class=content-img></p><!-- /col-3 #13 --><h2 id=b-withdraw-token-from-mochi>B. Withdraw token from Mochi <a href=#b-withdraw-token-from-mochi></a></h2><p><code>/withdraw</code> command in Mochi</p><p>Note:</p><ul><li>To swap ICY to USDT in the next step, you will need some Matic</li><li>Therefore, buy some tokens or withdraw it from your balance.</li></ul><ol><li>Use the below command to withdraw token from Mochi to the crypto wallet</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-3 #13 --><h2 id=b-withdraw-token-from-mochi>B. Withdraw token from Mochi <a href=#b-withdraw-token-from-mochi></a></h2><p><code>/withdraw</code> command in Mochi</p><p>Note:</p><ul><li>To swap ICY to USDT in the next step, you will need some Matic</li><li>Therefore, buy some tokens or withdraw it from your balance.</li></ul><ol><li>Use the below command to withdraw token from Mochi to the crypto wallet</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144652671.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144652671.webp onerror="this.onerror=null" class=content-img></p><ol start=2><li>Click the button “Enter address” and paste the address of the crypto wallet you have created above</li></ol><!-- col-2 #14 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li>Click the button “Enter address” and paste the address of the crypto wallet you have created above</li></ol><!-- col-2 #14 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144732450.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144732450.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144815006.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144815006.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #14 --><h2 id=c-convert-icy-to-usdt>C. Convert ICY to USDT <a href=#c-convert-icy-to-usdt></a></h2><p>Go to <a href=https://icy.so/>https://icy.so/</a> to swap ICY to USDT</p><ul><li>Connect with the created wallet</li><li>Select the support network to Polygon and approve the request from Metamask to change</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #14 --><h2 id=c-convert-icy-to-usdt>C. Convert ICY to USDT <a href=#c-convert-icy-to-usdt></a></h2><p>Go to <a href=https://icy.so/>https://icy.so/</a> to swap ICY to USDT</p><ul><li>Connect with the created wallet</li><li>Select the support network to Polygon and approve the request from Metamask to change</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144835406.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144835406.webp onerror="this.onerror=null" class=content-img></p><ul><li>Input the ICY amount you want to swap</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Input the ICY amount you want to swap</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144845614.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144845614.webp onerror="this.onerror=null" class=content-img></p><ul><li>Click Approve and Swap and sign all transactions request of metamask</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Click Approve and Swap and sign all transactions request of metamask</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144859473.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144859473.webp onerror="this.onerror=null" class=content-img></p><h2 id=d-transfer-to-binance>D. Transfer to Binance <a href=#d-transfer-to-binance></a></h2><ul><li><p>Go to the tab Wallet and choose the Funding tab
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=d-transfer-to-binance>D. Transfer to Binance <a href=#d-transfer-to-binance></a></h2><ul><li><p>Go to the tab Wallet and choose the Funding tab
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144911243.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144911243.webp onerror="this.onerror=null" class=content-img></p></li><li><p>Choose “Deposit” on Binance and choose token USDT
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Choose “Deposit” on Binance and choose token USDT
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144922569.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144922569.webp onerror="this.onerror=null" class=content-img></p></li><li><p>Select Network “Polygon” and copy the deposit address</p></li></ul><!-- col-2 #15 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Select Network “Polygon” and copy the deposit address</p></li></ul><!-- col-2 #15 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144951021.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144951021.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313144956988.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313144956988.webp onerror="this.onerror=null" class=content-img></p><!-- /col-2 #15 --><ul><li>Transfer token from the crypto wallet to that address</li></ul><!-- col-3 #16 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-2 #15 --><ul><li>Transfer token from the crypto wallet to that address</li></ul><!-- col-3 #16 --><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313145039356.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313145039356.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313145048322.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313145048322.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313145055489.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313145055489.webp onerror="this.onerror=null" class=content-img></p><!-- /col-3 #16 --><h2 id=e-withdraw-to-the-bank>E. Withdraw to the bank <a href=#e-withdraw-to-the-bank></a></h2><ul><li>Go to P2P trading and choose the suitable service to withdraw to the bank account</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><!-- /col-3 #16 --><h2 id=e-withdraw-to-the-bank>E. Withdraw to the bank <a href=#e-withdraw-to-the-bank></a></h2><ul><li>Go to P2P trading and choose the suitable service to withdraw to the bank account</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/how-to-withdraw-icy-20240313145106740.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/community/assets/how-to-withdraw-icy-20240313145106740.webp onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -166,27 +166,67 @@
       },
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>wireframe</div><div class=tags-index style=display:none>tags: dwarves, work</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>wireframe</h1></template><div class=date>Oct 16, 2023</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><h2 id=wireframe-workflow-design>Wireframe: Workflow Design <a href=#wireframe-workflow-design></a></h2><p>Created on scraps of paper, a whiteboard, or in a software program, serve to establish relationships between elements in a project such as navigation, imagery, and calls to action.
 Often, a wireframe has 3 core goals:</p><ul><li>To show the content and functionality of the pages before any further designs.</li><li>To help designers communicate with clients about the design concept.</li><li>To establish the information hierarchy of the site.</li></ul><h3 id=tools>Tools <a href=#tools></a></h3><ul><li>Paper & Pencil</li><li>Balsamiq</li><li>Whimsical</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/wireframe_3c6ce1f34b539d7de9da020608c19f8a_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/design/assets/wireframe_3c6ce1f34b539d7de9da020608c19f8a_md5.webp onerror="this.onerror=null" class=content-img></p><h2 id=information-architecture>Information Architecture <a href=#information-architecture></a></h2><p>Information architecture (IA) is, like a blueprint, a visual representation of the product’s infrastructure, features, and hierarchy. IA provides designers (as well as product development and engineering teams) a bird’s-eye view of the entire product.</p><h3 id=how-we-do>How we do <a href=#how-we-do></a></h3><ul><li>Sitemap</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=information-architecture>Information Architecture <a href=#information-architecture></a></h2><p>Information architecture (IA) is, like a blueprint, a visual representation of the product’s infrastructure, features, and hierarchy. IA provides designers (as well as product development and engineering teams) a bird’s-eye view of the entire product.</p><h3 id=how-we-do>How we do <a href=#how-we-do></a></h3><ul><li>Sitemap</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: `&ldquo;Sitemap&rdquo;`,
+    src: `playbook/design/assets/wireframe/203ab5b0117c8ecbeb2cf2db4b549d51_md5.gif`,
     altText: `&ldquo;Sitemap&rdquo;`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/design/playbook/design/assets/wireframe/203ab5b0117c8ecbeb2cf2db4b549d51_md5.gif alt=&ldquo;Sitemap&rdquo; x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Card Sorting</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Card Sorting</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/wireframe_1f61968fcb92a401380478e6df78410a_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/design/assets/wireframe_1f61968fcb92a401380478e6df78410a_md5.webp onerror="this.onerror=null" class=content-img></p><ul><li>State machine</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>State machine</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/wireframe_a58d97e8735e49f087898dd95725b929_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playbook/design/assets/wireframe_a58d97e8735e49f087898dd95725b929_md5.webp onerror="this.onerror=null" class=content-img></p><h3 id=tools-1>Tools <a href=#tools-1></a></h3><ul><li>Whimsical</li><li>Draw.io</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=tools-1>Tools <a href=#tools-1></a></h3><ul><li>Whimsical</li><li>Draw.io</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

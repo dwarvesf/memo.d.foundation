@@ -193,12 +193,22 @@ class App extends Component {
 export default App;
 view rawApp.js hosted with ❤ by GitHub
 </code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/hoc-renderprops-and-hook-in-reactjs_c02d8b16fe8c6c8b864064441c8ac84d_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/hoc-renderprops-and-hook-in-reactjs_c02d8b16fe8c6c8b864064441c8ac84d_md5.webp onerror="this.onerror=null" class=content-img></p><p>But if i want to add more text like XYZ and i want another button that toggle the text XYZ, i will have to create visible state for button and the method for toggle its visibility</p><p>![[c02d8b16fe8c6c8b864064441c8ac84d_MD5.webp]]</p><pre><code class=language-javascript>import React, { Component } from 'react';
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>But if i want to add more text like XYZ and i want another button that toggle the text XYZ, i will have to create visible state for button and the method for toggle its visibility</p><p>![[c02d8b16fe8c6c8b864064441c8ac84d_MD5.webp]]</p><pre><code class=language-javascript>import React, { Component } from 'react';
 
 class App extends Component {
   constructor() {

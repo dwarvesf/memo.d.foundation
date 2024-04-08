@@ -165,18 +165,38 @@
         }
       },
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Fundamental End To End Frontend Testing With Cypress</div><div class=tags-index style=display:none>tags: js, testing</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Fundamental End To End Frontend Testing With Cypress</h1></template><div class=date>Aug 2, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/fundamental-end-to-end-frontend-testing-with-cypress_7578257d37750f65869976d63ebb2b57_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/fundamental-end-to-end-frontend-testing-with-cypress_7578257d37750f65869976d63ebb2b57_md5.webp onerror="this.onerror=null" class=content-img></p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>End-to-end testing is a methodology used to test whether the flow of an application is performing as designed from start to finish. It’s like testing as a user perspective and not involve thing like assert internal code state or mock… etc</p><p>Cypress is an e2e testing framework that offers simplicity API and performant test runner <a href=https://www.cypress.io/>https://www.cypress.io/</a></p><h2 id=application-being-tested>Application being tested <a href=#application-being-tested></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>End-to-end testing is a methodology used to test whether the flow of an application is performing as designed from start to finish. It’s like testing as a user perspective and not involve thing like assert internal code state or mock… etc</p><p>Cypress is an e2e testing framework that offers simplicity API and performant test runner <a href=https://www.cypress.io/>https://www.cypress.io/</a></p><h2 id=application-being-tested>Application being tested <a href=#application-being-tested></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/fundamental-end-to-end-frontend-testing-with-cypress_706c9f06c1ddbab02d7e04195d24bc16_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/fundamental-end-to-end-frontend-testing-with-cypress_706c9f06c1ddbab02d7e04195d24bc16_md5.webp onerror="this.onerror=null" class=content-img></p><p>The application that we are going to test against is autocomplete textbox. Features</p><ul><li>Enter filter text and render list item that has text match filter text</li><li>Select item in the list will replace filter text with text in the list item</li></ul><h2 id=installation>Installation <a href=#installation></a></h2><p>Clone this project for application setup (This repo. Install project dependencies with yarn install) <a href=https://github.com/PhmNgocNghia/TestingReact>https://github.com/PhmNgocNghia/TestingReact</a></p><p>Since this is a react project using custom webpack template. Here is some command to start the project:</p><ul><li>yarn dev: start develop using webpack hot replacement server</li><li>yarn build: build production application</li></ul><p>We must first start run yarn dev for testing server at localhost:9000</p><p>To start writing test, create a npm script that starts cypress with npm command: cypress open</p><pre><code class=language-plain_text>&quot;scripts&quot;: {
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The application that we are going to test against is autocomplete textbox. Features</p><ul><li>Enter filter text and render list item that has text match filter text</li><li>Select item in the list will replace filter text with text in the list item</li></ul><h2 id=installation>Installation <a href=#installation></a></h2><p>Clone this project for application setup (This repo. Install project dependencies with yarn install) <a href=https://github.com/PhmNgocNghia/TestingReact>https://github.com/PhmNgocNghia/TestingReact</a></p><p>Since this is a react project using custom webpack template. Here is some command to start the project:</p><ul><li>yarn dev: start develop using webpack hot replacement server</li><li>yarn build: build production application</li></ul><p>We must first start run yarn dev for testing server at localhost:9000</p><p>To start writing test, create a npm script that starts cypress with npm command: cypress open</p><pre><code class=language-plain_text>&quot;scripts&quot;: {
    &quot;e2e&quot;: &quot;cypress open&quot;
 },
 </code></pre><p>Try running command yarn e2e first time, it will create folder named cypress. Create file named AutoComplete.spec.js in e2e/integration folder. Test files are located in <code>cypress/integration</code> by default, but can be configured to another directory.</p><p>Cypress integrate with mocha test runner and chai assert library by default. Each describes statement create a section of the test case and each statement create a test case. Mocha also has a hook which will run the function inside it. My test file bellow use beforEach hooks which will run the function you pass in it in every test case</p><pre><code class=language-plain_text>describe('Auto Complete', function () {
@@ -191,12 +211,22 @@
   })
 }
 </code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/fundamental-end-to-end-frontend-testing-with-cypress_dabaf075b757602a5af2c6bfcead3283_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/fundamental-end-to-end-frontend-testing-with-cypress_dabaf075b757602a5af2c6bfcead3283_md5.webp onerror="this.onerror=null" class=content-img></p><p>Run command yarn e2e it will show window and browser like this. A window is for select test and the browser is for testing result
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Run command yarn e2e it will show window and browser like this. A window is for select test and the browser is for testing result
 E2E Testing
 In the first test case: Filter source of the textbox correctly. That means we going to type in the textbox and expect it’s return list of item that includes the text in the textbox. Cypress syntax is chainable, you can chain it like</p><p><code>cy.get('input').type('abc')</code></p><p>The command above will get the element input tag and type word ‘abc’ in it. Cy.get take string parameter as CSS Selector. should statement allow you to do assertion. You must chain it after getting statement.</p><p>The should command allow us to do assertion.Should have two kind syntaxes:</p><ul><li>should(‘assertion_name, assertion_value)</li><li>should(assertion_function)</li></ul><p>With type 1, you can view all available assertion_name at <a href=https://docs.cypress.io/guides/references/assertions.html#Common-Assertions>https://docs.cypress.io/guides/references/assertions.html#Common-Assertions</a></p><pre><code class=language-javascript>it('Filter source of the textbox correctly', function () {
     // get input and type 'one' in it
@@ -219,9 +249,19 @@ In the first test case: Filter source of the textbox correctly. That means we go
     })
   })
 </code></pre><p>After inserting e2e test into the spec file. Run yarn e2e again to see the result of the test:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/fundamental-end-to-end-frontend-testing-with-cypress_8fbb0902507f83afa2b0ef1bc5f830a0_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/fundamental-end-to-end-frontend-testing-with-cypress_8fbb0902507f83afa2b0ef1bc5f830a0_md5.webp onerror="this.onerror=null" class=content-img></p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In this article, I didn’t cover all feature of cypress, mocha task runner and chai assertion library. You can check its document at:</p><ul><li>Chai assertion: <a href=https://www.chaijs.com/api/bdd/>https://www.chaijs.com/api/bdd/</a></li><li>Cypress: <a href=https://docs.cypress.io/>https://docs.cypress.io</a></li></ul><p>You can view the full working repository at <a href=https://github.com/PhmNgocNghia/TestingReact>https://github.com/PhmNgocNghia/TestingReact</a></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In this article, I didn’t cover all feature of cypress, mocha task runner and chai assertion library. You can check its document at:</p><ul><li>Chai assertion: <a href=https://www.chaijs.com/api/bdd/>https://www.chaijs.com/api/bdd/</a></li><li>Cypress: <a href=https://docs.cypress.io/>https://docs.cypress.io</a></li></ul><p>You can view the full working repository at <a href=https://github.com/PhmNgocNghia/TestingReact>https://github.com/PhmNgocNghia/TestingReact</a></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

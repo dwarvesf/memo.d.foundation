@@ -167,28 +167,64 @@
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Life cycle of a publication</div><div class=tags-index style=display:none>tags: communications, content, guidelines</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Life cycle of a publication</h1></template><div class=date>Mar 21, 2024</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/nikki>nikki</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p>Following the core theme of MMA (Mastery, Meaning, Autonomy), every piece of content we put out requires a strategic approach, so it can cut through the noise, serve purposes and meanings to readers.
 Whether we&rsquo;re crafting a note, article, research report, or digital post, the process and cycle remain largely the same.</p><h2 id=recording-knowledge>Recording knowledge <a href=#recording-knowledge></a></h2><p>We follow the <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjd1sqOxYSFAxWJma8BHS9-CmoQFnoECBAQAQ&amp;url=https%3A%2F%2Fzettelkasten.de%2Foverview%2F&amp;usg=AOvVaw3FPgOjz3YA4-_7PSvM22et&amp;opi=89978449">Zettelkasten Method</a> to record and organize knowledge. In short, every new thing we learn is stored as a fleeting note. Fleeting notes are conntected to one another by headings and metadata such as tags or numbers.</p><p>Fleeting notes can be personal to each team members, or can be shared through our Playground. When we need to craft a piece of content for a certain topic, we can just pull up related fleeting notes to start.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/lifecycle-of-a-publication-20240329170011754.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/assets/lifecycle-of-a-publication-20240329170011754.webp onerror="this.onerror=null" class=content-img></p><h2 id=know-our-audience-and-objectives>Know our audience and objectives <a href=#know-our-audience-and-objectives></a></h2><p>This step guides everything we do next. Before we start, think about who will read our work and what we want them to get from it. Here we can apply a simplified version of the <a href=https://fourweekmba.com/virtuous-cycle/>Virtuous Cycle</a> to define our audience and objectives.</p><ul><li>What characteristics do the readers have?</li><li>What do the readers want to get from us?</li><li>What can we offer the readers?</li><li>What should we write to answer to what they want?</li><li>How should we write (tone, voice, word choices)?</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=know-our-audience-and-objectives>Know our audience and objectives <a href=#know-our-audience-and-objectives></a></h2><p>This step guides everything we do next. Before we start, think about who will read our work and what we want them to get from it. Here we can apply a simplified version of the <a href=https://fourweekmba.com/virtuous-cycle/>Virtuous Cycle</a> to define our audience and objectives.</p><ul><li>What characteristics do the readers have?</li><li>What do the readers want to get from us?</li><li>What can we offer the readers?</li><li>What should we write to answer to what they want?</li><li>How should we write (tone, voice, word choices)?</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/lifecycle-of-a-publication-20240329170000789.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/assets/lifecycle-of-a-publication-20240329170000789.webp onerror="this.onerror=null" class=content-img></p><h2 id=create-content>Create content <a href=#create-content></a></h2><p>Once we have in mind how we should shape our content:</p><ul><li>Research: dig deep into the topic by pulling up our fleeting notes, we might need to research further to enhance the quality of our content.</li><li>Plan: have a plan for <strong>what</strong> we will create (outline) and <strong>when</strong> we will do it (deadline) and <strong>how</strong> we will measure the effectiveness of our work (metrics).</li><li>Write: write, gather, organize stuff according to the plan, keeping our audience and objectives in mind.</li><li>Format: We write in markdown, using VSCode and follow Dwarves&rsquo; styling.</li><li>Get reviewed: once we have a draft, submit it as a screenshot to our supervisor/manager for feeback for both content and visual.</li><li>Check and fix: go over our work carefully, several times to fix any errors and make sure it&rsquo;s clear and correct. Come back to our audience and objectives to check if what we write actually meet the brief.</li><li>Get approval: our supervior/manager needs to sign off on the work before we move forward.</li></ul><h2 id=publish-content>Publish content <a href=#publish-content></a></h2><p>Once our work is approved, we have a <strong>literature note</strong> ready for sharing with others. Most written content goes through 5 stages:</p><ul><li><a href=/playground/how-to-recap-a-publication/><strong>Internal recap</strong></a> within the communications team, so everyone understand it the same way, and can answer to any question readers have.</li><li>Publishing as an article on memo.d.foundation, so everyone has access to it.</li><li>Summary as slides, so we have training materials for everyone who&rsquo;s interested in the topic.</li><li>Workshop, tech event or radio talk with related experts/organizations to widen perspectives on the topic.</li><li>Social and newsletter promotion (optional).</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=create-content>Create content <a href=#create-content></a></h2><p>Once we have in mind how we should shape our content:</p><ul><li>Research: dig deep into the topic by pulling up our fleeting notes, we might need to research further to enhance the quality of our content.</li><li>Plan: have a plan for <strong>what</strong> we will create (outline) and <strong>when</strong> we will do it (deadline) and <strong>how</strong> we will measure the effectiveness of our work (metrics).</li><li>Write: write, gather, organize stuff according to the plan, keeping our audience and objectives in mind.</li><li>Format: We write in markdown, using VSCode and follow Dwarves&rsquo; styling.</li><li>Get reviewed: once we have a draft, submit it as a screenshot to our supervisor/manager for feeback for both content and visual.</li><li>Check and fix: go over our work carefully, several times to fix any errors and make sure it&rsquo;s clear and correct. Come back to our audience and objectives to check if what we write actually meet the brief.</li><li>Get approval: our supervior/manager needs to sign off on the work before we move forward.</li></ul><h2 id=publish-content>Publish content <a href=#publish-content></a></h2><p>Once our work is approved, we have a <strong>literature note</strong> ready for sharing with others. Most written content goes through 5 stages:</p><ul><li><a href=/playground/how-to-recap-a-publication/><strong>Internal recap</strong></a> within the communications team, so everyone understand it the same way, and can answer to any question readers have.</li><li>Publishing as an article on memo.d.foundation, so everyone has access to it.</li><li>Summary as slides, so we have training materials for everyone who&rsquo;s interested in the topic.</li><li>Workshop, tech event or radio talk with related experts/organizations to widen perspectives on the topic.</li><li>Social and newsletter promotion (optional).</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/lifecycle-of-a-publication_pasted-image-20240404170305.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/assets/lifecycle-of-a-publication_pasted-image-20240404170305.webp onerror="this.onerror=null" class=content-img></p><h2 id=talk-to-our-audience>Talk to our audience <a href=#talk-to-our-audience></a></h2><p>Here is when we know if our content is actually effective for the intended audience. At this stage, it is very important to engage with our audience and people who are interested in our work. Listen to what they have to say, make ways for them to discuss, ask questions and provide feedback to us.</p><h2 id=refine-and-upgrade>Refine and upgrade <a href=#refine-and-upgrade></a></h2><p>Keep a close eye on how people respond to our work (by tracking metrics you set out when you plan). Adjust our work based on what&rsquo;s working and what&rsquo;s not.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>We want to contribute as much as we can to the tech community, so making and sharing content is serious business at Dwarves.
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=talk-to-our-audience>Talk to our audience <a href=#talk-to-our-audience></a></h2><p>Here is when we know if our content is actually effective for the intended audience. At this stage, it is very important to engage with our audience and people who are interested in our work. Listen to what they have to say, make ways for them to discuss, ask questions and provide feedback to us.</p><h2 id=refine-and-upgrade>Refine and upgrade <a href=#refine-and-upgrade></a></h2><p>Keep a close eye on how people respond to our work (by tracking metrics you set out when you plan). Adjust our work based on what&rsquo;s working and what&rsquo;s not.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>We want to contribute as much as we can to the tech community, so making and sharing content is serious business at Dwarves.
 We already have standards and processes in place, following them and adapting them to fit our style and audience will get us high-quality content and become a true contributor to tech.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><script type=module>
   
   
-  const url = "\/playground\/assets\/lifecycle-of-a-publication.pdf";
+  let url = `assets\/lifecycle-of-a-publication.pdf`;
+  const currentUrlRoot = window.location.href.split('/')[3];
+  if (url.match(/^assets/)) {
+      url = `/${currentUrlRoot}/${url}`;
+  } else {
+      url = `/${url}`;
+  }
 
   
   const { pdfjsLib } = globalThis;

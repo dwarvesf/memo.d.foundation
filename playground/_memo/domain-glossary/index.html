@@ -165,18 +165,38 @@
         }
       },
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Domain Glossary</div><div class=tags-index style=display:none>tags: design</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Domain Glossary</h1></template><div class=date>Apr 19, 2020</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><h2 id=t1-retail-20>T1: Retail 2.0 <a href=#t1-retail-20></a></h2><p><em>Definition</em></p><ul><li>Enhancing consumer engagement within brick and mortar - online/using mobile devices, moving beyond simply blending in the online and the mobile experience, all driven at the heart by sophisticated big data tools that truly enable contextual, personalized and real-time conversations between brands, retailers and consumers. [1]</li><li>Made up of AR (augmented reality), VR (virtual reality), in-store apps, new payment methods and artificial intelligence.</li></ul><h3 id=personalized-exp>Personalized Exp <a href=#personalized-exp></a></h3><p>Designing or producing services and products to meet customer&rsquo;s individual requirements. You’re most likely already familiar with marketing personalization</p><h3 id=simplified-authentication>Simplified Authentication <a href=#simplified-authentication></a></h3><p>Authentication can be one of the most significant sources of friction for your application’s users. This usability barrier can impact adoption of your product, increase the burden on support operations or product administrators and, in some cases, degrade security.</p><h3 id=retail-30>Retail 3.0 <a href=#retail-30></a></h3><p>Haravan: Support offline shop on online selling to trigger O2O (standardize data structure) ––> Create the foundation for big data and 4.0</p><h3 id=retail-40>Retail 4.0 <a href=#retail-40></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/domain-glossary_9c8390ea196dd16d4d3dd5a56311ba94_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/domain-glossary_9c8390ea196dd16d4d3dd5a56311ba94_md5.webp onerror="this.onerror=null" class=content-img></p><h3 id=o2o---online-to-offline>O2O - Online to Offline <a href=#o2o---online-to-offline></a></h3><ul><li>Originally, implies an online trigger which prompts the customer to go to a physical location to complete their purchase</li><li>Evolvingly, it is the ability to pay online and then pick up a product in an offline place, such as the retailers&rsquo; physical store or 3rd party locations.</li><li>Another O2O feature is returning items purchased online to the retailers&rsquo; offline location.Open banking is also known as &ldquo;open bank data.&rdquo; Open banking is a banking practice that provides third-party financial service providers open access to consumer banking, transaction, and other financial data from banks and non-bank financial institutions through the use of application programming interfaces (APIs). Open banking will allow the networking of accounts and data across institutions for use by consumers, financial institutions, and third-party service providers. Open banking is becoming a major source of innovation that is poised to reshape the banking industry.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=o2o---online-to-offline>O2O - Online to Offline <a href=#o2o---online-to-offline></a></h3><ul><li>Originally, implies an online trigger which prompts the customer to go to a physical location to complete their purchase</li><li>Evolvingly, it is the ability to pay online and then pick up a product in an offline place, such as the retailers&rsquo; physical store or 3rd party locations.</li><li>Another O2O feature is returning items purchased online to the retailers&rsquo; offline location.Open banking is also known as &ldquo;open bank data.&rdquo; Open banking is a banking practice that provides third-party financial service providers open access to consumer banking, transaction, and other financial data from banks and non-bank financial institutions through the use of application programming interfaces (APIs). Open banking will allow the networking of accounts and data across institutions for use by consumers, financial institutions, and third-party service providers. Open banking is becoming a major source of innovation that is poised to reshape the banking industry.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/domain-glossary_4bc9024bc646f7b46a1675cd62ff9350_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/domain-glossary_4bc9024bc646f7b46a1675cd62ff9350_md5.webp onerror="this.onerror=null" class=content-img></p><pre><code class=language-javascript>Takeway
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><pre><code class=language-javascript>Takeway
 - Open banking is the system of allowing access and control of consumer banking and financial accounts through third-party applications.
 - Open banking has the potential to reshape the competitive landscape and consumer experience of the banking industry. 
 - Open banking raises the potential for both promising gains and grave risks to consumers as more of their data is shared more widely.

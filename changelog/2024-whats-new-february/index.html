@@ -166,21 +166,51 @@
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>What's New in February 2024</div><div class=tags-index style=display:none>tags: newsletter, consulting, tech-report, performance</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>What's New in February 2024</h1></template><div class=date>Mar 8, 2024</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/nikki>nikki</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><ul><li><strong><a href=#reporting-tech-signals>Reporting Tech Signals</a></strong> - Latest findings on Serverless Computing, AI & ML, FinOps and CyberSecurity</li><li><strong><a href=#research-topics-2024>Research Topics 2024</a></strong> - 40 topics on the most promising technologies.</li><li><strong><a href=#dwarves-reward-system>Dwarves&rsquo; Reward System</a></strong> - Developing our community reward system</li><li><strong><a href=#partner-network>Calling for Partners</a></strong> - One of the rare event where Dwarves and community members gather.</li></ul><h2 id=reporting-tech-signals>Reporting tech signals <a href=#reporting-tech-signals></a></h2><p>Every month we watch tech trends closely to depict which ones have high potential, and can be part of our growing tech stack.</p><p>This month highlights:</p><ul><li>AWS introduces Low Latency Runtime (LLRT) for <strong>serverless applications</strong>, promising over 10x faster startup times and up to 2x lower operational costs. Languages to look out for: Rust, QuickJS JavaScript</li><li>In the age of AI, <strong>system engineering</strong> is more crucial than traditional coding education</li><li>A groundbreaking method using 1.58 bits per parameter in LLMs aims to dramatically reduce the computational cost and energy consumption of running LLMs</li><li><strong>FinOps</strong> shift towards waste reduction and managing commitment-based discounts to address global economic pressures</li><li>White House Office reports the critical need for memory-safe programming languages, advocating for languages like C#, Go, Java, Python, Rust, and Swift</li></ul><p><strong><a href=/playground/_labs/market-report-feb-2024/>Read the full report here</a></strong></p><h2 id=research-topics-2024>Research Topics 2024 <a href=#research-topics-2024></a></h2><p>Being able to solve problems using the latest, coolest technologies has always been our main goal. Therefore, we are going big on research this year.</p><ul><li>At the moment, we have around 40 topics in our backlog.</li><li>Topics are chosen by nominating and voting.</li><li>All Dwarves&rsquo; members are required to participate in research activities.</li><li>Each topic will be a bounty item led by our senior members.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
-    altText: `500`,
+    title: ``,
+    alt: ``,
+    src: `assets/2024-whats-new-february_whats-new-february-2024-20240308101849109.webp`,
+    altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/changelog/changelog/assets/whats-new-february-2024-20240308101849109.webp alt=500 x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>A handful of community members has expressed interest in joining hands. Of course, we&rsquo;re happy to have everyone onboard. However, we will need to assess each contributor&rsquo;s skills and experience first for quality purpose.</p><p>If you want to join our research group, open a support ticket on our <a href=https://discord.gg/dwarvesv><strong>Discord</strong></a> and we&rsquo;ll talk to you asap!</p><h2 id=dwarves-reward-system>Dwarves&rsquo; Reward System <a href=#dwarves-reward-system></a></h2><p>Our server has been buzzing with quite a lot of knowledge sharing and discussing from members. It&rsquo;s only right that we start giving back to all contributors, through a Reward System.</p><p>ICYMI, ICY is Dwarves&rsquo; very own token used to reward both team members and community members. Anyone can earn ICY by participating in community activities. Even the simplest acts like sharing a link, or chatting count too.</p><p>Our reward system is currently being developed. You can look forward to it!</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
-    altText: `500`,
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>A handful of community members has expressed interest in joining hands. Of course, we&rsquo;re happy to have everyone onboard. However, we will need to assess each contributor&rsquo;s skills and experience first for quality purpose.</p><p>If you want to join our research group, open a support ticket on our <a href=https://discord.gg/dwarvesv><strong>Discord</strong></a> and we&rsquo;ll talk to you asap!</p><h2 id=dwarves-reward-system>Dwarves&rsquo; Reward System <a href=#dwarves-reward-system></a></h2><p>Our server has been buzzing with quite a lot of knowledge sharing and discussing from members. It&rsquo;s only right that we start giving back to all contributors, through a Reward System.</p><p>ICYMI, ICY is Dwarves&rsquo; very own token used to reward both team members and community members. Anyone can earn ICY by participating in community activities. Even the simplest acts like sharing a link, or chatting count too.</p><p>Our reward system is currently being developed. You can look forward to it!</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: `s=90`,
+    alt: ``,
+    src: `assets/2024-whats-new-february_whats-new-february-2024-20240308101902325.webp`,
+    altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/changelog/changelog/assets/whats-new-february-2024-20240308101902325.webp alt=500 x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=monthly-top-performers>Monthly top performers <a href=#monthly-top-performers></a></h2><p>Each month we track how productive and valuable each of our team members by using delivery points. The top 5 high-performing members get rewards with $ICY.</p><p>In February, kudos to those peeps who outperformed the rest: Chinh Le, Hai Huynh, Khac Vy, Tai Pham, Tay Nguyen!</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
-    altText: `300`,
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=monthly-top-performers>Monthly top performers <a href=#monthly-top-performers></a></h2><p>Each month we track how productive and valuable each of our team members by using delivery points. The top 5 high-performing members get rewards with $ICY.</p><p>In February, kudos to those peeps who outperformed the rest: Chinh Le, Hai Huynh, Khac Vy, Tai Pham, Tay Nguyen!</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: `s=90`,
+    alt: ``,
+    src: `assets/2024-whats-new-february_whats-new-february-2024-20240308101913942.webp`,
+    altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/changelog/changelog/assets/whats-new-february-2024-20240308101913942.webp alt=300 x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=partner-network>Partner Network <a href=#partner-network></a></h2><p>We are always seeking for business development partners, individuals and companies likewise, to develop a co-creation system driven by mutual purposes and interests.</p><p>With our average proejct size at $30,000, a partner can generate at least $2,400 per project. Commission is paid from project start, every month until project end.</p><p>But a stable income is not all we offer, there are <a href=/consulting/partners-network/>other perks and benefits</a> too!</p><p><a href=mailto:nikki@d.foundation>Reach out to Nikki</a> if you&rsquo;re interested or know someone who might :)</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=partner-network>Partner Network <a href=#partner-network></a></h2><p>We are always seeking for business development partners, individuals and companies likewise, to develop a co-creation system driven by mutual purposes and interests.</p><p>With our average proejct size at $30,000, a partner can generate at least $2,400 per project. Commission is paid from project start, every month until project end.</p><p>But a stable income is not all we offer, there are <a href=/consulting/partners-network/>other perks and benefits</a> too!</p><p><a href=mailto:nikki@d.foundation>Reach out to Nikki</a> if you&rsquo;re interested or know someone who might :)</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

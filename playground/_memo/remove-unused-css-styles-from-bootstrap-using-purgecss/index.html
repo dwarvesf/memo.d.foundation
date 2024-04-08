@@ -165,12 +165,22 @@
         }
       },
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Remove Unused Css Styles From Bootstrap Using Purgecss</div><div class=tags-index style=display:none>tags: css</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Remove Unused Css Styles From Bootstrap Using Purgecss</h1></template><div class=date>Feb 1, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_50067f1125ee42d2d68068bd93443235_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss_50067f1125ee42d2d68068bd93443235_md5.webp onerror="this.onerror=null" class=content-img></p><h1 id=introduction>Introduction <a href=#introduction></a></h1><p>Reducing assets size is one of the most practical ways to speed up your web application. I have a simple use case, lets imagine your HTML file looks like this</p><pre><code class=language-javascript>&lt;!DOCTYPE html&gt;
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h1 id=introduction>Introduction <a href=#introduction></a></h1><p>Reducing assets size is one of the most practical ways to speed up your web application. I have a simple use case, lets imagine your HTML file looks like this</p><pre><code class=language-javascript>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -191,12 +201,22 @@
 </code></pre><p>Now look at</p><pre><code class=language-javascript>bootstrap-grid.min.css
 </code></pre><p>![[50067f1125ee42d2d68068bd93443235_MD5.webp]]</p><p>Quite huge isn’t it? Thanks to PurgeCss here is the CSS file after being purged will only contain parts of the CSS file (only used selectors), as you can see horizontal scrollbar is not very long:</p><h1 id=usage>Usage <a href=#usage></a></h1><p>PurgeCSS can be installed with npm package</p><pre><code class=language-javascript>npm i --save-dev purgecss
 </code></pre><p>Basically, you run it against your CSS files and your HTML/JavaScript files. It will parse and analyze which CSS content will be used and remove unused CSS content.</p><p>PurgeCSS can be used as a CLI. This is our project structure, we gonna need to transform CSS files so we have to download bootstrap distro and get file we want to transform.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_a903c03602f38038a2c4e4eb4344e0b9_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss_a903c03602f38038a2c4e4eb4344e0b9_md5.webp onerror="this.onerror=null" class=content-img></p><p>CLI command syntax</p><p><code>purgecss --css &lt;css file> --content &lt;content file to parse css> --out &lt;output-directory></code></p><p>Since Purgecss is installed in <code>/node_modules\</code> we must run this command through npm script. We use <code>--out dist</code> option to store output CSS files in dist folder after transformed. Now change the path of <code>bootstrap-grid.min.css</code> in <code>index.html</code> to:</p><p><code>&lt;link rel="stylesheet" href="./dist/bootstrap-grid.min.css" /></code></p><p>Then create npm script to run purgecss</p><pre><code class=language-javascript>{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>CLI command syntax</p><p><code>purgecss --css &lt;css file> --content &lt;content file to parse css> --out &lt;output-directory></code></p><p>Since Purgecss is installed in <code>/node_modules\</code> we must run this command through npm script. We use <code>--out dist</code> option to store output CSS files in dist folder after transformed. Now change the path of <code>bootstrap-grid.min.css</code> in <code>index.html</code> to:</p><p><code>&lt;link rel="stylesheet" href="./dist/bootstrap-grid.min.css" /></code></p><p>Then create npm script to run purgecss</p><pre><code class=language-javascript>{
   &quot;name&quot;: &quot;PurgeCSS&quot;,
   &quot;version&quot;: &quot;1.0.0&quot;,
   &quot;main&quot;: &quot;index.js&quot;,
@@ -209,18 +229,38 @@
   }
 }
 </code></pre><p>Then run npm run build, you should see new bootstrap-grid.min.css in dist folder with unused CSS content being removed</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_04ee21f4b60188ce76c21df96695e6cf_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss_04ee21f4b60188ce76c21df96695e6cf_md5.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_dd640e027b4421ee74d88c2864f0c9ed_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss_dd640e027b4421ee74d88c2864f0c9ed_md5.webp onerror="this.onerror=null" class=content-img></p><p>You can view full CLI options at [https://www.purgecss.com/cli](https://www.purgecss.com/cli%5C)</p><p>Example repository: [https://github.com/PhmNgocNghia/purge-css-demo-cli](https://github.com/PhmNgocNghia/purge%5C-css%5C-demo%5C-cli%5C)</p><h1 id=setup-using-webpack>Setup using Webpack <a href=#setup-using-webpack></a></h1><p>Purge CSS can be used together with built tools such as webpack, gulp, grunt,… etc. You can view it’s documentation at [https://www.purgecss.com/](https://www.purgecss.com/%5C)</p><p>I’m going to demonstrate how to integrate with Webpack. This is my simple project which integrate project and Webpack</p><pre><code class=language-javascript>var UglifyJsPlugin = require(&quot;uglifyjs-webpack-plugin&quot;);
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>You can view full CLI options at [https://www.purgecss.com/cli](https://www.purgecss.com/cli%5C)</p><p>Example repository: [https://github.com/PhmNgocNghia/purge-css-demo-cli](https://github.com/PhmNgocNghia/purge%5C-css%5C-demo%5C-cli%5C)</p><h1 id=setup-using-webpack>Setup using Webpack <a href=#setup-using-webpack></a></h1><p>Purge CSS can be used together with built tools such as webpack, gulp, grunt,… etc. You can view it’s documentation at [https://www.purgecss.com/](https://www.purgecss.com/%5C)</p><p>I’m going to demonstrate how to integrate with Webpack. This is my simple project which integrate project and Webpack</p><pre><code class=language-javascript>var UglifyJsPlugin = require(&quot;uglifyjs-webpack-plugin&quot;);
 var HtmlWebpackPlugin = require(&quot;html-webpack-plugin&quot;);
 const MiniCssExtractPlugin = require(&quot;mini-css-extract-plugin&quot;);
 
@@ -265,12 +305,22 @@ module.exports = {
   ]
 };
 </code></pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code>// Import CSS Grid min CSS</code></p><p><code>import 'bootstrap/dist/css/bootstrap-grid.min.css'</code></p><p>Here is the build output which includes CSS grid file</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_429bb8c82f4e38465293c6f79d782394_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss_429bb8c82f4e38465293c6f79d782394_md5.webp onerror="this.onerror=null" class=content-img></p><p>To use PurgeCss with Webpack simply install this Webpack plugin:
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>To use PurgeCss with Webpack simply install this Webpack plugin:
 <code>npm i purgecss-webpack-plugin -D</code></p><p>Then add it to plugin section in Webpack config file</p><pre><code class=language-javascript>var UglifyJsPlugin = require(&quot;uglifyjs-webpack-plugin&quot;);
 var HtmlWebpackPlugin = require(&quot;html-webpack-plugin&quot;);
 const MiniCssExtractPlugin = require(&quot;mini-css-extract-plugin&quot;);
@@ -322,9 +372,19 @@ module.exports = {
   ]
 };
 </code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_97c7bfa1adf49d7c225f00976d99eb8c_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/remove-unused-css-styles-from-bootstrap-using-purgecss_97c7bfa1adf49d7c225f00976d99eb8c_md5.webp onerror="this.onerror=null" class=content-img></p><p>Full example repository: [https://github.com/PhmNgocNghia/purge-css-example-webpack](https://github.com/PhmNgocNghia/purge%5C-css%5C-example%5C-webpack%5C)</p><h1 id=conclusion>Conclusion <a href=#conclusion></a></h1><p>With PurgeCSS, our <code>bootstrap-grid.main.css</code> file reduce from <strong>47kb</strong> to <strong>601byte</strong>. All unused selectors has been removed. You can view the documentation at [https://www.purgecss.com/](https://www.purgecss.com/%5C) which contain details instruction and api references.</p><p>Not only bootstrap, you can use PurgeCSS with many css libraries such as TailwindCSS, Zurb foundation,&mldr; etc.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Full example repository: [https://github.com/PhmNgocNghia/purge-css-example-webpack](https://github.com/PhmNgocNghia/purge%5C-css%5C-example%5C-webpack%5C)</p><h1 id=conclusion>Conclusion <a href=#conclusion></a></h1><p>With PurgeCSS, our <code>bootstrap-grid.main.css</code> file reduce from <strong>47kb</strong> to <strong>601byte</strong>. All unused selectors has been removed. You can view the documentation at [https://www.purgecss.com/](https://www.purgecss.com/%5C) which contain details instruction and api references.</p><p>Not only bootstrap, you can use PurgeCSS with many css libraries such as TailwindCSS, Zurb foundation,&mldr; etc.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

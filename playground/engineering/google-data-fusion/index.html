@@ -166,26 +166,56 @@
       },
     }'><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Google Data Fusion</div><div class=tags-index style=display:none>tags: brainery, engineering/data, devops, google-cloud, Google-Data-Studio, google-data-fusion, ETL, reliability, CDAP, data-engineering, data</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Google Data Fusion</h1></template><div class=date>Jan 24, 2024</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/mickwan1234>mickwan1234</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><h2 id=introduction>Introduction <a href=#introduction></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_896575dd6ac0fba37e7e2c0771c3dd6d_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_896575dd6ac0fba37e7e2c0771c3dd6d_md5.webp onerror="this.onerror=null" class=content-img></p><p>Google Data Fusion is a fully managed, cloud-native data integration service that enables users to efficiently build and manage ETL/ELT data pipelines. It is designed to streamline data engineering tasks for enterprise users and is built on top of the open-source project CDAP</p><p>. Key features and benefits of Google Data Fusion include:</p><ul><li><strong>Graphical User Interface</strong>: Data Fusion offers a convenient drag-and-drop interface for building data pipelines, making it easier for users to focus on insights and actions rather than writing code.</li><li><strong>Flexibility</strong>: While the UI provides a quick and easy way to create pipelines, Data Fusion is also extensible, allowing users to add custom code when needed**<a href=https://gcloud.devoteam.com/blog/what-is-google-cloud-data-fusion/>2</a>**.</li><li><strong>GCP-native Architecture</strong>: Data Fusion is fully integrated and supported by Google Cloud Platform, unlocking the scalability, reliability, security, and privacy guarantees of Google Cloud.</li><li><strong>Data Governance</strong>: Data Fusion includes built-in features for data governance, such as end-to-end data lineage, integration metadata, and cloud-native security and data protection services.</li><li><strong>Integration with Google Cloud Services</strong>: Data Fusion connects with various Google Cloud services, such as Cloud Storage, BigQuery, and Cloud Spanner, allowing users to create, manage, and analyze data in a centralized manner.</li></ul><p>Overall, Google Data Fusion simplifies data engineering tasks and enables users to focus on data analytics and deriving insights for better customer service and operational efficiency</p><h2 id=use-cases>Use Cases <a href=#use-cases></a></h2><p>Google Cloud Data Fusion is a powerful tool for building and managing data pipelines, and its use cases are diverse and expanding. Here are some of the most common and impactful ways organizations are using it:</p><p><strong>Data Integration and ETL:</strong></p><ul><li><strong>Consolidating data from multiple sources:</strong> Data Fusion simplifies data ingestion from various on-premises, cloud, and SaaS applications, unifying it into a single repository for analysis. Examples include CRM, ERP, social media, and sensor data.</li><li><strong>Transforming and enriching data:</strong> Data Fusion offers a wide range of data transformation tools, including filtering, sorting, aggregation, and joining, enabling you to clean, enrich, and prepare data for specific use cases.</li><li><strong>Building data warehouses and lakes:</strong> Data Fusion seamlessly integrates with Google BigQuery and other data storage solutions, facilitating the creation of centralized data repositories for analytics and reporting.</li></ul><p><strong>Data Migration and Modernization:</strong></p><ul><li><strong>Migrating data to the cloud:</strong> Data Fusion simplifies the process of migrating on-premises data to Google Cloud, providing a managed and scalable solution for organizations looking to modernize their data infrastructure.</li><li><strong>Replicating data between cloud platforms:</strong> Data Fusion enables seamless data replication between different cloud environments, including Google Cloud Platform, AWS, and Azure, ensuring data consistency and availability.</li></ul><p><strong>Real-time Data Processing and Analytics:</strong></p><ul><li><strong>Building real-time data pipelines:</strong> Data Fusion supports Apache Spark, allowing you to create real-time data pipelines for near-instantaneous insights and decision-making based on streaming data feeds.</li><li><strong>Enabling real-time dashboards and reports:</strong> Data Fusion can be used to feed data into real-time dashboards and reports, providing stakeholders with immediate visibility into critical business metrics.</li><li><strong>Triggering actions based on data events:</strong> Data Fusion can be used to trigger actions based on specific data events, such as sending alerts, updating records, or initiating workflows in other systems.</li></ul><p><strong>Additional Use Cases:</strong></p><ul><li><strong>Data governance and compliance:</strong> Data Fusion offers features like data lineage tracking and auditing, ensuring data quality and compliance with regulations.</li><li><strong>Self-service data access:</strong> Data Fusion empowers business users with self-service data access capabilities, allowing them to explore and analyze data without needing technical expertise.</li><li><strong>Building custom data connectors:</strong> Data Fusion provides a framework for building custom connectors to integrate with niche applications and data sources.</li></ul><p>These are just a few examples, and the possibilities for using Data Fusion are vast. Its flexibility, scalability, and ease of use make it a valuable tool for organizations looking to unlock the potential of their data.</p><h2 id=pricing>Pricing <a href=#pricing></a></h2><p>Google Data Fusion have some pricing tier in the following table:
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Google Data Fusion is a fully managed, cloud-native data integration service that enables users to efficiently build and manage ETL/ELT data pipelines. It is designed to streamline data engineering tasks for enterprise users and is built on top of the open-source project CDAP</p><p>. Key features and benefits of Google Data Fusion include:</p><ul><li><strong>Graphical User Interface</strong>: Data Fusion offers a convenient drag-and-drop interface for building data pipelines, making it easier for users to focus on insights and actions rather than writing code.</li><li><strong>Flexibility</strong>: While the UI provides a quick and easy way to create pipelines, Data Fusion is also extensible, allowing users to add custom code when needed**<a href=https://gcloud.devoteam.com/blog/what-is-google-cloud-data-fusion/>2</a>**.</li><li><strong>GCP-native Architecture</strong>: Data Fusion is fully integrated and supported by Google Cloud Platform, unlocking the scalability, reliability, security, and privacy guarantees of Google Cloud.</li><li><strong>Data Governance</strong>: Data Fusion includes built-in features for data governance, such as end-to-end data lineage, integration metadata, and cloud-native security and data protection services.</li><li><strong>Integration with Google Cloud Services</strong>: Data Fusion connects with various Google Cloud services, such as Cloud Storage, BigQuery, and Cloud Spanner, allowing users to create, manage, and analyze data in a centralized manner.</li></ul><p>Overall, Google Data Fusion simplifies data engineering tasks and enables users to focus on data analytics and deriving insights for better customer service and operational efficiency</p><h2 id=use-cases>Use Cases <a href=#use-cases></a></h2><p>Google Cloud Data Fusion is a powerful tool for building and managing data pipelines, and its use cases are diverse and expanding. Here are some of the most common and impactful ways organizations are using it:</p><p><strong>Data Integration and ETL:</strong></p><ul><li><strong>Consolidating data from multiple sources:</strong> Data Fusion simplifies data ingestion from various on-premises, cloud, and SaaS applications, unifying it into a single repository for analysis. Examples include CRM, ERP, social media, and sensor data.</li><li><strong>Transforming and enriching data:</strong> Data Fusion offers a wide range of data transformation tools, including filtering, sorting, aggregation, and joining, enabling you to clean, enrich, and prepare data for specific use cases.</li><li><strong>Building data warehouses and lakes:</strong> Data Fusion seamlessly integrates with Google BigQuery and other data storage solutions, facilitating the creation of centralized data repositories for analytics and reporting.</li></ul><p><strong>Data Migration and Modernization:</strong></p><ul><li><strong>Migrating data to the cloud:</strong> Data Fusion simplifies the process of migrating on-premises data to Google Cloud, providing a managed and scalable solution for organizations looking to modernize their data infrastructure.</li><li><strong>Replicating data between cloud platforms:</strong> Data Fusion enables seamless data replication between different cloud environments, including Google Cloud Platform, AWS, and Azure, ensuring data consistency and availability.</li></ul><p><strong>Real-time Data Processing and Analytics:</strong></p><ul><li><strong>Building real-time data pipelines:</strong> Data Fusion supports Apache Spark, allowing you to create real-time data pipelines for near-instantaneous insights and decision-making based on streaming data feeds.</li><li><strong>Enabling real-time dashboards and reports:</strong> Data Fusion can be used to feed data into real-time dashboards and reports, providing stakeholders with immediate visibility into critical business metrics.</li><li><strong>Triggering actions based on data events:</strong> Data Fusion can be used to trigger actions based on specific data events, such as sending alerts, updating records, or initiating workflows in other systems.</li></ul><p><strong>Additional Use Cases:</strong></p><ul><li><strong>Data governance and compliance:</strong> Data Fusion offers features like data lineage tracking and auditing, ensuring data quality and compliance with regulations.</li><li><strong>Self-service data access:</strong> Data Fusion empowers business users with self-service data access capabilities, allowing them to explore and analyze data without needing technical expertise.</li><li><strong>Building custom data connectors:</strong> Data Fusion provides a framework for building custom connectors to integrate with niche applications and data sources.</li></ul><p>These are just a few examples, and the possibilities for using Data Fusion are vast. Its flexibility, scalability, and ease of use make it a valuable tool for organizations looking to unlock the potential of their data.</p><h2 id=pricing>Pricing <a href=#pricing></a></h2><p>Google Data Fusion have some pricing tier in the following table:
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_3af0d3138685ed2467a3d6edba263858_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_3af0d3138685ed2467a3d6edba263858_md5.webp onerror="this.onerror=null" class=content-img></p><p>Comparison between the tiers:
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Comparison between the tiers:
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_2276aa22c8381226ba65f2ef143bdd57_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_2276aa22c8381226ba65f2ef143bdd57_md5.webp onerror="this.onerror=null" class=content-img></p><h2 id=how-to-setup-data-fusion>How to setup Data fusion: <a href=#how-to-setup-data-fusion></a></h2><h3 id=prerequisites><strong>Prerequisites:</strong> <a href=#prerequisites></a></h3><ol><li><strong>Google Cloud Platform Account:</strong> Ensure that you have a Google Cloud Platform (GCP) account. If you don&rsquo;t have one, you can sign up <a href=https://cloud.google.com/>here</a>.</li><li><strong>Enable the Cloud Data Fusion API:</strong> In the GCP Console, navigate to the API & Services > Dashboard. Search for &ldquo;Cloud Data Fusion API&rdquo; and enable it.</li><li><strong>Install and Configure Google Cloud SDK:</strong> Install the <a href=https://cloud.google.com/sdk>Google Cloud SDK</a> on your local machine. After installation, run <strong><code>gcloud init</code></strong> to set up your credentials and project.</li></ol><h3 id=steps-to-set-up-google-cloud-data-fusion><strong>Steps to Set Up Google Cloud Data Fusion:</strong> <a href=#steps-to-set-up-google-cloud-data-fusion></a></h3><ol><li><p><strong>Create a Cloud Storage Bucket:</strong> Create a Cloud Storage bucket to store the artifacts and metadata required by Cloud Data Fusion. Replace <strong><code>[BUCKET_NAME]</code></strong> with your desired bucket name.</p><pre><code class=language-bash>bashCopy code
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=how-to-setup-data-fusion>How to setup Data fusion: <a href=#how-to-setup-data-fusion></a></h2><h3 id=prerequisites><strong>Prerequisites:</strong> <a href=#prerequisites></a></h3><ol><li><strong>Google Cloud Platform Account:</strong> Ensure that you have a Google Cloud Platform (GCP) account. If you don&rsquo;t have one, you can sign up <a href=https://cloud.google.com/>here</a>.</li><li><strong>Enable the Cloud Data Fusion API:</strong> In the GCP Console, navigate to the API & Services > Dashboard. Search for &ldquo;Cloud Data Fusion API&rdquo; and enable it.</li><li><strong>Install and Configure Google Cloud SDK:</strong> Install the <a href=https://cloud.google.com/sdk>Google Cloud SDK</a> on your local machine. After installation, run <strong><code>gcloud init</code></strong> to set up your credentials and project.</li></ol><h3 id=steps-to-set-up-google-cloud-data-fusion><strong>Steps to Set Up Google Cloud Data Fusion:</strong> <a href=#steps-to-set-up-google-cloud-data-fusion></a></h3><ol><li><p><strong>Create a Cloud Storage Bucket:</strong> Create a Cloud Storage bucket to store the artifacts and metadata required by Cloud Data Fusion. Replace <strong><code>[BUCKET_NAME]</code></strong> with your desired bucket name.</p><pre><code class=language-bash>bashCopy code
 gsutil mb -l [REGION] gs://[BUCKET_NAME]
 
 </code></pre></li><li><p><strong>Create a Cloud Data Fusion Instance:</strong> Use the following command to create a Cloud Data Fusion instance. Replace <strong><code>[INSTANCE_NAME]</code></strong> with your desired instance name, and <strong><code>[REGION]</code></strong> with the region where you want to deploy the instance.</p><pre><code class=language-bash>bashCopy code
@@ -200,123 +230,323 @@ gcloud data-fusion instances create [INSTANCE_NAME] \\
 gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
 </code></pre></li><li><p><strong>Connect to the Cloud Data Fusion UI:</strong> Open the provided URL in a web browser to access the Cloud Data Fusion UI. Log in using your Google Cloud credentials.</p></li><li><p><strong>Explore and Create Pipelines:</strong> Once you&rsquo;re in the Cloud Data Fusion UI, you can start exploring and creating ETL pipelines using the visual interface.</p></li></ol><p>Remember to replace placeholders like <strong><code>[REGION]</code></strong>, <strong><code>[BUCKET_NAME]</code></strong>, <strong><code>[INSTANCE_NAME]</code></strong></p><h2 id=how-to-setup-a-simple-etl-with-google-data-fusion--with-gcp-console>How to setup a simple ETL with Google Data Fusion ( with GCP console): <a href=#how-to-setup-a-simple-etl-with-google-data-fusion--with-gcp-console></a></h2><p>In this demo we’ll setup a simple ETL pipeline to import, transform load a csv file to a Google Big query data table</p><h3 id=step-1-go-to-the-big-query-console-page-and-create-a-dataset-and-table>Step 1: go to the Big Query console page and create a dataset and table: <a href=#step-1-go-to-the-big-query-console-page-and-create-a-dataset-and-table></a></h3><ul><li>On the top left corner of the main page of Big query select add and add a dataset. Then click on the three dot simple on the left side of the data set name to add a table. Right after that. you should see this screem to add a table.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_0228e14fdc9b93e5c79eacc7a7ed89a6_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_0228e14fdc9b93e5c79eacc7a7ed89a6_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Fill in the table name (the only mandatory field that left blank after you do the previous step). You can tweak others setting if you want to. Then click Create Table.</li></ul><h2 id=step-2-go-to-your-google-data-fusion-instance>Step 2: Go to your Google Data Fusion instance <a href=#step-2-go-to-your-google-data-fusion-instance></a></h2><ul><li>Go to your Data Fusion page and locate your data fusion instance. You should be see it listed right after you go the main page of Data fusion console.</li><li>Click on the instance you should be able to see a prompt like this:<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Fill in the table name (the only mandatory field that left blank after you do the previous step). You can tweak others setting if you want to. Then click Create Table.</li></ul><h2 id=step-2-go-to-your-google-data-fusion-instance>Step 2: Go to your Google Data Fusion instance <a href=#step-2-go-to-your-google-data-fusion-instance></a></h2><ul><li>Go to your Data Fusion page and locate your data fusion instance. You should be see it listed right after you go the main page of Data fusion console.</li><li>Click on the instance you should be able to see a prompt like this:<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_2ff260eafe1164c146b66e07b719a065_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_2ff260eafe1164c146b66e07b719a065_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Click the View Instance link. You should see the landing page of Google Data Fusion instance. Click on Studio button to start designing pipelines. You should see a screen like this:<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click the View Instance link. You should see the landing page of Google Data Fusion instance. Click on Studio button to start designing pipelines. You should see a screen like this:<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_3c40db19ec1af62c3c8afa9699051d72_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_3c40db19ec1af62c3c8afa9699051d72_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li></ul><h2 id=step-3-preparing-you-csv-file-on-gcs>Step 3: Preparing you CSV file on GCS <a href=#step-3-preparing-you-csv-file-on-gcs></a></h2><ul><li>Create a bucket and push you CSV to the storage. I prepared mine like this.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li></ul><h2 id=step-3-preparing-you-csv-file-on-gcs>Step 3: Preparing you CSV file on GCS <a href=#step-3-preparing-you-csv-file-on-gcs></a></h2><ul><li>Create a bucket and push you CSV to the storage. I prepared mine like this.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_1be5c2f7bb9170fd0267c2d30ee6388a_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_1be5c2f7bb9170fd0267c2d30ee6388a_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li></ul><h3 id=step-4-start-designing-your-first-pipeline>Step 4: Start designing your first pipeline <a href=#step-4-start-designing-your-first-pipeline></a></h3><ul><li>We’ll create a GCS as a source of data so on the search bar, search for ‘gcs’ and drag the ‘GCS’ simple in the <code>Source</code> section to the canvas<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li></ul><h3 id=step-4-start-designing-your-first-pipeline>Step 4: Start designing your first pipeline <a href=#step-4-start-designing-your-first-pipeline></a></h3><ul><li>We’ll create a GCS as a source of data so on the search bar, search for ‘gcs’ and drag the ‘GCS’ simple in the <code>Source</code> section to the canvas<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_149533894219b81b80c9af8473dcb666_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_149533894219b81b80c9af8473dcb666_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Properties</code> and you should be able to see a screen like this.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Properties</code> and you should be able to see a screen like this.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_5a415fd557838d4d98816e3cc25561e4_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_5a415fd557838d4d98816e3cc25561e4_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Browse</code> to browse through the files you uploaded to GCS. Locate your csv data source file and select it.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Browse</code> to browse through the files you uploaded to GCS. Locate your csv data source file and select it.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_e79e3ac84c23e2bf3f2358112b709abf_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_e79e3ac84c23e2bf3f2358112b709abf_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>(Optional) Enable the <code>Enable Quoted Values</code> and <code>Use First Row as Header</code> toggles and click on <code>Get Schema</code>. You should able to find your data schema on the right side of the screen<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>(Optional) Enable the <code>Enable Quoted Values</code> and <code>Use First Row as Header</code> toggles and click on <code>Get Schema</code>. You should able to find your data schema on the right side of the screen<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_5f466ca7e1d9ebc587d1c83d4dc71f8b_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_5f466ca7e1d9ebc587d1c83d4dc71f8b_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>You finished setting up the source CSV. Go on and click the <code>X</code> button on the top right next to <code>Validate</code> button.</li><li>Next, you’ll need to transform data to match you expected schema. Search for <code>wrangler</code> on the search bar and drag out <code>Wrangler</code> in the <code>Transform</code> section and drag an arrow from <code>GCS</code> box to it for Wrangler to recognize the input schema.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>You finished setting up the source CSV. Go on and click the <code>X</code> button on the top right next to <code>Validate</code> button.</li><li>Next, you’ll need to transform data to match you expected schema. Search for <code>wrangler</code> on the search bar and drag out <code>Wrangler</code> in the <code>Transform</code> section and drag an arrow from <code>GCS</code> box to it for Wrangler to recognize the input schema.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_3c77659f8f80214120f60e97847544dd_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_3c77659f8f80214120f60e97847544dd_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Then click on <code>properties</code> of the the <code>Wrangler</code> box.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Then click on <code>properties</code> of the the <code>Wrangler</code> box.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_acc19ad5ede5df8d029145c516c3ab45_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_acc19ad5ede5df8d029145c516c3ab45_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Here you can transform your data. Defines you output schema on the left and properties in the middle section. Here I’ll just left it like it is since it a simple demo.</li><li>Click on the top right <code>X</code> button to go back to the canvas.</li><li>Next, you’ll need a storage for you output data. Search <code>bigquery</code> in the search box and drag out <code>Bigquery</code> box from the <code>Sink</code> section and connect it to the <code>Wrangler</code> box.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Here you can transform your data. Defines you output schema on the left and properties in the middle section. Here I’ll just left it like it is since it a simple demo.</li><li>Click on the top right <code>X</code> button to go back to the canvas.</li><li>Next, you’ll need a storage for you output data. Search <code>bigquery</code> in the search box and drag out <code>Bigquery</code> box from the <code>Sink</code> section and connect it to the <code>Wrangler</code> box.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_81e1fe6503f40c31fecc7c752d0e56ac_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_81e1fe6503f40c31fecc7c752d0e56ac_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Properties</code> of the Bigquery box you’ll find this screen.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Properties</code> of the Bigquery box you’ll find this screen.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_5ef7b2f2dd57fb04cfc2610003f96a00_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_5ef7b2f2dd57fb04cfc2610003f96a00_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>You can find you input data schema on the left side of the screen. Here click on <code>Browse</code> to locate your Bigquery data table that you created in step 1 (Mine is <code>annual_enterprise_survey</code> in this case) and select it by double click.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>You can find you input data schema on the left side of the screen. Here click on <code>Browse</code> to locate your Bigquery data table that you created in step 1 (Mine is <code>annual_enterprise_survey</code> in this case) and select it by double click.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_fc06439858c80d305ed6a7a1ed62b650_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_fc06439858c80d305ed6a7a1ed62b650_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>(Optional) you can force the destination table of match you input schema by turn on these toggle.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>(Optional) you can force the destination table of match you input schema by turn on these toggle.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_7dfdc307f3b75f41fb65ab0fa6bd683e_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_7dfdc307f3b75f41fb65ab0fa6bd683e_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on the <code>X</code> again to go back to the canvas. You completed your first pipeline.</li></ul><h3 id=step-5-deploy-and-run-your-pipeline>Step 5: Deploy and Run your pipeline <a href=#step-5-deploy-and-run-your-pipeline></a></h3><ul><li>Naming your pipeline ( the name must be unique in the instance). Click on the <code>Name your pipeline</code> text on the top left of the screen.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on the <code>X</code> again to go back to the canvas. You completed your first pipeline.</li></ul><h3 id=step-5-deploy-and-run-your-pipeline>Step 5: Deploy and Run your pipeline <a href=#step-5-deploy-and-run-your-pipeline></a></h3><ul><li>Naming your pipeline ( the name must be unique in the instance). Click on the <code>Name your pipeline</code> text on the top left of the screen.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_a86d6d3174b32df8be3ba475f8c65a7a_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_a86d6d3174b32df8be3ba475f8c65a7a_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Then click on <code>Deploy</code> button on the top right to deploy the pipeline.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Then click on <code>Deploy</code> button on the top right to deploy the pipeline.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_f77c1ab73acf0eb740cbd3f0fea3fe60_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_f77c1ab73acf0eb740cbd3f0fea3fe60_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Wait for the deploy process to complete. You will face this screen<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Wait for the deploy process to complete. You will face this screen<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_ebe7e25e86bc52a44be5beefcef5008c_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_ebe7e25e86bc52a44be5beefcef5008c_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on the <code>Run</code> button at the top center of the screen and wait for it to execute pipelines.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on the <code>Run</code> button at the top center of the screen and wait for it to execute pipelines.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_5cf5dec00239ca3db4a54f690b8ae233_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_5cf5dec00239ca3db4a54f690b8ae233_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>After the the status show <code>Succeeded</code> you can check your destination table for the output data.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>After the the status show <code>Succeeded</code> you can check your destination table for the output data.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_b06407f4aa745186225988b9d32881cc_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_b06407f4aa745186225988b9d32881cc_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li><li>Here is the end result data in your Bigquery data table.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Here is the end result data in your Bigquery data table.<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/google-data-fusion_c9056f816907b772d3da1ebd68ab328b_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/engineering/assets/google-data-fusion_c9056f816907b772d3da1ebd68ab328b_md5.webp onerror="this.onerror=null" class=content-img></li></ul></li></ul><p>And that’s it, you’re done. Congrat on your first data pipeline with Google Data Fusion.</p><hr><!-- cta --><h3 id=contributing>Contributing <a href=#contributing></a></h3><p>At Dwarves, we encourage our people to read, write, share what we learn with others, and contributing to the Brainery is an important part of our learning culture. For visitors, you are welcome to read them, contribute to them, and suggest additions. We maintain a monthly pool of $1500 to reward contributors who support our journey of lifelong growth in knowledge and network.</p><h3 id=love-what-we-are-doing>Love what we are doing? <a href=#love-what-we-are-doing></a></h3><ul><li>Check out our <a href=https://superbits.co>products</a></li><li>Hire us to <a href=https://d.foundation>build your software</a></li><li>Join us, <a href=/careers/hiring/202403121185/>we are also hiring</a></li><li>Visit our <a href=https://discord.gg/dzNBpNTVEZ>Discord Learning Site</a></li><li>Visit our <a href=https://github.com/dwarvesf>GitHub</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li></ul><p>And that’s it, you’re done. Congrat on your first data pipeline with Google Data Fusion.</p><hr><!-- cta --><h3 id=contributing>Contributing <a href=#contributing></a></h3><p>At Dwarves, we encourage our people to read, write, share what we learn with others, and contributing to the Brainery is an important part of our learning culture. For visitors, you are welcome to read them, contribute to them, and suggest additions. We maintain a monthly pool of $1500 to reward contributors who support our journey of lifelong growth in knowledge and network.</p><h3 id=love-what-we-are-doing>Love what we are doing? <a href=#love-what-we-are-doing></a></h3><ul><li>Check out our <a href=https://superbits.co>products</a></li><li>Hire us to <a href=https://d.foundation>build your software</a></li><li>Join us, <a href=/careers/hiring/202403121185/>we are also hiring</a></li><li>Visit our <a href=https://discord.gg/dzNBpNTVEZ>Discord Learning Site</a></li><li>Visit our <a href=https://github.com/dwarvesf>GitHub</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

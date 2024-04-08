@@ -165,12 +165,22 @@
         }
       },
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Split And Reuse Code In React Application</div><div class=tags-index style=display:none>tags: react.js</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>Split And Reuse Code In React Application</h1></template><div class=date>May 2, 2019</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/split-and-reuse-code-in-react-application_5f86abdbff47c3d17d6258e3b001ceb8_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/split-and-reuse-code-in-react-application_5f86abdbff47c3d17d6258e3b001ceb8_md5.webp onerror="this.onerror=null" class=content-img></p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>Sometimes you found that some piece of code that is very repetitive in your react application such as:</p><ul><li>Modal: declare modal state and function to set modal state</li><li>Fetch: declare fetch states such as loading and error</li></ul><p>In some Vue.js, you got the feature that allows you to encapsulate state and methods into the package that you can easily insert to your component logic called mixins. What have we got in React.js?</p><p>Let’s take a look in the first repetitive problem above where you have to declare modal state and function to change modal state each time you want to use a modal.</p><h2 id=problems>Problems <a href=#problems></a></h2><p>Bellow is the code that implements an app that store state and method to show, open and close the modal</p><pre><code class=language-javascript>import React, { Component } from 'react';
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>Sometimes you found that some piece of code that is very repetitive in your react application such as:</p><ul><li>Modal: declare modal state and function to set modal state</li><li>Fetch: declare fetch states such as loading and error</li></ul><p>In some Vue.js, you got the feature that allows you to encapsulate state and methods into the package that you can easily insert to your component logic called mixins. What have we got in React.js?</p><p>Let’s take a look in the first repetitive problem above where you have to declare modal state and function to change modal state each time you want to use a modal.</p><h2 id=problems>Problems <a href=#problems></a></h2><p>Bellow is the code that implements an app that store state and method to show, open and close the modal</p><pre><code class=language-javascript>import React, { Component } from 'react';
 import Modal from './Modal'
 import './index.css'
 
@@ -258,12 +268,22 @@ export default class HOCCOmponent extends React.Component {
   }
 }
 </code></pre><p>React component has some reserve props and children is one it’s. It’s represent anything pass in this component</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/split-and-reuse-code-in-react-application_322e43365b34b2a13564d85a3adddcae_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/split-and-reuse-code-in-react-application_322e43365b34b2a13564d85a3adddcae_md5.webp onerror="this.onerror=null" class=content-img></p><p>For example, The Foo children prop ais the Bar component. The component above use child as a function since react is just the function that return react component. We pass repetitive data and methods that have been stored and processed in HOC Component to children function.</p><pre><code class=language-javascript>import React, { Component } from &quot;react&quot;;
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For example, The Foo children prop ais the Bar component. The component above use child as a function since react is just the function that return react component. We pass repetitive data and methods that have been stored and processed in HOC Component to children function.</p><pre><code class=language-javascript>import React, { Component } from &quot;react&quot;;
 import HOCModal from &quot;./HOCModal&quot;;
 import Modal from &quot;./Modal&quot;;
 import &quot;./index.css&quot;;

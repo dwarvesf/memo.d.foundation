@@ -167,38 +167,88 @@
     }"><template x-if=!hideTitle><div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>2021 July Updates</div><div class=tags-index style=display:none>tags: updates, changelog</div><template x-if=isTagPage()><h1 class=pagetitle x-text="`#${title}`"></h1></template><template x-if=!isTagPage()><h1 class=pagetitle x-text=title>2021 July Updates</h1></template><div class=date>Jul 31, 2021</div><template x-for="data in tagsData"><template x-if="data.tags && data.tags.length > 0"><div class=tags x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"><template x-for="tag in slice(data.tags, start, end)"><a class=tag x-bind:href="`/tags/${tag.toLowerCase()}`" x-text=tag></a></template><template x-if="!!loadText && data.tags.length > 4"><a class=tag href x-text=loadText @click.prevent=toggleLoad(loaded)></a></template></div></template></template><aside class=authors>by
 <a href=/contributor/duy>duy</a></aside></div></template><template x-if=!hideTitle><hr></template><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p>We&rsquo;re closing July with some notable highlights. Let&rsquo;s go through them ✌️</p><p>🚨 *Note: Covid situation is getting worse. Stay safe. 🦠</p><p>*The pandemic is going stronger than ever. There has been over 100k internal cases over the country til now. Take good care of you and your beloved ones. We hope everyone can stay safe.</p><h3 id=finish-the-shipment-for-our-wfh-station>Finish the shipment for our WFH station <a href=#finish-the-shipment-for-our-wfh-station></a></h3><p>We&rsquo;ve finished the shipment for all the WFH gears. Since the annual company trip can&rsquo;t be done this year, we hope it could help the working vibe more enjoyable. It&rsquo;s great to know you&rsquo;re all happy with the new setup.
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/2021-july-updates_733d0121febec06d18e9531f92400ab8_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/changelog/assets/2021-july-updates_733d0121febec06d18e9531f92400ab8_md5.webp onerror="this.onerror=null" class=content-img>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img>
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/2021-july-updates_541d9540dd68b6a75696f615a1a6c879_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/changelog/assets/2021-july-updates_541d9540dd68b6a75696f615a1a6c879_md5.webp onerror="this.onerror=null" class=content-img></p><h3 id=your-fleeting-notes>Your fleeting notes <a href=#your-fleeting-notes></a></h3><p>On July 15, few of our Dwarves shared a reward pool for $1000 for submitting their fleeting notes to our <a href=https://brain.d.foundation/>brainery</a>.</p><p>Some even wrote the literature notes. You are awesome. Please keep it up.</p><p>The Brainery will be the backbone for our long-term growth.</p><h3 id=office-hour-at-friday-5pm--ask-the-ceo-anything>Office hour at Friday, 5pm — Ask the CEO anything <a href=#office-hour-at-friday-5pm--ask-the-ceo-anything></a></h3><p>We&rsquo;re going fully remote. There might be a distance between you and the team. In case you seek for guidance, or the direction we want to go, we have dedicated office hours from <strong>4:30 to 6 pm</strong> in the discord AMA stage channel.</p><p>Feel free to ask the CEO anything. Workload, feature request, product discuss or career advice. He&rsquo;s there to help.
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=your-fleeting-notes>Your fleeting notes <a href=#your-fleeting-notes></a></h3><p>On July 15, few of our Dwarves shared a reward pool for $1000 for submitting their fleeting notes to our <a href=https://brain.d.foundation/>brainery</a>.</p><p>Some even wrote the literature notes. You are awesome. Please keep it up.</p><p>The Brainery will be the backbone for our long-term growth.</p><h3 id=office-hour-at-friday-5pm--ask-the-ceo-anything>Office hour at Friday, 5pm — Ask the CEO anything <a href=#office-hour-at-friday-5pm--ask-the-ceo-anything></a></h3><p>We&rsquo;re going fully remote. There might be a distance between you and the team. In case you seek for guidance, or the direction we want to go, we have dedicated office hours from <strong>4:30 to 6 pm</strong> in the discord AMA stage channel.</p><p>Feel free to ask the CEO anything. Workload, feature request, product discuss or career advice. He&rsquo;s there to help.
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/2021-july-updates_0b035e736bb615bcdde24b2efa950ec5_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/changelog/assets/2021-july-updates_0b035e736bb615bcdde24b2efa950ec5_md5.webp onerror="this.onerror=null" class=content-img></p><h3 id=moving-toward-blockchain-industry>Moving toward Blockchain industry <a href=#moving-toward-blockchain-industry></a></h3><p>We&rsquo;re dipping toes in the Blockchain pool, by partner with Legend of Fantasy War, a new NFT game project.</p><p>Another chance for us to get closer to this arising technology.</p><p>Sneak peek at the <a href=http://legendfantasywar.com/>landing website</a> →
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=moving-toward-blockchain-industry>Moving toward Blockchain industry <a href=#moving-toward-blockchain-industry></a></h3><p>We&rsquo;re dipping toes in the Blockchain pool, by partner with Legend of Fantasy War, a new NFT game project.</p><p>Another chance for us to get closer to this arising technology.</p><p>Sneak peek at the <a href=http://legendfantasywar.com/>landing website</a> →
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/2021-july-updates_4ac57a6a422a69aad933db59d4c43095_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/changelog/assets/2021-july-updates_4ac57a6a422a69aad933db59d4c43095_md5.webp onerror="this.onerror=null" class=content-img></p><h3 id=notion-os-running-our-team-from-notion-pages>Notion OS: Running our team from Notion pages <a href=#notion-os-running-our-team-from-notion-pages></a></h3><p>Notion is our new document base. We&rsquo;ve migrated our written document into this, as the new structure would be</p><ul><li>Index: Shortcuts to websites, handbooks, repo sources & social channels.</li><li>Process: Compliance checklist & general docs</li><li>Client Portal: Contacts to current project</li><li>Changelog: Our moving journey</li><li>New memo: Company blog</li></ul><h2 id=whats-next-in-aug>What&rsquo;s next in Aug <a href=#whats-next-in-aug></a></h2><p><strong>Brain Repo: Embedded & IoT R&amp;D</strong>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=notion-os-running-our-team-from-notion-pages>Notion OS: Running our team from Notion pages <a href=#notion-os-running-our-team-from-notion-pages></a></h3><p>Notion is our new document base. We&rsquo;ve migrated our written document into this, as the new structure would be</p><ul><li>Index: Shortcuts to websites, handbooks, repo sources & social channels.</li><li>Process: Compliance checklist & general docs</li><li>Client Portal: Contacts to current project</li><li>Changelog: Our moving journey</li><li>New memo: Company blog</li></ul><h2 id=whats-next-in-aug>What&rsquo;s next in Aug <a href=#whats-next-in-aug></a></h2><p><strong>Brain Repo: Embedded & IoT R&amp;D</strong>
 We plan to have a study group for IoT and embedded application. The study group will be led by Trung & Hieu on Discord channel.</p><p><strong>Performance review</strong>
 Performance review is starting next week. For those who wish to recognize your accomplishment, please prepare a 1 - 2 pages summary to reflect your performance/achievement, following this guide</p><ul><li><a href=http://github.com/dwarvesf/handbook/blob/master/making-a-career.md#performance-review>Github</a></li><li><a href=/548a540a40714f11915d631fd5cec53f#434d285816e34dcaa12f4bc652eb5bed>Notion</a></li></ul><h3 id=the-value-fit>The value fit <a href=#the-value-fit></a></h3><p>We have a reason to go this far. Everyone has goals and pay attention to their value fit. We encourage the Dwarves to</p><ul><li>Develop personal growth</li><li>Work hard for yourself</li><li>Ready for new opportunities</li></ul><p>Moving towards mutual goals is a condition to get along with your teammates. It&rsquo;s matter to know what value you can add to the game.</p><h3 id=senior-level-hiring>Senior-level hiring <a href=#senior-level-hiring></a></h3><p>We are hiring again. This would be a massive focuses on senior level to upgrade the A-team roster. And we need your help, please spread the message to your network.</p><p>Thanks Vy, Hoang for the referral. Thanks everyone else for sharing the post. It works.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/2021-july-updates_1b220da25eec9897a33cce413616f132_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/changelog/assets/2021-july-updates_1b220da25eec9897a33cce413616f132_md5.webp onerror="this.onerror=null" class=content-img></p><h3 id=shaping-our-image>Shaping our image <a href=#shaping-our-image></a></h3><p>Hey, it&rsquo;s time to update your LinkedIn, Github or Facebook profile. It makes us look cool as a team 🚀</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=shaping-our-image>Shaping our image <a href=#shaping-our-image></a></h3><p>Hey, it&rsquo;s time to update your LinkedIn, Github or Facebook profile. It makes us look cool as a team 🚀</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

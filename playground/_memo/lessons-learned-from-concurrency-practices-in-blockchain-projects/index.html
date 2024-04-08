@@ -195,12 +195,22 @@ TryXactLock:
    ...
 }
 </code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/lessons-learned-from-concurrency-practices-in-blockchain-projects_d24c06b91424a0367b9728cd76f4c3fc_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/lessons-learned-from-concurrency-practices-in-blockchain-projects_d24c06b91424a0367b9728cd76f4c3fc_md5.webp onerror="this.onerror=null" class=content-img></p><p><em>Source:</em> <em><a href=https://imgs.xkcd.com/comics/goto.png>https://xkcd.com/</a></em></p><p>We have a map of currencies that we keep track of in our database as well as related configurations for those currencies to map against real-time price data. We separate these as we have different configurations across our dev and production and environment.</p><pre><code class=language-plain_text>CurrencyMap:
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>Source:</em> <em><a href=https://imgs.xkcd.com/comics/goto.png>https://xkcd.com/</a></em></p><p>We have a map of currencies that we keep track of in our database as well as related configurations for those currencies to map against real-time price data. We separate these as we have different configurations across our dev and production and environment.</p><pre><code class=language-plain_text>CurrencyMap:
 	currencyMap, err := h.repo.CurrencyTranslation.GetAllMap(h.store)
 	if err != nil {
 		zap.L().Sugar().Errorf(&quot;h.repo.CurrencyTranslation.GetAllMap(): %v&quot;, err)

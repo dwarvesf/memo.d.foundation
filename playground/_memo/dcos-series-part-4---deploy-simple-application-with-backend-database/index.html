@@ -216,54 +216,134 @@ $ CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 $ docker build -t &lt;namespace&gt;/todolist .
 $ docker push &lt;namespace&gt;/todolist
 </code></pre><h2 id=setting-up-database-on-dcos>#=Setting up database on DC/OS <a href=#setting-up-database-on-dcos></a></h2><p>Let’s go to our DC/OS and create a <code>postgres</code> service</p><p>Go to DC/OS and choose package tab, then find <code>postgres</code>:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_7274a46eb1cff2f39783f79ef6352709_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_7274a46eb1cff2f39783f79ef6352709_md5.webp onerror="this.onerror=null" class=content-img></p><p>Customize your configuration after click <code>Advance setting</code> from pop-up page:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Customize your configuration after click <code>Advance setting</code> from pop-up page:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_efe59623d7bf4e6f6112c0d8b5fc2385_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_efe59623d7bf4e6f6112c0d8b5fc2385_md5.webp onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_d235654ef8f0f428f5ecad332edb6148_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_d235654ef8f0f428f5ecad332edb6148_md5.webp onerror="this.onerror=null" class=content-img></p><p>Finally, you need to wait a few minutes and get the result like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Finally, you need to wait a few minutes and get the result like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_b987a78c85ca24c80127c39227dc905f_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_b987a78c85ca24c80127c39227dc905f_md5.webp onerror="this.onerror=null" class=content-img></p><p>You also need to config more a little bit to be able to backup data:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>You also need to config more a little bit to be able to backup data:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_bd74914f8224427cee07a129310fbe15_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_bd74914f8224427cee07a129310fbe15_md5.webp onerror="this.onerror=null" class=content-img></p><p>A very important thing is sharing volumes. You will need to set a specific node with public IP to make sure if service restart, it will only be deployed to a node that you have specified before. There are 2 things need to be config:</p><ol><li>Set a specific node in <code>Service</code> tab:</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>A very important thing is sharing volumes. You will need to set a specific node with public IP to make sure if service restart, it will only be deployed to a node that you have specified before. There are 2 things need to be config:</p><ol><li>Set a specific node in <code>Service</code> tab:</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_fb4564d4758af4cc151fca604136180f_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_fb4564d4758af4cc151fca604136180f_md5.webp onerror="this.onerror=null" class=content-img></p><ol><li>Share volumes</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol><li>Share volumes</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_3d03a4c6a74681114944d4f0cc0ca683_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_3d03a4c6a74681114944d4f0cc0ca683_md5.webp onerror="this.onerror=null" class=content-img></p><p>For me, I usually share volumes inside container to <code>/srv</code> in node: <code>/srv/todolist/postgresql:/var/lib/postgresql/data</code></p><p>Then, you also need to enable <code>LOAD BALANCED SERVICE ADDRESS</code>, it will allow your application connect to <code>postgres</code></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For me, I usually share volumes inside container to <code>/srv</code> in node: <code>/srv/todolist/postgresql:/var/lib/postgresql/data</code></p><p>Then, you also need to enable <code>LOAD BALANCED SERVICE ADDRESS</code>, it will allow your application connect to <code>postgres</code></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_07ae10e7b5195c92905e0901562cb533_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_07ae10e7b5195c92905e0901562cb533_md5.webp onerror="this.onerror=null" class=content-img></p><p>After all, click <code>REVIEW & RUN</code> to change setting</p><h2 id=deploy-application>Deploy application <a href=#deploy-application></a></h2><p>As usual, we will need file <code>marathon.json</code> to define app and deploy:</p><p>You also need to replace your configuration <code>DB_HOST</code>, <code>DB_USER</code>, <code>DB_PASSWORD</code>, <code>DB_NAME</code></p><pre><code class=language-plain_text>{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>After all, click <code>REVIEW & RUN</code> to change setting</p><h2 id=deploy-application>Deploy application <a href=#deploy-application></a></h2><p>As usual, we will need file <code>marathon.json</code> to define app and deploy:</p><p>You also need to replace your configuration <code>DB_HOST</code>, <code>DB_USER</code>, <code>DB_PASSWORD</code>, <code>DB_NAME</code></p><pre><code class=language-plain_text>{
   &quot;id&quot;: &quot;/todolist/backend&quot;,
   &quot;cpus&quot;: 0.5,
   &quot;mem&quot;: 512,
@@ -306,15 +386,35 @@ $ docker push &lt;namespace&gt;/todolist
 }
 </code></pre><p>OK, we can deploy now !</p><pre><code class=language-plain_text>$ dcos marathon app add marathon.json
 </code></pre><p>As my expectation, it will be like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_b85d3535f4be0d3605d8d61ef3fcd21a_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_b85d3535f4be0d3605d8d61ef3fcd21a_md5.webp onerror="this.onerror=null" class=content-img></p><p>Everything is available now. Let’s check it:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Everything is available now. Let’s check it:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/dcos-series-part-4---deploy-simple-application-with-backend-database_91935fc991d145d9dec0c0a5a1703c2e_md5.webp`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
-  }" src=/playground/_memo/assets/dcos-series-part-4---deploy-simple-application-with-backend-database_91935fc991d145d9dec0c0a5a1703c2e_md5.webp onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
