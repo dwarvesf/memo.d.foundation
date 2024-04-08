@@ -9,20 +9,13 @@
 <script type="module">
   // If absolute URL from the remote server is provided, configure the CORS
   // header on that server.
-  const url = "
-  {{- if eq $scheme "" -}}
-    {{- if strings.HasSuffix $url.Path ".md" -}}
-      {{- relref .Page .Destination | safeURL -}}
-    {{- else -}}
-      {{ if strings.HasPrefix .Page.File.Dir "/" }}
-        {{- printf "%s" .Page.File.Dir .Destination | safeURL -}}
-      {{- else -}}
-        {{- printf "/%s%s" .Page.File.Dir .Destination | safeURL -}}
-      {{- end -}}
-    {{- end -}}
-  {{- else -}}
-    {{- .Destination | safeURL -}}
-  {{- end -}}";
+  let url = `{{ .Destination }}`;
+  const currentUrlRoot = window.location.href.split('/')[3];
+  if (url.match(/^assets/)) {
+      url = `/${currentUrlRoot}/${url}`;
+  } else {
+      url = `/${url}`;
+  }
 
   // Loaded via <script> tag, create shortcut to access PDF.js exports.
   const { pdfjsLib } = globalThis;
@@ -130,59 +123,53 @@
 {{- else if strings.HasSuffix .Destination ".mp4" -}}
 <video
   x-data="{
+    title: `{{- with .Title }}{{ . | safeHTML }}{{- end -}}`,
+    alt: `{{- with .Text }}{{ . | safeHTML }}{{- end -}}`,
+    src: `{{- .Destination }}`,
     altText: `{{- with .Text }}{{ . | safeHTML }}{{- end -}}`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
   }"
   controls
   autoplay
-  src="
-  {{- if eq $scheme "" -}}
-    {{- if strings.HasSuffix $url.Path ".md" -}}
-      {{- relref .Page .Destination | safeURL -}}
-    {{- else -}}
-      {{ if strings.HasPrefix .Page.File.Dir "/" }}
-        {{- printf "%s" .Page.File.Dir .Destination | safeURL -}}
-      {{- else -}}
-        {{- printf "/%s%s" .Page.File.Dir .Destination | safeURL -}}
-      {{- end -}}
-    {{- end -}}
-  {{- else -}}
-    {{- .Destination | safeURL -}}
-  {{- end -}}"
-  {{- with .Title }} title="{{ . | safeHTML }}"{{- end -}}
-  {{- with .Text }} alt="{{ . | safeHTML }}" x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }"
-  {{- end -}}
+  :src="relativeSrc"
+  :title="title"
+  :alt="alt"
+  :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }"
   onerror="this.onerror = null"
 ></video>
 {{- else -}}
 <img 
   x-data="{
+    title: `{{- with .Title }}{{ . | safeHTML }}{{- end -}}`,
+    alt: `{{- with .Text }}{{ . | safeHTML }}{{- end -}}`,
+    src: `{{- .Destination }}`,
     altText: `{{- with .Text }}{{ . | safeHTML }}{{- end -}}`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
       return this.altText.match(widthHeightRegex) ?? [];
     },
+    get relativeSrc() {
+      const currentUrlRoot = this.currentUrl.split('/')[1];
+      if (this.src.match(/^assets/)) {
+         return `/${currentUrlRoot}/${this.src}`;
+      }
+      return `/${this.src}`;
+    }
   }"
-  src="
-  {{- if eq $scheme "" -}}
-    {{- if strings.HasSuffix $url.Path ".md" -}}
-      {{- relref .Page .Destination | safeURL -}}
-    {{- else -}}
-      {{ if strings.HasPrefix .Page.File.Dir "/" }}
-        {{- printf "%s%s" .Page.File.Dir .Destination | safeURL -}}
-      {{- else -}}
-        {{- printf "/%s%s" .Page.File.Dir .Destination | safeURL -}}
-      {{- end -}}
-    {{- end -}}
-  {{- else -}}
-    {{- .Destination | safeURL -}}
-  {{- end -}}"
-  {{- with .Title }} title="{{ . | safeHTML }}"{{- end -}}
-  {{- with .Text }} alt="{{ . | safeHTML }}"  x-bind:style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }"
-  {{- end -}}
+  :src="relativeSrc"
+  :title="title"
+  :alt="alt"
+  :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }"
   onerror="this.onerror = null"
   class="content-img"
 />
