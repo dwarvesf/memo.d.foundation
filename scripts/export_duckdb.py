@@ -4,6 +4,9 @@ import duckdb
 import argparse
 import frontmatter
 import gitignore_parser
+import time
+import subprocess
+from dateutil import parser
 
 
 def extract_frontmatter(file_path):
@@ -13,7 +16,19 @@ def extract_frontmatter(file_path):
 
 
 def add_to_database(conn, file_path, frontmatter, md_content):
-	# Check if the frontmatter key is a list represented as a comma seperated string, convert it into a list
+	# Get the path to the submodule
+	submodule_path = os.path.dirname(file_path)
+
+	# Get the last updated date from Git
+	last_updated = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%ai'], cwd=submodule_path)
+	last_updated = last_updated.decode('utf-8').rstrip()
+	
+	# Convert from 'yyyy-mm-dd hh:mm:ss +zzzz' to 'yyyy-mm-ddThh:mm:ss+zzzz'
+	last_updated_dt = parser.parse(last_updated)
+	last_updated = last_updated_dt.isoformat()
+	frontmatter["last_updated"] = last_updated
+
+	# Check if the frontmatter key is a list represented  as a comma seperated string, convert it into a list
 	if "tags" in frontmatter.keys() and isinstance(frontmatter["tags"], str):
 		frontmatter["tags"] = frontmatter["tags"].split(",")
 
@@ -31,6 +46,8 @@ def add_to_database(conn, file_path, frontmatter, md_content):
 			column_types[key] = "DOUBLE"
 		elif isinstance(value, bool):
 			column_types[key] = "BOOLEAN"
+		elif "last_updated" in key:
+			column_types[key] = "TIMESTAMP"
 		elif "date" in key:
 			column_types[key] = "DATE"
 		else:
