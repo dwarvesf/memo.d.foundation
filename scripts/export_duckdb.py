@@ -3,6 +3,7 @@ import re
 import duckdb
 import argparse
 import frontmatter
+import gitignore_parser
 
 
 def extract_frontmatter(file_path):
@@ -31,18 +32,25 @@ def add_to_database(conn, file_path, frontmatter, md_content):
 
 
 def process_directory(conn, directory):
+	ignore_file_path = os.path.join(directory, ".export-ignore")
+	if os.path.exists(ignore_file_path):
+		spec = gitignore_parser.parse_gitignore(ignore_file_path)
+
 	for root, dirs, files in os.walk(directory):
 		for file in files:
 			if file.endswith(".md"):
 				full_path = os.path.join(root, file)
-				frontmatter, md_content = extract_frontmatter(full_path)
-				if frontmatter:
-					add_to_database(conn, full_path, frontmatter, md_content)
+				abs_path = os.path.abspath(full_path)
+				if not spec(abs_path):
+					frontmatter, md_content = extract_frontmatter(full_path)
+					if frontmatter:
+						add_to_database(conn, full_path, frontmatter, md_content)
 
 
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("directory", help="the directory to scan")
+	parser.add_argument("--format", choices=["csv", "parquet"], default="csv", help="output format")
 	args = parser.parse_args()
 
 	conn = duckdb.connect(":memory:")
@@ -50,9 +58,15 @@ def main():
 		"CREATE TABLE IF NOT EXISTS vault (file_path TEXT, frontmatter TEXT, md_content TEXT)"
 	)
 
+	print(f"Processing {args.directory} to DuckDB...")
 	process_directory(conn, args.directory)
 
-	conn.execute(f"EXPORT DATABASE '{args.directory}_export'")
+	match args.format:
+		case "csv":
+			conn.execute(f"EXPORT DATABASE 'db'")
+		case "parquet":
+			conn.execute(f"EXPORT DATABASE 'db' (FORMAT PARQUET)")
+
 	conn.close()
 
 

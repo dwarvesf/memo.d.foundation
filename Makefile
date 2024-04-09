@@ -48,3 +48,6 @@ backup-all:
 	@python ./scripts/export.py vault/hiring
 	@python ./scripts/export.py vault/newsletter
 	@python ./scripts/export.py vault/radar
+	
+duckdb-export:
+	@python scripts/export_duckdb.py vault --format parquet
