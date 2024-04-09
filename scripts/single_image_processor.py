@@ -9,7 +9,7 @@ import requests
 from io import BytesIO
 import argparse
 
-obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
+obsidian_image_link_regex_compiled = re.compile(r"^(?![>```\s])(.*?)(?<!```)!\[\[(.*?)\]\]|!\[.*?\]\((.*?)\)")
 
 
 def process_markdown_file(file_path):

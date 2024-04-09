@@ -10,10 +10,7 @@ import requests
 from io import BytesIO
 import argparse
 
-parser = argparse.ArgumentParser(description="Process some Markdown files.")
-parser.add_argument("folder_path", type=str, help="Path to the Markdown folder")
-
-obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
+obsidian_image_link_regex_compiled = re.compile(r"^(?![>```\s])(.*?)(?<!```)!\[\[(.*?)\]\]|!\[.*?\]\((.*?)\)")
 
 
 def process_markdown_file(file_path):
