@@ -12,7 +12,8 @@
     "awscli":                "1.32.21",
     "pre-commit":            "3.6.1",
     "duckdb":                "0.10.1",
-    "ffmpeg":                "6.1.1"
+    "ffmpeg":                "6.1.1",
+    "stdenv.cc.cc.lib":      ""
   },
   "shell": {
     "init_hook": [
@@ -23,13 +24,13 @@
       "make clear-build"
     ],
     "scripts": {
-      "build":          "make build",
-      "clear-build":    "make clear-build",
-      "watch-run":      "make watch-run",
-      "build-target":   "make build-target",
-      "run-target":     "make run-target",
-      "duckdb-export":  "make duckdb-export",
-      "fetch":          "make fetch"
+      "build":         "make build",
+      "clear-build":   "make clear-build",
+      "watch-run":     "make watch-run",
+      "build-target":  "make build-target",
+      "run-target":    "make run-target",
+      "duckdb-export": "make duckdb-export",
+      "fetch":         "make fetch"
     }
   }
 }
