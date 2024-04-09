@@ -13,20 +13,40 @@ def extract_frontmatter(file_path):
 
 
 def add_to_database(conn, file_path, frontmatter, md_content):
-	columns = ", ".join(frontmatter.keys())
-	values = ", ".join(["?" for _ in frontmatter.keys()])
+	# Check if the frontmatter key is a list represented as a comma seperated string, convert it into a list
+	if "tags" in frontmatter.keys() and isinstance(frontmatter["tags"], str):
+		frontmatter["tags"] = frontmatter["tags"].split(",")
+
+	if "authors" in frontmatter.keys() and isinstance(frontmatter["authors"], str):
+		frontmatter["authors"] = frontmatter["authors"].split(",")
+
+	# Detect column types
+	column_types = {}
+	for key, value in frontmatter.items():
+		if isinstance(value, list):
+			column_types[key] = "TEXT[]"
+		elif isinstance(value, int):
+			column_types[key] = "BIGINT"
+		elif isinstance(value, float):
+			column_types[key] = "DOUBLE"
+		elif isinstance(value, bool):
+			column_types[key] = "BOOLEAN"
+		elif "date" in key:
+			column_types[key] = "DATE"
+		else:
+			column_types[key] = "TEXT"
 
 	# Add new columns if they don't already exist
-	for column in frontmatter.keys():
+	for column, column_type in column_types.items():
 		try:
-			conn.execute(f"ALTER TABLE vault ADD COLUMN {column} TEXT")
+			conn.execute(f"ALTER TABLE vault ADD COLUMN {column} {column_type}")
 		except duckdb.ProgrammingError:
 			pass
 
 	# Remove the root folder from file_path
 	file_path = re.sub(r"^.*?/", "", file_path)
 	conn.execute(
-		f"INSERT INTO vault (file_path, {columns}, md_content) VALUES (?, {values}, ?)",
+		f"INSERT INTO vault (file_path, {', '.join(frontmatter.keys())}, md_content) VALUES (?, {', '.join('?' for _ in frontmatter.keys())}, ?)",
 		[file_path] + list(frontmatter.values()) + [md_content],
 	)
 
@@ -50,13 +70,13 @@ def process_directory(conn, directory):
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("directory", help="the directory to scan")
-	parser.add_argument("--format", choices=["csv", "parquet"], default="csv", help="output format")
+	parser.add_argument(
+		"--format", choices=["csv", "parquet"], default="csv", help="output format"
+	)
 	args = parser.parse_args()
 
 	conn = duckdb.connect(":memory:")
-	conn.execute(
-		"CREATE TABLE IF NOT EXISTS vault (file_path TEXT, frontmatter TEXT, md_content TEXT)"
-	)
+	conn.execute("CREATE TABLE IF NOT EXISTS vault (file_path TEXT, md_content TEXT)")
 
 	print(f"Processing {args.directory} to DuckDB...")
 	process_directory(conn, args.directory)
