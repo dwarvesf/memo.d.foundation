@@ -178,7 +178,7 @@
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -200,7 +200,7 @@ For Team & Project, it&rsquo;s a place for topic research output, learning resou
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;

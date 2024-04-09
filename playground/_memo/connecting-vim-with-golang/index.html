@@ -221,7 +221,7 @@ filetype plugin indent on    &quot; required
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -263,7 +263,7 @@ O: Insert và mở một hàng trống phía trên</p><ul><li><strong>Visual mod
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -284,7 +284,7 @@ O: Insert và mở một hàng trống phía trên</p><ul><li><strong>Visual mod
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;

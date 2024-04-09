@@ -180,7 +180,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -201,7 +201,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -222,7 +222,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -240,7 +240,7 @@ We already have standards and processes in place, following them and adapting th
   currentUrlParts.shift();
   currentUrlParts.pop();
   currentUrlParts.pop();
-  const relativeUrl = `/${currentUrlParts.join('/')}/`;
+  const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
   if (url.match(/^assets/)) {
       url = `${relativeUrl}/${url}`;

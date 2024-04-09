@@ -179,7 +179,7 @@ Unless you&rsquo;re reaching out for help, hiring is the last thing you should k
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;

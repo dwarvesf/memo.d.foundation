@@ -181,7 +181,7 @@
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -206,7 +206,7 @@
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -228,7 +228,7 @@ Most especially, Dwarves Discord Network where every techie can join to hang out
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -249,7 +249,7 @@ Most especially, Dwarves Discord Network where every techie can join to hang out
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -271,7 +271,7 @@ A location-based scavenger hunt where we took pictures of proof at locations alo
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -292,7 +292,7 @@ A location-based scavenger hunt where we took pictures of proof at locations alo
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -313,7 +313,7 @@ A location-based scavenger hunt where we took pictures of proof at locations alo
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;
@@ -335,7 +335,7 @@ A global turn-based 4-team 12x12 grid game played on a real-time web application
       currentUrlParts.shift();
       currentUrlParts.pop();
       currentUrlParts.pop();
-      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
          return `${relativeUrl}/${this.src}`;

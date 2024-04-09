@@ -177,7 +177,7 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
   currentUrlParts.shift();
   currentUrlParts.pop();
   currentUrlParts.pop();
-  const relativeUrl = `/${currentUrlParts.join('/')}/`;
+  const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
   if (url.match(/^assets/)) {
       url = `${relativeUrl}/${url}`;
