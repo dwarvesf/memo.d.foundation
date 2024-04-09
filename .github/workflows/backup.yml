@@ -20,7 +20,7 @@ jobs:
         uses: jetpack-io/devbox-install-action@v0.8.0
         with:
           enable-cache: true
-          devbox-version: 0.10.3
+          devbox-version: 0.10.4
 
       - name: Export DB
         shell: bash
