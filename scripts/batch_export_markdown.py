@@ -8,7 +8,7 @@ import asyncio
 import aiofiles
 import frontmatter
 import gitignore_parser
-
+import argparse
 
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
@@ -21,7 +21,7 @@ def slugify(value):
 def has_frontmatter_properties(content, file_path, export_path):
     # check if markdown file has frontmatter properties, title, description, tags, and author
     frontmatter_properties = frontmatter.loads(content)
-    
+
     # remove the root directory from file path
     root_dir = file_path.split("/")[0]
     url_path = file_path.replace(f"{root_dir}/", "")
@@ -36,22 +36,22 @@ def has_frontmatter_properties(content, file_path, export_path):
         [key in frontmatter_properties.keys() for key in ["title", "description"]]
     ):
         return False
-    
+
     # check if `hiring` is false
-    if 'hiring' in frontmatter_properties and frontmatter_properties['hiring'] == False:
+    if "hiring" in frontmatter_properties and frontmatter_properties["hiring"] == False:
         # if robots.txt does not exist, create it and write to it
         robots_file_path = os.path.join(export_path, "robots.txt")
-        
+
         # check if robots.txt exists
         if not os.path.exists(robots_file_path):
-            with open(robots_file_path, 'w') as robots_file:
+            with open(robots_file_path, "w") as robots_file:
                 robots_file.write("User-agent: *\n")
 
         # write to robots.txt
-        with open(robots_file_path, 'r') as robots_file:
-            if 'Disallow: /' + url_path + '\n' not in robots_file.readlines():
-                    with open(robots_file_path, 'a') as robots_file:
-                        robots_file.write('Disallow: /' + url_path + '\n')
+        with open(robots_file_path, "r") as robots_file:
+            if "Disallow: /" + url_path + "\n" not in robots_file.readlines():
+                with open(robots_file_path, "a") as robots_file:
+                    robots_file.write("Disallow: /" + url_path + "\n")
 
     return True
 
@@ -69,11 +69,10 @@ def process_markdown_file(file_path, export_path):
 
     file_dir = os.path.dirname(file_path)
     root_dir = file_path.split("/")[0]
-    
+
     # check if markdown file has frontmatter properties
     if not has_frontmatter_properties(content, file_path, export_path):
         return None, linked_files
-
 
     def replace_link(match):
         source_path = match.group(1)
@@ -96,7 +95,9 @@ def process_markdown_file(file_path, export_path):
                     # check if the file is a markdown file
                     if note_path.endswith(".md"):
                         # check if markdown file has frontmatter properties
-                        if not has_frontmatter_properties(content, file_path, export_path):
+                        if not has_frontmatter_properties(
+                            content, file_path, export_path
+                        ):
                             break
 
                     linked_files.append(file)
@@ -133,7 +134,7 @@ def is_ignored(filepath, ignore_spec):
     """Check if the given path matches any of the ignore patterns using gitignore_parser."""
     if ignore_spec is None:
         return False
-        
+
     # get the absolute path
     absolute_filepath = os.path.abspath(filepath)
 
@@ -146,7 +147,9 @@ def get_files(folder_path):
     ignore_spec = read_ignore_patterns(folder_path)
     for root, dirs, files in os.walk(folder_path, topdown=True):
         # Removing ignored directories in place
-        dirs[:] = [d for d in dirs if not is_ignored(os.path.join(root, d), ignore_spec)]
+        dirs[:] = [
+            d for d in dirs if not is_ignored(os.path.join(root, d), ignore_spec)
+        ]
         for file in files:
             file_path = os.path.join(root, file)
             if not is_ignored(file_path, ignore_spec):
@@ -155,7 +158,7 @@ def get_files(folder_path):
 
 async def process_markdown_file_async(file_path, export_path):
     """Processes a Markdown file asynchronously, moving local images to an 'assets' folder."""
-    
+
     content, linked_files = process_markdown_file(file_path, export_path)
 
     # move all linked files to the export path if they don't exist in the export path
@@ -239,14 +242,16 @@ async def process_markdown_folder_async(folder_path, export_path):
 
 # Get the Markdown file path from the user (assuming it's the first argument)
 if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        markdown_file_path = sys.argv[1]
-        export_path = sys.argv[2]
-        print(
-            f"Exporting Markdown files from '{markdown_file_path}' to '{export_path}'"
-        )
-        asyncio.run(process_markdown_folder_async(markdown_file_path, export_path))
-    else:
-        print(
-            "Please provide the path to the Markdown file as an argument as well as an export path."
-        )
+    parser = argparse.ArgumentParser(
+        description="Process Obsidian Markdown to Standard Markdown."
+    )
+    parser.add_argument(
+        "markdown_file_path", type=str, help="Path to the Markdown file"
+    )
+    parser.add_argument("export_path", type=str, help="Path to the export directory")
+    args = parser.parse_args()
+
+    markdown_file_path = args.markdown_file_path
+    export_path = args.export_path
+    print(f"Exporting Markdown files from '{markdown_file_path}' to '{export_path}'")
+    asyncio.run(process_markdown_folder_async(markdown_file_path, export_path))
