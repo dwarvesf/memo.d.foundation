@@ -23,13 +23,13 @@
       "make clear-build"
     ],
     "scripts": {
-      "build":        "make build",
-      "clear-build":  "make clear-build",
-      "watch-run":    "make watch-run",
-      "build-target": "make build-target",
-      "run-target":   "make run-target",
-      "backup-all":   "make backup-all",
-      "fetch":        "make fetch"
+      "build":          "make build",
+      "clear-build":    "make clear-build",
+      "watch-run":      "make watch-run",
+      "build-target":   "make build-target",
+      "run-target":     "make run-target",
+      "duckdb-export":  "make duckdb-export",
+      "fetch":          "make fetch"
     }
   }
 }
