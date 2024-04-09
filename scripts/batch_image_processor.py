@@ -10,7 +10,7 @@ import requests
 from io import BytesIO
 import argparse
 
-obsidian_image_link_regex_compiled = re.compile(r"^(?![>```\s])(.*?)(?<!```)!\[\[(.*?)\]\]|!\[.*?\]\((.*?)\)")
+obsidian_image_link_regex_compiled = re.compile(r"^(?![>```\s])(.*?)(?<!```)!\[\[(.*?)\]\]|!\[(.*?)\]\((.*?)\)")
 
 
 def process_markdown_file(file_path):
@@ -29,11 +29,8 @@ def process_markdown_file(file_path):
     os.makedirs(assets_dir, exist_ok=True)
 
     def replace_image_link(match):
-        source_image_path = match.group(1) if match.group(1) else match.group(2)
-        sources = re.split(r"[\\]?\|", source_image_path)
-
-        source_note = sources[0] if len(sources) > 0 else match.group(1)
-        source_name = sources[1] if len(sources) > 1 else ""
+        source_name = match.group(3) if match.group(3) else match.group(2)
+        source_image_path = match.group(4) if match.group(4) else match.group(2)
 
         # Get the trailing image name from source_image_path
         image_name = os.path.basename(urllib.parse.urlparse(source_image_path).path)
