@@ -10,9 +10,16 @@
   // If absolute URL from the remote server is provided, configure the CORS
   // header on that server.
   let url = `{{ .Destination }}`;
-  const currentUrlRoot = window.location.href.split('/')[3];
+  let currentUrlParts = window.location.href.split('/');
+  currentUrlParts.shift();
+  currentUrlParts.shift();
+  currentUrlParts.shift();
+  currentUrlParts.pop();
+  currentUrlParts.pop();
+  const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
   if (url.match(/^assets/)) {
-      url = `/${currentUrlRoot}/${url}`;
+      url = `${relativeUrl}/${url}`;
   } else {
       url = `/${url}`;
   }
@@ -132,9 +139,14 @@
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -159,9 +171,14 @@
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
