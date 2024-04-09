@@ -220,6 +220,9 @@ async def process_markdown_folder_async(folder_path, export_path):
 
     # copy all files from the folder_path to the export_path except the .md files
     copy_directory(folder_path, export_path, "*.md")
+    
+    # Copy the "db" folder
+    copy_directory("db", export_path, "*.sql")
 
     # Map files to their export paths and process only markdown files
     markdown_files = [
