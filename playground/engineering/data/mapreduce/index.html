@@ -175,9 +175,14 @@
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -194,9 +199,14 @@ Therefore, four months in with this strategy, we&rsquo;re able to calculate the 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -211,9 +221,14 @@ With this model, again, we were able to complete the census calculation in two m
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }

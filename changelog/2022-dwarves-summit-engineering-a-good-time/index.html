@@ -177,9 +177,14 @@
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -197,9 +202,14 @@
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -214,9 +224,14 @@ Most especially, Dwarves Discord Network where every techie can join to hang out
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -230,9 +245,14 @@ Most especially, Dwarves Discord Network where every techie can join to hang out
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -247,9 +267,14 @@ A location-based scavenger hunt where we took pictures of proof at locations alo
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -263,9 +288,14 @@ A location-based scavenger hunt where we took pictures of proof at locations alo
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -279,9 +309,14 @@ A location-based scavenger hunt where we took pictures of proof at locations alo
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -296,9 +331,14 @@ A global turn-based 4-team 12x12 grid game played on a real-time web application
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }

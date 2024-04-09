@@ -178,9 +178,14 @@ With coefficient equal to 1</li></ul><p>$$ R = 0.3 \times (\frac{3 + 3 + 3}{3}) 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -194,9 +199,14 @@ With coefficient equal to 1</li></ul><p>$$ R = 0.3 \times (\frac{3 + 3 + 3}{3}) 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -210,9 +220,14 @@ With coefficient equal to 1</li></ul><p>$$ R = 0.3 \times (\frac{3 + 3 + 3}{3}) 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -226,9 +241,14 @@ With coefficient equal to 1</li></ul><p>$$ R = 0.3 \times (\frac{3 + 3 + 3}{3}) 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -242,9 +262,14 @@ With coefficient equal to 1</li></ul><p>$$ R = 0.3 \times (\frac{3 + 3 + 3}{3}) 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }

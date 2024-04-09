@@ -174,9 +174,14 @@
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -195,9 +200,14 @@ MVP Development, Tech Consulting, Staff Augmentation</p><h1 id=the-challenges>Th
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -214,9 +224,14 @@ Open Fabric was designed to become a high-performance, low-latency system that f
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -231,9 +246,14 @@ We deploy our system to Amazon Web Service Cloud and keep them there. The overal
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -247,9 +267,14 @@ We deploy our system to Amazon Web Service Cloud and keep them there. The overal
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }

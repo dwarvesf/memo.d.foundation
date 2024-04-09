@@ -176,9 +176,14 @@ People who don&rsquo;t find a sense of purpose don&rsquo;t find us so well.</p><
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }

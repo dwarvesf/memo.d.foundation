@@ -176,9 +176,14 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -192,9 +197,14 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -208,9 +218,14 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      const currentUrlRoot = this.currentUrl.split('/')[1];
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
       if (this.src.match(/^assets/)) {
-         return `/${currentUrlRoot}/${this.src}`;
+         return `${relativeUrl}/${this.src}`;
       }
       return `/${this.src}`;
     }
@@ -219,9 +234,16 @@ We already have standards and processes in place, following them and adapting th
   
   
   let url = `assets\/lifecycle-of-a-publication.pdf`;
-  const currentUrlRoot = window.location.href.split('/')[3];
+  let currentUrlParts = window.location.href.split('/');
+  currentUrlParts.shift();
+  currentUrlParts.shift();
+  currentUrlParts.shift();
+  currentUrlParts.pop();
+  currentUrlParts.pop();
+  const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
   if (url.match(/^assets/)) {
-      url = `/${currentUrlRoot}/${url}`;
+      url = `${relativeUrl}/${url}`;
   } else {
       url = `/${url}`;
   }

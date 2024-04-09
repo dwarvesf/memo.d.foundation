@@ -171,9 +171,16 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
   
   
   let url = `assets\/2024-whats-new-january_doty2023.pdf`;
-  const currentUrlRoot = window.location.href.split('/')[3];
+  let currentUrlParts = window.location.href.split('/');
+  currentUrlParts.shift();
+  currentUrlParts.shift();
+  currentUrlParts.shift();
+  currentUrlParts.pop();
+  currentUrlParts.pop();
+  const relativeUrl = `/${currentUrlParts.join('/')}/`;
+
   if (url.match(/^assets/)) {
-      url = `/${currentUrlRoot}/${url}`;
+      url = `${relativeUrl}/${url}`;
   } else {
       url = `/${url}`;
   }
