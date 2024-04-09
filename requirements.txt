@@ -12,3 +12,6 @@ moviepy
 watchdog
 duckdb
 gitignore_parser
+openai
+python-dotenv
+pandas

@@ -222,7 +222,9 @@ async def process_markdown_folder_async(folder_path, export_path):
     copy_directory(folder_path, export_path, "*.md")
     
     # Copy the "db" folder
-    copy_directory("db", export_path, "*.sql")
+    db_folder_path = os.path.join("db")
+    export_db_folder_path = os.path.join(export_path, "db")
+    shutil.copytree(db_folder_path, export_db_folder_path)
 
     # Map files to their export paths and process only markdown files
     markdown_files = [

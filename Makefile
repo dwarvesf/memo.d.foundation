@@ -19,13 +19,11 @@ clear-build:
 	@rm -rf content
 
 run:
-	@python scripts/export_duckdb.py vault --format parquet
 	@python scripts/batch_image_processor.py vault
 	@python scripts/batch_export_markdown.py vault content
 	@hugo -DEF --logLevel error server
 	
 watch-run:
-	@python scripts/export_duckdb.py vault --format parquet
 	@python scripts/batch_image_processor.py vault
 	@python scripts/batch_export_markdown.py vault content
 	@python scripts/watch_run.py vault content
