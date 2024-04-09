@@ -13,10 +13,11 @@
   .pagetitle {
     grid-area: pagetitle;
     margin: 0px;
-    font-size: 2.5625rem;
+    font-size: 32px !important;
+    font-weight: 600;
     font-style: normal;
-    line-height: 100%;
-    letter-spacing: -0.05125rem;
+    line-height: 125%;
+    letter-spacing: -0.5px;
   }
 
   .date {
@@ -91,7 +92,7 @@ code.button {
 
 .grid {
   position: relative;
-  margin-top: 57px;
+  // margin-top: 57px;
   display: inline-grid;
   grid-template-areas:
     "tabmenu tabmenu tabmenu"
@@ -125,7 +126,8 @@ code.button {
 
     div.container {
       position: sticky;
-      top: 90px;
+      padding-top: 1.5rem;
+      top: 57px;
       right: 0;
       z-index: 9;
 
@@ -313,6 +315,10 @@ html[data-reading-mode="false"] {
     transform: translateY(0);
     transition-delay: 0.15s;
   }
+
+  .grid {
+    margin-top: 61px;
+  }
 }
 
 // if ToC is empty or there is no ToC, hide the label before it
@@ -357,11 +363,13 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
 }
 
 #TableOfContents a {
-  color: var(--secondary-font-color-light-var2);
-  width: max-content;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  color: var(--secondary-font-color-light-var2);
   font-weight: 400;
+  line-height: 140%;
 }
 
 #TableOfContents a[active="true"] {

@@ -89,9 +89,13 @@ html[data-reading-mode="true"] {
     visibility: hidden;
   }
 
-  .tab-header > .tab-menu {
-    opacity: 0;
-    pointer-events: none;
+  .tab-header {
+    position: relative;
+
+    & > .tab-menu {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
   #sidebar-toggle {
