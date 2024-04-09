@@ -30,6 +30,9 @@ def process_markdown_file(file_path):
     def replace_image_link(match):
         source_name = match.group(3) if match.group(3) else match.group(2)
         source_image_path = match.group(4) if match.group(4) else match.group(2)
+        
+        if source_name is None:
+            source_name = ""
 
         # Get the trailing image name from source_image_path
         image_name = os.path.basename(urllib.parse.urlparse(source_image_path).path)
