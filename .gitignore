@@ -27,10 +27,6 @@ public/*
 !public/CNAME
 content/
 
-# duckdb related files
-*.parquet
-db/
-
 # MacOS files
 .DS_Store
 .DocumentRevisions-V100
@@ -39,3 +35,6 @@ db/
 
 # secrets
 .secrets
+
+# environment files
+.env
