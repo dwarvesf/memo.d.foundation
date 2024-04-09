@@ -8,6 +8,10 @@ from PIL import Image
 from moviepy.editor import VideoFileClip
 import requests
 from io import BytesIO
+import argparse
+
+parser = argparse.ArgumentParser(description="Process some Markdown files.")
+parser.add_argument("folder_path", type=str, help="Path to the Markdown folder")
 
 obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
 
@@ -62,13 +66,22 @@ def process_markdown_file(file_path):
             # Get a unique image name from the parsed URL
             print(f"Downloading image '{source_image_path}'...")
             image_name = os.path.basename(parsed_url.path)
-            
+
             # if the image_name does not have a file extension, add one based on the content-type
             if not os.path.splitext(image_name)[1]:
                 image_name += "." + response.headers["Content-Type"].split("/")[1]
             # if the image_name does have a file extension, but it is not a valid image extension, add one based on the content-type
-            elif os.path.splitext(image_name)[1] not in [".png", ".jpg", ".jpeg", ".webp"]:
-                image_name = os.path.splitext(image_name)[0] + "." + response.headers["Content-Type"].split("/")[1]
+            elif os.path.splitext(image_name)[1] not in [
+                ".png",
+                ".jpg",
+                ".jpeg",
+                ".webp",
+            ]:
+                image_name = (
+                    os.path.splitext(image_name)[0]
+                    + "."
+                    + response.headers["Content-Type"].split("/")[1]
+                )
 
             with open(os.path.join(assets_dir, image_name), "wb") as f:
                 f.write(response.content)
@@ -174,11 +187,20 @@ def process_markdown_folder_parallel(folder_path, max_workers=os.cpu_count()):
 
 # Get the folder path from the user (assuming it's the first argument)
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        folder_path = sys.argv[1]
-        print(f"Processing images in folder: {folder_path}")
-        process_markdown_folder_parallel(folder_path)
-    else:
-        print(
-            "Please provide the path to the folder containing Markdown files as an argument."
-        )
+    parser = argparse.ArgumentParser(
+        description="Process and compress images for Markdown files."
+    )
+    parser.add_argument(
+        "folder_path", type=str, help="Path to the folder containing Markdown files."
+    )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=os.cpu_count(),
+        help="Maximum number of worker processes.",
+    )
+    args = parser.parse_args()
+
+    folder_path = args.folder_path
+    print(f"Processing images in folder: {folder_path}")
+    process_markdown_folder_parallel(folder_path)

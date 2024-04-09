@@ -7,7 +7,7 @@ from PIL import Image
 from moviepy.editor import VideoFileClip
 import requests
 from io import BytesIO
-
+import argparse
 
 obsidian_image_link_regex_compiled = re.compile(r"!\[\[(.*?)\]\]|\!\[.*?\]\((.*?)\)")
 
@@ -67,8 +67,17 @@ def process_markdown_file(file_path):
             if not os.path.splitext(image_name)[1]:
                 image_name += "." + response.headers["Content-Type"].split("/")[1]
             # if the image_name does have a file extension, but it is not a valid image extension, add one based on the content-type
-            elif os.path.splitext(image_name)[1] not in [".png", ".jpg", ".jpeg", ".webp"]:
-                image_name = os.path.splitext(image_name)[0] + "." + response.headers["Content-Type"].split("/")[1]
+            elif os.path.splitext(image_name)[1] not in [
+                ".png",
+                ".jpg",
+                ".jpeg",
+                ".webp",
+            ]:
+                image_name = (
+                    os.path.splitext(image_name)[0]
+                    + "."
+                    + response.headers["Content-Type"].split("/")[1]
+                )
 
             with open(os.path.join(assets_dir, image_name), "wb") as f:
                 f.write(response.content)
@@ -143,8 +152,13 @@ def process_markdown_file(file_path):
 
 # Get the Markdown file path from the user (assuming it's the first argument)
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        markdown_file_path = sys.argv[1]
-        process_markdown_file(markdown_file_path)
-    else:
-        print("Please provide the path to the Markdown file as an argument.")
+    parser = argparse.ArgumentParser(
+        description="Process and compress images for Markdown files."
+    )
+    parser.add_argument(
+        "markdown_file_path", type=str, help="Path to the Markdown file"
+    )
+    args = parser.parse_args()
+
+    markdown_file_path = args.markdown_file_path
+    process_markdown_file(markdown_file_path)

@@ -4,6 +4,7 @@ import urllib.parse
 import sys
 import frontmatter
 import shutil
+import argparse
 
 obsidian_link_regex_compiled = re.compile(r"\[\[(.*?)\]\]")
 
@@ -134,11 +135,15 @@ def process_markdown_file(file_path, export_path):
 
 # Get the Markdown file path from the user (assuming it's the first argument)
 if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        markdown_file_path = sys.argv[1]
-        export_path = sys.argv[2]
-        process_markdown_file(markdown_file_path, export_path)
-    else:
-        print(
-            "Please provide the path to the Markdown file as an argument as well as an export path."
-        )
+    parser = argparse.ArgumentParser(
+        description="Process Obsidian Markdown to Standard Markdown."
+    )
+    parser.add_argument(
+        "markdown_file_path", type=str, help="Path to the Markdown file"
+    )
+    parser.add_argument("export_path", type=str, help="Path to the export directory")
+    args = parser.parse_args()
+
+    markdown_file_path = args.markdown_file_path
+    export_path = args.export_path
+    process_markdown_file(markdown_file_path, export_path)
