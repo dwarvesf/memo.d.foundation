@@ -202,5 +202,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     folder_path = args.folder_path
+    workers = args.workers
     print(f"Processing images in folder: {folder_path}")
-    process_markdown_folder_parallel(folder_path)
+    process_markdown_folder_parallel(folder_path, workers)
