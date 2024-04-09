@@ -1,60 +1,50 @@
-import frontmatter
-import argparse
-import json
 import os
-import commonmark
-import pandas as pd
+import re
 import duckdb
-import io
-from gitignore_parser import parse_gitignore
+import argparse
+import frontmatter
 
-def markdown_folder_to_json(markdown_folder, gitignore):
-    metadata_list = []
-    parser = commonmark.Parser()
+def extract_frontmatter(file_path):
+	with open(file_path, 'r') as file:
+		post = frontmatter.load(file)
+		return post.metadata
 
-    for root, dirs, files in os.walk(markdown_folder):
-        dirs[:] = [d for d in dirs if not gitignore(os.path.join(root, d))]
-        for file in files:
-            if gitignore(os.path.join(root, file)):
-                continue
-            path = os.path.join(root, file)
-            directory = path.split("/")[1]
-            if file.endswith(".md") and not directory.startswith("_templates") and not directory.startswith("members"):
-              post = frontmatter.load(path)
-              post_data = post.to_dict()
-              prefix = "vault/"
-              post_data["_file"] = file.split(".md")[0]
-              post_data["_path"] = path[path.startswith(prefix) and len(prefix):]
-              metadata_list.append(post_data)
-              ast = parser.parse(post.content)
+def add_to_database(conn, file_path, frontmatter):
+	columns = ', '.join(frontmatter.keys())
+	values = ', '.join(['?' for _ in frontmatter.keys()])
 
-    metadata = json.dumps(metadata_list, indent=2, sort_keys=True, default=str)
-    return metadata
+	# Add new columns if they don't already exist
+	for column in frontmatter.keys():
+		try:
+			conn.execute(f"ALTER TABLE vault ADD COLUMN {column} TEXT")
+		except duckdb.ProgrammingError:
+			pass
+		
+	# Remove the root folder from file_path
+	file_path = re.sub(r'^.*?/', '', file_path)
+	conn.execute(f"INSERT INTO vault (file_path, {columns}) VALUES (?, {values})", [file_path] + list(frontmatter.values()))
 
-def export_markdown_folder_to_parquet(markdown_folder, gitignore):
-    json = markdown_folder_to_json(markdown_folder, gitignore)
-    # create vault.json temporary file
-    with open('vault.json', 'w+') as f:
-        f.write(json)
-    filename = os.path.basename(os.path.normpath(markdown_folder))
+def process_directory(conn, directory):
+	for root, dirs, files in os.walk(directory):
+		for file in files:
+			if file.endswith(".md"):
+				full_path = os.path.join(root, file)
+				frontmatter = extract_frontmatter(full_path)
+				if frontmatter:
+					add_to_database(conn, full_path, frontmatter)
 
-    conn = duckdb.connect(database='my_db.duckdb')
-    table_name = filename.replace(" ", "_")
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("directory", help="the directory to scan")
+	args = parser.parse_args()
 
-    # load json
-    conn.execute("INSTALL json")
-    conn.execute("LOAD json")
+	conn = duckdb.connect(":memory:")
+	conn.execute("CREATE TABLE IF NOT EXISTS vault (file_path TEXT, frontmatter TEXT)")
 
-    conn.execute(f"CREATE TABLE {table_name} AS SELECT * FROM 'vault.json'")
-    conn.close()
+	process_directory(conn, args.directory)
+
+	conn.execute(f"EXPORT DATABASE '{args.directory}_export'")
+	conn.close()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Exports a folder of Markdown files to JSON.")
-    parser.add_argument("markdown_folder", type=str, help="The path to the folder containing the Markdown files.")
-    args = parser.parse_args()
-
-    gitignore_file = os.path.join(args.markdown_folder, ".export-ignore")
-    with open(gitignore_file, 'r') as f:
-        gitignore = parse_gitignore(f.read())
-
-    export_markdown_folder_to_parquet(args.markdown_folder, gitignore)
+	main()
