@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-# Function to update the submodule if it's not initialized
-update_submodule() {
-	submodule=$1
-	if [ ! -f ".git/modules/${submodule}/HEAD" ]; then
-		git submodule update --init --recursive --filter=blob:none "${submodule}"
-	fi
-}
-
 # Function to checkout the submodule to the specified branch if it's not set
 checkout_submodule() {
 	submodule=$1
@@ -37,15 +29,13 @@ fetch_project() {
 }
 
 # Get the list of submodules
-submodules=$(git submodule status | awk '{print $2}')
+submodules=$(git submodule status --recursive | awk '{print $2}')
 
 # Fetch new changes for the current project
 fetch_project
 
 # Loop over the submodules and update them if they're not initialized
-for submodule in $submodules; do
-	update_submodule "${submodule}"
-done
+git submodule update --init --recursive --filter=blob:none
 
 # Loop over the submodules and checkout them to the specified branch if they're not set
 for submodule in $submodules; do
