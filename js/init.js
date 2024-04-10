@@ -73,24 +73,17 @@ document.addEventListener("alpine:init", () => {
     ...content.matchAll(/(?<!spawn|team|nikki)@([\d\w_\-\.]+)/gm),
   ];
 
-  const promises = [];
   // hyperlink contributors
   for (const res of results) {
     const [g1, g2] = res;
-    promises.push(
-      fetch(`/contributor/${g2}`, { method: "HEAD" }).then((r) => {
-        if (!r.ok) return;
-        content = content.replace(
-          new RegExp(g1, "gm"),
-          `<a href='/contributor/${g2}'>${g1}</a>`
-        );
-      })
+
+    content = content.replace(
+      new RegExp(g1, "gm"),
+      `<a href='/contributor/${g2}'>${g1}</a>`
     );
   }
 
-  Promise.all(promises).then(() => {
-    main.innerHTML = content;
-  });
+  main.innerHTML = content;
 });
 
 document.addEventListener("click", (e) => {
