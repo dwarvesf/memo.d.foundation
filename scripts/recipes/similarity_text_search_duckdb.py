@@ -33,7 +33,10 @@ def main():
 
 	conn = duckdb.connect(":memory:")
 	try:
+		conn.execute("INSTALL fts")
+		conn.execute("LOAD fts")
 		conn.execute("IMPORT DATABASE 'db'")
+		conn.execute("PRAGMA create_fts_index('vault', 'file_path', 'md_content')")
 	except:
 		pass
 
@@ -45,12 +48,25 @@ def main():
 			file_path,
 			md_content,
 			embeddings,
-			array_cosine_similarity({query_embedding}::DOUBLE[1536], embeddings) as similarity
-		FROM vault
-		WHERE embeddings NOT NULL
-		ORDER BY similarity DESC
-		LIMIT 10
-	""").fetchdf()
+			full_text_score,
+			similarity,
+			(full_text_score * similarity) / 2 AS score
+		FROM (
+			SELECT
+				file_path,
+				md_content,
+				embeddings,
+				fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
+				array_cosine_similarity(?::DOUBLE[1536], embeddings) AS similarity
+			FROM vault
+			WHERE 
+				embeddings IS NOT NULL
+				AND full_text_score IS NOT NULL
+			ORDER BY similarity DESC
+		)
+		ORDER BY score DESC
+		LIMIT 10;
+	""", [args.query, query_embedding]).fetchdf()
 
 	print(query)
 
