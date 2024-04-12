@@ -238,10 +238,10 @@ td {
   border-color: var(--border-color-light);
 }
 
-thead * {
-  padding: 6px 12px;
-  background-color: var(--secondary-background-color-light);
-}
+// thead * {
+//   padding: 6px 12px;
+//   background-color: var(--secondary-background-color-light);
+// }
 
 th,
 td {
@@ -262,19 +262,18 @@ table {
   margin-top: 18px;
   font-family: monospace, sans-serif;
 
-  * {
-    font-size: 16px;
+  & > * {
+    white-space: pre-wrap;
+  }
+
+  th {
+    white-space: nowrap;
   }
 
   th,
   td {
-    line-height: 16px;
-    padding: 8px 10px;
-    white-space: nowrap;
-
-    * {
-      white-space: nowrap;
-    }
+    line-height: 1.375rem;
+    padding: 10px 12px;
   }
 }
 
@@ -285,10 +284,6 @@ table:has(th:empty) {
     border: none;
     padding: 0px;
     line-height: 0px;
-  }
-
-  td {
-    border: none;
   }
 }
 
@@ -525,9 +520,9 @@ html[data-theme="dark"] {
     border-color: var(--border-color);
   }
 
-  thead * {
-    background-color: var(--secondary-background-color);
-  }
+  // thead * {
+  //   background-color: var(--secondary-background-color);
+  // }
 
   #TableOfContents a {
     color: var(--secondary-font-color);
