@@ -97,6 +97,26 @@ footer {
       height: 18px;
     }
   }
+
+  .authors {
+    display: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    column-gap: 5px;
+
+    a {
+      color: var(--secondary-font-color-light);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
 }
 
 footer span {
@@ -105,6 +125,10 @@ footer span {
 
 @media screen and (max-width: 768px) {
   footer {
+    .authors {
+      display: flex;
+    }
+
     .filename {
       display: none;
     }
