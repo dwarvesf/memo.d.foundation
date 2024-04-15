@@ -44,6 +44,7 @@ function renderGraph() {
   let forceShowLabel = false;
 
   // get container size
+  const outerContainer = document.querySelector("div.container");
   const graphContainer = document.querySelector(".graph-container");
   const parent = graphContainer.parentElement;
   const h = graphContainer.clientHeight / 2;
@@ -137,7 +138,7 @@ function renderGraph() {
       if (!title)
         title =
           new URL(l.href).pathname.startsWith("/contributor") &&
-          !l.textContent.startsWith("@")
+            !l.textContent.startsWith("@")
             ? `@${l.textContent}`
             : l.textContent;
       return {
@@ -245,7 +246,7 @@ function renderGraph() {
             const dynamicDistance = getRandomNumberInRange(
               MIN_DISTANCE,
               MAX_DISTANCE +
-                (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
+              (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3)
             );
             return Math.min(dynamicDistance, MAX_DISTANCE + referenceCount * 5);
           })
@@ -361,7 +362,7 @@ function renderGraph() {
     label.filter((nodeData) => nodeData !== d).style("visibility", "hidden");
 
     // Show titles of connected nodes
-    connectedLinks.each(function (linkData) {
+    connectedLinks.each(function(linkData) {
       const connectedNode =
         linkData.source === d ? linkData.target : linkData.source;
       label
@@ -445,13 +446,13 @@ function renderGraph() {
   node.call(drag);
 
   // Attach click event listener to nodes
-  node.on("click", function (event, d) {
+  node.on("click", function(event, d) {
     // Redirect to the URL associated with the node when clicked
     window.location.href = d.url;
   });
 
   if (!parent) return;
-  parent.classList.remove("no-transition");
+  outerContainer.classList.remove("no-transition");
 }
 
 // initial render graph
@@ -459,7 +460,7 @@ setTimeout(() => {
   renderGraph();
 }, 150);
 
-window.$graphCenterNodes = function (fullscreen = false) {
+window.$graphCenterNodes = function(fullscreen = false) {
   if (!svg) return;
   // Reset zoom behavior and transform
   if (fullscreen)
