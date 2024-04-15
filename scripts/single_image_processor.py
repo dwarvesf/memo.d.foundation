@@ -8,6 +8,7 @@ from moviepy.editor import VideoFileClip
 import requests
 from io import BytesIO
 import argparse
+from time import time
 
 obsidian_image_link_regex_compiled = re.compile(r"^(?![>```\s])(.*?)(?<!```)!\[\[(.*?)\]\]|!\[(.*?)\]\((.*?)\)")
 
@@ -115,6 +116,13 @@ def process_markdown_file(file_path):
             new_image_path = os.path.splitext(new_image_path)[0] + ".webp"
             new_filename = os.path.splitext(new_filename)[0] + ".webp"
 
+            # check if the new filename exists and if so, update the new filename
+            if os.path.exists(new_image_path):
+                unix_timestamp = str(int(time()) + 1)
+                new_image_path = os.path.splitext(new_image_path)[0] + "_" + unix_timestamp + ".webp"
+                new_filename = os.path.splitext(new_filename)[0] + "_" + unix_timestamp + ".webp"
+
+
             print(f"Compressing image '{new_image_path}'...")
             img.save(new_image_path, "WEBP", quality=75)
             os.remove(image_path)
@@ -128,6 +136,12 @@ def process_markdown_file(file_path):
                 # remove image_path old extension and add _compressed.mp4
                 new_image_path = os.path.splitext(new_image_path)[0] + "_compressed.mp4"
                 new_filename = os.path.splitext(new_filename)[0] + "_compressed.mp4"
+
+                # check if the new filename exists and if so, update the new filename
+                if os.path.exists(new_image_path):
+                    unix_timestamp = str(int(time()) + 1)
+                    new_image_path = os.path.splitext(new_image_path)[0] + "_" + unix_timestamp + "_compressed.mp4"
+                    new_filename = os.path.splitext(new_filename)[0] + "_" + unix_timestamp + "_compressed.mp4"
 
                 print(f"Compressing video '{new_image_path}'...")
                 clip.write_videofile(
