@@ -1,14 +1,12 @@
 .note-title {
   display: inline-grid;
   width: 100%;
-  row-gap: 12px;
   margin: 0px;
   grid-template-areas:
     "pagetitle pagetitle pagetitle pagetitle"
-    "date authors . tags";
+    ". . . tags";
   grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
   grid-template-columns: max-content max-content 0.1fr 1fr;
-  column-gap: 6px;
 
   .pagetitle {
     grid-area: pagetitle;
@@ -18,14 +16,6 @@
     font-style: normal;
     line-height: 42px;
     letter-spacing: -0.5px;
-  }
-
-  .date {
-    grid-area: date;
-    color: var(--secondary-font-color-light-var2);
-    font-size: 0.875rem;
-    font-style: normal;
-    font-weight: 400;
   }
 
   .tags {
@@ -50,14 +40,6 @@
       font-style: normal;
       font-weight: 500;
       line-height: 1.125rem;
-    }
-  }
-
-  .authors {
-    grid-area: authors;
-    color: var(--secondary-font-color-light-var2);
-    a {
-      padding: 0px;
     }
   }
 }
@@ -130,17 +112,22 @@ code.button {
       top: 57px;
       right: 0;
       z-index: 9;
+      display: flex;
+      flex-direction: column;
+      row-gap: 2rem;
 
-      .nav-label {
-        display: block;
-        text-transform: uppercase;
-        position: relative;
-        color: var(--Secondary-Black, #23252c);
-        font-size: 13px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 18.2px; /* 18.2px */
-        letter-spacing: 0.8px;
+      .always-on-right-sidebar {
+        .nav-label {
+          display: block;
+          text-transform: uppercase;
+          position: relative;
+          color: var(--Secondary-Black, #23252c);
+          font-size: 13px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 18.2px; /* 18.2px */
+          letter-spacing: 0.8px;
+        }
       }
     }
   }
@@ -260,7 +247,6 @@ td:has(img) {
 table {
   table-layout: fixed;
   margin-top: 18px;
-  font-family: monospace, sans-serif;
 
   & > * {
     white-space: pre-wrap;
@@ -298,15 +284,13 @@ table:has(img) {
   }
 }
 
-.pagenav .container > #graph-title ~ label:has(+ #TableOfContents),
-.pagenav .container > #graph-title ~ #TableOfContents {
+.pagenav .container .always-on-right-sidebar {
   transform: translateY(-300px);
   transition-delay: 0.15s;
 }
 
 html[data-reading-mode="false"] {
-  .pagenav .container > #graph-title ~ label:has(+ #TableOfContents),
-  .pagenav .container > #graph-title ~ #TableOfContents {
+  .pagenav .container .always-on-right-sidebar {
     transform: translateY(0);
     transition-delay: 0.15s;
   }
@@ -323,11 +307,13 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
 }
 
 #TableOfContents {
-  padding-right: 16px;
   max-height: calc(100svh - 100px);
   min-height: 200px;
   overflow-y: auto;
-  padding-bottom: 500px;
+
+  ul {
+    margin-top: 0;
+  }
 
   li {
     white-space: nowrap;
@@ -342,10 +328,21 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
   }
 }
 
-#graph-container ~ label:has(+ #TableOfContents),
-#graph-container ~ #TableOfContents {
+.always-on-right-sidebar {
   transition: transform 0.3s ease-in-out;
   transition-delay: 0s;
+  padding-bottom: 500px;
+
+  .metadata {
+    .authors {
+      display: flex;
+      gap: 3px;
+      color: var(--secondary-font-color-light-var2);
+      a {
+        padding: 0px;
+      }
+    }
+  }
 }
 
 #TableOfContents > ul > li > a {
@@ -602,7 +599,7 @@ html[data-theme="dark"] {
 
   .pagenav {
     .container {
-      display: none;
+      display: none !important;
     }
   }
 
@@ -622,7 +619,6 @@ html[data-theme="dark"] {
     width: 100%;
     grid-template-areas:
       "pagetitle pagetitle"
-      "date authors"
       "tags tags";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
     grid-template-columns: max-content 1fr;

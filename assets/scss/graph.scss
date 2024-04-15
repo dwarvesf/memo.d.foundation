@@ -96,8 +96,7 @@ html[data-theme="dark"] {
   }
 }
 
-label:has(+ .graph-container),
-.graph-container {
+.show-hide-right-sidebar {
   transform: translate(5%);
   opacity: 0;
   pointer-events: none;
@@ -106,8 +105,7 @@ label:has(+ .graph-container),
 }
 
 html[data-reading-mode="false"] {
-  label:has(+ .graph-container),
-  .graph-container {
+  .show-hide-right-sidebar {
     transform: translate(0%);
     opacity: 1;
     pointer-events: auto;
@@ -117,7 +115,7 @@ html[data-reading-mode="false"] {
 }
 
 @media screen and (max-width: 1100px) {
-  .graph-container {
+  .show-hide-right-sidebar {
     position: inherit;
     padding: 1rem 0;
   }

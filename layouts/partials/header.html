@@ -358,36 +358,57 @@
     {{ end }}
     <div class="pagenav" x-data="{{ $data | jsonify }}">
       <div class="container no-transition">
-        <label id="graph-title" class="nav-label">Interactive graph</label>
-        <div 
-          id="graph-container"
-          class="graph-container" 
-          :class="{ 'fullscreen': $store.graphFullScreen.on }"
-          x-data
-        >
+        <div class="show-hide-right-sidebar">
           <div>
-            <svg></svg>
-            <button type="button" @click="$store.graphFullScreen.toggle()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                x-bind:class="{ 'hidden': $store.graphFullScreen.on }"
-              >
-                <line x1="7" y1="17" x2="17" y2="7"></line>
-                <polyline points="7 7 17 7 17 17"></polyline>
-              </svg>
-              
-              <svg height="24" width="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" x-bind:class="{ 'hidden': !$store.graphFullScreen.on }">
-                <path
-                  d="M289.94,256l95-95A24,24,0,0,0,351,127l-95,95-95-95A24,24,0,0,0,127,161l95,95-95,95A24,24,0,1,0,161,385l95-95,95,95A24,24,0,0,0,385,351Z" 
-                />
-              </svg>
-            </button>
+            <label class="nav-label">Interactive graph</label>
+            <div 
+              id="graph-container"
+              class="graph-container" 
+              :class="{ 'fullscreen': $store.graphFullScreen.on }"
+              x-data
+            >
+              <div>
+                <svg></svg>
+                <button type="button" @click="$store.graphFullScreen.toggle()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    x-bind:class="{ 'hidden': $store.graphFullScreen.on }"
+                  >
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                  
+                  <svg height="24" width="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" x-bind:class="{ 'hidden': !$store.graphFullScreen.on }">
+                    <path
+                      d="M289.94,256l95-95A24,24,0,0,0,351,127l-95,95-95-95A24,24,0,0,0,127,161l95,95-95,95A24,24,0,1,0,161,385l95-95,95,95A24,24,0,0,0,385,351Z" 
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
   
   
-        <label class="nav-label">ON THIS PAGE</label>
-        {{ .TableOfContents }}
+        <div class="always-on-right-sidebar">
+          <div>
+            <label class="nav-label">ON THIS PAGE</label>
+            {{ .TableOfContents }}
+          </div>
+          {{ if .Params.authors -}}
+            <div class="metadata">
+              <hr>
+              <aside class="authors">
+                <span>{{ .Date.Format "Jan 2, 2006" }}</span> 
+                by
+                {{ $authorsLen := sub (len $.Params.authors) 1}}
+                {{ range $i, $e := .Params.authors }}
+                <a href="/contributor/{{ $e }}">{{ $e }}{{ if (gt $authorsLen $i) }},{{end}}</a>
+                {{ end }}
+              </aside>
+            </div>
+          {{ end }}
+        </div>
       </div>
     </div>
     <main x-data="{
@@ -433,33 +454,19 @@
 
           <template x-if="isTagPage()"><h1 class="pagetitle" x-text="`#${title}`"></h1></template>
           <template x-if="!isTagPage()"><h1 class="pagetitle" x-text="title">{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</h1></template>
-          <div class="date">{{ .Date.Format "Jan 2, 2006" }}</div>
-          <template x-for="data in tagsData">
-            <template x-if="data.tags && data.tags.length > 0">
-              <div class="tags" x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }">
-                <template x-for="tag in slice(data.tags, start, end)">
-                  <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a>
-                </template>
-                <template x-if="!!loadText && data.tags.length > 4">
-                  <a class="tag" href x-text="loadText" @click.prevent="toggleLoad(loaded)"></a>
-                </template>
-              </div>
-            </template>
-          </template>
-          {{ if .Params.authors -}}
-            <aside class="authors">
-              by
-              {{ $authorsLen := sub (len $.Params.authors) 1}}
-              {{ range $i, $e := .Params.authors }}
-              <a href="/contributor/{{ $e }}">{{ $e }}</a>{{ if (gt $authorsLen $i) }},{{end}}
-              {{ end }}
-            </aside>
-          {{ end }}
+          <!-- <template x-for="data in tagsData"> -->
+          <!--   <template x-if="data.tags && data.tags.length > 0"> -->
+          <!--     <div class="tags" x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"> -->
+          <!--       <template x-for="tag in slice(data.tags, start, end)"> -->
+          <!--         <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a> -->
+          <!--       </template> -->
+          <!--       <template x-if="!!loadText && data.tags.length > 4"> -->
+          <!--         <a class="tag" href x-text="loadText" @click.prevent="toggleLoad(loaded)"></a> -->
+          <!--       </template> -->
+          <!--     </div> -->
+          <!--   </template> -->
+          <!-- </template> -->
         </div>
-      </template>
-
-      <template x-if="!hideTitle">
-        <hr>
       </template>
 
       {{ if .Params.notice -}}
