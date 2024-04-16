@@ -3,7 +3,7 @@
 # Stash all unstaged changes and pull
 echo "Stashing unstaged changes and pulling..."
 git stash -u
-yes | git pull
+yes | git pull origin
 git stash pop
 
 # Loop over the submodules and update them if they're not initialized
