@@ -38,3 +38,7 @@ content/
 
 # environment files
 .env
+
+# database files
+vault.duckdb
+vault.duckdb.bak
