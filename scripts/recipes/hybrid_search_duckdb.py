@@ -6,22 +6,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-embedding_model = "mixedbread-ai/mxbai-embed-large-v1"
 
-
-def embed(text: str) -> list[float]:
-	text = text.replace("\n", " ")
-	client = OpenAI(
-		api_key="QNOZADR0DZ5N9153JPRYUL6J24IUD7ZJMRV2YRRY",
-		base_url="https://api.runpod.ai/v2/wtz99obl14hz6a/openai/v1",
-	)
+def embed_openai(text):
+	client = OpenAI()
 
 	try:
-		return client.embeddings.create(input=[text], model=embedding_model)
-	except:
-		pass
-
-	return None
+		text = text.replace("\n", " ")
+		return client.embeddings.create(input=[text], model="text-embedding-3-small")
+	except openai.BadRequestError:
+		spr_content = spr_compress(text)
+		spr_content_text = (
+			spr_content.choices[0].message.content if spr_content else None
+		)
+		return client.embeddings.create(
+			input=[spr_content_text], model="text-embedding-3-small"
+		)
+	except AttributeError:
+		return None
 
 
 def main():
@@ -43,15 +44,15 @@ def main():
 	except:
 		pass
 
-	query_embedding = embed(args.query)
+	query_embedding = embed_openai(args.query)
 	print("Query embedding:", query_embedding)
 	query_embedding = query_embedding.data[0].embedding
 
-	query = conn.execute(f"""
+	query = conn.execute(
+		f"""
 		SELECT
 			file_path,
 			md_content,
-			embeddings,
 			full_text_score,
 			similarity,
 			(full_text_score * similarity) / 2 AS score
@@ -59,18 +60,19 @@ def main():
 			SELECT
 				file_path,
 				md_content,
-				embeddings,
 				fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
-				array_cosine_similarity(?::DOUBLE[1536], embeddings) AS similarity
+				array_cosine_similarity(?::DOUBLE[1536], embeddings_openai) AS similarity
 			FROM vault
 			WHERE 
-				embeddings IS NOT NULL
+				embeddings_openai IS NOT NULL
 				AND full_text_score IS NOT NULL
 			ORDER BY similarity DESC
 		)
 		ORDER BY score DESC
 		LIMIT 10;
-	""", [args.query, query_embedding]).fetchdf()
+	""",
+		[args.query, query_embedding],
+	).fetchdf()
 
 	print(query)
 

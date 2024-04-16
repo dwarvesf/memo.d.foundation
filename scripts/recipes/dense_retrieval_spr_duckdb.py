@@ -2,21 +2,25 @@ from openai import OpenAI
 import duckdb
 import argparse
 from dotenv import load_dotenv
+import os
 
 
 load_dotenv()
 
-embedding_model = "text-embedding-3-small"
 
-
-def embed(text: str) -> list[float]:
-	text = text.replace("\n", " ")
-	client = OpenAI()
+def embed_mxbai(text):
+	client = OpenAI(
+		api_key=os.getenv("RUNPOD_API_KEY"),
+		base_url=os.getenv("RUNPOD_OPENAI_BASE_URL"),
+	)
 
 	try:
-		return client.embeddings.create(input=[text], model=embedding_model)
-	except:
-		pass
+		text = text.replace("\n", " ")
+		return client.embeddings.create(
+			input=[text], model="mixedbread-ai/mxbai-embed-large-v1"
+		)
+	except AttributeError:
+		return None
 
 	return None
 
@@ -37,20 +41,21 @@ def main():
 	except:
 		pass
 
-	query_embedding = embed(args.query)
+	query_embedding = embed_mxbai(args.query)
 	query_embedding = query_embedding.data[0].embedding
 
-	query = conn.execute(f"""
+	query = conn.execute(
+		f"""
 		SELECT
 			file_path,
 			md_content,
-			embeddings,
-			array_cosine_similarity({query_embedding}::DOUBLE[1536], embeddings) AS similarity
+			array_cosine_similarity({query_embedding}::DOUBLE[1024], embeddings_spr_mxbai) AS similarity
 		FROM vault
-		WHERE embeddings NOT NULL
+		WHERE embeddings_spr_mxbai NOT NULL
 		ORDER BY similarity DESC
 		LIMIT 10
-	""").fetchdf()
+	"""
+	).fetchdf()
 
 	print(query)
 
