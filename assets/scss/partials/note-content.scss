@@ -109,7 +109,7 @@ code.button {
     div.container {
       position: sticky;
       padding-top: 1.5rem;
-      top: 57px;
+      top: 0px;
       right: 0;
       z-index: 9;
       display: flex;
@@ -301,8 +301,8 @@ html[data-reading-mode="false"] {
 }
 
 // if ToC is empty or there is no ToC, hide the label before it
-label:nth-of-type(2):has(+ #TableOfContents:empty),
-label:nth-of-type(2):not(:has(+ #TableOfContents)) {
+label:has(+ #TableOfContents:empty),
+label:not(:has(+ #TableOfContents)) {
   display: none;
 }
 
@@ -335,8 +335,6 @@ label:nth-of-type(2):not(:has(+ #TableOfContents)) {
 
   .metadata {
     .authors {
-      display: flex;
-      gap: 3px;
       color: var(--secondary-font-color-light-var2);
       a {
         padding: 0px;

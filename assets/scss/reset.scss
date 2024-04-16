@@ -52,21 +52,29 @@ h3 {
 
 h4 {
   font-size: 20px !important;
-  margin: 16px 0px 8px !important;
+  margin: 22px 0px 8px !important;
 }
 
 h5 {
   font-size: 16px !important;
-  margin: 12px 0px 6px !important;
+  margin: 22px 0px 6px !important;
 }
 
-main > h1,
-main > h2,
-main > h3,
-main > h4,
-main > h5 {
-  margin-top: 0 !important;
+h1 + p,
+h2 + p,
+h3 + p,
+h4 + p,
+h5 + p {
+  margin-top: 0px;
 }
+
+// main > h1,
+// main > h2,
+// main > h3,
+// main > h4,
+// main > h5 {
+//   margin-top: 0 !important;
+// }
 
 p {
   margin-bottom: 0;
