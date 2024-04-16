@@ -1,0 +1,32 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>" | safeHTML }}
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Dwarves Foundation Memo</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>han@d.foundation (Han Ngo)</managingEditor>
+    <webMaster>han@d.foundation (Han Ngo)</webMaster>
+    <copyright>© 2024 Dwarves Foundation.</copyright>
+    <lastBuildDate>{{ time.Now.Format "Mon, 02 Jan 2006 15:04:05 +0700" }}</lastBuildDate>
+    <atom:link href="https://memo.d.foundation/index.xml" rel="self" type="application/rss+xml"/>
+    
+    {{ range .Site.Pages }}
+      {{ if eq (.Params.hiring | default true) true }}
+        <item>
+          <title>{{ .Title }}</title>
+          <link>{{ .Permalink }}</link>
+          {{ if not .Lastmod.IsZero }}
+            <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 +0700" | safeHTML }}</pubDate>
+          {{ end }}
+          <author>{{ if .Params.authors }}{{ $authorsLen := sub (len .Params.authors) 1 }}{{ range $i, $e := .Params.authors }}{{ $e }}{{ if (gt $authorsLen $i) }},{{ end }}{{ end }}{{ end }}</author>
+          <guid>{{ .Permalink }}</guid>
+          <description>{{ .Params.description }}</description>
+          <draft>{{ or false .Params.draft }}</draft>
+        </item>
+      {{ end }}
+    {{ end }}
+
+  </channel>
+</rss>
