@@ -6,12 +6,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-embedding_model = "text-embedding-3-small"
+embedding_model = "mixedbread-ai/mxbai-embed-large-v1"
 
 
 def embed(text: str) -> list[float]:
 	text = text.replace("\n", " ")
-	client = OpenAI()
+	client = OpenAI(
+		api_key="QNOZADR0DZ5N9153JPRYUL6J24IUD7ZJMRV2YRRY",
+		base_url="https://api.runpod.ai/v2/wtz99obl14hz6a/openai/v1",
+	)
 
 	try:
 		return client.embeddings.create(input=[text], model=embedding_model)
@@ -41,6 +44,7 @@ def main():
 		pass
 
 	query_embedding = embed(args.query)
+	print("Query embedding:", query_embedding)
 	query_embedding = query_embedding.data[0].embedding
 
 	query = conn.execute(f"""
