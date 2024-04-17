@@ -48,7 +48,7 @@ def main():
 		f"""
 		SELECT
 			file_path,
-			md_content,
+			spr_content,
 			array_cosine_similarity({query_embedding}::DOUBLE[1024], embeddings_spr_mxbai) AS similarity
 		FROM vault
 		WHERE embeddings_spr_mxbai NOT NULL

@@ -51,14 +51,14 @@ def main():
 		f"""
 		SELECT
 			file_path,
-			md_content,
+			spr_content,
 			full_text_score,
 			similarity,
 			(full_text_score * similarity) / 2 AS score
 		FROM (
 			SELECT
 				file_path,
-				md_content,
+				spr_content,
 				fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
 				array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_mxbai) AS similarity
 			FROM vault
