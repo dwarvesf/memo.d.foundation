@@ -12,9 +12,7 @@ def embed_openai(text):
 
 	try:
 		text = text.replace("\n", " ")
-		return client.embeddings.create(
-			input=[text], model="text-embedding-3-small"
-		)
+		return client.embeddings.create(input=[text], model="text-embedding-3-small")
 	except openai.BadRequestError:
 		spr_content = spr_compress(text)
 		spr_content_text = (
@@ -51,7 +49,6 @@ def main():
 		SELECT
 			file_path,
 			md_content,
-			embeddings_openai,
 			array_cosine_similarity({query_embedding}::DOUBLE[1536], embeddings_openai) AS similarity
 		FROM vault
 		WHERE embeddings_openai NOT NULL

@@ -45,7 +45,6 @@ def main():
 		pass
 
 	query_embedding = embed_openai(args.query)
-	print("Query embedding:", query_embedding)
 	query_embedding = query_embedding.data[0].embedding
 
 	query = conn.execute(
