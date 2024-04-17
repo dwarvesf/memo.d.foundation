@@ -1,5 +1,5 @@
 const initScroller = () => {
-  const pagenav = document.querySelectorAll(".pagenav a");
+  const pagenav = document.querySelectorAll("#TableOfContents a");
 
   const update = (nav) => {
     pagenav.forEach((nav) => {
@@ -19,7 +19,7 @@ const initScroller = () => {
     const id = target.id;
     if (!id) return;
 
-    const nav = document.querySelector(`.pagenav a[href='#${id}']`);
+    const nav = document.querySelector(`#TableOfContents a[href='#${id}']`);
     if (!nav) return;
 
     update(nav);
