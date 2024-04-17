@@ -40,5 +40,4 @@ content/
 .env
 
 # database files
-vault.duckdb
-vault.duckdb.bak
+vault.duckdb*
