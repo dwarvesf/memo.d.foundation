@@ -328,6 +328,10 @@ label:not(:has(+ #TableOfContents)) {
   }
 }
 
+.note-title + * + * {
+  margin-top: 0px !important;
+}
+
 .always-on-right-sidebar {
   transition: transform 0.3s ease-in-out;
   transition-delay: 0s;
@@ -338,6 +342,11 @@ label:not(:has(+ #TableOfContents)) {
       color: var(--secondary-font-color-light-var2);
       a {
         padding: 0px;
+        transition: color 0.1s ease-in-out;
+
+        &:hover {
+          color: var(--primary-color);
+        }
       }
     }
   }
@@ -686,7 +695,8 @@ p:has(img) {
   margin: 0;
 }
 
-pre[class*="language-"] {
+pre[class*="language-"],
+pre:has(> code) {
   position: relative;
 
   .copy-btn {
