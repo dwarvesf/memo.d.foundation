@@ -115,6 +115,7 @@ code.button {
       display: flex;
       flex-direction: column;
       row-gap: 2rem;
+      transition: top 0.2s ease-in-out;
 
       .always-on-right-sidebar {
         .nav-label {
@@ -290,6 +291,10 @@ table:has(img) {
 }
 
 html[data-reading-mode="false"] {
+  .grid .pagenav div.container {
+    top: 57px;
+  }
+
   .pagenav .container .always-on-right-sidebar {
     transform: translateY(0);
     transition-delay: 0.15s;
@@ -319,13 +324,20 @@ label:not(:has(+ #TableOfContents)) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 36px;
     padding-inline-start: 16px;
+  }
+
+  * {
+    line-height: 36px;
   }
 
   & > div > ul > li {
     padding-inline-start: 0;
   }
+}
+
+#TableOfContents:empty {
+  display: none;
 }
 
 .note-title + * + * {
@@ -335,7 +347,7 @@ label:not(:has(+ #TableOfContents)) {
 .always-on-right-sidebar {
   transition: transform 0.3s ease-in-out;
   transition-delay: 0s;
-  padding-bottom: 500px;
+  // padding-bottom: 500px;
 
   .metadata {
     .authors {
