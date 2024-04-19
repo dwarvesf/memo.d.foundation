@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish_job:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     name: Publish Obsidian notes to Github pages
     steps:
       - name: Checkout contents repo
@@ -34,10 +34,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'memo.d.foundation has been updated.'
