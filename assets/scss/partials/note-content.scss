@@ -127,6 +127,7 @@ code.button {
           font-weight: 600;
           line-height: 18.2px; /* 18.2px */
           letter-spacing: 0.8px;
+          margin-bottom: 16px;
         }
       }
     }
@@ -316,22 +317,17 @@ label:not(:has(+ #TableOfContents)) {
   overflow-y: auto;
 
   ul {
-    margin-top: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
   }
 
   li {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-inline-start: 16px;
-  }
-
-  * {
-    line-height: 36px;
-  }
-
-  & > div > ul > li {
-    padding-inline-start: 0;
+    padding-inline-start: 0px;
   }
 }
 
