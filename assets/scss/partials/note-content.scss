@@ -312,22 +312,27 @@ label:not(:has(+ #TableOfContents)) {
 }
 
 #TableOfContents {
-  max-height: calc(100svh - 100px);
+  max-height: calc(100svh / 3);
   // min-height: 200px;
   overflow-y: auto;
 
   ul {
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
+    // display: flex;
+    // flex-direction: column;
+    // row-gap: 8px;
   }
 
   li {
+    margin-top: 8px;
     // white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding-inline-start: 0px;
+  }
+
+  & > div > ul > li:first-child {
+    margin-top: 0px;
   }
 }
 
