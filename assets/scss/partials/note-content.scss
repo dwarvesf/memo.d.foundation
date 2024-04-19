@@ -313,7 +313,7 @@ label:not(:has(+ #TableOfContents)) {
 
 #TableOfContents {
   max-height: calc(100svh - 100px);
-  min-height: 200px;
+  // min-height: 200px;
   overflow-y: auto;
 
   ul {
