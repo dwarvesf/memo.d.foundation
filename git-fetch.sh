@@ -3,7 +3,7 @@
 # Stash all unstaged changes and pull
 echo "Stashing unstaged changes and pulling..."
 oldsha=$(git rev-parse -q --verify refs/stash)
-git stash -uq save
+git stash -u
 newsha=$(git rev-parse -q --verify refs/stash)
 if [ "$oldsha" = "$newsha" ]; then
     made_stash_entry=false
