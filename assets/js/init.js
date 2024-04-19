@@ -66,21 +66,23 @@ document.addEventListener("alpine:init", () => {
   });
 
   const main = document.querySelector("main");
-  let content = main.innerHTML;
-  if (!content) return;
+  const walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) {
+    nodes.push(walker.currentNode);
+  }
+  for (const node of nodes) {
+    const results = [...node.textContent.matchAll(/(.?)@([\d\w_\-\.]+)/gm)];
+    if (!results.length) continue;
 
-  const results = [
-    ...content.matchAll(/(?<!spawn|team|nikki)@([\d\w_\-\.]+)/gm),
-  ];
-
-  // hyperlink contributors
-  for (const res of results) {
-    const [g1, g2] = res;
-
-    content = content.replace(
-      new RegExp(g1, "gm"),
-      `<a href='/contributor/${g2}'>${g1}</a>`
-    );
+    for (const res of results) {
+      const [_, t] = res;
+      if (t.trim() !== "") continue;
+      node.parentElement.innerHTML = node.textContent.replace(
+        /(.?)@([\d\w_\-\.]+)/gm,
+        "<a href='/contributor/$2'>$1@$2</a>"
+      );
+    }
   }
 
   main.innerHTML = content;
