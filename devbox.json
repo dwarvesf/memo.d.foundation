@@ -1,7 +1,10 @@
 {
   "packages": {
     "go":   "1.21.3",
-    "hugo": "0.124.0",
+    "hugo": {
+      "version": "0.124.0",
+      "patch_glibc": true
+    },
     "obsidian": {
       "version":        "1.4.16",
       "allow_insecure": ["electron-25.9.0"]
