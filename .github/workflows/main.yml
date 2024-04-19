@@ -38,6 +38,7 @@ jobs:
   notify_job:
     runs-on: ubuntu-latest
     name: Publish Obsidian notes to Github pages
+    needs: publish_job
     steps:
       - name: Sleep for 30 seconds
         uses: jakejarvis/wait-action@master
