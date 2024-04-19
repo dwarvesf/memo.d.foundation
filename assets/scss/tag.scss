@@ -10,23 +10,19 @@
 
   & > a {
     flex-shrink: 0;
+    text-decoration: unset;
   }
 }
 
 .tag {
-  display: inline-block;
-  font-weight: 700;
-  text-transform: uppercase;
-  border-radius: 9999px;
-  letter-spacing: 0.025em;
-  font-style: normal;
-  font-size: 8px;
-  padding: 1px 0.5rem;
-  transform: translateY(-8%);
-  background-color: var(--border-color-light);
-  line-height: 1.5;
-  color: var(--primary-font-color-light);
-  white-space: nowrap;
+  border-radius: 2.8px;
+  padding: 0px 6px;
+  background-color: var(--primary-color-lighten);
+  color: var(--primary-color);
+  font-size: 10px;
+  text-transform: capitalize;
+  font-weight: 600;
+  line-height: 1.7;
 }
 
 html[data-theme="dark"] {

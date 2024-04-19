@@ -395,19 +395,26 @@
             <label class="nav-label">ON THIS PAGE</label>
             {{ .TableOfContents }}
           </div>
-          {{ if .Params.authors -}}
             <div class="metadata">
               <hr>
-              <aside class="authors">
-                <span>{{ .Date.Format "Jan 2, 2006" }}</span> 
-                by
-                {{ $authorsLen := sub (len $.Params.authors) 1}}
-                {{ range $i, $e := .Params.authors }}
-                <a href="/contributor/{{ $e }}">{{ $e }}{{ if (gt $authorsLen $i) }},{{end}}</a>
-                {{ end }}
-              </aside>
+              {{ if .Params.authors -}}
+                <aside class="authors">
+                  <span>{{ .Date.Format "Jan 2, 2006" }}</span> 
+                  by
+                  {{ $authorsLen := sub (len $.Params.authors) 1}}
+                  {{ range $i, $e := .Params.authors }}
+                  <a href="/contributor/{{ $e }}">{{ $e }}{{ if (gt $authorsLen $i) }},{{end}}</a>
+                  {{ end }}
+                </aside>
+              {{ end }}
+              {{ if .Params.tags }}
+                <div class="tags">
+                  {{ range $t := collections.First 2 .Params.tags }}
+                  <a href="/tags/{{ $t }}" class="tag">{{ $t }}</a>
+                  {{ end }}
+                </div>
+              {{ end }}
             </div>
-          {{ end }}
         </div>
       </div>
     </div>

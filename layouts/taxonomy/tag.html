@@ -34,9 +34,9 @@
 			<li class="term">
         <a href="{{ .Page.RelPermalink }}">{{ .Page.Name }}</a>
         {{ $tags := .Page.Params.Tags }}
-        {{ range $tags }}
-          {{ if ne . $currentTag }}
-            <span class="tag">{{ . }}</span>
+        {{ range $t := collections.First 2 $tags }}
+          {{ if ne (strings.ToLower $t) (strings.ToLower $currentTag) }}
+            <span class="tag">{{ $t }}</span>
           {{ end }}
         {{ end }}
       </li>
