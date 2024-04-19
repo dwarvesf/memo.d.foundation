@@ -451,8 +451,14 @@ main > * {
 }
 
 li:has(input[type="checkbox"]) {
-  display: block;
+  display: flex;
   list-style-type: none;
+
+  column-gap: 4px;
+
+  & > input[type="checkbox"] {
+    margin-right: 4px !important;
+  }
 }
 
 ul:has(li input[type="checkbox"]) {

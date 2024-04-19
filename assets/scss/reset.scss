@@ -198,6 +198,11 @@ html[data-theme="dark"] {
   //     background: var(--secondary-background-color) !important;
   //     color: var(--secondary-font-color);
   // }
+
+  input[type="checkbox"] {
+    background: #334155;
+    border: 1px solid #475569;
+  }
 }
 
 iframe {
@@ -256,4 +261,31 @@ html[data-theme="light"] {
 
 .no-transition * {
   transition: none !important;
+}
+
+// reset checkboxes
+input[type="checkbox"] {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -ms-appearance: none !important;
+  -o-appearance: none !important;
+  appearance: none !important;
+  margin: 0 !important;
+
+  margin-top: 6px !important;
+  width: 1rem;
+  height: 1rem;
+  color: #2563eb;
+  border: 1px solid #cbd5e1;
+  background: #f3f4f6;
+  border-radius: 0.125rem;
+
+  &:checked {
+    background-image: var(--check-icon);
+    background-color: currentColor;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 0.55rem 0.55rem;
+    border-color: transparent;
+  }
 }
