@@ -21,26 +21,6 @@
         }
       }
     },
-    "duckdb@0.10.1": {
-      "last_modified": "2024-03-29T03:06:03Z",
-      "resolved": "github:NixOS/nixpkgs/9b09bde6e3fc9493b6a8b2a5702ac87c66505c64#duckdb",
-      "source": "devbox-search",
-      "version": "0.10.1",
-      "systems": {
-        "aarch64-darwin": {
-          "store_path": "/nix/store/cwx2ph0p9xrqs9645c0df31lyh1kaqxr-duckdb-0.10.1"
-        },
-        "aarch64-linux": {
-          "store_path": "/nix/store/x83yvf4n8bcb30igxx303hhil05g46fd-duckdb-0.10.1"
-        },
-        "x86_64-darwin": {
-          "store_path": "/nix/store/ngygqbhxy0xgdxnisakk399jynw34wff-duckdb-0.10.1"
-        },
-        "x86_64-linux": {
-          "store_path": "/nix/store/g97758w29bryq4327fcah1kbfrad81c5-duckdb-0.10.1"
-        }
-      }
-    },
     "ffmpeg@6.1.1": {
       "last_modified": "2024-03-29T03:06:03Z",
       "resolved": "github:NixOS/nixpkgs/9b09bde6e3fc9493b6a8b2a5702ac87c66505c64#ffmpeg",
