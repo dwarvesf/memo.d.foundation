@@ -350,6 +350,17 @@ label:not(:has(+ #TableOfContents)) {
   // padding-bottom: 500px;
 
   .metadata {
+    .tags {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      row-gap: 6px;
+      align-items: flex-start;
+
+      .tag:hover {
+        color: var(--primary-color);
+      }
+    }
     .authors {
       color: var(--secondary-font-color-light-var2);
       a {
