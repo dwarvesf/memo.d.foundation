@@ -324,7 +324,7 @@ label:not(:has(+ #TableOfContents)) {
   }
 
   li {
-    white-space: nowrap;
+    // white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding-inline-start: 0px;
