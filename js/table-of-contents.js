@@ -40,6 +40,7 @@ const initScroller = () => {
     });
     nav.classList.add("transition", "duration-200");
     const el = document.getElementById(`${nav.href.split("#")[1]}`);
+    if (!(el instanceof Element)) return;
     ob.observe(el);
   }
 };
