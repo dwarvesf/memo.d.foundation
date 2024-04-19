@@ -2,9 +2,18 @@
 
 # Stash all unstaged changes and pull
 echo "Stashing unstaged changes and pulling..."
-git stash -u
+oldsha=$(git rev-parse -q --verify refs/stash)
+git stash -uq save
+newsha=$(git rev-parse -q --verify refs/stash)
+if [ "$oldsha" = "$newsha" ]; then
+    made_stash_entry=false
+else
+    made_stash_entry=true
+fi
+
 yes | git pull origin
-git stash pop
+
+if $made_stash_entry; then git stash pop; fi
 
 # Loop over the submodules and update them if they're not initialized
 echo "Updating submodules..."
