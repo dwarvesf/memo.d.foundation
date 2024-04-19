@@ -19,7 +19,7 @@ jobs:
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.9.0
         with:
-          enable-cache: false
+          enable-cache: true
           devbox-version: 0.10.5
 
       - name: Run Build
