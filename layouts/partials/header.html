@@ -33,7 +33,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="{{ .Permalink }}">
   {{ with $firstImageUrl }}
-    <meta property="og:image" content="{{ $baseURL }}/{{ $postDir }}{{ $firstImageUrl }}">
+    <meta property="og:image" content="{{ $baseURL }}{{ strings.ToLower $postDir }}{{ $firstImageUrl }}">
   {{ else }}
     <meta property="og:image" content="{{ $whiteImage.RelPermalink }}">
   {{ end }}
@@ -44,7 +44,7 @@
   <meta property="twitter:type" content="article">
   <meta property="twitter:url" content="{{ .Permalink }}">
   {{ with $firstImageUrl }}
-    <meta property="twitter:image" content="{{ $baseURL }}/{{ $postDir }}{{ $firstImageUrl }}">
+    <meta property="twitter:image" content="{{ $baseURL }}{{ strings.ToLower $postDir }}{{ $firstImageUrl }}">
   {{ else }}
     <meta property="twitter:image" content="{{ $whiteImage.RelPermalink}}">
   {{ end }}
