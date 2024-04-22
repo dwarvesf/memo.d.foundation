@@ -1,6 +1,6 @@
 {{ partial "header.html" . }}
 
-{{ if eq .Title "_all"}}
+{{ if eq .Title "archived"}}
   <ul>
     {{ range .Site.RegularPages.ByLastmod.Reverse }}
       {{ $url := .RelPermalink }}
