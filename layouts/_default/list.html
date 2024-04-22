@@ -1,5 +1,16 @@
 {{ partial "header.html" . }}
 
+{{ if eq .Title "_all"}}
+  <ul>
+    {{ range .Site.RegularPages.ByLastmod.Reverse }}
+      {{ $url := .RelPermalink }}
+        {{ with .LinkTitle }}
+          <li><a href="{{ $url }}">{{ . }}</a></li>
+        {{ end }}
+    {{ end }}
+  </ul>
+{{ end }}
+
 {{ .Content
    | replaceRE 
       `&lt;a:(\w+):(\d+)&gt;` 
