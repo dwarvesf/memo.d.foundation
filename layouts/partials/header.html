@@ -11,6 +11,14 @@
   {{ $darkIcon := resources.Get "img/theme/dark.svg" }}
   {{ $lightIcon := resources.Get "img/theme/light.svg" }}
   {{ $autoThemeIcon := resources.Get "img/theme/system.svg" }}
+  {{ $imageParam := .Params.img }}
+  {{ $images := strings.FindRE `!\[[\w\s]*\]\(([\w\/\-\_\.]*)\)` .RawContent }}
+  {{ $firstImage := collections.Index $images 0 }}
+  {{ $firstImageUrl := or $imageParam (strings.ReplaceRE `!\[[\w\s]*\]\(([\w\/\-\_\.]*)\)` "$1" $firstImage) }}
+  {{ $postDir := "/" }}
+  {{ with .File }}
+    {{ $postDir = .Dir }}
+  {{ end }}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}">
@@ -23,14 +31,22 @@
   <meta property="og:description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
   <meta property="og:type" content="article">
   <meta property="og:url" content="{{ .Permalink }}">
-  <meta property="og:image" content="{{ $whiteImage.Permalink }}">
+  {{ with $firstImageUrl }}
+    <meta property="og:image" content="/{{ $postDir }}{{ $firstImageUrl }}">
+  {{ else }}
+    <meta property="og:image" content="{{ $whiteImage.RelPermalink }}">
+  {{ end }}
 
   <!-- Twitter Meta -->
   <meta property="twitter:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
   <meta property="twitter:description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
   <meta property="twitter:type" content="article">
   <meta property="twitter:url" content="{{ .Permalink }}">
-  <meta property="twitter:image" content="{{ $whiteImage.Permalink }}">
+  {{ with $firstImageUrl }}
+    <meta property="twitter:image" content="/{{ $postDir }}{{ $firstImageUrl }}">
+  {{ else }}
+    <meta property="twitter:image" content="{{ $whiteImage.RelPermalink}}">
+  {{ end }}
 
   <link rel="icon" type="image/x-icon" href="{{ $favicon.Permalink }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ $favicon16.Permalink }}">
