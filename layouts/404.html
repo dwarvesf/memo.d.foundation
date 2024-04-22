@@ -1,3 +1,15 @@
 {{ partial "header.html" . }}
+{{ $img := resources.Get "img/404.png" }}
+
+<div>
+<div>
+<h2>404</h2>
+<p>Page not found</p>
+</div>
+
+{{ with $img }}
+<img src={{ .RelPermalink }} alt="404" />
+{{ end }}
+</div>
 
 {{ partial "footer.html" . }}

@@ -454,6 +454,9 @@
       isTagPage() {
         return this.currentUrl.includes('tags');
       },
+      isNotFound() {
+        rturn {{ .Kind }} === 404;
+      },
       slice(items, start, end) {
         return items.slice(start, end);
       },
@@ -470,7 +473,7 @@
       },
     }">
       <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
-      <template x-if="!hideTitle">
+      <template x-if="!hideTitle || isNotFound">
         <div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
           <!-- docsearch indices -->
           <div class="title-index" style="display: none;">{{ .Title }}</div>
@@ -500,4 +503,6 @@
       {{ if .Params.toc -}}
       <aside class="toc">{{ .TableOfContents }}</aside>
       {{ end }}
-      <img class="yggdrasil-tree" src="{{ $yggdrasilImage.Permalink }}" />
+      {{ if not (eq .Kind "404")}}
+        <img class="yggdrasil-tree" src="{{ $yggdrasilImage.Permalink }}" />
+      {{ end }}
