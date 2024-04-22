@@ -15,6 +15,7 @@
   {{ $images := strings.FindRE `!\[[\w\s]*\]\(([\w\/\-\_\.]*)\)` .RawContent }}
   {{ $firstImage := collections.Index $images 0 }}
   {{ $firstImageUrl := or $imageParam (strings.ReplaceRE `!\[[\w\s]*\]\(([\w\/\-\_\.]*)\)` "$1" $firstImage) }}
+  {{ $baseURL := .Page.Site.BaseURL }}
   {{ $postDir := "/" }}
   {{ with .File }}
     {{ $postDir = .Dir }}
@@ -32,7 +33,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="{{ .Permalink }}">
   {{ with $firstImageUrl }}
-    <meta property="og:image" content="{{ .Page.Site.BaseURL }}/{{ $postDir }}{{ $firstImageUrl }}">
+    <meta property="og:image" content="{{ $baseURL }}/{{ $postDir }}{{ $firstImageUrl }}">
   {{ else }}
     <meta property="og:image" content="{{ $whiteImage.RelPermalink }}">
   {{ end }}
@@ -43,7 +44,7 @@
   <meta property="twitter:type" content="article">
   <meta property="twitter:url" content="{{ .Permalink }}">
   {{ with $firstImageUrl }}
-    <meta property="twitter:image" content="{{ .Page.Site.BaseURL }}/{{ $postDir }}{{ $firstImageUrl }}">
+    <meta property="twitter:image" content="{{ $baseURL }}/{{ $postDir }}{{ $firstImageUrl }}">
   {{ else }}
     <meta property="twitter:image" content="{{ $whiteImage.RelPermalink}}">
   {{ end }}
