@@ -4,24 +4,40 @@
 
 .term {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 8px 8px;
+  gap: 4px 8px;
   align-items: baseline;
+
+  .authors {
+    &::before {
+      content: "⎯";
+    }
+    font-size: 12px;
+    line-height: 12px;
+  }
 
   & > a {
     flex-shrink: 0;
     text-decoration: unset;
+  }
+
+  & > div {
+    display: flex;
+    gap: 4px 8px;
   }
 }
 
 .tag {
   border-radius: 2.8px;
   padding: 0px 6px;
-  background-color: var(--primary-color-lighten);
-  color: var(--primary-color);
+  background-color: #f9fafb;
+  // background-color: var(--primary-color-lighten);
+  color: #4b4f53;
+  // color: var(--primary-color);
   font-size: 10px;
   text-transform: capitalize;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.7;
 }
 

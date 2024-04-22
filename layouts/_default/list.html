@@ -1,11 +1,25 @@
 {{ partial "header.html" . }}
 
 {{ if eq .Title "archived"}}
-  <ul>
+  <ul class="archived-list">
     {{ range .Site.RegularPages.ByLastmod.Reverse }}
       {{ $url := .RelPermalink }}
+      {{ $tags := .Page.Params.Tags }}
+      {{ $authors := .Page.Params.authors }}
         {{ with .LinkTitle }}
-          <li><a href="{{ $url }}">{{ . }}</a></li>
+          <li class="term">
+            {{ with $authors }}
+              <span class="authors">
+                {{ delimit $authors ", "}}
+              </span>
+            {{ end }}
+            <a href="{{ $url }}">{{ . }}</a>
+            <div>
+              {{ range $t := $tags }}
+                <span class="tag">{{ $t }}</span>
+              {{ end }}
+            </div>
+          </li>
         {{ end }}
     {{ end }}
   </ul>
