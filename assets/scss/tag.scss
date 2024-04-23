@@ -9,22 +9,28 @@
   gap: 4px 8px;
   align-items: baseline;
 
+  .tags {
+    display: flex;
+    gap: 4px;
+  }
+
   .authors {
-    &::before {
-      content: "⎯";
+    display: flex;
+    gap: 4px;
+
+    a {
+      font-size: 12px;
+      line-height: 12px;
+      text-decoration: none;
+      &:first-child::before {
+        content: "⎯ ";
+      }
     }
-    font-size: 12px;
-    line-height: 12px;
   }
 
   & > a {
     flex-shrink: 0;
     text-decoration: unset;
-  }
-
-  & > div {
-    display: flex;
-    gap: 4px 8px;
   }
 }
 
@@ -39,6 +45,7 @@
   text-transform: capitalize;
   font-weight: 500;
   line-height: 1.7;
+  text-decoration: none;
 }
 
 html[data-theme="dark"] {

@@ -26,6 +26,7 @@
   <meta name="keywords" content="{{ .Site.Params.tags }}">
   <meta name="title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
   <meta name="description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta name="theme-color" content="#1CA0F2">
   
   <!-- Facebook Meta -->
   <meta property="og:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
@@ -454,9 +455,6 @@
       isTagPage() {
         return this.currentUrl.includes('tags');
       },
-      isNotFound() {
-        return {{ .Kind }} === 404;
-      },
       slice(items, start, end) {
         return items.slice(start, end);
       },
@@ -473,28 +471,30 @@
       },
     }">
       <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
-      <template x-if="!hideTitle || isNotFound">
-        <div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
-          <!-- docsearch indices -->
-          <div class="title-index" style="display: none;">{{ .Title }}</div>
-          <div class="tags-index" style="display: none;">tags: {{ if .Params.Tags }}{{ delimit .Params.Tags ", " }}{{ end }}</div>
+      {{ if not (eq .Kind 404)}}
+        <template x-if="!hideTitle">
+          <div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
+            <!-- docsearch indices -->
+            <div class="title-index" style="display: none;">{{ .Title }}</div>
+            <div class="tags-index" style="display: none;">tags: {{ if .Params.Tags }}{{ delimit .Params.Tags ", " }}{{ end }}</div>
 
-          <template x-if="isTagPage()"><h1 class="pagetitle" x-text="`#${title}`"></h1></template>
-          <template x-if="!isTagPage()"><h1 class="pagetitle" x-text="title">{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</h1></template>
-          <!-- <template x-for="data in tagsData"> -->
-          <!--   <template x-if="data.tags && data.tags.length > 0"> -->
-          <!--     <div class="tags" x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"> -->
-          <!--       <template x-for="tag in slice(data.tags, start, end)"> -->
-          <!--         <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a> -->
-          <!--       </template> -->
-          <!--       <template x-if="!!loadText && data.tags.length > 4"> -->
-          <!--         <a class="tag" href x-text="loadText" @click.prevent="toggleLoad(loaded)"></a> -->
-          <!--       </template> -->
-          <!--     </div> -->
-          <!--   </template> -->
-          <!-- </template> -->
-        </div>
-      </template>
+            <template x-if="isTagPage()"><h1 class="pagetitle" x-text="`#${title}`"></h1></template>
+            <template x-if="!isTagPage()"><h1 class="pagetitle" x-text="title">{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</h1></template>
+            <!-- <template x-for="data in tagsData"> -->
+            <!--   <template x-if="data.tags && data.tags.length > 0"> -->
+            <!--     <div class="tags" x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"> -->
+            <!--       <template x-for="tag in slice(data.tags, start, end)"> -->
+            <!--         <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a> -->
+            <!--       </template> -->
+            <!--       <template x-if="!!loadText && data.tags.length > 4"> -->
+            <!--         <a class="tag" href x-text="loadText" @click.prevent="toggleLoad(loaded)"></a> -->
+            <!--       </template> -->
+            <!--     </div> -->
+            <!--   </template> -->
+            <!-- </template> -->
+          </div>
+        </template>
+      {{ end }}
 
       {{ if .Params.notice -}}
       <div class="notice">{{ .Params.notice }}</div>

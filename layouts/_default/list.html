@@ -9,14 +9,16 @@
         {{ with .LinkTitle }}
           <li class="term">
             {{ with $authors }}
-              <span class="authors">
-                {{ delimit $authors ", "}}
-              </span>
+              <div class="authors">
+                {{ range $authors }}
+                  <a href="/contributor/{{ . }}">{{ . }}</a>
+                {{ end }}
+              </div>
             {{ end }}
             <a href="{{ $url }}">{{ . }}</a>
-            <div>
+            <div class="tags">
               {{ range $t := $tags }}
-                <span class="tag">{{ $t }}</span>
+                <a href="/tags/{{ $t }}" class="tag">{{ $t }}</a>
               {{ end }}
             </div>
           </li>
