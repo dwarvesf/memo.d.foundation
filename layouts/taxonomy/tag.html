@@ -36,7 +36,7 @@
         {{ $tags := .Page.Params.Tags }}
         {{ range $t := collections.First 2 $tags }}
           {{ if ne (strings.ToLower $t) (strings.ToLower $currentTag) }}
-            <span class="tag">{{ $t }}</span>
+            <a href="/tags/{{ $t }}" class="tag">{{ $t }}</a>
           {{ end }}
         {{ end }}
       </li>

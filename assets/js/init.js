@@ -1,4 +1,4 @@
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
   document.body.classList.remove("no-transition");
 });
 
@@ -80,7 +80,7 @@ document.addEventListener("alpine:init", () => {
       if (t.trim() !== "") continue;
       node.parentElement.innerHTML = node.textContent.replace(
         /(.?)@([\d\w_\-\.]+)/gm,
-        "<a href='/contributor/$2'>$1@$2</a>"
+        "$1<a href='/contributor/$2'>@$2</a>"
       );
     }
   }
