@@ -8,16 +8,16 @@ import os
 load_dotenv()
 
 
-def embed_mxbai(text):
+def embed_custom(text):
 	client = OpenAI(
-		api_key=os.getenv("RUNPOD_API_KEY"),
-		base_url=os.getenv("RUNPOD_OPENAI_BASE_URL"),
+		api_key=os.getenv("INFINITY_API_KEY"),
+		base_url=os.getenv("INFINITY_OPENAI_BASE_URL"),
 	)
 
 	try:
 		text = text.replace("\n", " ")
 		return client.embeddings.create(
-			input=[text], model="mixedbread-ai/mxbai-embed-large-v1"
+			input=[text], model="Snowflake/snowflake-arctic-embed-l"
 		)
 	except AttributeError:
 		return None
@@ -44,7 +44,7 @@ def main():
 	except:
 		pass
 
-	query_embedding = embed_mxbai(args.query)
+	query_embedding = embed_custom(args.query)
 	query_embedding = query_embedding.data[0].embedding
 
 	query = conn.execute(
@@ -60,10 +60,10 @@ def main():
 				file_path,
 				spr_content,
 				fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
-				array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_mxbai) AS similarity
+				array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom) AS similarity
 			FROM vault
 			WHERE 
-				embeddings_spr_mxbai IS NOT NULL
+				embeddings_spr_custom IS NOT NULL
 				AND full_text_score IS NOT NULL
 			ORDER BY similarity DESC
 		)
