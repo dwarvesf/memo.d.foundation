@@ -1,7 +1,7 @@
 {{ partial "header.html" . }}
 
 {{ if eq .Title "archived"}}
-  <ul class="archived-list">
+  <ul class="post-list">
     {{ range .Site.RegularPages.ByLastmod.Reverse }}
       {{ $url := .RelPermalink }}
       {{ $tags := .Page.Params.Tags }}
