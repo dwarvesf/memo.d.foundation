@@ -269,11 +269,14 @@ def process_directory(conn, directory, limit):
     if os.path.exists(ignore_file_path):
         spec = gitignore_parser.parse_gitignore(ignore_file_path)
 
+    short_paths = []
     i = 0
     for root, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith(".md"):
                 full_path = os.path.join(root, file)
+                short_path = re.sub(r"^.*?/", "", full_path)
+                short_paths.append(short_path)
                 abs_path = os.path.abspath(full_path)
                 if not spec(abs_path):
                     frontmatter, md_content = extract_frontmatter(full_path)
@@ -283,6 +286,9 @@ def process_directory(conn, directory, limit):
                         i += 1
                         if limit and i >= limit:
                             return
+
+    print("Removing old file_paths...")
+    results = conn.execute(f"DELETE FROM vault WHERE file_path NOT IN ({', '.join('?' for _ in short_paths)})", short_paths).fetchall()
 
 
 def export(conn, format):
