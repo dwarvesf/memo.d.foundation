@@ -20,12 +20,20 @@
   {{ with .File }}
     {{ $postDir = .Dir }}
   {{ end }}
+  {{ $isContributor := strings.HasPrefix .Path "/contributor" }}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}">
-  <meta name="keywords" content="{{ .Site.Params.tags }}">
+  {{ if $isContributor }}
+    {{ $name := index (last 1 (strings.Split .Path "/")) 0 }}
+    {{ $social := index (first 1 .Params.social) 0 }}
+  <meta name="title" content="{{ with $name }}{{ . }}{{ end }}">
+  <meta name="description" content="Find me on {{ $social }}">
+  {{ else }}
   <meta name="title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
   <meta name="description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  {{ end }}
+  <meta name="keywords" content="{{ .Site.Params.tags }}">
   <meta name="theme-color" content="#1CA0F2">
   
   <!-- Facebook Meta -->
