@@ -20,11 +20,13 @@ clear-build:
 	@rm .git/hooks/pre-commit 2> /dev/null || true
 
 run:
+	@make clear-build
 	@python scripts/batch_image_processor.py vault
 	@python scripts/batch_export_markdown.py vault content
 	@hugo -DEF --logLevel error server
 	
 watch-run:
+	@make clear-build
 	@python scripts/batch_image_processor.py vault
 	@python scripts/batch_export_markdown.py vault content
 	@python scripts/watch_run.py vault content
