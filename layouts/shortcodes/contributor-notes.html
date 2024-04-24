@@ -1,0 +1,14 @@
+<ul class="post-list">
+  {{ range (where .Site.RegularPages.ByLastmod.Reverse "Params.authors" "intersect" .Params) }}
+    {{ $url := .RelPermalink }}
+    {{ $tags := .Page.Params.Tags }}
+    {{ $title := .LinkTitle }}
+<li class="term">
+<a href="{{ $url }}">{{ $title }}</a>
+<div class="tags">
+{{ range $t := $tags }}<a href="/tags/{{ $t }}" class="tag">{{ $t }}</a>
+{{ end }}
+</div>
+</li>
+  {{ end }}
+</ul>
