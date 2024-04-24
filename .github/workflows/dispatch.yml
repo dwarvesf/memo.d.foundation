@@ -1,0 +1,40 @@
+name: Update submodules
+
+on: workflow_dispatch
+
+jobs:
+  publish_job:
+    runs-on: ubuntu-latest
+    name: Pull and update submodules
+    steps:
+      - name: Debounce 10s
+        uses: zachary95/github-actions-debounce@v0.1.0
+        with:
+          wait: 10
+
+      - name: Checkout contents repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DWARVES_PAT }}
+          submodules: recursive
+
+      - name: Install devbox
+        uses: jetpack-io/devbox-install-action@v0.9.0
+        with:
+          enable-cache: true
+          devbox-version: 0.10.5
+
+      - name: Pull & update submodules recursively
+        run: |
+          yes | git submodule update --init --recursive --remote --progress --merge --filter=blob:none
+          git submodule foreach --recursive 'branch=$(git rev-parse --abbrev-ref HEAD); if [ "$(git config --get branch.$branch.remote)" = "" ]; then git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo main); fi'
+
+      - name: Commit
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git submodule foreach --recursive "git add --all; git commit -m 'chore: update submodules'; git push"
+          git submodule foreach --recursive "git add --all; git commit -m 'chore: update submodules'; git push"
+          git add --all
+          git commit -m "chore: update submodules"
+          git push
