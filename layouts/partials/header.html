@@ -471,7 +471,7 @@
       },
     }">
       <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
-      {{ if not (eq .Kind 404)}}
+      {{ if not (eq .Kind "404")}}
         <template x-if="!hideTitle">
           <div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
             <!-- docsearch indices -->
