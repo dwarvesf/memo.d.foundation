@@ -12,7 +12,6 @@ const popperInstance = Popper.createPopper(button, tooltip, {
 });
 
 function show() {
-  console.log("sdlgjdkljgkd");
   // Make the tooltip visible
   tooltip.setAttribute("data-show", "");
 
