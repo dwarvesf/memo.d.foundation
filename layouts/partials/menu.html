@@ -72,7 +72,7 @@
       WHERE grouped_path IS NOT NULL
         AND file_path NOT LIKE '%_index%'
         AND title IS NOT NULL
-        AND draft != true
+        AND (draft != true OR draft IS NULL)
       GROUP BY grouped_path;
     `);
 
