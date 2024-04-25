@@ -41,3 +41,6 @@ content/
 
 # database files
 vault.duckdb*
+
+# vtt transcript files
+*.vtt

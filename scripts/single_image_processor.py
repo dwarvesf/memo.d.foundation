@@ -129,6 +129,8 @@ def process_markdown_file(file_path):
         # If it's a video, compress it if it hasn't been compressed already
         elif image_path.lower().endswith((".mp4", ".avi", ".mov")):
             if "compressed" in image_path:
+                if image_path != new_image_path:
+                    os.rename(image_path, new_image_path)
                 return f"![{source_name}](assets/{new_filename})"
             else:
                 clip = VideoFileClip(image_path)
@@ -148,10 +150,10 @@ def process_markdown_file(file_path):
                     new_image_path, codec="libx264", bitrate="700k", logger=None
                 )
                 os.remove(image_path)
-
-        # Check if the image is not in the assets folder
-        if image_path != new_image_path:
-            os.rename(image_path, new_image_path)
+        else:
+            # Check if the image is not in the assets folder
+            if image_path != new_image_path:
+                os.rename(image_path, new_image_path)
 
         return f"![{source_name}](assets/{new_filename})"
 
