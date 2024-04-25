@@ -28,6 +28,10 @@ jobs:
           devbox run duckdb-export
           mkdir backup
           tar -czvf ./backup/$(date +%Y-%m-%d).tar.gz db
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          INFINITY_API_KEY: ${{ secrets.INFINITY_API_KEY }}
+          INFINITY_OPENAI_BASE_URL: ${{ secrets.INFINITY_OPENAI_BASE_URL }}
       
       - name: Upload latest db for querying
         uses: jakejarvis/s3-sync-action@master
