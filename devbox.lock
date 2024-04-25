@@ -321,26 +321,6 @@
         }
       }
     },
-    "obsidian@1.4.16": {
-      "last_modified": "2023-12-13T22:54:10Z",
-      "resolved": "github:NixOS/nixpkgs/fd04bea4cbf76f86f244b9e2549fca066db8ddff#obsidian",
-      "source": "devbox-search",
-      "version": "1.4.16",
-      "systems": {
-        "aarch64-darwin": {
-          "store_path": "/nix/store/l3nw3nndh69k8f866kihh64g9qgn9i54-obsidian-1.4.16"
-        },
-        "aarch64-linux": {
-          "store_path": "/nix/store/07ms3g6zdvr8d0r5narkys52rbvm5r9v-obsidian-1.4.16"
-        },
-        "x86_64-darwin": {
-          "store_path": "/nix/store/s7j0wrzcm3v58w6zx41hjmrncmf4fc88-obsidian-1.4.16"
-        },
-        "x86_64-linux": {
-          "store_path": "/nix/store/ixc5072pz32grgklkr5xq0mxr948apmi-obsidian-1.4.16"
-        }
-      }
-    },
     "pre-commit@3.6.1": {
       "last_modified": "2024-02-24T18:06:34-05:00",
       "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#pre-commit",

@@ -2,12 +2,6 @@
   "packages": {
     "go":   "1.21.3",
     "hugo": "0.124.1",
-    "obsidian": {
-      "version": "1.4.16",
-      "allow_insecure": [
-        "electron-25.9.0"
-      ]
-    },
     "git":                   "2.42.0",
     "python310Packages.pip": "23.2.1",
     "python":                "3.10.13",
@@ -34,6 +28,7 @@
   "shell": {
     "init_hook": [
       ". $VENV_DIR/bin/activate",
+      "export LD_LIBRARY_PATH=./.devbox/nix/profile/default/lib",
       "pip install -r requirements.txt",
       "pre-commit uninstall",
       "make fetch"
