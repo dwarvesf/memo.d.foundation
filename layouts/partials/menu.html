@@ -158,9 +158,7 @@
           },
           duckDBMenuData: $persist([]),
         }">
-      <details x-data="{
-            open: sessionStorage.getItem('details-pinned-notes') === 'true',
-          }" x-init="$watch('open', (val) => sessionStorage.setItem(`details-pinned-notes`, open))" x-bind:open="open">
+      <details x-data="{ open: $persist(true).as('details-pinned-notes').using(sessionStorage) }" x-bind:open="open">
         <summary @click.prevent="open = !open">
           <div class="chevron"></div>
           Pinned Notes
