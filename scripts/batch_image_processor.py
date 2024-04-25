@@ -128,6 +128,8 @@ def process_markdown_file(file_path):
             os.remove(image_path)
         # If it's a video, compress it if it hasn't been compressed already
         elif image_path.lower().endswith((".mp4", ".avi", ".mov")):
+            if image_path != new_image_path:
+                os.rename(image_path, new_image_path)
             if "compressed" in image_path:
                 return f"![{source_name}](assets/{new_filename})"
             else:
