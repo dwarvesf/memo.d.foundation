@@ -10,15 +10,24 @@
     },
     "git": "2.42.0",
     "python310Packages.pip": "23.2.1",
-    "python": "3.10.13",
+    "python": {
+      "version": "3.10.13",
+      "patch_glibc": true
+    },
     "awscli": "1.32.21",
     "pre-commit": "3.6.1",
     "github:nixos/nixpkgs/9dacfe4f4f1024c85503682fc3512e23098e01e8#duckdb": {
-      "excluded_platforms": ["x86_64-linux", "aarch64-linux"]
+      "excluded_platforms": [
+        "x86_64-linux",
+        "aarch64-linux"
+      ]
     },
     "duckdb": {
       "version": "0.10.1",
-      "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
+      "excluded_platforms": [
+        "x86_64-darwin",
+        "aarch64-darwin"
+      ]
     },
     "ffmpeg": "6.1.1",
     "stdenv.cc.cc.lib": ""
