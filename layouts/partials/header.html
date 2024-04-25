@@ -121,9 +121,6 @@
   {{ $algolia := resources.Get "js/algolia.js" | js.Build (dict "params" (dict "api_key" $algoliaApiKey "application_id" $algoliaApplicationId))  }}
   <script defer src="{{ $algolia.RelPermalink }}"></script>
 
-  {{ $systemAppearance := resources.Get "js/dark-light-check.js" }}
-  <script defer src="{{ $systemAppearance.RelPermalink }}"></script>
-
   {{ $graph := resources.Get "js/graph.js" }}
   <script defer src="{{ $graph.RelPermalink }}"></script>
 
@@ -313,38 +310,21 @@
       <button 
       class="btn-theme-toggler"
       x-data="{
-          theme: 'system',
+          theme: $persist('system').as('df.note.theme'),
           toggleTheme() {
-            // theme circle: light -> dark -> system
-            // system -> 
-            //   if light -> dark
-            //   if dark -> light
-            if (this.theme === undefined) {
-              this.theme = 'system';
-            } else if (this.theme === 'light') {
-              this.theme = 'dark';
-            } else if (this.theme === 'dark') {
-              this.theme = 'light';
-            }
-
-            // backup theme
-            localStorage.setItem('df.note.theme', this.theme);
-
-            if (this.theme == 'system') {
-              const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              this.theme = isDarkMode ? 'dark' : 'light';
+            switch (this.theme) {
+              case 'light': this.theme = 'dark'; break;
+              case 'dark': this.theme = 'light'; break;
+              default: this.theme = 'system'
             }
             document.documentElement.setAttribute('data-theme', this.theme);
           },
           init() {
-            let theme = localStorage.getItem('df.note.theme') || this.theme;
-            if (theme === 'system') {
+            if (this.theme === 'system') {
               const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              theme = isDarkMode ? 'dark' : 'light';
+              this.theme = isDarkMode ? 'dark' : 'light';
             }
-            this.theme = theme
-            localStorage.setItem('df.note.theme', theme);
-            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-theme', this.theme);
           }
         }" 
         x-init="init()" 

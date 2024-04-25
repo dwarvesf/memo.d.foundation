@@ -175,7 +175,7 @@
         </ul>
       </details>
 
-      <details x-data="{ open: $persist(false) }" :open="open">
+      <details x-data="{ open: $persist(false).using(sessionStorage) }" :open="open">
         <summary @click.prevent="open = !open">
           <div class="chevron"></div>
           Home
@@ -183,7 +183,7 @@
 
         <template x-for="(value, menu) in duckDBMenuData" :key="menu"
           @duckdb-menu.window="duckDBMenuData = $event.detail.data">
-          <details x-data="{ menuOpen: $persist(false).as(`${menu}-open`) }" :open="menuOpen">
+          <details x-data="{ menuOpen: $persist(false).as(`_x_${menu}-open`).using(sessionStorage) }" :open="menuOpen">
             <summary @click.prevent="menuOpen = !menuOpen">
               <div class="chevron"></div>
               <span x-text="menu"></span>
