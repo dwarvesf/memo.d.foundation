@@ -14,20 +14,22 @@
     "awscli":                "1.32.21",
     "pre-commit":            "3.6.1",
     "github:nixos/nixpkgs/9dacfe4f4f1024c85503682fc3512e23098e01e8#duckdb": {
-      "excluded_platforms": [
-        "x86_64-linux",
-        "aarch64-linux"
-      ]
+      "excluded_platforms": ["x86_64-linux", "aarch64-linux"]
     },
     "duckdb": {
-      "version": "0.10.1",
-      "excluded_platforms": [
-        "x86_64-darwin",
-        "aarch64-darwin"
-      ]
+      "version":            "0.10.1",
+      "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
     },
     "ffmpeg":                   "6.1.1",
-    "nixpkgs#stdenv.cc.cc.lib": ""
+    "nixpkgs#stdenv.cc.cc.lib": "",
+    "gcc": {
+      "version":            "13.2.0",
+      "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
+    },
+    "gcc-unwrapped": {
+      "version":            "13.2.0",
+      "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
+    }
   },
   "shell": {
     "init_hook": [
