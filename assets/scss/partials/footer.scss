@@ -54,69 +54,6 @@ footer {
       aspect-ratio: 1;
     }
   }
-
-  .filename {
-    display: flex;
-    align-items: center;
-    column-gap: 5px;
-    min-width: 0;
-
-    span {
-      color: var(--secondary-font-color-light);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-
-    svg {
-      flex-shrink: 0;
-      width: 18px;
-      height: 18px;
-    }
-  }
-
-  .last-updated {
-    display: flex;
-    align-items: center;
-    column-gap: 5px;
-    min-width: 0;
-
-    span {
-      &::before {
-        content: "Last modified ";
-      }
-      color: var(--secondary-font-color-light);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-
-    svg {
-      flex-shrink: 0;
-      width: 18px;
-      height: 18px;
-    }
-  }
-
-  .authors {
-    display: none;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    column-gap: 5px;
-
-    a {
-      color: var(--secondary-font-color-light);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-
-    svg {
-      width: 18px;
-      height: 18px;
-    }
-  }
 }
 
 footer span {

@@ -194,7 +194,7 @@ ol {
   line-height: 25px;
   margin: 0;
   padding: 0;
-  padding-left: 1rem;
+  padding-left: 2rem;
   display: flex;
   flex-direction: column;
   row-gap: 12px;
@@ -382,26 +382,80 @@ label:not(:has(+ #TableOfContents)) {
   // padding-bottom: 500px;
 
   .metadata {
-    .tags {
-      margin-top: 10px;
+    hr {
+      margin: 1rem 0px !important;
+    }
+    .stats {
+      margin: 0px;
+      padding: 0px;
       display: flex;
       flex-direction: column;
-      row-gap: 6px;
-      align-items: flex-start;
+      font-weight: 400;
 
-      .tag:hover {
-        color: var(--primary-color);
-      }
-    }
-    .authors {
-      color: var(--secondary-font-color-light-var2);
-      a {
+      a:not([class="tag"]) {
+        &::after {
+          content: ", ";
+        }
+
+        &:last-child {
+          &::after {
+            content: "";
+          }
+        }
         padding: 0px;
         transition: color 0.1s ease-in-out;
+        color: var(--secondary-font-color-light-var2);
 
         &:hover {
           color: var(--primary-color);
         }
+      }
+
+      div {
+        &::before {
+          content: "⎯ ";
+          color: var(--secondary-font-color-light);
+        }
+        &:first-of-type {
+          margin-top: 0px;
+        }
+        margin-top: 1rem;
+        color: var(--secondary-font-color-light);
+        font-size: 0.8rem;
+      }
+
+      li {
+        &:first-of-type {
+          margin-top: 0px;
+        }
+        margin-top: 0.225rem;
+        svg {
+          width: 1rem;
+          height: 1rem;
+        }
+        &.span {
+          justify-content: space-between;
+        }
+        span {
+          display: flex;
+          align-items: center;
+          column-gap: 0.25rem;
+          color: var(--secondary-font-color-light);
+        }
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        color: var(--secondary-font-color-light-var2);
+        column-gap: 0.25rem;
+      }
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+
+      .tag:hover {
+        color: var(--primary-color);
       }
     }
   }
