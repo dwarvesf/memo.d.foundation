@@ -56,6 +56,59 @@
     return result;
   }
 
+  function doBuildRecursiveSidebar(duckDbData, container) {
+    if (Array.isArray(duckDbData)) {
+      const ul = document.createElement("ul")
+
+      for (const file of duckDbData) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        const path = "/" + file.file_path.split(".")[0] + "/";
+        const isActive = location.pathname === path
+        a.href = path;
+        a.textContent = file.title;
+
+        if (isActive) li.classList.add("text-active");
+
+        li.appendChild(a)
+        ul.appendChild(li);
+      }
+
+      container.appendChild(ul);
+
+      return
+    }
+
+    for (const [key, value] of Object.entries(duckDbData)) {
+      const {next_path, _grouped_path, file_paths = []} = value
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      const chevron = document.createElement("div")
+      const span = document.createElement("span")
+      span.textContent = key
+      chevron.classList.add("chevron");
+      summary.appendChild(chevron)
+      summary.appendChild(span)
+      details.appendChild(summary)
+      container.appendChild(details)
+
+      if (Object.keys(next_path).length > 0) {
+        doBuildRecursiveSidebar(next_path, details);
+        continue;
+      }
+      doBuildRecursiveSidebar(file_paths, details)
+    }
+  }
+
+  function buildRecursiveSidebar(rootSelector, duckDbData) {
+    const root = document.querySelector(rootSelector);
+
+    const fragment = document.createDocumentFragment()
+    doBuildRecursiveSidebar(duckDbData, fragment);
+
+    root.appendChild(fragment);
+  }
+
   getDB().then(async (db) => {
     // Create a new connection
     const conn = await db.connect();
@@ -83,6 +136,7 @@
         : value
     ))
     const duckDBMenuData = nestPaths(parsedData)
+    /* buildRecursiveSidebar("#sidebar-root", duckDBMenuData); */
     let event = new CustomEvent('duckdb-menu', {
       detail: {
         data: duckDBMenuData
@@ -157,7 +211,7 @@
             }, {});
             return mappedData;
           },
-          duckDBMenuData: $persist([]),
+          duckDBMenuData: $persist([]).as('duckDBMenuData'),
         }">
       <details x-data="{ open: $persist(true).as('details-pinned-notes').using(sessionStorage) }" x-bind:open="open">
         <summary @click.prevent="open = !open">
@@ -180,77 +234,43 @@
           Home
         </summary>
 
-        <template x-for="(value, menu) in duckDBMenuData" :key="menu"
-          @duckdb-menu.window="duckDBMenuData = $event.detail.data">
-          <details x-data="{ menuOpen: $persist(false).as(`_x_${menu}-open`).using(sessionStorage) }" :open="menuOpen">
-            <summary @click.prevent="menuOpen = !menuOpen">
-              <div class="chevron"></div>
-              <span x-text="menu"></span>
-            </summary>
-
-            <ul>
-              <template x-if="duckDBMenuData[menu].next_path && Object.keys(duckDBMenuData[menu].next_path).length > 1">
-                <li>
-                  <a>
-                    <template x-for="(nextPathValue, nextPathMenu) in duckDBMenuData[menu].next_path">
-                      <details>
-                        <summary>
-                          <div class="chevron"></div>
-                          <span x-text="nextPathMenu"></span>
-                        </summary>
-
-                        <ul>
-                          <template x-if="duckDBMenuData[menu].next_path[nextPathMenu].file_paths && duckDBMenuData[menu].next_path[nextPathMenu].file_paths.length > 0">
-                            <template x-for="filePath in duckDBMenuData[menu].next_path[nextPathMenu].file_paths">
-                              <li :class="{ 'text-active': location.pathname === '/' + filePath.file_path.split('.md')[0] }" >
-                                <a :class="{ 'text-active': location.pathname === '/' + filePath.file_path.split('.md')[0] }" :href="'/' + filePath.file_path.split('.md')[0]"
-                                  x-text="filePath.title || filePath.file_path.split('.md')[0].split('/').slice(-1)"></a>
-                                </a>
-                              </li>
-                            </template>
-                          </template>
-                        </ul>
-                      </details>
-                    </template>
-                  </a>
-                </li>
-              </template>
-
-              <template x-if="duckDBMenuData[menu].file_paths && duckDBMenuData[menu].file_paths.length > 0">
-                <template x-for="filePath in duckDBMenuData[menu].file_paths">
-                  <li :class="{ 'text-active': location.pathname === '/' + filePath.file_path.split('.md')[0] }" >
-                    <a :class="{ 'text-active': location.pathname === '/' + filePath.file_path.split('.md')[0] }" :href="'/' + filePath.file_path.split('.md')[0]"
-                      x-text="filePath.title || filePath.file_path.split('.md')[0].split('/').slice(-1)"></a>
-                    </a>
-                  </li>
-                </template>
-              </template>
-            </ul>
-          </details>
-        </template>
-        <!-- <template x-for="menu in Object.keys(menuData)" x-bind:key="menu">
-            <details
-              x-data="{
-                open: sessionStorage.getItem(`${menu}-details`) === 'true',
-              }"
-              x-init="$watch('open', (val) => sessionStorage.setItem(`${menu}-details`, open))"
-              x-bind:open="open"
-            >
-              <summary
-                @click.prevent="open = !open"
-              >
-                <div class="chevron"></div>
-                <span x-text="menu"></span>
+        <div x-data="{
+          render(menu, value) {
+            let html = `
+              <summary @click.prevent='$store.menu.toggle(menu)'>
+                <div class='chevron'></div>
+                <span x-text='menu.replaceAll(\`-\`, \` \`)'></span>
               </summary>
-              <ul>
-                <template x-for="items in menuData[menu]">
-                  <li x-bind:class="{ 'text-active': location.pathname === items.url }">
-                    <a x-bind:class="{ 'text-active': location.pathname === items.url }" x-bind:href="items.url" x-text="items.name"></a>
+            `
+            if(Array.isArray(value.file_paths) && value.file_paths.length > 0) {
+              html += '<ul>';
+              for(const file of value.file_paths) {
+                const path = `/${file.file_path.split('.')[0]}/`
+                const isActive = location.pathname === path;
+                html += `
+                  <li>
+                    <a href='${path}' class='${isActive ? 'text-active':''}'>${file.title}</a>
                   </li>
+                `
+              }
+              html += '</ul>';
+            }
+            if(Object.keys(value.next_path).length > 0) {
+              html += `
+                <template x-for='(value, menu) in value.next_path' :key='menu'>
+                  <details x-html='render(menu, value)' :open='$store.menu[menu]'></details>
                 </template>
-              </ul>
-            </details>
-          </template> -->
+              `
+            }
+            return html;
+          }
+        }">
+          <template x-for="(value, menu) in duckDBMenuData" :key="menu"
+            @duckdb-menu.window="duckDBMenuData = $event.detail.data">
+            <details x-html="render(menu, value)" :open="$store.menu[menu]"></details>
+          </template>
+        </div>
+
 
       </details>
 
@@ -272,7 +292,7 @@
                       .join('-');
                   },
                   toNormal(tag) {
-                    return tag.replaceAll('-', ' ');
+                    return tag && tag.replaceAll('-', ' ');
                   }
                 }" x-bind:class="{ 'text-active': location.pathname === `/tags/${toKebabCase(tag)}/` }">
               <a x-bind:class="{ 'text-active': location.pathname === `/tags/${toKebabCase(tag)}/` }"

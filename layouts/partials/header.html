@@ -406,6 +406,7 @@
             <label class="nav-label">ON THIS PAGE</label>
             {{ .TableOfContents }}
           </div>
+          {{ if eq .Kind "page" }}
           <div class="metadata">
             <hr>
             <ul class="stats">
@@ -509,6 +510,7 @@
               </li>
             </ul>
           </div>
+          {{ end }}
         </div>
       </div>
     </div>
