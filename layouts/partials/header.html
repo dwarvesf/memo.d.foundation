@@ -310,7 +310,7 @@
       <button 
       class="btn-theme-toggler"
       x-data="{
-          theme: $persist('system').as('df.note.theme'),
+          theme: $persist('system'),
           toggleTheme() {
             switch (this.theme) {
               case 'light': this.theme = 'dark'; break;
