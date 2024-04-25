@@ -336,6 +336,38 @@ html[data-theme="dark"] {
     }
   }
 
+  .site-nav > details {
+    details {
+      &:not(:first-child) {
+        &:before {
+          background-color: var(--Neutral-500);
+        }
+      }
+    }
+
+    ul > li {
+      &:has(a:not(:is(.text-active))):hover {
+        &::before {
+          background-color: #9b9b9b;
+        }
+      }
+
+      &:has(> a:is(.text-active)) {
+        &::before {
+          background-color: var(--primary-color);
+        }
+
+        a {
+          color: var(--primary-color);
+        }
+      }
+
+      &::before {
+        background-color: var(--Neutral-500);
+      }
+    }
+  }
+
   // .site-nav > details {
   //   ul > li {
   //     &:hover > ::before {
