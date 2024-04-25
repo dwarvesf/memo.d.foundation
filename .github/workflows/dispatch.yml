@@ -40,10 +40,10 @@ jobs:
 
       - name: Commit
         run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-          git submodule foreach --recursive "git add --all; git commit -m 'chore: update submodules'; git push"
-          git submodule foreach --recursive "git add --all; git commit -m 'chore: update submodules'; git push"
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git submodule foreach --recursive "git add --all; git commit -m 'chore: update submodules' || echo "No changes committed; git push"
+          git submodule foreach --recursive "git add --all; git commit -m 'chore: update submodules' || echo "No changes committed; git push"
           git add --all
-          git commit -m "chore(deploy): update submodules and reindex"
+          git commit -m "chore(deploy): update submodules and reindex" || echo "No changes committed"
           git push
