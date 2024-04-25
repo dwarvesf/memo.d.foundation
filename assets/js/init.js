@@ -1,8 +1,39 @@
-window.addEventListener("load", function () {
+window.addEventListener("load", function() {
   document.body.classList.remove("no-transition");
 });
 
 document.addEventListener("alpine:init", () => {
+  Alpine.store("menu", {
+    init() {
+      const that = this;
+      function setMenu(menuData) {
+        for (const [key, value] of Object.entries(menuData)) {
+          const { next_path } = value;
+          const prev = sessionStorage.getItem(`menu_${key}`);
+          if (prev === null) {
+            that[key] = false;
+          } else {
+            that[key] = prev === "true";
+          }
+          if (Object.keys(next_path).length <= 0) continue;
+          setMenu(next_path);
+        }
+      }
+      try {
+        const menuData = JSON.parse(localStorage.getItem("duckDBMenuData"));
+        setMenu(menuData);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    toggle(menu) {
+      const prev = this[menu];
+      const newVal = !prev;
+      sessionStorage.setItem(`menu_${menu}`, newVal);
+
+      this[menu] = newVal;
+    },
+  });
   Alpine.store("sidebar", {
     open: false,
     close() {
@@ -78,6 +109,7 @@ document.addEventListener("alpine:init", () => {
     for (const res of results) {
       const [_, t] = res;
       if (t.trim() !== "") continue;
+      if (!node?.parentElement?.innerHTML) return;
       node.parentElement.innerHTML = node.textContent.replace(
         /(.?)@([\d\w_\-\.]+)/gm,
         "$1<a href='/contributor/$2'>@$2</a>"
