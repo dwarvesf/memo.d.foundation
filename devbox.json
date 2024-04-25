@@ -1,6 +1,6 @@
 {
   "packages": {
-    "go": "1.21.3",
+    "go":   "1.21.3",
     "hugo": "0.124.1",
     "obsidian": {
       "version": "1.4.16",
@@ -8,14 +8,11 @@
         "electron-25.9.0"
       ]
     },
-    "git": "2.42.0",
+    "git":                   "2.42.0",
     "python310Packages.pip": "23.2.1",
-    "python": {
-      "version": "3.10.13",
-      "patch_glibc": true
-    },
-    "awscli": "1.32.21",
-    "pre-commit": "3.6.1",
+    "python":                "3.10.13",
+    "awscli":                "1.32.21",
+    "pre-commit":            "3.6.1",
     "github:nixos/nixpkgs/9dacfe4f4f1024c85503682fc3512e23098e01e8#duckdb": {
       "excluded_platforms": [
         "x86_64-linux",
@@ -29,8 +26,8 @@
         "aarch64-darwin"
       ]
     },
-    "ffmpeg": "6.1.1",
-    "stdenv.cc.cc.lib": ""
+    "ffmpeg":                   "6.1.1",
+    "nixpkgs#stdenv.cc.cc.lib": ""
   },
   "shell": {
     "init_hook": [
@@ -40,13 +37,13 @@
       "make fetch"
     ],
     "scripts": {
-      "build": "make build",
-      "clear-build": "make clear-build",
-      "watch-run": "make watch-run",
-      "build-target": "make build-target",
-      "run-target": "make run-target",
+      "build":         "make build",
+      "clear-build":   "make clear-build",
+      "watch-run":     "make watch-run",
+      "build-target":  "make build-target",
+      "run-target":    "make run-target",
       "duckdb-export": "make duckdb-export",
-      "fetch": "make fetch"
+      "fetch":         "make fetch"
     }
   }
 }
