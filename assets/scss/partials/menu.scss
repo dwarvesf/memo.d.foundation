@@ -442,6 +442,7 @@ html[data-theme="dark"] {
   transform: translateX(-5%);
   opacity: 0;
   pointer-events: none;
+  left: 0;
 }
 
 #sidebar:is(:not(.show)):is(.menu-reading-mode) {

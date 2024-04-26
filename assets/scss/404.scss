@@ -1,0 +1,24 @@
+img[alt="404"] {
+  width: 80%;
+  margin: auto;
+}
+
+@media only screen and (max-width: 1100px) {
+  div.grid:has(img[alt="404"]) {
+    display: flex !important;
+    align-items: center;
+    justify-items: center;
+    height: 100svh;
+
+    .pagenav {
+      display: none !important;
+    }
+  }
+}
+
+main {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}

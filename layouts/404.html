@@ -1,15 +1,13 @@
 {{ partial "header.html" . }}
 {{ $img := resources.Get "img/404.png" }}
 
-<div>
-<div>
-<h2>404</h2>
-<p>Page not found</p>
-</div>
+{{ $styles := resources.Get "scss/404.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
+<style>
+  {{ $styles.Content | safeCSS }}
+</style>
 
 {{ with $img }}
 <img src={{ .RelPermalink }} alt="404" />
 {{ end }}
-</div>
 
 {{ partial "footer.html" . }}
