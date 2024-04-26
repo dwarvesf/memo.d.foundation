@@ -56,59 +56,6 @@
     return result;
   }
 
-  function doBuildRecursiveSidebar(duckDbData, container) {
-    if (Array.isArray(duckDbData)) {
-      const ul = document.createElement("ul")
-
-      for (const file of duckDbData) {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-        const path = "/" + file.file_path.split(".")[0] + "/";
-        const isActive = location.pathname === path
-        a.href = path;
-        a.textContent = file.title;
-
-        if (isActive) li.classList.add("text-active");
-
-        li.appendChild(a)
-        ul.appendChild(li);
-      }
-
-      container.appendChild(ul);
-
-      return
-    }
-
-    for (const [key, value] of Object.entries(duckDbData)) {
-      const {next_path, _grouped_path, file_paths = []} = value
-      const details = document.createElement("details");
-      const summary = document.createElement("summary");
-      const chevron = document.createElement("div")
-      const span = document.createElement("span")
-      span.textContent = key
-      chevron.classList.add("chevron");
-      summary.appendChild(chevron)
-      summary.appendChild(span)
-      details.appendChild(summary)
-      container.appendChild(details)
-
-      if (Object.keys(next_path).length > 0) {
-        doBuildRecursiveSidebar(next_path, details);
-        continue;
-      }
-      doBuildRecursiveSidebar(file_paths, details)
-    }
-  }
-
-  function buildRecursiveSidebar(rootSelector, duckDbData) {
-    const root = document.querySelector(rootSelector);
-
-    const fragment = document.createDocumentFragment()
-    doBuildRecursiveSidebar(duckDbData, fragment);
-
-    root.appendChild(fragment);
-  }
-
   getDB().then(async (db) => {
     // Create a new connection
     const conn = await db.connect();
@@ -136,7 +83,6 @@
         : value
     ))
     const duckDBMenuData = nestPaths(parsedData)
-    /* buildRecursiveSidebar("#sidebar-root", duckDBMenuData); */
     let event = new CustomEvent('duckdb-menu', {
       detail: {
         data: duckDBMenuData
@@ -242,6 +188,13 @@
                 <span x-text='menu.replaceAll(\`-\`, \` \`)'></span>
               </summary>
             `
+            if(Object.keys(value.next_path).length > 0) {
+              html += `
+                <template x-for='(value, menu) in value.next_path' :key='menu'>
+                  <details x-html='render(menu, value)' :open='$store.menu[menu]'></details>
+                </template>
+              `
+            }
             if(Array.isArray(value.file_paths) && value.file_paths.length > 0) {
               html += '<ul>';
               for(const file of value.file_paths) {
@@ -254,13 +207,6 @@
                 `
               }
               html += '</ul>';
-            }
-            if(Object.keys(value.next_path).length > 0) {
-              html += `
-                <template x-for='(value, menu) in value.next_path' :key='menu'>
-                  <details x-html='render(menu, value)' :open='$store.menu[menu]'></details>
-                </template>
-              `
             }
             return html;
           }
