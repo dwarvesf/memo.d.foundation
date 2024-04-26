@@ -145,18 +145,6 @@
             }, new Set());
             return [...mappedData];
           },
-          get menuData() {
-            const dataString = `{{ $data | jsonify }}`;
-            const data = JSON.parse(dataString);
-            data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-
-            const mappedData = data.reduce((acc, value) => {
-              if (!acc[value.menu]) acc[value.menu] = [];
-              acc[value.menu].push(value);
-              return acc;
-            }, {});
-            return mappedData;
-          },
           duckDBMenuData: $persist([]).as('duckDBMenuData'),
         }">
       <details x-data="{ open: $persist(true).as('details-pinned-notes').using(sessionStorage) }" x-bind:open="open">
