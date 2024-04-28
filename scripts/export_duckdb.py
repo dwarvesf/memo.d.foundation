@@ -119,33 +119,43 @@ def alter_columns(conn, frontmatter):
     column_types = {}
     for key, value in frontmatter.items():
         if isinstance(value, list):
-            column_types[key] = "TEXT[]"
+            column_types[key] = "VARCHAR[]"
+        elif isinstance(value, bool):
+            column_types[key] = "BOOLEAN"
         elif isinstance(value, int):
             column_types[key] = "BIGINT"
         elif isinstance(value, float):
             column_types[key] = "DOUBLE"
-        elif isinstance(value, bool):
-            column_types[key] = "BOOLEAN"
-        elif "embeddings_spr_custom" in key:
-            column_types[key] = "DOUBLE[1024]"
-        elif "embeddings_openai" in key:
-            column_types[key] = "DOUBLE[1536]"
-        elif "last_updated" in key:
-            column_types[key] = "TIMESTAMP"
-        elif "tags" in key:
-            column_types[key] = "TEXT[]"
-        elif "authors" in key:
-            column_types[key] = "TEXT[]"
-        elif "date" in key:
-            column_types[key] = "DATE"
         else:
-            column_types[key] = "TEXT"
+            column_types[key] = "VARCHAR"
+        
+        if "embeddings_spr_custom" in key:
+            column_types[key] = "DOUBLE[1024]"
+        if "embeddings_openai" in key:
+            column_types[key] = "DOUBLE[1536]"
+        if "last_updated" in key:
+            column_types[key] = "TIMESTAMP"
+        if "tags" in key:
+            column_types[key] = "VARCHAR[]"
+        if "authors" in key:
+            column_types[key] = "VARCHAR[]"
+        if "draft" in key:
+            column_types[key] = "BOOLEAN"
+        if "date" in key:
+            column_types[key] = "DATE"
+        if "discord_id" in key:
+            column_types[key] = "VARCHAR"
 
-    # Add new columns if they don't already exist
+    # Add new columns if they don't already exist or update them
     for column, column_type in column_types.items():
         try:
             conn.execute(f"ALTER TABLE vault ADD COLUMN {column} {column_type}")
         except duckdb.ProgrammingError:
+            pass
+
+        try:
+            conn.execute(f"ALTER TABLE vault ALTER COLUMN {column} TYPE {column_type}")
+        except duckdb.duckdb.ConversionException:
             pass
 
 
@@ -153,7 +163,8 @@ def regenerate_embeddings(md_content, frontmatter, spr_content_text=""):
     # Generate an SPR for the md_content and embed it
     if not spr_content_text:
         spr_content = spr_compress(md_content)
-        print(f"SPR: {spr_content}")
+        if spr_content:
+            print(f"SPR: {spr_content}")
         spr_content_text = (
             spr_content.choices[0].message.content if spr_content else None
         )
@@ -161,7 +172,8 @@ def regenerate_embeddings(md_content, frontmatter, spr_content_text=""):
 
     # Generate embeddings for the SPR
     embeddings_spr_custom = embed_custom(spr_content_text)
-    print(f"SPR Embeddings: {embeddings_spr_custom}")
+    if embeddings_spr_custom:
+        print(f"SPR Embeddings: {embeddings_spr_custom}")
     embeddings_spr_custom_values = (
         embeddings_spr_custom.data[0].embedding if embeddings_spr_custom else None
     )
@@ -169,7 +181,8 @@ def regenerate_embeddings(md_content, frontmatter, spr_content_text=""):
 
     # Generate OpenAI embeddings for the md_content
     embeddings_openai = embed_openai(md_content)
-    print(f"Embeddings: {embeddings_openai}")
+    if embeddings_openai:
+        print(f"Embeddings: {embeddings_openai}")
     frontmatter["embeddings_openai"] = (
         embeddings_openai.data[0].embedding if embeddings_openai else None
     )
@@ -321,13 +334,11 @@ def main():
 
     conn.execute("CREATE TABLE IF NOT EXISTS vault (file_path TEXT, md_content TEXT)")
 
-    # Process if we're not inside a GitHub Action
-    if "GITHUB_ACTIONS" not in os.environ:
-        try:
-            print(f"Processing {args.directory} to DuckDB...")
-            process_directory(conn, args.directory, args.limit)
-        except KeyboardInterrupt:
-            shutil.copyfile("vault.duckdb", "vault.duckdb.bak")
+    try:
+        print(f"Processing {args.directory} to DuckDB...")
+        process_directory(conn, args.directory, args.limit)
+    except KeyboardInterrupt:
+        shutil.copyfile("vault.duckdb", "vault.duckdb.bak")
 
     export(conn, args.format)
     conn.close()
