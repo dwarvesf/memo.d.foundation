@@ -13,39 +13,63 @@ window.duckdbduckdbWasm = duckdbduckdbWasm;
   }
 })();
 
+window._conn_whnf_thunk = null;
+
 const getDuckDB = async () => {
-  const duckdb = window.duckdbduckdbWasm;
-  if (window._db) return window._db;
-  const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
+  // If the connection promise exists, wait for it to resolve
+  if (window._conn_whnf_thunk) {
+    return await window._conn_whnf_thunk;
+  }
 
-  // Select a bundle based on browser checks
-  const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+  // If the database and connection are already established, return the existing connection
+  if (window._db && window._conn) {
+    return window._conn;
+  }
 
-  const worker_url = URL.createObjectURL(
-    new Blob([`importScripts("${bundle.mainWorker}");`], {
-      type: "text/javascript",
-    })
-  );
-
-  // Instantiate the asynchronus version of DuckDB-wasm
-  const worker = new Worker(worker_url);
-  // const logger = null //new duckdb.ConsoleLogger();
-  const logger = new duckdb.ConsoleLogger();
-  const db = new duckdb.AsyncDuckDB(logger, worker);
-  await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
-  URL.revokeObjectURL(worker_url);
-  window._db = db;
+  // Create a promise that will hold the connection
+  window._conn_whnf_thunk = (async () => {
+    const duckdb = window.duckdbduckdbWasm;
+    const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
   
-  const conn = await db.connect();
+    // Select a bundle based on browser checks
+    const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+  
+    const worker_url = URL.createObjectURL(
+      new Blob([`importScripts("${bundle.mainWorker}");`], {
+        type: "text/javascript",
+      })
+    );
+  
+    // Instantiate the asynchronus version of DuckDB-wasm
+    const worker = new Worker(worker_url);
+    // const logger = null //new duckdb.ConsoleLogger();
+    const logger = new duckdb.ConsoleLogger();
+    // After instantiating the database, create a connection
+    const db = new duckdb.AsyncDuckDB(logger, worker);
+    await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+    URL.revokeObjectURL(worker_url);
+    window._db = db;
 
-  console.time('Loading memo DuckDB')
-  await conn.query("IMPORT DATABASE 'https://memo.d.foundation/db/'")
-  await conn.query('INSTALL fts');
-  await conn.query('LOAD fts');
-  await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'md_content')")
-  console.timeEnd('Loading memo DuckDB')
+    // Create a connection to the database
+    const conn = await db.connect();
+    window._conn = conn;
 
-  return conn;
+    console.time('Loading memo DuckDB');
+    await conn.query("IMPORT DATABASE 'https://memo.d.foundation/db/'");
+    await conn.query('INSTALL fts');
+    await conn.query('LOAD fts');
+    await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'md_content')");
+    console.timeEnd('Loading memo DuckDB');
+
+    // Reset the promise since the connection is established
+    window._conn_whnf_thunk = null;
+
+    // Return the connection
+    return conn;
+  })();
+
+  // Return the result of the promise
+  return await window._conn_whnf_thunk;
 };
 
 window.getDuckDB = getDuckDB;
