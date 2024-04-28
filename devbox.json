@@ -1,8 +1,7 @@
 {
   "packages": {
-    "go":   "1.21.3",
-    "hugo": "0.124.1",
-    "git":                   "2.42.0",
+    "go":                    "1.21.3",
+    "hugo":                  "0.124.1",
     "python310Packages.pip": "23.2.1",
     "python":                "3.10.13",
     "awscli":                "1.32.21",
@@ -23,7 +22,8 @@
     "gcc-unwrapped": {
       "version":            "13.2.0",
       "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
-    }
+    },
+    "git": "2.44.0"
   },
   "shell": {
     "init_hook": [

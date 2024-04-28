@@ -141,6 +141,9 @@
   {{ $readingTooltip := resources.Get "js/reading-tooltip.js" }}
   <script defer src="{{ $readingTooltip.RelPermalink }}"></script>
 
+  {{ $queryEngine := resources.Get "js/query-engine.mjs" }}
+  <script defer type="module" src="{{ $queryEngine.RelPermalink }}"></script>
+
   {{ if .IsHome -}}
   <script type="application/ld+json">
     {
