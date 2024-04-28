@@ -1,71 +1,76 @@
 <script type="module">
-  Alpine.store("commandPaletteSearch", {
-    async search(query) {
-      const getMatchingLines = (s, pattern) => {
-        const lines = s.split('\n');
-        const regex = new RegExp(pattern);
-        const matchingLines = lines
-          .filter((line) => regex.test(line))
-          .slice(0, 1)
-          .map((line) => `${line.split(' ').slice(0, 30).join(' ')}...`);
+  const getMatchingLines = (s, pattern) => {
+    const lines = s.split('\n');
+    const regex = new RegExp(pattern);
+    const matchingLines = lines
+      .filter((line) => regex.test(line))
+      .slice(0, 1)
+      .map((line) => `${line.split(' ').slice(0, 30).join(' ')}...`);
 
-        return matchingLines;
-      }
+    return matchingLines;
+  }
 
-      return window.getDuckDB().then(async (conn) => {
-        console.time('Embedding query');
-        const queryEmbeddings = await window.getEmbeddings(query);
-        console.timeEnd('Embedding query')
+  document.addEventListener('command-palette-search', (event) => {
+    const query = event.detail.data;
 
-        console.time('Running hybrid search');
-        const hybridSearch = await conn.prepare(`
+    window.getDuckDB().then(async (conn) => {
+      console.time('Embedding query');
+      const queryEmbeddings = await window.getEmbeddings(query);
+      console.timeEnd('Embedding query')
+
+      console.time('Running hybrid search');
+      const hybridSearch = await conn.prepare(`
+        SELECT
+          title,
+          file_path,
+          tags,
+          md_content,
+          spr_content,
+          full_text_score,
+          similarity,
+          (full_text_score * similarity) AS score
+        FROM (
           SELECT
             title,
             file_path,
             tags,
             md_content,
             spr_content,
-            full_text_score,
-            similarity,
-            (full_text_score * similarity) AS score
-          FROM (
-            SELECT
-              title,
-              file_path,
-              tags,
-              md_content,
-              spr_content,
-              fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
-              ${window.pipe ? `array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom)` : '?'} AS similarity
-            FROM vault
-            WHERE 
-              embeddings_spr_custom IS NOT NULL
-              AND full_text_score IS NOT NULL
-              AND title IS NOT NULL
-              AND tags is NOT NULL
-              AND (hiring = true OR hiring IS NULL)
-              AND (draft != true OR draft IS NULL)
-            ORDER BY similarity DESC
-          )
-          ORDER BY score DESC
-          LIMIT 10;
-        `);
-        const hybridSearchData = await hybridSearch.query(
-          query,
-          window.pipe ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
-        );
-        const hybridSearchParsedData = window.parseDuckDBData(hybridSearchData);
-        const searchResults = hybridSearchParsedData.map((row) => {
-          row.matchingLines = getMatchingLines(row.md_content, query.split(' ').join('|'));
-          delete row.md_content;
-          return row;
-        })
-        console.log(searchResults);
-        console.timeEnd('Running hybrid search');
-        return searchResults;
-      })      
-    }
-  })
+            fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
+            ${window.pipe ? `array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom)` : '?'} AS similarity
+          FROM vault
+          WHERE 
+            embeddings_spr_custom IS NOT NULL
+            AND full_text_score IS NOT NULL
+            AND title IS NOT NULL
+            AND tags is NOT NULL
+            AND (hiring = true OR hiring IS NULL)
+            AND (draft != true OR draft IS NULL)
+          ORDER BY similarity DESC
+        )
+        ORDER BY score DESC
+        LIMIT 10;
+      `);
+      const hybridSearchData = await hybridSearch.query(
+        query,
+        window.pipe ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
+      );
+      const hybridSearchParsedData = window.parseDuckDBData(hybridSearchData);
+      const searchResults = hybridSearchParsedData.map((row) => {
+        row.matchingLines = getMatchingLines(row.md_content, query.split(' ').join('|'));
+        delete row.md_content;
+        return row;
+      })
+      const event = new CustomEvent('command-palette-search-result', {
+        detail: {
+          data: searchResults
+        }
+      });
+      window.dispatchEvent(event);
+      console.log(searchResults);
+      console.timeEnd('Running hybrid search');
+    })
+  });
 </script>
 
 <div x-data="{ searchBar: false, query: '', searchResults: [] }" class="cmd-palette">
@@ -93,7 +98,8 @@
         autocomplete="off"
         class="cmd-search-input"
         x-ref="searchInput"
-        @keydown.debounce="query = $event.target.value; searchResults = await $store.commandPaletteSearch.search($event.target.value)"
+        @keydown.debounce="$dispatch('command-palette-search', { data: $event.target.value })"
+        @command-palette-search-result.window="searchResults = $event.detail.data"
       />
       <div
         x-cloak
