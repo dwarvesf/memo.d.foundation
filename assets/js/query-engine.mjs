@@ -60,7 +60,7 @@ const getDuckDB = async () => {
     await conn.query(`IMPORT DATABASE '${window.location.origin}/db/'`);
     await conn.query('INSTALL fts');
     await conn.query('LOAD fts');
-    await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'md_content', 'tags', 'authors')");
+    await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'title', 'md_content', 'tags', 'authors')");
     console.timeEnd('Loading memo DuckDB');
 
     // Reset the promise since the connection is established
