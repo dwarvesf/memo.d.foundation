@@ -70,6 +70,8 @@
               AND full_text_score IS NOT NULL
               AND title IS NOT NULL
               AND tags is NOT NULL
+              AND (hiring = true OR hiring IS NULL)
+              AND (draft != true OR draft IS NULL)
             ORDER BY similarity DESC
           )
           ORDER BY score DESC
