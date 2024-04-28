@@ -110,7 +110,7 @@
         >
           <template x-for="result in searchResults" :key="result.file_path">
             <li class="cmd-result-item" tabindex="0">
-              <a :href="`/${result.file_path.replace('.md', '').replace('/_index', '').replace('&', '')}/`">
+              <a :href="`/${result.file_path.toLowerCase().replaceAll(' ', '-').replaceAll('.md', '').replaceAll('/_index', '').replaceAll('&', '')}/`">
                 <div class="cmd-result-title" x-text="result.title"></div>
                 <ul class="cmd-matching-lines">
                   <li class="cmd-tags">
