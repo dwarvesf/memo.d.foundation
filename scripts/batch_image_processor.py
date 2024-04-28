@@ -147,7 +147,7 @@ def process_markdown_file(file_path):
 
                 print(f"Compressing video '{new_image_path}'...")
                 clip.write_videofile(
-                    new_image_path, codec="libx264", bitrate="700k", logger=None
+                    new_image_path, codec="libx264", ffmpeg_params=['-crf', '28']
                 )
                 os.remove(image_path)
         else:
