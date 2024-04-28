@@ -6,7 +6,9 @@ window.duckdbduckdbWasm = duckdbduckdbWasm;
   // Check if the user is on a mobile device by screen width
   if (window.innerWidth > 768) { // Assuming a mobile device has a width of 768 pixels or less
     try {
+      console.time('Initializing pipeline with Snowflake/snowflake-arctic-embed-l')
       window.pipe = await pipeline('feature-extraction', 'Snowflake/snowflake-arctic-embed-l');
+      console.timeEnd('Initializing pipeline with Snowflake/snowflake-arctic-embed-l')
     } catch (error) {
       console.error('Failed to initialize pipeline:', error);
     }
