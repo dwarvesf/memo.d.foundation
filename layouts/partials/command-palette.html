@@ -1,0 +1,139 @@
+<script type="module">
+  Alpine.store("commandPaletteSearch", {
+    async search(query) {
+      const getMatchingLines = (s, pattern) => {
+        const lines = s.split('\n');
+        const regex = new RegExp(pattern);
+        const matchingLines = lines
+          .filter((line) => regex.test(line))
+          .slice(0, 1)
+          .map((line) => `${line.split(' ').slice(0, 30).join(' ')}...`);
+
+        return matchingLines;
+      }
+
+      return window.getDuckDB().then(async (conn) => {
+        console.time('Embedding query');
+        const queryEmbeddings = await window.getEmbeddings(query);
+        console.timeEnd('Embedding query')
+
+        console.time('Running hybrid search');
+        const hybridSearch = await conn.prepare(`
+          SELECT
+            title,
+            file_path,
+            tags,
+            md_content,
+            spr_content,
+            full_text_score,
+            similarity,
+            (full_text_score * similarity) AS score
+          FROM (
+            SELECT
+              title,
+              file_path,
+              tags,
+              md_content,
+              spr_content,
+              fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
+              ${window.pipe ? `array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom)` : '?'} AS similarity
+            FROM vault
+            WHERE 
+              embeddings_spr_custom IS NOT NULL
+              AND full_text_score IS NOT NULL
+              AND title IS NOT NULL
+              AND tags is NOT NULL
+            ORDER BY similarity DESC
+          )
+          ORDER BY score DESC
+          LIMIT 10;
+        `);
+        const hybridSearchData = await hybridSearch.query(
+          query,
+          window.pipe ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
+        );
+        const hybridSearchParsedData = window.parseDuckDBData(hybridSearchData);
+        const searchResults = hybridSearchParsedData.map((row) => {
+          row.matchingLines = getMatchingLines(row.md_content, query.split(' ').join('|'));
+          delete row.md_content;
+          return row;
+        })
+        console.log(searchResults);
+        console.timeEnd('Running hybrid search');
+        return searchResults;
+      })      
+    }
+  })
+</script>
+
+<div x-data="{ searchBar: false, query: '', searchResults: [] }" class="cmd-palette">
+  <button class="cmd-search-button" @click="searchBar = true">
+    <span class="cmd-search-button-text">🔍 Search</span>
+    <span class="cmd-search-button-keys">
+      <kbd class="tag">⌘</kbd>
+      <kbd class="tag">K</kbd>
+    </span>
+  </button>
+
+  <div
+    class="cmd-overlay"
+    :class="searchBar ? 'cmd-modal-active' : 'cmd-modal-hidden'"
+  >
+    <div
+      class="cmd-modal"
+      @mousedown.outside="searchBar = false"
+      x-trap.inert.noscroll.noreturn="searchBar"
+    >
+      <input
+        type="text"
+        x-model="query"
+        placeholder="Search"
+        autocomplete="off"
+        class="cmd-search-input"
+        x-ref="searchInput"
+        @keydown.debounce="query = $event.target.value; searchResults = await $store.commandPaletteSearch.search($event.target.value)"
+      />
+      <div
+        x-cloak
+        :class="searchBar ? 'cmd-results-active' : 'cmd-results-hidden'"
+        class="cmd-results"
+        @keydown.ctrl.k.prevent.document="searchBar = !searchBar; $nextTick(() => $refs.searchInput.focus())"
+        @keydown.meta.k.prevent.document="searchBar = !searchBar; $nextTick(() => $refs.searchInput.focus())"
+        @keydown.escape.document="searchBar = false"
+      >
+        <ul
+          :class="searchResults.length !== 0 && query.length !== 0 ? 'cmd-results-list' : 'cmd-results-hidden'"
+          @keydown.tab.document="$focus.wrap().next()"
+          @keydown.down.document="$focus.wrap().next()"
+          @keydown.u.document="$focus.wrap().previous()"
+          x-ref="resultsList"
+        >
+          <template x-for="result in searchResults" :key="result.file_path">
+            <li class="cmd-result-item" tabindex="0">
+              <a :href="`/${result.file_path.replace('.md', '').replace('/_index', '').replace('&', '')}/`">
+                <div class="cmd-result-title" x-text="result.title"></div>
+                <ul class="cmd-matching-lines">
+                  <li class="cmd-tags">
+                    <template x-for="tag in result.tags">
+                      <a class="tag" x-text="tag" :href="`/tag/${tag}`"></a>
+                    </template>
+                  </li>
+                  <template x-for="matchingLine in result.matchingLines">
+                    <li class="cmd-matching-line" x-text="matchingLine"></li>
+                  </template>
+                </ul>
+              </a>
+            </li>
+          </template>
+        </ul>
+
+        <div class="cmd-no-results" :class="searchResults.length === 0 && query.length > 0 ? 'cmd-no-results-active' : 'cmd-no-results-hidden'">
+          <p>No results found</p>
+        </div>
+        <div class="cmd-instructions">
+          Type <code>ESC</code> to close search bar
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
