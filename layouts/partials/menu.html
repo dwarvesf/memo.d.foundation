@@ -1,31 +1,9 @@
-<script async defer type="module">
-  import * as duckdbduckdbWasm from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev181.0/+esm";
-  window.duckdbduckdbWasm = duckdbduckdbWasm;
-
-  const getDB = async () => {
-    const duckdb = window.duckdbduckdbWasm;
-    if (window._db) return window._db;
-    const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
-
-    // Select a bundle based on browser checks
-    const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
-
-    const worker_url = URL.createObjectURL(
-      new Blob([`importScripts("${bundle.mainWorker}");`], {
-        type: "text/javascript",
-      })
-    );
-
-    // Instantiate the asynchronus version of DuckDB-wasm
-    const worker = new Worker(worker_url);
-    // const logger = null //new duckdb.ConsoleLogger();
-    const logger = new duckdb.ConsoleLogger();
-    const db = new duckdb.AsyncDuckDB(logger, worker);
-    await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
-    URL.revokeObjectURL(worker_url);
-    window._db = db;
-    return db;
-  };
+<script defer type="module">
+  const parseDuckDBData = (data) => JSON.parse(JSON.stringify(data.toArray(), (key, value) =>
+    typeof value === 'bigint'
+      ? value.toString()
+      : value
+  ))
 
   function nestPaths(data) {
     let result = {};
@@ -56,11 +34,9 @@
     return result;
   }
 
-  getDB().then(async (db) => {
-    // Create a new connection
-    const conn = await db.connect();
-
+  window.getDuckDB().then(async (conn) => {
     // Prepare query
+    console.time('Refreshing navigation menu')
     const stmt = await conn.prepare(`
       SELECT
         LOWER(CASE
@@ -68,7 +44,7 @@
           ELSE NULL
         END) as grouped_path,
         ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(LOWER(file_path), ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
-      FROM 'https://memo.d.foundation/db/vault.parquet'
+      FROM vault
       WHERE grouped_path IS NOT NULL
         AND file_path NOT LIKE '%_index%'
         AND title IS NOT NULL
@@ -77,11 +53,7 @@
     `);
 
     const data = await stmt.query()
-    const parsedData = JSON.parse(JSON.stringify(data.toArray(), (key, value) =>
-      typeof value === 'bigint'
-        ? value.toString()
-        : value
-    ))
+    const parsedData = parseDuckDBData(data)
     const duckDBMenuData = nestPaths(parsedData)
     let event = new CustomEvent('duckdb-menu', {
       detail: {
@@ -90,6 +62,7 @@
     });
     window.dispatchEvent(event);
     console.log(duckDBMenuData);
+    console.timeEnd('Refreshing navigation menu')
   });
 </script>
 
@@ -162,7 +135,7 @@
         </ul>
       </details>
 
-      <details x-data="{ open: $persist(false).using(sessionStorage) }" :open="open">
+      <details x-data="{ open: $persist(true).using(sessionStorage) }" :open="open">
         <summary @click.prevent="open = !open">
           <div class="chevron"></div>
           Home
