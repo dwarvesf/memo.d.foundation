@@ -26,77 +26,82 @@
       return linkUrlRoot === currentUrlRoot;
     },
   }"><ul><template x-for="item in links"><li x-bind:class="{ 'active': isActiveUrl(item.url) }"><a x-bind:href=item.url x-text=item.title></a></li></template></ul></nav><script type=module>
-  Alpine.store("commandPaletteSearch", {
-    async search(query) {
-      const getMatchingLines = (s, pattern) => {
-        const lines = s.split('\n');
-        const regex = new RegExp(pattern);
-        const matchingLines = lines
-          .filter((line) => regex.test(line))
-          .slice(0, 1)
-          .map((line) => `${line.split(' ').slice(0, 30).join(' ')}...`);
+  const getMatchingLines = (s, pattern) => {
+    const lines = s.split('\n');
+    const regex = new RegExp(pattern);
+    const matchingLines = lines
+      .filter((line) => regex.test(line))
+      .slice(0, 1)
+      .map((line) => `${line.split(' ').slice(0, 30).join(' ')}...`);
 
-        return matchingLines;
-      }
+    return matchingLines;
+  }
 
-      return window.getDuckDB().then(async (conn) => {
-        console.time('Embedding query');
-        const queryEmbeddings = await window.getEmbeddings(query);
-        console.timeEnd('Embedding query')
+  document.addEventListener('command-palette-search', (event) => {
+    const query = event.detail.data;
 
-        console.time('Running hybrid search');
-        const hybridSearch = await conn.prepare(`
+    window.getDuckDB().then(async (conn) => {
+      console.time('Embedding query');
+      const queryEmbeddings = await window.getEmbeddings(query);
+      console.timeEnd('Embedding query')
+
+      console.time('Running hybrid search');
+      const hybridSearch = await conn.prepare(`
+        SELECT
+          title,
+          file_path,
+          tags,
+          md_content,
+          spr_content,
+          full_text_score,
+          similarity,
+          (full_text_score * similarity) AS score
+        FROM (
           SELECT
             title,
             file_path,
             tags,
             md_content,
             spr_content,
-            full_text_score,
-            similarity,
-            (full_text_score * similarity) AS score
-          FROM (
-            SELECT
-              title,
-              file_path,
-              tags,
-              md_content,
-              spr_content,
-              fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
-              ${window.pipe ? `array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom)` : '?'} AS similarity
-            FROM vault
-            WHERE 
-              embeddings_spr_custom IS NOT NULL
-              AND full_text_score IS NOT NULL
-              AND title IS NOT NULL
-              AND tags is NOT NULL
-              AND (hiring = true OR hiring IS NULL)
-              AND (draft != true OR draft IS NULL)
-            ORDER BY similarity DESC
-          )
-          ORDER BY score DESC
-          LIMIT 10;
-        `);
-        const hybridSearchData = await hybridSearch.query(
-          query,
-          window.pipe ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
-        );
-        const hybridSearchParsedData = window.parseDuckDBData(hybridSearchData);
-        const searchResults = hybridSearchParsedData.map((row) => {
-          row.matchingLines = getMatchingLines(row.md_content, query.split(' ').join('|'));
-          delete row.md_content;
-          return row;
-        })
-        console.log(searchResults);
-        console.timeEnd('Running hybrid search');
-        return searchResults;
-      })      
-    }
-  })
+            fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
+            ${window.pipe ? `array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom)` : '?'} AS similarity
+          FROM vault
+          WHERE 
+            embeddings_spr_custom IS NOT NULL
+            AND full_text_score IS NOT NULL
+            AND title IS NOT NULL
+            AND tags is NOT NULL
+            AND (hiring = true OR hiring IS NULL)
+            AND (draft != true OR draft IS NULL)
+          ORDER BY similarity DESC
+        )
+        ORDER BY score DESC
+        LIMIT 10;
+      `);
+      const hybridSearchData = await hybridSearch.query(
+        query,
+        window.pipe ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
+      );
+      const hybridSearchParsedData = window.parseDuckDBData(hybridSearchData);
+      const searchResults = hybridSearchParsedData.map((row) => {
+        row.matchingLines = getMatchingLines(row.md_content, query.split(' ').join('|'));
+        delete row.md_content;
+        return row;
+      })
+      const event = new CustomEvent('command-palette-search-result', {
+        detail: {
+          data: searchResults
+        }
+      });
+      window.dispatchEvent(event);
+      console.log(searchResults);
+      console.timeEnd('Running hybrid search');
+    })
+  });
 </script><div x-data="{ searchBar: false, query: '', searchResults: [] }" class=cmd-palette><button class=cmd-search-button @click="searchBar = true">
 <span class=cmd-search-button-text>🔍 Search</span>
 <span class=cmd-search-button-keys><kbd class=tag>⌘</kbd>
-<kbd class=tag>K</kbd></span></button><div class=cmd-overlay :class="searchBar ? 'cmd-modal-active' : 'cmd-modal-hidden'"><div class=cmd-modal @mousedown.outside="searchBar = false" x-trap.inert.noscroll.noreturn=searchBar><input type=text x-model=query placeholder=Search autocomplete=off class=cmd-search-input x-ref=searchInput @keydown.debounce="query = $event.target.value; searchResults = await $store.commandPaletteSearch.search($event.target.value)"><div x-cloak :class="searchBar ? 'cmd-results-active' : 'cmd-results-hidden'" class=cmd-results @keydown.ctrl.k.prevent.document="searchBar = !searchBar; $nextTick(() => $refs.searchInput.focus())" @keydown.meta.k.prevent.document="searchBar = !searchBar; $nextTick(() => $refs.searchInput.focus())" @keydown.escape.document="searchBar = false"><ul :class="searchResults.length !== 0 && query.length !== 0 ? 'cmd-results-list' : 'cmd-results-hidden'" @keydown.tab.document=$focus.wrap().next() @keydown.down.document=$focus.wrap().next() @keydown.u.document=$focus.wrap().previous() x-ref=resultsList><template x-for="result in searchResults" :key=result.file_path><li class=cmd-result-item tabindex=0><a :href="`/${result.file_path.toLowerCase().replaceAll(' ', '-').replaceAll('.md', '').replaceAll('/_index', '').replaceAll('&', '')}/`"><div class=cmd-result-title x-text=result.title></div><ul class=cmd-matching-lines><li class=cmd-tags><template x-for="tag in result.tags"><a class=tag x-text=tag :href="`/tag/${tag}`"></a></template></li><template x-for="matchingLine in result.matchingLines"><li class=cmd-matching-line x-text=matchingLine></li></template></ul></a></li></template></ul><div class=cmd-no-results :class="searchResults.length === 0 && query.length > 0 ? 'cmd-no-results-active' : 'cmd-no-results-hidden'"><p>No results found</p></div><div class=cmd-instructions>Type <code>ESC</code> to close search bar</div></div></div></div></div><div><button class=btn-reading-mode-toggler x-data @click=$store.readingMode.toggle() :reading-mode=$store.readingMode.on :disable-transition=$store.readingMode.disableTransition><svg width="62" height="36" viewBox="0 0 62 34" fill="none" xmlns="http://www.w3.org/2000/svg"><g><rect width="62" height="34" rx="17"/><g><circle cx="17" cy="17" r="14"/><path d="M17 23.898V18.3265C17 17.9747 17.1398 17.6373 17.3885 17.3885 17.6373 17.1398 17.9747 17 18.3265 17S19.0158 17.1398 19.2645 17.3885C19.5133 17.6373 19.6531 17.9747 19.6531 18.3265v2.9184h2.1224C22.3384 21.2449 22.8782 21.4685 23.2763 21.8666 23.6744 22.2646 23.898 22.8045 23.898 23.3673v.5307" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2119 12.8561c-1.3228-1.4557-3.0979-2.4227-5.0383-2.7448C11.0416 10.0926 10.9071 10.1022 10.7791 10.1395S10.5324 10.2409 10.4311 10.3275C10.3279 10.4158 10.245 10.5253 10.1883 10.6487 10.1315 10.772 10.1021 10.9062 10.1021 11.0419v7.5669C10.1007 18.8411 10.1854 19.0658 10.3399 19.2394S10.7077 19.5232 10.9386 19.5487C12.4542 19.7543 13.8794 20.354 15.0774 21.276" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2124 15.7885V12.8561" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21.4852 19.5487C21.7161 19.5232 21.9295 19.413 22.084 19.2394S22.3232 18.8411 22.3218 18.6088V11.0419C22.3218 10.9062 22.2924 10.772 22.2356 10.6487 22.1788 10.5253 22.096 10.4158 21.9928 10.3275 21.8915 10.2409 21.7728 10.1768 21.6447 10.1395 21.5167 10.1022 21.3823 10.0926 21.2502 10.1113 19.3098 10.4334 17.5347 11.4004 16.2119 12.8561" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></g></svg></button><div class=btn-reading-mode-toggler-tooltip role=tooltip><span>Reading Mode</span><div x-data="{ modifier: window.navigator.userAgent.includes('Macintosh') ? '⌘':'ctrl'}"><kbd x-text=modifier></kbd>+<kbd>shift</kbd>+<kbd>f</kbd></div><div class=arrow data-popper-arrow></div></div></div><div id=themetoggler><button class=btn-theme-toggler x-data="{
+<kbd class=tag>K</kbd></span></button><div class=cmd-overlay :class="searchBar ? 'cmd-modal-active' : 'cmd-modal-hidden'"><div class=cmd-modal @mousedown.outside="searchBar = false" x-trap.inert.noscroll.noreturn=searchBar><input type=text x-model=query placeholder=Search autocomplete=off class=cmd-search-input x-ref=searchInput @keydown.debounce="$dispatch('command-palette-search', { data: $event.target.value })" @command-palette-search-result.window="searchResults = $event.detail.data"><div x-cloak :class="searchBar ? 'cmd-results-active' : 'cmd-results-hidden'" class=cmd-results @keydown.ctrl.k.prevent.document="searchBar = !searchBar; $nextTick(() => $refs.searchInput.focus())" @keydown.meta.k.prevent.document="searchBar = !searchBar; $nextTick(() => $refs.searchInput.focus())" @keydown.escape.document="searchBar = false"><ul :class="searchResults.length !== 0 && query.length !== 0 ? 'cmd-results-list' : 'cmd-results-hidden'" @keydown.tab.document=$focus.wrap().next() @keydown.down.document=$focus.wrap().next() @keydown.u.document=$focus.wrap().previous() x-ref=resultsList><template x-for="result in searchResults" :key=result.file_path><li class=cmd-result-item tabindex=0><a :href="`/${result.file_path.toLowerCase().replaceAll(' ', '-').replaceAll('.md', '').replaceAll('/_index', '').replaceAll('&', '')}/`"><div class=cmd-result-title x-text=result.title></div><ul class=cmd-matching-lines><li class=cmd-tags><template x-for="tag in result.tags"><a class=tag x-text=tag :href="`/tag/${tag}`"></a></template></li><template x-for="matchingLine in result.matchingLines"><li class=cmd-matching-line x-text=matchingLine></li></template></ul></a></li></template></ul><div class=cmd-no-results :class="searchResults.length === 0 && query.length > 0 ? 'cmd-no-results-active' : 'cmd-no-results-hidden'"><p>No results found</p></div><div class=cmd-instructions>Type <code>ESC</code> to close search bar</div></div></div></div></div><div><button class=btn-reading-mode-toggler x-data @click=$store.readingMode.toggle() :reading-mode=$store.readingMode.on :disable-transition=$store.readingMode.disableTransition><svg width="62" height="36" viewBox="0 0 62 34" fill="none" xmlns="http://www.w3.org/2000/svg"><g><rect width="62" height="34" rx="17"/><g><circle cx="17" cy="17" r="14"/><path d="M17 23.898V18.3265C17 17.9747 17.1398 17.6373 17.3885 17.3885 17.6373 17.1398 17.9747 17 18.3265 17S19.0158 17.1398 19.2645 17.3885C19.5133 17.6373 19.6531 17.9747 19.6531 18.3265v2.9184h2.1224C22.3384 21.2449 22.8782 21.4685 23.2763 21.8666 23.6744 22.2646 23.898 22.8045 23.898 23.3673v.5307" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2119 12.8561c-1.3228-1.4557-3.0979-2.4227-5.0383-2.7448C11.0416 10.0926 10.9071 10.1022 10.7791 10.1395S10.5324 10.2409 10.4311 10.3275C10.3279 10.4158 10.245 10.5253 10.1883 10.6487 10.1315 10.772 10.1021 10.9062 10.1021 11.0419v7.5669C10.1007 18.8411 10.1854 19.0658 10.3399 19.2394S10.7077 19.5232 10.9386 19.5487C12.4542 19.7543 13.8794 20.354 15.0774 21.276" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.2124 15.7885V12.8561" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21.4852 19.5487C21.7161 19.5232 21.9295 19.413 22.084 19.2394S22.3232 18.8411 22.3218 18.6088V11.0419C22.3218 10.9062 22.2924 10.772 22.2356 10.6487 22.1788 10.5253 22.096 10.4158 21.9928 10.3275 21.8915 10.2409 21.7728 10.1768 21.6447 10.1395 21.5167 10.1022 21.3823 10.0926 21.2502 10.1113 19.3098 10.4334 17.5347 11.4004 16.2119 12.8561" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></g></svg></button><div class=btn-reading-mode-toggler-tooltip role=tooltip><span>Reading Mode</span><div x-data="{ modifier: window.navigator.userAgent.includes('Macintosh') ? '⌘':'ctrl'}"><kbd x-text=modifier></kbd>+<kbd>shift</kbd>+<kbd>f</kbd></div><div class=arrow data-popper-arrow></div></div></div><div id=themetoggler><button class=btn-theme-toggler x-data="{
           theme: $persist('system'),
           toggleTheme() {
             switch (this.theme) {
