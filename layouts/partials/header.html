@@ -78,7 +78,7 @@
     <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
   <!-- Prism Themes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vs.min.css" integrity="sha512-Jn4HzkCnzA7Bc+lbSQHAMeen0EhSTy71o9yJbXZtQx9VvozKVBV/2zfR3VyuDFIxGvHgbOMMNvb80l+jxFBC1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: dark)" />
@@ -86,12 +86,8 @@
 
   <script defer data-domain="memo.d.foundation" src="https://plausible.io/js/script.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.13.10/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.13.10/dist/cdn.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.10/dist/cdn.min.js"></script>
-
-  <!-- Algolia -->
-  <link rel="preconnect" href="https://B0BWKXLVM9-dsn.algolia.net" crossorigin />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
-  <script defer src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
   <!-- D3 -->
   <script defer src="https://d3js.org/d3.v7.min.js"></script>
@@ -115,11 +111,6 @@
   
   {{ $tableOfContents := resources.Get "js/table-of-contents.js" }}
   <script defer src="{{ $tableOfContents.RelPermalink }}"></script>
-
-  {{ $algoliaApiKey := getenv "ALGOLIA_API_KEY" }}
-  {{ $algoliaApplicationId := getenv "ALGOLIA_APPLICATION_ID" }}
-  {{ $algolia := resources.Get "js/algolia.js" | js.Build (dict "params" (dict "api_key" $algoliaApiKey "application_id" $algoliaApplicationId))  }}
-  <script defer src="{{ $algolia.RelPermalink }}"></script>
 
   {{ $graph := resources.Get "js/graph.js" }}
   <script defer src="{{ $graph.RelPermalink }}"></script>
@@ -279,7 +270,7 @@
       <a href="/">Dwarves<br/>Memo</a>
     </span>
     {{ partial "tab-menu.html" . }}
-    <div id="docsearch"></div>
+    {{ partial "command-palette.html" . }}
     <div>
       <button 
         class="btn-reading-mode-toggler"

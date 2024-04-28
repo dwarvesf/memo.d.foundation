@@ -112,7 +112,7 @@ q {
 pre {
   all: initial;
   font-size: 0.8125rem !important;
-  font-family: monospace !important;
+  font-family: var(--font-monospace) !important;
   background: #f5f5f5 !important;
   border-radius: 2px;
   border: none !important;
@@ -134,7 +134,7 @@ code {
 }
 
 pre > code {
-  font-family: monospace !important;
+  font-family: var(--font-monospace) !important;
   text-indent: 0;
   white-space: inherit;
   font-weight: normal;
@@ -181,7 +181,7 @@ span {
 /* Theme */
 html[data-theme="dark"] {
   pre {
-    font-family: monospace !important;
+    font-family: var(--font-monospace) !important;
     background: #282828 !important;
   }
 
@@ -288,4 +288,12 @@ input[type="checkbox"] {
     background-size: 0.55rem 0.55rem;
     border-color: transparent;
   }
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+.hidden {
+  display: none;
 }

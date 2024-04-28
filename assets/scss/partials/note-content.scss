@@ -134,10 +134,6 @@ code.button {
   }
 }
 
-#docsearch {
-  grid-area: docsearch;
-}
-
 main {
   position: relative;
   grid-area: content;
@@ -696,7 +692,6 @@ html[data-theme="dark"] {
   .grid {
     display: inline-grid;
     grid-template-areas:
-      "docsearch"
       "tabmenu"
       "pagenav"
       "content"
