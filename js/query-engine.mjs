@@ -57,10 +57,10 @@ const getDuckDB = async () => {
     window._conn = conn;
 
     console.time('Loading memo DuckDB');
-    await conn.query("IMPORT DATABASE 'https://memo.d.foundation/db/'");
+    await conn.query(`IMPORT DATABASE '${window.location.origin}/db/'`);
     await conn.query('INSTALL fts');
     await conn.query('LOAD fts');
-    await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'md_content')");
+    await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'md_content', 'tags', 'authors')");
     console.timeEnd('Loading memo DuckDB');
 
     // Reset the promise since the connection is established
@@ -83,3 +83,10 @@ const parseDuckDBData = (data) => JSON.parse(JSON.stringify(data.toArray(), (key
 ))
 
 window.parseDuckDBData = parseDuckDBData;
+
+const getEmbeddings = async (query) => {
+  const res = window.pipe ? await window.pipe(query, { pooling: 'mean', normalize: true }) : [];
+  return res;
+}
+
+window.getEmbeddings = getEmbeddings;
