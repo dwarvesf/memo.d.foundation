@@ -73,3 +73,11 @@ const getDuckDB = async () => {
 };
 
 window.getDuckDB = getDuckDB;
+
+const parseDuckDBData = (data) => JSON.parse(JSON.stringify(data.toArray(), (key, value) =>
+  typeof value === 'bigint'
+    ? value.toString()
+    : value
+))
+
+window.parseDuckDBData = parseDuckDBData;

@@ -1,10 +1,4 @@
 <script defer type="module">
-  const parseDuckDBData = (data) => JSON.parse(JSON.stringify(data.toArray(), (key, value) =>
-    typeof value === 'bigint'
-      ? value.toString()
-      : value
-  ))
-
   function nestPaths(data) {
     let result = {};
 
@@ -53,7 +47,7 @@
     `);
 
     const data = await stmt.query()
-    const parsedData = parseDuckDBData(data)
+    const parsedData = window.parseDuckDBData(data)
     const duckDBMenuData = nestPaths(parsedData)
     let event = new CustomEvent('duckdb-menu', {
       detail: {
