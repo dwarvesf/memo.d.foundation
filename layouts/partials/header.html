@@ -21,6 +21,8 @@
     {{ $postDir = .Dir }}
   {{ end }}
   {{ $isContributor := strings.HasPrefix .Path "/contributor" }}
+  {{ $is404 := eq .Kind "404" }}
+  {{ $notFoundImg := resources.Get "img/404.png" }}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="{{ with .Site.Params.author }}{{ . }}{{ end }}">
@@ -42,24 +44,36 @@
   <!-- Facebook Meta -->
   <meta property="og:site_name" content="Dwarves Memo">
   <meta property="og:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+  {{ if $is404 }}
+  <meta property="og:description" content="Maybe try something else (*＞ω＜*)">
+  {{ else }}
   <meta property="og:description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  {{ end }}
   <meta property="og:type" content="article">
   <meta property="og:url" content="{{ .Permalink }}">
-  {{ with $firstImageUrl }}
-    <meta property="og:image" content="{{ $baseURL }}{{ strings.ToLower $postDir }}{{ $firstImageUrl }}">
+  {{ if $is404 }}
+  <meta property="og:image" content="{{ $notFoundImg.RelPermalink }}">
+  {{ else if $firstImageUrl }}
+  <meta property="og:image" content="{{ $baseURL }}{{ strings.ToLower $postDir }}{{ $firstImageUrl }}">
   {{ else }}
-    <meta property="og:image" content="{{ $whiteImage.RelPermalink }}">
+  <meta property="og:image" content="{{ $whiteImage.RelPermalink }}">
   {{ end }}
 
   <!-- Twitter Meta -->
   <meta property="twitter:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+  {{ if $is404 }}
+  <meta property="twitter:description" content="Maybe try something else (*＞ω＜*)">
+  {{ else }}
   <meta property="twitter:description" content="{{ if ne .Description "" }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  {{ end }}
   <meta property="twitter:type" content="article">
   <meta property="twitter:url" content="{{ .Permalink }}">
-  {{ with $firstImageUrl }}
-    <meta property="twitter:image" content="{{ $baseURL }}{{ strings.ToLower $postDir }}{{ $firstImageUrl }}">
+  {{ if $is404 }}
+  <meta property="twitter:image" content="{{ $notFoundImg.RelPermalink }}">
+  {{ else if $firstImageUrl }}
+  <meta property="twitter:image" content="{{ $baseURL }}{{ strings.ToLower $postDir }}{{ $firstImageUrl }}">
   {{ else }}
-    <meta property="twitter:image" content="{{ $whiteImage.RelPermalink}}">
+  <meta property="twitter:image" content="{{ $whiteImage.RelPermalink}}">
   {{ end }}
 
   <link rel="icon" type="image/x-icon" href="{{ $favicon.Permalink }}">
