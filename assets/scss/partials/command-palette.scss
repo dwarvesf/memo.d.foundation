@@ -291,4 +291,23 @@ html[data-theme="dark"] {
       color: var(--primary-font-color);
     }
   }
+
+  .cmd-results-group {
+    > span {
+      background-color: var(--primary-border-color-dark);
+    }
+  }
+
+  .cmd-result-preview {
+    border-left: 1px solid var(--primary-border-color);
+    background-color: var(--secondary-background-color);
+
+    .cmd-preview-icon {
+      color: var(--secondary-font-color);
+    }
+
+    .cmd-preview-description {
+      color: var(--secondary-font-color);
+    }
+  }
 }
