@@ -4,7 +4,6 @@
 .cmd-instructions {
   color: var(--primary-font-color-light);
   background-color: var(--primary-background-color-light);
-  font-family: var(--font-monospace);
   font-size: 12px;
 
   * {
@@ -22,13 +21,12 @@
   font: var(--font-monospace);
   justify-content: space-between;
   padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
 
   &:hover {
-    background-color: var(--primary-color);
-
-    .cmd-search-button-text {
-      color: var(--primary-font-color);
-    }
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
   }
 
   .cmd-search-button-text {
@@ -52,7 +50,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: start;
   justify-content: center;
@@ -68,6 +66,9 @@
   z-index: 1001;
   display: flex;
   flex-direction: column;
+
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 .cmd-modal-active {
@@ -122,6 +123,7 @@ div:has(> .cmd-results-list) {
 }
 
 .cmd-result-preview {
+  overflow: auto;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -129,9 +131,10 @@ div:has(> .cmd-results-list) {
   border-left: 1px solid var(--primary-border-color-light);
   background-color: var(--secondary-background-color-light);
 
-  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: inset 1px 1px 2px hsla(230, 6%, 60%, 0.24),
+    inset 2px 2px 8px hsla(230, 6%, 60%, 0.1);
 
-  padding: 24px 48px;
+  padding: 24px 72px;
 
   .cmd-preview-icon {
     width: 36px;
@@ -156,7 +159,30 @@ div:has(> .cmd-results-list) {
 
   .cmd-preview-description {
     font-size: 14px;
+    font-weight: 500;
+    color: var(--secondary-font-color-light);
+  }
+
+  .cmd-preview-recap {
+    margin-top: 32px;
     color: var(--secondary-font-color-light-var2);
+    > span {
+      text-transform: uppercase;
+      text-decoration: underline;
+      text-decoration-skip-ink: auto;
+      font-weight: 500;
+      font-size: 12px;
+    }
+    p {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      font-size: 12px;
+    }
+    hr {
+      margin: 10px 0px !important;
+    }
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -177,6 +203,10 @@ div:has(> .cmd-results-list) {
   display: flex;
   background-color: transparent;
   transition: background-color 0.05s ease-in;
+
+  > * {
+    outline: none;
+  }
 
   &.cmd-result-selected {
     background-color: var(--primary-color);
@@ -267,6 +297,10 @@ html[data-theme="dark"] {
   .cmd-search-button {
     color: var(--primary-font-color);
     border: 1px solid var(--primary-border-color);
+
+    &:hover {
+      filter: brightness(1.5);
+    }
   }
 
   .cmd-modal,
@@ -294,7 +328,7 @@ html[data-theme="dark"] {
 
   .cmd-results-group {
     > span {
-      background-color: var(--primary-border-color-dark);
+      background-color: var(--primary-border-color);
     }
   }
 
@@ -302,12 +336,21 @@ html[data-theme="dark"] {
     border-left: 1px solid var(--primary-border-color);
     background-color: var(--secondary-background-color);
 
+    box-shadow: inset 1px 1px 5px hsla(230, 0%, 0%, 0.43),
+      inset 2px 2px 14px hsla(230, 0%, 0%, 0.25);
+
     .cmd-preview-icon {
       color: var(--secondary-font-color);
     }
 
     .cmd-preview-description {
       color: var(--secondary-font-color);
+    }
+  }
+
+  .cmd-no-results {
+    img {
+      opacity: 1;
     }
   }
 }
