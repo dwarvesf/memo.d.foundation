@@ -219,6 +219,10 @@ div:has(> .cmd-results-list) {
 
     .cmd-matching-line {
       color: white;
+
+      span {
+        color: white;
+      }
     }
   }
 
@@ -238,16 +242,6 @@ div:has(> .cmd-results-list) {
   }
 }
 
-.cmd-tags {
-  display: none;
-  margin-bottom: 6px;
-
-  .tag {
-    margin-right: 6px;
-    filter: opacity(70%);
-  }
-}
-
 .cmd-result-item:last-child {
   border-bottom: none;
 }
@@ -257,13 +251,13 @@ div:has(> .cmd-results-list) {
   font-weight: 500;
 }
 
-.cmd-matching-lines {
-  list-style: none;
-  padding-left: 0;
-}
-
 .cmd-matching-line {
-  color: var(--secondary-font-color-light-var2);
+  span {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-skip-ink: auto;
+  }
 }
 
 .cmd-no-results {
