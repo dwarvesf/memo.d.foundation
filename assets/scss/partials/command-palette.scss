@@ -161,9 +161,11 @@ div:has(> .cmd-results-list) {
     font-size: 14px;
     font-weight: 500;
     color: var(--secondary-font-color-light);
+    width: 100%;
   }
 
   .cmd-preview-recap {
+    align-self: flex-start;
     margin-top: 32px;
     color: var(--secondary-font-color-light-var2);
     > span {

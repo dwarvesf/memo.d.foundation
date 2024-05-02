@@ -2,6 +2,9 @@
 
 <script type="module">
   import _groupBy from "https://fastly.jsdelivr.net/npm/lodash.groupby@4.6.0/+esm";
+  const authorRe = /author:([^\s]*)/g;
+  const tagRe = /tag:([^\s]*)/g
+  const titleRe = /title:([^\s]*)/g;
 
   const getMatchingLines = (s, pattern) => {
     const lines = s.split("\n");
@@ -14,8 +17,36 @@
     return matchingLines;
   };
 
+  const parseQueryForFilters = (query) => {
+    const filters = {authors: [], tags: [], title: ""}
+    const stripFilters = query.split(" ").filter(token => {
+      const titleMatch = [...token.matchAll(titleRe)];
+
+      const authorMatch = [...token.matchAll(authorRe)];
+      if (authorMatch?.length) {
+        filters.authors = filters.authors.concat(authorMatch.map(m => m[1]));
+        return false;
+      }
+      const tagMatch = [...token.matchAll(tagRe)];
+      if (tagMatch?.length) {
+        filters.tags = filters.tags.concat(tagMatch.map(m => m[1]));
+        return false;
+      }
+
+      if (titleMatch?.length) {
+        filters.title = titleMatch[0][1];
+        return false;
+      }
+
+      return true;
+    })
+
+    return {filters, query: stripFilters.join(" ").trim()};
+  }
+
   document.addEventListener("command-palette-search", (event) => {
-    const query = event.detail.data;
+    const rawQuery = event.detail.data;
+    const {filters, query} = parseQueryForFilters(rawQuery)
 
     window.getDuckDB().then(async (conn) => {
       console.time("Embedding query");
@@ -23,7 +54,7 @@
       console.timeEnd("Embedding query");
 
       console.time("Running hybrid search");
-      const hybridSearch = await conn.prepare(`
+      const queryStr = `
         SELECT
           title,
           description,
@@ -43,6 +74,7 @@
             md_content,
             spr_content,
             fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
+            authors,
             ${window.pipe
           ? `array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom)`
           : "?"
@@ -52,19 +84,28 @@
             embeddings_spr_custom IS NOT NULL
             AND full_text_score IS NOT NULL
             AND title IS NOT NULL
+            ${filters.title ? "AND title ILIKE ?" : ""}
             AND tags is NOT NULL
+            ${filters.tags.length ? filters.tags.map(t => `AND list_contains(tags, ?)`).join(" ") : ""}
             AND (hiring = true OR hiring IS NULL)
             AND (draft != true OR draft IS NULL)
+            ${filters.authors.length ? filters.authors.map(a => `AND list_contains(authors, ?)`).join(" ") : ""}
           ORDER BY similarity DESC
         )
         ORDER BY score DESC
         LIMIT 10;
-      `);
-      const hybridSearchData = await hybridSearch.query(
+      `
+      const hybridSearch = await conn.prepare(queryStr);
+      const args = [
         query,
-        window.pipe ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1
-      );
+        window.pipe ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
+        ...(filters.title ? [`%${filters.title}%`] : []),
+        ...filters.tags.map(t => `${t}`),
+        ...filters.authors.map(a => `${a}`),
+      ]
+      const hybridSearchData = await hybridSearch.query(...args);
       const hybridSearchParsedData = window.parseDuckDBData(hybridSearchData);
+      console.log(args, queryStr, hybridSearchParsedData)
       const searchResults = hybridSearchParsedData.map((row) => {
         const filePaths = row.file_path.split("/");
         filePaths.pop();

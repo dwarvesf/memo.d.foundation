@@ -376,16 +376,19 @@ label:not(:has(+ #TableOfContents)) {
       }
 
       div {
-        &::before {
-          content: "⎯ ";
-          color: var(--secondary-font-color-light);
-        }
         &:first-of-type {
           margin-top: 0px;
         }
         margin-top: 1rem;
-        color: var(--secondary-font-color-light);
-        font-size: 0.8rem;
+        font-size: 0.6rem;
+
+        text-transform: uppercase;
+        position: relative;
+        color: var(--Secondary-Black, #23252c);
+        font-style: normal;
+        font-weight: 600;
+        line-height: 18.2px; /* 18.2px */
+        letter-spacing: 0.8px;
       }
 
       li {
@@ -612,6 +615,10 @@ html[data-theme="dark"] {
   }
 
   .nav-label {
+    color: var(--primary-font-color) !important;
+  }
+
+  .always-on-right-sidebar .metadata .stats div {
     color: var(--primary-font-color) !important;
   }
 }

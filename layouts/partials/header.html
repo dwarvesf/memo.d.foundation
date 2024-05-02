@@ -414,7 +414,7 @@
             <label class="nav-label">ON THIS PAGE</label>
             {{ .TableOfContents }}
           </div>
-          {{ if eq .Kind "page" }}
+          {{ if and (eq .Kind "page") (not (hasPrefix .Path "/contributor")) }}
           <div class="metadata">
             <hr>
             <ul class="stats">
