@@ -49,7 +49,7 @@
     const data = await stmt.query()
     const parsedData = window.parseDuckDBData(data)
     const duckDBMenuData = nestPaths(parsedData)
-    let event = new CustomEvent('duckdb-menu', {
+    const event = new CustomEvent('duckdb-menu', {
       detail: {
         data: duckDBMenuData
       }
@@ -120,7 +120,7 @@
           Pinned Notes
         </summary>
         <ul>
-          <template x-for="item in pinnedData" :key="item.url">
+          <template x-for="item in pinnedData.slice(0, 3)" :key="item.url">
             <li x-bind:class="{ 'text-active': location.pathname === item.url }">
               <a x-bind:class="{ 'text-active': location.pathname === item.url }" x-bind:href="item.url"
                 x-text="item.title"></a>
