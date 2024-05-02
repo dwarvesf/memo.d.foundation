@@ -1,12 +1,14 @@
 import * as duckdbduckdbWasm from "https://fastly.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev181.0/+esm";
-import { pipeline } from 'https://fastly.jsdelivr.net/npm/@xenova/transformers@2.17.1';
+import { pipeline, env } from 'https://fastly.jsdelivr.net/npm/@xenova/transformers@2.17.1';
 
 window.duckdbduckdbWasm = duckdbduckdbWasm;
+
 (async () => {
   // Check if the user is on a mobile device by screen width
   if (window.innerWidth > 768) { // Assuming a mobile device has a width of 768 pixels or less
     try {
       console.time('Initializing pipeline with Snowflake/snowflake-arctic-embed-l')
+      env.backends.onnx.wasm.wasmPaths = "https://fastly.jsdelivr.net/npm/@xenova/transformers@2.17.1/dist/"
       window.pipe = await pipeline('feature-extraction', 'Snowflake/snowflake-arctic-embed-l');
       console.timeEnd('Initializing pipeline with Snowflake/snowflake-arctic-embed-l')
     } catch (error) {
