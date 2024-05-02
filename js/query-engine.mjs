@@ -1,5 +1,5 @@
-import * as duckdbduckdbWasm from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev181.0/+esm";
-import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.1';
+import * as duckdbduckdbWasm from "https://fastly.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev181.0/+esm";
+import { pipeline } from 'https://fastly.jsdelivr.net/npm/@xenova/transformers@2.17.1';
 
 window.duckdbduckdbWasm = duckdbduckdbWasm;
 (async () => {
@@ -14,6 +14,20 @@ window.duckdbduckdbWasm = duckdbduckdbWasm;
     }
   }
 })();
+
+const getJsDelivrBundles = () => {
+  const jsdelivr_dist_url = `https://fastly.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev181.0/dist/`;
+  return {
+    mvp: {
+      mainModule: `${jsdelivr_dist_url}duckdb-mvp.wasm`,
+      mainWorker: `${jsdelivr_dist_url}duckdb-browser-mvp.worker.js`,
+    },
+    eh: {
+      mainModule: `${jsdelivr_dist_url}duckdb-eh.wasm`,
+      mainWorker: `${jsdelivr_dist_url}duckdb-browser-eh.worker.js`,
+    },
+  };
+}
 
 window._conn_whnf_thunk = null;
 
@@ -31,17 +45,17 @@ const getDuckDB = async () => {
   // Create a promise that will hold the connection
   window._conn_whnf_thunk = (async () => {
     const duckdb = window.duckdbduckdbWasm;
-    const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
-  
+    const JSDELIVR_BUNDLES = getJsDelivrBundles();
+
     // Select a bundle based on browser checks
     const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
-  
+
     const worker_url = URL.createObjectURL(
       new Blob([`importScripts("${bundle.mainWorker}");`], {
         type: "text/javascript",
       })
     );
-  
+
     // Instantiate the asynchronus version of DuckDB-wasm
     const worker = new Worker(worker_url);
     // const logger = null //new duckdb.ConsoleLogger();
