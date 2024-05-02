@@ -211,7 +211,7 @@
     const data = await stmt.query()
     const parsedData = window.parseDuckDBData(data)
     const duckDBMenuData = nestPaths(parsedData)
-    let event = new CustomEvent('duckdb-menu', {
+    const event = new CustomEvent('duckdb-menu', {
       detail: {
         data: duckDBMenuData
       }
@@ -258,7 +258,7 @@
             return [...mappedData];
           },
           duckDBMenuData: $persist([]).as(&#39;duckDBMenuData&#39;),
-        }'><details x-data="{ open: $persist(true).as('details-pinned-notes').using(sessionStorage) }" x-bind:open=open><summary @click.prevent="open = !open"><div class=chevron></div>Pinned Notes</summary><ul><template x-for="item in pinnedData" :key=item.url><li x-bind:class="{ 'text-active': location.pathname === item.url }"><a x-bind:class="{ 'text-active': location.pathname === item.url }" x-bind:href=item.url x-text=item.title></a></li></template></ul></details><details x-data="{ open: $persist(true).using(sessionStorage) }" :open=open><summary @click.prevent="open = !open"><div class=chevron></div>Home</summary><div x-data="{
+        }'><details x-data="{ open: $persist(true).as('details-pinned-notes').using(sessionStorage) }" x-bind:open=open><summary @click.prevent="open = !open"><div class=chevron></div>Pinned Notes</summary><ul><template x-for="item in pinnedData.slice(0, 3)" :key=item.url><li x-bind:class="{ 'text-active': location.pathname === item.url }"><a x-bind:class="{ 'text-active': location.pathname === item.url }" x-bind:href=item.url x-text=item.title></a></li></template></ul></details><details x-data="{ open: $persist(true).using(sessionStorage) }" :open=open><summary @click.prevent="open = !open"><div class=chevron></div>Home</summary><div x-data="{
           render(menu, value) {
             let html = `
               <summary @click.prevent='$store.menu.toggle(menu)'>
