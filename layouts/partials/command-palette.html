@@ -73,6 +73,7 @@
           row.md_content,
           query.split(" ").join("|")
         );
+        row.spr_content = row.spr_content.replaceAll("\n", "<hr />");
         delete row.md_content;
         return row;
       });
@@ -93,21 +94,27 @@
 </script>
 
 <div x-data="{ searching: false, searchBar: false, query: '', searchResults: {}, flat: [], selected: {}, 
-    next() {
+    next(container) {
       const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
       let nextIdx = curIdx + 1;
       if(nextIdx >= this.flat.length) {
         nextIdx = 0;
       }
       this.selected = this.flat[nextIdx];
+      const selector = `a[data-searchid='${this.selected.file_path}']`;
+      const a = $refs.searchContainer.querySelector(selector)
+      a.scrollIntoView({ block: 'nearest', behavior: 'instant'});
     }, 
-    prev() {
+    prev(container) {
       const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
       let nextIdx = curIdx - 1;
       if(nextIdx < 0) {
         nextIdx = this.flat.length - 1;
       }
       this.selected = this.flat[nextIdx];
+      const selector = `a[data-searchid='${this.selected.file_path}']`;
+      const a = $refs.searchContainer.querySelector(selector)
+      a.scrollIntoView({ block: 'nearest', behavior: 'instant'});
     },
     set(file) {
       this.selected = file;
@@ -127,7 +134,7 @@
 
   <div @keydown.enter.stop.document="goto()" @keydown.ctrl.j.prevent.document="next()"
     @keydown.ctrl.k.prevent.document="prev()" @keydown.down.stop.document="next()" @keydown.up.stop.document="prev()"
-    class="cmd-overlay" :class="searchBar ?'cmd-modal-active' : 'cmd-modal-hidden'">
+    class="cmd-overlay" :class="searchBar ?'cmd-modal-active' : 'cmd-modal-hidden'" x-ref="searchContainer">
     <div class="cmd-modal" @mousedown.outside="searchBar = false" x-trap.inert.noscroll.noreturn="searchBar">
       <input type="text" x-model="query" placeholder="Search" autocomplete="off" class="cmd-search-input"
         x-ref="searchInput" @input.change="searching = true"
@@ -145,7 +152,7 @@
                 <template x-for="result in group[1]" :key="result.file_path">
                   <li @mouseenter="set(result)"
                     :class="{ 'cmd-result-item': true, 'cmd-result-selected': result.file_path.toLowerCase() === selected?.file_path.toLowerCase() }">
-                    <a
+                    <a :data-searchid="result.file_path"
                       :href="`/${result.file_path.toLowerCase().replaceAll(' ', '-').replaceAll('.md', '').replaceAll('/_index', '').replaceAll('&', '')}/`">
                       <div class="cmd-result-title" x-text="result.title"></div>
                       <ul class="cmd-matching-lines">
@@ -179,19 +186,24 @@
               <span class="cmd-preview-path" x-text="selected?.category"></span>
               <p class="cmd-preview-title" x-text="selected?.title"></p>
               <p class="cmd-preview-description" x-text="selected?.description"></p>
+              <div class="cmd-preview-recap">
+                <span>on this page</span>
+                <p x-html="selected?.spr_content">
+              </div>
             </div>
-          </template>
         </div>
-
-        <template x-if="!searching && Object.keys(searchResults).length === 0 && query.length > 0">
-          <div class="cmd-no-results">
-            <img src="{{ $img.RelPermalink }}" />
-          </div>
         </template>
-        <div class="cmd-instructions">
-          Type <kdb class="tag">ESC</kdb> to close search bar
+      </div>
+
+      <template x-if="!searching && Object.keys(searchResults).length === 0 && query.length > 0">
+        <div class="cmd-no-results">
+          <img src="{{ $img.RelPermalink }}" />
         </div>
+      </template>
+      <div class="cmd-instructions">
+        Type <kdb class="tag">ESC</kdb> to close search bar
       </div>
     </div>
   </div>
+</div>
 </div>
