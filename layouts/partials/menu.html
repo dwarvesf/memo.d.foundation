@@ -122,7 +122,7 @@
         <ul>
           <template x-for="item in pinnedData.slice(0, 3)" :key="item.url">
             <li x-bind:class="{ 'text-active': location.pathname === item.url }">
-              <a x-bind:class="{ 'text-active': location.pathname === item.url }" x-bind:href="item.url"
+              <a x-bind:class="{ 'line-clamp-2': true, 'text-active': location.pathname === item.url }" x-bind:href="item.url"
                 x-text="item.title"></a>
             </li>
           </template>
@@ -157,7 +157,7 @@
                 const isActive = location.pathname === path;
                 html += `
                   <li>
-                    <a href='${path}' class='${isActive ? 'text-active':''}'>${file.title}</a>
+                    <a href='${path}' class='line-clamp-2 ${isActive ? 'text-active':''}'>${file.title}</a>
                   </li>
                 `
               }
