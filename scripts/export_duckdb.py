@@ -128,7 +128,7 @@ def alter_columns(conn, frontmatter):
             column_types[key] = "DOUBLE"
         else:
             column_types[key] = "VARCHAR"
-        
+
         if "embeddings_spr_custom" in key:
             column_types[key] = "DOUBLE[1024]"
         if "embeddings_openai" in key:
@@ -277,10 +277,56 @@ def add_to_database(conn, file_path, frontmatter, md_content):
     )
 
 
-def process_directory(conn, directory, limit):
+def update_commit_history(conn, commit_hash, changed_md_files = []):
+    # First, insert or ignore the new commit_hash record
+    conn.execute(
+        "INSERT OR IGNORE INTO commit_history (commit_hash, changed_md_files, processed_at) VALUES (?, ?, CURRENT_TIMESTAMP)",
+        [commit_hash, changed_md_files],
+    )
+
+    # Then, delete any records that do not equal the commit_hash
+    conn.execute(
+        "DELETE FROM commit_history WHERE commit_hash != ?",
+        [commit_hash],
+    )
+
+
+
+def get_latest_processed_commit(conn):
+    result = conn.execute(
+        "SELECT commit_hash FROM commit_history ORDER BY processed_at DESC LIMIT 1"
+    ).fetchone()
+    return result[0] if result else None
+
+
+def process_directory(conn, directory, limit, process_all):
     ignore_file_path = os.path.join(directory, ".export-ignore")
     if os.path.exists(ignore_file_path):
         spec = gitignore_parser.parse_gitignore(ignore_file_path)
+
+    # Retrieve the latest commit hash from the database
+    latest_commit_hash = get_latest_processed_commit(conn)
+
+    # If there is no commit hash in the database, use the current HEAD commit
+    if latest_commit_hash is None:
+        latest_commit_hash = (
+            subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=directory)
+            .decode("utf-8")
+            .strip()
+        )
+        update_commit_history(conn, latest_commit_hash)
+        process_all = True
+
+    changed_md_files = []
+    if not process_all:
+        changed_files = (
+            subprocess.check_output(
+                ["git", "diff", "--name-only", latest_commit_hash], cwd=directory
+            )
+            .decode("utf-8")
+            .splitlines()
+        )
+        changed_md_files = [f for f in changed_files if f.endswith(".md")]
 
     short_paths = []
     i = 0
@@ -292,16 +338,30 @@ def process_directory(conn, directory, limit):
                 short_paths.append(short_path)
                 abs_path = os.path.abspath(full_path)
                 if not spec(abs_path):
-                    frontmatter, md_content = extract_frontmatter(full_path)
-                    if frontmatter:
-                        print(f"Processing {full_path}...")
-                        add_to_database(conn, full_path, frontmatter, md_content)
-                        i += 1
-                        if limit and i >= limit:
-                            return
+                    if process_all or short_path in changed_md_files:
+                        frontmatter, md_content = extract_frontmatter(full_path)
+                        if frontmatter:
+                            print(f"Processing {full_path}...")
+                            add_to_database(conn, full_path, frontmatter, md_content)
+                            i += 1
+                            if limit and i >= limit:
+                                return
 
+    # Update the commit history with the new commit hash if it's different from the latest processed commit
+    current_commit_hash = (
+        subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=directory)
+        .decode("utf-8")
+        .strip()
+    )
+    if current_commit_hash != latest_commit_hash:
+        update_commit_history(conn, current_commit_hash, changed_md_files)
+
+    # Remove old files
     print("Removing old file_paths...")
-    results = conn.execute(f"DELETE FROM vault WHERE file_path NOT IN ({', '.join('?' for _ in short_paths)})", short_paths).fetchall()
+    results = conn.execute(
+        f"DELETE FROM vault WHERE file_path NOT IN ({', '.join('?' for _ in short_paths)})",
+        short_paths,
+    ).fetchall()
 
 
 def export(conn, format):
@@ -319,6 +379,9 @@ def main():
         "--format", choices=["csv", "parquet"], default="csv", help="output format"
     )
     parser.add_argument("--limit", type=int, help="limit the number of files processed")
+    parser.add_argument(
+        "--all", action="store_true", help="process all files, not just changed ones"
+    )
     args = parser.parse_args()
 
     conn = duckdb.connect("vault.duckdb")
@@ -333,10 +396,19 @@ def main():
         pass
 
     conn.execute("CREATE TABLE IF NOT EXISTS vault (file_path TEXT, md_content TEXT)")
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS commit_history (
+            commit_hash TEXT PRIMARY KEY,
+            changed_md_files TEXT[],
+            processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """
+    )
 
     try:
         print(f"Processing {args.directory} to DuckDB...")
-        process_directory(conn, args.directory, args.limit)
+        process_directory(conn, args.directory, args.limit, args.all)
     except KeyboardInterrupt:
         shutil.copyfile("vault.duckdb", "vault.duckdb.bak")
 
