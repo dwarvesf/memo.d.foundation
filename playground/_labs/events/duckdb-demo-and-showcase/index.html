@@ -96,9 +96,7 @@
     const {filters, query} = parseQueryForFilters(rawQuery)
 
     window.getDuckDB().then(async (conn) => {
-      console.time("Embedding query");
       const queryEmbeddings = await window.getEmbeddings(query);
-      console.timeEnd("Embedding query");
 
       console.time("Running hybrid search");
       const queryStr = `
