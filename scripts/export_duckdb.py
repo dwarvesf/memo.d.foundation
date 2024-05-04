@@ -277,7 +277,7 @@ def add_to_database(conn, file_path, frontmatter, md_content):
     )
 
 
-def update_commit_history(conn, commit_hash, changed_md_files = []):
+def update_commit_history(conn, commit_hash, changed_md_files=[]):
     # First, insert or ignore the new commit_hash record
     conn.execute(
         "INSERT OR IGNORE INTO commit_history (commit_hash, changed_md_files, processed_at) VALUES (?, ?, CURRENT_TIMESTAMP)",
@@ -289,7 +289,6 @@ def update_commit_history(conn, commit_hash, changed_md_files = []):
         "DELETE FROM commit_history WHERE commit_hash != ?",
         [commit_hash],
     )
-
 
 
 def get_latest_processed_commit(conn):
@@ -403,7 +402,7 @@ def main():
             changed_md_files TEXT[],
             processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
-    """
+        """
     )
 
     try:
