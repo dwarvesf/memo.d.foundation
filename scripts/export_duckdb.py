@@ -309,7 +309,9 @@ def process_directory(conn, directory, limit, process_all):
     # If there is no commit hash in the database, use the current HEAD commit
     if latest_commit_hash is None:
         latest_commit_hash = (
-            subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=directory)
+            subprocess.check_output(
+                ["git", "log", "--pretty=format:%H", "-n", "1"], cwd=directory
+            )
             .decode("utf-8")
             .strip()
         )
