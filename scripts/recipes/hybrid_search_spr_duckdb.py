@@ -60,7 +60,7 @@ def main():
 				file_path,
 				spr_content,
 				fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
-				array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom) AS similarity
+				array_cosine_similarity(?::FLOAT[1024], embeddings_spr_custom) AS similarity
 			FROM vault
 			WHERE 
 				embeddings_spr_custom IS NOT NULL

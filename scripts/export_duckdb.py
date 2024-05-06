@@ -130,9 +130,9 @@ def alter_columns(conn, frontmatter):
             column_types[key] = "VARCHAR"
 
         if "embeddings_spr_custom" in key:
-            column_types[key] = "DOUBLE[1024]"
+            column_types[key] = "FLOAT[1024]"
         if "embeddings_openai" in key:
-            column_types[key] = "DOUBLE[1536]"
+            column_types[key] = "FLOAT[1536]"
         if "last_updated" in key:
             column_types[key] = "TIMESTAMP"
         if "tags" in key:
@@ -396,7 +396,16 @@ def main():
     except duckdb.duckdb.CatalogException:
         pass
 
-    conn.execute("CREATE TABLE IF NOT EXISTS vault (file_path TEXT, md_content TEXT)")
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS vault (
+            file_path TEXT,
+            md_content TEXT,
+            embeddings_openai FLOAT[1536],
+            embeddings_spr_custom FLOAT[1024]
+        )
+        """
+    )
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS commit_history (
