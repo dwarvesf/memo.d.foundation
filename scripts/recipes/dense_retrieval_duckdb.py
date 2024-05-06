@@ -49,7 +49,7 @@ def main():
 		SELECT
 			file_path,
 			md_content,
-			array_cosine_similarity({query_embedding}::DOUBLE[1536], embeddings_openai) AS similarity
+			array_cosine_similarity({query_embedding}::FLOAT[1536], embeddings_openai) AS similarity
 		FROM vault
 		WHERE embeddings_openai NOT NULL
 		ORDER BY similarity DESC

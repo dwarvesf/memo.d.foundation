@@ -101,7 +101,7 @@
             fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
             authors,
             ${window.pipe
-          ? `array_cosine_similarity(?::DOUBLE[1024], embeddings_spr_custom)`
+          ? `array_cosine_similarity(?::FLOAT[1024], embeddings_spr_custom)`
           : "?"
         } AS similarity
           FROM vault

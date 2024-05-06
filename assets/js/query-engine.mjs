@@ -109,10 +109,24 @@ const getDuckDB = async () => {
 
       console.time('Loading memo DuckDB');
       await conn.query(`IMPORT DATABASE '${window.location.origin}/db/'`);
-      await conn.query('INSTALL fts');
-      await conn.query('LOAD fts');
-      await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'title', 'md_content', 'tags', 'authors')");
       console.timeEnd('Loading memo DuckDB');
+
+      queueMicrotask(async () => {
+        console.time('Indexing vault with FTS');
+        await conn.query('INSTALL fts');
+        await conn.query('LOAD fts');
+        await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'title', 'md_content', 'tags', 'authors')");
+        console.timeEnd('Indexing vault with FTS');
+      })
+      
+      queueMicrotask(async () => {
+        console.time('Indexing embeddings with HNSW');
+        await conn.query('INSTALL vss');
+        await conn.query('LOAD vss');
+        await conn.query("CREATE INDEX emb_openai_hnsw_index ON vault USING HNSW (embeddings_openai)")
+        await conn.query("CREATE INDEX emb_spr_custom_hnsw_index ON vault USING HNSW (embeddings_spr_custom)")
+        console.timeEnd('Indexing embeddings with HNSW');
+      })
 
       // Reset the promise since the connection is established
       window._conn_whnf_thunk = null;

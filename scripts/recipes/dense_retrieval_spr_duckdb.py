@@ -49,7 +49,7 @@ def main():
 		SELECT
 			file_path,
 			spr_content,
-			array_cosine_similarity({query_embedding}::DOUBLE[1024], embeddings_spr_custom) AS similarity
+			array_cosine_similarity({query_embedding}::FLOAT[1024], embeddings_spr_custom) AS similarity
 		FROM vault
 		WHERE embeddings_spr_custom NOT NULL
 		ORDER BY similarity DESC
