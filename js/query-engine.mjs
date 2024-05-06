@@ -65,6 +65,67 @@ const getJsDelivrBundles = () => {
   };
 }
 
+const files = [
+  '/db/commit_history.parquet',
+  '/db/load.sql',
+  '/db/schema.sql',
+  '/db/vault.parquet',
+];
+
+// Function to fetch a file and check if it's updated
+const fetchAndCheck = async (file) => {
+  try {
+    // Fetch the file
+    const response = await fetch(file);
+    // Get the Last-Modified and ETag headers
+    const lastModified = response.headers.get('Last-Modified');
+    const eTag = response.headers.get('ETag');
+
+    // Get the cached response
+    const cachedResponse = await caches.match(file);
+    if (cachedResponse) {
+      // Get the cached Last-Modified and ETag headers
+      const cachedLastModified = cachedResponse.headers.get('Last-Modified');
+      const cachedETag = cachedResponse.headers.get('ETag');
+
+      if (lastModified !== cachedLastModified || eTag !== cachedETag) {
+        console.log('File has been updated:', file);
+        // The file has been updated, you can now update the cache
+        return true;
+      } else {
+        console.log('File has not been updated:', file);
+        return false;
+      }
+    } else {
+      console.log('File is not in cache, adding now:', file);
+      return true;
+    }
+  } catch (error) {
+    console.log('Error fetching or checking file:', error);
+    return false;
+  }
+};
+
+// Open (or create) a cache
+caches.open('vault-cache').then(async (cache) => {
+  try {
+    // Check all the files
+    await Promise.all(
+      files
+        .map((file) => `${window.location.origin}${file}`)
+        .map(async (file) => {
+          const isUpdated = await fetchAndCheck(file);
+          if (isUpdated) {
+            // If the file is updated or not in cache, add it to the cache
+            await cache.add(file);
+          }
+        }));
+    console.log('Files have been checked and updated in cache');
+  } catch (error) {
+    console.log('Error checking or caching files:', error);
+  }
+});
+
 window._conn_whnf_thunk = null;
 
 const getDuckDB = async () => {
@@ -118,7 +179,7 @@ const getDuckDB = async () => {
         await conn.query("PRAGMA create_fts_index('vault', 'file_path', 'title', 'md_content', 'tags', 'authors')");
         console.timeEnd('Indexing vault with FTS');
       })
-      
+
       queueMicrotask(async () => {
         console.time('Indexing embeddings with HNSW');
         await conn.query('INSTALL vss');
