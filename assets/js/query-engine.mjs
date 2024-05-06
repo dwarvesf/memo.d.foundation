@@ -66,10 +66,10 @@ const getJsDelivrBundles = () => {
 }
 
 const files = [
-  '/db/commit_history.parquet',
-  '/db/load.sql',
-  '/db/schema.sql',
-  '/db/vault.parquet',
+  `${window.location.origin}/db/commit_history.parquet`,
+  `${window.location.origin}/db/load.sql`,
+  `${window.location.origin}/db/schema.sql`,
+  `${window.location.origin}/db/vault.parquet`,
 ];
 
 // Function to fetch a file and check if it's updated
@@ -111,9 +111,7 @@ caches.open('vault-cache').then(async (cache) => {
   try {
     // Check all the files
     await Promise.all(
-      files
-        .map((file) => `${window.location.origin}${file}`)
-        .map(async (file) => {
+      files.map(async (file) => {
           const isUpdated = await fetchAndCheck(file);
           if (isUpdated) {
             // If the file is updated or not in cache, add it to the cache
@@ -169,7 +167,7 @@ const getDuckDB = async () => {
       window._conn = conn;
 
       console.time('Loading memo DuckDB');
-      await conn.query(`IMPORT DATABASE '${window.location.origin}/db/'`);
+      await conn.query(`IMPORT DATABASE '${window.location.origin}/db'`);
       console.timeEnd('Loading memo DuckDB');
 
       queueMicrotask(async () => {
