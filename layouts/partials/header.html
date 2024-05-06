@@ -254,11 +254,23 @@
       }
     </style>
   </noscript>
+  {{ $serviceWorker := resources.Get "js/service-worker.js" }}
   <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', function () {
       document.body.style.visibility = 'visible';
       document.body.style.opacity = 1;
     });
+    
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('{{ $serviceWorker.RelPermalink }}')
+        .then(registration => {
+          registration.update();
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(err => {
+          console.log('Service Worker registration failed:', err);
+        });
+    }
   </script>
 </head>
 
