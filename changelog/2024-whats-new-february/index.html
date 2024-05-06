@@ -52,6 +52,20 @@
       str += node.textContent.replaceAll(regex, "<span>$&</span>");
     }
 
+    if (str.length <= 100) return `...${str}...`;
+
+    while (str.length > 100) {
+      let wIdx = str.indexOf(" ");
+      const w = str.substring(0, wIdx);
+      if (w.startsWith("<span>") && w.endsWith("</span>")) {
+        wIdx = str.lastIndexOf(" ")
+        str = str.slice(0, wIdx);
+        continue;
+      }
+      str = str.slice(wIdx + 1)
+    }
+
+
     return `...${str}...`;
   };
 
