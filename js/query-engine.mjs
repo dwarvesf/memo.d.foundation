@@ -1,4 +1,4 @@
-import * as duckdbduckdbWasm from "https://fastly.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev181.0/+esm";
+import * as duckdbduckdbWasm from "https://fastly.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev193.0/+esm";
 import { pipeline, env } from 'https://fastly.jsdelivr.net/npm/@xenova/transformers@2.17.1';
 import ollama from 'https://esm.run/ollama@0.5.0/browser';
 
