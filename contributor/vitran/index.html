@@ -125,10 +125,7 @@
             spr_content,
             fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
             authors,
-            ${window.pipe
-          ? `array_cosine_similarity(?::FLOAT[1024], embeddings_spr_custom)`
-          : "?"
-        } AS similarity
+            ${queryEmbeddings ? `array_cosine_similarity(?::FLOAT[1024], embeddings_spr_custom)` : "?"} AS similarity
           FROM vault
           WHERE 
             embeddings_spr_custom IS NOT NULL
@@ -148,7 +145,7 @@
       const hybridSearch = await conn.prepare(queryStr);
       const args = [
         query,
-        window.pipe ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
+        queryEmbeddings ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
         ...(filters.title ? [`%${filters.title}%`] : []),
         ...filters.tags.map(t => `${t}`),
         ...filters.authors.map(a => `${a}`),
