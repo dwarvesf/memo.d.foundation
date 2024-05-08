@@ -219,7 +219,7 @@ const getEmbeddings = async (query) => {
   try {
     embeddingsType = 'Embedded with ollama';
     res = await window.ollama.embeddings({ model: ollamaModel, prompt: query })
-      .then((value) => ({ data: value.embedding }));
+      .then((value) => ({ data: new Float32Array(value.embedding) }));
   } catch {
     embeddingsType = 'Embedded with transformers.js';
     res = window.pipe ? await window.pipe(query, { pooling: 'mean', normalize: true }) : [];
