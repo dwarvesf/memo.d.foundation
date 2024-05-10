@@ -1,39 +1,13 @@
 import * as duckdbduckdbWasm from "https://fastly.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev193.0/+esm";
 import { pipeline, env } from 'https://fastly.jsdelivr.net/npm/@xenova/transformers@2.17.1';
-import ollama from 'https://esm.run/ollama@0.5.0/browser';
 
 window.duckdbduckdbWasm = duckdbduckdbWasm;
 
-const ollamaModel = 'snowflake-arctic-embed:335m';
 const transformersEmbeddingsModel = 'Snowflake/snowflake-arctic-embed-l';
-let embeddingsLoaded = false;
 
 queueMicrotask(async () => {
   // Don't load these models on mobile
   if (window.innerWidth <= 768) {
-    return;
-  }
-
-  // Load ollama
-  try {
-    console.time(`Initializing ollama with ${ollamaModel}`)
-
-    const modelList = await ollama.list();
-    const modelExists = modelList.models.some((model) => model.name === ollamaModel)
-    if (!modelExists) {
-      console.info(`Pulling ${ollamaModel} in ollama...`)
-      await ollama.pull({ model: ollamaModel });
-    }
-    window.ollama = ollama;
-
-    embeddingsLoaded = true;
-    console.timeEnd(`Initializing ollama with ${ollamaModel}`);
-  } catch (error) {
-    console.warn('Failed to initialize ollama:', error);
-  }
-
-  // Skip transformers.js if embeddings are loaded from ollama
-  if (embeddingsLoaded) {
     return;
   }
 
@@ -44,7 +18,6 @@ queueMicrotask(async () => {
     env.backends.onnx.wasm.wasmPaths = "https://fastly.jsdelivr.net/npm/@xenova/transformers@2.17.1/dist/";
     window.pipe = await pipeline('feature-extraction', transformersEmbeddingsModel);
 
-    embeddingsLoaded = true;
     console.timeEnd(`Initializing transformers.js pipeline with ${transformersEmbeddingsModel}`);
   } catch (error) {
     console.warn('Failed to initialize pipeline:', error);
@@ -212,21 +185,9 @@ const parseDuckDBData = (data) => JSON.parse(JSON.stringify(data.toArray(), (key
 window.parseDuckDBData = parseDuckDBData;
 
 const getEmbeddings = async (query) => {
-  let res;
-  let embeddingsType;
-
   console.time('Embedding query')
-  try {
-    embeddingsType = 'Embedded with ollama';
-    res = await window.ollama.embeddings({ model: ollamaModel, prompt: query })
-      .then((value) => ({ data: new Float32Array(value.embedding) }));
-  } catch {
-    embeddingsType = 'Embedded with transformers.js';
-    res = window.pipe ? await window.pipe(query, { pooling: 'mean', normalize: true }) : [];
-  }
-
+  const res = window.pipe ? await window.pipe(query, { pooling: 'mean', normalize: true }) : [];
   console.timeEnd('Embedding query')
-  console.info(embeddingsType);
   return res;
 }
 
