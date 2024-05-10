@@ -16,6 +16,11 @@ import requests
 import json
 
 load_dotenv()
+openai_client = OpenAI()
+ollama_openai_client = OpenAI(
+    base_url=os.getenv("OLLAMA_OPENAI_BASE_URL"),
+    api_key=os.getenv("OLLAMA_API_KEY"),
+)
 
 
 spr_compression_prompt = f"""
@@ -31,12 +36,10 @@ Render the input as a distilled list of succinct statements, assertions, associa
 
 
 def spr_compress(text):
-    client = OpenAI()
-
     try:
         text = text.replace("\n", " ")
         if len(text) > 100:
-            return client.chat.completions.create(
+            return openai_client.chat.completions.create(
                 messages=[
                     {
                         "role": "system",
@@ -50,7 +53,7 @@ def spr_compress(text):
                 model="gpt-3.5-turbo-0125",
             )
     except openai.BadRequestError:
-        return client.chat.completions.create(
+        return openai_client.chat.completions.create(
             messages=[
                 {
                     "role": "system",
@@ -72,18 +75,17 @@ def spr_compress(text):
 def get_ollama_embeddings(bearer_token, model, prompt):
     url = f"{os.getenv('OLLAMA_BASE_URL')}/api/embeddings"
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {bearer_token}'
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {bearer_token}",
     }
-    data = {
-        "model": model,
-        "prompt": prompt
-    }
+    data = {"model": model, "prompt": prompt}
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
 
     if response.status_code != 200:
-        raise Exception(f'Request failed with status code {response.status_code}:\n{response.text}')
+        raise Exception(
+            f"Request failed with status code {response.status_code}:\n{response.text}"
+        )
 
     embeddings = response.json()
     return embeddings
@@ -94,8 +96,8 @@ def embed_custom(text):
         text = text.replace("\n", " ")
         if len(text) > 100:
             return get_ollama_embeddings(
-                bearer_token=os.getenv('OLLAMA_API_KEY'),
-                model='snowflake-arctic-embed:335m',
+                bearer_token=os.getenv("OLLAMA_API_KEY"),
+                model="snowflake-arctic-embed:335m",
                 prompt=text,
             )
     except AttributeError:
@@ -105,12 +107,10 @@ def embed_custom(text):
 
 
 def embed_openai(text):
-    client = OpenAI()
-
     try:
         text = text.replace("\n", " ")
         if len(text) > 100:
-            return client.embeddings.create(
+            return openai_client.embeddings.create(
                 input=[text], model="text-embedding-3-small"
             )
     except openai.BadRequestError:
@@ -118,7 +118,7 @@ def embed_openai(text):
         spr_content_text = (
             spr_content.choices[0].message.content if spr_content else None
         )
-        return client.embeddings.create(
+        return openai_client.embeddings.create(
             input=[spr_content_text], model="text-embedding-3-small"
         )
     except AttributeError:
