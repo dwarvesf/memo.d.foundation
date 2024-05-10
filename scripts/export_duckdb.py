@@ -12,6 +12,8 @@ import openai
 from dotenv import load_dotenv
 from datetime import timezone
 import shutil
+import requests
+import json
 
 load_dotenv()
 
@@ -67,17 +69,34 @@ def spr_compress(text):
     return None
 
 
-def embed_custom(text):
-    client = OpenAI(
-        api_key=os.getenv("INFINITY_API_KEY"),
-        base_url=os.getenv("INFINITY_OPENAI_BASE_URL"),
-    )
+def get_ollama_embeddings(bearer_token, model, prompt):
+    url = f"{os.getenv('OLLAMA_BASE_URL')}/api/embeddings"
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {bearer_token}'
+    }
+    data = {
+        "model": model,
+        "prompt": prompt
+    }
 
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+
+    if response.status_code != 200:
+        raise Exception(f'Request failed with status code {response.status_code}:\n{response.text}')
+
+    embeddings = response.json()
+    return embeddings
+
+
+def embed_custom(text):
     try:
         text = text.replace("\n", " ")
         if len(text) > 100:
-            return client.embeddings.create(
-                input=[text], model="Snowflake/snowflake-arctic-embed-l"
+            return get_ollama_embeddings(
+                bearer_token=os.getenv('OLLAMA_API_KEY'),
+                model='snowflake-arctic-embed:335m',
+                prompt=text,
             )
     except AttributeError:
         return None
@@ -175,7 +194,7 @@ def regenerate_embeddings(md_content, frontmatter, spr_content_text=""):
     if embeddings_spr_custom:
         print(f"SPR Embeddings: {embeddings_spr_custom}")
     embeddings_spr_custom_values = (
-        embeddings_spr_custom.data[0].embedding if embeddings_spr_custom else None
+        embeddings_spr_custom["embedding"] if embeddings_spr_custom else None
     )
     frontmatter["embeddings_spr_custom"] = embeddings_spr_custom_values
 
