@@ -5,7 +5,7 @@ import ollama from 'https://esm.run/ollama@0.5.0/browser';
 window.duckdbduckdbWasm = duckdbduckdbWasm;
 
 const ollamaModel = 'snowflake-arctic-embed:335m';
-const transformersModel = 'Snowflake/snowflake-arctic-embed-l';
+const transformersEmbeddingsModel = 'Snowflake/snowflake-arctic-embed-l';
 let embeddingsLoaded = false;
 
 queueMicrotask(async () => {
@@ -39,13 +39,13 @@ queueMicrotask(async () => {
 
   // Load transformers.js otherwise
   try {
-    console.time(`Initializing transformers.js pipeline with ${transformersModel}`);
+    console.time(`Initializing transformers.js pipeline with ${transformersEmbeddingsModel}`);
 
     env.backends.onnx.wasm.wasmPaths = "https://fastly.jsdelivr.net/npm/@xenova/transformers@2.17.1/dist/";
-    window.pipe = await pipeline('feature-extraction', transformersModel);
+    window.pipe = await pipeline('feature-extraction', transformersEmbeddingsModel);
 
     embeddingsLoaded = true;
-    console.timeEnd(`Initializing transformers.js pipeline with ${transformersModel}`);
+    console.timeEnd(`Initializing transformers.js pipeline with ${transformersEmbeddingsModel}`);
   } catch (error) {
     console.warn('Failed to initialize pipeline:', error);
   }
@@ -112,12 +112,12 @@ caches.open('vault-cache').then(async (cache) => {
     // Check all the files
     await Promise.all(
       files.map(async (file) => {
-          const isUpdated = await fetchAndCheck(file);
-          if (isUpdated) {
-            // If the file is updated or not in cache, add it to the cache
-            await cache.add(file);
-          }
-        }));
+        const isUpdated = await fetchAndCheck(file);
+        if (isUpdated) {
+          // If the file is updated or not in cache, add it to the cache
+          await cache.add(file);
+        }
+      }));
     console.log('Files have been checked and updated in cache');
   } catch (error) {
     console.log('Error checking or caching files:', error);
