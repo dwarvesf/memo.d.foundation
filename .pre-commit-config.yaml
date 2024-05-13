@@ -1,9 +1,0 @@
-repos:
-- repo: local
-  hooks:
-  - id: submodule-branch-check
-    name: Check Submodule Branches
-    entry: ./pre-commit.sh
-    language: system  
-    pass_filenames: false
-    verbose: true
