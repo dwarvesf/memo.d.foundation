@@ -4,8 +4,12 @@ setup:
 	@mkdir -p ./content
 
 fetch:
-	@python scripts/update_git_settings.py
-	@./git-fetch.sh
+	@if [ $$(ps -ef | grep '[h]ugo' | wc -l) -eq 0 ] || [ $$(ps -ef | grep '[p]ython scripts/watch_run.py' | wc -l) -eq 0 ]; then \
+		python scripts/update_git_settings.py; \
+		./git-fetch.sh; \
+	else \
+		echo "A build process is currently running. Skipping fetch."; \
+	fi
 
 build:
 	@rm -rf public
@@ -43,14 +47,5 @@ run-target:
 	@obsidian-export --hard-linebreaks ./vault/ ./content/
 	@hugo -DEF --logLevel error server
 
-backup-all:
-	@python ./scripts/export.py vault/memo
-	@python ./scripts/export.py vault/earn
-	@python ./scripts/export.py vault/playbook
-	@python ./scripts/export.py vault/members
-	@python ./scripts/export.py vault/hiring
-	@python ./scripts/export.py vault/newsletter
-	@python ./scripts/export.py vault/radar
-	
 duckdb-export:
 	@python scripts/export_duckdb.py vault --format parquet
