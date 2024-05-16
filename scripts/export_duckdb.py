@@ -296,57 +296,37 @@ def add_to_database(conn, file_path, frontmatter, md_content):
     )
 
 
-def update_commit_history(conn, commit_hash, changed_md_files=[]):
-    # First, insert or ignore the new commit_hash record
-    conn.execute(
-        "INSERT OR IGNORE INTO commit_history (commit_hash, changed_md_files, processed_at) VALUES (?, ?, CURRENT_TIMESTAMP)",
-        [commit_hash, changed_md_files],
-    )
-
-    # Then, delete any records that do not equal the commit_hash
-    conn.execute(
-        "DELETE FROM commit_history WHERE commit_hash != ?",
-        [commit_hash],
-    )
-
-
-def get_latest_processed_commit(conn):
-    result = conn.execute(
-        "SELECT commit_hash FROM commit_history ORDER BY processed_at DESC LIMIT 1"
-    ).fetchone()
-    return result[0] if result else None
-
-
 def process_directory(conn, directory, limit, process_all):
     ignore_file_path = os.path.join(directory, ".export-ignore")
     if os.path.exists(ignore_file_path):
         spec = gitignore_parser.parse_gitignore(ignore_file_path)
-
-    # Retrieve the latest commit hash from the database
-    latest_commit_hash = get_latest_processed_commit(conn)
-
-    # If there is no commit hash in the database, use the current HEAD commit
-    if latest_commit_hash is None:
-        latest_commit_hash = (
-            subprocess.check_output(
-                ["git", "log", "--pretty=format:%H", "-n", "1"], cwd=directory
-            )
-            .decode("utf-8")
-            .strip()
-        )
-        update_commit_history(conn, latest_commit_hash)
-        process_all = True
-
-    changed_md_files = []
-    if not process_all:
+    
+    def get_changed_md_files(directory):
         changed_files = (
             subprocess.check_output(
-                ["git", "diff", "--name-only", latest_commit_hash], cwd=directory
+                ["git", "diff", "--name-only", "HEAD^"], cwd=directory
             )
             .decode("utf-8")
             .splitlines()
         )
-        changed_md_files = [f for f in changed_files if f.endswith(".md")]
+        return [f for f in changed_files if f.endswith(".md")]
+
+    changed_md_files = []
+    if not process_all:
+        # Check for changes in the main repository
+        changed_md_files += get_changed_md_files(directory)
+
+        # Check for changes in each submodule
+        submodules = (
+            subprocess.check_output(
+                ["git", "submodule", "foreach", "--quiet", "echo $path"], cwd=directory
+            )
+            .decode("utf-8")
+            .splitlines()
+        )
+        for submodule in submodules:
+            submodule_path = os.path.join(directory, submodule)
+            changed_md_files += [os.path.join(submodule, f) for f in get_changed_md_files(submodule_path)]
 
     short_paths = []
     i = 0
@@ -366,16 +346,6 @@ def process_directory(conn, directory, limit, process_all):
                             i += 1
                             if limit and i >= limit:
                                 return
-
-    # Update the commit history with the new commit hash if it's different from the latest processed commit
-    current_commit_hash = (
-        subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=directory)
-        .decode("utf-8")
-        .strip()
-    )
-    if current_commit_hash != latest_commit_hash:
-        update_commit_history(conn, current_commit_hash, changed_md_files)
-
     # Remove old files
     print("Removing old file_paths...")
     results = conn.execute(
@@ -422,15 +392,6 @@ def main():
             md_content TEXT,
             embeddings_openai FLOAT[1536],
             embeddings_spr_custom FLOAT[1024]
-        )
-        """
-    )
-    conn.execute(
-        """
-        CREATE TABLE IF NOT EXISTS commit_history (
-            commit_hash TEXT PRIMARY KEY,
-            changed_md_files TEXT[],
-            processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
