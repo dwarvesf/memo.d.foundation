@@ -39,7 +39,6 @@ const getJsDelivrBundles = () => {
 }
 
 const files = [
-  `${window.location.origin}/db/commit_history.parquet`,
   `${window.location.origin}/db/load.sql`,
   `${window.location.origin}/db/schema.sql`,
   `${window.location.origin}/db/vault.parquet`,
