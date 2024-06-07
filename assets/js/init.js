@@ -137,3 +137,17 @@ document.addEventListener("click", (e) => {
   if (svg.contains(e.target) || graphBtn.contains(e.target)) return;
   Alpine.store("graphFullScreen").close();
 });
+
+function playerSizer() {
+  const iframes = document.getElementsByTagName("iframe");
+  for (let iframe of iframes) {
+    if (iframe.src.includes("youtube.com")) {
+      iframe.style.width = '100%';
+      const width = iframe.getBoundingClientRect().width;
+      iframe.style.height = (width * 0.5625) + "px";
+    }
+  }
+}
+
+window.addEventListener("load", playerSizer);
+window.addEventListener("resize", playerSizer);
