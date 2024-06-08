@@ -16,7 +16,7 @@
       "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
     },
     "git":    "2.44.0",
-    "duckdb": "0.10.2"
+    "duckdb": "1.0.0"
   },
   "shell": {
     "init_hook": [
