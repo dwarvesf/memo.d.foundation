@@ -214,11 +214,12 @@
       "genre" : [
         {{ if and (isset .Params "tags") (not (eq .Params.tags nil)) }}
           {{ $tags := slice }}
-          {{ if (eq (printf "%T" .Params.tags) "string") }}
+          {{ $tagsType := printf "%T" .Params.tags }}
+          {{ if eq $tagsType "string" }}
             {{ $tags = append $tags .Params.tags }}
-          {{ else }}
+          {{ else if eq $tagsType "[]string" }}
             {{ $tags = .Params.tags }}
-          {{ end }}
+          {{ end }}        
           {{ range $index, $tag := $tags }}
             {{ if $index }}, {{ end }}"{{ $tag }}"
           {{ end }}
@@ -227,11 +228,12 @@
       "keywords" : [
         {{ if and (isset .Params "tags") (not (eq .Params.tags nil)) }}
           {{ $tags := slice }}
-          {{ if (eq (printf "%T" .Params.tags) "string") }}
+          {{ $tagsType := printf "%T" .Params.tags }}
+          {{ if eq $tagsType "string" }}
             {{ $tags = append $tags .Params.tags }}
-          {{ else }}
+          {{ else if eq $tagsType "[]string" }}
             {{ $tags = .Params.tags }}
-          {{ end }}
+          {{ end }}        
           {{ range $index, $tag := $tags }}
             {{ if $index }}, {{ end }}"{{ $tag }}"
           {{ end }}
