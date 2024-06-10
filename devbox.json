@@ -1,7 +1,6 @@
 {
   "packages": {
     "go":                       "1.21.3",
-    "hugo":                     "0.124.1",
     "python310Packages.pip":    "23.2.1",
     "python":                   "3.10.14",
     "awscli":                   "1.32.21",
@@ -16,7 +15,8 @@
       "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
     },
     "git":    "2.44.0",
-    "duckdb": "1.0.0"
+    "duckdb": "1.0.0",
+    "hugo":   "0.126.3"
   },
   "shell": {
     "init_hook": [
