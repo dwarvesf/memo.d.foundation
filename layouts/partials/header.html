@@ -213,24 +213,12 @@
       "wordCount" : "{{ .WordCount }}",
       "genre" : [
         {{ if and (isset .Params "tags") (not (eq .Params.tags nil)) }}
-        {{ $tags := slice }}
-
-        {{ with .Params.tags }}
-          {{ $tagsType := printf "%T" . }}
-        
-          {{ if eq $tagsType "string" }}
-            {{ $tags = append $tags . }}
-        
-          {{ else if eq $tagsType "[]string" }}
-            <!-- Directly assign the slice of tags -->
-            {{ $tags = . }}
-        
-          {{ else if eq $tagsType "[]interface {}" }}
-            {{ range . }}
-              {{ $tags = append $tags (slice .) }}
-            {{ end }}
+          {{ $tags := slice }}
+          {{ if (eq (printf "%T" .Params.tags) "string") }}
+            {{ $tags = append $tags (slice .Params.tags) }}
+          {{ else }}
+            {{ $tags = .Params.tags }}
           {{ end }}
-        {{ end }}
           {{ range $index, $tag := $tags }}
             {{ if $index }}, {{ end }}"{{ $tag }}"
           {{ end }}
@@ -238,24 +226,12 @@
       ],
       "keywords" : [
         {{ if and (isset .Params "tags") (not (eq .Params.tags nil)) }}
-        {{ $tags := slice }}
-
-        {{ with .Params.tags }}
-          {{ $tagsType := printf "%T" . }}
-        
-          {{ if eq $tagsType "string" }}
-            {{ $tags = append $tags . }}
-        
-          {{ else if eq $tagsType "[]string" }}
-            <!-- Directly assign the slice of tags -->
-            {{ $tags = . }}
-        
-          {{ else if eq $tagsType "[]interface {}" }}
-            {{ range . }}
-              {{ $tags = append $tags (slice .) }}
-            {{ end }}
+          {{ $tags := slice }}
+          {{ if (eq (printf "%T" .Params.tags) "string") }}
+            {{ $tags = append $tags (slice .Params.tags) }}
+          {{ else }}
+            {{ $tags = .Params.tags }}
           {{ end }}
-        {{ end }}
           {{ range $index, $tag := $tags }}
             {{ if $index }}, {{ end }}"{{ $tag }}"
           {{ end }}
