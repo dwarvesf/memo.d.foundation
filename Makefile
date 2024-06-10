@@ -12,8 +12,8 @@ fetch:
 	fi
 
 build:
-	@rm -rf public
-	@git checkout -- public
+	@make clear-build
+	@python scripts/batch_image_processor.py vault
 	@python scripts/batch_export_markdown.py vault content
 	@hugo -DEF --minify
 
