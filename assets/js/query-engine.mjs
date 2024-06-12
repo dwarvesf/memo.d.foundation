@@ -1,4 +1,4 @@
-import * as duckdbduckdbWasm from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev215.0/+esm";
+import * as duckdbduckdbWasm from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev218.0/+esm";
 import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.1';
 
 window.duckdbduckdbWasm = duckdbduckdbWasm;
@@ -25,7 +25,7 @@ queueMicrotask(async () => {
 })
 
 const getJsDelivrBundles = () => {
-  const jsdelivr_dist_url = `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev181.0/dist/`;
+  const jsdelivr_dist_url = `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev218.0/dist/`;
   return {
     mvp: {
       mainModule: `${jsdelivr_dist_url}duckdb-mvp.wasm`,
