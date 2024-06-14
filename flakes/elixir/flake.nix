@@ -1,6 +1,6 @@
 {
   description =
-    "A flake that adds Elixir 1.16.x with Erlang OTP 27";
+    "A flake that adds Elixir 1.17.x with Erlang OTP 27";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/master";
@@ -12,7 +12,7 @@
       let pkgs = nixpkgs.legacyPackages.${system};
       in {
         packages = {
-          elixir = pkgs.beam.packages.erlang_27.elixir_1_16;
+          elixir = pkgs.beam.packages.erlang_27.elixir_1_17;
           elixir-ls = pkgs.beam.packages.erlang_27.elixir-ls;
         };
       });
