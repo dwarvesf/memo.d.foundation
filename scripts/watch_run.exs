@@ -8,7 +8,8 @@ defmodule FileWatcher do
   use GenServer
   require Logger
 
-  @unlock_delay 2000  # delay in milliseconds
+  # delay in milliseconds
+  @unlock_delay 2000
 
   def main(args) do
     {opts, _, _} = OptionParser.parse(args, switches: [vaultpath: :string])
@@ -43,13 +44,15 @@ defmodule FileWatcher do
     {:ok, state}
   end
 
-  def handle_info({:file_event, watcher_pid, {path, events}}, state) when watcher_pid === state.watcher_pid do
+  def handle_info({:file_event, watcher_pid, {path, events}}, state)
+      when watcher_pid === state.watcher_pid do
     if (:modified in events or :created in events) and not locked?(path) do
       Logger.info("File changed: #{path}. Running scripts...")
       lock(path)
       run_scripts(path)
       schedule_unlock(path)
     end
+
     {:noreply, state}
   end
 
@@ -67,8 +70,13 @@ defmodule FileWatcher do
   end
 
   defp run_scripts(file_path) do
-    System.cmd("elixir", ["scripts/export_media.exs", "--vaultpath", file_path], into: IO.stream(:stdio, :line))
-    System.cmd("elixir", ["scripts/export_markdown.exs", "--vaultpath", file_path], into: IO.stream(:stdio, :line))
+    System.cmd("elixir", ["scripts/export_media.exs", "--vaultpath", file_path],
+      into: IO.stream(:stdio, :line)
+    )
+
+    System.cmd("elixir", ["scripts/export_markdown.exs", "--vaultpath", file_path],
+      into: IO.stream(:stdio, :line)
+    )
   end
 
   defp lock(file_path) do

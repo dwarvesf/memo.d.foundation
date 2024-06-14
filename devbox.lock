@@ -71,6 +71,14 @@
       "source": "devbox-search",
       "version": "17.0.6",
       "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "path": "/nix/store/c1ib07kj7baid3s3wf5m98hcpbvgs8mk-clang-wrapper-16.0.6",
+              "default": true
+            }
+          ]
+        },
         "aarch64-linux": {
           "outputs": [
             {
