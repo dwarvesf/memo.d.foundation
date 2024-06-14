@@ -13,39 +13,24 @@ fetch:
 
 build:
 	@make clear-build
-	@python scripts/batch_image_processor.py vault
-	@python scripts/batch_export_markdown.py vault content
+	@elixir scripts/export_media.exs --vaultpath vault
+	@elixir scripts/export_markdown.exs --vaultpath vault
 	@hugo -DEF --minify
 
 clear-build:
 	@rm -rf public
 	@git checkout -- public
 	@rm -rf content
-	@rm .git/hooks/pre-commit 2> /dev/null || true
 
 run:
 	@make clear-build
-	@python scripts/batch_image_processor.py vault
-	@python scripts/batch_export_markdown.py vault content
+	@elixir scripts/export_media.exs --vaultpath vault
+	@elixir scripts/export_markdown.exs --vaultpath vault
 	@hugo -DEF --logLevel error server
 	
 watch-run:
 	@make clear-build
-	@python scripts/batch_image_processor.py vault
-	@python scripts/batch_export_markdown.py vault content
-	@python scripts/watch_run.py vault content
-
-build-target:
-	@mkdir -p vault content
-	@rsync -avh $(path) ./vault/ --delete
-	@obsidian-export --hard-linebreaks ./vault/ ./content/
-	@hugo -DEF --minify
-
-run-target:
-	@mkdir -p vault content
-	@rsync -avh $(path) ./vault/ --delete
-	@obsidian-export --hard-linebreaks ./vault/ ./content/
-	@hugo -DEF --logLevel error server
+	@elixir scripts/watch_run.exs --vaultpath vault
 
 duckdb-export:
 	@python scripts/export_duckdb.py vault --format parquet
