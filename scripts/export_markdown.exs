@@ -20,23 +20,38 @@ defmodule MarkdownExporter do
     vaultpath = opts[:vaultpath] || "vault"
     exportpath = opts[:exportpath] || "content"
 
-    ignored_patterns = read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
+    {vault_dir, mode} =
+      if File.dir?(vaultpath) do
+        {vaultpath, :directory}
+      else
+        {Path.dirname(vaultpath), :file}
+      end
 
-    paths = list_files_and_assets_recursive(vaultpath)
+    ignored_patterns = read_export_ignore_file(Path.join(vault_dir, ".export-ignore"))
+
+    paths = list_files_and_assets_recursive(vault_dir)
     {all_files, all_assets} = Enum.split_with(paths, &File.regular?/1)
 
     all_valid_files =
       all_files
-      |> Enum.filter(&(not ignored?(&1, ignored_patterns, vaultpath)))
+      |> Enum.filter(&(not ignored?(&1, ignored_patterns, vault_dir)))
 
-    Flow.from_enumerable(all_valid_files)
-    |> Flow.filter(&contains_required_frontmatter_keys?/1)
-    |> Flow.map(&process_file(&1, vaultpath, exportpath, all_valid_files))
-    |> Flow.run()
+    if mode == :file do
+      if Enum.member?(all_valid_files, vaultpath) do
+        process_single_file(vaultpath, all_valid_files, vault_dir, exportpath)
+      else
+        IO.puts("File #{vaultpath} does not exist or is ignored.")
+      end
+    else
+      Flow.from_enumerable(all_valid_files)
+      |> Flow.filter(&contains_required_frontmatter_keys?/1)
+      |> Flow.map(&process_file(&1, vault_dir, exportpath, all_valid_files))
+      |> Flow.run()
 
-    Flow.from_enumerable(all_assets)
-    |> Flow.map(&export_assets_folder(&1, vaultpath, exportpath))
-    |> Flow.run()
+      Flow.from_enumerable(all_assets)
+      |> Flow.map(&export_assets_folder(&1, vault_dir, exportpath))
+      |> Flow.run()
+    end
   end
 
   defp list_files_and_assets_recursive(path) do
@@ -132,6 +147,20 @@ defmodule MarkdownExporter do
   end
 
   defp process_file(file, vaultpath, exportpath, all_files) do
+    content = File.read!(file)
+    links = extract_links(content)
+    resolved_links = resolve_links(links, all_files, vaultpath)
+    converted_content = convert_links(content, resolved_links)
+
+    export_file = String.replace_prefix(file, vaultpath, Path.join(exportpath, "files"))
+    export_dir = Path.dirname(export_file)
+    File.mkdir_p!(export_dir)
+
+    File.write!(export_file, converted_content)
+    IO.puts("Exported: #{file} -> #{export_file}")
+  end
+
+  defp process_single_file(file, all_files, vaultpath, exportpath) do
     content = File.read!(file)
     links = extract_links(content)
     resolved_links = resolve_links(links, all_files, vaultpath)
