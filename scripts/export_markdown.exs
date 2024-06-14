@@ -6,7 +6,7 @@ Mix.install([
 
 defmodule MarkdownExporter do
   @moduledoc """
-  A module to export Obsidian markdown files to standard markdown.
+  A module to export Obsidian markdown files and assets folders to standard markdown.
   """
 
   use Flow
@@ -21,30 +21,45 @@ defmodule MarkdownExporter do
     exportpath = opts[:exportpath] || "content"
 
     ignored_patterns = read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
-    all_files = list_files_recursive(vaultpath)
+
+    paths = list_files_and_assets_recursive(vaultpath)
+    {all_files, all_assets} = Enum.split_with(paths, &File.regular?/1)
 
     all_valid_files =
       all_files
       |> Enum.filter(&(not ignored?(&1, ignored_patterns, vaultpath)))
 
-    all_valid_files
-    |> Flow.from_enumerable()
-    |> Flow.filter(&contains_required_frontmatter_keys?(&1))
+    Flow.from_enumerable(all_valid_files)
+    |> Flow.filter(&contains_required_frontmatter_keys?/1)
     |> Flow.map(&process_file(&1, vaultpath, exportpath, all_valid_files))
+    |> Flow.run()
+
+    Flow.from_enumerable(all_assets)
+    |> Flow.map(&export_assets_folder(&1, vaultpath, exportpath))
     |> Flow.run()
   end
 
-  defp list_files_recursive(path) do
+  defp list_files_and_assets_recursive(path) do
     File.ls!(path)
     |> Enum.flat_map(fn file ->
       full_path = Path.join(path, file)
 
       if File.dir?(full_path) do
-        list_files_recursive(full_path)
+        [full_path | list_files_and_assets_recursive(full_path)]
       else
         [full_path]
       end
     end)
+  end
+
+  defp export_assets_folder(asset_path, vaultpath, exportpath) do
+    if Path.basename(asset_path) == "assets" do
+      target_path = String.replace_prefix(asset_path, vaultpath, exportpath)
+      File.mkdir_p!(target_path)
+
+      File.cp_r!(asset_path, target_path)
+      IO.puts("Exported assets: #{asset_path} -> #{target_path}")
+    end
   end
 
   defp read_export_ignore_file(ignore_file) do
@@ -80,13 +95,17 @@ defmodule MarkdownExporter do
   end
 
   defp contains_required_frontmatter_keys?(file) do
-    content = File.read!(file)
+    case File.read(file) do
+      {:ok, content} ->
+        case parse_frontmatter(content) do
+          {:ok, frontmatter} ->
+            Map.has_key?(frontmatter, "title") and Map.has_key?(frontmatter, "description")
 
-    case parse_frontmatter(content) do
-      {:ok, frontmatter} ->
-        Map.has_key?(frontmatter, "title") and Map.has_key?(frontmatter, "description")
+          _ ->
+            false
+        end
 
-      _ ->
+      {:error, _} ->
         false
     end
   end
@@ -151,7 +170,8 @@ defmodule MarkdownExporter do
   defp find_link_paths(link, all_files, vaultpath) do
     all_files
     |> Enum.reduce(%{}, fn path, acc ->
-      if String.contains?(Path.basename(path), link) do
+      if String.contains?(Path.basename(path), link) or
+         String.contains?(String.downcase(Path.basename(path)), String.downcase(link)) do
         relative_path = Path.relative_to(path, vaultpath)
         Map.put(acc, link, relative_path)
       else
