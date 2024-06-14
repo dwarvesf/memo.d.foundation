@@ -152,7 +152,7 @@ defmodule MarkdownExporter do
     resolved_links = resolve_links(links, all_files, vaultpath)
     converted_content = convert_links(content, resolved_links)
 
-    export_file = String.replace_prefix(file, vaultpath, Path.join(exportpath, "files"))
+    export_file = String.replace_prefix(file, vaultpath, exportpath)
     export_dir = Path.dirname(export_file)
     File.mkdir_p!(export_dir)
 
@@ -197,10 +197,14 @@ defmodule MarkdownExporter do
   end
 
   defp find_link_paths(link, all_files, vaultpath) do
+    downcased_link = String.downcase(link)
+
     all_files
     |> Enum.reduce(%{}, fn path, acc ->
-      if String.contains?(Path.basename(path), link) or
-         String.contains?(String.downcase(Path.basename(path)), String.downcase(link)) do
+      basename = Path.basename(path)
+      downcased_basename = String.downcase(basename)
+
+      if String.contains?(basename, link) or String.contains?(downcased_basename, downcased_link) do
         relative_path = Path.relative_to(path, vaultpath)
         Map.put(acc, link, relative_path)
       else
