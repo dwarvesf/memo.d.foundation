@@ -23,7 +23,7 @@ jobs:
         uses: jetpack-io/devbox-install-action@v0.11.0
         with:
           enable-cache: true
-          devbox-version: 0.11.0
+          devbox-version: 0.11.1
 
       - name: Pull & update submodules recursively
         run: |

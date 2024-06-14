@@ -14,9 +14,21 @@
       "version":            "13.2.0",
       "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
     },
-    "git":    "2.44.0",
-    "duckdb": "1.0.0",
-    "hugo":   "0.126.3"
+    "inotify-tools": {
+      "version":            "4.23.9.0",
+      "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
+    },
+    "darwin.apple_sdk.frameworks.CoreServices": {
+      "platforms": ["x86_64-darwin", "aarch64-darwin"]
+    },
+    "darwin.apple_sdk.frameworks.CoreFoundation": {
+      "platforms": ["x86_64-darwin", "aarch64-darwin"]
+    },
+    "git":       "2.44.0",
+    "duckdb":    "1.0.0",
+    "hugo":      "0.126.3",
+    "elixir":    "1.16.3",
+    "elixir-ls": "0.21.3"
   },
   "shell": {
     "init_hook": [
