@@ -65,13 +65,61 @@
         }
       }
     },
+    "clang@17.0.6": {
+      "last_modified": "2024-05-22T06:18:38Z",
+      "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#clang",
+      "source": "devbox-search",
+      "version": "17.0.6",
+      "systems": {
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ddcfhyzi4kliy1x0y2saknspa0na3x44-clang-wrapper-17.0.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ddcfhyzi4kliy1x0y2saknspa0na3x44-clang-wrapper-17.0.6"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/mzhqknx2mc94jdz4n320hn1lml86398y-clang-wrapper-17.0.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/mzhqknx2mc94jdz4n320hn1lml86398y-clang-wrapper-17.0.6"
+        }
+      }
+    },
     "darwin.apple_sdk.frameworks.CoreFoundation": {
       "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#darwin.apple_sdk.frameworks.CoreFoundation",
-      "source": "nixpkg"
+      "source": "nixpkg",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "path": "/nix/store/730jjv9fhvvalsb18csa8w7qiqzlwybc-apple-framework-CoreFoundation-11.0.0",
+              "default": true
+            }
+          ]
+        }
+      }
     },
     "darwin.apple_sdk.frameworks.CoreServices": {
       "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#darwin.apple_sdk.frameworks.CoreServices",
-      "source": "nixpkg"
+      "source": "nixpkg",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "path": "/nix/store/j343fncqfbb6wdlrwj6dnfmvx4hi1zki-apple-framework-CoreServices-11.0.0",
+              "default": true
+            }
+          ]
+        }
+      }
     },
     "duckdb@1.0.0": {
       "last_modified": "2024-06-09T00:38:05Z",
@@ -842,6 +890,21 @@
             }
           ],
           "store_path": "/nix/store/24k5v56isdk6ma2d2zx64dqdpfp7l9q7-inotify-tools-4.23.9.0"
+        }
+      }
+    },
+    "nixpkgs#stdenv.cc.cc.lib": {
+      "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#nixpkgs#stdenv.cc.cc.lib",
+      "source": "nixpkg",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "lib",
+              "path": "/nix/store/sfm0x3frvzamcj8k5zgzjjv3b65b48c4-clang-16.0.6-lib",
+              "default": true
+            }
+          ]
         }
       }
     },
