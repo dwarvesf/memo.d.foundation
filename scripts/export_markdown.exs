@@ -214,17 +214,25 @@ defmodule MarkdownExporter do
   end
 
   defp convert_links(content, resolved_links) do
+    sanitized_resolved_links =
+      Enum.reduce(resolved_links, %{}, fn {k, v}, acc ->
+        sanitized_key = String.replace(k, ~r/\\\|/, "|")
+        Map.put(acc, sanitized_key, String.replace(v, ~r/\\$/, ""))
+      end)
+
     # First handle links with alt text
     content =
       Regex.replace(~r/\[\[([^\|\]]+)\|([^\]]+)\]\]/, content, fn _, link, alt_text ->
-        resolved_path = Map.get(resolved_links, link, link)
+        resolved_path = Map.get(sanitized_resolved_links, link, link)
+        resolved_path = String.replace(resolved_path, ~r/\\$/, "")
         "[#{alt_text}](#{resolved_path})"
       end)
 
     # Handle links without alt text
     content =
       Regex.replace(~r/\[\[([^\]]+)\]\]/, content, fn _, link ->
-        resolved_path = Map.get(resolved_links, link, "#{link}.md")
+        resolved_path = Map.get(sanitized_resolved_links, link, "#{link}.md")
+        resolved_path = String.replace(resolved_path, ~r/\\$/, "")
         alt_text = Path.basename(resolved_path, ".md")
         "[#{alt_text}](#{resolved_path})"
       end)
@@ -232,7 +240,8 @@ defmodule MarkdownExporter do
     # Handle embedded images
     content =
       Regex.replace(~r/!\[\[([^\]]+)\]\]/, content, fn _, link ->
-        resolved_path = Map.get(resolved_links, link, link)
+        resolved_path = Map.get(sanitized_resolved_links, link, link)
+        resolved_path = String.replace(resolved_path, ~r/\\$/, "")
         "![](#{resolved_path})"
       end)
 
