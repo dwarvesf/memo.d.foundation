@@ -26,7 +26,7 @@ run:
 	@make clear-build
 	@elixir scripts/export_media.exs --vaultpath vault
 	@elixir scripts/export_markdown.exs --vaultpath vault
-	@hugo -DEF --logLevel error server
+	@hugo -DEF --poll 2s --logLevel error server
 	
 watch-run:
 	@make clear-build
