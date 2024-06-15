@@ -66,7 +66,9 @@ defmodule FileWatcher do
   end
 
   defp start_hugo_server() do
-    System.cmd("hugo", ["-DEF", "--logLevel", "error", "server"], into: IO.stream(:stdio, :line))
+    System.cmd("hugo", ["-DEF", "--poll", "2s", "--logLevel", "error", "server"],
+      into: IO.stream(:stdio, :line)
+    )
   end
 
   defp run_scripts(file_path) do
