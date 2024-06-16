@@ -29,7 +29,7 @@ defmodule MarkdownExportDuckDB do
   }
 
   @allowed_frontmatter [
-    {"file_path", "TEXT"},
+    {"file_path", "TEXT UNIQUE"},
     {"md_content", "TEXT"},
     {"embeddings_openai", "FLOAT[1536]"},
     {"embeddings_spr_custom", "FLOAT[1024]"},
@@ -544,15 +544,55 @@ defmodule MarkdownExportDuckDB do
     frontmatter = ensure_all_columns(frontmatter)
     prepared_values = prepare_data(keys, frontmatter)
 
-    query =
-      "INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})"
+    file_path = Map.get(frontmatter, "file_path")
 
-    case Duckdbex.query(conn, query) do
-      {:ok, _result_ref} ->
-        IO.puts("Insertion succeeded for file: #{frontmatter["file_path"]}")
+    # Fetch existing data
+    select_query = "SELECT * FROM vault WHERE file_path = ?"
+    case Duckdbex.query(conn, select_query, [file_path]) do
+      {:ok, %{rows: [existing_data]}} ->
+        if data_changed?(existing_data, frontmatter) do
+          perform_upsert(conn, file_path, keys, prepared_values, frontmatter)
+        else
+          IO.puts("No changes detected for file: #{file_path}")
+        end
+
+      {:ok, _} ->
+        # If no existing data is retrieved, proceed with the insert
+        perform_upsert(conn, file_path, keys, prepared_values, frontmatter)
 
       {:error, error_message} ->
-        IO.puts("Insertion failed for file: #{frontmatter["file_path"]}")
+        IO.puts("Failed to fetch existing entry for file: #{file_path}")
+        IO.puts("Error: #{inspect(error_message)}")
+    end
+  end
+
+  defp data_changed?(existing_data, frontmatter) do
+    Enum.any?(@allowed_frontmatter, fn {key, _} ->
+      Map.get(existing_data, key) != Map.get(frontmatter, key)
+    end)
+  end
+
+  defp perform_upsert(conn, file_path, keys, prepared_values, frontmatter) do
+    delete_query = "DELETE FROM vault WHERE file_path = ?"
+    insert_query = """
+    INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})
+    """
+
+    # Execute the delete query first
+    case Duckdbex.query(conn, delete_query, [file_path]) do
+      {:ok, _result_ref} ->
+        # Execute the insert query next
+        case Duckdbex.query(conn, insert_query) do
+          {:ok, _result_ref} ->
+            IO.puts("Upsert succeeded for file: #{frontmatter["file_path"]}")
+
+          {:error, error_message} ->
+            IO.puts("Upsert failed for file: #{frontmatter["file_path"]}")
+            IO.puts("Error: #{inspect(error_message)}")
+        end
+
+      {:error, error_message} ->
+        IO.puts("Failed to delete existing entry for file: #{frontmatter["file_path"]}")
         IO.puts("Error: #{inspect(error_message)}")
     end
   end
