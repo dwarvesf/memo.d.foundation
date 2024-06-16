@@ -4,12 +4,8 @@ setup:
 	@mkdir -p ./content
 
 fetch:
-	@if [ $$(ps -ef | grep '[h]ugo' | wc -l) -eq 0 ] || [ $$(ps -ef | grep '[p]ython scripts/watch_run.py' | wc -l) -eq 0 ]; then \
-		python scripts/update_git_settings.py; \
-		./git-fetch.sh; \
-	else \
-		echo "A build process is currently running. Skipping fetch."; \
-	fi
+	@elixir scripts/update_git_settings.exs
+	@./git-fetch.sh
 
 build:
 	@make clear-build
