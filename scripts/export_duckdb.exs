@@ -97,7 +97,6 @@ defmodule MarkdownExportDuckDB do
       try do
         install_and_load_extensions(conn)
         setup_database(conn)
-        IO.puts("Starting the process of scanning and updating the vault database.")
         process_files(conn, selected_files, vaultpath, all_files_to_process)
         export(conn, export_format)
       rescue
@@ -184,11 +183,43 @@ defmodule MarkdownExportDuckDB do
   end
 
   defp process_and_store(conn, file_path, frontmatter, md_content) do
-    frontmatter = transform_frontmatter(md_content, frontmatter, file_path)
-    updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
+    query = "SELECT md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = ?"
 
-    if updated_frontmatter do
-      add_to_database(conn, updated_frontmatter)
+    case Duckdbex.query(conn, query, [file_path]) do
+      {:ok, result_ref} ->
+        case Duckdbex.fetch_all(result_ref) do
+          {:ok, [existing_data]} ->
+            IO.puts(Jason.encode(existing_data))
+            if escape_multiline_text(existing_data["md_content"]) != md_content do
+              # Regenerate embeddings if md_content has changed
+              frontmatter = transform_frontmatter(md_content, frontmatter, file_path)
+              updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
+              add_to_database(conn, updated_frontmatter)
+            else
+              # Use existing embeddings if md_content hasn't changed
+              frontmatter = transform_frontmatter(md_content, frontmatter, file_path)
+              existing_data_with_current_frontmatter = Map.merge(frontmatter, %{
+                "embeddings_openai" => existing_data["embeddings_openai"],
+                "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
+              })
+
+              add_to_database(conn, existing_data_with_current_frontmatter)
+            end
+
+          {:ok, []} ->
+            # If no existing data is retrieved, proceed with the transformation, regeneration, and insertion
+            frontmatter = transform_frontmatter(md_content, frontmatter, file_path)
+            updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
+            add_to_database(conn, updated_frontmatter)
+
+          {:error, error_message} ->
+            IO.puts("Failed to fetch existing entry for file: #{file_path}")
+            IO.puts("Error: #{inspect(error_message)}")
+        end
+
+      {:error, error_message} ->
+        IO.puts("Failed to fetch existing entry for file: #{file_path}")
+        IO.puts("Error: #{inspect(error_message)}")
     end
   end
 
@@ -549,16 +580,23 @@ defmodule MarkdownExportDuckDB do
     # Fetch existing data
     select_query = "SELECT * FROM vault WHERE file_path = ?"
     case Duckdbex.query(conn, select_query, [file_path]) do
-      {:ok, %{rows: [existing_data]}} ->
-        if data_changed?(existing_data, frontmatter) do
-          perform_upsert(conn, file_path, keys, prepared_values, frontmatter)
-        else
-          IO.puts("No changes detected for file: #{file_path}")
-        end
+      {:ok, result_ref} ->
+        case Duckdbex.fetch_all(result_ref) do
+          {:ok, [existing_data]} ->
+            if data_changed?(existing_data, frontmatter) do
+              perform_upsert(conn, file_path, keys, prepared_values, frontmatter)
+            else
+              IO.puts("No changes detected for file: #{file_path}")
+            end
 
-      {:ok, _} ->
-        # If no existing data is retrieved, proceed with the insert
-        perform_upsert(conn, file_path, keys, prepared_values, frontmatter)
+          {:ok, []} ->
+            # If no existing data is retrieved, proceed with the insert
+            perform_upsert(conn, file_path, keys, prepared_values, frontmatter)
+
+          {:error, error_message} ->
+            IO.puts("Failed to fetch existing entry for file: #{file_path}")
+            IO.puts("Error: #{inspect(error_message)}")
+        end
 
       {:error, error_message} ->
         IO.puts("Failed to fetch existing entry for file: #{file_path}")
