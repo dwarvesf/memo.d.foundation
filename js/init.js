@@ -99,23 +99,53 @@ document.addEventListener("alpine:init", () => {
   const main = document.querySelector("main");
   const walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT);
   const nodes = [];
+  
   while (walker.nextNode()) {
     nodes.push(walker.currentNode);
   }
+  
   for (const node of nodes) {
     const results = [...node.textContent.matchAll(/(.?)@([\d\w_\-\.]+)/gm)];
     if (!results.length) continue;
-
-    for (const res of results) {
-      const [_, t] = res;
-      if (t.trim() !== "") continue;
-      if (!node?.parentElement?.innerHTML) return;
-      node.parentElement.innerHTML = node.textContent.replace(
-        /(.?)@([\d\w_\-\.]+)/gm,
-        "$1<a href='/contributor/$2'>@$2</a>"
-      );
+  
+    const parent = node.parentElement;
+    if (!parent || !parent.innerHTML) continue;
+  
+    // Create a document fragment to build the new structure
+    const frag = document.createDocumentFragment();
+    let lastIndex = 0;
+  
+    for (const match of results) {
+      const [fullMatch, prefix, username] = match;
+      const index = match.index;
+  
+      // Add text before the match
+      if (lastIndex < index) {
+        frag.appendChild(document.createTextNode(node.textContent.slice(lastIndex, index)));
+      }
+  
+      // Add the prefix
+      if (prefix) {
+        frag.appendChild(document.createTextNode(prefix));
+      }
+  
+      // Create the link element for the username
+      const a = document.createElement('a');
+      a.href = `/contributor/${username}`;
+      a.textContent = `@${username}`;
+      frag.appendChild(a);
+  
+      lastIndex = index + fullMatch.length;
     }
-  }
+  
+    // Add any remaining text after the last match
+    if (lastIndex < node.textContent.length) {
+      frag.appendChild(document.createTextNode(node.textContent.slice(lastIndex)));
+    }
+  
+    // Replace the original text node with the document fragment
+    parent.replaceChild(frag, node);
+  }  
 });
 
 document.addEventListener("click", (e) => {
