@@ -296,20 +296,43 @@ def add_to_database(conn, file_path, frontmatter, md_content):
     )
 
 
-def process_directory(conn, directory, limit, process_all):
-    ignore_file_path = os.path.join(directory, ".export-ignore")
-    if os.path.exists(ignore_file_path):
-        spec = gitignore_parser.parse_gitignore(ignore_file_path)
-    
-    def get_changed_md_files(directory):
+def get_changed_md_files(directory):
+    try:
         changed_files = (
             subprocess.check_output(
-                ["git", "diff", "--name-only", "HEAD^"], cwd=directory
+                ["git", "diff", "--name-only", "HEAD^"],
+                cwd=directory,
+                stderr=subprocess.DEVNULL,  # Suppress stderr
             )
             .decode("utf-8")
             .splitlines()
         )
-        return [f for f in changed_files if f.endswith(".md")]
+    except subprocess.CalledProcessError as e:
+        error_message = e.output.decode("utf-8") if e.output else ""
+        if "unknown revision or path not in the working tree" in error_message:
+            try:
+                # Handle the case when HEAD^ doesn't exist (e.g., first commit)
+                changed_files = (
+                    subprocess.check_output(
+                        ["git", "diff", "--name-only", "HEAD"],
+                        cwd=directory,
+                        stderr=subprocess.DEVNULL,  # Suppress stderr
+                    )
+                    .decode("utf-8")
+                    .splitlines()
+                )
+            except subprocess.CalledProcessError:
+                # Handle the case when HEAD doesn't exist (no commits at all)
+                changed_files = []
+        else:
+            raise
+    return [f for f in changed_files if f.endswith(".md")]
+
+
+def process_directory(conn, directory, limit, process_all):
+    ignore_file_path = os.path.join(directory, ".export-ignore")
+    if os.path.exists(ignore_file_path):
+        spec = gitignore_parser.parse_gitignore(ignore_file_path)
 
     changed_md_files = []
     if not process_all:
@@ -317,16 +340,24 @@ def process_directory(conn, directory, limit, process_all):
         changed_md_files += get_changed_md_files(directory)
 
         # Check for changes in each submodule
-        submodules = (
-            subprocess.check_output(
-                ["git", "submodule", "foreach", "--quiet", "echo $path"], cwd=directory
+        try:
+            submodules = (
+                subprocess.check_output(
+                    ["git", "submodule", "foreach", "--quiet", "echo $path"],
+                    cwd=directory,
+                    stderr=subprocess.DEVNULL,  # Suppress stderr
+                )
+                .decode("utf-8")
+                .splitlines()
             )
-            .decode("utf-8")
-            .splitlines()
-        )
-        for submodule in submodules:
-            submodule_path = os.path.join(directory, submodule)
-            changed_md_files += [os.path.join(submodule, f) for f in get_changed_md_files(submodule_path)]
+            for submodule in submodules:
+                submodule_path = os.path.join(directory, submodule)
+                changed_md_files += [
+                    os.path.join(submodule, f)
+                    for f in get_changed_md_files(submodule_path)
+                ]
+        except subprocess.CalledProcessError:
+            print(f"Failed to fetch submodule changes in {directory}")
 
     short_paths = []
     i = 0
@@ -354,12 +385,38 @@ def process_directory(conn, directory, limit, process_all):
     ).fetchall()
 
 
+def remove_unwanted_lines(file_path):
+    # Define the lines to be removed
+    lines_to_remove = [
+        "CREATE SCHEMA information_schema;",
+        "CREATE SCHEMA pg_catalog;",
+    ]
+
+    # Read the file
+    with open(file_path, "r") as file:
+        lines = file.readlines()
+
+    # Write back only the lines that are not in the list to be removed
+    with open(file_path, "w") as file:
+        for line in lines:
+            if line.strip() not in lines_to_remove:
+                file.write(line)
+
+
 def export(conn, format):
+    output_dir = "db"
     match format:
         case "csv":
-            conn.execute(f"EXPORT DATABASE 'db'")
+            conn.execute(f"EXPORT DATABASE '{output_dir}'")
         case "parquet":
-            conn.execute(f"EXPORT DATABASE 'db' (FORMAT PARQUET)")
+            conn.execute(f"EXPORT DATABASE '{output_dir}' (FORMAT PARQUET)")
+
+    # Path to the exported schema.sql file
+    schema_file_path = os.path.join(output_dir, "schema.sql")
+
+    # Remove unwanted lines from the schema.sql file
+    if os.path.exists(schema_file_path):
+        remove_unwanted_lines(schema_file_path)
 
 
 def main():
