@@ -200,7 +200,7 @@ defmodule MarkdownExportDuckDB do
 
     case duckdb_cmd(query) do
       {:ok, [existing_data]} ->
-        if existing_data["md_content"] != escape_multiline_text(md_content) do
+        if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) do
           # Regenerate embeddings if md_content has changed
           frontmatter = transform_frontmatter(md_content, frontmatter, escaped_file_path)
           updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
@@ -559,7 +559,16 @@ defmodule MarkdownExportDuckDB do
   defp default_transform_value(value) when is_map(value), do: "'#{Jason.encode!(value)}'"
   defp default_transform_value(_value), do: "NULL"
 
-  defp serialize_array(array) when is_list(array), do: "[#{Enum.join(array, ", ")}]"
+  defp serialize_array(array) when is_list(array) do
+    "[#{Enum.join(array, ", ")}]"
+  end
+
+  defp serialize_array(array) when is_binary(array) do
+    case Jason.decode(array) do
+      {:ok, decoded} when is_list(decoded) -> serialize_array(decoded)
+      _ -> "[]"
+    end
+  end
 
   defp serialize_list(list) do
     cleaned_list = Enum.reject(list, &(&1 == "" or &1 == nil))
