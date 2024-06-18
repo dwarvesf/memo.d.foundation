@@ -19,6 +19,7 @@ defmodule MarkdownExporter do
 
     vaultpath = opts[:vaultpath] || "vault"
     exportpath = opts[:exportpath] || "content"
+    dbpath = "db"
 
     {vault_dir, mode} =
       if File.dir?(vaultpath) do
@@ -51,6 +52,16 @@ defmodule MarkdownExporter do
       Flow.from_enumerable(all_assets)
       |> Flow.map(&export_assets_folder(&1, vault_dir, exportpath))
       |> Flow.run()
+
+      # Export the db directory
+      if File.dir?(dbpath) do
+        export_db_path = Path.join(exportpath, "db")
+        File.mkdir_p!(export_db_path)
+        File.cp_r!(dbpath, export_db_path)
+        IO.puts("Exported db folder: #{dbpath} -> #{export_db_path}")
+      else
+        IO.puts("db folder not found at #{dbpath}")
+      end
     end
   end
 
