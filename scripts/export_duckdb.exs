@@ -57,12 +57,7 @@ defmodule MarkdownExportDuckDB do
 
     {opts, _, _} =
       OptionParser.parse(args,
-        strict: [
-          vaultpath: :string,
-          format: :string,
-          all: :boolean,
-          limit: :integer
-        ]
+        strict: [vaultpath: :string, format: :string, all: :boolean, limit: :integer]
       )
 
     vaultpath = opts[:vaultpath] || "vault"
@@ -73,14 +68,15 @@ defmodule MarkdownExportDuckDB do
     ignored_patterns = read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
 
     paths = list_files_and_assets_recursive(vaultpath)
-    {all_files, _all_assets} = Enum.split_with(paths, &File.regular?/1)
 
-    # Filter only markdown files
-    all_files = Enum.filter(all_files, &String.ends_with?(&1, ".md"))
+    all_files =
+      Enum.filter(
+        Enum.split_with(paths, &File.regular?/1) |> elem(0),
+        &String.ends_with?(&1, ".md")
+      )
 
     all_files_to_process =
-      all_files
-      |> Enum.filter(&(not ignored?(&1, ignored_patterns, vaultpath)))
+      Enum.filter(all_files, &(not ignored?(&1, ignored_patterns, vaultpath)))
 
     filtered_files =
       if process_all do
@@ -89,33 +85,36 @@ defmodule MarkdownExportDuckDB do
         get_files_to_process(vaultpath, process_all, all_files_to_process)
       end
 
-    IO.inspect(filtered_files)
-    selected_files = if limit == :infinity, do: filtered_files, else: Enum.take(filtered_files, limit)
+    selected_files =
+      if limit == :infinity, do: filtered_files, else: Enum.take(filtered_files, limit)
 
-    case duckdb_cmd("SELECT 1") do
-      {:ok, _} ->
-        install_and_load_extensions()
-        setup_database()
-        process_files(selected_files, vaultpath, all_files_to_process)
-        export(export_format)
-      {:error, _reason} ->
-        IO.puts("Failed to connect to DuckDB")
+    IO.inspect(selected_files)
+
+    with {:ok, _} <- duckdb_cmd("SELECT 1"),
+         :ok <- install_and_load_extensions(),
+         :ok <- setup_database() do
+      process_files(selected_files, vaultpath, all_files_to_process)
+      export(export_format)
+    else
+      {:error, _reason} -> IO.puts("Failed to connect to DuckDB")
     end
   end
 
   defp duckdb_cmd(query) do
-    case System.cmd("duckdb", ["vault.duckdb", "-json", "-c", query]) do
-      {result, 0} ->
-        if result == "" do
-          {:ok, []}
-        else
-          case Jason.decode(result) do
-            {:ok, json} -> {:ok, json}
-            {:error, _} -> {:ok, result}  # For queries that don't return JSON
-          end
-        end
+    {result, exit_code} = System.cmd("duckdb", ["vault.duckdb", "-json", "-c", query])
 
-      {error_message, _} -> {:error, error_message}
+    cond do
+      exit_code != 0 ->
+        {:error, result}
+
+      result == "" ->
+        {:ok, []}
+
+      true ->
+        case Jason.decode(result) do
+          {:ok, json} -> {:ok, json}
+          {:error, _} -> {:ok, result}
+        end
     end
   end
 
@@ -163,7 +162,9 @@ defmodule MarkdownExportDuckDB do
       cleaned_content =
         content
         |> String.split("\n")
-        |> Enum.reject(&(&1 in ["CREATE SCHEMA information_schema;", "CREATE SCHEMA pg_catalog;"]))
+        |> Enum.reject(
+          &(&1 in ["CREATE SCHEMA information_schema;", "CREATE SCHEMA pg_catalog;"])
+        )
         |> Enum.join("\n")
 
       File.write!(file_path, cleaned_content)
@@ -177,10 +178,13 @@ defmodule MarkdownExportDuckDB do
     files
     |> Enum.each(fn file_path ->
       relative_path = Path.relative_to(file_path, vaultpath)
+
       case File.read(file_path) do
         {:ok, content} ->
           case extract_frontmatter(content) do
-            {:error, :no_frontmatter} -> nil
+            {:error, :no_frontmatter} ->
+              nil
+
             {frontmatter, md_content} ->
               process_and_store(relative_path, frontmatter, md_content)
           end
@@ -196,47 +200,59 @@ defmodule MarkdownExportDuckDB do
 
   defp process_and_store(file_path, frontmatter, md_content) do
     escaped_file_path = escape_string(file_path)
-    query = "SELECT md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
 
-    case duckdb_cmd(query) do
-      {:ok, [existing_data]} ->
-        if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) do
-          # Regenerate embeddings if md_content has changed
-          frontmatter = transform_frontmatter(md_content, frontmatter, escaped_file_path)
-          updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
-          add_to_database(updated_frontmatter)
-        else
-          # Use existing embeddings if md_content hasn't changed
-          frontmatter = transform_frontmatter(md_content, frontmatter, escaped_file_path)
-          existing_data_with_current_frontmatter = Map.merge(frontmatter, %{
-            "embeddings_openai" => existing_data["embeddings_openai"],
-            "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
-          })
+    query =
+      "SELECT md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
 
-          add_to_database(existing_data_with_current_frontmatter)
-        end
-
-      {:ok, []} ->
-        # If no existing data is retrieved, proceed with the transformation, regeneration, and insertion
-        frontmatter = transform_frontmatter(md_content, frontmatter, escaped_file_path)
-        updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
-        add_to_database(updated_frontmatter)
-
-      {:ok, result} when is_binary(result) ->
-        IO.puts("Unexpected result: #{result}")
-
+    with {:ok, result} <- duckdb_cmd(query),
+         existing_data when is_list(result) <- List.first(result) || [],
+         transformed_frontmatter <-
+           transform_frontmatter(md_content, frontmatter, escaped_file_path),
+         :ok <- maybe_update_database(existing_data, transformed_frontmatter, md_content) do
+      :ok
+    else
       {:error, error_message} ->
         IO.puts("Failed to fetch existing entry for file: #{escaped_file_path}")
         IO.puts("Error: #{inspect(error_message)}")
+
+      unexpected_result ->
+        IO.puts("Unexpected result: #{inspect(unexpected_result)}")
     end
   end
 
+  defp maybe_update_database(existing_data, frontmatter, md_content) do
+    case existing_data do
+      [] ->
+        insert_or_update_new_document(frontmatter, md_content)
+
+      _ ->
+        if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) do
+          insert_or_update_new_document(frontmatter, md_content)
+        else
+          use_existing_embeddings(existing_data, frontmatter)
+        end
+    end
+  end
+
+  defp insert_or_update_new_document(frontmatter, md_content) do
+    updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
+    add_to_database(updated_frontmatter)
+  end
+
+  defp use_existing_embeddings(existing_data, frontmatter) do
+    updated_frontmatter =
+      Map.merge(frontmatter, %{
+        "embeddings_openai" => existing_data["embeddings_openai"],
+        "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
+      })
+
+    add_to_database(updated_frontmatter)
+  end
+
   defp get_files_to_process(directory, process_all, all_files) do
-    if process_all == :false do
-      # Get modified files in the main repository
+    if process_all == false do
       git_files = get_modified_files(directory)
 
-      # Collect modified files from submodules
       submodule_files =
         list_submodules(directory)
         |> Enum.flat_map(&get_submodule_modified_files(directory, &1))
@@ -251,7 +267,9 @@ defmodule MarkdownExportDuckDB do
 
   defp get_modified_files(directory) do
     revision = if valid_revision?(directory, "HEAD^"), do: "HEAD^", else: "HEAD"
-    {output, _status} = System.cmd("git", ["diff", "--name-only", revision], cd: directory, stderr_to_stdout: true)
+
+    {output, _status} =
+      System.cmd("git", ["diff", "--name-only", revision], cd: directory, stderr_to_stdout: true)
 
     output
     |> String.split("\n")
@@ -260,18 +278,32 @@ defmodule MarkdownExportDuckDB do
   end
 
   defp list_submodules(directory) do
-    case System.cmd("git", ["config", "--file", Path.join(directory, ".gitmodules"), "--name-only", "--get-regexp", "submodule\\..*\\.path"]) do
+    case System.cmd("git", [
+           "config",
+           "--file",
+           Path.join(directory, ".gitmodules"),
+           "--name-only",
+           "--get-regexp",
+           "submodule\\..*\\.path"
+         ]) do
       {output, 0} ->
         output
         |> String.split("\n", trim: true)
         |> Enum.map(&get_submodule_path(directory, &1))
 
-      _ -> []
+      _ ->
+        []
     end
   end
 
   defp get_submodule_path(directory, line) do
-    case System.cmd("git", ["config", "--file", Path.join(directory, ".gitmodules"), "--get", line]) do
+    case System.cmd("git", [
+           "config",
+           "--file",
+           Path.join(directory, ".gitmodules"),
+           "--get",
+           line
+         ]) do
       {output, 0} ->
         output |> String.trim()
 
@@ -282,6 +314,7 @@ defmodule MarkdownExportDuckDB do
 
   defp get_submodule_modified_files(base_directory, submodule) do
     submodule_dir = Path.join(base_directory, submodule)
+
     case get_modified_files(submodule_dir) do
       [] -> []
       modified_files -> Enum.map(modified_files, &Path.join(submodule, &1))
@@ -289,7 +322,10 @@ defmodule MarkdownExportDuckDB do
   end
 
   defp valid_revision?(directory, revision) do
-    case System.cmd("git", ["rev-parse", "--verify", revision], cd: directory, stderr_to_stdout: true) do
+    case System.cmd("git", ["rev-parse", "--verify", revision],
+           cd: directory,
+           stderr_to_stdout: true
+         ) do
       {_, 0} -> true
       _ -> false
     end
@@ -326,7 +362,6 @@ defmodule MarkdownExportDuckDB do
   defp match_pattern?(path, pattern) do
     cond do
       String.ends_with?(pattern, "/") ->
-        # Check if the path starts with the directory pattern
         String.starts_with?(path, pattern) or String.contains?(path, "/#{pattern}")
 
       String.starts_with?(pattern, "*") ->
@@ -341,15 +376,13 @@ defmodule MarkdownExportDuckDB do
   end
 
   defp extract_frontmatter(content) do
-    case Regex.run(~r/^---\n(.+?)\n---\n/s, content, capture: :all_but_first) do
-      [frontmatter_content] ->
-        case YamlElixir.read_from_string(frontmatter_content) do
-          {:ok, metadata} -> {metadata, strip_frontmatter(content)}
-          {:error, _reason} -> {:error, :invalid_frontmatter}
-        end
-
-      _ ->
-        {:error, :no_frontmatter}
+    with [frontmatter_content] <-
+           Regex.run(~r/^---\n(.+?)\n---\n/s, content, capture: :all_but_first),
+         {:ok, metadata} <- YamlElixir.read_from_string(frontmatter_content) do
+      {metadata, strip_frontmatter(content)}
+    else
+      _ -> {:error, :no_frontmatter}
+      {:error, _reason} -> {:error, :invalid_frontmatter}
     end
   end
 
@@ -385,78 +418,59 @@ defmodule MarkdownExportDuckDB do
 
   defp regenerate_embeddings(md_content, frontmatter) do
     spr_content = spr_compress(md_content)
-    frontmatter = Map.put(frontmatter, "spr_content", spr_content)
 
-    custom_embedding = embed_custom(spr_content)
-    frontmatter = Map.put(frontmatter, "embeddings_spr_custom", custom_embedding["embedding"])
-
-    openai_embedding = embed_openai(md_content)
-    frontmatter = Map.put(frontmatter, "embeddings_openai", openai_embedding["embedding"])
-
-    frontmatter
+    with custom_embedding <- embed_custom(spr_content),
+         openai_embedding <- embed_openai(md_content) do
+      frontmatter
+      |> Map.put("spr_content", spr_content)
+      |> Map.put("embeddings_spr_custom", custom_embedding["embedding"])
+      |> Map.put("embeddings_openai", openai_embedding["embedding"])
+      |> (fn fm ->
+            IO.inspect(custom_embedding)
+            IO.inspect(openai_embedding)
+            fm
+          end).()
+    end
   end
 
   defp spr_compress(text) do
-    text |> String.replace("\n", " ")
-    if String.length(text) <= 100 do
-      ""
-    else
-      spr_text = compress_text_openai(text)
-      if String.length(spr_text) > 100, do: IO.puts("SPR: #{spr_text}")
-      spr_text
-    end
+    text
+    |> String.replace("\n", " ")
+    |> (&if(String.length(&1) > 100, do: compress_text_openai(&1), else: "")).()
   end
 
   defp compress_text_openai(text) do
     api_key = System.get_env("OPENAI_API_KEY")
 
-    if api_key do
-      headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}]
-
-      payload = %{
-        "model" => "gpt-3.5-turbo-0125",
-        "messages" => [
-          %{"role" => "system", "content" => @config.spr_compression_prompt},
-          %{"role" => "user", "content" => text}
-        ]
-      }
-
-      json_payload = Jason.encode!(payload)
-
-      case HTTPoison.post(
+    with true <- is_binary(api_key),
+         headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}],
+         payload =
+           Jason.encode!(%{
+             "model" => "gpt-3.5-turbo-0125",
+             "messages" => [
+               %{"role" => "system", "content" => @config.spr_compression_prompt},
+               %{"role" => "user", "content" => text}
+             ]
+           }),
+         {:ok, %HTTPoison.Response{body: body}} <-
+           HTTPoison.post(
              "https://api.openai.com/v1/chat/completions",
-             json_payload,
+             payload,
              headers,
              @config.http_options
-           ) do
-        {:ok, %HTTPoison.Response{body: body}} ->
-          case Jason.decode(body) do
-            {:ok, decoded_body} ->
-              if Map.has_key?(decoded_body, "error"),
-                do: "",
-                else:
-                  decoded_body["choices"]
-                  |> List.first()
-                  |> Map.get("message")
-                  |> Map.get("content", text)
-
-            {:error, _} ->
-              ""
-          end
-
-        {:error, _} ->
-          ""
-      end
+           ),
+         {:ok, decoded_body} <- Jason.decode(body),
+         false <- Map.has_key?(decoded_body, "error"),
+         %{"choices" => [%{"message" => %{"content" => content}}]} <- decoded_body do
+      content
     else
-      ""
+      _ -> ""
     end
   end
 
   defp embed_custom(text) do
     if String.length(text) > 100 do
-      embeddings = fetch_ollama_embeddings(text)
-      IO.inspect(embeddings)
-      embeddings
+      fetch_ollama_embeddings(text)
     else
       %{"embedding" => List.duplicate(0, 1024)}
     end
@@ -464,9 +478,7 @@ defmodule MarkdownExportDuckDB do
 
   defp embed_openai(text) do
     if String.length(text) > 100 do
-      embeddings = fetch_openai_embeddings(text)
-      IO.inspect(embeddings)
-      embeddings
+      fetch_openai_embeddings(text)
     else
       %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
     end
@@ -475,54 +487,39 @@ defmodule MarkdownExportDuckDB do
   defp fetch_openai_embeddings(text) do
     api_key = System.get_env("OPENAI_API_KEY")
 
-    if api_key do
-      headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}]
-      payload = %{"input" => text, "model" => "text-embedding-3-small"}
-      json_payload = Jason.encode!(payload)
-
-      case HTTPoison.post(
+    with true <- is_binary(api_key),
+         headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}],
+         payload = %{"input" => text, "model" => "text-embedding-3-small"},
+         {:ok, json_payload} <- Jason.encode(payload),
+         {:ok, %HTTPoison.Response{body: body}} <-
+           HTTPoison.post(
              "https://api.openai.com/v1/embeddings",
              json_payload,
              headers,
              @config.http_options
-           ) do
-        {:ok, %HTTPoison.Response{body: body}} ->
-          case Jason.decode(body) do
-            {:ok, data} ->
-              items = data["data"] || []
-              item = List.first(items) || %{}
-              embedding = Map.get(item, "embedding", [])
-              total_tokens = Map.get(data["usage"], "total_tokens", 0)
-              %{"embedding" => embedding, "total_tokens" => total_tokens}
-
-            {:error, _} ->
-              %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
-          end
-
-        {:error, _} ->
-          %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
-      end
+           ),
+         {:ok, data} <- Jason.decode(body),
+         items = data["data"] || [],
+         item = List.first(items) || %{},
+         embedding = Map.get(item, "embedding", List.duplicate(0, 1536)),
+         total_tokens = Map.get(data["usage"], "total_tokens", 0) do
+      %{"embedding" => embedding, "total_tokens" => total_tokens}
     else
-      %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+      _ -> %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
     end
   end
 
   defp fetch_ollama_embeddings(prompt) do
-    url = System.get_env("OLLAMA_BASE_URL")
-    api_key = System.get_env("OLLAMA_API_KEY")
-
-    headers = [{"Content-Type", "application/json"}, {"Authorization", "Bearer #{api_key}"}]
-    body = Jason.encode!(%{model: "snowflake-arctic-embed:335m", prompt: prompt})
-
-    case HTTPoison.post("#{url}/api/embeddings", body, headers, @config.http_options) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: response_body}} ->
-        Jason.decode!(response_body)
-
-      {:ok, %HTTPoison.Response{status_code: _status_code, body: _response_body}} ->
-        %{}
-
-      {:error, _} ->
-        %{}
+    with url when not is_nil(url) <- System.get_env("OLLAMA_BASE_URL"),
+         api_key when not is_nil(api_key) <- System.get_env("OLLAMA_API_KEY"),
+         headers <- [{"Content-Type", "application/json"}, {"Authorization", "Bearer #{api_key}"}],
+         body <- Jason.encode!(%{model: "snowflake-arctic-embed:335m", prompt: prompt}),
+         {:ok, %HTTPoison.Response{status_code: 200, body: response_body}} <-
+           HTTPoison.post("#{url}/api/embeddings", body, headers, @config.http_options),
+         {:ok, parsed_response} <- Jason.decode(response_body) do
+      parsed_response
+    else
+      _ -> %{}
     end
   end
 
@@ -571,14 +568,18 @@ defmodule MarkdownExportDuckDB do
   end
 
   defp serialize_list(list) do
-    cleaned_list = Enum.reject(list, &(&1 == "" or &1 == nil))
+    list
+    |> Enum.reject(&(&1 in ["", nil]))
+    |> case do
+      [] ->
+        "NULL"
 
-    if cleaned_list == [],
-      do: "NULL",
-      else:
-        Enum.map(cleaned_list, &"'#{String.replace(&1, "'", "''")}'")
+      cleaned_list ->
+        cleaned_list
+        |> Enum.map(&"'#{String.replace(&1, "'", "''")}'")
         |> Enum.join(", ")
         |> (&"[#{&1}]").()
+    end
   end
 
   defp escape_string(value) when is_binary(value) do
@@ -587,11 +588,8 @@ defmodule MarkdownExportDuckDB do
 
   defp escape_multiline_text(text) do
     text
-    # Escape single quotes
     |> String.replace("'", "''")
-    # Escape newline characters
     |> String.replace("\n", "\\n")
-    # Wrap in single quotes
     |> (&"'#{&1}'").()
   end
 
@@ -601,26 +599,21 @@ defmodule MarkdownExportDuckDB do
 
   defp add_to_database(frontmatter) do
     keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
-
     frontmatter = ensure_all_columns(frontmatter)
     prepared_values = prepare_data(keys, frontmatter)
-
     file_path = Map.get(frontmatter, "file_path")
     escaped_file_path = escape_string(file_path)
 
-    # Fetch existing data
-    select_query = "SELECT * FROM vault WHERE file_path = '#{escaped_file_path}'"
-    case duckdb_cmd(select_query) do
-      {:ok, [existing_data]} ->
-        if data_changed?(existing_data, frontmatter) do
-          perform_upsert(escaped_file_path, keys, prepared_values, frontmatter)
-        else
-          IO.puts("No changes detected for file: #{escaped_file_path}")
-        end
-
+    with {:ok, [existing_data]} <-
+           duckdb_cmd("SELECT * FROM vault WHERE file_path = '#{escaped_file_path}'"),
+         true <- data_changed?(existing_data, frontmatter) do
+      perform_upsert(escaped_file_path, keys, prepared_values, frontmatter)
+    else
       {:ok, []} ->
-        # If no existing data is retrieved, proceed with the insert
         perform_upsert(escaped_file_path, keys, prepared_values, frontmatter)
+
+      false ->
+        IO.puts("No changes detected for file: #{escaped_file_path}")
 
       {:error, error_message} ->
         IO.puts("Failed to fetch existing entry for file: #{escaped_file_path}")
@@ -636,25 +629,17 @@ defmodule MarkdownExportDuckDB do
 
   defp perform_upsert(file_path, keys, prepared_values, frontmatter) do
     delete_query = "DELETE FROM vault WHERE file_path = '#{file_path}'"
+
     insert_query = """
     INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})
     """
 
-    # Execute the delete query first
-    case duckdb_cmd(delete_query) do
-      {:ok, _result} ->
-        # Execute the insert query next
-        case duckdb_cmd(insert_query) do
-          {:ok, _result} ->
-            IO.puts("Upsert succeeded for file: #{frontmatter["file_path"]}")
-
-          {:error, error_message} ->
-            IO.puts("Upsert failed for file: #{frontmatter["file_path"]}")
-            IO.puts("Error: #{inspect(error_message)}")
-        end
-
+    with {:ok, _} <- duckdb_cmd(delete_query),
+         {:ok, _} <- duckdb_cmd(insert_query) do
+      IO.puts("Upsert succeeded for file: #{frontmatter["file_path"]}")
+    else
       {:error, error_message} ->
-        IO.puts("Failed to delete existing entry for file: #{frontmatter["file_path"]}")
+        IO.puts("Upsert failed for file: #{frontmatter["file_path"]}")
         IO.puts("Error: #{inspect(error_message)}")
     end
   end
