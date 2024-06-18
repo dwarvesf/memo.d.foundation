@@ -1,4 +1,4 @@
 [submodule "vault"]
 	path = vault
-	url = git@github.com:dwarvesf/content.git
+	url = git@github.com:dwarvesf/brainery.git
 	branch = main
