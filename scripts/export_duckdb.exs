@@ -454,7 +454,7 @@ defmodule MarkdownExportDuckDB do
 
   defp embed_custom(text) do
     if String.length(text) > 100 do
-      embeddings = get_ollama_embeddings(text)
+      embeddings = fetch_ollama_embeddings(text)
       IO.inspect(embeddings)
       embeddings
     else
@@ -464,7 +464,7 @@ defmodule MarkdownExportDuckDB do
 
   defp embed_openai(text) do
     if String.length(text) > 100 do
-      embeddings = fetch_openai_embedding(text)
+      embeddings = fetch_openai_embeddings(text)
       IO.inspect(embeddings)
       embeddings
     else
@@ -472,12 +472,12 @@ defmodule MarkdownExportDuckDB do
     end
   end
 
-  defp fetch_openai_embedding(text) do
+  defp fetch_openai_embeddings(text) do
     api_key = System.get_env("OPENAI_API_KEY")
 
     if api_key do
       headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}]
-      payload = %{"input" => text, "model" => "text-embedding-ada-002"}
+      payload = %{"input" => text, "model" => "text-embedding-3-small"}
       json_payload = Jason.encode!(payload)
 
       case HTTPoison.post(
@@ -507,7 +507,7 @@ defmodule MarkdownExportDuckDB do
     end
   end
 
-  defp get_ollama_embeddings(prompt) do
+  defp fetch_ollama_embeddings(prompt) do
     url = System.get_env("OLLAMA_BASE_URL")
     api_key = System.get_env("OLLAMA_API_KEY")
 
