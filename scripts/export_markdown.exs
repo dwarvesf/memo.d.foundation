@@ -124,39 +124,24 @@ defmodule MarkdownExporter do
   end
 
   defp contains_required_frontmatter_keys?(file) do
-    case File.read(file) do
-      {:ok, content} ->
-        case parse_frontmatter(content) do
-          {:ok, frontmatter} ->
-            Map.has_key?(frontmatter, "title") and Map.has_key?(frontmatter, "description")
-
-          _ ->
-            false
-        end
-
-      {:error, _} ->
-        false
+    with {:ok, content} <- File.read(file),
+         {:ok, frontmatter} <- parse_frontmatter(content) do
+      Map.has_key?(frontmatter, "title") and Map.has_key?(frontmatter, "description")
+    else
+      _ -> false
     end
   end
 
   defp parse_frontmatter(content) do
-    case Regex.run(~r/^---\n(.*?)\n---/s, content, capture: :all_but_first) do
-      [frontmatter_str] ->
-        frontmatter_str
-        |> String.split("\n")
-        |> Enum.reduce(%{}, fn line, acc ->
-          case String.split(line, ": ", parts: 2) do
-            [key, value] ->
-              Map.put(acc, key, String.trim(value))
-
-            _ ->
-              acc
-          end
-        end)
-        |> (&{:ok, &1}).()
-
-      _ ->
-        :error
+    with [frontmatter_str] <- Regex.run(~r/^---\n(.*?)\n---/s, content, capture: :all_but_first) do
+      frontmatter_str
+      |> String.split("\n")
+      |> Enum.map(&String.split(&1, ": ", parts: 2))
+      |> Enum.filter(&match?([_, _], &1))
+      |> Enum.into(%{}, fn [key, value] -> {key, String.trim(value)} end)
+      |> (&{:ok, &1}).()
+    else
+      _ -> :error
     end
   end
 
@@ -213,18 +198,13 @@ defmodule MarkdownExporter do
   defp find_link_paths(link, all_files, vaultpath) do
     downcased_link = String.downcase(link)
 
-    all_files
-    |> Enum.reduce(%{}, fn path, acc ->
-      basename = Path.basename(path)
-      downcased_basename = String.downcase(basename)
-
-      if String.contains?(basename, link) or String.contains?(downcased_basename, downcased_link) do
-        relative_path = Path.relative_to(path, vaultpath)
-        Map.put(acc, link, relative_path)
-      else
-        acc
-      end
-    end)
+    for path <- all_files,
+        basename = Path.basename(path),
+        downcased_basename = String.downcase(basename),
+        String.contains?(basename, link) or String.contains?(downcased_basename, downcased_link),
+        into: %{} do
+      {link, Path.relative_to(path, vaultpath)}
+    end
   end
 
   defp convert_links(content, resolved_links) do
