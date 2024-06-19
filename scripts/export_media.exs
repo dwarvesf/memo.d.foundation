@@ -208,14 +208,14 @@ defmodule MediaConverter do
       cond do
         String.ends_with?(full_path, ~w(.png .jpg .gif .svg)) ->
           new_path = compress_image(full_path)
-          {link, new_path}
+          {link, Path.relative_to(new_path, vaultpath)}
 
         String.ends_with?(full_path, ~w(.mp4 .mov .avi)) ->
           new_path = compress_video(full_path)
-          {link, new_path}
+          {link, Path.relative_to(new_path, vaultpath)}
 
         true ->
-          {link, relative_path}
+          {link, Path.relative_to(relative_path, vaultpath)}
       end
     end
   end
