@@ -47,7 +47,8 @@ defmodule MarkdownExportDuckDB do
     {"website", "VARCHAR"},
     {"avatar", "VARCHAR"},
     {"discord_id", "VARCHAR"},
-    {"aliases", "VARCHAR[]"}
+    {"aliases", "VARCHAR[]"},
+    {"icy", "DOUBLE"}
   ]
 
   use Flow
