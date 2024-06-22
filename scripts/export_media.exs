@@ -45,7 +45,7 @@ defmodule MediaConverter do
 
     if mode == :file do
       if Enum.member?(all_valid_files, vaultpath) do
-        process_file(vaultpath, vault_dir, all_valid_files)
+        process_file(vaultpath, vault_dir)
       else
         IO.puts("File #{vaultpath} does not exist or is ignored.")
       end
@@ -53,7 +53,7 @@ defmodule MediaConverter do
       all_valid_files
       |> Flow.from_enumerable()
       |> Flow.filter(&contains_required_frontmatter_keys?(&1))
-      |> Flow.map(&process_file(&1, vault_dir, all_valid_files))
+      |> Flow.map(&process_file(&1, vault_dir))
       |> Flow.run()
     end
   end
@@ -124,13 +124,14 @@ defmodule MediaConverter do
     end
   end
 
-  defp process_file(file, vaultpath, all_files) do
+  defp process_file(file, vaultpath) do
     content = File.read!(file)
     links = extract_links(content)
 
     resolved_links =
       links
-      |> Enum.map(fn link ->
+      |> Flow.from_enumerable()
+      |> Flow.map(fn link ->
         new_link = handle_media_link(link, vaultpath)
         {link, new_link}
       end)
@@ -145,18 +146,28 @@ defmodule MediaConverter do
   defp handle_media_link(link, vaultpath) do
     cond do
       already_converted?(link, vaultpath) ->
-        # If the link is already converted, just return the link
         link
 
       is_url?(link) ->
-        # If the link is a URL, download, convert, and compress
-        download_path = download_file(link, Path.join(vaultpath, @assets_dir, Path.basename(link)))
-        convert_and_compress_media(download_path, vaultpath)
+        if url_points_to_media?(link) do
+          # download_path = download_file(link, vaultpath |> Path.join(@assets_dir) |> Path.join(Path.basename(link)))
+          # convert_and_compress_media(download_path, vaultpath)
+        else
+          link
+        end
 
       true ->
-        # If the link is a local file that isn't converted, convert and compress
-        convert_and_compress_media(link, vaultpath)
+        # convert_and_compress_media(link, vaultpath)
+        link
     end
+  end
+
+  defp url_points_to_media?(url) do
+    uri = URI.parse(url)
+    path = uri.path || ""
+
+    # Check if the URL path ends with a known media file extension
+    Regex.match?(~r/\.(png|jpg|jpeg|gif|svg|mp4|mov|avi)$/i, path)
   end
 
   defp extract_links(content) do
@@ -189,33 +200,25 @@ defmodule MediaConverter do
   defp convert_and_compress_media(link, vaultpath) do
     full_path = Path.join(vaultpath, link)
 
-    cond do
-      String.match?(link, ~r/\.(png|jpg|jpeg)$/i) ->
-        compress_image(full_path)
+    if File.exists?(full_path) do
+      cond do
+        String.match?(link, ~r/\.(png|jpg|jpeg)$/i) ->
+          compress_image(full_path)
 
-      String.match?(link, ~r/\.(mp4|mov|avi)$/i) ->
-        compress_video(full_path)
+        String.match?(link, ~r/\.(mp4|mov|avi)$/i) ->
+          compress_video(full_path)
 
-      true ->
-        link
-    end
-  end
-
-  defp handle_media_link(link, vaultpath) do
-    if is_url?(link) do
-      download_path = download_file(link, Path.join(vaultpath, @assets_dir, Path.basename(link)))
-      convert_and_compress_media(download_path, vaultpath)
-    else
-      if already_converted?(link, vaultpath) do
-        link
-      else
-        convert_and_compress_media(link, vaultpath)
+        true ->
+          link
       end
+    else
+      link
     end
   end
 
   defp is_url?(link) do
-    Regex.match?(~r/^https?:\/\//, link)
+    uri = URI.parse(link)
+    uri.scheme != nil && uri.host != nil
   end
 
   defp download_file(url, target_path) do
@@ -232,11 +235,19 @@ defmodule MediaConverter do
   defp compress_image(image_path) do
     new_path = Path.rootname(image_path) <> ".webp"
 
-    Mogrify.open(image_path)
-    |> Mogrify.format("webp")
-    |> Mogrify.save(path: new_path)
+    try do
+      Mogrify.open(image_path)
+      |> Mogrify.format("webp")
+      |> Mogrify.save(path: new_path)
 
-    new_path
+      new_path
+    rescue
+      e ->
+        IO.puts("Error processing image: #{image_path}")
+        IO.puts("Error: #{inspect(e)}")
+        # Return the original path if compression fails
+        image_path
+    end
   end
 
   defp compress_video(video_path) do
@@ -258,35 +269,61 @@ defmodule MediaConverter do
   end
 
   defp convert_links(content, resolved_links, file, vaultpath) do
-    file_dir = Path.dirname(file)
+    link_patterns = [
+      {~r/!\[\[([^\|\]]+)\|([^\]]+)\]\]/, fn src, alias -> {src, alias} end},
+      {~r/!\[\[([^\]]+)\]\]/, fn link -> {link, nil} end},
+      {~r/!\[([^\]]*)\]\(([^)]+)\)/, fn alt_text, link -> {link, alt_text} end}
+    ]
 
-    resolve_asset_path = fn resolved_path ->
-      asset_path = Path.relative_to(Path.join(vaultpath, resolved_path), file_dir)
-      Path.join(@assets_dir, Path.basename(asset_path))
+    Enum.reduce(link_patterns, content, fn {pattern, extractor}, acc ->
+      Regex.replace(pattern, acc, fn _, capture1, capture2 ->
+        {src, alt} =
+          case extractor do
+            f when is_function(f, 2) -> f.(capture1, capture2)
+            f when is_function(f, 1) -> f.(capture1)
+          end
+
+        resolved_path = Map.get(resolved_links, src, src)
+
+        if is_url?(resolved_path) and not url_points_to_media?(resolved_path) do
+          "![#{alt || ""}](#{resolved_path})"
+        else
+          "![#{alt || ""}](#{resolve_asset_path(resolved_path, file, vaultpath)})"
+        end
+      end)
+    end)
+  end
+
+  defp resolve_asset_path(resolved_path, file_path, vaultpath) do
+    file_dir = Path.dirname(file_path)
+
+    cond do
+      String.starts_with?(resolved_path, @assets_dir) ->
+        resolved_path
+
+      File.exists?(Path.join(file_dir, resolved_path)) ->
+        resolved_path
+
+      true ->
+        find_file_in_vault(vaultpath, Path.basename(resolved_path))
+        |> case do
+          {:ok, found_path} -> Path.relative_to(found_path, file_dir)
+          :error -> Path.join(@assets_dir, Path.basename(resolved_path))
+        end
     end
+  end
 
-    # Handle links with aliases
-    content =
-      Regex.replace(~r/!\[\[([^\|\]]+)\|([^\]]+)\]\]/, content, fn _, src, alias ->
-        resolved_path = Map.get(resolved_links, src,src)
-        "![#{alias}](#{resolve_asset_path.(resolved_path)})"
-      end)
+  defp find_file_in_vault(vaultpath, filename) do
+    pattern = "**/" <> String.replace(filename, ~r/[()]/, "?")
 
-    # Handle links without aliases
-    content =
-      Regex.replace(~r/!\[\[([^\]]+)\]\]/, content, fn _, link ->
-        resolved_path = Map.get(resolved_links, link, link)
-        "![](#{resolve_asset_path.(resolved_path)})"
-      end)
-
-    # Handle markdown links
-    content =
-      Regex.replace(~r/!\[([^\]]+)\]\(([^)]+)\)/, content, fn _, alt_text, link ->
-        resolved_path = Map.get(resolved_links, link, link)
-        "![#{alt_text}](#{resolve_asset_path.(resolved_path)})"
-      end)
-
-    content
+    vaultpath
+    |> Path.join(pattern)
+    |> Path.wildcard()
+    |> Enum.sort_by(&String.jaro_distance(Path.basename(&1), filename), &>=/2)
+    |> case do
+      [] -> :error
+      [path | _] -> {:ok, path}
+    end
   end
 end
 
