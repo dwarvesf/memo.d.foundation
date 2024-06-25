@@ -392,8 +392,8 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1464</li><li class=span><span>Characters:
-</span>19488</li><li class=span><span>Without Spaces:
-</span>8551</li><li class=span><span>Blocks:
+</span>19423</li><li class=span><span>Without Spaces:
+</span>8558</li><li class=span><span>Blocks:
 </span>42</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div><main x-data='{
       currentUrl: `/playground/01_literature/why-micro-frontend/`,
@@ -452,7 +452,7 @@ Folder:
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As web applications become more complex and feature-rich, traditional frontend architectures such as monolithic will become harder to maintain, scale, and evolve. Micro-frontend is an emerging front-end architecture that aims to address these challenges by breaking down the front-end into small, independent and reusable modules.</p><p>In this article, we will explore the concept of micro-frontend, its benefits, design principles, tools and technologies, implementation strategies, and challenges. By the end of this article, you will have a good understanding of what micro-frontend is and why it is important for modern front-end development.</p><h2 id=what-is-micro-frontend>What is Micro-Frontend? <a href=#what-is-micro-frontend></a></h2><p>Micro-Frontend is an architectural pattern for frontend development that emphasizes breaking down the frontend into small, independent and self-contained modules.</p><p>Each module is responsible for a specific feature or functionality and can be developed, tested, and deployed independently. The modules can then be composed into a complete frontend application, similar to how microservices are composed into a complete backend application.</p><p>To better understand how micro-frontend architecture works, we should first look into what’s <strong>monolithic architecture.</strong></p><h3 id=the-monolithic-architecture>The Monolithic Architecture <a href=#the-monolithic-architecture></a></h3><p>In a monolith system, everything resides in one repository and all the developers work on the same code base. For every single change, the entire app needs to be built, tested & shipped as a whole.</p><p>In a lot of cases, this approach is fine, it works if you do it right and a lot of systems use it efficiently. However, as the software scales, issues might arise. It becomes difficult to upgrade the dependencies due to a big codebase with huge impacts, a lot of time would be spent in coordination between developers, testing and deployments become slower, individual changes cannot be shipped, slowing down the pace of the team bringing value to the clients.</p><p>There might be a need for a more efficient solution - by breaking it down:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
     alt: ``,
-    src: `playground/_memo/assets/why-micro-frontend/149cb7501d21ad52e476f168b93085cc_MD5.jpeg`,
+    src: `assets/149cb7501d21ad52e476f168b93085cc_MD5.jpeg`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -495,7 +495,7 @@ Folder:
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>We can see that the backend work has been broken into microservices - a term we are probably too familiar with at this point. However, front-end work is still one big chunk. This is where micro-frontend comes in.</p><h3 id=the-micro-frontend-architecture>The Micro-Frontend Architecture <a href=#the-micro-frontend-architecture></a></h3><p>Let’s take the previous monolithic example (The Shop Team), broken into micro-frontends:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
     alt: ``,
-    src: `playground/_memo/assets/why-micro-frontend/8b4ce5b2e752b7bbc96be21b6d2f1349_MD5.jpeg`,
+    src: `assets/8b4ce5b2e752b7bbc96be21b6d2f1349_MD5.jpeg`,
     altText: ``,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -536,7 +536,7 @@ Folder:
       return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img>
-![](Pasted image 20231101050539.webp)
+![](assets/Pasted image 20231101050539.webp)
 With micro-frontends, codebase, teams, and responsibilities are split vertically in a way that the coupling between them is very low. Each team owns a smaller codebase, and can individually test, deploy and scale according to the needs. Now the teams only need to coordinate the moving parts, which can be kept minimal with a good system design. The teams can easily manage their dependencies and even use a separate tech stack.</p><p>Finally, all micro-frontends can be served to the users altogether through a container (shell) app:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
     alt: ``,
