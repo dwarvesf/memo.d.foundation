@@ -38,7 +38,11 @@ defmodule MarkdownExporter do
 
     if mode == :file do
       if Enum.member?(all_valid_files, vaultpath) do
-        process_single_file(vaultpath, all_valid_files, vault_dir, exportpath)
+        if contains_required_frontmatter_keys?(vaultpath) do
+          process_file(vaultpath, vault_dir, exportpath, all_valid_files)
+        else
+          IO.puts("File #{vaultpath} does not contain required frontmatter keys.")
+        end
       else
         IO.puts("File #{vaultpath} does not exist or is ignored.")
       end
@@ -151,21 +155,12 @@ defmodule MarkdownExporter do
     resolved_links = resolve_links(links, all_files, vaultpath)
     converted_content = convert_links(content, resolved_links)
 
-    export_file = String.replace_prefix(file, vaultpath, exportpath)
-    export_dir = Path.dirname(export_file)
-    File.mkdir_p!(export_dir)
+    [vaultpath_prefix, exportpath_prefix] =
+      [vaultpath, exportpath]
+      |> Enum.map(&Path.split/1)
+      |> Enum.map(&List.first/1)
 
-    File.write!(export_file, converted_content)
-    IO.puts("Exported: #{file} -> #{export_file}")
-  end
-
-  defp process_single_file(file, all_files, vaultpath, exportpath) do
-    content = File.read!(file)
-    links = extract_links(content)
-    resolved_links = resolve_links(links, all_files, vaultpath)
-    converted_content = convert_links(content, resolved_links)
-
-    export_file = String.replace_prefix(file, vaultpath, exportpath)
+    export_file = String.replace_prefix(file, vaultpath_prefix, exportpath_prefix)
     export_dir = Path.dirname(export_file)
     File.mkdir_p!(export_dir)
 
