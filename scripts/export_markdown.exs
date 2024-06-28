@@ -76,10 +76,20 @@ defmodule MarkdownExporter do
 
   defp export_assets_folder(asset_path, vaultpath, exportpath) do
     if Path.basename(asset_path) == "assets" do
-      target_path = String.replace_prefix(asset_path, vaultpath, exportpath)
-      File.mkdir_p!(target_path)
+      [vaultpath_prefix, exportpath_prefix] =
+        [vaultpath, exportpath]
+        |> Enum.map(&Path.split/1)
+        |> Enum.map(&List.first/1)
 
-      File.cp_r!(asset_path, target_path)
+      target_path = String.replace_prefix(asset_path, vaultpath_prefix, exportpath_prefix)
+
+      [asset_path_lowercase, target_path_lowercase] =
+        [asset_path, target_path]
+        |> Enum.map(&String.downcase/1)
+
+      File.mkdir_p!(target_path_lowercase)
+
+      File.cp_r!(asset_path_lowercase, target_path_lowercase)
       IO.puts("Exported assets: #{asset_path} -> #{target_path}")
     end
   end
@@ -160,7 +170,8 @@ defmodule MarkdownExporter do
       |> Enum.map(&Path.split/1)
       |> Enum.map(&List.first/1)
 
-    export_file = String.replace_prefix(file, vaultpath_prefix, exportpath_prefix)
+    file_lowercase = String.downcase(file, :default)
+    export_file = String.replace_prefix(file_lowercase, vaultpath_prefix, exportpath_prefix)
     export_dir = Path.dirname(export_file)
     File.mkdir_p!(export_dir)
 
