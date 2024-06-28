@@ -37,28 +37,34 @@ defmodule MarkdownExporter do
       |> Enum.filter(&(not ignored?(&1, ignored_patterns, vault_dir)))
 
     if mode == :file do
-      if Enum.member?(all_valid_files, vaultpath) do
-        if contains_required_frontmatter_keys?(vaultpath) do
-          process_file(vaultpath, vault_dir, exportpath, all_valid_files)
-        else
-          IO.puts("File #{vaultpath} does not contain required frontmatter keys.")
-        end
-      else
-        IO.puts("File #{vaultpath} does not exist or is ignored.")
-      end
+      process_single_file(vaultpath, vault_dir, exportpath, all_valid_files)
     else
-      Flow.from_enumerable(all_valid_files)
-      |> Flow.filter(&contains_required_frontmatter_keys?/1)
-      |> Flow.map(&process_file(&1, vault_dir, exportpath, all_valid_files))
-      |> Flow.run()
-
-      Flow.from_enumerable(all_assets)
-      |> Flow.map(&export_assets_folder(&1, vault_dir, exportpath))
-      |> Flow.run()
-
-      # Export the db directory
-      export_db_directory("db", exportpath)
+      process_directory(all_valid_files, all_assets, vault_dir, exportpath)
     end
+  end
+
+  defp process_single_file(vaultpath, vault_dir, exportpath, all_valid_files) do
+    if Enum.member?(all_valid_files, vaultpath) and contains_required_frontmatter_keys?(vaultpath) do
+      process_file(vaultpath, vault_dir, exportpath, all_valid_files)
+    else
+      IO.puts(
+        "File #{vaultpath} does not exist, is ignored, or does not contain required frontmatter keys."
+      )
+    end
+  end
+
+  defp process_directory(all_valid_files, all_assets, vault_dir, exportpath) do
+    Flow.from_enumerable(all_valid_files)
+    |> Flow.filter(&contains_required_frontmatter_keys?/1)
+    |> Flow.map(&process_file(&1, vault_dir, exportpath, all_valid_files))
+    |> Flow.run()
+
+    Flow.from_enumerable(all_assets)
+    |> Flow.map(&export_assets_folder(&1, vault_dir, exportpath))
+    |> Flow.run()
+
+    # Export the db directory
+    export_db_directory("db", exportpath)
   end
 
   defp list_files_and_assets_recursive(path) do
@@ -66,30 +72,16 @@ defmodule MarkdownExporter do
     |> Enum.flat_map(fn file ->
       full_path = Path.join(path, file)
 
-      if File.dir?(full_path) do
-        [full_path | list_files_and_assets_recursive(full_path)]
-      else
-        [full_path]
-      end
+      if File.dir?(full_path),
+        do: [full_path | list_files_and_assets_recursive(full_path)],
+        else: [full_path]
     end)
   end
 
   defp export_assets_folder(asset_path, vaultpath, exportpath) do
     if Path.basename(asset_path) == "assets" do
-      [vaultpath_prefix, exportpath_prefix] =
-        [vaultpath, exportpath]
-        |> Enum.map(&Path.split/1)
-        |> Enum.map(&List.first/1)
-
-      target_path = String.replace_prefix(asset_path, vaultpath_prefix, exportpath_prefix)
-
-      [asset_path_lowercase, target_path_lowercase] =
-        [asset_path, target_path]
-        |> Enum.map(&String.downcase/1)
-
-      File.mkdir_p!(target_path_lowercase)
-
-      File.cp_r!(asset_path_lowercase, target_path_lowercase)
+      target_path = replace_path_prefix(asset_path, vaultpath, exportpath)
+      copy_directory(asset_path, target_path)
       IO.puts("Exported assets: #{asset_path} -> #{target_path}")
     end
   end
@@ -97,19 +89,35 @@ defmodule MarkdownExporter do
   defp export_db_directory(dbpath, exportpath) do
     if File.dir?(dbpath) do
       export_db_path = Path.join(exportpath, "db")
-      File.mkdir_p!(export_db_path)
-      File.cp_r!(dbpath, export_db_path)
+      copy_directory(dbpath, export_db_path)
       IO.puts("Exported db folder: #{dbpath} -> #{export_db_path}")
     else
       IO.puts("db folder not found at #{dbpath}")
     end
   end
 
+  defp copy_directory(source, destination) do
+    lowercase_destination = String.downcase(destination)
+    File.mkdir_p!(lowercase_destination)
+
+    File.ls!(source)
+    |> Enum.each(fn item ->
+      source_path = Path.join(source, item)
+      dest_path = Path.join(lowercase_destination, String.downcase(item))
+
+      if File.dir?(source_path) do
+        copy_directory(source_path, dest_path)
+      else
+        File.copy!(source_path, dest_path)
+      end
+    end)
+  end
+
   defp read_export_ignore_file(ignore_file) do
     if File.exists?(ignore_file) do
       File.read!(ignore_file)
       |> String.split("\n", trim: true)
-      |> Enum.filter(&(&1 != "" and not String.starts_with?(&1, "#")))
+      |> Enum.reject(&(String.starts_with?(&1, "#") or &1 == ""))
     else
       []
     end
@@ -123,7 +131,6 @@ defmodule MarkdownExporter do
   defp match_pattern?(path, pattern) do
     cond do
       String.ends_with?(pattern, "/") ->
-        # Check if the path starts with the directory pattern
         String.starts_with?(path, pattern) or String.contains?(path, "/#{pattern}")
 
       String.starts_with?(pattern, "*") ->
@@ -165,18 +172,20 @@ defmodule MarkdownExporter do
     resolved_links = resolve_links(links, all_files, vaultpath)
     converted_content = convert_links(content, resolved_links)
 
-    [vaultpath_prefix, exportpath_prefix] =
-      [vaultpath, exportpath]
-      |> Enum.map(&Path.split/1)
-      |> Enum.map(&List.first/1)
-
-    file_lowercase = String.downcase(file, :default)
-    export_file = String.replace_prefix(file_lowercase, vaultpath_prefix, exportpath_prefix)
-    export_dir = Path.dirname(export_file)
+    export_file = replace_path_prefix(file, vaultpath, exportpath)
+    lowercase_export_file = String.downcase(export_file)
+    export_dir = Path.dirname(lowercase_export_file)
     File.mkdir_p!(export_dir)
 
-    File.write!(export_file, converted_content)
-    IO.puts("Exported: #{file} -> #{export_file}")
+    File.write!(lowercase_export_file, converted_content)
+    IO.puts("Exported: #{file} -> #{lowercase_export_file}")
+  end
+
+  defp replace_path_prefix(path, old_prefix, new_prefix) do
+    [old_prefix, new_prefix]
+    |> Enum.map(&Path.split/1)
+    |> Enum.map(&List.first/1)
+    |> then(fn [old, new] -> String.replace_prefix(path, old, new) end)
   end
 
   defp extract_links(content) do
@@ -209,7 +218,7 @@ defmodule MarkdownExporter do
         downcased_basename = String.downcase(basename),
         String.contains?(basename, link) or String.contains?(downcased_basename, downcased_link),
         into: %{} do
-      {link, Path.relative_to(path, vaultpath)}
+      {link, Path.relative_to(path, vaultpath) |> String.downcase()}
     end
   end
 
@@ -220,32 +229,40 @@ defmodule MarkdownExporter do
         Map.put(acc, sanitized_key, String.replace(v, ~r/\\$/, ""))
       end)
 
-    # First handle links with alt text
-    content =
-      Regex.replace(~r/\[\[([^\|\]]+)\|([^\]]+)\]\]/, content, fn _, link, alt_text ->
-        resolved_path = Map.get(sanitized_resolved_links, link, link)
-        resolved_path = String.replace(resolved_path, ~r/\\$/, "")
-        "[#{alt_text}](#{resolved_path})"
-      end)
-
-    # Handle links without alt text
-    content =
-      Regex.replace(~r/\[\[([^\]]+)\]\]/, content, fn _, link ->
-        resolved_path = Map.get(sanitized_resolved_links, link, "#{link}.md")
-        resolved_path = String.replace(resolved_path, ~r/\\$/, "")
-        alt_text = Path.basename(resolved_path, ".md")
-        "[#{alt_text}](#{resolved_path})"
-      end)
-
-    # Handle embedded images
-    content =
-      Regex.replace(~r/!\[\[([^\]]+)\]\]/, content, fn _, link ->
-        resolved_path = Map.get(sanitized_resolved_links, link, link)
-        resolved_path = String.replace(resolved_path, ~r/\\$/, "")
-        "![](#{resolved_path})"
-      end)
-
     content
+    |> convert_links_with_alt_text(sanitized_resolved_links)
+    |> convert_links_without_alt_text(sanitized_resolved_links)
+    |> convert_embedded_images(sanitized_resolved_links)
+  end
+
+  defp convert_links_with_alt_text(content, resolved_links) do
+    Regex.replace(~r/\[\[([^\|\]]+)\|([^\]]+)\]\]/, content, fn _, link, alt_text ->
+      resolved_path =
+        Map.get(resolved_links, link, link) |> String.replace(~r/\\$/, "") |> String.downcase()
+
+      "[#{alt_text}](#{resolved_path})"
+    end)
+  end
+
+  defp convert_links_without_alt_text(content, resolved_links) do
+    Regex.replace(~r/\[\[([^\]]+)\]\]/, content, fn _, link ->
+      resolved_path =
+        Map.get(resolved_links, link, "#{link}.md")
+        |> String.replace(~r/\\$/, "")
+        |> String.downcase()
+
+      alt_text = Path.basename(resolved_path, ".md")
+      "[#{alt_text}](#{resolved_path})"
+    end)
+  end
+
+  defp convert_embedded_images(content, resolved_links) do
+    Regex.replace(~r/!\[\[([^\]]+)\]\]/, content, fn _, link ->
+      resolved_path =
+        Map.get(resolved_links, link, link) |> String.replace(~r/\\$/, "") |> String.downcase()
+
+      "![](#{resolved_path})"
+    end)
   end
 end
 
