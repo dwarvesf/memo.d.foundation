@@ -99,9 +99,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vsc-dark-plus.min.css" integrity="sha512-ML8rkwYTFNcblPFx+VLgFIT2boa6f8DDP6p6go4+FT0/mJ8DCbCgi6S0UdjtzB3hKCr1zhU+YVB0AHhIloZP8Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: light)" />
 
   <script defer data-domain="memo.d.foundation" src="https://plausible.io/js/script.js"></script>
-  <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/persist@3.13.10/dist/cdn.min.js"></script>
-  <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/focus@3.13.10/dist/cdn.min.js"></script>
-  <script defer src="https://fastly.jsdelivr.net/npm/alpinejs@3.13.10/dist/cdn.min.js"></script>
+  <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/persist@3.14.1/dist/cdn.min.js"></script>
+  <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/focus@3.14.1/dist/cdn.min.js"></script>
+  <script defer src="https://fastly.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
 
   <!-- D3 -->
   <script defer src="https://d3js.org/d3.v7.min.js"></script>
@@ -570,28 +570,14 @@
     }">
       <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
       {{ if not (eq .Kind "404")}}
-        <template x-if="!hideTitle">
-          <div x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
-            <!-- docsearch indices -->
-            <div class="title-index" style="display: none;">{{ .Title }}</div>
-            <div class="tags-index" style="display: none;">tags: {{ if .Params.Tags }}{{ delimit .Params.Tags ", " }}{{ end }}</div>
+        <div x-show="!hideTitle" x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
+          <div class="title-index" style="display: none;">{{ .Title }}</div>
+          <div class="tags-index" style="display: none;">tags: {{ if .Params.Tags }}{{ delimit .Params.Tags ", " }}{{ end }}</div>
 
-            <template x-if="isTagPage()"><h1 class="pagetitle" x-text="`#${title.replaceAll('-', ' ')}`"></h1></template>
-            <template x-if="!isTagPage()"><h1 class="pagetitle" x-text="title">{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</h1></template>
-            <!-- <template x-for="data in tagsData"> -->
-            <!--   <template x-if="data.tags && data.tags.length > 0"> -->
-            <!--     <div class="tags" x-data="{ start: 0, end: 4, loaded: false, loadText: '...', }"> -->
-            <!--       <template x-for="tag in slice(data.tags, start, end)"> -->
-            <!--         <a class="tag" x-bind:href="`/tags/${tag.toLowerCase()}`" x-text="tag"></a> -->
-            <!--       </template> -->
-            <!--       <template x-if="!!loadText && data.tags.length > 4"> -->
-            <!--         <a class="tag" href x-text="loadText" @click.prevent="toggleLoad(loaded)"></a> -->
-            <!--       </template> -->
-            <!--     </div> -->
-            <!--   </template> -->
-            <!-- </template> -->
-          </div>
-        </template>
+          <h1 class="pagetitle" x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">
+            {{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}
+          </h1>
+        </div>
       {{ end }}
 
       {{ if .Params.notice -}}
