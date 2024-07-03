@@ -155,7 +155,7 @@
   });
 </script>
 
-<div x-data="{ searching: false, searchBar: false, query: '', searchResults: {}, flat: [], selected: {}, 
+<div x-data="{ searching: false, searchPlaceholder: 'Initializing Search...', searchBar: false, query: '', searchResults: {}, flat: [], selected: {}, 
     next(container) {
       const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
       let nextIdx = curIdx + 1;
@@ -202,10 +202,11 @@
     @keydown.ctrl.k.prevent.document="prev()" @keydown.down.stop.document="next()" @keydown.up.stop.document="prev()"
     class="cmd-overlay" :class="searchBar ?'cmd-modal-active' : 'cmd-modal-hidden'" x-ref="searchContainer">
     <div class="cmd-modal" @mousedown.outside="close()" x-trap.inert.noscroll.noreturn="searchBar">
-      <input type="text" x-model="query" placeholder="Search" autocomplete="off" class="cmd-search-input"
+      <input type="text" x-model="query" :placeholder="searchPlaceholder" autocomplete="off" class="cmd-search-input"
         x-ref="searchInput" @input.change="searching = true"
         @input.change.debounce="$dispatch('command-palette-search', { data: $event.target.value })"
-        @command-palette-search-result.window="searching = false; searchResults = $event.detail.data.grouped; flat = $event.detail.data.flat; selected = $event.detail.data.flat[0]" />
+        @command-palette-search-result.window="searching = false; searchResults = $event.detail.data.grouped; flat = $event.detail.data.flat; selected = $event.detail.data.flat[0]"
+        @command-palette-search-initialize.window="searchPlaceholder = $event.detail.text"/>
       <div x-cloak :class="searchBar ?'cmd-results-active' : 'cmd-results-hidden'" class="cmd-results"
         @keydown.meta.k.prevent.document="searchBar = !searchBar; $nextTick(() => $refs.searchInput.focus())"
         @keydown.escape.document="close()">
