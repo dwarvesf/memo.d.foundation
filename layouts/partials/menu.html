@@ -8,20 +8,18 @@
 
       paths.forEach((path, index) => {
         if (!currentLevel[path]) {
-          currentLevel[path] = {};
-        }
-        if (index === paths.length - 1) {
           currentLevel[path] = {
-            "grouped_path": item.grouped_path || '',
-            "file_paths": item.file_paths.map((paths) => JSON.parse(paths)) || [],
+            "grouped_path": paths.slice(0, index + 1).join('/'),
+            "file_paths": [],
             "next_path": {}
           };
-        } else {
-          if (!currentLevel[path].next_path) {
-            currentLevel[path].next_path = {};
-          }
-          currentLevel = currentLevel[path].next_path;
         }
+
+        if (index === paths.length - 1) {
+          currentLevel[path].file_paths = item.file_paths.map(paths => JSON.parse(paths));
+        }
+
+        currentLevel = currentLevel[path].next_path;
       });
     });
 
@@ -41,6 +39,7 @@
       FROM vault
       WHERE grouped_path IS NOT NULL
         AND file_path NOT LIKE '%_index%'
+        AND file_path NOT LIKE '%_radar%'
         AND title IS NOT NULL
         AND (draft != true OR draft IS NULL)
       GROUP BY grouped_path;
