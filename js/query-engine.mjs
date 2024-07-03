@@ -5,6 +5,37 @@ window.duckdbduckdbWasm = duckdbduckdbWasm;
 
 const transformersEmbeddingsModel = 'Snowflake/snowflake-arctic-embed-l';
 
+class EventQueue {
+  constructor(delay, event) {
+    this.queue = [];
+    this.isProcessing = false;
+    this.delay = delay;
+    this.event = event
+  }
+
+  add(text) {
+    this.queue.push(text);
+    if (!this.isProcessing) {
+      this.processQueue();
+    }
+  }
+
+  async processQueue() {
+    this.isProcessing = true;
+    while (this.queue.length > 0) {
+      const text = this.queue.shift();
+      this.dispatchEvent(text);
+      await new Promise(resolve => setTimeout(resolve, this.delay));
+    }
+    this.isProcessing = false;
+  }
+
+  dispatchEvent(text) {
+    const event = new CustomEvent(this.event, { detail: { text } });
+    window.dispatchEvent(event);
+  }
+}
+
 queueMicrotask(async () => {
   // Don't load these models on mobile
   if (window.innerWidth <= 768) {
@@ -98,6 +129,11 @@ caches.open('vault-cache').then(async (cache) => {
 
 window._conn_whnf_thunk = null;
 
+const eventQueue = new EventQueue(500, 'command-palette-search-initialize');
+const dispatchSearchPlaceholder = (text) => {
+  eventQueue.add(text)
+}
+
 const getDuckDB = async () => {
   // If the connection promise exists, wait for it to resolve
   if (window._conn_whnf_thunk) {
@@ -138,11 +174,13 @@ const getDuckDB = async () => {
       const conn = await db.connect();
       window._conn = conn;
 
+      dispatchSearchPlaceholder('Initializing Search: Loading memo DuckDB...')
       console.time('Loading memo DuckDB');
       await conn.query(`IMPORT DATABASE '${window.location.origin}/db'`);
       console.timeEnd('Loading memo DuckDB');
 
       queueMicrotask(async () => {
+        dispatchSearchPlaceholder('Initializing Search: Indexing vault with FTS...')
         console.time('Indexing vault with FTS');
         await conn.query('INSTALL fts');
         await conn.query('LOAD fts');
@@ -151,12 +189,14 @@ const getDuckDB = async () => {
       })
 
       queueMicrotask(async () => {
+        dispatchSearchPlaceholder('Initializing Search: Indexing embeddings with HNSW...')
         console.time('Indexing embeddings with HNSW');
         await conn.query('INSTALL vss');
         await conn.query('LOAD vss');
         await conn.query("CREATE INDEX emb_openai_hnsw_index ON vault USING HNSW (embeddings_openai)")
         await conn.query("CREATE INDEX emb_spr_custom_hnsw_index ON vault USING HNSW (embeddings_spr_custom)")
         console.timeEnd('Indexing embeddings with HNSW');
+        dispatchSearchPlaceholder('Search')
       })
 
       // Reset the promise since the connection is established
