@@ -287,6 +287,7 @@ defmodule MarkdownExporter do
         |> String.split(",")
         |> Enum.map(&extract_column_name/1)
         |> Enum.filter(&(&1 != nil))
+
       nil ->
         []
     end
@@ -294,19 +295,37 @@ defmodule MarkdownExporter do
 
   defp extract_column_name(column) do
     column = String.trim(column)
+
     cond do
-      String.contains?(column, " AS ") ->
-        [_, alias] = String.split(column, ~r/\sAS\s/i, parts: 2)
+      # Case: column AS alias
+      String.match?(column, ~r/\sAS\s/i) ->
+        [_, alias] = Regex.split(~r/\sAS\s/i, column, parts: 2)
         clean_name(alias)
-      String.match?(column, ~r/\w+\(.*\)\s+\w+$/) ->
-        Regex.run(~r/\w+\(.*\)\s+(\w+)$/, column) |> List.last() |> clean_name()
+
+      # Case: function(column) alias
+      String.match?(column, ~r/^[\w\d_]+\(.*\)\s+\w+$/) ->
+        Regex.run(~r/^.*\)\s+(\w+)$/, column)
+        |> List.last()
+        |> clean_name()
+
+      # Case: function(column) AS alias
+      String.match?(column, ~r/^[\w\d_]+\(.*\)\s+AS\s+\w+$/i) ->
+        Regex.run(~r/^.*\)\s+AS\s+(\w+)$/i, column)
+        |> List.last()
+        |> clean_name()
+
+      # Case: just a function
       String.contains?(column, "(") ->
         case Regex.run(~r/(\w+)\((.*)\)/, column) do
           [_, func_name, args] ->
             arg = args |> String.split(",") |> List.first() |> String.trim()
             clean_name(arg)
-          nil -> clean_name(column)
+
+          nil ->
+            clean_name(column)
         end
+
+      # Case: just a column name
       true ->
         column |> String.split(" ") |> List.last() |> clean_name()
     end
