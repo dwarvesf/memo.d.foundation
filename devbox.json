@@ -27,10 +27,11 @@
     "git":         "2.44.0",
     "duckdb":      "1.0.0",
     "hugo":        "0.126.3",
-    "elixir":      "1.16.3",
+    "elixir_1_17": "1.17.1",
     "elixir-ls":   "0.21.3",
     "imagemagick": "7.1.1-32",
-    "clang":       "17.0.6"
+    "clang":       "17.0.6",
+    "erlang":      "25.3.2.12"
   },
   "shell": {
     "init_hook": [

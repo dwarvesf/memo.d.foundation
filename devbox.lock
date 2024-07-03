@@ -210,8 +210,8 @@
       }
     },
     "elixir-ls@0.21.3": {
-      "last_modified": "2024-06-07T15:28:25Z",
-      "resolved": "github:NixOS/nixpkgs/d226935fd75012939397c83f6c385e4d6d832288#elixir-ls",
+      "last_modified": "2024-06-18T11:39:17Z",
+      "resolved": "github:NixOS/nixpkgs/56fc115880db6498245adecda277ccdb33025bc2#elixir-ls",
       "source": "devbox-search",
       "version": "0.21.3",
       "systems": {
@@ -219,89 +219,137 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/g4a79np54z6xzbj0wnr17m2x6hjbr4g7-elixir-ls-0.21.3",
+              "path": "/nix/store/5rhjh7w5602h3qsr4bannps029xcnbpr-elixir-ls-0.21.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/g4a79np54z6xzbj0wnr17m2x6hjbr4g7-elixir-ls-0.21.3"
+          "store_path": "/nix/store/5rhjh7w5602h3qsr4bannps029xcnbpr-elixir-ls-0.21.3"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/24h045nsx5dnpv3j27n7idfdiadmpz0r-elixir-ls-0.21.3",
+              "path": "/nix/store/nknl51g0z723kg085d3478pfw006ag97-elixir-ls-0.21.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/24h045nsx5dnpv3j27n7idfdiadmpz0r-elixir-ls-0.21.3"
+          "store_path": "/nix/store/nknl51g0z723kg085d3478pfw006ag97-elixir-ls-0.21.3"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/jnii1xiq0km48z54x6aic25dya7xca91-elixir-ls-0.21.3",
+              "path": "/nix/store/i8kzkal4s0rm2gpqawwgnp98fibhdbny-elixir-ls-0.21.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/jnii1xiq0km48z54x6aic25dya7xca91-elixir-ls-0.21.3"
+          "store_path": "/nix/store/i8kzkal4s0rm2gpqawwgnp98fibhdbny-elixir-ls-0.21.3"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/v8cgz6ww2fijf75yhaay4lb10165v83b-elixir-ls-0.21.3",
+              "path": "/nix/store/ri1vqmgsvkq5wp4664ms0p3xxwvl7458-elixir-ls-0.21.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/v8cgz6ww2fijf75yhaay4lb10165v83b-elixir-ls-0.21.3"
+          "store_path": "/nix/store/ri1vqmgsvkq5wp4664ms0p3xxwvl7458-elixir-ls-0.21.3"
         }
       }
     },
-    "elixir@1.16.3": {
-      "last_modified": "2024-06-07T15:28:25Z",
-      "resolved": "github:NixOS/nixpkgs/d226935fd75012939397c83f6c385e4d6d832288#elixir",
+    "elixir_1_17@1.17.1": {
+      "last_modified": "2024-06-18T20:33:49Z",
+      "resolved": "github:NixOS/nixpkgs/37a45fb6993f14555f50b18fbcf4945b82a35707#elixir_1_17",
       "source": "devbox-search",
-      "version": "1.16.3",
+      "version": "1.17.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/j4g1bnc4mzsn7bicygndvcl1vbqq1p4h-elixir-1.16.3",
+              "path": "/nix/store/lm8ac9ar54iqai0s07iv0zn884m8sg8x-elixir-1.17.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/j4g1bnc4mzsn7bicygndvcl1vbqq1p4h-elixir-1.16.3"
+          "store_path": "/nix/store/lm8ac9ar54iqai0s07iv0zn884m8sg8x-elixir-1.17.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vsbdjg9wnxww6kkwnqkpi8r5h8yvm3il-elixir-1.16.3",
+              "path": "/nix/store/gk2zf378idbcbpplaqszxwfxsd5xdlnq-elixir-1.17.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vsbdjg9wnxww6kkwnqkpi8r5h8yvm3il-elixir-1.16.3"
+          "store_path": "/nix/store/gk2zf378idbcbpplaqszxwfxsd5xdlnq-elixir-1.17.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/d2isv30lhgaf2a19vr1a1xqk6v8bm0s5-elixir-1.16.3",
+              "path": "/nix/store/762c8fwf9nnny6f9h07w3z7ql80hrw4d-elixir-1.17.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/d2isv30lhgaf2a19vr1a1xqk6v8bm0s5-elixir-1.16.3"
+          "store_path": "/nix/store/762c8fwf9nnny6f9h07w3z7ql80hrw4d-elixir-1.17.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vah2w1gcg20qkrr4j3b2v4xjxnrv496s-elixir-1.16.3",
+              "path": "/nix/store/4i9a04zq8nyhvmyda92zr4cqckz70sxv-elixir-1.17.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vah2w1gcg20qkrr4j3b2v4xjxnrv496s-elixir-1.16.3"
+          "store_path": "/nix/store/4i9a04zq8nyhvmyda92zr4cqckz70sxv-elixir-1.17.1"
+        }
+      }
+    },
+    "erlang@25.3.2.12": {
+      "last_modified": "2024-06-12T20:55:33Z",
+      "resolved": "github:NixOS/nixpkgs/a9858885e197f984d92d7fe64e9fff6b2e488d40#erlang",
+      "source": "devbox-search",
+      "version": "25.3.2.12",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/g6v8c7227rwc485ismnn0brwyc2zd5kf-erlang-25.3.2.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/g6v8c7227rwc485ismnn0brwyc2zd5kf-erlang-25.3.2.12"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/cfvm62bc1261nysn7dlyi6fmqzv1mn41-erlang-25.3.2.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/cfvm62bc1261nysn7dlyi6fmqzv1mn41-erlang-25.3.2.12"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/sbyx43p2pqlgs849h3b2zxm59sxwvg8l-erlang-25.3.2.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/sbyx43p2pqlgs849h3b2zxm59sxwvg8l-erlang-25.3.2.12"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4a5pyplciq5jb7snny7mppcfsgvc7bzp-erlang-25.3.2.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4a5pyplciq5jb7snny7mppcfsgvc7bzp-erlang-25.3.2.12"
         }
       }
     },
