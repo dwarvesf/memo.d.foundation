@@ -46,11 +46,13 @@ defmodule FileWatcher do
 
   def handle_info({:file_event, watcher_pid, {path, events}}, state)
       when watcher_pid === state.watcher_pid do
-    if (:modified in events or :created in events) and not locked?(path) do
-      Logger.info("File changed: #{path}. Running scripts...")
-      lock(path)
-      run_scripts(path)
-      schedule_unlock(path)
+    relative_path = get_relative_path(path, state.vaultpath)
+
+    if (:modified in events or :created in events) and not locked?(relative_path) do
+      Logger.info("File changed: #{relative_path}. Running scripts...")
+      lock(relative_path)
+      run_scripts(relative_path)
+      schedule_unlock(relative_path)
     end
 
     {:noreply, state}
@@ -63,6 +65,18 @@ defmodule FileWatcher do
 
   def handle_info(_msg, state) do
     {:noreply, state}
+  end
+
+  defp get_relative_path(full_path, vaultpath) do
+    case String.split(full_path, vaultpath) do
+      [_, relative] ->
+        relative
+        |> String.trim_leading("/")
+        |> (&Path.join(Path.basename(vaultpath), &1)).()
+
+      _ ->
+        full_path
+    end
   end
 
   defp start_hugo_server() do
