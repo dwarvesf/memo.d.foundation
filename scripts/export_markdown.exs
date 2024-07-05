@@ -212,7 +212,7 @@ defmodule MarkdownExporter do
   end
 
   defp duckdb_cmd(query) do
-    {result, exit_code} = System.cmd("duckdb", ["vault.duckdb", "-json", "-c", query])
+    {result, exit_code} = System.cmd("duckdb", ["-json", "-cmd", "IMPORT DATABASE 'db'", "-c", query])
 
     cond do
       exit_code != 0 ->
