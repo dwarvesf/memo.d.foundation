@@ -7,11 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Pull and update submodules
     steps:
-      - name: Debounce 10s
-        uses: zachary95/github-actions-debounce@v0.1.0
-        with:
-          wait: 10
-
       - name: Checkout contents repo
         uses: actions/checkout@v4
         with:
@@ -24,14 +19,6 @@ jobs:
         with:
           enable-cache: true
           devbox-version: 0.12.0
-
-      - name: Check for Label
-        id: check_label
-        run: |
-          if git log -1 --pretty=format:%B | grep -q 'chore(ci)'; then
-            echo "Commit contains `ci` label. Exiting..."
-            exit 0
-          fi
 
       - name: Pull & update submodules recursively
         run: |
