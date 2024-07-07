@@ -143,14 +143,16 @@
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }"
   controls
@@ -176,14 +178,16 @@
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }"
   :src="relativeSrc"
