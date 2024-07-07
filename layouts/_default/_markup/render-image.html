@@ -139,16 +139,18 @@
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      let currentUrlParts = this.currentUrl.split('/');
-      currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
-      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
-
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
+        return this.src; // Return the full URL for external links
       }
-      return `/${this.src}`;
+
+      let currentUrlParts = window.location.pathname.split('/');
+      currentUrlParts.pop(); // Remove the current page
+      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+
+      if (this.src.startsWith('assets/')) {
+         return `${relativeUrl}${this.src}`;
+      }
+      return `/${this.src.replace(/^\//, '')}`;
     }
   }"
   controls
@@ -170,16 +172,18 @@
       return this.altText.match(widthHeightRegex) ?? [];
     },
     get relativeSrc() {
-      let currentUrlParts = this.currentUrl.split('/');
-      currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
-      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
-
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
+        return this.src; // Return the full URL for external links
       }
-      return `/${this.src}`;
+
+      let currentUrlParts = window.location.pathname.split('/');
+      currentUrlParts.pop(); // Remove the current page
+      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+
+      if (this.src.startsWith('assets/')) {
+         return `${relativeUrl}${this.src}`;
+      }
+      return `/${this.src.replace(/^\//, '')}`;
     }
   }"
   :src="relativeSrc"
