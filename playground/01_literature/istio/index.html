@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1011</li><li class=span><span>Characters:
-</span>21228</li><li class=span><span>Without Spaces:
+</span>21240</li><li class=span><span>Without Spaces:
 </span>5797</li><li class=span><span>Blocks:
 </span>35</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data="{
@@ -439,14 +439,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Pros</strong></p><ul><li>Microservices can focus on business logic</li><li>Authentication, logging, and monitoring can be handled by the API Gateway</li><li>Flexibility to use completely independent protocols in which clients and microservice can talk</li><li>Can handle failures/retries</li></ul><p><strong>Cons</strong></p><ul><li>API Gateways are fairly centralized, so it could be a single point of failure if it is not well managed and scaled.</li><li>Although they can be scalable, they still require a single point to register new APIs or change configuration</li><li>From an organizational perspective, they are likely to be maintained by a single team</li></ul><h3 id=service-mesh>Service Mesh <a href=#service-mesh></a></h3><p>Unlike API Gateways, Service meshes are focus on decentralized and self-organizing networks between microservices. that handle load balancing, service discovery, health checks, monitoring, and tracing. The mesh work by attaching small agents container, also known as &ldquo;sidecar&rdquo; alongside with every instance that manipulate the inbound/outbound traffic and handles instance registration, metric collection, and tracing. Istio, Linkerd are the most known service meshes.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -462,14 +464,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Pros</strong></p><ul><li>Because of the decentralization, service mesh entities handle their own traffic without being gathered at a single point.</li><li>Service meshes are more dynamic and can easily shift shape and accommodate new functionalities and endpoints.</li><li>Their decentralized nature makes it easier to work on microservices for development teams</li><li>Resilience, failure/retry handling is as power as API gateway</li></ul><p><strong>Cons</strong></p><ul><li>Service meshes is complex and require quite lot of resource.</li><li>It requires the deployment of a separate traffic manager, a telemetry gatherer, a certificate manager and a sidecar process for each instance.</li><li>They are still young, and need a lot more of development to be fully ready for a production grade microservice network.</li></ul><h2 id=a-nutshell>A nutshell <a href=#a-nutshell></a></h2><p>It’s easy to see that both API Gateway and Service mesh have the strength that each other misses, so many developers agree that the best practice for microservices network are combining both of them. Istio is the very first pioneer in this approach, making it the worthiest architecture in the world, that’s why it is backed by many engineers from tech giants like Google, IBM and Redhat.</p><h2 id=what-leads-to-istio>What leads to Istio <a href=#what-leads-to-istio></a></h2><p>Let&rsquo;s begin with Kubernetes - the famous container orchestration platforms To make a microservices network, k8s basically run these 3 entities:</p><ul><li>Pod - a group of one or more containers, with shared storage/network</li><li>Deployment - manages pod definition and defines replicas of pods</li><li>Service - an abstraction, an access point to a set of Pods</li></ul><p>So we have the microservices the Kubernetes way:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -485,14 +489,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>What if I found microservices grow up like this?</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -508,14 +514,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Definitely it will become a multiple points of failure. This is where the savior Service Mesh come in, and Istio can solve the problem. Istio injects a sidecar in every pod in the network:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -531,14 +539,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>So instead of continuously writing code for the routing, the circuit breaker or every networking stuff, we can focus on the business logic of each application in the network.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -554,14 +564,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Our system&rsquo;s network now becomes more under controlled:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -577,14 +589,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=istio-architecture>Istio Architecture <a href=#istio-architecture></a></h2><h3 id=envoy>Envoy <a href=#envoy></a></h3><p>Istio utilizes an expanded Envoy proxy version which is a high-performance proxy built in C++ for all facilities in the service mesh to mediate all inbound and outbound traffic of the entire mesh network. Istio leverages many integrated characteristics of Envoy, making it the core component in establishing service meshes, such as:</p><ul><li>Dynamic service discovery</li><li>Load balancing</li><li>TLS termination</li><li>HTTP/2 and gRPC proxies</li><li>Circuit breakers</li><li>Health checks</li><li>Staged rollouts with percentage based traffic split</li><li>Fault injection</li><li>Rich metrics</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -600,14 +614,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Envoy is deployed along side with every Kubernetes pods as a sidecar to the appropriate proxy. This deployment allows Istio to extract information about traffic behavior as attributes. Istio can, in turn, use these attributes in Mixer to enforce policy decisions, and send them to monitoring systems to provide information about the behavior of the entire mesh.</p><h3 id=pilot>Pilot <a href=#pilot></a></h3><p>Pilot provides service discovery for the Envoy sidecars, traffic management capabilities for intelligent routing (e.g., A/B tests, canary rollouts, etc.), and resiliency (timeouts, retries, circuit breakers, etc.).</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -623,14 +639,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Pilot transforms high-level scheduling rules into Envoy-specific settings that regulate the traffic and propagates them in real time to the sidecars. Pilot summarizes and synthesizes platform-specific service discovery processes (Kubernetes, Consul, etc) into a normal file that can be consumed by any sidecar compliant with the APIs of the Envoy data plane. This loose coupling allows Istio to run on multiple environments while maintaining the same operator interface for traffic management.</p><h3 id=mixer>Mixer <a href=#mixer></a></h3><p>Mixer enforces access control and utilization strategies across the system mesh and gathers information from the Envoy Proxy and other facilities for telemetry. In another word, Mixer is the monitoring agent of Istio network.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -646,14 +664,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -669,14 +689,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Mixer involves a versatile plugin system. It allows Istio to interact with multiple backend infrastructures. Istio therefore extracts from these information of the Envoy Proxy and Istio-managed facilities.</p><h3 id=citadel>Citadel <a href=#citadel></a></h3><p>Citadel enables strong service-to-service and end-user authentication with built-in identity and credential management. Citadel can be used to upgrade unencrypted traffic in the service mesh.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -692,13 +714,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=galley>Galley <a href=#galley></a></h3><p>Galley is Istio’s configuration validation, ingestion, processing and distribution component. It is responsible for insulating the rest of the Istio components from the details of obtaining user configuration from the underlying platform (e.g. Kubernetes).</p><h2 id=references>References <a href=#references></a></h2><ul><li>Book: Istio In Action - Christian Posta</li><li>Istio docs: <a href=https://istio.io/docs/concepts/what-is-istio/ target=_blank>https://istio.io/docs/concepts/what-is-istio/</a></li><li><a href=https://medium.com/microservices-in-practice/service-mesh-vs-api-gateway-a6d814b9bf56 target=_blank>https://medium.com/microservices-in-practice/service-mesh-vs-api-gateway-a6d814b9bf56</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

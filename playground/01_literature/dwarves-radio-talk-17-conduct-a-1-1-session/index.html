@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>277</li><li class=span><span>Characters:
-</span>3204</li><li class=span><span>Without Spaces:
+</span>3205</li><li class=span><span>Without Spaces:
 </span>1352</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div><main x-data="{
@@ -439,14 +439,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=how-we-conduct-our-1-1-session>How we conduct our 1-1 session <a href=#how-we-conduct-our-1-1-session></a></h3><p><strong>Timing</strong>
 A sharing hour weekly or biweekly.</p><p><strong>Agenda</strong>

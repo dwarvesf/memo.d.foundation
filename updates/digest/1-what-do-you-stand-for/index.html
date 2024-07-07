@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>updates/digest</li><div>Stats</div><li class=span><span>Words:
 </span>329</li><li class=span><span>Characters:
-</span>7311</li><li class=span><span>Without Spaces:
+</span>7315</li><li class=span><span>Without Spaces:
 </span>1622</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>11m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=whats-in-the-motivation>What’s in the #Motivation? <a href=#whats-in-the-motivation></a></h3><p>After watching a movie, Anna, our UX designer shared this interesting quote, sparking some serious quality sharing from the team. We&rsquo;ve been diving deep into the question, &lsquo;What do you stand for?&rsquo;</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>We were blown away by the tons of quality sharing from the team, with a range of ideas and perspectives.</p><p>Some stand for the power of curiosity, others for family, and some for the ongoing pursuit of inner peace and freedom from life&rsquo;s distractions. We’re happy to see our tribe embracing their most authentic selves through this open sharing, giving &lsquo;100% Real&rsquo; answers.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,14 +491,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>So, how about you? What do you stand for?</p><p><a href=https://discord.com/channels/462663954813157376/1214231226282418228/1224942206280929310 target=_blank>Jump right into the conversation</a>. And if you&rsquo;ve got something worth sharing, we&rsquo;re all ears.</p><h3 id=whats-around-you>What’s around you? <a href=#whats-around-you></a></h3><p>Pay <a href=https://discord.com/channels/462663954813157376/788084358991970337/1225783749988319252 target=_blank>#random</a>, <a href=https://discord.com/channels/462663954813157376/907727610417655898/1225767773708222566 target=_blank>#lobby</a> channel a visit - where we love sharing our daily things, stories and having fun with peeps. You&rsquo;ll always find something interesting going on here. It&rsquo;s like catching up with friends in a cozy virtual hangout spot and a dose of good vibes.</p><p>Has anyone heard from @bien lately? Hope he&rsquo;s doing alright. And @vincent, did you hear about his plans for his next trip in Europe this summer? Man, I&rsquo;m already jealous just thinking about it.</p><p>Let&rsquo;s keep the conversation going and the good times rolling. See you around next week for a catch-up.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,13 +516,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

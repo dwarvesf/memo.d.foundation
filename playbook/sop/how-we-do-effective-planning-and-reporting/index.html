@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>playbook/sop</li><div>Stats</div><li class=span><span>Words:
 </span>410</li><li class=span><span>Characters:
-</span>6546</li><li class=span><span>Without Spaces:
+</span>6549</li><li class=span><span>Without Spaces:
 </span>2141</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=weekly-reporting>Weekly reporting <a href=#weekly-reporting></a></h3><p>Weekly reports should show progress, communicate achievements, and address any challenges within the team Similar to how we do planning, all team members must submit their written report before the meeting.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Reporting happens at the start of all planning sessions. Since we already have a written report, here we focus mostly on:</p><ul><li>Quality of completed tasks</li><li>Discuss challenges / issues encountered, and lesson learned</li><li>Celebrate successes or contributions from team members</li></ul><h3 id=daily-checkin>Daily checkin <a href=#daily-checkin></a></h3><p>Daily checkin is required at the end of each working day, 6PM being the latest. We may choose to have standups and/or written checkin, depending on the team&rsquo;s functions. But overall, make sure we keep it brief and to the point.</p><p>A daily checkin needs to show:</p><ul><li>What did we plan to do today?</li><li>What did we get done today?</li><li>Are there any obstacles blocking our progress?</li><li>Do we need support from any other members?</li><li>Do we have any takeaways, lessons learned or new things we learned to share with the team?</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,13 +491,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=summary>Summary <a href=#summary></a></h3><p>A working week at Dwarves must follow, at the bare minimum, planning and report:</p><ul><li>Weekly planning: written plan as bullet point list & meeting at week start / week end</li><li>Weekly report: written report as bullet point list, focusing on progress, challenges/issues, lessons learned</li><li>Daily checkin: written checkin at day end</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

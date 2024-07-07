@@ -392,7 +392,7 @@ Tags:
 Folder:
 </span>careers/additional-info</li><div>Stats</div><li class=span><span>Words:
 </span>456</li><li class=span><span>Characters:
-</span>8519</li><li class=span><span>Without Spaces:
+</span>8520</li><li class=span><span>Without Spaces:
 </span>2798</li><li class=span><span>Blocks:
 </span>8</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -442,13 +442,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=community-support>Community support <a href=#community-support></a></h2><p>Driven to turn what we know into impactful products & insights for community support. Over the past few years, the Dwarves has participated in countless campaigns and become the sponsor of different tech communities.</p><table><thead><tr><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td><strong><a href=https://golang.org.vn/ target=_blank>Golang Vietnam</a></strong></td><td><strong><a href=https://webuild.community/ target=_blank>WeBuild Community</a></strong></td><td><strong><a href=http://techiestory.co/ target=_blank>Techie Story</a></strong></td><td><strong><a href=https://startup.vn/ target=_blank>Startup.vn</a></strong></td></tr><tr><td>![](../hiring/assets/Life at Dwarves-20231205142616589.webp)</td><td>![](../hiring/assets/Life at Dwarves-20231205142625014.webp)</td><td>![](../hiring/assets/Life at Dwarves-20231205142630563.webp)</td><td>![](../hiring/assets/Life at Dwarves-20231205142634406.webp)</td></tr></tbody></table></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

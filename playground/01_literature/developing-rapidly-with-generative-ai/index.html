@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>402</li><li class=span><span>Characters:
-</span>8449</li><li class=span><span>Without Spaces:
+</span>8453</li><li class=span><span>Without Spaces:
 </span>2189</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data="{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Generative AI is a subset of artificial intelligence that focuses on creating new content, such as images, text, or audio, based on patterns learned from existing data.</p><h2 id=stages-for-building-llm-powered-features>Stages for Building LLM-powered Features <a href=#stages-for-building-llm-powered-features></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=1-identify-use-cases>1. Identify use cases <a href=#1-identify-use-cases></a></h3><p>The first stage is to identifying where generative AI can make an impact. The common challenges can be:</p><ul><li>Involve analysis, interpretation, or review of unstructured content (e.g. text) at scale</li><li>Require massive scaling that may be otherwise prohibitive due to limited resources</li><li>Would be challenging for rules-based or traditional ML approaches</li></ul><h3 id=2-define-requirements>2. Define requirements <a href=#2-define-requirements></a></h3><p>This phase requires a thoughtful analysis to select the best-suited LLM and to frame the problem as a prompt to an LLM. Several factors of defining product requirements:</p><ul><li><strong>Latency</strong>: How fast does the system need to respond to user input?</li><li><strong>Task Complexity</strong>: What level of understanding is required from the LLM? Is the input context and prompt super domain-specific?</li><li><strong>Prompt Length</strong>: How much context needs to be provided for the LLM to do its task?</li><li><strong>Safety</strong>: How important is it to sanitize user input or prevent the generation of harmful content and prompt hacking?</li><li><strong>Language Support</strong>: Which languages does the application need to support?</li><li><strong>Estimated QPS</strong>: What throughput does our system eventually need to handle?</li></ul><h3 id=3-prototype>3. Prototype <a href=#3-prototype></a></h3><p>Selecting off-the-shelf LLM which use for the prototype. The general idea is that if problems can&rsquo;t be adequately solved with state-of-the-art foundational models like GPT-4, then more often than not, those problems may not be addressable using current generative AI tech.</p><p>The key step at this stage is to create the right prompt. To do this, a technique known as <a href=https://arize.com/blog-course/llm-evaluation-the-definitive-guide/ target=_blank>AI-assisted evaluation</a> can help to pick the prompts that lead to better quality outputs by using metrics for measuring performance.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,14 +491,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=4-deploying-at-scale>4. Deploying at Scale <a href=#4-deploying-at-scale></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,14 +516,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img>
 This involves setting up the infrastructure to handle the expected load, monitoring the system&rsquo;s performance, and ensuring that the feature continues to meet the requirements set in the previous stages. There are 2 ways to consider for deploying:</p><ul><li><p><strong>Using commercial LLMs</strong>: this is greate to accessing to top-notch models, don&rsquo;t have to worry about setting up the tech, but the expenses can add up quickly.</p></li><li><p><strong>Self-hosted LLMs</strong>: can reduce costs dramatically - but with additional development time, maintenance overhead, and possible performance implications.</p></li></ul><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://discord.com/blog/developing-rapidly-with-generative-ai target=_blank>Developing rapidly with Generative AI</a></li><li><a href=https://medium.com/womenintechnology/ai-c3412c5aa0ac target=_blank>Artificial Intelligence, Machine Learning , Deep Learning, GenAI and more</a></li><li><a href=https://arize.com/blog-course/llm-evaluation-the-definitive-guide/ target=_blank>LLM Evaluation: Everything You Need To Run, Benchmark LLM Evals</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

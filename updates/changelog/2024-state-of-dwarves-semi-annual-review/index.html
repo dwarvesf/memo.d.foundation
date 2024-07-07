@@ -392,7 +392,7 @@ Tags:
 Folder:
 </span>updates/changelog</li><div>Stats</div><li class=span><span>Words:
 </span>1332</li><li class=span><span>Characters:
-</span>27635</li><li class=span><span>Without Spaces:
+</span>27648</li><li class=span><span>Without Spaces:
 </span>7559</li><li class=span><span>Blocks:
 </span>52</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div><main x-data='{
@@ -442,14 +442,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=community-growth>Community Growth <a href=#community-growth></a></h2><h3 id=organized-offline-meet-up>Organized offline meet-up <a href=#organized-offline-meet-up></a></h3><p>Our Year-End Party (YEP) was the first offline meet-up that set the tone for future gatherings, where peeps can connect in person with like-minded people. Building on its success, we hosted our second Ho Chi Minh City meetup on May 31st.</p><p>Over 50 enthusiastic members joined us for a night of tech talks, and all-around good vibes. It was an opportunity to connect with our community in person and share our passion for technology.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -465,14 +467,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=dwarves-community-is-growing-with-more-contributions>Dwarves community is growing with more contributions <a href=#dwarves-community-is-growing-with-more-contributions></a></h3><p>A big thanks to our active members who have taken part in learning and sharing knowledge with our peeps.</p><p>Long Bui Van (@longddl) has published helpful notes on data pipelines and learning vector databases. You can explore at:</p><ul><li><a href=https://memo.d.foundation/playground/engineering/data/data-pipeline-design-framework/>Data Pipeline Design Framework</a></li><li><a href=https://memo.d.foundation/playground/engineering/data/quick-learning-vector-database/>Quick Learning Vector Database</a></li></ul><p>@jack collaborated with @phucld on <a href=https://memo.d.foundation/playground/01_literature/how-to-transfer-dfg-from-eth-to-base-for-staking/>How to bridge $DFG from Ethereum Mainnet to Base Network for staking.</a></p><p>Additionally, several other members have made noteworthy contributions from @tom, @hnh, @vincent, @bienvh, @innno_, @nikki, @huytq, @minhlq, @nhuthm, @hieuthu1, @antran, @ngocthanh, @thanh, @minh_cloud, @minh, @truongquoctuan, @tristran, @anna, @nambui, @tay, @datpv, @datnguyennnx, @nam, @taipn, @hoangnnh, @lapnn, @hieuthu2, @huymaius, @phucld for keeping our server active and full of great content.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -488,14 +492,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=team-growth>Team Growth <a href=#team-growth></a></h2><h3 id=building-dwarves-wiki---memodfoundation>Building Dwarves’ wiki - memo.d.foundation <a href=#building-dwarves-wiki---memodfoundation></a></h3><p><a href=http://memo.d.foundation/ target=_blank>memo.d.foundation</a> is where we share how we work, learn, and operate as a team. This site is part of our continuous learning engine, aiming to build a 1% improvement habit by learning in public.</p><p>There&rsquo;s a long road ahead to make it the ultimate knowledge source for the team, as a research-focused firm. We aim for the memo to be a centralized knowledge hub that uses a markdown format, displays a graph view, and connects through topic nodes.</p><p>Through learning, sharing, applying, and elevating our core knowledge, we can grow as a team and ship software more efficiently.</p><p>You will get a 5-15 ICY reward for each publication. Community members are welcome to share their learning notes too.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -511,14 +517,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=upgrading-icy-reward-for-dwarves-learning-system>Upgrading ICY reward for Dwarves learning system <a href=#upgrading-icy-reward-for-dwarves-learning-system></a></h3><p>We&rsquo;re excited about the future of ICY and our plans rolled out since its launch in September 2022:</p><ul><li>Monthly reward system for learning contribution up to 3000 ICY.</li><li>ICY contract moved to Base chain for NFT/staking.</li><li>New members joining our Discord with a verified account will get 0.1 ICY.</li><li>Share links in <strong>💻・tech, 💡・til</strong> earn 1 ICY.</li><li>Share your expertise in OGIF talks and earn 15-25 ICY per talk.</li><li>Rewarding our top contributors weekly on Friday receives 3 ICY.</li><li>Link Mochi wallet to GitHub for ICY rewards</li><li>Earn & Stake ICY for rewards and future benefits.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -534,14 +542,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=exclusive-dwarves-nfts-for-our-team-members>Exclusive Dwarves NFTs for our team members <a href=#exclusive-dwarves-nfts-for-our-team-members></a></h3><p>Peeps NFT is an exclusive collection for Dwarves Foundation members, granting access to internal communications and earning opportunities.</p><p>Each NFT signifies a unique role with special perks and privileges for our members.</p><p>These unique non-transferable tokens can be viewed on OpenSea at <a href=https://opensea.io/collection/dwarves-4 target=_blank>https://opensea.io/collection/dwarves-4</a>.</p><p><a href=https://memo.d.foundation/contributor/Tono>@Tono</a> Bot will automatically grant the <a href=https://memo.d.foundation/contributor/peeps>@peeps</a> role to NFT holders with connected wallets.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -557,14 +567,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=improvement-in-internal-tooling-fortress-tono-mochi>Improvement in internal tooling: Fortress, Tono, Mochi <a href=#improvement-in-internal-tooling-fortress-tono-mochi></a></h3><p>We’ve made several upgrades to enhance our Discord server with our self-built bots, improving task management and overall server experience.</p><p><strong>Tono:</strong> Server management bot that keeps the network running smoothly, tracks weekly activities, and generates top contributor and top reading lists both daily and weekly.</p><p><strong>Fortress:</strong> Tracks performance and issue reporting, offering real-time memo updates and weekly memo publication reports.</p><p><strong>Mochi:</strong> Tip bot for sending virtual kudos to show appreciation for others.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -580,14 +592,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=research-topics-the-road-to-expand-the-knowledge-base>Research topics: the road to expand the knowledge base <a href=#research-topics-the-road-to-expand-the-knowledge-base></a></h3><p>Solving problems using the latest technologies has always been our goal. This year&rsquo;s research focus is based on five key pillars:</p><ul><li><strong>Tooling:</strong> Devbox, Colima, alert/monitoring standards</li><li><strong>Software Architecture:</strong> Event-driven architecture, Modular Monolith</li><li><strong>LLM:</strong> RAG, MLOps</li><li><strong>Blockchain:</strong> Solana infrastructure, Monolithic vs. Modular blockchain</li><li><strong>Coding Security:</strong> Standard security procedures, Zero trust infrastructure, GitOps</li></ul><p>We&rsquo;ve made progress in building internal tools like Tono Bot and Memo using LLM/RAG. Additionally, we&rsquo;ve introduced our <a href=https://memo.d.foundation/playground/01_literature/security/how-i-came-up-with-our-security-standard/>Cyber Security Framework</a> and adopted & built a Map of Content for <a href=https://memo.d.foundation/playground/01_literature/devbox-local-development-env/>Devbox</a>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -603,14 +617,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=tech-research-advancements-in-tooling-architecture--llm>Tech research advancements in tooling, architecture, & LLM <a href=#tech-research-advancements-in-tooling-architecture--llm></a></h3><p>We closely monitor tech trends every month to identify those with high potential that could become part of our growing tech stack.</p><p>In the past six months, our radar has detected:</p><ul><li>AI/LLM dominating the market. We&rsquo;ve seen advanced models like GPT-4o and Sora, and open-source models like Llama 3 and Mistra, <a href=https://memo.d.foundation/playground/01_literature/market-report-may-2024#gpt-4o-opportunities-and-disruptions>providing new opportunities</a> for richer applications and automation tools.</li><li>RAG remains the top architecture for applications with LLM models. The <a href="https://www.notion.so/State-of-Dwarves-2024-Semi-annual-Review-7915e90978c14739be0ad7e66a377718?pvs=21" target=_blank>next advancements</a> will refine retrieval processes to manage the growing online information, including multimodal data integration.</li><li>Rust is the top choice for developing tooling and system-level software due to its performance. Big names like <a href=https://memo.d.foundation/playground/01_literature/market-report-mar-2024/#other-notable-trends>Google and Microsoft advocate for Rust</a> to address <a href="https://www.notion.so/State-of-Dwarves-2024-Semi-annual-Review-7915e90978c14739be0ad7e66a377718?pvs=21" target=_blank>memory safety vulnerabilities</a>.</li><li>Edge computing and serverless architecture are the <a href="https://www.notion.so/State-of-Dwarves-2024-Semi-annual-Review-7915e90978c14739be0ad7e66a377718?pvs=21" target=_blank>new wave in modern web development</a>. Platforms like Cloudflare and Fly.io are simplifying complexity for developers. Building web applications with edge computing speeds up page load times and reduces server maintenance costs.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -626,14 +642,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=resume-ogif---dwarves-weekly-friday-sharing>Resume OGIF - Dwarves&rsquo; weekly Friday sharing <a href=#resume-ogif---dwarves-weekly-friday-sharing></a></h3><p>OGIF is our weekly Friday tradition where members share 10-minute talks. After three months we have discussed diverse topics like software development, industry trends, finance, entrepreneurship, blockchain, AI, and more. It&rsquo;s a quick, engaging way to learn something new.</p><p>In this era of public learning, we’re excited to see what the team will create. You can revisit our OGIF sharing <a href=https://memo.d.foundation/updates/ogif/11-ogif-office-hours-0621/>here</a>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -649,14 +667,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=reorganize-discord-roles-mma-system>Reorganize Discord roles: MMA system <a href=#reorganize-discord-roles-mma-system></a></h3><p>We&rsquo;ve revamped our Discord roles, now ladder-based and function-based, offering additional activities and benefits, especially with NFT and ICY staking.</p><p><strong>MMA-based new roles system</strong></p><ul><li>Mastery: Recognizing expertise.</li><li><a href=https://memo.d.foundation/contributor/sers>@sers</a> (Meaning): Acknowledging contributions both at work and beyond.</li><li><a href=https://memo.d.foundation/contributor/chad>@chad</a> (Autonomy): Highlighting high performers who excel in quality, quantity, communication, cooperation, and reliability.</li></ul><p><strong>Consulting staff</strong></p><ul><li>Peeps: Newcomers, qualified to work with us.</li><li>Baby dwarf: Purpose-seeking individuals.</li><li>Dwarf: Members involved in R&amp;D and learning activities.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -672,14 +692,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=monthly-top-performers-honoring-your-work-efforts>Monthly top performers: Honoring your work efforts <a href=#monthly-top-performers-honoring-your-work-efforts></a></h3><p>Each month, we use delivery points to recognize our team&rsquo;s efforts. Team members who earn the most points shipped and effort spent receive ICY rewards.</p><p><strong>Highlight Top Performers:</strong></p><ul><li><strong>January:</strong> @ngocthanh, @chinhld, @jim, @taipn, @phatnt</li><li><strong>February:</strong> @chinhld, @haihuynh, @khacvy, @taipn, @tay</li><li><strong>March:</strong> @ngocthanh, @nam, @taipn, @jim, @trkhoi</li><li><strong>April:</strong> @hoangnnh, @minhth, @nam, @haihuynh, @hieuvd</li><li><strong>May:</strong> @trkhoi, @ngocthanh, @haihuynh, @bienvh, @chinhld</li></ul><h3 id=spgroup-wala-x-echelon-asia-summit-2024>SPGroup WALA x Echelon Asia Summit 2024 <a href=#spgroup-wala-x-echelon-asia-summit-2024></a></h3><p>In May, our team leaders <a href=https://memo.d.foundation/contributor/tieubao>@tieubao</a>, <a href=https://memo.d.foundation/contributor/nikki>@nikki</a>, and <a href=https://memo.d.foundation/contributor/huytq>@huytq</a> attended the Echelon Asia Summit in Singapore. The event focused on the future of Southeast Asia’s tech and startup ecosystem, highlighting the trends and high-growth industries.</p><p>We observed the evolving use of funds by investors and startups, advancements in AI, and upcoming projects in the APAC tech startup landscape.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -695,14 +717,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=launching-dwarves-internship-program>Launching Dwarves internship program <a href=#launching-dwarves-internship-program></a></h3><p>We’ve launched another internship batch. This time, we welcome @datnguyennnx and @ngocquang to our team. We hope Dat and Quang will thrive and grow with us as they embark on this new chapter at Dwarves.</p><h3 id=team-promotion-and-new-teammate>Team promotion and new teammate <a href=#team-promotion-and-new-teammate></a></h3><p>We&rsquo;ve made some changes to our team structure. @hnh has been promoted to Chief of Staff, and @minh_cloud is now our Junior PM and Executive Assistant. We&rsquo;re also delighted to welcome our new teammate, @minh, who brings business development experience to our team.</p><h3 id=brand-new-merchandise>Brand new merchandise <a href=#brand-new-merchandise></a></h3><p>The operations team is gearing up for another batch of t-shirts and stickers. The response to the new sticker set has been positive. We’re excited to see our community members sporting these items and showcasing their pride in being part of the Dwarves Foundation.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -718,13 +742,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Let&rsquo;s wrap this up with a cheer on top, celebrating the many wins we&rsquo;ve enjoyed. Here&rsquo;s to continuing our journey with the same enthusiasm and dedication in 2024.</p><p>Thank you all for being a part of our inner circle, and helping us achieve MMA&rsquo;s goals.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

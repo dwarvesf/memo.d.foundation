@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>887</li><li class=span><span>Characters:
-</span>11784</li><li class=span><span>Without Spaces:
+</span>11788</li><li class=span><span>Without Spaces:
 </span>4575</li><li class=span><span>Blocks:
 </span>32</li><li class=span><span>Est reading Time:
 </span>11m 0s</li></ul></div></div></div></div><main x-data='{
@@ -439,14 +439,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>To install Deckset, first download the <a href="https://drive.google.com/file/d/16aOzaQ6YxySsGEjCwVVDSVbt3dSYSdAT/view?usp=drive_link" target=_blank>software version</a> compatible with your operating system from the Drive. Once the download is complete, run the installer and follow the on-screen instructions to complete the installation process.</p><h2 id=import-theme>Import theme <a href=#import-theme></a></h2><p><strong>Step 1:</strong> Open Deckset and select <strong>New Presentation</strong>.</p><p><strong>Step 2:</strong> Select <strong>Import Theme</strong> from the <strong>File</strong> menu.</p><p><strong>Step 3:</strong> Select the theme file you want to add. Theme files are usually in <strong>.dstheme</strong> format.</p><p><strong>Step 4:</strong> Deckset will automatically install the theme and add it to the list of available themes.</p><p><strong>Step 5:</strong> Select the theme you want to use and start creating your presentation.</p><h2 id=add-content-to-slides>Add content to slides <a href=#add-content-to-slides></a></h2><p>The beauty of Deckset is, it lets you focus on what truly matters – the content of your presentation! Don&rsquo;t worry about fiddling with design elements; Deckset gives you a handy preview of each slide. Want to see a full view? Just double click on it. Made a typo or have more ideas? Click &ldquo;Edit&rdquo; and Deckset will open your presentation in your markdown document (like VSCode).</p><p>Here&rsquo;s the cool part: you get a tiny Deckset preview window floating beside you as you edit. Even better, the preview updates live as you make changes! This makes editing text a breeze and lets you experiment with quotes, code, and other content types to see how they translate into Deckset&rsquo;s stylish themes. It&rsquo;s a small feature, but a powerful one that builds confidence in your editing and lets you explore the unique styles your presentation can take.</p><p>Deckset also provides a variety of tools to add content to your slides, including:</p><p><strong>Images:</strong> </p><pre><code class=language-bash>    # ![inline/left/right 100%] (image.png)
 </code></pre><p><strong>Videos/Audio</strong> </p><pre><code class=language-bash>    # ![] (video.mov)
@@ -479,14 +481,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=presenting-your-presentation>Presenting your presentation <a href=#presenting-your-presentation></a></h2><p>When you&rsquo;re ready to present, simply click <strong>Play</strong> or <strong>Rehearse</strong> on the toolbar. Deckset will switch to full screen and you can navigate between slides using the arrow buttons or keyboard shortcuts.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -502,14 +506,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Deckset takes Markdown presentations to the next level with presenter mode. This mode provides a clean interface, showing the current and upcoming slides alongside the elapsed time. Even better, <a href=https://docs.deckset.com/English.lproj/Presenting/presenter-notes.html target=_blank>presenter notes</a> embedded within your Markdown text will appear below the slide in this view. It’s everything you could have wanted from a simple Markdown presentations experience.</p><h2 id=save-your-file>Save your file <a href=#save-your-file></a></h2><p>Once you have finished presenting, select <strong>File</strong> > <strong>Export Presentation&mldr;</strong> to save your presentation. You can save your presentation as a <strong>.md</strong> file or export it to other formats such as <strong>PDF, PNG</strong>, or <strong>JPEG</strong>.</p><p><strong>A set of export files to upload to Dwarves Drive will include:</strong></p><ul><li><strong>PDF file:</strong> This is the primary file format for documents, and it can be opened on any device with a PDF reader.</li><li><strong>Markdown file:</strong> This is a text-based file format that can be used to create and edit documents. It is a popular format for technical documentation and README files (optional).</li><li><strong>Image folder:</strong> This folder will contain all of the images that are used in the document. The images should be in a format that is supported by Deckset, such as JPEG, PNG, or GIF.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -525,13 +531,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><blockquote><p><strong>Note</strong>: Markdown file and image folder must stay together to avoid missing images in your final presentation.</p></blockquote><p>While Deckset doesn&rsquo;t allow you to customize everything to your heart&rsquo;s desire, such as adding custom quotation marks around block quotes, for example. Sometimes, I also wish for more flexibility in slide design.</p><p>However, Deckset is still a great tool that helps me create beautiful presentations quickly and easily. It allows me to have a moderate level of control, focusing on the content without getting distracted by complex design details.</p><p>Therefore, even though Deckset is not truly perfect, I still hope you will like it. Give Deckset a try and share your experience with me!</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1002</li><li class=span><span>Characters:
-</span>10970</li><li class=span><span>Without Spaces:
+</span>10972</li><li class=span><span>Without Spaces:
 </span>5153</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data="{
@@ -439,14 +439,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>Sometimes you found that some piece of code that is very repetitive in your react application such as:</p><ul><li>Modal: declare modal state and function to set modal state</li><li>Fetch: declare fetch states such as loading and error</li></ul><p>In some Vue.js, you got the feature that allows you to encapsulate state and methods into the package that you can easily insert to your component logic called mixins. What have we got in React.js?</p><p>Let’s take a look in the first repetitive problem above where you have to declare modal state and function to change modal state each time you want to use a modal.</p><h2 id=problems>Problems <a href=#problems></a></h2><p>Bellow is the code that implements an app that store state and method to show, open and close the modal</p><pre><code class=language-javascript>import React, { Component } from 'react';
 import Modal from './Modal'
@@ -549,14 +551,16 @@ export default class HOCCOmponent extends React.Component {
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For example, The Foo children prop ais the Bar component. The component above use child as a function since react is just the function that return react component. We pass repetitive data and methods that have been stored and processed in HOC Component to children function.</p><pre><code class=language-javascript>import React, { Component } from &quot;react&quot;;
 import HOCModal from &quot;./HOCModal&quot;;

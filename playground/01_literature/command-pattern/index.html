@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>505</li><li class=span><span>Characters:
-</span>8331</li><li class=span><span>Without Spaces:
+</span>8334</li><li class=span><span>Without Spaces:
 </span>2917</li><li class=span><span>Blocks:
 </span>16</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div><main x-data="{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=what-is-the-command-design-pattern>What is the Command Design Pattern? <a href=#what-is-the-command-design-pattern></a></h2><p>Command is a behavioral design pattern that encapsulates a request as an object. This allows you to parameterize methods with different requests, delay or queue a request’s execution, and support undoable operations. This pattern promotes the decoupling of the sender and receiver of a request, enhancing flexibility and maintainability.</p><h2 id=key-components-of-the-command-pattern>Key components of the Command Pattern <a href=#key-components-of-the-command-pattern></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=command-interface>Command Interface <a href=#command-interface></a></h3><p><strong>Purpose</strong></p><ul><li>Declares a method for executing a command.</li><li>Ensures that all concrete commands implement this method, providing a consistent interface.</li></ul><p><strong>Responsibilities</strong></p><ul><li>Defines an <code>execute()</code> method that <code>concrete commands</code> must implement.</li></ul><h3 id=concrete-command>Concrete Command <a href=#concrete-command></a></h3><p><strong>Purpose</strong></p><ul><li>Implements the Command interface.</li><li>Defines the binding between a <code>Receiver</code> object and an action.</li><li>Calls the appropriate operations on the <code>Receiver</code>.</li></ul><p><strong>Responsibilities</strong></p><ul><li>Implements the <code>execute()</code> method by invoking the corresponding operation(s) on the <code>Receiver</code>.</li><li>Holds a reference to the Receiver.</li></ul><h3 id=receiver>Receiver <a href=#receiver></a></h3><p><strong>Purpose</strong></p><ul><li>Knows how to perform the operations needed to carry out the request.</li></ul><p><strong>Responsibilities</strong></p><ul><li>Performs the actual work when its methods are called by the <code>Concrete Command</code>.</li></ul><h3 id=invoker>Invoker <a href=#invoker></a></h3><p><strong>Purpose</strong></p><ul><li>Asks the command to carry out the request.</li><li>Can store and queue commands, and even support undo operations by storing executed commands.</li></ul><p><strong>Responsibilities</strong></p><ul><li>Maintains a reference to a Command object (or a list of Command objects).</li><li>Calls the <code>execute()</code> method on the Command object.</li></ul><h2 id=the-real-life-example>The real life example <a href=#the-real-life-example></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,14 +491,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><blockquote><p>Imagine you own a small restaurant where you are both the chef and the person taking orders directly from your customers. As the chef, you prepare each meal yourself.</p><p>As your restaurant gains popularity, you find it increasingly difficult to handle the growing number of orders. To manage this, you decide to hire a waiter. The waiter&rsquo;s responsibilities include taking orders from customers and writing them down on a piece of paper.</p><p>The waiter then brings the written orders to the kitchen and sticks them on the wall. You, the chef, can pick up these order slips from the wall and prepare the meals accordingly. Once you finish cooking, you place the meal on a tray along with the corresponding order slip.
 The waiter retrieves the tray, double-checks the order, and serves the meal to the customer.</p></blockquote><p>In this scenario, the paper order serves as a <code>Command</code>. It remains in a queue until the chef is ready to prepare it. The order contains all the relevant information required to cook the meal, allowing the chef to start cooking immediately instead of clarifying the order details directly from the customer.</p><h2 id=pros-and-cons>Pros and Cons <a href=#pros-and-cons></a></h2><h3 id=pros>Pros <a href=#pros></a></h3><ul><li>Single Responsibility Principle: Decouples classes that invoke operations from classes that perform these operations.</li><li>Open/Closed Principle: New commands can be introduced into the app without breaking existing client code.</li><li>Undo/Redo: Supports implementing undo/redo functionality.</li><li>Deferred Execution: Allows implementing deferred execution of operations.</li><li>Complex Commands: Facilitates assembling a set of simple commands into a complex one.</li></ul><h3 id=cons>Cons <a href=#cons></a></h3><ul><li>Complexity: Introduces a whole new layer between senders and receivers, which can complicate the code.</li></ul><h2 id=applicability>Applicability <a href=#applicability></a></h2><ul><li>Transactional Systems: Financial/payment system, e-commerce platforms</li><li>Task Scheduling: Job schedulers, cron jobs, and task queues, batch jobs, data processing pipelines</li><li>User Interfaces: Optimistic UI</li></ul><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://refactoring.guru/design-patterns/command target=_blank>https://refactoring.guru/design-patterns/command</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

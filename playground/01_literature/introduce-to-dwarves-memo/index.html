@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>397</li><li class=span><span>Characters:
-</span>5085</li><li class=span><span>Without Spaces:
+</span>5087</li><li class=span><span>Without Spaces:
 </span>1866</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>17m 0s</li></ul></div></div></div></div><main x-data="{
@@ -440,14 +440,16 @@ The purpose of every story is to bring the audience a little closer to the autho
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=how-to-use>How to Use <a href=#how-to-use></a></h2><p>The CMS for Memo is <a href=https://outline.d.foundation/home target=_blank>Outline</a>. The document tree is classified into these categories</p><ul><li>Company: company updates & year-end recaps</li><li>Culture: the culture values, or facts & figures</li><li>Design: blog post & team research of Design</li><li>Engineering: blog post & team research of Engineering</li><li>Podcast: transcript from webinar & interview</li><li>Workflow: short write-up of our working system</li></ul><h3 id=metadata>Metadata <a href=#metadata></a></h3><p>A direct parse was conducted from Outline to Memo. Once you hit the &lsquo;publish&rsquo; button on your Outline document, it should be successfully landed on Memo a few secs later. To make sure a blog post can make it, please input these metadata at first  </p><ul><li>spoiler: A brief introduction of the blog content</li><li>tags: keywords that distinguishes your post. If you don&rsquo;t want to make it detailedly, try blog, engineering, design at least</li><li>authors: Use the naming convention of your team email address</li><li>dates: YYYY-MM-DD</li></ul><p>A qualified draft for a blog post should appear like this</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -463,13 +465,15 @@ The purpose of every story is to bring the audience a little closer to the autho
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=headlines><strong>Headlines</strong> <a href=#headlines></a></h3><p>Headlines in Memo should follow the order of Markdown, which is H1 - H2 & H3. For those who haven&rsquo;t gotten familiarized with this:</p><ul><li>H1: put 1 # before your headline</li><li>H2: put 2 ## before your headline</li><li>H3: pit 3 ### before your headline</li></ul><p>H3 should be the smallest level of headlines here. Any titles smaller than that can be marked as <strong>bold</strong>, or put it in numeric/ alphabetical order.</p><p>Everyone is welcomed to craft their thoughts here. Actually, we encourage you to. Nothing reveals the company voice better than the people who live it.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

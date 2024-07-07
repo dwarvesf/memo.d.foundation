@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1159</li><li class=span><span>Characters:
-</span>18844</li><li class=span><span>Without Spaces:
+</span>18852</li><li class=span><span>Without Spaces:
 </span>6381</li><li class=span><span>Blocks:
 </span>29</li><li class=span><span>Est reading Time:
 </span>18m 0s</li></ul></div></div></div></div><main x-data="{
@@ -439,14 +439,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In this article, we will learn about Helm, a powerful tool that makes life working with Kubernetes easier than ever. Although these terms are quite common with developers today, we will skim a jiffy for those who don’t know:</p><ul><li><strong>Containerization</strong>: <em>a next-generation virtualization and automation solution after Hypervisor Virtualization</em>. It widely applied today because of the breakthrough effect with outstanding advantages in creating and deploying applications faster, more scalable and more securely than traditional methods.</li><li><strong>Docker</strong>: <em>a number one software to create, manage and run containers.</em> Most chosen for all popular <em>Containerization</em> applications today. Many large cloud solutions like Google Cloud, Amazon Web Services, Microsoft Azure are using it.</li><li><strong>Kubernetes</strong>: <em>a famous open source used for container orchestration</em>. With the rise of <em>Containerization</em>, the management and coordination of container-based applications became complicated and difficult, making Kubernetes an effective and indispensable solution for systems using Containerization</li></ul><h2 id=helm-overview>Helm Overview <a href=#helm-overview></a></h2><h3 id=concepts>Concepts <a href=#concepts></a></h3><p>Helm has 4 basic concepts:</p><ul><li><strong>Chart</strong>: a collection of YAML files; bundle of the Kubernetes resources needed to build a Kubernetes application. For ease of visualization, Helm Chart can be compared like a Docker Image. Of course, Helm also has a Helm Hub where to search and share Charts for popular apps</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -462,14 +464,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Config</strong>: a configuration in the values.yaml file, which contains configuration explicit to a release of Kubernetes application. It can be the config for service, ingress, deployment, etc. until specific applications such as Kafka, Consul, Vault, NATS-streaming, etc.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -485,14 +489,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Release</strong>: a chart instance is loaded into Kubernetes. It can be viewed as a version of the Kubernetes application running based on Chart and associated with a specific Config.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -508,14 +514,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Repositories</strong>: a repository of published Charts. These can be private repositories that are only used within the company or public through the Helm Hub. Some Charts may have different versions of many companies or publishers. Particularly, Charts in a Stable repository must always meet the criteria from the Technical Requirements of Helm.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -531,14 +539,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=architecture>Architecture <a href=#architecture></a></h2><p>Helm has a fairly simple client-server architecture, including a CLI client and an in-cluster server running in the Kubernetes cluster:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -554,14 +564,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Helm Client</strong>: Provides the developer to use it a command-line interface (CLI) to work with Charts, Config, Release, Repositories. Helm Client will interact with Tiller Server, to perform various actions such as <em>install</em>, <em>upgrade</em> and <em>rollback</em> with Charts, Release.</li><li><strong>Tiller Server</strong>: an in-cluster server in the Kubernetes cluster, interacting with the Helm Client and communicating with the Kubernetes API server. Thus, Helm can easily manage Kubernetes with tasks such as <em>install</em>, <em>upgrade</em>, <em>query</em> and <em>remove</em> for Kubernetes resources.</li></ul><p>Here are some basic concepts and architectures to help you understand and grasp Helm more quickly. In the next section, we’ll take some tutorials to deep dive into Helm. Let’s do it!</p><h1 id=helm-in-action>Helm in Action <a href=#helm-in-action></a></h1><p>Before we begin, we’ll need to prepare a few things for us to be able to practice with Helm.</p><ul><li>Firstly, we need a Kubernetes cluster. At <a href=https://dwarves.foundation/ target=_blank>Dwarves Foundation</a>, we’re using the Google Kubernetes Engine for a production environment and the Kubernetes on-premise for a staging environment. If you don’t have any Kubernetes cluster, don’t worry. You can use <a href=https://kubernetes.io/docs/setup/learning-environment/minikube/ target=_blank>Minikube</a>, which offers an excellent way to work with a single-node Kubernetes cluster locally.</li><li>And, we’ll need a basic purpose that manages the application within the Kubernetes cluster. In fact, I have a responsibility for overseeing and configuring <a href=https://solapp.io/ target=_blank>Sol</a>, the Travel Log product of the <a href=https://dwarves.foundation/ target=_blank>Dwarves Foundation</a>. It using Kafka as a message streaming for communication between its’ microservices. For this tutorial, we’ll install Kafka to the Kubernetes cluster via Helm.</li></ul><h2 id=installing-helm><strong>Installing Helm</strong> <a href=#installing-helm></a></h2><p>There are multiple ways to install Helm that are obviously described on the <a href=https://helm.sh/docs/using_helm/#installing-helm target=_blank>Helm documentation</a>. Helm has two parts: The Helm client (helm) and the Helm server (Tiller). <strong>The quickest way to install helm on macOS is using</strong> <strong><a href=https://brew.sh/ target=_blank>Homebrew</a></strong>, a package manager for macOS platforms.</p><p>It&rsquo;s a simple command to install Helm client locally via Homebrew</p><pre><code class=language-javascript>brew install kubernetes-helm
 </code></pre><p>Next step is to initialize helm, please ensure that the Kubernetes cluster is running and accessible through <em>kubectl</em>. When you initialize helm, a deployment named tiller-deploy will be deployed in the kube-system namespace.</p><p>Initialize helm using the following command.</p><pre><code class=language-javascript>helm init
@@ -588,14 +600,16 @@ helm install bitnami/kafka --name kafka --namespace queue
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Execute the following helm install command to deploy a Kafka with your Config in <code>values-prod.yaml</code>. It will download the Kafka helm chart from the Bitnami repo and apply your configuration via <code>values.yaml file</code>.</p><pre><code class=language-javascript>helm install bitnami/kafka \
   --name kafka-prod \
@@ -615,14 +629,16 @@ helm install bitnami/kafka --name kafka --namespace queue
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Check the install helm chart using this command</p><pre><code class=language-javascript>helm ls
 </code></pre><p>Delete the installation from Kubernetes cluster, use this command</p><pre><code class=language-javascript>helm delete --purge kafka-prod

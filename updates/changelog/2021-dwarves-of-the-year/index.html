@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>updates/changelog</li><div>Stats</div><li class=span><span>Words:
 </span>228</li><li class=span><span>Characters:
-</span>5096</li><li class=span><span>Without Spaces:
+</span>5099</li><li class=span><span>Without Spaces:
 </span>1025</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=claim-your-prize>Claim Your Prize <a href=#claim-your-prize></a></h3><p>Based on the prize value in each title, let’s select your prize item in this sheet <a href=https://bit.ly/3G0LuAU target=_blank>https://bit.ly/3G0LuAU</a>. A few notes on this:</p><ul><li>You can choose <em><strong>any item</strong></em> - as long as the subtotal value is <em><strong>≤= your prize value</strong></em>.</li><li>The prize value can’t be redeemed in cash.</li><li>Please help to select your prize <strong>before Jan 14, 2022</strong>. We will close the list by then.</li><li>If your name is on the list but you can’t input the prize, drop your email to Duy.</li><li>If you got any wishlist item that also matches your prize value, please ping Duy for further support.</li></ul><p><strong>We’ve also prepared you all a mini merchandise set for the rest of the team</strong>
 Hope you can travel anywhere with this combo. Please help by inputting your info in the tab Team Address - <a href=https://bit.ly/3G0LuAU target=_blank>https://bit.ly/3G0LuAU</a>.</p><p>A big congratulations to our Dwarves of 2021! And thank you to all the Dwarves teammates for being with us through the past seven years. May we all enter 2022 with happiness and success. ♡</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -465,14 +467,16 @@ Hope you can travel anywhere with this combo. Please help by inputting your info
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -488,13 +492,15 @@ Hope you can travel anywhere with this combo. Please help by inputting your info
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

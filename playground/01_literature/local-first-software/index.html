@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>429</li><li class=span><span>Characters:
-</span>5730</li><li class=span><span>Without Spaces:
+</span>5731</li><li class=span><span>Without Spaces:
 </span>2750</li><li class=span><span>Blocks:
 </span>8</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,13 +441,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For a &ldquo;traditional&rdquo; app, the clients are a &ldquo;thin&rdquo; layer that depends on the servers for any read/write operations.</p><p>Local-first shifts the roles between servers and clients, making clients the primary source of data while servers act as backup and synchronization sources.</p><h2 id=how-does-it-work>How does it work? <a href=#how-does-it-work></a></h2><p>Generally, local-first is enabled by two core concepts:</p><ul><li><strong>CRDTs (Conflict-free Replicated Data Types)</strong>: These data structures allow multiple users to edit documents simultaneously, merging changes without conflicts. You can read more about CRDTs here: <a href=/playground/01_literature/engineering/backend/introduction-to-crdt/>Introduction to CRDT</a>.</li><li><strong>Data Synchronization</strong>: Changes made offline are synced with other devices and the cloud when a connection is available.</li></ul><p>In most cases, end-to-end encryption is required to ensure data security during synchronization.</p><h2 id=why-local-first>Why local-first? <a href=#why-local-first></a></h2><ul><li><strong>Data Ownership and Privacy</strong>: Users have full control over their data, reducing the risk of breaches.</li><li><strong>Offline Functionality</strong>: Applications remain fully functional without internet connectivity.</li><li><strong>Performance and Reliability</strong>: Local data storage enhances performance and ensures reliability even with poor or no network connections.</li><li><strong>Seamless Collaboration</strong>: Enables real-time collaboration and conflict resolution without central servers.</li></ul><h2 id=how-does-it-compare-to-existing-models>How does it compare to existing models? <a href=#how-does-it-compare-to-existing-models></a></h2><ul><li><strong>Traditional File Systems and Email Attachments</strong>: Offer local data storage but lack real-time collaboration and seamless multi-device synchronization.</li><li><strong>Cloud-based Solutions (e.g., Trello, Google Drive)</strong>: Improve accessibility and collaboration but centralize control and expose users to data breaches and loss of access.</li><li><strong>Hybrid Models (e.g., Dropbox)</strong>: Offer local storage with cloud sync but still depend on centralized servers for data availability.</li></ul><h2 id=who-is-using-local-first>Who is using local-first? <a href=#who-is-using-local-first></a></h2><p>Popular apps that are known to adopt a local-first approach:</p><ul><li><a href=https://figma.com/ target=_blank><strong>Figma</strong></a>: A design tool that supports real-time collaboration with local-first principles.</li><li><strong><a href=https://obsidian.md/ target=_blank>Obsidian</a></strong>: A knowledge base that stores data locally, allowing offline access and synchronization.</li><li><strong><a href=https://www.notion.so/ target=_blank>Notion</a></strong>: While primarily cloud-based, it incorporates local-first elements for offline editing and data synchronization.</li><li><strong><a href=https://linear.app/ target=_blank>Linear</a></strong>: A project management tool that adopts the local-first approach, ensuring data remains accessible and synchronized across devices even without an internet connection.</li></ul><h2 id=whats-the-catch>What&rsquo;s the catch? <a href=#whats-the-catch></a></h2><ul><li><strong>Complexity of CRDTs</strong>: Implementing efficient and scalable CRDTs is technically challenging.</li><li><strong>Security</strong>: Ensuring robust encryption and secure data synchronization is critical.</li><li><strong>User Experience</strong>: Balancing simplicity and the benefits of local-first architecture in user interfaces.</li><li><strong>Performance Overhead</strong>: Managing the performance impact of data synchronization and CRDT operations.</li></ul><h2 id=references>References <a href=#references></a></h2><ol><li><a href=https://www.inkandswitch.com/local-first/ target=_blank>Local-first software: You own your data, in spite of the cloud (inkandswitch.com)</a></li></ol></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

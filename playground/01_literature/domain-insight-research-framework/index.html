@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1471</li><li class=span><span>Characters:
-</span>12633</li><li class=span><span>Without Spaces:
+</span>12634</li><li class=span><span>Without Spaces:
 </span>7873</li><li class=span><span>Blocks:
 </span>28</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div><main x-data="{
@@ -440,14 +440,16 @@ There are different ways to conduct market research and collect data. Still, we 
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Primary research</strong>
 Primary research is any type of research that the researchers collect themselves. We conduct primary research by reading (books, journals, articles&mldr;). Sometimes, we also gather information directly from customers of the target market through surveys or interviews.</p><p><strong>Secondary research</strong>

@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>updates/digest</li><div>Stats</div><li class=span><span>Words:
 </span>508</li><li class=span><span>Characters:
-</span>9654</li><li class=span><span>Without Spaces:
+</span>9659</li><li class=span><span>Without Spaces:
 </span>2601</li><li class=span><span>Blocks:
 </span>21</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=what-are-your-plans-this-holiday>What are your plans this holiday? <a href=#what-are-your-plans-this-holiday></a></h3><p>Have you decided where you&rsquo;re headed for your upcoming vacation? It&rsquo;s fascinating to see that some Dwarves members are planning trips to Xinjiang, while others are getting together to enjoy board games and maybe even tackle some tasks (just kidding!).</p><p>Whatever you choose to do, make sure you make the most of those precious three days off and recharge for the exciting new working week in May. Wishing every one of you a fantastic and joyful holiday.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=exciting-opportunities-await-southeast-asia-blockchain-event>Exciting opportunities await: Southeast Asia Blockchain Event <a href=#exciting-opportunities-await-southeast-asia-blockchain-event></a></h3><p>For the upcoming Southeast Asia Blockchain event happening next week in none other than the beautiful land of Thailand. Our super cool CEO has decided to go all out and sponsor a whopping 50% of the cost for anyone who wants to be part of this extravaganza. How awesome is that?</p><p>There are also some events lined up for you at the <strong>#📈・econ-cafe</strong> channel. We attends community events as a group, where we have the opportunity to learn from others&rsquo; experiences, share our knowledge, and connect with fellow tech enthusiasts in the industry.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,14 +491,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=investment-dopamine>Investment dopamine <a href=#investment-dopamine></a></h3><p>Everyone&rsquo;s still buzzing about gold prices and investments. The constant fluctuations in the market keep us informed.</p><p>Also, our COO&rsquo;s passive income really got us talking. It&rsquo;s evident that we&rsquo;re all eager to explore diverse investment opportunities and grasp their role in the wider economic picture. There&rsquo;s always something fresh to uncover and discuss together.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,14 +516,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=our-community-includes-everyone-including-you>Our community includes everyone, including you <a href=#our-community-includes-everyone-including-you></a></h3><p>I just wanted to give a huge shoutout to all of you for the awesome response we got to the weekly digest. Your enthusiasm and engagement seriously made my day. It&rsquo;s so rad to see everyone diving in, sharing thoughts, and sparking cool discussions.</p><p>Keep being awesome, and let&rsquo;s keep the good vibes rolling.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -533,13 +541,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=dwarves-internship-program>Dwarves internship program <a href=#dwarves-internship-program></a></h3><p>Lastly, we launched the Internship Program for students to provide training, mentoring, and career development opportunities to shape your software skills and define your career paths.</p><p>Interested in joining our Internship Program? We&rsquo;re here to welcome you aboard.</p><p><a href=mailto:spawn@dwarvesv.com>Shoot us an email</a> with your LinkedIn / CV<br><a href=https://discord.gg/dwarvesv target=_blank>Join our Discord</a> of +300 other engineers and designers</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

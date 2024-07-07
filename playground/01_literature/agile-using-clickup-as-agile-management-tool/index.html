@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>339</li><li class=span><span>Characters:
-</span>6132</li><li class=span><span>Without Spaces:
+</span>6135</li><li class=span><span>Without Spaces:
 </span>1602</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div><main x-data="{
@@ -439,14 +439,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Calendar: showing the calendar with tickets due date. I found it&rsquo;s not very useful.</li><li>List: Same as Board but in another point of view. Some people may find this view is clearer than Kanban board because it&rsquo;s more like a project todo list.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -462,14 +464,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=workflow>Workflow <a href=#workflow></a></h2><p>We do Agile Scrumban. So there are several required steps when using Agile Management Tool</p><ul><li>Ticket or task or Backlog Item should be put in a short loop called Sprint.</li><li>Ticket should have description on how to complete it.</li><li>Ticket should have a definition of done.</li><li>Person in charge is assigned.</li><li>Deadline or due date is set.</li></ul><h3 id=new-project>New project <a href=#new-project></a></h3><ul><li>Create a new Space as Project</li><li>Create a first list as Backlog</li></ul><h3 id=sprint-planning-meeting>Sprint planning meeting <a href=#sprint-planning-meeting></a></h3><ul><li>Create a list as Sprint #</li><li>Do planning and create tickets in detailed with <strong>Open</strong> status or move them from backlog.</li><li>Use label to differentiate the ticket type e.g backend, frontend, design, ui, ux, etc.</li></ul><h3 id=sprint-release>Sprint release <a href=#sprint-release></a></h3><p>Make sure every tickets is on the right side of the kanban board.</p><h3 id=sprint-retrospective-meeting>Sprint retrospective meeting <a href=#sprint-retrospective-meeting></a></h3><p>Archive the sprint.</p><h2 id=suggestion-on-daily-basis>Suggestion on daily basis <a href=#suggestion-on-daily-basis></a></h2><p>To get my things done, I use <strong>List View</strong> with <strong>Me</strong> filter to show my assigned tickets across all the Spaces.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -485,13 +489,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>To keep track the whole project progress or member progress, both Board View, List View and Box View work very efficient.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

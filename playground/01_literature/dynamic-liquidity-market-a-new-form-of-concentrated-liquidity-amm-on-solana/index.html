@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>731</li><li class=span><span>Characters:
-</span>11529</li><li class=span><span>Without Spaces:
+</span>11534</li><li class=span><span>Without Spaces:
 </span>3622</li><li class=span><span>Blocks:
 </span>21</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>Dynamic Liquidity Market Maker (DLMM) is a new form of concentrated liquidity AMM on Solana, developed to make it easier and more sustainable for users and project teams to provide broader, deeper liquidity on Solana. DLMM aim to improve LP profitability with dynamic fees, allow new tokens to bootstrap their liquidity in new creative ways, and allow LPs a broader array of LP strategies and more precise liquidity concentration.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=technical-overview-of-dlmm>Technical Overview of DLMM <a href=#technical-overview-of-dlmm></a></h2><p>The DLMM allows liquidity providers to contribute to discrete liquidity bins, enabling them to specify buy or sell orders for token pairs at predetermined prices. Essentially, the DLMM&rsquo;s liquidity pools consist of numerous price-specific bins filled with tokens by LPs. Trading within these pools transitions sequentially from one bin to another as tokens are exchanged, ensuring continuous market operation.</p><h3 id=dlmm-bin-price>DLMM Bin Price <a href=#dlmm-bin-price></a></h3><p>Liquidity is distributed across discrete bins with a fixed width and fixed price. Within each bin, liquidity can be exchanged at a fixed price <strong>X + Y = k</strong> within each bin. Basically you add <strong>X</strong> tokens and take out <strong>Y</strong> tokens (or vice versa), until there is only just one type of token left.</p><p>Each bin represents a single price point, and difference between 2 consecutive bins is the bin step. Bin steps are calculated based on the basis points set by the pool creator. For example, taking SOL/USDC. If the current price is $20 and the bin step is 25 basis points (0.25%), then the consecutive bins would be 20 x 1.0025 = 20.05, 20.05 * 1.0025 = 20.10 and so on.</p><h3 id=bin-liquidity>Bin Liquidity <a href=#bin-liquidity></a></h3><p>Liquidity in each bin is calculated by the constant sum price variant, <code>𝑃.𝑥+𝑦=𝐿</code>, where <em><strong>x</strong></em> is the quantity of token <strong>X</strong>, <em><strong>y</strong></em> is the quantity of token <strong>Y</strong>, <strong>L</strong> is the amount of liquidity in the bin and <code>𝑃=Δ𝑦/Δ𝑥</code>. <strong>P</strong> is defined as the rate of change of <strong>Y</strong> reserves per change in <strong>X</strong> reserves, and is a price constant unique to each pool.</p><p><strong>P</strong> can be visualized as the gradient of the line in the following image:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,14 +491,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=market-aggregation>Market Aggregation <a href=#market-aggregation></a></h3><p>The constant sum curve intercepts both the <strong>x</strong> and <strong>y</strong> axes, meaning that the reserves of <strong>X</strong> or <strong>Y</strong> token can be exhausted. When this happens, the current price would move to the next bin either on the left or right.</p><p>Active price bin is defined as the bin that contains reserves of both <strong>X</strong> and <strong>Y</strong>. Note that there can only be one active bin at any point in time. All bins to the left of the active bin will only contain token <strong>Y</strong>, while all bins to the right of it will only contain token <strong>X</strong>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,14 +516,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=differences-over-other-models>Differences Over Other Models <a href=#differences-over-other-models></a></h2><h3 id=over-amms>Over AMMs <a href=#over-amms></a></h3><p>DLMMs offer a number of benefits over traditional automated market makers (AMMs):</p><ul><li>Reduced slippage: By concentrating liquidity in a specific price range, DLMMs reduce the amount of slippage that traders experience.</li><li>Improved capital efficiency: DLMMs allow liquidity providers to deposit their assets into specific price bins, which makes better use of their capital.</li><li>Deeper liquidity: DLMMs can provide deeper liquidity for asset pairs, even those with low trading volume.</li><li>Improved LP profitability: Dynamic fees allow LPs to make more money on market volatility</li></ul><h3 id=over-clmms>Over CLMMs <a href=#over-clmms></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -533,13 +541,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=advantages-of-dlmm>Advantages of DLMM <a href=#advantages-of-dlmm></a></h2><p>DLMM offers several benefits but the main ones include:</p><p><strong>Zero Slippage</strong>: Trading within an active bin has zero slippage or price impact. This makes it easier for LPs to concentrate their liquidity even further and capture more volume and fees than they could before.</p><p><strong>Higher capital efficiency:</strong> DLMM offers zero slippage for swaps within the same bins. Further, it also supports lower liquidity requirements and higher volume of trading as liquidity is concentrated on the market value.</p><p><strong>Better profitability and flexibility:</strong> LPs can create richer and more precise strategies by creating liquidity shapes that suit their need. Profitability is also increased as LPs earn a base fee as well as a variable fee when price actions become more volatile, causing the DLMM to switch bins.</p><h2 id=whats-next>What’s next? <a href=#whats-next></a></h2><p>Today, Jupiter is leveraging the DLMM model in its Launchpad, there are many project using Jup Launchpad such as:</p><ul><li><a href=https://jup.ag/ target=_blank>Jupiter</a> - Top DEX aggregator in crypto.</li><li><a href=https://zeusnetwork.xyz/ target=_blank>Zeus Network</a> - Permissionless communication layer connecting. Solana and Bitcoin.</li><li><a href=https://uprock.com/ target=_blank>Uprock</a> - The premier DePIN network fueling AI</li></ul><p>In addition, users can create a new pool or add liquidity to the existing DLMM pool to earn fees by visit <a href=https://app.meteora.ag/dlmm target=_blank>Meteora DLMM pools</a>.</p><h2 id=references>References <a href=#references></a></h2><p><a href=https://docs.meteora.ag target=_blank>https://docs.meteora.ag</a></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

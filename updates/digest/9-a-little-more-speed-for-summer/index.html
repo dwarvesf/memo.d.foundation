@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>updates/digest</li><div>Stats</div><li class=span><span>Words:
 </span>584</li><li class=span><span>Characters:
-</span>10983</li><li class=span><span>Without Spaces:
+</span>10989</li><li class=span><span>Without Spaces:
 </span>2960</li><li class=span><span>Blocks:
 </span>24</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=friendship-blooms-as-we-connect-and-celebrate>Friendship blooms as we connect and celebrate <a href=#friendship-blooms-as-we-connect-and-celebrate></a></h3><p>After our Friday night meet-up, the excitement persisted. We organized additional activities for those who traveled a long way to join us. Saturday morning we enjoyed lively conversations and laughter at a café before savoring a tasty BBQ. Thanks @haongo1, @anna, @bienvh, @taipham, @thangnt, @hnh, and @minhth for spending your time.</p><p>Meanwhile, another group set off for Ninh Thuan to celebrate @lapnguyen&rsquo;s wedding. It&rsquo;s been a week brimming with adventure and camaraderie.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=thought-on-the-future-of-software-engineering>Thought on the future of software engineering <a href=#thought-on-the-future-of-software-engineering></a></h3><p>@tristran shared an article expressing concerns about GenAI&rsquo;s impact on software engineering careers. The article highlighted Microsoft&rsquo;s partnership with Cognition to deploy Software Engineer AI to Azure and the mixed reactions from developers about the world&rsquo;s first AI software engineer, Devin.</p><p>@tieubao responded with his perspective on GenAI, offering a more optimistic view:</p><p>&ldquo;In my opinion, if you provide GenAI with enough data and a solid GitHub code base, it can effectively assist you. By letting GenAI handle basic tasks like CRUD operations, developers can focus on mastering complex system design and effective implementation. This shift allows for greater skill development and a promising future in software engineering.&rdquo;</p><p>What do you think? How do you see GenAI impacting your career?</p><p>You can check out the link @tieubao mentioned for more insights: <a href=https://spectrum.ieee.org/ai-programming target=_blank>AI Programming</a>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,14 +491,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=more-on-the-engage-to-earn>More on the engage to earn <a href=#more-on-the-engage-to-earn></a></h3><p>Just wanted to drop some cool news your way. We&rsquo;ve just updated the rewards in the <strong>💻・tech</strong> channel. Now, every tech link you share will earn you 1 ICY. You won&rsquo;t believe it—some folks thought this was a glitch at first.</p><p>We do this to encourage everyone to learn new things, engage with the team, and make sharing even more worthwhile. There are multiple activities going on, and everyone is welcome to join hands. Who knows, you might just become our next ICY millionaire.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,14 +516,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=unique-celebrations-for-special-moments>Unique celebrations for special moments <a href=#unique-celebrations-for-special-moments></a></h3><p>Blast off into another year @hieuthu2. Congrats on unlocking another year of life. Hope your new age is filled with epic loot drops, lovely gift from your girlfriend, super rare achievements, and a health bar filled to the max.</p><p>Welcome to the Storybook Start. Congratulations on the arrival of your little hero @huynk. May your little one level up quickly, with plenty of sleep boosts and diaper loot. Here’s to joyful quests and magical moments ahead.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -533,14 +541,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -556,13 +566,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Wish we could hit rewind and relive <a href="https://www.youtube.com/watch?v=Aa9YmR8SdeA" target=_blank>yesterday once more</a>. Those moments with me and the team were truly special, filled with laughter and joy that we all cherish.</p><p>P.S. If you’re feeling nostalgic or just want to catch up on what you might have missed, you can find highlights from our previous edition <a href=https://memo.d.foundation/playground/digest/8-then-came-the-last-days-of-may/>right here</a>.</p><p>Until next time.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>updates/changelog</li><div>Stats</div><li class=span><span>Words:
 </span>380</li><li class=span><span>Characters:
-</span>7470</li><li class=span><span>Without Spaces:
+</span>7474</li><li class=span><span>Without Spaces:
 </span>1833</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=selective-in-project-decision>Selective in Project Decision <a href=#selective-in-project-decision></a></h3><p>It’s a promise of bigger clients & better team deployment.</p><p>We were able to drop the long-term projects that no longer match our business direction; successfully committed to <strong>deploying a minimum of 3 Dwarves</strong> for almost all remaining projects. With this change, we also <strong>increased the headcount rate</strong> as we believe it should grow alongside our ability to deliver.</p><h3 id=growing-the-team>Growing The Team <a href=#growing-the-team></a></h3><p>A special congrats to Cuong Mai, Tom, & Ngoc Mai for passing the probation and becoming true Dwarves. Last month brought us Phat Ha, who’s currently in charge of Nghe Nhan Trading. The Dwarves are growing, by all means.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The Dwarves have shown their ongoing ability to deliver more credible outputs within each project and were significantly endorsed by the clients.</p><p>We got Momos, Relay, BeaverBitcoin & Tokenomy as examples. Some Dwarves joined us lately, but they’ve already shown they’re the right person for the job.</p><ul><li>Ngoc Thanh - Spike Inu</li><li>An Tran - Nghe Nhan Trading</li><li>Tom - LFW BE lead & study group lead</li><li>Hoang Nguyen - SP Digital</li></ul><h3 id=and-the-attached-benefits>And The Attached Benefits <a href=#and-the-attached-benefits></a></h3><p>That growth explains our <strong>upgrade in the benefits package</strong>. We did a full upgrade on the team, from base salary to WFH station upgrade. You guys really earned this.</p><h3 id=office-status>Office Status <a href=#office-status></a></h3><p>I think it’s safe to announce that one-way tickets to our remote hubs will be available by the 1st quarter of 2022. Additionally, we might host tech events, seminars, and training in Da Nang.</p><h3 id=dwarves-of-2021>Dwarves of 2021 <a href=#dwarves-of-2021></a></h3><p>A huge congratulations to our <strong><a href=https://memo.d.foundation/changelog/2021-dwarves-of-the-year/>Dwarves of 2021</a></strong>! Please help to tick your wishlist items so we can proceed with them as soon as possible.</p><p>We’ve received much input to help improve the team. All of those ideas have been logged into our 2022 to-do list.</p><p>And Dwarves, don’t forget to drop your info at Team Address - I’ll have these small gifts delivered to you real soon.</p><p>Here’s to rock 2022!</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,14 +491,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,13 +516,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

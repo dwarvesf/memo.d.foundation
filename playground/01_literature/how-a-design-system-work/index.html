@@ -389,7 +389,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>345</li><li class=span><span>Characters:
-</span>5476</li><li class=span><span>Without Spaces:
+</span>5478</li><li class=span><span>Without Spaces:
 </span>1746</li><li class=span><span>Blocks:
 </span>7</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div><main x-data="{
@@ -439,14 +439,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>When Common Weight Name Mapping is used in UI, we need to know the ratio between the font weights, which one is bold and which one is light. What we need is the consistency of text style in the overall UI, and Text Style Generator in Figma plugin makes it possible. It generates a new unified style by writing overlay on the previous one, and have it updated for all.</p><h2 id=component-naming-convention--component-structure>Component Naming Convention & Component Structure <a href=#component-naming-convention--component-structure></a></h2><h3 id=special-atom>Special Atom <a href=#special-atom></a></h3><ul><li>Iconography (Atoms)</li><li>Assets (Atoms)</li></ul><h3 id=component-naming-convention>Component Naming Convention <a href=#component-naming-convention></a></h3><ul><li><strong>Formula 1</strong>: Variations > Size > State</li><li><strong>Formula 2:</strong> Type > Level > Variations or Component Position > Size > State</li><li><strong>Formula 3:</strong> Variations or Component Position > Type > Level > Size > State</li></ul><p>If Variation and Type (kind) have complex modify, we can consider dividing the Variation into Artboards.</p><h3 id=component-structure>Component Structure <a href=#component-structure></a></h3><ul><li>Constructed in atomic design</li><li>Created from the micro elements, Atoms; then expand it through the levels: Molecules - Organisms - Templates</li><li>Possible cases: create folders for automatic show/hide function in UI</li></ul><h2 id=auto-layout-application>Auto Layout Application <a href=#auto-layout-application></a></h2><h3 id=helps-analyze-the-components>Helps analyze the components <a href=#helps-analyze-the-components></a></h3><ol><li>Button (Molecules) / Button Group</li><li>Table Row</li><li>Breadcrumb</li><li>Input Field</li></ol><h2 id=description-of-design-system>Description of Design System <a href=#description-of-design-system></a></h2><ul><li>Turn UI file/ design system into document</li><li>Helps to note down a detailed instruction for the team (with >2 designers). This drives better communication between designer-designer and designer-developer.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -462,13 +464,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

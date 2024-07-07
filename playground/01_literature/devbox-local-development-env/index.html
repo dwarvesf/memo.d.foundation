@@ -392,7 +392,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1181</li><li class=span><span>Characters:
-</span>11098</li><li class=span><span>Without Spaces:
+</span>11099</li><li class=span><span>Without Spaces:
 </span>6500</li><li class=span><span>Blocks:
 </span>24</li><li class=span><span>Est reading Time:
 </span>20m 0s</li></ul></div></div></div></div><main x-data='{
@@ -442,14 +442,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=engineering--programming--time--people>Engineering = Programming + Time + People <a href=#engineering--programming--time--people></a></h2><p>Programming itself is challenging enough—solving problems by writing code that works. However, engineering extends this challenge: it involves ensuring that code continues to function over time and can be effectively managed and improved by a team of programmers that is changed continuously. This introduces complexities that go beyond initial development. As mentioned in the <a href=https://research.swtch.com/vgo-eng target=_blank>What is Software Engineering?</a></p><p>Once the project scales and team grows, the complexity of managing dependencies, tools, and environments also increases. It is an inherent outcome of the collaborative essence of software engineering.</p><h2 id=we-cant-control-everything-manually>We can’t control everything manually <a href=#we-cant-control-everything-manually></a></h2><p>Dwarves experienced this complexity firsthand as we welcomed a lot of new talents and projects with varying sizes and tech stacks. Team members are rotated to another project once the current project is done. Because each project has different scales and requirements, each time onboarding happens, team members need to install different tools to begin developing. This situation causes their machine to be filled with a lot of redundant applications and dependencies over time.</p><p>Besides, we have no way to track what dependencies are installed or not currently. So we must install them one by one until the project can be executed. You can have your checklist in the <em>README</em>. But it just only helps you manually checking it is installed or not, you can’t make sure the installed stuff is compatible with your available applications and you also don’t know the exact version of them. The challenge of managing different tools and dependencies became evident. It forces our members to spend a lot of time setting up new projects under anxiety.</p><h2 id=the-road-to-devbox>The road to Devbox <a href=#the-road-to-devbox></a></h2><p>To address this challenge, we adopted several strategies that other successful teams have used. Using containerization tools like Docker can ensure a consistent environment across different projects by packaging applications and their dependencies into isolated containers. Virtual environments and package managers can help manage dependencies specific to each project, reducing conflicts and redundancies. However, Docker images become quite large and unwieldy, making them difficult to manage and distribute efficiently. On the other side, virtual environment and package manager often lack the robustness needed for truly reproducible builds and environments. Finally, we found Nix as a savior.</p><p>We took a look at Nix with the expectation of creating a configurable, reproducible, and portable development environment that helps us quickly onboard anybody to any new project with a few simple commands. It also brings an easy way to manage all installed applications in an isolated or semi-isolated environment.</p><p>But Nix needs a huge effort to be applied such as separated syntax and mechanisms. It is also too big to serve our purpose. So we need something more simple, and lightweight but can also take advantage of Nix. This is the reason why finally we chose Devbox for a few first experiments. You can read about Devbox <a href=https://memo.d.foundation/playground/_memo/devbox-nix-and-our-devbox-adoption/>here</a>.</p><h2 id=devbox-simple-setup>Devbox simple setup <a href=#devbox-simple-setup></a></h2><p>Our purpose is creating a configurable, isolated, reproducible and portable development environment. So we use Devbox to create an isolated shell in our project root.</p><pre><code class=language-shell>cd way/to/the/project
 devbox init

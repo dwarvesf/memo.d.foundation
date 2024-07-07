@@ -391,7 +391,7 @@ Tags:
 Folder:
 </span>updates/digest</li><div>Stats</div><li class=span><span>Words:
 </span>682</li><li class=span><span>Characters:
-</span>13564</li><li class=span><span>Without Spaces:
+</span>13571</li><li class=span><span>Without Spaces:
 </span>3472</li><li class=span><span>Blocks:
 </span>28</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -441,14 +441,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=rolling-out-fleeting-notes>Rolling out fleeting notes <a href=#rolling-out-fleeting-notes></a></h3><p>Dwarves has always been a playground for techies, where learning and sharing go hand-in-hand. We&rsquo;re stoked to see you all playing, learning, and sharing your discoveries.</p><p>To keep the momentum going, we&rsquo;re bringing back fleeting notes – for those quick tech insights and discoveries you want to share with the community. Whether it&rsquo;s a hot new tech trend, a clever coding trick, or just something interesting you stumbled upon, we want to hear about it.</p><p>Remember to keep it short, sweet, and easy to digest with a clear TL;DR. We&rsquo;ve got a monthly pool of 3000 ICY that will be split equally among everyone contributing to the learning activities.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -464,14 +466,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=tech-sharing-is-heating-up>Tech sharing is heating up <a href=#tech-sharing-is-heating-up></a></h3><p>We&rsquo;ve seen a surge in tech sharing—seriously, you all are killing it. If you have new findings, just drop them at <strong>💡・til, 💻・tech channels.</strong> Dwarves Rewards is here to support your learning.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -487,14 +491,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=annual-heath-check-up-reminder>Annual heath check-up reminder <a href=#annual-heath-check-up-reminder></a></h3><p>Folks in Ho Chi Minh City, don’t forget to check out the leaflet for your medical exam instructions at <a href=https://discord.com/channels/462663954813157376/1249591418746306570/1252160647983005706 target=_blank><strong>📌・message</strong></a> channel. Team Hanoi, yours are on the way.</p><p>If this month&rsquo;s jam-packed, no worries—you&rsquo;ve got until July 15 to wrap up your check-up. Stay healthy and take care.</p><h3 id=score-your-style-with-new-tees>Score your style with new tees <a href=#score-your-style-with-new-tees></a></h3><p>A new batch of t-shirts has just touched down at HadoHQ. If you&rsquo;re in sunny Saigon this week, be sure to swing by and grab yours – we&rsquo;ve even got a limited-edition design that&rsquo;s calling your name.</p><p>And don&rsquo;t worry, our Hanoi crew, we haven&rsquo;t forgotten about you. The team will be sending your shirts your way very soon, so hang tight.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,14 +516,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=can-we-achieve-30-profit-with-uniswap-yield-farming>Can we achieve 30% profit with Uniswap yield farming <a href=#can-we-achieve-30-profit-with-uniswap-yield-farming></a></h3><p>@baskin (community member) asked @phucld about the feasibility of achieving a 30% profit by putting $1M worth of BTC and/or ETH into Uniswap&rsquo;s WBTC/ETH liquidity pool, aiming to maintain the initial amount and achieve monthly and yearly profit targets.</p><p>@phucld jumped in with some helpful insights: it&rsquo;s possible with skilled management of price range, trading volume, and impermanent loss. He also pointed to tools like Arrakis Finance for managing price ranges and PoolFish for APR simulations to assess potential earnings.</p><p><em>Pro tip</em>: sticking with pairs that tend to move together can make your life easier. <a href=https://discord.com/channels/462663954813157376/1216788839880724562/1251504848583655515 target=_blank>Check out the convo here</a>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -533,14 +541,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=econ-café-deep-dive-tcb-bonus-shares-dividends-and-market-insights>Econ-café deep dive: TCB bonus shares, dividends, and market insights <a href=#econ-caf%c3%a9-deep-dive-tcb-bonus-shares-dividends-and-market-insights></a></h3><p>In the recent 📈・<a href=https://discord.com/channels/462663954813157376/1216788839880724562/1252821854670946345 target=_blank>econ-cafe</a> chat, our COO @nikki, and team members @huytq, @ngocthanh talked about the upcoming event where the Vietnam Technological and Commercial Joint Stock Bank (TCB) will issue bonus shares.</p><p>@hnh and @hieuthu2 discussed how issuing dividends in shares can affect ownership value and market price. They explained that while the overall value of the company might remain the same, the value per share could change, which is crucial for investors to understand.</p><p>The conversation also touched on broader banking and market predictions.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -556,14 +566,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=belated-birthday-cheers-to-our-dynamic-duo>Belated birthday cheers to our dynamic duo <a href=#belated-birthday-cheers-to-our-dynamic-duo></a></h3><p>Big birthday wishes to our CEO @tieubao and head of meme @minhlq. Hope you both had a blast and were filled with joy. Here’s to another year of unforgettable moments. Wishing you all the best.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -579,13 +591,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Well, folks, that&rsquo;s all she wrote for this week&rsquo;s digital dispatch. Now go forth and spread those summer vibes like confetti and take a moment to savor the simple joys.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

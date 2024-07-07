@@ -392,7 +392,7 @@ Tags:
 Folder:
 </span>careers/additional-info</li><div>Stats</div><li class=span><span>Words:
 </span>526</li><li class=span><span>Characters:
-</span>4543</li><li class=span><span>Without Spaces:
+</span>4544</li><li class=span><span>Without Spaces:
 </span>2574</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -444,13 +444,15 @@ You want someone who’s capable of building something from scratch and seeing i
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=referral>Referral <a href=#referral></a></h3><p>We usually hire and to keep the quality bar the Dwarves are encouraged to recommend friends that you think they match with the team. We think your suggestions should be helpful as you have to know the person.</p><p>We also want to spend the bonus on you rather than the headhunting agency. The company will pay a one month salary as a referral bonus to any employee who refers an applicant to our company who is hired by the company to a full-time position. The bonus is paid upon completion of the newly hired employee’s first 90 days of employment. The referring employee must still be employed with the company at the time the bonus is to be given.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

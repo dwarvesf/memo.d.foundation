@@ -392,7 +392,7 @@ Tags:
 Folder:
 </span>careers/life</li><div>Stats</div><li class=span><span>Words:
 </span>739</li><li class=span><span>Characters:
-</span>6886</li><li class=span><span>Without Spaces:
+</span>6888</li><li class=span><span>Without Spaces:
 </span>3366</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div><main x-data='{
@@ -442,14 +442,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=the-200-motto>The 200% motto. <a href=#the-200-motto></a></h3><p>&ldquo;My trait of having an eye for details sometimes leads to slower productivity. Thus, I&rsquo;m still today-year-old thriving to optimize it. While I was still working on Aharooms, staying up working until 1 or 2 AM was an everyday scheme. It bugs me to go to bed knowing I haven&rsquo;t finished the work. It&rsquo;s a principle to work with all I can, despite the role I&rsquo;m playing as. Looking back at my 2017 version, I&rsquo;ve always been amazed by what has been learned and changed.</p><p>Last July rounded up my 5th year as a Dwarves. It was one hell of a roller coaster ride. I play by a motto where I&rsquo;m down to perform at a 200% effort. I guess that motto layers my success at Open Fabric, a recently-wrapped up project where the teammates and the Project Lead himself endorsed me for being an absolute rock star. It&rsquo;s hard to describe the feeling, but &lsquo;proud&rsquo; would be the right word.</p><p>Dwarves is scaling up and getting bigger every day. So as a long-time contributor, the newbies would come and ask me how to upgrade their career and self-development. I often come with this: Give yourself the chance to try, and try out everything until you find something you wouldn&rsquo;t trade the world for. Keep up the consistency in what you choose. On top of that, don&rsquo;t force yourself to work on what you hate. Meeting new people will outgrow you. And remember to spend good times with the colleagues, because that can be one of the best moments you remember about that place.&rdquo;</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -465,13 +467,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><hr><p><strong>Life at Dwarves</strong> is a series of stories about people, perspectives and lives at the Dwarves Foundation.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

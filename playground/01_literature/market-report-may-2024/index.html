@@ -392,7 +392,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1134</li><li class=span><span>Characters:
-</span>14343</li><li class=span><span>Without Spaces:
+</span>14346</li><li class=span><span>Without Spaces:
 </span>7334</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data='{
@@ -442,14 +442,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>Integrate GPT-4o chatbot with Google Sheets to generate insights from reports.</em></p><h2 id=job-market-trends-demand-for-advanced-and-veteran-programmers>Job Market Trends: Demand for Advanced and Veteran Programmers <a href=#job-market-trends-demand-for-advanced-and-veteran-programmers></a></h2><p>The demand for advanced and veteran programmers is rising as companies seek to address the increasing complexity of modern software development and the need for efficient problem-solving skills. Many organizations now prefer candidates with extensive experience over newcomers. This trend is partly driven by the limitations observed in some programmers&rsquo; skills, leading companies to favor seasoned professionals who can navigate complex challenges and contribute significantly from day one, now with the demand for hardware engineering growing.</p><p>The barrier to entry for programming has never been lower than before with AI, but now with emerging barriers for more bespoke and advanced software. We expect this trend to continue, as there has been great emphasis and importance on continuous learning and skill enhancement in the tech industry.</p><h2 id=the-rise-of-prescriptive-ai>The Rise of Prescriptive AI <a href=#the-rise-of-prescriptive-ai></a></h2><p>Prescriptive AI is becoming a significant trend, offering solutions that go beyond predictive analytics by recommending actions based on data insights. This form of AI can transform industries by optimizing decision-making processes and operational efficiency to enable resilient supply chains or better manage public finances. One example, in manufacturing, prescriptive AI analysis can process vast amounts of vision data to suggest improvements, reduce downtime, and recommend/alert on urgent fixes. Its ability to provide actionable recommendations makes it a powerful tool for businesses aiming to leverage data for strategic advantage.</p><p>With agentic designs for AI being more mainstream, we think that the integration of prescriptive AI will soon become a standard practice across various sectors, driving innovation with actionable AI assistants in both the software and hardware space.</p><h2 id=web-development-shift-is-your-code-outdated>Web Development Shift: Is Your Code Outdated? <a href=#web-development-shift-is-your-code-outdated></a></h2><p>The web development landscape is undergoing a transformative shift. React 19 has introduced a major change, reflecting the evolving nature of JavaScript frameworks and the ongoing debates in the developer community. A significant trend is the move towards keeping HTML templates on the server while maintaining front-end interactivity similar to technologies like Hotwire and LiveView. React, traditionally focused on component-based development, is now venturing into this space, offering solutions for managing the network gap.</p><p>The seamless integration between the frontend and backend in React eliminates the need for developers to worry about data passing between them. Although it may seem unconventional for a frontend library to handle network and backend tasks, the &ldquo;<a href="https://www.youtube.com/watch?v=zqhE-CepH2g" target=_blank>Mind The Gap</a>&rdquo; demo showcased React components rendered on the server and then teleported to the browser. This blurring of the network gap between frontend and backend frameworks, while maintaining high interactivity on the client side, is an approach worth exploring. Developers should stay curious about these new methodologies as they could potentially make traditional frontend-backend API connections obsolete.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -465,14 +467,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>React code can now interact with the network and a small part of the backend.</em></p><h2 id=graphql-not-our-choice>GraphQL: Not Our Choice <a href=#graphql-not-our-choice></a></h2><p>GraphQL is a technology we have never fully committed to. While we have experimented with it and inherited projects that use it, we prefer the simplicity of having all API endpoint code in one file rather than navigating the complexities of GraphQL’s various layers and models. JSON REST APIs remain our preferred choice.</p><p>A recent <a href=https://bessey.dev/blog/2024/05/24/why-im-over-graphql/ target=_blank>debate</a> highlighted dissatisfaction with GraphQL. Like many trendy technologies, GraphQL works well for small projects but becomes problematic as project requirements grow more complex. Increased adoption and demand on the API lead to more debugging time. GraphQL exacerbates these challenges, with vague issue descriptions, harder-to-find log entries, and performance issues appearing randomly. For us, the &ldquo;boring&rdquo; REST API remains the preferred choice.</p><h2 id=bend-a-parallel-programming-language-for-the-ai-age>Bend: A Parallel Programming Language for the AI Age? <a href=#bend-a-parallel-programming-language-for-the-ai-age></a></h2><p>This month introduced <a href=https://higherorderco.com/ target=_blank>Bend</a>, a new programming language designed to scale performance by default on massively parallel hardware like GPUs. Parallel computing accelerates problem-solving by using multiple computers or cores, but it can be challenging due to synchronization issues. Bend simplifies this by making parallelism the default, requiring no specialized knowledge of CUDA or other parallel technologies.</p><p>Bend replaces traditional loops with the concept of “fold,” allowing recursive data types to be consumed in parallel. The performance gains are significant, with code execution times dropping from 30 seconds on a CPU to just 1.5 seconds on a GPU using Bend. Despite its high-level features akin to Python and Haskell, Bend supports fast object allocations, higher-order functions with closures, unrestricted recursion, and continuations, making it an exciting prospect for data processing and machine learning tasks.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -488,13 +492,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://openai.com/index/hello-gpt-4o/ target=_blank>https://openai.com/index/hello-gpt-4o/</a></li><li><a href=https://platform.openai.com/docs/models/gpt-4o target=_blank>https://platform.openai.com/docs/models/gpt-4o</a></li><li><a href=https://openai.com/index/improvements-to-data-analysis-in-chatgpt/ target=_blank>https://openai.com/index/improvements-to-data-analysis-in-chatgpt/</a></li><li><a href=https://openai.com/index/be-my-eyes/ target=_blank>https://openai.com/index/be-my-eyes/</a></li><li><a href=https://github.com/HigherOrderCO/Bend target=_blank>https://github.com/HigherOrderCO/Bend</a></li><li><a href=https://bessey.dev/blog/2024/05/24/why-im-over-graphql/ target=_blank>https://bessey.dev/blog/2024/05/24/why-im-over-graphql/</a></li><li><a href="https://news.ycombinator.com/item?id=40521518" target=_blank>https://news.ycombinator.com/item?id=40521518</a></li><li><a href="https://www.notion.so/Market-Report-May-2024-9ad25dcb3fbb4a0ebb9744a44733913c?pvs=21" target=_blank>Mind The Gap" by Ryan Florence</a></li><li><a href="https://news.ycombinator.com/item?id=40224213" target=_blank>https://news.ycombinator.com/item?id=40224213</a></li><li><a href=https://x.com/aznweng/status/1780594562597081362 target=_blank>https://x.com/aznweng/status/1780594562597081362</a></li><li><a href=https://www.linkedin.com/pulse/data-driven-manufacturing-exploring-intersection-ai-analytics-goyal-exqcc/ target=_blank>https://www.linkedin.com/pulse/data-driven-manufacturing-exploring-intersection-ai-analytics-goyal-exqcc/</a></li><li><a href=https://www.tandfonline.com/doi/full/10.1080/00207543.2024.2341415 target=_blank>https://www.tandfonline.com/doi/full/10.1080/00207543.2024.2341415</a></li><li><a href=https://graphite-note.com/prescriptive-data-analysis-game-changer-for-businesses/ target=_blank>https://graphite-note.com/prescriptive-data-analysis-game-changer-for-businesses/</a></li><li><a href=https://one.oecd.org/document/GOV/SBO%282024%2914/en/pdf target=_blank>https://one.oecd.org/document/GOV/SBO(2024)14/en/pdf</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -392,7 +392,7 @@ Tags:
 Folder:
 </span>consulting/case-study</li><div>Stats</div><li class=span><span>Words:
 </span>539</li><li class=span><span>Characters:
-</span>14878</li><li class=span><span>Without Spaces:
+</span>14887</li><li class=span><span>Without Spaces:
 </span>3025</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div><main x-data='{
@@ -442,14 +442,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=in-brief>In brief <a href=#in-brief></a></h2><ul><li>Founded in 1997 and has having 22 years in the market, Reapit is the largest CRM and Client Accounting software provider to the UK residential real estate sector.</li><li>Reapit got acquired by Accel KKR in 2017 - which powered them to accelerate their growth and innovation potential in products and technology expansion</li><li>Reapit wants to migrate the app from desktop-based to Cloud-based. They want to develop a PaaS to support an expandability for SME customer.</li><li>We stepped in as a Vietnam offshore team for prototypes and skunkworks. Skunkworks demands minimum team management, able to ship work in short timeline and scaling ability.</li></ul><h2 id=technical-highlight>Technical Highlight <a href=#technical-highlight></a></h2><ul><li>Migrating current separated apps to one single monorepo.</li><li>React and Redux for composability and component reusability.</li><li>RPS software-support for Geo Diary.</li><li>Integration pipeline for straight deployment on hourly basis.</li><li>Tight coupling of backend and frontend for a robust system.</li><li>90% test coverage with web-driver end-to-end test before official deployment.</li><li><strong><a href=https://github.com/reapit/foundations target=_blank>Open-source repo</a></strong> for bug report & feature request.</li><li>Meet launching timeline for <strong><a href="https://www.youtube.com/watch?v=y-Fhlg2jrYo" target=_blank>Reapit Foundation Launch Event</a>.</strong></li><li>SLA management for on-time advise and business qualification.</li></ul><h2 id=the-context>The Context <a href=#the-context></a></h2><p>They currently have 60 engineers in the UK. But they need augmentation to grow faster. A skunkworks team is perfect for that.</p><p>We take over the module development as part of SME solutions. This enables Reapit to trial new ideas for their upcoming launch event: Reapit Foundation.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -465,14 +467,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Normally, building up a team needs an interference of headhunter, service fee and time to get people onboarded.</p><blockquote><p>We tackle that with a team of skillful engineers. Reapit was thrilled to form an Asia offshore team for scaling possibility.</p></blockquote><p>SLA is also a part that we help qualify. More than the code, we offer long term tech strategy.</p><h2 id=engagement-model>Engagement Model <a href=#engagement-model></a></h2><p>We form up a Cloud-team with senior React.js. We dive in to take care 2 focuses of AgencyCloud:</p><ul><li>Reapit&rsquo;s Foundation: Cloud-based Platform-as-a-Service (PaaS) and app marketplace</li><li>Reapit&rsquo;s Geo Diary: On-the-go app for instant access in daily & weekly appointments.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -488,14 +492,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Reapit&rsquo;s Foundation contains of 3 main apps: Admin Portal, Developer Portal and App Marketplace (in which consists of Geo Diary and AML Checklist). Having multiple apps is hard to handle the codebase. We initiatively suggest them monorepo as a united solution.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -511,14 +517,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -534,14 +542,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=collaboration>Collaboration <a href=#collaboration></a></h3><p>Our Account Manager directly work with Reapit’s Engineering Team Leader to ensure development progress. Followed by some team practices:</p><ul><li>Sprint Planning: Milestone discussion and weekly focus.</li><li>4PM Daily meeting: Work status sync-up and problem-resolve.</li><li>Bi-weekly Sprint Update: Previous-sprint walk through and new tickets clarification.</li><li>Task list: Member can bid on task due to personal capacities.</li></ul><p>This approach drives a proactivity for teammates. We&rsquo;re able to catch up shortly, discuss on roadblocks, quickly response to incidents and perform at our best state.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -557,14 +567,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=tech-stacks>Tech stacks <a href=#tech-stacks></a></h3><ul><li>Backend: NodeJS</li><li>Frontend: React.js, TypeScript, Svelte</li><li>Infras: AWS</li><li>Logging/Monitoring: Sentry, CloudWatch</li><li>Testing: Jest, Cypress</li></ul><h3 id=collaboration-1>Collaboration <a href=#collaboration-1></a></h3><ul><li>Agile practices</li><li>Sprint planning, Sprint update & Daily sync-up</li><li>Slack & Basecamp</li><li>Git/ Gitflow/ GitHub Kanban</li></ul><h2 id=outcome>Outcome <a href=#outcome></a></h2><p>With 2 weeks for product research and 2 weeks for development, we&rsquo;re proud to introduce the prototype - which enables Reapit to meet their launching timeline for <strong><a href="https://www.youtube.com/watch?v=y-Fhlg2jrYo" target=_blank>Reapit Foundation Launch Event</a></strong>.</p><p>Reapit shortly rolled out the beta version for App Store, 3 mini-apps & Foundation Developer Portal to successfully level up their Foundation App Marketplace.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -580,14 +592,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -603,14 +617,16 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -626,13 +642,15 @@ Folder:
         return this.src; // Return the full URL for external links
       }
 
-      let currentUrlParts = window.location.pathname.split('/');
-      currentUrlParts.pop(); // Remove the current page
-      const relativeUrl = currentUrlParts.length > 0 ? `${currentUrlParts.join('/')}/` : '/';
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.startsWith('assets/')) {
-         return `${relativeUrl}${this.src}`;
+      if (this.src.match(/^assets/)) {
+         return `${relativeUrl}/${this.src}`;
       }
-      return `/${this.src.replace(/^\//, '')}`;
+      return `/${this.src}`;
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
