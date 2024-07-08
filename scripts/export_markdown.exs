@@ -16,6 +16,9 @@ defmodule MarkdownExporter do
   Entry point for the script.
   """
   def main(args) do
+    System.put_env("LC_ALL", "en_US.UTF-8")
+    System.cmd("locale", [])
+
     {opts, _, _} = OptionParser.parse(args, strict: [vaultpath: :string, exportpath: :string])
 
     vaultpath = opts[:vaultpath] || "vault"
@@ -45,11 +48,12 @@ defmodule MarkdownExporter do
   end
 
   defp process_single_file(vaultpath, vault_dir, exportpath, all_valid_files) do
-    if Enum.member?(all_valid_files, vaultpath) and contains_required_frontmatter_keys?(vaultpath) do
-      process_file(vaultpath, vault_dir, exportpath, all_valid_files)
+    normalized_vaultpath = normalize_path(vaultpath)
+    if Enum.member?(all_valid_files, normalized_vaultpath) and contains_required_frontmatter_keys?(normalized_vaultpath) do
+      process_file(normalized_vaultpath, vault_dir, exportpath, all_valid_files)
     else
       IO.puts(
-        "File #{vaultpath} does not exist, is ignored, or does not contain required frontmatter keys."
+        "File #{inspect(vaultpath)} does not exist, is ignored, or does not contain required frontmatter keys."
       )
     end
   end
@@ -71,7 +75,8 @@ defmodule MarkdownExporter do
   defp list_files_and_assets_recursive(path) do
     File.ls!(path)
     |> Enum.flat_map(fn file ->
-      full_path = Path.join(path, file)
+      normalized_file = normalize_path(file)
+      full_path = Path.join(path, normalized_file)
 
       if File.dir?(full_path),
         do: [full_path | list_files_and_assets_recursive(full_path)],
@@ -126,7 +131,19 @@ defmodule MarkdownExporter do
 
   defp ignored?(file, patterns, vaultpath) do
     relative_path = Path.relative_to(file, vaultpath)
-    Enum.any?(patterns, &match_pattern?(relative_path, &1))
+    normalized_path = normalize_path(relative_path)
+    Enum.any?(patterns, &match_pattern?(normalized_path, &1))
+  end
+
+  defp normalize_path(path) do
+    path
+    |> String.replace("Â§", "§")
+    |> String.to_charlist()
+    |> Enum.map(fn
+      c when c < 128 -> c
+      c -> c
+    end)
+    |> List.to_string()
   end
 
   defp match_pattern?(path, pattern) do
@@ -180,7 +197,7 @@ defmodule MarkdownExporter do
     File.mkdir_p!(export_dir)
 
     File.write!(lowercase_export_file, converted_content)
-    IO.puts("Exported: #{file} -> #{lowercase_export_file}")
+    IO.puts("Exported: #{inspect(file)} -> #{inspect(lowercase_export_file)}")
   end
 
   defp process_duckdb_queries(content) do

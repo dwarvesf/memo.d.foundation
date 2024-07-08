@@ -22,6 +22,9 @@ defmodule MediaConverter do
   Entry point for the script.
   """
   def main(args) do
+    System.put_env("LC_ALL", "en_US.UTF-8")
+    System.cmd("locale", [])
+
     {opts, _, _} = OptionParser.parse(args, strict: [vaultpath: :string])
 
     vaultpath = opts[:vaultpath] || "vault"
@@ -44,24 +47,32 @@ defmodule MediaConverter do
     File.mkdir_p!(Path.join(vault_dir, @assets_dir))
 
     if mode == :file do
-      if Enum.member?(all_valid_files, vaultpath) do
-        process_file(vaultpath, vault_dir)
-      else
-        IO.puts("File #{vaultpath} does not exist or is ignored.")
-      end
+      process_single_file(vaultpath, vault_dir, all_valid_files)
     else
       all_valid_files
       |> Flow.from_enumerable()
-      |> Flow.filter(&contains_required_frontmatter_keys?(&1))
+      |> Flow.filter(&contains_required_frontmatter_keys?/1)
       |> Flow.map(&process_file(&1, vault_dir))
       |> Flow.run()
+    end
+  end
+
+  defp process_single_file(vaultpath, vault_dir, all_valid_files) do
+    normalized_vaultpath = normalize_path(vaultpath)
+    if Enum.member?(all_valid_files, normalized_vaultpath) and contains_required_frontmatter_keys?(normalized_vaultpath) do
+      process_file(normalized_vaultpath, vault_dir)
+    else
+      IO.puts(
+        "File #{inspect(vaultpath)} does not exist, is ignored, or does not contain required frontmatter keys."
+      )
     end
   end
 
   defp list_files_recursive(path) do
     File.ls!(path)
     |> Enum.flat_map(fn file ->
-      full_path = Path.join(path, file)
+      normalized_file = normalize_path(file)
+      full_path = Path.join(path, normalized_file)
 
       if File.dir?(full_path) do
         list_files_recursive(full_path)
@@ -69,6 +80,17 @@ defmodule MediaConverter do
         [full_path]
       end
     end)
+  end
+
+  defp normalize_path(path) do
+    path
+    |> String.replace("Â§", "§")
+    |> String.to_charlist()
+    |> Enum.map(fn
+      c when c < 128 -> c
+      c -> c
+    end)
+    |> List.to_string()
   end
 
   defp read_export_ignore_file(ignore_file) do
@@ -83,7 +105,8 @@ defmodule MediaConverter do
 
   defp ignored?(file, patterns, vaultpath) do
     relative_path = Path.relative_to(file, vaultpath)
-    Enum.any?(patterns, &match_pattern?(relative_path, &1))
+    normalized_path = normalize_path(relative_path)
+    Enum.any?(patterns, &match_pattern?(normalized_path, &1))
   end
 
   defp match_pattern?(path, pattern) do
@@ -132,7 +155,7 @@ defmodule MediaConverter do
       links
       |> Flow.from_enumerable()
       |> Flow.map(fn link ->
-        new_link = handle_media_link(link, vaultpath)
+        new_link = handle_media_link(normalize_path(link), vaultpath)
         {link, new_link}
       end)
       |> Enum.into(%{})
@@ -140,7 +163,7 @@ defmodule MediaConverter do
     converted_content = convert_links(content, resolved_links, file, vaultpath)
 
     File.write!(file, converted_content)
-    IO.puts("Processed: #{file}")
+    IO.puts("Processed: #{inspect(file)}")
   end
 
   defp handle_media_link(link, vaultpath) do
