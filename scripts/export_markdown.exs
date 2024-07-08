@@ -212,7 +212,16 @@ defmodule MarkdownExporter do
   end
 
   defp duckdb_cmd(query) do
-    {result, exit_code} = System.cmd("duckdb", ["-json", "-cmd", "IMPORT DATABASE 'db'", "-c", query])
+    {result, exit_code} =
+      System.cmd("duckdb", [
+        "-json",
+        "-cmd",
+        "IMPORT DATABASE 'db'",
+        "-cmd",
+        "CREATE OR REPLACE TEMP MACRO markdown_link(title, file_path) AS '[' || COALESCE(title, '/' || REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(^-|-$)', '')) || '](/' || REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(^-|-$)', '') || ')'",
+        "-c",
+        query
+      ])
 
     cond do
       exit_code != 0 ->
@@ -231,7 +240,11 @@ defmodule MarkdownExporter do
 
   defp result_to_markdown_table(result, query) when is_list(result) and length(result) > 0 do
     headers = extract_headers_from_query(query)
-    available_headers = Map.keys(hd(result))
+    available_headers =
+      case result do
+        [%{} | _] -> Map.keys(hd(result))
+        _ -> []
+      end
 
     # Use headers from query if available, otherwise use all available headers
     headers =
@@ -239,23 +252,36 @@ defmodule MarkdownExporter do
         do: available_headers,
         else: Enum.filter(headers, &(&1 in available_headers))
 
-    header_row = "| #{Enum.join(headers, " | ")} |"
-    separator_row = "|#{String.duplicate("---|", length(headers))}"
+    # If headers are still empty, use the keys from the first result item
+    headers = if Enum.empty?(headers), do: Map.keys(hd(result)), else: headers
 
-    rows =
-      Enum.map(result, fn row ->
-        "| #{Enum.map(headers, &(get_value(row, &1) |> to_string)) |> Enum.join(" | ")} |"
-      end)
+    if Enum.empty?(headers) do
+      "No headers found in the result."
+    else
+      header_row = "| #{Enum.join(headers, " | ")} |"
+      separator_row = "|#{String.duplicate("---|", length(headers))}"
 
-    [header_row, separator_row | rows]
-    |> Enum.join("\n")
+      rows =
+        Enum.map(result, fn row ->
+          "| #{Enum.map(headers, &(get_value(row, &1) |> to_string |> String.trim)) |> Enum.join(" | ")} |"
+        end)
+
+      [header_row, separator_row | rows]
+      |> Enum.join("\n")
+    end
   end
 
+  defp result_to_markdown_table(result, _) when is_binary(result), do: result
   defp result_to_markdown_table(_, _), do: "No results or invalid data format."
 
   defp result_to_markdown_list(result, query) when is_list(result) and length(result) > 0 do
     headers = extract_headers_from_query(query)
-    available_headers = Map.keys(hd(result))
+
+    available_headers =
+      case result do
+        [%{} | _] -> Map.keys(hd(result))
+        _ -> []
+      end
 
     headers =
       if Enum.empty?(headers),
@@ -263,15 +289,25 @@ defmodule MarkdownExporter do
         else: Enum.filter(headers, &(&1 in available_headers))
 
     Enum.map(result, fn row ->
-      values = Enum.map(headers, &(get_value(row, &1) |> to_string))
-      "- #{Enum.join(values, ": ")}"
+      value =
+        if Enum.empty?(headers) do
+          format_item(row)
+        else
+          headers
+          |> Enum.map(&get_value(row, &1))
+          |> Enum.map(&format_item/1)
+          |> Enum.join(": ")
+        end
+
+      "- #{value}"
     end)
     |> Enum.join("\n")
   end
 
+  defp result_to_markdown_list(result, _) when is_binary(result), do: "- #{result}"
   defp result_to_markdown_list(_, _), do: "No results or invalid data format."
 
-  defp get_value(row, key) do
+  defp get_value(row, key) when is_map(row) do
     cond do
       Map.has_key?(row, key) -> row[key]
       Map.has_key?(row, String.downcase(key)) -> row[String.downcase(key)]
@@ -279,6 +315,19 @@ defmodule MarkdownExporter do
       true -> nil
     end
   end
+
+  defp get_value(row, _key), do: row
+
+  defp format_item(item) when is_binary(item), do: String.trim(item)
+
+  defp format_item(item) when is_map(item) do
+    case Map.values(item) do
+      [single_value] -> format_item(single_value)
+      _ -> Enum.map_join(item, ", ", fn {k, v} -> "#{k}: #{v}" end)
+    end
+  end
+
+  defp format_item(item), do: to_string(item)
 
   defp extract_headers_from_query(query) do
     case Regex.run(~r/SELECT\s+(.+?)\s+FROM/is, query) do
@@ -314,20 +363,9 @@ defmodule MarkdownExporter do
         |> List.last()
         |> clean_name()
 
-      # Case: just a function
-      String.contains?(column, "(") ->
-        case Regex.run(~r/(\w+)\((.*)\)/, column) do
-          [_, func_name, args] ->
-            arg = args |> String.split(",") |> List.first() |> String.trim()
-            clean_name(arg)
-
-          nil ->
-            clean_name(column)
-        end
-
-      # Case: just a column name
+      # Case: just a function or column name without alias
       true ->
-        column |> String.split(" ") |> List.last() |> clean_name()
+        clean_name(column)
     end
   end
 
