@@ -240,6 +240,7 @@ defmodule MarkdownExporter do
 
   defp result_to_markdown_table(result, query) when is_list(result) and length(result) > 0 do
     headers = extract_headers_from_query(query)
+
     available_headers =
       case result do
         [%{} | _] -> Map.keys(hd(result))
@@ -263,7 +264,7 @@ defmodule MarkdownExporter do
 
       rows =
         Enum.map(result, fn row ->
-          "| #{Enum.map(headers, &(get_value(row, &1) |> to_string |> String.trim)) |> Enum.join(" | ")} |"
+          "| #{Enum.map(headers, &(get_value(row, &1) |> to_string |> String.trim())) |> Enum.join(" | ")} |"
         end)
 
       [header_row, separator_row | rows]
@@ -346,6 +347,18 @@ defmodule MarkdownExporter do
     column = String.trim(column)
 
     cond do
+      # Case: column AS 'alias with spaces'
+      String.match?(column, ~r/\sAS\s+'([^']+)'/i) ->
+        Regex.run(~r/\sAS\s+'([^']+)'/i, column)
+        |> List.last()
+        |> clean_name()
+
+      # Case: column AS "alias with spaces"
+      String.match?(column, ~r/\sAS\s+"([^"]+)"/i) ->
+        Regex.run(~r/\sAS\s+"([^"]+)"/i, column)
+        |> List.last()
+        |> clean_name()
+
       # Case: column AS alias
       String.match?(column, ~r/\sAS\s/i) ->
         [_, alias] = Regex.split(~r/\sAS\s/i, column, parts: 2)
