@@ -186,10 +186,7 @@
         return row;
       });
 
-      searchResults.sort((a, b) => b.rrf_score - a.rrf_score);
-      const topResults = searchResults.slice(0, 15);
-
-      const grouped = _groupBy(topResults, "category");
+      const grouped = _groupBy(searchResults, "category");
       const event = new CustomEvent("command-palette-search-result", {
         detail: {
           data: {
