@@ -95,6 +95,10 @@
 
     return {filters, query: stripFilters.join(" ").trim()};
   }
+  
+  function calculateRRFScore(fullTextRank, similarityRank, k = 60) {
+    return 1 / (k + fullTextRank) + 1 / (k + similarityRank);
+  }
 
   document.addEventListener("command-palette-search", (event) => {
     const rawQuery = event.detail.data;
@@ -114,7 +118,8 @@
           spr_content,
           full_text_score,
           similarity,
-          (full_text_score * similarity) AS score
+          ROW_NUMBER() OVER (ORDER BY full_text_score DESC) as full_text_rank,
+          ROW_NUMBER() OVER (ORDER BY similarity DESC) as similarity_rank
         FROM (
           SELECT
             title,
@@ -139,8 +144,8 @@
             ${filters.authors.length ? filters.authors.map(a => `AND list_contains(authors, ?)`).join(" ") : ""}
           ORDER BY similarity DESC
         )
-        ORDER BY score DESC
-        LIMIT 10;
+        ORDER BY full_text_score DESC, similarity DESC
+        LIMIT 50;
       `
       const hybridSearch = await conn.prepare(queryStr);
       const args = [
@@ -161,10 +166,16 @@
           query.split(" ").join("|")
         );
         row.spr_content = row.spr_content.replaceAll("\n", "<hr />");
+        row.rrf_score = calculateRRFScore(row.full_text_rank, row.similarity_rank);
+
         delete row.md_content;
         return row;
       });
-      const grouped = _groupBy(searchResults, "category");
+
+      searchResults.sort((a, b) => b.rrf_score - a.rrf_score);
+      const topResults = searchResults.slice(0, 15);
+
+      const grouped = _groupBy(topResults, "category");
       const event = new CustomEvent("command-palette-search-result", {
         detail: {
           data: {
