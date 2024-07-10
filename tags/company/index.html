@@ -95,10 +95,6 @@
 
     return {filters, query: stripFilters.join(" ").trim()};
   }
-  
-  function calculateRRFScore(fullTextRank, similarityRank, k = 60) {
-    return 1 / (k + fullTextRank) + 1 / (k + similarityRank);
-  }
 
   document.addEventListener("command-palette-search", (event) => {
     const rawQuery = event.detail.data;
@@ -109,6 +105,40 @@
 
       console.time("Running hybrid search");
       const queryStr = `
+        WITH search_results AS (
+          SELECT
+            title,
+            description,
+            file_path,
+            tags,
+            md_content,
+            spr_content,
+            authors,
+            fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
+            ${queryEmbeddings ? `array_cosine_similarity(?::FLOAT[1024], embeddings_spr_custom)` : "?"} AS similarity
+          FROM vault
+          WHERE 
+            embeddings_spr_custom IS NOT NULL
+            AND title IS NOT NULL
+            ${filters.title ? "AND title ILIKE ?" : ""}
+            ${filters.tags.length ? filters.tags.map(t => `AND list_contains(tags, ?)`).join(" ") : ""}
+            ${filters.authors.length ? filters.authors.map(a => `AND list_contains(authors, ?)`).join(" ") : ""}
+            AND (hiring = true OR hiring IS NULL)
+            AND (draft != true OR draft IS NULL)
+        ),
+        ranked_results AS (
+          SELECT
+            *,
+            ROW_NUMBER() OVER (ORDER BY full_text_score DESC) as full_text_rank,
+            ROW_NUMBER() OVER (ORDER BY similarity DESC) as similarity_rank
+          FROM search_results
+        ),
+        rrf_results AS (
+          SELECT
+            *,
+            1.0 / (60 + full_text_rank) + 1.0 / (60 + similarity_rank) AS rrf_score
+          FROM ranked_results
+        )
         SELECT
           title,
           description,
@@ -118,34 +148,10 @@
           spr_content,
           full_text_score,
           similarity,
-          ROW_NUMBER() OVER (ORDER BY full_text_score DESC) as full_text_rank,
-          ROW_NUMBER() OVER (ORDER BY similarity DESC) as similarity_rank
-        FROM (
-          SELECT
-            title,
-            description,
-            file_path,
-            tags,
-            md_content,
-            spr_content,
-            fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
-            authors,
-            ${queryEmbeddings ? `array_cosine_similarity(?::FLOAT[1024], embeddings_spr_custom)` : "?"} AS similarity
-          FROM vault
-          WHERE 
-            embeddings_spr_custom IS NOT NULL
-            AND full_text_score IS NOT NULL
-            AND title IS NOT NULL
-            ${filters.title ? "AND title ILIKE ?" : ""}
-            AND tags is NOT NULL
-            ${filters.tags.length ? filters.tags.map(t => `AND list_contains(tags, ?)`).join(" ") : ""}
-            AND (hiring = true OR hiring IS NULL)
-            AND (draft != true OR draft IS NULL)
-            ${filters.authors.length ? filters.authors.map(a => `AND list_contains(authors, ?)`).join(" ") : ""}
-          ORDER BY similarity DESC
-        )
-        ORDER BY full_text_score DESC, similarity DESC
-        LIMIT 50;
+          rrf_score
+        FROM rrf_results
+        ORDER BY rrf_score DESC
+        LIMIT 15;
       `
       const hybridSearch = await conn.prepare(queryStr);
       const args = [
@@ -166,7 +172,6 @@
           query.split(" ").join("|")
         );
         row.spr_content = row.spr_content.replaceAll("\n", "<hr />");
-        row.rrf_score = calculateRRFScore(row.full_text_rank, row.similarity_rank);
 
         delete row.md_content;
         return row;
