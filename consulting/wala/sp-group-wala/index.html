@@ -403,7 +403,7 @@ Tags:
 Folder:
 </span>consulting/wala</li><div>Stats</div><li class=span><span>Words:
 </span>485</li><li class=span><span>Characters:
-</span>4161</li><li class=span><span>Without Spaces:
+</span>4189</li><li class=span><span>Without Spaces:
 </span>2417</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div><main x-data='{
@@ -460,8 +460,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><hr><p><strong>WALA: to walk around, learn around.</strong></p><p>In our line of work, we hear and talk about domain knowledge all the time. WALA aims for exactly that: we, people in tech, take a break from sitting in front of our computers, to go out, connect with new people, and get to understand other businesses.</p><p>Through stories collected from Techie WALAs, we hope our community members get the chance to learn from others’ successes and failures, gain insights into what works and doesn’t, and reflect on their own works and practices.</p><p>Besides, breaking away from the stereotype of “tech people are introverts” is always fun.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

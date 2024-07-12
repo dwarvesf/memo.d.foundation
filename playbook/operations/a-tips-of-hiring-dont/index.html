@@ -403,7 +403,7 @@ Tags:
 Folder:
 </span>playbook/operations</li><div>Stats</div><li class=span><span>Words:
 </span>282</li><li class=span><span>Characters:
-</span>2775</li><li class=span><span>Without Spaces:
+</span>2803</li><li class=span><span>Without Spaces:
 </span>1308</li><li class=span><span>Blocks:
 </span>5</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data='{
@@ -461,9 +461,9 @@ Unless you&rsquo;re reaching out for help, hiring is the last thing you should k
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Before posting advertisements for open positions, make sure you understand every damn thing in the job description. Do it yourself. Understand the struggle. Automate the process. Optimize the method.
 That&rsquo;s when you write the job description yourself. Knowing how the job operates gives you the proactivity to response whenever a question comes up. And most importantly, you have an actual expectation for them to meet, not some crap they can learn online.</p><p>We do believe in hard working. In fact, we urge the team to discover their limit in any possible way. But for the love of God, don&rsquo;t misunderstand it with the state of burying your head in the sand. It trims off the quality, and things end up worse than they should have been just because we try to reach things that are way over our head. Success doesn&rsquo;t work that way.

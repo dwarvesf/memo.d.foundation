@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>playground/00_fleeting</li><div>Stats</div><li class=span><span>Words:
 </span>392</li><li class=span><span>Characters:
-</span>4426</li><li class=span><span>Without Spaces:
+</span>4454</li><li class=span><span>Without Spaces:
 </span>1950</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -459,8 +459,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=gradient-descent-in-simple-terms>Gradient Descent in simple terms <a href=#gradient-descent-in-simple-terms></a></h3><ul><li><strong>You:</strong> The computer trying to learn.</li><li><strong>Hill:</strong> The error in guesses.</li><li><strong>Lowest Point:</strong> Best learning with the least errors.</li><li><strong>Steps:</strong> Small adjustments to improve guesses.</li><li><strong>Looking Around:</strong> Checking which way reduces errors the most.</li></ul><p>Just like you keep stepping down the hill to find the treasure, the computer keeps adjusting its guesses to learn better and make the fewest mistakes.</p><h3 id=reference>Reference <a href=#reference></a></h3><p><a href=https://medium.com/onfido-tech/machine-learning-101-be2e0a86c96a target=_blank>https://medium.com/onfido-tech/machine-learning-101-be2e0a86c96a</a></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

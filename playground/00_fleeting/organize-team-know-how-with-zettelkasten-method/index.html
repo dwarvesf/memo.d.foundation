@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>playground/00_fleeting</li><div>Stats</div><li class=span><span>Words:
 </span>602</li><li class=span><span>Characters:
-</span>10377</li><li class=span><span>Without Spaces:
+</span>10517</li><li class=span><span>Without Spaces:
 </span>3043</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data="{
@@ -459,9 +459,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=components-of-a-note>Components of a note <a href=#components-of-a-note></a></h3><ol><li><strong>A unique identifier</strong>. This gives your Zettel an unambiguous address. For example: unique ID, URL</li><li><strong>The body of the Zettel</strong>. This is where you write down what you want to capture: The piece of knowledge.</li><li><strong>References</strong>. At the bottom of each Zettel, you either reference the source of the knowledge you capture or leave it blank if you capture your own thoughts.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -484,9 +484,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=types-of-note-included-in-zettelkasten>Types of note included in Zettelkasten <a href=#types-of-note-included-in-zettelkasten></a></h3><p>There are several different types of notes that you can add into your Zettelkasten. Here’s a quick overview:</p><ol><li><strong>Fleeting Notes:</strong> These are for quick, temporary notes that capture in-the-moment ideas and learnings. They&rsquo;re not meant to be comprehensive or polished, but are meant to capture your thoughts so that you can refine them later.</li><li><strong>Literature Notes</strong>: When you learn something from reading, create a literature note. These notes capture the key points and ideas from the books, articles, or other sources that you&rsquo;re studying. Remember to keep each literature note a single idea, as opposed to a collection of learnings from what you read.</li><li><strong>Permanent Notes:</strong> These are the notes that you want to keep for the long-term. They’re made up of the notes you’ve grouped and connected together. Think of it like a summarization of your ideas.</li><li><strong>Reference Notes:</strong> These notes act as “connectors” within your Zettelkasten. Think of them as the table of contents or legend that tell you where to find what information, or which notes connect with which. For example, if you’re using a star to mark notes that came from the same book, you can define that in a reference note. If you’re using a digital Zettelkasten, you might not need to create reference notes.</li></ol><h3 id=how-the-zettelkasten-method-improve-the-way-we-think-and-our-writing-skill>How the <strong>Zettelkasten Method improve the way we think and our writing skill</strong> <a href=#how-the-zettelkasten-method-improve-the-way-we-think-and-our-writing-skill></a></h3><ul><li><strong>Clarity in Thinking</strong>: Writing forces you to clarify your point, helping you stick to it coherently.</li><li><strong>Consistent Development</strong>: Writing down thoughts prevents mental leaps, ensuring consistent development of ideas.</li><li><strong>Improved Memorization</strong>: Putting thoughts on paper aids memorization.</li><li><strong>Guarding Against Bias</strong>: Written thoughts remain unchanged, tackling hindsight bias effectively.</li></ul><h2 id=how-the-team-applied-the-zettelkasten-method>How the team applied the Zettelkasten method <a href=#how-the-team-applied-the-zettelkasten-method></a></h2><h3 id=the-tags-system>The tags system <a href=#the-tags-system></a></h3><p>When a user enters Homepage, all the tags are listed on the sidebar and nested in the section Popular Tags. Each tag represents a topic and contains all the post of that topic. All the memo will attached with at least 3 tags that are related to the memo topics which allow readers to find content easier and look for connections to other notes.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -509,9 +509,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>When readers choose a tag, all the related post will be listed, with chart on the right side to show how all post are linked with each others and the tag.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -534,9 +534,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=the-map-of-content>The Map of content <a href=#the-map-of-content></a></h3><p>Our team use the Zettelkasten method to organize the map of content by usiing Obsidian. All of the files are stored in the form of markdown first, then they will be categorized into certain topics. The map of content provides a high-level view of interconnected notes which offers a flexible and connected way to organize notes.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -559,8 +559,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

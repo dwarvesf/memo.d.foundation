@@ -403,7 +403,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1965</li><li class=span><span>Characters:
-</span>26454</li><li class=span><span>Without Spaces:
+</span>26762</li><li class=span><span>Without Spaces:
 </span>9988</li><li class=span><span>Blocks:
 </span>47</li><li class=span><span>Est reading Time:
 </span>22m 0s</li></ul></div></div></div></div><main x-data='{
@@ -467,9 +467,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=nix-build-is-dependency-graph>Nix build is dependency graph <a href=#nix-build-is-dependency-graph></a></h2><p>In contrast to Docker, Nix build works differently. It uses symlinks to achieve atomic deployment of new versions of the system configuration. This makes rollbacks easy to perform and reduces the complexity of managing dependencies. Under the hood, Nix creates a &ldquo;map&rdquo; of all the packages and their dependencies, providing a high-level view of the entire system.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -492,9 +492,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Imagine you have a big box full of toys. Inside the box, there are lots of different toys that are connected to each other in different ways. For example, one toy might be connected to another toy by a string. If you want to play with just one toy, you need to find it in the box and take it out. But if you want to play with all the toys at once, you need to open the box and take them all out.</p><p>Nix works the same way. It creates a &ldquo;map&rdquo; of all the packages on your computer, and how they depend on each other. When you want to use a package, Nix finds it in the map and uses it. If you want to update a package, Nix changes the map to reflect the new version.</p><p>The magic of Nix is that it makes sure that everything works together correctly. It&rsquo;s like having a special box that knows how all the toys are connected, so it can help you play with them without getting confused or losing any of them.</p><h2 id=docker-can-access-internet-while-building-image>Docker can access internet while building image <a href=#docker-can-access-internet-while-building-image></a></h2><p>As we discussed in the <a href=https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges>Devbox #2: Our Docker adoption and its challenges</a>, Docker builds can access the public internet, so we can&rsquo;t guarantee that the same image will be built every time, as everything on the internet can change in minutes. Additionally, there are no checks to ensure that the files being fetched are actually the ones you intended for your Docker image. Even if we can push the image to a registry and pull it for running identical containers on different computers. In some edge cases when we can’t access to the online repository so need to build another one, we may not be able to build the required image again if some dependencies have changed on the internet.</p><h2 id=nix-ensures-external-sources-are-immutable>Nix ensures external sources are Immutable <a href=#nix-ensures-external-sources-are-immutable></a></h2><p>Take a look at the following diagram, we can see with the same build expression, Nix can result in the same images. In contrast, we can just only build a Docker Image one time and bring this result everywhere if don’t want any change to happen. How can Nix make it happen?</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -517,9 +517,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -542,9 +542,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Nix restricts external sources from being changed without being detected. As a result, Nix build always produces functionally the same output each time they are run. This also makes making changes safer, as a change requires a rebuild. The reason for this is that Nix provides the ability to configure the system state using Nix expressions in the Nix language. Essentially, it&rsquo;s an instruction to Nix on how should it build the package and what the final result should look like.</p><p>To further illustrate the point that Nix builds produce the same output each time, we can understand that Nix is implemented as a pure function that always returns the same result for the same input parameters. This means that if you run the same Nix expression multiple times, you will always get the same output.</p><h2 id=nix-also-can-build-docker-image-better-than-docker-build>Nix also can build Docker image better than Docker build <a href=#nix-also-can-build-docker-image-better-than-docker-build></a></h2><p>Nix can build Docker images better than Docker build, here&rsquo;s why: Nix takes advantage of a dirty secret deep within Docker - a content-aware store. However, since Docker build isn&rsquo;t designed to utilize this feature. Nix, on the other hand, can create layered images that only upload the changed layers, making updates more efficient.</p><p>A layered image puts every dependency into its own image layer so you only upload the parts of your image that have actually changed. For example, making an update to the webp library to fix a trivial bounds checking vulnerability because nobody writes those libraries in memory-safe languages? The only thing that&rsquo;d need to be uploaded is that single webp library layer.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -567,9 +567,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Additionally, if you have multiple services in the same repository, they&rsquo;ll share Docker layers with each other without any extra configuration. It&rsquo;s not possible to achieve this level of efficiency with Docker without creating multiple common base images, each containing a bunch of tools and unnecessary bloat that some of your services may never use.</p><h2 id=but-nix-needs-effort-devbox-is-more-easy>But Nix needs effort, Devbox is more easy <a href=#but-nix-needs-effort-devbox-is-more-easy></a></h2><p>After all, Nix looks superior to Docker. But not everything is perfect. Nix is more complex, If you and your team do not want to destroy everything and start again, migrating to Nix needs a lot of effort. But we have another simple way to apply Nix in the local development environment, that is using Devbox.</p><p>Powered by Nix, Devbox is a command-line tool that makes it easy to create isolated shells for development. By defining the list of packages needed for your development environment, Devbox creates a dedicated space for your application to run without anything related to container or VM.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -592,9 +592,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In practice, Devbox works similarly to a package manager like Yarn - except the packages it manages are at the operating system level (something you would normally install with brew or apt-get). With Devbox, you can access over 400,000 package versions from the Nix Package Registry.</p><p>Devbox offers an intuitive interface for creating development environments using the Nix Package Manager, without requiring any knowledge of the Nix language. So, how can we incorporate Devbox into our team&rsquo;s workflow?</p><h2 id=case-study-memodfoundation>Case Study: memo.d.foundation <a href=#case-study-memodfoundation></a></h2><p>Looking at <a href=https://github.com/dwarvesf/memo.d.foundation target=_blank>memo.d.foundation</a>, we use Devbox as a tool to create reproducible development environments, making it easy for new team members to get started with minimal effort. By setting up a Devbox shell config with needed dependencies, new joiners can quickly get started without installing anything beyond Devbox. They can then focus on making the application run locally, avoiding the issue of &ldquo;It works on my machine.&rdquo; Non-tech team members working on content for this repository can also easily run the project without any concerns.</p><p>All above ideas are proved by below transparent configuration file.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -617,9 +617,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Jut only need to bring it to anywhere then using <code>devbox shell</code> to setup an reproduced development environment without any outstanding steps likes following.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -642,9 +642,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Finally, easy to run our project without installing any other stuffs</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -667,9 +667,9 @@ RUN some-expensive-operation
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=case-study-docker-less-development-with-devbox-services>Case Study: docker-less development with Devbox services <a href=#case-study-docker-less-development-with-devbox-services></a></h2><p>In addition, we use Devbox to create a containerless development environment by leveraging Devbox services. Under the hood, it takes advantage of Process-Compose, a simple and flexible scheduler and orchestrator written in Nix, to manage non-containerized applications. With Devbox, we can create and manage servers in the shell using a Docker-compose-like approach without any actual Docker containers needed.</p><p>When we install a package using Devbox, it creates a file <code>process-compose.yaml</code> in the <code>./.devbox/virtualenv/</code> directory. This allows Devbox to manage every package installed inside the shell.</p><p>For example, when installing PostgreSQL using Devbox add Postgresql, the resulting <code>process-compose.yaml</code> file contains instructions for executing the DB, as shown in the following code.</p><pre><code class=language-BASH>version: &quot;0.5&quot;
 
@@ -703,9 +703,9 @@ processes:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>So depending on what applications you are running, you will have the proper way to config different ports. For example, can change add one more argument to change the default port of Postgresql in the <code>process-compose.yaml</code> to get parallel processes.</p><pre><code class=language-BASH>version: &quot;0.5&quot;
 
@@ -739,8 +739,8 @@ processes:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For now, this is the list of usecases I can provide. As I continue to learn and adapt, I will introduce more in the future.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In summary, Nix and Devbox offer exciting new possibilities for streamlining software development processes. By providing a more efficient way to create reproducible development environments, Nix and Devbox can help teams overcome challenges and improve overall workflow. While they may not completely replace Docker, they can effectively address different problems and provide additional support where Docker may be struggling.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

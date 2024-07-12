@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>268</li><li class=span><span>Characters:
-</span>6364</li><li class=span><span>Without Spaces:
+</span>6476</li><li class=span><span>Without Spaces:
 </span>1245</li><li class=span><span>Blocks:
 </span>8</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data='{
@@ -459,9 +459,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>We set up the recording screen on OBS as shown in the image below:<ul><li>We choose the window to record.</li><li>We set up <a href=https://restream.io/learn/obs-studio/how-to-multistream-with-obs/ target=_blank>streaming mode</a>.</li><li>We set up the audio input (Mute the Mic/Aux).</li></ul></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -484,9 +484,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>When the Ogif starts, we start recording on OBS and stream on YouTube.</li><li>When the Ogif ends, we stop the recording and save it.</li><li>Then, we split the recording by individual session.</li></ul><h3 id=record-audio-in-the-background-and-transcript>Record Audio in the Background and Transcript <a href=#record-audio-in-the-background-and-transcript></a></h3><p>Craig Bot is used to record audio in the background and split segments by user for AI transcription.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -509,9 +509,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>We invite the Craig Bot into the Dwarves Foundation server. If the bot is already in the server, this step can be skipped.</li><li>We invite the Craig Bot to the open voice channel to start recording by using the command <code>/join</code>.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -534,8 +534,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>After the Ogif ends, we stop the recording and save the audio file.</li><li>Then, we use ChatGPT-4 to transcribe the recording and split it into parts, similar to the video segments.</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

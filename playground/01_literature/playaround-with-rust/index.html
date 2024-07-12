@@ -400,7 +400,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>718</li><li class=span><span>Characters:
-</span>6586</li><li class=span><span>Without Spaces:
+</span>6614</li><li class=span><span>Without Spaces:
 </span>3165</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data="{
@@ -507,9 +507,9 @@ fn main() {
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In order to correct the function, we just put the lifetime in parameter like:</p><pre><code class=language-javascript>fn largest(x: &amp;i64, y: &amp;i64) -&gt; &amp;i64 {
    if x &gt; y {

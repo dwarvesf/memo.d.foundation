@@ -403,7 +403,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>309</li><li class=span><span>Characters:
-</span>7240</li><li class=span><span>Without Spaces:
+</span>7352</li><li class=span><span>Without Spaces:
 </span>1506</li><li class=span><span>Blocks:
 </span>16</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div><main x-data='{
@@ -460,9 +460,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Once your wallet is connected, your address will show up in the blue box, fill out these:</p></li></ol><ul><li><p>In the &ldquo;From&rdquo; tab, select &ldquo;DFG&rdquo; for Token and &ldquo;Ethereum&rdquo; for Network.</p></li><li><p>In the &ldquo;To&rdquo; tab, choose &ldquo;DFG&rdquo; for Token and &ldquo;Base&rdquo; for Network.</p></li><li><p>Enter the amount you want to send.</p></li><li><p>The address on the Base network should be your connected wallet by default.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -485,9 +485,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li></ul><ol start=3><li><p>Once you&rsquo;ve filled in those blanks, hit Approve, and confirm a couple of transactions on Coinbase Wallet.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,9 +510,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Spending Cap</strong>: The spending cap limits how much cryptocurrency you can spend at once or over time.</li><li><strong>Approval</strong>: Each transaction must be approved to ensure awareness and consent, enhancing security and preventing unauthorized or accidental transactions.</li></ul></li><li><p>Then just sit back and wait for your DFG to roll into your Base wallet.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -535,8 +535,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li></ol></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

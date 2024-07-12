@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>careers/life</li><div>Stats</div><li class=span><span>Words:
 </span>433</li><li class=span><span>Characters:
-</span>5252</li><li class=span><span>Without Spaces:
+</span>5308</li><li class=span><span>Without Spaces:
 </span>1978</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div><main x-data='{
@@ -459,9 +459,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=remote-working-can-significantly-benefit-when-you-use-it-wisely>Remote working can significantly benefit when you use it wisely. <a href=#remote-working-can-significantly-benefit-when-you-use-it-wisely></a></h3><p>“Sometimes the people I work with don&rsquo;t feel so comfy working from home. In that case, I&rsquo;ll invite them to go out and try pair working, if we&rsquo;re lucky to live in the same city. I&rsquo;m glad to help the mates adapt to this working culture because I know how remote working can significantly benefit when you use it wisely. In reverse, the team even reserves support costs for co-working space for the extroverted peeps.</p><p>In short, working from home only minimize our chances of verbal communication. It doesn&rsquo;t, and can&rsquo;t affect our work if you make it right. For me, it&rsquo;s the greatest work style ever. "</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -484,8 +484,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><hr><p><strong>Life at Dwarves</strong> is a series of stories about people, perspectives and lives at the Dwarves Foundation.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

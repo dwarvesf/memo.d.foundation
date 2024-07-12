@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>382</li><li class=span><span>Characters:
-</span>9744</li><li class=span><span>Without Spaces:
+</span>9912</li><li class=span><span>Without Spaces:
 </span>1788</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -459,9 +459,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=create-a-post>Create a post <a href=#create-a-post></a></h2><ol><li>Choose a folder that you want to nest your post in. If you don&rsquo;t know where to place your note, just leave it in the folder <code>vault/playground/00_fleeting</code>.</li><li>Click to the icon New files, and enter the name of new file. Remember to add the suffix <code>.md</code> after the file name to segment the type of file.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -484,9 +484,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=3><li>Insert the code for metadata on the top of your post.</li></ol><pre><code class=language-md>---
 tags: 
@@ -519,9 +519,9 @@ authors: [your name]
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=review-process>Review process <a href=#review-process></a></h2><p>After you finish editing the post, you need to capture the whole page of your post on local link, then send it to your supervior and @anna to review.</p><p>We suggest you to use Scrolling Capture of <a href=https://cleanshot.com/ target=_blank>Cleanshot</a>.</p><h2 id=commit-changes>Commit changes <a href=#commit-changes></a></h2><p>After editing, your post is only saved on local files. To post it to memo, you will need to create a request for administrator to approve. Before creating a request, you need to commit all changes first:</p><ol><li>Go to Source control section.</li><li>Sync all changes in memo.d.foundation and in the branch you edited.</li><li>Stage all changes of the branch you edited.</li><li>Name the commit and press Commit button.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -544,9 +544,9 @@ authors: [your name]
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=create-pull-request>Create Pull Request <a href=#create-pull-request></a></h2><p>Now, you should go to your <a href=https://github.com/ target=_blank>Github</a> and log in. After that follow the guideline to create pull request:</p><ol><li>Open the profile dropdown and open Your repositories section.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -569,9 +569,9 @@ authors: [your name]
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li>Choose the branch that you have edited.</li><li>Open the pull request list.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -594,8 +594,8 @@ authors: [your name]
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=4><li>Choose the commit and Create the pull request.</li></ol><p>Now all you need is waiting for admin to review your request!</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

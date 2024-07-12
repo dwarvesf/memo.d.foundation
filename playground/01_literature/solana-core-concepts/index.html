@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>779</li><li class=span><span>Characters:
-</span>12665</li><li class=span><span>Without Spaces:
+</span>12833</li><li class=span><span>Without Spaces:
 </span>4362</li><li class=span><span>Blocks:
 </span>29</li><li class=span><span>Est reading Time:
 </span>17m 0s</li></ul></div></div></div></div><main x-data='{
@@ -459,9 +459,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=types-of-accounts>Types of Accounts <a href=#types-of-accounts></a></h2><p>There are two types of accounts on the Solana blockchain: executable and non-executable. Programs are executable accounts and store the immutable code of a program. Data storage and token balances are stored in non-executable accounts as their data can be changed. To control who can change this data, non-executable accounts have an owner program address assigned to them.</p><p>For each type of account, there will be typical accounts.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -484,9 +484,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Data accounts store data</p><p>Program accounts store executable programs</p><p>Native accounts that indicate native programs on Solana such as System, Stake, and Vote</p><p>Within data accounts, there are 2 types:</p><ul><li>System owned accounts</li><li>PDA (Program Derived Address) accounts</li></ul><h2 id=programs>Programs <a href=#programs></a></h2><p>Solana Programs, often called &ldquo;smart contracts&rdquo; on other blockchains, are the executable code that interprets the instructions sent inside of each transaction on the blockchain. They can be deployed directly into the network’s core as Native Programs or published by anyone as On Chain Programs. Programs are the core building blocks of the network and handle everything from sending tokens between wallets to accepting votes of DAOs, to tracking ownership of NFTs.</p><p>Unlike most other blockchains, Solana completely separates code from data. All data that programs interact with are stored in separate accounts and passed in as references via instructions. This model allows for a single generic program to operate across various accounts without requiring additional deployments.</p><h2 id=types-of-programs>Types of programs <a href=#types-of-programs></a></h2><p>The Solana blockchain has two types of programs:</p><ul><li>Native programs</li><li>On chain programs</li></ul><p>Native programs are those built directly into the core of the Solana blockchain. These programs are divided into <a href=https://docs.solana.com/developing/runtime-facilities/programs#bpf-loader target=_blank>Native Programs</a> and <a href=https://spl.solana.com/ target=_blank>Solana Program Library (SPL) Programs</a>.</p><p>On chain programs is user-written programs, often called &ldquo;smart contracts&rdquo; on other blockchains, are deployed directly to the blockchain for anyone to interact with and execute.</p><h2 id=transactions-and-instructions>Transactions and Instructions <a href=#transactions-and-instructions></a></h2><p>On Solana, we send transactions to interactions with the network. Transactions include one or more instructions, each representing a specific operation to be processed. The execution logic for instructions is stored on programs deployed to the Solana network, where each program stores its own set of instructions.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -509,9 +509,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>An instruction is a request to process a specific action on-chain and is the smallest contiguous unit of execution logic in a program. You can imagine a instruction as a function which handles logic on web2.</p><p>Each instruction must include the following information:</p><ul><li>Program address: Specifies the program being invoked.</li><li>Accounts: Lists every account the instruction reads from or writes to, including other programs.</li><li>Instruction Data: A byte array that specifies which instruction handler on the program to invoke, plus any additional data required by the instruction handler (function arguments).</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -534,9 +534,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=program-derived-addresses-pdas>Program Derived Addresses (PDAs) <a href=#program-derived-addresses-pdas></a></h2><p>PDAs are addresses that are deterministically derived and look like standard public keys, but have no associated private keys. This means that no external user can generate a valid signature for the address. However, the Solana runtime enables programs to programmatically &ldquo;sign&rdquo; for PDAs without needing a private key.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -559,9 +559,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>PDA was created can sign transactions to modify its data. That is very useful when you need storage that can only be modifiable by your program.</p><h2 id=cross-program-invocations-cpis>Cross Program Invocations (CPIs) <a href=#cross-program-invocations-cpis></a></h2><p>A Cross Program Invocation (CPI) refers to when one program invokes the instructions of another program. This mechanism allows for the composability of Solana programs.</p><p>You can think of instructions as API endpoints that a program exposes to the network and a CPI as one API internally invoking another API.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -584,8 +584,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>When a program initiates a Cross Program Invocation (CPI) to another program:</p><ul><li>The signer privileges from the initial transaction invoking the caller program (A) extend to the callee (B) program.</li><li>The callee (B) program can make further CPIs to other programs, up to a maximum depth of 4 (ex. B->C, C->D).</li><li>The programs can &ldquo;sign&rdquo; on behalf of the PDAs derived from its program ID.</li></ul><h2 id=references>References <a href=#references></a></h2><p><a href=https://solana.com/docs target=_blank>https://solana.com/docs</a></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -398,7 +398,7 @@ Author:</span></li><div>Location</div><li><span><svg xmlns="http://www.w3.org/20
 Folder:
 </span>playground/_radar</li><div>Stats</div><li class=span><span>Words:
 </span>359</li><li class=span><span>Characters:
-</span>4728</li><li class=span><span>Without Spaces:
+</span>4756</li><li class=span><span>Without Spaces:
 </span>2211</li><li class=span><span>Blocks:
 </span>7</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div><main x-data="{
@@ -455,8 +455,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>(2021-12-13) - <strong>[Assess]</strong> (Tom) First proposal to project LFW for using TimescaleDB</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

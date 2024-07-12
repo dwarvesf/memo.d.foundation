@@ -400,7 +400,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>909</li><li class=span><span>Characters:
-</span>16735</li><li class=span><span>Without Spaces:
+</span>16931</li><li class=span><span>Without Spaces:
 </span>5417</li><li class=span><span>Blocks:
 </span>30</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div><main x-data="{
@@ -457,9 +457,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>To install homebrew, you just need to run the <code>brew</code> and you will get brew command ready in couple of minutes.</p><pre><code class=language-javascript>/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
 </code></pre><p>Homebrew is developed in Ruby and its program will be defined as a formula which is simple Ruby script. Most of tools can be found in Homebrew such as: docker, ruby, python, ansible, todo.txt, … At this time they have over 3k5 formulas that was contributed by community.</p><pre><code class=language-javascript>class Wget &lt; Formula
@@ -495,9 +495,9 @@ $ brew upgrade
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Basically, when you use homebrew, it will create a separate folder on your machine. Everything usually will be installed in <code>/usr/local/Cellar</code> and all formulas was stored at <code>/usr/local/Library/Formula.</code></p><p>So in short, if you want to contribute a new one, you need to create a new formula in your local and submit a pull request to <code>https://github.com/Homebrew/homebrew.</code></p><h3 id=fork-from-homebrew>Fork from Homebrew <a href=#fork-from-homebrew></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -520,9 +520,9 @@ $ brew upgrade
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For us, we will have a repo called <code>dwarvesf/homebrew</code> which we can clone and start from there.</p><h3 id=create-new-formula>Create new formula <a href=#create-new-formula></a></h3><p>Make sure you have installed <code>brew</code> on your machine (you have to!) and your new formula must meets all their Acceptable Formulae requirements.</p><p>Then we can start from create a new branch (like git workflow) or not. For us we skip it and use the master branch (plot twist: we forgot to do this step)</p><p>We move to the step of create new formula by run the command</p><pre><code class=language-javascript>$ brew create &lt;URL.tar.gz&gt;
 </code></pre><p>Example for us, we use the archive url of our github repo <a href=https://github.com/dwarvesf/glod-cli/archive/1.0.3.2.tar.gz target=_blank>https://github.com/dwarvesf/glod-cli/archive/1.0.3.2.tar.gz</a>. You can get it by combining</p><pre><code class=language-javascript>https://github.com/&lt;YOUR REPO&gt;/archive/&lt;COMMIT SHA | TAG&gt;.tar.g
@@ -585,9 +585,9 @@ $ brew cleanup
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><pre><code class=language-javascript>$ brew test $FORMULA
 $ brew audit --strict --online $FORMULA
@@ -613,9 +613,9 @@ $ brew audit --strict --online $FORMULA
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -638,9 +638,9 @@ $ brew audit --strict --online $FORMULA
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -663,8 +663,8 @@ $ brew audit --strict --online $FORMULA
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>We did it! You only still need the feedback from Homebrew team. You can leave your keyboard and take a cup of coffee. If everything goes well, well done boss! you have just contribute to one of the famous repo in the internet. Congratulations!</p><h2 id=acknowledgement>Acknowledgement <a href=#acknowledgement></a></h2><ul><li>Our pull request: <a href=https://github.com/Homebrew/homebrew/pull/49843 target=_blank>https://github.com/Homebrew/homebrew/pull/49843</a></li><li><a href=https://github.com/dwarvesf/glod-cli target=_blank>glod-cli</a>: A small cli written in Go to help download music/video from multiple resources: Youtube, Vimeo, Facebook, Soundcloud … <a href=https://github.com/dwarvesf/glod-cli target=_blank>https://github.com/dwarvesf/glod-cli</a></li><li>Formula Cookbook</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

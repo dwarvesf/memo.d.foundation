@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>playground/01_literature/engineering/ai</li><div>Stats</div><li class=span><span>Words:
 </span>907</li><li class=span><span>Characters:
-</span>11351</li><li class=span><span>Without Spaces:
+</span>11435</li><li class=span><span>Without Spaces:
 </span>5284</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div><main x-data='{
@@ -460,9 +460,9 @@ So how to do it properly. There are several method, but there are 2 main methods
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>This method is involved following step:</p><ol><li>Extract images, tables, and text from document.</li><li>For tables and images, pass them through LLM to summarize the main content in text based.</li><li>Embedding images,table summaries and text to vectorDB and also raw data for reference.</li><li>When searching similarity in retrieval step, get the relevant context and feed raw data to LLM to generate output.</li></ol><h2 id=implementation>Implementation <a href=#implementation></a></h2><p>We take this <a href=https://cloudedjudgement.substack.com/p/clouded-judgement-111023 target=_blank>post</a> for doing implementation cause it contain many chart images. We will follow steps above to do preprocessing for this document.</p><ol><li><strong>Extract data from document</strong>: We use <a href=https://unstructured.io/ target=_blank>Unstructured</a> - a great ELT tool well-suited for this because it can extract elements (tables, images, text) from numerous file types. And categorized them base on there types.</li></ol><pre><code class=language-python>from unstructured.partition.pdf import partition_pdf
 
@@ -507,9 +507,9 @@ image_sum_prompt = &quot;&quot;&quot;You are an assistant tasked with summarizin
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=3><li><p><strong>Embedding data</strong>: We embedding tables and images summaries to vectorDB and also store raw data to get reference. Remember that we store embeded summarized data(vector) and its raw content but not summarized content.</p></li><li><p><strong>Retrieval</strong>: when we search for similarity through vectorDB, we will get related context(raw content) and then we feed it with original user&rsquo;s input to generate the response. That why we store raw data but not summarized data because we want something like: &ldquo;Hey GPT, I have some images and table, can you answer my question based on them&rdquo;, but not: &ldquo;Hey GPT, I have some images summaries and table summaries, can you answer my question based on these summaries&rdquo;.</p><pre><code class=language-python> def prompt_func(data_dict):
    &quot;&quot;&quot;
@@ -562,8 +562,8 @@ image_sum_prompt = &quot;&quot;&quot;You are an assistant tasked with summarizin
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li></ol><p>We take an image which is a table content data about reported revenue of tech companies in quarter. An then we ask some information inside that image. For example: &ldquo;what is actual reported revenue of Datadog in quarter?&rdquo; which we can see on the image is $547.5 million. Our RAG response the ansewr correctly.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>The integration of various data types, such as text and images, into LLMs enhances their ability to generate more wholistic responses to a user’s queries. More new model come and solve the problems realted to different type of data in LLM. This concept of multimodal RAG is an early but important step toward achieving human-like perception in machines.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://medium.com/kx-systems/guide-to-multimodal-rag-for-images-and-text-10dab36e3117 target=_blank>https://medium.com/kx-systems/guide-to-multimodal-rag-for-images-and-text-10dab36e3117</a></li><li><a href=https://blog.langchain.dev/semi-structured-multi-modal-rag/ target=_blank>https://blog.langchain.dev/semi-structured-multi-modal-rag/</a></li><li><a href=https://unstructured.io target=_blank>https://unstructured.io</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

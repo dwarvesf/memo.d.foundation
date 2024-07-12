@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>earn</li><div>Stats</div><li class=span><span>Words:
 </span>162</li><li class=span><span>Characters:
-</span>2702</li><li class=span><span>Without Spaces:
+</span>2730</li><li class=span><span>Without Spaces:
 </span>829</li><li class=span><span>Blocks:
 </span>5</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data="{
@@ -463,8 +463,8 @@ Ex:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

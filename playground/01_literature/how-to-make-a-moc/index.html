@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>572</li><li class=span><span>Characters:
-</span>8759</li><li class=span><span>Without Spaces:
+</span>8843</li><li class=span><span>Without Spaces:
 </span>3400</li><li class=span><span>Blocks:
 </span>23</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -459,9 +459,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>1. Identify Core Topic</strong></p><p>Start with a central theme. For example, &ldquo;<em>Microservices Architecture</em>.&rdquo;</p><p><strong>2. Make MOC Note</strong></p><p>Create a new note titled &ldquo;<em>§ Microservices Architecture</em>&rdquo; in your note-taking tool. The <strong><code>§</code></strong> symbol helps sort the note to the top of your folder and indicate it is a MOC note.</p><p>Every topic folder should have a corresponding MOC. If there are multiple MOCs, create a home MOC helps with navigation for readers and contributors.</p><p><strong>3. Gather Related Notes</strong></p><p>If it’s a new topic, proceed to the next step. Otherwise, include all related notes, documents, and resources. Link these to the core topic. For example:</p><ul><li><code>[microservices design patterns](microservices design patterns.md)</code></li><li><code>[api gateway implementation](api gateway implementation.md)</code></li><li><code>[event-driven architecture](event-driven architecture.md)</code></li><li><code>[service discovery methods](service discovery methods.md)</code></li><li><code>[security in microservices](security in microservices.md)</code></li><li><code>[microservices best practices](microservices best practices.md)</code></li></ul><p><strong>4. Add Context and Categories</strong></p><p>Organize the links into categories or sections, adding brief descriptions for context. Arrange the content from basic to advanced, addressing what, why, when, and how:</p><ul><li><strong>What</strong>: Introduction, history</li><li><strong>Why</strong>: Reasons, benefits, applications</li><li><strong>When</strong>: Best practices, pros and cons</li><li><strong>How</strong>: Mechanisms, key techniques</li></ul><p>Example:</p><ul><li><strong>Design Patterns:</strong><ul><li><code>[microservices design patterns](microservices design patterns.md)</code></li><li><code>[event-driven architecture](event-driven architecture.md)</code></li></ul></li><li><strong>Implementation:</strong><ul><li><code>[api gateway implementation](api gateway implementation.md)</code></li><li><code>[service discovery methods](service discovery methods.md)</code></li></ul></li><li><strong>Best Practices:</strong><ul><li><code>[microservices best practices](microservices best practices.md)</code></li><li><code>[security in microservices](security in microservices.md)</code></li></ul></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -484,9 +484,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>5. Iterate and Expand</strong></p><p>Continuously grow the MOC with new information and insights. Add new links, refine categories, and keep it a living document.</p><p><strong>6. Cross-Link MOCs</strong></p><p>Link various MOCs together. For example, the &ldquo;<em>§ Microservices Architecture</em>&rdquo; might link to a broader &ldquo;<em>§ Software Architecture</em>.&rdquo;</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -509,8 +509,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=conclusion><strong>Conclusion</strong> <a href=#conclusion></a></h2><p>A Map of Content (MOC) structure is a valuable tool for managing information. At Dwarves, we strive to create content that contributes meaningfully to the tech community while supporting our engineering team&rsquo;s collective knowledge. By developing and sharing well-crafted MOCs, we aim to maintain our standards and ensure that our insights remain accessible and useful to our audience.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

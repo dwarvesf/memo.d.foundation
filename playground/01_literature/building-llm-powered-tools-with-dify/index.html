@@ -403,7 +403,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>772</li><li class=span><span>Characters:
-</span>10953</li><li class=span><span>Without Spaces:
+</span>11037</li><li class=span><span>Without Spaces:
 </span>4556</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div><main x-data='{
@@ -460,9 +460,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -485,9 +485,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=2-ogif-memo-summarizer>2. OGIF memo summarizer <a href=#2-ogif-memo-summarizer></a></h3><p>Specialized in extracting information from YouTube transcripts, this tool quickly generates time-stamped summaries with key points, saving hours of manual video analysis. We recently wrote an article about this tool, which you can read <a href=notion://www.notion.so/dwarves/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing.md>here</a>.</p><h3 id=3-discord-summarizer-assistant>3. Discord summarizer assistant <a href=#3-discord-summarizer-assistant></a></h3><p>Using large language models, this workflow helps translate and summarize conversations across different languages, making global team communication easier.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -510,8 +510,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>These tools help us significantly increase our productivity. We extensively use Claude 3.5 Sonnet, and occasionally GPT-4 for more detailed instructions. Without the hard work of @innno_ and her efforts on our social media platforms, we wouldn&rsquo;t be able to build these tools.</p><h2 id=best-practices-for-developing-internal-llm-tools>Best practices for developing internal LLM tools <a href=#best-practices-for-developing-internal-llm-tools></a></h2><p>When using managed LLMOps platforms like Dify to create internal tools, consider these best practices:</p><ol><li><strong>Start with a Clear Use Case</strong>: Identify specific pain points or inefficiencies in your workflows that LLMs can address.</li><li><strong>Iterate Based on Feedback</strong>: Regularly collect and incorporate user feedback to improve your tools.</li><li><strong>Ensure Data Privacy</strong>: When dealing with sensitive internal data, make sure your LLM applications follow your organization&rsquo;s security policies.</li><li><strong>Monitor Performance</strong>: Use the analytics provided by your LLMOps platform to track usage and optimize performance.</li></ol><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Managed LLMOps platforms like Dify are making AI technology accessible to organizations of all sizes, allowing them to create powerful internal tools without needing extensive AI expertise. By simplifying the development and deployment process, these platforms are paving the way for a new era of AI-augmented productivity tools. As LLM technology continues to advance, we can expect to see even more innovative applications that transform the way we work.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

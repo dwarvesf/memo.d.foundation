@@ -403,7 +403,7 @@ Tags:
 Folder:
 </span>playbook/operations</li><div>Stats</div><li class=span><span>Words:
 </span>930</li><li class=span><span>Characters:
-</span>7736</li><li class=span><span>Without Spaces:
+</span>7764</li><li class=span><span>Without Spaces:
 </span>4685</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data='{
@@ -470,9 +470,9 @@ Hire culture-contributors who will make our culture better.</p><p><script src=/j
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=culture-add-not-culture-fit>Culture add, not culture fit <a href=#culture-add-not-culture-fit></a></h2><p>Culture fit is a variable that has become increasingly important in the hiring process. Companies aren&rsquo;t just looking for candidates with the right skills - they want someone that matches their company DNA.</p><p>It&rsquo;s easy to fall into the trap of hiring people like everyone else in your company as a default. Adding people like you can create a &ldquo;me-too&rdquo; culture, not typically an environment where ideas and innovation flourish.</p><p>Instead, look for people that add to your culture. Hiring candidates that bring something different to the table gives you a diverse workforce that can approach business problems from different directions instead of focusing on what a candidate lacks</p><p><strong>Listen</strong>
 Rule one with how to interview: Most interviewers talk way too much. When a candidate finally gets to you, listen for the &ldquo;story line&rdquo; of his or her life, at home and at work. It&rsquo;s been said that being a leader is like practicing psychiatry without a license. That may be more true in hiring than in any other part of the job.</p><p><strong>Don&rsquo;t get desperate</strong>

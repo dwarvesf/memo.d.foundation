@@ -400,7 +400,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>592</li><li class=span><span>Characters:
-</span>12372</li><li class=span><span>Without Spaces:
+</span>12484</li><li class=span><span>Without Spaces:
 </span>3196</li><li class=span><span>Blocks:
 </span>26</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data="{
@@ -457,9 +457,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>A foundational book on UX and Design, introducing design as a competitive advantage in business.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -482,9 +482,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>A straightforward book on usability, serving as a great introduction to UX.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -507,9 +507,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>An introduction to statistics and data visualization (and how they can both be manipulated).</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -532,8 +532,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Part of the Lean Startup movement, this book introduces the process for Lean UX.</p><h2 id=tool-and-resources>Tool and resources <a href=#tool-and-resources></a></h2><h3 id=quantitative>Quantitative <a href=#quantitative></a></h3><ul><li><p><strong><a href="https://www.google.com/analytics/#?modal_active=none" target=_blank>Google Analytics</a></strong> - Free, standard yet robust web analytics with wide adoption.</p></li><li><p><strong><a href=https://www.hubspot.com/ target=_blank>HubSpot</a></strong> - In-depth analytics, A/B testing, SEO, CRO, and more.</p></li><li><p><strong><a href=https://mixpanel.com/ target=_blank>Mix panel</a></strong> - Free, fully custom and integrated mobile & web analytics platform.</p></li><li><p><strong><a href="https://heapanalytics.com/?referral=5djmk" target=_blank>Heap</a></strong> - Automated analytics platform that captures every action.</p></li><li><p><strong><a href=https://www.crazyegg.com/ target=_blank>Crazy Egg</a></strong> - Heat mapping, click mapping, scroll mapping, and more.</p></li><li><p><strong><a href=https://www.kissmetrics.com/ target=_blank>KISS metrics</a></strong> - Easily configured funnels and reports based on user behavior.</p></li><li><p><strong><a href=https://www.optimizely.com/ target=_blank>Optimizely</a></strong> - Javascript-based A/B testing and multivariate testing platform.</p></li><li><p><strong><a href=https://optimize.google.com/optimize/home/#/accounts/2740283315/containers/8631801 target=_blank>Google Optimize</a></strong>- Free A/B testing platform that’s integrated with Google Analytics.</p></li></ul><h3 id=testing>Testing <a href=#testing></a></h3><ul><li><strong><a href=http://usertesting.com/ target=_blank>UserTesting.com</a></strong> - Fully integrated user testing platform with a participant panel.</li><li><strong><a href=https://www.userzoom.com/ target=_blank>UserZoom</a></strong> - All-in-one qualitative research and user testing platform.</li><li><strong><a href=https://www.trymyui.com/ target=_blank>Try</a></strong>** <strong><strong><a href=https://www.trymyui.com/ target=_blank>My</a></strong></strong> **<strong><a href=https://www.trymyui.com/ target=_blank>UI</a></strong> - Remote unmoderated usability testing panel and platform.</li><li><strong><a href=https://verifyapp.com/ target=_blank>Verify App</a></strong> - Quickly test where users would click in wireframes and mockups.</li><li><strong><a href=https://www.loop11.com/ target=_blank>Loop11</a></strong> - Platform for testing wireframes and prototypes, usability, and accessibility.</li></ul><h3 id=diagrams>Diagrams <a href=#diagrams></a></h3><ul><li><p><strong><a href=https://www.gliffy.com/ target=_blank>Gliffy</a></strong> - Free Chrome plugin for drawing diagrams, flowcharts, and more.</p></li><li><p><strong><a href=https://docs.google.com/drawings/d/1saUBNhMvr-v-nunOZ73Pp-rqrPp-r4EeT2Ml2p2lcng/edit target=_blank>Google Drawings</a></strong> -Create, share, and collaborate on drawings in your Google Drive.</p></li><li><p><strong><a href=http://coggle.it/ target=_blank>Coggle.it</a></strong> - Visually map out concepts during brainstorming sessions.</p></li><li><p><strong><a href=http://www.xmind.net/ target=_blank>XMind</a></strong> - Free tool for quick and easy to edit Mind Mapping.</p></li><li><p><strong><a href=https://www.apple.com/keynote/ target=_blank>Keynote</a></strong> - Great for creating personas, task and competitive analyses, etc.</p></li></ul><h3 id=wireframes>Wireframes <a href=#wireframes></a></h3><ul><li><strong><a href=https://balsamiq.com/ target=_blank>Balsamiq</a></strong> - Basic, straightforward wireframe tool with web and desktop versions.</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

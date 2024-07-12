@@ -402,7 +402,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1114</li><li class=span><span>Characters:
-</span>16869</li><li class=span><span>Without Spaces:
+</span>17065</li><li class=span><span>Without Spaces:
 </span>5808</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data='{
@@ -459,9 +459,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=how-user-feedback-improves-ai-implicit-and-explicit-methods>How User Feedback Improves AI: Implicit and Explicit Methods <a href=#how-user-feedback-improves-ai-implicit-and-explicit-methods></a></h2><h3 id=implicit-feedback>Implicit Feedback <a href=#implicit-feedback></a></h3><p>Implicit feedback comes from how users behave when they interact with an AI model, without them directly telling us what they think. There are a few main ways we notice this:</p><ol><li><strong>Stop Generate</strong>: If users stop the AI from generating a response quickly, it usually means they don&rsquo;t like what it&rsquo;s saying or find it irrelevant. For example, if they read a few lines and feel it&rsquo;s not helpful, they might stop it.</li><li><strong>Double Check Response</strong>: When users go to search engines to check information from the AI, it shows they might not trust what it said. This often happens if the AI gives answers that seem made up, especially with numbers or dates.</li><li><strong>Regenerate</strong>: If users ask for a new answer, it means they didn&rsquo;t like the first one. They might use a button to get a different response when the first one doesn&rsquo;t meet their needs. For instance, they might want a better answer to the same question.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -484,9 +484,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=explicit-feedback>Explicit Feedback <a href=#explicit-feedback></a></h3><p>Explicit feedback involves users directly communicating their satisfaction or dissatisfaction with the AI’s responses. The methods include:</p><ol><li><strong>Like/Dislike</strong>: Users can give a thumbs up if they like the response or thumbs down if they don’t. This quick feedback helps us know how well the AI’s answers are working. For example, a thumbs up means they found it useful, while a thumbs down means it wasn’t helpful.</li><li><strong>Scoring</strong>: Users can give a score to show how good they think the response is. This lets them give detailed feedback on whether the answer was great or just okay. For instance, a 5-star rating helps us see where the AI did well, and a 4-star rating shows areas for improvement.</li><li><strong>Surveys and Question</strong>: These ask users specific questions about how well the AI is doing. They can give detailed feedback on what they like and what could be better. For example, a survey might ask about accuracy, how easy it was to use, and if the tone was right.</li><li><strong>Textual Feedback</strong>: Users can write their thoughts on the AI’s responses. This lets them explain in detail what worked or didn’t work for them. For instance, they might say how a response helped with their work or where it missed the mark.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -509,9 +509,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=organizing-user-feedback-for-llm-application>Organizing User Feedback for LLM Application <a href=#organizing-user-feedback-for-llm-application></a></h2><p>After collecting user feedback, we&rsquo;ll organize the data using the schema below. This structured approach makes it easier to analyze and understand the feedback. By categorizing it properly, we can see exactly where improvements are needed. This organized data helps create datasets for fine-tuning or pretraining our large language models.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -534,9 +534,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>chat_feedback table:</strong></p><ul><li><code>id</code> A unique identifier for each feedback entry.</li><li><code>thread_id</code> Links the feedback to a specific conversation thread.</li><li><code>chat_id</code> Identifies the particular message within the thread that the feedback refers to.</li><li><code>type_id</code> Categorizes the type of feedback provided. We can define enum type_id for storing specify facts.</li><li><code>notes</code> Allows users to add specific comments or details about their feedback.</li></ul><p><strong>Relationships:</strong></p><ul><li><code>chat_feedback.thread_id</code> references <code>threads.id</code> This links feedback to the appropriate conversation thread, ensuring we can trace feedback back to the entire conversation context. When we need to load history chat, we can count total thumbs-up and thumbs-down user reactions there are.</li><li><code>chat_feedback.chat_id</code> references <a href=http://chats.id target=_blank><code>chats.id</code></a> This connects the feedback to the specific message. We can render history chat again, improving the user experience of specific chats.</li><li><code>chat_feedback.type_id</code> references <code>feedback_type.id</code> This categorizes the feedback, making it easier to analyze patterns and specific issues.</li></ul><p><strong>feedback_type table:</strong></p><ul><li><code>id</code> A unique identifier for each type of feedback.</li><li><code>name</code> A descriptive name for the feedback type.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -559,9 +559,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -584,9 +584,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>We need to track user feedback by <code>chat_id</code> and <code>thread_id</code>, as well as <code>feedback_type</code> and <code>notes</code>. We will provide a selection to describe how users interact with the LLM response, which will be stored in <code>type_id</code>. We define the types of feedback in the feedback_type table, and we can define common facts for the user to easily choose.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -609,8 +609,8 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Imagine you&rsquo;re chatting with a chatbot. If you receive a response that&rsquo;s too long, you can click the dislike button then select &ldquo;Too long&rdquo; from the feedback options and add a note explaining that the information could be more detailed. This feedback is saved in the system, linked to the specific <code>chat_id</code> and <code>thread_id</code>, and categorized under the &ldquo;Too long&rdquo; type.</p><p>Let&rsquo;s say you&rsquo;re chatting with a bot to get some tips on baking a cake. You ask, &ldquo;How can I make my cake fluffy?&rdquo; Instead of giving you baking advice, the bot starts talking about the history of cakes, which isn&rsquo;t what you wanted. So, you hit the &ldquo;stop&rdquo; button because the response isn&rsquo;t relevant to your question. This action tells us the answer wasn&rsquo;t helpful or on-topic.</p><h2 id=whats-next>What’s next <a href=#whats-next></a></h2><p>Collecting feedback creates a valuable dataset for later training step, using method like Reinforcement Learning from Human Feedback (RLHF). To understanding step by step using human feedback for fine-tuning large language model, you can found articles about <a href=https://dwarvesf.hashnode.dev/challenges-faced-when-researching-rlhf-with-openassistant target=_blank>RLHF method</a> then we go next step training human feedback at <a href>here</a>.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>By tracking interactions and analyzing feedback, we can keep improving the outputs to be more accurate and user-friendly. Understanding how to design a database to log the feedback will help us prepare good datasets for later training step.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://cohere.com/blog/evaluating-llm-outputs target=_blank>Evaluating LLM Outputs (cohere.com)</a></li><li><a href=https://docs.orq.ai/docs/human-in-the-loop-feedback target=_blank>Human in the Loop feedback (orq.ai)</a></li><li><a href="https://encord.com/blog/human-in-the-loop-ai/#:~:text=What%20is%20HITL%3F-,Human%2Din%2Dthe%2Dloop%20%28HITL%29%20is%20an,%2C%20accuracy%2C%20and%20training%20outcomes." target=_blank>Human in the Loop - Machine Learning - Definition & Examples | Encord</a></li><li><a href=https://www.leewayhertz.com/how-to-test-llms-in-production/#A/B-testing target=_blank>How to test LLMs in production? (leewayhertz.com)</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

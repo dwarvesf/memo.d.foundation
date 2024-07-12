@@ -400,7 +400,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>510</li><li class=span><span>Characters:
-</span>4704</li><li class=span><span>Without Spaces:
+</span>4732</li><li class=span><span>Without Spaces:
 </span>2505</li><li class=span><span>Blocks:
 </span>21</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data="{
@@ -457,9 +457,9 @@ Folder:
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=the-hesitation>The Hesitation <a href=#the-hesitation></a></h2><p>Of course, the upfront hesitance can fall into these three common thoughts.</p><p>&ldquo;<strong>I&rsquo;m bothering people.&rdquo;</strong> 
 You bump into an obstacle, and you need help. You look for the question-guy and state it clearly. That&rsquo;s not bothering. You&rsquo;re just doing your job.</p><p>&ldquo;<strong>I&rsquo;m making a fool of myself.&rdquo;</strong> 

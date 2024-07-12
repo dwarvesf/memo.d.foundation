@@ -400,7 +400,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>4119</li><li class=span><span>Characters:
-</span>31044</li><li class=span><span>Without Spaces:
+</span>31072</li><li class=span><span>Without Spaces:
 </span>21865</li><li class=span><span>Blocks:
 </span>38</li><li class=span><span>Est reading Time:
 </span>29m 0s</li></ul></div></div></div></div><main x-data='{
@@ -685,9 +685,9 @@ If the pipeline is not designed properly, it can result in data loss. For exampl
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`;
+         return `${relativeUrl}/${this.src}`.toLowerCase();
       }
-      return `/${this.src}`;
+      return `/${this.src}`.toLowerCase();
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As you spawn more Goroutines to process requests concurrently, this leaves us with another problem. What happens if all your Goroutines access the same shared resources, say a remote cache? Bombarding your cache with an unbounded number of concurrent requests is a surefire recipe to bring down your cache immediately. This is where the Semaphore comes in handy.</p><p>Unlike mutex lock, which allows a single thread to access a resource at a time, Semaphore allows <code>N</code> threads to access a resource at a time. Using the concept of a buffered channel, we can design a semaphore easily.</p><pre><code class=language-go>type Semaphore struct {
 	semaCh chan struct{}
