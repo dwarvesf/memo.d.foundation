@@ -272,6 +272,26 @@
         });
     }
   </script>
+
+  <script>
+    window.difyChatbotConfig = {
+     token: 'IeZ2h9ZROD5vFkGO',
+     baseUrl: 'https://dify-dwarves-u18517.vm.elestio.app'
+    }
+   </script>
+   <script
+    src="https://dify-dwarves-u18517.vm.elestio.app/embed.min.js"
+    id="IeZ2h9ZROD5vFkGO"
+    defer>
+   </script>
+   <style>
+    #dify-chatbot-bubble-button {
+      background-color: #e13f5e !important;
+    }
+    #dify-chatbot-bubble-window {
+      min-width: 40vw !important;
+    }
+   </style>
 </head>
 
 {{ $.Scratch.Set "section" (replaceRE "^/([^/]+)/.*" "$1" .RelPermalink) }}
