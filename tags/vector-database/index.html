@@ -288,6 +288,7 @@
         AND file_path NOT LIKE '%_radar%'
         AND title IS NOT NULL
         AND (draft != true OR draft IS NULL)
+        AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
       GROUP BY grouped_path;
     `);
 
