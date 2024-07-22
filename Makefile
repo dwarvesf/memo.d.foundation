@@ -29,4 +29,4 @@ watch-run:
 	@elixir scripts/watch_run.exs --vaultpath vault
 
 duckdb-export:
-	@python scripts/export_duckdb.py vault --format parquet
+	@elixir scripts/export_duckdb.exs vault --format parquet
