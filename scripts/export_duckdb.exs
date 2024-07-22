@@ -2,7 +2,6 @@
 
 Mix.install([
   {:flow, "~> 1.2"},
-  {:duckdbex, "~> 0.3"},
   {:jason, "~> 1.4"},
   {:yaml_elixir, "~> 2.9"},
   {:dotenv_parser, "~> 2.0"},
@@ -270,7 +269,7 @@ defmodule MarkdownExportDuckDB do
       _ ->
         if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) or
              is_nil(existing_data["embeddings_openai"]) or
-             is_nil(existing_data["embeddings_spr_custom"]) do
+             is_nil(existing_data["embeddings_spt pr_custom"]) do
           insert_or_update_new_document(frontmatter, md_content)
         else
           use_existing_embeddings(existing_data, frontmatter)
