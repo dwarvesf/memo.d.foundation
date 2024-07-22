@@ -62,7 +62,9 @@ defmodule MarkdownExportDuckDB do
   use Flow
 
   def main(args) do
-    DotenvParser.load_file(".env")
+    if File.exists?(".env") do
+      DotenvParser.load_file(".env")
+    end
 
     {opts, _, _} =
       OptionParser.parse(args,
