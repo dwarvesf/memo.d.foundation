@@ -59,7 +59,9 @@ defmodule MediaConverter do
 
   defp process_single_file(vaultpath, vault_dir, all_valid_files) do
     normalized_vaultpath = normalize_path(vaultpath)
-    if Enum.member?(all_valid_files, normalized_vaultpath) and contains_required_frontmatter_keys?(normalized_vaultpath) do
+
+    if Enum.member?(all_valid_files, normalized_vaultpath) and
+         contains_required_frontmatter_keys?(normalized_vaultpath) do
       process_file(normalized_vaultpath, vault_dir)
     else
       IO.puts(

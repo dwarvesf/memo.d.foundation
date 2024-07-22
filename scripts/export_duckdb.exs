@@ -31,6 +31,7 @@ defmodule MarkdownExportDuckDB do
   @allowed_frontmatter [
     {"file_path", "TEXT UNIQUE"},
     {"md_content", "TEXT"},
+    {"spr_content", "TEXT"},
     {"embeddings_openai", "FLOAT[1536]"},
     {"embeddings_spr_custom", "FLOAT[1024]"},
     {"title", "VARCHAR"},
@@ -41,6 +42,8 @@ defmodule MarkdownExportDuckDB do
     {"pinned", "BOOLEAN"},
     {"hide_frontmatter", "BOOLEAN"},
     {"hide_title", "BOOLEAN"},
+    {"hiring", "BOOLEAN"},
+    {"featured", "BOOLEAN"},
     {"draft", "BOOLEAN"},
     {"social", "VARCHAR"},
     {"github", "VARCHAR"},
@@ -53,6 +56,8 @@ defmodule MarkdownExportDuckDB do
     {"PICs", "TEXT"},
     {"status", "TEXT"},
     {"function", "TEXT"},
+    {"estimated_tokens", "BIGINT"},
+    {"total_tokens", "BIGINT"}
   ]
 
   use Flow
@@ -101,7 +106,7 @@ defmodule MarkdownExportDuckDB do
       process_files(selected_files, vaultpath, all_files_to_process)
       export(export_format)
     else
-      {:error, _reason} -> IO.puts("Failed to connect to DuckDB")
+      {:error, reason} -> IO.puts("Failed to set up DuckDB: #{reason}")
     end
   end
 
@@ -129,6 +134,30 @@ defmodule MarkdownExportDuckDB do
   end
 
   defp setup_database() do
+    check_query = "SELECT table_name FROM information_schema.tables WHERE table_name = 'vault'"
+
+    case duckdb_cmd(check_query) do
+      {:ok, []} ->
+        case duckdb_cmd("IMPORT DATABASE 'db'") do
+          {:ok, _} ->
+            IO.puts("Successfully imported database from 'db' directory.")
+            :ok
+
+          {:error, error} ->
+            IO.puts("Failed to import database: #{error}")
+            create_vault_table()
+        end
+
+      {:ok, _} ->
+        :ok
+
+      {:error, error} ->
+        IO.puts("Error checking for vault table: #{error}")
+        create_vault_table()
+    end
+  end
+
+  defp create_vault_table() do
     columns =
       @allowed_frontmatter
       |> Enum.map(fn {name, type} -> "#{name} #{type}" end)
@@ -140,7 +169,15 @@ defmodule MarkdownExportDuckDB do
       )
     """
 
-    duckdb_cmd(query) |> handle_result()
+    case duckdb_cmd(query) do
+      {:ok, _} ->
+        IO.puts("Created vault table.")
+        :ok
+
+      {:error, error} ->
+        IO.puts("Failed to create vault table: #{error}")
+        :error
+    end
   end
 
   defp export(format) do
@@ -231,7 +268,9 @@ defmodule MarkdownExportDuckDB do
         insert_or_update_new_document(frontmatter, md_content)
 
       _ ->
-        if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) do
+        if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) or
+             is_nil(existing_data["embeddings_openai"]) or
+             is_nil(existing_data["embeddings_spr_custom"]) do
           insert_or_update_new_document(frontmatter, md_content)
         else
           use_existing_embeddings(existing_data, frontmatter)
@@ -386,7 +425,7 @@ defmodule MarkdownExportDuckDB do
          {:ok, metadata} <- YamlElixir.read_from_string(frontmatter_content) do
       {metadata, strip_frontmatter(content)}
     else
-      _ -> {:error, :no_frontmatter}
+      nil -> {:error, :no_frontmatter}
       {:error, _reason} -> {:error, :invalid_frontmatter}
     end
   end
@@ -591,8 +630,11 @@ defmodule MarkdownExportDuckDB do
     String.replace(value, "'", "''")
   end
 
-  defp escape_multiline_text(text) do
+  defp escape_multiline_text(nil), do: "NULL"
+
+  defp escape_multiline_text(text) when is_binary(text) do
     text
+    |> String.trim()
     |> String.replace("'", "''")
     |> String.replace("\n", "\\n")
     |> (&"'#{&1}'").()
