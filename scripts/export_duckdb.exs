@@ -245,7 +245,7 @@ defmodule MarkdownExportDuckDB do
     escaped_file_path = escape_string(file_path)
 
     query =
-      "SELECT md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
+      "SELECT spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
 
     with {:ok, result} <- duckdb_cmd(query),
          existing_data when is_list(result) <- List.first(result) || [],
@@ -270,6 +270,7 @@ defmodule MarkdownExportDuckDB do
 
       _ ->
         if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) or
+             is_nil(existing_data["spr_content"]) or
              is_nil(existing_data["embeddings_openai"]) or
              is_nil(existing_data["embeddings_spr_custom"]) do
           insert_or_update_new_document(frontmatter, md_content)
@@ -287,6 +288,7 @@ defmodule MarkdownExportDuckDB do
   defp use_existing_embeddings(existing_data, frontmatter) do
     updated_frontmatter =
       Map.merge(frontmatter, %{
+        "spr_content" => existing_data["spr_content"],
         "embeddings_openai" => existing_data["embeddings_openai"],
         "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
       })
