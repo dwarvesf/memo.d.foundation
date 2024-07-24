@@ -13,35 +13,42 @@
     const regex = new RegExp(pattern, "gi");
     const matchingLines = lines
       .filter((line) => regex.test(line))
-      .slice(0, 1)
-      .map(snarkdown);
+      .slice(0, 1);
 
-    if (!matchingLines.length) return ""
-    const div = document.createElement("div");
-    div.innerHTML = matchingLines[0];
-    let str = ""
-    const walker = document.createTreeWalker(div, NodeFilter.SHOW_TEXT);
-    while (walker.nextNode()) {
-      const node = walker.currentNode;
-      if (!node.textContent) continue;
-      str += node.textContent.replaceAll(regex, "<span>$&</span>");
-    }
+    if (!matchingLines.length) return "";
+
+    // Custom function to convert Markdown to plain text without creating HTML elements
+    const markdownToPlainText = (markdown) => {
+      // Remove image Markdown syntax
+      let text = markdown.replace(/!\[.*?\]\(.*?\)/g, '');
+      // Remove link Markdown syntax, keeping only the link text
+      text = text.replace(/\[([^\]]+)\]\(.*?\)/g, '$1');
+      // Remove other Markdown syntax
+      text = text.replace(/[*_~`#]/g, '');
+      return text;
+    };
+
+    let str = markdownToPlainText(matchingLines[0]);
+
+    // Highlight matching parts
+    str = str.replace(regex, "<span>$&</span>");
 
     if (str.length <= 100) return `...${str}...`;
 
-    while (str.length > 100) {
-      let wIdx = str.indexOf(" ");
-      const w = str.substring(0, wIdx);
-      if (w.startsWith("<span>") && w.endsWith("</span>")) {
-        wIdx = str.lastIndexOf(" ")
-        str = str.slice(0, wIdx);
-        continue;
+    // Trim the string to around 100 characters
+    let trimmed = str.slice(0, 100);
+    let lastSpaceIndex = trimmed.lastIndexOf(' ');
+    
+    // Ensure we don't cut off in the middle of a highlight
+    while (lastSpaceIndex > 0) {
+      let substring = trimmed.substring(0, lastSpaceIndex);
+      if (substring.split('<span>').length === substring.split('</span>').length) {
+        break;
       }
-      str = str.slice(wIdx + 1)
+      lastSpaceIndex = trimmed.lastIndexOf(' ', lastSpaceIndex - 1);
     }
 
-
-    return `...${str}...`;
+    return `...${trimmed.slice(0, lastSpaceIndex)}...`;
   };
 
   const parseQueryForFilters = (query) => {
@@ -123,7 +130,6 @@
         ORDER BY full_text_score DESC, similarity DESC
         LIMIT 50;
       `
-      console.log(queryStr)
       const hybridSearch = await conn.prepare(queryStr);
       const args = [
         query,
