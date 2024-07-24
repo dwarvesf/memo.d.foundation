@@ -47,35 +47,42 @@
     const regex = new RegExp(pattern, "gi");
     const matchingLines = lines
       .filter((line) => regex.test(line))
-      .slice(0, 1)
-      .map(snarkdown);
+      .slice(0, 1);
 
-    if (!matchingLines.length) return ""
-    const div = document.createElement("div");
-    div.innerHTML = matchingLines[0];
-    let str = ""
-    const walker = document.createTreeWalker(div, NodeFilter.SHOW_TEXT);
-    while (walker.nextNode()) {
-      const node = walker.currentNode;
-      if (!node.textContent) continue;
-      str += node.textContent.replaceAll(regex, "<span>$&</span>");
-    }
+    if (!matchingLines.length) return "";
+
+    
+    const markdownToPlainText = (markdown) => {
+      
+      let text = markdown.replace(/!\[.*?\]\(.*?\)/g, '');
+      
+      text = text.replace(/\[([^\]]+)\]\(.*?\)/g, '$1');
+      
+      text = text.replace(/[*_~`#]/g, '');
+      return text;
+    };
+
+    let str = markdownToPlainText(matchingLines[0]);
+
+    
+    str = str.replace(regex, "<span>$&</span>");
 
     if (str.length <= 100) return `...${str}...`;
 
-    while (str.length > 100) {
-      let wIdx = str.indexOf(" ");
-      const w = str.substring(0, wIdx);
-      if (w.startsWith("<span>") && w.endsWith("</span>")) {
-        wIdx = str.lastIndexOf(" ")
-        str = str.slice(0, wIdx);
-        continue;
+    
+    let trimmed = str.slice(0, 100);
+    let lastSpaceIndex = trimmed.lastIndexOf(' ');
+    
+    
+    while (lastSpaceIndex > 0) {
+      let substring = trimmed.substring(0, lastSpaceIndex);
+      if (substring.split('<span>').length === substring.split('</span>').length) {
+        break;
       }
-      str = str.slice(wIdx + 1)
+      lastSpaceIndex = trimmed.lastIndexOf(' ', lastSpaceIndex - 1);
     }
 
-
-    return `...${str}...`;
+    return `...${trimmed.slice(0, lastSpaceIndex)}...`;
   };
 
   const parseQueryForFilters = (query) => {
@@ -157,7 +164,6 @@
         ORDER BY full_text_score DESC, similarity DESC
         LIMIT 50;
       `
-      console.log(queryStr)
       const hybridSearch = await conn.prepare(queryStr);
       const args = [
         query,
