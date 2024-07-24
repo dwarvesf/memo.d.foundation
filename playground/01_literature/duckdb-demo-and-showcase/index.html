@@ -174,7 +174,7 @@
           row.md_content,
           query.split(" ").join("|")
         );
-        row.spr_content = row.spr_content.replaceAll("\n", "<hr />");
+        row.spr_content = row.spr_content?.replaceAll("\n", "<hr />");
         row.rrf_score = calculateRRFScore(row.full_text_rank, row.similarity_rank);
 
         delete row.md_content;
