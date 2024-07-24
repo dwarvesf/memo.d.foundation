@@ -491,7 +491,7 @@ defmodule MarkdownExportDuckDB do
          headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}],
          payload =
            Jason.encode!(%{
-             "model" => "gpt-3.5-turbo-0125",
+             "model" => "gpt-4o-mini-2024-07-18",
              "messages" => [
                %{"role" => "system", "content" => @config.spr_compression_prompt},
                %{"role" => "user", "content" => text}
