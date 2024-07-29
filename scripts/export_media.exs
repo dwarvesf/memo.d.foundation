@@ -241,10 +241,12 @@ defmodule MediaConverter do
     end
   end
 
-  defp is_url?(link) do
+  defp is_url?(link) when is_binary(link) do
     uri = URI.parse(link)
     uri.scheme != nil && uri.host != nil
   end
+
+  defp is_url?(_), do: false
 
   defp download_file(url, target_path) do
     case HTTPoison.get(url) do
@@ -310,10 +312,14 @@ defmodule MediaConverter do
 
         resolved_path = Map.get(resolved_links, src, src)
 
-        if is_url?(resolved_path) and not url_points_to_media?(resolved_path) do
-          "![#{alt || ""}](#{resolved_path})"
+        if is_nil(resolved_path) do
+          "![#{alt || ""}](#{src})"
         else
-          "![#{alt || ""}](#{resolve_asset_path(resolved_path, file, vaultpath)})"
+          if is_url?(resolved_path) and not url_points_to_media?(resolved_path) do
+            "![#{alt || ""}](#{resolved_path})"
+          else
+            "![#{alt || ""}](#{resolve_asset_path(resolved_path, file, vaultpath)})"
+          end
         end
       end)
     end)
