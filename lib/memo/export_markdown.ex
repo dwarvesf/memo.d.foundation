@@ -1,28 +1,16 @@
-#!/usr/bin/env elixir
-
-Mix.install([
-  {:flow, "~> 1.2"},
-  {:jason, "~> 1.4"}
-])
-
-defmodule MarkdownExporter do
+defmodule Memo.ExportMarkdown do
   @moduledoc """
   A module to export Obsidian markdown files and assets folders to standard markdown.
   """
 
   use Flow
 
-  @doc """
-  Entry point for the script.
-  """
-  def main(args) do
+  def run(vaultpath, exportpath) do
     System.put_env("LC_ALL", "en_US.UTF-8")
     System.cmd("locale", [])
 
-    {opts, _, _} = OptionParser.parse(args, strict: [vaultpath: :string, exportpath: :string])
-
-    vaultpath = opts[:vaultpath] || "vault"
-    exportpath = opts[:exportpath] || "content"
+    vaultpath = vaultpath || "vault"
+    exportpath = exportpath || "content"
 
     {vault_dir, mode} =
       if File.dir?(vaultpath) do
@@ -491,5 +479,3 @@ defmodule MarkdownExporter do
     end)
   end
 end
-
-MarkdownExporter.main(System.argv())
