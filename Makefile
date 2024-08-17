@@ -4,13 +4,13 @@ setup:
 	@mkdir -p ./content
 
 fetch:
-	@elixir scripts/update_git_settings.exs
+	@mix run -e 'Memo.UpdateGitSettings.run()'
 	@./git-fetch.sh
 
 build:
 	@make clear-build
-	@elixir scripts/export_media.exs --vaultpath vault
-	@elixir scripts/export_markdown.exs --vaultpath vault
+	@mix --cd .. run -e 'Memo.ExportMedia.run("vault")'
+	@mix --cd .. run -e 'Memo.ExportMarkdown.run("vault")'
 	@hugo -DEF --minify
 
 clear-build:
@@ -20,13 +20,13 @@ clear-build:
 
 run:
 	@make clear-build
-	@elixir scripts/export_media.exs --vaultpath vault
-	@elixir scripts/export_markdown.exs --vaultpath vault
+	@mix --cd .. run -e 'Memo.ExportMedia.run("vault")'
+	@mix --cd .. run -e 'Memo.ExportMarkdown.run("vault")'
 	@hugo -DEF --poll 2s --logLevel error server
 	
 watch-run:
 	@make clear-build
-	@elixir scripts/watch_run.exs --vaultpath vault
+	@mix --cd .. run -e 'Memo.Application.watch_run("vault", "content")'
 
 duckdb-export:
-	@elixir scripts/export_duckdb.exs vault --format parquet
+	@mix --cd .. run -e 'Memo.Application.export_duckdb("vault", "parquet")'

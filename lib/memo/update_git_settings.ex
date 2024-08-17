@@ -1,6 +1,4 @@
-#!/usr/bin/env elixir
-
-defmodule UpdateGitSettings do
+defmodule Memo.UpdateGitSettings do
   defp check_git_config_setting(section, key) do
     case System.cmd("git", ["config", "--get-all", "#{section}.#{key}"]) do
       {result, 0} ->
@@ -42,5 +40,3 @@ defmodule UpdateGitSettings do
     handle_git_setting("submodule", "fetchJobs", "10", "Setting submodule fetch jobs")
   end
 end
-
-UpdateGitSettings.run()

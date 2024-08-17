@@ -1,33 +1,20 @@
-#!/usr/bin/env elixir
-
-Mix.install([
-  {:flow, "~> 1.2"},
-  {:mogrify, "~> 0.9"},
-  {:ffmpex, "~> 0.10"},
-  {:httpoison, "~> 1.8"}
-])
-
-defmodule MediaConverter do
+defmodule Memo.ExportMedia do
   @moduledoc """
   A module to convert images and videos in Obsidian markdown files.
   """
 
   use Flow
-  import FFmpex
-  use FFmpex.Options
 
   @assets_dir "assets"
 
   @doc """
   Entry point for the script.
   """
-  def main(args) do
+  def run(vaultpath) do
     System.put_env("LC_ALL", "en_US.UTF-8")
     System.cmd("locale", [])
 
-    {opts, _, _} = OptionParser.parse(args, strict: [vaultpath: :string])
-
-    vaultpath = opts[:vaultpath] || "vault"
+    vaultpath = vaultpath || "vault"
 
     {vault_dir, mode} =
       if File.dir?(vaultpath) do
@@ -175,14 +162,12 @@ defmodule MediaConverter do
 
       is_url?(link) ->
         if url_points_to_media?(link) do
-          # download_path = download_file(link, vaultpath |> Path.join(@assets_dir) |> Path.join(Path.basename(link)))
-          # convert_and_compress_media(download_path, vaultpath)
+          link
         else
           link
         end
 
       true ->
-        # convert_and_compress_media(link, vaultpath)
         link
     end
   end
@@ -222,78 +207,12 @@ defmodule MediaConverter do
     String.ends_with?(link, [".webp", "_compressed.mp4"]) and File.exists?(full_path)
   end
 
-  defp convert_and_compress_media(link, vaultpath) do
-    full_path = Path.join(vaultpath, link)
-
-    if File.exists?(full_path) do
-      cond do
-        String.match?(link, ~r/\.(png|jpg|jpeg)$/i) ->
-          compress_image(full_path)
-
-        String.match?(link, ~r/\.(mp4|mov|avi)$/i) ->
-          compress_video(full_path)
-
-        true ->
-          link
-      end
-    else
-      link
-    end
-  end
-
   defp is_url?(link) when is_binary(link) do
     uri = URI.parse(link)
     uri.scheme != nil && uri.host != nil
   end
 
   defp is_url?(_), do: false
-
-  defp download_file(url, target_path) do
-    case HTTPoison.get(url) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        File.write!(target_path, body)
-        target_path
-
-      _ ->
-        raise "Failed to download #{url}"
-    end
-  end
-
-  defp compress_image(image_path) do
-    new_path = Path.rootname(image_path) <> ".webp"
-
-    try do
-      Mogrify.open(image_path)
-      |> Mogrify.format("webp")
-      |> Mogrify.save(path: new_path)
-
-      new_path
-    rescue
-      e ->
-        IO.puts("Error processing image: #{image_path}")
-        IO.puts("Error: #{inspect(e)}")
-        # Return the original path if compression fails
-        image_path
-    end
-  end
-
-  defp compress_video(video_path) do
-    new_path = Path.rootname(video_path) <> "_compressed" <> Path.extname(video_path)
-
-    if String.ends_with?(video_path, "_compressed" <> Path.extname(video_path)) do
-      video_path
-    else
-      FFmpex.new_command()
-      |> add_global_option(option_y())
-      |> add_input_file(video_path)
-      |> add_output_file(new_path)
-      |> add_file_option(option_codec("libx264"))
-      |> add_file_option(option_crf(28))
-      |> execute()
-
-      new_path
-    end
-  end
 
   defp convert_links(content, resolved_links, file, vaultpath) do
     link_patterns = [
@@ -357,5 +276,3 @@ defmodule MediaConverter do
     end
   end
 end
-
-MediaConverter.main(System.argv())

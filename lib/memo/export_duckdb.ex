@@ -1,17 +1,9 @@
-#!/usr/bin/env elixir
-
-Mix.install([
-  {:flow, "~> 1.2"},
-  {:jason, "~> 1.4"},
-  {:yaml_elixir, "~> 2.9"},
-  {:dotenv_parser, "~> 2.0"},
-  {:httpoison, "~> 2.2"}
-])
-
-defmodule MarkdownExportDuckDB do
+defmodule Memo.ExportDuckDB do
   @moduledoc """
   A module to process markdown files and store their information in DuckDB.
   """
+
+  use Flow
 
   @config %{
     spr_compression_prompt: """
@@ -59,22 +51,15 @@ defmodule MarkdownExportDuckDB do
     {"total_tokens", "BIGINT"}
   ]
 
-  use Flow
-
-  def main(args) do
+  def run(vaultpath, format, all, limit) do
     if File.exists?(".env") do
       DotenvParser.load_file(".env")
     end
 
-    {opts, _, _} =
-      OptionParser.parse(args,
-        strict: [vaultpath: :string, format: :string, all: :boolean, limit: :integer]
-      )
-
-    vaultpath = opts[:vaultpath] || "vault"
-    export_format = opts[:format] || "parquet"
-    process_all = opts[:all] || false
-    limit = opts[:limit] || :infinity
+    vaultpath = vaultpath || "vault"
+    export_format = format || "parquet"
+    process_all = all || false
+    limit = limit || :infinity
 
     ignored_patterns = read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
 
@@ -439,6 +424,9 @@ defmodule MarkdownExportDuckDB do
   end
 
   defp transform_frontmatter(md_content, frontmatter, file_path) do
+    estimated_tokens = div(String.length(md_content), 4)
+    frontmatter = Map.put(frontmatter, "estimated_tokens", estimated_tokens)
+
     frontmatter
     |> Map.take(@allowed_frontmatter |> Enum.map(&elem(&1, 0)))
     |> Map.new(fn {k, v} -> {k, normalize_value(k, v)} end)
@@ -584,6 +572,7 @@ defmodule MarkdownExportDuckDB do
       "authors" -> serialize_list(value)
       "aliases" -> serialize_list(value)
       "md_content" -> escape_multiline_text(value)
+      "estimated_tokens" -> to_string(value)
       _ -> default_transform_value(value)
     end
   end
@@ -706,5 +695,3 @@ defmodule MarkdownExportDuckDB do
   defp handle_result({:ok, _result}), do: :ok
   defp handle_result({:error, _error}), do: :error
 end
-
-MarkdownExportDuckDB.main(System.argv())

@@ -1,10 +1,4 @@
-#!/usr/bin/env elixir
-
-Mix.install([
-  {:flow, "~> 1.2"}
-])
-
-defmodule CombineVTT do
+defmodule Memo.CombineVTT do
   @moduledoc """
   Module to combine multiple VTT transcripts with parallel processing.
   """
@@ -81,8 +75,8 @@ defmodule CombineVTT do
     |> Enum.join()
   end
 
-  def main do
-    {files, output} = parse_args(System.argv())
+  def run(args) do
+    {files, output} = parse_args(args)
 
     combined_content = combine_transcripts(files)
     IO.puts(combined_content)
@@ -99,5 +93,3 @@ defmodule CombineVTT do
     {files, Keyword.get(opts, :output)}
   end
 end
-
-CombineVTT.main()
