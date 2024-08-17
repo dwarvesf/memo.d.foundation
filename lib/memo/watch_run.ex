@@ -75,7 +75,6 @@ defmodule Memo.WatchRun do
 
   defp start_hugo_server() do
     System.cmd("hugo", ["-DEF", "--poll", "2s", "--logLevel", "error", "server"],
-      cd: "..",
       into: IO.stream(:stdio, :line)
     )
   end
