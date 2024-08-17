@@ -9,8 +9,8 @@ fetch:
 
 build:
 	@make clear-build
-	@mix --cd .. run -e 'Memo.ExportMedia.run("vault")'
-	@mix --cd .. run -e 'Memo.ExportMarkdown.run("vault")'
+	@mix run -e 'Memo.ExportMedia.run("vault")'
+	@mix run -e 'Memo.ExportMarkdown.run("vault")'
 	@hugo -DEF --minify
 
 clear-build:
@@ -20,13 +20,13 @@ clear-build:
 
 run:
 	@make clear-build
-	@mix --cd .. run -e 'Memo.ExportMedia.run("vault")'
-	@mix --cd .. run -e 'Memo.ExportMarkdown.run("vault")'
+	@mix run -e 'Memo.ExportMedia.run("vault")'
+	@mix run -e 'Memo.ExportMarkdown.run("vault")'
 	@hugo -DEF --poll 2s --logLevel error server
 	
 watch-run:
 	@make clear-build
-	@mix --cd .. run -e 'Memo.Application.watch_run("vault", "content")'
+	@mix run -e 'Memo.Application.watch_run("vault", "content")'
 
 duckdb-export:
-	@mix --cd .. run -e 'Memo.Application.export_duckdb("vault", "parquet")'
+	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet")'
