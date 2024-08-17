@@ -1,37 +1,31 @@
-#!/usr/bin/env elixir
-
-Mix.install([
-  {:file_system, "~> 1.0"}
-])
-
-defmodule FileWatcher do
+defmodule Memo.WatchRun do
   use GenServer
   require Logger
 
   # delay in milliseconds
   @unlock_delay 2000
 
-  def main(args) do
-    {opts, _, _} = OptionParser.parse(args, switches: [vaultpath: :string])
-    vaultpath = opts[:vaultpath] || "vault"
+  def run(vaultpath, exportpath) do
+    vaultpath = vaultpath || "vault"
+    exportpath = exportpath || "content"
 
     # Start the FileWatcher and keep the main process alive
-    {:ok, _pid} = start_link(vaultpath)
+    {:ok, _pid} = start_link(vaultpath, exportpath)
 
     # Keep the script running
     Process.sleep(:infinity)
   end
 
-  def start_link(vaultpath) do
-    GenServer.start_link(__MODULE__, vaultpath, name: __MODULE__)
+  def start_link(vaultpath, exportpath) do
+    GenServer.start_link(__MODULE__, {vaultpath, exportpath}, name: __MODULE__)
   end
 
-  def init(vaultpath) do
+  def init({vaultpath, exportpath}) do
     # Set up ETS table for locks
     :ets.new(:file_locks, [:named_table, :public, :set])
 
     # Run the scripts to build the site
-    run_scripts(vaultpath)
+    run_scripts(vaultpath, exportpath)
 
     # Start the Hugo server
     Task.start(fn -> start_hugo_server() end)
@@ -40,7 +34,7 @@ defmodule FileWatcher do
     {:ok, watcher_pid} = FileSystem.start_link(dirs: [vaultpath])
     FileSystem.subscribe(watcher_pid)
 
-    state = %{watcher_pid: watcher_pid, vaultpath: vaultpath}
+    state = %{watcher_pid: watcher_pid, vaultpath: vaultpath, exportpath: exportpath}
     {:ok, state}
   end
 
@@ -51,7 +45,7 @@ defmodule FileWatcher do
     if (:modified in events or :created in events) and not locked?(relative_path) do
       Logger.info("File changed: #{relative_path}. Running scripts...")
       lock(relative_path)
-      run_scripts(relative_path)
+      run_scripts(relative_path, state.exportpath)
       schedule_unlock(relative_path)
     end
 
@@ -85,14 +79,9 @@ defmodule FileWatcher do
     )
   end
 
-  defp run_scripts(file_path) do
-    System.cmd("elixir", ["scripts/export_media.exs", "--vaultpath", file_path],
-      into: IO.stream(:stdio, :line)
-    )
-
-    System.cmd("elixir", ["scripts/export_markdown.exs", "--vaultpath", file_path],
-      into: IO.stream(:stdio, :line)
-    )
+  defp run_scripts(vaultpath, exportpath) do
+    Memo.Application.export_media(vaultpath)
+    Memo.Application.export_markdown(vaultpath, exportpath)
   end
 
   defp lock(file_path) do
@@ -114,6 +103,3 @@ defmodule FileWatcher do
     Process.send_after(self(), {:unlock, file_path}, @unlock_delay)
   end
 end
-
-# Start the main function with command-line arguments
-FileWatcher.main(System.argv())
