@@ -10,7 +10,7 @@ fetch:
 build:
 	@make clear-build
 	@mix run -e 'Memo.ExportMedia.run("vault")'
-	@mix run -e 'Memo.ExportMarkdown.run("vault")'
+	@mix run -e 'Memo.ExportMarkdown.run("vault", "content")'
 	@hugo -DEF --minify
 
 clear-build:
