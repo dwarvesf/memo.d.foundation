@@ -38,7 +38,8 @@
       ". $VENV_DIR/bin/activate",
       "export LD_LIBRARY_PATH=./.devbox/nix/profile/default/lib",
       "pip install -r requirements.txt",
-      "make fetch"
+      "make fetch",
+      "mix deps.get"
     ],
     "scripts": {
       "build":         "make build",
