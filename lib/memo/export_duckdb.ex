@@ -522,11 +522,11 @@ defmodule Memo.ExportDuckDB do
   defp fetch_openai_embeddings(text) do
     api_key = System.get_env("OPENAI_API_KEY")
 
-    with true <- is_binary(api_key),
+    with true <- is_binary(api_key) && api_key != "",
          headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}],
          payload = %{"input" => text, "model" => "text-embedding-3-small"},
          {:ok, json_payload} <- Jason.encode(payload),
-         {:ok, %HTTPoison.Response{body: body}} <-
+         {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
            HTTPoison.post(
              "https://api.openai.com/v1/embeddings",
              json_payload,
@@ -534,13 +534,25 @@ defmodule Memo.ExportDuckDB do
              @config.http_options
            ),
          {:ok, data} <- Jason.decode(body),
-         items = data["data"] || [],
-         item = List.first(items) || %{},
-         embedding = Map.get(item, "embedding", List.duplicate(0, 1536)),
-         total_tokens = Map.get(data["usage"], "total_tokens", 0) do
+         %{"data" => [%{"embedding" => embedding}], "usage" => %{"total_tokens" => total_tokens}} <- data do
       %{"embedding" => embedding, "total_tokens" => total_tokens}
     else
-      _ -> %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+      false ->
+        IO.puts("Error: OPENAI_API_KEY is not set or is empty")
+        %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+      {:error, %Jason.DecodeError{}} ->
+        IO.puts("Error: Invalid JSON response from OpenAI API")
+        %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
+        IO.puts("Error: OpenAI API request failed with status code #{status_code}")
+        IO.puts("Response body: #{body}")
+        %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        IO.puts("Error: HTTP request failed - #{inspect(reason)}")
+        %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+      error ->
+        IO.puts("Unexpected error: #{inspect(error)}")
+        %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
     end
   end
 
