@@ -30,3 +30,7 @@ watch-run:
 
 duckdb-export:
 	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet")'
+
+duckdb-export-all:
+	@rm vault.duckdb
+	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", true, :infinity)'
