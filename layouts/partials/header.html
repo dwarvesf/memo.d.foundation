@@ -106,6 +106,10 @@
   <!-- D3 -->
   <script defer src="https://d3js.org/d3.v7.min.js"></script>
 
+  <!-- Mermaid -->
+  {{ $mermaid := resources.Get "js/mermaid.mjs" }}
+  <script defer type="module" src="{{ $mermaid.RelPermalink }}"></script>
+
   {{ $styles := resources.Get "scss/styles.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
   <style>
     {{ $styles.Content | safeCSS }}

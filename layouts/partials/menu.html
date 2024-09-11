@@ -153,7 +153,7 @@
             if(Array.isArray(value.file_paths) && value.file_paths.length > 0) {
               html += '<ul>';
               for(const file of value.file_paths) {
-                const path = `/${file.file_path.split('.')[0]}/`
+                const path = `/${file.file_path.replaceAll('&', '').replaceAll('¶', '').replaceAll('§', '').split('.')[0]}/`
                 const isActive = location.pathname === path;
                 html += `
                   <li>
@@ -187,7 +187,9 @@
             <li x-data="{
                   toKebabCase(tag) {
                     return tag && tag
-                      .replace('&', '')
+                      .replaceAll('&', '')
+                      .replaceAll('¶', '')
+                      .replaceAll('§', '')
                       .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
                       .map(x => x.toLowerCase())
                       .join('-');
