@@ -237,7 +237,7 @@
                   <li @mouseenter="set(result)"
                     :class="{ 'cmd-result-item': true, 'cmd-result-selected': result.file_path.toLowerCase() === selected?.file_path.toLowerCase() }">
                     <a :data-searchid="result.file_path"
-                      :href="`/${result.file_path.toLowerCase().replaceAll(' ', '-').replaceAll('.md', '').replaceAll('/_index', '').replaceAll('&', '').replaceAll('¶', '')}/`">
+                      :href="`/${result.file_path.toLowerCase().replaceAll(' ', '-').replaceAll('.md', '').replaceAll('/_index', '').replaceAll('&', '').replaceAll('¶', '').replaceAll('§', '')}/`">
                       <div class="cmd-result-title" x-text="result.title"></div>
                       <p class="cmd-matching-line" x-html="result.matchingLines"></p>
                     </a>
