@@ -181,3 +181,20 @@ function playerSizer() {
 
 window.addEventListener("load", playerSizer);
 window.addEventListener("resize", playerSizer);
+
+function convertMermaidElements() {
+  const elements = document.querySelectorAll('pre.language-mermaid');
+  elements.forEach(element => {
+    element.classList.remove('language-mermaid');
+    element.classList.add('mermaid');
+    
+    // If there's a nested <code> element, remove it and move its content up
+    const codeElement = element.querySelector('code');
+    if (codeElement) {
+      element.innerHTML = codeElement.innerHTML;
+    }
+  });
+}
+
+// Run the function when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', convertMermaidElements);
