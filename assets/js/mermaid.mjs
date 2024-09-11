@@ -22,7 +22,8 @@ async function renderMermaidDiagrams() {
         element.parentNode.insertBefore(renderElement, element.nextSibling);
 
         // Render the Mermaid diagram
-        const { svg } = await mermaid.render('mermaid-' + Math.random().toString(36).substr(2, 9), mermaidCode);
+        const { svg } = await mermaid.render('mermaid-' + Math.random().toString(36).slice(2, 11), mermaidCode);
+
         renderElement.innerHTML = svg;
 
         // Optionally, hide the original pre element
