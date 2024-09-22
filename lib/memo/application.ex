@@ -24,6 +24,9 @@ defmodule Memo.Application do
   def update_git_settings(), do: Memo.UpdateGitSettings.run()
   def watch_run(vaultpath, exportpath), do: Memo.WatchRun.run(vaultpath, exportpath)
 
-  def export_duckdb(vaultpath, format), do: Memo.ExportDuckDB.run(vaultpath, format, false, :infinity)
-  def export_duckdb(vaultpath, format, all, limit), do: Memo.ExportDuckDB.run(vaultpath, format, all, limit)
+  def export_duckdb(vaultpath, format),
+    do: Memo.ExportDuckDB.run(vaultpath, format, false, :infinity)
+
+  def export_duckdb(vaultpath, format, all, limit),
+    do: Memo.ExportDuckDB.run(vaultpath, format, all, limit)
 end

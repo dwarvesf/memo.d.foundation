@@ -505,7 +505,7 @@ defmodule Memo.ExportDuckDB do
 
   defp embed_custom(text) do
     if String.length(text) > 100 do
-      fetch_ollama_embeddings(text)
+      fetch_jina_embeddings(text)
     else
       %{"embedding" => List.duplicate(0, 1024)}
     end
@@ -534,39 +534,68 @@ defmodule Memo.ExportDuckDB do
              @config.http_options
            ),
          {:ok, data} <- Jason.decode(body),
-         %{"data" => [%{"embedding" => embedding}], "usage" => %{"total_tokens" => total_tokens}} <- data do
+         %{"data" => [%{"embedding" => embedding}], "usage" => %{"total_tokens" => total_tokens}} <-
+           data do
       %{"embedding" => embedding, "total_tokens" => total_tokens}
     else
       false ->
         IO.puts("Error: OPENAI_API_KEY is not set or is empty")
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+
       {:error, %Jason.DecodeError{}} ->
         IO.puts("Error: Invalid JSON response from OpenAI API")
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         IO.puts("Error: OpenAI API request failed with status code #{status_code}")
         IO.puts("Response body: #{body}")
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+
       {:error, %HTTPoison.Error{reason: reason}} ->
         IO.puts("Error: HTTP request failed - #{inspect(reason)}")
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+
       error ->
         IO.puts("Unexpected error: #{inspect(error)}")
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
     end
   end
 
-  defp fetch_ollama_embeddings(prompt) do
-    with url when not is_nil(url) <- System.get_env("OLLAMA_BASE_URL"),
-         api_key when not is_nil(api_key) <- System.get_env("OLLAMA_API_KEY"),
+  defp fetch_jina_embeddings(prompts) when is_list(prompts) do
+    with url when not is_nil(url) <- System.get_env("JINA_BASE_URL"),
+         api_key when not is_nil(api_key) <- System.get_env("JINA_API_KEY"),
          headers <- [{"Content-Type", "application/json"}, {"Authorization", "Bearer #{api_key}"}],
-         body <- Jason.encode!(%{model: "snowflake-arctic-embed:335m", prompt: prompt}),
+         body <-
+           Jason.encode!(%{
+             model: "jina-embeddings-v3",
+             task: "text-matching",
+             dimensions: 1024,
+             late_chunking: false,
+             embedding_type: "float",
+             input: prompts
+           }),
          {:ok, %HTTPoison.Response{status_code: 200, body: response_body}} <-
-           HTTPoison.post("#{url}/api/embeddings", body, headers, @config.http_options),
-         {:ok, parsed_response} <- Jason.decode(response_body) do
-      parsed_response
+           HTTPoison.post("#{url}/embeddings", body, headers, @config.http_options),
+         {:ok, parsed_response} <- Jason.decode(response_body),
+         %{
+           "model" => _model,
+           "object" => "list",
+           "usage" => %{"total_tokens" => total_tokens, "prompt_tokens" => _prompt},
+           "data" => embeddings_data
+         } <- parsed_response do
+      embeddings_data
+      |> Enum.map(fn %{"object" => "embedding", "index" => _index, "embedding" => embedding} ->
+        %{"embedding" => embedding, "total_tokens" => total_tokens}
+      end)
     else
-      _ -> %{}
+      _ -> []
+    end
+  end
+
+  defp fetch_jina_embeddings(prompt) when is_binary(prompt) do
+    case fetch_jina_embeddings([prompt]) do
+      [embedding_map] -> embedding_map
+      _ -> %{"embedding" => [], "total_tokens" => 0}
     end
   end
 
