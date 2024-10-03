@@ -21,7 +21,7 @@ defmodule Memo.Application do
   def combine_vtt(args), do: Memo.CombineVTT.run(args)
   def export_markdown(vaultpath, exportpath), do: Memo.ExportMarkdown.run(vaultpath, exportpath)
   def export_media(vaultpath), do: Memo.ExportMedia.run(vaultpath)
-  def update_git_settings(), do: Memo.UpdateGitSettings.run()
+  def update_git_settings(), do: Memo.Common.GitUtils.handle_git_setting("remote.origin", "fetch", "^refs/heads/gh-pages", "Excluding gh-pages from git fetch")
   def watch_run(vaultpath, exportpath), do: Memo.WatchRun.run(vaultpath, exportpath)
 
   def export_duckdb(vaultpath, format),
