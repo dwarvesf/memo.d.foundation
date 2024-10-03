@@ -32,5 +32,5 @@ duckdb-export:
 	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet")'
 
 duckdb-export-all:
-	@rm vault.duckdb
+	@rm -f vault.duckdb
 	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", true, :infinity)'

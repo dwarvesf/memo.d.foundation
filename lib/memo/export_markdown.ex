@@ -127,7 +127,7 @@ defmodule Memo.ExportMarkdown do
 
   defp process_dsql_tables(content) do
     Regex.replace(~r/```dsql-table\n(.*?)```/s, content, fn _, query ->
-      case DuckDBUtils.execute_query(query) do
+      case DuckDBUtils.execute_query_temp(query) do
         {:ok, result} -> DuckDBUtils.result_to_markdown_table(result, query)
         {:error, error} -> "Error executing query: #{error}"
       end
@@ -136,7 +136,7 @@ defmodule Memo.ExportMarkdown do
 
   defp process_dsql_lists(content) do
     Regex.replace(~r/```dsql-list\n(.*?)```/s, content, fn _, query ->
-      case DuckDBUtils.execute_query(query) do
+      case DuckDBUtils.execute_query_temp(query) do
         {:ok, result} -> DuckDBUtils.result_to_markdown_list(result, query)
         {:error, error} -> "Error executing query: #{error}"
       end

@@ -555,9 +555,10 @@ defmodule Memo.ExportDuckDB do
 
   defp remove_old_files(paths) do
     if paths != [] do
-      query =
-        "DELETE FROM vault WHERE file_path NOT IN (#{Enum.join(Enum.map(paths, fn _ -> "?" end), ", ")})"
+      escaped_paths = Enum.map(paths, &"'#{escape_string(&1)}'")
+      query = "DELETE FROM vault WHERE file_path NOT IN (#{Enum.join(escaped_paths, ", ")})"
 
+      IO.puts(query)
       DuckDBUtils.execute_query(query) |> handle_result()
     end
   end

@@ -11,6 +11,13 @@ defmodule Memo.Common.DuckDBUtils do
   end
 
   @doc """
+  Executes a DuckDB query.
+  """
+  def execute_query_temp(query) do
+    duckdb_cmd_temp(query)
+  end
+
+  @doc """
   Converts query result to a markdown table.
   """
   def result_to_markdown_table(result, query) when is_list(result) and length(result) > 0 do
@@ -84,7 +91,7 @@ defmodule Memo.Common.DuckDBUtils do
   def result_to_markdown_list(result, _) when is_binary(result), do: "- #{result}"
   def result_to_markdown_list(_, _), do: "No results or invalid data format."
 
-  defp duckdb_cmd(query) do
+  defp duckdb_cmd_temp(query) do
     {result, exit_code} =
       System.cmd("duckdb", [
         "-json",
@@ -92,6 +99,30 @@ defmodule Memo.Common.DuckDBUtils do
         "IMPORT DATABASE 'db'",
         "-cmd",
         "CREATE OR REPLACE TEMP MACRO markdown_link(title, file_path) AS '[' || COALESCE(title, '/' || REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(^-|-$)', '')) || '](/' || REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(^-|-$)', '') || ')'",
+        "-c",
+        query
+      ])
+
+    cond do
+      exit_code != 0 ->
+        {:error, result}
+
+      result == "" ->
+        {:ok, []}
+
+      true ->
+        case Jason.decode(result) do
+          {:ok, json} -> {:ok, json}
+          {:error, _} -> {:ok, result}
+        end
+    end
+  end
+
+  defp duckdb_cmd(query) do
+    {result, exit_code} =
+      System.cmd("duckdb", [
+        "vault.duckdb",
+        "-json",
         "-c",
         query
       ])
