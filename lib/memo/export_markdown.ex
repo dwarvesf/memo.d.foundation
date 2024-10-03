@@ -4,7 +4,7 @@ defmodule Memo.ExportMarkdown do
   """
 
   use Flow
-  alias Memo.Common.{FileUtils, Frontmatter, LinkUtils, DuckDBUtils}
+  alias Memo.Common.{FileUtils, Frontmatter, LinkUtils, DuckDBUtils, Slugify}
 
   def run(vaultpath, exportpath) do
     System.put_env("LC_ALL", "en_US.UTF-8")
@@ -66,7 +66,7 @@ defmodule Memo.ExportMarkdown do
   defp export_assets_folder(asset_path, vaultpath, exportpath, ignored_patterns) do
     if Path.basename(asset_path) == "assets" and not FileUtils.ignored?(asset_path, ignored_patterns, vaultpath) do
       target_path = replace_path_prefix(asset_path, vaultpath, exportpath)
-      slugified_target_path = slugify_path(target_path)
+      slugified_target_path = Slugify.slugify_path(target_path)
       copy_directory(asset_path, slugified_target_path, ignored_patterns, vaultpath)
       IO.puts("Exported assets: #{asset_path} -> #{slugified_target_path}")
     end
@@ -75,7 +75,7 @@ defmodule Memo.ExportMarkdown do
   defp export_db_directory(dbpath, exportpath) do
     if File.dir?(dbpath) do
       export_db_path = Path.join(exportpath, "db")
-      slugified_export_db_path = slugify_path(export_db_path)
+      slugified_export_db_path = Slugify.slugify_path(export_db_path)
       copy_directory(dbpath, slugified_export_db_path, [], dbpath)
       IO.puts("Exported db folder: #{dbpath} -> #{slugified_export_db_path}")
     else
@@ -84,13 +84,13 @@ defmodule Memo.ExportMarkdown do
   end
 
   defp copy_directory(source, destination, ignored_patterns, vaultpath) do
-    slugified_destination = slugify_path(destination)
+    slugified_destination = Slugify.slugify_path(destination)
     File.mkdir_p!(slugified_destination)
 
     File.ls!(source)
     |> Enum.each(fn item ->
       source_path = Path.join(source, item)
-      dest_path = Path.join(slugified_destination, slugify_filename(item))
+      dest_path = Path.join(slugified_destination, Slugify.slugify_filename(item))
 
       if not FileUtils.ignored?(source_path, ignored_patterns, vaultpath) do
         if File.dir?(source_path) do
@@ -108,48 +108,15 @@ defmodule Memo.ExportMarkdown do
     resolved_links = LinkUtils.resolve_links(links, all_files, vaultpath)
     converted_content = LinkUtils.convert_links(content, resolved_links)
     converted_content = process_duckdb_queries(converted_content)
-    converted_content = slugify_markdown_links(converted_content)
+    converted_content = Slugify.slugify_markdown_links(converted_content)
 
     export_file = replace_path_prefix(file, vaultpath, exportpath)
-    slugified_export_file = slugify_path(export_file)
+    slugified_export_file = Slugify.slugify_path(export_file)
     export_dir = Path.dirname(slugified_export_file)
     File.mkdir_p!(export_dir)
 
     File.write!(slugified_export_file, converted_content)
     IO.puts("Exported: #{inspect(file)} -> #{inspect(slugified_export_file)}")
-  end
-
-  defp slugify_markdown_links(content) do
-    Regex.replace(~r/\[([^\]]+)\]\(([^)]+)\)/, content, fn _, text, link ->
-      slugified_link = slugify_link_path(link)
-      "[#{text}](#{slugified_link})"
-    end)
-  end
-
-  defp slugify_link_path(link) do
-    cond do
-      String.starts_with?(link, ["http://", "https://", "#"]) ->
-        link
-      String.contains?(link, "#") ->
-        [path, fragment] = String.split(link, "#", parts: 2)
-        slugified_path = slugify_path_components(URI.decode(path))
-        "#{slugified_path}##{fragment}"
-      true ->
-        slugify_path_components(URI.decode(link))
-    end
-  end
-
-  defp slugify_path_components(path) do
-    path
-    |> Path.split()
-    |> Enum.map(fn component ->
-      case component do
-        "." -> "."
-        ".." -> ".."
-        _ -> slugify(component)
-      end
-    end)
-    |> Path.join()
   end
 
   defp process_duckdb_queries(content) do
@@ -181,32 +148,5 @@ defmodule Memo.ExportMarkdown do
     |> Enum.map(&Path.split/1)
     |> Enum.map(&List.first/1)
     |> then(fn [old, new] -> String.replace_prefix(path, old, new) end)
-  end
-
-  defp slugify(string) do
-    string
-    |> String.downcase()
-    |> String.replace(~r/[^a-z0-9\s_-]/, "")
-    |> String.replace(~r/\s+/, "-")
-    |> String.replace(~r/-+/, "-")
-    |> String.trim("-")
-  end
-
-  defp slugify_filename(filename) do
-    {name, ext} = Path.basename(filename) |> Path.rootname() |> (&{&1, Path.extname(filename)}).()
-    slugify(name) <> ext
-  end
-
-  defp slugify_path(path) do
-    dirname = Path.dirname(path)
-    basename = Path.basename(path)
-    Path.join(slugify_directory(dirname), slugify_filename(basename))
-  end
-
-  defp slugify_directory(path) do
-    path
-    |> Path.split()
-    |> Enum.map(&slugify/1)
-    |> Path.join()
   end
 end
