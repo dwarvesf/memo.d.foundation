@@ -1059,7 +1059,7 @@
     },
     "python@3.10.14": {
       "last_modified": "2024-05-22T06:18:38Z",
-      "plugin_version": "0.0.4",
+      "plugin_version": "0.0.3",
       "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#python310",
       "source": "devbox-search",
       "version": "3.10.14",
