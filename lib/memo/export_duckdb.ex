@@ -4,6 +4,7 @@ defmodule Memo.ExportDuckDB do
   """
 
   use Flow
+  alias Memo.Common.{FileUtils, Frontmatter, GitUtils, DuckDBUtils}
 
   @config %{
     spr_compression_prompt: """
@@ -61,9 +62,9 @@ defmodule Memo.ExportDuckDB do
     process_all = all || false
     limit = limit || :infinity
 
-    ignored_patterns = read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
+    ignored_patterns = FileUtils.read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
 
-    paths = list_files_and_assets_recursive(vaultpath)
+    paths = FileUtils.list_files_recursive(vaultpath)
 
     all_files =
       Enum.filter(
@@ -72,7 +73,7 @@ defmodule Memo.ExportDuckDB do
       )
 
     all_files_to_process =
-      Enum.filter(all_files, &(not ignored?(&1, ignored_patterns, vaultpath)))
+      Enum.filter(all_files, &(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
 
     filtered_files =
       if process_all do
@@ -86,7 +87,7 @@ defmodule Memo.ExportDuckDB do
 
     IO.inspect(selected_files)
 
-    with {:ok, _} <- duckdb_cmd("SELECT 1"),
+    with {:ok, _} <- DuckDBUtils.execute_query("SELECT 1"),
          :ok <- install_and_load_extensions(),
          :ok <- setup_database() do
       process_files(selected_files, vaultpath, all_files_to_process)
@@ -96,35 +97,17 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
-  defp duckdb_cmd(query) do
-    {result, exit_code} = System.cmd("duckdb", ["vault.duckdb", "-json", "-c", query])
-
-    cond do
-      exit_code != 0 ->
-        {:error, result}
-
-      result == "" ->
-        {:ok, []}
-
-      true ->
-        case Jason.decode(result) do
-          {:ok, json} -> {:ok, json}
-          {:error, _} -> {:ok, result}
-        end
-    end
-  end
-
   defp install_and_load_extensions() do
-    duckdb_cmd("INSTALL parquet") |> handle_result()
-    duckdb_cmd("LOAD parquet") |> handle_result()
+    DuckDBUtils.execute_query("INSTALL parquet") |> handle_result()
+    DuckDBUtils.execute_query("LOAD parquet") |> handle_result()
   end
 
   defp setup_database() do
     check_query = "SELECT table_name FROM information_schema.tables WHERE table_name = 'vault'"
 
-    case duckdb_cmd(check_query) do
+    case DuckDBUtils.execute_query(check_query) do
       {:ok, []} ->
-        case duckdb_cmd("IMPORT DATABASE 'db'") do
+        case DuckDBUtils.execute_query("IMPORT DATABASE 'db'") do
           {:ok, _} ->
             IO.puts("Successfully imported database from 'db' directory.")
             :ok
@@ -155,7 +138,7 @@ defmodule Memo.ExportDuckDB do
       )
     """
 
-    case duckdb_cmd(query) do
+    case DuckDBUtils.execute_query(query) do
       {:ok, _} ->
         IO.puts("Created vault table.")
         :ok
@@ -169,12 +152,12 @@ defmodule Memo.ExportDuckDB do
   defp export(format) do
     case format do
       "csv" ->
-        response = duckdb_cmd("EXPORT DATABASE 'db'")
+        response = DuckDBUtils.execute_query("EXPORT DATABASE 'db'")
         clean_exported_schema("db/schema.sql")
         response
 
       "parquet" ->
-        response = duckdb_cmd("EXPORT DATABASE 'db' (FORMAT PARQUET)")
+        response = DuckDBUtils.execute_query("EXPORT DATABASE 'db' (FORMAT PARQUET)")
         clean_exported_schema("db/schema.sql")
         response
 
@@ -209,7 +192,7 @@ defmodule Memo.ExportDuckDB do
 
       case File.read(file_path) do
         {:ok, content} ->
-          case extract_frontmatter(content) do
+          case Frontmatter.extract_frontmatter(content) do
             {:error, :no_frontmatter} ->
               nil
 
@@ -232,7 +215,7 @@ defmodule Memo.ExportDuckDB do
     query =
       "SELECT spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
 
-    with {:ok, result} <- duckdb_cmd(query),
+    with {:ok, result} <- DuckDBUtils.execute_query(query),
          existing_data when is_list(result) <- List.first(result) || [],
          transformed_frontmatter <-
            transform_frontmatter(md_content, frontmatter, escaped_file_path),
@@ -283,11 +266,11 @@ defmodule Memo.ExportDuckDB do
 
   defp get_files_to_process(directory, process_all, all_files) do
     if process_all == false do
-      git_files = get_modified_files(directory)
+      git_files = GitUtils.get_modified_files(directory)
 
       submodule_files =
-        list_submodules(directory)
-        |> Enum.flat_map(&get_submodule_modified_files(directory, &1))
+        GitUtils.list_submodules(directory)
+        |> Enum.flat_map(&GitUtils.get_submodule_modified_files(directory, &1))
 
       all_git_files = git_files ++ submodule_files
 
@@ -296,160 +279,6 @@ defmodule Memo.ExportDuckDB do
       all_files
     end
   end
-
-  defp get_modified_files(directory) do
-    revision = if valid_revision?(directory, "HEAD^"), do: "HEAD^", else: "HEAD"
-
-    {output, _status} =
-      System.cmd("git", ["diff", "--name-only", revision], cd: directory, stderr_to_stdout: true)
-
-    output
-    |> String.split("\n")
-    |> Enum.filter(&String.ends_with?(&1, ".md"))
-    |> Enum.reject(&String.contains?(&1, "fatal: Needed a single revision"))
-  end
-
-  defp list_submodules(directory) do
-    case System.cmd("git", [
-           "config",
-           "--file",
-           Path.join(directory, ".gitmodules"),
-           "--name-only",
-           "--get-regexp",
-           "submodule\\..*\\.path"
-         ]) do
-      {output, 0} ->
-        output
-        |> String.split("\n", trim: true)
-        |> Enum.map(&get_submodule_path(directory, &1))
-
-      _ ->
-        []
-    end
-  end
-
-  defp get_submodule_path(directory, line) do
-    case System.cmd("git", [
-           "config",
-           "--file",
-           Path.join(directory, ".gitmodules"),
-           "--get",
-           line
-         ]) do
-      {output, 0} ->
-        output |> String.trim()
-
-      _ ->
-        nil
-    end
-  end
-
-  defp get_submodule_modified_files(base_directory, submodule) do
-    submodule_dir = Path.join(base_directory, submodule)
-
-    case get_modified_files(submodule_dir) do
-      [] -> []
-      modified_files -> Enum.map(modified_files, &Path.join(submodule, &1))
-    end
-  end
-
-  defp valid_revision?(directory, revision) do
-    case System.cmd("git", ["rev-parse", "--verify", revision],
-           cd: directory,
-           stderr_to_stdout: true
-         ) do
-      {_, 0} -> true
-      _ -> false
-    end
-  end
-
-  defp list_files_and_assets_recursive(path) do
-    File.ls!(path)
-    |> Enum.flat_map(fn file ->
-      full_path = Path.join(path, file)
-
-      if File.dir?(full_path) do
-        [full_path | list_files_and_assets_recursive(full_path)]
-      else
-        [full_path]
-      end
-    end)
-  end
-
-  defp read_export_ignore_file(ignore_file) do
-    if File.exists?(ignore_file) do
-      File.read!(ignore_file)
-      |> String.split("\n", trim: true)
-      |> Enum.filter(&(&1 != "" and not String.starts_with?(&1, "#")))
-    else
-      []
-    end
-  end
-
-  defp ignored?(file, patterns, vaultpath) do
-    relative_path = Path.relative_to(file, vaultpath)
-    Enum.any?(patterns, &match_pattern?(relative_path, &1))
-  end
-
-  defp match_pattern?(path, pattern) do
-    cond do
-      String.ends_with?(pattern, "/") ->
-        String.starts_with?(path, pattern) or String.contains?(path, "/#{pattern}")
-
-      String.starts_with?(pattern, "*") ->
-        String.ends_with?(path, String.trim_leading(pattern, "*"))
-
-      String.ends_with?(pattern, "*") ->
-        String.starts_with?(path, String.trim_trailing(pattern, "*"))
-
-      true ->
-        path == pattern or String.contains?(path, pattern)
-    end
-  end
-
-  defp extract_frontmatter(content) do
-    with [frontmatter_content] <-
-           Regex.run(~r/^---\n(.+?)\n---\n/s, content, capture: :all_but_first),
-         {:ok, metadata} <- YamlElixir.read_from_string(frontmatter_content) do
-      {metadata, strip_frontmatter(content)}
-    else
-      nil -> {:error, :no_frontmatter}
-      {:error, _reason} -> {:error, :invalid_frontmatter}
-    end
-  end
-
-  defp strip_frontmatter(content) do
-    [_, rest] = String.split(content, "---\n", parts: 2)
-    String.split(rest, "\n---\n", parts: 2) |> List.last()
-  end
-
-  defp transform_frontmatter(md_content, frontmatter, file_path) do
-    estimated_tokens = div(String.length(md_content), 4)
-    frontmatter = Map.put(frontmatter, "estimated_tokens", estimated_tokens)
-
-    frontmatter
-    |> Map.take(@allowed_frontmatter |> Enum.map(&elem(&1, 0)))
-    |> Map.new(fn {k, v} -> {k, normalize_value(k, v)} end)
-    |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
-  end
-
-  defp normalize_value(key, value) when key in ["tags", "authors", "aliases"] do
-    normalize_list_value(value)
-  end
-
-  defp normalize_value(_key, value), do: value
-
-  defp normalize_list_value(value) when is_binary(value) do
-    if String.contains?(value, ",") do
-      value
-      |> String.split(",")
-      |> Enum.map(&String.trim/1)
-    else
-      [String.trim(value)]
-    end
-  end
-
-  defp normalize_list_value(value), do: value
 
   defp regenerate_embeddings(md_content, frontmatter) do
     spr_content = spr_compress(md_content)
@@ -685,7 +514,7 @@ defmodule Memo.ExportDuckDB do
     escaped_file_path = escape_string(file_path)
 
     with {:ok, [existing_data]} <-
-           duckdb_cmd("SELECT * FROM vault WHERE file_path = '#{escaped_file_path}'"),
+           DuckDBUtils.execute_query("SELECT * FROM vault WHERE file_path = '#{escaped_file_path}'"),
          true <- data_changed?(existing_data, frontmatter) do
       perform_upsert(escaped_file_path, keys, prepared_values, frontmatter)
     else
@@ -714,8 +543,8 @@ defmodule Memo.ExportDuckDB do
     INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})
     """
 
-    with {:ok, _} <- duckdb_cmd(delete_query),
-         {:ok, _} <- duckdb_cmd(insert_query) do
+    with {:ok, _} <- DuckDBUtils.execute_query(delete_query),
+         {:ok, _} <- DuckDBUtils.execute_query(insert_query) do
       IO.puts("Upsert succeeded for file: #{frontmatter["file_path"]}")
     else
       {:error, error_message} ->
@@ -729,10 +558,38 @@ defmodule Memo.ExportDuckDB do
       query =
         "DELETE FROM vault WHERE file_path NOT IN (#{Enum.join(Enum.map(paths, fn _ -> "?" end), ", ")})"
 
-      duckdb_cmd(query) |> handle_result()
+      DuckDBUtils.execute_query(query) |> handle_result()
     end
   end
 
   defp handle_result({:ok, _result}), do: :ok
   defp handle_result({:error, _error}), do: :error
+
+  defp transform_frontmatter(md_content, frontmatter, file_path) do
+    estimated_tokens = div(String.length(md_content), 4)
+    frontmatter = Map.put(frontmatter, "estimated_tokens", estimated_tokens)
+
+    frontmatter
+    |> Map.take(@allowed_frontmatter |> Enum.map(&elem(&1, 0)))
+    |> Map.new(fn {k, v} -> {k, normalize_value(k, v)} end)
+    |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
+  end
+
+  defp normalize_value(key, value) when key in ["tags", "authors", "aliases"] do
+    normalize_list_value(value)
+  end
+
+  defp normalize_value(_key, value), do: value
+
+  defp normalize_list_value(value) when is_binary(value) do
+    if String.contains?(value, ",") do
+      value
+      |> String.split(",")
+      |> Enum.map(&String.trim/1)
+    else
+      [String.trim(value)]
+    end
+  end
+
+  defp normalize_list_value(value), do: value
 end

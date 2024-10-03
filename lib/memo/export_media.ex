@@ -4,6 +4,7 @@ defmodule Memo.ExportMedia do
   """
 
   use Flow
+  alias Memo.Common.{FileUtils, Frontmatter, LinkUtils}
 
   @assets_dir "assets"
 
@@ -23,12 +24,12 @@ defmodule Memo.ExportMedia do
         {Path.dirname(vaultpath), :file}
       end
 
-    ignored_patterns = read_export_ignore_file(Path.join(vault_dir, ".export-ignore"))
-    all_files = list_files_recursive(vault_dir)
+    ignored_patterns = FileUtils.read_export_ignore_file(Path.join(vault_dir, ".export-ignore"))
+    all_files = FileUtils.list_files_recursive(vault_dir)
 
     all_valid_files =
       all_files
-      |> Enum.filter(&(not ignored?(&1, ignored_patterns, vault_dir)))
+      |> Enum.filter(&(not FileUtils.ignored?(&1, ignored_patterns, vault_dir)))
 
     # Create assets directory if it doesn't exist
     File.mkdir_p!(Path.join(vault_dir, @assets_dir))
@@ -38,101 +39,22 @@ defmodule Memo.ExportMedia do
     else
       all_valid_files
       |> Flow.from_enumerable()
-      |> Flow.filter(&contains_required_frontmatter_keys?/1)
+      |> Flow.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
       |> Flow.map(&process_file(&1, vault_dir))
       |> Flow.run()
     end
   end
 
   defp process_single_file(vaultpath, vault_dir, all_valid_files) do
-    normalized_vaultpath = normalize_path(vaultpath)
+    normalized_vaultpath = FileUtils.normalize_path(vaultpath)
 
     if Enum.member?(all_valid_files, normalized_vaultpath) and
-         contains_required_frontmatter_keys?(normalized_vaultpath) do
+         Frontmatter.contains_required_frontmatter_keys?(normalized_vaultpath) do
       process_file(normalized_vaultpath, vault_dir)
     else
       IO.puts(
         "File #{inspect(vaultpath)} does not exist, is ignored, or does not contain required frontmatter keys."
       )
-    end
-  end
-
-  defp list_files_recursive(path) do
-    File.ls!(path)
-    |> Enum.flat_map(fn file ->
-      normalized_file = normalize_path(file)
-      full_path = Path.join(path, normalized_file)
-
-      if File.dir?(full_path) do
-        list_files_recursive(full_path)
-      else
-        [full_path]
-      end
-    end)
-  end
-
-  defp normalize_path(path) do
-    path
-    |> String.replace("Â§", "§")
-    |> String.to_charlist()
-    |> Enum.map(fn
-      c when c < 128 -> c
-      c -> c
-    end)
-    |> List.to_string()
-  end
-
-  defp read_export_ignore_file(ignore_file) do
-    if File.exists?(ignore_file) do
-      File.read!(ignore_file)
-      |> String.split("\n", trim: true)
-      |> Enum.filter(&(&1 != "" and not String.starts_with?(&1, "#")))
-    else
-      []
-    end
-  end
-
-  defp ignored?(file, patterns, vaultpath) do
-    relative_path = Path.relative_to(file, vaultpath)
-    normalized_path = normalize_path(relative_path)
-    Enum.any?(patterns, &match_pattern?(normalized_path, &1))
-  end
-
-  defp match_pattern?(path, pattern) do
-    cond do
-      String.ends_with?(pattern, "/") ->
-        String.starts_with?(path, pattern) or String.contains?(path, "/#{pattern}")
-
-      String.starts_with?(pattern, "*") ->
-        String.ends_with?(path, String.trim_leading(pattern, "*"))
-
-      String.ends_with?(pattern, "*") ->
-        String.starts_with?(path, String.trim_trailing(pattern, "*"))
-
-      true ->
-        path == pattern or String.contains?(path, pattern)
-    end
-  end
-
-  defp contains_required_frontmatter_keys?(file) do
-    with {:ok, content} <- File.read(file),
-         {:ok, frontmatter} <- parse_frontmatter(content) do
-      Map.has_key?(frontmatter, "title") and Map.has_key?(frontmatter, "description")
-    else
-      _ -> false
-    end
-  end
-
-  defp parse_frontmatter(content) do
-    with [frontmatter_str] <- Regex.run(~r/^---\n(.*?)\n---/s, content, capture: :all_but_first) do
-      frontmatter_str
-      |> String.split("\n")
-      |> Enum.map(&String.split(&1, ": ", parts: 2))
-      |> Enum.filter(&match?([_, _], &1))
-      |> Enum.into(%{}, fn [key, value] -> {key, String.trim(value)} end)
-      |> (&{:ok, &1}).()
-    else
-      _ -> :error
     end
   end
 
@@ -144,7 +66,7 @@ defmodule Memo.ExportMedia do
       links
       |> Flow.from_enumerable()
       |> Flow.map(fn link ->
-        new_link = handle_media_link(normalize_path(link), vaultpath)
+        new_link = handle_media_link(FileUtils.normalize_path(link), vaultpath)
         {link, new_link}
       end)
       |> Enum.into(%{})
@@ -160,7 +82,7 @@ defmodule Memo.ExportMedia do
       already_converted?(link, vaultpath) ->
         link
 
-      is_url?(link) ->
+      LinkUtils.is_url?(link) ->
         if url_points_to_media?(link) do
           link
         else
@@ -207,13 +129,6 @@ defmodule Memo.ExportMedia do
     String.ends_with?(link, [".webp", "_compressed.mp4"]) and File.exists?(full_path)
   end
 
-  defp is_url?(link) when is_binary(link) do
-    uri = URI.parse(link)
-    uri.scheme != nil && uri.host != nil
-  end
-
-  defp is_url?(_), do: false
-
   defp convert_links(content, resolved_links, file, vaultpath) do
     link_patterns = [
       {~r/!\[\[([^\|\]]+)\|([^\]]+)\]\]/, fn src, alias -> {src, alias} end},
@@ -234,7 +149,7 @@ defmodule Memo.ExportMedia do
         if is_nil(resolved_path) do
           "![#{alt || ""}](#{src})"
         else
-          if is_url?(resolved_path) and not url_points_to_media?(resolved_path) do
+          if LinkUtils.is_url?(resolved_path) and not url_points_to_media?(resolved_path) do
             "![#{alt || ""}](#{resolved_path})"
           else
             "![#{alt || ""}](#{resolve_asset_path(resolved_path, file, vaultpath)})"
