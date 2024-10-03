@@ -32,7 +32,7 @@ defmodule Memo.ExportMarkdown do
     if mode == :file do
       process_single_file(vaultpath, vault_dir, exportpath, all_valid_files)
     else
-      process_directory(all_valid_files, all_assets, vault_dir, exportpath)
+      process_directory(all_valid_files, all_assets, vault_dir, exportpath, ignored_patterns)
     end
   end
 
@@ -49,51 +49,55 @@ defmodule Memo.ExportMarkdown do
     end
   end
 
-  defp process_directory(all_valid_files, all_assets, vault_dir, exportpath) do
+  defp process_directory(all_valid_files, all_assets, vault_dir, exportpath, ignored_patterns) do
     Flow.from_enumerable(all_valid_files)
     |> Flow.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
     |> Flow.map(&process_file(&1, vault_dir, exportpath, all_valid_files))
     |> Flow.run()
 
     Flow.from_enumerable(all_assets)
-    |> Flow.map(&export_assets_folder(&1, vault_dir, exportpath))
+    |> Flow.map(&export_assets_folder(&1, vault_dir, exportpath, ignored_patterns))
     |> Flow.run()
 
     # Export the db directory
     export_db_directory("db", exportpath)
   end
 
-  defp export_assets_folder(asset_path, vaultpath, exportpath) do
-    if Path.basename(asset_path) == "assets" do
+  defp export_assets_folder(asset_path, vaultpath, exportpath, ignored_patterns) do
+    if Path.basename(asset_path) == "assets" and not FileUtils.ignored?(asset_path, ignored_patterns, vaultpath) do
       target_path = replace_path_prefix(asset_path, vaultpath, exportpath)
-      copy_directory(asset_path, target_path)
-      IO.puts("Exported assets: #{asset_path} -> #{target_path}")
+      slugified_target_path = slugify_path(target_path)
+      copy_directory(asset_path, slugified_target_path, ignored_patterns, vaultpath)
+      IO.puts("Exported assets: #{asset_path} -> #{slugified_target_path}")
     end
   end
 
   defp export_db_directory(dbpath, exportpath) do
     if File.dir?(dbpath) do
       export_db_path = Path.join(exportpath, "db")
-      copy_directory(dbpath, export_db_path)
-      IO.puts("Exported db folder: #{dbpath} -> #{export_db_path}")
+      slugified_export_db_path = slugify_path(export_db_path)
+      copy_directory(dbpath, slugified_export_db_path, [], dbpath)
+      IO.puts("Exported db folder: #{dbpath} -> #{slugified_export_db_path}")
     else
       IO.puts("db folder not found at #{dbpath}")
     end
   end
 
-  defp copy_directory(source, destination) do
-    lowercase_destination = String.downcase(destination)
-    File.mkdir_p!(lowercase_destination)
+  defp copy_directory(source, destination, ignored_patterns, vaultpath) do
+    slugified_destination = slugify_path(destination)
+    File.mkdir_p!(slugified_destination)
 
     File.ls!(source)
     |> Enum.each(fn item ->
       source_path = Path.join(source, item)
-      dest_path = Path.join(lowercase_destination, String.downcase(item))
+      dest_path = Path.join(slugified_destination, slugify_filename(item))
 
-      if File.dir?(source_path) do
-        copy_directory(source_path, dest_path)
-      else
-        File.copy!(source_path, dest_path)
+      if not FileUtils.ignored?(source_path, ignored_patterns, vaultpath) do
+        if File.dir?(source_path) do
+          copy_directory(source_path, dest_path, ignored_patterns, vaultpath)
+        else
+          File.copy!(source_path, dest_path)
+        end
       end
     end)
   end
@@ -104,14 +108,48 @@ defmodule Memo.ExportMarkdown do
     resolved_links = LinkUtils.resolve_links(links, all_files, vaultpath)
     converted_content = LinkUtils.convert_links(content, resolved_links)
     converted_content = process_duckdb_queries(converted_content)
+    converted_content = slugify_markdown_links(converted_content)
 
     export_file = replace_path_prefix(file, vaultpath, exportpath)
-    lowercase_export_file = String.downcase(export_file)
-    export_dir = Path.dirname(lowercase_export_file)
+    slugified_export_file = slugify_path(export_file)
+    export_dir = Path.dirname(slugified_export_file)
     File.mkdir_p!(export_dir)
 
-    File.write!(lowercase_export_file, converted_content)
-    IO.puts("Exported: #{inspect(file)} -> #{inspect(lowercase_export_file)}")
+    File.write!(slugified_export_file, converted_content)
+    IO.puts("Exported: #{inspect(file)} -> #{inspect(slugified_export_file)}")
+  end
+
+  defp slugify_markdown_links(content) do
+    Regex.replace(~r/\[([^\]]+)\]\(([^)]+)\)/, content, fn _, text, link ->
+      slugified_link = slugify_link_path(link)
+      "[#{text}](#{slugified_link})"
+    end)
+  end
+
+  defp slugify_link_path(link) do
+    cond do
+      String.starts_with?(link, ["http://", "https://", "#"]) ->
+        link
+      String.contains?(link, "#") ->
+        [path, fragment] = String.split(link, "#", parts: 2)
+        slugified_path = slugify_path_components(URI.decode(path))
+        "#{slugified_path}##{fragment}"
+      true ->
+        slugify_path_components(URI.decode(link))
+    end
+  end
+
+  defp slugify_path_components(path) do
+    path
+    |> Path.split()
+    |> Enum.map(fn component ->
+      case component do
+        "." -> "."
+        ".." -> ".."
+        _ -> slugify(component)
+      end
+    end)
+    |> Path.join()
   end
 
   defp process_duckdb_queries(content) do
@@ -143,5 +181,32 @@ defmodule Memo.ExportMarkdown do
     |> Enum.map(&Path.split/1)
     |> Enum.map(&List.first/1)
     |> then(fn [old, new] -> String.replace_prefix(path, old, new) end)
+  end
+
+  defp slugify(string) do
+    string
+    |> String.downcase()
+    |> String.replace(~r/[^a-z0-9\s_-]/, "")
+    |> String.replace(~r/\s+/, "-")
+    |> String.replace(~r/-+/, "-")
+    |> String.trim("-")
+  end
+
+  defp slugify_filename(filename) do
+    {name, ext} = Path.basename(filename) |> Path.rootname() |> (&{&1, Path.extname(filename)}).()
+    slugify(name) <> ext
+  end
+
+  defp slugify_path(path) do
+    dirname = Path.dirname(path)
+    basename = Path.basename(path)
+    Path.join(slugify_directory(dirname), slugify_filename(basename))
+  end
+
+  defp slugify_directory(path) do
+    path
+    |> Path.split()
+    |> Enum.map(&slugify/1)
+    |> Path.join()
   end
 end
