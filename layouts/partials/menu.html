@@ -153,7 +153,7 @@
             if(Array.isArray(value.file_paths) && value.file_paths.length > 0) {
               html += '<ul>';
               for(const file of value.file_paths) {
-                const path = `/${file.file_path.replaceAll('&', '').replaceAll('¶', '').replaceAll('§', '').split('.')[0]}/`
+                const path = `/${file.file_path.replaceAll('&', '').replaceAll('¶', '').replaceAll('§', '').replace(/\/-/, '/').replace(/^-/, '').split('.')[0]}/`
                 const isActive = location.pathname === path;
                 html += `
                   <li>
