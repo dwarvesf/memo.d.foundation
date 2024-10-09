@@ -3,6 +3,8 @@ defmodule Memo.Common.LinkUtils do
   Utility functions for handling links in markdown files.
   """
 
+  alias Memo.Common.Slugify
+
   @doc """
   Extracts links from content.
   """
@@ -72,7 +74,9 @@ defmodule Memo.Common.LinkUtils do
   defp convert_links_with_alt_text(content, resolved_links) do
     Regex.replace(~r/\[\[([^\|\]]+)\|([^\]]+)\]\]/, content, fn _, link, alt_text ->
       resolved_path =
-        Map.get(resolved_links, link, link) |> String.replace(~r/\\$/, "") |> String.downcase()
+        Map.get(resolved_links, link, link)
+        |> String.replace(~r/\\$/, "")
+        |> Slugify.slugify_link_path()
 
       "[#{alt_text}](#{resolved_path})"
     end)
@@ -83,7 +87,7 @@ defmodule Memo.Common.LinkUtils do
       resolved_path =
         Map.get(resolved_links, link, "#{link}.md")
         |> String.replace(~r/\\$/, "")
-        |> String.downcase()
+        |> Slugify.slugify_link_path()
 
       alt_text = Path.basename(resolved_path, ".md")
       "[#{alt_text}](#{resolved_path})"
@@ -93,7 +97,9 @@ defmodule Memo.Common.LinkUtils do
   defp convert_embedded_images(content, resolved_links) do
     Regex.replace(~r/!\[\[([^\]]+)\]\]/, content, fn _, link ->
       resolved_path =
-        Map.get(resolved_links, link, link) |> String.replace(~r/\\$/, "") |> String.downcase()
+        Map.get(resolved_links, link, link)
+        |> String.replace(~r/\\$/, "")
+        |> Slugify.slugify_link_path()
 
       "![](#{resolved_path})"
     end)

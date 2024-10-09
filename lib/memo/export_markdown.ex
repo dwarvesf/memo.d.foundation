@@ -111,7 +111,10 @@ defmodule Memo.ExportMarkdown do
     converted_content = Slugify.slugify_markdown_links(converted_content)
 
     export_file = replace_path_prefix(file, vaultpath, exportpath)
-    slugified_export_file = Slugify.slugify_path(export_file)
+    slugified_export_file = Path.join(
+      Path.dirname(export_file),
+      Slugify.slugify_filename(Path.basename(export_file))
+    )
     export_dir = Path.dirname(slugified_export_file)
     File.mkdir_p!(export_dir)
 
