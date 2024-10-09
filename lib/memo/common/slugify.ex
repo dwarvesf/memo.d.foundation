@@ -50,14 +50,19 @@ defmodule Memo.Common.Slugify do
     end
   end
 
-  def slugify_path_components(path) do
+  def slugify_path_components(path) when is_binary(path) do
     path
     |> Path.split()
+    |> slugify_path_components()
+  end
+
+  def slugify_path_components(components) when is_list(components) do
+    components
     |> Enum.map(fn component ->
       case component do
         "." -> "."
         ".." -> ".."
-        _ -> slugify(component)
+        _ -> slugify_filename(component)
       end
     end)
     |> Path.join()
