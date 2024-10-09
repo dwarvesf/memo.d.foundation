@@ -118,7 +118,17 @@
 
   document.addEventListener("command-palette-search", async (event) => {
     const rawQuery = event.detail.data;
-    const {filters, query} = parseQueryForFilters(rawQuery)
+    const {filters, query} = parseQueryForFilters(rawQuery);
+    
+    
+    const cachedResult = sessionStorage.getItem(rawQuery);
+    if (cachedResult) {
+      console.log("Retrieving results from cache");
+      const parsedResult = JSON.parse(cachedResult);
+      dispatchSearchResults(parsedResult);
+      return;
+    }
+
     const queryEmbeddings = await window.getEmbeddings(query);
 
     try {
@@ -131,35 +141,21 @@
           tags,
           md_content,
           spr_content,
-          full_text_score,
-          similarity,
-          ROW_NUMBER() OVER (ORDER BY full_text_score DESC) as full_text_rank,
-          ROW_NUMBER() OVER (ORDER BY similarity DESC) as similarity_rank
-        FROM (
-          SELECT
-            title,
-            description,
-            file_path,
-            tags,
-            md_content,
-            spr_content,
-            fts_main_vault.match_bm25(file_path, '${query}') AS full_text_score,
-            authors,
-            ${queryEmbeddings ? `array_cosine_similarity(${JSON.stringify(Array.from(queryEmbeddings.data))}::FLOAT[1024], embeddings_spr_custom)` : "1"} AS similarity
-          FROM vault
-          WHERE 
-            embeddings_spr_custom IS NOT NULL
-            AND full_text_score IS NOT NULL
-            AND title IS NOT NULL
-            ${filters.title ? `AND title ILIKE '%${filters.title}%'` : ""}
-            AND tags is NOT NULL
-            ${filters.tags.length ? `AND '${JSON.stringify(filters.tags)}'::JSON && tags` : ""}
-            AND (hiring = true OR hiring IS NULL)
-            AND (draft != true OR draft IS NULL)
-            ${filters.authors.length ? `AND '${JSON.stringify(filters.authors)}'::JSON && authors` : ""}
-          ORDER BY similarity DESC
-        )
-        ORDER BY full_text_score DESC, similarity DESC
+          fts_main_vault.match_bm25(file_path, '${query}') AS full_text_score,
+          ${queryEmbeddings ? `array_cosine_similarity(${JSON.stringify(Array.from(queryEmbeddings.data))}::FLOAT[1024], embeddings_spr_custom)` : "1"} AS similarity
+        FROM vault
+        WHERE
+          embeddings_spr_custom IS NOT NULL
+          AND title IS NOT NULL
+          ${filters.title ? `AND title ILIKE '%${filters.title}%'` : ""}
+          AND tags IS NOT NULL
+          ${filters.tags.length ? `AND tags @> '${JSON.stringify(filters.tags)}'::jsonb` : ""}
+          AND (NOT hiring OR hiring IS NULL)
+          AND (NOT draft OR draft IS NULL)
+          ${filters.authors.length ? `AND authors @> '${JSON.stringify(filters.authors)}'::jsonb` : ""}
+        ORDER BY 
+          full_text_score DESC,
+          similarity DESC
         LIMIT 10;
       `;
 
@@ -181,21 +177,28 @@
       });
 
       const grouped = _groupBy(searchResults, "category");
-      const event = new CustomEvent("command-palette-search-result", {
-        detail: {
-          data: {
-            grouped,
-            flat: Object.values(grouped).flatMap((groupFiles) => groupFiles),
-          },
-        },
-      });
-      window.dispatchEvent(event);
+      const result = {
+        grouped,
+        flat: Object.values(grouped).flatMap((groupFiles) => groupFiles),
+      };
+
+      
+      sessionStorage.setItem(rawQuery, JSON.stringify(result));
+
+      dispatchSearchResults(result);
       console.log(searchResults);
       console.timeEnd("Running hybrid search");
     } catch (error) {
       console.error("Error running search:", error);
     }
   });
+
+  function dispatchSearchResults(result) {
+    const event = new CustomEvent("command-palette-search-result", {
+      detail: { data: result },
+    });
+    window.dispatchEvent(event);
+  }
 </script><div x-data="{ searching: false, searchPlaceholder: 'Initializing Search...', searchBar: false, query: '', searchResults: {}, flat: [], selected: {}, 
     next(container) {
       const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
