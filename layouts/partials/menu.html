@@ -17,6 +17,21 @@
 
         if (index === paths.length - 1) {
           currentLevel[path].file_paths = item.file_paths.map(paths => JSON.parse(paths));
+          // Sort file_paths: special characters first, then by date
+          currentLevel[path].file_paths.sort((a, b) => {
+            const specialChars = /^[§¶&]/;
+            const aHasSpecial = specialChars.test(a.title);
+            const bHasSpecial = specialChars.test(b.title);
+
+            if (aHasSpecial && !bHasSpecial) return -1;
+            if (!aHasSpecial && bHasSpecial) return 1;
+            if (aHasSpecial && bHasSpecial) {
+              // If both have special characters, maintain their original order
+              return 0;
+            }
+            // If neither have special characters or both do, sort by date (assuming newer dates should come first)
+            return new Date(b.date) - new Date(a.date);
+          });
         }
 
         currentLevel = currentLevel[path].next_path;
