@@ -217,7 +217,7 @@
     <div class="cmd-modal" @mousedown.outside="close()" x-trap.inert.noscroll.noreturn="searchBar">
       <input type="text" x-model="query" :placeholder="searchPlaceholder" autocomplete="off" class="cmd-search-input"
         x-ref="searchInput" @input.change="searching = true"
-        @input.change.debounce="$dispatch('command-palette-search', { data: $event.target.value })"
+        @input.change.debounce.750ms="$dispatch('command-palette-search', { data: $event.target.value })"
         @command-palette-search-result.window="searching = false; searchResults = $event.detail.data.grouped; flat = $event.detail.data.flat; selected = $event.detail.data.flat[0]"
         @command-palette-search-initialize.window="searchPlaceholder = $event.detail.text"/>
       <div x-cloak :class="searchBar ?'cmd-results-active' : 'cmd-results-hidden'" class="cmd-results"
