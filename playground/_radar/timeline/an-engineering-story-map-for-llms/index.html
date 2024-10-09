@@ -107,13 +107,12 @@
     return 1 / (k + fullTextRank) + 1 / (k + similarityRank);
   }
 
-  document.addEventListener("command-palette-search", (event) => {
+  document.addEventListener("command-palette-search", async (event) => {
     const rawQuery = event.detail.data;
     const {filters, query} = parseQueryForFilters(rawQuery)
+    const queryEmbeddings = await window.getEmbeddings(query);
 
-    window.getDuckDB().then(async (conn) => {
-      const queryEmbeddings = await window.getEmbeddings(query);
-
+    try {
       console.time("Running hybrid search");
       const queryStr = `
         SELECT
@@ -135,33 +134,29 @@
             tags,
             md_content,
             spr_content,
-            fts_main_vault.match_bm25(file_path, ?) AS full_text_score,
+            fts_main_vault.match_bm25(file_path, '${query}') AS full_text_score,
             authors,
-            ${queryEmbeddings ? `array_cosine_similarity(?::FLOAT[1024], embeddings_spr_custom)` : "?"} AS similarity
+            ${queryEmbeddings ? `array_cosine_similarity(${JSON.stringify(Array.from(queryEmbeddings.data))}::FLOAT[1024], embeddings_spr_custom)` : "1"} AS similarity
           FROM vault
           WHERE 
             embeddings_spr_custom IS NOT NULL
             AND full_text_score IS NOT NULL
             AND title IS NOT NULL
-            ${filters.title ? "AND title ILIKE ?" : ""}
+            ${filters.title ? `AND title ILIKE '%${filters.title}%'` : ""}
             AND tags is NOT NULL
-            ${filters.tags.length ? "AND " + JSON.stringify(filters.tags).replaceAll('"', "'") + " && tags" : ""}
+            ${filters.tags.length ? `AND '${JSON.stringify(filters.tags)}'::JSON && tags` : ""}
             AND (hiring = true OR hiring IS NULL)
             AND (draft != true OR draft IS NULL)
-            ${filters.authors.length ? "AND " + JSON.stringify(filters.authors).replaceAll('"', "'") + " && authors" : ""}
+            ${filters.authors.length ? `AND '${JSON.stringify(filters.authors)}'::JSON && authors` : ""}
           ORDER BY similarity DESC
         )
         ORDER BY full_text_score DESC, similarity DESC
-        LIMIT 50;
-      `
-      const hybridSearch = await conn.prepare(queryStr);
-      const args = [
-        query,
-        queryEmbeddings ? JSON.stringify(Array.from(queryEmbeddings.data)) : 1,
-        ...(filters.title ? [`%${filters.title}%`] : []),
-      ]
-      const hybridSearchData = await hybridSearch.query(...args);
-      const hybridSearchParsedData = window.parseDuckDBData(hybridSearchData);
+        LIMIT 10;
+      `;
+
+      const response = await window.queryAPI(queryStr);
+      const hybridSearchParsedData = response.result;
+
       const searchResults = hybridSearchParsedData.map((row) => {
         const filePaths = row.file_path.split("/");
         filePaths.pop();
@@ -171,16 +166,12 @@
           query.split(" ").join("|")
         );
         row.spr_content = row.spr_content?.replaceAll("\n", "<hr />");
-        row.rrf_score = calculateRRFScore(row.full_text_rank, row.similarity_rank);
 
         delete row.md_content;
         return row;
       });
 
-      searchResults.sort((a, b) => b.rrf_score - a.rrf_score);
-      const topResults = searchResults.slice(0, 15);
-
-      const grouped = _groupBy(topResults, "category");
+      const grouped = _groupBy(searchResults, "category");
       const event = new CustomEvent("command-palette-search-result", {
         detail: {
           data: {
@@ -192,7 +183,9 @@
       window.dispatchEvent(event);
       console.log(searchResults);
       console.timeEnd("Running hybrid search");
-    });
+    } catch (error) {
+      console.error("Error running search:", error);
+    }
   });
 </script><div x-data="{ searching: false, searchPlaceholder: 'Initializing Search...', searchBar: false, query: '', searchResults: {}, flat: [], selected: {}, 
     next(container) {
@@ -303,38 +296,43 @@
     return result;
   }
 
-  window.getDuckDB().then(async (conn) => {
-    
-    console.time('Refreshing navigation menu')
-    const stmt = await conn.prepare(`
-      SELECT
-        LOWER(CASE
-          WHEN POSITION('/' IN REVERSE(file_path)) > 0 THEN SUBSTRING(file_path, 1, LENGTH(file_path) - POSITION('/' IN REVERSE(file_path)))
-          ELSE NULL
-        END) as grouped_path,
-        ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(LOWER(file_path), ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
-      FROM vault
-      WHERE grouped_path IS NOT NULL
-        AND file_path NOT LIKE '%_index%'
-        AND file_path NOT LIKE '%_radar%'
-        AND title IS NOT NULL
-        AND (draft != true OR draft IS NULL)
-        AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
-      GROUP BY grouped_path;
-    `);
+  async function refreshNavigationMenu() {
+    try {
+      console.time('Refreshing navigation menu')
+      const queryStr = `
+        SELECT
+          LOWER(CASE
+            WHEN POSITION('/' IN REVERSE(file_path)) > 0 THEN SUBSTRING(file_path, 1, LENGTH(file_path) - POSITION('/' IN REVERSE(file_path)))
+            ELSE NULL
+          END) as grouped_path,
+          ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(LOWER(file_path), ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
+        FROM vault
+        WHERE grouped_path IS NOT NULL
+          AND file_path NOT LIKE '%_index%'
+          AND file_path NOT LIKE '%_radar%'
+          AND title IS NOT NULL
+          AND (draft != true OR draft IS NULL)
+          AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
+        GROUP BY grouped_path;
+      `;
 
-    const data = await stmt.query()
-    const parsedData = window.parseDuckDBData(data)
-    const duckDBMenuData = nestPaths(parsedData)
-    const event = new CustomEvent('duckdb-menu', {
-      detail: {
-        data: duckDBMenuData
-      }
-    });
-    window.dispatchEvent(event);
-    console.log(duckDBMenuData);
-    console.timeEnd('Refreshing navigation menu')
-  });
+      const response = await window.queryAPI(queryStr);
+      const parsedData = response.result;
+      const duckDBMenuData = nestPaths(parsedData);
+      const event = new CustomEvent('duckdb-menu', {
+        detail: {
+          data: duckDBMenuData
+        }
+      });
+      window.dispatchEvent(event);
+      console.log(duckDBMenuData);
+      console.timeEnd('Refreshing navigation menu')
+    } catch (error) {
+      console.error('Error refreshing navigation menu:', error);
+    }
+  }
+
+  refreshNavigationMenu();
 </script><nav x-data id=sidebar :class="{ 'menu scrollbar-hidden': true, 'show': $store.sidebar.open }"><div><nav class=tab-menu x-data="{
     currentUrl: `/playground/_radar/timeline/an-engineering-story-map-for-llms/`,
     links: [
