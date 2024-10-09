@@ -409,7 +409,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1417</li><li class=span><span>Characters:
-</span>18374</li><li class=span><span>Without Spaces:
+</span>18376</li><li class=span><span>Without Spaces:
 </span>9342</li><li class=span><span>Blocks:
 </span>40</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div><main x-data='{
@@ -448,7 +448,7 @@ Folder:
     }'><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Visitor design pattern, the concept, problem solution and use cases</div><div class=tags-index style=display:none>tags: design-pattern, gang-of-four, behavior-pattern, visitor-design-pattern</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Visitor design pattern, the concept, problem solution and use cases</h1></div><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p><script src=/js/pdf-js/pdf.mjs type=module></script></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
     alt: `illustration`,
-    src: `assets/visitor-design-pattern-1webp`,
+    src: `assets/visitor-design-pattern-1.webp`,
     altText: `illustration`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -473,7 +473,7 @@ Folder:
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=what-is-the-visitor-design-pattern>What is the Visitor Design Pattern? <a href=#what-is-the-visitor-design-pattern></a></h2><p><strong>Visitor</strong> is a behavioral design pattern that lets you separate algorithms from the objects on which they operate.</p><p>Visitor design pattern is one of the <a href=https://www.geeksforgeeks.org/software-design-patterns/ target=_blank><strong>behavioral design patterns</strong></a>. It is used when we have to perform an operation on a group of similar kind of Objects. With the help of visitor pattern, we can move the operational logic from the objects to another class. The visitor pattern consists of two parts:</p><ul><li>a method called <strong>Visit()</strong> which is implemented by the visitor and is called for every element in the data structure</li><li>visitable classes providing <strong>Accept()</strong> methods that accept a visitor</li></ul><h2 id=problem-statement>Problem statement <a href=#problem-statement></a></h2><p>Imagine you&rsquo;re developing a simple text editing application. In this application, you have different types of document elements such as paragraphs, tables, and images. Each of these elements can perform certain operations, such as rendering to the screen, exporting to different formats (like HTML or plain text), and spell-checking.</p><p>As the application grows, more operations need to be supported for these elements. Without a proper design, adding new operations could lead to a bloated and hard-to-maintain codebase, especially if it involves modifying each element class every time a new operation is introduced.</p><h2 id=solution-with-visitor-pattern>Solution with Visitor Pattern <a href=#solution-with-visitor-pattern></a></h2><p>The Visitor Pattern allows us to define a new operation without changing the classes of the elements on which it operates. Instead of adding the new operation to each element, we create a visitor class that implements the operation. Each element class then has an <code>accept</code> method that takes a visitor and calls the visitor’s method corresponding to that element.</p><h2 id=structure>Structure <a href=#structure></a></h2><ul><li>The Visitor interface declares a set of visiting methods that can take concrete elements of an object structure as arguments. These methods may have the same names if the program is written in a language that supports overloading, but the type of their parameters must be different.</li><li>Each Concrete Visitor implements several versions of the same behaviors, tailored for different concrete element classes.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
     alt: `structure`,
-    src: `assets/visitor-design-pattern-2webp`,
+    src: `assets/visitor-design-pattern-2.webp`,
     altText: `structure`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
