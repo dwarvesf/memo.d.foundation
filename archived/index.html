@@ -279,6 +279,21 @@
 
         if (index === paths.length - 1) {
           currentLevel[path].file_paths = item.file_paths.map(paths => JSON.parse(paths));
+          
+          currentLevel[path].file_paths.sort((a, b) => {
+            const specialChars = /^[§¶&]/;
+            const aHasSpecial = specialChars.test(a.title);
+            const bHasSpecial = specialChars.test(b.title);
+
+            if (aHasSpecial && !bHasSpecial) return -1;
+            if (!aHasSpecial && bHasSpecial) return 1;
+            if (aHasSpecial && bHasSpecial) {
+              
+              return 0;
+            }
+            
+            return new Date(b.date) - new Date(a.date);
+          });
         }
 
         currentLevel = currentLevel[path].next_path;
@@ -904,7 +919,7 @@
 <a href=/tags/radar class=tag>radar</a>
 <a href=/tags/bounty class=tag>bounty</a></div></li><li class=term><a href=/playground/01_literature/level-up-your-markdown-memos/>Level Up Your Markdown Memos: Avoiding Common Pitfalls</a><div class=tags><a href=/tags/community class=tag>community</a>
 <a href=/tags/instructions class=tag>instructions</a>
-<a href=/tags/guideline class=tag>guideline</a></div></li><li class=term><div class=authors><a href=/contributor/anna>anna</a></div><a href=/playground/01_literature/design-less-present-more-with-deckset/>Design less, present more with Deckset</a><div class=tags><a href=/tags/community class=tag>community</a>
+<a href=/tags/guideline class=tag>guideline</a></div></li><li class=term><a href=/playground/01_literature/design-less-present-more-with-deckset/>Design less, present more with Deckset</a><div class=tags><a href=/tags/community class=tag>community</a>
 <a href=/tags/instructions class=tag>instructions</a>
 <a href=/tags/guideline class=tag>guideline</a></div></li><li class=term><div class=authors><a href=/contributor/innno_>innno_</a></div><a href=/updates/changelog/2024-whats-new-march/>What's New in March 2024</a><div class=tags><a href=/tags/newsletter class=tag>newsletter</a>
 <a href=/tags/ICY class=tag>ICY</a>
