@@ -41,7 +41,16 @@
     return result;
   }
 
+  function hasMenuBeenRefreshed() {
+    return sessionStorage.getItem('menuRefreshed') === 'true';
+  }
+
   async function refreshNavigationMenu() {
+    if (hasMenuBeenRefreshed()) {
+      console.log('Navigation menu already refreshed this session');
+      return;
+    }
+
     try {
       console.time('Refreshing navigation menu')
       const queryStr = `
@@ -70,6 +79,8 @@
         }
       });
       window.dispatchEvent(event);
+      sessionStorage.setItem('menuRefreshed', 'true');
+
       console.log(duckDBMenuData);
       console.timeEnd('Refreshing navigation menu')
     } catch (error) {
