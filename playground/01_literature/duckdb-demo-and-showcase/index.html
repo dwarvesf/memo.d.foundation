@@ -227,7 +227,19 @@
     },
     goto() {
       if(!this.selected.file_path) return;
-      window.location.pathname = this.selected.file_path.slice(0, -3);
+      window.location.pathname = this.selected.file_path
+        .slice(0, -3)
+        .replaceAll('&', '')
+        .replaceAll('¶', '')
+        .replaceAll('§', '')
+        .toLowerCase()
+        .replaceAll(' ', '-')
+        .replaceAll('.md', '')
+        .replaceAll('/_index', '')
+        .replace(/\/+/g, '/')
+        .split('/')
+        .map(segment => segment.replace(/^-+|-+$/g, ''))
+        .join('/');
     },
     close() {
       this.searchBar = false;
@@ -308,7 +320,16 @@
     return result;
   }
 
+  function hasMenuBeenRefreshed() {
+    return sessionStorage.getItem('menuRefreshed') === 'true';
+  }
+
   async function refreshNavigationMenu() {
+    if (hasMenuBeenRefreshed()) {
+      console.log('Navigation menu already refreshed this session');
+      return;
+    }
+
     try {
       console.time('Refreshing navigation menu')
       const queryStr = `
@@ -337,6 +358,8 @@
         }
       });
       window.dispatchEvent(event);
+      sessionStorage.setItem('menuRefreshed', 'true');
+
       console.log(duckDBMenuData);
       console.timeEnd('Refreshing navigation menu')
     } catch (error) {
