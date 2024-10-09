@@ -78,7 +78,11 @@ defmodule Memo.Common.LinkUtils do
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      "[#{alt_text}](#{resolved_path})"
+      if file_exists?(resolved_path) do
+        "[#{alt_text}](#{resolved_path})"
+      else
+        "[#{alt_text}]()"
+      end
     end)
   end
 
@@ -90,7 +94,12 @@ defmodule Memo.Common.LinkUtils do
         |> Slugify.slugify_link_path()
 
       alt_text = Path.basename(resolved_path, ".md")
-      "[#{alt_text}](#{resolved_path})"
+
+      if file_exists?(resolved_path) do
+        "[#{alt_text}](#{resolved_path})"
+      else
+        "[#{alt_text}]()"
+      end
     end)
   end
 
@@ -103,5 +112,9 @@ defmodule Memo.Common.LinkUtils do
 
       "![](#{resolved_path})"
     end)
+  end
+
+  defp file_exists?(path) do
+    File.exists?(path)
   end
 end
