@@ -41,38 +41,43 @@
     return result;
   }
 
-  window.getDuckDB().then(async (conn) => {
-    // Prepare query
-    console.time('Refreshing navigation menu')
-    const stmt = await conn.prepare(`
-      SELECT
-        LOWER(CASE
-          WHEN POSITION('/' IN REVERSE(file_path)) > 0 THEN SUBSTRING(file_path, 1, LENGTH(file_path) - POSITION('/' IN REVERSE(file_path)))
-          ELSE NULL
-        END) as grouped_path,
-        ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(LOWER(file_path), ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
-      FROM vault
-      WHERE grouped_path IS NOT NULL
-        AND file_path NOT LIKE '%_index%'
-        AND file_path NOT LIKE '%_radar%'
-        AND title IS NOT NULL
-        AND (draft != true OR draft IS NULL)
-        AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
-      GROUP BY grouped_path;
-    `);
+  async function refreshNavigationMenu() {
+    try {
+      console.time('Refreshing navigation menu')
+      const queryStr = `
+        SELECT
+          LOWER(CASE
+            WHEN POSITION('/' IN REVERSE(file_path)) > 0 THEN SUBSTRING(file_path, 1, LENGTH(file_path) - POSITION('/' IN REVERSE(file_path)))
+            ELSE NULL
+          END) as grouped_path,
+          ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(LOWER(file_path), ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
+        FROM vault
+        WHERE grouped_path IS NOT NULL
+          AND file_path NOT LIKE '%_index%'
+          AND file_path NOT LIKE '%_radar%'
+          AND title IS NOT NULL
+          AND (draft != true OR draft IS NULL)
+          AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
+        GROUP BY grouped_path;
+      `;
 
-    const data = await stmt.query()
-    const parsedData = window.parseDuckDBData(data)
-    const duckDBMenuData = nestPaths(parsedData)
-    const event = new CustomEvent('duckdb-menu', {
-      detail: {
-        data: duckDBMenuData
-      }
-    });
-    window.dispatchEvent(event);
-    console.log(duckDBMenuData);
-    console.timeEnd('Refreshing navigation menu')
-  });
+      const response = await window.queryAPI(queryStr);
+      const parsedData = response.result;
+      const duckDBMenuData = nestPaths(parsedData);
+      const event = new CustomEvent('duckdb-menu', {
+        detail: {
+          data: duckDBMenuData
+        }
+      });
+      window.dispatchEvent(event);
+      console.log(duckDBMenuData);
+      console.timeEnd('Refreshing navigation menu')
+    } catch (error) {
+      console.error('Error refreshing navigation menu:', error);
+    }
+  }
+
+  refreshNavigationMenu();
 </script>
 
 {{ $currentPage := .Sites.First.Home }}
