@@ -41,10 +41,12 @@ defmodule Memo.Common.Slugify do
     cond do
       String.starts_with?(link, ["http://", "https://", "#"]) ->
         link
+
       String.contains?(link, "#") ->
         [path, fragment] = String.split(link, "#", parts: 2)
         slugified_path = slugify_path_components(URI.decode(path))
         "#{slugified_path}##{fragment}"
+
       true ->
         slugify_path_components(URI.decode(link))
     end

@@ -369,7 +369,9 @@ defmodule Memo.ExportDuckDB do
     escaped_file_path = escape_string(file_path)
 
     with {:ok, [existing_data]} <-
-           DuckDBUtils.execute_query("SELECT * FROM vault WHERE file_path = '#{escaped_file_path}'"),
+           DuckDBUtils.execute_query(
+             "SELECT * FROM vault WHERE file_path = '#{escaped_file_path}'"
+           ),
          true <- data_changed?(existing_data, frontmatter) do
       perform_upsert(escaped_file_path, keys, prepared_values, frontmatter)
     else
