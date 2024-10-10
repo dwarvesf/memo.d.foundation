@@ -469,7 +469,7 @@ Tags:
 Folder:
 </span>playground/AI</li><div>Stats</div><li class=span><span>Words:
 </span>783</li><li class=span><span>Characters:
-</span>11598</li><li class=span><span>Without Spaces:
+</span>11596</li><li class=span><span>Without Spaces:
 </span>4742</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>18m 0s</li></ul></div></div></div></div><main x-data="{
@@ -588,7 +588,7 @@ Folder:
       metadata={&quot;source&quot;: &quot;local&quot;})
       doc.append(page)
 
-  vectorstore = Chroma.from_documents(documents=doc, 
+  vectorstore = Chroma.from_documents(documents=doc,
                                     embedding=OpenAIEmbeddings())
 
   retriever = vectorstore.as_retriever()
