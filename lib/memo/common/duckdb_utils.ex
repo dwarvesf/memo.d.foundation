@@ -98,7 +98,39 @@ defmodule Memo.Common.DuckDBUtils do
         "-cmd",
         "IMPORT DATABASE 'db'",
         "-cmd",
-        "CREATE OR REPLACE TEMP MACRO markdown_link(title, file_path) AS '[' || COALESCE(title, '/' || REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(-/|-$)', '')) || '](/' || REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(-/|-$)', '') || ')'",
+        """
+        CREATE OR REPLACE TEMP MACRO markdown_link(title, file_path) AS
+        '[' || COALESCE(title, file_path) || '](' ||
+        (
+          WITH slugified AS (
+            SELECT
+              REGEXP_REPLACE(
+                REGEXP_REPLACE(
+                  REGEXP_REPLACE(
+                    REGEXP_REPLACE(
+                      LOWER(file_path),
+                      '[^a-z0-9\\s_/-]', ''
+                    ),
+                    '\\s+', '-'
+                  ),
+                  '-+', '-'
+                ),
+                '^-|-$', ''
+              ) AS slug
+          )
+          SELECT
+            CASE
+              WHEN file_path LIKE 'http://%' OR file_path LIKE 'https://%' OR file_path LIKE '#%' THEN file_path
+              WHEN INSTR(file_path, '#') > 0 THEN
+                CONCAT(
+                  (SELECT slug FROM slugified),
+                  '#',
+                  SPLIT_PART(file_path, '#', 2)
+                )
+              ELSE (SELECT slug FROM slugified)
+            END
+        ) || ')'
+        """,
         "-c",
         query
       ])
