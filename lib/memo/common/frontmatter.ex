@@ -54,16 +54,12 @@ defmodule Memo.Common.Frontmatter do
   Parses frontmatter from content.
   """
   def parse_frontmatter(content) do
-    with [frontmatter_str] <- Regex.run(~r/^---\n(.*?)\n---/s, content, capture: :all_but_first) do
-      case YamlElixir.read_from_string(frontmatter_str) do
-        {:ok, parsed} ->
-          {:ok, parsed}
+    case Regex.run(~r/^---\n(.*?)\n---/s, content, capture: :all_but_first) do
+      [frontmatter_str] ->
+        YamlElixir.read_from_string(frontmatter_str)
 
-        {:error, _reason} ->
-          :error
-      end
-    else
-      _ -> :error
+      _ ->
+        {:error, :no_frontmatter}
     end
   end
 end
