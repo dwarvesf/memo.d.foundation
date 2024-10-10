@@ -64,7 +64,8 @@ defmodule Memo.ExportMarkdown do
   end
 
   defp export_assets_folder(asset_path, vaultpath, exportpath, ignored_patterns) do
-    if Path.basename(asset_path) == "assets" and not FileUtils.ignored?(asset_path, ignored_patterns, vaultpath) do
+    if Path.basename(asset_path) == "assets" and
+         not FileUtils.ignored?(asset_path, ignored_patterns, vaultpath) do
       target_path = replace_path_prefix(asset_path, vaultpath, exportpath)
       slugified_target_path = Slugify.slugify_path(target_path)
       copy_directory(asset_path, slugified_target_path, ignored_patterns, vaultpath)
@@ -111,10 +112,13 @@ defmodule Memo.ExportMarkdown do
     converted_content = Slugify.slugify_markdown_links(converted_content)
 
     export_file = replace_path_prefix(file, vaultpath, exportpath)
-    slugified_export_file = Path.join(
-      Path.dirname(export_file),
-      Slugify.slugify_filename(Path.basename(export_file))
-    )
+
+    slugified_export_file =
+      Path.join(
+        Path.dirname(export_file),
+        Slugify.slugify_filename(Path.basename(export_file))
+      )
+
     export_dir = Path.dirname(slugified_export_file)
     File.mkdir_p!(export_dir)
 
