@@ -26,15 +26,28 @@ defmodule Memo.Common.Frontmatter do
   end
 
   @doc """
-  Checks if a file contains required frontmatter keys.
+  Checks if a file contains required frontmatter keys with correct types.
   """
   def contains_required_frontmatter_keys?(file) do
     with {:ok, content} <- File.read(file),
          {:ok, frontmatter} <- parse_frontmatter(content) do
-      Map.has_key?(frontmatter, "title") and Map.has_key?(frontmatter, "description")
+      has_required_fields?(frontmatter) and
+        has_valid_optional_fields?(frontmatter)
     else
       _ -> false
     end
+  end
+
+  defp has_required_fields?(frontmatter) do
+    Map.has_key?(frontmatter, "title") and Map.has_key?(frontmatter, "description")
+  end
+
+  defp has_valid_optional_fields?(frontmatter) do
+    authors = Map.get(frontmatter, "authors")
+    tags = Map.get(frontmatter, "tags")
+
+    (is_nil(authors) or is_list(authors)) and
+      (is_nil(tags) or is_list(tags))
   end
 
   @doc """
@@ -42,12 +55,13 @@ defmodule Memo.Common.Frontmatter do
   """
   def parse_frontmatter(content) do
     with [frontmatter_str] <- Regex.run(~r/^---\n(.*?)\n---/s, content, capture: :all_but_first) do
-      frontmatter_str
-      |> String.split("\n")
-      |> Enum.map(&String.split(&1, ": ", parts: 2))
-      |> Enum.filter(&match?([_, _], &1))
-      |> Enum.into(%{}, fn [key, value] -> {key, String.trim(value)} end)
-      |> (&{:ok, &1}).()
+      case YamlElixir.read_from_string(frontmatter_str) do
+        {:ok, parsed} ->
+          {:ok, parsed}
+
+        {:error, _reason} ->
+          :error
+      end
     else
       _ -> :error
     end
