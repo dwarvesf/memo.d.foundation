@@ -62,6 +62,7 @@ defmodule Memo.Common.Slugify do
       case component do
         "." -> "."
         ".." -> ".."
+        "/" -> "/"
         _ -> slugify_filename(component)
       end
     end)
