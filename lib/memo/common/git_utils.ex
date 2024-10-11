@@ -45,8 +45,8 @@ defmodule Memo.Common.GitUtils do
   @doc """
   Gets modified files in a Git repository.
   """
-  def get_modified_files(directory) do
-    revision = if valid_revision?(directory, "HEAD^"), do: "HEAD^", else: "HEAD"
+  def get_modified_files(directory, commits_back \\ "HEAD^") do
+    revision = if valid_revision?(directory, commits_back), do: commits_back, else: "HEAD"
 
     {output, _status} =
       System.cmd("git", ["diff", "--name-only", revision], cd: directory, stderr_to_stdout: true)
@@ -82,10 +82,10 @@ defmodule Memo.Common.GitUtils do
   @doc """
   Gets modified files in a Git submodule.
   """
-  def get_submodule_modified_files(base_directory, submodule) do
+  def get_submodule_modified_files(base_directory, submodule, commits_back \\ "HEAD^") do
     submodule_dir = Path.join(base_directory, submodule)
 
-    case get_modified_files(submodule_dir) do
+    case get_modified_files(submodule_dir, commits_back) do
       [] -> []
       modified_files -> Enum.map(modified_files, &Path.join(submodule, &1))
     end

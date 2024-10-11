@@ -33,9 +33,24 @@ defmodule Memo.Application do
 
   def watch_run(vaultpath, exportpath), do: Memo.WatchRun.run(vaultpath, exportpath)
 
-  def export_duckdb(vaultpath, format),
-    do: Memo.ExportDuckDB.run(vaultpath, format, false, :infinity)
+  @doc """
+  Exports DuckDB data.
 
-  def export_duckdb(vaultpath, format, all, limit),
-    do: Memo.ExportDuckDB.run(vaultpath, format, all, limit)
+  ## Parameters
+
+  - vaultpath: The path to the vault directory.
+  - format: The export format (e.g., "parquet", "csv").
+  - commits_back: Specifies how many commits back to look for changes.
+    Can be :all to process all files, "HEAD~n" where n is a number to look back n commits,
+    or any other value will default to "HEAD^" (the previous commit).
+  - limit: The maximum number of files to process (default: :infinity).
+
+  ## Examples
+
+      iex> Memo.Application.export_duckdb("vault", "parquet", "HEAD~2")
+      iex> Memo.Application.export_duckdb("vault", "parquet", :all)
+  """
+  def export_duckdb(vaultpath, format, commits_back \\ "HEAD^", limit \\ :infinity) do
+    Memo.ExportDuckDB.run(vaultpath, format, commits_back, limit)
+  end
 end
