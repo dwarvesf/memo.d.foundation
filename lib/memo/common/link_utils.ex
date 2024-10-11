@@ -47,6 +47,7 @@ defmodule Memo.Common.LinkUtils do
     |> convert_links_with_alt_text(sanitized_resolved_links)
     |> convert_links_without_alt_text(sanitized_resolved_links)
     |> convert_embedded_images(sanitized_resolved_links)
+    |> convert_markdown_links(sanitized_resolved_links)
   end
 
   @doc """
@@ -111,6 +112,21 @@ defmodule Memo.Common.LinkUtils do
         |> Slugify.slugify_link_path()
 
       "![](#{resolved_path})"
+    end)
+  end
+
+  defp convert_markdown_links(content, resolved_links) do
+    Regex.replace(~r/\[([^\]]+)\]\(([^\)]+\.md)\)/, content, fn _, alt_text, link ->
+      resolved_path =
+        Map.get(resolved_links, link, link)
+        |> String.replace(~r/\\$/, "")
+        |> Slugify.slugify_link_path()
+
+      if file_exists?(resolved_path) do
+        "[#{alt_text}](#{resolved_path})"
+      else
+        "[#{alt_text}]()"
+      end
     end)
   end
 
