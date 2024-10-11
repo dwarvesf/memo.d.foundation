@@ -38,14 +38,14 @@ defmodule Memo.ExportDuckDB do
     {"total_tokens", "BIGINT"}
   ]
 
-  def run(vaultpath, format, all, limit) do
+  def run(vaultpath, format, commits_back, limit) do
     if File.exists?(".env") do
       DotenvParser.load_file(".env")
     end
 
     vaultpath = vaultpath || "vault"
     export_format = format || "parquet"
-    process_all = all || false
+    commits_back = parse_commits_back(commits_back)
     limit = limit || :infinity
 
     ignored_patterns = FileUtils.read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
@@ -61,12 +61,7 @@ defmodule Memo.ExportDuckDB do
     all_files_to_process =
       Enum.filter(all_files, &(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
 
-    filtered_files =
-      if process_all do
-        all_files_to_process
-      else
-        get_files_to_process(vaultpath, process_all, all_files_to_process)
-      end
+    filtered_files = get_files_to_process(vaultpath, commits_back, all_files_to_process)
 
     selected_files =
       if limit == :infinity, do: filtered_files, else: Enum.take(filtered_files, limit)
@@ -82,6 +77,10 @@ defmodule Memo.ExportDuckDB do
       {:error, reason} -> IO.puts("Failed to set up DuckDB: #{reason}")
     end
   end
+
+  defp parse_commits_back(:all), do: :all
+  defp parse_commits_back("HEAD~" <> n), do: "HEAD~#{n}"
+  defp parse_commits_back(_), do: "HEAD^"
 
   defp install_and_load_extensions() do
     DuckDBUtils.execute_query("INSTALL parquet") |> handle_result()
@@ -250,19 +249,21 @@ defmodule Memo.ExportDuckDB do
     add_to_database(updated_frontmatter)
   end
 
-  defp get_files_to_process(directory, process_all, all_files) do
-    if process_all == false do
-      git_files = GitUtils.get_modified_files(directory)
+  defp get_files_to_process(directory, commits_back, all_files) do
+    case commits_back do
+      :all ->
+        all_files
 
-      submodule_files =
-        GitUtils.list_submodules(directory)
-        |> Enum.flat_map(&GitUtils.get_submodule_modified_files(directory, &1))
+      _ ->
+        git_files = GitUtils.get_modified_files(directory, commits_back)
 
-      all_git_files = git_files ++ submodule_files
+        submodule_files =
+          GitUtils.list_submodules(directory)
+          |> Enum.flat_map(&GitUtils.get_submodule_modified_files(directory, &1, commits_back))
 
-      Enum.map(all_git_files, fn file -> Path.join(directory, file) end)
-    else
-      all_files
+        all_git_files = git_files ++ submodule_files
+
+        Enum.map(all_git_files, fn file -> Path.join(directory, file) end)
     end
   end
 
