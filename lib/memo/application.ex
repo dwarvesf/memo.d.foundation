@@ -53,4 +53,17 @@ defmodule Memo.Application do
   def export_duckdb(vaultpath, format, commits_back \\ "HEAD^", limit \\ :infinity) do
     Memo.ExportDuckDB.run(vaultpath, format, commits_back, limit)
   end
+
+  @doc """
+  Syncs markdown files with Hashnode API.
+
+  ## Parameters
+
+  - vaultpath: The path to the vault directory.
+
+  ## Example
+
+      iex> Memo.Application.sync_hashnode("vault")
+  """
+  def sync_hashnode(vaultpath), do: Memo.SyncHashnode.run(vaultpath)
 end

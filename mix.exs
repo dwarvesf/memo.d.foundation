@@ -29,7 +29,8 @@ defmodule Memo.MixProject do
       {:httpoison, "~> 2.2"},
       {:file_system, "~> 1.0"},
       {:ffmpex, "~> 0.11"},
-      {:mogrify, "~> 0.9"}
+      {:mogrify, "~> 0.9"},
+      {:neuron, "~> 5.1.0"}  # Added Neuron dependency
     ]
   end
 end
