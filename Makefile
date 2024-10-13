@@ -34,3 +34,6 @@ duckdb-export:
 duckdb-export-all:
 	@rm -f vault.duckdb
 	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", true, :all)'
+
+sync-hashnode:
+	@mix run -e 'Memo.Application.sync_hashnode("vault")'
