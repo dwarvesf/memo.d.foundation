@@ -12,6 +12,7 @@
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], [], "hexpm", "69b09adddc4f74a40716ae54d140f93beb0fb8978d8636eaded0c31b6f099f16"},
   "mimerl": {:hex, :mimerl, "1.3.0", "d0cd9fc04b9061f82490f6581e0128379830e78535e017f7780f37fea7545726", [:rebar3], [], "hexpm", "a1e15a50d1887217de95f0b9b0793e32853f7c258a5cd227650889b38839fe9d"},
   "mogrify": {:hex, :mogrify, "0.9.3", "238c782f00271dace01369ad35ae2e9dd020feee3443b9299ea5ea6bed559841", [:mix], [], "hexpm", "0189b1e1de27455f2b9ae8cf88239cefd23d38de9276eb5add7159aea51731e6"},
+  "neuron": {:hex, :neuron, "5.1.0", "dd321d5c2d9c03706ee7161ab49f8af634bfd1becb6fb95d8caa28bc95b6c655", [:mix], [{:httpoison, "~> 1.0 or ~> 2.0", [hex: :httpoison, repo: "hexpm", optional: false]}, {:jason, "~> 1.1", [hex: :jason, repo: "hexpm", optional: true]}], "hexpm", "23cddb0e0dd9c0eea247bc5b4bc3e1f8b52dbaf63f1637623920ec0b2385b6ce"},
   "parse_trans": {:hex, :parse_trans, "3.4.1", "6e6aa8167cb44cc8f39441d05193be6e6f4e7c2946cb2759f015f8c56b76e5ff", [:rebar3], [], "hexpm", "620a406ce75dada827b82e453c19cf06776be266f5a67cff34e1ef2cbb60e49a"},
   "rambo": {:hex, :rambo, "0.3.4", "8962ac3bd1a633ee9d0e8b44373c7913e3ce3d875b4151dcd060886092d2dce7", [:mix], [], "hexpm", "0cc54ed089fbbc84b65f4b8a774224ebfe60e5c80186fafc7910b3e379ad58f1"},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.7", "354c321cf377240c7b8716899e182ce4890c5938111a1296add3ec74cf1715df", [:make, :mix, :rebar3], [], "hexpm", "fe4c190e8f37401d30167c8c405eda19469f34577987c76dde613e838bbc67f8"},
