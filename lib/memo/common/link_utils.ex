@@ -43,11 +43,18 @@ defmodule Memo.Common.LinkUtils do
         Map.put(acc, sanitized_key, String.replace(v, ~r/\\$/, ""))
       end)
 
-    content
-    |> convert_links_with_alt_text(sanitized_resolved_links)
-    |> convert_links_without_alt_text(sanitized_resolved_links)
-    |> convert_embedded_images(sanitized_resolved_links)
-    |> convert_markdown_links(sanitized_resolved_links)
+    split_content_and_code_blocks(content)
+    |> Enum.map(fn
+      {:code, block} ->
+        block
+      {:content, text} ->
+        text
+        |> convert_links_with_alt_text(sanitized_resolved_links)
+        |> convert_links_without_alt_text(sanitized_resolved_links)
+        |> convert_embedded_images(sanitized_resolved_links)
+        |> convert_markdown_links(sanitized_resolved_links)
+    end)
+    |> Enum.join("")
   end
 
   @doc """
@@ -72,8 +79,22 @@ defmodule Memo.Common.LinkUtils do
     end
   end
 
+  defp split_content_and_code_blocks(content) do
+    regex = ~r/(```[\s\S]*?```)/m
+    parts = Regex.split(regex, content, include_captures: true)
+
+    parts
+    |> Enum.map(fn part ->
+      if String.starts_with?(part, "```") do
+        {:code, part}
+      else
+        {:content, part}
+      end
+    end)
+  end
+
   defp convert_links_with_alt_text(content, resolved_links) do
-    Regex.replace(~r/\[\[([^\|\]]+)\|([^\]]+)\]\]/, content, fn _, link, alt_text ->
+    Regex.replace(~r/(?<![`\w])\[\[([^\|\]]+)\|([^\]]+)\]\](?![`\w])/, content, fn _full_match, link, alt_text ->
       resolved_path =
         Map.get(resolved_links, link, link)
         |> String.replace(~r/\\$/, "")
@@ -88,7 +109,7 @@ defmodule Memo.Common.LinkUtils do
   end
 
   defp convert_links_without_alt_text(content, resolved_links) do
-    Regex.replace(~r/\[\[([^\]]+)\]\]/, content, fn _, link ->
+    Regex.replace(~r/(?<![`\w])\[\[([^\]]+)\]\](?![`\w])/, content, fn _full_match, link ->
       resolved_path =
         Map.get(resolved_links, link, "#{link}.md")
         |> String.replace(~r/\\$/, "")
