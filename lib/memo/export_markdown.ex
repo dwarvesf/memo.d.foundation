@@ -4,7 +4,7 @@ defmodule Memo.ExportMarkdown do
   """
 
   use Flow
-  alias Memo.Common.{FileUtils, Frontmatter, LinkUtils, DuckDBUtils, Slugify}
+  alias Memo.Common.{FileUtils, Frontmatter, LinkUtils, DuckDBUtils, Slugify, KatexUtils}
 
   def run(vaultpath, exportpath) do
     System.put_env("LC_ALL", "en_US.UTF-8")
@@ -113,6 +113,7 @@ defmodule Memo.ExportMarkdown do
     converted_content = LinkUtils.convert_links(content, resolved_links)
     converted_content = process_duckdb_queries(converted_content)
     converted_content = Slugify.slugify_markdown_links(converted_content)
+    converted_content = KatexUtils.wrap_multiline_katex(converted_content)
 
     export_file = replace_path_prefix(file, vaultpath, exportpath)
 
