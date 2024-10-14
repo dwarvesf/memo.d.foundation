@@ -198,3 +198,29 @@ function convertMermaidElements() {
 
 // Run the function when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', convertMermaidElements);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const lightStylesheet = document.querySelector('link[href*="prism-vs.min.css"]');
+  const darkStylesheet = document.querySelector('link[href*="prism-vsc-dark-plus.min.css"]');
+
+  function updateStylesheets(isDark) {
+    lightStylesheet.media = isDark ? 'not all' : 'all';
+    darkStylesheet.media = isDark ? 'all' : 'not all';
+  }
+
+  // Initial update based on current theme
+  updateStylesheets(document.documentElement.getAttribute('data-theme') === 'dark');
+
+  // Create a MutationObserver to watch for changes to the data-theme attribute
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        const isDark = mutation.target.getAttribute('data-theme') === 'dark';
+        updateStylesheets(isDark);
+      }
+    });
+  });
+
+  // Start observing the html element for attribute changes
+  observer.observe(document.documentElement, { attributes: true });
+});
