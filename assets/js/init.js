@@ -62,13 +62,13 @@ const initializeReadingMode = () => {
       const pathname = location.pathname;
       const isWhitelisted = ["/", "/consulting/", "/careers/hiring/"].includes(pathname);
       const isOff = sessionStorage.getItem("df.note.reading-mode") === "false";
-      
+
       if (isOff || isWhitelisted) {
         this.on = false;
         document.documentElement.setAttribute("data-reading-mode", "false");
         return;
       }
-      
+
       sessionStorage.setItem("df.note.reading-mode", "true");
       document.documentElement.setAttribute("data-reading-mode", "true");
       this.disableTransition = false;
@@ -91,41 +91,50 @@ const processTextNodes = () => {
   const main = document.querySelector("main");
   const walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT);
   const nodes = [];
-  
+
   while (walker.nextNode()) nodes.push(walker.currentNode);
-  
+
   nodes.forEach(node => {
-    const results = [...node.textContent.matchAll(/(.?)@([\d\w_\-\.]+)/gm)];
+    // Check if the node is inside a KaTeX block
+    let parent = node.parentElement;
+    while (parent && parent !== main) {
+      if (parent.classList.contains('katex') || parent.classList.contains('katex-display')) {
+        return; // Skip processing this node
+      }
+      parent = parent.parentElement;
+    }
+
+    const results = [...node.textContent.matchAll(/(.?)@([\d\w_\-\.]{3,})/gm)];
     if (!results.length) return;
-  
-    const parent = node.parentElement;
-    if (!parent || !parent.innerHTML) return;
-  
+
+    const immediateParent = node.parentElement;
+    if (!immediateParent || !immediateParent.innerHTML) return;
+
     const frag = document.createDocumentFragment();
     let lastIndex = 0;
-  
+
     results.forEach(match => {
       const [fullMatch, prefix, username] = match;
       const index = match.index;
-  
+
       if (lastIndex < index) {
         frag.appendChild(document.createTextNode(node.textContent.slice(lastIndex, index)));
       }
-  
+
       if (prefix) frag.appendChild(document.createTextNode(prefix));
       const a = document.createElement('a');
       a.href = `/contributor/${username}`;
       a.textContent = `@${username}`;
       frag.appendChild(a);
-  
+
       lastIndex = index + fullMatch.length;
     });
     if (lastIndex < node.textContent.length) {
       frag.appendChild(document.createTextNode(node.textContent.slice(lastIndex)));
     }
-  
-    parent.replaceChild(frag, node);
-});
+
+    immediateParent.replaceChild(frag, node);
+  });
 };
 
 const handleOutsideClick = (e) => {
@@ -133,10 +142,10 @@ const handleOutsideClick = (e) => {
   const btn = document.querySelector("#sidebar-toggle");
 
   if (!sidebar.contains(e.target)) {
-  if (btn.contains(e.target)) {
-    sidebar.classList.add("menu-reading-mode");
+    if (btn.contains(e.target)) {
+      sidebar.classList.add("menu-reading-mode");
     } else {
-  Alpine.store("sidebar").close();
+      Alpine.store("sidebar").close();
     }
   }
 
@@ -144,7 +153,7 @@ const handleOutsideClick = (e) => {
   const svg = graphContainer.querySelector("svg");
   const graphBtn = graphContainer.querySelector("button");
   if (!svg.contains(e.target) && !graphBtn.contains(e.target)) {
-  Alpine.store("graphFullScreen").close();
+    Alpine.store("graphFullScreen").close();
   }
 };
 
@@ -164,7 +173,7 @@ const convertMermaidElements = () => {
   elements.forEach(element => {
     element.classList.remove('language-mermaid');
     element.classList.add('mermaid');
-    
+
     const codeElement = element.querySelector('code');
     if (codeElement) {
       element.innerHTML = codeElement.innerHTML;
@@ -195,6 +204,23 @@ const updatePrismStylesheets = () => {
   observer.observe(document.documentElement, { attributes: true });
 };
 
+const handleMathRendering = () => {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: true},
+      {left: "\\(", right: "\\)", display: false},
+      {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+      {left: "\\begin{align}", right: "\\end{align}", display: true},
+      {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+      {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+      {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+      {left: "\\[", right: "\\]", display: true},
+    ],
+    throwOnError: false
+  });
+};
+
 // Event listeners
 window.addEventListener("load", removeNoTransition);
 window.addEventListener("load", resizeYoutubeVideos);
@@ -211,3 +237,4 @@ document.addEventListener("alpine:init", () => {
 document.addEventListener("click", handleOutsideClick);
 document.addEventListener('DOMContentLoaded', convertMermaidElements);
 document.addEventListener('DOMContentLoaded', updatePrismStylesheets);
+document.addEventListener('DOMContentLoaded', handleMathRendering);

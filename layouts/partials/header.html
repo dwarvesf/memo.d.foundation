@@ -98,6 +98,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vs.min.css" integrity="sha512-Jn4HzkCnzA7Bc+lbSQHAMeen0EhSTy71o9yJbXZtQx9VvozKVBV/2zfR3VyuDFIxGvHgbOMMNvb80l+jxFBC1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: light)" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vsc-dark-plus.min.css" integrity="sha512-ML8rkwYTFNcblPFx+VLgFIT2boa6f8DDP6p6go4+FT0/mJ8DCbCgi6S0UdjtzB3hKCr1zhU+YVB0AHhIloZP8Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: dark)" /> 
 
+  <!-- Katex -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+
   <script defer data-domain="memo.d.foundation" src="https://plausible.io/js/script.js"></script>
   <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/persist@3.14.1/dist/cdn.min.js"></script>
   <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/focus@3.14.1/dist/cdn.min.js"></script>
@@ -124,8 +129,8 @@
   {{ $tabMenu := resources.Get "js/tab-menu.js" }}
   <script defer src="{{ $tabMenu.RelPermalink }}"></script>
 
-  {{ $markdownEntities := resources.Get "js/markdown-entities.js" }}
-  <script defer src="{{ $markdownEntities.RelPermalink }}"></script>
+  <!-- {{ $markdownEntities := resources.Get "js/markdown-entities.js" }}
+  <script defer src="{{ $markdownEntities.RelPermalink }}"></script> -->
   
   {{ $tableOfContents := resources.Get "js/table-of-contents.js" }}
   <script defer src="{{ $tableOfContents.RelPermalink }}"></script>

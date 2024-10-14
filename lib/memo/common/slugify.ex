@@ -31,9 +31,19 @@ defmodule Memo.Common.Slugify do
   end
 
   def slugify_markdown_links(content) do
-    Regex.replace(~r/\[([^\]]+)\]\(([^)]+)\)/, content, fn _, text, link ->
+    split_content_and_code_blocks(content)
+    |> Enum.map(fn
+      {:code, block} -> block
+      {:content, text} -> slugify_links_in_text(text)
+    end)
+    |> Enum.join("")
+  end
+
+  defp slugify_links_in_text(text) do
+    regex = ~r/\[([^\]]+)\]\(([^)]+)\)/
+    Regex.replace(regex, text, fn _, link_text, link ->
       slugified_link = slugify_link_path(link)
-      "[#{text}](#{slugified_link})"
+      "[#{link_text}](#{slugified_link})"
     end)
   end
 
@@ -69,5 +79,19 @@ defmodule Memo.Common.Slugify do
       end
     end)
     |> Path.join()
+  end
+
+  defp split_content_and_code_blocks(content) do
+    regex = ~r/(```[\s\S]*?```)/m
+    parts = Regex.split(regex, content, include_captures: true)
+
+    parts
+    |> Enum.map(fn part ->
+      if String.starts_with?(part, "```") do
+        {:code, part}
+      else
+        {:content, part}
+      end
+    end)
   end
 end
