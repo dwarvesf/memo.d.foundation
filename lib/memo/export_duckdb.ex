@@ -38,7 +38,7 @@ defmodule Memo.ExportDuckDB do
     {"total_tokens", "BIGINT"}
   ]
 
-  def run(vaultpath, format, commits_back, limit) do
+  def run(vaultpath, format, commits_back) do
     if File.exists?(".env") do
       DotenvParser.load_file(".env")
     end
@@ -46,7 +46,6 @@ defmodule Memo.ExportDuckDB do
     vaultpath = vaultpath || "vault"
     export_format = format || "parquet"
     commits_back = parse_commits_back(commits_back)
-    limit = limit || :infinity
 
     ignored_patterns = FileUtils.read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
 
@@ -63,15 +62,12 @@ defmodule Memo.ExportDuckDB do
 
     filtered_files = get_files_to_process(vaultpath, commits_back, all_files_to_process)
 
-    selected_files =
-      if limit == :infinity, do: filtered_files, else: Enum.take(filtered_files, limit)
-
-    IO.inspect(selected_files)
+    IO.inspect(filtered_files)
 
     with {:ok, _} <- DuckDBUtils.execute_query("SELECT 1"),
          :ok <- install_and_load_extensions(),
          :ok <- setup_database() do
-      process_files(selected_files, vaultpath, all_files_to_process)
+      process_files(filtered_files, vaultpath, all_files_to_process)
       export(export_format)
     else
       {:error, reason} -> IO.puts("Failed to set up DuckDB: #{reason}")
