@@ -110,18 +110,14 @@ defmodule Memo.ExportMarkdown do
     content = File.read!(file)
     links = LinkUtils.extract_links(content)
     resolved_links = LinkUtils.resolve_links(links, all_files, vaultpath)
-    converted_content = LinkUtils.convert_links(content, resolved_links)
+    converted_content = LinkUtils.convert_links(content, resolved_links, file)
     converted_content = process_duckdb_queries(converted_content)
     converted_content = Slugify.slugify_markdown_links(converted_content)
     converted_content = KatexUtils.wrap_multiline_katex(converted_content)
 
     export_file = replace_path_prefix(file, vaultpath, exportpath)
 
-    slugified_export_file =
-      Path.join(
-        Path.dirname(export_file),
-        Slugify.slugify_filename(Path.basename(export_file))
-      )
+    slugified_export_file = Slugify.slugify_path(export_file)
 
     export_dir = Path.dirname(slugified_export_file)
     File.mkdir_p!(export_dir)

@@ -36,7 +36,7 @@ defmodule Memo.Common.LinkUtils do
   @doc """
   Converts links in content to their resolved paths.
   """
-  def convert_links(content, resolved_links) do
+  def convert_links(content, resolved_links, current_file) do
     sanitized_resolved_links =
       Enum.reduce(resolved_links, %{}, fn {k, v}, acc ->
         sanitized_key = String.replace(k, ~r/\\\|/, "|")
@@ -49,10 +49,10 @@ defmodule Memo.Common.LinkUtils do
         block
       {:content, text} ->
         text
-        |> convert_links_with_alt_text(sanitized_resolved_links)
-        |> convert_links_without_alt_text(sanitized_resolved_links)
-        |> convert_embedded_images(sanitized_resolved_links)
-        |> convert_markdown_links(sanitized_resolved_links)
+        |> convert_links_with_alt_text(sanitized_resolved_links, current_file)
+        |> convert_links_without_alt_text(sanitized_resolved_links, current_file)
+        |> convert_embedded_images(sanitized_resolved_links, current_file)
+        |> convert_markdown_links(sanitized_resolved_links, current_file)
     end)
     |> Enum.join("")
   end
@@ -93,14 +93,14 @@ defmodule Memo.Common.LinkUtils do
     end)
   end
 
-  defp convert_links_with_alt_text(content, resolved_links) do
+  defp convert_links_with_alt_text(content, resolved_links, current_file) do
     Regex.replace(~r/(?<![`\w])\[\[([^\|\]]+)\|([^\]]+)\]\](?![`\w])/, content, fn _full_match, link, alt_text ->
       resolved_path =
         Map.get(resolved_links, link, link)
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      if file_exists?(resolved_path) do
+      if file_exists?(link, current_file) do
         "[#{alt_text}](#{resolved_path})"
       else
         "[#{alt_text}]()"
@@ -108,7 +108,7 @@ defmodule Memo.Common.LinkUtils do
     end)
   end
 
-  defp convert_links_without_alt_text(content, resolved_links) do
+  defp convert_links_without_alt_text(content, resolved_links, current_file) do
     Regex.replace(~r/(?<![`\w])\[\[([^\]]+)\]\](?![`\w])/, content, fn _full_match, link ->
       resolved_path =
         Map.get(resolved_links, link, "#{link}.md")
@@ -117,7 +117,7 @@ defmodule Memo.Common.LinkUtils do
 
       alt_text = Path.basename(resolved_path, ".md")
 
-      if file_exists?(resolved_path) do
+      if file_exists?(link, current_file) do
         "[#{alt_text}](#{resolved_path})"
       else
         "[#{alt_text}]()"
@@ -125,25 +125,29 @@ defmodule Memo.Common.LinkUtils do
     end)
   end
 
-  defp convert_embedded_images(content, resolved_links) do
+  defp convert_embedded_images(content, resolved_links, current_file) do
     Regex.replace(~r/!\[\[([^\]]+)\]\]/, content, fn _, link ->
       resolved_path =
         Map.get(resolved_links, link, link)
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      "![](#{resolved_path})"
+      if file_exists?(link, current_file) do
+        "![](#{resolved_path})"
+      else
+        "![]()"
+      end
     end)
   end
 
-  defp convert_markdown_links(content, resolved_links) do
+  defp convert_markdown_links(content, resolved_links, current_file) do
     Regex.replace(~r/\[([^\]]+)\]\(([^\)]+\.md)\)/, content, fn _, alt_text, link ->
       resolved_path =
         Map.get(resolved_links, link, link)
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      if file_exists?(resolved_path) do
+      if file_exists?(link, current_file) do
         "[#{alt_text}](#{resolved_path})"
       else
         "[#{alt_text}]()"
@@ -151,7 +155,13 @@ defmodule Memo.Common.LinkUtils do
     end)
   end
 
-  defp file_exists?(path) do
-    File.exists?(path)
+  defp file_exists?(link, current_file) do
+    link = String.replace(link, "%20", " ")
+    current_dir = Path.dirname(current_file)
+    full_path = Path.join(current_dir, link)
+    normalized_path = Path.expand(full_path)
+
+    IO.puts("Checking file existence: #{normalized_path}")
+    File.exists?(normalized_path)
   end
 end
