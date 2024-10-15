@@ -273,13 +273,13 @@
     let result = {};
 
     data.forEach(item => {
-      let paths = item.grouped_path.split('/');
+      let paths = item.grouped_path.split('/').filter(p => p);
       let currentLevel = result;
 
       paths.forEach((path, index) => {
         if (!currentLevel[path]) {
           currentLevel[path] = {
-            "grouped_path": paths.slice(0, index + 1).join('/'),
+            "grouped_path": '/' + paths.slice(0, index + 1).join('/'),
             "file_paths": [],
             "next_path": {}
           };
@@ -324,19 +324,27 @@
     try {
       console.time('Refreshing navigation menu')
       const queryStr = `
+        WITH recursive_paths AS (
+          SELECT
+            file_path,
+            title,
+            date,
+            CASE
+              WHEN POSITION('/' IN REVERSE(file_path)) > 0 THEN SUBSTRING(file_path, 1, LENGTH(file_path) - POSITION('/' IN REVERSE(file_path)))
+              ELSE NULL
+            END as grouped_path
+          FROM vault
+          WHERE file_path NOT LIKE '%_index%'
+            AND file_path NOT LIKE '%_radar%'
+            AND title IS NOT NULL
+            AND (draft != true OR draft IS NULL)
+            AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
+        )
         SELECT
-          LOWER(CASE
-            WHEN POSITION('/' IN REVERSE(file_path)) > 0 THEN SUBSTRING(file_path, 1, LENGTH(file_path) - POSITION('/' IN REVERSE(file_path)))
-            ELSE NULL
-          END) as grouped_path,
+          LOWER(grouped_path) as grouped_path,
           ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(LOWER(file_path), ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
-        FROM vault
+        FROM recursive_paths
         WHERE grouped_path IS NOT NULL
-          AND file_path NOT LIKE '%_index%'
-          AND file_path NOT LIKE '%_radar%'
-          AND title IS NOT NULL
-          AND (draft != true OR draft IS NULL)
-          AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
         GROUP BY grouped_path;
       `;
 
