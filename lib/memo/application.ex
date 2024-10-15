@@ -43,15 +43,14 @@ defmodule Memo.Application do
   - commits_back: Specifies how many commits back to look for changes.
     Can be :all to process all files, "HEAD~n" where n is a number to look back n commits,
     or any other value will default to "HEAD^" (the previous commit).
-  - limit: The maximum number of files to process (default: :infinity).
 
   ## Examples
 
       iex> Memo.Application.export_duckdb("vault", "parquet", "HEAD~2")
       iex> Memo.Application.export_duckdb("vault", "parquet", :all)
   """
-  def export_duckdb(vaultpath, format, commits_back \\ "HEAD^", limit \\ :infinity) do
-    Memo.ExportDuckDB.run(vaultpath, format, commits_back, limit)
+  def export_duckdb(vaultpath, format, commits_back \\ "HEAD^") do
+    Memo.ExportDuckDB.run(vaultpath, format, commits_back)
   end
 
   @doc """
