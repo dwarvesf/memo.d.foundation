@@ -29,7 +29,7 @@ watch-run:
 	@mix run -e 'Memo.Application.watch_run("vault", "content")'
 
 duckdb-export:
-	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", "HEAD~3")'
+	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", "HEAD~5")'
 
 duckdb-export-all:
 	@rm -f vault.duckdb
