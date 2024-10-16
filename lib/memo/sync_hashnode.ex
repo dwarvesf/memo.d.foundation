@@ -89,7 +89,10 @@ defmodule Memo.SyncHashnode do
         coverImageOptions: %{
           coverImageURL: cover_image_url
         },
-        originalArticleURL: original_article_url
+        originalArticleURL: original_article_url,
+        settings: %{
+          enableTableOfContent: true
+        }
       }
     }
 
@@ -131,7 +134,10 @@ defmodule Memo.SyncHashnode do
         coverImageOptions: %{
           coverImageURL: cover_image_url
         },
-        originalArticleURL: original_article_url
+        originalArticleURL: original_article_url,
+        settings: %{
+          isTableOfContentEnabled: true
+        }
       }
     }
 
