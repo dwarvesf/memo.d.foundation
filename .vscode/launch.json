@@ -1,0 +1,90 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "mix_task",
+            "name": "Export Media",
+            "request": "launch",
+            "task": "run",
+            "taskArgs": [
+                "-e",
+                "Memo.ExportMedia.run(\"vault\")"
+            ],
+            "projectDir": "${workspaceRoot}",
+            "requireFiles": [
+                "lib/memo/export_media.ex"
+            ]
+        },
+        {
+            "type": "mix_task",
+            "name": "Export Markdown",
+            "request": "launch",
+            "task": "run",
+            "taskArgs": [
+                "-e",
+                "Memo.ExportMarkdown.run(\"vault\", \"content\")"
+            ],
+            "projectDir": "${workspaceRoot}",
+            "requireFiles": [
+                "lib/memo/export_markdown.ex"
+            ]
+        },
+        {
+            "type": "mix_task",
+            "name": "Watch Run",
+            "request": "launch",
+            "task": "run",
+            "taskArgs": [
+                "-e",
+                "Memo.Application.watch_run(\"vault\", \"content\")"
+            ],
+            "projectDir": "${workspaceRoot}",
+            "requireFiles": [
+                "lib/memo/application.ex"
+            ]
+        },
+        {
+            "type": "mix_task",
+            "name": "DuckDB Export",
+            "request": "launch",
+            "task": "run",
+            "taskArgs": [
+                "-e",
+                "Memo.Application.export_duckdb(\"vault\", \"parquet\", \"HEAD~5\")"
+            ],
+            "projectDir": "${workspaceRoot}",
+            "requireFiles": [
+                "lib/memo/export_duckdb.ex"
+            ]
+        },
+        {
+            "type": "mix_task",
+            "name": "Sync Hashnode",
+            "request": "launch",
+            "task": "run",
+            "taskArgs": [
+                "-e",
+                "Memo.Application.sync_hashnode(\"vault\")"
+            ],
+            "projectDir": "${workspaceRoot}",
+            "requireFiles": [
+                "lib/memo/sync_hashnode.ex"
+            ]
+        },
+        {
+            "type": "mix_task",
+            "name": "mix test",
+            "request": "launch",
+            "task": "test",
+            "taskArgs": [
+                "--trace"
+            ],
+            "startApps": false,
+            "projectDir": "${workspaceRoot}",
+            "requireFiles": [
+                "test/**/test_helper.exs",
+                "test/**/*_test.exs"
+            ]
+        }
+    ]
+}
