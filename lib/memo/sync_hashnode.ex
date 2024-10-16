@@ -5,7 +5,7 @@ defmodule Memo.SyncHashnode do
   before sending content to Hashnode.
   """
 
-  alias Memo.Common.{FileUtils, Frontmatter, Slugify, LinkTransformer}
+  alias Memo.Common.{FileUtils, Frontmatter, Slugify, LinkTransformer, GitUtils}
   require Logger
 
   @hashnode_api_url "https://gql.hashnode.com/"
@@ -110,47 +110,54 @@ defmodule Memo.SyncHashnode do
   end
 
   defp update_post(file, frontmatter, content, hashnode_meta, vaultpath) do
-    mutation = """
-    mutation UpdatePost($input: UpdatePostInput!) {
-      updatePost(input: $input) {
-        post {
-          id
-          slug
-          title
+    modified_files = GitUtils.get_modified_files(vaultpath)
+    relative_file_path = Path.relative_to(file, vaultpath)
+
+    if relative_file_path in modified_files do
+      mutation = """
+      mutation UpdatePost($input: UpdatePostInput!) {
+        updatePost(input: $input) {
+          post {
+            id
+            slug
+            title
+          }
         }
       }
-    }
-    """
+      """
 
-    cover_image_url = extract_first_image_url(content)
-    original_article_url = generate_original_article_url(file, vaultpath)
+      cover_image_url = extract_first_image_url(content)
+      original_article_url = generate_original_article_url(file, vaultpath)
 
-    variables = %{
-      input: %{
-        id: hashnode_meta["id"],
-        title: Map.get(frontmatter, "title", "Untitled"),
-        contentMarkdown: content,
-        tags: format_tags(Map.get(frontmatter, "tags", [])),
-        coverImageOptions: %{
-          coverImageURL: cover_image_url
-        },
-        originalArticleURL: original_article_url,
-        settings: %{
-          isTableOfContentEnabled: true
+      variables = %{
+        input: %{
+          id: hashnode_meta["id"],
+          title: Map.get(frontmatter, "title", "Untitled"),
+          contentMarkdown: content,
+          tags: format_tags(Map.get(frontmatter, "tags", [])),
+          coverImageOptions: %{
+            coverImageURL: cover_image_url
+          },
+          originalArticleURL: original_article_url,
+          settings: %{
+            isTableOfContentEnabled: true
+          }
         }
       }
-    }
 
-    case execute_query(mutation, variables) do
-      {:ok, %Neuron.Response{body: %{"data" => %{"updatePost" => %{"post" => post}}}}} ->
-        update_frontmatter(file, frontmatter, post)
-        Logger.info("Updated post: #{file}")
+      case execute_query(mutation, variables) do
+        {:ok, %Neuron.Response{body: %{"data" => %{"updatePost" => %{"post" => post}}}}} ->
+          update_frontmatter(file, frontmatter, post)
+          Logger.info("Updated post: #{file}")
 
-      {:error, error} ->
-        Logger.error("Error updating post #{file}: #{inspect(error)}")
+        {:error, error} ->
+          Logger.error("Error updating post #{file}: #{inspect(error)}")
 
-      unexpected ->
-        Logger.error("Unexpected response for #{file}: #{inspect(unexpected)}")
+        unexpected ->
+          Logger.error("Unexpected response for #{file}: #{inspect(unexpected)}")
+      end
+    else
+      Logger.info("Skipping update for #{file} as it has not been modified recently")
     end
   end
 
