@@ -9,7 +9,7 @@ defmodule Memo.SyncHashnode do
   require Logger
 
   @hashnode_api_url "https://gql.hashnode.com/"
-  @debug_mode true
+  @debug_mode false
 
   def run(vaultpath) do
     if File.exists?(".env") do
@@ -53,9 +53,9 @@ defmodule Memo.SyncHashnode do
 
       unless @debug_mode do
         if is_nil(hashnode_meta) do
-          publish_post(file, frontmatter, transformed_content)
+          publish_post(file, frontmatter, transformed_content, vaultpath)
         else
-          update_post(file, frontmatter, transformed_content, hashnode_meta)
+          update_post(file, frontmatter, transformed_content, hashnode_meta, vaultpath)
         end
       end
     else
@@ -64,7 +64,7 @@ defmodule Memo.SyncHashnode do
     end
   end
 
-  defp publish_post(file, frontmatter, content) do
+  defp publish_post(file, frontmatter, content, vaultpath) do
     mutation = """
     mutation PublishPost($input: PublishPostInput!) {
       publishPost(input: $input) {
@@ -77,12 +77,19 @@ defmodule Memo.SyncHashnode do
     }
     """
 
+    cover_image_url = extract_first_image_url(content)
+    original_article_url = generate_original_article_url(file, vaultpath)
+
     variables = %{
       input: %{
         title: Map.get(frontmatter, "title", "Untitled"),
         contentMarkdown: content,
         tags: format_tags(Map.get(frontmatter, "tags", [])),
-        publicationId: System.get_env("HASHNODE_PUBLICATION_ID")
+        publicationId: System.get_env("HASHNODE_PUBLICATION_ID"),
+        coverImageOptions: %{
+          coverImageURL: cover_image_url
+        },
+        originalArticleURL: original_article_url
       }
     }
 
@@ -99,7 +106,7 @@ defmodule Memo.SyncHashnode do
     end
   end
 
-  defp update_post(file, frontmatter, content, hashnode_meta) do
+  defp update_post(file, frontmatter, content, hashnode_meta, vaultpath) do
     mutation = """
     mutation UpdatePost($input: UpdatePostInput!) {
       updatePost(input: $input) {
@@ -112,12 +119,19 @@ defmodule Memo.SyncHashnode do
     }
     """
 
+    cover_image_url = extract_first_image_url(content)
+    original_article_url = generate_original_article_url(file, vaultpath)
+
     variables = %{
       input: %{
         id: hashnode_meta["id"],
         title: Map.get(frontmatter, "title", "Untitled"),
         contentMarkdown: content,
-        tags: format_tags(Map.get(frontmatter, "tags", []))
+        tags: format_tags(Map.get(frontmatter, "tags", [])),
+        coverImageOptions: %{
+          coverImageURL: cover_image_url
+        },
+        originalArticleURL: original_article_url
       }
     }
 
@@ -173,5 +187,19 @@ defmodule Memo.SyncHashnode do
     |> String.replace(~r/[^a-z0-9\s-]/, "")
     |> String.replace(~r/[\s-]+/, "-")
     |> String.trim("-")
+  end
+
+  defp extract_first_image_url(content) do
+    case Regex.run(~r/!\[.*?\]\((.*?)\)/, content) do
+      [_, url] -> url
+      _ -> nil
+    end
+  end
+
+  defp generate_original_article_url(file, vaultpath) do
+    relative_path = Path.relative_to(file, vaultpath)
+    path_parts = Path.split(relative_path)
+    slugified_path = Enum.map(path_parts, &Slugify.slugify_filename/1)
+    "https://memo.d.foundation/#{Path.join(slugified_path)}"
   end
 end
