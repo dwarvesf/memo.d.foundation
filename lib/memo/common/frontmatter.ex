@@ -38,11 +38,11 @@ defmodule Memo.Common.Frontmatter do
     end
   end
 
-  defp has_required_fields?(frontmatter) do
+  def has_required_fields?(frontmatter) do
     Map.has_key?(frontmatter, "title") and Map.has_key?(frontmatter, "description")
   end
 
-  defp has_valid_optional_fields?(frontmatter) do
+  def has_valid_optional_fields?(frontmatter) do
     authors = Map.get(frontmatter, "authors")
     tags = Map.get(frontmatter, "tags")
 
