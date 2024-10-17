@@ -456,6 +456,7 @@ html[data-theme="dark"] {
   pointer-events: auto !important;
   opacity: 1 !important;
   transform: translateX(0%) !important;
+  top: 59px;
 }
 
 .menu-reading-mode {
@@ -465,7 +466,7 @@ html[data-theme="dark"] {
   }
 
   .site-nav {
-    padding-top: 10px;
+    padding-top: 16px;
   }
 }
 
@@ -494,6 +495,8 @@ body:has(#sidebar:is(.show)) {
     row-gap: 5px;
     flex-direction: column;
     align-items: flex-start;
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
 }
 
@@ -514,7 +517,7 @@ body:has(#sidebar:is(.show)) {
     padding: 0rem 0.5rem !important;
 
     .site-nav {
-      padding-top: 5px !important;
+      padding-top: 16px !important;
     }
   }
 }
