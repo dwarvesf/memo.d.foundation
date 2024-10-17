@@ -38,5 +38,7 @@ defmodule Memo.UpdateGitSettings do
     )
 
     handle_git_setting("submodule", "fetchJobs", "10", "Setting submodule fetch jobs")
+
+    handle_git_setting("core", "ignorecase", "false", "Setting case sensitivity for file names")
   end
 end
