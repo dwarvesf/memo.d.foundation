@@ -13,6 +13,7 @@ defmodule Memo.ExportDuckDB do
     {"embeddings_openai", "FLOAT[1536]"},
     {"embeddings_spr_custom", "FLOAT[1024]"},
     {"title", "VARCHAR"},
+    {"short_title", "VARCHAR"},
     {"description", "VARCHAR"},
     {"tags", "VARCHAR[]"},
     {"authors", "VARCHAR[]"},
@@ -93,7 +94,7 @@ defmodule Memo.ExportDuckDB do
         case DuckDBUtils.execute_query("IMPORT DATABASE 'db'") do
           {:ok, _} ->
             IO.puts("Successfully imported database from 'db' directory.")
-            :ok
+            check_and_add_new_columns()
 
           {:error, error} ->
             IO.puts("Failed to import database: #{error}")
@@ -101,7 +102,7 @@ defmodule Memo.ExportDuckDB do
         end
 
       {:ok, _} ->
-        :ok
+        check_and_add_new_columns()
 
       {:error, error} ->
         IO.puts("Error checking for vault table: #{error}")
@@ -129,6 +130,37 @@ defmodule Memo.ExportDuckDB do
       {:error, error} ->
         IO.puts("Failed to create vault table: #{error}")
         :error
+    end
+  end
+
+  defp check_and_add_new_columns() do
+    existing_columns_query = """
+    SELECT column_name
+    FROM information_schema.columns
+    WHERE table_name = 'vault'
+    """
+
+    case DuckDBUtils.execute_query(existing_columns_query) do
+      {:ok, existing_columns} ->
+        existing_column_names =
+          Enum.map(existing_columns, fn %{"column_name" => name} -> String.downcase(name) end)
+
+        new_columns =
+          Enum.filter(@allowed_frontmatter, fn {name, _} ->
+            String.downcase(name) not in existing_column_names
+          end)
+
+        Enum.each(new_columns, fn {name, type} ->
+          add_column_query = "ALTER TABLE vault ADD COLUMN #{name} #{type}"
+
+          case DuckDBUtils.execute_query(add_column_query) do
+            {:ok, _} -> IO.puts("Added new column: #{name}")
+            {:error, error} -> IO.puts("Failed to add column #{name}: #{error}")
+          end
+        end)
+
+      {:error, error} ->
+        IO.puts("Failed to fetch existing columns: #{error}")
     end
   end
 
@@ -421,31 +453,25 @@ defmodule Memo.ExportDuckDB do
   defp handle_result({:ok, _result}), do: :ok
   defp handle_result({:error, _error}), do: :error
 
-  defp transform_frontmatter(md_content, frontmatter, file_path) do
-    estimated_tokens = div(String.length(md_content), 4)
-    frontmatter = Map.put(frontmatter, "estimated_tokens", estimated_tokens)
+  defp transform_frontmatter(md_content, frontmatter, file_path) when is_map(frontmatter) do
+    if Frontmatter.has_required_fields?(frontmatter) and
+         Frontmatter.has_valid_optional_fields?(frontmatter) do
+      estimated_tokens = div(String.length(md_content), 4)
+      frontmatter = Map.put(frontmatter, "estimated_tokens", estimated_tokens)
 
-    frontmatter
-    |> Map.take(@allowed_frontmatter |> Enum.map(&elem(&1, 0)))
-    |> Map.new(fn {k, v} -> {k, normalize_value(k, v)} end)
-    |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
-  end
-
-  defp normalize_value(key, value) when key in ["tags", "authors", "aliases"] do
-    normalize_list_value(value)
-  end
-
-  defp normalize_value(_key, value), do: value
-
-  defp normalize_list_value(value) when is_binary(value) do
-    if String.contains?(value, ",") do
-      value
-      |> String.split(",")
-      |> Enum.map(&String.trim/1)
+      frontmatter
+      |> Map.take(@allowed_frontmatter |> Enum.map(&elem(&1, 0)))
+      |> Map.new(fn {k, v} -> {k, normalize_value(k, v)} end)
+      |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
     else
-      [String.trim(value)]
+      # Handle invalid frontmatter case
+      %{
+        "file_path" => file_path,
+        "md_content" => md_content,
+        "estimated_tokens" => div(String.length(md_content), 4)
+      }
     end
   end
 
-  defp normalize_list_value(value), do: value
+  defp normalize_value(_key, value), do: value
 end
