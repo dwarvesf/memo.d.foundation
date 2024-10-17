@@ -134,7 +134,7 @@ defmodule Memo.SyncHashnode do
       }
       """
 
-      cover_image_url = extract_first_image_url(content)
+      cover_image_url = get_in(hashnode_meta, ["coverImageOptions", "coverImageURL"]) || extract_first_image_url(content)
       original_article_url = generate_original_article_url(file, vaultpath)
 
       variables = %{
@@ -155,7 +155,7 @@ defmodule Memo.SyncHashnode do
 
       case execute_query(mutation, variables) do
         {:ok, %Neuron.Response{body: %{"data" => %{"updatePost" => %{"post" => post}}}}} ->
-          update_frontmatter(file, frontmatter, post)
+          update_frontmatter(file, frontmatter, post, hashnode_meta)
           Logger.info("Updated post: #{file}")
 
         {:error, error} ->
@@ -179,15 +179,16 @@ defmodule Memo.SyncHashnode do
     Neuron.query(query, variables, headers: headers)
   end
 
-  defp update_frontmatter(file, frontmatter, post) do
+  defp update_frontmatter(file, frontmatter, post, existing_hashnode_meta \\ %{}) do
     updated_hashnode_meta =
-      %{
+      existing_hashnode_meta
+      |> Map.merge(%{
         "id" => post["id"],
         "slug" => post["slug"],
         "coverImageOptions" => %{
-          "coverImageURL" => get_in(post, ["coverImage", "url"])
+          "coverImageURL" => get_in(post, ["coverImage", "url"]) || get_in(existing_hashnode_meta, ["coverImageOptions", "coverImageURL"])
         }
-      }
+      })
       |> Frontmatter.remove_nil_and_empty_values()
 
     updated_frontmatter =
