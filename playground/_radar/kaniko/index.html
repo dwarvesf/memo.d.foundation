@@ -342,6 +342,7 @@
         WITH recursive_paths AS (
           SELECT
             file_path,
+            COALESCE(short_title, title) AS display_title,
             title,
             date,
             CASE
@@ -360,7 +361,7 @@
         )
         SELECT
           grouped_path as grouped_path,
-          ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(file_path, ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
+          ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(file_path, ' ', '-'), 'title', display_title) ORDER BY date DESC) as file_paths
         FROM recursive_paths
         WHERE grouped_path IS NOT NULL
         GROUP BY grouped_path
@@ -369,6 +370,7 @@
 
       const response = await window.queryAPI(queryStr);
       const parsedData = response.result;
+      console.log(parsedData);
       const duckDBMenuData = nestPaths(parsedData);
       const event = new CustomEvent('duckdb-menu', {
         detail: {
