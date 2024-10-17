@@ -39,9 +39,7 @@ defmodule Memo.ExportDuckDB do
   ]
 
   def run(vaultpath, format, commits_back) do
-    if File.exists?(".env") do
-      DotenvParser.load_file(".env")
-    end
+    load_env()
 
     vaultpath = vaultpath || "vault"
     export_format = format || "parquet"
@@ -77,6 +75,10 @@ defmodule Memo.ExportDuckDB do
   defp parse_commits_back(:all), do: :all
   defp parse_commits_back("HEAD~" <> n), do: "HEAD~#{n}"
   defp parse_commits_back(_), do: "HEAD^"
+
+  defp load_env do
+    if File.exists?(".env"), do: DotenvParser.load_file(".env")
+  end
 
   defp install_and_load_extensions() do
     DuckDBUtils.execute_query("INSTALL parquet") |> handle_result()
