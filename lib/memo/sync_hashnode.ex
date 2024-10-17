@@ -1,7 +1,7 @@
 defmodule Memo.SyncHashnode do
   @moduledoc """
   A module to sync markdown files with Hashnode API.
-  This module now includes functionality to transform local links and images
+  This module includes functionality to transform local links and images
   before sending content to Hashnode.
   """
 
@@ -11,28 +11,30 @@ defmodule Memo.SyncHashnode do
   @hashnode_api_url "https://gql.hashnode.com/"
   @debug_mode false
 
+  @doc """
+  Runs the sync process for the given vault path.
+  """
   def run(vaultpath) do
-    if File.exists?(".env") do
-      DotenvParser.load_file(".env")
-    end
-
+    load_env()
     vaultpath = Path.expand(vaultpath || "vault")
     ignored_patterns = FileUtils.read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
 
-    FileUtils.list_files_recursive(vaultpath)
-    |> Enum.filter(&(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
-    |> Enum.filter(&File.regular?/1)
-    |> Enum.filter(&has_hashnode_sync?/1)
+    vaultpath
+    |> FileUtils.list_files_recursive()
+    |> Stream.filter(&(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
+    |> Stream.filter(&File.regular?/1)
+    |> Stream.filter(&has_hashnode_sync?/1)
     |> Enum.each(&process_file(&1, vaultpath))
+  end
+
+  defp load_env do
+    if File.exists?(".env"), do: DotenvParser.load_file(".env")
   end
 
   defp has_hashnode_sync?(file) do
     case Frontmatter.parse_frontmatter(File.read!(file)) do
-      {:ok, frontmatter} ->
-        Map.get(frontmatter, "sync") == "hashnode"
-
-      _ ->
-        false
+      {:ok, frontmatter} -> Map.get(frontmatter, "sync") == "hashnode"
+      _ -> false
     end
   end
 
@@ -40,7 +42,6 @@ defmodule Memo.SyncHashnode do
     with {:ok, content} <- File.read(file),
          {:ok, frontmatter} <- Frontmatter.parse_frontmatter(content),
          true <- Frontmatter.contains_required_frontmatter_keys?(file) do
-      hashnode_meta = Map.get(frontmatter, "hashnode_meta")
       content_without_frontmatter = Frontmatter.strip_frontmatter(content)
 
       transformed_content =
@@ -51,18 +52,18 @@ defmodule Memo.SyncHashnode do
         IO.puts(content_without_frontmatter)
         IO.puts("\nTransformed content:")
         IO.puts(transformed_content)
-      end
-
-      unless @debug_mode do
-        if is_nil(hashnode_meta) do
-          publish_post(file, frontmatter, transformed_content, vaultpath)
-        else
-          update_post(file, frontmatter, transformed_content, hashnode_meta, vaultpath)
-        end
+      else
+        sync_with_hashnode(file, frontmatter, transformed_content, vaultpath)
       end
     else
-      _ ->
-        Logger.error("Error processing file: #{file}")
+      _ -> Logger.error("Error processing file: #{file}")
+    end
+  end
+
+  defp sync_with_hashnode(file, frontmatter, content, vaultpath) do
+    case Map.get(frontmatter, "hashnode_meta") do
+      nil -> publish_post(file, frontmatter, content, vaultpath)
+      meta -> update_post(file, frontmatter, content, meta, vaultpath)
     end
   end
 
@@ -82,23 +83,8 @@ defmodule Memo.SyncHashnode do
     }
     """
 
-    cover_image_url = extract_first_image_url(content)
-    original_article_url = generate_original_article_url(file, vaultpath)
-
     variables = %{
-      input: %{
-        title: Map.get(frontmatter, "title", "Untitled"),
-        contentMarkdown: content,
-        tags: format_tags(Map.get(frontmatter, "tags", [])),
-        publicationId: System.get_env("HASHNODE_PUBLICATION_ID"),
-        coverImageOptions: %{
-          coverImageURL: cover_image_url
-        },
-        originalArticleURL: original_article_url,
-        settings: %{
-          enableTableOfContent: true
-        }
-      }
+      input: build_post_input(frontmatter, content, file, vaultpath, :publish)
     }
 
     case execute_query(mutation, variables) do
@@ -134,23 +120,10 @@ defmodule Memo.SyncHashnode do
       }
       """
 
-      cover_image_url = get_in(hashnode_meta, ["coverImageOptions", "coverImageURL"]) || extract_first_image_url(content)
-      original_article_url = generate_original_article_url(file, vaultpath)
-
       variables = %{
-        input: %{
-          id: hashnode_meta["id"],
-          title: Map.get(frontmatter, "title", "Untitled"),
-          contentMarkdown: content,
-          tags: format_tags(Map.get(frontmatter, "tags", [])),
-          coverImageOptions: %{
-            coverImageURL: cover_image_url
-          },
-          originalArticleURL: original_article_url,
-          settings: %{
-            isTableOfContentEnabled: true
-          }
-        }
+        input:
+          build_post_input(frontmatter, content, file, vaultpath, :update)
+          |> Map.put(:id, hashnode_meta["id"])
       }
 
       case execute_query(mutation, variables) do
@@ -166,6 +139,34 @@ defmodule Memo.SyncHashnode do
       end
     else
       Logger.info("Skipping update for #{file} as it has not been modified recently")
+    end
+  end
+
+  defp build_post_input(frontmatter, content, file, vaultpath, operation) do
+    cover_image_url = extract_first_image_url(content)
+    original_article_url = generate_original_article_url(file, vaultpath)
+
+    base_input = %{
+      title: Map.get(frontmatter, "title", "Untitled"),
+      contentMarkdown: content,
+      tags: format_tags(Map.get(frontmatter, "tags", [])),
+      publicationId: System.get_env("HASHNODE_PUBLICATION_ID"),
+      coverImageOptions: %{
+        coverImageURL: cover_image_url
+      },
+      originalArticleURL: original_article_url
+    }
+
+    case operation do
+      :publish ->
+        Map.put(base_input, :settings, %{
+          enableTableOfContent: true
+        })
+
+      :update ->
+        Map.put(base_input, :settings, %{
+          isTableOfContentEnabled: true
+        })
     end
   end
 
@@ -186,17 +187,20 @@ defmodule Memo.SyncHashnode do
         "id" => post["id"],
         "slug" => post["slug"],
         "coverImageOptions" => %{
-          "coverImageURL" => get_in(post, ["coverImage", "url"]) || get_in(existing_hashnode_meta, ["coverImageOptions", "coverImageURL"])
+          "coverImageURL" =>
+            get_in(post, ["coverImage", "url"]) ||
+              get_in(existing_hashnode_meta, ["coverImageOptions", "coverImageURL"])
         }
       })
       |> Frontmatter.remove_nil_and_empty_values()
 
-    updated_frontmatter =
-      frontmatter
-      |> Map.put("hashnode_meta", updated_hashnode_meta)
+    updated_frontmatter = Map.put(frontmatter, "hashnode_meta", updated_hashnode_meta)
 
     updated_content =
-      "---\n#{Frontmatter.dump_frontmatter(updated_frontmatter)}\n---\n#{String.trim(Frontmatter.strip_frontmatter(File.read!(file)))}"
+      "---\n" <>
+        Frontmatter.dump_frontmatter(updated_frontmatter) <>
+        "\n---\n" <>
+        String.trim(Frontmatter.strip_frontmatter(File.read!(file)))
 
     File.write!(file, updated_content)
   end
@@ -204,18 +208,10 @@ defmodule Memo.SyncHashnode do
   defp format_tags(tags) do
     Enum.map(tags, fn tag ->
       %{
-        slug: slugify(tag),
+        slug: Slugify.slugify(tag),
         name: tag
       }
     end)
-  end
-
-  defp slugify(text) do
-    text
-    |> String.downcase()
-    |> String.replace(~r/[^a-z0-9\s-]/, "")
-    |> String.replace(~r/[\s-]+/, "-")
-    |> String.trim("-")
   end
 
   defp extract_first_image_url(content) do
@@ -226,9 +222,11 @@ defmodule Memo.SyncHashnode do
   end
 
   defp generate_original_article_url(file, vaultpath) do
-    relative_path = Path.relative_to(file, vaultpath)
-    path_parts = Path.split(relative_path)
-    slugified_path = Enum.map(path_parts, &Slugify.slugify_filename/1)
-    "https://memo.d.foundation/#{Path.join(slugified_path)}"
+    file
+    |> Path.relative_to(vaultpath)
+    |> Path.split()
+    |> Enum.map(&Slugify.slugify_filename/1)
+    |> Path.join()
+    |> (&"https://memo.d.foundation/#{&1}").()
   end
 end
