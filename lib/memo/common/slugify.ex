@@ -41,6 +41,7 @@ defmodule Memo.Common.Slugify do
 
   defp slugify_links_in_text(text) do
     regex = ~r/\[([^\]]+)\]\(([^)]+)\)/
+
     Regex.replace(regex, text, fn _, link_text, link ->
       slugified_link = slugify_link_path(link)
       "[#{link_text}](#{slugified_link})"

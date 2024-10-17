@@ -30,7 +30,7 @@ defmodule Memo.MixProject do
       {:file_system, "~> 1.0"},
       {:ffmpex, "~> 0.11"},
       {:mogrify, "~> 0.9"},
-      {:neuron, "~> 5.1.0"}  # Added Neuron dependency
+      {:neuron, "~> 5.1.0"}
     ]
   end
 end

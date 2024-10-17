@@ -8,7 +8,7 @@ defmodule Memo.Common.LinkTransformer do
   def transform_local_links(content, file, vaultpath) do
     content
     |> String.split("\n")
-    |> Enum.map(&(transform_line(&1, file, vaultpath)))
+    |> Enum.map(&transform_line(&1, file, vaultpath))
     |> Enum.join("\n")
   end
 
@@ -16,8 +16,10 @@ defmodule Memo.Common.LinkTransformer do
     cond do
       String.contains?(line, "![") and String.contains?(line, "](") ->
         transform_image_link(line, file, vaultpath)
+
       String.contains?(line, "[") and String.contains?(line, "](") ->
         transform_markdown_link(line, file, vaultpath)
+
       true ->
         line
     end
