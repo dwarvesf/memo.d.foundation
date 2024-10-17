@@ -317,7 +317,22 @@
       });
     });
 
-    return result;
+    
+    function sortGroupedPaths(obj) {
+      const sortedKeys = Object.keys(obj).sort();
+      let sortedObj = {};
+
+      sortedKeys.forEach(key => {
+        sortedObj[key] = obj[key];
+        if (Object.keys(sortedObj[key].next_path).length > 0) {
+          sortedObj[key].next_path = sortGroupedPaths(sortedObj[key].next_path);
+        }
+      });
+
+      return sortedObj;
+    }
+
+    return sortGroupedPaths(result);
   }
 
   function hasMenuBeenRefreshed() {
@@ -346,15 +361,19 @@
           WHERE file_path NOT LIKE '%_index%'
             AND file_path NOT LIKE '%_radar%'
             AND title IS NOT NULL
+            AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
+            AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
+            AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
         )
         SELECT
-          LOWER(grouped_path) as grouped_path,
-          ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(LOWER(file_path), ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
+          grouped_path as grouped_path,
+          ARRAY_AGG(JSON_OBJECT('file_path', REPLACE(file_path, ' ', '-'), 'title', title) ORDER BY date DESC) as file_paths
         FROM recursive_paths
         WHERE grouped_path IS NOT NULL
-        GROUP BY grouped_path;
+        GROUP BY grouped_path
+        ORDER BY grouped_path DESC;
       `;
 
       const response = await window.queryAPI(queryStr);
@@ -436,7 +455,6 @@
                   .replaceAll('¶', '')
                   .replaceAll('§', '')
                   .split('.')[0]
-                  .toLowerCase()
                   .replaceAll(' ', '-')
                   .replace(/\/+/g, '/')  // Replace multiple slashes with a single slash
                   .split('/')
@@ -462,7 +480,6 @@
                       .replaceAll('¶', '')
                       .replaceAll('§', '')
                       .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
-                      .map(x => x.toLowerCase())
                       .join('-');
                   },
                   toNormal(tag) {

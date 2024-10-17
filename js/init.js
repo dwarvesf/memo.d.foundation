@@ -207,17 +207,24 @@ const updatePrismStylesheets = () => {
 const handleMathRendering = () => {
   renderMathInElement(document.body, {
     delimiters: [
-      {left: "$$", right: "$$", display: true},
-      {left: "$", right: "$", display: true},
-      {left: "\\(", right: "\\)", display: false},
-      {left: "\\begin{equation}", right: "\\end{equation}", display: true},
-      {left: "\\begin{align}", right: "\\end{align}", display: true},
-      {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
-      {left: "\\begin{gather}", right: "\\end{gather}", display: true},
-      {left: "\\begin{CD}", right: "\\end{CD}", display: true},
-      {left: "\\[", right: "\\]", display: true},
+      { left: "$$", right: "$$", display: true },
+      { left: "\\(", right: "\\)", display: false },
+      { left: "\\begin{equation}", right: "\\end{equation}", display: true },
+      { left: "\\begin{align}", right: "\\end{align}", display: true },
+      { left: "\\begin{alignat}", right: "\\end{alignat}", display: true },
+      { left: "\\begin{gather}", right: "\\end{gather}", display: true },
+      { left: "\\begin{CD}", right: "\\end{CD}", display: true },
+      { left: "\\[", right: "\\]", display: true },
     ],
-    throwOnError: false
+    throwOnError: false,
+    preProcess: (text) => {
+      // This function will prevent conversion for simple dollar sign cases followed by numbers
+      return text.replace(/(\B\$)(\d+((,\d+)+)?\.?\d*)(\b)/g, '_TEMP_DOLLAR_$2$4');
+    },
+    postProcess: (text) => {
+      // Restore the original dollar signs after processing
+      return text.replace(/_TEMP_DOLLAR_(\d+((,\d+)+)?\.?\d*)/g, '$$$1');
+    }
   });
 };
 
