@@ -42,7 +42,9 @@ defmodule Memo.SyncHashnode do
          true <- Frontmatter.contains_required_frontmatter_keys?(file) do
       hashnode_meta = Map.get(frontmatter, "hashnode_meta")
       content_without_frontmatter = Frontmatter.strip_frontmatter(content)
-      transformed_content = LinkTransformer.transform_local_links(content_without_frontmatter, file, vaultpath)
+
+      transformed_content =
+        LinkTransformer.transform_local_links(content_without_frontmatter, file, vaultpath)
 
       if @debug_mode do
         IO.puts("Original content:")
@@ -72,6 +74,9 @@ defmodule Memo.SyncHashnode do
           id
           slug
           title
+          coverImage {
+            url
+          }
         }
       }
     }
@@ -121,6 +126,9 @@ defmodule Memo.SyncHashnode do
             id
             slug
             title
+            coverImage {
+              url
+            }
           }
         }
       }
@@ -172,12 +180,19 @@ defmodule Memo.SyncHashnode do
   end
 
   defp update_frontmatter(file, frontmatter, post) do
+    updated_hashnode_meta =
+      %{
+        "id" => post["id"],
+        "slug" => post["slug"],
+        "coverImageOptions" => %{
+          "coverImageURL" => get_in(post, ["coverImage", "url"])
+        }
+      }
+      |> Frontmatter.remove_nil_and_empty_values()
+
     updated_frontmatter =
       frontmatter
-      |> Map.put("hashnode_meta", %{
-        "id" => post["id"],
-        "slug" => post["slug"]
-      })
+      |> Map.put("hashnode_meta", updated_hashnode_meta)
 
     updated_content =
       "---\n#{Frontmatter.dump_frontmatter(updated_frontmatter)}\n---\n#{String.trim(Frontmatter.strip_frontmatter(File.read!(file)))}"

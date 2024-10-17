@@ -68,29 +68,67 @@ defmodule Memo.Common.Frontmatter do
   """
   def dump_frontmatter(frontmatter) do
     frontmatter
-    |> Enum.map(fn {key, value} -> format_yaml_line(key, value) end)
+    |> remove_nil_and_empty_values()
+    |> Enum.map(fn {key, value} -> format_yaml_line(key, value, 0) end)
     |> Enum.join("\n")
   end
 
-  defp format_yaml_line(key, value) when is_list(value) do
-    formatted_values = Enum.map(value, fn v -> "  - #{inspect(v)}" end) |> Enum.join("\n")
-    "#{key}:\n#{formatted_values}"
+  @doc """
+  Recursively removes nil values and empty maps/lists from a map structure.
+  """
+  def remove_nil_and_empty_values(map) when is_map(map) do
+    map
+    |> Enum.map(fn {k, v} -> {k, remove_nil_and_empty_values(v)} end)
+    |> Enum.filter(fn {_, v} -> v != nil and v != %{} and v != [] end)
+    |> Enum.into(%{})
   end
 
-  defp format_yaml_line(key, value) when is_map(value) do
-    formatted_values = Enum.map(value, fn {k, v} -> "  #{k}: #{inspect(v)}" end) |> Enum.join("\n")
-    "#{key}:\n#{formatted_values}"
+  def remove_nil_and_empty_values(list) when is_list(list) do
+    list
+    |> Enum.map(&remove_nil_and_empty_values/1)
+    |> Enum.filter(fn v -> v != nil and v != %{} and v != [] end)
   end
 
-  defp format_yaml_line(key, value) when is_binary(value) do
+  def remove_nil_and_empty_values(value), do: value
+
+  defp format_yaml_line(key, value, indent_level) when is_list(value) and value != [] do
+    indent = String.duplicate("  ", indent_level)
+
+    formatted_values =
+      Enum.map_join(value, "\n", fn v ->
+        "#{indent}- #{format_yaml_value(v, indent_level + 1)}"
+      end)
+
+    "#{indent}#{key}:\n#{formatted_values}"
+  end
+
+  defp format_yaml_line(key, value, indent_level) when is_map(value) and value != %{} do
+    indent = String.duplicate("  ", indent_level)
+
+    formatted_values =
+      Enum.map_join(value, "\n", fn {k, v} -> format_yaml_line(k, v, indent_level + 1) end)
+
+    "#{indent}#{key}:\n#{formatted_values}"
+  end
+
+  defp format_yaml_line(key, value, indent_level) when not is_nil(value) do
+    indent = String.duplicate("  ", indent_level)
+    "#{indent}#{key}: #{format_yaml_value(value, indent_level)}"
+  end
+
+  defp format_yaml_value(value, _indent_level) when is_binary(value) do
     if String.contains?(value, "\n") do
-      "#{key}: |\n  #{String.replace(value, "\n", "\n  ")}"
+      "|\n  #{String.replace(value, "\n", "\n  ")}"
     else
-      "#{key}: #{inspect(value)}"
+      "\"#{String.replace(value, "\"", "\\\"")}\""
     end
   end
 
-  defp format_yaml_line(key, value) do
-    "#{key}: #{inspect(value)}"
+  defp format_yaml_value(value, _indent_level) when is_number(value) or is_boolean(value) do
+    "#{value}"
+  end
+
+  defp format_yaml_value(value, _indent_level) do
+    "\"#{inspect(value)}\""
   end
 end

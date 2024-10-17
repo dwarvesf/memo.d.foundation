@@ -47,6 +47,7 @@ defmodule Memo.Common.LinkUtils do
     |> Enum.map(fn
       {:code, block} ->
         block
+
       {:content, text} ->
         text
         |> convert_links_with_alt_text(sanitized_resolved_links, current_file)
@@ -94,7 +95,9 @@ defmodule Memo.Common.LinkUtils do
   end
 
   defp convert_links_with_alt_text(content, resolved_links, current_file) do
-    Regex.replace(~r/(?<![`\w])\[\[([^\|\]]+)\|([^\]]+)\]\](?![`\w])/, content, fn _full_match, link, alt_text ->
+    Regex.replace(~r/(?<![`\w])\[\[([^\|\]]+)\|([^\]]+)\]\](?![`\w])/, content, fn _full_match,
+                                                                                   link,
+                                                                                   alt_text ->
       resolved_path =
         Map.get(resolved_links, link, link)
         |> String.replace(~r/\\$/, "")
