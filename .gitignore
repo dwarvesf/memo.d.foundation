@@ -77,3 +77,4 @@ memo-*.tar
 
 # Devbox artifacts
 /.devbox/
+.aider*
