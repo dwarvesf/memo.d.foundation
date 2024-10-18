@@ -450,6 +450,7 @@
                   .split('.')[0]
                   .replaceAll(' ', '-')
                   .replace(/\/+/g, '/')  // Replace multiple slashes with a single slash
+                  .toLowerCase()
                   .split('/')
                   .map(segment => segment.replace(/^-+|-+$/g, ''))  // Clean each path segment
                   .join('/')}/`
