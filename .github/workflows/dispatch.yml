@@ -12,7 +12,7 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
-          fetch-depth: 5
+          fetch-depth: 10
 
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.11.0
@@ -20,16 +20,12 @@ jobs:
           enable-cache: true
           devbox-version: 0.13.3
 
-      - name: Pull & update submodules recursively
-        run: |
-          yes | git submodule update --init --recursive --remote --progress --merge --filter=blob:none
-          git submodule foreach --recursive 'branch=$(git rev-parse --abbrev-ref HEAD); if [ "$(git config --get branch.$branch.remote)" = "" ]; then git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo main); fi'
-
       - name: Export DB
         shell: bash
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
+          devbox run fetch
           devbox run duckdb-export
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
