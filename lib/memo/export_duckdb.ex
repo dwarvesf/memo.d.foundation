@@ -135,9 +135,9 @@ defmodule Memo.ExportDuckDB do
 
   defp check_and_add_new_columns() do
     existing_columns_query = """
-    SELECT column_name
-    FROM information_schema.columns
-    WHERE table_name = 'vault'
+      SELECT column_name
+      FROM information_schema.columns
+      WHERE table_name = 'vault'
     """
 
     case DuckDBUtils.execute_query(existing_columns_query) do
