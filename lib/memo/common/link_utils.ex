@@ -166,14 +166,16 @@ defmodule Memo.Common.LinkUtils do
     normalized_path = Path.expand(full_path)
 
     IO.puts("Checking file validity: #{normalized_path}")
-    file_exists?(normalized_path) && has_valid_frontmatter?(normalized_path)
+    File.exists?(normalized_path) && Frontmatter.contains_required_frontmatter_keys?(normalized_path)
   end
 
-  defp file_exists?(path) do
-    File.exists?(path)
-  end
+  defp file_exists?(link, current_file) do
+    link = String.replace(link, "%20", " ")
+    current_dir = Path.dirname(current_file)
+    full_path = Path.join(current_dir, link)
+    normalized_path = Path.expand(full_path)
 
-  defp has_valid_frontmatter?(path) do
-    Frontmatter.contains_required_frontmatter_keys?(path)
+    IO.puts("Checking file existence: #{normalized_path}")
+    File.exists?(normalized_path)
   end
 end
