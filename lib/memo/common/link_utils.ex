@@ -166,7 +166,9 @@ defmodule Memo.Common.LinkUtils do
     normalized_path = Path.expand(full_path)
 
     IO.puts("Checking file validity: #{normalized_path}")
-    File.exists?(normalized_path) && Frontmatter.contains_required_frontmatter_keys?(normalized_path)
+
+    File.exists?(normalized_path) &&
+      Frontmatter.contains_required_frontmatter_keys?(normalized_path)
   end
 
   defp file_exists?(link, current_file) do

@@ -63,13 +63,18 @@ defmodule Memo.ExportDuckDB do
 
     IO.inspect(filtered_files)
 
-    with {:ok, _} <- DuckDBUtils.execute_query("SELECT 1"),
-         :ok <- install_and_load_extensions(),
-         :ok <- setup_database() do
-      process_files(filtered_files, vaultpath, all_files_to_process)
-      export(export_format)
-    else
-      {:error, reason} -> IO.puts("Failed to set up DuckDB: #{reason}")
+    case DuckDBUtils.execute_query("SELECT 1") do
+      {:ok, _} ->
+        with :ok <- install_and_load_extensions(),
+             :ok <- setup_database() do
+          process_files(filtered_files, vaultpath, all_files_to_process)
+          export(export_format)
+        else
+          :error -> IO.puts("Failed to set up DuckDB")
+        end
+
+      {:error, reason} ->
+        IO.puts("Failed to connect to DuckDB: #{reason}")
     end
   end
 
