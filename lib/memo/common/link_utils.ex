@@ -136,7 +136,7 @@ defmodule Memo.Common.LinkUtils do
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      if file_valid?(link, current_file) do
+      if file_exists?(link, current_file) do
         "![](#{resolved_path})"
       else
         "![]()"
