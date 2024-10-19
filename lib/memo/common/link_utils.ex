@@ -4,6 +4,7 @@ defmodule Memo.Common.LinkUtils do
   """
 
   alias Memo.Common.Slugify
+  alias Memo.Common.Frontmatter
 
   @doc """
   Extracts links from content.
@@ -103,7 +104,7 @@ defmodule Memo.Common.LinkUtils do
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      if file_exists?(link, current_file) do
+      if file_valid?(link, current_file) do
         "[#{alt_text}](#{resolved_path})"
       else
         "[#{alt_text}]()"
@@ -120,7 +121,7 @@ defmodule Memo.Common.LinkUtils do
 
       alt_text = Path.basename(resolved_path, ".md")
 
-      if file_exists?(link, current_file) do
+      if file_valid?(link, current_file) do
         "[#{alt_text}](#{resolved_path})"
       else
         "[#{alt_text}]()"
@@ -135,7 +136,7 @@ defmodule Memo.Common.LinkUtils do
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      if file_exists?(link, current_file) do
+      if file_valid?(link, current_file) do
         "![](#{resolved_path})"
       else
         "![]()"
@@ -150,7 +151,7 @@ defmodule Memo.Common.LinkUtils do
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      if file_exists?(link, current_file) do
+      if file_valid?(link, current_file) do
         "[#{alt_text}](#{resolved_path})"
       else
         "[#{alt_text}]()"
@@ -158,13 +159,21 @@ defmodule Memo.Common.LinkUtils do
     end)
   end
 
-  defp file_exists?(link, current_file) do
+  defp file_valid?(link, current_file) do
     link = String.replace(link, "%20", " ")
     current_dir = Path.dirname(current_file)
     full_path = Path.join(current_dir, link)
     normalized_path = Path.expand(full_path)
 
-    IO.puts("Checking file existence: #{normalized_path}")
-    File.exists?(normalized_path)
+    IO.puts("Checking file validity: #{normalized_path}")
+    file_exists?(normalized_path) && has_valid_frontmatter?(normalized_path)
+  end
+
+  defp file_exists?(path) do
+    File.exists?(path)
+  end
+
+  defp has_valid_frontmatter?(path) do
+    Frontmatter.contains_required_frontmatter_keys?(path)
   end
 end
