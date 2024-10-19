@@ -99,7 +99,7 @@ defmodule Memo.ExportDuckDB do
         case DuckDBUtils.execute_query("IMPORT DATABASE 'db'") do
           {:ok, _} ->
             IO.puts("Successfully imported database from 'db' directory.")
-            check_and_add_new_columns()
+            merge_columns()
 
           {:error, error} ->
             IO.puts("Failed to import database: #{error}")
@@ -107,7 +107,7 @@ defmodule Memo.ExportDuckDB do
         end
 
       {:ok, _} ->
-        check_and_add_new_columns()
+        merge_columns()
 
       {:error, error} ->
         IO.puts("Error checking for vault table: #{error}")
@@ -138,11 +138,11 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
-  defp check_and_add_new_columns() do
+  defp merge_columns() do
     existing_columns_query = """
-      SELECT column_name
-      FROM information_schema.columns
-      WHERE table_name = 'vault'
+    SELECT column_name
+    FROM information_schema.columns
+    WHERE table_name = 'vault'
     """
 
     case DuckDBUtils.execute_query(existing_columns_query) do
@@ -150,17 +150,36 @@ defmodule Memo.ExportDuckDB do
         existing_column_names =
           Enum.map(existing_columns, fn %{"column_name" => name} -> String.downcase(name) end)
 
-        new_columns =
+        allowed_column_names =
+          Enum.map(@allowed_frontmatter, fn {name, _} -> String.downcase(name) end)
+
+        columns_to_add =
           Enum.filter(@allowed_frontmatter, fn {name, _} ->
             String.downcase(name) not in existing_column_names
           end)
 
-        Enum.each(new_columns, fn {name, type} ->
+        columns_to_remove =
+          Enum.filter(existing_column_names, fn name ->
+            name not in allowed_column_names
+          end)
+
+        # Add new columns
+        Enum.each(columns_to_add, fn {name, type} ->
           add_column_query = "ALTER TABLE vault ADD COLUMN #{name} #{type}"
 
           case DuckDBUtils.execute_query(add_column_query) do
             {:ok, _} -> IO.puts("Added new column: #{name}")
             {:error, error} -> IO.puts("Failed to add column #{name}: #{error}")
+          end
+        end)
+
+        # Remove old columns
+        Enum.each(columns_to_remove, fn name ->
+          remove_column_query = "ALTER TABLE vault DROP COLUMN #{name}"
+
+          case DuckDBUtils.execute_query(remove_column_query) do
+            {:ok, _} -> IO.puts("Removed column: #{name}")
+            {:error, error} -> IO.puts("Failed to remove column #{name}: #{error}")
           end
         end)
 
