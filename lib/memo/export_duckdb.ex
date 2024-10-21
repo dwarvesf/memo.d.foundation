@@ -323,19 +323,26 @@ defmodule Memo.ExportDuckDB do
 
   defp regenerate_embeddings(md_content, frontmatter) do
     spr_content = AIUtils.spr_compress(md_content)
+    estimated_tokens = div(String.length(md_content), 4)
 
-    with custom_embedding <- AIUtils.embed_custom(spr_content),
-         openai_embedding <- AIUtils.embed_openai(md_content) do
-      frontmatter
-      |> Map.put("spr_content", spr_content)
-      |> Map.put("embeddings_spr_custom", custom_embedding["embedding"])
-      |> Map.put("embeddings_openai", openai_embedding["embedding"])
-      |> (fn fm ->
-            IO.inspect(custom_embedding)
-            IO.inspect(openai_embedding)
-            fm
-          end).()
+    custom_embedding = AIUtils.embed_custom(spr_content)
+
+    openai_embedding = if estimated_tokens <= 7500 do
+      AIUtils.embed_openai(md_content)
+    else
+      %{"embedding" => List.duplicate(0, 1536)}
     end
+
+    frontmatter
+    |> Map.put("spr_content", spr_content)
+    |> Map.put("embeddings_spr_custom", custom_embedding["embedding"])
+    |> Map.put("embeddings_openai", openai_embedding["embedding"])
+    |> Map.put("estimated_tokens", estimated_tokens)
+    |> (fn fm ->
+          IO.inspect(custom_embedding)
+          IO.inspect(openai_embedding)
+          fm
+        end).()
   end
 
   defp ensure_all_columns(frontmatter) do
