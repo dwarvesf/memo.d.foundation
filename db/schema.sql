@@ -5,5 +5,4 @@ CREATE TABLE vault(file_path VARCHAR, md_content VARCHAR, tags VARCHAR[], title 
 
 
 
-CREATE MACRO main.markdown_link (title, file_path) AS ((((('[' || COALESCE(title, ('/' || regexp_replace(lower(regexp_replace("replace"("replace"(file_path, '.md', ''), ' ', '-'), '[^a-zA-Z0-9/_-]+', '-')), '(^-|-$)', '')))) || '](/') || regexp_replace(lower(regexp_replace("replace"("replace"(file_path, '.md', ''), ' ', '-'), '[^a-zA-Z0-9/_-]+', '-')), '(^-|-$)', '')) || ')'));
 
