@@ -80,8 +80,7 @@
               ELSE NULL
             END as grouped_path
           FROM vault
-          WHERE file_path NOT LIKE '%_index%'
-            AND file_path NOT LIKE '%_radar%'
+          WHERE file_path NOT LIKE '%_radar%'
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
@@ -222,7 +221,7 @@
                   .replace(/\/+/g, '/')  // Replace multiple slashes with a single slash
                   .toLowerCase()
                   .split('/')
-                  .map(segment => segment.replace(/^-+|-+$/g, ''))  // Clean each path segment
+                  .map(segment => segment.replace(/^-+|-+$/g, '').replace(/_index$/, ''))  // Clean each path segment and remove _index suffix
                   .join('/')}/`
                 const isActive = location.pathname === path;
                 html += `

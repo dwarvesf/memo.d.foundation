@@ -103,6 +103,7 @@ defmodule Memo.Common.LinkUtils do
         Map.get(resolved_links, link, link)
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
+        |> remove_index_suffix()
 
       if file_valid?(link, current_file) do
         "[#{alt_text}](#{resolved_path})"
@@ -113,11 +114,12 @@ defmodule Memo.Common.LinkUtils do
   end
 
   defp convert_links_without_alt_text(content, resolved_links, current_file) do
-    Regex.replace(~r/(?<![`\w])\[\[([^\]]+)\]\](?![`\w])/, content, fn _full_match, link ->
+    Regex.replace(~r/(?![`\w])\[\[([^\]]+)\]\](?![`\w])/, content, fn _full_match, link ->
       resolved_path =
         Map.get(resolved_links, link, "#{link}.md")
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
+        |> remove_index_suffix()
 
       alt_text = Path.basename(resolved_path, ".md")
 
@@ -150,6 +152,7 @@ defmodule Memo.Common.LinkUtils do
         Map.get(resolved_links, link, link)
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
+        |> remove_index_suffix()
 
       if file_valid?(link, current_file) do
         "[#{alt_text}](#{resolved_path})"
@@ -179,5 +182,11 @@ defmodule Memo.Common.LinkUtils do
 
     IO.puts("Checking file existence: #{normalized_path}")
     File.exists?(normalized_path)
+  end
+
+  defp remove_index_suffix(path) do
+    path
+    |> String.replace(~r/_index\.md$/, ".md")
+    |> String.replace(~r/_index$/, "")
   end
 end
