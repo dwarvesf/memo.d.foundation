@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai</li><div>Stats</div><li class=span><span>Words:
 </span>489</li><li class=span><span>Characters:
-</span>8488</li><li class=span><span>Without Spaces:
+</span>10375</li><li class=span><span>Without Spaces:
 </span>2690</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li></ul></li></ul></li><li><p>Install node library and run</p><ul><li>Run <code>yarn install</code> inside repository root folder</li><li>Start web and waiting load model, Run command: <code>yarn dev</code> to start the web. You will see the log after run command:
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -566,7 +590,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -575,10 +599,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li><p>Otherwise, you can use other bigger model to improve the output</p><ul><li>Using Alpaca 13B model, it require more memory. Download Alpaca 13B from <a href=https://huggingface.co/eachadea/ggml-gpt4-x-alpaca-13b-native-4bit/blob/main/gpt4-x-alpaca-13b-native-ggml-q4_0.bin target=_blank>here</a></li><li>Using gpt4All model, require another binding library from <a href=https://github.com/nomic-ai/gpt4all/tree/main/chat target=_blank>here</a> depending on your OS and download model from <a href=https://huggingface.co/4bit/gpt4all-lora-quantized/blob/main/gpt4all-lora-quantized.bin target=_blank>here</a></li><li>Using Alpaca 30B model, I had try using model gpt4-x-alpaca-30b-ggml-q4_1 but system cannot load it.</li><li>Using Alpaca 7B tunning with GPT4</li></ul></li><li><p>Test chatbot</p><ul><li>You can ask chatbot like this
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -592,7 +640,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -601,9 +649,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li></ul><h2 id=fine-tune-your-model>Fine-tune your model <a href=#fine-tune-your-model></a></h2><p>To fine tune your model you need create your dataset depend on your data, you can clone our example at <a href=https://github.com/thanhpn/df-dataset target=_blank>here</a></p><p>We are using Google colab to train pre-trained model, you can follow the code example at <a href="https://colab.research.google.com/drive/1TbV-Enz4O__GFXtqUWEFK0snYedOwPTh?usp=sharing" target=_blank>here</a></p><h2 id=comparing-the-chatbot-with-chatgpt3>Comparing the chatbot with ChatGPT3 <a href=#comparing-the-chatbot-with-chatgpt3></a></h2><p>For models with a large number of parameters, such as 30 billion or more, the results generated can be used as a suggestion for further research, but the quality of the answers will not be comparable to ChatGPT3.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://huggingface.co/docs/timm/main/en/quickstart#finetune-a-pretrained-model target=_blank>https://huggingface.co/docs/timm/main/en/quickstart#finetune-a-pretrained-model</a></li><li><a href=https://github.com/EwingYangs/awesome-open-gpt/tree/main target=_blank>https://github.com/EwingYangs/awesome-open-gpt/tree/main</a></li><li><a href=https://github.com/nomic-ai/gpt4all target=_blank>https://github.com/nomic-ai/gpt4all</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

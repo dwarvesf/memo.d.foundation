@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai</li><div>Stats</div><li class=span><span>Words:
 </span>664</li><li class=span><span>Characters:
-</span>7754</li><li class=span><span>Without Spaces:
+</span>8383</li><li class=span><span>Without Spaces:
 </span>4256</li><li class=span><span>Blocks:
 </span>8</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=question-answer-systems>Question Answer Systems <a href=#question-answer-systems></a></h3><p>In order to get question and answering from prompts, we follow 4 steps with langchain:</p><ol><li>Create an index</li><li>Create a Retriever from that index</li><li>Create a question answering chain</li><li>Ask questions!</li></ol><h2 id=example-agent-with-csvs>Example agent with CSVs <a href=#example-agent-with-csvs></a></h2><p>Below is an example using a CSV file through an agent. This CSV contains <code>red-alert</code> channel data from Dwarves&rsquo; discord as the context for our questions that we will be asking later.</p><ol start=0><li>First we load all of our <code>pip</code> packages</li></ol><pre><code class=language-sh>pip install langchain openai huggingface_hub gitpython chromadb tiktoken google-api-python-client llama-cpp-python
 </code></pre><ol><li>Then, with our <code>red_alert.csv</code> file, we create a loader with it on langchain and create a reference object by loading it.</li></ol><pre><code class=language-python>from langchain.document_loaders.csv_loader import CSVLoader

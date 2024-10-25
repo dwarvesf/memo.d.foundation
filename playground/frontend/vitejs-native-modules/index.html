@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>408</li><li class=span><span>Characters:
-</span>5976</li><li class=span><span>Without Spaces:
+</span>7234</li><li class=span><span>Without Spaces:
 </span>2377</li><li class=span><span>Blocks:
 </span>12</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h4 id=native-esm-based-dev-server>Native ESM based dev server <a href=#native-esm-based-dev-server></a></h4><p>Vite&rsquo;s approach was instead of bundling all everything on the server, it only bundles modules when the browser requires them through HTTP request.</p><p>This architecture provides a faster dev server by avoiding bundling all the application on the server and utilizing the power of modules handling of the browsers.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,9 +598,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=update-when-built>Update when built <a href=#update-when-built></a></h3><p>Rebuilding the whole bundle after making changes to your source code in a bundler-based build system is inefficient for the obvious reason that the update speed would degrade linearly with the app&rsquo;s size.</p><p><strong>HMR (Hot module replacement)</strong> is applied to native ESM in Vite. Vite consistently performs HMR updates quickly regardless of the size of your application by only needing to precisely invalidate the chain between the updated module and its nearest HMR boundary when a file is changed.</p><h3 id=why-bundle-for-production>Why Bundle for Production <a href=#why-bundle-for-production></a></h3><p>Despite the fact that native ESM is now generally supported, deploying unbundled ESM in production is still wasteful (even with HTTP/2) since nested imports require extra network round trips. It is still preferable to bundle your code with tree-shaking, lazy-loading, and common chunk splitting to get the best loading performance in production (for better caching).</p><h3 id=why-not-bundle-with-esbuild>Why not bundle with ESBuild? <a href=#why-not-bundle-with-esbuild></a></h3><p>While <code>esbuild</code> is lightning-quick and a very capable bundler for libraries, some crucial features required for bundling apps, specifically code-splitting and CSS handling, are still <strong>under development</strong>. <code>Rollup</code> is currently more capable and adaptable in several areas and being used in production.</p><h3 id=references>References <a href=#references></a></h3><ul><li><a href=https://vitejs.dev/guide/why.html target=_blank>https://vitejs.dev/guide/why.html</a></li><li><a href=https://www.telerik.com/blogs/whats-vite-guide-modern-super-fast-project-tooling target=_blank>https://www.telerik.com/blogs/whats-vite-guide-modern-super-fast-project-tooling</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

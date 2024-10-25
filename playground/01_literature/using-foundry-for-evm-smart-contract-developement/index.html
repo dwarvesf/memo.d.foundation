@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1609</li><li class=span><span>Characters:
-</span>22803</li><li class=span><span>Without Spaces:
+</span>24690</li><li class=span><span>Without Spaces:
 </span>11847</li><li class=span><span>Blocks:
 </span>40</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=managing-dependencies>Managing Dependencies <a href=#managing-dependencies></a></h2><p>Currently, there are two ways of managing dependencies in a Foundry projects</p><ul><li>Using <a href=https://git-scm.com/book/en/v2/Git-Tools-Submodules target=_blank>Git Submodules</a></li><li>Using <a href=https://soldeer.xyz/ target=_blank>Soldeer</a> - A Solidity native dependency manager</li></ul><p>By default, Foundry uses <em>Git Submodules</em> for managing dependencies. However, I prefer <em>Solder</em> for my EVM repository template because it integrates well with <em>forge</em> - A command-line tool included with Foundry.</p><h2 id=toolbox-overview>Toolbox Overview <a href=#toolbox-overview></a></h2><p>Foundry offers a powerful suite of tools to resolve our development development needs:</p><ul><li><a href=https://book.getfoundry.sh/forge/ target=_blank>Forge</a> - Builds, tests and deploys EVM smart contracts</li><li><a href=https://book.getfoundry.sh/cast/ target=_blank>Cast</a> - Allows interaction with smart contracts, including making calls, sending transactions, and retrieving data.</li><li><a href=https://book.getfoundry.sh/anvil/ target=_blank>Anvil</a> - Create local testnet node for deploying and testing smart contracts</li><li><a href=https://book.getfoundry.sh/chisel target=_blank>Chisel</a> - Provides an advanced Solidity REPL for rapid testing of code snippets.</li></ul><p>In the scope of this memo, we&rsquo;ll focus on <em>Forge</em> for constructing a template EVM contract repository.</p><h2 id=showcase-preparation>Showcase Preparation <a href=#showcase-preparation></a></h2><p>Let&rsquo;s create a fresh repository with the following files and folders:</p><pre><code>- src
   - contracts
@@ -791,7 +815,7 @@ contract StreamPointsTest is Test {
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -800,10 +824,34 @@ contract StreamPointsTest is Test {
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=deploying-icyswap-contract-to-base-sepolia-testnet>Deploying <code>IcySwap</code> contract to <code>Base Sepolia</code> testnet <a href=#deploying-icyswap-contract-to-base-sepolia-testnet></a></h3><p>Before deploying <code>IcySwap</code> contract to <code>Base Sepolia</code> testnet, we need to have following environment variables in <code>.env</code> file:</p><pre><code>WALLET_PRIVATE_KEY=&lt;your_wallet_private_key&gt;
 BLOCK_EXPLORER_API_KEY=&lt;your_block_explorer_api_key_from_basescan&gt;
@@ -840,7 +888,7 @@ contract IcySwapScript is Script {
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -849,9 +897,33 @@ contract IcySwapScript is Script {
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=other-usages>Other Usages <a href=#other-usages></a></h2><p>Foundry is not just be here to resolve our common tasks like compiling, testing and deploying smart contracts. It also provides a lot of other features that can be used to enhance our development workflow. One of them is <code>Fork testing</code>.</p><p><a href=https://book.getfoundry.sh/forge/fork-testing target=_blank>Fork testing</a> is like a time machine that allows us to test our contracts on a forked mainnet and move to a specific block for testing.</p><p>I found an interesting repository that use Foundry to reproduce a lot of DeFi hacked incidents in the past - It&rsquo;s <a href=https://github.com/SunWeb3Sec/DeFiHackLabs target=_blank>DeFiHackLabs</a>.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://book.getfoundry.sh/getting-started/first-steps target=_blank>https://book.getfoundry.sh/getting-started/first-steps</a></li><li><a href=https://milotruck.github.io/blog/Foundry-Cheatsheet/ target=_blank>https://milotruck.github.io/blog/Foundry-Cheatsheet/</a></li><li><a href=https://github.com/SunWeb3Sec/DeFiHackLabs target=_blank>https://github.com/SunWeb3Sec/DeFiHackLabs</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

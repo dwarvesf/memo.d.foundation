@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai/use-cases</li><div>Stats</div><li class=span><span>Words:
 </span>1021</li><li class=span><span>Characters:
-</span>15750</li><li class=span><span>Without Spaces:
+</span>19524</li><li class=span><span>Without Spaces:
 </span>6121</li><li class=span><span>Blocks:
 </span>21</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Yelp put together a dataset ( you can find <a href=https://huggingface.co/datasets/Yelp/yelp_review_full target=_blank>this datasets at here</a>, based on 5 star rating system review) of old inappropriate reviews to train their model. This dataset had labeled examples of really bad language. To make the model work even better, they used a few tricks like:</p><ul><li><strong>Scoring System</strong>: Moderators rated how bad the inappropriate content was.</li><li><strong>Sentence Embeddings</strong>: They used LLMs to find reviews that were similar to high-quality examples to bulk up the dataset.</li><li><strong>Sampling Techniques</strong>: They adjust the dataset by over-sampling and under-sampling to boost recall, especially for rare types of inappropriate content. <strong>They also used zero-shot and few-shot technique</strong> to handle cases where there wasn’t enough data for certain categories.</li></ul><p><strong>Yelp used a curated dataset and LLM model from HuggingFace to classify inappropriate reviews.</strong> They evaluated model performance by visualizing sentence embeddings and fine-tuned the model to improve accuracy.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Since incorporating LLMs to help detect harmful and inappropriate content, it enabled Yelp moderators to proactively prevent <strong>23,600+ reviews from ever publishing to Yelp in 2023</strong>.</p><h3 id=photo-embeddings-with-clip-model>Photo embeddings with CLIP model <a href=#photo-embeddings-with-clip-model></a></h3><p>Yelp uses business and photo embeddings to enhance data accessibility and improve recommendations, semantic search, and clustering.</p><ol><li><strong>Business Embeddings</strong>: These are created by averaging the vector embeddings of the 50 most recent reviews of a business, representing its metadata. Before LLM trends grows, they are apply ML for this feature.</li><li><strong>Photo Embeddings</strong>: Yelp uses <strong>OpenAI&rsquo;s CLIP model</strong> to generate semantic representations of images. CLIP is a zero-shot model that pairs images with relevant text, helping classify photos more accurately with minimal data.</li></ol><p><strong>Semantic Understanding:</strong> CLIP is employed to generate semantic embeddings of images, enabling the system to understand and categorize the content of photos effectively. For example from Yelp, we observe that many <strong>Interior</strong> and <strong>Exterior</strong> photos get classified as <strong>Other</strong> by the CLIP model. Here are some examples for <strong>Interior</strong>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -590,7 +638,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -599,10 +647,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Category Identification:</strong> The model classifies photos into predefined categories such as <strong>Food</strong>, <strong>Drinks</strong>, <strong>Menu</strong>. For example, Images labeled <strong>Waffles</strong> in Yelp dataset were considered misclassified as <strong>Chicken Wings or Fried Chicken</strong> by the CLIP model.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -615,7 +687,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -624,10 +696,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Yelp&rsquo;s project involves generating new embeddings for its extensive data using models like CLIP. These embeddings (for reviews, photos, and metadata) allow Yelp to improve the breadth, depth, and accuracy of its content, making it more useful for internal teams. They plan to fine-tune the CLIP model to enhance photo embeddings and expand business embeddings by integrating multiple data types. With hundreds of millions of embeddings, different teams at Yelp are already leveraging this data to enhance their products and services.</p><h2 id=review-highlights-and-tagging>Review highlights and tagging <a href=#review-highlights-and-tagging></a></h2><p>They’ve also improved the search experience with <strong>AI and LLMs</strong> (Large Language Models). These updates help you find exactly what you’re looking for by analyzing all the user-generated content on Yelp and giving you smarter, more relevant search results. They’ve even added a fun new <strong>“Surprise Me”</strong> feature that suggests places to eat when you’re not sure what you want, and new clickable tags to make narrowing down your search easier.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -640,7 +736,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -649,10 +745,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Another cool addition is how Yelp’s making reviews more engaging. You can now <strong>add videos to your reviews</strong>, making them more immersive and interactive. They’ve also added <strong>new review reactions</strong> (think thumbs up or similar) and <strong>review topics</strong> to help you write better, more organized reviews.</p><h2 id=yelp-assistant>Yelp Assistant <a href=#yelp-assistant></a></h2><p>Yelp is using Large Language Models (LLMs) in some cool ways to make things easier for both users and businesses. One of the main features powered by LLMs is <strong>Yelp Assistant</strong>, a conversational AI tool that helps you find and hire service pros. You can just tell Yelp Assistant what you need, and it’ll ask you follow-up questions, then match you with the best local pros for the job. It’s smart because it pulls from Yelp’s huge collection of business info and reviews, making sure you get the right fit.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -665,7 +785,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -674,9 +794,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Yelp’s also got the <strong>Yelp Fusion AI API</strong>, which lets other companies integrate Yelp’s content into their own apps or platforms. So, if you’re on a different app and you ask something like, &ldquo;Find a coffee shop with free Wi-Fi nearby,&rdquo; the LLMs will pull from Yelp’s data and give you solid recommendations, complete with reviews, ratings, and photos. It’s a way for third-party apps to give their users access to Yelp’s content with smart, natural language searches.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In terms of user experience, Yelp&rsquo;s integration of AI and large language models (LLMs) has changed the platform by improving search intelligence, review insight, and content moderation effectiveness. Yelp is transforming the way businesses communicate with consumers by applying these advanced technologies. Yelp is using LLMs in a bunch of different ways, from helping user find service pros with LLM, to making search results smarter, to powering other apps with Yelp’s data. It’s all about making things easier, faster, and more personalized for users.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://engineeringblog.yelp.com/2023/04/yelp-content-as-embeddings.html target=_blank>https://engineeringblog.yelp.com/2023/04/yelp-content-as-embeddings.html</a></li><li><a href=https://blog.yelp.com/businesses/new-yelp-business-features-august-2023/ target=_blank>https://blog.yelp.com/businesses/new-yelp-business-features-august-2023/</a></li><li><a href=https://engineeringblog.yelp.com/2018/05/scaling-collaborative-filtering-with-pyspark.html target=_blank>https://engineeringblog.yelp.com/2018/05/scaling-collaborative-filtering-with-pyspark.html</a></li><li><a href=https://engineeringblog.yelp.com/2024/03/ai-pipeline-inappropriate-language-detection.html target=_blank>https://engineeringblog.yelp.com/2024/03/ai-pipeline-inappropriate-language-detection.html</a></li><li><a href=https://www.yelp-press.com/press-releases/press-release-details/2023/Yelp-Introduces-New-Ways-to-Discover-and-Connect-with-Local-Businesses-and-Contribute-Helpful-Content/default.aspx target=_blank>https://www.yelp-press.com/press-releases/press-release-details/2023/Yelp-Introduces-New-Ways-to-Discover-and-Connect-with-Local-Businesses-and-Contribute-Helpful-Content/default.aspx</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/blockchain</li><div>Stats</div><li class=span><span>Words:
 </span>405</li><li class=span><span>Characters:
-</span>5422</li><li class=span><span>Without Spaces:
+</span>6680</li><li class=span><span>Without Spaces:
 </span>2262</li><li class=span><span>Blocks:
 </span>8</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=how-compression-for-nfts-works>How Compression for NFTs works <a href=#how-compression-for-nfts-works></a></h2><p>Compressed NFTs are stored in Merkle trees via the Gummyroll program where:</p><ul><li>Roots of Merkle trees are stored and updated on-chain in a buffer stored in a program account</li><li>Modifications to a tree (e.g. mint, transfer, delegate) are encoded in the Solana ledger</li><li>Off-chain indexers observe changes to the tree via the ledger and cache NFT-related metadata, and serve data and proofs needed to power dApps and smart contracts</li></ul><p>The Merkle root&rsquo;s on-chain buffer in the Gummyroll program enables multiple write requests to a single Merkle tree to be processed simultaneously. As updates to the tree cause the root to change, the program ensures that outdated requests to update the tree remain valid if they would have updated a prior version of the tree, given the nature of how Merkle trees operate.</p><p>The implementation of Compression for NFTs will have a significant impact on the Solana ecosystem, and Metaplex is working towards making this a reality. To achieve this, Metaplex is collaborating with various partners, including wallets and RPCs. Some of the partners that have already implemented solutions include Solflare for wallets, Crossmint for enterprise tools, and GenysysGo and Triton for RPCs. Additionally, partners such as Phantom for wallets and Quicknode and Alchemy for RPCs are expected to launch their solutions soon.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,9 +598,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>This is just a brief overview of Compression for NFTs. There is much more to explore, whether from a technical perspective or in terms of potential use cases. Nevertheless, this technological advancement marks a significant shift in how users, developers, and businesses can approach NFTs in Solana blockchain.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://www.metaplex.com/posts/expanding-digital-assets-with-compression-for-nfts target=_blank>https://www.metaplex.com/posts/expanding-digital-assets-with-compression-for-nfts</a></li><li><a href=https://metaplex.notion.site/Compression-for-NFTs-Public-94f9faa25f034110b513414a11a85bbe target=_blank>https://metaplex.notion.site/Compression-for-NFTs-Public-94f9faa25f034110b513414a11a85bbe</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

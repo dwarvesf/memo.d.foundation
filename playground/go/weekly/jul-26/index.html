@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/go/weekly</li><div>Stats</div><li class=span><span>Words:
 </span>779</li><li class=span><span>Characters:
-</span>10104</li><li class=span><span>Without Spaces:
+</span>11362</li><li class=span><span>Without Spaces:
 </span>4283</li><li class=span><span>Blocks:
 </span>32</li><li class=span><span>Est reading Time:
 </span>17m 0s</li></ul></div></div></div></div><main x-data='{
@@ -548,7 +548,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -557,10 +557,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Resolving DNS and opening new TLS connection is slow (~160ms) but probably not notice how slow it is because the browser will open connect once and reuse it for many requests and HTTP/2 or HTTP/3 would be faster.</p></li><li><p>Can&rsquo;t rely on reusing connections since the need of sending many requests to many different hosts in different networks.</p></li><li><p>Would get rate-limited or banned quickly.</p></li></ul></li><li><p>Solution: Spread the load on many servers</p><ul><li><p>Remove what we can from the steps: <code>Request parsing</code> and <code>DNS resolution</code>. (Simple crafted HTTP/1.1 requests by hand and <a href=https://github.com/blechschmidt/massdns target=_blank>massdns</a> to resolve thousands of DNS records in a couple of seconds)</p></li><li><p>Design the HTTP/1.1 sending mechanism:</p><ul><li><p>Multiple worker pools that piped together:</p><ol><li>Request generation pool</li><li>Sender pool</li><li>Response pool</li></ol></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -573,7 +597,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -582,10 +606,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Use a concurrency-safe <a href=https://github.com/enriquebris/goconcurrentqueue target=_blank>queue</a> to seperate the worker pools and to reuse the objects and memory as much as possible.</li></ul></li><li><p>Choose <code>fasthttp</code> over <code>net/http</code> to get x10 faster according to the <a href="https://github.com/valyala/fasthttp?tab=readme-ov-file#http-client-comparison-with-nethttp" target=_blank>benmark</a></p></li><li><p>Optimize the fasthttp&rsquo;s client to get rid of normalization step (fork and edit the lib)</p><pre><code class=language-go>req := rawfasthttp.AcquireRequest()
 resp := rawfasthttp.AcquireResponse()

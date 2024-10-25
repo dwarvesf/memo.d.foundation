@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>898</li><li class=span><span>Characters:
-</span>10982</li><li class=span><span>Without Spaces:
+</span>12240</li><li class=span><span>Without Spaces:
 </span>4916</li><li class=span><span>Blocks:
 </span>23</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div><main x-data='{
@@ -546,7 +546,7 @@ openRequest.onsuccess = () =&gt; {
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -555,10 +555,34 @@ openRequest.onsuccess = () =&gt; {
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><pre><code class=language-javascript>db.createObjectStore('books' /* name */, { keyPath: 'id' })
 </code></pre><blockquote><p><a href=https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore target=_blank>Read more</a> about <strong>IDBObjectStore</strong>, an interface of IndexDB API that represents object stores.</p></blockquote><h3 id=transaction>Transaction <a href=#transaction></a></h3><p>An atomic set of <em>data-access</em> and <em>data-modification</em> operations on a particular database, they should either <strong>all succeed</strong> or <strong>all fail</strong>. It is how you interact with the data in a database. <strong>Any reading or changing of data in the database must happen in a transaction</strong>.</p><p>A database connection can have several active transactions associated with it at a time, so long as the writing transactions do not have overlapping scopes. The scope of transactions gives us information of during the transaction, which object stores are involved (and are expected to be modified) and which of them remain.</p><pre><code class=language-javascript>const trans = db.transaction(&quot;books&quot; /* store */, &quot;readwrite&quot; /* type */)
@@ -593,7 +617,7 @@ openRequest.onupgradeneeded = () =&gt; {
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -602,10 +626,34 @@ openRequest.onupgradeneeded = () =&gt; {
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=cursor>Cursor <a href=#cursor></a></h3><p>With a huge object store, bigger than the available memory, <code>getAll</code> might fail to get all records as an array. Cursors provide the means to work around that.</p><p><strong>A cursor is a special object that traverses the object storage using a given query, and returns one key/value at a time, thus saving memory</strong>.</p><pre><code class=language-javascript>const request = store.openCursor('id' /* query */, ['next' /* or 'prev', 'nextunique'... */])
 

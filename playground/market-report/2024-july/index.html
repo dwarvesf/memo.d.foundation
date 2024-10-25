@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/market-report</li><div>Stats</div><li class=span><span>Words:
 </span>1233</li><li class=span><span>Characters:
-</span>16995</li><li class=span><span>Without Spaces:
+</span>19511</li><li class=span><span>Without Spaces:
 </span>8362</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div><main x-data='{
@@ -542,7 +542,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -551,10 +551,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>We believe this move presents exciting opportunities for optimizing AI applications. The benefits of fine-tuning include higher quality results, significant token savings, and lower latency - all crucial factors in production environments.</p><p>However, it&rsquo;s important to note that fine-tuning should be considered after exploring other optimization methods like prompt engineering, prompt chaining, and function calling. <a href=https://christianjmills.com/posts/mastering-llms-course-notes/conference-talk-009/ target=_blank>Long Live Fine-Tuning</a>. These methods often yield good results with a faster feedback loop than fine-tuning, which requires dataset creation and training jobs. As we integrate this technology into our systems, we&rsquo;ll need to carefully weigh the trade-offs between the time investment in fine-tuning and the potential performance gains, especially for mission-critical applications.</p><h2 id=claude-sonnet-35-accelerating-technical-founder-productivity>Claude Sonnet 3.5: Accelerating Technical Founder Productivity <a href=#claude-sonnet-35-accelerating-technical-founder-productivity></a></h2><p>The recent release of Claude Sonnet 3.5 is reshaping the landscape of software development for technical founders. This Large Language Model (LLM) stands out from its predecessors by offering an unprecedented level of comfort and efficiency in implementation tasks. Early adopters report a staggering 10x improvement in development speed for UI components and other technical aspects of popular applications. This acceleration in coding productivity allows founders to focus more on critical architectural and infrastructure decisions, potentially revolutionizing the pace of innovation in the startup ecosystem.</p><p>The workflow enabled by Claude Sonnet 3.5 is very relatable, as we use similar methods with Claude to speed up development and design cycles, with thorough planning and prompting. However, it&rsquo;s crucial to note that while this tool significantly enhances coding efficiency, it doesn&rsquo;t replace the need for sound architectural decision-making. As we integrate this technology into our development processes, we&rsquo;ll need to carefully balance the rapid iteration capabilities with maintaining code quality and system integrity.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -567,7 +591,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -576,10 +600,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=advancements-in-ai-for-sports-and-audio-enhancing-performance-analysis-and-communication>Advancements in AI for Sports and Audio: Enhancing Performance Analysis and Communication <a href=#advancements-in-ai-for-sports-and-audio-enhancing-performance-analysis-and-communication></a></h2><p>Recent developments in artificial intelligence have led to significant advancements in both sports analytics and audio processing. Roboflow has developed a suite of computer vision tools specifically tailored for sports applications, addressing challenges such as ball tracking, player identification, and camera calibration in high-resolution video analysis.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><video x-data="{
     title: ``,
@@ -592,7 +640,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -601,10 +649,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" controls :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></video></p><p>ElevenLabs has introduced Turbo v2.5, a state-of-the-art text-to-speech model that supports 32 languages, including new additions like Vietnamese, Hungarian, and Norwegian. This model offers high-quality, low-latency conversational AI capabilities, potentially revolutionizing multilingual communication in various fields, including sports commentary and analysis.</p><p>The most practical advancement we see of the two would be ElevenLabs’ Turbo v2.5. There is not much significant difference between it’s last in terms of spoken English, but they have recently supported other languages, especially Vietnamese. The quality of speech with foreign languages has also been quite exceptional and it opens a lot of doors for software that require natural conversations or voice design and acting.</p><h2 id=cybersecurity-vulnerabilities-and-it-outages-a-wake-up-call-for-diversified-systems>Cybersecurity Vulnerabilities and IT Outages: A Wake-up Call for Diversified Systems <a href=#cybersecurity-vulnerabilities-and-it-outages-a-wake-up-call-for-diversified-systems></a></h2><p>Recent events have exposed significant vulnerabilities in enterprise cybersecurity systems and version control platforms. A global IT outage caused by a <a href=https://www.nbcconnecticut.com/news/business/money-report/how-a-software-update-caused-one-of-the-worlds-biggest-it-blackouts/3339921/ target=_blank>faulty CrowdStrike update</a> and the discovery of a <a href=https://trufflesecurity.com/blog/anyone-can-access-deleted-and-private-repo-data-github target=_blank>Cross Fork Object Reference (CFOR)</a> vulnerability in GitHub&rsquo;s architecture highlight the risks of over-reliance on single systems. The CrowdStrike incident demonstrated how deeply integrated security software can become a critical point of failure, while the GitHub vulnerability revealed unexpected data exposure risks in collaborative development environments.</p><p>From what we see, these incidents underscore the importance of diversified and resilient system designs. The widespread impact of the CrowdStrike outage serves as a stark reminder that we shouldn&rsquo;t put all our eggs in one basket, especially regarding critical infrastructure and security solutions. Moving forward, we must prioritize the development of more robust, distributed systems that can withstand single-point failures. This is not isolated to just these incidents, but similar events on our side have been clear indicators for us to better decentralize our subscriptions with vendors.</p><h2 id=where-javascript-and-tech-sits-in-software-engineering>Where JavaScript and Tech sits in Software Engineering <a href=#where-javascript-and-tech-sits-in-software-engineering></a></h2><p>The JavaScript ecosystem and broader software engineering field are undergoing significant shifts in 2024. The job market for software engineers has tightened, slowing career advancement and increasing competition. This climate is driving several key trends:</p><ol><li>Adoption of &ldquo;boring&rdquo; technology and monoliths, prioritizing stability over cutting-edge solutions.</li><li>Growing momentum for Full Stack development and TypeScript.</li><li>Increased responsibilities &ldquo;shifting left&rdquo; onto developers.</li></ol><p>The 2024 Stack Overflow survey reveals interesting insights:</p><ul><li>Erlang developers command the highest median salary at $100,836, followed closely by Elixir and Clojure.</li><li>AI tools are expected to become more integrated into development workflows, particularly in documenting code (81%), testing code (80%), and writing code (76%).</li><li>JavaScript, despite being the mainstay language of developers, has seen a drop in median salary:
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -618,7 +690,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -627,9 +699,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul><p>These trends suggest a software engineering landscape that values efficiency, reliability, and versatility. There is a necessity to adapt to these changes while maintaining a balanced approach to technology adoption. The increasing integration of AI tools presents both opportunities and challenges, particularly in areas of code documentation and testing. Moving forward, it&rsquo;s crucial to leverage these tools effectively while ensuring we don&rsquo;t overlook the importance of human expertise and hard skill in software development.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://newsletter.pragmaticengineer.com/p/what-is-old-is-new-again target=_blank>https://newsletter.pragmaticengineer.com/p/what-is-old-is-new-again</a></li><li><a href=https://x.com/garrytan/status/1814732623073456165https://survey.stackoverflow.co/2024/ target=_blank></a><a href=https://x.com/garrytan/status/1814732623073456165 target=_blank>https://x.com/garrytan/status/1814732623073456165</a></li><li><a href=https://trufflesecurity.com/blog/anyone-can-access-deleted-and-private-repo-data-github target=_blank>https://trufflesecurity.com/blog/anyone-can-access-deleted-and-private-repo-data-github</a></li><li><a href=https://elevenlabs.io/blog/thoughtly target=_blank>https://elevenlabs.io/blog/thoughtly</a></li><li><a href=https://web.swipeinsight.app/posts/openai-introduces-fine-tuning-for-gpt-4o-mini-8957 target=_blank>https://web.swipeinsight.app/posts/openai-introduces-fine-tuning-for-gpt-4o-mini-8957</a></li><li><a href=https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/ target=_blank>https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/</a></li><li><a href=https://github.com/roboflow/sports target=_blank>https://github.com/roboflow/sports</a></li><li><a href=https://2023.stateofjs.com/en-US target=_blank>https://2023.stateofjs.com/en-US</a></li><li><a href="https://newsletter.pragmaticengineer.com/p/what-is-old-is-new-again?ref=blog.pragmaticengineer.com" target=_blank>https://newsletter.pragmaticengineer.com/p/what-is-old-is-new-again?ref=blog.pragmaticengineer.com</a></li><li><a href=https://survey.stackoverflow.co/2024/ target=_blank>https://survey.stackoverflow.co/2024/</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

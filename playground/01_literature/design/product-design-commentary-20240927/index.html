@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature/design</li><div>Stats</div><li class=span><span>Words:
 </span>712</li><li class=span><span>Characters:
-</span>12810</li><li class=span><span>Without Spaces:
+</span>15326</li><li class=span><span>Without Spaces:
 </span>4092</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=augmented-reality-ar-and-virtual-reality-vr>Augmented Reality (AR) and Virtual Reality (VR) <a href=#augmented-reality-ar-and-virtual-reality-vr></a></h2><p>AR and VR are quickly becoming standards in multiple industries, enhancing both user experience and product interaction.</p><h3 id=growth-forecast>Growth Forecast <a href=#growth-forecast></a></h3><p>The number of AR users is expected to increase from <strong>0.44 billion in 2019</strong> to <strong>1.73 billion by 2024</strong>, with the AR/VR market projected to reach <strong>$40 billion in revenue by 2027</strong>.</p><h3 id=practical-applications-in-ux>Practical Applications in UX <a href=#practical-applications-in-ux></a></h3><ul><li><strong>E-commerce</strong>: AR allows users to preview products in real-world environments, such as <strong>trying on shoes virtually</strong>, <strong>placing furniture in a room</strong>, or <strong>trying on clothing</strong>.<ul><li>Example: <a href=https://www.lorealparisusa.com/skin-care/facial-moisturizers/age-perfect-rosy-tone-cooling-night-moisturizer target=_blank>L&rsquo;Oreal AR Skincare</a></li><li>Example: <a href=https://www.warbyparker.com/ target=_blank>Warby Parker AR Glasses Try-On</a></li></ul></li><li><strong>Education and Training</strong>: VR is being utilized to provide immersive, direct-learning environments, where learners can practice skills in a safe, virtual setting.</li></ul><h3 id=products-leading-arvr-trends>Products Leading AR/VR Trends <a href=#products-leading-arvr-trends></a></h3><p><strong>Vietnam</strong>:</p><ul><li><strong>VinFast AR/VR</strong>: <a href=https://vinfastauto.com/vn_vi/vingroup-phat-trien-cong-nghe-arvr-tai-showroom-vin3s target=_blank>VinFast Showroom with AR/VR</a></li><li><strong>Viettel x VR360</strong>: <a href=https://vr360.com.vn/du-an-hop-tac-giua-viettel-va-vr360 target=_blank>Viettel Collaboration with VR360</a></li></ul><p><strong>Global Products</strong>:</p><ul><li><strong>Meta Horizon Worlds</strong>: <a href=https://www.meta.com/horizon-worlds/ target=_blank>Meta Horizon World</a></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=modular-design-systems>Modular Design Systems <a href=#modular-design-systems></a></h2><p><strong>Modular Design Systems</strong> allow teams to build reusable components that create consistency across products. Elements like buttons, navigation bars, fonts, and more are organized into a system, making it easy for teams to maintain a unified user experience across different platforms.</p><h3 id=benefits>Benefits <a href=#benefits></a></h3><p>Modular systems are designed once and can be reused across various products, saving development time and ensuring a cohesive user experience.</p><h3 id=examples>Examples <a href=#examples></a></h3><ul><li><strong>Ant Design</strong>: <a href=https://ant.design/ target=_blank>Ant Design System</a></li><li><strong>Tailwind CSS</strong>: <a href=https://flowbite.com/docs/getting-started/introduction/ target=_blank>Tailwinds Flowbite</a></li><li><strong>Shadcn UI</strong>: <a href=https://ui.shadcn.com/docs/figma target=_blank>Shadcn UI Design System</a></li></ul><p><em>All these systems are available as Figma libraries as well as for development, making it easy to ensure design and implementation are well-aligned.</em></p><h3 id=application-in-design--development>Application in Design & Development <a href=#application-in-design--development></a></h3><ul><li><strong>For Designers</strong>: Designers use the design system as the primary source for creating components in Figma. All designs strictly adhere to the principles of the system library, limiting customization.</li><li><strong>For Developers</strong>: Developers also have access to the pre-built component libraries that follow the design system. This ensures that the web version closely mirrors the design mockups.</li></ul><p>One significant advantage is <strong>responsiveness across devices</strong>. By using a single web design, it can adapt to tablet and mobile formats easily.</p><p>Example: <a href=https://flowbite.com/docs/components/tables/ target=_blank>Flowbite Component Example</a></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -590,7 +638,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -599,10 +647,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=ai-tools-for-ux-ui-and-product-designers>AI Tools for UX, UI, and Product Designers <a href=#ai-tools-for-ux-ui-and-product-designers></a></h2><p>AI is transforming the design industry by automating repetitive tasks, streamlining the research process, and optimizing UI/UX design.</p><h3 id=for-ux--research>For UX & Research <a href=#for-ux--research></a></h3><p>AI plays a crucial role in <strong>UX research</strong>, helping designers better understand user behavior and needs by analyzing data and automating research processes. These tools provide data-driven insights that optimize the user experience from the early stages.</p><ul><li><strong>ChatGPT</strong>: <a href=https://chatgpt.com/ target=_blank>ChatGPT</a></li><li><strong>Maze</strong>: <a href=https://maze.co/ai/ target=_blank>Maze AI Testing</a></li><li><strong>Claude AI</strong>: <a href=https://claude.ai/new target=_blank>Claude AI</a></li></ul><h3 id=for-ui-design>For UI Design <a href=#for-ui-design></a></h3><p>AI also plays an important role in <strong>automating UI design processes</strong> such as layout adjustment, color selection, and image processing. This helps UI designers save time while ensuring that the user interface always meets the highest standards of aesthetics and functionality.</p><ul><li><strong>Uizard</strong>: <a href=https://uizard.io/ target=_blank>Uizard</a></li><li><strong>Galileo AI</strong>: <a href=https://www.usegalileo.ai/ target=_blank>Galileo AI</a></li><li><strong>Creatie AI:</strong> <a href=https://creatie.ai target=_blank>Creatie AI</a></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -615,7 +687,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -624,9 +696,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>The integration of VUI, AR/VR, Modular Design Systems, and AI is transforming modern design by enhancing user experience and streamlining workflows. To stay competitive, designers must leverage these tools effectively, focusing on user feedback, privacy, personalization, and cross-platform performance. Embracing these technologies will enable teams to create innovative, user-centered products that stand out in the market.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

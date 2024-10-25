@@ -492,7 +492,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>560</li><li class=span><span>Characters:
-</span>8161</li><li class=span><span>Without Spaces:
+</span>10048</li><li class=span><span>Without Spaces:
 </span>3006</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data="{
@@ -539,7 +539,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -548,10 +548,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Core</li><li>Team</li><li>Personal</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -564,7 +588,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -573,10 +597,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=incompetent-assholes-fire-fast>Incompetent Assholes (Fire fast) <a href=#incompetent-assholes-fire-fast></a></h3><p>Low-performers and their behavior is incongruent with company values. Fire fast.</p><h3 id=competent-assholes-remediate-or-separate>Competent Assholes (Remediate or Separate) <a href=#competent-assholes-remediate-or-separate></a></h3><p>High-performers but exhibit behavioral tendencies that are incongruent with your company values. The only reason to keep them is because they are seen as critical to the company or difficult to replace.</p><p>Exceptions shouldn’t be made, otherwise it shows your values are merely aspirational. It should be made clear that value-incongruent behavior is not tolerated and they will need to remediate their behavior in a measurable way within a limited time.</p><!-- child_page e3ce81f5-e335-4b71-b97f-eeffa2aabde3 --><h3 id=incompetent-nice-guys-manage-or-move>Incompetent Nice Guys (Manage or Move) <a href=#incompetent-nice-guys-manage-or-move></a></h3><p>Low-performers but is the exemplars of your culture and are well-liked by almost everyone.</p><p>Incompetent nice guys and gals should be put on a traditional performance improvement plan (PIP), and skillfully managed in order to give them the training and feedback to improve their abilities.</p><p>Of course, if that is not possible or does not work out, they should also be separated from the company.</p><!-- child_page 4007b6a1-df17-48ad-aace-f815a7d07e86 --><h3 id=competent-and-outstanding-nice-guys-praise-and-raise>Competent and Outstanding Nice Guys (Praise and Raise) <a href=#competent-and-outstanding-nice-guys-praise-and-raise></a></h3><p>Competent nice guys and gals earn up to 75% of the maximum <strong>employee evaluation score</strong>, and should be praised and given the opportunity for advancement.</p><p>By building this designation directly into the evaluation matrix, outstanding nice guys and gals should be formally recognized and rewarded with raises and promotions.</p><p>10x engineer can&rsquo;t be an asshole. They will decrease the performance of the people around them.</p><h2 id=the-dark-triad>The Dark Triad <a href=#the-dark-triad></a></h2><p><a href>📎 dark-triad.pdf</a></p><p>The key to understanding the Dark Triad is that while all three share a callousness toward others that encourages manipulativeness, they do so for distinct reasons. Psychopaths are driven by short-term tangible rewards, and engage in reckless, antisocial behavior to get it. Machiavellians are fueled by long-term tangible rewards and will strategize schemes to get them. Narcissists are motivated by whatever boosts their ego, whether tangible rewards or simple praise that validates their idealized self-image.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -589,7 +637,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -598,9 +646,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

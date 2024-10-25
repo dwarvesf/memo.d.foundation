@@ -492,7 +492,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1752</li><li class=span><span>Characters:
-</span>22035</li><li class=span><span>Without Spaces:
+</span>27067</li><li class=span><span>Without Spaces:
 </span>8583</li><li class=span><span>Blocks:
 </span>58</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div><main x-data='{
@@ -539,7 +539,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -548,10 +548,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=mixed-up-headings>Mixed-up headings <a href=#mixed-up-headings></a></h2><p>Headings might seem like a pain, but they actually make your writing awesome! Imagine your document as a house – headings are like the signs on each door, telling everyone what&rsquo;s inside. Using headings in order creates a clear structure, like a well-organized house. Readers can easily find the main points (like the kitchen!), understand the overall flow (living room to bedroom!), and jump straight to interesting sections (the game room!). Ordered headings also make your writing look sharp, keeping readers engaged.</p><p>There are two main types of headings:</p><pre><code class=language-bash># Heading Title (H1)
 Also known as the main title or headline of a page. H1 tags are the largest tags, and there can only be one H1 tag per article on a page.
@@ -569,7 +593,7 @@ These are titles that represent the content of each paragraph and include H2, H3
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -578,10 +602,34 @@ These are titles that represent the content of each paragraph and include H2, H3
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Heading structure for Memos:</strong></p><p>To create a heading in a Memo, you use the <code>#</code> symbol. The number of <code>#</code> symbols you use will determine the level of the heading. The more # symbols you use, the lower the heading level.</p><p>You should follow the following heading structure:</p><ul><li>heading 1: for the main title of the memo (<code>title:</code> located at the first line of the markdown)</li><li>heading 2: for subheadings (<code>##</code>)</li><li>heading 3: for more detailed headings (<code>###</code>)</li><li>heading 4, 5, 6: for sub-subheadings (<code>####</code>&mldr;) (optional)</li></ul><p>Aside from the main points mentioned, there are a few other <strong>things to keep in mind</strong> when using headings: Headings shouldn&rsquo;t be SHOUTING (all caps) - they should be clear and easy to read. Keep your heading colors consistent throughout your writing, and use different colors only for hyperlinks or notes to make them pop. Finally, skip the numbering or lettering within headings - make them short and clear.</p><h2 id=toc-ignoring-headings>ToC ignoring headings <a href=#toc-ignoring-headings></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -594,7 +642,7 @@ These are titles that represent the content of each paragraph and include H2, H3
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -603,10 +651,34 @@ These are titles that represent the content of each paragraph and include H2, H3
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Table of content (ToC) acts as a &ldquo;map&rdquo; to help readers grasp information in the most clear way. To fully display all headings in &ldquo;On this page&rdquo;, the following must be observed:</p><ul><li>Use the correct heading level for each section and subsection in the article</li><li>ToC only shows the first two heading levels: <code>## header 2</code> and <code>### header 3</code> (not showing <code># header 1</code> )</li><li>Use <code>## header 2</code> for main sections and <code>### header 3</code> for subsections</li><li>Limit the use of heading <code>#### header 4</code> to ensure readability of the article</li><li>Avoid using text formatting like <code>**</code> or adding links directly within headings can cause ToC errors.</li></ul><p>Following these rules will help you create a scientific, easy-to-read Markdown article that fully displays all headings in the ToC of the memo.</p><p>Example:</p><pre><code class=language-bash>## Meetings start on time
 Paragraph
@@ -628,7 +700,7 @@ Paragraph
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -637,10 +709,34 @@ Paragraph
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><blockquote><p><strong>Tip:</strong> the outline view in the bottom of the File Explorer is a great way to review your document&rsquo;s header structure and outline in VSCode.</p></blockquote><h2 id=nesting-list-disorder>Nesting list disorder <a href=#nesting-list-disorder></a></h2><p>Nesting list disorder occurs when the numbering in a nested list is incorrect, making it difficult to follow and distinguish between different levels of the list.</p><p>There are two main causes of nesting list disorder:</p><ul><li><strong>Incorrect syntax:</strong> Using incorrect syntax for nesting lists (e.g., using the wrong numbers or symbols) can cause the list to be numbered incorrectly.</li><li><strong>Manual editing:</strong> Manually editing a list (e.g., adding or removing items) can disrupt the numbering order.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -653,7 +749,7 @@ Paragraph
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -662,10 +758,34 @@ Paragraph
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>After you&rsquo;ve built your fancy list, take a quick minute to double-check it. Scan through and make sure the numbers are counting up (or down) the way they should. A quick proofread can save you a headache later.</p><p>For example:</p><pre><code class=language-bash>1. First list item
    1. Ordered nested list item
@@ -693,7 +813,7 @@ Paragraph
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -702,10 +822,34 @@ Paragraph
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Use hyperlinks instead of plain text links</strong></p><p>Hyperlinks allow readers to hover over the link to see the destination URL before clicking. This helps them decide whether the link is relevant to them and avoid clicking on unwanted links.</p><p>In addition, you should use links sparingly and only link to important and useful information.</p><p>References for links support two formats:</p><ul><li>External links: <code>[text] (http://example.com)</code>. Shows all links to <code>http://example.com</code>.</li><li>Internal links: <code>[text] (.file.md)</code>. Shows all links to <code>file.md</code></li></ul><h2 id=code-blockception>Code Blockception <a href=#code-blockception></a></h2><p>Nested code errors can occur when you use block code within another block code. This can happen when you&rsquo;re trying to format code within a code block, or when you&rsquo;re trying to include code within a blockquote.</p><p>To avoid nested code errors, you can use triple backticks ``` in a fenced code block, wrap them inside quadruple backticks ````.</p><pre><code class=language-plain-text>````
 ```
@@ -726,7 +870,7 @@ Look! You can see my backticks.
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -735,10 +879,34 @@ Look! You can see my backticks.
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Remember, horizontal rules are a versatile tool that can be used to improve the readability and visual appeal of your writing. When using horizontal rules, be sure to use them consistently throughout your writing and they will be a masterpiece!</p><h2 id=blah-text-in-callouts>Blah text in callouts <a href=#blah-text-in-callouts></a></h2><p>Callouts are like little spotlights for your writing. They help you shine a light on important information or give your readers some extra insider info. However, when using callouts, you may encounter some common mistakes that can affect the effectiveness and readability of your content.</p><p>Here&rsquo;s a closer look at some of these mistakes:</p><p><strong>Not changing the text color for notes</strong></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -751,7 +919,7 @@ Look! You can see my backticks.
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -760,10 +928,34 @@ Look! You can see my backticks.
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Using the grey text formatting for your callouts can blend them in with the background, making them less noticeable and defeating their purpose.</p><p><strong>Fix it:</strong> Want your callouts to shout &ldquo;Hey, look at me!&rdquo;? Use black or a contrasting color to make them pop against the background. This will help your readers easily identify important information.</p><p><strong>Not using spaces to break for sub-lines</strong></p><p>This is the simplest and most common way to break lines in a callout. Add the <code>> ></code> character at the position where you want to break the line in the callout content.</p><p>You can break callouts in multiple levels.</p><pre><code class=language-plain-text>&gt; Can callouts break the line?
 &gt; &gt; Yes!, they can.

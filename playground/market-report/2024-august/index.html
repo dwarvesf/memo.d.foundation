@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/market-report</li><div>Stats</div><li class=span><span>Words:
 </span>1308</li><li class=span><span>Characters:
-</span>17831</li><li class=span><span>Without Spaces:
+</span>20976</li><li class=span><span>Without Spaces:
 </span>8116</li><li class=span><span>Blocks:
 </span>31</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data='{
@@ -542,7 +542,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -551,10 +551,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><a href=https://x.com/karpathy/status/1827143768459637073 target=_blank>https://x.com/karpathy/status/1827143768459637073</a></p><p>Looking ahead, we see a future where software development revolves less around manual coding and more around directing AI to create optimal solutions. The challenge will be preserving the creativity and problem-solving that make development rewarding, while still embracing AI&rsquo;s efficiencies. For many of us, the idea of coding without AI is already hard to imagine, signaling a significant shift in software engineering.</p><h3 id=amazon-developers-embrace-79-of-auto-generated-code-reviews-for-upgrading-foundation-software>Amazon Developers Embrace 79% of Auto-Generated Code Reviews for Upgrading Foundation Software <a href=#amazon-developers-embrace-79-of-auto-generated-code-reviews-for-upgrading-foundation-software></a></h3><p>Amazon&rsquo;s GenAI assistant, Amazon Q, is revolutionizing software maintenance by slashing upgrade times from 50 developer-days to mere hours. We think this efficiency is a game-changer, allowing developers to focus on more valuable tasks instead of getting stuck on version upgrades. In less than six months, Amazon modernized over half its production Java systems with minimal developer involvement, proving the power of AI-driven automation.</p><p>The implications are profound—by migrating to newer Java versions quickly, Amazon has boosted security and saved an estimated $260 million annually. Perhaps most striking is that 79% of AI-generated code was shipped without further modification, highlighting the growing trust in AI systems to handle tasks once reserved for human developers.</p><p>As AI continues to evolve, we expect even more profound changes in how software is developed, maintained, and upgraded. Developers are increasingly becoming overseers and guides as AI takes on more of the heavy lifting.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -567,7 +591,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -576,10 +600,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><a href=https://x.com/ajassy/status/1826608791741493281 target=_blank>https://x.com/ajassy/status/1826608791741493281</a></p><h2 id=the-next-thing-after-generative-ui-is-generative-apps>The Next Thing After Generative UI is Generative Apps <a href=#the-next-thing-after-generative-ui-is-generative-apps></a></h2><p>We’re seeing the future unfold right before our eyes with generative UI, but the next big leap is already here: generative apps. Claude and ChatGPT are already capable of generating mini applications from a user prompt and allowing direct access to them. Imagine this: a super app where you describe out loud the app you need, and it’s built for you in moments. This could be incredibly useful for a lot of random one-off tasks, and we’re basically there.</p><p>We believe this development could fundamentally change how we interact with technology. A few powerful apps could rule them all. The convenience and flexibility of simply describing what you need and having an app materialize could revolutionize productivity, making this technology an essential part of daily lives.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -592,7 +640,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -601,10 +649,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The user’s prompt to create a Bill Splitting App in Claude Mobile App</p><h2 id=new-features-open-more-opportunities>New Features Open More Opportunities <a href=#new-features-open-more-opportunities></a></h2><h3 id=prompt-caching-by-anthropic><strong>Prompt Caching by Anthropic</strong> <a href=#prompt-caching-by-anthropic></a></h3><p>Anthropic&rsquo;s prompt caching is a game-changer in optimizing AI application efficiency. By caching frequently used context, this feature dramatically reduces costs and latency—up to 90% and 85%, respectively. We see this as a significant boost for scenarios like conversational agents and coding assistants, where repeated context is crucial.</p><p>Early adopters are already reporting substantial improvements, showing the practical value of this feature. Notion&rsquo;s integration of prompt caching into its Claude-powered AI assistant, Notion AI, is a strategic move to optimize operations and enhance user experience.</p><p>With prompt caching now in public beta for various Claude versions, developers have the chance to experiment and find the best fit for their needs. We think this flexibility will drive broader adoption, positioning prompt caching as a central tool in the next wave of AI adoption.</p><h3 id=structured-output-by-openai>Structured Output by OpenAI <a href=#structured-output-by-openai></a></h3><p>OpenAI&rsquo;s introduction of Structured Outputs is a significant step forward in ensuring the precision of AI-generated data. By enabling outputs to adhere to developer-supplied JSON Schemas, this feature addresses the challenge of generating reliable JSON, particularly in fields where precision is paramount.</p><p>We expect this development to shift industry standards, with developers favoring structured outputs over traditional methods, especially for tasks requiring meticulous data formatting. The impact will be particularly profound in data-sensitive fields like finance and healthcare, where the accuracy of data is crucial.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -617,7 +689,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -626,10 +698,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><a href=https://platform.openai.com/docs/guides/structured-outputs/supported-schemas target=_blank>https://platform.openai.com/docs/guides/structured-outputs/supported-schemas</a></p><h3 id=gpt-4o-supports-fine-tuning>GPT-4o Supports Fine-Tuning <a href=#gpt-4o-supports-fine-tuning></a></h3><p>OpenAI’s fine-tuning for GPT-4o is a powerful step that we expect will enable developers to tailor AI models to their specific needs. With 1 million free training tokens per day through September 23, this offering presents a compelling opportunity for organizations to enhance AI performance without immediate costs.</p><p>Fine-tuning is especially valuable for applications where out-of-the-box models may not fully meet specific domain requirements. We see this as empowering developers to achieve superior results in tasks like natural language processing and specialized content generation.</p><p>What makes this offering particularly appealing is the customization and control it provides. Developers retain full ownership of their business data, which is crucial in industries like finance and healthcare, where data privacy and security are top priorities.</p><h2 id=flux-1-and-deep-live-cam-new-achievements-in-open-media-models>Flux 1 and Deep Live Cam: New Achievements in Open Media Models <a href=#flux-1-and-deep-live-cam-new-achievements-in-open-media-models></a></h2><p>Black Forest Labs&rsquo; Flux model marks a significant leap in open-source text-to-image AI. With 12 billion parameters, Flux is pushing the new achievement of image generation, especially in text and positioning. However, complex prompt adherence remains a challenge, reminding us that there&rsquo;s still room for improvement.</p><p>Meanwhile, Deep Live Cam&rsquo;s real-time face-swapping capabilities signal the next frontier in AI-driven media manipulation. The ethical safeguards built into Deep Live Cam, designed to prevent inappropriate content processing, are just the start. We think the broader ethical concerns around deepfake technology will require ongoing dialogue and regulation.</p><p>As deepfake technology proliferates, it&rsquo;s reasonable to expect financial institutions like Visa and Mastercard to extend their oversight to platforms dealing with AI-generated media. This could usher in a new era of compliance, where online platforms are required to implement robust measures against deepfake misuse.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -642,7 +738,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -651,9 +747,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><a href=https://github.com/hacksider/Deep-Live-Cam/blob/main/demo.gif target=_blank>https://github.com/hacksider/Deep-Live-Cam/blob/main/demo.gif</a></p><h2 id=shadcn-v0-tailwind-the-new-standard-for-ui-development>Shadcn, v0, Tailwind: The New Standard for UI Development <a href=#shadcn-v0-tailwind-the-new-standard-for-ui-development></a></h2><p>We are witnessing a significant shift in frontend development with a new workflow that blends cutting-edge tools and AI capabilities. Starting with a complex web app prototype using <a href=https://v0.dev/ target=_blank>v0.dev</a> and shadcn UI, the process integrates into a Next.js project with React, but the real magic happens in the refinement stage. Tools like Cursor and Claude 3.5 Sonnet interpret and implement intricate design instructions, creating highly desirable web screens.</p><p>We think this approach will push the prototyping process further and faster, even designers can skip traditional design tools and jump directly into working on a live-action version of the mockup. Furthermore, we expect shadcn and Tailwind to gain traction, becoming essential components of the new toolkit in UI development.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://x.com/karpathy/status/1827143768459637073 target=_blank>https://x.com/karpathy/status/1827143768459637073</a></li><li><a href=https://x.com/ajassy/status/1826608791741493281 target=_blank>https://x.com/ajassy/status/1826608791741493281</a></li><li><a href=https://openai.com/index/introducing-structured-outputs-in-the-api/ target=_blank>https://openai.com/index/introducing-structured-outputs-in-the-api/</a></li><li><a href="https://news.ycombinator.com/item?id=41088013" target=_blank>https://news.ycombinator.com/item?id=41088013</a></li><li><a href=https://deeplive.cam/ target=_blank>https://deeplive.cam/</a></li><li><a href=https://www.anthropic.com/news/prompt-caching target=_blank>https://www.anthropic.com/news/prompt-caching</a></li><li><a href=https://openai.com/index/gpt-4o-fine-tuning/ target=_blank>https://openai.com/index/gpt-4o-fine-tuning/</a></li><li><a href=https://blackforestlabs.ai/#get-flux target=_blank>https://blackforestlabs.ai/#get-flux</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

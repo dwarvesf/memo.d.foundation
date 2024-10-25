@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>updates/newsletter</li><div>Stats</div><li class=span><span>Words:
 </span>625</li><li class=span><span>Characters:
-</span>8658</li><li class=span><span>Without Spaces:
+</span>10545</li><li class=span><span>Without Spaces:
 </span>3118</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data='{
@@ -542,7 +542,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -551,10 +551,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=in-timeline>In timeline <a href=#in-timeline></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -567,7 +591,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -576,10 +600,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=more-room-for-like-minded-people>More room for like-minded people <a href=#more-room-for-like-minded-people></a></h3><p>As long as it&rsquo;s someone who is good at what they do and sees things the same way we do, then it&rsquo;s a yes - we’d love to have you here!</p><p>Our people is our greatest asset. That&rsquo;s why most of our effort goes into hiring the right people, giving them our absolute support to grow with us.</p><ul><li>Reached 60 engineers on the team.</li><li>Recruited only mid & senior engineers everywhere in Vietnam.</li><li>More teammates took on leading & mentoring roles</li><li>Increased compensation and benefits for every Dwarves.</li><li>Issued Dwarves Token to reward positive contributions.</li><li>Refined engineering career ladder & mentorship, raising the bar.</li><li>Facilitated training and learning team-wise.</li></ul><h3 id=advancing-in-tech>Advancing in tech <a href=#advancing-in-tech></a></h3><p>Throughout 2021, our bet was on the Web3, the Open Internet, and the next-gen automation software using AI and Big Data.</p><ul><li>6+ blockchain-based projects onboard.</li><li>Blockchain development team reached 20 Dwarves.</li><li>Active study groups organized by the Dwarves themselves.</li></ul><h3 id=new-business-directions-and-new-partnerships>New business directions and new partnerships <a href=#new-business-directions-and-new-partnerships></a></h3><p>We’re at a stage where we have the chance to get involved in different kinds of projects. Our new business direction and project decisions brought us to:</p><ul><li>Got bigger partnerships with certain restriction in number of deployed head counts.</li><li>Shifted gradually from outsourcing to software consulting.</li><li>Engineers involved in project decisions and hiring for projects.</li><li>Engineers got to work and deliver as a team.</li></ul><p>Also, now you can visit Dwarves and have a good time at 4 different locations in Vietnam; HCMC, Danang, Hanoi, Dalat.</p><h2 id=so-whats-in-store-for-2022>So what&rsquo;s in store for 2022? <a href=#so-whats-in-store-for-2022></a></h2><p>As a profitable and fast-moving company, the possibilities ahead of us are limitless. Dwarves 2.0 for us is about finding a great mix of quality and quantity, and becoming greater at what we are already good at.</p><ul><li><strong>Doubling down on blockchain & web3</strong>. We are never to stay behind when it comes to tech.</li><li><strong>Partnering with even more fantastic teams</strong> and ship more top-notch products. We want to help more and more businesses to be able to leverage technology.</li><li><strong>Leveling up</strong>. We are going to be a team that knows how to build software right, and is able to teach others on that.</li><li><strong>Scaling up</strong>. We are expanding the team and hope to reach those with the same DNAs. If you know someone who might be interested, send them to <strong><a href=https://memo.d.foundation/careers/hiring/>Dwarves Careers</a>.</strong></li></ul><p>That&rsquo;s just a small part in our backlog, we are going to try our hands at many different things.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -592,7 +640,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -601,9 +649,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Here&rsquo;s to many more great products, meaningful partnerships and friendships, experiments and experiences, challenges and opportunities.</strong></p><p>Onward and upward,</p><p>Han & Nikki.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

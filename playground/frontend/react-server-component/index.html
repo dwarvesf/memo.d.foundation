@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>1398</li><li class=span><span>Characters:
-</span>14526</li><li class=span><span>Without Spaces:
+</span>15784</li><li class=span><span>Without Spaces:
 </span>7581</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Here is an example of a simple RSC that fetches some data from a database and renders it on the server:</p><pre><code class=language-jsx>// app/Greeting.server.js
 import db from './db'
@@ -588,7 +612,7 @@ export default function Homepage() {
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -597,10 +621,34 @@ export default function Homepage() {
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><code>use client</code> marks the transition from server-only to client code. It goes at the top of a file, before any imports, to indicate that everything below it belongs to the client bundle. This includes any modules or components that are imported in the file.</p><p>Server Components are incompatible with custom hooks that use state, effects, or browser-only APIs.</p><h2 id=what-are-the-benefits-of-using-server-components-with-nextjs>What are the benefits of using Server Components with Next.js? <a href=#what-are-the-benefits-of-using-server-components-with-nextjs></a></h2><p>Using RSC with Next.js can bring several benefits to your application, such as:</p><ul><li>Improved performance: reduce the amount of data that needs to be transferred between the server and the client, as well as the amount of code that needs to be parsed and executed on the client. This can result in faster page loads and better user experience.</li><li>Reduced bundle size: this allows you to move large dependencies or logic that are only needed on the server to RSC files, which are not included in the client bundle. This can reduce the size of your client-side code and improve performance and caching.</li><li>Simplified data fetching: eliminate the need for using APIs or fetching data on the client for some parts of your application via access directly to backend resources. This can simplify your code, reduce dependencies complexity, errors and keep sensitive information on the backend.</li></ul><h3 id=pattern-for-using-server-components>Pattern for using Server Components <a href=#pattern-for-using-server-components></a></h3><ul><li>To optimize our component tree, we aim to relocate client components to the leaf nodes whenever feasible. Rather than designating the entire component as a client component, we extract the interactive logic and place it in a client-specific component, such as <code>&lt;SearchBar />, &lt;Input />...</code> and so on. Meanwhile, we maintain static components like <code>&lt;Layout />, &lt;List />...</code> as server components. This approach eliminates the need to transmit the entire JavaScript code for the layout to the client.</li><li>Server and Client Components can be combined in the same component tree, which means:<ul><li>On the server, React renders <strong>all</strong> Server Components <strong>before</strong> sending the result to the client.</li><li>On the client, React renders Client Components and <em>slots in</em> the rendered result of Server Components, merging the work done on the server and client.</li></ul></li><li>Importing Server Components in Client Components is <strong>not supported</strong>, so Server Components will treat as <strong>Client Components.</strong></li></ul><pre><code class=language-jsx>'use client';
 

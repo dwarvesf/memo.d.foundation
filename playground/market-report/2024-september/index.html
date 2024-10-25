@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/market-report</li><div>Stats</div><li class=span><span>Words:
 </span>1131</li><li class=span><span>Characters:
-</span>15110</li><li class=span><span>Without Spaces:
+</span>16997</li><li class=span><span>Without Spaces:
 </span>7079</li><li class=span><span>Blocks:
 </span>23</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div><main x-data='{
@@ -542,7 +542,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -551,10 +551,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=generative-ai-in-legacy-codebases>Generative AI in Legacy Codebases <a href=#generative-ai-in-legacy-codebases></a></h2><p>One of the most powerful capabilities of Generative AI is its ability to summarize large volumes of text and media. In software delivery, this translates to helping developers and business analysts understand complex or legacy codebases more efficiently.</p><p>We are seeing tools like <a href=https://githubnext.com/projects/copilot-workspace target=_blank>GitHub Copilot Workspace</a>, and <a href=https://aws.amazon.com/q/developer/ target=_blank>Amazon Q&rsquo;s developer</a> agent revolutionize how we interact with code:</p><ul><li><strong>Visual Abstractions:</strong> These tools provide visual representations of code, revealing intentions while minimizing technical jargon.</li><li><strong>Knowledge Preservation:</strong> They mitigate risks associated with the loss of expertise when key developers leave.</li><li><strong>Tech Stack Migrations:</strong> They simplify the process of migrating to new technologies by providing clearer overviews of existing systems.</li></ul><p>Despite these advancements, challenges remain:</p><ul><li><strong>Abstract Comprehension:</strong> Fully understanding code through abstract concepts is still a hurdle.</li><li><strong>Generic Problem Solving:</strong> Current AI agents are not yet the universal problem solvers they aspire to be.</li></ul><p>We think it&rsquo;s crucial to focus on specific problem spaces where these agents excel, rather than expecting them to handle every coding challenge. Their true value lies in augmenting developer capabilities in targeted areas.</p><h2 id=the-rise-of-small-models>The Rise of Small Models <a href=#the-rise-of-small-models></a></h2><p>While most users rely on commercial giants like ChatGPT, researchers and developers are finding value in running smaller models locally. Tools like <a href=https://ollama.com/ target=_blank>Ollama</a> are proving that AIs with 8 to 70 billion parameters can run efficiently on personal devices, including laptops. As hardware continues to improve, local models will become an increasingly viable alternative for tasks that don’t require massive computational power.</p><p>The immutability of local models also guarantees consistency, making them indispensable in scientific research, where reproducibility is key. With the recent release of <a href=https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices/ target=_blank><strong>Llama 3.2</strong></a> supporting vision, we’re seeing even more possibilities for lightweight, portable AI.</p><h2 id=serverless-overuse-is-becoming-a-problem>Serverless Overuse is Becoming a Problem <a href=#serverless-overuse-is-becoming-a-problem></a></h2><p>Serverless computing may have once seemed like a silver bullet, but it&rsquo;s now becoming clear that it&rsquo;s not the answer to every problem. We’re seeing a growing number of cases where serverless is being misapplied, particularly in scenarios that require a persistent server.</p><p>It’s fine to start with serverless when you&rsquo;re small, but as usage scales, moving to a dedicated server can save a lot of time and money. It’s time for developers to get smarter about where and when to use serverless architectures.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -567,7 +591,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -576,10 +600,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=openai-ditches-nextjs-for-remix>OpenAI Ditches Next.js for Remix <a href=#openai-ditches-nextjs-for-remix></a></h2><p>This month, OpenAI surprised the community by switching the framework behind ChatGPT from <strong>Next.js to Remix</strong>. While the exact reasons haven’t been disclosed, there are a few theories. Remix’s ability to handle server-side rendering more efficiently and reduce the need for API calls seems to have played a part.</p><p>Meanwhile, Next.js has grown increasingly complex, with new features like server actions and app routing that have pushed its build times longer. This complexity may have driven developers to look for leaner alternatives like Remix, particularly for client-heavy applications.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -592,7 +640,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -601,9 +649,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=javascript-in-crisis>JavaScript in Crisis? <a href=#javascript-in-crisis></a></h2><p>We’ve been following the thought-provoking observations from <a href=https://molily.de/something-went-wrong/ target=_blank>Mathias Schäfer</a> regarding the current state of JavaScript in web development, and many of his points resonate with us:</p><ul><li>No matter which framework you choose, it will likely be outdated within five years.</li><li>The relentless focus on improving the developer experience is a driving force in the industry.</li><li>The solution lies in web architectures that minimize client-side JavaScript dependency.</li><li>React&rsquo;s performance is often compromised by multiple architectural layers, exacerbating the issue.</li><li>Frameworks should disappear from client-side code, thanks to compilers, leaving only minimal runtime on the client.</li><li>Your JavaScript should work across different runtimes and frameworks—vendor lock-in should be avoided.</li><li>Frameworks should share core APIs and primitives. The Vue community has done excellent work in this regard, with tools like <a href=https://vitejs.dev/ target=_blank>Vite</a>, <a href=https://nitro.unjs.io/ target=_blank>Nitro</a>, <a href=https://github.com/nksaraf/vinxi target=_blank>Vinxi</a>, and <a href=https://vitest.dev/ target=_blank>Vitest</a> proving useful across many stacks.</li></ul><p>We believe those takeaways should be taken into consideration by any builder who wants to build for the next web.</p><h2 id=who-is-hiring>Who is hiring? <a href=#who-is-hiring></a></h2><p>Our analysis of the latest <a href="https://news.ycombinator.com/item?id=41425910" target=_blank>job posts</a> in Y Combinator’s hiring thread shows that while the number of job listings has remained steady, it&rsquo;s only a third of what it was in 2022. Some key trends:</p><ul><li>Popular stacks: <strong>Python</strong>, <strong>AWS</strong>, <strong>React</strong>, <strong>TypeScript</strong>, and <strong>C</strong>. Following these are <strong>Rust</strong> and <strong>AI/ML</strong> stack.</li><li>Remote work remains the dominant offering.</li><li>Full-time roles make up the majority, with only 4% of job postings seeking contractors.</li></ul><p>The key points indicate that companies will continue to be selective and conservative in their hiring strategies. For more detailed insights, you can view the full dataset <a href=https://docs.google.com/spreadsheets/d/1HKOd5-xy5rvsHgJjTbNkGmcoubdL0oVPt10fwC1iB0M target=_blank>here</a>.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://openai.com/index/learning-to-reason-with-llms/ target=_blank>https://openai.com/index/learning-to-reason-with-llms/</a></li><li><a href=https://simonwillison.net/2024/Sep/12/openai-o1/ target=_blank>https://simonwillison.net/2024/Sep/12/openai-o1/</a></li><li><a href=https://www.anthropic.com/news/contextual-retrieval target=_blank>https://www.anthropic.com/news/contextual-retrieval</a></li><li><a href=https://www.nature.com/articles/d41586-024-02998-y target=_blank>https://www.nature.com/articles/d41586-024-02998-y</a></li><li><a href=https://x.com/dhh/status/1834019299876573198 target=_blank>https://x.com/dhh/status/1834019299876573198</a></li><li><a href=https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices/ target=_blank>https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices/</a></li><li><a href=https://martinfowler.com/articles/legacy-modernization-gen-ai.html target=_blank>https://martinfowler.com/articles/legacy-modernization-gen-ai.html</a></li><li><a href=https://molily.de/something-went-wrong/ target=_blank>https://molily.de/something-went-wrong/</a></li><li><a href=https://www.reddit.com/r/nextjs/comments/1f92jdv/chatgptcom_switched_from_nextjs_to_remix/ target=_blank>https://www.reddit.com/r/nextjs/comments/1f92jdv/chatgptcom_switched_from_nextjs_to_remix/</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li><div>Stats</div><li class=span><span>Words:
 </span>1296</li><li class=span><span>Characters:
-</span>14548</li><li class=span><span>Without Spaces:
+</span>17064</li><li class=span><span>Without Spaces:
 </span>7189</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data="{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>ReWOO can referring to plans from earlier stages in instructions to Workers. This allows next step and subsequent steps to build on the results of previous steps, enabling the model to handle complex tasks more effectively. The final solver prompt is designed to be concise and efficient, ensuring that the model can accurately synthesize the final answer based on the evidence provided by the workers.</p><h2 id=example>Example <a href=#example></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As you can see in above example, The planner prompt list all the plans need to do. Then the task list will pass that list to Worker, Worker will execute each plan step by step, it can be a API call or external tools, in each step the result will be store to support the next plan if needed. At the end, the Solver prompt will be called to analyze all the evidences and synthesize the final answer. You can realize that the total LLM model call is just 2+(+ number of LLM call in tools if had). It reduce a lot of token usage when compare with other reasoning techniques(with number of LLM call = number of reasoning step + tool uses) when they have to call LLM model every step of reasoning to decide what to do next. Besides that, you can have an overview of all the process at the beginning, it can help you to understand the problem better snf support in debugging.</p><h2 id=implementation>Implementation <a href=#implementation></a></h2><p>To implement ReWOO, we can use many LLM framwork to build the pipeline. In this article, I will illustrate it by Langgraph - a Langchain-based library for building language model applications.</p><ul><li>Firstly, We need defined from for planner and solver:</li></ul><pre><code class=language-ts>const plannerPrompt = `For the following task, make plans that can solve the problem step by step. For each plan, indicate
 which external tool together with tool input to retrieve evidence. You can store the evidence into a 
@@ -721,7 +769,7 @@ We run a same question to ReAct, and see the difference:</p><table><thead><tr><t
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -730,10 +778,34 @@ We run a same question to ReAct, and see the difference:</p><table><thead><tr><t
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></td><td><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -746,7 +818,7 @@ We run a same question to ReAct, and see the difference:</p><table><thead><tr><t
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -755,9 +827,33 @@ We run a same question to ReAct, and see the difference:</p><table><thead><tr><t
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></td></tr><tr><td>Token usage: 3265</td><td>Token usage: 2661</td></tr></tbody></table><p>As you can see, ReWOO save 604 tokens compared to ReAct. It because ReWOO not need to make LLM call for each step of reasoning. Image if we have more complicated task, it will have much more steps, then the tokens will be save much more.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>The development of LLM is cannot be denial, many new techniques are being developed to make LLM more powerful. ReWOO is one of them, it saving token usage and modulize the system, make it easy to modify and mantain.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://arxiv.org/abs/2305.18323 target=_blank>https://arxiv.org/abs/2305.18323</a></li><li><a href=https://medium.com/@minhleduc_0210/on-short-of-rewoo-decoupling-reasoning-from-observations-for-efficient-augmented-language-models-151f53f09630 target=_blank>https://medium.com/@minhleduc_0210/on-short-of-rewoo-decoupling-reasoning-from-observations-for-efficient-augmented-language-models-151f53f09630</a></li><li><a href=https://langchain-ai.github.io/langgraph/tutorials/rewoo/rewoo/ target=_blank>https://langchain-ai.github.io/langgraph/tutorials/rewoo/rewoo/</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

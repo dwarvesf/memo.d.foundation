@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>626</li><li class=span><span>Characters:
-</span>8327</li><li class=span><span>Without Spaces:
+</span>10214</li><li class=span><span>Without Spaces:
 </span>3013</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -541,7 +541,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -550,10 +550,34 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=know-our-audience-and-objectives>Know our audience and objectives <a href=#know-our-audience-and-objectives></a></h2><p>This step guides everything we do next. Before we start, think about who will read our work and what we want them to get from it. Here we can apply a simplified version of the <a href=https://fourweekmba.com/virtuous-cycle/ target=_blank>Virtuous Cycle</a> to define our audience and objectives.</p><ul><li>What characteristics do the readers have?</li><li>What do the readers want to get from us?</li><li>What can we offer the readers?</li><li>What should we write to answer to what they want?</li><li>How should we write (tone, voice, word choices)?</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -566,7 +590,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -575,10 +599,34 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=create-content>Create content <a href=#create-content></a></h2><p>Once we have in mind how we should shape our content:</p><ul><li>Research: dig deep into the topic by pulling up our fleeting notes, we might need to research further to enhance the quality of our content.</li><li>Plan: have a plan for <strong>what</strong> we will create (outline) and <strong>when</strong> we will do it (deadline) and <strong>how</strong> we will measure the effectiveness of our work (metrics).</li><li>Write: write, gather, organize stuff according to the plan, keeping our audience and objectives in mind.</li><li>Format: We write in markdown, using VSCode and follow Dwarves&rsquo; styling.</li><li>Get reviewed: once we have a draft, submit it as a screenshot to our supervisor/manager for feeback for both content and visual.</li><li>Check and fix: go over our work carefully, several times to fix any errors and make sure it&rsquo;s clear and correct. Come back to our audience and objectives to check if what we write actually meet the brief.</li><li>Get approval: our supervior/manager needs to sign off on the work before we move forward.</li></ul><h2 id=publish-content>Publish content <a href=#publish-content></a></h2><p>Once our work is approved, we have a <strong>literature note</strong> ready for sharing with others. Most written content goes through 5 stages:</p><ul><li><a href=/playground/01_literature/how-to-recap-a-publication/><strong>Internal recap</strong></a> within the communications team, so everyone understand it the same way, and can answer to any question readers have.</li><li>Publishing as an article on memo.d.foundation, so everyone has access to it.</li><li>Summary as slides, so we have training materials for everyone who&rsquo;s interested in the topic.</li><li>Workshop, tech event or radio talk with related experts/organizations to widen perspectives on the topic.</li><li>Social and newsletter promotion (optional).</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -591,7 +639,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -600,10 +648,34 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=talk-to-our-audience>Talk to our audience <a href=#talk-to-our-audience></a></h2><p>Here is when we know if our content is actually effective for the intended audience. At this stage, it is very important to engage with our audience and people who are interested in our work. Listen to what they have to say, make ways for them to discuss, ask questions and provide feedback to us.</p><h2 id=refine-and-upgrade>Refine and upgrade <a href=#refine-and-upgrade></a></h2><p>Keep a close eye on how people respond to our work (by tracking metrics you set out when you plan). Adjust our work based on what&rsquo;s working and what&rsquo;s not.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>We want to contribute as much as we can to the tech community, so making and sharing content is serious business at Dwarves.
 We already have standards and processes in place, following them and adapting them to fit our style and audience will get us high-quality content and become a true contributor to tech.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

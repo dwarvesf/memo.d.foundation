@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/blockchain/foundational-topics</li><div>Stats</div><li class=span><span>Words:
 </span>852</li><li class=span><span>Characters:
-</span>7541</li><li class=span><span>Without Spaces:
+</span>8799</li><li class=span><span>Without Spaces:
 </span>4007</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=how-proof-of-stake-works>How proof of stake works <a href=#how-proof-of-stake-works></a></h2><p>The Proof of Stake algorithm uses a pseudo-random election process to select a node as the validator of the next block, based on a combination of factors that may include staking age, random and the size of the button. Users who wish to participate in this process must lock a certain number of native tokens into the network as their stake. The size of the stake determines the chance for a node to be selected as a validator to generate the next block – the larger the stake, the greater the chance. In order for the process not only to prioritize the wealthiest nodes in the network, unique methods are added to the selection process. The two most commonly used methods are &lsquo;Random Block Selection&rsquo; and &lsquo;Coin Age Selection&rsquo;. In the Random Block Pick method, validators are selected by looking for nodes with the combination of the lowest hash value and the highest stake, and since the stake size is public, the validator node The next real thing can usually be predicted by other nodes. The Coin Age Selection method selects nodes based on how long their coins have been staked. Coin age is calculated by multiplying the number of days the coin is held by the number of coins staked. When a node forges a block, their coin age is reset to zero and they have to wait a certain amount of time before they can generate another block – this prevents large stake nodes from dominating the blockchain.</p><p>Each native token that uses the Proof of Stake algorithm has its own set of rules and methods to create the best combination for them and their users.</p><p>When a node is selected to generate the next block, it checks if the transactions in the block are valid, signs the block, and adds it to the blockchain. The node receives the transaction fees associated with the transactions in the block.</p><p>If a node wants to stop working as a blacksmith, its staked coins along with the rewards earned are released after a certain amount of time, giving the network time to verify that no fraudulent blocks were added by that node. into the blockchain.</p><p>Proof of stake was created as an alternative to proof of work (PoW), to solve the inherent problems of computation time and energy consumption when using PoW.</p><p>PoS seeks to solve the problem by reducing mining power to the percentage of coins a miner spends to join the nodes. This way, instead of using energy to solve the PoW problem, PoS miners are limited to mining by a transaction rate that reflects the number of shares the miner owns. For example, a miner who owns 3% of Bitcoins could theoretically only mine 3% of those blocks.</p><h4 id=compare-pow-and-pos>Compare PoW and PoS <a href=#compare-pow-and-pos></a></h4><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,9 +598,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=about-security>About security <a href=#about-security></a></h2><p>The stake coin acts as a financial incentive for the forging node to not validate or generate fraudulent transactions. If the network detects a fraudulent transaction, the forging node will lose part of its stake and the right to participate in future block forging. So as long as the stake is higher than the reward, validators will lose more coins than they would have gained in case of a fraud attempt.</p><p>To effectively control the network and approve fraudulent transactions, a node would have to own a majority stake in the network, this is known as a 51% attack. Depending on the value of the native token, this would be very impractical as to gain control of the network you would need to have more than 51% of the circulating supply.</p><p>In 2017, Ethereum (ETH) started its full transition from PoW to PoS system and by 2022 it has successfully deployed on Ropsten testnet.</p><h2 id=advantages-of-pos>Advantages of PoS: <a href=#advantages-of-pos></a></h2><ul><li>Fast transaction processing.</li><li>PoS does not harm the environment.</li><li>Not vulnerable to government attacks: don&rsquo;t need huge amounts of electricity.</li><li>Can be performed on smaller and weaker devices because there is no need to download the entire blockchain, and because it does not require a lot of computing power, it can be</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

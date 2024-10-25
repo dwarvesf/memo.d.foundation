@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature/engineering/backend</li><div>Stats</div><li class=span><span>Words:
 </span>599</li><li class=span><span>Characters:
-</span>6734</li><li class=span><span>Without Spaces:
+</span>7363</li><li class=span><span>Without Spaces:
 </span>3924</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>18m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,9 +549,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=why-crdt>Why CRDT? <a href=#why-crdt></a></h2><h3 id=addressing-data-modification-dilemma>Addressing Data Modification Dilemma <a href=#addressing-data-modification-dilemma></a></h3><p>There are two approaches to handling concurrent modifications in distributed systems:</p><ol><li><strong>Strongly Consistent Replication</strong>: In this approach, replicas coordinate for modifications to ensure strong consistency. However, this coordination sacrifices performance and can be limited by the Cap Theorem. The CAP theorem states that in a distributed system, it&rsquo;s impossible to simultaneously guarantee consistency (every read receives the most recent write), availability (every request receives a response), and partition tolerance (the system continues to operate despite network partitions).</li><li><strong>Optimistic Replication</strong>: In optimistic replication, users can independently modify data without coordination, which enhances performance. However, this approach may lead to conflicts when multiple replicas receive conflicting modifications. To address conflicts, replicas communicate and resolve conflicts automatically.</li></ol><h3 id=role-of-crdts>Role of CRDTs <a href=#role-of-crdts></a></h3><p>CRDTs (Conflict-free Replicated Data Types) play a crucial role in <strong>optimistic replication systems</strong>. They enable seamless merging of data modifications by performing replication as commutative operations. CRDTs ensure that conflicting modifications from different replicas are resolved automatically, eliminating the need for special conflict resolution code or user intervention. This makes CRDTs a valuable tool for maintaining consistency in distributed systems while maximizing performance.</p><h2 id=how-to-use-crdt>How to use CRDT? <a href=#how-to-use-crdt></a></h2><p>CRDTs (Conflict-free Replicated Data Types) are a powerful tool for ensuring data consistency and synchronization in various applications. Here are some examples of how CRDTs can be applied:</p><p><strong>Applications of CRDTs</strong></p><ul><li><em>Mobile Apps</em>: CRDTs enable seamless synchronization of data across multiple devices used by a single user. This ensures that the user can access and modify their data from any device without conflicts or inconsistencies.</li><li><em>Distributed Databases</em>: CRDTs play a crucial role in maintaining data integrity in distributed databases. They allow replicas of the database to be located in different locations while still ensuring that updates and modifications to the data are propagated correctly across all replicas.</li><li><em>Collaboration Software</em>: CRDTs are particularly useful in collaboration software where multiple users can simultaneously make changes to the same file or data. By using CRDTs, conflicts between concurrent changes can be automatically resolved without the need for centralized coordination or locking mechanisms.</li><li><em>Large-scale Data Storage Systems</em>: CRDTs are instrumental in building large-scale data storage systems that require global scalability. By replicating data using CRDTs, these systems can handle high volumes of data and distribute it across multiple nodes, allowing for efficient and reliable access to the data.</li></ul><p><strong>Decentralized Operation</strong></p><ul><li>One of the key advantages of CRDTs is that they support decentralized operation. Unlike traditional systems that rely on a single server, CRDTs can thrive in peer-to-peer networks and other decentralized settings. This makes them well-suited for applications and environments where a central authority is not desirable or feasible.</li></ul><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In short, Conflict-free Replicated Data Types (CRDTs) play a pivotal role in managing conflict resolution. It guarantees the seamless merging of data into a coherent state, irrespective of the modifications made on distinct replicas. Importantly, CRDTs automate this merging process, eliminating the necessity for specialized conflict resolution code or user intervention.</p><p>Unlike systems relying on algorithms utilized by platforms such as Google Docs, Trello, and Figma, CRDTs don&rsquo;t presuppose the reliance on a single server. This distinctive quality allows CRDTs to seamlessly integrate into peer-to-peer networks and various decentralized settings, setting them apart in the landscape of distributed data management.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://crdt.tech/ target=_blank>https://crdt.tech/</a></li><li><a href=https://redis.com/blog/diving-into-crdts/ target=_blank>https://redis.com/blog/diving-into-crdts/</a></li><li><a href=https://jakelazaroff.com/words/an-interactive-intro-to-crdts/#user-content-fn-cvrdt target=_blank>https://jakelazaroff.com/words/an-interactive-intro-to-crdts/#user-content-fn-cvrdt</a></li><li><a href=https://www.infoq.com/presentations/crdt-production/ target=_blank>https://www.infoq.com/presentations/crdt-production/</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

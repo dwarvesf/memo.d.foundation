@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai</li><div>Stats</div><li class=span><span>Words:
 </span>1107</li><li class=span><span>Characters:
-</span>12615</li><li class=span><span>Without Spaces:
+</span>13244</li><li class=span><span>Without Spaces:
 </span>7272</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div><main x-data='{
@@ -541,7 +541,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -550,10 +550,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=recommended-cloud-provider>Recommended cloud provider: <a href=#recommended-cloud-provider></a></h2><p>One of the cloud providers we used to implement our RLHF flow is Redmond. Redmond.ai is a cloud computing service provider that specializes in offering accelerated cloud computing solutions for artificial intelligence (AI) and machine learning (ML) applications.</p><ul><li><a href=https://redmond.ai/ target=_blank>https://redmond.ai/</a></li></ul><h2 id=system-requirements>System requirements: <a href=#system-requirements></a></h2><p>For our example, we use the <a href=https://www.eleuther.ai/papers-blog/pythia-a-suite-for-analyzing-large-language-modelsacross-training-and-scaling target=_blank>Pythia</a> as our LLM model. Mostly, system requirements are dependent on the model being used. For instance, 7 billion parameters may require a GPU that contains at least 400GB for RLHF learning. The important part is the amount of GPUs we have access to running our model. If there are other training steps and nuances, this requirement grows linearly.</p><p>Our example uses 12 billion parameters. Along with a few requirements for testing our models, we&rsquo;ve used the below recommended system requirements to have enough leeway to train our model as well as test its runtime.</p><ul><li>8xA100 80GB (224 vCPU 768GB RAM) (recommended)</li></ul><h2 id=how-to-setup-training-for-the-model>How to setup training for the model <a href=#how-to-setup-training-for-the-model></a></h2><p>Our training for the model will use the typical Pytorch and Jupyter setup. There are a few packages specific to the GPU we use (by NVidia), so we will also install <code>cuda</code> along with it.</p><h3 id=setup-environment>Setup environment <a href=#setup-environment></a></h3><p>There are a few nuances with using <code>cuda</code> with specialized NVidia GPUs in the cloud. For our case on Redmond, we have to use Python 3.10 and <code>cuda</code> versions 11.8 to avoid any errors specific to our hardware.</p><pre><code class=language-bash>mambaforge/bin/mamba install jupyterlab code-server jupyterhub jupyter-vscode-proxy jupyterlab-git python=3.10 pytorch pytorch-cuda=11.8 cuda=11.8 cuda-nvcc=11.8 ninja cxx-compiler==1.5.2 -c nvidia -c pytorch -y
 </code></pre><p>Although for our example, we rarely use Jupyter and mostly use OpenAssistant, we have it here just in case.</p><h3 id=setup-repo>Setup repo <a href=#setup-repo></a></h3><p>Since we&rsquo;re mainly using OpenAssistant as our client chatbot to interface with our language model, we will clone their repo as our step to setting up ours for testing. There will be a few helper scripts to generalize and simplify our training process.</p><p>Most of our work here will be updating the configuration of these scripts, as well as preparing our dataset, to nudge the language model to a more expected behavior.</p><pre><code class=language-bash>git clone https://github.com/LAION-AI/Open-Assistant.git  #commit id: 0d4adb5f1ad6c38a828370414a584dd485165dce

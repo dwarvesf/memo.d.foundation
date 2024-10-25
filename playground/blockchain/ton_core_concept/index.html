@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/blockchain</li><div>Stats</div><li class=span><span>Words:
 </span>745</li><li class=span><span>Characters:
-</span>9120</li><li class=span><span>Without Spaces:
+</span>11007</li><li class=span><span>Without Spaces:
 </span>4094</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Up to 1023 bits of data</li><li>Up to 4 references to other cells</li></ul><p>Currently, TON has 2 types of cells: ordinary and exotic</p><ul><li>ordinary: basic, standard cell.</li><li>exotic: specialized cells with specific functions.<ul><li>Pruned Branch Cell: represents a pruned branch in a data structure.</li><li>Library Reference Cell: references external libraries or modules.</li><li>Merkle Proof Cell: contains proofs for verifying data in a Merkle tree.</li><li>Merkle Update Cell: contains information to update a Merkle tree.</li></ul></li></ul><p>When serializing cells into byte arrays, it is called Bag of cells. <strong>Every data stored on TON including blocks and the state of the network is a bag of cells.</strong></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=smart-contract>Smart contract <a href=#smart-contract></a></h2><p>As mentioned in the previous post, everything in TON is a smart contract. That contains:</p><ul><li>Address: (workchain_id, account_id) pairs present smart contract as a unique identifier.</li><li>Code: code that can be run on TVM, and represents the rule and business logic of this contract.</li><li>Data: the state of the smart contract, includes variables that store information and can be modified by the contract’s code.</li><li>Balance: the amount of TON held by the contract.</li><li>Others: flags requesting tick-tock calls at each block (active only for fundamental contracts), auto-splitting information and published library cells, etc.</li></ul><h2 id=message>Message <a href=#message></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -590,7 +638,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -599,10 +647,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>To communicate between smart contracts aka actors on TON network, we need to send messages. A message is a package of data that contains the following elements:</p><ul><li>Source Address: Sender’s address.</li><li>Destination Address: Receiver’s address.</li><li>Value: Amount of Toncoins being transferred.</li><li>Payload: Data or instructions for the recipient.</li><li>State Init: Optional initialization data for the recipient.</li></ul><p>We have 2 types of messages:</p><ul><li>Internal Messages: Facilitate communication and value transfer between smart contracts within the TON network. They are used for contract-to-contract interactions.</li><li>External Messages: Allow users and external entities to interact with smart contracts. They are typically used to invoke functions or services provided by the smart contracts.</li></ul><h2 id=transaction>Transaction <a href=#transaction></a></h2><p>On TON, we have the transaction that records the state changes of processing a message. That basically contains:</p><ul><li>Inbound Message: The message that triggered the transaction.</li><li>State Changes: Modifications to the account or smart contract state, such as balance updates or data modifications.</li><li>Outbound Messages: Any new messages generated as a result of processing the inbound message.</li><li>Gas Fees: Computational resources consumed during the transaction.</li></ul><p>Not every transaction leads to outgoing messages or updates to the contract’s storage; this depends on the specific actions defined by the contract’s code.</p><p>One more important point to note is that unlike Ethereum or most other synchronous blockchains, where each transaction can contain several smart contract calls, in TON, <strong>a transaction is executed on a single smart contract, and smart contracts communicate through messages.</strong></p><h2 id=gas>Gas <a href=#gas></a></h2><p>In Solidity, gas concerns are minimal for contract developers. If a user provides insufficient gas, the transaction will be completely reverted (though the gas spent will not be refunded). If sufficient gas is provided, the actual costs will be calculated and deducted from the user’s balance automatically.</p><p>In TON, the scenario differs:</p><ul><li>Insufficient gas leads to partial transaction execution.</li><li>Excess gas must be refunded, a responsibility falling on the developer.</li><li>When multiple contracts exchange messages, each message requires individual control and calculation.</li></ul><p>TON does not automatically calculate gas. The entire transaction execution, with all its outcomes, can be lengthy, potentially leaving the user with an insufficient toncoin balance by the end. <strong>So the developer must take care of gas costs</strong>. However, calculating gas is not an easy task. So we often need to set a minimum gas limit for each transaction, then refund the excess gas later. For example:</p><ul><li>Today, every transaction costs around ~0.005 TON.</li><li>And NFT marketplaces usually take an extra amount of TON (~1 TON) and return (1 - transaction_fee) later.</li></ul><blockquote><p>FYI: Fee formula on TON transaction_fee = storage_fees</p></blockquote><pre><code>+ in_fwd_fees
 + computation_fees

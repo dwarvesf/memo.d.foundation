@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai</li><div>Stats</div><li class=span><span>Words:
 </span>1130</li><li class=span><span>Characters:
-</span>13615</li><li class=span><span>Without Spaces:
+</span>15502</li><li class=span><span>Without Spaces:
 </span>7019</li><li class=span><span>Blocks:
 </span>24</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=semantic-cache-implementation>Semantic cache implementation <a href=#semantic-cache-implementation></a></h2><h3 id=cache-between-user-and-vector-database>Cache between user and vector database <a href=#cache-between-user-and-vector-database></a></h3><p>We would need some tools/libraries for this:</p><ul><li>Embedding tool: to transform the sentences into fixed-length vectors, also know as embeddings. Like: <a href=https://github.com/UKPLab/sentence-transformers target=_blank>sentence transformers</a> or could use api of openai if you have budget/access to it.</li><li>Vector database: to store the embeddings. Like: <a href=https://github.com/chroma-core/chroma target=_blank>chromadb</a>, <a href=https://github.com/pgvector/pgvector target=_blank>pgvector</a>.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>To be able to determine the similarity between the user query and the cached queries, we need to store user query embeddings in the vector database. When a user query comes in, we transform it into an embedding and search for the most similar embeddings in the vector database. If the similarity score is above a certain threshold, we consider the user query to be the same as the cached query and return the cached response.</p><p>Example of transforming the user query into embeddings using openai api:</p><pre><code class=language-typescript>type EmbeddingData = {
   object: string
@@ -648,7 +696,7 @@ const semanticCache = createTable(
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -657,9 +705,33 @@ const semanticCache = createTable(
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>This is similar to the previous implementation, the difference is that instead caching the embeddings, we cache the response of the generative model. As mentioned above, this is useful when we want to keep the answer consistent and reduce the cost of generating the same answer multiple times. But it reduces the flexibility of the generative model.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Caching is a vital technique that boosts performance by storing frequently accessed information. This allows the system to quickly retrieve data without having to repeatedly access large databases, reducing latency and computational costs. In RAG systems, caching can be implemented at various levels, including KV cache, prompt cache, exact cache, and semantic cache. The choice of cache type depends on the use case and the desired trade-offs between performance, cost, and flexibility.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://huyenchip.com/2024/07/25/genai-platform.html#step_4_reduce_latency_with_cache target=_blank>https://huyenchip.com/2024/07/25/genai-platform.html#step_4_reduce_latency_with_cache</a></li><li><a href=https://arxiv.org/pdf/2311.04934 target=_blank>https://arxiv.org/pdf/2311.04934</a></li><li><a href=https://github.com/UKPLab/sentence-transformers target=_blank>https://github.com/UKPLab/sentence-transformers</a></li><li><a href=https://huggingface.co/learn/cookbook/en/semantic_cache_chroma_vector_database target=_blank>https://huggingface.co/learn/cookbook/en/semantic_cache_chroma_vector_database</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

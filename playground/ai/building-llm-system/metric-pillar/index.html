@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li><div>Stats</div><li class=span><span>Words:
 </span>1198</li><li class=span><span>Characters:
-</span>17827</li><li class=span><span>Without Spaces:
+</span>20972</li><li class=span><span>Without Spaces:
 </span>7803</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=model-metrics>Model Metrics <a href=#model-metrics></a></h2><p>Model metrics examine the performance of the LLM itself. We&rsquo;ll separate them into two sections: metrics for model-based scoring and metrics for retrieval-augmented generation (RAG) systems.</p><h3 id=scoring-based-on-the-model>Scoring based on the model <a href=#scoring-based-on-the-model></a></h3><p>Evaluating the performance of an LLM requires specific metrics that quantify its output quality. Almost they are testing based on public dataset or benchmarks. Here are four key metrics used for model scoring:</p><ul><li><strong>Perplexity</strong>: Perplexity measures how well a probability distribution predicts a sample. Lower perplexity indicates better predictive performance, making it a valuable metric for evaluating language models.</li><li><strong>BLEU Score</strong>: The BLEU (Bilingual Evaluation Understudy) score is used to assess the quality of machine-generated text by comparing it to one or more reference texts. A higher BLEU score indicates a closer match to human-generated outputs.</li><li><strong>METEOR</strong>: This metric improves upon BLEU by considering synonyms and stemming, providing a more nuanced evaluation of generated text quality. Higher METEOR scores reflect better semantic meaning.</li><li><strong>ROUGE</strong>: ROUGE (Recall-Oriented Understudy for Gisting Evaluation) focuses on recall and is particularly useful for summarization tasks. It compares the overlap of n-grams between the generated text and reference texts.</li></ul><table><thead><tr><th>Metric Type</th><th>Description</th><th>Importance</th></tr></thead><tbody><tr><td>Perplexity</td><td>Predictive performance measure</td><td>Lower values indicate better models</td></tr><tr><td>BLEU</td><td>Quality comparison to reference texts</td><td>Higher scores reflect closer matches</td></tr><tr><td>METEOR</td><td>Evaluates semantic similarity</td><td>Enhances BLEU&rsquo;s effectiveness</td></tr><tr><td>ROUGE</td><td>Measures overlap in summarization</td><td>Useful for content generation tasks</td></tr></tbody></table><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=scoring-based-on-rag-systems>Scoring based on RAG systems <a href=#scoring-based-on-rag-systems></a></h3><p>In retrieval-augmented generation systems, the effectiveness of information retrieval can be as important as the quality of generated text. Some metrics below help us understand the quality and precision of search engine.</p><ul><li><strong>Precision@K</strong>: This measures the proportion of relevant documents within the top K results returned by the system. A higher Precision@K indicates that the system effectively retrieves relevant content, which is vital for generating accurate responses.</li><li><strong>Recall@K</strong>: Recall@K evaluates how many of the total relevant documents were retrieved. This metric helps ensure the system captures all necessary information, thus preventing critical data loss.</li><li><strong>Mean Reciprocal Rank (MRR)</strong>: MRR assesses the average rank of the first relevant result returned. A higher MRR indicates that relevant results appear earlier in the list, which enhances user satisfaction.</li><li><strong>Normalized Discounted Cumulative Gain (NDCG)</strong>: NDCG considers the position of relevant documents in the result list, providing a comprehensive view of ranking quality. High NDCG scores signify that relevant documents are prioritized, improving user experience.</li></ul><table><thead><tr><th>Metric Type</th><th>Description</th><th>Importance</th></tr></thead><tbody><tr><td>Precision@K</td><td>Relevant documents among top K results</td><td>Importance for content quality</td></tr><tr><td>Recall@K</td><td>Proportion of relevant documents retrieved</td><td>Ensures no critical info is missed</td></tr><tr><td>Mean Reciprocal Rank</td><td>Average rank of the first relevant result</td><td>Improves user satisfaction</td></tr><tr><td>Normalized Discounted Cumulative Gain</td><td>Evaluates ranking quality</td><td>Enhances overall user experience</td></tr></tbody></table><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -590,7 +638,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -599,10 +647,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=metrics-for-fine-tuning-model>Metrics for Fine-Tuning model <a href=#metrics-for-fine-tuning-model></a></h3><p>Fine-tuning models is an essential step for improving performance when the RAG technique cannot improve the behavior and predictability of the model.</p><ul><li><strong>Performance Improvement</strong>: This metric compares model performance before and after fine-tuning using various scores (e.g., BLEU, ROUGE). It provides a clear indication of whether the fine-tuning process was successful</li><li><strong>Training Time</strong>: Monitoring the time taken for fine-tuning helps assess the efficiency of the training process. Reducing training time while maintaining performance is a key goal.</li><li><strong>Overfitting Rate</strong>: The overfitting rate evaluates how well the model generalizes to unseen data after fine-tuning. A low overfitting rate indicates that the model has retained its ability to perform well across different datasets.</li><li><strong>Loss Reduction</strong>: Tracking the loss function before and after fine-tuning gives insights into how well the model learns from the data. A significant reduction in loss indicates effective fine-tuning.</li><li><strong>User Feedback</strong>: Gathering qualitative feedback from users can provide insights into perceived improvements in model performance, helping to complement quantitative metrics.</li></ul><table><thead><tr><th>Metric Type</th><th>Description</th><th>Importance</th></tr></thead><tbody><tr><td>Performance</td><td>Comparison of scores pre- and post-fine-tuning</td><td>Indicates success of fine-tuning</td></tr><tr><td>Training Time</td><td>Duration of the fine-tuning process</td><td>Critical for efficiency</td></tr><tr><td>Overfitting Rate</td><td>Generalization capability post-tuning</td><td>Ensures model robustness</td></tr><tr><td>Loss Reduction</td><td>Change in the loss function</td><td>Reflects learning effectiveness</td></tr><tr><td>User Feedback</td><td>Qualitative assessment of model performance</td><td>Provides context to quantitative data</td></tr></tbody></table><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -615,7 +687,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -624,10 +696,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=cost-metrics>Cost Metrics <a href=#cost-metrics></a></h2><p>Finally, the operating system should mention cost and price of the amount of model to help us understand the behavior of the user when choosing the model. A balance between pricing and performance is good for we observability.</p><ul><li><strong>Pricing per Request</strong>: This metric reflects the cost associated with processing each user request. Understanding this is crucial for budgeting and resource allocation.</li><li><strong>Token In/Out</strong>: Tracking the number of tokens processed (input and output) helps in understanding usage patterns and associated costs. Many third-party providers charge based on token counts.</li><li><strong>Total Time</strong>: This metric aggregates the total time spent processing requests, which can be correlated with costs, especially in cloud environments where time translates to billing.</li><li><strong>Resource Costs</strong>: Monitoring costs associated with cloud resources (e.g., CPU, storage) is essential for calculating total operational costs.</li><li><strong>Service Rate Limits</strong>: Understanding the rate limits imposed by third-party services helps in planning usage and avoiding unexpected costs or service interruptions.</li></ul><table><thead><tr><th>Metric Type</th><th>Description</th><th>Importance</th></tr></thead><tbody><tr><td>Pricing per Request</td><td>Cost per processed user request</td><td>Important for budgeting</td></tr><tr><td>Token In/Out</td><td>Count of processed tokens</td><td>Affects overall cost</td></tr><tr><td>Total Time</td><td>Aggregate processing time</td><td>Correlates with operational costs</td></tr><tr><td>Resource Costs</td><td>Expenses linked to resource utilization</td><td>Essential for cost management</td></tr><tr><td>Service Rate Limits</td><td>Limits set by service providers</td><td>Important for usage planning</td></tr></tbody></table><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -640,7 +736,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -649,9 +745,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Knowing and implementing a robust set of observability metrics in LLM applications is important for making sure high performance and client happiness. Reviewing all the metrics mentioned in the article gives a lot of valuable insights into why each one is important and why we should be using them.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://aman.ai/primers/ai/LLM/ target=_blank>https://aman.ai/primers/ai/LLM/</a></li><li><a href=https://www.pinecone.io/learn/offline-evaluation/ target=_blank>https://www.pinecone.io/learn/offline-evaluation/</a></li><li><a href=https://docs.smith.langchain.com/tutorials/Developers/observability target=_blank>https://docs.smith.langchain.com/tutorials/Developers/observability</a></li><li><a href=https://konfuzio.com/de/limits-llms-retrieval-augmented-generation/ target=_blank>https://konfuzio.com/de/limits-llms-retrieval-augmented-generation/</a></li><li><a href=https://sebastianraschka.com/blog/2023/optimizing-LLMs-dataset-perspective.html target=_blank>https://sebastianraschka.com/blog/2023/optimizing-LLMs-dataset-perspective.html</a></li><li><a href=https://www.trulens.org/trulens/getting_started/core_concepts/feedback_functions/#large-language-model-evaluations target=_blank>https://www.trulens.org/trulens/getting_started/core_concepts/feedback_functions/#large-language-model-evaluations</a></li><li><a href=https://kili-technology.com/large-language-models-llms/how-to-build-llm-evaluation-datasets-for-your-domain-specific-use-cases target=_blank>https://kili-technology.com/large-language-models-llms/how-to-build-llm-evaluation-datasets-for-your-domain-specific-use-cases</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

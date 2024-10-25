@@ -492,7 +492,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>2203</li><li class=span><span>Characters:
-</span>18784</li><li class=span><span>Without Spaces:
+</span>20042</li><li class=span><span>Without Spaces:
 </span>12152</li><li class=span><span>Blocks:
 </span>44</li><li class=span><span>Est reading Time:
 </span>11m 0s</li></ul></div></div></div></div><main x-data="{
@@ -556,7 +556,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -565,10 +565,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=overall-architecture>Overall Architecture <a href=#overall-architecture></a></h3><p>When working with NSXPCConnection-based helper apps, both the main application and the helper have an instance of NSXPCConnection. The main application creates its connection object itself, which causes the helper to launch. A delegate method in the helper gets passed its connection object when the connection is established. This is illustrated in Figure 4-1.</p><p>Each NSXPCConnection object provides three key features:</p><ul><li>An exportedInterface property that describes the methods that should be made available to the opposite side of the connection.</li><li>An exportedObject property that contains a local object to handle method calls coming in from the other side of the connection.</li><li>The ability to obtain a proxy object for calling methods on the other side of the connection.</li></ul><p>When the main application calls a method on a proxy object, the XPC service’s NSXPCConnection object calls that method on the object stored in its exportedObject property.</p><p>Similarly, if the XPC service obtains a proxy object and calls a method on that object, the main app’s NSXPCConnection object calls that method on the object stored in its exportedObject property</p><h3 id=designing-an-interface>Designing an Interface <a href=#designing-an-interface></a></h3><p>The NSXPCConnection API takes advantage of Objective-C protocols to define the programmatic interface between the calling application and the service. Any instance method that you want to call from the opposite side of a connection must be explicitly defined in a formal protocol. For example</p><pre><code class=language-javascript>@protocol FeedMeACookie
     - (void)feedMeACookie: (Cookie *)cookie;
@@ -595,7 +619,7 @@ myConnection.remoteObjectInterface = myCookieInterface;
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -604,10 +628,34 @@ myConnection.remoteObjectInterface = myCookieInterface;
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>At this point, the main application can call the remoteObjectProxy or remoteObjectProxyWithErrorHandler: methods on the myConnection object to obtain a proxy object.</p><p>This object acts as a proxy for the object that the XPC service has set as its exported object (by setting the exportedObject property). This object must conform to the protocol defined by the remoteObjectInterface property.</p><p>When your application calls a method on the proxy object, the corresponding method is called on the exported object inside the XPC service. When the service’s method calls the reply block, the parameter values are serialized and sent back to the application, where the parameter values are deserialized and passed to the reply block. (The reply block executes within the application’s address space.)</p><p><em>Note: If you want to allow the helper process to call methods on an object in your application, you must set the exportedInterface and exportedObject properties before calling resume. These properties are described further in the next section.</em></p><h3 id=accepting-a-connection-in-the-helper>Accepting a Connection in the Helper <a href=#accepting-a-connection-in-the-helper></a></h3><p>When an NSXPCConnection-based helper receives the first message from a connection, the listener delegate’s <code>listener:shouldAcceptNewConnection:</code> method is called with a listener object and a connection object. This method lets you decide whether to accept the connection or not; it should return YES to accept the connection or NO to refuse the connection.</p><p><em>Note: The helper receives a connection request when the first actual message is sent. The connection object’s resume method does not cause a message to be sent.</em></p><p>In addition to making policy decisions, this method must configure the connection object. In particular, assuming the helper decides to accept the connection, it must set the following properties on the connection:</p><ul><li>exportedInterface—an interface object that describes the protocol for the object you want to export. (Creating this object was described previously in Connecting to and Using an Interface.)</li><li>exportedObject—the local object (usually in the helper) to which the remote client’s method calls should be delivered. Whenever the opposite end of the connection (usually in the application) calls a method on the connection’s proxy object, the corresponding method is called on the object specified by the exportedObject property.</li></ul><p>After setting those properties, it should call the connection object’s resume method before returning YES. Although the delegate may defer calling resume, the connection will not receive any messages until it does so.</p><h3 id=sending-messages>Sending Messages <a href=#sending-messages></a></h3><p>Sending messages with NSXPC is as simple as making a method call. For example, given the interface myCookieInterface (described in previous sections) on the XPC connection object myConnection, you can call the feedMeACookie method like this:</p><pre><code class=language-javascript>Cookie *myCookie = ...
  

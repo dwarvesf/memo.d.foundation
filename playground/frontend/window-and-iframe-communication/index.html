@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>440</li><li class=span><span>Characters:
-</span>7357</li><li class=span><span>Without Spaces:
+</span>8615</li><li class=span><span>Without Spaces:
 </span>3021</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -550,7 +550,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -559,10 +559,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=cross-origin-communication>Cross Origin Communication <a href=#cross-origin-communication></a></h2><p>Cross origin communication occurs when the iframe and the parent window come from different origins. The <a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage target=_blank>postMessage</a> interface allows windows to communicate regardless of their origins.</p><p>This method is an exception to the &ldquo;Same Origin&rdquo; policy, enabling windows from different origins to exchange information if both parties agree and implement corresponding JavaScript functions, ensuring user safety.</p><p>Here&rsquo;s how the communication happens:</p><ul><li>Both the iframe and its parent window can communicate using the <code>postMessage</code> method.</li><li>The parent window uses <code>iframe.contentWindow.postMessage</code> to send messages to the iframe.</li><li>The iframe sends messages to the parent window using <code>window.parent.postMessage</code>.</li><li>Both parties receive messages using <code>window.addEventListener('message')</code>.</li></ul><p>Here&rsquo;s an example of cross origin communication:</p><pre><code class=language-html>&lt;iframe src=&quot;http://example.com&quot; name=&quot;example&quot;&gt;&lt;/iframe&gt;
 &lt;script&gt;
@@ -594,7 +618,7 @@ window.addEventListener('message', function (event) {
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -603,9 +627,33 @@ window.addEventListener('message', function (event) {
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In summary, communication between a window and an iframe is facilitated through the <code>postMessage</code> interface for cross origin scenarios, and the <code>contentWindow</code> property for same origin scenarios. This allows for seamless integration of iframes in various web applications, enhancing user experience and functionality.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://javascript.info/cross-window-communication target=_blank>https://javascript.info/cross-window-communication</a></li><li><a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage target=_blank>https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage</a></li><li><a href=https://gist.github.com/pbojinov/8965299 target=_blank>Two way iframe communication</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature/security</li><div>Stats</div><li class=span><span>Words:
 </span>724</li><li class=span><span>Characters:
-</span>8215</li><li class=span><span>Without Spaces:
+</span>8844</li><li class=span><span>Without Spaces:
 </span>4609</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div><main x-data="{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,9 +549,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=1-application-security>1. Application Security <a href=#1-application-security></a></h3><p>Securing the application itself is the first line of defense. This involves protecting the app from unauthorized access and preventing common security vulnerabilities.</p><ul><li><strong>Key Practices:</strong> Implementing secure authentication mechanisms, following best practices for API design, and conducting regular penetration testing.</li><li><strong>Compliance Standard:</strong> <a href=https://owasp.org/ target=_blank>OWASP</a> (Open Web Application Security Project) offers a framework and guidelines to prevent the most common vulnerabilities, including cross-site scripting and SQL injection.</li></ul><h3 id=2-data-security>2. Data Security <a href=#2-data-security></a></h3><p>At the heart of every platform lies data—ensuring the confidentiality, integrity, and availability of this data is crucial.</p><ul><li><strong>Key Practices:</strong> Encrypting sensitive data (e.g., passwords, credit card information) both at rest and in transit, respecting user privacy through data ownership and control, and providing mechanisms for user data deletion.</li><li><strong>Compliance Standards:</strong> <a href=https://gdpr-info.eu/ target=_blank>GDPR</a> (General Data Protection Regulation) and <a href=https://oag.ca.gov/privacy/ccpa target=_blank>CCPA</a> (California Consumer Privacy Act) are two major regulations governing data privacy, setting a high standard for transparency and user control.</li></ul><h3 id=3-development--infrastructure-security>3. Development & Infrastructure Security <a href=#3-development--infrastructure-security></a></h3><p>Integrating security into the development lifecycle is vital for maintaining a secure infrastructure. From developer access to production environments, everything needs stringent security protocols.</p><ul><li><strong>Key Practices:</strong> Setting up role-based access control (RBAC), requiring multi-factor authentication (MFA) for accessing development services, and providing regular cybersecurity training for all employees.</li><li><strong>Compliance Standard:</strong> <a href=https://www.iso.org/standard/27001 target=_blank>ISO 27001</a> outlines best practices for information security management, focusing on risk assessment and mitigation.</li></ul><h2 id=a-3-month-security-roadmap>A 3-Month Security Roadmap <a href=#a-3-month-security-roadmap></a></h2><p>Building a security foundation takes time. We’ve devised a phased approach over the next three months to implement security protocols in a manageable, prioritized way. This plan allows us to remain nimble while progressively enhancing security.</p><h3 id=phase-1-immediate-actions>Phase 1: Immediate Actions <a href=#phase-1-immediate-actions></a></h3><p>Focus on implementing foundational security measures that address immediate risks.</p><ul><li><strong>Authentication & Authorization:</strong> Secure the login process using MFA, and implement secure token refresh policies.</li><li><strong>Data Encryption:</strong> Configure AES-256 encryption for sensitive data.</li></ul><h3 id=phase-2-short-term-actions>Phase 2: Short-Term Actions <a href=#phase-2-short-term-actions></a></h3><p>Once immediate risks are handled, shift focus to building a stronger defense against potential threats.</p><ul><li><strong>OWASP Checklist:</strong> Address key vulnerabilities such as improper input validation, session management, and common risks from the <a href=https://owasp.org/www-project-top-ten/ target=_blank>OWASP Top Ten list</a>.</li><li><strong>GDPR/CCPA Compliance:</strong> Implement data minimization strategies, and develop transparent processes for user consent, data access, and deletion requests.</li></ul><h3 id=phase-3-long-term-actions>Phase 3: Long-Term Actions <a href=#phase-3-long-term-actions></a></h3><p>Finally, strengthen our infrastructure security to protect against sophisticated threats.</p><ul><li><strong>Environment Segmentation:</strong> Ensure clear separation between development, testing, and production environments to reduce risk from cross-environment threats.</li><li><strong>Log Management and Monitoring:</strong> Set up a robust logging and alert system to monitor unusual activity, providing early warnings of potential security incidents.</li></ul><h2 id=tailoring-security-to-fit-our-context>Tailoring Security to Fit Our Context <a href=#tailoring-security-to-fit-our-context></a></h2><p>While this security roadmap offers a structured approach, it&rsquo;s important to remember that the specifics of security strategies should adapt to the unique needs of each business. For our platform, this plan balances immediate priorities with long-term goals, ensuring we build a secure foundation without losing focus on growth. However, other team may require a different plan based on their specific client needs, regulatory requirements, and available resources.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>We hope this memo delivers a high-level overview of the key components required for a successful security implementation plan. While the security requirements of every business may differ, we believe this approach can serve as a foundation for creating a customized strategy that aligns with your particular context.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

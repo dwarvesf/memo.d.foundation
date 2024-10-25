@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>883</li><li class=span><span>Characters:
-</span>9668</li><li class=span><span>Without Spaces:
+</span>10297</li><li class=span><span>Without Spaces:
 </span>5399</li><li class=span><span>Blocks:
 </span>24</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Our journey to develop a fully local search engine for our memo website has been an evolution. Initially, we relied on Algolia, a third-party search solution that provided excellent search capabilities, followed up with <a href=https://modal.com/docs/examples/algolia_indexer target=_blank>Modal</a> to index and scrape our website. However, as our platform grew, we began to reconsider this approach. We wanted to move away from server-dependent solutions for several reasons:</p><ol><li>Privacy concerns: Keeping all search data local enhances user privacy.</li><li>Cost efficiency: Eliminating the need for external services reduces operational costs.</li><li>Offline functionality: A local solution allows for offline search capabilities.</li><li>Customization: Building our own solution gives us complete control over the search experience.</li></ol><p>This led us to explore alternatives, and we eventually landed on DuckDB as our core technology. DuckDB&rsquo;s ability to run entirely in the browser, coupled with its powerful SQL capabilities, made it an ideal choice for our local search engine.</p><p>Interestingly, our implementation came just before DuckDB introduced their <a href=https://duckdb.org/docs/sql/data_types/array target=_blank>array type</a>, which they promptly followed with a post on <a href=https://motherduck.com/blog/search-using-duckdb-part-3/ target=_blank>hybrid search with DuckDB</a>. This timing highlights how our journey aligns with the broader trend of leveraging DuckDB for analysis, AI integration, and web applications.</p><p>Our search engine combines the power of full-text search, semantic search, and a sleek user interface (thanks @vincent) to deliver fast and accurate results, all while running entirely on the client-side. In this post, we&rsquo;ll walk you through the key components and technologies that make this possible, showcasing how we&rsquo;ve achieved a server-free, privacy-focused search solution.</p><h2 id=the-tech-stack>The Tech Stack <a href=#the-tech-stack></a></h2><p>Our local search engine leverages several cutting-edge technologies:</p><ol><li>DuckDB-wasm: A fully in-browser SQL database</li><li>Transformers.js: For generating embeddings directly in the browser</li><li>Alpine.js: For reactive UI components</li><li>Lodash: For data manipulation</li><li>Snarkdown: For Markdown parsing</li></ol><h2 id=key-features>Key Features <a href=#key-features></a></h2><h3 id=1-hybrid-search>1. Hybrid Search <a href=#1-hybrid-search></a></h3><p>We&rsquo;ve implemented a hybrid search approach that combines full-text search with semantic search. This allows us to capture both keyword matches and conceptual similarities.</p><pre><code class=language-sql>WITH search_results AS (
   SELECT

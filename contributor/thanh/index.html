@@ -527,7 +527,7 @@
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -536,9 +536,33 @@
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></td><td><a href=https://github.com/zlatanpham target=_blank>https://github.com/zlatanpham</a></td></tr></tbody></table><h2 id=contributed-notes>Contributed Notes <a href=#contributed-notes></a></h2><ul><li><a href=/playground/ai/building-llm-system/model-selection>Model Selection</a></li><li><a href=/opensource>Open Source</a></li><li><a href=/playground/market-report/2024-september>Market Report September 2024</a></li><li><a href=/playground/ai/building-llm-system/use-cases-for-llm-applications>Use cases for LLM applications</a></li><li><a href=/playground/ai/building-llm-system/the-rise-of-ai-applications-with-llm>The rise of AI applications with LLM</a></li><li><a href=/updates/forward-engineering/2024-quarter-3>Forward Engineering Quarter, 2024</a></li><li><a href=/playground/ai/building-llm-system/building-llm-system>§ Building LLM System</a></li><li><a href=/playground/01_literature/security/a-holistic-guide-to-security>A Holistic Guide to Security</a></li><li><a href=/playground/01_literature/record-reward-sharing-culture>Record and reward sharing at Dwarves</a></li><li><a href=/playground/market-report/2024-august>Market Report August 2024</a></li><li><a href=/playbook/operations/how-to-conduct-delivery-reports>How to conduct delivery reports</a></li><li><a href=/playground/market-report/2024-july>Market Report July 2024</a></li><li><a href=/playbook/operations/checklists/artifact-checklist>Checklist: Back up Artifact</a></li><li><a href=/playground/market-report/2024-may>Market Report May 2024</a></li><li><a href=/playground/01_literature/how-to-make-a-moc>How to make a MOC</a></li><li><a href=/playground/market-report/2024-april>Market Report April 2024</a></li><li><a href=/playground/01_literature/security/how-i-came-up-with-our-security-standard>How I came up with our Security Standard</a></li><li><a href=/playground/01_literature/tech-canvas>Tech Canvas</a></li><li><a href=/playground/market-report/2024-march>Market Report March 2024</a></li><li><a href=/playground/market-report/2024-february>Market Report February 2024</a></li><li><a href=/playground/market-report/2024-january>Market Report January 2024</a></li><li><a href=/playground/market-report/2023-december>Market Report December 2023</a></li><li><a href=/contributing>Home</a></li><li><a href=/playground/01_literature/labs-who-we-are>Labs - Who we are</a></li><li><a href=/updates/forward-engineering/2023-november>Forward Engineering November 2023</a></li><li><a href=/playground/01_literature/labs-x-consulting-workflow>Labs x Consulting Workflow</a></li><li><a href=/playground/01_literature/labs-topic-proposal-progress-tracking>Labs - Topic proposal & progress tracking</a></li><li><a href=/playground/01_literature/knowledge-journey>Knowledge Journey</a></li><li><a href=/playground/01_literature/reward-model-nomination>Reward Model & Nomination</a></li><li><a href=/playground/01_literature/labs-roadmap-nov-23-update>Labs Roadmap (Nov 23 update)</a>)</li><li><a href=/playground/01_literature/how-r-d-contributes-to-performance-review>How R&amp;D contributes to Performance Review</a></li><li><a href=/playground/01_literature/labs-new-member-onboarding>Labs - New Member Onboarding</a></li><li><a href=/updates/forward-engineering/2023-october>Forward Engineering October 2023</a></li><li><a href=/updates/forward-engineering/2023-august>Forward Engineering August 2023</a></li><li><a href=/playground/frontend/window-and-iframe-communication>Window and iframe communication</a></li><li><a href=/earn/trend-command>Trend Command</a></li><li><a href=/playground/01_literature/adoption-of-pnpm>Adoption Of Pnpm</a></li><li><a href=/playground/ai/adversarial-prompting>Adversarial Prompting in Prompt Engineering</a></li><li><a href=/playground/ai/chunking-strategies-to-overcome-context-limitation-in-llm>Chunking strategies to overcome context limitation in LLM</a></li><li><a href=/updates/forward-engineering/2023-june>Forward Engineering June 2023</a></li><li><a href=/playground/ai/llm-query-caching>Query Caching for Large Language Models</a></li><li><a href=/updates/forward-engineering/2023-may>Forward Engineering May 2023</a></li><li><a href=/playground/ai/foundation-model>Foundation Models: The Latest Advancement in AI</a></li><li><a href=/updates/forward-engineering/2023-march>Forward Engineering March 2023</a></li><li><a href=/playground/frontend/why-we-chose-our-tech-stack-accelerating-development-with-a-robust-frontend-solution>Why We Chose Our Tech Stack Accelerating Development With A Robust Frontend Solution</a></li><li><a href=/playground/frontend/tackling-server-state-complexity-in-frontend-development>Tackling Server State complexity in Frontend Development</a></li><li><a href=/updates/forward-engineering/2023-december>Forward Engineering December 2023</a></li><li><a href=/updates/forward-engineering/2022>Forward Engineering 2022</a></li><li><a href=/handbook/learning/tech-radar>Dwarves Radar Program</a></li><li><a href=/playground/frontend/the-fundamental-of-web-performance>The fundamental of web performance</a></li><li><a href=/handbook/learning/sharing>Sharing</a></li><li><a href=/handbook/learning/showcase>Showcase</a></li><li><a href=/playground/frontend/dark-mode-flickers-a-white-background-for-a-fraction-of-a-second>Dark mode flickers a white background for a fraction of a second</a></li><li><a href=/playground/frontend/why-virtual-dom-is-fast>Why Virtual DOM is fast?</a></li><li><a href=/playground/frontend/why-dom-manipulation-is-slow>Why DOM manipulation is slow?</a></li><li><a href=/playground/frontend/focus-trap>Focus trap</a></li><li><a href=/playground/frontend/html-inert>HTML inert</a></li><li><a href=/playground/frontend/zaplib-post-mortem>Zaplib post-mortem</a></li><li><a href=/playground/frontend/parallelism-in-javascript>Parallelism in JavaScript</a></li><li><a href=/playbook/operations/checklists/project-handover>Checklist: Project Handover</a></li><li><a href=/playbook/operations/checklists/project-communication>Checklist: Project Communication</a></li><li><a href=/playbook/operations/checklists/project-archive>Checklist: Project Archive</a></li><li><a href=/playbook/operations/checklists/project-initialization>Checklist: Project Initialization</a></li><li><a href=/playbook/operations/checklists/project-case-study>Checklist: Project Case Study</a></li><li><a href=/handbook/engineering-ladder>Engineering Ladder</a></li><li><a href=/playground/frontend/micro-frontends-microservices-for-frontend-development>Micro Frontends Microservices For Frontend Development</a></li><li><a href=/playground/frontend/using-correct-html-element-to-increase-website-accessibility>Using Correct Html Element To Increase Website Accessibility</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

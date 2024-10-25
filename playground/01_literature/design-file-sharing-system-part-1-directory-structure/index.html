@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>679</li><li class=span><span>Characters:
-</span>8134</li><li class=span><span>Without Spaces:
+</span>9392</li><li class=span><span>Without Spaces:
 </span>4003</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=overview>Overview <a href=#overview></a></h2><p>This file storage and sharing system enables users to:</p><ul><li><strong>Upload and Edit Files:</strong> Users can upload various types of files to their personal storage space on the website and edit them.</li><li><strong>Share Files:</strong> Users can share files with specific individuals or groups(all workspace members), providing controlled access to their content.</li><li><strong>Public File Access:</strong> Users can make certain files public, allowing guest users to view these files without requiring a login.</li><li><strong>Password Protection:</strong> For added security, users can set passwords on files to restrict access and ensure that only authorized users can view the content.</li></ul><p>This system is designed to be user-friendly and secure, ensuring that users can manage their files with ease while maintaining control over who can access their content.</p><h2 id=data-model>Data Model <a href=#data-model></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,9 +598,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=workspace>Workspace <a href=#workspace></a></h3><p>The workspace table contains basic information that is essential for understanding the context. It&rsquo;s important to know that a workspace is essentially a group of people working together towards common goals. These individuals may collaborate on various sharing resources.</p><h3 id=asset>Asset <a href=#asset></a></h3><p>The Asset table is the primary storage for information about digital assets within the system. These assets could include various types of files, documents, or other digital content. This table stores essential metadata about each asset, including identifiers, timestamps, file details, ownership information, and organizational categorization (such as project and workspace associations).</p><h3 id=main-permission--sub-permission>Main Permission & Sub Permission <a href=#main-permission--sub-permission></a></h3><p>The Permissions table manages access control and authorization for various resources within the system, defining who has what level of access to different assets. This table stores comprehensive permission data, including roles, access levels, and the scope of permissions.</p><p>This data model ensures a flexible and comprehensive system for managing files and their public accessibility, providing the foundation for a robust file storage and sharing system.</p><h2 id=handle-file-structure>Handle File Structure <a href=#handle-file-structure></a></h2><h3 id=problem>Problem <a href=#problem></a></h3><p><strong>Hierarchical File Listing</strong></p><ul><li>The challenge in representing and maintaining a folder-like structure for file organization</li><li>Efficient methods for retrieving files at specific levels of the hierarchy</li></ul><p><strong>File Operations Across Hierarchy</strong></p><ul><li>Complexity in moving files between different levels of the hierarchy</li><li>Ensuring data integrity when relocating files with child elements</li><li>Updating all relevant references and permissions when files are moved</li></ul><h3 id=solution>Solution <a href=#solution></a></h3><p><strong>Path Field in Asset Model</strong></p><p>The <code>path</code> field in the <code>Asset</code> model represents the hierarchical location of an asset within the storage system. It is formatted as a string of concatenated IDs separated by slashes, such as <code>"/6667c29bb49c9ccb61d4aefe/6667c324b49c9ccb61d4af04/6667d6e8b49c9ccb61d4af2d"</code>. The structure of this path is as follows:</p><ul><li>The first ID (<code>6667c29bb49c9ccb61d4aefe</code>) represents the <code>workspaceID</code>.</li><li>The subsequent IDs represent the hierarchical directory structure leading to the current asset, with each ID corresponding to a parent directory (e.g., assetID level 1, assetID level 2).</li></ul><p><strong>Performance Improvement</strong></p><p>Using the <code>path</code> field in this format allows for efficient retrieval and updates of asset locations. Since the entire hierarchy is encapsulated in a single string, operations like moving an asset to a different directory or renaming a directory can be performed with constant time complexity, O(1). This efficiency is achieved because:</p><ol><li><strong>Direct Access:</strong> The path provides a direct reference to the asset&rsquo;s location, eliminating the need for recursive directory traversal.</li><li><strong>Simplified Updates:</strong> Updating the path of an asset or its parent directories only requires modifying the string, avoiding complex tree structure updates.</li></ol><p>This approach significantly reduces the computational overhead and complexity associated with managing hierarchical file structures, ensuring swift and efficient operations.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In this memo, I discuss the various requirements of the system, detailing what is necessary for its optimal performance. Additionally, I explain how I optimize the file structure to ensure efficient storage and retrieval of data. In the next part of this memo, I will continue the discussion by elaborating on how I handle permissions, manage file sharing, and set passwords to enhance the security and accessibility of the system. This comprehensive approach ensures that all aspects of system management are covered thoroughly.</p><p><a href=https://memo.d.foundation/playground/01_literature/design-file-sharing-system-part-2-permission-and-password/>Continue to Part 2: Permission & Password</a></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

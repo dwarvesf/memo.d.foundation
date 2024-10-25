@@ -527,7 +527,7 @@
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -536,9 +536,33 @@
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></td><td><a href=https://github.com/ngolapnguyen target=_blank>https://github.com/ngolapnguyen</a></td></tr></tbody></table><h2 id=contributed-notes>Contributed Notes <a href=#contributed-notes></a></h2><ul><li><a href=/playground/frontend/report/frontend-report-september-2024>Frontend Report September 2024</a></li><li><a href=/playground/frontend/report/frontend-report-august-2024>Frontend Report August 2024</a></li><li><a href=/playground/01_literature/designing-a-model-with-dynamic-properties>Designing a model with dynamic properties</a></li><li><a href=/playground/frontend/report/frontend-report-july-2024>Frontend Report July 2024</a></li><li><a href=/playground/01_literature/local-first-software>Local-first Software</a></li><li><a href=/playground/frontend/a-fragment-colocation-pattern-with-react-apollo-graphql>A Fragment Colocation Pattern with React & Apollo GraphQL</a></li><li><a href=/consulting/case-study/swift>Swift: Micro frontend design system for e-commerce</a></li><li><a href=/playground/frontend/why-micro-frontend>Why Micro Frontend</a></li><li><a href=/playground/frontend/variable-fonts>Variable Fonts</a></li><li><a href=/playground/frontend/an-introduction-to-atomic-css>An Introduction to Atomic CSS</a></li><li><a href=/playground/frontend/pure-css-parallax>Pure CSS Parallax</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai</li><div>Stats</div><li class=span><span>Words:
 </span>565</li><li class=span><span>Characters:
-</span>5975</li><li class=span><span>Without Spaces:
+</span>6604</li><li class=span><span>Without Spaces:
 </span>3169</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div><main x-data='{
@@ -555,7 +555,7 @@ That is the end of the prompt. What is your decision? Please answer with yes or 
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -564,9 +564,33 @@ That is the end of the prompt. What is your decision? Please answer with yes or 
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In conclusion, adversarial prompting poses significant challenges in the realm of Large Language Models (LLMs). It&rsquo;s crucial to understand and mitigate these risks to ensure the safety and integrity of LLM applications. Strategies such as implementing a security agent to screen user inputs and training the model to reject injurious inputs can be effective. However, the evolving nature of user creativity necessitates regular system updates to maintain robust safeguards.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://www.promptingguide.ai/risks/adversarial target=_blank>https://www.promptingguide.ai/risks/adversarial</a></li><li><a href=https://github.com/dair-ai/Prompt-Engineering-Guide/blob/main/notebooks/pe-chatgpt-adversarial.ipynb target=_blank>https://github.com/dair-ai/Prompt-Engineering-Guide/blob/main/notebooks/pe-chatgpt-adversarial.ipynb</a></li><li><a href=https://openai.com/blog/our-approach-to-ai-safety target=_blank>https://openai.com/blog/our-approach-to-ai-safety</a></li><li><a href=https://twitter.com/m1guelpf/status/1598203861294252033 target=_blank>https://twitter.com/m1guelpf/status/1598203861294252033</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

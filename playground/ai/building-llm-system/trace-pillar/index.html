@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li><div>Stats</div><li class=span><span>Words:
 </span>699</li><li class=span><span>Characters:
-</span>11376</li><li class=span><span>Without Spaces:
+</span>13892</li><li class=span><span>Without Spaces:
 </span>4174</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>11m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=why-tracing-is-necessary>Why tracing is necessary <a href=#why-tracing-is-necessary></a></h2><p>Tracing can help you track down issues like:</p><ul><li><strong>Application latency:</strong> showing delayed LLM and Retriever invocations.</li><li><strong>Token usage:</strong> provides a breakdown of token usage with LLMs to highlight your most expensive LLM calls.</li><li><strong>Runtime exceptions:</strong> important runtime errors, such as rate limitation, are recorded as exception events.</li><li><strong>Retrieved documents:</strong> view all the documents retrieved during a retriever call, including the score and order in which they were returned.</li><li><strong>LLM parameters:</strong> view the parameters used when calling out to an LLM to debug things like temperature and system prompts.</li><li><strong>Prompt templates:</strong> determine which prompt template was used during the prompting step, as well as the variables used.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=element-in-tracing>Element in tracing <a href=#element-in-tracing></a></h2><p>We should be making clear the difference between trace and span.</p><table><thead><tr><th><strong>Attribute</strong></th><th><strong>Trace</strong></th><th><strong>Span</strong></th></tr></thead><tbody><tr><td><strong>Scope</strong></td><td>Covers the entire lifecycle of a request</td><td>Focuses on individual operations or steps</td></tr><tr><td><strong>Level of Detail</strong></td><td>High-level overview</td><td>Detailed, includes specific metrics</td></tr><tr><td><strong>Granularity</strong></td><td>Includes multiple spans</td><td>Captures single actions</td></tr><tr><td><strong>Primary Use</strong></td><td>Understanding overall application flow and dependencies</td><td>Debugging or optimizing specific components/tasks</td></tr><tr><td><strong>Data Collected</strong></td><td>Timeline of operations, parent-child relationships</td><td>Duration, input/output, token usage, errors, attributes like provider, scores</td></tr><tr><td><strong>Examples</strong></td><td>Full document retrieval process</td><td>Querying a database, calling an API, embedding query</td></tr></tbody></table><h3 id=trace>Trace <a href=#trace></a></h3><p>Traces, also known as distributed traces, provide a view of a system by crossing agent, process, and function. Spans form the fundamental components of a trace.</p><p>A trace consists of a tree structure of spans, beginning with a root span that has no parent. This root span encapsulates the total time required to complete a task, representing a single logical operation such as adding an step to a get current weather. The root span serves as the foundation, with child spans branching off to provide more detailed information about specific subtasks or processes within the overall operation.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -590,7 +638,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -599,10 +647,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=span>Span <a href=#span></a></h3><p>Span help define the main operations within LLM applications. These types of operations are broken down into different categories to keep things organized and easy to understand.</p><ul><li><strong>Chain ( Workflow )</strong>: This is like a roadmap of static steps, which can include things like retrieving data, embedding text, or making LLM calls.</li><li><strong>Embedding</strong>: This deals with embedding tasks, such as working with text embeddings, often used for making similarity-based queries or refining questions.</li><li><strong>Retrieval</strong>: In setups like RAG system, this fetches data from a vector database to give the LLM more context for better, more accurate responses.</li><li><strong>LLM</strong>: Calls to the LLM itself for things like generating text or getting inferences, often using various APIs or SDKs.</li><li><strong>Tool</strong>: External tool calls, like grabbing info from a weather API or using a calculator to get real-time data.</li><li><strong>Agent</strong>: In intelligent agent scenarios, this handles more dynamic workflows, making decisions based on LLM outputs.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -615,7 +687,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -624,9 +696,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Tracing lets you see what’s going on in your LLM app, from tracking performance to fixing errors and understanding token usage. It’s a simple way to debug and optimize everything from prompts to external tool calls.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://www.datadoghq.com/blog/datadog-llm-observability/ target=_blank>https://www.datadoghq.com/blog/datadog-llm-observability/</a></li><li><a href=https://mlflow.org/docs/latest/llms/tracing/tracing-schema.html target=_blank>https://mlflow.org/docs/latest/llms/tracing/tracing-schema.html</a></li><li><a href=https://arize.com/blog/llm-tracing-and-observability-with-arize-phoenix/ target=_blank>https://arize.com/blog/llm-tracing-and-observability-with-arize-phoenix/</a></li><li><a href=https://arize.com/blog-course/traces-spans-large-language-model-orchestration/ target=_blank>https://arize.com/blog-course/traces-spans-large-language-model-orchestration/</a></li><li><a href=https://www.linkedin.com/posts/aurimas-griciunas_llm-genai-llmops-activity-7250055380553084928-9XAA target=_blank>https://www.linkedin.com/posts/aurimas-griciunas_llm-genai-llmops-activity-7250055380553084928-9XAA</a></li><li><a href=https://www.alibabacloud.com/blog/observability-of-llm-applications-exploration-and-practice-from-the-perspective-of-trace_601604 target=_blank>https://www.alibabacloud.com/blog/observability-of-llm-applications-exploration-and-practice-from-the-perspective-of-trace_601604</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

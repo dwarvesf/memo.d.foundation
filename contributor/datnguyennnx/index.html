@@ -527,7 +527,7 @@
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -536,9 +536,33 @@
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></td><td><a href=https://github.com/datnguyennnx target=_blank>https://github.com/datnguyennnx</a></td></tr></tbody></table><h2 id=contributed-notes>Contributed Notes <a href=#contributed-notes></a></h2><ul><li><a href=/playground/ai/digest/ai-digest-01>AI digest #1 Aider reasoning, OpenAI Realtime API, Cline - pre Claude-dev</a></li><li><a href=/playground/ai/use-cases/yelp>Yelp use cases</a></li><li><a href=/playground/ai/building-llm-system/metric-pillar>Metrics</a></li><li><a href=/playground/ai/building-llm-system/trace-pillar>Tracing</a></li><li><a href=/playground/ai/building-llm-system/logs-pillar>Logging</a></li><li><a href=/playground/ai/building-llm-system/observability-in-ai-platforms>Observability in AI Platforms</a></li><li><a href=/playground/ai/building-llm-system/evaluation-guideline-for-llm-application>Evaluation Guidelines for LLM Applications</a></li><li><a href=/playground/01_literature/hybrid-search>Evaluating search engine in RAG systems</a></li><li><a href=/playground/ai/thumbs-up-and-thumbs-down-pattern>Thumbs up and Thumbs down pattern</a></li><li><a href=/playground/01_literature/feedback-mechanism>Design feedback mechanism for LLM applications</a></li><li><a href=/playground/01_literature/history-of-structured-output-for-llms>History of Structured Outputs for LLMs</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

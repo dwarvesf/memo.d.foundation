@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>updates/changelog</li><div>Stats</div><li class=span><span>Words:
 </span>472</li><li class=span><span>Characters:
-</span>6458</li><li class=span><span>Without Spaces:
+</span>7716</li><li class=span><span>Without Spaces:
 </span>2632</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=icy-updates-in-2024>ICY Updates in 2024 <a href=#icy-updates-in-2024></a></h2><p>Since its launch in September 2022, ICY was used to reward the network members and allow all members to earn ICY through engagement in discussions, research on Dwarves&rsquo; tech, and more.</p><p>In March:</p><ul><li>To welcome new members to our Discord discussions, we&rsquo;re giving away ICY to members with the @guest role as a warm welcome from us. Additionally, we&rsquo;ve implemented a new role system to make it more fun and organized.</li><li>We transferred the ICY contract from Polygon to the Base chain, paving the way for further NFT/staking advancements, with updated Mochi & Onchain balances.</li><li>To expand our reach beyond Discord, we&rsquo;ve initiated the linking of Mochi wallet accounts with GitHub accounts, rewarding linked users with ICY tokens.</li></ul><p><a href=https://memo.d.foundation/playbook/community/starting-your-journey-at-dwarves-discord/>How we set up Discord server</a></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,9 +598,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=community-engagement-offline-meetups-in-april>Community Engagement: Offline Meetups in April <a href=#community-engagement-offline-meetups-in-april></a></h2><p>Starting this April, we&rsquo;re excited to launch a fresh initiative focused on nurturing stronger connections and more meaningful interactions within our community. We&rsquo;ll trade our usual team dinners for engaging offline meetups held every three months in Ho Chi Minh City. We can&rsquo;t wait to see you there.</p><h2 id=demo-and-showcase-give-your-screenshots-a-cleaner-look-with-backr>Demo and Showcase: Give your screenshots a cleaner look with Backr <a href=#demo-and-showcase-give-your-screenshots-a-cleaner-look-with-backr></a></h2><p>The next initiative in our monthly call will have a broader range of topics to discuss, including project demos and product showcases.</p><ul><li>Elevate your screenshots with <a href=https://getbackr.vercel.app/ target=_blank>Backr</a>, a tool crafted by Tuan Dao. It allows you to set captivating backgrounds and make your captures look stunning.</li><li>Also, our team member, Khac Vy actively participates in the weekly Solana event, Build Station, which is organized every Saturday. Reach out to Khac Vy if you&rsquo;re interested in joining. The &ldquo;Build Station&rdquo; offers developers a platform to connect, learn, and share experiences.</li></ul><p><strong>Coming up:</strong></p><ul><li>Mark your calendars for our first offline meetup in Ho Chi Minh City (TBA).</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

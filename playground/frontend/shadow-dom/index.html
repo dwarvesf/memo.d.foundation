@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>446</li><li class=span><span>Characters:
-</span>4856</li><li class=span><span>Without Spaces:
+</span>5485</li><li class=span><span>Without Spaces:
 </span>2460</li><li class=span><span>Blocks:
 </span>7</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> Source: <a href=https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM target=_blank>https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM</a></p><p>There are some bits of shadow DOM terminology to be aware of:</p><ul><li><strong>Shadow host</strong>: The regular DOM node that the shadow DOM is attached to.</li><li><strong>Shadow tree</strong>: The DOM tree inside the shadow DOM.</li><li><strong>Shadow boundary</strong>: the place where the shadow DOM ends, and the regular DOM begins.</li><li><strong>Shadow root</strong>: The root node of the shadow tree.</li></ul><p>When working with the shadow DOM, you have the power to manipulate its nodes just like you would with non-shadow nodes. This includes appending children, setting attributes, and applying styles using <code>element.style.color</code> or a <code>&lt;style></code> element within the shadow DOM. The key distinction is that any code within the shadow DOM remains encapsulated, unable to affect elements outside of it, providing a valuable encapsulation feature.</p><h2 id=basic-usage>Basic usage <a href=#basic-usage></a></h2><p>Now that we understand the importance of Shadow DOM, let&rsquo;s explore how to create and manipulate Shadow DOM. You can create Shadow Dom by attaching a shadow root to any element using the <code>Element.attachShadow()</code> method. This takes as its parameter an options object that contains one option — <code>mode</code> — with a value of <code>open</code> or <code>closed</code>:</p><pre><code class=language-js>const shadowOpen = host.attachShadow({ mode: 'open' })
 const shadowClosed = host.attachShadow({ mode: 'closed' })

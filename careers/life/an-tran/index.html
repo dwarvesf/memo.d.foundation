@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>careers/life</li><div>Stats</div><li class=span><span>Words:
 </span>611</li><li class=span><span>Characters:
-</span>7138</li><li class=span><span>Without Spaces:
+</span>8396</li><li class=span><span>Without Spaces:
 </span>3008</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=what-does-it-take-for-an-to-become-a-senior>What does it take for An to become a Senior? <a href=#what-does-it-take-for-an-to-become-a-senior></a></h3><p>“If others need advice, I also give my own perspective and personal experience. I build trust with them, as that is how I leave an impact in my role as a guiding figure.”</p><h3 id=how-does-being-a-senior-at-dwarves-differ-from-previous-companies>How does being a Senior at Dwarves differ from previous companies? <a href=#how-does-being-a-senior-at-dwarves-differ-from-previous-companies></a></h3><p>“Each project comes with its own difficulties and responsibilities. I will have to find ways to adapt to the project and determine the approach to meet the client&rsquo;s requirements in any given environment.</p><p>During the initial phase of building Nghe Nhan system, our team had limited resources. The client&rsquo;s demands had to be balanced with the speed of delivery given the available resources. It was indeed a challenge. From planning and task allocation within the team to ensuring the quality of our work and the final product.</p><p>Nghe Nhan system is more complex than previous projects. I have to strike a balance between keeping up with the customer&rsquo;s pace as new features are continuously added. I need to ensure that the client understands that pushing for faster product development can sometimes be challenging in terms of maintaining quality. Working at Dwarves, especially in a senior role, presents various challenging scenarios for me to learn from and enhance my capabilities.”</p><h3 id=what-is-your-opinion-of-a-true-senior>What is your opinion of a true Senior? <a href=#what-is-your-opinion-of-a-true-senior></a></h3><p>“I believe that I can learn a great deal from a genuine Senior. From task management, team communication, to problem-solving and providing solutions, there is much to gain. The clearest indication of working with a true Senior is the sense of comfort. They would be the first person I think of when encountering difficulties.“</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,9 +598,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=dwarves-is-a-fast-paced-environment-where-things-can-get-chaotic-for-seniors-who-have-many-responsibilities-how-do-you-manage-your-own-tasks-and-teammates>Dwarves is a fast-paced environment where things can get chaotic for Seniors who have many responsibilities. How do you manage your own tasks and teammates? <a href=#dwarves-is-a-fast-paced-environment-where-things-can-get-chaotic-for-seniors-who-have-many-responsibilities-how-do-you-manage-your-own-tasks-and-teammates></a></h3><p>“I realize that leading someone who is fresh out of school can have a big impact on their career path. Working together for a long time, their working style may start to resemble mine, and even their code style may reflect my mindset. I believe that is how I leave an influence in my role as a trailblazer.</p><p>If you need advice or want to learn something specific or take additional courses to enhance your knowledge, I can provide you with my perspective. I share my insights and experiences based on what I have personally gone through. I won&rsquo;t share if I haven&rsquo;t experienced it myself. There&rsquo;s no secret formula, but I aim to build trust with you. Once you trust me, you&rsquo;ll be more inclined to listen to my advice”.</p><hr><p><strong>Life at Dwarves</strong> is a series of stories about people, perspectives and lives at the Dwarves Foundation.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

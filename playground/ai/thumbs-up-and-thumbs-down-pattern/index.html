@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai</li><div>Stats</div><li class=span><span>Words:
 </span>532</li><li class=span><span>Characters:
-</span>9197</li><li class=span><span>Without Spaces:
+</span>11713</li><li class=span><span>Without Spaces:
 </span>2906</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=thumbs-up-and-thumbs-down-feedback>Thumbs Up and Thumbs Down Feedback <a href=#thumbs-up-and-thumbs-down-feedback></a></h2><ul><li><strong>Thumbs Up (Positive Feedback)</strong>: When a user interacts with an LLM and receives a helpful, accurate, or satisfying response, they provide a &ldquo;thumbs up&rdquo; or a positive rating. This indicates that the LLM&rsquo;s output was valuable and aligned with the user&rsquo;s intent.</li><li><strong>Thumbs Down (Negative Feedback)</strong>: Conversely, if a user receives an unhelpful, incorrect, offensive, or otherwise unsatisfactory response, they give a &ldquo;thumbs down&rdquo; or a negative rating. This feedback signals that the LLM&rsquo;s output needs improvement.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=simplifying-user-interaction-and-increasing-engagement>Simplifying User Interaction and Increasing Engagement <a href=#simplifying-user-interaction-and-increasing-engagement></a></h2><p><strong>User-Friendly Feedback Mechanism:</strong> Using thumbs up and down is a simple way to get user feedback. When it&rsquo;s quick and easy, more people are likely to join in. This means more feedback, which gives the model better data to learn from.</p><p><strong>Encouraging Consistent Feedback:</strong> Since giving a thumbs up or down is so easy, people can keep giving feedback without feeling it&rsquo;s a hassle. This steady feedback is really important for models that need constant input to get better over time. The more feedback the model gets, the better it can understand and guess what users like.</p><h2 id=case-studies>Case Studies <a href=#case-studies></a></h2><p><strong>Sentiment Analysis in Review Systems:</strong> In sentiment analysis, using thumbs up and down can really help in figuring out if reviews are positive or negative. For example, an algorithm that sorts product reviews can use this simple feedback to get better at understanding how people feel. This makes it easier for the model to catch the subtle ways people express their opinions, leading to more accurate results.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -590,7 +638,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -599,10 +647,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Content Moderation and Filtering:</strong> In content moderation, using thumbs up and down feedback can help spot inappropriate or harmful stuff. When users give a thumbs down to something they don&rsquo;t like, the model learns to filter out similar content in the future. This feedback loop is key to keeping online spaces safe and positive. Platforms like YouTube and Twitter use likes and dislikes to manage and filter content. This feedback helps algorithms find trends, popular posts, and catch possible misinformation or harmful content.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -615,7 +687,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -624,9 +696,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=reference>Reference <a href=#reference></a></h3><ul><li><a href=https://www.scribbr.com/statistics/pearson-correlation-coefficient/ target=_blank>Pearson Correlation Coefficient (r) | Guide & Examples (scribbr.com)</a></li><li><a href=https://truera.com/ai-quality-education/generative-ai-observability/whats-missing-to-evaluate-foundation-models-at-scale/ target=_blank>What’s Missing to Evaluate Foundation Models at Scale - TruEra</a></li><li><a href=https://besedo.com/blog/content-filtering-vs-moderation/ target=_blank>How Content Filtering Makes It Possible to Do Moderation at Scale – Besedo</a></li><li><a href=https://www.researchgate.net/publication/248832100_Thumbs_Up_or_Thumbs_Down_Semantic_Orientation_Applied_to_Unsupervised_Classification_of_Reviews target=_blank>(PDF) Thumbs Up or Thumbs Down? Semantic Orientation Applied to Unsupervised Classification of Reviews (researchgate.net)</a></li><li><a href=https://towardsdatascience.com/how-to-make-the-most-out-of-llm-production-data-simulated-user-feedback-843c444febc7 target=_blank>How to Make the Most Out of LLM Production Data: Simulated User Feedback | by Pasquale Antonante, Ph.D. | Towards Data Science</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

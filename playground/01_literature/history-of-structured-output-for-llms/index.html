@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1129</li><li class=span><span>Characters:
-</span>11991</li><li class=span><span>Without Spaces:
+</span>12620</li><li class=span><span>Without Spaces:
 </span>7390</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div><main x-data="{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,9 +549,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>There&rsquo;s been a clear progression from user workarounds and external frameworks to functionalities embedded directly within LLMs. We&rsquo;ve seen increased control over output format, with advancements like JSON schemas and schema-example combinations. Research continues to address accuracy, flexibility, and seamless integration of structured output functionalities across LLM platforms.</p><h2 id=challenge-and-future-of-structured-output>Challenge and Future of structured output <a href=#challenge-and-future-of-structured-output></a></h2><p>Structured output strives for a balance between two seemingly opposed forces:</p><ul><li><strong>Structured Data Requirements:</strong> Businesses and applications often require data in specific formats for analysis, reporting, and integration. Imagine needing financial data from an LLM report, but it comes back as a free-flowing narrative. Structured output aims to bridge this gap.</li><li><strong>The Creativity of LLMs:</strong> LLMs excel at generating creative text formats. Confining them to rigid structures can stifle their potential. The ideal solution allows LLMs to adhere to a format while still retaining some flexibility in their output.</li></ul><p><strong>Challenges to Overcome</strong></p><ul><li><strong>Accuracy:</strong> One of the main challenges facing LLMs is ensuring consistency and without errors creation inside complex formats. These models may exhibit difficulties when dealing with complex structures or subtle data, which could result in incorrect output. For instance, early structured outputs might have produced financial reports with factual errors due to the LLM&rsquo;s difficulty handling specific formats.</li><li><strong>Flexibility:</strong> Balancing structure and creativity in LLM outputs is crucial. While structured data is necessary, it’s important that LLMs also creatively express information within a specified framework. Otherwise, they risk becoming rigid and robotic in their responses.</li><li><strong>Integration:</strong> Structured output functionalities currently may require external libraries or custom coding, depending on the LLM platform. Seamless integration into various platforms and applications is essential for wider adoption. Historically, structured outputs were often limited to specific LLM platforms, necessitating additional coding for use in other environments.</li></ul><p><strong>The Future of Structured Output</strong></p><p>By addressing these challenges and continuing research, structured output has the potential to unlock exciting possibilities:</p><ul><li><strong>More Accurate and Flexible Outputs:</strong> LLMs will be able to generate data that adheres to complex structures while retaining some creative freedom, offering the best of both worlds.</li><li><strong>Wider Range of Applications:</strong> Structured output will become more accessible and integrated into various platforms, enabling applications in data analysis, report generation, form completion, and more.</li><li><strong>Enhanced Human-AI Collaboration:</strong> Humans and LLMs will work together more effectively to produce high-quality structured outputs. Human feedback can guide the LLM, leading to a more efficient and productive interaction.</li></ul><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://arxiv.org/pdf/2404.07362v1 target=_blank>https://arxiv.org/pdf/2404.07362v1</a></li><li><a href=https://github.com/langchain-ai/langchain target=_blank>https://github.com/langchain-ai/langchain</a></li><li><a href=https://github.com/outlines-dev/outlines target=_blank>https://github.com/outlines-dev/outlines</a></li><li><a href=https://github.com/1rgs/jsonformer target=_blank>https://github.com/1rgs/jsonformer</a></li><li><a href=https://github.com/otriscon/llm-structured-output target=_blank>https://github.com/otriscon/llm-structured-output</a></li><li><a href=https://github.com/jxnl/instructor target=_blank>https://github.com/jxnl/instructor</a></li><li><a href="https://www.youtube.com/watch?v=yj-wSRJwrrc" target=_blank>https://www.youtube.com/watch?v=yj-wSRJwrrc</a></li><li><a href=https://www.timlrx.com/blog/generating-structured-output-from-llms target=_blank>https://www.timlrx.com/blog/generating-structured-output-from-llms</a></li><li><a href=https://medium.com/@kyeg/unlocking-structured-outputs-with-agents-8b5a564b5d44 target=_blank>https://medium.com/@kyeg/unlocking-structured-outputs-with-agents-8b5a564b5d44</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

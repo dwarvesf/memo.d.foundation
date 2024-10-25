@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playbook/operations</li><div>Stats</div><li class=span><span>Words:
 </span>1939</li><li class=span><span>Characters:
-</span>17042</li><li class=span><span>Without Spaces:
+</span>18300</li><li class=span><span>Without Spaces:
 </span>9776</li><li class=span><span>Blocks:
 </span>42</li><li class=span><span>Est reading Time:
 </span>20m 0s</li></ul></div></div></div></div><main x-data='{
@@ -544,7 +544,7 @@ With coefficient equal to 1</li></ul><p><em><strong>R = 0.3 \times (\frac{3 + 3 
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -553,10 +553,34 @@ With coefficient equal to 1</li></ul><p><em><strong>R = 0.3 \times (\frac{3 + 3 
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Core</li><li>Team</li><li>Personal</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -569,7 +593,7 @@ With coefficient equal to 1</li></ul><p><em><strong>R = 0.3 \times (\frac{3 + 3 
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -578,10 +602,34 @@ With coefficient equal to 1</li></ul><p><em><strong>R = 0.3 \times (\frac{3 + 3 
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=incompetent-assholes-fire-fast>Incompetent Assholes (Fire fast) <a href=#incompetent-assholes-fire-fast></a></h2><p>Low-performers and their behavior is incongruent with company values. Fire fast.</p><h2 id=competent-assholes-remediate-or-separate>Competent Assholes (Remediate or Separate) <a href=#competent-assholes-remediate-or-separate></a></h2><p>High-performers but exhibit behavioral tendencies that are incongruent with your company values. The only reason to keep them is because they are seen as critical to the company or difficult to replace.</p><p>Exceptions shouldn’t be made, otherwise it shows your values are merely aspirational. It should be made clear that value-incongruent behavior is not tolerated and they will need to remediate their behavior in a measurable way within a limited time.</p><!-- child_page b99ef74d-4ade-4609-9fc5-be8af4c27c55 --><h2 id=incompetent-nice-guys-manage-or-move>Incompetent Nice Guys (Manage or Move) <a href=#incompetent-nice-guys-manage-or-move></a></h2><p>Low-performers but is the exemplars of your culture and are well-liked by almost everyone.</p><p>Incompetent nice guys and gals should be put on a traditional performance improvement plan (PIP), and skillfully managed in order to give them the training and feedback to improve their abilities.</p><p>Of course, if that is not possible or does not work out, they should also be separated from the company.</p><!-- child_page 59afd2f7-27c8-414b-888c-3d2b61a51cd8 --><h2 id=competent-and-outstanding-nice-guys-praise-and-raise>Competent and Outstanding Nice Guys (Praise and Raise) <a href=#competent-and-outstanding-nice-guys-praise-and-raise></a></h2><p>Competent nice guys and gals earn up to 75% of the maximum <strong>employee evaluation score</strong>, and should be praised and given the opportunity for advancement.</p><p>By building this designation directly into the evaluation matrix, outstanding nice guys and gals should be formally recognized and rewarded with raises and promotions.</p><p>10x engineer can&rsquo;t be an asshole. They will decrease the performance of the people around them.</p><h2 id=the-dark-triad>The Dark Triad <a href=#the-dark-triad></a></h2><p><a href>📎 dark-triad.pdf</a></p><p>The key to understanding the Dark Triad is that while all three share a callousness toward others that encourages manipulativeness, they do so for distinct reasons. Psychopaths are driven by short-term tangible rewards, and engage in reckless, antisocial behavior to get it. Machiavellians are fueled by long-term tangible rewards and will strategize schemes to get them. Narcissists are motivated by whatever boosts their ego, whether tangible rewards or simple praise that validates their idealized self-image.</p><p>I am currently working on a tech startup. Our team have 8 people including product guys and biz guys. As you’ve known, there are many factors to make a success business and teamwork is one of them. I think this is the most important.</p><p>Startup, in common sense, is found to solve people problems, real problems; is found to provide works for society, and also, to make money. That is a thing that people called the vision, team vision, company vision. As the team member, you should understand it clearly, love it or hate it and follow it, make it your life, your working purpose. Small team does not need employees but contributors.</p><p>The team still need heroes and there should be an i in the team but the only way to make the boat go fast is perfect coordination, it also means perfect teamwork and synchronization. Skill set is important but it is not important as vision and coordination. The i must be unselfish and think about the team first. As a team member, it’s important to remember that no one is perfect; everyone has something that they could improve upon, including yourself. So, be supportive. Offer constructive criticism. Listen, listen, listen. People who always talk, but never listen will be stunted in growth. Remember that everyone knows something you don’t know.</p><p>We effectively have an environment in which competition and collaboration co-exist and feed off each other. Competition, synchronization or collaborating perfectly; make the boat go fast is always the main point. Remember, even if you work harder than anyone else, if you lose synchronization, you slow the boat down.</p><pre><code class=language-plain_text>	*They told me there is no “I” in team.*
 	I am an athlete.

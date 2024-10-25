@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>consulting/case-study</li><div>Stats</div><li class=span><span>Words:
 </span>543</li><li class=span><span>Characters:
-</span>9168</li><li class=span><span>Without Spaces:
+</span>11684</li><li class=span><span>Without Spaces:
 </span>2947</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div><main x-data='{
@@ -542,7 +542,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -551,10 +551,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=highlights>Highlights <a href=#highlights></a></h2><ul><li>Microservices architecture, written in Go</li><li>Using K8s on Google Cloud (GKE) for deployment</li><li>Apply MOM pattern & RabbitMQ to handle async jobs</li><li>Write SQL raw queries instead of using ORM</li><li>Automation regression testing</li><li>Using <a href=https://about.codecov.io/ target=_blank>Codecov</a> to ensure code coverage</li><li>Matching service based on multiple criteria</li></ul><h2 id=the-context>The Context <a href=#the-context></a></h2><p>Para was in a rushing period. They saw a demand for its product peak when Covid-19 hit severely. Nutriment products and healthcare services are essentials. The roadmap was clear and concise. They seek a team to quickly work and conclude the remaining features. Speed up the development phase is the top priority.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -567,7 +591,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -576,10 +600,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>We offer our top-tier core services. Our quick-to-adapt Dwarves experts give them full support as staff augmentation, where Para focuses on building their business.</p><p>Beyond that, our expertise provides them with business & tech consultancy that suits their roadmap, heading for user acquisition & revenue growth.</p><h2 id=engagement-model>Engagement Model <a href=#engagement-model></a></h2><h3 id=team-size>Team size <a href=#team-size></a></h3><p>The Dwarves initially joined in with 1 Backend Engineer. Working together with Para team, we helped build a sturdy backend system to sort out different logics.</p><p>Para&rsquo;s app serves multiple purposes and deals with a loaded volume of data. We went for a microservice architecture built from Go.</p><p>When the system has been set up, our Designer and her director stepped in. Using Figma & Sketch, we delivered a stunning brush-up for Para&rsquo;s mobile app&rsquo;s interface. The app covered both Android & iOS versions for a wider user segment. Then our Frontend Engineer continued turning those canvas into a digital display.</p><p>Throughout the process, we keep 1 PM in the team to oversee and provide on-time consultancy. With a team of 5, we stayed aligned and respected Para&rsquo;s business goal to maintain flexibility during the development stage.</p><h3 id=tech-stacks>Tech stacks <a href=#tech-stacks></a></h3><ul><li>Backend: Microservices, Go</li><li>Frontend: React, Redux, Material UI</li><li>Database: MySQL</li><li>Infra: GKE, Google Cloud</li></ul><h3 id=communication>Communication <a href=#communication></a></h3><ul><li>Slack & Google Meets: Team discussion</li><li>Figma: Design storage</li><li>Git/ Gitflow practice</li><li>Jira, Statushero & Confluence: Task management</li></ul><h2 id=outcome>Outcome <a href=#outcome></a></h2><p>Through more than 6 months of working on the remaining features, we got to launch a shape MVP release on time - a fully functioning app for nurse shifting schedules.</p><p>JoinPara app is a finetune product ready to demo for various clients, empowering Para to reach more funding opportunities and expand the market.</p><blockquote><p><em>&ldquo;Dwarves Foundation&rsquo;s communication skills are exceptional as well as their integrity. They stand out with the highest standards of delivery. Dwarves is in a league of their own.&rdquo;</em> CEO, Para</p></blockquote><p>View more at <a href=https://clutch.co/profile/dwarves-foundation#reviews target=_blank>clutch.co</a></p><p>By connecting nursing professionals with vacant shifts, Para contributed its effort to respond to the COVID surge in demand for healthcare services.</p><p>This output enabled Para to reduce development time and tackle pivotal features to scale the business with lessened complexity. They now can drive the focus back to revenue growth & user acquisition.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -592,7 +640,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -601,10 +649,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -617,7 +689,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -626,9 +698,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

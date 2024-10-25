@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>consulting/case-study</li><div>Stats</div><li class=span><span>Words:
 </span>1993</li><li class=span><span>Characters:
-</span>21155</li><li class=span><span>Without Spaces:
+</span>24300</li><li class=span><span>Without Spaces:
 </span>11917</li><li class=span><span>Blocks:
 </span>39</li><li class=span><span>Est reading Time:
 </span>25m 0s</li></ul></div></div></div></div><main x-data='{
@@ -542,7 +542,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -551,10 +551,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=kafis-digital-transformation-journey-from-challenges-to-breakthroughs>Kafi&rsquo;s Digital Transformation Journey: From Challenges to Breakthroughs <a href=#kafis-digital-transformation-journey-from-challenges-to-breakthroughs></a></h2><p>Previously, Kafi Securities was relatively obscure in the market and frequently incurred losses. The year 2022 marked a turning point when the company began a restructuring phase, leading to impressive revenue. This success helped Kafi&rsquo;s leadership recognize the importance of user experience in their application and decide to invest in technology. This wise decision created an opportunity for DF and Kafi to collaborate on developing new features.</p><p>Kafi decided to &ldquo;transform&rdquo; by launching a technological upgrade for their mobile application, aiming to create a smoother, more user-friendly, and secure experience. With comprehensive support from the leadership to the company team, we achieved a high level of refinement in user experience (UX).</p><p>However, with this large-scale change, Kafi couldn&rsquo;t just implement small and gradual improvements. Instead, they needed to transition to a completely new application. Rebuilding from scratch created an opportunity to optimize performance and security, while providing a more consistent and seamless user experience, overcoming the limitations of the old system.</p><h2 id=understanding-user-needs>Understanding User Needs <a href=#understanding-user-needs></a></h2><p>The team divided the project into three main phases: <strong>empathize, plan, and design</strong>. In the empathize phase, Kafi recognized their lack of insight into customers&rsquo; desires, needs, and expectations. The team needed to answer three key questions: What are customers&rsquo; current pain points? What do they truly want? And what do they actually need?</p><p>Next, the team dove into a one-week deep dive to really get to the bottom of things:</p><ul><li>Usability testing: Directly using the app to capture subtle details that other methods may miss, such as users&rsquo; emotions and thoughts when interacting with the application.</li><li>Social media analysis: Investigate forums, Facebook groups, and Reddit to understand common issues and needs of individual investors in the stock market. Utilize ChatGPT to assist in analyzing the collected information.</li><li>Competitor analysis: Thoroughly researching competitors and SWOT to identify unique features and opportunities for improvement.</li></ul><p>During the research process, the team utilized artificial intelligence (AI) to support market research and competitive analysis. AI helped uncover potential issues in the stock market, providing a starting point and foundation for the team&rsquo;s research. However, the results needed to be carefully examined.</p><h3 id=action-planning>Action Planning <a href=#action-planning></a></h3><p>In the second phase of the project, after gathering all primary data, the team encountered an abundance of information. The team needed to <strong>prioritize and strategize</strong> for the user experience design. The team then conducted <strong>secondary research</strong> to shape Kafi&rsquo;s product and experience strategy. This stage comprised three main activities:</p><ol><li>Creating personas and customer journey maps</li><li>Identifying and prioritizing customer pain points, desires, and needs to inform their roadmap and feature set for the product&rsquo;s second version</li><li>Presenting findings to stakeholders and gathering their input</li></ol><p>Kafi&rsquo;s first task was <strong>building personas</strong>: creating representations of specific customer segments based on factors such as age, investment experience, financial goals, and risk tolerance. After identifying the personas, the team conducted a deeper analysis of each group&rsquo;s behavior by <strong>mapping customer journeys</strong>. This included key points such as:</p><ul><li>Researching how users interact with the application</li><li>Determining when and how frequently they use different features</li><li>Analyzing factors influencing their investment decisions</li></ul><p>Next, the team focused on <strong>determining the key needs for each target group</strong>. For instance, new investors might require more educational content and learning tools, while professional traders might value advanced analytics and rapid trade execution capabilities.</p><p>However, Kafi couldn&rsquo;t tackle everything at once, so prioritization and detailed planning for each part were necessary. Therefore, the management and design team organized a strategic meeting to select, prioritize, and create specific plans for each issue.</p><p>As a result, the team identified the <strong>10 most important tasks</strong> in the priority assessment table of the Problem & Solution section.</p><p>Based on the data analysis and Kafi&rsquo;s philosophy, they decided to concentrate on two primary user segments: newbie traders and professional day traders. Kafi’s research led to crucial insights that reshaped their approach to stock trading, including knowledge gaps for new investors, speed and accuracy requirements for professionals, and universal concerns about security and risk management.</p><p>Their study also revealed that traders primarily use mobile applications as supplementary tools, focusing on:</p><ul><li>Monitoring market fluctuations and news quickly, helping them seize investment opportunities in a timely manner</li><li>Checking investment asset balances periodically, ensuring they always have a clear understanding of their financial situation</li><li>Receiving notifications about important fluctuations or new investment opportunities</li></ul><p>Understanding this behavior helps Kafi optimize the user experience on mobile applications, focusing on providing quick, accurate, and easily accessible information, while ensuring high security for important transactions.</p><p>With the team comprehensive research complete, Kafi was ready to move forward&mldr;</p><h3 id=helping-new-investors>Helping New Investors <a href=#helping-new-investors></a></h3><p>Investing is a complex field that requires a solid foundation of knowledge, posing significant challenges for new investors. They face risks when investing large amounts of capital without fully understanding the potential consequences. This can lead to unwise investment decisions and substantial financial losses.</p><p>Recognizing this challenge, the design team set out to transform the application into a reliable guide for new investors. They decided to integrate a comprehensive support system, including contextual help such as smart tooltips, pop-up windows providing detailed information, and an elegantly designed interactive help panel. These features allow users to easily access important knowledge without feeling overwhelmed.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -567,7 +591,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -576,10 +600,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For example, when a new investor is viewing a stock price chart, the interactive help panel can:</p><ul><li>Appear as a small icon in the corner of the screen, allowing users to expand it when needed.</li><li>When opened, provide brief explanations of important terms such as &ldquo;trading volume,&rdquo; &ldquo;opening price,&rdquo; &ldquo;closing price.&rdquo;</li><li>Feature interactive buttons allowing users to delve deeper into common technical indicators without leaving the main screen.</li><li>Offer quick tips on how to read candlestick charts or common patterns in technical analysis.</li></ul><p>The core objective of the new design is not just to provide information, but to create an interactive learning environment where users can confidently explore the world of investing. In this way, Kafi becomes more than just a trading tool; it transforms into a financial education platform, helping users develop the skills and knowledge necessary to make informed investment decisions.</p><p>The design team also improved Kafi&rsquo;s user interface, simplifying it so that new investors don&rsquo;t feel overwhelmed by information, while still maintaining the ability to present complex financial data. They created a Moodboard and compared the pros and cons of each style, ultimately arriving at the optimal choice: a minimalist, modern, and scientific interface suitable for both professional investors and beginners. The team focused on core design elements:</p><ul><li><strong>Less is more:</strong> Eliminating unnecessary elements helps make the interface cleaner and easier to use.</li><li><strong>Focus on functionality:</strong> Every element on the interface must serve a specific purpose, which is to help users execute transactions quickly and efficiently.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -592,7 +640,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -601,10 +649,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -617,7 +689,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -626,10 +698,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=step-by-step-guide-for-easy-onboarding>Step-by-Step Guide for Easy Onboarding <a href=#step-by-step-guide-for-easy-onboarding></a></h3><p>Before implementing improvements, the Kafi application faced a common challenge in the financial industry: a high user dropout rate right from the registration step. After thorough analysis, the design team recognized that the complex registration and identity verification (eKYC) process was one of the main causes. Users often felt discouraged when they had to provide too much information and complete multiple verification steps.</p><p>To improve the onboarding experience, we optimized the registration and identity verification process. Instead of using a long and complex registration form, we broke down the process into concise steps. Each step only requires a sufficient amount of information, helping users not feel overwhelmed. Kafi also allows users to explore the application and experience features without immediate registration.</p><p>When users decide to create an account, they are guided through the user verification process, portfolio tracking, and order placement step by step. The design team integrated a visual progress bar, allowing users to easily track the onboarding process and flexibly skip any step if desired. This approach not only simplifies the registration process but also creates a personalized experience tailored to the needs of each customer segment.</p><h3 id=designing-tools-for-different-user-groups>Designing Tools for Different User Groups <a href=#designing-tools-for-different-user-groups></a></h3><p>Investors, especially professional ones, need advanced support tools to make informed investment decisions. While web platforms allow for flexible arrangement of features and tools, the limited space on mobile phones poses a significant challenge for interface design. We must find a way to provide comprehensive analytical tools for professional investors without overwhelming new investors.</p><p>After registration, the application <strong>applies a user classification system to divide users into different groups</strong> (such as beginners, intermediate investors, and professionals). Each group receives a personalized experience with guidance content and tools tailored to their specific level of understanding and investment goals. For example, beginners may receive basic investment lessons, while professional investors are provided with advanced analytical tools.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -642,7 +738,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -651,9 +747,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>This approach not only enhances the user experience but also promotes continuous development of investors on the Kafi platform. By providing content and tools appropriate for each stage of development, Kafi creates a dynamic learning and investment ecosystem, encouraging users to constantly improve their knowledge and skills. This method meets the specific needs of each customer segment while maintaining a simple and accessible application. As a result, Kafi becomes a flexible platform, effectively serving both beginners and experienced investors, creating a diverse and vibrant investment community.</p><h2 id=lessons-learned>Lessons Learned <a href=#lessons-learned></a></h2><p>There are many ways to address the challenges faced by Kafi and other stock trading applications. However, the most important thing is to understand customer needs clearly. If your company serves multiple user groups, pay attention to collecting and analyzing their diverse needs. Then, prioritize addressing these needs appropriately for each group, as Kafi did through their research.</p><p>Here are some common and effective methods to explore and understand customer needs:</p><ul><li>Online Surveys: Use closed and open-ended questions to gather information from people who have used the application.</li><li>User data analysis: Leverage AI to analyze vast amounts of user data from apps, websites, and other sources. This reveals patterns in user behavior, preferences, and needs.</li><li>Building personas: Create user representatives, identifying their goals, behaviors, and challenges.</li><li>Competitive analysis: Use Excel or analytical tools to collect and evaluate competitors&rsquo; products or services, learning about their strengths and weaknesses.</li></ul><p>Additionally, you can incorporate AI into the UX research process as a tool to support data collection and analysis. AI will help you process large amounts of information from competitors. Moreover, it assists the design team in clustering users based on characteristics and behaviors, thereby building more accurate and effective personas and user stories.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

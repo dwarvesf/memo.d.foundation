@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature/engineering</li><div>Stats</div><li class=span><span>Words:
 </span>1253</li><li class=span><span>Characters:
-</span>20772</li><li class=span><span>Without Spaces:
+</span>25804</li><li class=span><span>Without Spaces:
 </span>6721</li><li class=span><span>Blocks:
 </span>36</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Google Dataproc is a fast and easy-to-use, fully managed cloud service for running Apache Spark and Hadoop workloads. It allows users to process and analyze large-scale data efficiently and at scale. Key features and benefits of Google Dataproc include:</p><ul><li><strong>Fast and Scalable Processing</strong>: Dataproc enables users to run Apache Spark and Hadoop workloads on Google Cloud Platform, taking advantage of its scalable infrastructure and resources.</li><li><strong>Integration with Google Cloud Services</strong>: Dataproc integrates seamlessly with other Google Cloud services, such as BigQuery, Cloud Storage, and Cloud Spanner, allowing users to access and analyze data in a centralized manner**<a href=https://cloud.google.com/dataproc target=_blank>1</a>**</li><li><strong>Data Analytics and Machine Learning</strong>: Dataproc supports data scientists and engineers in building and deploying machine learning models, as well as analyzing data using custom-built applications and open-source libraries.</li><li><strong>Managed and Secure Environment</strong>: Google Dataproc provides a fully managed and secure environment for running data processing workloads, ensuring that users can focus on their data analysis and insights without worrying about infrastructure management**<a href=https://cloud.google.com/dataproc target=_blank>1</a>**.</li></ul><p>Overall, Google Dataproc simplifies big data processing and analysis by providing a fast, scalable, and integrated platform for running Apache Spark and Hadoop workloads on Google Cloud Platform.</p><h2 id=use-cases>Use cases <a href=#use-cases></a></h2><p>Google Cloud Dataproc has a wide range of use cases for processing large datasets and running big data applications. Here are some of the most popular examples:</p><p><strong>Batch processing:</strong></p><ul><li><strong>Data warehousing and ETL:</strong> Dataproc can be used to extract, transform, and load (ETL) data from various sources into data warehouses like BigQuery. It can also be used to process and clean large datasets for data analysis.</li><li><strong>Log processing:</strong> Dataproc can be used to analyze massive log files from web applications, servers, and other systems to identify trends and troubleshoot issues.</li><li><strong>Financial analysis:</strong> Dataproc can be used to analyze large financial datasets for fraud detection, risk assessment, and portfolio management.</li><li><strong>Scientific simulations:</strong> Dataproc can be used to run large-scale scientific simulations in fields like physics, chemistry, and biology.</li><li><strong>Image processing:</strong> Dataproc can be used to process and analyze large collections of images and videos for applications like object recognition, facial recognition, and image classification.</li></ul><p><strong>Real-time processing:</strong></p><ul><li><strong>Data streaming:</strong> Dataproc can be used to process data streams in real-time for applications like fraud detection, anomaly detection, and event processing.</li><li><strong>Internet of Things (IoT):</strong> Dataproc can be used to analyze data from IoT devices in real-time for applications like environmental monitoring, predictive maintenance, and smart city management.</li><li><strong>Machine learning:</strong> Dataproc can be used to train and deploy machine learning models on large datasets.</li></ul><p><strong>Other use cases:</strong></p><ul><li><strong>Web scraping:</strong> Dataproc can be used to scrape data from websites at scale.</li><li><strong>Social media analysis:</strong> Dataproc can be used to analyze large social media datasets for sentiment analysis, topic modeling, and social network analysis.</li><li><strong>Genomics:</strong> Dataproc can be used to analyze large genomic datasets for research and clinical applications.</li></ul><h2 id=pricing>Pricing <a href=#pricing></a></h2><p><a href=https://cloud.google.com/dataproc target=_blank>Dataproc on Compute Engine</a> pricing is based on the size of Dataproc clusters and the duration of time that they run. The size of a cluster is based on the aggregate number of <a href=https://cloud.google.com/compute/docs/machine-types target=_blank>virtual CPUs (vCPUs)</a> across the entire cluster, including the master and worker nodes. The duration of a cluster is the length of time between cluster creation and cluster stopping or deletion.</p><p>The Dataproc pricing formula is: <code>$0.010 * # of vCPUs * hourly duration</code>.</p><p>Although the pricing formula is expressed as an hourly rate, Dataproc is billed by the second, and all Dataproc clusters are billed in one-second clock-time increments, subject to a 1-minute minimum billing. Usage is stated in fractional hours (for example, 30 minutes is expressed as 0.5 hours) in order to apply hourly pricing to second-by-second use.</p><p>Dataproc pricing is in addition to the <a href=https://cloud.google.com/compute/pricing target=_blank>Compute Engine per-instance price</a> for each virtual machine (see <a href=https://cloud.google.com/dataproc/pricing#use_of_other_google_cloud_resources target=_blank>Use of other Google Cloud resources</a>).</p><p>As an example, consider a cluster (with master and worker nodes) that has the following configuration:</p><table><thead><tr><th>Item</th><th>Machine Type</th><th>Virtual CPUs</th><th>Attached persistent disk</th><th>Number in cluster</th></tr></thead><tbody><tr><td>Master Node</td><td>n1-standard-4</td><td>4</td><td>500 GB</td><td>1</td></tr><tr><td>Worker Nodes</td><td>n1-standard-4</td><td>4</td><td>500 GB</td><td>5</td></tr></tbody></table><p>This Dataproc cluster has 24 virtual CPUs, 4 for the master and 20 spread across the workers. For Dataproc billing purposes, the pricing for this cluster would be based on those 24 virtual CPUs and the length of time the cluster ran (assuming no nodes are scaled down or preempted). If the cluster runs for 2 hours, the Dataproc pricing would use the following formula:</p><p><code>Dataproc charge = # of vCPUs * hours * Dataproc price = 24 * 2 * $0.01 = $0.48</code></p><p>In this example, the cluster would also incur charges for Compute Engine and Standard Persistent Disk Provisioned Space in addition to the Dataproc charge (see <a href=https://cloud.google.com/dataproc/pricing#use_of_other_google_cloud_resources target=_blank>Use of other Google Cloud resources</a>). The <a href=https://cloud.google.com/products/calculator target=_blank>billing calculator</a> can be used to determine separate Google Cloud resource costs.</p><h2 id=how-to-setup-a-dataproc-cluster>How to setup a Dataproc cluster <a href=#how-to-setup-a-dataproc-cluster></a></h2><h3 id=prerequisites>Prerequisites: <a href=#prerequisites></a></h3><ol><li><strong>Google Cloud Platform Account:</strong><ul><li>You need a GCP account. If you don&rsquo;t have one, you can sign up for a free trial at <a href=https://console.cloud.google.com/ target=_blank>Google Cloud Console</a>.</li></ul></li><li><strong>Enable Billing:</strong><ul><li>Make sure you have billing enabled for your GCP project.</li></ul></li><li><strong>Install Google Cloud SDK:</strong><ul><li>Install the <a href=https://cloud.google.com/sdk/docs/install target=_blank>Google Cloud SDK</a> on your local machine. This SDK includes the <strong><code>gcloud</code></strong> command-line tool, which you&rsquo;ll use to interact with GCP.</li></ul></li><li><strong>Create a GCP Project:</strong><ul><li>Create a GCP project if you don&rsquo;t already have one. You can do this through the <a href=https://console.cloud.google.com/ target=_blank>GCP Console</a>.</li></ul></li><li><strong>Enable APIs:</strong><ul><li>Enable the necessary APIs for Dataproc and other services. You can do this through the <a href=https://console.cloud.google.com/apis/dashboard target=_blank>APIs & Services > Dashboard</a> section in the GCP Console.</li></ul></li></ol><h3 id=set-up-a-dataproc-cluster>Set Up a Dataproc Cluster: <a href=#set-up-a-dataproc-cluster></a></h3><p>Now that you have the prerequisites in place, you can proceed to set up a Dataproc cluster:</p><ol><li><p><strong>Open Cloud Shell:</strong></p><ul><li>Open the <a href=https://console.cloud.google.com/ target=_blank>Google Cloud Console</a>.</li><li>Click on the &ldquo;Activate Cloud Shell&rdquo; button in the upper right corner.</li></ul></li><li><p><strong>Create a Dataproc Cluster:</strong></p><ul><li><p>Use the following <strong><code>gcloud</code></strong> command to create a Dataproc cluster. Adjust the parameters as needed.</p><pre><code class=language-bash>bashCopy code
 gcloud dataproc clusters create CLUSTER_NAME \\
@@ -573,7 +597,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -582,10 +606,34 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=step-2-fill-all-necessary-field-in-the-job-creation-modal>Step 2: Fill all necessary field in the job creation modal: <a href=#step-2-fill-all-necessary-field-in-the-job-creation-modal></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -598,7 +646,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -607,10 +655,34 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Job ID: job unique name across the cluster</p></li><li><p>Job Type: the type of the job that you submit to Dataproc including (in this demo we’ll use PySpark):
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -624,7 +696,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -633,10 +705,34 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Main file: the directory of main job file from GCS or HDFS or inside the compute engine.</p></li><li><p>All others field is optional.</p></li><li><p>After you fill in the necessary input i should be something like this:
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -650,7 +746,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -659,10 +755,34 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Then press <code>Submit</code> to submit the job</p></li></ul><h3 id=step-3>Step 3: <a href=#step-3></a></h3><p>After submitting the job you should be able to similar screen to this:
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -676,7 +796,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -685,10 +805,34 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Wait for the job status change to succeeded (or failed):
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -702,7 +846,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -711,10 +855,34 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>And that is how you run a Spark ( or Hadoop) job on Google Cloud Dataproc.
 Full video step by step:
@@ -729,7 +897,7 @@ Full video step by step:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -738,9 +906,33 @@ Full video step by step:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" controls :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null"></video></p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li><div>Stats</div><li class=span><span>Words:
 </span>443</li><li class=span><span>Characters:
-</span>5991</li><li class=span><span>Without Spaces:
+</span>6620</li><li class=span><span>Without Spaces:
 </span>2945</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data="{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,9 +549,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=the-three-pillars-of-observability>The Three Pillars of Observability <a href=#the-three-pillars-of-observability></a></h2><p>Understanding observability requires understanding its three pillars: <strong>Metrics</strong>, <strong>Logs</strong>, and <strong>Traces</strong>. Each plays a different role in creating a overview of your LLM application.</p><h3 id=metrics>Metrics <a href=#metrics></a></h3><p><a href=/playground/ai/building-llm-system/metric-pillar/>Metrics</a> are the foundation of AI observability, including system- and model-specific indications. System indicators like throughput and hardware usage are common, whereas model metrics like accuracy and hallucination rates are AI-specific. Cost tracking includes tracking query volumes and token usage. Using a combination of spot and extensive checks ensures complete monitoring.</p><h3 id=logs>Logs <a href=#logs></a></h3><p><a href=/playground/ai/building-llm-system/logs-pillar/>Logging</a> in AI applications ensures detailed records are maintained, enabling effective monitoring and debugging throughout the system’s operation. The golden rule of logging is to record everything: system parameters, queries, outputs, and component lifecycles. Effective logging needs consistent tagging and identification assignment for traceability.</p><h3 id=traces>Traces <a href=#traces></a></h3><p><a href>Tracing</a> in AI applications provides a full picture of the execution path, from query to response. It includes document retrieval, prompting, and model interactions, as well as time and cost estimates for each step. Visualization tools such as Langsmith provide simple trace representations.</p><h2 id=benefits-of-llm-observability>Benefits of LLM observability <a href=#benefits-of-llm-observability></a></h2><p>Using LLM observability tools brings a range of benefits to business:</p><ul><li><strong>LLM Performance:</strong> Ongoing monitoring helps fine-tune LLMs, improving speed and accuracy.</li><li><strong>Faster Problem Diagnosis:</strong> Detailed logs and metrics make it easier to spot and fix problems fast, reducing downtime.</li><li><strong>Cost Savings:</strong> Early detection of inefficiencies and better resource management can lower operating expenses.</li><li><strong>Better Explainability:</strong> A clearer understanding of how LLMs work helps companies explain decisions, especially in regulated industries.</li><li><strong>Increased Reliability:</strong> Proactive monitoring helps catch issues early, making LLMs more dependable.</li></ul><h2 id=challenges-in-llm-observability>Challenges in LLM observability <a href=#challenges-in-llm-observability></a></h2><p>Monitoring LLMs presents several challenges:</p><ul><li><strong>Model Complexity:</strong> LLMs are costly and complex, making them difficult to monitor and optimize effectively.</li><li><strong>Third-Party Rate Limits:</strong> A lot of LLMs use third-party APIs with rate limits, which can slow down monitoring and make it harder to get real-time data.</li><li><strong>Dynamic Workloads:</strong> LLM performance can change in response to shifting demands, requiring adaptive monitoring strategies.</li><li><strong>Data privacy:</strong> Ensuring data privacy when monitoring LLMs is important because businesses must meet legal requirements without sacrificing insights.</li></ul><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://theblue.ai/blog/llm-observability-en/ target=_blank>https://theblue.ai/blog/llm-observability-en/</a></li><li><a href=https://medium.com/@aiswaryasomanathan4/logging-traces-and-metrics-whats-the-difference-c796ea276c98 target=_blank>https://medium.com/@aiswaryasomanathan4/logging-traces-and-metrics-whats-the-difference-c796ea276c98</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

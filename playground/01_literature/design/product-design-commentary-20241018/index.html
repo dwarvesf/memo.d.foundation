@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature/design</li><div>Stats</div><li class=span><span>Words:
 </span>980</li><li class=span><span>Characters:
-</span>12151</li><li class=span><span>Without Spaces:
+</span>14038</li><li class=span><span>Without Spaces:
 </span>5790</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol><li><strong>Component</strong>:<ul><li><strong>Example</strong>: AI used to provide additional context or cognitive insight behind individual elements in a system. For instance, a feature that suggests relevant actions for a user in a specific interface component.</li></ul></li><li><strong>Flow</strong>:<ul><li><strong>Example</strong>: AI automates or enhances multi-step flows. A practical example would be a chatbot guiding users through a multi-step process, automatically completing sections based on previous inputs.</li></ul></li><li><strong>Feature</strong>:<ul><li><strong>Example</strong>: Here, AI powers a specific action or feature. Consider an AI-driven grammar checker embedded in a word processor.</li></ul></li><li><strong>Application</strong>:<ul><li><strong>Example</strong>: AI creates entire applications or powers core experiences. For example, tools like Grammarly, which is primarily an AI-driven application built around content refinement and language improvement.</li></ul></li><li><strong>Platform and Ecosystem</strong>:<ul><li><strong>Example</strong>: On a larger scale, platforms or ecosystems use AI pervasively. An ecosystem may see different systems interacting through a network of AI technologies, such as multiple SaaS tools integrated with AI APIs to enhance functionalities and data flow across systems.</li></ul></li></ol><p>Each level of this scope reveals the depth at which AI interacts within a digital system—from individual elements to entire ecosystems. Designers should consider how AI features align with the scale of their product&rsquo;s experience.</p><h2 id=spatial-relationships>Spatial Relationships <a href=#spatial-relationships></a></h2><p>In terms of user interface (UI) design, <strong>Spatial Relationships</strong> describe the physical layout and placement of AI components relative to other features on a screen. This placement is crucial for ensuring a seamless interaction between AI elements and the rest of the user experience. The diagram highlights the following relationships</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol><li><strong>Separate</strong>:<ul><li><strong>Description</strong>: Generative AI is placed on a completely different page or space.</li><li><strong>Example</strong>: Think of an AI-driven support system that opens a separate window or app when initiated, like a full-screen chatbot.</li></ul></li><li><strong>Alongside</strong>:<ul><li><strong>Description</strong>: Generative AI is placed on the same screen but in its own space, typically as a side panel.</li><li><strong>Example</strong>: A sidebar AI assistant that provides suggestions while users work in the main content space.</li></ul></li><li><strong>Layered</strong>:<ul><li><strong>Description</strong>: Generative AI exists as a floating modal or overlay.</li><li><strong>Example</strong>: A floating AI chatbot on a shopping website that pops up over the main content area when activated.</li></ul></li><li><strong>Integrated (Parent and Child)</strong>:<ul><li><strong>Description</strong>: AI is intermingled with the feature and drives the content. In the parent relationship, AI takes the primary role, while the child relationship sees the AI supplementing the feature.</li><li><strong>Example</strong>: AI tools that refine user-written text in real-time, such as an AI-driven grammar checker in a text editor.</li></ul></li><li><strong>Point</strong>:<ul><li><strong>Description</strong>: AI supports a specific feature, acting at a particular point in the content.</li><li><strong>Example</strong>: AI-powered auto-suggestions that appear while typing in a search bar, subtly enhancing the primary feature.</li></ul></li></ol><p>The spatial design directly impacts user navigation and interaction fluidity, and placing AI in the appropriate spatial relationship ensures a seamless user experience.</p><h2 id=functional-relationships>Functional Relationships <a href=#functional-relationships></a></h2><p>Lastly, <strong>Functional Relationships</strong> refer to how Generative AI interacts with other features and content at a functional level. The interaction model can vary based on the role AI plays within the system. The different types of functional relationships include</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -590,7 +638,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -599,9 +647,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol><li><strong>Separate</strong>:<ul><li><strong>Description</strong>: AI operates in a separate experience without direct interaction with other features.</li><li><strong>Example</strong>: A separate AI content generation tool like MidJourney, which creates art without influencing other features directly.</li></ul></li><li><strong>Aware of</strong>:<ul><li><strong>Description</strong>: Generative AI is aware of other content or features, but it does not act upon them directly.</li><li><strong>Example</strong>: An AI that passively monitors text input and offers suggestions based on the content without actively changing it.</li></ul></li><li><strong>Acting upon</strong>:<ul><li><strong>Description</strong>: Generative AI can directly interact with and modify content or features based on user input.</li><li><strong>Example</strong>: AI-powered content moderation tools that automatically remove inappropriate content in a chatroom.</li></ul></li><li><strong>Feature incorporates</strong>:<ul><li><strong>Description</strong>: AI-generated outputs are integrated into the user experience, enhancing the primary feature.</li><li><strong>Example</strong>: A text editor like Microsoft Word that incorporates AI-generated writing suggestions directly into the content being created.</li></ul></li><li><strong>Uses feature</strong>:<ul><li><strong>Description</strong>: Generative AI relies on other features to function properly.</li><li><strong>Example</strong>: An AI system that relies on database queries to generate relevant reports or suggestions.</li></ul></li><li><strong>Uses conversationally</strong>:<ul><li><strong>Description</strong>: AI interacts with features and the user through conversational inputs and responses, often as a two-way exchange.</li><li><strong>Example</strong>: A conversational AI that interacts with users through voice commands, such as Google Assistant, which processes natural language inputs to perform tasks.</li></ul></li></ol><p>These functional dynamics define how deeply integrated AI is with system features and user actions, guiding how AI can best support or enhance user experiences.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>The evolution of Generative AI within digital systems hinges on its <strong>scope</strong>, <strong>spatial</strong>, and <strong>functional relationships</strong>. Designers and developers must pay close attention to how these relationships manifest within their products to ensure that AI serves to enhance the user experience rather than disrupt it. By understanding how Generative AI fits into these relationships, we can design more intuitive, helpful, and powerful AI-driven experiences that feel natural and effortless for the user.</p><p>Generative AI is a transformative tool, and its success relies on how well it integrates into the systems and experiences we create. As AI technology evolves, designers must constantly rethink these relationships to maintain an optimal balance between functionality and usability.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

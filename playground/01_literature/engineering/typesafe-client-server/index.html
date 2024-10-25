@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature/engineering</li><div>Stats</div><li class=span><span>Words:
 </span>544</li><li class=span><span>Characters:
-</span>6460</li><li class=span><span>Without Spaces:
+</span>7089</li><li class=span><span>Without Spaces:
 </span>3480</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -541,7 +541,7 @@ To address this challenge, typesafe client-server architecture introduces a code
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -550,10 +550,34 @@ To address this challenge, typesafe client-server architecture introduces a code
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>This automated approach not only minimizes human error but also streamlines the development process, as developers can now focus on building features rather than fixing mismatches between the FE and BE. By adopting this typesafe client-server system, teams can enhance collaboration, accelerate time-to-market, and deliver a more reliable product.</p><h3 id=benefits>Benefits <a href=#benefits></a></h3><ul><li><strong>Enhanced Reliability</strong>: The automatic code generation ensures consistency between the frontend and backend, reducing the risk of runtime failures.</li><li><strong>Early Error Detection</strong>: Any inconsistencies or errors in the API are detected during the code generation process, allowing for early detection and resolution.</li><li><strong>Improved Developer Productivity</strong>: Developers can focus on feature development instead of manual synchronization tasks, increasing overall productivity.</li><li><strong>Security Enhancements</strong>: The typesafe client-server architecture helps prevent security vulnerabilities by ensuring that data is properly handled and transferred between the frontend and backend.</li><li><strong>Documentation and Collaboration</strong>: API definitions serve as documentation and a common language for developers and stakeholders, facilitating collaboration and understanding.</li><li><strong>Refactoring and Scalability</strong>: When changes are made to the API, the code generation process helps identify and update affected areas, making refactoring and scalability easier.</li></ul><h3 id=how-to-use-effectively>How to use effectively <a href=#how-to-use-effectively></a></h3><ul><li><strong>API First Development</strong>: Start by designing API definitions that accurately represent the desired functionality and data structures.</li><li><strong>Automate Code Generation</strong>: Set up automation tools to generate code whenever changes are made to the API definitions. This ensures that the frontend and backend stay in sync.</li><li><strong>Continuous Integration</strong>: As part of the CI/CD pipeline, validate the API definitions and ensure that the auto-generated code does not have manual edits. This maintains the integrity of the synchronization process.</li><li><strong>Testing</strong>: Conduct thorough unit and integration tests for both the frontend and backend. With Swagger, automated tests can be generated and run based on the API definitions, further ensuring the reliability of the system.</li><li><strong>Documentation</strong>: Utilize tools like Swagger UI or ReDoc to provide interactive API documentation. This helps developers and non-technical stakeholders understand and experiment with the API.</li><li><strong>Version Control</strong>: As the API evolves, make sure to version it to manage changes effectively and maintain backward compatibility.</li></ul><h3 id=supported-frameworkstools>Supported frameworks/tools <a href=#supported-frameworkstools></a></h3><p><a href=https://openapi-generator.tech/ target=_blank>openapi-generator</a>: Official tool to validate Swagger spec and generate clients. Using Axios for client requests.
 <a href=https://next.orval.dev/ target=_blank>Orval</a>: Generate code in various clients (axios, swr, react-query…). Support mock data with <a href=https://mswjs.io/ target=_blank>msw</a> and <a href=https://fakerjs.dev/ target=_blank>faker</a></p><h3 id=references>References <a href=#references></a></h3><ul><li><a href=https://openapi-generator.tech target=_blank>https://openapi-generator.tech</a></li><li><a href=https://orval.dev target=_blank>https://orval.dev</a></li><li><a href=https://docs.stoplight.io/docs/spectral/eb68e7afd463e-spectral-in-java-script target=_blank>https://docs.stoplight.io/docs/spectral/eb68e7afd463e-spectral-in-java-script</a></li><li><a href=https://swagger.io/specification target=_blank>https://swagger.io/specification</a></li><li><a href=https://trpc.io target=_blank>https://trpc.io</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>careers/life</li><div>Stats</div><li class=span><span>Words:
 </span>376</li><li class=span><span>Characters:
-</span>4198</li><li class=span><span>Without Spaces:
+</span>4827</li><li class=span><span>Without Spaces:
 </span>1924</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,9 +549,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=learning-by-watching-and-doing>Learning by watching and doing <a href=#learning-by-watching-and-doing></a></h3><p>Observing how others, like <a href=https://memo.d.foundation/contributor/tom>@tom</a> or CEO, handled challenges taught me more than online guides, my learning feel more real. One session where my mentor optimized code gave me insights I couldn’t have gained from remote tutorials.</p><p>Seeing everyone solve problems in real-time helped me grasp things much faster. Working on projects with input from different team members broadened my view on how to collaborate effectively.</p><h3 id=the-value-of-being-face-to-face>The value of being face-to-face <a href=#the-value-of-being-face-to-face></a></h3><p>Learning here happens naturally. Everyone shares what they know through the work itself. No formal lessons needed - just quick exchanges and hands-on collaboration. Being in the office helped me sharpen skills that are harder to develop remotely, like thinking on my feet.</p><h3 id=growing-with-the-whole-team>Growing with the whole team <a href=#growing-with-the-whole-team></a></h3><p>The hybrid setup offers the best of both worlds. I can focus remotely but get that extra boost from being in the office when needed. The goal is simple - helping each other improve and push forward, with support from the entire team along the way.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>handbook/guides</li><div>Stats</div><li class=span><span>Words:
 </span>405</li><li class=span><span>Characters:
-</span>4392</li><li class=span><span>Without Spaces:
+</span>5021</li><li class=span><span>Without Spaces:
 </span>2033</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -542,7 +542,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -551,9 +551,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=verification--notification>Verification & Notification <a href=#verification--notification></a></h3><p>After submitting the request, the line manager and leader will discuss the request with you. They will work with you to align the workload and resources to ensure the project remains on track. A working process will be designed to prevent any interruptions during your absence.</p><h3 id=approvaldenial>Approval/Denial <a href=#approvaldenial></a></h3><p>If your request is approved, the manager will mark the ticket as done and note your return date. Basecamp will send an approval email to everyone involved, and the Google Calendar will be updated.</p><p>Since the client doesn&rsquo;t receive Basecamp notifications, you or the manager must inform the client via email. If denied, the manager or lead will note the reason in the ticket.</p><h3 id=announcement>Announcement <a href=#announcement></a></h3><p>Once your request is approved, a short informal message should be delivered to the related team channel to notify other team members. On the client side, you must announce your leave to the client’s communication channel and remind them before the leave.</p><h3 id=holiday-notifications>Holiday Notifications <a href=#holiday-notifications></a></h3><p>1-2 weeks before the holiday starts, Operations will send an official email announcement to all clients about the holiday period. Then, 2-3 days before the holiday begins, your Project Manager or Leader will remind clients informally via Slack or other communication channels.</p><p><strong>Note</strong>: During holidays or days off, unless stated as URGENT, we should NOT respond to clients on that day.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

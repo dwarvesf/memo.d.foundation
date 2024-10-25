@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>935</li><li class=span><span>Characters:
-</span>15660</li><li class=span><span>Without Spaces:
+</span>19434</li><li class=span><span>Without Spaces:
 </span>4911</li><li class=span><span>Blocks:
 </span>30</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div><main x-data='{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>Image Source: <a href=https://dev.to/arikaturika/how-web-browsers-work-parsing-the-html-part-3-with-illustrations-45fi target=_blank>How web browsers work - parsing the HTML (part 3, with illustrations)</a></em></p><h2 id=how-about-css>How about CSS? <a href=#how-about-css></a></h2><p>As soon as the browser begins to parse the HTML, once encountering a <code>link</code> tag to a CSS file, it simultaneously makes a request to fetch that. As you may anticipate, the procedure mirrors the way browsers form the DOM (from bytes to the object model). This process forms a tree structure called the <strong>CSS Object Model</strong> (CSSOM).</p><blockquote><p>For further information, please check out this article: <a href=https://dev.to/arikaturika/how-web-browsers-work-parsing-the-css-part-4-with-illustrations-4c target=_blank>How web browsers work - parsing the CSS (part 4, with illustrations)</a>.</p></blockquote><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -565,7 +589,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -574,10 +598,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>Image Source: <a href=https://dev.to/arikaturika/how-web-browsers-work-parsing-the-css-part-4-with-illustrations-4c target=_blank>How web browsers work - parsing the CSS (part 4, with illustrations)</a></em></p><p>As you can see in the example above, the elements have both inherited styles from the parent (depicted in white), and their own styles that overwrite the inherited ones (depicted in black). And since we can have several CSS files linked to our HTML, that&rsquo;s when the <a href=https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity target=_blank>Specificity</a> comes in handy for the browser in determining which style to apply to a particular node.</p><h2 id=combining-the-dom-with-the-cssom>Combining the DOM with the CSSOM <a href=#combining-the-dom-with-the-cssom></a></h2><p>The browser traverses every visible node starting from the root of the DOM tree. Certain nodes are ignored by default (such as script or meta tags), while for others, the browser seeks the relevant rules within the CSSOM and proceeds to paint them on the screen. The browser will also ignores the nodes that are hidden due to their CSS property (<code>display: none</code> for example).</p><p>Now the Render Tree holds the information of the <strong>visibility</strong> of each node and its <strong>styles</strong>, but what needs to be done next to calculate the exact position of those elements and paint them to the screen?</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -590,7 +638,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -599,10 +647,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>Image Source: <a href=https://dev.to/arikaturika/how-web-browsers-work-the-render-tree-part-7-with-illustrations-24h3 target=_blank>How web browsers work - the render tree (part 7, with illustrations)</a></em></p><h2 id=the-layoutreflow-stage>The Layout/Reflow stage <a href=#the-layoutreflow-stage></a></h2><p>The <strong>Layout</strong>/<strong>Reflow</strong> is a process to find the <strong>geometry</strong> of elements. The main thread walks through the DOM and constructs a layout tree that stores details such as <strong>x and y coordinates</strong>, as well as <strong>bounding box dimensions</strong>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -615,7 +687,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -624,10 +696,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>Image Source: <a href=https://developer.chrome.com/blog/inside-browser-part3/ target=_blank>Inside look at modern web browser (part 3)</a></em></p><p>This process happens every time we change something in the DOM that affects the layout, which may include:</p><ul><li>Adding or deleting elements from the DOM</li><li>Resizing the browser window</li><li>Changing the width, the position of an element or floating it</li></ul><h2 id=the-painting-stage>The Painting stage <a href=#the-painting-stage></a></h2><p>Despite having a DOM, style information, and a layout, these elements alone do not suffice for rendering a web page. Once the browser determines which nodes should be visible and calculates their positions within the viewport, the next step is to actually draw (render) them. Similar to the layout phase, the painting process doesn&rsquo;t occur just once but repeatedly whenever there are changes to the appearance of on-screen elements.</p><p><strong>Painting</strong> means the browser needs to draw every visual part of an element to the screen, including text, colors, borders, shadows, and elements like buttons and images. To ensure repainting can be done even faster than the initial paint, the drawing to the screen is generally broken down into several <strong>layers</strong>. When this happens, compositing becomes necessary.</p><h2 id=compositing>Compositing <a href=#compositing></a></h2><p><strong>Compositing</strong> is a method used to divide different elements of a webpage into distinct layers, independently rendering each layer, and then combining them to form a complete page in a separate thread known as the compositor thread. When scrolling occurs, this approach becomes efficient because the layers are already rendered, requiring only the composition of a new frame. Similarly, animation can be achieved by repositioning these layers and composing a new frame, enabling smooth and responsive animations.</p><p>To determine which elements should be placed within specific layers, the main thread goes through the layout tree to generate the <strong>Layer tree</strong>.</p><blockquote><p>Learn more about the <strong>Layers panel</strong> of DevTools <a href=https://blog.logrocket.com/eliminate-content-repaints-with-the-new-layers-panel-in-chrome-e2c306d4d752/ target=_blank>here</a>.</p></blockquote><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -640,7 +736,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -649,10 +745,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>Image Source: <a href=https://developer.chrome.com/blog/inside-browser-part3/ target=_blank>Inside look at modern web browser (part 3)</a></em></p><p>Once the Layer tree is established and the orders of rendering are determined, the main thread transfers that information to the compositor thread. The compositor thread then begins the process of rendering each layer. Some layers, such as those having the entire length of a webpage, can be quite extensive. To handle this, the compositor thread breaks them down into smaller sections known as <strong>tiles</strong> and dispatches each tile to <strong>raster threads</strong>. These raster threads are responsible for rendering each tile and storing the results in the memory of the GPU.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -665,7 +785,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -674,9 +794,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><em>Image Source: <a href=https://developer.chrome.com/blog/inside-browser-part3/ target=_blank>Inside look at modern web browser (part 3)</a></em></p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://developer.chrome.com/blog/inside-browser-part3/ target=_blank>https://developer.chrome.com/blog/inside-browser-part3/</a></li><li><a href=https://blog.logrocket.com/how-browser-rendering-works-behind-scenes/ target=_blank>https://blog.logrocket.com/how-browser-rendering-works-behind-scenes/</a></li><li><a href=https://dev.to/arikaturika/series/17842 target=_blank>https://dev.to/arikaturika/series/17842</a></li><li><a href=https://twitter.com/alexxubyte/status/1534201516063461376 target=_blank>https://twitter.com/alexxubyte/status/1534201516063461376</a></li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1566</li><li class=span><span>Characters:
-</span>13211</li><li class=span><span>Without Spaces:
+</span>14469</li><li class=span><span>Without Spaces:
 </span>7585</li><li class=span><span>Blocks:
 </span>29</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div><main x-data="{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=what-is-the-deal-with-dca>What is the deal with DCA? <a href=#what-is-the-deal-with-dca></a></h2><p>Dollar-Cost Averaging (DCA) is a simple yet powerful investment strategy that can help you minimize risk and maximize long-term returns. With DCA, you <strong>invest a fixed amount of money into an asset</strong> (crypto, stocks, funds, etc.) <strong>at regular intervals, regardless of the current market price</strong>. The goal is to accumulate as much of the asset as possible over time. This strategy is suitable for all investors, especially beginners.</p><p>In simpler terms, it&rsquo;s about throwing some money into crypto at regular intervals, no matter if the price is mooning or going down. This way, you average out the cost over time and snag some sweet profits in the long run.</p><p>While not a new concept, DCA has been proven effective for decades in traditional markets like stocks and gold. In the high-potential crypto market, DCA has become even more popular. The mentality of &ldquo;buying more when the price is down&rdquo; is very common among crypto enthusiasts, especially when the market has been skyrocketing in recent years. While &ldquo;bottom fishing&rdquo; can be tempting, DCA is the key to safe and effective investing in a volatile market like crypto.</p><h2 id=how-dca-works>How DCA Works <a href=#how-dca-works></a></h2><p>To better understand how this investment strategy works, let&rsquo;s look at an example:
 Suppose an investor decides to invest $3,000 over 6 months by buying $1,000 of a specific asset for the first <strong>3 months</strong> and applying the DCA strategy. However, if you want to see the powerful impact of cost averaging, check out the difference between cost averaging and not using the strategy (when you invest the entire $3,000 in month 1).</p><p>The scenario would be as follows:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -566,7 +590,7 @@ Suppose an investor decides to invest $3,000 over 6 months by buying $1,000 of a
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -575,9 +599,33 @@ Suppose an investor decides to invest $3,000 over 6 months by buying $1,000 of a
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>From March onwards, you can see that DCA has increased in value compared to not having a strategy. <strong>This is because the more money you invest at once, the more risk you are exposed to market fluctuations.</strong></p><ul><li>When investing without a strategy, the $3,000 is subject to the entire decline of March + April and has to take the rest of the time to recover.</li><li>With the DCA strategy, you can minimize the loss by 20% and take advantage of it to catch the bottom and collect more assets.</li></ul><p>To implement DCA, follow these steps:</p><ol><li>Choose the right investment asset for DCA</li><li>Decide on the investment amount per period</li><li>Identify your maximum acceptable loss</li><li>Choose an investment frequency (weekly, monthly,…)</li><li>Define entry, profit-taking, and stop-loss points</li></ol><blockquote><p><strong>Note</strong>: While DCA can be a good strategy, there can be more transaction fees compared to a one-time investment.</p></blockquote><h2 id=dca-in-practice>DCA in Practice <a href=#dca-in-practice></a></h2><p>In theory, DCA helps you buy an asset at different prices, thereby minimizing the risk of market fluctuations. However, in practice, traders and investors apply DCA in many different ways, specifically as follows:</p><p><strong>DCA in a Bull Market</strong></p><p>This strategy is a way of investing in a rising market by buying a fixed amount of an asset at regular intervals, such as every month. This means that you will buy more of the asset when the price is low and less of the asset when the price is high. The average purchase price will increase over time.</p><ul><li><strong>Pros:</strong> Buy with the mindset of &ldquo;making a profit&rdquo;. You aim to buy low and sell high for maximum profit. While buying at higher prices increases your average cost, there&rsquo;s still room for profit if the price keeps rising. This approach lets you potentially maximize your gains.</li><li><strong>Cons:</strong> Buy more at higher prices can hurt your profit potential. Remember, the crypto market is known for big, unexpected crashes, especially after periods of strong price increases.</li></ul><p>Since 2021, this has perhaps been the strategy adopted by large investment funds, such as MicroStrategy, BlackRock, and Fidelity, if you often follow articles on the allocation of capital flows from investment funds.</p><p><strong>DCA in a Bear Market</strong></p><p>DCA in a bear market is the opposite of DCA in a bull market. When falling market, investors buy more of an asset when the price is low and less when the price is high. The average purchase price will decrease over time.</p><ul><li><strong>Pros</strong>: You can buy assets at lower prices, which could mean higher profits when the market recovers. And regular investing helps you avoid trying to time the market, which can be risky.</li><li><strong>Cons</strong>: The risk of this method is that hard to know when to buy. It&rsquo;s tough to know when the market will hit its lowest point, so you might buy too early or too late. Prices could keep falling, even if you&rsquo;re buying regularly.</li></ul><p><a href="https://www.thestreet.com/investing/el-salvador-buys-the-dip-again#:~:text=At%20500%20coins%2C%20this%20purchase,150%20bought%20in%20September%202021." target=_blank>El Salvador has been consistently &ldquo;buying the dip&rdquo;</a> in Bitcoin throughout 2021-2022, driven by the belief of its leaders in Bitcoin&rsquo;s growth. CoinDesk estimates that El Salvador currently holds 2,381 Bitcoin in its treasury, worth a total of $147 million. Most recently, the country said that if it sold all of its Bitcoin now, it would make a profit of over 40%, or $41.6 million.</p><p><strong>DCA for the Long Haul</strong></p><p>A simple way to invest that&rsquo;s perfect for people who want to put their money away for the long term and don&rsquo;t want to worry too much about the ups and downs of the market. It&rsquo;s like putting money in a savings account, but instead of just earning interest, you&rsquo;re also buying shares of an asset, like stocks or cryptocurrency.</p><ul><li><strong>Pros</strong>: Don&rsquo;t need to be an expert to use this strategy. You can start investing with even a small amount of money. The market has always gone up in the long run, so this strategy can be a good way to grow your wealth over time.</li><li><strong>Cons</strong>: The price of your investment could go down in the short term, so you could lose money. If you lack knowledge and experience, you will be easily scared by price changes. This can cause you to sell your investments when the market goes down.</li></ul><p>Crypto prices can go up and down quickly, making this strategy tricky to use. Still, some traders have pulled it off in the short term to buy at the best prices.</p><p><strong>Flexible DCA</strong></p><p>The flexible DCA strategy takes regular DCA to the next level. You can adjust your investment amount based on the market&rsquo;s ups and downs. So, if the market is falling, you can invest a little more to buy more when prices are low. And when the market is rising, you can invest a little less to avoid buying at high prices.</p><ul><li><strong>Pros</strong>: You can change how much you invest based on the market and your own finances. This strategy can work for both beginners and experienced investors.</li><li><strong>Cons</strong>: To make the most of this strategy, you should have some basic understanding of the financial markets.</li></ul><p><strong>Comparison table:</strong></p><table><thead><tr><th>Bull Market</th><th>Bear Market</th><th>Long Haul</th><th>Flexible</th></tr></thead><tbody><tr><td>Invest in a rising market</td><td>Invest in a falling market</td><td>Believe that the market will always trend upwards in the long run</td><td>Invest based on the market</td></tr><tr><td>Buy a fixed amount of it at <strong>regular intervals</strong> (daily, weekly, monthly,…)</td><td>Buy <strong>more of an asset</strong> when the price is low and less when the price is high</td><td>Buy a fixed amount of it over a <strong>period</strong> of 3-5 years</td><td>Adjust your amount based on the market&rsquo;s ups and downs</td></tr><tr><td>The average purchase price will <strong>increase</strong> over time</td><td>The average purchase price will <strong>decrease</strong> over time</td><td>Invest without worrying about market ups and downs</td><td>The average purchase price will <strong>increase</strong> or <strong>decrease</strong> gradually depending on market trends</td></tr></tbody></table><h3 id=can-dca-be-applied-to-anything>Can DCA be applied to anything? <a href=#can-dca-be-applied-to-anything></a></h3><p>Hell no! While DCA is a simple and easy-to-understand strategy, it&rsquo;s not a magic bullet for beating the market. Many investors combine DCA with portfolio diversification to reduce risk.</p><p><strong>DCA is best suited for low-risk assets such as:</strong></p><ul><li>Bitcoin</li><li>Ethereum</li><li>S&amp;P 500 Index Fund</li><li>ETFs</li><li>Retirement funds (e.g., 401(k))</li></ul><p><strong>Common mistakes when using DCA:</strong></p><ul><li><strong>Leverage trading:</strong> Leverage trading (such as margin, futures, etc.) is already inherently risky, as traders use more money than they have. Combining it with DCA amplifies this risk. It&rsquo;s recommended to only use DCA for spot trading.</li><li><strong>Low-liquidity altcoins:</strong> Even Bitcoin, with its high trading volume, experiences significant price fluctuations. Low-liquidity altcoins pose even greater risks. These altcoins may be poorly designed or pump-and-dump schemes, requiring thorough research before investing.</li><li><strong>Altcoin/BTC pairs:</strong> While experienced traders may profit from this approach, altcoin/BTC pairs expose you to two layers of volatility: altcoin/BTC pair fluctuations and BTC/USD fluctuations. This can lead to double losses if you use your losing BTC to buy a falling altcoin/BTC.</li><li><strong>Meme coins:</strong> Meme coins are essentially overpriced jokes. View them as a portfolio diversification tool rather than a DCA strategy target.</li></ul><p>Bear in mind that before you start DCAing during a downturn, ask yourself: &ldquo;How much risk can I handle?&rdquo; Only DCA with money you can afford to lose, and be prepared for the possibility that some of it might not come back.</p><p>Overall, DCA is a long-term investment strategy. Don&rsquo;t get discouraged by short-term market fluctuations. Stay disciplined and consistent with your investments, and you&rsquo;ll be well on your way to achieving your financial goals.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

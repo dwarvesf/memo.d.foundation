@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>handbook</li><div>Stats</div><li class=span><span>Words:
 </span>419</li><li class=span><span>Characters:
-</span>4240</li><li class=span><span>Without Spaces:
+</span>4869</li><li class=span><span>Without Spaces:
 </span>2138</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -542,7 +542,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -551,9 +551,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=hybrid-working-at-dwarves>Hybrid working at Dwarves <a href=#hybrid-working-at-dwarves></a></h2><p>Dwarves HQ is in Saigon, but we proudly embrace a flexible hybrid working culture. The Foundation fully supports team members in choosing their ideal work environment. Whether you&rsquo;re local or abroad, you&rsquo;re always welcome to work remotely or visit Saigon and use the office as needed.</p><h2 id=why-spend-time-at-the-office>Why spend time at the office? <a href=#why-spend-time-at-the-office></a></h2><p>While hybrid work gives you the flexibility to work remotely, there are clear benefits to spending time at the office:</p><ul><li><strong>Clear Work-Life Boundaries</strong>: Working at the office helps separate work from home life, making it easier to focus during work hours and fully engage with family afterward.</li><li><strong>Work-Life Separation for Family</strong>: Being physically at the office can help your spouse or partner understand that it’s &ldquo;work time,&rdquo; creating clearer boundaries and reducing interruptions at home.</li><li><strong>Access to Office Resources</strong>: The office provides access to specialized equipment, faster internet, and collaborative spaces, which can be harder to replicate at home.</li></ul><h2 id=creating-the-ideal-hybrid-work-environment>Creating the ideal hybrid work environment <a href=#creating-the-ideal-hybrid-work-environment></a></h2><p>Our culture is shaped by the people we hire and the values we promote.</p><p>At Dwarves, we keep things &lsquo;Lite.&rsquo; We’ve set up spaces to help you stay focused and comfortable at the office. From distraction-free setups, good functionality, and cozy environments to office perks like dedicated desks, meeting rooms, high-speed internet, and 24/7 access — everything you need is at your fingertips.</p><p>For those seeking a change of scenery, our Hado hub offers a comfortable and productive environment, designed to feel like a second home. Because real work happens when you feel your best self. With the support of flexible schedules and options for both remote and in-office work.</p><h2 id=the-way-forward>The way forward <a href=#the-way-forward></a></h2><p>The role of the office is evolving, and hybrid work is becoming the way forward. The freedom to choose where to work is now the norm, and for many, it offers the best of both worlds.</p><p>There might be some bumps along the way, but they’re just that — bumps. The future of work is about giving people the freedom to do their best work, wherever they are. And at Dwarves, we’re already there.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

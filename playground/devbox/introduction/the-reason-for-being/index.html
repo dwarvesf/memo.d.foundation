@@ -493,7 +493,7 @@ Tags:
 Folder:
 </span>playground/devbox/introduction</li><div>Stats</div><li class=span><span>Words:
 </span>505</li><li class=span><span>Characters:
-</span>7250</li><li class=span><span>Without Spaces:
+</span>9137</li><li class=span><span>Without Spaces:
 </span>2581</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div><main x-data="{
@@ -540,7 +540,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -549,10 +549,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=pulling-from-internet-is-not-stable>Pulling from internet is not stable <a href=#pulling-from-internet-is-not-stable></a></h3><p>The installed application version can be specified in the <code>apt-get add</code> script, but its dependencies are not stable. Repositories can be updated, transitive dependencies are changed without changing the main package version. So once we run <code>apt-get update</code>, the produced image may not be the same as the previous build.</p><h3 id=docker-is-heavy-on-non-linux-os>Docker is heavy on non-Linux OS <a href=#docker-is-heavy-on-non-linux-os></a></h3><p>On Windows and MacOS, Docker containers are run on a Linux VM. So we need to split resources from the host machine to serve this VM. It makes our computer become slow.
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
@@ -566,7 +590,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -575,10 +599,34 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=how-to-resolve-problems>How to resolve problems? <a href=#how-to-resolve-problems></a></h3><p>The problems can be summed up as slow, asynchronous, and cumbersome when developing locally. We actually can resolve them by using some Docker hack. But we can also do it by avoiding using Docker (or changing your machine if you want). Among a variety solutions, we consider trying using Devbox. What&rsquo;s it?</p><h2 id=devbox>Devbox <a href=#devbox></a></h2><h3 id=do-not-build-do-not-need-vm>Do not build, do not need VM <a href=#do-not-build-do-not-need-vm></a></h3><p>Powered by Nix which is known as a cross-platform package manager for Unix-like systems with the ability to build any package, or application running natively on your machine with 100.000+ available Nix packages. Devbox will simply scope an isolated workspace, and then install all dependencies to help you run your project. All these dependencies are native to your OS, so just only need to run without any other middleman.</p><h3 id=consistent-dependencies>Consistent dependencies <a href=#consistent-dependencies></a></h3><p>All packages in the Devbox workspace are actually linked from your local Nix storage, where every application is installed. They are identified by a unique hash and are linked together by a dependency tree. So it will not change over time. So the Devbox environment can be reproduced perfectly and easily to share between teammates with just a script file.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
@@ -591,7 +639,7 @@ Folder:
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -600,9 +648,33 @@ Folder:
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The hash is different between versions of the same application. So we have different versions of a package in our Nix storage. And easily link it to different projects that require different versions of a package.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Embracing Devbox has not only streamlined our development process but has also fostered a more collaborative and productive team dynamic. As we continue to scale our projects, Devbox&rsquo;s reproducibility and efficiency will undoubtedly remain key factors in our success.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>

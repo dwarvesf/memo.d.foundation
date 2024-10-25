@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>careers/life</li><div>Stats</div><li class=span><span>Words:
 </span>1018</li><li class=span><span>Characters:
-</span>7802</li><li class=span><span>Without Spaces:
+</span>8431</li><li class=span><span>Without Spaces:
 </span>4878</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data='{
@@ -543,7 +543,7 @@ If I take that offer, my life will become a 9-to-5 circle. Everything is settled
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -552,9 +552,33 @@ If I take that offer, my life will become a 9-to-5 circle. Everything is settled
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>After three years working here, I grew from someone who would not dare to speak to anyone to a person who can now confidently convey his experience and knowledge to interns. That&rsquo;s also the most challenging aspect of being an intern supporter: Learning to understand people&rsquo;s wants and needs and how to provide the most efficient support."</p><p>Swing by our Discord to meet & chat with Hieu Vu and the rest of Dwarves team: <a href=https://discord.gg/dwarvesv target=_blank>https://discord.gg/dwarvesv</a>.</p><hr><p><strong>Life at Dwarves</strong> is a series of stories about people, perspectives and lives at the Dwarves Foundation.</p></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
