@@ -20,7 +20,6 @@ clear-build:
 
 run:
 	@make clear-build
-	@mix run -e 'Memo.ExportMedia.run("vault")'
 	@mix run -e 'Memo.ExportMarkdown.run("vault", "content")'
 	@hugo -DEF --poll 2s --logLevel error server
 	
