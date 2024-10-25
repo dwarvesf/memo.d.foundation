@@ -80,7 +80,6 @@ defmodule Memo.WatchRun do
   end
 
   defp run_scripts(vaultpath, exportpath) do
-    Memo.Application.export_media(vaultpath)
     Memo.Application.export_markdown(vaultpath, exportpath)
   end
 
