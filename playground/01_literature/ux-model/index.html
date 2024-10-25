@@ -350,7 +350,7 @@
               ELSE NULL
             END as grouped_path
           FROM vault
-          WHERE file_path NOT LIKE '%_radar%'
+          WHERE file_path NOT LIKE '%_radar/%'
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
