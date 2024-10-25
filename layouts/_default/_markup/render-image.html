@@ -20,7 +20,7 @@
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -29,10 +29,34 @@
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }"
   controls
@@ -55,7 +79,7 @@
     },
     get relativeSrc() {
       if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src; // Return the full URL for external links
+        return this.src;
       }
 
       let currentUrlParts = this.currentUrl.split('/');
@@ -64,10 +88,34 @@
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
-      if (this.src.match(/^assets/)) {
-         return `${relativeUrl}/${this.src}`.toLowerCase();
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
       }
-      return `/${this.src}`.toLowerCase();
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
     }
   }"
   :src="relativeSrc"
