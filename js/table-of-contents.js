@@ -1,6 +1,11 @@
 const initScroller = () => {
   const pagenav = document.querySelectorAll("#TableOfContents a");
 
+  // Add no-underline style to all links
+  pagenav.forEach(nav => {
+    nav.style.textDecoration = 'none';
+  });
+
   const update = (nav) => {
     pagenav.forEach((nav) => {
       nav.classList.remove("text-active");
