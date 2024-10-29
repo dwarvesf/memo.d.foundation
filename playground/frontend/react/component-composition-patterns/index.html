@@ -493,8 +493,8 @@ Tags:
 Folder:
 </span>playground/frontend/react</li><div>Stats</div><li class=span><span>Words:
 </span>863</li><li class=span><span>Characters:
-</span>8279</li><li class=span><span>Without Spaces:
-</span>5362</li><li class=span><span>Blocks:
+</span>8278</li><li class=span><span>Without Spaces:
+</span>5361</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div><main x-data="{
       currentUrl: `/playground/frontend/react/component-composition-patterns/`,
@@ -546,7 +546,7 @@ Folder:
 }
 
 // Usage:
-;&lt;DataFetcher render={(data) =&gt; &lt;DisplayData data={data} /&gt;} /&gt;
+&lt;DataFetcher render={(data) =&gt; &lt;DisplayData data={data} /&gt;} /&gt;
 </code></pre><p><strong>When to Use Render Props</strong>:</p><ul><li>For providing control over how the child component renders data.</li><li>When the consuming component needs flexibility in rendering but also needs the data or logic encapsulated in the parent.</li></ul><p><strong>Trade-offs</strong>:</p><ul><li>Can lead to deeply nested code if not structured thoughtfully.</li><li>Not as widely used with hooks and context, which often simplify sharing functionality across components.</li></ul><h3 id=compound-components>Compound Components <a href=#compound-components></a></h3><p>Compound components are components that work together as a single unit but allow for great customization of individual parts.</p><p><strong>Example Use Case</strong>: A <code>&lt;Dropdown /></code> component that lets you use <code>&lt;Dropdown.Toggle /></code> and <code>&lt;Dropdown.Menu /></code> as children, giving flexibility to control each part while keeping the structure consistent.</p><pre><code class=language-js>function Dropdown({ children }) {
   const [isOpen, setIsOpen] = useState(false)
   return (

@@ -493,9 +493,9 @@ Tags:
 Folder:
 </span>playground/frontend/react</li><div>Stats</div><li class=span><span>Words:
 </span>1122</li><li class=span><span>Characters:
-</span>12177</li><li class=span><span>Without Spaces:
-</span>7290</li><li class=span><span>Blocks:
-</span>27</li><li class=span><span>Est reading Time:
+</span>12127</li><li class=span><span>Without Spaces:
+</span>7288</li><li class=span><span>Blocks:
+</span>25</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data='{
       currentUrl: `/playground/frontend/react/design-system-integration/`,
       title: `Design System Integration in React`,
@@ -598,8 +598,9 @@ const Button = styled.button`
   color: ${({ variant }) =&gt; tokens.colors[variant]};
   background-color: ${({ bg }) =&gt; bg || tokens.colors.background};
 `
-</code></pre><p>This approach allows the Button component to be reusable, enabling different colors and backgrounds with minimal code.</p><h3 id=4-establish-and-use-a-component-library-framework-storybook>4. Establish and Use a Component Library Framework (Storybook) <a href=#4-establish-and-use-a-component-library-framework-storybook></a></h3><p><strong>Storybook</strong> is a popular tool for creating isolated component libraries, documenting components, and allowing team members to interact with components outside of the application environment.</p><ol><li><strong>Set up Storybook</strong>: Install Storybook in your React project.</li></ol><pre><code class=language-sh>npx sb init
-</code></pre><ol start=2><li><strong>Write Stories for Components</strong>: Each component should have its own story, describing its appearance with various props and states.</li></ol><p><strong>Example: Button.stories.js</strong></p><pre><code class=language-jsx>import React from 'react'
+</code></pre><p>This approach allows the Button component to be reusable, enabling different colors and backgrounds with minimal code.</p><h3 id=4-establish-and-use-a-component-library-framework-storybook>4. Establish and Use a Component Library Framework (Storybook) <a href=#4-establish-and-use-a-component-library-framework-storybook></a></h3><p><a href=https://storybook.js.org/ target=_blank>Storybook</a> is a popular tool for creating isolated component libraries, documenting components, and allowing team members to interact with components outside of the application environment.</p><p><strong>Set up Storybook</strong></p><p>Install Storybook in your React project.</p><pre><code class=language-sh>npx sb init
+</code></pre><p><strong>Write Stories for Components</strong></p><p>Each component should have its own story, describing its appearance with various props and states.</p><pre><code class=language-jsx>// Example: Button.stories.js
+import React from 'react'
 import { Button } from './Button'
 
 export default {
@@ -609,12 +610,14 @@ export default {
 
 export const Primary = () =&gt; &lt;Button variant=&quot;primary&quot; label=&quot;Primary Button&quot; /&gt;
 export const Secondary = () =&gt; &lt;Button variant=&quot;secondary&quot; label=&quot;Secondary Button&quot; /&gt;
-</code></pre><p><strong>Benefits:</strong></p><ul><li>Provides a single source of truth for UI components, where designers and developers can collaborate.</li><li>Enables interactive testing of each component’s variations, ensuring they meet design requirements.</li><li>Encourages consistency across components, as each component variation is clearly documented.</li></ul><h3 id=5-implement-accessibility-standards>5. Implement Accessibility Standards <a href=#5-implement-accessibility-standards></a></h3><p>Design systems must prioritize accessibility to create inclusive applications. Follow <strong>WCAG guidelines</strong> and use accessible components, ensuring that all users can interact with your app.</p><ul><li><p><strong>Color Contrast</strong>: Use tokens that meet accessibility standards for contrast. Tools like axe can test for color contrast and other accessibility issues.</p></li><li><p><strong>Aria Roles and Attributes</strong>: Use ARIA attributes for interactive components like buttons, modals, and dialogs to improve screen reader support.</p></li></ul><p><strong>Example: Accessible Button with ARIA</strong></p><pre><code class=language-jsx>const Button = ({ label, onClick, ariaLabel, variant = 'primary' }) =&gt; (
+</code></pre><p><strong>Benefits:</strong></p><ul><li>Provides a single source of truth for UI components, where designers and developers can collaborate.</li><li>Enables interactive testing of each component’s variations, ensuring they meet design requirements.</li><li>Encourages consistency across components, as each component variation is clearly documented.</li></ul><h3 id=5-implement-accessibility-standards>5. Implement Accessibility Standards <a href=#5-implement-accessibility-standards></a></h3><p>Design systems must prioritize accessibility to create inclusive applications. Follow <strong>WCAG guidelines</strong> and use accessible components, ensuring that all users can interact with your app.</p><ul><li><p><strong>Color Contrast</strong>: Use tokens that meet accessibility standards for contrast. Tools like axe can test for color contrast and other accessibility issues.</p></li><li><p><strong>Aria Roles and Attributes</strong>: Use ARIA attributes for interactive components like buttons, modals, and dialogs to improve screen reader support.</p></li></ul><pre><code class=language-jsx>// Example: Accessible Button with ARIA
+const Button = ({ label, onClick, ariaLabel, variant = 'primary' }) =&gt; (
   &lt;button onClick={onClick} style={{ backgroundColor: tokens.colors[variant] }} aria-label={ariaLabel}&gt;
     {label}
   &lt;/button&gt;
 )
-</code></pre><ul><li><strong>Keyboard Navigation</strong>: Ensure that all components can be navigated via keyboard. Focus management is crucial, especially for modal dialogs or dynamic components like carousels.</li></ul><p><strong>Example: Focus Management in a Modal</strong></p><pre><code class=language-jsx>import { useEffect, useRef } from 'react'
+</code></pre><ul><li><strong>Keyboard Navigation</strong>: Ensure that all components can be navigated via keyboard. Focus management is crucial, especially for modal dialogs or dynamic components like carousels.</li></ul><pre><code class=language-jsx>// Example: Focus Management in a Modal
+import { useEffect, useRef } from 'react'
 
 const Modal = ({ isOpen, onClose, children }) =&gt; {
   const closeButtonRef = useRef()
@@ -634,7 +637,7 @@ const Modal = ({ isOpen, onClose, children }) =&gt; {
     &lt;/div&gt;
   ) : null
 }
-</code></pre><p>Tools:</p><ul><li><code>axe-core</code> and <code>eslint-plugin-jsx-a11y</code> for testing accessibility issues.</li><li><code>Storybook accessibility addon</code> to validate and fix issues while developing components.</li></ul><h3 id=6-use-context-and-theming-for-adaptable-designs>6. Use Context and Theming for Adaptable Designs <a href=#6-use-context-and-theming-for-adaptable-designs></a></h3><p>To support <strong>themes</strong> (e.g., dark and light modes), use <strong>context providers</strong> to pass theme values down to components. This enables consistent theming and allows the user to switch themes easily.</p><p><strong>Example: Theming with Context</strong></p><p><strong>1. Create Theme Context:</strong></p><pre><code class=language-jsx>import React, { createContext, useContext, useState } from 'react'
+</code></pre><p>Tools:</p><ul><li><code>axe-core</code> and <code>eslint-plugin-jsx-a11y</code> for testing accessibility issues.</li><li><code>Storybook accessibility addon</code> to validate and fix issues while developing components.</li></ul><h3 id=6-use-context-and-theming-for-adaptable-designs>6. Use Context and Theming for Adaptable Designs <a href=#6-use-context-and-theming-for-adaptable-designs></a></h3><p>To support <strong>themes</strong> (e.g., dark and light modes), use <strong>context providers</strong> to pass theme values down to components. This enables consistent theming and allows the user to switch themes easily.</p><p><strong>Example: Theming with Context</strong></p><ol><li>Create Theme Context:</li></ol><pre><code class=language-jsx>import React, { createContext, useContext, useState } from 'react'
 import tokens from './tokens.json'
 
 const ThemeContext = createContext()
@@ -650,7 +653,7 @@ export const ThemeProvider = ({ children }) =&gt; {
 }
 
 export const useTheme = () =&gt; useContext(ThemeContext)
-</code></pre><p><strong>2. Consume Theme Context in Components:</strong></p><pre><code class=language-jsx>const ThemedButton = ({ label }) =&gt; {
+</code></pre><ol start=2><li>Consume Theme Context in Components:</li></ol><pre><code class=language-jsx>const ThemedButton = ({ label }) =&gt; {
   const { themeStyles } = useTheme()
   return (
     &lt;button
@@ -663,7 +666,7 @@ export const useTheme = () =&gt; useContext(ThemeContext)
     &lt;/button&gt;
   )
 }
-</code></pre><p><strong>3. Switch Themes in App:</strong></p><pre><code class=language-jsx>function App() {
+</code></pre><ol start=3><li>Switch Themes in App:</li></ol><pre><code class=language-jsx>function App() {
   const { toggleTheme } = useTheme()
   return (
     &lt;div&gt;
