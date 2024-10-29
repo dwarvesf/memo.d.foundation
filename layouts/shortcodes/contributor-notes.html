@@ -5,8 +5,8 @@
     {{ $title := .LinkTitle }}
 <li class="term">
 <a href="{{ $url }}">{{ $title }}</a>
-<div class="tags">
-{{ range $t := $tags }}<a href="/tags/{{ $t }}" class="tag">{{ $t }}</a>
+<div class="memo-tags">
+{{ range $t := $tags }}<a href="/tags/{{ $t }}" class="memo-tag">{{ $t }}</a>
 {{ end }}
 </div>
 </li>
