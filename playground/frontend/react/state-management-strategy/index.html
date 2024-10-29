@@ -493,8 +493,8 @@ Tags:
 Folder:
 </span>playground/frontend/react</li><div>Stats</div><li class=span><span>Words:
 </span>949</li><li class=span><span>Characters:
-</span>9394</li><li class=span><span>Without Spaces:
-</span>6219</li><li class=span><span>Blocks:
+</span>9396</li><li class=span><span>Without Spaces:
+</span>6221</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>16m 0s</li></ul></div></div></div></div><main x-data="{
       currentUrl: `/playground/frontend/react/state-management-strategy/`,
@@ -623,7 +623,7 @@ function UserProfile({ userId }) {
 }
 
 // Usage in App:
-&lt;QueryClientProvider client={queryClient}&gt;
+;&lt;QueryClientProvider client={queryClient}&gt;
   &lt;UserProfile userId={1} /&gt;
 &lt;/QueryClientProvider&gt;
 </code></pre><p><strong>React Query vs. SWR</strong>:</p><ul><li><strong>React Query</strong>: More feature-rich and configurable; supports pagination, optimistic updates, and complex cache invalidation.</li><li><strong>SWR</strong>: Lightweight with a more declarative approach; suitable for simpler use cases.</li></ul><p><strong>When to Use React Query or SWR</strong>:</p><ul><li>Server-side data that needs caching, synchronization, and refresh-on-focus.</li><li>Use React Query for applications with complex server data dependencies and SWR for simpler needs.</li></ul><h3 id=combined-approach-with-context--react-query>Combined Approach with Context + React Query <a href=#combined-approach-with-context--react-query></a></h3><p>For scalable applications, a hybrid approach works well, where:</p><ul><li>Context handles small, rarely-changing global state (like theme or user settings).</li><li>React Query or SWR manages server state (API data).</li><li>Local state and custom hooks organize isolated or ephemeral component-specific state.</li></ul><p><strong>Example Hybrid Structure</strong>:</p><pre><code class=language-jsx>const UserContext = React.createContext()
@@ -649,7 +649,7 @@ function UserComponent() {
 }
 
 // Usage:
-&lt;AppProvider&gt;
+;&lt;AppProvider&gt;
   &lt;UserComponent /&gt;
 &lt;/AppProvider&gt;
 </code></pre><p><strong>Benefits of the Combined Approach</strong>:</p><ul><li>Avoids overloading context with complex state management.</li><li>Improves separation of concerns by delegating responsibilities: local state for UI, context for global app state, and React Query for async/server state.</li></ul><h3 id=key-takeaways>Key Takeaways <a href=#key-takeaways></a></h3><ul><li><strong>Local state</strong> for isolated, ephemeral data.</li><li><strong>Context API</strong> for lightweight global state that rarely changes.</li><li><strong>Redux/Zustand</strong> for structured, complex state management across large applications.</li><li><strong>React Query/SWR</strong> for async data, caching, and server-side synchronization.</li><li><strong>Combined Approach</strong> for scalable, maintainable architecture.</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
