@@ -138,6 +138,9 @@
   {{ $graph := resources.Get "js/graph.js" }}
   <script defer src="{{ $graph.RelPermalink }}"></script>
 
+  {{ $zoom := resources.Get "js/zoom.js" }}
+  <script defer src="{{ $zoom.RelPermalink }}"></script>
+
   {{ $scroll := resources.Get "js/scroll.js" }}
   <script defer src="{{ $scroll.RelPermalink }}"></script>
 
