@@ -18,7 +18,7 @@
     letter-spacing: -0.5px;
   }
 
-  .tags {
+  .memo-tags {
     display: inline-flex;
     flex-wrap: wrap;
     gap: 6px;
@@ -26,7 +26,7 @@
     justify-self: right;
     justify-content: right;
 
-    .tag {
+    .memo-tag {
       display: inline-flex;
       padding: 0.125rem 0.5rem;
       justify-content: center;
@@ -396,7 +396,7 @@ label:not(:has(+ #TableOfContents)) {
       flex-direction: column;
       font-weight: 400;
 
-      a:not([class="tag"]) {
+      a:not([class="memo-tag"]) {
         &::after {
           content: ", ";
         }
@@ -632,8 +632,8 @@ html[data-theme="dark"] {
   }
 
   .note-title {
-    .tags {
-      .tag {
+    .memo-tags {
+      .memo-tag {
         background-color: var(--secondary-background-color);
         color: var(--secondary-font-color);
       }

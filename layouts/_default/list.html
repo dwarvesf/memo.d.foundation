@@ -16,9 +16,9 @@
               </div>
             {{ end }}
             <a href="{{ $url }}">{{ . }}</a>
-            <div class="tags">
+            <div class="memo-tags">
               {{ range $t := $tags }}
-                <a href="/tags/{{ $t }}" class="tag">{{ replaceRE `-` ` ` $t }}</a>
+                <a href="/tags/{{ $t }}" class="memo-tag">{{ replaceRE `-` ` ` $t }}</a>
               {{ end }}
             </div>
           </li>

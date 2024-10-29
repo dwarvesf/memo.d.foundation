@@ -35,7 +35,7 @@
   }
 }
 
-.tag {
+.memo-tag {
   border-radius: 2.8px;
   padding: 0px 6px;
   background-color: #f9fafb;
@@ -50,7 +50,7 @@
 }
 
 html[data-theme="dark"] {
-  .tag {
+  .memo-tag {
     background-color: var(--border-color);
     color: var(--primary-font-color);
   }
