@@ -21,6 +21,7 @@ defmodule Memo.ExportDuckDB do
     {"pinned", "BOOLEAN"},
     {"hide_frontmatter", "BOOLEAN"},
     {"hide_title", "BOOLEAN"},
+    {"hide_on_sidebar", "BOOLEAN"},
     {"hiring", "BOOLEAN"},
     {"featured", "BOOLEAN"},
     {"draft", "BOOLEAN"},
