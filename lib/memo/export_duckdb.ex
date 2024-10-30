@@ -328,11 +328,12 @@ defmodule Memo.ExportDuckDB do
 
     custom_embedding = AIUtils.embed_custom(spr_content)
 
-    openai_embedding = if estimated_tokens <= 7500 do
-      AIUtils.embed_openai(md_content)
-    else
-      %{"embedding" => List.duplicate(0, 1536)}
-    end
+    openai_embedding =
+      if estimated_tokens <= 7500 do
+        AIUtils.embed_openai(md_content)
+      else
+        %{"embedding" => List.duplicate(0, 1536)}
+      end
 
     frontmatter
     |> Map.put("spr_content", spr_content)
@@ -454,7 +455,7 @@ defmodule Memo.ExportDuckDB do
     Enum.any?(@allowed_frontmatter, fn {key, _type} ->
       existing_value = Map.get(existing_data, key)
       new_value = Map.get(frontmatter, key)
-      
+
       normalized_existing = normalize_for_comparison(existing_value, key)
       normalized_new = normalize_for_comparison(new_value, key)
       normalized_existing != normalized_new
@@ -483,38 +484,47 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp normalize_array(value) when is_list(value), do: value
+
   defp normalize_array(value) when is_binary(value) do
     case Jason.decode(value) do
-      {:ok, decoded} when is_list(decoded) -> decoded
-      _ -> 
+      {:ok, decoded} when is_list(decoded) ->
+        decoded
+
+      _ ->
         # Try parsing DuckDB array format
         case Regex.run(~r/^\[(.*)\]$/, value) do
-          [_, inner] -> 
+          [_, inner] ->
             inner
             |> String.split(",")
             |> Enum.map(&String.trim/1)
-            |> Enum.map(fn x -> 
+            |> Enum.map(fn x ->
               case Float.parse(x) do
                 {num, ""} -> num
                 _ -> x
               end
             end)
-          _ -> []
+
+          _ ->
+            []
         end
     end
   end
+
   defp normalize_array(_), do: []
 
   defp normalize_list(value) when is_list(value) do
     value |> Enum.reject(&(&1 in ["", nil])) |> Enum.sort()
   end
+
   defp normalize_list(value) when is_binary(value) do
     case Jason.decode(value) do
-      {:ok, decoded} when is_list(decoded) -> normalize_list(decoded)
-      _ -> 
+      {:ok, decoded} when is_list(decoded) ->
+        normalize_list(decoded)
+
+      _ ->
         # Try parsing DuckDB array format
         case Regex.run(~r/^\[(.*)\]$/, value) do
-          [_, inner] -> 
+          [_, inner] ->
             inner
             |> String.split(",")
             |> Enum.map(&String.trim/1)
@@ -526,22 +536,32 @@ defmodule Memo.ExportDuckDB do
             end)
             |> Enum.reject(&(&1 in ["", nil]))
             |> Enum.sort()
-          _ -> []
+
+          _ ->
+            []
         end
     end
   end
+
   defp normalize_list(_), do: []
 
   defp normalize_text(value) when is_binary(value) do
-    value 
+    value
     |> String.trim()
-    |> String.replace(~r/\r\n/, "\n")  # Normalize Windows line endings
-    |> String.replace(~r/\\n/, "\n")  # Convert escaped newlines
-    |> String.replace(~r/\n{3,}/, "\n\n")  # Collapse multiple blank lines
-    |> String.replace(~r/ +/, " ")  # Collapse multiple spaces
-    |> String.replace(~r/\\\|/, "|")  # Unescape pipes in markdown tables/images
-    |> String.replace(~r/\\([\\`*_{}[\]()#+\-.!])/, "\\1")  # Unescape markdown special chars
+    # Normalize Windows line endings
+    |> String.replace(~r/\r\n/, "\n")
+    # Convert escaped newlines
+    |> String.replace(~r/\\n/, "\n")
+    # Collapse multiple blank lines
+    |> String.replace(~r/\n{3,}/, "\n\n")
+    # Collapse multiple spaces
+    |> String.replace(~r/ +/, " ")
+    # Unescape pipes in markdown tables/images
+    |> String.replace(~r/\\\|/, "|")
+    # Unescape markdown special chars
+    |> String.replace(~r/\\([\\`*_{}[\]()#+\-.!])/, "\\1")
   end
+
   defp normalize_text(_), do: ""
 
   defp normalize_default(value) when is_binary(value), do: String.trim(value)
