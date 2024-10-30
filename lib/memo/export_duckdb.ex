@@ -457,15 +457,7 @@ defmodule Memo.ExportDuckDB do
       
       normalized_existing = normalize_for_comparison(existing_value, key)
       normalized_new = normalize_for_comparison(new_value, key)
-
-      if normalized_existing != normalized_new do
-        IO.puts("Change detected in #{key}:")
-        IO.puts("  Existing: #{inspect(normalized_existing)}")
-        IO.puts("  New: #{inspect(normalized_new)}")
-        true
-      else
-        false
-      end
+      normalized_existing != normalized_new
     end)
   end
 
