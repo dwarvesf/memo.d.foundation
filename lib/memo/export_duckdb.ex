@@ -451,10 +451,60 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp data_changed?(existing_data, frontmatter) do
-    Enum.any?(@allowed_frontmatter, fn {key, _} ->
-      Map.get(existing_data, key) != Map.get(frontmatter, key)
+    Enum.any?(@allowed_frontmatter, fn {key, _type} ->
+      existing_value = Map.get(existing_data, key)
+      new_value = Map.get(frontmatter, key)
+      
+      normalized_existing = normalize_for_comparison(existing_value, key)
+      normalized_new = normalize_for_comparison(new_value, key)
+      
+      normalized_existing != normalized_new
     end)
   end
+
+  defp normalize_for_comparison(nil, _key), do: nil
+  defp normalize_for_comparison(value, key) do
+    case key do
+      "embeddings_openai" -> normalize_array(value)
+      "embeddings_spr_custom" -> normalize_array(value)
+      "tags" -> normalize_list(value)
+      "authors" -> normalize_list(value)
+      "aliases" -> normalize_list(value)
+      "md_content" -> normalize_text(value)
+      _ -> normalize_default(value)
+    end
+  end
+
+  defp normalize_array(value) when is_list(value), do: value
+  defp normalize_array(value) when is_binary(value) do
+    case Jason.decode(value) do
+      {:ok, decoded} when is_list(decoded) -> decoded
+      _ -> []
+    end
+  end
+  defp normalize_array(_), do: []
+
+  defp normalize_list(value) when is_list(value) do
+    value |> Enum.reject(&(&1 in ["", nil])) |> Enum.sort()
+  end
+  defp normalize_list(value) when is_binary(value) do
+    case Jason.decode(value) do
+      {:ok, decoded} when is_list(decoded) -> normalize_list(decoded)
+      _ -> []
+    end
+  end
+  defp normalize_list(_), do: []
+
+  defp normalize_text(value) when is_binary(value) do
+    value |> String.trim() |> String.replace(~r/\s+/, " ")
+  end
+  defp normalize_text(_), do: ""
+
+  defp normalize_default(value) when is_binary(value), do: String.trim(value)
+  defp normalize_default(value) when is_boolean(value), do: value
+  defp normalize_default(value) when is_number(value), do: value
+  defp normalize_default(value) when is_map(value), do: Jason.encode!(value)
+  defp normalize_default(_), do: nil
 
   defp perform_upsert(file_path, keys, prepared_values, frontmatter) do
     delete_query = "DELETE FROM vault WHERE file_path = '#{file_path}'"
