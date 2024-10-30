@@ -514,8 +514,11 @@ defmodule Memo.ExportDuckDB do
     value 
     |> String.trim()
     |> String.replace(~r/\r\n/, "\n")  # Normalize Windows line endings
+    |> String.replace(~r/\\n/, "\n")  # Convert escaped newlines
     |> String.replace(~r/\n{3,}/, "\n\n")  # Collapse multiple blank lines
     |> String.replace(~r/ +/, " ")  # Collapse multiple spaces
+    |> String.replace(~r/\\\|/, "|")  # Unescape pipes in markdown tables/images
+    |> String.replace(~r/\\([\\`*_{}[\]()#+\-.!])/, "\\1")  # Unescape markdown special chars
   end
   defp normalize_text(_), do: ""
 
