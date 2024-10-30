@@ -366,6 +366,7 @@
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
+            AND (hide_on_sidebar IS NULL OR hide_on_sidebar = false)
         )
         SELECT
           grouped_path as grouped_path,
