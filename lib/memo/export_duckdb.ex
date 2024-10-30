@@ -494,7 +494,21 @@ defmodule Memo.ExportDuckDB do
   defp normalize_array(value) when is_binary(value) do
     case Jason.decode(value) do
       {:ok, decoded} when is_list(decoded) -> decoded
-      _ -> []
+      _ -> 
+        # Try parsing DuckDB array format
+        case Regex.run(~r/^\[(.*)\]$/, value) do
+          [_, inner] -> 
+            inner
+            |> String.split(",")
+            |> Enum.map(&String.trim/1)
+            |> Enum.map(fn x -> 
+              case Float.parse(x) do
+                {num, ""} -> num
+                _ -> x
+              end
+            end)
+          _ -> []
+        end
     end
   end
   defp normalize_array(_), do: []
@@ -505,7 +519,23 @@ defmodule Memo.ExportDuckDB do
   defp normalize_list(value) when is_binary(value) do
     case Jason.decode(value) do
       {:ok, decoded} when is_list(decoded) -> normalize_list(decoded)
-      _ -> []
+      _ -> 
+        # Try parsing DuckDB array format
+        case Regex.run(~r/^\[(.*)\]$/, value) do
+          [_, inner] -> 
+            inner
+            |> String.split(",")
+            |> Enum.map(&String.trim/1)
+            |> Enum.map(fn x ->
+              # Remove surrounding quotes if present
+              x = String.trim(x, "'")
+              x = String.trim(x, "\"")
+              x
+            end)
+            |> Enum.reject(&(&1 in ["", nil]))
+            |> Enum.sort()
+          _ -> []
+        end
     end
   end
   defp normalize_list(_), do: []
