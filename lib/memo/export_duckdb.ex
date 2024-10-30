@@ -511,7 +511,11 @@ defmodule Memo.ExportDuckDB do
   defp normalize_list(_), do: []
 
   defp normalize_text(value) when is_binary(value) do
-    value |> String.trim() |> String.replace(~r/\s+/, " ")
+    value 
+    |> String.trim()
+    |> String.replace(~r/\r\n/, "\n")  # Normalize Windows line endings
+    |> String.replace(~r/\n{3,}/, "\n\n")  # Collapse multiple blank lines
+    |> String.replace(~r/ +/, " ")  # Collapse multiple spaces
   end
   defp normalize_text(_), do: ""
 
