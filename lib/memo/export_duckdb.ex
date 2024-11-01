@@ -274,7 +274,7 @@ defmodule Memo.ExportDuckDB do
     case DuckDBUtils.execute_query(query) do
       {:ok, result} ->
         existing_data = List.first(result) || []
-        transformed_frontmatter = transform_frontmatter(md_content, normalized_frontmatter, escaped_file_path)
+        transformed_frontmatter = transform_frontmatter(md_content, normalized_frontmatter, file_path)
         maybe_update_database(existing_data, transformed_frontmatter, md_content)
 
       {:error, error_message} ->
@@ -382,8 +382,9 @@ defmodule Memo.ExportDuckDB do
   defp default_transform_value(value) when is_list(value),
     do: "'#{Jason.encode!(Enum.reject(value, &(&1 == "" or &1 == nil)))}'"
 
-  defp default_transform_value(value) when is_binary(value),
-    do: "'#{String.replace(value, "'", "''")}'"
+  defp default_transform_value(value) when is_binary(value) do
+    "'#{escape_string(value)}'"
+  end
 
   defp default_transform_value(value) when is_boolean(value),
     do: if(value, do: "true", else: "false")
@@ -423,7 +424,9 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp escape_string(value) when is_binary(value) do
-    String.replace(value, "'", "''")
+    value
+    |> String.replace("''", "'") # First normalize any existing double quotes to single
+    |> String.replace("'", "''") # Then replace single quotes with doubles
   end
 
   defp escape_multiline_text(nil), do: "NULL"
@@ -444,23 +447,44 @@ defmodule Memo.ExportDuckDB do
     keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
     frontmatter = ensure_all_columns(frontmatter)
     prepared_values = prepare_data(keys, frontmatter)
-    file_path = Map.get(frontmatter, "file_path")
+    file_path_value = Map.get(frontmatter, "file_path") |> escape_string()
 
     with {:ok, [existing_data]} <-
            DuckDBUtils.execute_query(
-             "SELECT * FROM vault WHERE file_path = '#{file_path}'"
+             "SELECT * FROM vault WHERE file_path = '#{file_path_value}'"
            ),
          true <- data_changed?(existing_data, frontmatter) do
-      perform_upsert(file_path, keys, prepared_values, frontmatter)
+      perform_upsert(keys, prepared_values)
     else
       {:ok, []} ->
-        perform_upsert(file_path, keys, prepared_values, frontmatter)
+        perform_upsert(keys, prepared_values)
 
       false ->
-        IO.puts("No changes detected for file: #{file_path}")
+        IO.puts("No changes detected for file: #{file_path_value}")
 
       {:error, error_message} ->
-        IO.puts("Failed to fetch existing entry for file: #{file_path}")
+        IO.puts("Failed to fetch existing entry for file: #{file_path_value}")
+        IO.puts("Error: #{inspect(error_message)}")
+    end
+  end
+
+  defp perform_upsert(keys, prepared_values) do
+    # Find the index of the "file_path" key
+    file_path_index = Enum.find_index(keys, &(&1 == "file_path"))
+    file_path_value = Enum.at(prepared_values, file_path_index)
+
+    delete_query = "DELETE FROM vault WHERE file_path = #{file_path_value}"
+
+    insert_query = """
+    INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})
+    """
+
+    with {:ok, _} <- DuckDBUtils.execute_query(delete_query),
+         {:ok, _} <- DuckDBUtils.execute_query(insert_query) do
+      IO.puts("Upsert succeeded for file: #{file_path_value}")
+    else
+      {:error, error_message} ->
+        IO.puts("Upsert failed for file: #{file_path_value}")
         IO.puts("Error: #{inspect(error_message)}")
     end
   end
@@ -567,23 +591,6 @@ defmodule Memo.ExportDuckDB do
     |> String.replace(~r/ +/, " ")
     |> String.replace(~r/\\\|/, "|")
     |> String.replace(~r/\\([\\`*_{}[\]()#+\-.!])/, "\\1")
-  end
-
-  defp perform_upsert(file_path, keys, prepared_values, frontmatter) do
-    delete_query = "DELETE FROM vault WHERE file_path = '#{file_path}'"
-
-    insert_query = """
-    INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})
-    """
-
-    with {:ok, _} <- DuckDBUtils.execute_query(delete_query),
-         {:ok, _} <- DuckDBUtils.execute_query(insert_query) do
-      IO.puts("Upsert succeeded for file: #{frontmatter["file_path"]}")
-    else
-      {:error, error_message} ->
-        IO.puts("Upsert failed for file: #{frontmatter["file_path"]}")
-        IO.puts("Error: #{inspect(error_message)}")
-    end
   end
 
   defp remove_old_files(paths) do
