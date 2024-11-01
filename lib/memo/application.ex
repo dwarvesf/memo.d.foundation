@@ -49,8 +49,8 @@ defmodule Memo.Application do
       iex> Memo.Application.export_duckdb("vault", "parquet", "HEAD~2")
       iex> Memo.Application.export_duckdb("vault", "parquet", :all)
   """
-  def export_duckdb(vaultpath, format, commits_back \\ "HEAD^") do
-    Memo.ExportDuckDB.run(vaultpath, format, commits_back)
+  def export_duckdb(vaultpath, format, commits_back \\ "HEAD^", pattern \\ nil) do
+    Memo.ExportDuckDB.run(vaultpath, format, commits_back, pattern)
   end
 
   @doc """
