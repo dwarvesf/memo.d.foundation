@@ -325,8 +325,8 @@ defmodule Memo.ExportDuckDB do
     add_to_database(updated_frontmatter)
   end
 
-  defp get_files_to_process(directory, commits_back, all_files) do
-    case commits_back do
+  defp get_files_to_process(directory, commits_back, all_files, pattern) do
+    files = case commits_back do
       :all ->
         all_files
 
@@ -340,6 +340,13 @@ defmodule Memo.ExportDuckDB do
         all_git_files = git_files ++ submodule_files
 
         Enum.map(all_git_files, fn file -> Path.join(directory, file) end)
+    end
+
+    if pattern do
+      pattern_files = Path.wildcard(Path.join(directory, pattern))
+      Enum.filter(files, &(&1 in pattern_files))
+    else
+      files
     end
   end
 
