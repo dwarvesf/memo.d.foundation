@@ -25,7 +25,7 @@ defmodule Memo.ExportDuckDB do
     {"hiring", "BOOLEAN"},
     {"featured", "BOOLEAN"},
     {"draft", "BOOLEAN"},
-    {"social", "VARCHAR"},
+    {"social", "TEXT[]"},
     {"github", "VARCHAR"},
     {"website", "VARCHAR"},
     {"avatar", "VARCHAR"},
@@ -33,7 +33,7 @@ defmodule Memo.ExportDuckDB do
     {"aliases", "VARCHAR[]"},
     {"icy", "DOUBLE"},
     {"bounty", "DOUBLE"},
-    {"PICs", "TEXT"},
+    {"PICs", "TEXT[]"},
     {"status", "TEXT"},
     {"function", "TEXT"},
     {"estimated_tokens", "BIGINT"},
@@ -252,22 +252,33 @@ defmodule Memo.ExportDuckDB do
   defp process_and_store(file_path, frontmatter, md_content) do
     escaped_file_path = escape_string(file_path)
 
-    query =
-      "SELECT spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
+    normalized_frontmatter = frontmatter
+    |> Map.update("tags", [], fn tags ->
+      case tags do
+        tags when is_binary(tags) ->
+          if String.contains?(tags, ",") do
+            tags
+            |> String.split(",")
+            |> Enum.map(&String.trim/1)
+            |> Enum.reject(&(&1 in ["", nil]))
+          else
+            [tags]
+          end
+        list when is_list(list) -> list
+        _ -> []
+      end
+    end)
 
-    with {:ok, result} <- DuckDBUtils.execute_query(query),
-         existing_data when is_list(result) <- List.first(result) || [],
-         transformed_frontmatter <-
-           transform_frontmatter(md_content, frontmatter, escaped_file_path),
-         :ok <- maybe_update_database(existing_data, transformed_frontmatter, md_content) do
-      :ok
-    else
+    query = "SELECT spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
+
+    case DuckDBUtils.execute_query(query) do
+      {:ok, result} ->
+        existing_data = List.first(result) || []
+        transformed_frontmatter = transform_frontmatter(md_content, normalized_frontmatter, escaped_file_path)
+        maybe_update_database(existing_data, transformed_frontmatter, md_content)
+
       {:error, error_message} ->
-        IO.puts("Failed to fetch existing entry for file: #{escaped_file_path}")
-        IO.puts("Error: #{inspect(error_message)}")
-
-      unexpected_result ->
-        IO.puts("Unexpected result: #{inspect(unexpected_result)}")
+        IO.puts("Query failed: #{inspect(error_message)}")
     end
   end
 
@@ -393,12 +404,16 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp serialize_list(list) do
-    list
-    |> Enum.reject(&(&1 in ["", nil]))
-    |> case do
+    normalized = case list do
+      val when is_binary(val) -> [val]  # Handle single string value
+      list when is_list(list) ->
+        Enum.reject(list, &(&1 in ["", nil]))
+      _ -> []
+    end
+
+    case normalized do
       [] ->
         "NULL"
-
       cleaned_list ->
         cleaned_list
         |> Enum.map(&"'#{String.replace(&1, "'", "''")}'")
@@ -430,23 +445,22 @@ defmodule Memo.ExportDuckDB do
     frontmatter = ensure_all_columns(frontmatter)
     prepared_values = prepare_data(keys, frontmatter)
     file_path = Map.get(frontmatter, "file_path")
-    escaped_file_path = escape_string(file_path)
 
     with {:ok, [existing_data]} <-
            DuckDBUtils.execute_query(
-             "SELECT * FROM vault WHERE file_path = '#{escaped_file_path}'"
+             "SELECT * FROM vault WHERE file_path = '#{file_path}'"
            ),
          true <- data_changed?(existing_data, frontmatter) do
-      perform_upsert(escaped_file_path, keys, prepared_values, frontmatter)
+      perform_upsert(file_path, keys, prepared_values, frontmatter)
     else
       {:ok, []} ->
-        perform_upsert(escaped_file_path, keys, prepared_values, frontmatter)
+        perform_upsert(file_path, keys, prepared_values, frontmatter)
 
       false ->
-        IO.puts("No changes detected for file: #{escaped_file_path}")
+        IO.puts("No changes detected for file: #{file_path}")
 
       {:error, error_message} ->
-        IO.puts("Failed to fetch existing entry for file: #{escaped_file_path}")
+        IO.puts("Failed to fetch existing entry for file: #{file_path}")
         IO.puts("Error: #{inspect(error_message)}")
     end
   end
@@ -456,94 +470,96 @@ defmodule Memo.ExportDuckDB do
       existing_value = Map.get(existing_data, key)
       new_value = Map.get(frontmatter, key)
 
+      # Normalize both values for comparison
       normalized_existing = normalize_for_comparison(existing_value, key)
       normalized_new = normalize_for_comparison(new_value, key)
-      normalized_existing != normalized_new
+
+      if normalized_existing != normalized_new do
+        # For debugging, show the normalized values
+        IO.puts("Change detected in #{key}:")
+        IO.puts("  Existing (normalized): #{inspect(normalized_existing)}")
+        IO.puts("  New (normalized): #{inspect(normalized_new)}")
+        true
+      else
+        false
+      end
     end)
   end
 
   defp normalize_for_comparison(nil, key) do
-    case key do
-      key when key in ["tags", "authors", "aliases"] -> []
-      "embeddings_openai" -> []
-      "embeddings_spr_custom" -> []
+    type = Enum.find(@allowed_frontmatter, fn {k, _} -> k == key end) |> elem(1)
+    if is_array_type?(type), do: [], else: nil
+  end
+
+  defp normalize_for_comparison(value, key) do
+    type = Enum.find(@allowed_frontmatter, fn {k, _} -> k == key end) |> elem(1)
+
+    cond do
+      is_array_type?(type) -> normalize_array_value(value)
+      String.contains?(type, "BOOLEAN") -> normalize_boolean(value)
+      String.contains?(type, ["DOUBLE", "FLOAT", "INT", "BIGINT"]) -> normalize_number(value)
+      true -> normalize_text(value)
+    end
+  end
+
+  defp normalize_boolean(value) do
+    case value do
+      val when is_boolean(val) -> val
+      "true" -> true
+      "TRUE" -> true
+      "True" -> true
+      "false" -> false
+      "FALSE" -> false
+      "False" -> false
+      _ -> false
+    end
+  end
+
+  defp normalize_number(value) do
+    case value do
+      val when is_number(val) -> val
+      val when is_binary(val) ->
+        case Float.parse(val) do
+          {num, ""} -> num
+          _ -> nil
+        end
       _ -> nil
     end
   end
 
-  defp normalize_for_comparison(value, key) do
-    case key do
-      "embeddings_openai" -> normalize_array(value)
-      "embeddings_spr_custom" -> normalize_array(value)
-      "tags" -> normalize_list(value)
-      "authors" -> normalize_list(value)
-      "aliases" -> normalize_list(value)
-      "md_content" -> normalize_text(value)
-      _ -> normalize_default(value)
-    end
-  end
-
-  defp normalize_array(value) when is_list(value), do: value
-
-  defp normalize_array(value) when is_binary(value) do
-    case Jason.decode(value) do
-      {:ok, decoded} when is_list(decoded) ->
-        decoded
-
-      _ ->
-        # Try parsing DuckDB array format
-        case Regex.run(~r/^\[(.*)\]$/, value) do
-          [_, inner] ->
-            inner
+  defp normalize_array_value(value) do
+    case value do
+      nil -> []
+      val when is_list(val) ->
+        val
+        |> Enum.reject(&(&1 in ["", nil]))
+        |> Enum.sort()
+      val when is_binary(val) ->
+        cond do
+          # Handle DuckDB array format
+          String.starts_with?(val, "[") && String.ends_with?(val, "]") ->
+            val
+            |> String.slice(1..-2//1)
             |> String.split(",")
             |> Enum.map(&String.trim/1)
             |> Enum.map(fn x ->
-              case Float.parse(x) do
-                {num, ""} -> num
-                _ -> x
-              end
-            end)
-
-          _ ->
-            []
-        end
-    end
-  end
-
-  defp normalize_array(_), do: []
-
-  defp normalize_list(value) when is_list(value) do
-    value |> Enum.reject(&(&1 in ["", nil])) |> Enum.sort()
-  end
-
-  defp normalize_list(value) when is_binary(value) do
-    case Jason.decode(value) do
-      {:ok, decoded} when is_list(decoded) ->
-        normalize_list(decoded)
-
-      _ ->
-        # Try parsing DuckDB array format
-        case Regex.run(~r/^\[(.*)\]$/, value) do
-          [_, inner] ->
-            inner
-            |> String.split(",")
-            |> Enum.map(&String.trim/1)
-            |> Enum.map(fn x ->
-              # Remove surrounding quotes if present
-              x = String.trim(x, "'")
-              x = String.trim(x, "\"")
-              x
+              x |> String.trim("'") |> String.trim("\"")
             end)
             |> Enum.reject(&(&1 in ["", nil]))
-            |> Enum.sort()
-
-          _ ->
-            []
+          # Handle comma-separated string format
+          String.contains?(val, ",") ->
+            val
+            |> String.split(",")
+            |> Enum.map(&String.trim/1)
+            |> Enum.reject(&(&1 in ["", nil]))
+          String.trim(val) == "" -> []
+          true -> [val]
         end
-    end
+      _ -> []
+    end |> Enum.sort()
   end
 
-  defp normalize_list(_), do: []
+  defp is_array_type?(type), do: String.contains?(type, "[]") or String.contains?(type, "ARRAY")
 
   defp normalize_text(value) when is_binary(value) do
     value
@@ -564,14 +580,26 @@ defmodule Memo.ExportDuckDB do
 
   defp normalize_text(_), do: ""
 
-  defp normalize_default(value) when is_binary(value), do: String.trim(value)
+  defp normalize_default(value) when is_binary(value) do
+    trimmed = String.trim(value)
+    # Unescape single quotes before comparison
+    unescaped = String.replace(trimmed, "''", "'")
+    cond do
+      unescaped in ["true", "TRUE", "True"] -> true
+      unescaped in ["false", "FALSE", "False"] -> false
+      match?({_num, ""}, Float.parse(unescaped)) ->
+        {num, _} = Float.parse(unescaped)
+        if floor(num) == num, do: floor(num), else: num
+      true -> unescaped
+    end
+  end
   defp normalize_default(value) when is_boolean(value), do: value
   defp normalize_default(value) when is_number(value), do: value
   defp normalize_default(value) when is_map(value), do: Jason.encode!(value)
   defp normalize_default(_), do: nil
 
-  defp perform_upsert(file_path, keys, prepared_values, frontmatter) do
-    delete_query = "DELETE FROM vault WHERE file_path = '#{file_path}'"
+  defp perform_upsert(escaped_file_path, keys, prepared_values, frontmatter) do
+    delete_query = "DELETE FROM vault WHERE file_path = '#{escaped_file_path}'"
 
     insert_query = """
     INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})
@@ -600,24 +628,31 @@ defmodule Memo.ExportDuckDB do
   defp handle_result({:error, _error}), do: :error
 
   defp transform_frontmatter(md_content, frontmatter, file_path) when is_map(frontmatter) do
-    if Frontmatter.has_required_fields?(frontmatter) and
-         Frontmatter.has_valid_optional_fields?(frontmatter) do
-      estimated_tokens = div(String.length(md_content), 4)
-      frontmatter = Map.put(frontmatter, "estimated_tokens", estimated_tokens)
+    estimated_tokens = div(String.length(md_content), 4)
 
-      frontmatter
-      |> Map.take(@allowed_frontmatter |> Enum.map(&elem(&1, 0)))
-      |> Map.new(fn {k, v} -> {k, normalize_value(k, v)} end)
-      |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
-    else
-      # Handle invalid frontmatter case
-      %{
-        "file_path" => file_path,
-        "md_content" => md_content,
-        "estimated_tokens" => div(String.length(md_content), 4)
-      }
-    end
+    # Get all array columns from @allowed_frontmatter
+    array_columns = @allowed_frontmatter
+    |> Enum.filter(fn {_key, type} -> is_array_type?(type) end)
+    |> Enum.map(&elem(&1, 0))
+
+    # Pre-normalize certain fields before taking, with safe access
+    normalized_frontmatter = frontmatter
+    |> Map.put("estimated_tokens", estimated_tokens)
+    |> then(fn map ->
+      Enum.reduce(array_columns, map, fn key, acc ->
+        Map.update(acc, key, [], &normalize_array_value/1)
+      end)
+    end)
+
+    allowed_keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
+
+    normalized_frontmatter
+    |> Map.take(allowed_keys)
+    |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
   end
 
-  defp normalize_value(_key, value), do: value
+  defp normalize_value(key, value) do
+    type = Enum.find(@allowed_frontmatter, fn {k, _} -> k == key end) |> elem(1)
+    if is_array_type?(type), do: normalize_array_value(value), else: value
+  end
 end
