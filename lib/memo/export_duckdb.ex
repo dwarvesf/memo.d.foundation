@@ -475,7 +475,6 @@ defmodule Memo.ExportDuckDB do
       normalized_new = normalize_for_comparison(new_value, key)
 
       if normalized_existing != normalized_new do
-        # For debugging, show the normalized values
         IO.puts("Change detected in #{key}:")
         IO.puts("  Existing (normalized): #{inspect(normalized_existing)}")
         IO.puts("  New (normalized): #{inspect(normalized_new)}")
@@ -486,11 +485,6 @@ defmodule Memo.ExportDuckDB do
     end)
   end
 
-  defp normalize_for_comparison(nil, key) do
-    type = Enum.find(@allowed_frontmatter, fn {k, _} -> k == key end) |> elem(1)
-    if is_array_type?(type), do: [], else: nil
-  end
-
   defp normalize_for_comparison(value, key) do
     type = Enum.find(@allowed_frontmatter, fn {k, _} -> k == key end) |> elem(1)
 
@@ -498,7 +492,8 @@ defmodule Memo.ExportDuckDB do
       is_array_type?(type) -> normalize_array_value(value)
       String.contains?(type, "BOOLEAN") -> normalize_boolean(value)
       String.contains?(type, ["DOUBLE", "FLOAT", "INT", "BIGINT"]) -> normalize_number(value)
-      true -> normalize_text(value)
+      String.contains?(type, ["TEXT", "VARCHAR"]) -> normalize_text(value)
+      true -> value  # Default case for other types
     end
   end
 
@@ -519,11 +514,12 @@ defmodule Memo.ExportDuckDB do
     case value do
       val when is_number(val) -> val
       val when is_binary(val) ->
-        case Float.parse(val) do
-          {num, ""} -> num
-          _ -> nil
+        cond do
+          String.match?(val, ~r/^\d+$/) -> String.to_integer(val)
+          String.match?(val, ~r/^\d+\.\d+$/) -> String.to_float(val)
+          true -> val  # Return the original string if it's not a valid number
         end
-      _ -> nil
+      _ -> value  # Return the original value if it's not a number or string
     end
   end
 
@@ -561,45 +557,20 @@ defmodule Memo.ExportDuckDB do
 
   defp is_array_type?(type), do: String.contains?(type, "[]") or String.contains?(type, "ARRAY")
 
-  defp normalize_text(value) when is_binary(value) do
+  defp normalize_text(value) do
     value
+    |> to_string()  # Ensure the value is treated as a string
     |> String.trim()
-    # Normalize Windows line endings
     |> String.replace(~r/\r\n/, "\n")
-    # Convert escaped newlines
     |> String.replace(~r/\\n/, "\n")
-    # Collapse multiple blank lines
     |> String.replace(~r/\n{3,}/, "\n\n")
-    # Collapse multiple spaces
     |> String.replace(~r/ +/, " ")
-    # Unescape pipes in markdown tables/images
     |> String.replace(~r/\\\|/, "|")
-    # Unescape markdown special chars
     |> String.replace(~r/\\([\\`*_{}[\]()#+\-.!])/, "\\1")
   end
 
-  defp normalize_text(_), do: ""
-
-  defp normalize_default(value) when is_binary(value) do
-    trimmed = String.trim(value)
-    # Unescape single quotes before comparison
-    unescaped = String.replace(trimmed, "''", "'")
-    cond do
-      unescaped in ["true", "TRUE", "True"] -> true
-      unescaped in ["false", "FALSE", "False"] -> false
-      match?({_num, ""}, Float.parse(unescaped)) ->
-        {num, _} = Float.parse(unescaped)
-        if floor(num) == num, do: floor(num), else: num
-      true -> unescaped
-    end
-  end
-  defp normalize_default(value) when is_boolean(value), do: value
-  defp normalize_default(value) when is_number(value), do: value
-  defp normalize_default(value) when is_map(value), do: Jason.encode!(value)
-  defp normalize_default(_), do: nil
-
-  defp perform_upsert(escaped_file_path, keys, prepared_values, frontmatter) do
-    delete_query = "DELETE FROM vault WHERE file_path = '#{escaped_file_path}'"
+  defp perform_upsert(file_path, keys, prepared_values, frontmatter) do
+    delete_query = "DELETE FROM vault WHERE file_path = '#{file_path}'"
 
     insert_query = """
     INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})
@@ -649,10 +620,5 @@ defmodule Memo.ExportDuckDB do
     normalized_frontmatter
     |> Map.take(allowed_keys)
     |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
-  end
-
-  defp normalize_value(key, value) do
-    type = Enum.find(@allowed_frontmatter, fn {k, _} -> k == key end) |> elem(1)
-    if is_array_type?(type), do: normalize_array_value(value), else: value
   end
 end
