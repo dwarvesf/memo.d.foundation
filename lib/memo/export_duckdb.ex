@@ -40,12 +40,13 @@ defmodule Memo.ExportDuckDB do
     {"total_tokens", "BIGINT"}
   ]
 
-  def run(vaultpath, format, commits_back) do
+  def run(vaultpath, format, commits_back, pattern \\ nil) do
     load_env()
 
     vaultpath = vaultpath || "vault"
     export_format = format || "parquet"
     commits_back = parse_commits_back(commits_back)
+    pattern = pattern || "**/*.md"
 
     ignored_patterns = FileUtils.read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
 
@@ -58,7 +59,11 @@ defmodule Memo.ExportDuckDB do
       )
 
     all_files_to_process =
-      Enum.filter(all_files, &(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
+      if pattern do
+        Path.wildcard(Path.join(vaultpath, pattern))
+      else
+        Enum.filter(all_files, &(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
+      end
 
     filtered_files = get_files_to_process(vaultpath, commits_back, all_files_to_process)
 

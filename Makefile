@@ -27,11 +27,16 @@ watch-run:
 	@mix run -e 'Memo.Application.watch_run("vault", "content")'
 
 duckdb-export:
+	@rm -f vault.duckdb
 	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", "HEAD~5")'
 
 duckdb-export-all:
 	@rm -f vault.duckdb
 	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", :all)'
+
+duckdb-export-pattern:
+	@rm -f vault.duckdb
+	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", :all, "$(pattern)")'
 
 sync-hashnode:
 	@mix run -e 'Memo.Application.sync_hashnode("vault")'
