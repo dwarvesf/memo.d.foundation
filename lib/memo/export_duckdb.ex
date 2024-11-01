@@ -59,11 +59,16 @@ defmodule Memo.ExportDuckDB do
       )
 
     all_files_to_process =
-      if pattern do
-        Path.wildcard(Path.join(vaultpath, pattern))
-      else
-        Enum.filter(all_files, &(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
-      end
+      all_files
+      |> Enum.filter(&(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
+      |> then(fn filtered ->
+        if pattern do
+          pattern_files = Path.wildcard(Path.join(vaultpath, pattern))
+          Enum.filter(filtered, &(&1 in pattern_files))
+        else
+          filtered
+        end
+      end)
 
     filtered_files = get_files_to_process(vaultpath, commits_back, all_files_to_process)
 
