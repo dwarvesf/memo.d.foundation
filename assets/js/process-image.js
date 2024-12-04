@@ -2,6 +2,7 @@ function process() {
   const images = document.querySelectorAll("main img[title]");
 
   for (const img of images) {
+    img.style.background = "#fff";
     const modifiers = img.getAttribute("title");
     const params = new URLSearchParams(modifiers);
 
