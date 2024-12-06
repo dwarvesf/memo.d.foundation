@@ -494,7 +494,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li><div>Stats</div><li class=span><span>Words:
 </span>921</li><li class=span><span>Characters:
-</span>19255</li><li class=span><span>Without Spaces:
+</span>19251</li><li class=span><span>Without Spaces:
 </span>5621</li><li class=span><span>Blocks:
 </span>33</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div><main x-data="{
@@ -582,7 +582,7 @@ Folder:
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>There are many quantization schema to reduce the size of the model. One technique is called Linear Qunatization - which is used to map the floating point values to the smaller range of values by shifting and scaling. There are 2 main modes in this technique:</p><ul><li><strong>Symmetric</strong>: The zero-point is zero — i.e. 0.0 of the floating point range is the same as 0 in the quantized range. Typically, this is more efficient to compute at runtime but may result in lower accuracy if the floating point range is unequally distributed around the floating point 0.0.</li><li><strong>Asymmetric</strong>: Zero-point that is non-zero in value. This can result in higher accuracy but may be less efficient to compute at runtime.</li></ul><p>In this part, we focus on the asymmetric mode.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
     alt: `Asymmetric mode`,
-    src: `./assets/quantization-in-llm-formula.webp`,
+    src: `assets/quantization-in-llm-formula.webp`,
     altText: `Asymmetric mode`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
@@ -631,7 +631,7 @@ Folder:
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In this part, we focus on the asymmetric mode.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
     alt: `Asymmetric mode`,
-    src: `./assets/quantization-in-llm-formula.webp`,
+    src: `assets/quantization-in-llm-formula.webp`,
     altText: `Asymmetric mode`,
     get altWidthHeight() {
       const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
