@@ -157,19 +157,19 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/b19xgirdzfbbhjjar8na47lgi1mjp26l-duckdb-1.1.1",
+              "path": "/nix/store/w6irvd280nziw7yk2k040shp378li3bd-duckdb-1.1.1",
               "default": true
             },
             {
               "name": "dev",
-              "path": "/nix/store/8krmqqzh2ifx355f4qzxygw3hgds4kn9-duckdb-1.1.1-dev"
+              "path": "/nix/store/hn9jqkvadyhvwmrxdi7rq1nczxahyp4w-duckdb-1.1.1-dev"
             },
             {
               "name": "lib",
-              "path": "/nix/store/xrbqx0fciijs7dxqk0by3c2v8z4xfdls-duckdb-1.1.1-lib"
+              "path": "/nix/store/m628h8gy2vav15rcl36v77b9v1ays0j2-duckdb-1.1.1-lib"
             }
           ],
-          "store_path": "/nix/store/b19xgirdzfbbhjjar8na47lgi1mjp26l-duckdb-1.1.1"
+          "store_path": "/nix/store/w6irvd280nziw7yk2k040shp378li3bd-duckdb-1.1.1"
         },
         "x86_64-darwin": {
           "outputs": [
@@ -179,12 +179,12 @@
               "default": true
             },
             {
-              "name": "lib",
-              "path": "/nix/store/lfc5v7wxcjclaf8hgp0jkf7gwdxbrf98-duckdb-1.1.1-lib"
-            },
-            {
               "name": "dev",
               "path": "/nix/store/rbhyg6n3nddcaq1cym19fih12jjjgw4y-duckdb-1.1.1-dev"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/lfc5v7wxcjclaf8hgp0jkf7gwdxbrf98-duckdb-1.1.1-lib"
             }
           ],
           "store_path": "/nix/store/5z23v9s2hi88af6cq3c25p9n1ps1awlz-duckdb-1.1.1"
@@ -193,19 +193,19 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/jr5pbrnjd8n5wx6ipyijxjv5mmnlfjbl-duckdb-1.1.1",
+              "path": "/nix/store/acr78ks6j9vymafba67x9q7ddbzj0ns1-duckdb-1.1.1",
               "default": true
             },
             {
               "name": "dev",
-              "path": "/nix/store/g51vfbdmmvc0iwr7460d50yz81p7r2zj-duckdb-1.1.1-dev"
+              "path": "/nix/store/glmbwdzk4p2wl4b0k6bcfqc71xdz5j2b-duckdb-1.1.1-dev"
             },
             {
               "name": "lib",
-              "path": "/nix/store/7q2dkabhdl3kc4alyq64jkn5a1wsim4d-duckdb-1.1.1-lib"
+              "path": "/nix/store/2js740w6wx9slq0afzv0wkg3njq7d0ns-duckdb-1.1.1-lib"
             }
           ],
-          "store_path": "/nix/store/jr5pbrnjd8n5wx6ipyijxjv5mmnlfjbl-duckdb-1.1.1"
+          "store_path": "/nix/store/acr78ks6j9vymafba67x9q7ddbzj0ns1-duckdb-1.1.1"
         }
       }
     },
@@ -258,8 +258,8 @@
       }
     },
     "elixir@1.17.3": {
-      "last_modified": "2024-10-18T06:41:56Z",
-      "resolved": "github:NixOS/nixpkgs/c858402c2a629211153137fb8d39be9fde4694ff#elixir",
+      "last_modified": "2024-12-13T21:43:23Z",
+      "resolved": "github:NixOS/nixpkgs/71a6392e367b08525ee710a93af2e80083b5b3e2#elixir",
       "source": "devbox-search",
       "version": "1.17.3",
       "systems": {
@@ -267,41 +267,41 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/mwsh3akiibii4vrd7nxjkrwy16kyx485-elixir-1.17.3",
+              "path": "/nix/store/dl3j72306hrl4q77613pq30l9fyl04q0-elixir-1.17.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/mwsh3akiibii4vrd7nxjkrwy16kyx485-elixir-1.17.3"
+          "store_path": "/nix/store/dl3j72306hrl4q77613pq30l9fyl04q0-elixir-1.17.3"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/h0mysk38xrrd0cwa44za8bcs28dlwjqy-elixir-1.17.3",
+              "path": "/nix/store/pz4hk0sp4zj76waaprlfdmvc4xdblz55-elixir-1.17.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/h0mysk38xrrd0cwa44za8bcs28dlwjqy-elixir-1.17.3"
+          "store_path": "/nix/store/pz4hk0sp4zj76waaprlfdmvc4xdblz55-elixir-1.17.3"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/02bbmlbqp1471bnxrhvwzpxls5p0w7m0-elixir-1.17.3",
+              "path": "/nix/store/53gdjbdwryivkjnxgpif5d1wifh6v8ia-elixir-1.17.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/02bbmlbqp1471bnxrhvwzpxls5p0w7m0-elixir-1.17.3"
+          "store_path": "/nix/store/53gdjbdwryivkjnxgpif5d1wifh6v8ia-elixir-1.17.3"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/w9a0bhqkzdvd4acsvyvv4vlds2054sa0-elixir-1.17.3",
+              "path": "/nix/store/5ymy92n325c5spm2b52jracmln301fyl-elixir-1.17.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/w9a0bhqkzdvd4acsvyvv4vlds2054sa0-elixir-1.17.3"
+          "store_path": "/nix/store/5ymy92n325c5spm2b52jracmln301fyl-elixir-1.17.3"
         }
       }
     },
@@ -372,6 +372,14 @@
               "default": true
             },
             {
+              "name": "data",
+              "path": "/nix/store/1vlci9l267cmv32476djg3b6h5djyb6b-ffmpeg-6.1.1-data"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/ysb200cm2hmccn8rndvhygyhh8zmnhcz-ffmpeg-6.1.1-dev"
+            },
+            {
               "name": "doc",
               "path": "/nix/store/0ca7zd5g399z81y129g1dg37bvvvl7sk-ffmpeg-6.1.1-doc"
             },
@@ -382,14 +390,6 @@
             {
               "name": "out",
               "path": "/nix/store/d5a385cr8z7ck4rp2kn5c1v241hawlvj-ffmpeg-6.1.1"
-            },
-            {
-              "name": "data",
-              "path": "/nix/store/1vlci9l267cmv32476djg3b6h5djyb6b-ffmpeg-6.1.1-data"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/ysb200cm2hmccn8rndvhygyhh8zmnhcz-ffmpeg-6.1.1-dev"
             }
           ],
           "store_path": "/nix/store/m03q22dyb0wlp7182hzxiigf7iqac4yh-ffmpeg-6.1.1-bin"
@@ -407,6 +407,14 @@
               "default": true
             },
             {
+              "name": "out",
+              "path": "/nix/store/cc0lzg8i6imdf57z6vx0jd2jng186xw0-ffmpeg-6.1.1"
+            },
+            {
+              "name": "data",
+              "path": "/nix/store/vf2pab5g1bfmf73q0yf1kcydyx53fk8d-ffmpeg-6.1.1-data"
+            },
+            {
               "name": "dev",
               "path": "/nix/store/vj82rvnxmmrsggrflr8ijqqrps4dc0km-ffmpeg-6.1.1-dev"
             },
@@ -417,14 +425,6 @@
             {
               "name": "lib",
               "path": "/nix/store/glsvgxj71s0s771fkr3kv3cbcazjj771-ffmpeg-6.1.1-lib"
-            },
-            {
-              "name": "out",
-              "path": "/nix/store/cc0lzg8i6imdf57z6vx0jd2jng186xw0-ffmpeg-6.1.1"
-            },
-            {
-              "name": "data",
-              "path": "/nix/store/vf2pab5g1bfmf73q0yf1kcydyx53fk8d-ffmpeg-6.1.1-data"
             }
           ],
           "store_path": "/nix/store/zy4ahmp1lrkyc4bg646isl0pr1cp6z8l-ffmpeg-6.1.1-bin"
@@ -442,14 +442,6 @@
               "default": true
             },
             {
-              "name": "data",
-              "path": "/nix/store/ws8yly0a3wkrwvmmqdfh13mvjy5g1drg-ffmpeg-6.1.1-data"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/i9y11psddip3xqn7rvfagl5a9lgji3ca-ffmpeg-6.1.1-dev"
-            },
-            {
               "name": "doc",
               "path": "/nix/store/l09k2gh8vmz30lij02x8yv896jlwm6rp-ffmpeg-6.1.1-doc"
             },
@@ -460,6 +452,14 @@
             {
               "name": "out",
               "path": "/nix/store/2sva9a7y35z778czxr9hkhq88mgy919n-ffmpeg-6.1.1"
+            },
+            {
+              "name": "data",
+              "path": "/nix/store/ws8yly0a3wkrwvmmqdfh13mvjy5g1drg-ffmpeg-6.1.1-data"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/i9y11psddip3xqn7rvfagl5a9lgji3ca-ffmpeg-6.1.1-dev"
             }
           ],
           "store_path": "/nix/store/02siac5dmjgmz1gjfwfj8zyfxnbdrp2b-ffmpeg-6.1.1-bin"
@@ -477,10 +477,6 @@
               "default": true
             },
             {
-              "name": "out",
-              "path": "/nix/store/h029z9si4ja0rx6jj6bpqryry6mw8q0m-ffmpeg-6.1.1"
-            },
-            {
               "name": "data",
               "path": "/nix/store/nb4n2mzl7r2552n2940bpxm5sm89wzyl-ffmpeg-6.1.1-data"
             },
@@ -495,6 +491,10 @@
             {
               "name": "lib",
               "path": "/nix/store/p0iahx9iimsfq2q7nbzvsklmnfacwmv2-ffmpeg-6.1.1-lib"
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/h029z9si4ja0rx6jj6bpqryry6mw8q0m-ffmpeg-6.1.1"
             }
           ],
           "store_path": "/nix/store/h9a1giw2dz7yjlwxi6g94kv48227nn34-ffmpeg-6.1.1-bin"
@@ -761,12 +761,12 @@
               "default": true
             },
             {
-              "name": "debug",
-              "path": "/nix/store/i1nl22ni2q75z0k382rppf1jn9yd3l8w-git-2.44.0-debug"
-            },
-            {
               "name": "doc",
               "path": "/nix/store/ayc8cya0p0czymwikfn1ig5f8ppyh4w9-git-2.44.0-doc"
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/i1nl22ni2q75z0k382rppf1jn9yd3l8w-git-2.44.0-debug"
             }
           ],
           "store_path": "/nix/store/3ddhbidq5vgc0njy73q532x9j2zvfz1l-git-2.44.0"
@@ -950,8 +950,8 @@
       }
     },
     "inotify-tools@4.23.9.0": {
-      "last_modified": "2024-10-13T23:44:06Z",
-      "resolved": "github:NixOS/nixpkgs/d4f247e89f6e10120f911e2e2d2254a050d0f732#inotify-tools",
+      "last_modified": "2024-12-03T12:40:06Z",
+      "resolved": "github:NixOS/nixpkgs/566e53c2ad750c84f6d31f9ccb9d00f823165550#inotify-tools",
       "source": "devbox-search",
       "version": "4.23.9.0",
       "systems": {
@@ -959,21 +959,21 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/5ra75kh3civkkbpq42isn60y5f4xlkav-inotify-tools-4.23.9.0",
+              "path": "/nix/store/gxw2s9awz3ygzglndrzgk76wjf67h6ii-inotify-tools-4.23.9.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/5ra75kh3civkkbpq42isn60y5f4xlkav-inotify-tools-4.23.9.0"
+          "store_path": "/nix/store/gxw2s9awz3ygzglndrzgk76wjf67h6ii-inotify-tools-4.23.9.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/hprlaj9lypb8lfmmm3n011knv35m94lm-inotify-tools-4.23.9.0",
+              "path": "/nix/store/vkam4cgyzvym93fzzg1641capm6b0424-inotify-tools-4.23.9.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/hprlaj9lypb8lfmmm3n011knv35m94lm-inotify-tools-4.23.9.0"
+          "store_path": "/nix/store/vkam4cgyzvym93fzzg1641capm6b0424-inotify-tools-4.23.9.0"
         }
       }
     },

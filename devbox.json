@@ -24,14 +24,14 @@
     "darwin.apple_sdk.frameworks.CoreFoundation": {
       "platforms": ["x86_64-darwin", "aarch64-darwin"]
     },
-    "git":         "2.44.0",
-    "duckdb":      "1.1.1",
-    "hugo":        "0.132.1",
-    "elixir":      "1.17.3",
-    "elixir-ls":   "0.21.3",
-    "imagemagick": "7.1.1-32",
-    "clang":       "17.0.6",
-    "erlang":      "25.3.2.12"
+    "git":                  "2.44.0",
+    "duckdb":               "1.1.1",
+    "hugo":                 "0.132.1",
+    "elixir":               "1.17.3",
+    "elixir-ls":            "0.21.3",
+    "imagemagick":          "7.1.1-32",
+    "clang":                "17.0.6",
+    "erlang":               "25.3.2.12",
   },
   "shell": {
     "init_hook": [
