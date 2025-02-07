@@ -26,7 +26,6 @@
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
       currentUrlParts.pop();
-      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -82,9 +81,9 @@
         return this.src;
       }
 
+      console.log(this.currentUrl);
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
       currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
