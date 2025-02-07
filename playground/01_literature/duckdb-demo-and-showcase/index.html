@@ -360,6 +360,7 @@
             END as grouped_path
           FROM vault
           WHERE file_path NOT LIKE '%_radar/%'
+            AND file_path NOT LIKE '%archived/%'
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
