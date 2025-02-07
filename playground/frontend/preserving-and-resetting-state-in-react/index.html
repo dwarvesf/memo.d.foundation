@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>637</li><li class=span><span>Characters:
-</span>11519</li><li class=span><span>Without Spaces:
+</span>11552</li><li class=span><span>Without Spaces:
 </span>3120</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data='{
@@ -576,8 +576,7 @@ function Counter(name) {
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -661,8 +660,7 @@ return (
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -720,8 +718,7 @@ return (
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

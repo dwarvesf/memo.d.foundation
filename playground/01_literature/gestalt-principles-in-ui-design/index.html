@@ -494,7 +494,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1281</li><li class=span><span>Characters:
-</span>20587</li><li class=span><span>Without Spaces:
+</span>20664</li><li class=span><span>Without Spaces:
 </span>6237</li><li class=span><span>Blocks:
 </span>27</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div><main x-data="{
@@ -546,8 +546,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -596,8 +595,7 @@ If you are new to UI Design, there would be sometimes you are quite confused abo
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -646,8 +644,7 @@ The fact that the movement direction of elements shapes our perception of groupi
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -696,8 +693,7 @@ Similarity Principle is the answer to why the button system of every application
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -746,8 +742,7 @@ The presence of the Closure Principle in UI design is shown through the iconogra
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -796,8 +791,7 @@ The continuation principle is best described in the UI field by the alignment of
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -846,8 +840,7 @@ There are a lot of ways to create the Figure/ Ground effect, for example, semi-t
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

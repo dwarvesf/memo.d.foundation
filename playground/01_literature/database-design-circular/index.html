@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>923</li><li class=span><span>Characters:
-</span>12788</li><li class=span><span>Without Spaces:
+</span>12821</li><li class=span><span>Without Spaces:
 </span>5474</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div><main x-data='{
@@ -547,8 +547,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -597,8 +596,7 @@ A more complex example of circular reference is simple task management system. T
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -646,8 +644,7 @@ A more complex example of circular reference is simple task management system. T
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

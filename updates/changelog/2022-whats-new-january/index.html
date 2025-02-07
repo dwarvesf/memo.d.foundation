@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>updates/changelog</li><div>Stats</div><li class=span><span>Words:
 </span>616</li><li class=span><span>Characters:
-</span>6488</li><li class=span><span>Without Spaces:
+</span>6499</li><li class=span><span>Without Spaces:
 </span>2901</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -551,8 +551,7 @@ A small gift to thank you for being with us for the past year. May we all enter 
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

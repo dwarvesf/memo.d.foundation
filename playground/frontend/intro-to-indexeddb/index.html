@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>898</li><li class=span><span>Characters:
-</span>12240</li><li class=span><span>Without Spaces:
+</span>12262</li><li class=span><span>Without Spaces:
 </span>4916</li><li class=span><span>Blocks:
 </span>23</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div><main x-data='{
@@ -553,8 +553,7 @@ openRequest.onsuccess = () =&gt; {
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -624,8 +623,7 @@ openRequest.onupgradeneeded = () =&gt; {
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

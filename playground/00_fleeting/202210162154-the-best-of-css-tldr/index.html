@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/00_fleeting</li><div>Stats</div><li class=span><span>Words:
 </span>303</li><li class=span><span>Characters:
-</span>7345</li><li class=span><span>Without Spaces:
+</span>7378</li><li class=span><span>Without Spaces:
 </span>1530</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div><main x-data="{
@@ -553,8 +553,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -603,8 +602,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -653,8 +651,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>updates/forward-engineering</li><div>Stats</div><li class=span><span>Words:
 </span>477</li><li class=span><span>Characters:
-</span>5305</li><li class=span><span>Without Spaces:
+</span>5316</li><li class=span><span>Without Spaces:
 </span>2463</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div><main x-data='{
@@ -549,8 +549,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

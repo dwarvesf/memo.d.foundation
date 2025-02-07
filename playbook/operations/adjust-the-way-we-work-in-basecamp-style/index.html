@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>playbook/operations</li><div>Stats</div><li class=span><span>Words:
 </span>932</li><li class=span><span>Characters:
-</span>10533</li><li class=span><span>Without Spaces:
+</span>10555</li><li class=span><span>Without Spaces:
 </span>4661</li><li class=span><span>Blocks:
 </span>26</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data='{
@@ -549,8 +549,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -599,8 +598,7 @@ For Team & Project, it&rsquo;s a place for topic research output, learning resou
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

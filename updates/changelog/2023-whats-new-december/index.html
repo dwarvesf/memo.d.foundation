@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>updates/changelog</li><div>Stats</div><li class=span><span>Words:
 </span>688</li><li class=span><span>Characters:
-</span>9811</li><li class=span><span>Without Spaces:
+</span>9833</li><li class=span><span>Without Spaces:
 </span>3601</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div><main x-data='{
@@ -548,8 +548,7 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -597,8 +596,7 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

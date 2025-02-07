@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/ai</li><div>Stats</div><li class=span><span>Words:
 </span>565</li><li class=span><span>Characters:
-</span>6604</li><li class=span><span>Without Spaces:
+</span>6615</li><li class=span><span>Without Spaces:
 </span>3169</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div><main x-data='{
@@ -562,8 +562,7 @@ That is the end of the prompt. What is your decision? Please answer with yes or 
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

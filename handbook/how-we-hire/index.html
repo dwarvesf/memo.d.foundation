@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>handbook</li><div>Stats</div><li class=span><span>Words:
 </span>663</li><li class=span><span>Characters:
-</span>6530</li><li class=span><span>Without Spaces:
+</span>6541</li><li class=span><span>Without Spaces:
 </span>3309</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div><main x-data='{
@@ -549,8 +549,7 @@ You want someone who’s capable of building something from scratch and seeing i
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/frontend</li><div>Stats</div><li class=span><span>Words:
 </span>253</li><li class=span><span>Characters:
-</span>8323</li><li class=span><span>Without Spaces:
+</span>8356</li><li class=span><span>Without Spaces:
 </span>1611</li><li class=span><span>Blocks:
 </span>12</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data='{
@@ -547,8 +547,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -607,8 +606,7 @@ const color = getComputedStyle(someOtherBox).color
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -676,8 +674,7 @@ function resizeAllParagraphsToMatchBoxWidth(paragraphs, box) {
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

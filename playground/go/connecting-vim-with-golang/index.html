@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/go</li><div>Stats</div><li class=span><span>Words:
 </span>1359</li><li class=span><span>Characters:
-</span>15965</li><li class=span><span>Without Spaces:
+</span>15998</li><li class=span><span>Without Spaces:
 </span>6532</li><li class=span><span>Blocks:
 </span>36</li><li class=span><span>Est reading Time:
 </span>19m 0s</li></ul></div></div></div></div><main x-data="{
@@ -589,8 +589,7 @@ filetype plugin indent on    &quot; required
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -654,8 +653,7 @@ auto - pairs
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -703,8 +701,7 @@ auto - pairs
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

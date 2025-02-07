@@ -494,7 +494,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>3420</li><li class=span><span>Characters:
-</span>27309</li><li class=span><span>Without Spaces:
+</span>27331</li><li class=span><span>Without Spaces:
 </span>18056</li><li class=span><span>Blocks:
 </span>54</li><li class=span><span>Est reading Time:
 </span>17m 0s</li></ul></div></div></div></div><main x-data="{
@@ -546,8 +546,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -595,8 +594,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

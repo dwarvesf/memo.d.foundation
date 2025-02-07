@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>playground/market-report</li><div>Stats</div><li class=span><span>Words:
 </span>947</li><li class=span><span>Characters:
-</span>12924</li><li class=span><span>Without Spaces:
+</span>12946</li><li class=span><span>Without Spaces:
 </span>5563</li><li class=span><span>Blocks:
 </span>21</li><li class=span><span>Est reading Time:
 </span>16m 0s</li></ul></div></div></div></div><main x-data='{
@@ -549,8 +549,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -598,8 +597,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

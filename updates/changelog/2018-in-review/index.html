@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>updates/changelog</li><div>Stats</div><li class=span><span>Words:
 </span>118</li><li class=span><span>Characters:
-</span>2466</li><li class=span><span>Without Spaces:
+</span>2477</li><li class=span><span>Without Spaces:
 </span>543</li><li class=span><span>Blocks:
 </span>7</li><li class=span><span>Est reading Time:
 </span>0m 0s</li></ul></div></div></div></div><main x-data='{
@@ -551,8 +551,7 @@ We moved to new office. We welcomed the new dwarves to join us.</p><p>We scaled 
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>careers/additional-info</li><div>Stats</div><li class=span><span>Words:
 </span>1848</li><li class=span><span>Characters:
-</span>13499</li><li class=span><span>Without Spaces:
+</span>13510</li><li class=span><span>Without Spaces:
 </span>8551</li><li class=span><span>Blocks:
 </span>41</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div><main x-data='{
@@ -548,8 +548,7 @@ In particular, if you have a grievance with a leader and feel unable to raise it
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

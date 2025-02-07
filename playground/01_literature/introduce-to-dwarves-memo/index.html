@@ -494,7 +494,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>397</li><li class=span><span>Characters:
-</span>6401</li><li class=span><span>Without Spaces:
+</span>6423</li><li class=span><span>Without Spaces:
 </span>1866</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>17m 0s</li></ul></div></div></div></div><main x-data="{
@@ -547,8 +547,7 @@ The purpose of every story is to bring the audience a little closer to the autho
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -596,8 +595,7 @@ The purpose of every story is to bring the audience a little closer to the autho
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

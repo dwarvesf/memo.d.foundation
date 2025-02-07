@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>careers/life</li><div>Stats</div><li class=span><span>Words:
 </span>1018</li><li class=span><span>Characters:
-</span>8431</li><li class=span><span>Without Spaces:
+</span>8442</li><li class=span><span>Without Spaces:
 </span>4878</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data='{
@@ -550,8 +550,7 @@ If I take that offer, my life will become a 9-to-5 circle. Everything is settled
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

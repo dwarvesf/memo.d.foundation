@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playbook/operations</li><div>Stats</div><li class=span><span>Words:
 </span>283</li><li class=span><span>Characters:
-</span>3485</li><li class=span><span>Without Spaces:
+</span>3496</li><li class=span><span>Without Spaces:
 </span>1402</li><li class=span><span>Blocks:
 </span>5</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div><main x-data='{
@@ -547,8 +547,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

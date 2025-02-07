@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li><div>Stats</div><li class=span><span>Words:
 </span>823</li><li class=span><span>Characters:
-</span>10239</li><li class=span><span>Without Spaces:
+</span>10261</li><li class=span><span>Without Spaces:
 </span>4688</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div><main x-data="{
@@ -554,8 +554,7 @@ Score:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -612,8 +611,7 @@ Explain your reasoning step by step then answer (yes or no) the question:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

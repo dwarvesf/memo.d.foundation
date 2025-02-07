@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1566</li><li class=span><span>Characters:
-</span>14469</li><li class=span><span>Without Spaces:
+</span>14491</li><li class=span><span>Without Spaces:
 </span>7585</li><li class=span><span>Blocks:
 </span>29</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div><main x-data="{
@@ -547,8 +547,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -597,8 +596,7 @@ Suppose an investor decides to invest $3,000 over 6 months by buying $1,000 of a
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

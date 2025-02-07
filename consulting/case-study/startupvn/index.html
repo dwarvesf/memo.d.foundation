@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>consulting/case-study</li><div>Stats</div><li class=span><span>Words:
 </span>188</li><li class=span><span>Characters:
-</span>3627</li><li class=span><span>Without Spaces:
+</span>3638</li><li class=span><span>Without Spaces:
 </span>1049</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data='{
@@ -549,8 +549,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

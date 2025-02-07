@@ -495,7 +495,7 @@ Tags:
 Folder:
 </span>playground/00_fleeting</li><div>Stats</div><li class=span><span>Words:
 </span>75</li><li class=span><span>Characters:
-</span>2500</li><li class=span><span>Without Spaces:
+</span>2511</li><li class=span><span>Without Spaces:
 </span>445</li><li class=span><span>Blocks:
 </span>4</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div><main x-data="{
@@ -549,8 +549,7 @@ use for:</p><ul><li>Protect servers</li><li>load balancing</li><li>cache static 
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

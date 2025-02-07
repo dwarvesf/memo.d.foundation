@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>playbook/operations/email-template</li><div>Stats</div><li class=span><span>Words:
 </span>176</li><li class=span><span>Characters:
-</span>3138</li><li class=span><span>Without Spaces:
+</span>3149</li><li class=span><span>Without Spaces:
 </span>870</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data='{
@@ -552,8 +552,7 @@ We do hope this change brings better fit the mutual requirements.</p></li></ul><
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

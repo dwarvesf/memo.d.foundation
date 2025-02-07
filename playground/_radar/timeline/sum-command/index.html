@@ -492,7 +492,7 @@ Author:</span></li><div>Location</div><li><span><svg viewBox="0 0 24 24"><path f
 Folder:
 </span>playground/_radar/timeline</li><div>Stats</div><li class=span><span>Words:
 </span>0</li><li class=span><span>Characters:
-</span>1743</li><li class=span><span>Without Spaces:
+</span>1754</li><li class=span><span>Without Spaces:
 </span>0</li><li class=span><span>Blocks:
 </span>1</li><li class=span><span>Est reading Time:
 </span>0m 0s</li></ul></div></div></div></div><main x-data="{
@@ -544,8 +544,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

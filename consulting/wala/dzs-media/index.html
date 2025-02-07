@@ -497,7 +497,7 @@ Tags:
 Folder:
 </span>consulting/wala</li><div>Stats</div><li class=span><span>Words:
 </span>521</li><li class=span><span>Characters:
-</span>4913</li><li class=span><span>Without Spaces:
+</span>4924</li><li class=span><span>Without Spaces:
 </span>2534</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div><main x-data='{
@@ -550,8 +550,7 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
