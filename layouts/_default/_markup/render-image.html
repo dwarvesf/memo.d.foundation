@@ -25,8 +25,7 @@
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -84,8 +83,7 @@
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
+      currentUrlParts = currentUrlParts.filter(part => part !== '');
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
