@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -494,7 +495,7 @@ Tags:
 Folder:
 </span>playbook/design</li><div>Stats</div><li class=span><span>Words:
 </span>124</li><li class=span><span>Characters:
-</span>8377</li><li class=span><span>Without Spaces:
+</span>8333</li><li class=span><span>Without Spaces:
 </span>711</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data="{
@@ -547,7 +548,8 @@ Often, a wireframe has 3 core goals:</p><ul><li>To show the content and function
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -595,7 +597,8 @@ Often, a wireframe has 3 core goals:</p><ul><li>To show the content and function
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -643,7 +646,8 @@ Often, a wireframe has 3 core goals:</p><ul><li>To show the content and function
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -691,7 +695,8 @@ Often, a wireframe has 3 core goals:</p><ul><li>To show the content and function
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -494,7 +495,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>721</li><li class=span><span>Characters:
-</span>47395</li><li class=span><span>Without Spaces:
+</span>47131</li><li class=span><span>Without Spaces:
 </span>3243</li><li class=span><span>Blocks:
 </span>58</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div><main x-data="{
@@ -550,7 +551,8 @@ the Act function required center point, starting angle and ending angle, we need
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -598,7 +600,8 @@ the Act function required center point, starting angle and ending angle, we need
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -647,7 +650,8 @@ This tick shape simple draw a line front top center down to 5 points</p><p><scri
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -695,7 +699,8 @@ This tick shape simple draw a line front top center down to 5 points</p><p><scri
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -745,7 +750,8 @@ For readable and maintainability, I create new view named Ticks for it.</p><p><s
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -793,7 +799,8 @@ For readable and maintainability, I create new view named Ticks for it.</p><p><s
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -842,7 +849,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -890,7 +898,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -938,7 +947,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -986,7 +996,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1034,7 +1045,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1082,7 +1094,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1130,7 +1143,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1178,7 +1192,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1226,7 +1241,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1274,7 +1290,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1322,7 +1339,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1370,7 +1388,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1418,7 +1437,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1466,7 +1486,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1514,7 +1535,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1562,7 +1584,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1610,7 +1633,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1658,7 +1682,8 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><script src=/j
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

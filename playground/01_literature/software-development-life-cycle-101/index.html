@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -494,7 +495,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1197</li><li class=span><span>Characters:
-</span>25367</li><li class=span><span>Without Spaces:
+</span>25268</li><li class=span><span>Without Spaces:
 </span>6403</li><li class=span><span>Blocks:
 </span>47</li><li class=span><span>Est reading Time:
 </span>21m 0s</li></ul></div></div></div></div><main x-data="{
@@ -546,7 +547,8 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -597,7 +599,8 @@ SDLC provides a well-structured flow of phases that help an organization to quic
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -646,7 +649,8 @@ Business-oriented is a key in this stage. There are plenty of technique being us
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -694,7 +698,8 @@ Business-oriented is a key in this stage. There are plenty of technique being us
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -743,7 +748,8 @@ In other words, the team should determine the feasibility of the project and how
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -791,7 +797,8 @@ In other words, the team should determine the feasibility of the project and how
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -839,7 +846,8 @@ In other words, the team should determine the feasibility of the project and how
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -887,7 +895,8 @@ In other words, the team should determine the feasibility of the project and how
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -936,7 +945,8 @@ Provide stakeholders information about the <strong>project quality</strong> then
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

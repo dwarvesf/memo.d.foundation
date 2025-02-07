@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -495,7 +496,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1913</li><li class=span><span>Characters:
-</span>33948</li><li class=span><span>Without Spaces:
+</span>33838</li><li class=span><span>Without Spaces:
 </span>11308</li><li class=span><span>Blocks:
 </span>32</li><li class=span><span>Est reading Time:
 </span>18m 0s</li></ul></div></div></div></div><main x-data='{
@@ -547,7 +548,8 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -595,7 +597,8 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -643,7 +646,8 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -691,7 +695,8 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -840,7 +845,8 @@ async function hybridSearch(
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -888,7 +894,8 @@ async function hybridSearch(
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -936,7 +943,8 @@ async function hybridSearch(
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -984,7 +992,8 @@ async function hybridSearch(
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1032,7 +1041,8 @@ async function hybridSearch(
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -1080,7 +1090,8 @@ async function hybridSearch(
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

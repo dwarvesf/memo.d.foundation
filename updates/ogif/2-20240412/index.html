@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -495,7 +496,7 @@ Tags:
 Folder:
 </span>updates/ogif</li><div>Stats</div><li class=span><span>Words:
 </span>154</li><li class=span><span>Characters:
-</span>8460</li><li class=span><span>Without Spaces:
+</span>8416</li><li class=span><span>Without Spaces:
 </span>883</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data='{
@@ -549,7 +550,8 @@ Recorded Apr 12, 2024</p><h2 id=summary>Summary <a href=#summary></a></h2><ol><l
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -598,7 +600,8 @@ Recorded Apr 12, 2024</p><h2 id=summary>Summary <a href=#summary></a></h2><ol><l
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -647,7 +650,8 @@ Recorded Apr 12, 2024</p><h2 id=summary>Summary <a href=#summary></a></h2><ol><l
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -696,7 +700,8 @@ Recorded Apr 12, 2024</p><h2 id=summary>Summary <a href=#summary></a></h2><ol><l
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

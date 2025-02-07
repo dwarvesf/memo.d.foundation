@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -495,7 +496,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li><div>Stats</div><li class=span><span>Words:
 </span>907</li><li class=span><span>Characters:
-</span>13277</li><li class=span><span>Without Spaces:
+</span>13244</li><li class=span><span>Without Spaces:
 </span>5284</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div><main x-data='{
@@ -547,7 +548,8 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -617,7 +619,8 @@ image_sum_prompt = &quot;&quot;&quot;You are an assistant tasked with summarizin
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -695,7 +698,8 @@ image_sum_prompt = &quot;&quot;&quot;You are an assistant tasked with summarizin
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

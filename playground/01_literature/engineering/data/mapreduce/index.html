@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -495,7 +496,7 @@ Tags:
 Folder:
 </span>playground/01_literature/engineering/data</li><div>Stats</div><li class=span><span>Words:
 </span>1035</li><li class=span><span>Characters:
-</span>11457</li><li class=span><span>Without Spaces:
+</span>11424</li><li class=span><span>Without Spaces:
 </span>4504</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div><main x-data='{
@@ -547,7 +548,8 @@ Folder:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -598,7 +600,8 @@ Therefore, four months in with this strategy, we&rsquo;re able to calculate the 
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
@@ -647,7 +650,8 @@ With this model, again, we were able to complete the census calculation in two m
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

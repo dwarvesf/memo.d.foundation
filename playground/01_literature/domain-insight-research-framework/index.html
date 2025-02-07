@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -494,7 +495,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li><div>Stats</div><li class=span><span>Words:
 </span>1471</li><li class=span><span>Characters:
-</span>13302</li><li class=span><span>Without Spaces:
+</span>13291</li><li class=span><span>Without Spaces:
 </span>7873</li><li class=span><span>Blocks:
 </span>28</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div><main x-data="{
@@ -547,7 +548,8 @@ There are different ways to conduct market research and collect data. Still, we 
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;

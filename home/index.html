@@ -355,6 +355,7 @@
             AND title IS NOT NULL
             AND description IS NOT NULL
             AND (draft != true OR draft IS NULL)
+            AND (hiring != false OR hiring IS NULL)
             AND (status IS NULL OR (status IS NOT NULL AND status = 'Open'))
             AND (authors IS NULL OR typeof(authors) = 'VARCHAR[]')
             AND (tags IS NULL OR typeof(tags) = 'VARCHAR[]')
@@ -496,7 +497,7 @@ Tags:
 </span><a class=memo-tag href=/tags/dwarves>dwarves</a><a class=memo-tag href=/tags/work>work</a><a class=memo-tag href=/tags/home>home</a></li><div>Location</div><li><span><svg viewBox="0 0 24 24"><path fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 12.75V12A2.25 2.25.0 014.5 9.75h15A2.25 2.25.0 0121.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5.0 00-1.061-.44H4.5A2.25 2.25.0 002.25 6v12a2.25 2.25.0 002.25 2.25h15A2.25 2.25.0 0021.75 18V9A2.25 2.25.0 0019.5 6.75h-5.379a1.5 1.5.0 01-1.06-.44"/></svg>
 Folder:</span></li><div>Stats</div><li class=span><span>Words:
 </span>341</li><li class=span><span>Characters:
-</span>7461</li><li class=span><span>Without Spaces:
+</span>7450</li><li class=span><span>Without Spaces:
 </span>1843</li><li class=span><span>Blocks:
 </span>5</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div><main x-data='{
@@ -548,7 +549,8 @@ Folder:</span></li><div>Stats</div><li class=span><span>Words:
 
       let currentUrlParts = this.currentUrl.split('/');
       currentUrlParts.shift();
-      currentUrlParts = currentUrlParts.filter(part => part !== '');
+      currentUrlParts.pop();
+      currentUrlParts.pop();
       const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
 
       let path = this.src;
