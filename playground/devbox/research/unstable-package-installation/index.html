@@ -496,8 +496,8 @@ Tags:
 Folder:
 </span>playground/devbox/research</li><div>Stats</div><li class=span><span>Words:
 </span>232</li><li class=span><span>Characters:
-</span>1738</li><li class=span><span>Without Spaces:
-</span>1233</li><li class=span><span>Blocks:
+</span>1746</li><li class=span><span>Without Spaces:
+</span>1237</li><li class=span><span>Blocks:
 </span>8</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div><main x-data='{
       currentUrl: `/playground/devbox/research/unstable-package-installation/`,
@@ -532,8 +532,8 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Unstable Package Installation in Docker</div><div class=tags-index style=display:none>tags: docker, devbox, nix</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Unstable Package Installation in Docker</h1></div><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p>For example, lets suppose that we have following <code>Dockerfile</code>.</p><pre><code class=language-Dockerfile>FROM ubuntu:20.04
+    }'><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Unstable Package Installation in Docker</div><div class=tags-index style=display:none>tags: docker, devbox, nix</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Unstable Package Installation in Docker</h1></div><img class=yggdrasil-tree src=https://memo.d.foundation/img/footer-bg.svg><p>For example, let&rsquo;s suppose that we have the following <code>Dockerfile</code>.</p><pre><code class=language-Dockerfile>FROM ubuntu:20.04
 RUN apt-get update &amp;&amp; apt-get install -y python3
-</code></pre><p>Imagine that the first time you build your Docker image, the version of Python is 3.8.1. However, today when the latest version of Python is 3.9.1, you want to build Docker image again. Transparently, your two images are different no matter that you are using the same Dockerfile. It means you can’t reproduce the same environment where your application is running.</p><p>If you are familiar with Docker, it is more than one solution pops into your mind. The easiest way is to specify a specific version to install like the following.</p><pre><code class=language-Dockerfile>FROM ubuntu:20.04
+</code></pre><p>Imagine that the first time you build your Docker image, the version of Python is 3.8.1. However, today when the latest version of Python is 3.9.1, you want to build Docker image again. Transparently, your two images are different no matter that you are using the same Dockerfile. It means you can’t reproduce the same environment in which your application is running.</p><p>If you are familiar with Docker, more than one solution pops into your mind. The easiest way is to specify a specific version to install like the following.</p><pre><code class=language-Dockerfile>FROM ubuntu:20.04
 RUN apt-get update &amp;&amp; apt-get install -y python3=3.8.10-0ubuntu1~20.04.1
 </code></pre><p>In this way, the instability can be decreased but can not resolve the issue completely. The reasons can be listed as follows.</p><ul><li><p>Indirect dependencies: even though you specify the version for main packages, these dependencies that you can’t control, can be changed over time.</p></li><li><p>Packages are not supported: Ubuntu repositories can be changed. So your build will fail once any required packages/versions are removed from repositories.</p></li><li><p>Ubuntu mirrors aka copies of main Ubuntu repositories can be changed also. Once the packages that you need, are not available, the building will fail.</p></li></ul><p>We have some keywords related to better solutions that I only list here for reference.</p><ul><li>Local cache</li><li>Private registry</li><li>Multistage builds</li></ul></main></div><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js></script></body></html>
