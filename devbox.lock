@@ -259,6 +259,7 @@
     },
     "elixir@1.17.3": {
       "last_modified": "2024-12-13T21:43:23Z",
+      "plugin_version": "0.0.1",
       "resolved": "github:NixOS/nixpkgs/71a6392e367b08525ee710a93af2e80083b5b3e2#elixir",
       "source": "devbox-search",
       "version": "1.17.3",
@@ -773,6 +774,9 @@
         }
       }
     },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "resolved": "github:NixOS/nixpkgs/3a05eebede89661660945da1f151959900903b6a?lastModified=1740547748&narHash=sha256-Ly2fBL1LscV%2BKyCqPRufUBuiw%2BzmWrlJzpWOWbahplg%3D"
+    },
     "go@1.22.3": {
       "last_modified": "2024-06-12T20:55:33Z",
       "resolved": "github:NixOS/nixpkgs/a9858885e197f984d92d7fe64e9fff6b2e488d40#go",
@@ -974,21 +978,6 @@
             }
           ],
           "store_path": "/nix/store/vkam4cgyzvym93fzzg1641capm6b0424-inotify-tools-4.23.9.0"
-        }
-      }
-    },
-    "nixpkgs#stdenv.cc.cc.lib": {
-      "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#nixpkgs#stdenv.cc.cc.lib",
-      "source": "nixpkg",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "lib",
-              "path": "/nix/store/sfm0x3frvzamcj8k5zgzjjv3b65b48c4-clang-16.0.6-lib",
-              "default": true
-            }
-          ]
         }
       }
     },
