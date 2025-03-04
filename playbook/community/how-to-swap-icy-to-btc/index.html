@@ -496,7 +496,7 @@ Tags:
 Folder:
 </span>playbook/community</li><div>Stats</div><li class=span><span>Words:
 </span>378</li><li class=span><span>Characters:
-</span>10179</li><li class=span><span>Without Spaces:
+</span>8468</li><li class=span><span>Without Spaces:
 </span>1802</li><li class=span><span>Blocks:
 </span>2</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div><main x-data='{
@@ -582,57 +582,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li><li>Ensure your wallet is switched to the <strong>Base network</strong>, since ICY operates on this network.
-<script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
-    title: ``,
-    alt: ``,
-    src: `assets/how-to-swap-icy-to-btc-2.png`,
-    altText: ``,
-    get altWidthHeight() {
-      const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
-      return this.altText.match(widthHeightRegex) ?? [];
-    },
-    get relativeSrc() {
-      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
-        return this.src;
-      }
-
-      let currentUrlParts = this.currentUrl.split('/');
-      currentUrlParts.shift();
-      currentUrlParts.pop();
-      currentUrlParts.pop();
-      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
-
-      let path = this.src;
-      if (path.match(/^assets/)) {
-         path = `${relativeUrl}/${path}`;
-      } else {
-         path = `/${path}`;
-      }
-
-      // Split path and slugify each component
-      const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
-        
-        // Handle the filename separately to preserve extension
-        if (part.includes('.')) {
-          const [name, ext] = part.split('.');
-          return `${this.slugify(name)}.${ext}`;
-        }
-        return this.slugify(part);
-      });
-
-      return pathParts.join('/').toLowerCase();
-    },
-    slugify(text) {
-      return text
-        .toLowerCase()
-        .replace(/[^a-z0-9\s_-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim('-');
-    }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ol><h2 id=step-2-swap-icy-to-btc>Step 2: Swap ICY to BTC <a href=#step-2-swap-icy-to-btc></a></h2><ol><li>After connecting your wallet, choose <strong>ICY</strong> as the token you want to swap from and <strong>BTC</strong> as the token you want to receive.</li><li>Enter the amount of ICY you wish to swap. The minimum amount is <strong>20 ICY</strong>.</li><li>Input your <strong>BTC wallet address</strong> where you want the BTC to be sent.</li><li>Click the <strong>&ldquo;Swap&rdquo;</strong> button and confirm the transaction in your wallet. You’ll need to pay gas fees in <strong>ETH</strong> for this step.
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li><li>Ensure your wallet is switched to the <strong>Base network</strong>, since ICY operates on this network.</li></ol><h2 id=step-2-swap-icy-to-btc>Step 2: Swap ICY to BTC <a href=#step-2-swap-icy-to-btc></a></h2><ol><li>After connecting your wallet, choose <strong>ICY</strong> as the token you want to swap from and <strong>BTC</strong> as the token you want to receive.</li><li>Enter the amount of ICY you wish to swap. The minimum amount is <strong>20 ICY</strong>.</li><li>Input your <strong>BTC wallet address</strong> where you want the BTC to be sent.</li><li>Click the <strong>&ldquo;Swap&rdquo;</strong> button and confirm the transaction in your wallet. You’ll need to pay gas fees in <strong>ETH</strong> for this step.
 <script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
     title: ``,
     alt: `alt text`,
