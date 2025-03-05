@@ -263,10 +263,14 @@
     close() {
       this.searchBar = false;
       this.query = '';
+      // Remove class from body
+      document.body.classList.remove('cmd-palette-open');
     },
     
     openPalette() {
       this.searchBar = true;
+      // Add class to body to help style neko images
+      document.body.classList.add('cmd-palette-open');
       // Dispatch event to load recent pages
       const evt = new CustomEvent('command-palette-opened');
       document.dispatchEvent(evt);

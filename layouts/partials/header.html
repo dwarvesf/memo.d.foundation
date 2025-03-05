@@ -311,6 +311,10 @@
 {{ $.Scratch.Set "section" (replaceRE "^/([^/]+)/.*" "$1" .RelPermalink) }}
 
 <body class="no-transition {{ if .IsHome }}home{{ else }}{{ $.Scratch.Get " section" }}{{ end }}">
+  {{ $nekoImage := resources.Get "img/neko.png" }}
+  {{ $nekoImage2 := resources.Get "img/neko-2.png" }}
+  <img class="neko" src="{{ $nekoImage.RelPermalink }}" alt="Neko" />
+  <img class="neko2" src="{{ $nekoImage2.RelPermalink }}" alt="Neko2" />
   <div class="tab-header">
     <button x-data @click="$store.sidebar.toggle()" id="sidebar-toggle" class="mobile-nav-btn">
       <svg :show="!$store.sidebar.open" class="icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

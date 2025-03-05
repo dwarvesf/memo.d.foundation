@@ -2,7 +2,7 @@ img.neko {
   position: fixed;
   bottom: 32px;
   right: 15%;
-  z-index: 100;
+  z-index: 5; /* Very low z-index */
   pointer-events: none;
   width: 100px;
   height: auto;
@@ -13,7 +13,7 @@ img.neko2 {
   position: fixed;
   bottom: 32px;
   left: 15%;
-  z-index: 100;
+  z-index: 5; /* Very low z-index */
   pointer-events: none;
   width: 100px;
   height: auto;

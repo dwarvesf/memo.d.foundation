@@ -169,6 +169,7 @@ div:has(> .cmd-results-list) {
     align-self: flex-start;
     margin-top: 32px;
     color: var(--secondary-font-color-light-var2);
+
     > span {
       text-transform: uppercase;
       text-decoration: underline;
@@ -176,14 +177,17 @@ div:has(> .cmd-results-list) {
       font-weight: 500;
       font-size: 12px;
     }
+
     p {
       margin-top: 20px;
       white-space: pre-wrap;
       font-size: 12px;
     }
+
     hr {
       margin: 10px 0px !important;
     }
+
     display: flex;
     flex-direction: column;
   }
