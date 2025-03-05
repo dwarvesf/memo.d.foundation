@@ -156,6 +156,9 @@
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   {{ $readingTooltip := resources.Get "js/reading-tooltip.js" }}
   <script defer src="{{ $readingTooltip.RelPermalink }}"></script>
+  
+  {{ $recentPages := resources.Get "js/recent-pages.js" }}
+  <script defer src="{{ $recentPages.RelPermalink }}"></script>
 
   {{ $queryEngine := resources.Get "js/query-engine.mjs" }}
   <script defer type="module" src="{{ $queryEngine.RelPermalink }}"></script>

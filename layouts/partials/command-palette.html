@@ -168,54 +168,115 @@
   }
 </script>
 
-<div x-data="{ searching: false, searchPlaceholder: 'Initializing Search...', searchBar: false, query: '', searchResults: {}, flat: [], selected: {}, 
+<div x-data="{ 
+    searching: false, 
+    searchPlaceholder: 'Initializing Search...', 
+    searchBar: false, 
+    query: '', 
+    searchResults: {}, 
+    flat: [], 
+    selected: {}, 
+    recentPages: [],
+    selectedRecent: null,
+    showingRecents: true,
+    
     next(container) {
-      const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
-      let nextIdx = curIdx + 1;
-      if(nextIdx >= this.flat.length) {
-        nextIdx = 0;
+      if (this.showingRecents && this.recentPages.length > 0) {
+        const curIdx = this.recentPages.findIndex(p => p === this.selectedRecent);
+        let nextIdx = curIdx + 1;
+        if(nextIdx >= this.recentPages.length) {
+          nextIdx = 0;
+        }
+        this.selectedRecent = this.recentPages[nextIdx];
+        const selector = `div[data-recent-id='${nextIdx}']`;
+        const div = $refs.searchContainer.querySelector(selector);
+        if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
+      } else {
+        const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
+        let nextIdx = curIdx + 1;
+        if(nextIdx >= this.flat.length) {
+          nextIdx = 0;
+        }
+        this.selected = this.flat[nextIdx];
+        const selector = `a[data-searchid='${this.selected.file_path}']`;
+        const a = $refs.searchContainer.querySelector(selector);
+        if (a) a.scrollIntoView({ block: 'nearest', behavior: 'instant'});
       }
-      this.selected = this.flat[nextIdx];
-      const selector = `a[data-searchid='${this.selected.file_path}']`;
-      const a = $refs.searchContainer.querySelector(selector)
-      a.scrollIntoView({ block: 'nearest', behavior: 'instant'});
     }, 
+    
     prev(container) {
-      const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
-      let nextIdx = curIdx - 1;
-      if(nextIdx < 0) {
-        nextIdx = this.flat.length - 1;
+      if (this.showingRecents && this.recentPages.length > 0) {
+        const curIdx = this.recentPages.findIndex(p => p === this.selectedRecent);
+        let nextIdx = curIdx - 1;
+        if(nextIdx < 0) {
+          nextIdx = this.recentPages.length - 1;
+        }
+        this.selectedRecent = this.recentPages[nextIdx];
+        const selector = `div[data-recent-id='${nextIdx}']`;
+        const div = $refs.searchContainer.querySelector(selector);
+        if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
+      } else {
+        const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
+        let nextIdx = curIdx - 1;
+        if(nextIdx < 0) {
+          nextIdx = this.flat.length - 1;
+        }
+        this.selected = this.flat[nextIdx];
+        const selector = `a[data-searchid='${this.selected.file_path}']`;
+        const a = $refs.searchContainer.querySelector(selector);
+        if (a) a.scrollIntoView({ block: 'nearest', behavior: 'instant'});
       }
-      this.selected = this.flat[nextIdx];
-      const selector = `a[data-searchid='${this.selected.file_path}']`;
-      const a = $refs.searchContainer.querySelector(selector)
-      a.scrollIntoView({ block: 'nearest', behavior: 'instant'});
     },
+    
     set(file) {
       this.selected = file;
+      this.showingRecents = false;
     },
+    
+    setRecent(page, index) {
+      this.selectedRecent = page;
+      this.showingRecents = true;
+    },
+    
     goto() {
-      if(!this.selected.file_path) return;
-      window.location.pathname = this.selected.file_path
-        .slice(0, -3)
-        .replaceAll('&', '')
-        .replaceAll('¶', '')
-        .replaceAll('§', '')
-        .toLowerCase()
-        .replaceAll(' ', '-')
-        .replaceAll('.md', '')
-        .replaceAll('/_index', '')
-        .replace(/\/+/g, '/')
-        .split('/')
-        .map(segment => segment.replace(/^-+|-+$/g, ''))
-        .join('/');
+      if(this.showingRecents && this.selectedRecent) {
+        window.location.pathname = this.selectedRecent.path;
+      } else if(!this.selected.file_path) {
+        return;
+      } else {
+        window.location.pathname = this.selected.file_path
+          .slice(0, -3)
+          .replaceAll('&', '')
+          .replaceAll('¶', '')
+          .replaceAll('§', '')
+          .toLowerCase()
+          .replaceAll(' ', '-')
+          .replaceAll('.md', '')
+          .replaceAll('/_index', '')
+          .replace(/\/+/g, '/')
+          .split('/')
+          .map(segment => segment.replace(/^-+|-+$/g, ''))
+          .join('/');
+      }
     },
+    
     close() {
       this.searchBar = false;
       this.query = '';
+    },
+    
+    openPalette() {
+      this.searchBar = true;
+      // Dispatch event to load recent pages
+      const evt = new CustomEvent('command-palette-opened');
+      document.dispatchEvent(evt);
+      this.$nextTick(() => this.$refs.searchInput.focus());
     }
-  }" class="cmd-palette">
-  <button class="cmd-search-button" @click="searchBar = true">
+  }" 
+  class="cmd-palette" 
+  @command-palette-recents.window="recentPages = $event.detail.data; if(recentPages.length > 0) { selectedRecent = recentPages[0]; showingRecents = true; }"
+>
+  <button class="cmd-search-button" @click="openPalette()">
     <span class="cmd-search-button-text">🔍 Search</span>
     <span class="cmd-search-button-keys">
       <kbd class="memo-tag">⌘</kbd>
@@ -223,17 +284,22 @@
     </span>
   </button>
 
-  <div @keydown.enter.stop.document="goto()" @keydown.ctrl.j.prevent.document="next()"
-    @keydown.ctrl.k.prevent.document="prev()" @keydown.down.stop.document="next()" @keydown.up.stop.document="prev()"
+  <div 
+    @keydown.enter.stop.document="goto()" 
+    @keydown.ctrl.j.prevent.document="next()"
+    @keydown.ctrl.k.prevent.document="prev()" 
+    @keydown.arrow-down.prevent.document="next()" 
+    @keydown.arrow-up.prevent.document="prev()"
     class="cmd-overlay" :class="searchBar ?'cmd-modal-active' : 'cmd-modal-hidden'" x-ref="searchContainer">
     <div class="cmd-modal" @mousedown.outside="close()" x-trap.inert.noscroll.noreturn="searchBar">
       <input type="text" x-model="query" :placeholder="searchPlaceholder" autocomplete="off" class="cmd-search-input"
-        x-ref="searchInput" @input.change="searching = true"
-        @input.change.debounce.750ms="$dispatch('command-palette-search', { data: $event.target.value })"
-        @command-palette-search-result.window="searching = false; searchResults = $event.detail.data.grouped; flat = $event.detail.data.flat; selected = $event.detail.data.flat[0]"
+        x-ref="searchInput" 
+        @input="searching = true; showingRecents = query.length === 0;"
+        @input.debounce.750ms="$dispatch('command-palette-search', { data: $event.target.value })"
+        @command-palette-search-result.window="searching = false; searchResults = $event.detail.data.grouped; flat = $event.detail.data.flat; if(flat.length > 0) { selected = flat[0]; showingRecents = false; }"
         @command-palette-search-initialize.window="searchPlaceholder = $event.detail.text"/>
       <div x-cloak :class="searchBar ?'cmd-results-active' : 'cmd-results-hidden'" class="cmd-results"
-        @keydown.meta.k.prevent.document="searchBar = !searchBar; $nextTick(() => $refs.searchInput.focus())"
+        @keydown.meta.k.prevent.document="searchBar ? close() : openPalette()"
         @keydown.escape.document="close()">
         <div
           :class="Object.keys(searchResults).length !== 0 && query.length !== 0 ? 'cmd-results-list-wrapper' : 'cmd-results-hidden'">
@@ -243,7 +309,7 @@
                 <span x-text="group[0]"></span>
                 <template x-for="result in group[1]" :key="result.file_path">
                   <li @mouseenter="set(result)"
-                    :class="{ 'cmd-result-item': true, 'cmd-result-selected': result.file_path.toLowerCase() === selected?.file_path.toLowerCase() }">
+                    :class="{ 'cmd-result-item': true, 'cmd-result-selected': result.file_path.toLowerCase() === selected?.file_path.toLowerCase() && !showingRecents }">
                     <a :data-searchid="result.file_path"
                       :href="`/${result.file_path
                         .replaceAll('&', '')
@@ -290,11 +356,43 @@
         </template>
       </div>
 
+      <!-- Recents Section -->
+      <template x-if="!searching && query.length === 0 && recentPages.length > 0">
+        <div class="cmd-recents-section">
+          <div class="cmd-recents-header">
+            <svg class="cmd-recents-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="cmd-recents-title">Recents</span>
+          </div>
+          <ul class="cmd-recents-list">
+            <template x-for="(page, index) in recentPages" :key="index">
+              <div 
+                class="cmd-recent-item" 
+                :class="{ 'cmd-recent-selected': page === selectedRecent && showingRecents }"
+                @mouseenter="setRecent(page, index)"
+                @click="goto()"
+                :data-recent-id="index"
+              >
+                <svg class="cmd-recent-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <span class="cmd-recent-title" x-text="page.title"></span>
+              </div>
+            </template>
+          </ul>
+        </div>
+      </template>
+
+      <!-- No Results -->
       <template x-if="!searching && Object.keys(searchResults).length === 0 && query.length > 0">
         <div class="cmd-no-results">
           <img src="{{ $img.RelPermalink }}" />
         </div>
       </template>
+      
       <div class="cmd-instructions">
         Type <kdb class="memo-tag">ESC</kdb> to close search bar
       </div>

@@ -1,0 +1,109 @@
+.cmd-recents-section {
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  
+  .cmd-recents-header {
+    display: flex;
+    align-items: center;
+    padding: 0 16px 10px;
+    
+    .cmd-recents-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      color: var(--secondary-font-color-light-var2);
+    }
+    
+    .cmd-recents-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--secondary-font-color-light-var2);
+    }
+  }
+  
+  .cmd-recents-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .cmd-recent-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--primary-border-color-light);
+    transition: background-color 0.05s ease-in;
+    
+    &:hover, &.cmd-recent-selected {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .cmd-recent-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      color: var(--secondary-font-color-light);
+    }
+    
+    &:hover .cmd-recent-icon, &.cmd-recent-selected .cmd-recent-icon {
+      color: white;
+    }
+    
+    .cmd-recent-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--primary-font-color-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    
+    &:hover .cmd-recent-title, &.cmd-recent-selected .cmd-recent-title {
+      color: white;
+    }
+  }
+}
+
+html[data-theme="dark"] {
+  .cmd-recents-section {
+    .cmd-recents-icon {
+      color: var(--secondary-font-color);
+    }
+    
+    .cmd-recents-title {
+      color: var(--secondary-font-color);
+    }
+    
+    .cmd-recent-item {
+      border-bottom: 1px solid var(--primary-border-color);
+      
+      &:hover, &.cmd-recent-selected {
+        background-color: var(--primary-color);
+        color: white;
+      }
+      
+      .cmd-recent-icon {
+        color: var(--secondary-font-color);
+      }
+      
+      &:hover .cmd-recent-icon, &.cmd-recent-selected .cmd-recent-icon {
+        color: white;
+      }
+      
+      .cmd-recent-title {
+        color: var(--primary-font-color);
+      }
+      
+      &:hover .cmd-recent-title, &.cmd-recent-selected .cmd-recent-title {
+        color: white;
+      }
+    }
+  }
+}
