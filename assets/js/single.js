@@ -1,3 +1,4 @@
+// Subscription form
 function loadSubscriptionForm() {
   function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -55,6 +56,31 @@ function loadSubscriptionForm() {
     .addEventListener('submit', handleSubmit);
 }
 
+
+// Load more mentioned in
+function handleLoadMoreMentionedIn() {
+  const button = document.querySelector('button.mentionedin_btn');
+  const ul = document.querySelector('.mentionin ul');
+  const data = JSON.parse(ul.getAttribute('data-x'));
+
+  button.addEventListener('click', () => {
+    if (data.length > 0) {
+      const fragment = document.createDocumentFragment();
+      data.forEach((item) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url;
+        a.textContent = item.title;
+        li.appendChild(a);
+        fragment.appendChild(li);
+      });
+      ul.appendChild(fragment);
+      button.parentElement.removeChild(button);
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadSubscriptionForm();
 });
+window.addEventListener('load', handleLoadMoreMentionedIn);
