@@ -94,8 +94,7 @@
   padding: 16px;
 }
 
-.cmd-results {
-}
+.cmd-results {}
 
 .cmd-results-active {
   display: block;
@@ -170,7 +169,7 @@ div:has(> .cmd-results-list) {
     margin-top: 32px;
     color: var(--secondary-font-color-light-var2);
 
-    > span {
+    >span {
       text-transform: uppercase;
       text-decoration: underline;
       text-decoration-skip-ink: auto;
@@ -197,7 +196,7 @@ div:has(> .cmd-results-list) {
   display: flex;
   flex-direction: column;
 
-  > span {
+  >span {
     background-color: var(--primary-border-color-light);
     padding: 6px 12px;
     text-transform: capitalize;
@@ -211,14 +210,14 @@ div:has(> .cmd-results-list) {
   background-color: transparent;
   transition: background-color 0.05s ease-in;
 
-  > * {
+  >* {
     outline: none;
   }
 
   &.cmd-result-selected {
     background-color: var(--primary-color);
 
-    > a {
+    >a {
       color: white !important;
     }
 
@@ -231,7 +230,7 @@ div:has(> .cmd-results-list) {
     }
   }
 
-  > a {
+  >a {
     color: var(--primary-font-color-light);
     position: relative;
     width: 100%;
@@ -278,6 +277,72 @@ div:has(> .cmd-results-list) {
     width: 40%;
     filter: invert(1);
     opacity: 0.4;
+  }
+}
+
+/* Styling for section headers */
+.cmd-recents-section {
+  border-bottom: 1px solid var(--primary-border-color-light);
+}
+
+.cmd-recents-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.cmd-recents-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  color: var(--secondary-font-color-light);
+}
+
+.cmd-recents-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--secondary-font-color-light);
+  letter-spacing: 0.5px;
+}
+
+.cmd-recent-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+
+  &:hover,
+  &.cmd-recent-selected {
+    background-color: var(--primary-color);
+    color: white;
+
+    .cmd-recent-icon {
+      color: white;
+    }
+  }
+}
+
+.cmd-recent-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 12px;
+  color: var(--secondary-font-color-light-var2);
+}
+
+html[data-theme="dark"] {
+  .cmd-recents-section {
+    border-bottom: 1px solid var(--primary-border-color);
+  }
+
+  .cmd-recents-icon,
+  .cmd-recent-icon {
+    color: var(--secondary-font-color);
+  }
+
+  .cmd-recents-title {
+    color: var(--secondary-font-color);
   }
 }
 
@@ -328,7 +393,7 @@ html[data-theme="dark"] {
   }
 
   .cmd-results-group {
-    > span {
+    >span {
       background-color: var(--primary-border-color);
     }
   }

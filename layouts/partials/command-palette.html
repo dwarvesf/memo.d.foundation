@@ -1,4 +1,10 @@
 {{ $img := resources.Get "img/404.png" }}
+{{ $pinned := slice }}
+{{ range .Site.Pages }}
+{{ if .Params.pinned }}
+{{ $pinned = $pinned | append (dict "title" .Params.Title "url" .RelPermalink "date" .Page.Params.Date) }}
+{{ end }}
+{{ end }}
 
 <script type="module">
   import _groupBy from "https://fastly.jsdelivr.net/npm/lodash.groupby@4.6.0/+esm";
@@ -178,20 +184,13 @@
     selected: {}, 
     recentPages: [],
     selectedRecent: null,
-    showingRecents: true,
+    selectedSection: 'recents', // 'recents', 'welcome', 'suggestions', or 'search'
+    selectedWelcomeItem: 0,
+    selectedSuggestionItem: 0,
     
     next(container) {
-      if (this.showingRecents && this.recentPages.length > 0) {
-        const curIdx = this.recentPages.findIndex(p => p === this.selectedRecent);
-        let nextIdx = curIdx + 1;
-        if(nextIdx >= this.recentPages.length) {
-          nextIdx = 0;
-        }
-        this.selectedRecent = this.recentPages[nextIdx];
-        const selector = `div[data-recent-id='${nextIdx}']`;
-        const div = $refs.searchContainer.querySelector(selector);
-        if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
-      } else {
+      // Handle search results navigation when query is present
+      if (this.query.length > 0) {
         const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
         let nextIdx = curIdx + 1;
         if(nextIdx >= this.flat.length) {
@@ -201,49 +200,196 @@
         const selector = `a[data-searchid='${this.selected.file_path}']`;
         const a = $refs.searchContainer.querySelector(selector);
         if (a) a.scrollIntoView({ block: 'nearest', behavior: 'instant'});
+        this.selectedSection = 'search';
+        return;
       }
-    }, 
-    
-    prev(container) {
-      if (this.showingRecents && this.recentPages.length > 0) {
-        const curIdx = this.recentPages.findIndex(p => p === this.selectedRecent);
-        let nextIdx = curIdx - 1;
-        if(nextIdx < 0) {
-          nextIdx = this.recentPages.length - 1;
+      
+      // Handle navigation between sections
+      if (this.selectedSection === 'recents') {
+        if (this.recentPages.length === 0) {
+          // No recents, move to welcome section
+          this.selectedSection = 'welcome';
+          this.selectedWelcomeItem = 0;
+          this.selectWelcomeItem(0);
+          return;
         }
+        
+        const curIdx = this.recentPages.findIndex(p => p === this.selectedRecent);
+        let nextIdx = curIdx + 1;
+        if (nextIdx >= this.recentPages.length) {
+          // Move to welcome section
+          this.selectedSection = 'welcome';
+          this.selectedWelcomeItem = 0;
+          this.selectWelcomeItem(0);
+          return;
+        }
+        
+        // Next recent item
         this.selectedRecent = this.recentPages[nextIdx];
         const selector = `div[data-recent-id='${nextIdx}']`;
         const div = $refs.searchContainer.querySelector(selector);
         if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
-      } else {
-        const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
-        let nextIdx = curIdx - 1;
-        if(nextIdx < 0) {
-          nextIdx = this.flat.length - 1;
+      } 
+      else if (this.selectedSection === 'welcome') {
+        let nextIdx = this.selectedWelcomeItem + 1;
+        if (nextIdx >= 2) { // 2 welcome items
+          // Move to suggestions section
+          this.selectedSection = 'suggestions';
+          this.selectedSuggestionItem = 0;
+          this.selectSuggestionItem(0);
+          return;
         }
-        this.selected = this.flat[nextIdx];
+        
+        // Next welcome item
+        this.selectWelcomeItem(nextIdx);
+      } 
+      else if (this.selectedSection === 'suggestions') {
+        // Only one suggestion item, go back to recents
+        if (this.recentPages.length > 0) {
+          this.selectedSection = 'recents';
+          this.selectedRecent = this.recentPages[0];
+          const selector = `div[data-recent-id='0']`;
+          const div = $refs.searchContainer.querySelector(selector);
+          if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
+        } else {
+          // No recents, go to welcome
+          this.selectedSection = 'welcome';
+          this.selectedWelcomeItem = 0;
+          this.selectWelcomeItem(0);
+        }
+      }
+    }, 
+    
+    prev(container) {
+      // Handle search results navigation when query is present
+      if (this.query.length > 0) {
+        const curIdx = this.flat.findIndex(f => f.file_path === this.selected.file_path);
+        let prevIdx = curIdx - 1;
+        if(prevIdx < 0) {
+          prevIdx = this.flat.length - 1;
+        }
+        this.selected = this.flat[prevIdx];
         const selector = `a[data-searchid='${this.selected.file_path}']`;
         const a = $refs.searchContainer.querySelector(selector);
         if (a) a.scrollIntoView({ block: 'nearest', behavior: 'instant'});
+        this.selectedSection = 'search';
+        return;
       }
+      
+      // Handle navigation between sections
+      if (this.selectedSection === 'recents') {
+        if (this.recentPages.length === 0) {
+          // No recents, move to suggestions
+          this.selectedSection = 'suggestions';
+          this.selectedSuggestionItem = 0;
+          this.selectSuggestionItem(0);
+          return;
+        }
+        
+        const curIdx = this.recentPages.findIndex(p => p === this.selectedRecent);
+        let prevIdx = curIdx - 1;
+        if (prevIdx < 0) {
+          // Move to suggestions section
+          this.selectedSection = 'suggestions';
+          this.selectedSuggestionItem = 0;
+          this.selectSuggestionItem(0);
+          return;
+        }
+        
+        // Previous recent item
+        this.selectedRecent = this.recentPages[prevIdx];
+        const selector = `div[data-recent-id='${prevIdx}']`;
+        const div = $refs.searchContainer.querySelector(selector);
+        if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
+      } 
+      else if (this.selectedSection === 'welcome') {
+        let prevIdx = this.selectedWelcomeItem - 1;
+        if (prevIdx < 0) {
+          // Move to recents section if available
+          if (this.recentPages.length > 0) {
+            this.selectedSection = 'recents';
+            this.selectedRecent = this.recentPages[this.recentPages.length - 1];
+            const selector = `div[data-recent-id='${this.recentPages.length - 1}']`;
+            const div = $refs.searchContainer.querySelector(selector);
+            if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
+          } else {
+            // No recents, wrap to suggestions
+            this.selectedSection = 'suggestions';
+            this.selectedSuggestionItem = 0;
+            this.selectSuggestionItem(0);
+          }
+          return;
+        }
+        
+        // Previous welcome item
+        this.selectWelcomeItem(prevIdx);
+      } 
+      else if (this.selectedSection === 'suggestions') {
+        // Move to welcome section
+        this.selectedSection = 'welcome';
+        this.selectedWelcomeItem = 1; // Last welcome item
+        this.selectWelcomeItem(1);
+      }
+    },
+    
+    // Helper methods for selection
+    selectWelcomeItem(index) {
+      // Update state
+      this.selectedSection = 'welcome';
+      this.selectedWelcomeItem = index;
+      
+      // Clear all selections
+      this.clearAllSelections();
+      
+      // Apply new selection
+      const welcomeItems = $refs.searchContainer.querySelectorAll('[data-welcome-id]');
+      if (welcomeItems && welcomeItems[index]) {
+        welcomeItems[index].classList.add('cmd-recent-selected');
+        welcomeItems[index].scrollIntoView({ block: 'nearest', behavior: 'instant'});
+      }
+    },
+    
+    selectSuggestionItem(index) {
+      // Update state
+      this.selectedSection = 'suggestions';
+      this.selectedSuggestionItem = index;
+      
+      // Clear all selections
+      this.clearAllSelections();
+      
+      // Apply new selection
+      const suggestionItem = $refs.searchContainer.querySelector('[data-suggestion-id]');
+      if (suggestionItem) {
+        suggestionItem.classList.add('cmd-recent-selected');
+        suggestionItem.scrollIntoView({ block: 'nearest', behavior: 'instant'});
+      }
+    },
+    
+    clearAllSelections() {
+      // Clear all selected items
+      const allItems = $refs.searchContainer.querySelectorAll('.cmd-recent-selected');
+      allItems.forEach(item => {
+        item.classList.remove('cmd-recent-selected');
+      });
     },
     
     set(file) {
       this.selected = file;
-      this.showingRecents = false;
+      this.selectedSection = 'search';
+      this.clearAllSelections();
     },
     
     setRecent(page, index) {
       this.selectedRecent = page;
-      this.showingRecents = true;
+      this.selectedSection = 'recents';
     },
     
     goto() {
-      if(this.showingRecents && this.selectedRecent) {
-        window.location.pathname = this.selectedRecent.path;
-      } else if(!this.selected.file_path) {
-        return;
-      } else {
+      if (this.query.length > 0) {
+        // Handle search results
+        if (!this.selected.file_path) {
+          return;
+        }
         window.location.pathname = this.selected.file_path
           .slice(0, -3)
           .replaceAll('&', '')
@@ -257,7 +403,52 @@
           .split('/')
           .map(segment => segment.replace(/^-+|-+$/g, ''))
           .join('/');
+        return;
       }
+      
+      // Handle navigation based on selected section
+      if (this.selectedSection === 'recents') {
+        if (this.selectedRecent) {
+          window.location.pathname = this.selectedRecent.path;
+        }
+      } 
+      else if (this.selectedSection === 'welcome') {
+        if (this.selectedWelcomeItem === 0) {
+          // What's been hot lately
+          window.location = '/';
+        } else {
+          // Check pinned note
+          const pinnedPosts = {{ $pinned | jsonify }};
+          if (pinnedPosts && pinnedPosts.length > 0) {
+            window.location = pinnedPosts[0].url;
+          } else {
+            window.location = '/';
+          }
+        }
+      } 
+      else if (this.selectedSection === 'suggestions') {
+        // Copy memo content
+        const content = document.querySelector('.memo-content')?.textContent || 'No content found';
+        navigator.clipboard.writeText(content);
+        const notification = document.createElement('div');
+        notification.textContent = 'Content copied to clipboard!';
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.left = '50%';
+        notification.style.transform = 'translateX(-50%)';
+        notification.style.padding = '10px 20px';
+        notification.style.backgroundColor = 'var(--primary-color)';
+        notification.style.color = 'white';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        document.body.appendChild(notification);
+        setTimeout(() => {
+          notification.style.opacity = '0';
+          notification.style.transition = 'opacity 0.5s ease';
+          setTimeout(() => document.body.removeChild(notification), 500);
+        }, 2000);
+      }
+      this.close();
     },
     
     close() {
@@ -274,16 +465,31 @@
       // Dispatch event to load recent pages
       const evt = new CustomEvent('command-palette-opened');
       document.dispatchEvent(evt);
-      // Ensure first recent is selected on open
+      // Reset search
+      this.query = '';
+      // Set initial selection 
       if (this.recentPages.length > 0) {
         this.selectedRecent = this.recentPages[0];
-        this.showingRecents = true;
+        this.selectedSection = 'recents';
+      } else {
+        this.selectedSection = 'welcome';
+        this.selectedWelcomeItem = 0;
       }
-      this.$nextTick(() => this.$refs.searchInput.focus());
+      this.$nextTick(() => {
+        this.$refs.searchInput.focus();
+        // Apply initial selection styling
+        if (this.selectedSection === 'welcome') {
+          this.selectWelcomeItem(this.selectedWelcomeItem);
+        } else if (this.selectedSection === 'recents') {
+          const selector = `div[data-recent-id='0']`;
+          const div = this.$refs.searchContainer.querySelector(selector);
+          if (div) div.classList.add('cmd-recent-selected');
+        }
+      });
     }
   }" 
   class="cmd-palette" 
-  @command-palette-recents.window="recentPages = $event.detail.data; if(recentPages.length > 0) { selectedRecent = recentPages[0]; showingRecents = true; }"
+  @command-palette-recents.window="recentPages = $event.detail.data; if(recentPages.length > 0) { selectedRecent = recentPages[0]; selectedSection = 'recents'; }"
 >
   <button class="cmd-search-button" @click="openPalette()">
     <span class="cmd-search-button-text">🔍 Search</span>
@@ -306,10 +512,16 @@
         @input="
           searching = true; 
           if(query.length === 0) {
-            showingRecents = true;
             if(recentPages.length > 0) {
               selectedRecent = recentPages[0];
+              selectedSection = 'recents';
+            } else {
+              selectedSection = 'welcome';
+              selectedWelcomeItem = 0;
             }
+            clearAllSelections();
+          } else {
+            selectedSection = 'search';
           }
         "
         @input.debounce.750ms="$dispatch('command-palette-search', { data: $event.target.value })"
@@ -319,10 +531,17 @@
           flat = $event.detail.data.flat; 
           if(query.length > 0 && flat.length > 0) { 
             selected = flat[0]; 
-            showingRecents = false; 
-          } else if (query.length === 0 && recentPages.length > 0) { 
-            selectedRecent = recentPages[0]; 
-            showingRecents = true; 
+            selectedSection = 'search';
+            clearAllSelections();
+          } else if (query.length === 0) {
+            if (recentPages.length > 0) { 
+              selectedRecent = recentPages[0]; 
+              selectedSection = 'recents';
+            } else {
+              selectedSection = 'welcome';
+              selectedWelcomeItem = 0; 
+            }
+            clearAllSelections();
           }
         "
         @command-palette-search-initialize.window="searchPlaceholder = $event.detail.text"/>
@@ -337,7 +556,7 @@
                 <span x-text="group[0]"></span>
                 <template x-for="result in group[1]" :key="result.file_path">
                   <li @mouseenter="set(result)"
-                    :class="{ 'cmd-result-item': true, 'cmd-result-selected': result.file_path.toLowerCase() === selected?.file_path.toLowerCase() && !showingRecents }">
+                    :class="{ 'cmd-result-item': true, 'cmd-result-selected': result.file_path.toLowerCase() === selected?.file_path.toLowerCase() && selectedSection === 'search' }">
                     <a :data-searchid="result.file_path"
                       :href="`/${result.file_path
                         .replaceAll('&', '')
@@ -388,18 +607,14 @@
       <template x-if="!searching && query.length === 0 && recentPages.length > 0">
         <div class="cmd-recents-section">
           <div class="cmd-recents-header">
-            <svg class="cmd-recents-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
             <span class="cmd-recents-title">Recents</span>
           </div>
           <ul class="cmd-recents-list">
             <template x-for="(page, index) in recentPages" :key="index">
               <div 
                 class="cmd-recent-item" 
-                :class="{ 'cmd-recent-selected': page === selectedRecent && showingRecents }"
-                @mouseenter="setRecent(page, index)"
+                :class="{ 'cmd-recent-selected': page === selectedRecent && selectedSection === 'recents' }"
+                @mouseenter="setRecent(page, index); clearAllSelections()"
                 @click="goto()"
                 :data-recent-id="index"
               >
@@ -410,6 +625,96 @@
                 <span class="cmd-recent-title" x-text="page.title"></span>
               </div>
             </template>
+          </ul>
+        </div>
+      </template>
+      
+      <!-- Welcome to Dwarves Memo Section -->
+      <template x-if="!searching && query.length === 0">
+        <div class="cmd-recents-section">
+          <div class="cmd-recents-header">
+            <span class="cmd-recents-title">Welcome to Dwarves Memo</span>
+          </div>
+          <ul class="cmd-recents-list">
+            <div 
+              class="cmd-recent-item"
+              :class="{ 'cmd-recent-selected': selectedSection === 'welcome' && selectedWelcomeItem === 0 }"
+              @click="window.location = '/'; close();"
+              @mouseenter="selectWelcomeItem(0)"
+              data-welcome-id="0"
+            >
+              <svg class="cmd-recent-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+              <span class="cmd-recent-title">What's been hot lately</span>
+            </div>
+            <div 
+              class="cmd-recent-item"
+              :class="{ 'cmd-recent-selected': selectedSection === 'welcome' && selectedWelcomeItem === 1 }"
+              x-data="{ 
+                pinnedPosts: {{ $pinned | jsonify }},
+                getPinnedUrl() {
+                  if (this.pinnedPosts && this.pinnedPosts.length > 0) {
+                    return this.pinnedPosts[0].url;
+                  }
+                  return '/';
+                }
+              }"
+              @click="window.location = getPinnedUrl(); close();"
+              @mouseenter="selectWelcomeItem(1)"
+              data-welcome-id="1"
+            >
+              <svg class="cmd-recent-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1L1 8l11 7 11-7-11-7M2 19v-8.4L12 17l10-6.4V19l-10 7-10-7z"></path>
+              </svg>
+              <span class="cmd-recent-title">Check pinned note</span>
+            </div>
+          </ul>
+        </div>
+      </template>
+      
+      <!-- Suggestions Section -->
+      <template x-if="!searching && query.length === 0">
+        <div class="cmd-recents-section">
+          <div class="cmd-recents-header">
+            <span class="cmd-recents-title">Suggestions</span>
+          </div>
+          <ul class="cmd-recents-list">
+            <div 
+              class="cmd-recent-item"
+              :class="{ 'cmd-recent-selected': selectedSection === 'suggestions' && selectedSuggestionItem === 0 }"
+              @click="
+                const content = document.querySelector('.memo-content')?.textContent || 'No content found';
+                navigator.clipboard.writeText(content);
+                const notification = document.createElement('div');
+                notification.textContent = 'Content copied to clipboard!';
+                notification.style.position = 'fixed';
+                notification.style.bottom = '20px';
+                notification.style.left = '50%';
+                notification.style.transform = 'translateX(-50%)';
+                notification.style.padding = '10px 20px';
+                notification.style.backgroundColor = 'var(--primary-color)';
+                notification.style.color = 'white';
+                notification.style.borderRadius = '5px';
+                notification.style.zIndex = '1000';
+                document.body.appendChild(notification);
+                setTimeout(() => {
+                  notification.style.opacity = '0';
+                  notification.style.transition = 'opacity 0.5s ease';
+                  setTimeout(() => document.body.removeChild(notification), 500);
+                }, 2000);
+                close();
+              "
+              @mouseenter="selectSuggestionItem(0)"
+              data-suggestion-id="0"
+            >
+              <svg class="cmd-recent-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+              </svg>
+              <span class="cmd-recent-title">Copy memo</span>
+            </div>
           </ul>
         </div>
       </template>
