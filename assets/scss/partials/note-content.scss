@@ -10,7 +10,6 @@
 
   .pagetitle {
     grid-area: pagetitle;
-    margin-bottom: 0!important;
     font-size: 35px !important;
     font-weight: 500;
     font-style: normal;
@@ -43,6 +42,10 @@
       line-height: 1.125rem;
     }
   }
+}
+
+.note-title + * + * {
+  margin-top: 0px !important;
 }
 
 .clear-title {
@@ -357,10 +360,6 @@ label:not(:has(+ #TableOfContents)) {
 
 #TableOfContents:empty {
   display: none;
-}
-
-.note-title + * + * {
-  margin-top: 0px !important;
 }
 
 .always-on-right-sidebar {
