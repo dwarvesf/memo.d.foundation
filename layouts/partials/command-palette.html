@@ -428,7 +428,14 @@
       } 
       else if (this.selectedSection === 'suggestions') {
         // Copy memo content
-        const content = document.querySelector('.memo-content')?.textContent || 'No content found';
+        const memoContent = document.querySelector('.memo-content');
+        let content = 'No content found';
+        if (memoContent) {
+          // Get text content, preserving important whitespace but removing excessive newlines
+          content = memoContent.innerText
+            .replace(/\n\s*\n\s*\n/g, '\n\n') // Replace 3+ newlines with 2
+            .trim();
+        }
         navigator.clipboard.writeText(content);
         const notification = document.createElement('div');
         notification.textContent = 'Content copied to clipboard!';
@@ -685,7 +692,14 @@
               class="cmd-recent-item"
               :class="{ 'cmd-recent-selected': selectedSection === 'suggestions' && selectedSuggestionItem === 0 }"
               @click="
-                const content = document.querySelector('.memo-content')?.textContent || 'No content found';
+                const memoContent = document.querySelector('.memo-content');
+                let content = 'No content found';
+                if (memoContent) {
+                  // Get text content, preserving important whitespace but removing excessive newlines
+                  content = memoContent.innerText
+                    .replace(/\n\s*\n\s*\n/g, '\n\n') // Replace 3+ newlines with 2
+                    .trim();
+                }
                 navigator.clipboard.writeText(content);
                 const notification = document.createElement('div');
                 notification.textContent = 'Content copied to clipboard!';
