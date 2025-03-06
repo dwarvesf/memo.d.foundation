@@ -41,6 +41,9 @@
             md_content LIKE '%https://memo.d.foundation${escapedFullPath}%'
             -- Search for relative path mentions
             OR md_content LIKE '%${escapedFullPath}%'
+            -- Search for just the slug mentions with .md extension
+            OR md_content LIKE '%/${escapedSlug}.md%'
+            OR md_content LIKE '%#${escapedSlug}.md%'
           )
           -- Exclude self-mentions
           AND file_path != '${escapedPath}'
