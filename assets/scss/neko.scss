@@ -2,9 +2,10 @@ img.neko {
   position: fixed;
   bottom: 32px;
   right: 15%;
-  z-index: 5; /* Very low z-index */
+  z-index: 5;
+  /* Very low z-index */
   pointer-events: none;
-  width: 100px;
+  width: 70px;
   height: auto;
   display: none;
 }
@@ -13,9 +14,10 @@ img.neko2 {
   position: fixed;
   bottom: 32px;
   left: 15%;
-  z-index: 5; /* Very low z-index */
+  z-index: 5;
+  /* Very low z-index */
   pointer-events: none;
-  width: 100px;
+  width: 70px;
   height: auto;
   display: none;
 }

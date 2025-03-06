@@ -1,0 +1,161 @@
+.sidebar {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  min-height: 100vh;
+  background-color: var(--primary-background-color-light);
+  z-index: 1200;
+  /* Higher than other UI elements */
+  transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border-color-light);
+  padding: 0 16px;
+
+  &.collapsed {
+    width: 72px;
+
+    .sidebar-item {
+      justify-content: center;
+    }
+  }
+
+  &.expanded {
+    width: 232px;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    margin-bottom: 0;
+    height: 40px;
+
+    svg {
+      min-width: 24px;
+      width: 24px;
+      height: 24px;
+      padding: 0px 8px;
+      flex-shrink: 0;
+    }
+
+    a {
+      font-weight: 700;
+      white-space: nowrap;
+      text-decoration: none;
+      color: #23252c;
+      font-size: 13px;
+      line-height: 1.2;
+      opacity: 0;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease-in-out;
+
+      &.show {
+        opacity: 100;
+      }
+    }
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px 0;
+      text-decoration: none;
+      color: #23252c;
+      transition: background-color 0.2s ease;
+      border-radius: 8px;
+
+      .sidebar.expanded & {
+        justify-content: flex-start;
+      }
+
+      &:hover {
+        background-color: #ededed;
+      }
+
+      svg,
+      img {
+        min-width: 24px;
+        width: 24px;
+        height: 24px;
+        padding: 0px 8px;
+        flex-shrink: 0;
+      }
+
+      .sidebar.expanded & {
+
+        svg,
+        img {
+          margin-right: 12px;
+        }
+      }
+
+      span {
+        font-size: 14px;
+        white-space: nowrap;
+        font-weight: 500;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+
+        &.show {
+          opacity: 100;
+        }
+      }
+    }
+  }
+}
+
+// Dark theme support
+html[data-theme="dark"] {
+  .sidebar {
+    background-color: var(--primary-background-color);
+    border-right: 1px solid var(--border-color);
+
+    .sidebar-logo a {
+      color: #dadada;
+    }
+
+    .sidebar-item {
+      color: #dadada;
+
+      &:hover {
+        background-color: #252525;
+      }
+
+      img {
+        filter: invert(0.5);
+      }
+    }
+  }
+}
+
+// Mobile adjustments
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 240px;
+    /* Always expanded on mobile */
+
+    &.mobile-visible {
+      transform: translateX(0);
+    }
+  }
+
+  body.has-sidebar {
+
+    .grid,
+    .tab-header {
+      padding-left: 0 !important;
+      /* No sidebar space on mobile */
+    }
+  }
+}

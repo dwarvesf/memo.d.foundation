@@ -274,6 +274,11 @@
       // Dispatch event to load recent pages
       const evt = new CustomEvent('command-palette-opened');
       document.dispatchEvent(evt);
+      // Ensure first recent is selected on open
+      if (this.recentPages.length > 0) {
+        this.selectedRecent = this.recentPages[0];
+        this.showingRecents = true;
+      }
       this.$nextTick(() => this.$refs.searchInput.focus());
     }
   }" 
@@ -298,9 +303,28 @@
     <div class="cmd-modal" @mousedown.outside="close()" x-trap.inert.noscroll.noreturn="searchBar">
       <input type="text" x-model="query" :placeholder="searchPlaceholder" autocomplete="off" class="cmd-search-input"
         x-ref="searchInput" 
-        @input="searching = true; showingRecents = query.length === 0;"
+        @input="
+          searching = true; 
+          if(query.length === 0) {
+            showingRecents = true;
+            if(recentPages.length > 0) {
+              selectedRecent = recentPages[0];
+            }
+          }
+        "
         @input.debounce.750ms="$dispatch('command-palette-search', { data: $event.target.value })"
-        @command-palette-search-result.window="searching = false; searchResults = $event.detail.data.grouped; flat = $event.detail.data.flat; if(flat.length > 0) { selected = flat[0]; showingRecents = false; }"
+        @command-palette-search-result.window="
+          searching = false; 
+          searchResults = $event.detail.data.grouped; 
+          flat = $event.detail.data.flat; 
+          if(query.length > 0 && flat.length > 0) { 
+            selected = flat[0]; 
+            showingRecents = false; 
+          } else if (query.length === 0 && recentPages.length > 0) { 
+            selectedRecent = recentPages[0]; 
+            showingRecents = true; 
+          }
+        "
         @command-palette-search-initialize.window="searchPlaceholder = $event.detail.text"/>
       <div x-cloak :class="searchBar ?'cmd-results-active' : 'cmd-results-hidden'" class="cmd-results"
         @keydown.meta.k.prevent.document="searchBar ? close() : openPalette()"
