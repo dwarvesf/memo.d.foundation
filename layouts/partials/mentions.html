@@ -1,0 +1,181 @@
+<script defer type="module">
+  async function loadMentions() {
+    try {
+      // Get the current page path
+      const currentPath = '{{ .RelPermalink }}';
+      const currentPathNoSlash = currentPath.replace(/\/$/, '');
+      
+      // Extract the slug (last part of the path)
+      const pathParts = currentPathNoSlash.split('/').filter(Boolean);
+      const slug = pathParts.length > 0 ? pathParts[pathParts.length - 1] : '';
+      
+      if (!slug || slug === '_index') {
+        console.log('No valid slug found for current page');
+        return;
+      }
+      
+      // Escape single quotes for SQL
+      const escapedSlug = slug.replace(/'/g, "''");
+      const escapedPath = currentPathNoSlash.replace(/'/g, "''");
+      const escapedFullPath = currentPath.replace(/'/g, "''");
+
+      // Build the query to find mentions
+      const queryStr = `
+        SELECT 
+          file_path,
+          title,
+          date,
+          description,
+          authors[0] as primary_author
+        FROM vault
+        WHERE 
+          (
+            -- Search for full URL mentions
+            md_content LIKE '%https://memo.d.foundation${escapedFullPath}%'
+            -- Search for relative path mentions
+            OR md_content LIKE '%${escapedFullPath}%'
+            -- Search for just the slug mentions (with word boundaries to reduce false positives)
+            OR md_content LIKE '%/${escapedSlug}/%'
+            OR md_content LIKE '%/${escapedSlug}.%'
+            OR md_content LIKE '%#${escapedSlug}%'
+          )
+          -- Exclude self-mentions
+          AND file_path != '${escapedPath}'
+          -- Standard filters
+          AND file_path NOT LIKE '%_radar/%'
+          AND file_path NOT LIKE '%archived/%'
+          AND title IS NOT NULL
+          AND description IS NOT NULL
+          AND (draft != true OR draft IS NULL)
+          AND (hide_on_sidebar IS NULL OR hide_on_sidebar = false)
+        ORDER BY date DESC
+        LIMIT 10;
+      `;
+      
+      console.log('Executing mentions query for:', slug);
+      const response = await window.queryAPI(queryStr);
+      const mentionsData = response.result;
+      
+      if (mentionsData && mentionsData.length > 0) {
+        console.log(`Found ${mentionsData.length} mentions for ${slug}`);
+        const event = new CustomEvent('page-mentions', {
+          detail: {
+            data: mentionsData
+          }
+        });
+        window.dispatchEvent(event);
+      } else {
+        console.log('No mentions found for', slug);
+      }
+    } catch (error) {
+      console.error('Error loading mentions:', error);
+    }
+  }
+  
+  // Load mentions when the page loads
+  // Wait for queryAPI to be available
+  if (window.queryAPI) {
+    loadMentions();
+  } else {
+    window.addEventListener('load', () => {
+      if (window.queryAPI) {
+        loadMentions();
+      } else {
+        console.warn('queryAPI not available for mentions');
+      }
+    });
+  }
+</script>
+
+<section class="mentions" x-data="{ 
+  mentions: [],
+  hasMentions: false,
+  formatDate(dateStr) {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  },
+  formatFilePath(filePath) {
+    return '/' + filePath
+      .replace(/&/g, '')
+      .replace(/¶/g, '')
+      .replace(/§/g, '')
+      .split('.')[0]
+      .replace(/\s+/g, '-')
+      .replace(/\/+/g, '/')
+      .toLowerCase()
+      .split('/')
+      .map(segment => segment.replace(/^-+|-+$/g, '').replace(/_index$/, ''))
+      .join('/') + '/';
+  }
+}" @page-mentions.window="mentions = $event.detail.data; hasMentions = mentions.length > 0">
+  <template x-if="hasMentions">
+    <div class="mentions-container">
+      <h3 class="mentions-title">Mentioned in</h3>
+      <ul class="mentions-list">
+        <template x-for="mention in mentions" :key="mention.file_path">
+          <li class="mention-item">
+            <a :href="formatFilePath(mention.file_path)" class="mention-link">
+              <span class="mention-title" x-text="mention.title"></span>
+              <div class="mention-meta">
+                <span class="mention-date" x-text="formatDate(mention.date)"></span>
+                <template x-if="mention.primary_author">
+                  <span class="mention-author" x-text="'by ' + mention.primary_author"></span>
+                </template>
+              </div>
+            </a>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </template>
+</section>
+
+<style>
+  .mentions-container {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color, #eaeaea);
+  }
+  
+  .mentions-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .mentions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .mention-item {
+    margin-bottom: 1rem;
+  }
+  
+  .mention-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text-color, inherit);
+  }
+  
+  .mention-link:hover .mention-title {
+    text-decoration: underline;
+  }
+  
+  .mention-title {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+  
+  .mention-meta {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #666);
+  }
+  
+  .mention-date {
+    margin-right: 0.5rem;
+  }
+</style>
