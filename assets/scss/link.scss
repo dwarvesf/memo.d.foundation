@@ -31,13 +31,16 @@ a {
 
 main {
   a {
-    text-decoration: underline var(--primary-color);
-    -webkit-text-decoration: underline var(--primary-color);
+    text-decoration: underline var(--neutral-100);
+    -webkit-text-decoration: underline var(--neutral-100);
     text-decoration-skip-ink: auto;
     color: #23252c;
+    transition: all 150ms ease-in-out;
 
     &:hover {
       color: var(--primary-color) !important;
+      text-decoration: underline var(--primary-color);
+      -webkit-text-decoration: underline var(--primary-color);
     }
   }
 

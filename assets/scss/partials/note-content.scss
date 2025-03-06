@@ -10,12 +10,13 @@
 
   .pagetitle {
     grid-area: pagetitle;
-    margin: 0px;
+    margin-bottom: 0!important;
     font-size: 35px !important;
-    font-weight: 600;
+    font-weight: 500;
     font-style: normal;
     line-height: 42px;
     letter-spacing: -0.5px;
+    padding-bottom: 0!important;
   }
 
   .memo-tags {
@@ -161,7 +162,7 @@ ol {
   padding-left: 2rem;
   display: flex;
   flex-direction: column;
-  row-gap: 12px;
+  row-gap: 10px;
   margin-top: 0.5rem;
 
   > li > a {
@@ -215,18 +216,13 @@ main {
 }
 
 table,
+tr,
 th,
 td {
-  border: 1px solid;
   border-collapse: collapse;
-  border-spacing: 0px;
-  border-color: var(--border-color-light);
+  border-spacing: 0;
+  border: 1px solid var(--border-color-light);
 }
-
-// thead * {
-//   padding: 6px 12px;
-//   background-color: var(--secondary-background-color-light);
-// }
 
 th,
 td {
@@ -243,7 +239,7 @@ td:has(img) {
 
 table {
   width: 100%;
-  border-collapse: separate;
+  border-collapse: collapse;
   table-layout: fixed;
   border-spacing: 0;
   margin-top: 17px;
@@ -263,13 +259,8 @@ thead {
   z-index: 1;
 }
 
-thead::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 1px;
+th{
+  font-weight: 500;
 }
 
 html[data-theme="light"] {
@@ -280,10 +271,6 @@ html[data-theme="light"] {
   thead {
     background-color: var(--secondary-background-color-light);
   }
-
-  thead::after {
-    background-color: var(--border-color-light);
-  }
 }
 
 html[data-theme="dark"] {
@@ -293,10 +280,6 @@ html[data-theme="dark"] {
 
   thead {
     background-color: var(--secondary-background-color);
-  }
-
-  thead::after {
-    background-color: var(--border-color);
   }
 }
 
