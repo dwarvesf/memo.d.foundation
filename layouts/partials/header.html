@@ -157,7 +157,7 @@
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   {{ $readingTooltip := resources.Get "js/reading-tooltip.js" }}
   <script defer src="{{ $readingTooltip.RelPermalink }}"></script>
-  
+
   {{ $recentPages := resources.Get "js/recent-pages.js" }}
   <script defer src="{{ $recentPages.RelPermalink }}"></script>
 
@@ -316,9 +316,9 @@
   {{ $nekoImage2 := resources.Get "img/neko-2.png" }}
   <img class="neko" src="{{ $nekoImage.RelPermalink }}" alt="Neko" />
   <img class="neko2" src="{{ $nekoImage2.RelPermalink }}" alt="Neko2" />
-  
+
   {{ partial "sidebar.html" . }}
-  
+
   <div class="tab-header">
     <div class="header-spacer"></div>
     {{ partial "command-palette.html" . }}
@@ -516,25 +516,25 @@
                 <span>
                 Words:
                 </span>
-                {{ .WordCount }}
+                {{ .WordCount | lang.FormatNumber 0}}
               </li>
               <li class="span">
                 <span>
                 Characters:
                 </span>
-                {{ .Len }}
+                {{ .Len | lang.FormatNumber 0}}
               </li>
               <li class="span">
                 <span>
                 Without Spaces:
                 </span>
-                {{ .Plain | htmlUnescape | replaceRE "(\\s)" "" | len }}
+                {{ .Plain | htmlUnescape | replaceRE "(\\s)" "" | len | lang.FormatNumber 0 }}
               </li>
               <li class="span">
                 <span>
                 Blocks:
                 </span>
-                {{ findRE `(?m:<p>)` .Content | len }}
+                {{ findRE `(?m:<p>)` .Content | len | lang.FormatNumber 0 }}
               </li>
               <li class="span">
                 <span>
