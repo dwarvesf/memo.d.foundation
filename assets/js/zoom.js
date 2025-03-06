@@ -2,7 +2,7 @@
 function wrapImageWithContainer(img) {
   // Skip if already wrapped
   if (img.closest('.image-container')) return;
-  
+
   // Skip if no-zoom class or in sidebar
   if (img.classList.contains('no-zoom') || img.closest('.sidebar')) return;
 
@@ -29,7 +29,7 @@ function wrapImageWithContainer(img) {
   modal.className = 'zoom-modal';
   modal.innerHTML = `
     <div class="zoom-modal-content">
-      <img 
+      <img
         src="${img.src}"
         alt="${img.alt || ''}"
         class="zoomed-img"
@@ -47,7 +47,7 @@ function wrapImageWithContainer(img) {
 
 function initializeZoom() {
   // First wrap all images with zoom container
-  document.querySelectorAll('img:not(.zoomed-img):not(.no-zoom)').forEach(wrapImageWithContainer);
+  document.querySelectorAll('main img:not(.zoomed-img):not(.no-zoom)').forEach(wrapImageWithContainer);
 
   // Handle ESC key press
   document.addEventListener('keydown', (e) => {
@@ -65,14 +65,14 @@ function initializeZoom() {
       const container = e.currentTarget.closest('.image-container');
       const modal = container.querySelector('.zoom-modal');
       const zoomedImg = modal.querySelector('.zoomed-img');
-      
+
       // Show modal and center image
       modal.classList.add('active');
       zoomedImg.style.transform = 'translate(-50%, -50%) scale(1)';
       zoomedImg.style.position = 'absolute';
       zoomedImg.style.left = '50%';
       zoomedImg.style.top = '50%';
-      
+
       document.body.style.overflow = 'hidden'; // Prevent scrolling
     });
   });
