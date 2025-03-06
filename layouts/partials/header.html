@@ -40,7 +40,7 @@
   {{ end }}
   <meta name="keywords" content="{{ .Site.Params.tags }}">
   <meta name="theme-color" content="#1CA0F2">
-  
+
   <!-- Facebook Meta -->
   <meta property="og:site_name" content="Dwarves Memo">
   <meta property="og:title" content="{{ if eq .IsHome true }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
@@ -93,9 +93,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
   <!-- Prism Themes -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vs.min.css" integrity="sha512-Jn4HzkCnzA7Bc+lbSQHAMeen0EhSTy71o9yJbXZtQx9VvozKVBV/2zfR3VyuDFIxGvHgbOMMNvb80l+jxFBC1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: light)" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-vsc-dark-plus.min.css" integrity="sha512-ML8rkwYTFNcblPFx+VLgFIT2boa6f8DDP6p6go4+FT0/mJ8DCbCgi6S0UdjtzB3hKCr1zhU+YVB0AHhIloZP8Q==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: dark)" /> 
+  <link rel="stylesheet" id="prism-light" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-light.min.css" integrity="sha512-hS/3ZdmvOJPB/KZXZF9mUeMQuoNmo6BSiJHdUajzlhIs0CTBZMmJbtBkxMJAx7nm7IvigDv8N925UeuM0M96gg==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: light)" />
+  <link rel="stylesheet" id="prism-dark" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" integrity="sha512-c6S8OdtvoqZCbMfA1lWE0qd368pLdFvVHVILQzNizfowC+zV8rmVKdSlmL5SuidvATO0A7awDg53axd+s/9amw==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: dark)" />
 
   <!-- Katex -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
@@ -130,7 +131,7 @@
 
   <!-- {{ $markdownEntities := resources.Get "js/markdown-entities.js" }}
   <script defer src="{{ $markdownEntities.RelPermalink }}"></script> -->
-  
+
   {{ $tableOfContents := resources.Get "js/table-of-contents.js" }}
   <script defer src="{{ $tableOfContents.RelPermalink }}"></script>
 
@@ -274,7 +275,7 @@
       document.body.style.visibility = 'visible';
       document.body.style.opacity = 1;
     });
-    
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('{{ $serviceWorker.RelPermalink }}')
         .then(registration => {
@@ -322,10 +323,10 @@
     <div class="header-spacer"></div>
     {{ partial "command-palette.html" . }}
     <div>
-      <button 
+      <button
         class="btn-reading-mode-toggler"
         x-data
-        @click="$store.readingMode.toggle()" 
+        @click="$store.readingMode.toggle()"
         :reading-mode="$store.readingMode.on"
         :disable-transition="$store.readingMode.disableTransition"
       >
@@ -351,7 +352,7 @@
       </div>
     </div>
     <div id="themetoggler">
-      <button 
+      <button
       class="btn-theme-toggler"
       x-data="{
           theme: $persist('system'),
@@ -370,9 +371,9 @@
             }
             document.documentElement.setAttribute('data-theme', this.theme);
           }
-        }" 
-        x-init="init()" 
-        x-on:click="toggleTheme()" 
+        }"
+        x-init="init()"
+        x-on:click="toggleTheme()"
         x-bind:class="{ 'dark': theme === 'dark' }"
       >
         <svg viewBox="0 0 24 24" width="24" height="24" x-bind:class="{'hidden': theme === 'light'}">
@@ -389,7 +390,7 @@
         </svg>
       </button>
     </div>
-    
+
   </div>
   <div class="grid">
    <div id="overlay"></div>
@@ -401,7 +402,7 @@
     {{ $menus := .Site.Menus }}
     {{ $data := slice }}
     {{ $menuNames := slice "earn" "labs" "consulting" "memo" "newsletter" "changelog" }}
-    
+
     {{ range $menuNames }}
       {{ $menuName := . }}
         {{ $posts := index $menus $menuName }}
@@ -416,9 +417,9 @@
         <div class="show-hide-right-sidebar">
           <div>
             <label class="nav-label">Interactive graph</label>
-            <div 
+            <div
               id="graph-container"
-              class="graph-container" 
+              class="graph-container"
               :class="{ 'fullscreen': $store.graphFullScreen.on }"
               x-data
             >
@@ -432,10 +433,10 @@
                     <line x1="7" y1="17" x2="17" y2="7"></line>
                     <polyline points="7 7 17 7 17 17"></polyline>
                   </svg>
-                  
+
                   <svg height="24" width="24" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" x-bind:class="{ 'hidden': !$store.graphFullScreen.on }">
                     <path
-                      d="M289.94,256l95-95A24,24,0,0,0,351,127l-95,95-95-95A24,24,0,0,0,127,161l95,95-95,95A24,24,0,1,0,161,385l95-95,95,95A24,24,0,0,0,385,351Z" 
+                      d="M289.94,256l95-95A24,24,0,0,0,351,127l-95,95-95-95A24,24,0,0,0,127,161l95,95-95,95A24,24,0,1,0,161,385l95-95,95,95A24,24,0,0,0,385,351Z"
                     />
                   </svg>
                 </button>
@@ -443,8 +444,8 @@
             </div>
           </div>
         </div>
-  
-  
+
+
         <div class="always-on-right-sidebar">
           <div>
             <label class="nav-label">ON THIS PAGE</label>

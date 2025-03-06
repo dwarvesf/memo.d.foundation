@@ -182,9 +182,8 @@ const convertMermaidElements = () => {
 };
 
 const updatePrismStylesheets = () => {
-  const lightStylesheet = document.querySelector('link[href*="prism-vs.min.css"]');
-  const darkStylesheet = document.querySelector('link[href*="prism-vsc-dark-plus.min.css"]');
-
+  const lightStylesheet = document.querySelector('link#prism-light');
+  const darkStylesheet = document.querySelector('link#prism-dark');
   const updateStylesheets = (isDark) => {
     lightStylesheet.media = isDark ? 'not all' : 'all';
     darkStylesheet.media = isDark ? 'all' : 'not all';
