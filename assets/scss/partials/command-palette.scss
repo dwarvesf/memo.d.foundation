@@ -94,8 +94,7 @@
   padding: 16px;
 }
 
-.cmd-results {
-}
+.cmd-results {}
 
 .cmd-results-active {
   display: block;
@@ -169,21 +168,25 @@ div:has(> .cmd-results-list) {
     align-self: flex-start;
     margin-top: 32px;
     color: var(--secondary-font-color-light-var2);
-    > span {
+
+    >span {
       text-transform: uppercase;
       text-decoration: underline;
       text-decoration-skip-ink: auto;
       font-weight: 500;
       font-size: 12px;
     }
+
     p {
       margin-top: 20px;
       white-space: pre-wrap;
       font-size: 12px;
     }
+
     hr {
       margin: 10px 0px !important;
     }
+
     display: flex;
     flex-direction: column;
   }
@@ -193,7 +196,7 @@ div:has(> .cmd-results-list) {
   display: flex;
   flex-direction: column;
 
-  > span {
+  >span {
     background-color: var(--primary-border-color-light);
     padding: 6px 12px;
     text-transform: capitalize;
@@ -207,14 +210,14 @@ div:has(> .cmd-results-list) {
   background-color: transparent;
   transition: background-color 0.05s ease-in;
 
-  > * {
+  >* {
     outline: none;
   }
 
   &.cmd-result-selected {
     background-color: var(--primary-color);
 
-    > a {
+    >a {
       color: white !important;
     }
 
@@ -227,7 +230,7 @@ div:has(> .cmd-results-list) {
     }
   }
 
-  > a {
+  >a {
     color: var(--primary-font-color-light);
     position: relative;
     width: 100%;
@@ -324,7 +327,7 @@ html[data-theme="dark"] {
   }
 
   .cmd-results-group {
-    > span {
+    >span {
       background-color: var(--primary-border-color);
     }
   }

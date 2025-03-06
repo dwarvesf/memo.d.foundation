@@ -156,6 +156,9 @@
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   {{ $readingTooltip := resources.Get "js/reading-tooltip.js" }}
   <script defer src="{{ $readingTooltip.RelPermalink }}"></script>
+  
+  {{ $recentPages := resources.Get "js/recent-pages.js" }}
+  <script defer src="{{ $recentPages.RelPermalink }}"></script>
 
   {{ $queryEngine := resources.Get "js/query-engine.mjs" }}
   <script defer type="module" src="{{ $queryEngine.RelPermalink }}"></script>
@@ -307,26 +310,16 @@
 
 {{ $.Scratch.Set "section" (replaceRE "^/([^/]+)/.*" "$1" .RelPermalink) }}
 
-<body class="no-transition {{ if .IsHome }}home{{ else }}{{ $.Scratch.Get " section" }}{{ end }}">
+<body class="no-transition has-sidebar {{ if .IsHome }}home{{ else }}{{ $.Scratch.Get " section" }}{{ end }}">
+  {{ $nekoImage := resources.Get "img/neko.png" }}
+  {{ $nekoImage2 := resources.Get "img/neko-2.png" }}
+  <img class="neko" src="{{ $nekoImage.RelPermalink }}" alt="Neko" />
+  <img class="neko2" src="{{ $nekoImage2.RelPermalink }}" alt="Neko2" />
+  
+  {{ partial "sidebar.html" . }}
+  
   <div class="tab-header">
-    <button x-data @click="$store.sidebar.toggle()" id="sidebar-toggle" class="mobile-nav-btn">
-      <svg :show="!$store.sidebar.open" class="icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11 20H29M11 14H29M11 26H29" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <svg :show="$store.sidebar.open" class="icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.3993 14.0148C15.1064 13.7219 14.6316 13.7219 14.3387 14.0148C14.0458 14.3077 14.0458 14.7826 14.3387 15.0755L19.2632 20L14.3387 24.9245C14.0458 25.2174 14.0458 25.6923 14.3387 25.9851C14.6316 26.278 15.1064 26.278 15.3993 25.9851L20.3238 21.0607L25.2483 25.9851C25.5412 26.278 26.0161 26.278 26.309 25.9851C26.6019 25.6923 26.6019 25.2174 26.309 24.9245L21.3845 20L26.309 15.0755C26.6019 14.7826 26.6019 14.3077 26.309 14.0148C26.0161 13.7219 25.5412 13.7219 25.2483 14.0148L20.3238 18.9393L15.3993 14.0148Z" fill="currentColor"/>
-      </svg>
-    </button>
-    <span class="title">
-      <svg width="30" height="30" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.41664 20C1.08113 20 0 18.8812 0 17.4991V2.50091C0 1.11883 1.08113 0 2.41664 0L8.46529 0.00731261C13.8427 0.00731261 18.1954 4.55576 18.1248 10.1353C18.0541 15.6271 13.6307 20 8.32397 20H2.41664Z" fill="#E13F5E"/>
-        <path d="M3.63209 15.6271H3.32118C3.15159 15.6271 3.01733 15.4881 3.01733 15.3126V12.8044C3.01733 12.6289 3.15159 12.49 3.32118 12.49H5.74488C5.91447 12.49 6.04873 12.6289 6.04873 12.8044V13.1262C6.04873 14.5082 4.9676 15.6271 3.63209 15.6271Z" fill="white"/>
-        <path d="M3.32119 8.11701H10.8749C12.2105 8.11701 13.2916 6.99818 13.2916 5.6161V5.31628C13.2916 5.13347 13.1503 4.98721 12.9736 4.98721H5.44105C4.10554 4.98721 3.02441 6.10604 3.02441 7.48813V7.80257C3.02441 7.97807 3.15867 8.11701 3.32119 8.11701Z" fill="white"/>
-        <path d="M3.32118 11.8684H7.24998C8.58549 11.8684 9.66661 10.7496 9.66661 9.36747V9.05303C9.66661 8.87753 9.53236 8.73859 9.36277 8.73859H3.32118C3.15159 8.73859 3.01733 8.87753 3.01733 9.05303V11.5539C3.0244 11.7294 3.15866 11.8684 3.32118 11.8684Z" fill="white"/>
-      </svg>
-      <a href="/">Dwarves<br/>Memo</a>
-    </span>
-    {{ partial "tab-menu.html" . }}
+    <div class="header-spacer"></div>
     {{ partial "command-palette.html" . }}
     <div>
       <button 
