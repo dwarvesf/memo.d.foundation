@@ -2,6 +2,9 @@
 function wrapImageWithContainer(img) {
   // Skip if already wrapped
   if (img.closest('.image-container')) return;
+  
+  // Skip if no-zoom class or in sidebar
+  if (img.classList.contains('no-zoom') || img.closest('.sidebar')) return;
 
   // Create container
   const container = document.createElement('div');
@@ -44,7 +47,7 @@ function wrapImageWithContainer(img) {
 
 function initializeZoom() {
   // First wrap all images with zoom container
-  document.querySelectorAll('img:not(.zoomed-img)').forEach(wrapImageWithContainer);
+  document.querySelectorAll('img:not(.zoomed-img):not(.no-zoom)').forEach(wrapImageWithContainer);
 
   // Handle ESC key press
   document.addEventListener('keydown', (e) => {

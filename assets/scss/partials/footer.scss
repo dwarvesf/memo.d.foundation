@@ -20,7 +20,7 @@ footer {
   box-sizing: border-box;
   overflow: hidden;
 
-  & > * {
+  &>* {
     color: #9b9b9b;
     padding: 0px 12px;
     border-width: 0px 1px;
@@ -48,6 +48,7 @@ footer {
     justify-content: start;
     align-items: center;
     column-gap: 10px;
+    margin: 0 auto;
 
     a {
       cursor: pointer;
@@ -62,6 +63,11 @@ footer span {
 
 @media screen and (max-width: 768px) {
   footer {
+    .socials {
+      margin-left: 0;
+      /* Remove sidebar width adjustment on mobile */
+    }
+
     .authors {
       display: flex;
     }
@@ -84,7 +90,7 @@ html[data-theme="dark"] {
     border-top: 1px solid var(--border-color);
     background-color: var(--primary-background-color);
 
-    & > * {
+    &>* {
       &:not(:last-child) {
         border-right-color: var(--border-color);
       }
