@@ -750,10 +750,9 @@ html[data-theme="dark"] {
 
   main {
     justify-self: center;
-    width: calc(100vw - 72px);
+    width: 100vw;
     max-width: 100vw;
     padding: var(--main-padding-mobile);
-    margin-left: 72px;
   }
 
   #TableOfContents {

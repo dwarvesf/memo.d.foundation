@@ -6,33 +6,23 @@
   left: 0;
   height: 100%;
   min-height: 100vh;
+  width: 72px;
   background-color: var(--primary-background-color-light);
   /* Higher than other UI elements */
-  transition: width 0.3s ease;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to visible to allow tooltips to show */
   border-right: 1px solid var(--border-color-light);
   padding: 0 16px;
-
-  &.collapsed {
-    width: 72px;
-
-    .sidebar-item {
-      justify-content: center;
-    }
-  }
-
-  &.expanded {
-    width: 232px;
-  }
 
   .sidebar-logo {
     display: flex;
     align-items: center;
-    padding: 16px 0;
-    margin-bottom: 0;
+    justify-content: center;
+    margin: 16px 0;
+    padding: 0;
     height: 40px;
+    position: relative;
 
     svg {
       min-width: 24px;
@@ -43,19 +33,7 @@
     }
 
     span {
-      font-weight: 700;
-      white-space: nowrap;
-      text-decoration: none;
-      color: #23252c;
-      font-size: 13px;
-      line-height: 1.2;
-      opacity: 0;
-      text-transform: uppercase;
-      transition: opacity 0.2s ease-in-out;
-
-      &.show {
-        opacity: 100;
-      }
+      display: none; /* Hide the text completely */
     }
   }
 
@@ -67,16 +45,13 @@
     .sidebar-item {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       padding: 12px 0;
       text-decoration: none;
       color: #23252c;
       transition: background-color 0.2s ease;
       border-radius: 8px;
-
-      .sidebar.expanded & {
-        justify-content: flex-start;
-      }
+      position: relative;
 
       &:hover {
         background-color: #ededed;
@@ -91,24 +66,8 @@
         flex-shrink: 0;
       }
 
-      .sidebar.expanded & {
-
-        svg,
-        img {
-          margin-right: 12px;
-        }
-      }
-
       span {
-        font-size: 14px;
-        white-space: nowrap;
-        font-weight: 500;
-        opacity: 0;
-        transition: opacity 0.2s ease-in-out;
-
-        &.show {
-          opacity: 100;
-        }
+        display: none; /* Hide the text as it will be in the tooltip */
       }
     }
   }
@@ -119,14 +78,6 @@ html[data-theme="dark"] {
   .sidebar {
     background-color: var(--primary-background-color);
     border-right: 1px solid var(--border-color);
-
-    .sidebar-logo a {
-      color: #dadada;
-    }
-
-    .sidebar-logo span {
-      color: white;
-    }
 
     .sidebar-item {
       color: #dadada;
@@ -142,24 +93,101 @@ html[data-theme="dark"] {
   }
 }
 
+// Tooltips container outside the sidebar
+.tooltips-container {
+  position: fixed;
+  z-index: 1000; // Higher than sidebar
+  pointer-events: none; // Let clicks pass through
+}
+
+// Sidebar tooltip styles
+.sidebar-tooltip {
+  background: var(--secondary-background-color);
+  color: var(--secondary-font-color);
+  font-weight: bold;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  &[data-show] {
+    display: block;
+  }
+
+  .arrow,
+  .arrow::before {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: inherit;
+  }
+
+  .arrow {
+    visibility: hidden;
+  }
+
+  .arrow::before {
+    visibility: visible;
+    content: "";
+    transform: rotate(45deg);
+  }
+
+  &[data-popper-placement^="top"]>.arrow {
+    bottom: -4px;
+  }
+
+  &[data-popper-placement^="bottom"]>.arrow {
+    top: -4px;
+  }
+
+  &[data-popper-placement^="left"]>.arrow {
+    right: -4px;
+  }
+
+  &[data-popper-placement^="right"]>.arrow {
+    left: -4px;
+  }
+}
+
+// Dark theme support for tooltips
+html[data-theme="dark"] {
+  .sidebar-tooltip {
+    background: var(--secondary-background-color);
+    color: var(--secondary-font-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
 // Mobile adjustments
 @media (max-width: 768px) {
   .sidebar {
+    width: 56px;
+    padding: 0 12px;
+    z-index: 1000;
+    transition: transform 0.3s ease;
     transform: translateX(-100%);
-    width: 240px;
     /* Always expanded on mobile */
 
     &.mobile-visible {
       transform: translateX(0);
     }
-  }
-
-  body.has-sidebar {
-
-    .grid,
-    .tab-header {
-      padding-left: 0 !important;
-      /* No sidebar space on mobile */
+    
+    // Show labels on mobile without tooltips
+    .sidebar-item {
+      justify-content: flex-start;
+      
+      span {
+        display: inline-block;
+        margin-left: 12px;
+      }
+    }
+    
+    // Hide tooltips on mobile
+    .sidebar-tooltip {
+      display: none !important;
     }
   }
+
 }

@@ -62,7 +62,7 @@
   margin-top: 10vh;
   border-radius: 8px;
   width: 100%;
-  max-width: 1000px;
+  max-width: 750px;
   z-index: 1001;
   display: flex;
   flex-direction: column;
@@ -114,6 +114,8 @@ div:has(> .cmd-results-list) {
 }
 
 .cmd-results-list {
+  flex: 1;
+  flex-basis: 50%;
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -125,6 +127,7 @@ div:has(> .cmd-results-list) {
 .cmd-result-preview {
   overflow: auto;
   flex: 1;
+  flex-basis: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,7 +137,7 @@ div:has(> .cmd-results-list) {
   box-shadow: inset 1px 1px 2px hsla(230, 6%, 60%, 0.24),
     inset 2px 2px 8px hsla(230, 6%, 60%, 0.1);
 
-  padding: 24px 72px;
+  padding: 24px 56px;
 
   .cmd-preview-icon {
     width: 36px;
