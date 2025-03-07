@@ -72,13 +72,14 @@ defmodule Memo.ExportMarkdown do
       else
         IO.puts("Processing #{Enum.count(files_to_process)} changed files...")
 
-        # Process changed files
+        # Process changed files - Using Enum instead of Flow to avoid protocol errors
         updated_entries =
-          Flow.from_enumerable(files_to_process)
-          |> Flow.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
-          |> Flow.map(&process_file(&1, vault_dir, exportpath, all_valid_files, cache))
-          |> Flow.reduce(fn -> %{} end, fn entry, acc -> Map.merge(acc, entry) end)
-          |> Flow.run()
+          files_to_process
+          |> Enum.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
+          |> Enum.map(fn file ->
+              # process_file always returns a map, no need to check for :ok
+              process_file(file, vault_dir, exportpath, all_valid_files, cache)
+            end)
           |> Enum.reduce(%{}, fn entry, acc -> Map.merge(acc, entry) end)
 
         # Merge with unchanged entries
@@ -97,10 +98,8 @@ defmodule Memo.ExportMarkdown do
       remove_deleted_exports(deleted_files, vault_dir, exportpath)
     end
 
-    # Process assets folders
-    Flow.from_enumerable(all_assets)
-    |> Flow.map(&export_assets_folder(&1, vault_dir, exportpath, ignored_patterns))
-    |> Flow.run()
+    # Process assets folders - Using Enum instead of Flow to avoid protocol errors
+    Enum.each(all_assets, &export_assets_folder(&1, vault_dir, exportpath, ignored_patterns))
 
     # Export the db directory
     export_db_directory("../../db", exportpath)
@@ -118,38 +117,51 @@ defmodule Memo.ExportMarkdown do
       copy_directory(asset_path, slugified_target_path, ignored_patterns, vaultpath)
       IO.puts("Exported assets: #{asset_path} -> #{slugified_target_path}")
     end
+
+    # Always return an empty map to avoid Enumerable protocol errors
+    %{}
   end
 
   defp export_db_directory(dbpath, exportpath) do
     if File.dir?(dbpath) do
       export_db_path = Path.join(exportpath, "../../db")
-      slugified_export_db_path = Slugify.slugify_path(export_db_path)
+      # Use preserve_relative_prefix_and_slugify to keep the relative path prefix
+      slugified_export_db_path = preserve_relative_prefix_and_slugify(export_db_path)
       copy_directory(dbpath, slugified_export_db_path, [], dbpath)
       IO.puts("Exported db folder: #{dbpath} -> #{slugified_export_db_path}")
     else
       IO.puts("db folder not found at #{dbpath}")
     end
+
+    # Always return an empty map to avoid Enumerable protocol errors
+    %{}
   end
 
   defp copy_directory(source, destination, ignored_patterns, vaultpath) do
-    slugified_destination = Slugify.slugify_path(destination)
+    # Use preserve_relative_prefix_and_slugify instead of Slugify.slugify_path to keep the relative path prefix
+    slugified_destination = preserve_relative_prefix_and_slugify(destination)
     File.mkdir_p!(slugified_destination)
 
-    File.ls!(source)
-    |> Enum.each(fn item ->
-      source_path = Path.join(source, item)
-      dest_path = Path.join(slugified_destination, Slugify.slugify_filename(item))
+    case File.ls(source) do
+      {:ok, files} ->
+        Enum.each(files, fn item ->
+          source_path = Path.join(source, item)
+          dest_path = Path.join(slugified_destination, Slugify.slugify_filename(item))
 
-      if not FileUtils.ignored?(source_path, ignored_patterns, vaultpath) do
-        if File.dir?(source_path) do
-          if Path.basename(source_path) != "assets" or Path.basename(source) != "assets" do
-            copy_directory(source_path, dest_path, ignored_patterns, vaultpath)
+          if not FileUtils.ignored?(source_path, ignored_patterns, vaultpath) do
+            if File.dir?(source_path) do
+              # Skip only if BOTH directories are named "assets"
+              if not (Path.basename(source_path) == "assets" and Path.basename(source) == "assets") do
+                copy_directory(source_path, dest_path, ignored_patterns, vaultpath)
+              end
+            else
+              File.copy!(source_path, dest_path)
+            end
           end
-        else
-          File.copy!(source_path, dest_path)
-        end
-      end
-    end)
+        end)
+      {:error, reason} ->
+        IO.puts("Error listing directory #{source}: #{reason}")
+    end
   end
 
   defp process_file(file, vaultpath, exportpath, all_files, cache) do
@@ -332,8 +344,8 @@ defmodule Memo.ExportMarkdown do
     old_base = Path.basename(old_prefix)
     new_base = Path.basename(new_prefix)
 
-    # Simple string replacement of vault with content
-    # This works regardless of relative paths or other path components
-    String.replace(path, "/#{old_base}/", "/#{new_base}/")
+    # Handle both relative and absolute paths
+    # This works with paths like "../../vault" and "../../content"
+    String.replace(path, ~r"(^|/)#{old_base}(/|$)", "\\1#{new_base}\\2")
   end
 end
