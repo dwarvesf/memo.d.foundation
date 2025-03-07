@@ -3,7 +3,7 @@ setup:
 	@devbox install
 	@mkdir -p ./content
 
-compiler-setup:
+lib-setup:
 	@cd lib/obsidian-compiler && mix local.hex --force && mix local.rebar --force && mix deps.get
 
 fetch:
