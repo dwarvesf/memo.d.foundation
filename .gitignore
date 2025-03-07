@@ -26,6 +26,7 @@ resources
 public/*
 !public/CNAME
 content/
+!src/lib/content/
 
 # MacOS files
 .DS_Store
