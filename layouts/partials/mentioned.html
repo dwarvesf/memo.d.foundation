@@ -173,12 +173,6 @@
     <!-- Loading state -->
     <div
       x-show="loading"
-      x-transition:enter="transition ease-out duration-300"
-      x-transition:enter-start="opacity-0"
-      x-transition:enter-end="opacity-100"
-      x-transition:leave="transition ease-out duration-300"
-      x-transition:leave-start="opacity-100"
-      x-transition:leave-end="opacity-0"
       class="loading-container"
     >
       <div class="loading-placeholder"></div>
@@ -189,9 +183,6 @@
     <!-- Content when mentions exist -->
     <div
       x-show="!loading && hasMentions"
-      x-transition:enter="transition ease-out duration-300"
-      x-transition:enter-start="opacity-0"
-      x-transition:enter-end="opacity-100"
       class="mentions-list"
     >
       <ul>
@@ -215,9 +206,6 @@
     <!-- No mentions state -->
     <div
       x-show="!loading && !hasMentions && !error"
-      x-transition:enter="transition ease-out duration-300"
-      x-transition:enter-start="opacity-0"
-      x-transition:enter-end="opacity-100"
       class="no-mentions-container"
     >
       <p class="no-mentions">No mentions found</p>
@@ -226,9 +214,6 @@
     <!-- Error state -->
     <div
       x-show="!loading && error"
-      x-transition:enter="transition ease-out duration-300"
-      x-transition:enter-start="opacity-0"
-      x-transition:enter-end="opacity-100"
       class="error-container"
     >
       <p class="no-mentions">Unable to load mentions</p>
