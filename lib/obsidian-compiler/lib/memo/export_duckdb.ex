@@ -99,7 +99,7 @@ defmodule Memo.ExportDuckDB do
 
     case DuckDBUtils.execute_query(check_query) do
       {:ok, []} ->
-        case DuckDBUtils.execute_query("IMPORT DATABASE 'db'") do
+        case DuckDBUtils.execute_query("IMPORT DATABASE '../../db'") do
           {:ok, _} ->
             IO.puts("Successfully imported database from 'db' directory.")
             merge_columns()
@@ -194,13 +194,13 @@ defmodule Memo.ExportDuckDB do
   defp export(format) do
     case format do
       "csv" ->
-        response = DuckDBUtils.execute_query("EXPORT DATABASE 'db'")
-        clean_exported_schema("db/schema.sql")
+        response = DuckDBUtils.execute_query("EXPORT DATABASE '../../db'")
+        clean_exported_schema("../../db/schema.sql")
         response
 
       "parquet" ->
-        response = DuckDBUtils.execute_query("EXPORT DATABASE 'db' (FORMAT PARQUET)")
-        clean_exported_schema("db/schema.sql")
+        response = DuckDBUtils.execute_query("EXPORT DATABASE '../../db' (FORMAT PARQUET)")
+        clean_exported_schema("../../db/schema.sql")
         response
 
       _ ->
@@ -455,25 +455,72 @@ defmodule Memo.ExportDuckDB do
   defp add_to_database(frontmatter) do
     keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
     frontmatter = ensure_all_columns(frontmatter)
-    prepared_values = prepare_data(keys, frontmatter)
     file_path_value = Map.get(frontmatter, "file_path") |> escape_string()
 
     with {:ok, [existing_data]} <-
-           DuckDBUtils.execute_query(
-             "SELECT * FROM vault WHERE file_path = '#{file_path_value}'"
-           ),
-         true <- data_changed?(existing_data, frontmatter) do
-      perform_upsert(keys, prepared_values)
+         DuckDBUtils.execute_query(
+         "SELECT * FROM vault WHERE file_path = '#{file_path_value}'"
+         ) do
+      # Check if data has changed and if embeddings need regeneration
+      case check_data_changes(existing_data, frontmatter) do
+        {:no_change} ->
+          IO.puts("No changes detected for file: #{file_path_value}")
+
+        {:changed, :regenerate_embeddings} ->
+          IO.puts("Embeddings are all zeros. Regenerating embeddings for: #{file_path_value}")
+          md_content = Map.get(frontmatter, "md_content")
+          updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
+          prepared_values = prepare_data(keys, updated_frontmatter)
+          perform_upsert(keys, prepared_values)
+
+        {:changed, :normal_update} ->
+          prepared_values = prepare_data(keys, frontmatter)
+          perform_upsert(keys, prepared_values)
+      end
     else
       {:ok, []} ->
+        prepared_values = prepare_data(keys, frontmatter)
         perform_upsert(keys, prepared_values)
-
-      false ->
-        IO.puts("No changes detected for file: #{file_path_value}")
 
       {:error, error_message} ->
         IO.puts("Failed to fetch existing entry for file: #{file_path_value}")
         IO.puts("Error: #{inspect(error_message)}")
+    end
+  end
+
+  defp check_data_changes(existing_data, frontmatter) do
+    # First check if any field has changed
+    any_field_changed = Enum.any?(@allowed_frontmatter, fn {key, _type} ->
+      existing_value = Map.get(existing_data, key)
+      new_value = Map.get(frontmatter, key)
+
+      # Normalize both values for comparison
+      normalized_existing = normalize_for_comparison(existing_value, key)
+      normalized_new = normalize_for_comparison(new_value, key)
+
+      if normalized_existing != normalized_new do
+        IO.puts("Change detected in #{key}:")
+        IO.puts("  Existing (normalized): #{inspect(normalized_existing)}")
+        IO.puts("  New (normalized): #{inspect(normalized_new)}")
+        true
+      else
+        false
+      end
+    end)
+
+    # If no fields have changed, check if the embeddings are all zeros
+    if not any_field_changed do
+      # Check if the existing embeddings are all zeros
+      openai_embeddings_all_zeros = all_zeros?(existing_data["embeddings_openai"])
+
+      if openai_embeddings_all_zeros do
+        IO.puts("No field changes detected, but embeddings are all zeros. Marking as changed.")
+        {:changed, :regenerate_embeddings}
+      else
+        {:no_change}
+      end
+    else
+      {:changed, :normal_update}
     end
   end
 
@@ -498,25 +545,15 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
-  defp data_changed?(existing_data, frontmatter) do
-    Enum.any?(@allowed_frontmatter, fn {key, _type} ->
-      existing_value = Map.get(existing_data, key)
-      new_value = Map.get(frontmatter, key)
-
-      # Normalize both values for comparison
-      normalized_existing = normalize_for_comparison(existing_value, key)
-      normalized_new = normalize_for_comparison(new_value, key)
-
-      if normalized_existing != normalized_new do
-        IO.puts("Change detected in #{key}:")
-        IO.puts("  Existing (normalized): #{inspect(normalized_existing)}")
-        IO.puts("  New (normalized): #{inspect(normalized_new)}")
-        true
-      else
-        false
-      end
-    end)
+  defp all_zeros?(nil), do: false
+  defp all_zeros?(embeddings) when is_list(embeddings), do: Enum.all?(embeddings, &(&1 == 0))
+  defp all_zeros?(embeddings) when is_binary(embeddings) do
+    case Jason.decode(embeddings) do
+      {:ok, decoded} when is_list(decoded) -> all_zeros?(decoded)
+      _ -> false
+    end
   end
+  defp all_zeros?(_), do: false
 
   defp normalize_for_comparison(value, key) do
     type = Enum.find(@allowed_frontmatter, fn {k, _} -> k == key end) |> elem(1)
