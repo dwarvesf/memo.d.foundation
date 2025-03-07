@@ -98,9 +98,9 @@ dispatchSearchPlaceholder('Initializing Search...');
 queryAPI('SELECT 1')
   .then(() => {
     console.log('API connection successful');
-    dispatchSearchPlaceholder('Search');
+    dispatchSearchPlaceholder('Search for a topic or memo...');
   })
   .catch((error) => {
     console.error('Failed to initialize API connection:', error);
-    dispatchSearchPlaceholder('Search (Offline)');
+    dispatchSearchPlaceholder('Search for a topic or memo... (Offline)');
   });
