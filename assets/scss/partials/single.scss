@@ -1,0 +1,115 @@
+.subscription {
+  padding: 1.5rem;
+  background-color: var(--secondary-background-color-light);
+  border-radius: 8px;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .subscription {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
+  .subscription-form {
+    margin-top: 5px;
+  }
+}
+
+.subscription-form {
+  display: flex;
+}
+
+.subscription-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 !important;
+}
+
+.subscription-description {
+  font-size: 14px;
+  color: var(--secondary-foreground);
+  margin-top: 0;
+}
+
+.subscription-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--primary-border-color-light);
+  border-radius: 8px 0 0 8px;
+  font-size: 0.875rem;
+  background-color: var(--primary-background-color-light);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+html[data-theme='dark'] {
+  .subscription-input {
+    background-color: var(--primary-background-color-dark);
+    border: 1px solid var(--border-color);
+    color: var(--primary-font-color);
+  }
+  .subscription {
+    background-color: var(--secondary-background-color);
+  }
+}
+
+.subscription-input:focus {
+  border-color: var(--primary-color);
+}
+
+.subscription-button {
+  padding: 0.75rem 2rem;
+  background-color: var(--primary-color);
+  color: var(--primary-foreground-color);
+  border: none;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.subscription-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.subscription-button:hover:not(:disabled) {
+  background-color: var(--error-color);
+}
+
+.subscription-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+  .subscription-button {
+    width: 100%;
+  }
+}
+
+.spinner {
+  display: none;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--primary-foreground-color);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: 8px;
+  transform: rotate(0deg);
+}
+
+.subscription-button.loading .spinner {
+  display: inline-block;
+}
