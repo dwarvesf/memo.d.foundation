@@ -528,7 +528,7 @@
       });
     }
   }" class=cmd-palette @command-palette-recents.window="recentPages = $event.detail.data; if(recentPages.length > 0) { selectedRecent = recentPages[0]; selectedSection = 'recents'; }"><button class=cmd-search-button @click=openPalette()>
-<span class=cmd-search-button-text>🔍 Search for a topic or memo...</span>
+<span class=cmd-search-button-text>🔍 Search</span>
 <span class=cmd-search-button-keys><kbd class=memo-tag>⌘</kbd>
 <kbd class=memo-tag>K</kbd></span></button><div @keydown.enter.stop.document=goto() @keydown.ctrl.j.prevent.document=next() @keydown.ctrl.k.prevent.document=prev() @keydown.arrow-down.prevent.document=next() @keydown.arrow-up.prevent.document=prev() class=cmd-overlay :class="searchBar ?'cmd-modal-active' : 'cmd-modal-hidden'" x-ref=searchContainer><div class=cmd-modal @mousedown.outside=close() x-trap.inert.noscroll.noreturn=searchBar><input type=text x-model=query :placeholder=searchPlaceholder autocomplete=off class=cmd-search-input x-ref=searchInput @input="
           searching = true;
