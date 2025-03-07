@@ -126,7 +126,7 @@
           AND (NOT hiring OR hiring IS NULL)
           AND (NOT draft OR draft IS NULL)
           ${filters.authors.length ? `AND authors @> '${JSON.stringify(filters.authors)}'::jsonb` : ""}
-        ORDER BY 
+        ORDER BY
           full_text_score DESC,
           similarity DESC
         LIMIT 10;
@@ -174,20 +174,20 @@
   }
 </script>
 
-<div x-data="{ 
-    searching: false, 
-    searchPlaceholder: 'Initializing Search...', 
-    searchBar: false, 
-    query: '', 
-    searchResults: {}, 
-    flat: [], 
-    selected: {}, 
+<div x-data="{
+    searching: false,
+    searchPlaceholder: 'Initializing Search...',
+    searchBar: false,
+    query: '',
+    searchResults: {},
+    flat: [],
+    selected: {},
     recentPages: [],
     selectedRecent: null,
     selectedSection: 'recents', // 'recents', 'welcome', 'suggestions', or 'search'
     selectedWelcomeItem: 0,
     selectedSuggestionItem: 0,
-    
+
     next(container) {
       // Handle search results navigation when query is present
       if (this.query.length > 0) {
@@ -203,7 +203,7 @@
         this.selectedSection = 'search';
         return;
       }
-      
+
       // Handle navigation between sections
       if (this.selectedSection === 'recents') {
         if (this.recentPages.length === 0) {
@@ -213,7 +213,7 @@
           this.selectWelcomeItem(0);
           return;
         }
-        
+
         const curIdx = this.recentPages.findIndex(p => p === this.selectedRecent);
         let nextIdx = curIdx + 1;
         if (nextIdx >= this.recentPages.length) {
@@ -223,13 +223,13 @@
           this.selectWelcomeItem(0);
           return;
         }
-        
+
         // Next recent item
         this.selectedRecent = this.recentPages[nextIdx];
         const selector = `div[data-recent-id='${nextIdx}']`;
         const div = $refs.searchContainer.querySelector(selector);
         if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
-      } 
+      }
       else if (this.selectedSection === 'welcome') {
         let nextIdx = this.selectedWelcomeItem + 1;
         if (nextIdx >= 2) { // 2 welcome items
@@ -239,10 +239,10 @@
           this.selectSuggestionItem(0);
           return;
         }
-        
+
         // Next welcome item
         this.selectWelcomeItem(nextIdx);
-      } 
+      }
       else if (this.selectedSection === 'suggestions') {
         // Only one suggestion item, go back to recents
         if (this.recentPages.length > 0) {
@@ -258,8 +258,8 @@
           this.selectWelcomeItem(0);
         }
       }
-    }, 
-    
+    },
+
     prev(container) {
       // Handle search results navigation when query is present
       if (this.query.length > 0) {
@@ -275,7 +275,7 @@
         this.selectedSection = 'search';
         return;
       }
-      
+
       // Handle navigation between sections
       if (this.selectedSection === 'recents') {
         if (this.recentPages.length === 0) {
@@ -285,7 +285,7 @@
           this.selectSuggestionItem(0);
           return;
         }
-        
+
         const curIdx = this.recentPages.findIndex(p => p === this.selectedRecent);
         let prevIdx = curIdx - 1;
         if (prevIdx < 0) {
@@ -295,13 +295,13 @@
           this.selectSuggestionItem(0);
           return;
         }
-        
+
         // Previous recent item
         this.selectedRecent = this.recentPages[prevIdx];
         const selector = `div[data-recent-id='${prevIdx}']`;
         const div = $refs.searchContainer.querySelector(selector);
         if (div) div.scrollIntoView({ block: 'nearest', behavior: 'instant'});
-      } 
+      }
       else if (this.selectedSection === 'welcome') {
         let prevIdx = this.selectedWelcomeItem - 1;
         if (prevIdx < 0) {
@@ -320,10 +320,10 @@
           }
           return;
         }
-        
+
         // Previous welcome item
         this.selectWelcomeItem(prevIdx);
-      } 
+      }
       else if (this.selectedSection === 'suggestions') {
         // Move to welcome section
         this.selectedSection = 'welcome';
@@ -331,16 +331,16 @@
         this.selectWelcomeItem(1);
       }
     },
-    
+
     // Helper methods for selection
     selectWelcomeItem(index) {
       // Update state
       this.selectedSection = 'welcome';
       this.selectedWelcomeItem = index;
-      
+
       // Clear all selections
       this.clearAllSelections();
-      
+
       // Apply new selection
       const welcomeItems = $refs.searchContainer.querySelectorAll('[data-welcome-id]');
       if (welcomeItems && welcomeItems[index]) {
@@ -348,15 +348,15 @@
         welcomeItems[index].scrollIntoView({ block: 'nearest', behavior: 'instant'});
       }
     },
-    
+
     selectSuggestionItem(index) {
       // Update state
       this.selectedSection = 'suggestions';
       this.selectedSuggestionItem = index;
-      
+
       // Clear all selections
       this.clearAllSelections();
-      
+
       // Apply new selection
       const suggestionItem = $refs.searchContainer.querySelector('[data-suggestion-id]');
       if (suggestionItem) {
@@ -364,7 +364,7 @@
         suggestionItem.scrollIntoView({ block: 'nearest', behavior: 'instant'});
       }
     },
-    
+
     clearAllSelections() {
       // Clear all selected items
       const allItems = $refs.searchContainer.querySelectorAll('.cmd-recent-selected');
@@ -372,18 +372,18 @@
         item.classList.remove('cmd-recent-selected');
       });
     },
-    
+
     set(file) {
       this.selected = file;
       this.selectedSection = 'search';
       this.clearAllSelections();
     },
-    
+
     setRecent(page, index) {
       this.selectedRecent = page;
       this.selectedSection = 'recents';
     },
-    
+
     goto() {
       if (this.query.length > 0) {
         // Handle search results
@@ -405,13 +405,13 @@
           .join('/');
         return;
       }
-      
+
       // Handle navigation based on selected section
       if (this.selectedSection === 'recents') {
         if (this.selectedRecent) {
           window.location.pathname = this.selectedRecent.path;
         }
-      } 
+      }
       else if (this.selectedSection === 'welcome') {
         if (this.selectedWelcomeItem === 0) {
           // What's been hot lately
@@ -425,7 +425,7 @@
             window.location = '/';
           }
         }
-      } 
+      }
       else if (this.selectedSection === 'suggestions') {
         // Copy memo content
         const memoContent = document.querySelector('.memo-content');
@@ -457,14 +457,14 @@
       }
       this.close();
     },
-    
+
     close() {
       this.searchBar = false;
       this.query = '';
       // Remove class from body
       document.body.classList.remove('cmd-palette-open');
     },
-    
+
     openPalette() {
       this.searchBar = true;
       // Add class to body to help style neko images
@@ -474,7 +474,7 @@
       document.dispatchEvent(evt);
       // Reset search
       this.query = '';
-      // Set initial selection 
+      // Set initial selection
       if (this.recentPages.length > 0) {
         this.selectedRecent = this.recentPages[0];
         this.selectedSection = 'recents';
@@ -511,7 +511,7 @@
     <div class="cmd-modal" @mousedown.outside="close()" x-trap.inert.noscroll.noreturn="searchBar">
       <input type="text" x-model="query" :placeholder="searchPlaceholder" autocomplete="off" class="cmd-search-input"
         x-ref="searchInput" @input="
-          searching = true; 
+          searching = true;
           if(query.length === 0) {
             if(recentPages.length > 0) {
               selectedRecent = recentPages[0];
@@ -526,20 +526,20 @@
           }
         " @input.debounce.750ms="$dispatch('command-palette-search', { data: $event.target.value })"
         @command-palette-search-result.window="
-          searching = false; 
-          searchResults = $event.detail.data.grouped; 
-          flat = $event.detail.data.flat; 
-          if(query.length > 0 && flat.length > 0) { 
-            selected = flat[0]; 
+          searching = false;
+          searchResults = $event.detail.data.grouped;
+          flat = $event.detail.data.flat;
+          if(query.length > 0 && flat.length > 0) {
+            selected = flat[0];
             selectedSection = 'search';
             clearAllSelections();
           } else if (query.length === 0) {
-            if (recentPages.length > 0) { 
-              selectedRecent = recentPages[0]; 
+            if (recentPages.length > 0) {
+              selectedRecent = recentPages[0];
               selectedSection = 'recents';
             } else {
               selectedSection = 'welcome';
-              selectedWelcomeItem = 0; 
+              selectedWelcomeItem = 0;
             }
             clearAllSelections();
           }
@@ -655,7 +655,7 @@
               </div>
             </div>
             <div class="cmd-idle-item"
-              :class="{ 'cmd-idle-selected': selectedSection === 'welcome' && selectedWelcomeItem === 1 }" x-data="{ 
+              :class="{ 'cmd-idle-selected': selectedSection === 'welcome' && selectedWelcomeItem === 1 }" x-data="{
                 pinnedPosts: {{ $pinned | jsonify }},
                 getPinnedUrl() {
                   if (this.pinnedPosts && this.pinnedPosts.length > 0) {
@@ -702,23 +702,15 @@
                     .trim();
                 }
                 navigator.clipboard.writeText(content);
-                const notification = document.createElement('div');
-                notification.textContent = 'Content copied to clipboard!';
-                notification.style.position = 'fixed';
-                notification.style.bottom = '20px';
-                notification.style.left = '50%';
-                notification.style.transform = 'translateX(-50%)';
-                notification.style.padding = '10px 20px';
-                notification.style.backgroundColor = 'var(--primary-color)';
-                notification.style.color = 'white';
-                notification.style.borderRadius = '5px';
-                notification.style.zIndex = '1000';
-                document.body.appendChild(notification);
-                setTimeout(() => {
-                  notification.style.opacity = '0';
-                  notification.style.transition = 'opacity 0.5s ease';
-                  setTimeout(() => document.body.removeChild(notification), 500);
-                }, 2000);
+                Toastify({
+                  text: 'Copied memo content!',
+                  duration: 3000,
+                  newWindow: true,
+                  close: false,
+                  gravity: 'top',
+                  position: 'center',
+                  stopOnFocus: true,
+                }).showToast();
                 close();
               " @mouseenter="selectSuggestionItem(0)" data-suggestion-id="0">
               <div class="cmd-idle-icon">
