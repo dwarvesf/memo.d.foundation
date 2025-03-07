@@ -1,23 +1,25 @@
 const initTableOfContents = () => {
   const tableOfContents = document.getElementById('TableOfContents');
-  
+
   if (!tableOfContents) return;
 
   // Add tree-like styling
   tableOfContents.classList.add('table-of-contents-tree');
-  
+
   // Style links based on heading level
   const links = tableOfContents.querySelectorAll('a');
+  const levels = Array.from(links).map(link => getHeadingLevel(link));
+  const minLevel = Math.min(...levels);
+
   links.forEach(link => {
-    // Get the parent li's nesting level
-    const level = getHeadingLevel(link);
-    
+    const level = getHeadingLevel(link) - minLevel + 1;
+
     link.classList.add(
-      'heading-level-' + level,
-      'block', 
+      `heading-level-${level}`,
+      'block',
       'text-[hsl(var(--foreground-secondary))]',
       'hover:text-[hsl(var(--foreground))]',
-      'transition-colors', 
+      'transition-colors',
       'duration-200',
       'text-[0.95rem]'
     );
@@ -28,14 +30,14 @@ const initTableOfContents = () => {
 const getHeadingLevel = (link) => {
   let level = 1;
   let parent = link.parentElement;
-  
+
   while (parent) {
     if (parent.tagName === 'UL') {
       level++;
     }
     parent = parent.parentElement;
   }
-  
+
   return level;
 };
 
