@@ -1,5 +1,7 @@
 :root {
   --primary-color: #e13f5e;
+  --primary-hover-color: #d95870;
+  --primary-foreground-color: #ffffff;
   --primary-color-lighten: rgba(255, 160, 179, 0.125);
   --docsearch-primary-color: #e13f5e;
   --docsearch-primary-color: #e13f5e;
@@ -12,13 +14,15 @@
   --secondary-font-color-light: ##DBDBDB;
   --secondary-font-color-light-var2: #636466;
 
+  --secondary-foreground: #9B9B9B;
+
   --font-monospace: "IBM Plex Mono";
 
   --primary-background-color: #1e1e1e;
   --primary-background-color-light: #fff;
 
   --secondary-background-color: #282828;
-  --secondary-background-color-light: #fcfcfc;
+  --secondary-background-color-light: #F8F8F8;
   --secondary-background-color-var2: #202020;
 
   --primary-border-color: #282828;
@@ -41,6 +45,10 @@
   --Neutral-500: #363636;
   --Neutral-200: #eaecf0;
   --neutral-100: #dededf;
+
+  --error-color: #d81b60;
+
+  --toast-background-color: #EDEDED;
 
 
   --chevron-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23a3a3a3' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m10 7l5 5l-5 5'/%3E%3C/svg%3E");

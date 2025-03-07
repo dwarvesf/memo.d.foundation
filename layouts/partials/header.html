@@ -164,6 +164,11 @@
   {{ $queryEngine := resources.Get "js/query-engine.mjs" }}
   <script defer type="module" src="{{ $queryEngine.RelPermalink }}"></script>
 
+  {{ $single := resources.Get "js/single.js" }}
+  <script defer type="module" src="{{ $single.RelPermalink }}"></script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
   {{ if .IsHome -}}
   <script type="application/ld+json">
     {
