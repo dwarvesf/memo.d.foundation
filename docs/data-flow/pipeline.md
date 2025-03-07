@@ -19,7 +19,7 @@ graph TD
     I --> J[API Service]
     H --> K[Static Site]
     K --> L[GitHub Pages Deployment]
-    J <--> M[Browser Search]
+    J <--> M[Browser]
     L <--> M
 ```
 
