@@ -5,7 +5,7 @@ defmodule Memo.ExportMarkdown do
   """
 
   use Flow
-  alias Memo.Common.{FileUtils, Frontmatter, LinkUtils, DuckDBUtils, Slugify, KatexUtils, GitUtils}
+  alias Memo.Common.{FileUtils, Frontmatter, LinkUtils, DuckDBUtils, Slugify, KatexUtils}
 
   @cache_file ".memo_export_cache.json"
 
@@ -103,7 +103,7 @@ defmodule Memo.ExportMarkdown do
     |> Flow.run()
 
     # Export the db directory
-    export_db_directory("db", exportpath)
+    export_db_directory("../../db", exportpath)
 
     # Save the updated cache
     save_cache(new_cache, exportpath)
@@ -114,7 +114,7 @@ defmodule Memo.ExportMarkdown do
          Path.basename(Path.dirname(asset_path)) != "assets" and
          not FileUtils.ignored?(asset_path, ignored_patterns, vaultpath) do
       target_path = replace_path_prefix(asset_path, vaultpath, exportpath)
-      slugified_target_path = Slugify.slugify_path(target_path)
+      slugified_target_path = preserve_relative_prefix_and_slugify(target_path)
       copy_directory(asset_path, slugified_target_path, ignored_patterns, vaultpath)
       IO.puts("Exported assets: #{asset_path} -> #{slugified_target_path}")
     end
@@ -122,7 +122,7 @@ defmodule Memo.ExportMarkdown do
 
   defp export_db_directory(dbpath, exportpath) do
     if File.dir?(dbpath) do
-      export_db_path = Path.join(exportpath, "db")
+      export_db_path = Path.join(exportpath, "../../db")
       slugified_export_db_path = Slugify.slugify_path(export_db_path)
       copy_directory(dbpath, slugified_export_db_path, [], dbpath)
       IO.puts("Exported db folder: #{dbpath} -> #{slugified_export_db_path}")
@@ -178,7 +178,7 @@ defmodule Memo.ExportMarkdown do
       converted_content = KatexUtils.wrap_multiline_katex(converted_content)
 
       export_file = replace_path_prefix(file, vaultpath, exportpath)
-      slugified_export_file = Slugify.slugify_path(export_file)
+      slugified_export_file = preserve_relative_prefix_and_slugify(export_file)
 
       export_dir = Path.dirname(slugified_export_file)
       File.mkdir_p!(export_dir)
@@ -272,7 +272,7 @@ defmodule Memo.ExportMarkdown do
     Map.keys(cache) |> Enum.filter(fn cached_file -> cached_file not in current_files end)
   end
 
-  defp remove_deleted_exports(deleted_files, vault_dir, exportpath) do
+  defp remove_deleted_exports(deleted_files, _vault_dir, exportpath) do
     Enum.each(deleted_files, fn file ->
       case Map.get(load_cache(exportpath), file) do
         nil -> :ok
@@ -310,10 +310,30 @@ defmodule Memo.ExportMarkdown do
     end)
   end
 
+  defp preserve_relative_prefix_and_slugify(path) do
+    # Extract and preserve any relative path prefix
+    {relative_prefix, path_without_prefix} =
+      if String.match?(path, ~r|^(\.\./)+|) do
+        [prefix | _] = Regex.run(~r|^(\.\./)+|, path)
+        {prefix, String.replace_prefix(path, prefix, "")}
+      else
+        {"", path}
+      end
+
+    # Slugify the path without the relative prefix
+    slugified_path = Slugify.slugify_path(path_without_prefix)
+
+    # Re-add the relative prefix
+    relative_prefix <> slugified_path
+  end
+
   defp replace_path_prefix(path, old_prefix, new_prefix) do
-    [old_prefix, new_prefix]
-    |> Enum.map(&Path.split/1)
-    |> Enum.map(&List.first/1)
-    |> then(fn [old, new] -> String.replace_prefix(path, old, new) end)
+    # Extract the base names without any path components
+    old_base = Path.basename(old_prefix)
+    new_base = Path.basename(new_prefix)
+
+    # Simple string replacement of vault with content
+    # This works regardless of relative paths or other path components
+    String.replace(path, "/#{old_base}/", "/#{new_base}/")
   end
 end

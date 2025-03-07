@@ -96,7 +96,7 @@ defmodule Memo.Common.DuckDBUtils do
       System.cmd("duckdb", [
         "-json",
         "-cmd",
-        "IMPORT DATABASE 'db'",
+        "IMPORT DATABASE '../../db'",
         "-cmd",
         "CREATE OR REPLACE TEMP MACRO markdown_link(title, file_path) AS '[' || COALESCE(title, '/' || REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(-/|-$|_index$)', '')) || '](/' || REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(-/|-$|_index$)', '') || ')'",
         "-c",
