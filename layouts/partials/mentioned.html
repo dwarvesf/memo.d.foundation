@@ -4,23 +4,25 @@
       // Get the current page path
       const currentPath = '{{ .RelPermalink }}';
       const currentPathNoSlash = currentPath.replace(/\/$/, '');
-      
+
       // Extract the slug (last part of the path)
       const pathParts = currentPathNoSlash.split('/').filter(Boolean);
       const slug = pathParts.length > 0 ? pathParts[pathParts.length - 1] : '';
-      
+
       if (!slug || slug === '_index') {
         console.log('No valid slug found for current page');
         // Dispatch event to show "no mentions" state
-        window.dispatchEvent(new CustomEvent('page-mentions', {
-          detail: {
-            data: [],
-            loading: false
-          }
-        }));
+        window.dispatchEvent(
+          new CustomEvent('page-mentions', {
+            detail: {
+              data: [],
+              loading: false,
+            },
+          }),
+        );
         return;
       }
-      
+
       // Escape single quotes for SQL
       const escapedSlug = slug.replace(/'/g, "''");
       const escapedPath = currentPathNoSlash.replace(/'/g, "''");
@@ -28,14 +30,14 @@
 
       // Build the query to find mentions
       const queryStr = `
-        SELECT 
+        SELECT
           file_path,
           title,
           date,
           description,
           authors[0] as primary_author
         FROM vault
-        WHERE 
+        WHERE
           (
             -- Search for full URL mentions
             md_content LIKE '%https://memo.d.foundation${escapedFullPath}%'
@@ -57,51 +59,57 @@
         ORDER BY date DESC
         LIMIT 10;
       `;
-      
+
       console.log('Executing mentions query for:', slug);
       const response = await window.queryAPI(queryStr);
       const mentionsData = response.result;
-      
+
       if (mentionsData && mentionsData.length > 0) {
         console.log(`Found ${mentionsData.length} mentions for ${slug}`);
         const event = new CustomEvent('page-mentions', {
           detail: {
             data: mentionsData,
-            loading: false
-          }
+            loading: false,
+          },
         });
         window.dispatchEvent(event);
       } else {
         console.log('No mentions found for', slug);
         // Signal empty results
-        window.dispatchEvent(new CustomEvent('page-mentions', {
-          detail: {
-            data: [],
-            loading: false
-          }
-        }));
+        window.dispatchEvent(
+          new CustomEvent('page-mentions', {
+            detail: {
+              data: [],
+              loading: false,
+            },
+          }),
+        );
       }
     } catch (error) {
       console.error('Error loading mentions:', error);
       // Signal error
-      window.dispatchEvent(new CustomEvent('page-mentions', {
-        detail: {
-          data: [],
-          loading: false,
-          error: true
-        }
-      }));
+      window.dispatchEvent(
+        new CustomEvent('page-mentions', {
+          detail: {
+            data: [],
+            loading: false,
+            error: true,
+          },
+        }),
+      );
     }
   }
-  
+
   // Set initial loading state
-  window.dispatchEvent(new CustomEvent('page-mentions', {
-    detail: {
-      data: [],
-      loading: true
-    }
-  }));
-  
+  window.dispatchEvent(
+    new CustomEvent('page-mentions', {
+      detail: {
+        data: [],
+        loading: true,
+      },
+    }),
+  );
+
   // Load mentions when the page loads
   // Wait for queryAPI to be available
   if (window.queryAPI) {
@@ -113,19 +121,25 @@
       } else {
         console.warn('queryAPI not available for mentions');
         // Signal API unavailable
-        window.dispatchEvent(new CustomEvent('page-mentions', {
-          detail: {
-            data: [],
-            loading: false,
-            error: true
-          }
-        }));
+        window.dispatchEvent(
+          new CustomEvent('page-mentions', {
+            detail: {
+              data: [],
+              loading: false,
+              error: true,
+            },
+          }),
+        );
       }
     });
   }
 </script>
 
-<section class="mentionin" x-data="{ 
+<hr />
+
+<section
+  class="mentionin"
+  x-data="{
   mentions: [],
   loading: true,
   error: false,
@@ -148,60 +162,75 @@
       .map(segment => segment.replace(/^-+|-+$/g, '').replace(/_index$/, ''))
       .join('/') + '/';
   }
-}" @page-mentions.window="mentions = $event.detail.data; loading = $event.detail.loading; error = $event.detail.error || false; hasMentions = mentions.length > 0">
-  
+}"
+  @page-mentions.window="mentions = $event.detail.data; loading = $event.detail.loading; error = $event.detail.error || false; hasMentions = mentions.length > 0"
+>
   <!-- Header is always visible -->
   <h6>Mentioned in</h6>
-  
+
   <!-- Content container - fixed height to prevent jumping -->
   <div class="mentions-content">
     <!-- Loading state -->
-    <div x-show="loading" 
-         x-transition:enter="transition ease-out duration-300" 
-         x-transition:enter-start="opacity-0" 
-         x-transition:enter-end="opacity-100" 
-         x-transition:leave="transition ease-out duration-300" 
-         x-transition:leave-start="opacity-100" 
-         x-transition:leave-end="opacity-0"
-         class="loading-container">
+    <div
+      x-show="loading"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-out duration-300"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      class="loading-container"
+    >
       <div class="loading-placeholder"></div>
-      <div class="loading-placeholder" style="width: 85%"></div>
-      <div class="loading-placeholder" style="width: 70%"></div>
+      <div class="loading-placeholder" style="width: 75%"></div>
+      <div class="loading-placeholder" style="width: 50%"></div>
     </div>
 
     <!-- Content when mentions exist -->
-    <div x-show="!loading && hasMentions" 
-         x-transition:enter="transition ease-out duration-300" 
-         x-transition:enter-start="opacity-0" 
-         x-transition:enter-end="opacity-100"
-         class="mentions-list">
+    <div
+      x-show="!loading && hasMentions"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      class="mentions-list"
+    >
       <ul>
         <template x-for="mention in mentions" :key="mention.file_path">
           <li>
-            <a :href="formatFilePath(mention.file_path)" x-text="mention.title"></a>
+            <a
+              :href="formatFilePath(mention.file_path)"
+              x-text="`📄 ${mention.title}`"
+            ></a>
           </li>
         </template>
       </ul>
-      <template x-if="mentions.length >= 5">
-        <button class="mentionedin_btn" x-text="`Load More (5/${mentions.length})`"></button>
+      <template x-if="mentions.length > 5">
+        <button
+          class="mentionedin_btn"
+          x-text="`Load More (5/${mentions.length})`"
+        ></button>
       </template>
     </div>
-    
+
     <!-- No mentions state -->
-    <div x-show="!loading && !hasMentions && !error" 
-         x-transition:enter="transition ease-out duration-300" 
-         x-transition:enter-start="opacity-0" 
-         x-transition:enter-end="opacity-100"
-         class="no-mentions-container">
+    <div
+      x-show="!loading && !hasMentions && !error"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      class="no-mentions-container"
+    >
       <p class="no-mentions">No mentions found</p>
     </div>
-    
+
     <!-- Error state -->
-    <div x-show="!loading && error" 
-         x-transition:enter="transition ease-out duration-300" 
-         x-transition:enter-start="opacity-0" 
-         x-transition:enter-end="opacity-100"
-         class="error-container">
+    <div
+      x-show="!loading && error"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      class="error-container"
+    >
       <p class="no-mentions">Unable to load mentions</p>
     </div>
   </div>
