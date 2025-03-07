@@ -1,45 +1,15 @@
 {
   "packages": {
-    "go":                       "1.22.3",
-    "python310Packages.pip":    "23.2.1",
-    "python":                   "3.10.14",
-    "awscli":                   "1.32.21",
-    "ffmpeg":                   "6.1.1",
-    "gcc": {
-      "version":            "13.2.0",
-      "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
-    },
-    "gcc-unwrapped": {
-      "version":            "13.2.0",
-      "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
-    },
-    "inotify-tools": {
-      "version":            "4.23.9.0",
-      "excluded_platforms": ["x86_64-darwin", "aarch64-darwin"]
-    },
-    "darwin.apple_sdk.frameworks.CoreServices": {
-      "platforms": ["x86_64-darwin", "aarch64-darwin"]
-    },
-    "darwin.apple_sdk.frameworks.CoreFoundation": {
-      "platforms": ["x86_64-darwin", "aarch64-darwin"]
-    },
-    "git":                  "2.44.0",
-    "duckdb":               "1.1.1",
-    "hugo":                 "0.132.1",
-    "elixir":               "1.17.3",
-    "elixir-ls":            "0.21.3",
-    "imagemagick":          "7.1.1-32",
-    "clang":                "17.0.6",
-    "erlang":               "25.3.2.12",
+    "awscli":    "1.32.21",
+    "git":       "2.48.1",
+    "duckdb":    "1.2.0",
+    "elixir":    "1.18.1",
+    "elixir-ls": "0.21.3",
+    "nodejs":    "23.9.0"
   },
   "shell": {
     "init_hook": [
-      ". $VENV_DIR/bin/activate",
-      "export LD_LIBRARY_PATH=./.devbox/nix/profile/default/lib",
-      "pip install -r requirements.txt",
-      "mix local.hex --force",
-      "mix local.rebar --force",
-      "mix deps.get",
+      "make compiler-setup",
       "make fetch"
     ],
     "scripts": {

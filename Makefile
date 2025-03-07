@@ -3,8 +3,11 @@ setup:
 	@devbox install
 	@mkdir -p ./content
 
+compiler-setup:
+	@cd obsidian-compiler && mix local.hex --force && mix local.rebar --force && mix deps.get
+
 fetch:
-	@mix run -e 'Memo.UpdateGitSettings.run()'
+	@cd obsidian-compiler && mix run -e 'Memo.UpdateGitSettings.run()'
 	@./git-fetch.sh
 
 build:
@@ -19,24 +22,24 @@ clear-build:
 
 run:
 	@make clear-build
-	@mix run -e 'Memo.ExportMarkdown.run("vault", "content")'
+	@cd obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("vault", "content")'
 	@hugo -DEF --poll 2s --logLevel error server
 	
 watch-run:
 	@make clear-build
-	@mix run -e 'Memo.Application.watch_run("vault", "content")'
+	@cd obsidian-compiler && mix run -e 'Memo.Application.watch_run("vault", "content")'
 
 duckdb-export:
 	@rm -f vault.duckdb
-	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", "HEAD~5")'
+	@cd obsidian-compiler && mix run -e 'Memo.Application.export_duckdb("vault", "parquet", "HEAD~5")'
 
 duckdb-export-all:
 	@rm -f vault.duckdb
-	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", :all)'
+	@cd obsidian-compiler && mix run -e 'Memo.Application.export_duckdb("vault", "parquet", :all)'
 
 duckdb-export-pattern:
 	@rm -f vault.duckdb
-	@mix run -e 'Memo.Application.export_duckdb("vault", "parquet", :all, "$(pattern)")'
+	@cd obsidian-compiler && mix run -e 'Memo.Application.export_duckdb("vault", "parquet", :all, "$(pattern)")'
 
 sync-hashnode:
-	@mix run -e 'Memo.Application.sync_hashnode("vault")'
+	@cd obsidian-compiler && mix run -e 'Memo.Application.sync_hashnode("vault")'
