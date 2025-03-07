@@ -38,7 +38,14 @@ defmodule Memo.ExportMarkdown do
     if mode == :file do
       process_single_file(vaultpath, vault_dir, exportpath, all_valid_files, cache)
     else
-      process_directory(all_valid_files, all_assets, vault_dir, exportpath, ignored_patterns, cache)
+      process_directory(
+        all_valid_files,
+        all_assets,
+        vault_dir,
+        exportpath,
+        ignored_patterns,
+        cache
+      )
     end
   end
 
@@ -48,7 +55,9 @@ defmodule Memo.ExportMarkdown do
     if Enum.member?(all_valid_files, normalized_vaultpath) and
          Frontmatter.contains_required_frontmatter_keys?(normalized_vaultpath) do
       # Process the file and update the cache
-      new_cache = process_file(normalized_vaultpath, vault_dir, exportpath, all_valid_files, cache)
+      new_cache =
+        process_file(normalized_vaultpath, vault_dir, exportpath, all_valid_files, cache)
+
       save_cache(new_cache, exportpath)
     else
       IO.puts(
@@ -57,7 +66,14 @@ defmodule Memo.ExportMarkdown do
     end
   end
 
-  defp process_directory(all_valid_files, all_assets, vault_dir, exportpath, ignored_patterns, cache) do
+  defp process_directory(
+         all_valid_files,
+         all_assets,
+         vault_dir,
+         exportpath,
+         ignored_patterns,
+         cache
+       ) do
     # Find files that need processing (new or modified)
     {files_to_process, files_unchanged} = filter_changed_files(all_valid_files, cache)
 
@@ -65,21 +81,21 @@ defmodule Memo.ExportMarkdown do
     deleted_files = find_deleted_files(all_valid_files, cache)
 
     # Process only changed files
-    new_cache =
+    file_cache =
       if Enum.empty?(files_to_process) do
         IO.puts("No files have changed since last run.")
         cache
       else
-        IO.puts("Processing #{Enum.count(files_to_process)} changed files...")
+        IO.puts("Processing #{Enum.count(files_to_process)} files...")
 
         # Process changed files - Using Enum instead of Flow to avoid protocol errors
         updated_entries =
           files_to_process
           |> Enum.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
           |> Enum.map(fn file ->
-              # process_file always returns a map, no need to check for :ok
-              process_file(file, vault_dir, exportpath, all_valid_files, cache)
-            end)
+            # process_file always returns a map, no need to check for :ok
+            process_file(file, vault_dir, exportpath, all_valid_files, cache)
+          end)
           |> Enum.reduce(%{}, fn entry, acc -> Map.merge(acc, entry) end)
 
         # Merge with unchanged entries
@@ -99,42 +115,95 @@ defmodule Memo.ExportMarkdown do
     end
 
     # Process assets folders - Using Enum instead of Flow to avoid protocol errors
-    Enum.each(all_assets, &export_assets_folder(&1, vault_dir, exportpath, ignored_patterns))
+    # Collect cache entries for asset folders
+    assets_cache =
+      all_assets
+      |> Enum.map(fn asset_path ->
+        export_assets_folder(asset_path, vault_dir, exportpath, ignored_patterns, cache)
+      end)
+      |> Enum.reduce(%{}, fn entry, acc -> Map.merge(acc, entry) end)
 
-    # Export the db directory
-    export_db_directory("../../db", exportpath)
+    # Export the db directory with caching
+    db_cache = export_db_directory("../../db", exportpath, cache)
+
+    # Merge all cache entries: files, assets, and db
+    new_cache = file_cache |> Map.merge(assets_cache) |> Map.merge(db_cache)
 
     # Save the updated cache
     save_cache(new_cache, exportpath)
   end
 
-  defp export_assets_folder(asset_path, vaultpath, exportpath, ignored_patterns) do
+  defp export_assets_folder(asset_path, vaultpath, exportpath, ignored_patterns, cache) do
     if Path.basename(asset_path) == "assets" and
          Path.basename(Path.dirname(asset_path)) != "assets" and
          not FileUtils.ignored?(asset_path, ignored_patterns, vaultpath) do
       target_path = replace_path_prefix(asset_path, vaultpath, exportpath)
       slugified_target_path = preserve_relative_prefix_and_slugify(target_path)
-      copy_directory(asset_path, slugified_target_path, ignored_patterns, vaultpath)
-      IO.puts("Exported assets: #{asset_path} -> #{slugified_target_path}")
-    end
 
-    # Always return an empty map to avoid Enumerable protocol errors
-    %{}
+      # Get the current mtime of the asset folder
+      current_mtime = get_directory_mtime(asset_path)
+
+      # Check if the asset folder is in the cache and if its mtime has changed
+      cache_entry = Map.get(cache, asset_path)
+
+      if cache_entry && cache_entry["type"] == "asset_folder" &&
+           cache_entry["mtime"] == current_mtime do
+        # Asset folder hasn't changed, skip copying
+        %{asset_path => cache_entry}
+      else
+        # Asset folder has changed or is not in cache, copy it
+        copy_directory(asset_path, slugified_target_path, ignored_patterns, vaultpath)
+        IO.puts("Exported assets: #{asset_path} -> #{slugified_target_path}")
+
+        # Create a new cache entry for the asset folder
+        new_entry = %{
+          "type" => "asset_folder",
+          "mtime" => current_mtime,
+          "export_path" => slugified_target_path
+        }
+
+        %{asset_path => new_entry}
+      end
+    else
+      # Not an asset folder or ignored, return empty map
+      %{}
+    end
   end
 
-  defp export_db_directory(dbpath, exportpath) do
+  defp export_db_directory(dbpath, exportpath, cache) do
     if File.dir?(dbpath) do
       export_db_path = Path.join(exportpath, "../../db")
       # Use preserve_relative_prefix_and_slugify to keep the relative path prefix
       slugified_export_db_path = preserve_relative_prefix_and_slugify(export_db_path)
-      copy_directory(dbpath, slugified_export_db_path, [], dbpath)
-      IO.puts("Exported db folder: #{dbpath} -> #{slugified_export_db_path}")
+
+      # Get the current mtime of the db directory
+      current_mtime = get_directory_mtime(dbpath)
+
+      # Check if the db directory is in the cache and if its mtime has changed
+      cache_entry = Map.get(cache, dbpath)
+
+      if cache_entry && cache_entry["type"] == "db_directory" &&
+           cache_entry["mtime"] == current_mtime do
+        # DB directory hasn't changed, skip copying
+        %{dbpath => cache_entry}
+      else
+        # DB directory has changed or is not in cache, copy it
+        copy_directory(dbpath, slugified_export_db_path, [], dbpath)
+        IO.puts("Exported db folder: #{dbpath} -> #{slugified_export_db_path}")
+
+        # Create a new cache entry for the db directory
+        new_entry = %{
+          "type" => "db_directory",
+          "mtime" => current_mtime,
+          "export_path" => slugified_export_db_path
+        }
+
+        %{dbpath => new_entry}
+      end
     else
       IO.puts("db folder not found at #{dbpath}")
+      %{}
     end
-
-    # Always return an empty map to avoid Enumerable protocol errors
-    %{}
   end
 
   defp copy_directory(source, destination, ignored_patterns, vaultpath) do
@@ -159,6 +228,7 @@ defmodule Memo.ExportMarkdown do
             end
           end
         end)
+
       {:error, reason} ->
         IO.puts("Error listing directory #{source}: #{reason}")
     end
@@ -173,9 +243,9 @@ defmodule Memo.ExportMarkdown do
     cache_entry = Map.get(cache, file)
 
     if cache_entry &&
-       cache_entry["size"] == size &&
-       cache_entry["mtime"] == mtime &&
-       cache_entry["hash"] == file_hash do
+         cache_entry["size"] == size &&
+         cache_entry["mtime"] == mtime &&
+         cache_entry["hash"] == file_hash do
       # File hasn't changed, skip processing
       IO.puts("Unchanged (skipping): #{inspect(file)}")
       %{file => cache_entry}
@@ -220,11 +290,14 @@ defmodule Memo.ExportMarkdown do
       case File.read(cache_path) do
         {:ok, content} ->
           case Jason.decode(content) do
-            {:ok, cache} -> cache
+            {:ok, cache} ->
+              cache
+
             _ ->
               IO.puts("Warning: Could not parse cache file. Starting with empty cache.")
               %{}
           end
+
         _ ->
           IO.puts("Warning: Could not read cache file. Starting with empty cache.")
           %{}
@@ -245,6 +318,7 @@ defmodule Memo.ExportMarkdown do
       {:ok, json} ->
         File.write!(cache_path, json)
         IO.puts("Cache saved to #{cache_path}")
+
       _ ->
         IO.puts("Warning: Failed to encode cache to JSON")
     end
@@ -254,10 +328,12 @@ defmodule Memo.ExportMarkdown do
     case File.read(file) do
       {:ok, content} ->
         :crypto.hash(:md5, content) |> Base.encode16(case: :lower)
+
       _ ->
         # If we can't read the file, generate a unique hash based on the path and current time
         # This ensures we'll process it next time
-        :crypto.hash(:md5, "#{file}#{:os.system_time(:millisecond)}") |> Base.encode16(case: :lower)
+        :crypto.hash(:md5, "#{file}#{:os.system_time(:millisecond)}")
+        |> Base.encode16(case: :lower)
     end
   end
 
@@ -267,13 +343,17 @@ defmodule Memo.ExportMarkdown do
       # 1. It's not in the cache, or
       # 2. Its stats have changed
       case Map.get(cache, file) do
-        nil -> true
+        nil ->
+          true
+
         entry ->
           case File.stat(file, time: :posix) do
             {:ok, %{size: size, mtime: mtime}} ->
               size != entry["size"] || mtime != entry["mtime"] ||
-              compute_file_hash(file) != entry["hash"]
-            _ -> true
+                compute_file_hash(file) != entry["hash"]
+
+            _ ->
+              true
           end
       end
     end)
@@ -281,18 +361,50 @@ defmodule Memo.ExportMarkdown do
 
   defp find_deleted_files(current_files, cache) do
     # Files that were in the cache but are no longer in the current files list
-    Map.keys(cache) |> Enum.filter(fn cached_file -> cached_file not in current_files end)
+    # Only consider regular files, not asset folders or db directories
+    Map.keys(cache)
+    |> Enum.filter(fn cached_file ->
+      case Map.get(cache, cached_file) do
+        # Skip asset folders and db directories
+        %{"type" => type} when type in ["asset_folder", "db_directory"] -> false
+        # Include regular files that are no longer in the current files list
+        _ -> cached_file not in current_files
+      end
+    end)
   end
 
   defp remove_deleted_exports(deleted_files, _vault_dir, exportpath) do
     Enum.each(deleted_files, fn file ->
       case Map.get(load_cache(exportpath), file) do
-        nil -> :ok
+        nil ->
+          :ok
+
         entry ->
           export_path = entry["export_path"]
+
           if export_path && File.exists?(export_path) do
-            File.rm!(export_path)
-            IO.puts("Removed export for deleted file: #{file} -> #{export_path}")
+            # Check if this is a directory (asset folder) or a regular file
+            is_directory =
+              entry["type"] == "asset_folder" || entry["type"] == "db_directory" ||
+                File.dir?(export_path)
+
+            # Use appropriate removal function based on the type
+            try do
+              if is_directory do
+                # For directories, use rm_rf which can remove directories recursively
+                File.rm_rf!(export_path)
+                IO.puts("Removed export for deleted directory: #{file} -> #{export_path}")
+              else
+                # For regular files, use rm
+                File.rm!(export_path)
+                IO.puts("Removed export for deleted file: #{file} -> #{export_path}")
+              end
+            rescue
+              e in File.Error ->
+                IO.puts(
+                  "Warning: Could not remove #{if is_directory, do: "directory", else: "file"} #{export_path}: #{e.reason}"
+                )
+            end
           end
       end
     end)
@@ -320,6 +432,15 @@ defmodule Memo.ExportMarkdown do
         {:error, error} -> "Error executing query: #{error}"
       end
     end)
+  end
+
+  defp get_directory_mtime(dir_path) do
+    # Get the modification time of the directory itself
+    case File.stat(dir_path, time: :posix) do
+      {:ok, %{mtime: mtime}} -> mtime
+      # Default to 0 if we can't get the mtime
+      _ -> 0
+    end
   end
 
   defp preserve_relative_prefix_and_slugify(path) do

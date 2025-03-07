@@ -254,29 +254,38 @@ defmodule Memo.ExportDuckDB do
   defp process_and_store(file_path, frontmatter, md_content) do
     escaped_file_path = escape_string(file_path)
 
-    normalized_frontmatter = frontmatter
-    |> Map.update("tags", [], fn tags ->
-      case tags do
-        tags when is_binary(tags) ->
-          if String.contains?(tags, ",") do
-            tags
-            |> String.split(",")
-            |> Enum.map(&String.trim/1)
-            |> Enum.reject(&(&1 in ["", nil]))
-          else
-            [tags]
-          end
-        list when is_list(list) -> list
-        _ -> []
-      end
-    end)
+    normalized_frontmatter =
+      frontmatter
+      |> Map.update("tags", [], fn tags ->
+        case tags do
+          tags when is_binary(tags) ->
+            if String.contains?(tags, ",") do
+              tags
+              |> String.split(",")
+              |> Enum.map(&String.trim/1)
+              |> Enum.reject(&(&1 in ["", nil]))
+            else
+              [tags]
+            end
 
-    query = "SELECT spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
+          list when is_list(list) ->
+            list
+
+          _ ->
+            []
+        end
+      end)
+
+    query =
+      "SELECT spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
 
     case DuckDBUtils.execute_query(query) do
       {:ok, result} ->
         existing_data = List.first(result) || []
-        transformed_frontmatter = transform_frontmatter(md_content, normalized_frontmatter, file_path)
+
+        transformed_frontmatter =
+          transform_frontmatter(md_content, normalized_frontmatter, file_path)
+
         maybe_update_database(existing_data, transformed_frontmatter, md_content)
 
       {:error, error_message} ->
@@ -318,21 +327,22 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp get_files_to_process(directory, commits_back, all_files, pattern) do
-    files = case commits_back do
-      :all ->
-        all_files
+    files =
+      case commits_back do
+        :all ->
+          all_files
 
-      _ ->
-        git_files = GitUtils.get_modified_files(directory, commits_back)
+        _ ->
+          git_files = GitUtils.get_modified_files(directory, commits_back)
 
-        submodule_files =
-          GitUtils.list_submodules(directory)
-          |> Enum.flat_map(&GitUtils.get_submodule_modified_files(directory, &1, commits_back))
+          submodule_files =
+            GitUtils.list_submodules(directory)
+            |> Enum.flat_map(&GitUtils.get_submodule_modified_files(directory, &1, commits_back))
 
-        all_git_files = git_files ++ submodule_files
+          all_git_files = git_files ++ submodule_files
 
-        Enum.map(all_git_files, fn file -> Path.join(directory, file) end)
-    end
+          Enum.map(all_git_files, fn file -> Path.join(directory, file) end)
+      end
 
     if pattern do
       pattern_files = Path.wildcard(Path.join(directory, pattern))
@@ -414,16 +424,23 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp serialize_list(list) do
-    normalized = case list do
-      val when is_binary(val) -> [val]  # Handle single string value
-      list when is_list(list) ->
-        Enum.reject(list, &(&1 in ["", nil]))
-      _ -> []
-    end
+    normalized =
+      case list do
+        # Handle single string value
+        val when is_binary(val) ->
+          [val]
+
+        list when is_list(list) ->
+          Enum.reject(list, &(&1 in ["", nil]))
+
+        _ ->
+          []
+      end
 
     case normalized do
       [] ->
         "NULL"
+
       cleaned_list ->
         cleaned_list
         |> Enum.map(&"'#{String.replace(&1, "'", "''")}'")
@@ -434,8 +451,10 @@ defmodule Memo.ExportDuckDB do
 
   defp escape_string(value) when is_binary(value) do
     value
-    |> String.replace("''", "'") # First normalize any existing double quotes to single
-    |> String.replace("'", "''") # Then replace single quotes with doubles
+    # First normalize any existing double quotes to single
+    |> String.replace("''", "'")
+    # Then replace single quotes with doubles
+    |> String.replace("'", "''")
   end
 
   defp escape_multiline_text(nil), do: "NULL"
@@ -458,9 +477,7 @@ defmodule Memo.ExportDuckDB do
     file_path_value = Map.get(frontmatter, "file_path") |> escape_string()
 
     with {:ok, [existing_data]} <-
-         DuckDBUtils.execute_query(
-         "SELECT * FROM vault WHERE file_path = '#{file_path_value}'"
-         ) do
+           DuckDBUtils.execute_query("SELECT * FROM vault WHERE file_path = '#{file_path_value}'") do
       # Check if data has changed and if embeddings need regeneration
       case check_data_changes(existing_data, frontmatter) do
         {:no_change} ->
@@ -490,23 +507,24 @@ defmodule Memo.ExportDuckDB do
 
   defp check_data_changes(existing_data, frontmatter) do
     # First check if any field has changed
-    any_field_changed = Enum.any?(@allowed_frontmatter, fn {key, _type} ->
-      existing_value = Map.get(existing_data, key)
-      new_value = Map.get(frontmatter, key)
+    any_field_changed =
+      Enum.any?(@allowed_frontmatter, fn {key, _type} ->
+        existing_value = Map.get(existing_data, key)
+        new_value = Map.get(frontmatter, key)
 
-      # Normalize both values for comparison
-      normalized_existing = normalize_for_comparison(existing_value, key)
-      normalized_new = normalize_for_comparison(new_value, key)
+        # Normalize both values for comparison
+        normalized_existing = normalize_for_comparison(existing_value, key)
+        normalized_new = normalize_for_comparison(new_value, key)
 
-      if normalized_existing != normalized_new do
-        IO.puts("Change detected in #{key}:")
-        IO.puts("  Existing (normalized): #{inspect(normalized_existing)}")
-        IO.puts("  New (normalized): #{inspect(normalized_new)}")
-        true
-      else
-        false
-      end
-    end)
+        if normalized_existing != normalized_new do
+          IO.puts("Change detected in #{key}:")
+          IO.puts("  Existing (normalized): #{inspect(normalized_existing)}")
+          IO.puts("  New (normalized): #{inspect(normalized_new)}")
+          true
+        else
+          false
+        end
+      end)
 
     # If no fields have changed, check if the embeddings are all zeros
     if not any_field_changed do
@@ -547,12 +565,14 @@ defmodule Memo.ExportDuckDB do
 
   defp all_zeros?(nil), do: false
   defp all_zeros?(embeddings) when is_list(embeddings), do: Enum.all?(embeddings, &(&1 == 0))
+
   defp all_zeros?(embeddings) when is_binary(embeddings) do
     case Jason.decode(embeddings) do
       {:ok, decoded} when is_list(decoded) -> all_zeros?(decoded)
       _ -> false
     end
   end
+
   defp all_zeros?(_), do: false
 
   defp normalize_for_comparison(value, key) do
@@ -563,7 +583,8 @@ defmodule Memo.ExportDuckDB do
       String.contains?(type, "BOOLEAN") -> normalize_boolean(value)
       String.contains?(type, ["DOUBLE", "FLOAT", "INT", "BIGINT"]) -> normalize_number(value)
       String.contains?(type, ["TEXT", "VARCHAR"]) -> normalize_text(value)
-      true -> value  # Default case for other types
+      # Default case for other types
+      true -> value
     end
   end
 
@@ -582,24 +603,33 @@ defmodule Memo.ExportDuckDB do
 
   defp normalize_number(value) do
     case value do
-      val when is_number(val) -> val
+      val when is_number(val) ->
+        val
+
       val when is_binary(val) ->
         cond do
           String.match?(val, ~r/^\d+$/) -> String.to_integer(val)
           String.match?(val, ~r/^\d+\.\d+$/) -> String.to_float(val)
-          true -> val  # Return the original string if it's not a valid number
+          # Return the original string if it's not a valid number
+          true -> val
         end
-      _ -> value  # Return the original value if it's not a number or string
+
+      # Return the original value if it's not a number or string
+      _ ->
+        value
     end
   end
 
   defp normalize_array_value(value) do
     case value do
-      nil -> []
+      nil ->
+        []
+
       val when is_list(val) ->
         val
         |> Enum.reject(&(&1 in ["", nil]))
         |> Enum.sort()
+
       val when is_binary(val) ->
         cond do
           # Handle DuckDB array format
@@ -612,24 +642,33 @@ defmodule Memo.ExportDuckDB do
               x |> String.trim("'") |> String.trim("\"")
             end)
             |> Enum.reject(&(&1 in ["", nil]))
+
           # Handle comma-separated string format
           String.contains?(val, ",") ->
             val
             |> String.split(",")
             |> Enum.map(&String.trim/1)
             |> Enum.reject(&(&1 in ["", nil]))
-          String.trim(val) == "" -> []
-          true -> [val]
+
+          String.trim(val) == "" ->
+            []
+
+          true ->
+            [val]
         end
-      _ -> []
-    end |> Enum.sort()
+
+      _ ->
+        []
+    end
+    |> Enum.sort()
   end
 
   defp is_array_type?(type), do: String.contains?(type, "[]") or String.contains?(type, "ARRAY")
 
   defp normalize_text(value) do
     value
-    |> to_string()  # Ensure the value is treated as a string
+    # Ensure the value is treated as a string
+    |> to_string()
     |> String.trim()
     |> String.replace(~r/\r\n/, "\n")
     |> String.replace(~r/\\n/, "\n")
@@ -655,18 +694,20 @@ defmodule Memo.ExportDuckDB do
     estimated_tokens = div(String.length(md_content), 4)
 
     # Get all array columns from @allowed_frontmatter
-    array_columns = @allowed_frontmatter
-    |> Enum.filter(fn {_key, type} -> is_array_type?(type) end)
-    |> Enum.map(&elem(&1, 0))
+    array_columns =
+      @allowed_frontmatter
+      |> Enum.filter(fn {_key, type} -> is_array_type?(type) end)
+      |> Enum.map(&elem(&1, 0))
 
     # Pre-normalize certain fields before taking, with safe access
-    normalized_frontmatter = frontmatter
-    |> Map.put("estimated_tokens", estimated_tokens)
-    |> then(fn map ->
-      Enum.reduce(array_columns, map, fn key, acc ->
-        Map.update(acc, key, [], &normalize_array_value/1)
+    normalized_frontmatter =
+      frontmatter
+      |> Map.put("estimated_tokens", estimated_tokens)
+      |> then(fn map ->
+        Enum.reduce(array_columns, map, fn key, acc ->
+          Map.update(acc, key, [], &normalize_array_value/1)
+        end)
       end)
-    end)
 
     allowed_keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
 
