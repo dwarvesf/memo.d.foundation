@@ -1,13 +1,14 @@
 {{ partial "header.html" . }}
 <div class="memo-content">
-{{ .Content 
-   | replaceRE 
-      `&lt;a:(\w+):(\d+)&gt;` 
-      "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.gif?size=44&quality=lossless\" alt=\":${1}:\"/>" 
-   | replaceRE 
-      `&lt;:(\w+):(\d+)&gt;` 
-      "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>" 
+{{ .Content
+   | replaceRE
+      `&lt;a:(\w+):(\d+)&gt;`
+      "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.gif?size=44&quality=lossless\" alt=\":${1}:\"/>"
+   | replaceRE
+      `&lt;:(\w+):(\d+)&gt;`
+      "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>"
    | safeHTML
 }}
 </div>
+<!-- {{ partial "subscription.html" . }} -->
 {{ partial "footer.html" . }}
