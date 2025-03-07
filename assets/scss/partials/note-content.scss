@@ -112,7 +112,9 @@ code.button {
 
     div.container {
       position: sticky;
-      padding-top: 1.5rem;
+      x: calc(100vh - 80px);
+      padding: 1.5rem 0 40px 0;
+      overflow-y: auto;
       top: 0px;
       right: 0;
       display: flex;
@@ -433,7 +435,7 @@ label:not(:has(+ #TableOfContents)) {
         }
         font-weight: 400;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         color: var(--secondary-font-color-light-var2);
         column-gap: 0.25rem;
       }
