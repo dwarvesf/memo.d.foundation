@@ -1,3 +1,4 @@
+// subscription block
 .subscription {
   padding: 1.5rem;
   background-color: var(--secondary-background-color-light);
@@ -112,4 +113,88 @@ html[data-theme='dark'] {
 
 .subscription-button.loading .spinner {
   display: inline-block;
+}
+
+// mentionin block
+.mentionin {
+  h6 {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 10px;
+    margin-bottom: 0;
+  }
+
+  ul {
+    list-style-type: none !important;
+    padding-left: 0;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  li {
+    padding: 0;
+    font-size: 1rem;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.mentionedin_btn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--secondary-foreground);
+  padding: 0;
+}
+
+.mentionedin_btn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--secondary-foreground);
+  padding: 0;
+}
+
+.mentionin .mentions-content {
+  min-height: 30px; /* Ensures consistent height */
+  position: relative;
+}
+
+.mentionin .loading-container {
+  margin-top: 5px;
+}
+
+.mentionin .loading-placeholder {
+    height: 12px;
+    width: 80%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #f5f5f5 25%, #ececec 50%, #f5f5f5 75%);
+    background-size: 200% 100%;
+    animation: loading-pulse 1.5s infinite ease-in-out;
+    margin-bottom: 8px;
+}
+
+html[data-theme='dark'] {
+    .mentionin .loading-placeholder {
+        background: linear-gradient(90deg, #3b3b3b 25%, #3b3b3b 50%, #3b3b3b 75%);
+    }
+}
+
+.mentionin .no-mentions {
+  color: #9b9b9b;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+@keyframes loading-pulse {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
