@@ -158,6 +158,9 @@
   {{ $readingTooltip := resources.Get "js/reading-tooltip.js" }}
   <script defer src="{{ $readingTooltip.RelPermalink }}"></script>
 
+  {{ $sidebarTooltip := resources.Get "js/sidebar-tooltip.js" }}
+  <script defer src="{{ $sidebarTooltip.RelPermalink }}"></script>
+
   {{ $recentPages := resources.Get "js/recent-pages.js" }}
   <script defer src="{{ $recentPages.RelPermalink }}"></script>
 
@@ -325,6 +328,16 @@
   {{ partial "sidebar.html" . }}
 
   <div class="tab-header">
+    <!-- Mobile sidebar toggle button -->
+    <button 
+      id="sidebar-toggle"
+      x-data
+      @click="document.querySelector('.sidebar').classList.toggle('mobile-visible')"
+      aria-label="Toggle sidebar">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
     <div class="header-spacer"></div>
     {{ partial "command-palette.html" . }}
     <div>

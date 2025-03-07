@@ -97,6 +97,10 @@ html[data-theme='dark'] {
   .subscription-button {
     width: 100%;
   }
+
+  .subscription-input {
+    min-width: unset;
+  }
 }
 
 .spinner {
