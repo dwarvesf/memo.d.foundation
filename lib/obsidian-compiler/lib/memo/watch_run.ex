@@ -27,9 +27,6 @@ defmodule Memo.WatchRun do
     # Run the scripts to build the site
     run_scripts(vaultpath, exportpath)
 
-    # Start the Hugo server
-    Task.start(fn -> start_hugo_server() end)
-
     # Start the file watcher
     {:ok, watcher_pid} = FileSystem.start_link(dirs: [vaultpath])
     FileSystem.subscribe(watcher_pid)
@@ -73,14 +70,18 @@ defmodule Memo.WatchRun do
     end
   end
 
-  defp start_hugo_server() do
-    System.cmd("hugo", ["-DEF", "--poll", "2s", "--logLevel", "error", "server"],
-      into: IO.stream(:stdio, :line)
-    )
-  end
-
   defp run_scripts(vaultpath, exportpath) do
-    Memo.Application.export_markdown(vaultpath, exportpath)
+    # If vaultpath is a specific file, process just that file
+    # Otherwise, process the entire directory
+    if is_binary(vaultpath) and String.contains?(vaultpath, ".md") and File.exists?(vaultpath) do
+      # Process a single file
+      IO.puts("Processing single file: #{vaultpath}")
+      Memo.Application.export_markdown(vaultpath, exportpath)
+    else
+      # Process the entire directory
+      IO.puts("Processing directory: #{vaultpath}")
+      Memo.Application.export_markdown(vaultpath, exportpath)
+    end
   end
 
   defp lock(file_path) do
