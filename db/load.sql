@@ -1,1 +1,1 @@
-COPY vault FROM 'db/vault.parquet' (FORMAT 'parquet');
+COPY vault FROM '../../db/vault.parquet' (FORMAT 'parquet');
