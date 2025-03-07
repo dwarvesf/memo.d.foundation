@@ -1,0 +1,13 @@
+{application,mogrify,
+             [{modules,['Elixir.Mogrify','Elixir.Mogrify.Compat',
+                        'Elixir.Mogrify.Image','Elixir.Mogrify.Option',
+                        'Elixir.Mogrify.Options',
+                        'Elixir.Mogrify.Options.Color',
+                        'Elixir.Mogrify.Options.Filter',
+                        'Elixir.Mogrify.Options.Helpers',
+                        'Elixir.Mogrify.Options.Transform']},
+              {optional_applications,[]},
+              {applications,[kernel,stdlib,elixir,crypto,logger]},
+              {description,"mogrify"},
+              {registered,[]},
+              {vsn,"0.9.3"}]}.

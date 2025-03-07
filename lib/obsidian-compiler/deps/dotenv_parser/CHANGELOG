@@ -1,0 +1,17 @@
+2.0.1
+-----
+
+* Changed ~R sigils to ~r to fix compile warning.
+* Changed String.slice range to stepped to fix compile warning.
+* Raised minimum supported Elixir version to 1.12.
+
+2.0.0
+-----
+
++ Added support for multiline values by using quotes around the value.
+* Fixed some escaping related corner cases.
+
+1.2.0
+-----
+
+First public release.

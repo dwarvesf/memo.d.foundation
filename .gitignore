@@ -78,3 +78,6 @@ memo-*.tar
 # Devbox artifacts
 /.devbox/
 .aider*
+
+# node_modules
+node_modules
