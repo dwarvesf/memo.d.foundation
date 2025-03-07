@@ -44,7 +44,7 @@
   }
 }
 
-.note-title + * + * {
+.memo-content > *:first-child {
   margin-top: 0px !important;
 }
 
