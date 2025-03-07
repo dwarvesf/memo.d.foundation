@@ -317,7 +317,6 @@ defmodule Memo.ExportMarkdown do
     case Jason.encode(cache, pretty: true) do
       {:ok, json} ->
         File.write!(cache_path, json)
-        IO.puts("Cache saved to #{cache_path}")
 
       _ ->
         IO.puts("Warning: Failed to encode cache to JSON")
