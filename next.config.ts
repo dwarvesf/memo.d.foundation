@@ -13,5 +13,7 @@ const withMDX = createMDX({
   // Add markdown plugins here, as desired
 })
  
+module.exports = withMDX(nextConfig)
+
 // Merge MDX config with Next.js config
 export default withMDX(nextConfig)
