@@ -144,8 +144,8 @@
   {{ $scroll := resources.Get "js/scroll.js" }}
   <script defer src="{{ $scroll.RelPermalink }}"></script>
 
-  {{ $codeblockCopy := resources.Get "js/codeblock-copy.js" }}
-  <script defer src="{{ $codeblockCopy.RelPermalink }}"></script>
+  {{ $codeblock := resources.Get "js/codeblock.js" }}
+  <script defer src="{{ $codeblock.RelPermalink }}"></script>
 
   {{ $processImage := resources.Get "js/process-image.js" }}
   <script defer src="{{ $processImage.RelPermalink }}"></script>
