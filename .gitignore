@@ -23,8 +23,6 @@ go.work
 # hugo dev-related files
 resources
 .hugo_build.lock
-public/*
-!public/CNAME
 content/
 !src/lib/content/
 
