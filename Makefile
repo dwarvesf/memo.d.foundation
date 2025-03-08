@@ -13,6 +13,9 @@ fetch:
 build:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../content")'
 
+watch-run:
+	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.watch_run("../../vault", "../../content")'
+
 duckdb-export:
 	@rm -f vault.duckdb
 	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.export_duckdb("../../vault", "parquet", "HEAD~2")'
