@@ -7,6 +7,21 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Enable build caching features
+  experimental: {
+    // These settings help with build caching even in static export mode
+    // Optimize for static export but still benefit from caching
+    optimizePackageImports: ['react', 'react-dom'],
+  },
+  // Increase the build cache size
+  onDemandEntries: {
+    // Keep pages in memory for longer during development
+    maxInactiveAge: 60 * 60 * 1000, // 1 hour
+    // Number of pages to keep in memory
+    pagesBufferLength: 5,
+  },
+  // Improve static generation performance
+  staticPageGenerationTimeout: 120, // seconds
 }
 
 const withMDX = createMDX({

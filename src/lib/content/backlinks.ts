@@ -34,7 +34,6 @@ export async function getBacklinks(slug: string[]): Promise<string[]> {
           });
 
           backlinks = filteredData.map(row => row[0]?.toString() || '');
-          console.log('Pages referencing this content:', backlinks);
         }
       });
     }

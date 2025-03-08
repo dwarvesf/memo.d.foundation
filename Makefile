@@ -12,6 +12,7 @@ fetch:
 
 build:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../content")'
+	@pnpm run build
 
 watch-run:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.watch_run("../../vault", "../../content")'
