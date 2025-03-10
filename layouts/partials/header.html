@@ -329,7 +329,7 @@
 
   <div class="tab-header">
     <!-- Mobile sidebar toggle button -->
-    <button 
+    <button
       id="sidebar-toggle"
       x-data
       @click="document.querySelector('.sidebar').classList.toggle('mobile-visible')"
@@ -615,7 +615,9 @@
         }
       },
     }">
-      <!-- <a href="/">{{ .Site.Title }}</a> / <a href="{{ .RelPermalink }}">{{ .Title }}</a> -->
+    {{ if not (eq .Kind "404")}}
+      <img class="yggdrasil-tree no-zoom" src="{{ $yggdrasilImage.Permalink }}" />
+    {{ end }}
       {{ if not (eq .Kind "404")}}
         <div x-show="!hideTitle" x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }">
           <div class="title-index" style="display: none;">{{ .Title }}</div>
@@ -633,7 +635,4 @@
 
       {{ if .Params.toc -}}
       <aside class="toc">{{ .TableOfContents }}</aside>
-      {{ end }}
-      {{ if not (eq .Kind "404")}}
-        <img class="yggdrasil-tree no-zoom" src="{{ $yggdrasilImage.Permalink }}" />
       {{ end }}
