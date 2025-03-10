@@ -106,6 +106,7 @@
   <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/persist@3.14.1/dist/cdn.min.js"></script>
   <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/focus@3.14.1/dist/cdn.min.js"></script>
   <script defer src="https://fastly.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mipd@0.0.7/dist/cjs/index.min.js"></script>
 
   <!-- D3 -->
   <script defer src="https://d3js.org/d3.v7.min.js"></script>
@@ -165,6 +166,9 @@
 
   {{ $single := resources.Get "js/single.js" }}
   <script defer type="module" src="{{ $single.RelPermalink }}"></script>
+
+  {{ $eip6963 := resources.Get "js/eip6963.js" }}
+  <script defer type="module" src="{{ $eip6963.RelPermalink }}"></script>
 
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
@@ -374,6 +378,9 @@
        </div>
        <div class="arrow" data-popper-arrow></div>
      </div>
+     <button type="button" class="connect-wallet">
+      Connect
+    </button>
  </div>
 
   </div>
