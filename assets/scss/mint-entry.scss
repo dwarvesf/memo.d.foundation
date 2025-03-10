@@ -1,0 +1,189 @@
+.mint-entry-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
+    padding: 1.5rem 0;
+    box-sizing: border-box;
+
+    * {
+        box-sizing: border-box;
+    }
+}
+
+.entry-minter {
+    flex: 1;
+    flex-basis: 50%;
+    flex-shrink: 0;
+    background-color: #f8f0f0;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+
+    .mint-cta {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1.5rem;
+
+        img {
+            height: 167px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        span {
+            align-self: center;
+            font-size: 0.875rem;
+            color: var(--secondary-font-color-light-var2);
+            font-weight: 400;
+            text-align: center;
+            line-height: 100%;
+        }
+
+        button {
+            height: 40px;
+            background-color: var(--primary-color);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: white;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.1s ease;
+
+            &:hover {
+                filter: brightness(1.05);
+            }
+        }
+    }
+
+    .mint-progress {
+        height: 72px;
+        border-top: 1px solid #ece4e4;
+        padding: 1rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        position: relative;
+
+        & > span {
+            font-size: 0.75rem;
+            font-weight: 400;
+            align-self: flex-end;
+            line-height: 100%;
+        }
+
+        --progress: 10.5%;
+
+        .mint-progress-label {
+            width: 24px;;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            left: calc(1.5rem + var(--progress));
+            bottom: 1rem;
+            transform: translateX(-50%);
+            row-gap: 0.5rem;
+
+            span {
+                color: var(--primary-color);
+                font-size: 0.75rem;
+                font-weight: 400;
+                white-space: nowrap;
+                text-align: center;
+                line-height: 100%;
+            }
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        progress {
+            appearance: none;
+            width: 100%;
+            height: 0.5rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+
+            &::-webkit-progress-bar {
+                background-color: white;
+                border-radius: 0.5rem;
+            }
+
+            &::-webkit-progress-value {
+                background-color: var(--primary-color);
+            }
+        }
+    }
+}
+
+.entry-info {
+    flex: 1;
+    flex-basis: 50%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    row-gap: 1.5rem;
+    background-color: #f2f2f2;
+    border-radius: 0.5rem;
+    position: relative;
+
+    img.neko-sticker {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        bottom: -8px;
+        right: -8px;
+        transform: rotateZ(14deg);
+    }
+
+    span {
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 140%;
+    }
+
+    span:nth-of-type(1) {
+        color: #23252c;
+    }
+
+    span:nth-of-type(2) {
+        line-height: 130%;
+        color: var(--secondary-font-color-light-var2);
+    }
+
+    dl {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+
+        dt {
+            font-size: 0.625rem;
+            font-weight: 500;
+            color: var(--secondary-foreground);
+            text-transform: uppercase;
+            line-height: 140%;
+        }
+
+        dd {
+            font-size: 0.8125rem;
+            color: #23252f;
+            font-weight: 400;
+            font-family: var(--font-monospace);
+            margin: 0.25rem 0 0 0;
+            line-height: 100%;
+        }
+
+        dt:not(:first-child) {
+            margin-top: 1rem;
+        }
+    }
+}
