@@ -99,7 +99,7 @@ defmodule Memo.WatchRun do
 
       # After both exports are complete, run npm run dev
       IO.puts("Both exports completed. Starting npm run dev...")
-      case System.cmd("npm", ["run", "dev"], cd: "../..", into: IO.stream(:stdio, :line)) do
+      case System.cmd("pnpm", ["run", "dev"], cd: "../..", into: IO.stream(:stdio, :line)) do
         {_, 0} -> IO.puts("npm run dev started successfully")
         {error, code} -> IO.puts("npm run dev failed with code #{code}: #{inspect(error)}")
       end

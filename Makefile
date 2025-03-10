@@ -14,6 +14,10 @@ build:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../content")'
 	@pnpm run build
 
+run:
+	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../content")'
+	@pnpm run dev
+
 watch-run:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.watch_run("../../vault", "../../content")'
 
