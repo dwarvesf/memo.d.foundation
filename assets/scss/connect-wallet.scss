@@ -1,0 +1,32 @@
+.connect-wallet {
+  padding: 0.5rem;
+  height: 40px;
+  min-width: 100px;
+  text-align: center;
+  background-color: var(--primary-color);
+  color: var(--primary-foreground-color);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  justify-content: center;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.1s ease;
+  white-space: nowrap;
+
+  &:hover {
+    filter: brightness(1.05);
+  }
+}
+
+.wallet-connected {
+  background-color: var(--primary-foreground-color);
+  color: var(--primary-font-color-light);
+  border: 1px solid var(--border-color-light);
+
+  &:hover {
+    background-color: var(--secondary-font-color);
+  }
+}
