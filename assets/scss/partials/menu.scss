@@ -1,7 +1,7 @@
 nav.menu {
   position: sticky;
   top: 57px;
-  padding: 1.5rem 0.5rem 0rem 0.5rem;
+  padding: 1.5rem 0rem 0rem 0.5rem;
   line-height: 22px;
   white-space: nowrap;
   grid-area: nav;
@@ -11,7 +11,6 @@ nav.menu {
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  border-right: 1px solid var(--border-color-light);
   transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
   background-color: var(--primary-background-color-light);
   display: flex;
@@ -405,7 +404,8 @@ html[data-theme="dark"] {
 }
 
 #sidebar {
-  width: 270px;
+  padding-left:80px;
+  width: 350px;
   z-index: 2;
 
   & > div {

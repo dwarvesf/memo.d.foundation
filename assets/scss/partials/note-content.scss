@@ -85,7 +85,7 @@ code.button {
     "nav content pagenav"
     "nav content pagenav";
   grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-  grid-template-columns: 270px minmax(auto, var(--container-max-width)) 248px;
+  grid-template-columns: 350px minmax(auto, var(--container-max-width)) 328px;
   column-gap: var(--column-gap);
   justify-content: center;
 
@@ -367,7 +367,7 @@ label:not(:has(+ #TableOfContents)) {
 .always-on-right-sidebar {
   transition: transform 0.3s ease-in-out;
   transition-delay: 0s;
-  // padding-bottom: 500px;
+  max-width: 300px;
 
   .metadata {
     hr {

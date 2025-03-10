@@ -13,7 +13,7 @@
   flex-direction: column;
   overflow: visible; /* Changed from hidden to visible to allow tooltips to show */
   border-right: 1px solid var(--border-color-light);
-  padding: 0 16px;
+  padding: 0 10px;
 
   .sidebar-logo {
     display: flex;
@@ -104,13 +104,14 @@ html[data-theme="dark"] {
 .sidebar-tooltip {
   background: var(--secondary-background-color);
   color: var(--secondary-font-color);
-  font-weight: bold;
+  font-weight: medium;
   padding: 6px 10px;
   font-size: 12px;
   border-radius: 4px;
   display: none;
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
 
   &[data-show] {
     display: block;
@@ -161,7 +162,7 @@ html[data-theme="dark"] {
 }
 
 // Mobile adjustments
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .sidebar {
     width: 56px;
     padding: 0 12px;
@@ -173,17 +174,17 @@ html[data-theme="dark"] {
     &.mobile-visible {
       transform: translateX(0);
     }
-    
+
     // Show labels on mobile without tooltips
     .sidebar-item {
       justify-content: flex-start;
-      
+
       span {
         display: inline-block;
         margin-left: 12px;
       }
     }
-    
+
     // Hide tooltips on mobile
     .sidebar-tooltip {
       display: none !important;

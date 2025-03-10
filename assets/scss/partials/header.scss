@@ -471,7 +471,7 @@ nav.menu>.tab-menu {
   .btn-reading-mode-toggler {
     display: none;
   }
-  
+
   #sidebar-toggle {
     display: flex;
   }
@@ -498,8 +498,8 @@ nav.menu>.tab-menu {
     cursor: pointer;
     padding: 0;
     color: var(--secondary-font-color-light);
-    
-    @media (max-width: 768px) {
+
+    @media (max-width: 1100px) {
       display: flex;
       align-items: center;
       justify-content: center;

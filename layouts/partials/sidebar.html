@@ -22,8 +22,8 @@
         sidebar.classList.remove('mobile-visible');
       }
     }
-  }" 
-  class="sidebar" 
+  }"
+  class="sidebar"
   @click.outside="closeSidebar"
 >
   <!-- Logo and title -->
@@ -36,13 +36,13 @@
     </svg>
     <span>Dwarves Memo</span>
   </a>
-  
+
   <!-- Navigation items -->
   <nav class="sidebar-nav">
     <template x-for="(item, index) in links" :key="item.url">
       <div class="nav-item-container">
-        <a :href="item.url" 
-           class="sidebar-item" 
+        <a :href="item.url"
+           class="sidebar-item"
            :class="{ 'active': isActiveUrl(item.url) }"
            :id="'sidebar-item-' + index">
           <img :src="item.icon" alt="" width="24" height="24" class="no-zoom">
@@ -56,7 +56,7 @@
 <!-- Tooltips container (outside the sidebar to avoid overflow issues) -->
 <div class="tooltips-container">
   <!-- Logo tooltip removed as it's just a home link -->
-  
+
   <template x-data="{links: [
     { title: 'Home', url: '/' },
     { title: 'Consulting', url: '/consulting/' },
