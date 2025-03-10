@@ -170,6 +170,9 @@
   {{ $eip6963 := resources.Get "js/eip6963.js" }}
   <script defer type="module" src="{{ $eip6963.RelPermalink }}"></script>
 
+  {{ $mintEntry := resources.Get "js/mint-entry.js" }}
+  <script defer type="module" src="{{ $mintEntry.RelPermalink }}"></script>
+
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
   {{ if .IsHome -}}
