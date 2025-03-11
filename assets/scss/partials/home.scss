@@ -1,0 +1,36 @@
+// hero image on home page
+.home .note-title + p * {
+  margin: 0 !important;
+}
+
+.love-what-we-are-doing {
+  h6 {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 10px;
+    margin-bottom: 0px !important;
+  }
+
+  ul {
+    margin-top: 10px;
+    list-style: none;
+    padding-left: 0px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
+  }
+
+  a {
+    font-size: 14px;
+    color: var(--primary-color);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .love-what-we-are-doing {
+    ul {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
