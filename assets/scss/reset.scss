@@ -5,23 +5,28 @@ html {
 body {
   font-family: "Public Sans", sans-serif;
   font-size: 1.0625rem;
-  color: #23252c;
+  color: var(--primary-font-color-light);
   text-rendering: optimizeLegibility;
   padding: 2rem;
   max-width: 100%;
   margin: 0px;
   padding: 0px;
   background-color: var(--primary-background-color-light);
-  line-height: 1.5;
+  line-height: 1.75;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   hyphens: auto;
   overscroll-behavior: none;
+  font-weight: 300!important;
 }
 
 strong {
-  font-weight: 500;
+  font-weight: 600;
+}
+
+html[data-theme="dark"] main {
+  font-weight: 300;
 }
 
 h1,
@@ -36,48 +41,34 @@ h5 {
 }
 
 h1 {
-  font-size: 41px !important;
-  margin: 16px 0px 32px !important;
+  font-size: 35px !important;
+  margin: var(--heading-margin) 0px 0px !important;
 }
 
 h2 {
-  font-size: 25px !important;
-  margin: 40px 0px 32px !important;
+  font-size: 28px !important;
+  color: var(--primary-color);
+  margin: var(--heading-margin) 0px 0px !important;
 }
 
 h3 {
   font-size: 22px !important;
-  margin: 40px 0px 24px !important;
+  margin: var(--heading-margin) 0px 0px !important;
 }
 
 h4 {
   font-size: 20px !important;
-  margin: 22px 0px 8px !important;
+  margin: var(--element-margin) 0px 0px !important;
 }
 
 h5 {
   font-size: 16px !important;
-  margin: 22px 0px 6px !important;
+  margin: var(--element-margin) 0px 0px !important;
 }
-
-h1 + p,
-h2 + p,
-h3 + p,
-h4 + p,
-h5 + p {
-  margin-top: 0px;
-}
-
-// main > h1,
-// main > h2,
-// main > h3,
-// main > h4,
-// main > h5 {
-//   margin-top: 0 !important;
-// }
 
 p {
   margin-bottom: 0;
+  margin-top: var(--element-margin);
 }
 
 a[href^="#"] {
@@ -123,7 +114,7 @@ pre {
   display: inline-block;
   padding: 12px 16px !important;
   margin: 0 !important;
-  margin-top: 10px !important;
+  margin-top: var(--element-margin) !important;
 }
 
 code {
@@ -146,18 +137,6 @@ pre > code {
   display: inline-block;
   width: 100%;
 }
-
-//
-// code comment {
-//     color: #777;
-// }
-
-// table code {
-//     margin: 0px;
-//     background: var(--secondary-background-color-light) !important;
-//     color: var(--secondary-font-color-light);
-//     border: 0.5px solid var(--secondary-font-color-light);
-// }
 
 span {
   a,
@@ -194,14 +173,38 @@ html[data-theme="dark"] {
     background-color: transparent !important;
   }
 
-  // table code {
-  //     background: var(--secondary-background-color) !important;
-  //     color: var(--secondary-font-color);
-  // }
-
   input[type="checkbox"] {
     background: #334155;
     border: 1px solid #475569;
+  }
+}
+
+main ul,
+ol {
+  line-height: 27px;
+  margin: 0;
+  padding: 0;
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  margin-top: 0.5rem;
+
+  > li > a {
+    padding: 0;
+    &::before {
+      height: 15%;
+      bottom: 0%;
+    }
+  }
+}
+
+main ul,
+ol {
+  margin-top: var(--element-margin);
+
+  ul, ol {
+    margin-top: calc(var(--element-margin) / 2);
   }
 }
 
@@ -212,7 +215,7 @@ iframe {
 
 html[data-theme="light"] {
   h1,
-  h2,
+  // h2,
   h3,
   h4,
   h5 {
@@ -237,6 +240,113 @@ html[data-theme="light"] {
     font-size: calc(1rem + 0.5vw);
   }
 }
+
+table,
+tr,
+th,
+td {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid var(--border-color-light);
+}
+
+th,
+td {
+  padding: 6px 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+  text-align: left;
+}
+
+td:has(img) {
+  padding: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: var(--element-margin);
+}
+
+th, td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  word-wrap: break-word;
+  min-width: 100px;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th {
+  font-weight: 500;
+}
+
+html[data-theme="light"] {
+  th, td {
+    border: 1px solid var(--border-color-light);
+  }
+
+  thead {
+    background-color: var(--secondary-background-color-light);
+  }
+}
+
+html[data-theme="dark"] {
+  th, td {
+    border: 1px solid var(--border-color);
+  }
+
+  thead {
+    background-color: var(--secondary-background-color);
+  }
+}
+
+table:has(th:empty) {
+  border: none;
+
+  th {
+    border: none;
+    padding: 0px;
+    line-height: 0px;
+  }
+}
+
+table:has(img) {
+  td {
+    min-width: 200px;
+  }
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+hr {
+  all: initial;
+  height: 1px;
+  display: block;
+  margin: var(--element-margin) 0px !important;
+  width: 100%;
+  max-width: inherit;
+  background-color: var(--primary-border-color-light);
+}
+
+.content-img {
+  max-height: 500px;
+  margin: 0px auto 0 auto;
+  transform-origin: center center;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
 
 .relative {
   position: relative !important;
