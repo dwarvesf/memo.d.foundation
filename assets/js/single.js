@@ -22,7 +22,12 @@ function loadSubscriptionForm() {
     const email = emailInput.value.trim();
 
     if (!isValidEmail(email)) {
-      window.alert('Please enter a valid email address');
+      Toastify({
+        text: 'Please enter a valid email address',
+        duration: 3000,
+        gravity: 'top',
+        position: 'center',
+      }).showToast();
       emailInput.focus();
       return;
     }
@@ -30,22 +35,32 @@ function loadSubscriptionForm() {
     setSubmitting(true);
 
     try {
-      // Simulate API call with a delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch('https://api.fortress.d.foundation/api/v1/dynamic-events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'subscribe_memo',
+          data: {
+            email: email,
+          }
+        })
+      });
 
-      // Successful submission
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       Toastify({
         text: 'Thank you for subscribing!',
         duration: 3000,
-        newWindow: true,
-        close: false,
         gravity: 'top',
         position: 'center',
-        stopOnFocus: true,
       }).showToast();
       emailInput.value = '';
     } catch (error) {
-      window.alert('An error occurred. Please try again.');
+      alert('An error occurred. Please try again.')
     } finally {
       setSubmitting(false);
     }
