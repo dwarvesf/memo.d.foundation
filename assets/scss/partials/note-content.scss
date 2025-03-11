@@ -51,7 +51,7 @@
 }
 
 .memo-content {
-  margin-bottom: 60px;
+  margin-bottom: 52px;
 }
 
 .note-title + * {
@@ -87,8 +87,6 @@ code.button {
 }
 
 .grid {
-  position: relative;
-  // margin-top: 57px;
   display: inline-grid;
   grid-template-areas:
     "tabmenu tabmenu tabmenu"
