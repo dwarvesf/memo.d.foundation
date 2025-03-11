@@ -46,16 +46,19 @@
   }
 }
 
-.memo-content > *:first-child {
+// hero image on home page
+.home .note-title + p *{
+  margin: 0!important;
+}
+
+.memo-content > *:first-child,
+.memo-content > *:first-child > *,
+.note-title + * {
   margin-top: 0px !important;
 }
 
 .memo-content {
   margin-bottom: 52px;
-}
-
-.note-title + * {
-  margin-top: 0px !important;
 }
 
 .clear-title {
@@ -699,9 +702,4 @@ iframe {
 .post-list {
   row-gap: 24px;
   padding-left: 0;
-}
-
-// hero image on home page
-.home .note-title + p *{
-  margin: 0!important;
 }
