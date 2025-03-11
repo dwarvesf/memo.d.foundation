@@ -122,7 +122,7 @@ code.button {
 
     div.container {
       position: sticky;
-      padding: 0 0 40px 0;
+      padding: 90px 0 40px 0!important;
       overflow-y: auto;
       top: 0px;
       right: 0;
@@ -204,26 +204,6 @@ main {
   aspect-ratio: 1 / 1;
 }
 
-.pagenav .container .always-on-right-sidebar {
-  transform: translateY(-300px);
-  transition-delay: 0.15s;
-}
-
-html[data-reading-mode="false"] {
-  .grid .pagenav div.container {
-    top: 57px;
-  }
-
-  .pagenav .container .always-on-right-sidebar {
-    transform: translateY(0);
-    transition-delay: 0.15s;
-  }
-
-  .grid {
-    margin-top: 61px;
-  }
-}
-
 // if ToC is empty or there is no ToC, hide the label before it
 label:has(+ #TableOfContents:empty),
 label:not(:has(+ #TableOfContents)) {
@@ -259,11 +239,21 @@ label:not(:has(+ #TableOfContents)) {
   display: none;
 }
 
+html[data-reading-mode="true"] {
+  .metadata{
+    opacity: 0;
+    transform: translateX(50px);
+    pointer-events: none;
+  }
+}
+
 .always-on-right-sidebar {
   transition: transform 0.3s ease-in-out;
   transition-delay: 0s;
 
   .metadata {
+    transition: all 0.2s ease-in-out;
+    transform: translateX(0px);
     padding-right:20px;
 
     hr {
