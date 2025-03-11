@@ -60,7 +60,13 @@ function loadSubscriptionForm() {
       }).showToast();
       emailInput.value = '';
     } catch (error) {
-      alert('An error occurred. Please try again.')
+      Toastify({
+        text: 'An error occurred. Please try again later.',
+        duration: 3000,
+        gravity: 'top',
+        position: 'center',
+        className: 'error',
+      }).showToast();
     } finally {
       setSubmitting(false);
     }
