@@ -1,4 +1,8 @@
 .table-of-contents-tree {
+  > ul > li:first-child{
+    margin-top: 0!important;
+  }
+
   ul {
     list-style: none;
     padding-left: 0;
