@@ -18,7 +18,6 @@ body {
   flex-direction: column;
   hyphens: auto;
   overscroll-behavior: none;
-  font-weight: 300!important;
 }
 
 strong {
@@ -274,7 +273,7 @@ table {
   margin-top: var(--element-margin);
 }
 
-.fixed-layout-table{
+.fixed-layout-table {
   > table{
     table-layout: fixed;
   }
