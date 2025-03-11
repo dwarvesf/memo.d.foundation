@@ -48,6 +48,10 @@
   margin-top: 0px !important;
 }
 
+.note-title + * {
+  margin-top: 0px !important;
+}
+
 .clear-title {
   grid-template-areas: "pagetitle pagetitle";
   gap: 0;
