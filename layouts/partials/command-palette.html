@@ -437,23 +437,15 @@
             .trim();
         }
         navigator.clipboard.writeText(content);
-        const notification = document.createElement('div');
-        notification.textContent = 'Content copied to clipboard!';
-        notification.style.position = 'fixed';
-        notification.style.bottom = '20px';
-        notification.style.left = '50%';
-        notification.style.transform = 'translateX(-50%)';
-        notification.style.padding = '10px 20px';
-        notification.style.backgroundColor = 'var(--primary-color)';
-        notification.style.color = 'white';
-        notification.style.borderRadius = '5px';
-        notification.style.zIndex = '1000';
-        document.body.appendChild(notification);
-        setTimeout(() => {
-          notification.style.opacity = '0';
-          notification.style.transition = 'opacity 0.5s ease';
-          setTimeout(() => document.body.removeChild(notification), 500);
-        }, 2000);
+        Toastify({
+          text: 'Copied memo content!',
+          duration: 3000,
+          newWindow: true,
+          close: false,
+          gravity: 'top',
+          position: 'center',
+          stopOnFocus: true,
+        }).showToast();
       }
       this.close();
     },
