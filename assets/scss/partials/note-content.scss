@@ -206,6 +206,10 @@ label:not(:has(+ #TableOfContents)) {
   display: none;
 }
 
+.always-on-right-sidebar:has(#TableOfContents:empty) .metadata hr{
+  display:none;
+}
+
 #TableOfContents {
   max-height: calc(100svh / 3);
   // min-height: 200px;
