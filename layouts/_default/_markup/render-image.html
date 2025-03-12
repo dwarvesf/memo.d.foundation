@@ -1,12 +1,6 @@
 {{- $url := urls.Parse .Destination -}}
 {{- $scheme := $url.Scheme -}}
 
-{{ $mozillaPDF := resources.Get "js/pdf-js/pdf.mjs" }}
-{{ $mozillaWorkerPDF := resources.Get "js/pdf-js/pdf.worker.mjs" }}
-<script src="{{ $mozillaPDF.RelPermalink }}" type="module"></script>
-
-{{- if strings.HasSuffix .Destination ".pdf" -}}
-<!-- PDF rendering code remains unchanged -->
 {{- else if strings.HasSuffix .Destination ".mp4" -}}
 <video
   x-data="{
