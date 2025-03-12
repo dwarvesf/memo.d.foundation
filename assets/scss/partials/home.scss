@@ -96,9 +96,7 @@
     }
   }
 }
-.home .primary-link{
-  
-}
+
 .all-events{
   display: block;
   font-family: "Inter", sans-serif;
@@ -153,12 +151,15 @@
    text-decoration: none;
 
    margin-top: 0!important;
- 
+  
+ }
+ &:hover .memo-title{
+  color: var(--primary-color);
  }
  &-desc{
   font-size: 17px;
   font-weight: 400;
-  color: var(--secondary-black) !important;
+  color: var(--secondary-black);
   font-family: "IBM Plex Sans", sans-serif;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -229,5 +230,34 @@
   margin-top: 0;
 
  }
+ &:hover .radar-title{
+  color: var(--primary-color);
+ }
 
+}
+
+.home .changelog{
+  &-list{
+    padding: 1rem 0;
+  }
+  &-title{
+    font-size: 17px;
+    line-height: 36px;
+    color: var(--primary-color);
+    text-decoration: underline var(--primary-color);
+    font-family: "IBM Plex Sans", sans-serif;
+    margin-top: 0;
+    &:hover{
+      color: var(--primary-hover-color);
+      text-decoration: underline var(--primary-hover-color);
+    }
+  }
+  &-time{
+    font-size: 17px;
+    line-height: 36px;
+    color: var(--secondary-black);
+    font-family: "IBM Plex Sans", sans-serif;
+    margin-top: 0;
+    white-space: nowrap;
+  }
 }
