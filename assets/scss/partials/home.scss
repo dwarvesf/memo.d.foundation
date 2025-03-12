@@ -23,7 +23,7 @@
   }
 
   a {
-    font-size: 14px;
+    font-size: 1rem;
     color: var(--primary-color);
   }
 }
@@ -96,6 +96,9 @@
     }
   }
 }
+.home .primary-link{
+  
+}
 .all-events{
   display: block;
   font-family: "Inter", sans-serif;
@@ -136,12 +139,18 @@
    flex-direction: column;
    gap: 0.5rem;
  }
+&.no-image .memo-body{
+  padding-left: 0;
+  padding-right: 0;
+ }
  &-title{
    font-size: 17px !important;
    line-height: 25px;
    font-weight: 600;
    color: var(--secondary-black);
    font-family: "IBM Plex Sans", sans-serif;
+
+   text-decoration: none;
 
    margin-top: 0!important;
  
@@ -158,7 +167,7 @@
   
  }
 
- &-author{
+ &-author,&-time{
   font-size: 0.875rem;
   font-weight: 400;
   color: var(--secondary-font-color-light-var2) ;
@@ -185,4 +194,40 @@
 
 }
 
+.home .radar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+  min-width: 98px;
+  text-decoration: none;
 
+  &-list{
+   display: flex;
+   flex-wrap: wrap;
+  }
+ &-image{
+  padding: 1.5rem 1rem 0.625rem;
+  img{
+    
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--secondary-medium-grey);
+ border-radius: 9999px;
+ object-fit: cover;
+ object-position: 50%;
+  
+   }
+ }
+ &-title{
+  padding: 0.625rem 0.75rem;
+  color: var(--secondary-black);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 25px;
+  font-family: "IBM Plex Sans", sans-serif;
+  margin-top: 0;
+
+ }
+
+}
