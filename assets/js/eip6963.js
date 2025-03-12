@@ -1,4 +1,13 @@
+// Map of allowed RDNS providers with their display names and icons
+const rdnsMap = new Map([
+  ["io.metamask", { name: "MetaMask", icon: "https://metamask.io/images/metamask-fox.svg", provider: null }],
+  ["me.rainbow", { name: "Rainbow", icon: "https://rainbow.me/static/rainbow-logo.png", provider: null }],
+  ["org.toshi", { name: "Coinbase Wallet", icon: "https://www.coinbase.com/assets/press/coinbase-icon.png", provider: null }],
+  ["io.rabby", { name: "Rabby Wallet", icon: "https://rabby.io/assets/logo/rabby.svg", provider: null }],
+]);
+
 let mainWallet = null;
+let dropdownVisible = false;
 
 const getAccounts = (wallet) => {
   if (!wallet) return;
@@ -50,12 +59,21 @@ function listProviders() {
 
   window.addEventListener("eip6963:announceProvider", (event) => {
     const { info, provider } = event.detail;
-    if (provider && info && info.rdns === "io.metamask") {
+    if (rdnsMap.has(info.rdns)) {
+      const walletInfo = rdnsMap.get(info.rdns);
+      walletInfo.provider = provider;
+      rdnsMap.set(info.rdns, walletInfo);
+      
+      // Setup account change listener
+      provider.on("accountsChanged", (accs) => {
+        if (mainWallet === provider) {
+          updateButton(accs, connectBtn);
+        }
+      });
+      
+      // If no wallet is selected yet, use the first one
+      if (!mainWallet) {
       mainWallet = provider;
-      mainWallet.on("accountsChanged", (accs) =>
-        updateButton(accs, connectBtn)
-      );
-
       const accs = getAccounts(mainWallet);
       updateButton(accs, connectBtn);
 
