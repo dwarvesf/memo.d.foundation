@@ -1,7 +1,7 @@
 {{- $url := urls.Parse .Destination -}}
 {{- $scheme := $url.Scheme -}}
 
-{{- else if strings.HasSuffix .Destination ".mp4" -}}
+{{- if strings.HasSuffix .Destination ".mp4" -}}
 <video
   x-data="{
     title: `{{- with .Title }}{{ . | safeHTML }}{{- end -}}`,
