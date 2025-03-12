@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>783</li><li class=span><span>Characters:
-</span>14,112</li><li class=span><span>Without Spaces:
+</span>13,880</li><li class=span><span>Without Spaces:
 </span>4,742</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>18m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Re-ranking in RAG</div><div class=tags-index style=display:none>tags: llm, rag, ai</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Re-ranking in RAG</h1></div><div class=memo-content><p>One of the primary problems in RAG systems is the retrieval of a heterogeneous set of documents or pieces of information. These documents, while related to the query, often include extraneous details that can clutter the generation model&rsquo;s input. As a result, the generated text may lack coherence, accuracy, or pertinence, ultimately undermining the system&rsquo;s reliability and effectiveness. To address this issue, the concept of re-ranking has emerged as a critical solution.</p><h2 id=problem>Problem <a href=#problem></a></h2><p>When we do pre-processing step, embeddings capture semantic information, they sometimes lack contrastive information. For example, embedding may struggle to distinguish between &ldquo;I love shrimp&rdquo; and &ldquo;I used to love shimps&rdquo; since both convey a similar semantic meaning but it have completely different meaning. Besides that, embeddings documents or sentences is constrainted in fix number of dimension (e.g, 1024). This limitation challengeing to encode all relevant information accurately, especially for longer documents or queries. From these reason, relevant context retrieved from Retrieval step will be mixed with noise. that why we need re-ranking step to filter out those irrelevant data.</p><h2 id=what-is-re-ranking>What is re-ranking <a href=#what-is-re-ranking></a></h2><p>Re-ranking is the step, functioning as the second-pass document filter in information retrieval(IR) systems, it involves the evaluation and re-ordering of retrieved documents to prioritize the most relevant and useful ones before they are passed on to the generation model. In simpler terms, re-ranking is like helping you choose the most relevant references from a pile of study materials during an open-book exam, so that you can answer the questions more efficiently and accurately.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Re-ranking in RAG</div><div class=tags-index style=display:none>tags: llm, rag, ai</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Re-ranking in RAG</h1></div><div class=memo-content><p>One of the primary problems in RAG systems is the retrieval of a heterogeneous set of documents or pieces of information. These documents, while related to the query, often include extraneous details that can clutter the generation model&rsquo;s input. As a result, the generated text may lack coherence, accuracy, or pertinence, ultimately undermining the system&rsquo;s reliability and effectiveness. To address this issue, the concept of re-ranking has emerged as a critical solution.</p><h2 id=problem>Problem <a href=#problem></a></h2><p>When we do pre-processing step, embeddings capture semantic information, they sometimes lack contrastive information. For example, embedding may struggle to distinguish between &ldquo;I love shrimp&rdquo; and &ldquo;I used to love shimps&rdquo; since both convey a similar semantic meaning but it have completely different meaning. Besides that, embeddings documents or sentences is constrainted in fix number of dimension (e.g, 1024). This limitation challengeing to encode all relevant information accurately, especially for longer documents or queries. From these reason, relevant context retrieved from Retrieval step will be mixed with noise. that why we need re-ranking step to filter out those irrelevant data.</p><h2 id=what-is-re-ranking>What is re-ranking <a href=#what-is-re-ranking></a></h2><p>Re-ranking is the step, functioning as the second-pass document filter in information retrieval(IR) systems, it involves the evaluation and re-ordering of retrieved documents to prioritize the most relevant and useful ones before they are passed on to the generation model. In simpler terms, re-ranking is like helping you choose the most relevant references from a pile of study materials during an open-book exam, so that you can answer the questions more efficiently and accurately.</p><p><img x-data="{
     title: ``,
     alt: `Re-ranking`,
     src: `assets/re-ranking-in-rag-re-ranker.webp`,
@@ -931,7 +931,7 @@ Folder:
       {passage_2} \
       #...
       ranke these passages base on their relevance to the query &quot;&quot;&quot;
-</code></pre><p>Besides that, should be careful with the LLM input because it have fixed size limit, In that case we can apply sliding window with bubble sort to get the highest rank context</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Besides that, should be careful with the LLM input because it have fixed size limit, In that case we can apply sliding window with bubble sort to get the highest rank context</p><p><img x-data="{
     title: ``,
     alt: `LLM Re-ranking`,
     src: `assets/re-ranking-in-rag-slide-window.webp`,
@@ -1020,7 +1020,7 @@ Folder:
 
   query= 'Do I love eating shrimp?'
 )
-</code></pre><p>we list of 20 strings includes various opinions about shrimp, ranging from positive to negative, and some neutral statements. This variety will challenge a reranker to accurately identify the document that expresses a love for shrimp. We will fetch cosine similartiy and then pass it through cohere reranking to demonstrate it improve accuracy.</p><p><strong>Cosine distance</strong></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>we list of 20 strings includes various opinions about shrimp, ranging from positive to negative, and some neutral statements. This variety will challenge a reranker to accurately identify the document that expresses a love for shrimp. We will fetch cosine similartiy and then pass it through cohere reranking to demonstrate it improve accuracy.</p><p><strong>Cosine distance</strong></p><p><img x-data="{
     title: ``,
     alt: `Cosine Distance Similarity`,
     src: `assets/re-ranking-in-rag-base-rertrieved.webp`,
@@ -1069,7 +1069,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Cohere Reranker</strong></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Cohere Reranker</strong></p><p><img x-data="{
     title: ``,
     alt: `Cohere Reranker`,
     src: `assets/re-ranking-in-rag-cohere-rerank.webp`,

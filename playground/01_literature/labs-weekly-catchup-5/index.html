@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>215</li><li class=span><span>Characters:
-</span>8,938</li><li class=span><span>Without Spaces:
+</span>8,706</li><li class=span><span>Without Spaces:
 </span>1,202</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Labs Weekly Catchup #5</div><div class=tags-index style=display:none>tags: dwarves, work, internal, discussion, event, labs, catchup, rust, elixir</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Labs Weekly Catchup #5</h1></div><div class=memo-content><table><thead><tr><th>Event Date</th><th>Discord Channel</th><th>Type</th></tr></thead><tbody><tr><td>03/01/2024</td><td>🍎 apple</td><td>Internal</td></tr></tbody></table><p>Our fifth weekly catchup. We organize an agenda the day beforehand and consolidate our findings, notable research progress, possibly new tech, insight or technique everyone should know.</p><h3 id=agenda>Agenda: <a href=#agenda></a></h3><ul><li>Auto pass reCAPTCHA by @Toan Ho</li><li>Passkey demo by @Tay</li><li>Github Trending Analyzer use-case discussion by @Hieu</li></ul><h3 id=output>Output: <a href=#output></a></h3><ul><li>Understand the research progress and passions of the labs team</li><li>Understand any shortcomings or things to improve for the next weekly catchup</li></ul><hr><h2 id=notes-from-the-catchup>Notes from the catchup <a href=#notes-from-the-catchup></a></h2><p>weekly meeting #5 - 03/01/2024:</p><p>🤖 <strong>Auto-pass reCAPTCHA followup</strong></p><ul><li>A follow up of @Toan&rsquo;s demo ov YoloV8 over Tensorflow.js, using WebGPU as the backend, to do object detection over recaptcha images</li><li>@Toan demo includes image autodetection, keyword detection, object separation, and auto clicking.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Labs Weekly Catchup #5</div><div class=tags-index style=display:none>tags: dwarves, work, internal, discussion, event, labs, catchup, rust, elixir</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Labs Weekly Catchup #5</h1></div><div class=memo-content><table><thead><tr><th>Event Date</th><th>Discord Channel</th><th>Type</th></tr></thead><tbody><tr><td>03/01/2024</td><td>🍎 apple</td><td>Internal</td></tr></tbody></table><p>Our fifth weekly catchup. We organize an agenda the day beforehand and consolidate our findings, notable research progress, possibly new tech, insight or technique everyone should know.</p><h3 id=agenda>Agenda: <a href=#agenda></a></h3><ul><li>Auto pass reCAPTCHA by @Toan Ho</li><li>Passkey demo by @Tay</li><li>Github Trending Analyzer use-case discussion by @Hieu</li></ul><h3 id=output>Output: <a href=#output></a></h3><ul><li>Understand the research progress and passions of the labs team</li><li>Understand any shortcomings or things to improve for the next weekly catchup</li></ul><hr><h2 id=notes-from-the-catchup>Notes from the catchup <a href=#notes-from-the-catchup></a></h2><p>weekly meeting #5 - 03/01/2024:</p><p>🤖 <strong>Auto-pass reCAPTCHA followup</strong></p><ul><li>A follow up of @Toan&rsquo;s demo ov YoloV8 over Tensorflow.js, using WebGPU as the backend, to do object detection over recaptcha images</li><li>@Toan demo includes image autodetection, keyword detection, object separation, and auto clicking.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/labs-weekly-catchup-5-20240105153824098.webp`,
@@ -927,7 +927,7 @@ Folder:
         .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>🔒 <strong>Passkey demo</strong></p><ul><li>A continuation effort with @Tay</li><li>(@Tay) Uses Golang library instead for the backend server</li><li>(@Tay) Different from magic links where it uses JWT token and a verification flow
-<script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+<img x-data="{
     title: ``,
     alt: ``,
     src: `assets/labs-weekly-catchup-5-20240105154513918.webp`,
@@ -976,7 +976,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul><p>🚀 <strong>Github Trending Analyzer use-case discussion</strong></p><ul><li>@Hieu Scaffolded a repository for scraping web data from GitHub trending, user profile, stars, and contributions<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul><p>🚀 <strong>Github Trending Analyzer use-case discussion</strong></p><ul><li>@Hieu Scaffolded a repository for scraping web data from GitHub trending, user profile, stars, and contributions<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/labs-weekly-catchup-5-20240105155035154.webp`,
@@ -1025,7 +1025,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>(@Hieu) Today is more of a general discussion as to what use-cases there should be for the app</li><li>(@Hieu) The application uses TimescaleDB to allow for high ingest rates, currently requires a bit of remodeling and general constraints<ul><li><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>(@Hieu) Today is more of a general discussion as to what use-cases there should be for the app</li><li>(@Hieu) The application uses TimescaleDB to allow for high ingest rates, currently requires a bit of remodeling and general constraints<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/labs-weekly-catchup-5-20240105155040503.webp`,

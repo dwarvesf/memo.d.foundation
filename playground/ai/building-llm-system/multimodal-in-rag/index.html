@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>907</li><li class=span><span>Characters:
-</span>13,244</li><li class=span><span>Without Spaces:
+</span>13,070</li><li class=span><span>Without Spaces:
 </span>5,284</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Multimodal in rag</div><div class=tags-index style=display:none>tags: llm, vector-database, rag</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Multimodal in rag</h1></div><div class=memo-content><p>In spite of having taken the world by storm, Large Language Models(LLM) still has some limitations such as limited context window and a knowledge cutoff date. Retrieval-Augmented Generation(RAG) steps in to bridge this gap by allowing LLMs to access and utilize external knowledge sources beyond their training data. However, data is not text based only, it also can be image, audio, table in docs,&mldr; It make information captured is lost in most RAG application. Therefore, preprocess multimodal data is a problem we should not ignore in making RAG application. In this note, we will explore how to effectively preprocess and integrate multimodal data to enhance the performance and utility of RAG systems.</p><h2 id=challenge-in-multimodal-rag>Challenge in multimodal RAG <a href=#challenge-in-multimodal-rag></a></h2><p>Taking an example: Doing preprocessing for document(.pdf) file. the document contain a mixture of content types, including text, table and images. When we chunking and embedding data, text splitting may break up tables, corrupting the data in retrieval and the images can lose data in someway. So how to do it properly. There are several method, but there are 2 main methods are currently used:</p><ul><li>Use a multimodal embedding model to embed both text and images.</li><li>Use a multimodal LLM to summarize images, tables, pass summaries and text data to a text embedding model such as OpenAI’s “text-embedding-3-small”.</li></ul><p>In this note, we will focus on second method.</p><h2 id=multimodal-llm>Multimodal LLM <a href=#multimodal-llm></a></h2><p>The main idea of this approach is transform all of your data into a single modality: text. This means that you only need to use a text embedding model to store all of your data within the same vector space.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Multimodal in rag</div><div class=tags-index style=display:none>tags: llm, vector-database, rag</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Multimodal in rag</h1></div><div class=memo-content><p>In spite of having taken the world by storm, Large Language Models(LLM) still has some limitations such as limited context window and a knowledge cutoff date. Retrieval-Augmented Generation(RAG) steps in to bridge this gap by allowing LLMs to access and utilize external knowledge sources beyond their training data. However, data is not text based only, it also can be image, audio, table in docs,&mldr; It make information captured is lost in most RAG application. Therefore, preprocess multimodal data is a problem we should not ignore in making RAG application. In this note, we will explore how to effectively preprocess and integrate multimodal data to enhance the performance and utility of RAG systems.</p><h2 id=challenge-in-multimodal-rag>Challenge in multimodal RAG <a href=#challenge-in-multimodal-rag></a></h2><p>Taking an example: Doing preprocessing for document(.pdf) file. the document contain a mixture of content types, including text, table and images. When we chunking and embedding data, text splitting may break up tables, corrupting the data in retrieval and the images can lose data in someway. So how to do it properly. There are several method, but there are 2 main methods are currently used:</p><ul><li>Use a multimodal embedding model to embed both text and images.</li><li>Use a multimodal LLM to summarize images, tables, pass summaries and text data to a text embedding model such as OpenAI’s “text-embedding-3-small”.</li></ul><p>In this note, we will focus on second method.</p><h2 id=multimodal-llm>Multimodal LLM <a href=#multimodal-llm></a></h2><p>The main idea of this approach is transform all of your data into a single modality: text. This means that you only need to use a text embedding model to store all of your data within the same vector space.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/multimodal-in-rag-multimodel-llm.webp`,
@@ -948,7 +948,7 @@ raw_pdf_elements= partition_pdf(
 image_sum_prompt = &quot;&quot;&quot;You are an assistant tasked with summarizing images for retrieval. \
   These summaries will be embedded and used to retrieve the raw image. \
   Give a concise summary of the image that is well optimized for retrieval.&quot;&quot;&quot;
-</code></pre><p>After summarizing, the sample result will similar to below.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>After summarizing, the sample result will similar to below.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/multimodal-in-rag-img-summary.webp`,
@@ -1027,7 +1027,7 @@ image_sum_prompt = &quot;&quot;&quot;You are an assistant tasked with summarizin
    }
    messages.append(text_message)
    return [HumanMessage(content=messages)]
-</code></pre></li><li><p><strong>Testing</strong>: To testing what we have done so far, let take and image in document and findout our RAG can extract the information from it and answer correctly.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre></li><li><p><strong>Testing</strong>: To testing what we have done so far, let take and image in document and findout our RAG can extract the information from it and answer correctly.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/multimodal-in-rag-testing.webp`,

@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/go/weekly</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>589</li><li class=span><span>Characters:
-</span>9,442</li><li class=span><span>Without Spaces:
+</span>9,326</li><li class=span><span>Without Spaces:
 </span>3,172</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>17m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -938,7 +938,7 @@ func main() {
 // w1: {0x14000090280}
 // h1 == h2: true
 // h1 == w1: false
-</code></pre><h3 id=how-does-it-work>How does it work <a href=#how-does-it-work></a></h3><ul><li>Having a in-between tiny object (8bytes)</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h3 id=how-does-it-work>How does it work <a href=#how-does-it-work></a></h3><ul><li>Having a in-between tiny object (8bytes)</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/weak-pointer-indirection-reference.webp`,
@@ -987,7 +987,7 @@ func main() {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>This setup lets the garbage collector clean up weak pointers to a specific object all at once, efficiently:<ul><li>the collector only needs to set the pointer in the indirection object to nil (or 0x0). No need to go around updating each weak pointer individually.</li></ul></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>This setup lets the garbage collector clean up weak pointers to a specific object all at once, efficiently:<ul><li>the collector only needs to set the pointer in the indirection object to nil (or 0x0). No need to go around updating each weak pointer individually.</li></ul></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/weak-pointer-gc-reclaim.webp`,

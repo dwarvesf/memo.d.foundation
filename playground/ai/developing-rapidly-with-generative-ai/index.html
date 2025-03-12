@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>402</li><li class=span><span>Characters:
-</span>10,915</li><li class=span><span>Without Spaces:
+</span>10,683</li><li class=span><span>Without Spaces:
 </span>2,189</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Developing rapidly with Generative AI</div><div class=tags-index style=display:none>tags: llm, ai, tooling</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Developing rapidly with Generative AI</h1></div><div class=memo-content><h2 id=generative-ai>Generative AI <a href=#generative-ai></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Developing rapidly with Generative AI</div><div class=tags-index style=display:none>tags: llm, ai, tooling</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Developing rapidly with Generative AI</h1></div><div class=memo-content><h2 id=generative-ai>Generative AI <a href=#generative-ai></a></h2><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/developing-rapidly-with-generative-ai_ai-eco.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Generative AI is a subset of artificial intelligence that focuses on creating new content, such as images, text, or audio, based on patterns learned from existing data.</p><h2 id=stages-for-building-llm-powered-features>Stages for Building LLM-powered Features <a href=#stages-for-building-llm-powered-features></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Generative AI is a subset of artificial intelligence that focuses on creating new content, such as images, text, or audio, based on patterns learned from existing data.</p><h2 id=stages-for-building-llm-powered-features>Stages for Building LLM-powered Features <a href=#stages-for-building-llm-powered-features></a></h2><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/developing-rapidly-with-generative-ai_llm-building-stages.webp`,
@@ -975,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=1-identify-use-cases>1. Identify use cases <a href=#1-identify-use-cases></a></h3><p>The first stage is to identifying where generative AI can make an impact. The common challenges can be:</p><ul><li>Involve analysis, interpretation, or review of unstructured content (e.g. text) at scale</li><li>Require massive scaling that may be otherwise prohibitive due to limited resources</li><li>Would be challenging for rules-based or traditional ML approaches</li></ul><h3 id=2-define-requirements>2. Define requirements <a href=#2-define-requirements></a></h3><p>This phase requires a thoughtful analysis to select the best-suited LLM and to frame the problem as a prompt to an LLM. Several factors of defining product requirements:</p><ul><li><strong>Latency</strong>: How fast does the system need to respond to user input?</li><li><strong>Task Complexity</strong>: What level of understanding is required from the LLM? Is the input context and prompt super domain-specific?</li><li><strong>Prompt Length</strong>: How much context needs to be provided for the LLM to do its task?</li><li><strong>Safety</strong>: How important is it to sanitize user input or prevent the generation of harmful content and prompt hacking?</li><li><strong>Language Support</strong>: Which languages does the application need to support?</li><li><strong>Estimated QPS</strong>: What throughput does our system eventually need to handle?</li></ul><h3 id=3-prototype>3. Prototype <a href=#3-prototype></a></h3><p>Selecting off-the-shelf LLM which use for the prototype. The general idea is that if problems can&rsquo;t be adequately solved with state-of-the-art foundational models like GPT-4, then more often than not, those problems may not be addressable using current generative AI tech.</p><p>The key step at this stage is to create the right prompt. To do this, a technique known as <a href=https://arize.com/blog-course/llm-evaluation-the-definitive-guide/ target=_blank>AI-assisted evaluation</a> can help to pick the prompts that lead to better quality outputs by using metrics for measuring performance.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=1-identify-use-cases>1. Identify use cases <a href=#1-identify-use-cases></a></h3><p>The first stage is to identifying where generative AI can make an impact. The common challenges can be:</p><ul><li>Involve analysis, interpretation, or review of unstructured content (e.g. text) at scale</li><li>Require massive scaling that may be otherwise prohibitive due to limited resources</li><li>Would be challenging for rules-based or traditional ML approaches</li></ul><h3 id=2-define-requirements>2. Define requirements <a href=#2-define-requirements></a></h3><p>This phase requires a thoughtful analysis to select the best-suited LLM and to frame the problem as a prompt to an LLM. Several factors of defining product requirements:</p><ul><li><strong>Latency</strong>: How fast does the system need to respond to user input?</li><li><strong>Task Complexity</strong>: What level of understanding is required from the LLM? Is the input context and prompt super domain-specific?</li><li><strong>Prompt Length</strong>: How much context needs to be provided for the LLM to do its task?</li><li><strong>Safety</strong>: How important is it to sanitize user input or prevent the generation of harmful content and prompt hacking?</li><li><strong>Language Support</strong>: Which languages does the application need to support?</li><li><strong>Estimated QPS</strong>: What throughput does our system eventually need to handle?</li></ul><h3 id=3-prototype>3. Prototype <a href=#3-prototype></a></h3><p>Selecting off-the-shelf LLM which use for the prototype. The general idea is that if problems can&rsquo;t be adequately solved with state-of-the-art foundational models like GPT-4, then more often than not, those problems may not be addressable using current generative AI tech.</p><p>The key step at this stage is to create the right prompt. To do this, a technique known as <a href=https://arize.com/blog-course/llm-evaluation-the-definitive-guide/ target=_blank>AI-assisted evaluation</a> can help to pick the prompts that lead to better quality outputs by using metrics for measuring performance.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/developing-rapidly-with-generative-ai_evaluating-prompts.webp`,
@@ -1024,7 +1024,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=4-deploying-at-scale>4. Deploying at Scale <a href=#4-deploying-at-scale></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=4-deploying-at-scale>4. Deploying at Scale <a href=#4-deploying-at-scale></a></h3><p><img x-data="{
     title: ``,
     alt: `A high-level architecture for an LLM application`,
     src: `assets/developing-rapidly-with-generative-ai_llm-arch.webp`,

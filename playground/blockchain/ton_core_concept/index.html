@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/blockchain</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>745</li><li class=span><span>Characters:
-</span>11,007</li><li class=span><span>Without Spaces:
+</span>10,833</li><li class=span><span>Without Spaces:
 </span>4,094</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Ton's base concepts</div><div class=tags-index style=display:none>tags: web3, blockchain, ton</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Ton's base concepts</h1></div><div class=memo-content><p>In my previous post, <a href=/playground/blockchain/ton_blockchain_of_blockchains/>Ton: Blockchain of Blockchains</a>, I talked about some core technologies that make TON strong. However, it was just an overview. To begin developing on TON is not enough. Today, I will introduce some core concepts in TON that you will frequently work with as a TON developer.</p><h2 id=cells-and-data-storage>Cells and Data Storage <a href=#cells-and-data-storage></a></h2><p><strong>Cells are the atomic unit of data storage in TON</strong>. It is a data structure containing:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Ton's base concepts</div><div class=tags-index style=display:none>tags: web3, blockchain, ton</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Ton's base concepts</h1></div><div class=memo-content><p>In my previous post, <a href=/playground/blockchain/ton_blockchain_of_blockchains/>Ton: Blockchain of Blockchains</a>, I talked about some core technologies that make TON strong. However, it was just an overview. To begin developing on TON is not enough. Today, I will introduce some core concepts in TON that you will frequently work with as a TON developer.</p><h2 id=cells-and-data-storage>Cells and Data Storage <a href=#cells-and-data-storage></a></h2><p><strong>Cells are the atomic unit of data storage in TON</strong>. It is a data structure containing:</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ton_core_concept_ton_cell.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Up to 1023 bits of data</li><li>Up to 4 references to other cells</li></ul><p>Currently, TON has 2 types of cells: ordinary and exotic</p><ul><li>ordinary: basic, standard cell.</li><li>exotic: specialized cells with specific functions.<ul><li>Pruned Branch Cell: represents a pruned branch in a data structure.</li><li>Library Reference Cell: references external libraries or modules.</li><li>Merkle Proof Cell: contains proofs for verifying data in a Merkle tree.</li><li>Merkle Update Cell: contains information to update a Merkle tree.</li></ul></li></ul><p>When serializing cells into byte arrays, it is called Bag of cells. <strong>Every data stored on TON including blocks and the state of the network is a bag of cells.</strong></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Up to 1023 bits of data</li><li>Up to 4 references to other cells</li></ul><p>Currently, TON has 2 types of cells: ordinary and exotic</p><ul><li>ordinary: basic, standard cell.</li><li>exotic: specialized cells with specific functions.<ul><li>Pruned Branch Cell: represents a pruned branch in a data structure.</li><li>Library Reference Cell: references external libraries or modules.</li><li>Merkle Proof Cell: contains proofs for verifying data in a Merkle tree.</li><li>Merkle Update Cell: contains information to update a Merkle tree.</li></ul></li></ul><p>When serializing cells into byte arrays, it is called Bag of cells. <strong>Every data stored on TON including blocks and the state of the network is a bag of cells.</strong></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ton_core_concept_ton_bag_of_cells.webp`,
@@ -975,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=smart-contract>Smart contract <a href=#smart-contract></a></h2><p>As mentioned in the previous post, everything in TON is a smart contract. That contains:</p><ul><li>Address: (workchain_id, account_id) pairs present smart contract as a unique identifier.</li><li>Code: code that can be run on TVM, and represents the rule and business logic of this contract.</li><li>Data: the state of the smart contract, includes variables that store information and can be modified by the contract’s code.</li><li>Balance: the amount of TON held by the contract.</li><li>Others: flags requesting tick-tock calls at each block (active only for fundamental contracts), auto-splitting information and published library cells, etc.</li></ul><h2 id=message>Message <a href=#message></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=smart-contract>Smart contract <a href=#smart-contract></a></h2><p>As mentioned in the previous post, everything in TON is a smart contract. That contains:</p><ul><li>Address: (workchain_id, account_id) pairs present smart contract as a unique identifier.</li><li>Code: code that can be run on TVM, and represents the rule and business logic of this contract.</li><li>Data: the state of the smart contract, includes variables that store information and can be modified by the contract’s code.</li><li>Balance: the amount of TON held by the contract.</li><li>Others: flags requesting tick-tock calls at each block (active only for fundamental contracts), auto-splitting information and published library cells, etc.</li></ul><h2 id=message>Message <a href=#message></a></h2><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ton_core_concept_ton_message_flow.webp`,

@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/use-cases</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>448</li><li class=span><span>Characters:
-</span>13,285</li><li class=span><span>Without Spaces:
+</span>12,995</li><li class=span><span>Without Spaces:
 </span>3,021</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Building MVP for AI-driven interview platform</div><div class=tags-index style=display:none>tags: ai, llm</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Building MVP for AI-driven interview platform</h1></div><div class=memo-content><p>Our engineering team collaborated with a confidential HRTech client to create an <strong>MVP</strong> for AI-based, real-time voice interviews. Built in just <strong>two weeks</strong> to validate the concept, the solution leverages advanced <strong>AI</strong> and <strong>AI voice processing</strong> to conduct sales-specific interviews. Despite the short development timeline, the initial results have been very promising.</p><h3 id=challenges>Challenges <a href=#challenges></a></h3><ol><li><strong>Time-consuming screening</strong>: Traditional processes took weeks to screen and evaluate candidates.</li><li><strong>Inconsistent assessment</strong>: Evaluations often varied due to human bias and fluctuating criteria.</li><li><strong>Manual processes</strong>: Recruiters spent excessive time on repetitive screening tasks, detracting from strategic decision-making.</li></ol><h3 id=our-mvp-solution>Our MVP solution <a href=#our-mvp-solution></a></h3><p>We developed an automated interview system using real-time voice processing to evaluate candidates. By integrating with <a href=https://elevenlabs.io/ target=_blank>ElevenLabs</a>’ voice technology, the platform simulates realistic sales conversations and measures performance through consistent AI-driven scoring. Key benefits include:</p><ul><li><strong>Faster hiring</strong>: Automated screening accelerates the time-to-hire.</li><li><strong>Objective evaluations</strong>: AI-driven scoring removes bias and maintains uniform standards.</li><li><strong>Scalable & efficient</strong>: Repetitive tasks are automated, freeing recruiters for strategic activities.</li></ul><h3 id=architecture-highlights>Architecture highlights <a href=#architecture-highlights></a></h3><ol><li><strong>Serverless backend</strong>: A Node.js (Next.js) backend processes interviews and orchestrates AI-based evaluations.</li><li><strong>Real-time voice processing</strong>: Integrations with ElevenLabs’ API handle immediate speech input and feedback.</li><li><strong>Data storage</strong>: TimescaleDB provides scalable, high-performance data management for sessions and analytics.</li><li><strong>Analytics & frontend</strong>: <a href=https://retool.com/ target=_blank>Retool</a> dashboards offer real-time insights, while a Next.js interface ensures a smooth user experience</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Building MVP for AI-driven interview platform</div><div class=tags-index style=display:none>tags: ai, llm</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Building MVP for AI-driven interview platform</h1></div><div class=memo-content><p>Our engineering team collaborated with a confidential HRTech client to create an <strong>MVP</strong> for AI-based, real-time voice interviews. Built in just <strong>two weeks</strong> to validate the concept, the solution leverages advanced <strong>AI</strong> and <strong>AI voice processing</strong> to conduct sales-specific interviews. Despite the short development timeline, the initial results have been very promising.</p><h3 id=challenges>Challenges <a href=#challenges></a></h3><ol><li><strong>Time-consuming screening</strong>: Traditional processes took weeks to screen and evaluate candidates.</li><li><strong>Inconsistent assessment</strong>: Evaluations often varied due to human bias and fluctuating criteria.</li><li><strong>Manual processes</strong>: Recruiters spent excessive time on repetitive screening tasks, detracting from strategic decision-making.</li></ol><h3 id=our-mvp-solution>Our MVP solution <a href=#our-mvp-solution></a></h3><p>We developed an automated interview system using real-time voice processing to evaluate candidates. By integrating with <a href=https://elevenlabs.io/ target=_blank>ElevenLabs</a>’ voice technology, the platform simulates realistic sales conversations and measures performance through consistent AI-driven scoring. Key benefits include:</p><ul><li><strong>Faster hiring</strong>: Automated screening accelerates the time-to-hire.</li><li><strong>Objective evaluations</strong>: AI-driven scoring removes bias and maintains uniform standards.</li><li><strong>Scalable & efficient</strong>: Repetitive tasks are automated, freeing recruiters for strategic activities.</li></ul><h3 id=architecture-highlights>Architecture highlights <a href=#architecture-highlights></a></h3><ol><li><strong>Serverless backend</strong>: A Node.js (Next.js) backend processes interviews and orchestrates AI-based evaluations.</li><li><strong>Real-time voice processing</strong>: Integrations with ElevenLabs’ API handle immediate speech input and feedback.</li><li><strong>Data storage</strong>: TimescaleDB provides scalable, high-performance data management for sessions and analytics.</li><li><strong>Analytics & frontend</strong>: <a href=https://retool.com/ target=_blank>Retool</a> dashboards offer real-time insights, while a Next.js interface ensures a smooth user experience</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ai-interview-architecture.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p style=text-align:center;margin-top:0>Architecture diagram</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p style=text-align:center;margin-top:0>Architecture diagram</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ai-interview-flow.webp`,
@@ -975,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p style=text-align:center;margin-top:0>Main flow</p><h3 id=screenshots>Screenshots <a href=#screenshots></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p style=text-align:center;margin-top:0>Main flow</p><h3 id=screenshots>Screenshots <a href=#screenshots></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ai-interview-screenshot-1.webp`,
@@ -1024,7 +1024,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ai-interview-screenshot-2.webp`,
@@ -1073,7 +1073,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ai-interview-screenshot-3.webp`,

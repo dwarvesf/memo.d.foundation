@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>562</li><li class=span><span>Characters:
-</span>7,952</li><li class=span><span>Without Spaces:
+</span>7,894</li><li class=span><span>Without Spaces:
 </span>3,506</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -914,7 +914,7 @@ echo $(ip addr show eth0 | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1
 </code></pre><h3 id=step-3---install-dcos-to-master-nodes>Step 3 - Install DC/OS to master nodes <a href=#step-3---install-dcos-to-master-nodes></a></h3><ul><li>SSH to your nodes:</li></ul><pre><code class=language-javascript>ssh &lt;node-ip&gt;
 </code></pre><ul><li>Make a new directory and navigate to it:</li></ul><pre><code class=language-javascript>mkdir /tmp/dcos &amp;&amp; cd /tmp/dcos
 </code></pre><ul><li>Download the DC/OS installer from the NGINX Docker container, where <code>&lt;bootstrap-ip></code> and <code>&lt;your_port></code> are specified in <code>bootstrap_url</code>:</li></ul><pre><code class=language-javascript>curl -O http://&lt;bootstrap-ip&gt;:&lt;your_port&gt;/dcos_install.sh
-</code></pre><ul><li>Run this command to install DC/OS on your agent nodes. You must designate your agent nodes as public or private.</li><li>Private agent nodes: <code>sudo bash dcos_install.sh slave</code></li><li>Public agent nodes: <code>sudo bash dcos_install.sh public</code></li></ul><h3 id=step-4---launch-the-dcos>Step 4 - Launch the DC/OS <a href=#step-4---launch-the-dcos></a></h3><p>You can access to web interface at <code>http://&lt;master-node-public-ip>/</code>and bingo !</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><ul><li>Run this command to install DC/OS on your agent nodes. You must designate your agent nodes as public or private.</li><li>Private agent nodes: <code>sudo bash dcos_install.sh slave</code></li><li>Public agent nodes: <code>sudo bash dcos_install.sh public</code></li></ul><h3 id=step-4---launch-the-dcos>Step 4 - Launch the DC/OS <a href=#step-4---launch-the-dcos></a></h3><p>You can access to web interface at <code>http://&lt;master-node-public-ip>/</code>and bingo !</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-1---quick-look-installation_7e7988a963f67f1005ed0e19e2b93e01_md5.webp`,

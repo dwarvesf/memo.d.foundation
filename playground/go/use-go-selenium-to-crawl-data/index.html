@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/go</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>567</li><li class=span><span>Characters:
-</span>8,602</li><li class=span><span>Without Spaces:
+</span>8,486</li><li class=span><span>Without Spaces:
 </span>3,057</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Use Go Selenium To Crawl Data</div><div class=tags-index style=display:none>tags: golang, software</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Use Go Selenium To Crawl Data</h1></div><div class=memo-content><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Use Go Selenium To Crawl Data</div><div class=tags-index style=display:none>tags: golang, software</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Use Go Selenium To Crawl Data</h1></div><div class=memo-content><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/use-go-selenium-to-crawl-data_f963144e3cfac24481dbfeb02cf6a0e6_md5.webp`,
@@ -927,7 +927,7 @@ Folder:
         .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=crawl-data>Crawl data <a href=#crawl-data></a></h2><p>Crawl is a widespread issue occurring in making software. News, discount news, film ticket, etc are some examples of crawl. To be simple, it is analytics HTML, read cards, and extract data. The Go library I usually use is <a href=https://github.com/PuerkitoBio/goquery target=_blank>goquery</a>.</p><p>However, crawling an original HTML will not work in some cases: data loaded by ajax (when reading HTML, we will only see wrapper, not data), or must login when entering a page need crawl.</p><p>In this article, take crawling <a href="https://www.amazon.com/gp/goldbox/all-deals/ref=gbps_ftr_s-3_3022_wht_541966?ie=UTF8&*Version*=1&*entries*=0&amp;gb_f_GB-SUPPLE=sortOrder%3ABY_SCORE%2CenforcedCategories%3A3760911%2C2335752011%2C541966&amp;pf_rd_p=2292853022&amp;pf_rd_s=slot-3&amp;pf_rd_t=701&amp;pf_rd_i=gb_all&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_r=14CQSB5TF4GTC2RNHDAG" target=_blank>Amazon deal</a> into consideration. In this page, javascript will call ajax taking data and then pour it into DOM. When using goquery read HTML, we will not see div cards like inspecting elements.</p><p>To these types, I use selenium to run the web in a real browser, take action to have fully loaded HTML before extracting data.</p><p>Selenium running in JVM is quite famous in automation test. It allows me to run script test in a real browser. My method will be: Use selenium to run the Amazon page, wait for javascript to load, and then crawl the data normally.</p><h2 id=how-to-setup>How to setup <a href=#how-to-setup></a></h2><p>Firstly, you go to <a href=https://selenium.dev/downloads/ target=_blank>seleniumhq</a> link to download and set up seleniumhq. Selenium plays a role like a server, receiving requests sent from my code Go.</p><p>To run it, we go to the folder containing file jar and run the command:</p><pre><code class=language-plain_text>java -jar selenium-server-standalone-2.50.1.jar -port 8081
-</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/use-go-selenium-to-crawl-data_79536b2784ffffd405fdcbd54b56927f_md5.webp`,

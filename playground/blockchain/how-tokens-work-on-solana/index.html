@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/blockchain</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>435</li><li class=span><span>Characters:
-</span>8,816</li><li class=span><span>Without Spaces:
+</span>8,642</li><li class=span><span>Without Spaces:
 </span>2,102</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How Tokens Work on Solana</div><div class=tags-index style=display:none>tags: blockchain, solana, token</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How Tokens Work on Solana</h1></div><div class=memo-content><h2 id=how-tokens-work-on-solana---explain-for-evm-developers>How tokens work on solana - explain for EVM developers <a href=#how-tokens-work-on-solana---explain-for-evm-developers></a></h2><blockquote><p><strong>Let&rsquo;s say you want to create a new type of fungible token, mint some to yourself, and then transfer some to your friend. What would you do?</strong></p></blockquote><ul><li>As a EVM developer, you have to deploy a new ERC20 smart contract.</li><li>On Solana, you don&rsquo;t need to create a new contract. There is a single token program (which was deployed by the Solana team) which responsible for creating, minting and transfering tokens.</li><li>In order to create a new token, you send the <code>create</code> instruction to the token program. This creates a new <code>mint account</code>. Each type of token is associated with exactly one <code>mint account</code> which holds metadata about the token (likes <code>total supply</code>, <code>decimals</code>, <code>mint authority</code> - who allowed to mint, <code>freeze authority</code> - who allowed to freeze account ).</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How Tokens Work on Solana</div><div class=tags-index style=display:none>tags: blockchain, solana, token</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How Tokens Work on Solana</h1></div><div class=memo-content><h2 id=how-tokens-work-on-solana---explain-for-evm-developers>How tokens work on solana - explain for EVM developers <a href=#how-tokens-work-on-solana---explain-for-evm-developers></a></h2><blockquote><p><strong>Let&rsquo;s say you want to create a new type of fungible token, mint some to yourself, and then transfer some to your friend. What would you do?</strong></p></blockquote><ul><li>As a EVM developer, you have to deploy a new ERC20 smart contract.</li><li>On Solana, you don&rsquo;t need to create a new contract. There is a single token program (which was deployed by the Solana team) which responsible for creating, minting and transfering tokens.</li><li>In order to create a new token, you send the <code>create</code> instruction to the token program. This creates a new <code>mint account</code>. Each type of token is associated with exactly one <code>mint account</code> which holds metadata about the token (likes <code>total supply</code>, <code>decimals</code>, <code>mint authority</code> - who allowed to mint, <code>freeze authority</code> - who allowed to freeze account ).</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-tokens-work-on-solana_vuocgc7h.png.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>You&rsquo;ve just created a new token but you don&rsquo;t own any amount of this token yet. From <code>mint account</code>, you have to create a <code>token account</code>. A <code>token account</code> stores how many tokens a particular user has, for a particular type of token.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>You&rsquo;ve just created a new token but you don&rsquo;t own any amount of this token yet. From <code>mint account</code>, you have to create a <code>token account</code>. A <code>token account</code> stores how many tokens a particular user has, for a particular type of token.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-tokens-work-on-solana_jrckbifh.webp`,
@@ -975,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Now, you have a <code>mint account</code> and a <code>token account</code>. Let&rsquo;s mint some tokens. To mint, you just send the <code>mint</code> instruction to the token program, which tells the program how many tokens to mint and whom to mint them to. Only one user is allowed to mint a token of a particular type (the <code>mint authority</code> which mentioned above)</p></li><li><p>To transfer tokens, no surprises, you send the <code>transfer</code> instruction to the token program, which tells it how many tokens to transfer and whom to transfer them. Note that the recipient must also own a <code>token account</code> for the type of token you&rsquo;re transferring.</p></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Now, you have a <code>mint account</code> and a <code>token account</code>. Let&rsquo;s mint some tokens. To mint, you just send the <code>mint</code> instruction to the token program, which tells the program how many tokens to mint and whom to mint them to. Only one user is allowed to mint a token of a particular type (the <code>mint authority</code> which mentioned above)</p></li><li><p>To transfer tokens, no surprises, you send the <code>transfer</code> instruction to the token program, which tells it how many tokens to transfer and whom to transfer them. Note that the recipient must also own a <code>token account</code> for the type of token you&rsquo;re transferring.</p></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-tokens-work-on-solana_c2fz6whh.webp`,

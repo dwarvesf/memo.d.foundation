@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/go/weekly</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>605</li><li class=span><span>Characters:
-</span>10,419</li><li class=span><span>Without Spaces:
+</span>10,245</li><li class=span><span>Without Spaces:
 </span>3,048</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -966,7 +966,7 @@ func (m *Map) Clear()
     p atomic.Pointer[any]
   }
 </code></pre><ul><li><p>readonly map is where the fast, lock-free lookups happen; built around an atomic.Pointer, which lets multiple goroutines access it without needing to lock anything. (ideal for scenarios where data is mostly being read and not frequently modified)
-=> the readonly map might not always hold the most up-to-date data, therefore dirty map</p></li><li><p>dirty map stores any new entries that get added while the readonly map is still being used for lookups</p></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+=> the readonly map might not always hold the most up-to-date data, therefore dirty map</p></li><li><p>dirty map stores any new entries that get added while the readonly map is still being used for lookups</p></li></ul><p><img x-data="{
     title: ``,
     alt: `syncmap_structure`,
     src: `assets/syncmap_structure.png`,
@@ -1015,7 +1015,7 @@ func (m *Map) Clear()
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>=> dirty map contains all the data from the readonly map, along with any new entries that haven’t yet been promoted to the readonly map</p><ul><li>when you update a value, all you need to do is update this pointer. Since both the readonly and dirty maps point to the same entry</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>=> dirty map contains all the data from the readonly map, along with any new entries that haven’t yet been promoted to the readonly map</p><ul><li>when you update a value, all you need to do is update this pointer. Since both the readonly and dirty maps point to the same entry</li></ul><p><img x-data="{
     title: ``,
     alt: `double_pointer_indirection_syncmap`,
     src: `assets/double_pointer_indirection_syncmap.png`,
@@ -1064,7 +1064,7 @@ func (m *Map) Clear()
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>The behavior of the pointer in the entry struct defines the state of the entry in the map, and there are 3 possible states:</p><ul><li><p><strong>Normal state</strong>: This is when the entry is valid. The pointer p is pointing to a real value, and the entry exists in those maps, meaning it’s actively in use and can be read without any issues.</p></li><li><p><strong>Deleted state</strong>: When an entry is deleted from a sync.Map, it’s not immediately removed from the readonly maps. Instead, the pointer p is simply set to nil, signaling that the entry has been deleted but still exists in the maps.</p></li><li><p><strong>Expunged state</strong>: This is a special state where the key is fully removed. The entry is marked with a special sentinel value that indicates it’s been completely deleted.</p></li></ul></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>The behavior of the pointer in the entry struct defines the state of the entry in the map, and there are 3 possible states:</p><ul><li><p><strong>Normal state</strong>: This is when the entry is valid. The pointer p is pointing to a real value, and the entry exists in those maps, meaning it’s actively in use and can be read without any issues.</p></li><li><p><strong>Deleted state</strong>: When an entry is deleted from a sync.Map, it’s not immediately removed from the readonly maps. Instead, the pointer p is simply set to nil, signaling that the entry has been deleted but still exists in the maps.</p></li><li><p><strong>Expunged state</strong>: This is a special state where the key is fully removed. The entry is marked with a special sentinel value that indicates it’s been completely deleted.</p></li></ul></li></ul><p><img x-data="{
     title: ``,
     alt: `state_chart_syncmap`,
     src: `assets/state_chart_syncmap.png`,

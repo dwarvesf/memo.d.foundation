@@ -843,7 +843,7 @@ Tags:
 Folder:
 </span>playground/use-cases</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>784</li><li class=span><span>Characters:
-</span>24,084</li><li class=span><span>Without Spaces:
+</span>23,504</li><li class=span><span>Without Spaces:
 </span>4,761</li><li class=span><span>Blocks:
 </span>35</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -879,7 +879,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Setup centralized monitoring system for Hedge Foundation trading platform</div><div class=tags-index style=display:none>tags: monitoring, fintech</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Setup centralized monitoring system for Hedge Foundation trading platform</h1></div><div class=memo-content><p>Hedge Foundtion, a private trading platform serving select traders, required a robust centralized monitoring system to ensure platform reliability and prevent financial losses. Given the high-stakes nature of trading operations, the system needed to provide real-time alerts, maintain data integrity, and optimize resource allocation to protect traders from potential monetary losses.</p><h2 id=understanding-the-unique-challenges>Understanding the unique challenges <a href=#understanding-the-unique-challenges></a></h2><p>As a privately-owned platform with a limited user base, Nghenhan faces unique challenges:</p><ol><li><strong>High-stakes trading</strong>: Each user represents a significant portion of the platform&rsquo;s trading volume. Any system failure or data loss can lead to substantial financial losses for these traders.</li><li><strong>Reputational risk</strong>: With a smaller user base, any issues with the platform can quickly erode trust and lead to user attrition. Maintaining a stellar reputation is essential for Nghenhan&rsquo;s long-term success.</li><li><strong>Resource allocation</strong>: While the user base is limited, the platform must still be equipped to handle peak usage times and spikes. Efficient resource allocation is critical to ensure reliable performance without overspending on infrastructure.</li></ol><h2 id=mitigating-financial-losses-through-proactive-monitoring>Mitigating financial losses through proactive monitoring <a href=#mitigating-financial-losses-through-proactive-monitoring></a></h2><p>To address these challenges, Nghenhan must implement a proactive monitoring strategy that focuses on:</p><ol><li><strong>Real-time alerts</strong>: The monitoring system must provide instant notifications for any anomalies or threshold breaches. This allows the team to react swiftly and minimize the duration and impact of any issues.</li><li><strong>Data integrity</strong>: Ensuring the accuracy and synchronization of trading data is paramount. Any data loss or discrepancies can trigger false alarms or missed opportunities, leading to financial losses for traders.</li><li><strong>Resource optimization</strong>: Monitoring resource utilization helps Nghenhan allocate resources effectively during peak times while avoiding over-provisioning during normal usage.</li></ol><h2 id=implementing-grafana-and-prometheus-for-robust-monitoring>Implementing Grafana and Prometheus for robust monitoring <a href=#implementing-grafana-and-prometheus-for-robust-monitoring></a></h2><p>Integrating Grafana and Prometheus provides Nghenhan with a powerful centralized monitoring solution. Let&rsquo;s dive deeper into how these tools work together and examine the system diagram:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Setup centralized monitoring system for Hedge Foundation trading platform</div><div class=tags-index style=display:none>tags: monitoring, fintech</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Setup centralized monitoring system for Hedge Foundation trading platform</h1></div><div class=memo-content><p>Hedge Foundtion, a private trading platform serving select traders, required a robust centralized monitoring system to ensure platform reliability and prevent financial losses. Given the high-stakes nature of trading operations, the system needed to provide real-time alerts, maintain data integrity, and optimize resource allocation to protect traders from potential monetary losses.</p><h2 id=understanding-the-unique-challenges>Understanding the unique challenges <a href=#understanding-the-unique-challenges></a></h2><p>As a privately-owned platform with a limited user base, Nghenhan faces unique challenges:</p><ol><li><strong>High-stakes trading</strong>: Each user represents a significant portion of the platform&rsquo;s trading volume. Any system failure or data loss can lead to substantial financial losses for these traders.</li><li><strong>Reputational risk</strong>: With a smaller user base, any issues with the platform can quickly erode trust and lead to user attrition. Maintaining a stellar reputation is essential for Nghenhan&rsquo;s long-term success.</li><li><strong>Resource allocation</strong>: While the user base is limited, the platform must still be equipped to handle peak usage times and spikes. Efficient resource allocation is critical to ensure reliable performance without overspending on infrastructure.</li></ol><h2 id=mitigating-financial-losses-through-proactive-monitoring>Mitigating financial losses through proactive monitoring <a href=#mitigating-financial-losses-through-proactive-monitoring></a></h2><p>To address these challenges, Nghenhan must implement a proactive monitoring strategy that focuses on:</p><ol><li><strong>Real-time alerts</strong>: The monitoring system must provide instant notifications for any anomalies or threshold breaches. This allows the team to react swiftly and minimize the duration and impact of any issues.</li><li><strong>Data integrity</strong>: Ensuring the accuracy and synchronization of trading data is paramount. Any data loss or discrepancies can trigger false alarms or missed opportunities, leading to financial losses for traders.</li><li><strong>Resource optimization</strong>: Monitoring resource utilization helps Nghenhan allocate resources effectively during peak times while avoiding over-provisioning during normal usage.</li></ol><h2 id=implementing-grafana-and-prometheus-for-robust-monitoring>Implementing Grafana and Prometheus for robust monitoring <a href=#implementing-grafana-and-prometheus-for-robust-monitoring></a></h2><p>Integrating Grafana and Prometheus provides Nghenhan with a powerful centralized monitoring solution. Let&rsquo;s dive deeper into how these tools work together and examine the system diagram:</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-monitoring-system-diagram.webp`,
@@ -928,7 +928,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Backend services</strong>: The backend services of Nghenhan&rsquo;s trading platform expose metrics through an HTTP endpoint, which Prometheus scrapes at regular intervals.</li><li><strong>Prometheus server</strong>: The Prometheus server scrapes the metrics from the backend services and stores them as time series data. It also handles the querying and alerting functionality.</li><li><strong>Alert manager</strong>: The Alert Manager is a component of Prometheus that handles the routing and management of alerts. It receives alerts from Prometheus and sends notifications to the configured receivers, such as the admin or notification channels.</li><li><strong>Grafana</strong>: Grafana fetches data from Prometheus to create visualizations and dashboards. It also allows users to set up alerts and explore historical data.</li><li><strong>Notification receivers</strong>: The notification receivers are the endpoints or channels where alerts are sent, such as email, Discord, or custom webhooks. The admin can also receive notifications and take appropriate actions based on the alerts.</li></ul><h3 id=prometheus-as-data-collector>Prometheus as Data collector <a href=#prometheus-as-data-collector></a></h3><p>Prometheus serves as the primary data collection and monitoring tool, scraping metrics from various services and recording health and performance information. The setup involves configuring Prometheus to gather data on key metrics, including:</p><p><strong>CPU and Memory usage</strong></p><p>Making sure that system resources are not reaching critical thresholds.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Backend services</strong>: The backend services of Nghenhan&rsquo;s trading platform expose metrics through an HTTP endpoint, which Prometheus scrapes at regular intervals.</li><li><strong>Prometheus server</strong>: The Prometheus server scrapes the metrics from the backend services and stores them as time series data. It also handles the querying and alerting functionality.</li><li><strong>Alert manager</strong>: The Alert Manager is a component of Prometheus that handles the routing and management of alerts. It receives alerts from Prometheus and sends notifications to the configured receivers, such as the admin or notification channels.</li><li><strong>Grafana</strong>: Grafana fetches data from Prometheus to create visualizations and dashboards. It also allows users to set up alerts and explore historical data.</li><li><strong>Notification receivers</strong>: The notification receivers are the endpoints or channels where alerts are sent, such as email, Discord, or custom webhooks. The admin can also receive notifications and take appropriate actions based on the alerts.</li></ul><h3 id=prometheus-as-data-collector>Prometheus as Data collector <a href=#prometheus-as-data-collector></a></h3><p>Prometheus serves as the primary data collection and monitoring tool, scraping metrics from various services and recording health and performance information. The setup involves configuring Prometheus to gather data on key metrics, including:</p><p><strong>CPU and Memory usage</strong></p><p>Making sure that system resources are not reaching critical thresholds.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-cpu-usage.webp`,
@@ -977,7 +977,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Error rates</strong></p><p>Tracking the number of errors in real time to quickly detect discrepancies.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Error rates</strong></p><p>Tracking the number of errors in real time to quickly detect discrepancies.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-error-rate.webp`,
@@ -1026,7 +1026,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Data synchronization status</strong></p><p>Monitoring the synchronization of data from Binance to ensure its latest version without any data loss.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Data synchronization status</strong></p><p>Monitoring the synchronization of data from Binance to ensure its latest version without any data loss.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/data-sync-status.webp`,
@@ -1075,7 +1075,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Binance rate limit monitoring</strong></p><p>Implementing a rate limit monitoring system to ensure that requests to Binance are still compliant with the rate limits. This will prevent data loss during periods of high network traffic.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Binance rate limit monitoring</strong></p><p>Implementing a rate limit monitoring system to ensure that requests to Binance are still compliant with the rate limits. This will prevent data loss during periods of high network traffic.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-binance-rate-limit.webp`,
@@ -1124,7 +1124,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Service back-off restarting</strong></p><p>due to multiple issues, such as resource limits, configuration errors, or dependency failures.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Service back-off restarting</strong></p><p>due to multiple issues, such as resource limits, configuration errors, or dependency failures.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-service-back-off-restarting.webp`,
@@ -1173,7 +1173,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=grafana-as-data-visualizer-for-insightful-observations>Grafana as Data Visualizer for insightful observations <a href=#grafana-as-data-visualizer-for-insightful-observations></a></h3><p>Grafana complements Prometheus by providing robust data visualization capabilities. With Grafana, Nghenhan can create dynamic dashboards that display real-time data on service performance. These dashboards include:</p><p><strong>Real-time alerts</strong></p><p>Configured alerts notify our team of any anomalies, such as sudden increases in CPU usage or error rates, etc. that exceed established thresholds.</p><p>Here’s an example of how we configured conditions on Grafana to trigger an alert using the Alert Manager</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=grafana-as-data-visualizer-for-insightful-observations>Grafana as Data Visualizer for insightful observations <a href=#grafana-as-data-visualizer-for-insightful-observations></a></h3><p>Grafana complements Prometheus by providing robust data visualization capabilities. With Grafana, Nghenhan can create dynamic dashboards that display real-time data on service performance. These dashboards include:</p><p><strong>Real-time alerts</strong></p><p>Configured alerts notify our team of any anomalies, such as sudden increases in CPU usage or error rates, etc. that exceed established thresholds.</p><p>Here’s an example of how we configured conditions on Grafana to trigger an alert using the Alert Manager</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-real-time-alert.webp`,
@@ -1222,7 +1222,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The setup above will trigger an alert if data exceeds the threshold, and the Alert Manager will send it to Discord by webhook.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The setup above will trigger an alert if data exceeds the threshold, and the Alert Manager will send it to Discord by webhook.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-discord-alert.webp`,
@@ -1271,7 +1271,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Interactive graphs</strong></p><p>We utilize visual representations of data that help us easily identify trends during peak trading times and spikes.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Interactive graphs</strong></p><p>We utilize visual representations of data that help us easily identify trends during peak trading times and spikes.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-interactive-graph.webp`,
@@ -1320,7 +1320,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Historical data analysis</strong></p><p>Grafana’s capabilities allow us to analyze historical data to understand system behavior and improve resource allocation strategies.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Historical data analysis</strong></p><p>Grafana’s capabilities allow us to analyze historical data to understand system behavior and improve resource allocation strategies.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/nghenhan-historical-analytics.webp`,

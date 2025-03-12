@@ -843,7 +843,7 @@ Tags:
 Folder:
 </span>playground/ai</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>588</li><li class=span><span>Characters:
-</span>15,961</li><li class=span><span>Without Spaces:
+</span>15,613</li><li class=span><span>Without Spaces:
 </span>3,085</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -879,7 +879,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>What is Generative UI?</div><div class=tags-index style=display:none>tags: AI, generative-ui, llm</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">What is Generative UI?</h1></div><div class=memo-content><h2 id=what-is-generative-ui>What is Generative UI? <a href=#what-is-generative-ui></a></h2><ul><li>A <strong>generative UI</strong> (genUI) is a user interface that responds to the user with AI-generated elements instead of just text messages.</li><li>It offers a personalized experience based on the user&rsquo;s needs and context. Users can interact with this AI-generated interface and sometimes make requests through it.</li></ul><h3 id=examples>Examples <a href=#examples></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>What is Generative UI?</div><div class=tags-index style=display:none>tags: AI, generative-ui, llm</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">What is Generative UI?</h1></div><div class=memo-content><h2 id=what-is-generative-ui>What is Generative UI? <a href=#what-is-generative-ui></a></h2><ul><li>A <strong>generative UI</strong> (genUI) is a user interface that responds to the user with AI-generated elements instead of just text messages.</li><li>It offers a personalized experience based on the user&rsquo;s needs and context. Users can interact with this AI-generated interface and sometimes make requests through it.</li></ul><h3 id=examples>Examples <a href=#examples></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/generative-ui-example1.webp`,
@@ -928,7 +928,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Instead of generating text to tell you the weather in San Francisco, it will create a UI displaying all the information you need. This approach not only looks better but also delivers the information more effectively.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Instead of generating text to tell you the weather in San Francisco, it will create a UI displaying all the information you need. This approach not only looks better but also delivers the information more effectively.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/generative-ui-example2.webp`,
@@ -1016,7 +1016,7 @@ const askGPT = async () =&gt; {
     &lt;/form&gt;
   )
 }
-</code></pre><h3 id=pros>Pros: <a href=#pros></a></h3><ul><li>Easy to use; everything is provided, so you only need to import the function or copy the code to use it.</li></ul><h3 id=cons>Cons: <a href=#cons></a></h3><ul><li>Library is usable for Next.js with server component support.</li><li>Poorly documented for Next.js’s Page Router; it is recommended for the App Router.</li></ul><p>By observing the behavior of Vercel AI SDK, we came up with a general idea and 2 approches.</p><h2 id=general-idea>General Idea <a href=#general-idea></a></h2><ul><li><a href="https://www.youtube.com/watch?v=d3uoLbfBPkw&amp;t=406s" target=_blank>Video Explanation</a></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h3 id=pros>Pros: <a href=#pros></a></h3><ul><li>Easy to use; everything is provided, so you only need to import the function or copy the code to use it.</li></ul><h3 id=cons>Cons: <a href=#cons></a></h3><ul><li>Library is usable for Next.js with server component support.</li><li>Poorly documented for Next.js’s Page Router; it is recommended for the App Router.</li></ul><p>By observing the behavior of Vercel AI SDK, we came up with a general idea and 2 approches.</p><h2 id=general-idea>General Idea <a href=#general-idea></a></h2><ul><li><a href="https://www.youtube.com/watch?v=d3uoLbfBPkw&amp;t=406s" target=_blank>Video Explanation</a></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/generative-ui-general-idea.webp`,
@@ -1065,7 +1065,7 @@ const askGPT = async () =&gt; {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Goal</strong></p><ul><li>The chatbot can respond to the user with both text and UI in the correct order.</li><li>The chatbot should understand the responded UI.</li><li>The approach should be implementable on any web technology.</li></ul><p><strong>Idea</strong></p><ul><li>Langchain-supported tool that allows LLM to detect which agent to take action (given the description, defined parameters) ⇒ On each tool, define the corresponding UI component to render when it triggers</li><li>LLM supports streaming responses. There are two approaches:</li></ul><h3 id=approach-1>Approach 1 <a href=#approach-1></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Goal</strong></p><ul><li>The chatbot can respond to the user with both text and UI in the correct order.</li><li>The chatbot should understand the responded UI.</li><li>The approach should be implementable on any web technology.</li></ul><p><strong>Idea</strong></p><ul><li>Langchain-supported tool that allows LLM to detect which agent to take action (given the description, defined parameters) ⇒ On each tool, define the corresponding UI component to render when it triggers</li><li>LLM supports streaming responses. There are two approaches:</li></ul><h3 id=approach-1>Approach 1 <a href=#approach-1></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/generative-ui-approach-1.webp`,
@@ -1128,7 +1128,7 @@ const askGPT = async () =&gt; {
     },
   },
 ]
-</code></pre><h3 id=approach-2>Approach 2 <a href=#approach-2></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h3 id=approach-2>Approach 2 <a href=#approach-2></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/generative-ui-approach-2.webp`,
@@ -1177,8 +1177,7 @@ const askGPT = async () =&gt; {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Directly forward stream events to the frontend to handle using (HTTP Streaming, Server-Sent Events, WebSocket, etc.)</li><li>After a tool is done, include the tool result data in the chat history to help the chatbot understand the context.</li></ul><h3 id=handle-event-flow>Handle event flow <a href=#handle-event-flow></a></h3><p>Below is an example for handling event stream generated during LLM processing with langchain.
-<script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Directly forward stream events to the frontend to handle using (HTTP Streaming, Server-Sent Events, WebSocket, etc.)</li><li>After a tool is done, include the tool result data in the chat history to help the chatbot understand the context.</li></ul><h3 id=handle-event-flow>Handle event flow <a href=#handle-event-flow></a></h3><p>Below is an example for handling event stream generated during LLM processing with langchain. <img x-data="{
     title: ``,
     alt: `event-flow`,
     src: `assets/generative-ui-handle-event-flow.webp`,

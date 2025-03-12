@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/frontend</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>276</li><li class=span><span>Characters:
-</span>11,596</li><li class=span><span>Without Spaces:
+</span>11,306</li><li class=span><span>Without Spaces:
 </span>1,607</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>HSL Color</div><div class=tags-index style=display:none>tags: frontend, hsl</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">HSL Color</h1></div><div class=memo-content><p>Frontend engineers use Hexadecimal color codes to represent colors, but they have some limitations:</p><ul><li>Hexadecimal color codes are difficult to write and adjust, requiring the use of a third-party application to get right.</li><li>Hexadecimal color codes can be difficult to remember and use, especially for designers.</li></ul><p>HSL is the answer to resolving all of the painful points.</p><h2 id=what-is-hsl>What is HSL? <a href=#what-is-hsl></a></h2><p><strong>HSL</strong> stands for <strong>hue</strong>, <strong>saturation</strong>, and <strong>lightness</strong>. It’s based on the RGB color wheel. Each color has an angle and a percentage value for the saturation and lightness values.</p><ul><li><p><strong>Hue</strong>: Think of a color wheel. Around 0<sup>o</sup> and 360<sup>o</sup> are reds. 120<sup>o</sup> is where greens are and 240<sup>o</sup> are blues. Use anything in between 0-360. Values above and below will be modulus 360.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>HSL Color</div><div class=tags-index style=display:none>tags: frontend, hsl</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">HSL Color</h1></div><div class=memo-content><p>Frontend engineers use Hexadecimal color codes to represent colors, but they have some limitations:</p><ul><li>Hexadecimal color codes are difficult to write and adjust, requiring the use of a third-party application to get right.</li><li>Hexadecimal color codes can be difficult to remember and use, especially for designers.</li></ul><p>HSL is the answer to resolving all of the painful points.</p><h2 id=what-is-hsl>What is HSL? <a href=#what-is-hsl></a></h2><p><strong>HSL</strong> stands for <strong>hue</strong>, <strong>saturation</strong>, and <strong>lightness</strong>. It’s based on the RGB color wheel. Each color has an angle and a percentage value for the saturation and lightness values.</p><ul><li><p><strong>Hue</strong>: Think of a color wheel. Around 0<sup>o</sup> and 360<sup>o</sup> are reds. 120<sup>o</sup> is where greens are and 240<sup>o</sup> are blues. Use anything in between 0-360. Values above and below will be modulus 360.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/hsl-color_hls-color.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p><strong>Saturation</strong>: 0% is completely desaturated (grayscale). 100% is fully saturated (full color).</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p><strong>Saturation</strong>: 0% is completely desaturated (grayscale). 100% is fully saturated (full color).</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/hsl-color_hls-hue.webp`,
@@ -975,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p><strong>Lightness</strong>: 0% is completely dark (black). 100% is completely light (white). 50% is average lightness.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p><strong>Lightness</strong>: 0% is completely dark (black). 100% is completely light (white). 50% is average lightness.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/hsl-color_hls-lightest.webp`,
@@ -1024,7 +1024,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li></ul><h2 id=using-hsl>Using HSL <a href=#using-hsl></a></h2><h3 id=darkerlighter-colors>Darker/lighter colors <a href=#darkerlighter-colors></a></h3><p>Imagine you&rsquo;re creating a button component and you want it to appear darker on hovering to increase its contrast. You can do this easily with the help of HSL.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li></ul><h2 id=using-hsl>Using HSL <a href=#using-hsl></a></h2><h3 id=darkerlighter-colors>Darker/lighter colors <a href=#darkerlighter-colors></a></h3><p>Imagine you&rsquo;re creating a button component and you want it to appear darker on hovering to increase its contrast. You can do this easily with the help of HSL.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/hsl-color_using-hls.webp`,
@@ -1087,7 +1087,7 @@ Folder:
 .button:hover {
   --primary-l: 40%;
 }
-</code></pre><h3 id=color-palette>Color palette <a href=#color-palette></a></h3><p>By altering the <code>lightness</code>, we can create a set of shades for a color that can be used throughout the UI where possible.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h3 id=color-palette>Color palette <a href=#color-palette></a></h3><p>By altering the <code>lightness</code>, we can create a set of shades for a color that can be used throughout the UI where possible.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/hsl-color_hls-color-pallete.webp`,

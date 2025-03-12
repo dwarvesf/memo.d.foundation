@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai/digest</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>760</li><li class=span><span>Characters:
-</span>15,183</li><li class=span><span>Without Spaces:
+</span>14,893</li><li class=span><span>Without Spaces:
 </span>4,384</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>AI digest #2 New command Aider, OpenHands, Qwen2.5 Coder 32B, Predicted Output</div><div class=tags-index style=display:none>tags: llm, tooling, aider, qwen2.5, openhand, predicted output</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">AI digest #2 New command Aider, OpenHands, Qwen2.5 Coder 32B, Predicted Output</h1></div><div class=memo-content><h2 id=aider-v0630-release>Aider v0.63.0 release <a href=#aider-v0630-release></a></h2><ul><li>Support for Qwen 2.5 Coder 32B.</li><li><code>/web</code> command just adds the page to the chat, without triggering an LLM response.</li></ul><p>Qwen 2.5 Coder 32B has been making waves in the past week. This could be a turning point for self-hosting models for coding without needing to call a third-party API. Additionally, the new <code>/web</code> command allows developers to easily input a URL as documentation context for Aider.</p><p>Here&rsquo;s an example of how to use the <code>/web</code> command. The developer provides the documentation URL for initializing Langfuse, which is used to trace API calls for a wrapper.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>AI digest #2 New command Aider, OpenHands, Qwen2.5 Coder 32B, Predicted Output</div><div class=tags-index style=display:none>tags: llm, tooling, aider, qwen2.5, openhand, predicted output</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">AI digest #2 New command Aider, OpenHands, Qwen2.5 Coder 32B, Predicted Output</h1></div><div class=memo-content><h2 id=aider-v0630-release>Aider v0.63.0 release <a href=#aider-v0630-release></a></h2><ul><li>Support for Qwen 2.5 Coder 32B.</li><li><code>/web</code> command just adds the page to the chat, without triggering an LLM response.</li></ul><p>Qwen 2.5 Coder 32B has been making waves in the past week. This could be a turning point for self-hosting models for coding without needing to call a third-party API. Additionally, the new <code>/web</code> command allows developers to easily input a URL as documentation context for Aider.</p><p>Here&rsquo;s an example of how to use the <code>/web</code> command. The developer provides the documentation URL for initializing Langfuse, which is used to trace API calls for a wrapper.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/digest-02-web-command.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=openhands>OpenHands <a href=#openhands></a></h2><p>OpenHands just took a huge step forward with <em>All Hands Online (Beta)</em>, a new hosted version of its AI software development tool. This means no more wrestling with setup—just go to app.all-hands.dev, and you’re good to go in seconds! OpenHands has already proven itself by solving over half of real GitHub issues on the SWE-Bench Verified benchmark, and now it’s easier than ever to get started.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=openhands>OpenHands <a href=#openhands></a></h2><p>OpenHands just took a huge step forward with <em>All Hands Online (Beta)</em>, a new hosted version of its AI software development tool. This means no more wrestling with setup—just go to app.all-hands.dev, and you’re good to go in seconds! OpenHands has already proven itself by solving over half of real GitHub issues on the SWE-Bench Verified benchmark, and now it’s easier than ever to get started.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/digest-02-new-ui-openhand.webp`,
@@ -975,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The hosted version also comes with a fresh, redesigned interface and smooth GitHub integration. With the GitHub integration, you can hook up your repos directly, clone projects, and push changes right from OpenHands, keeping everything in one place. And this is just the beginning—more features are on the way to make the tool even smarter, more customizable, and ready to tackle bigger challenges.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The hosted version also comes with a fresh, redesigned interface and smooth GitHub integration. With the GitHub integration, you can hook up your repos directly, clone projects, and push changes right from OpenHands, keeping everything in one place. And this is just the beginning—more features are on the way to make the tool even smarter, more customizable, and ready to tackle bigger challenges.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets//digest-02-github-integrated-openhand.webp`,
@@ -1024,7 +1024,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=qwen25-coder-32b>Qwen2.5 Coder 32B <a href=#qwen25-coder-32b></a></h2><p>The Qwen team is excited to announce the open-source release of the Qwen2.5-Coder series, a set of highly capable AI coding models designed for practical, real-world programming tasks. Headlining the series is the Qwen2.5-Coder-32B-Instruct, which has set a new standard as the top open-source code model, rivaling the performance of commercial models like GPT-4o. With six model sizes ranging from 0.5B to 32B, Qwen2.5-Coder meets diverse developer needs, whether for lightweight tasks or complex code generation. The models excel in coding benchmarks like EvalPlus and BigCodeBench, offering robust performance across over 40 programming languages, making it a flexiable assistant for a wide range of coding needs.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=qwen25-coder-32b>Qwen2.5 Coder 32B <a href=#qwen25-coder-32b></a></h2><p>The Qwen team is excited to announce the open-source release of the Qwen2.5-Coder series, a set of highly capable AI coding models designed for practical, real-world programming tasks. Headlining the series is the Qwen2.5-Coder-32B-Instruct, which has set a new standard as the top open-source code model, rivaling the performance of commercial models like GPT-4o. With six model sizes ranging from 0.5B to 32B, Qwen2.5-Coder meets diverse developer needs, whether for lightweight tasks or complex code generation. The models excel in coding benchmarks like EvalPlus and BigCodeBench, offering robust performance across over 40 programming languages, making it a flexiable assistant for a wide range of coding needs.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/digest-02-qwen-bench-1.webp`,
@@ -1073,7 +1073,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In addition to coding and code repair, Qwen2.5-Coder also demonstrates strengths in code reasoning and multi-language support, with impressive scores on benchmarks such as McEval and MdEval. This release is a big win for open-source developers who want a powerful, accessible alternative to proprietary models for code generation, repair, and reasoning tasks. Qwen2.5-Coder is also licensed under Apache 2.0, ensuring flexibility and ease of use. The team is looking forward to expanding its capabilities, exploring advanced reasoning models, and unlocking new possibilities in collaboration with the coding community.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In addition to coding and code repair, Qwen2.5-Coder also demonstrates strengths in code reasoning and multi-language support, with impressive scores on benchmarks such as McEval and MdEval. This release is a big win for open-source developers who want a powerful, accessible alternative to proprietary models for code generation, repair, and reasoning tasks. Qwen2.5-Coder is also licensed under Apache 2.0, ensuring flexibility and ease of use. The team is looking forward to expanding its capabilities, exploring advanced reasoning models, and unlocking new possibilities in collaboration with the coding community.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/digest-02-qwen-bench-2.webp`,

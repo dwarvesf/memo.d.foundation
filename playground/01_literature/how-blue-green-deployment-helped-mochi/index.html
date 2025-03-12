@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>894</li><li class=span><span>Characters:
-</span>16,474</li><li class=span><span>Without Spaces:
+</span>16,242</li><li class=span><span>Without Spaces:
 </span>5,873</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -996,7 +996,7 @@ spec:
 </code></pre><h2 id=applying-resources-to-the-cluster-and-testing>Applying Resources to the Cluster and Testing <a href=#applying-resources-to-the-cluster-and-testing></a></h2><p>We applied the resource files to the Kubernetes cluster using <code>**kubectl apply**</code> commands. The application was deployed to the active environment and could be viewed on the production domain - <code>mochiapp.bluegreen.domain</code>.</p><pre><code class=language-bash>kubectl apply -f app/bluegreen-rollout.yaml
 kubectl apply -f app/service.yaml
 kubectl apply -f app/ingress.yaml
-</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-blue-green-deployment-helped-mochi_f711c252bf191800d3184c8839221899_md5.webp`,
@@ -1051,7 +1051,7 @@ containers:
 	  image: argoproj/rollouts-demo:green
 </code></pre><pre><code class=language-bash>kubectl apply -f app/bluegreen-rollout.yaml
 </code></pre><p>Once the updated application version was thoroughly tested, we promoted it to the active environment using a specific command. The updated application was then accessible on the active environment in the blue domain.</p><pre><code class=language-bash>kubectl argo rollouts promote mochi
-</code></pre><p>With the deployment complete, the updated application was accessible on the active environment in the blue domain - <code>mochiapp.bluegreen.domain</code>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>With the deployment complete, the updated application was accessible on the active environment in the blue domain - <code>mochiapp.bluegreen.domain</code>.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-blue-green-deployment-helped-mochi_dbebe30b5e9fa94fd865c1c66b41c5f6_md5.webp`,
@@ -1100,7 +1100,7 @@ containers:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>An alternative would be to utilize the ArgoCD UI for the promotion, as it could prove to be exceptionally helpful for those who may not be able to operate the CLI, including QC, during the release rollout. Additionally, any issues that may arise can quickly be reverted with just the click of the &ldquo;Rollback&rdquo; button.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>An alternative would be to utilize the ArgoCD UI for the promotion, as it could prove to be exceptionally helpful for those who may not be able to operate the CLI, including QC, during the release rollout. Additionally, any issues that may arise can quickly be reverted with just the click of the &ldquo;Rollback&rdquo; button.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-blue-green-deployment-helped-mochi_8a98dc8c92776e0f68f1db43bf3b4a9a_md5.webp`,
@@ -1149,7 +1149,7 @@ containers:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-blue-green-deployment-helped-mochi_8ee42dc2d4a9b07dbfc76db9b009a8cc_md5.webp`,

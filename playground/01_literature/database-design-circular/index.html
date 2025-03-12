@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>923</li><li class=span><span>Characters:
-</span>12,788</li><li class=span><span>Without Spaces:
+</span>12,614</li><li class=span><span>Without Spaces:
 </span>5,474</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Database design Circular</div><div class=tags-index style=display:none>tags: database, sql, data-modeling</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Database design Circular</h1></div><div class=memo-content><p>In the database solution design, there is the bad practices is called circular references.</p><h2 id=whats-circular-in-the-database>What&rsquo;s circular in the database? <a href=#whats-circular-in-the-database></a></h2><p>Imagining one type of circular reference in SQL is made when a first table references a second and that second table references the first table. Simple example of how this would look in a model: students and professors in which students has a reference to professor as advisor and professor has a reference to student as advising student.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Database design Circular</div><div class=tags-index style=display:none>tags: database, sql, data-modeling</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Database design Circular</h1></div><div class=memo-content><p>In the database solution design, there is the bad practices is called circular references.</p><h2 id=whats-circular-in-the-database>What&rsquo;s circular in the database? <a href=#whats-circular-in-the-database></a></h2><p>Imagining one type of circular reference in SQL is made when a first table references a second and that second table references the first table. Simple example of how this would look in a model: students and professors in which students has a reference to professor as advisor and professor has a reference to student as advising student.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/circular_student.png`,
@@ -927,7 +927,7 @@ Folder:
         .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>The principal problem on circular references is that when we start inserting data into the tables we won’t be able to since none of the references can accept nulls and we can’t insert one record without having another on the other table.
-A more complex example of circular reference is simple task management system. There are 4 entities in the solution: users, tasks, projects, project_assignments, project_teams:</p><ul><li>A project has many tasks</li><li>A project has many users via project_teams entity</li><li>A project_assignments combine by 2 connection tasks and project_teams</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+A more complex example of circular reference is simple task management system. There are 4 entities in the solution: users, tasks, projects, project_assignments, project_teams:</p><ul><li>A project has many tasks</li><li>A project has many users via project_teams entity</li><li>A project_assignments combine by 2 connection tasks and project_teams</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/circular_project.png`,
@@ -976,7 +976,7 @@ A more complex example of circular reference is simple task management system. T
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>So, a project has 2 ways to get the project_assignments. The problem occurs when we query the data. If we start at projects, tasks and then project_assignments, there the link ends, since project_assignments does not serve as the primary key for any other table. Then we do the same process with the other link, start at projects, go to project_teams, end up in project_assignments.</p><p>An easy way to identify a circular reference is to start on a table which is serving as the primary table for two or more foreign keys. Some database designs look like a circular references, but not true. An example is the purchasing system. There are some entities: products, purchases, commissions, customers, retailers. The products has many customers by 2 connections: purchases or commissions.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>So, a project has 2 ways to get the project_assignments. The problem occurs when we query the data. If we start at projects, tasks and then project_assignments, there the link ends, since project_assignments does not serve as the primary key for any other table. Then we do the same process with the other link, start at projects, go to project_teams, end up in project_assignments.</p><p>An easy way to identify a circular reference is to start on a table which is serving as the primary table for two or more foreign keys. Some database designs look like a circular references, but not true. An example is the purchasing system. There are some entities: products, purchases, commissions, customers, retailers. The products has many customers by 2 connections: purchases or commissions.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/circular_purchasing.png`,

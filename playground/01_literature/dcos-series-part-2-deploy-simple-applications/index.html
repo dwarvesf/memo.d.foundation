@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>471</li><li class=span><span>Characters:
-</span>13,403</li><li class=span><span>Without Spaces:
+</span>13,113</li><li class=span><span>Without Spaces:
 </span>2,576</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -876,7 +876,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Dcos Series Part 2 Deploy Simple Applications</div><div class=tags-index style=display:none>tags: dcos</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Dcos Series Part 2 Deploy Simple Applications</h1></div><div class=memo-content><p>There are so many interesting things in DC/OS GUI (<code>Dashboard</code> with useful metrics/status from all nodes, <code>Services</code> tab help us to know which application/service is running on which node, its status, etc.).</p><p>In this article, we will try to deploy applications to DC/OS and run it.</p><h2 id=universe-packages>Universe packages <a href=#universe-packages></a></h2><p>The Universe tab shows all of the available DC/OS services from package repositories. You can install packages from the DC/OS Universe with a single click. The packages can be installed with defaults or customized directly in the web interface</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Dcos Series Part 2 Deploy Simple Applications</div><div class=tags-index style=display:none>tags: dcos</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Dcos Series Part 2 Deploy Simple Applications</h1></div><div class=memo-content><p>There are so many interesting things in DC/OS GUI (<code>Dashboard</code> with useful metrics/status from all nodes, <code>Services</code> tab help us to know which application/service is running on which node, its status, etc.).</p><p>In this article, we will try to deploy applications to DC/OS and run it.</p><h2 id=universe-packages>Universe packages <a href=#universe-packages></a></h2><p>The Universe tab shows all of the available DC/OS services from package repositories. You can install packages from the DC/OS Universe with a single click. The packages can be installed with defaults or customized directly in the web interface</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-2---deploy-simple-applications_e84b0a38362cbe07380b58ee7adae02d_md5.webp`,
@@ -925,7 +925,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=dcos-cli>DC/OS CLI <a href=#dcos-cli></a></h2><p>You also can use the DC/OS command-line interface (CLI) to manage your cluster nodes, install DC/OS packages, inspect the cluster state, and administer the DC/OS service subcommands, deploy application, etc.</p><h3 id=installing>Installing <a href=#installing></a></h3><p>You can quickly install the CLI from the DC/OS web interface.</p><ol><li>Click Install CLI from the top-left corner of the DC/OS web interface</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=dcos-cli>DC/OS CLI <a href=#dcos-cli></a></h2><p>You also can use the DC/OS command-line interface (CLI) to manage your cluster nodes, install DC/OS packages, inspect the cluster state, and administer the DC/OS service subcommands, deploy application, etc.</p><h3 id=installing>Installing <a href=#installing></a></h3><p>You can quickly install the CLI from the DC/OS web interface.</p><ol><li>Click Install CLI from the top-left corner of the DC/OS web interface</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-2---deploy-simple-applications_8f79be9b29c62d95fe90e2e03bc62284_md5.webp`,
@@ -974,7 +974,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li>Copy and paste the code snippets into your terminal.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li>Copy and paste the code snippets into your terminal.</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-2---deploy-simple-applications_fad27ec33399ea4f93224edcc53bbfb3_md5.webp`,
@@ -1064,7 +1064,7 @@ By default, applications will be deployed to <code>private node</code>, so if yo
 </code></pre><ol start=3><li>Verify that the app is added with this command:</li></ol><pre><code class=language-javascript>$ dcos marathon app list
 </code></pre><p>The output can be look like this:</p><pre><code class=language-javascript>ID      MEM  CPUS  TASKS  HEALTH  DEPLOYMENT  CONTAINER  CMD
 /nginx   64  0.1    0/1    ---      scale       DOCKER   None
-</code></pre><ol start=4><li>Check application on DC/OS GUI</li></ol><p>Click on <code>Services</code> tab, you will see list of applications that you are running. To check application’s information, just click on service and choose service ID that you want to see</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><ol start=4><li>Check application on DC/OS GUI</li></ol><p>Click on <code>Services</code> tab, you will see list of applications that you are running. To check application’s information, just click on service and choose service ID that you want to see</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-2---deploy-simple-applications_377366f7ddcabc286a3d6d1e505eb94f_md5.webp`,
@@ -1113,7 +1113,7 @@ By default, applications will be deployed to <code>private node</code>, so if yo
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As the picture above, you can check your application directly via <code>Endpoint</code></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As the picture above, you can check your application directly via <code>Endpoint</code></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-2---deploy-simple-applications_82cc4eeeaae867eb9bcafc54c0f7eda5_md5.webp`,

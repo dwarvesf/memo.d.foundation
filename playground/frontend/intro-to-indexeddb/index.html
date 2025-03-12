@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/frontend</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>898</li><li class=span><span>Characters:
-</span>12,240</li><li class=span><span>Without Spaces:
+</span>12,124</li><li class=span><span>Without Spaces:
 </span>4,916</li><li class=span><span>Blocks:
 </span>23</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -883,7 +883,7 @@ openRequest.onsuccess = () =&gt; {
 	const db = openRequest.result
 	...
 }
-</code></pre><blockquote><p><a href=https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase target=_blank>Read more</a> about methods, attributes and how to use <strong>IDBDatabase</strong>.</p></blockquote><h3 id=object-store>Object store <a href=#object-store></a></h3><p>Object store is an individual bucket to store data. It is the <strong>core concept</strong> of IndexedDB. You can think of object stores as being similar to tables in traditional relational databases. A database may have multiple stores and each of them must have a name that is <strong>unique</strong> within its database.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><blockquote><p><a href=https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase target=_blank>Read more</a> about methods, attributes and how to use <strong>IDBDatabase</strong>.</p></blockquote><h3 id=object-store>Object store <a href=#object-store></a></h3><p>Object store is an individual bucket to store data. It is the <strong>core concept</strong> of IndexedDB. You can think of object stores as being similar to tables in traditional relational databases. A database may have multiple stores and each of them must have a name that is <strong>unique</strong> within its database.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cygld5u.png`,
@@ -953,8 +953,7 @@ openRequest.onupgradeneeded = () =&gt; {
 	const books = db.createObjectStore('books', {keyPath: 'id'})
 	const index = books.createIndex('price_idx', 'price')
 }
-</code></pre><p>Search the <code>books</code> object store by <code>price</code> key:
-<script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Search the <code>books</code> object store by <code>price</code> key: <img x-data="{
     title: ``,
     alt: ``,
     src: `assets/tjherhh.png`,

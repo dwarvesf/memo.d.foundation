@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/use-cases</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,755</li><li class=span><span>Characters:
-</span>17,109</li><li class=span><span>Without Spaces:
+</span>16,993</li><li class=span><span>Without Spaces:
 </span>9,044</li><li class=span><span>Blocks:
 </span>31</li><li class=span><span>Est reading Time:
 </span>20m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -899,7 +899,7 @@ Folder:
     	&quot;tradeId&quot;:&quot;2059192&quot;
 	}
 ]
-</code></pre><p><em>Code 1: JSON response of Binance API Get Income History (USER_DATA)</em></p><p>Our job is just passing <code>TRANSFER</code> as <code>incomeType</code> to filter out other types of Binance transactions. Then we can store these records for use later. But when looking at this response, can you imagine the limitations that I mentioned in the title of this part? Yes! you actually can&rsquo;t know where the fund comes from or move to? Just only can detect whether it is a deposit or withdrawal by using the sign, which is not enough in our system where every account is under our control. If it is hard for you to understand, the result of the transfer notification is look sus as below screenshot.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><em>Code 1: JSON response of Binance API Get Income History (USER_DATA)</em></p><p>Our job is just passing <code>TRANSFER</code> as <code>incomeType</code> to filter out other types of Binance transactions. Then we can store these records for use later. But when looking at this response, can you imagine the limitations that I mentioned in the title of this part? Yes! you actually can&rsquo;t know where the fund comes from or move to? Just only can detect whether it is a deposit or withdrawal by using the sign, which is not enough in our system where every account is under our control. If it is hard for you to understand, the result of the transfer notification is look sus as below screenshot.</p><p><img x-data="{
     title: ``,
     alt: `Sporadic and confusing transfer logs`,
     src: `assets/nghenhan-bad-logging.png`,
@@ -948,7 +948,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <em>Figure 1: Sporadic and confusing transfer logs that lack clear relationships between transactions</em></p><p>To me, it looks bad. Ignore the wrong destination balance because of another issue with the data, this logging is too sporadic, hard to understand, and confusing. We can&rsquo;t understand how the fund is transferred. In my expectation, at least, it should like following.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <em>Figure 1: Sporadic and confusing transfer logs that lack clear relationships between transactions</em></p><p>To me, it looks bad. Ignore the wrong destination balance because of another issue with the data, this logging is too sporadic, hard to understand, and confusing. We can&rsquo;t understand how the fund is transferred. In my expectation, at least, it should like following.</p><p><img x-data="{
     title: ``,
     alt: `Clear and connected transfer logs showing fund flow between accounts`,
     src: `assets/nghenhan-better-logging.png`,

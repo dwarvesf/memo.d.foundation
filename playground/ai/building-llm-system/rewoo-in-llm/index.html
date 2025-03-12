@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,281</li><li class=span><span>Characters:
-</span>17,006</li><li class=span><span>Without Spaces:
+</span>16,774</li><li class=span><span>Without Spaces:
 </span>7,186</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>ReWOO: Reasoning without observation - A deeper look</div><div class=tags-index style=display:none>tags: llm, ai</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">ReWOO: Reasoning without observation - A deeper look</h1></div><div class=memo-content><p>In the process of improving Large Language Model (LLM) performance, many techniques have been proposed. The Augmented Language Model (ALM) approach boosted LLM accuracy by enabling the attachment of external sources to enhance the model&rsquo;s knowledge. However, ALMs still had limitations in terms of time consumption and token resources. To address these issues, ReWOO was developed as a more efficient solution.</p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>ReWOO which stands for Reasoning WithOut Observation, is a modular paradigm that decouples the reasoning process from external observation. Benefits of this approach can be summarized as follows:</p><ul><li>Modular design: Easy to modify, maintain component while cause no harm to other</li><li>Save token usage: It reducde the number of call to LLM model for repeated executions and by ability to interact with external tools.</li></ul><h2 id=how-it-works>How it works <a href=#how-it-works></a></h2><p>ReWOO divided core 3-step reasoning process into 3 modules:</p><ul><li><strong>Planner</strong>: Uses the predictable reasoning of LLMs to create a solution blueprint. It consists plans and steps for each plan to exeucte.</li><li><strong>Worker</strong>: Executes the plan and collect evidence by calling external tools or APIs.</li><li><strong>Solver</strong>: Examines all plans and evidences from worker to analyze and synthsize the final answer.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>ReWOO: Reasoning without observation - A deeper look</div><div class=tags-index style=display:none>tags: llm, ai</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">ReWOO: Reasoning without observation - A deeper look</h1></div><div class=memo-content><p>In the process of improving Large Language Model (LLM) performance, many techniques have been proposed. The Augmented Language Model (ALM) approach boosted LLM accuracy by enabling the attachment of external sources to enhance the model&rsquo;s knowledge. However, ALMs still had limitations in terms of time consumption and token resources. To address these issues, ReWOO was developed as a more efficient solution.</p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>ReWOO which stands for Reasoning WithOut Observation, is a modular paradigm that decouples the reasoning process from external observation. Benefits of this approach can be summarized as follows:</p><ul><li>Modular design: Easy to modify, maintain component while cause no harm to other</li><li>Save token usage: It reducde the number of call to LLM model for repeated executions and by ability to interact with external tools.</li></ul><h2 id=how-it-works>How it works <a href=#how-it-works></a></h2><p>ReWOO divided core 3-step reasoning process into 3 modules:</p><ul><li><strong>Planner</strong>: Uses the predictable reasoning of LLMs to create a solution blueprint. It consists plans and steps for each plan to exeucte.</li><li><strong>Worker</strong>: Executes the plan and collect evidence by calling external tools or APIs.</li><li><strong>Solver</strong>: Examines all plans and evidences from worker to analyze and synthsize the final answer.</li></ul><p><img x-data="{
     title: ``,
     alt: `ReWOO`,
     src: `assets/rewoo-in-llm.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>ReWOO can referring to plans from earlier stages in instructions to Workers. This allows next step and subsequent steps to build on the results of previous steps, enabling the model to handle complex tasks more effectively. The final solver prompt is designed to be concise and efficient, ensuring that the model can accurately synthesize the final answer based on the evidence provided by the workers.</p><h2 id=example>Example <a href=#example></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>ReWOO can referring to plans from earlier stages in instructions to Workers. This allows next step and subsequent steps to build on the results of previous steps, enabling the model to handle complex tasks more effectively. The final solver prompt is designed to be concise and efficient, ensuring that the model can accurately synthesize the final answer based on the evidence provided by the workers.</p><h2 id=example>Example <a href=#example></a></h2><p><img x-data="{
     title: ``,
     alt: `Example`,
     src: `assets/rewoo-in-llm-example.webp`,
@@ -1087,7 +1087,7 @@ async function Solver(state: typeof GraphState.State, config?: RunnableConfig) {
 
 // Compile
 const app = workflow.compile()
-</code></pre><p>Now let test with question: &ldquo;What is the mass of earth and how many natural satelite of it. Calculate different in mass of Jupyter and Earth?&rdquo;</p><p>Result: <a href=https://smith.langchain.com/public/624cb78d-e55e-40a6-8cd5-912a2046a864/r target=_blank>Link</a></p><h2 id=comparison-with-react>Comparison with ReAct <a href=#comparison-with-react></a></h2><p>To demonstrate the token usage saving of ReWOO, we will make a comparision with traditional technique like ReAct(Reason + Act). If you do not know what is ReAct? Can take a look to this memo: <a href=/playground/ai/building-llm-system/react-in-llm/>ReAct(Reason + Act) in LLM</a>. We run a same question to ReAct, and see the difference:</p><table><thead><tr><th>ReAct</th><th>ReWOO</th></tr></thead><tbody><tr><td><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Now let test with question: &ldquo;What is the mass of earth and how many natural satelite of it. Calculate different in mass of Jupyter and Earth?&rdquo;</p><p>Result: <a href=https://smith.langchain.com/public/624cb78d-e55e-40a6-8cd5-912a2046a864/r target=_blank>Link</a></p><h2 id=comparison-with-react>Comparison with ReAct <a href=#comparison-with-react></a></h2><p>To demonstrate the token usage saving of ReWOO, we will make a comparision with traditional technique like ReAct(Reason + Act). If you do not know what is ReAct? Can take a look to this memo: <a href=/playground/ai/building-llm-system/react-in-llm/>ReAct(Reason + Act) in LLM</a>. We run a same question to ReAct, and see the difference:</p><table><thead><tr><th>ReAct</th><th>ReWOO</th></tr></thead><tbody><tr><td><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/rewoo-in-llm-compare-react.webp`,
@@ -1136,7 +1136,7 @@ const app = workflow.compile()
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></td><td><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></td><td><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/rewoo-in-llm-compare-rewoo.webp`,

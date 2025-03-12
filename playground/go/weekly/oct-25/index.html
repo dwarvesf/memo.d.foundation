@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/go/weekly</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,462</li><li class=span><span>Characters:
-</span>20,138</li><li class=span><span>Without Spaces:
+</span>19,964</li><li class=span><span>Without Spaces:
 </span>8,813</li><li class=span><span>Blocks:
 </span>30</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -1085,7 +1085,7 @@ func AddInts(left, right) int
 func main() {
     fmt.Println(&quot;1 + 2 = &quot;, AddInts(1, 2))
 }
-</code></pre><p><strong>LINE 1</strong>: The file contains amd64 specific instructions, so we need to include a Go build tag to make sure Go does not try to compile this file for non x86 machines.</p><p><strong>LINE 3</strong>: You can think of this line as the functions declaration. TEXT declares that this is a function or text section. ·AddInts(SB) specifies our functions name. 4 represents “NOSPLIT” which we need for some reason. And $0 is the size of the function’s stack frame (used for local variables). It’s zero in this case because we can easily fit everything into the registers.</p><p><strong>LINE 4 & 5</strong>: Go’s calling convention is to put the function arguments onto the stack. So we MOVe both Long 32-bit values into the AX and BX registers by dereferencing the frame pointer (FP) with the appropriate offsets. The first argument is stored at offset 0. The second argument is stored at offset 8 (int’s only need 4 bytes but I think Go offsets all arguments by 8 to maintain memory alignment).</p><p><strong>LINE 6</strong>: Add the Long 32-bit value in AX (left) with the Long 32-bit value in BX. And store the resulting Long 32-bit value in AX.</p><p><strong>LINE 7 & 8</strong>: Go’s calling convention (as far as I can tell) is to put the function return values after its arguments on the stack. So we MOVe the Long 32-bit values in the AX register onto the stack by dereferencing the frame pointer (FP) with the appropriate offset. Which is 16 in this case.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><strong>LINE 1</strong>: The file contains amd64 specific instructions, so we need to include a Go build tag to make sure Go does not try to compile this file for non x86 machines.</p><p><strong>LINE 3</strong>: You can think of this line as the functions declaration. TEXT declares that this is a function or text section. ·AddInts(SB) specifies our functions name. 4 represents “NOSPLIT” which we need for some reason. And $0 is the size of the function’s stack frame (used for local variables). It’s zero in this case because we can easily fit everything into the registers.</p><p><strong>LINE 4 & 5</strong>: Go’s calling convention is to put the function arguments onto the stack. So we MOVe both Long 32-bit values into the AX and BX registers by dereferencing the frame pointer (FP) with the appropriate offsets. The first argument is stored at offset 0. The second argument is stored at offset 8 (int’s only need 4 bytes but I think Go offsets all arguments by 8 to maintain memory alignment).</p><p><strong>LINE 6</strong>: Add the Long 32-bit value in AX (left) with the Long 32-bit value in BX. And store the resulting Long 32-bit value in AX.</p><p><strong>LINE 7 & 8</strong>: Go’s calling convention (as far as I can tell) is to put the function return values after its arguments on the stack. So we MOVe the Long 32-bit values in the AX register onto the stack by dereferencing the frame pointer (FP) with the appropriate offset. Which is 16 in this case.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/smallvectorsfloat32addition.png`,
@@ -1135,7 +1135,7 @@ func main() {
         .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img>
-<script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+<img x-data="{
     title: ``,
     alt: ``,
     src: `assets/mediumvectorsfloat32addition.png`,
@@ -1185,7 +1185,7 @@ func main() {
         .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img>
-<script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+<img x-data="{
     title: ``,
     alt: ``,
     src: `assets/largevectorsfloat32addition.png`,

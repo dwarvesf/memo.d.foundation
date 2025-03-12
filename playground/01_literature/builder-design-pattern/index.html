@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>416</li><li class=span><span>Characters:
-</span>3,850</li><li class=span><span>Without Spaces:
+</span>5,442</li><li class=span><span>Without Spaces:
 </span>2,329</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,56 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Introduce the Builder pattern and its use cases</div><div class=tags-index style=display:none>tags: design-pattern, creational-design-pattern, gang-of-four</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Introduce the Builder pattern and its use cases</h1></div><div class=memo-content><p><script src=/js/pdf-js/pdf.mjs type=module></script></p><h2 id=problem-statement>Problem statement <a href=#problem-statement></a></h2><p>We want to create complex object without worrying too much about the hows, we could use Factory pattern to abstract away those details and just give us the output, but the drawback is you get a fixed same object everytime. There will be cases where you need to tweak some properties of that object to get the desired result, look no further than the Builder pattern.</p><h2 id=builder-design-pattern>Builder design pattern <a href=#builder-design-pattern></a></h2><p>Create a Builder of the object you wanna build, e.g. QueryBuilder, ButtonBuilder, etc,&mldr;</p><p>Add methods that act as steps to gradually build your object, this method must return an instance of the builder itself to allow method chainning (not required but a very distinct feature of this pattern).</p><p>Have a method that finalizes and output the actual object, conventionally it&rsquo;s called &ldquo;build()&rdquo;.</p><p>Let&rsquo;s say we to build a Drink object, consider the following example of a DrinkBuilder class:</p><pre><code class=language-ts>class DrinkBuilder implements Builder {
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Introduce the Builder pattern and its use cases</div><div class=tags-index style=display:none>tags: design-pattern, creational-design-pattern, gang-of-four</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Introduce the Builder pattern and its use cases</h1></div><div class=memo-content><p><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/builder-design-pattern.pdf`,
+    altText: ``,
+    get altWidthHeight() {
+      const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
+      return this.altText.match(widthHeightRegex) ?? [];
+    },
+    get relativeSrc() {
+      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
+        return this.src;
+      }
+
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
+
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
+      }
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=problem-statement>Problem statement <a href=#problem-statement></a></h2><p>We want to create complex object without worrying too much about the hows, we could use Factory pattern to abstract away those details and just give us the output, but the drawback is you get a fixed same object everytime. There will be cases where you need to tweak some properties of that object to get the desired result, look no further than the Builder pattern.</p><h2 id=builder-design-pattern>Builder design pattern <a href=#builder-design-pattern></a></h2><p>Create a Builder of the object you wanna build, e.g. QueryBuilder, ButtonBuilder, etc,&mldr;</p><p>Add methods that act as steps to gradually build your object, this method must return an instance of the builder itself to allow method chainning (not required but a very distinct feature of this pattern).</p><p>Have a method that finalizes and output the actual object, conventionally it&rsquo;s called &ldquo;build()&rdquo;.</p><p>Let&rsquo;s say we to build a Drink object, consider the following example of a DrinkBuilder class:</p><pre><code class=language-ts>class DrinkBuilder implements Builder {
   private drink: Drink
   private name = ''
   private ingredients = []

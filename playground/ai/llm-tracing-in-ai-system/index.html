@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>255</li><li class=span><span>Characters:
-</span>7,362</li><li class=span><span>Without Spaces:
+</span>7,246</li><li class=span><span>Without Spaces:
 </span>2,013</li><li class=span><span>Blocks:
 </span>7</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>LLM tracing in AI system</div><div class=tags-index style=display:none>tags: llm, ai, tooling</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">LLM tracing in AI system</h1></div><div class=memo-content><h2 id=when>When <a href=#when></a></h2><p>Building software with Large Language Models (LLMs) involves several steps, from planning to deployment. LLM tracing emerges as a final step in this process, providing ongoing insights and enabling continuous improvement of LLM-powered applications.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>LLM tracing in AI system</div><div class=tags-index style=display:none>tags: llm, ai, tooling</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">LLM tracing in AI system</h1></div><div class=memo-content><h2 id=when>When <a href=#when></a></h2><p>Building software with Large Language Models (LLMs) involves several steps, from planning to deployment. LLM tracing emerges as a final step in this process, providing ongoing insights and enabling continuous improvement of LLM-powered applications.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/llm-tracing-build-steps.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=why>Why <a href=#why></a></h2><p>Before diving into tracing, it&rsquo;s important to understand the fundamental difference between traditional software and LLM-powered applications:</p><ul><li><strong>Traditional software</strong>: Deterministic, based on explicit instructions written by programmers.</li><li><strong>With LLMs</strong>: Probabilistic, based on neural networks with weights determined through training.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=why>Why <a href=#why></a></h2><p>Before diving into tracing, it&rsquo;s important to understand the fundamental difference between traditional software and LLM-powered applications:</p><ul><li><strong>Traditional software</strong>: Deterministic, based on explicit instructions written by programmers.</li><li><strong>With LLMs</strong>: Probabilistic, based on neural networks with weights determined through training.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/llm-tracing-architecture.webp`,

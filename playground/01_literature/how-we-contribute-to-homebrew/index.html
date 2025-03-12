@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>909</li><li class=span><span>Characters:
-</span>21,334</li><li class=span><span>Without Spaces:
+</span>20,928</li><li class=span><span>Without Spaces:
 </span>5,417</li><li class=span><span>Blocks:
 </span>30</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -876,7 +876,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How We Contribute To Homebrew</div><div class=tags-index style=display:none>tags: oss</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How We Contribute To Homebrew</h1></div><div class=memo-content><h2 id=homebrew>Homebrew <a href=#homebrew></a></h2><p>Homebrew (or brew) is one of the biggest repo on Github with more than 29k stars, 14k forks and 1k watches. It was started by Max Howell in 2009 to build the missing package manager for OS X. Back to before 2009, in Mac OSX, if we wanted to install something, we had to install it via pkg files or bin files. We didn’t have anything fancy like <code>apt-get</code> in Ubuntu or <code>yum</code> in Fedora. MacPort was an only option but it was not too good. Check the very old article about it: <a href=https://www.engadget.com/2009/12/25/homebrew-the-perfect-gift-for-command-line-lovers/ target=_blank>Homebrew, the perfect gift for command line lovers</a></p><p>For now, you can access homebrew via</p><ul><li>Homepage: <a href=http://brew.sh target=_blank>http://brew.sh</a></li><li>Github: <a href=https://github.com/Homebrew/homebrew target=_blank>https://github.com/Homebrew/homebrew</a></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How We Contribute To Homebrew</div><div class=tags-index style=display:none>tags: oss</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How We Contribute To Homebrew</h1></div><div class=memo-content><h2 id=homebrew>Homebrew <a href=#homebrew></a></h2><p>Homebrew (or brew) is one of the biggest repo on Github with more than 29k stars, 14k forks and 1k watches. It was started by Max Howell in 2009 to build the missing package manager for OS X. Back to before 2009, in Mac OSX, if we wanted to install something, we had to install it via pkg files or bin files. We didn’t have anything fancy like <code>apt-get</code> in Ubuntu or <code>yum</code> in Fedora. MacPort was an only option but it was not too good. Check the very old article about it: <a href=https://www.engadget.com/2009/12/25/homebrew-the-perfect-gift-for-command-line-lovers/ target=_blank>Homebrew, the perfect gift for command line lovers</a></p><p>For now, you can access homebrew via</p><ul><li>Homepage: <a href=http://brew.sh target=_blank>http://brew.sh</a></li><li>Github: <a href=https://github.com/Homebrew/homebrew target=_blank>https://github.com/Homebrew/homebrew</a></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_2cb764be7c789e87ab8df174d9e799e3_md5.webp`,
@@ -938,7 +938,7 @@ Folder:
 end
 </code></pre><p>Brew makes it really easy to update and upgrade. Because everything is based on Git, you just need to run those below commands then everything will be done automatically.</p><pre><code class=language-javascript>$ brew update
 $ brew upgrade
-</code></pre><h2 id=contributing-to-homebrew>Contributing to Homebrew <a href=#contributing-to-homebrew></a></h2><p>Note: In this post, we just cover the command line or tool part of Homebrew. The example is taken from our <strong><a href=https://github.com/dwarvesf/glod-cli target=_blank>glod-cli</a>****.</strong></p><p>When you look into the repo of Homebrew, you can easily find the doc directory in <code>homebrew/share/doc/homebrew/</code> which contains all the information. The most important file for this tutorial is the <code>Formula-Cookbook.md.</code></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h2 id=contributing-to-homebrew>Contributing to Homebrew <a href=#contributing-to-homebrew></a></h2><p>Note: In this post, we just cover the command line or tool part of Homebrew. The example is taken from our <strong><a href=https://github.com/dwarvesf/glod-cli target=_blank>glod-cli</a>****.</strong></p><p>When you look into the repo of Homebrew, you can easily find the doc directory in <code>homebrew/share/doc/homebrew/</code> which contains all the information. The most important file for this tutorial is the <code>Formula-Cookbook.md.</code></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_d720976fff56c521e1fb95eb8696c975_md5.webp`,
@@ -987,7 +987,7 @@ $ brew upgrade
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Basically, when you use homebrew, it will create a separate folder on your machine. Everything usually will be installed in <code>/usr/local/Cellar</code> and all formulas was stored at <code>/usr/local/Library/Formula.</code></p><p>So in short, if you want to contribute a new one, you need to create a new formula in your local and submit a pull request to <code>https://github.com/Homebrew/homebrew.</code></p><h3 id=fork-from-homebrew>Fork from Homebrew <a href=#fork-from-homebrew></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Basically, when you use homebrew, it will create a separate folder on your machine. Everything usually will be installed in <code>/usr/local/Cellar</code> and all formulas was stored at <code>/usr/local/Library/Formula.</code></p><p>So in short, if you want to contribute a new one, you need to create a new formula in your local and submit a pull request to <code>https://github.com/Homebrew/homebrew.</code></p><h3 id=fork-from-homebrew>Fork from Homebrew <a href=#fork-from-homebrew></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_023366a1f0837a41a52f37788092a6fa_md5.webp`,
@@ -1076,7 +1076,7 @@ end
 </code></pre><h3 id=install-debug-local-formula>Install/ Debug local formula <a href=#install-debug-local-formula></a></h3><pre><code class=language-javascript>$ brew install --verbose --debug $FORMULA
 </code></pre><p>This command will help to install your formula at /usr/local/Library/Formula. Happy debugging until you can install it smoothly.</p><p>Sometimes you will need to uninstall the formula, you can use this command</p><pre><code class=language-javascript>$ brew unlink $FORMULA
 $ brew cleanup
-</code></pre><h3 id=test-the-formula>Test the formula <a href=#test-the-formula></a></h3><p>One note for the test block, there are still a lot of formula that try to cheat by printing out the help or version. As a good contributor, you should write good tests for your formulas or your pull request will be rejected (like us)</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h3 id=test-the-formula>Test the formula <a href=#test-the-formula></a></h3><p>One note for the test block, there are still a lot of formula that try to cheat by printing out the help or version. As a good contributor, you should write good tests for your formulas or your pull request will be rejected (like us)</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_8af79f8ad176a520effb9282ffd621de_md5.webp`,
@@ -1128,7 +1128,7 @@ $ brew cleanup
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><pre><code class=language-javascript>$ brew test $FORMULA
 $ brew audit --strict --online $FORMULA
 </code></pre><p>Those tests should be passed to make sure your formula is qualified. The second command is provided to check if your formula have</p><ul><li>More than 50 stars</li><li>More than 20 fork</li><li>More than 20 watchers</li><li>And initialized more than 30 days</li></ul><h3 id=submit-pull-request>Submit pull request <a href=#submit-pull-request></a></h3><p>Bravo! It’s really great if you can get here, your formula is qualified. Let’s copy the local formula to your git repo. Example</p><pre><code class=language-javascript>$ cp -f /usr/local/Library/Formula/glod-cli.rb ~/Workspace/dwarvesf/homebrew/Library/Formula
-</code></pre><p>Commit and push your changes to <strong>YOUR</strong> Github. Then we open the Github Repo (still yours), click on button <code>New pull request</code> and we get</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Commit and push your changes to <strong>YOUR</strong> Github. Then we open the Github Repo (still yours), click on button <code>New pull request</code> and we get</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_6b2b8ce5d8671f85ddf41e15f637dd04_md5.webp`,
@@ -1177,7 +1177,7 @@ $ brew audit --strict --online $FORMULA
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_096ad9e94b7139c6f99bdac0c463196d_md5.webp`,
@@ -1226,7 +1226,7 @@ $ brew audit --strict --online $FORMULA
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_096ad9e94b7139c6f99bdac0c463196d_md5.webp`,

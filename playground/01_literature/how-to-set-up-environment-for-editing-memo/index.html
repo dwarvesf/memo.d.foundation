@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>489</li><li class=span><span>Characters:
-</span>17,347</li><li class=span><span>Without Spaces:
+</span>16,941</li><li class=span><span>Without Spaces:
 </span>2,637</li><li class=span><span>Blocks:
 </span>16</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -878,7 +878,7 @@ Folder:
         }
       },
     }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How to set up environment to edit memo</div><div class=tags-index style=display:none>tags: content, instructions, guideline</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How to set up environment to edit memo</h1></div><div class=memo-content><h2 id=set-up-ssh-key>Set up SSH key <a href=#set-up-ssh-key></a></h2><p>SSH key is a secure authentication method which includes a public key and a private key.</p><ul><li>The public key is shared with others (like GitHub), while the private key is kept secret on your Mac.</li><li>When you connect to a server (like GitHub) using SSH, the server verifies your identity by comparing a fingerprint derived from your public key with the key it has on record.</li></ul><p>During SSH authentication, the server you&rsquo;re connecting to (like GitHub) checks the fingerprint of your public key against the one it has on record. If they match, and you provide the correct passphrase to unlock your private key (if you set one), the connection is established securely.</p><p>To generate your SSH key, please follow this <a href=https://g.co/gemini/share/3972239af940 target=_blank>instruction</a>. The process including 3 steps:</p><ol><li>Create ssh key pair (public, private)</li><li>Save private key to your computer</li><li>Submit public key to github</li></ol><h2 id=install-the-visual-studio-code>Install the Visual Studio Code <a href=#install-the-visual-studio-code></a></h2><p>Firstly, you have to install Visual Studio Code, <a href=https://code.visualstudio.com/ target=_blank>here</a></p><h2 id=install-the-devbox>Install the Devbox <a href=#install-the-devbox></a></h2><ol><li>Open the Terminal on VScode
-You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo-1.webp`,
@@ -927,7 +927,7 @@ You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p>
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Then run this command in the Terminal to install Devbox: <code>curl -fsSL https://get.jetpack.io/devbox | bash</code>.</p><h2 id=pull-the-github-source-to-your-local-disk>Pull the Github Source to your local disk <a href=#pull-the-github-source-to-your-local-disk></a></h2><p>You have 2 ways to pull the Github source to the local disk:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Then run this command in the Terminal to install Devbox: <code>curl -fsSL https://get.jetpack.io/devbox | bash</code>.</p><h2 id=pull-the-github-source-to-your-local-disk>Pull the Github Source to your local disk <a href=#pull-the-github-source-to-your-local-disk></a></h2><p>You have 2 ways to pull the Github source to the local disk:</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo_how-to-set-up-environment-for-editing-memo_6f5e3e3ea3303c26882261367dba3c62_md5.webp`,
@@ -980,7 +980,7 @@ You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p>
 </code></pre><ol start=2><li>Install <a href=https://github.com/git-ecosystem/git-credential-manager/releases/tag/v2.4.1 target=_blank>git-credential-manager</a>. For Apple-silicon Macs, download the <a href=https://github.com/git-ecosystem/git-credential-manager/releases/download/v2.4.1/gcm-osx-arm64-2.4.1.pkg target=_blank>gcm-osx-arm64-2.4.1.pkg</a> file and run it. Otherwise, select the <a href=gcm-osx-x64-241.pkg>gcm-osx-x64-2.4.1.pkg package</a>.</li><li>Run these 2 commands seperately in Terminal to connect the Github account to the VScode:</li></ol><pre><code class=language-sh>git config --global user.email &quot;you@example.com&quot;
 git config --global user.name &quot;Your Name&quot;
 </code></pre><ol start=4><li>Run this command in Terminal to clone the repository:</li></ol><pre><code class=language-sh>git clone https://github.com/dwarvesf/memo.d.foundation
-</code></pre><h3 id=method-2-link-vscode-with-your-github-account>Method 2: Link VScode with your Github account <a href=#method-2-link-vscode-with-your-github-account></a></h3><p>Before you can clone the repo, you should connect your github account with the VScode. Then follow these steps:</p><ol><li>Choose option Clone Repositories</li><li>Choose Clone from Github</li><li>Search repo <code>https://github.com/dwarvesf/memo.d.foundation</code> or <code>memo.d.foundation</code> and select to clone it</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h3 id=method-2-link-vscode-with-your-github-account>Method 2: Link VScode with your Github account <a href=#method-2-link-vscode-with-your-github-account></a></h3><p>Before you can clone the repo, you should connect your github account with the VScode. Then follow these steps:</p><ol><li>Choose option Clone Repositories</li><li>Choose Clone from Github</li><li>Search repo <code>https://github.com/dwarvesf/memo.d.foundation</code> or <code>memo.d.foundation</code> and select to clone it</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo-6.webp`,
@@ -1029,7 +1029,7 @@ git config --global user.name &quot;Your Name&quot;
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=setup-the-environment-on-your-laptop>Setup the environment on your laptop <a href=#setup-the-environment-on-your-laptop></a></h2><ol><li>Open the repository <code>memo.d.foundation</code> by directing to the destination of folder note.d.foundation that you have saved when clone the repo.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=setup-the-environment-on-your-laptop>Setup the environment on your laptop <a href=#setup-the-environment-on-your-laptop></a></h2><ol><li>Open the repository <code>memo.d.foundation</code> by directing to the destination of folder note.d.foundation that you have saved when clone the repo.</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo_how-to-set-up-environment-to-edit-memo-6.webp`,
@@ -1081,7 +1081,7 @@ git config --global user.name &quot;Your Name&quot;
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li>Run submodule update by running these 3 commands in order and seperately:</li></ol><pre><code class=language-sh>git submodule update --init --recursive
 git submodule update --recursive --remote
 git submodule foreach --recursive 'git checkout main || git checkout master'
-</code></pre><ol start=3><li>Create folder &ldquo;content&rdquo; under node.d.foundation folder</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><ol start=3><li>Create folder &ldquo;content&rdquo; under node.d.foundation folder</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo-4.webp`,
@@ -1130,7 +1130,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=4><li>To preview all the changes on website, open devbox by running command <code>devbox shell</code> in Terminal. Then use command <code>make watch-run</code> to rebuilt the website.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=4><li>To preview all the changes on website, open devbox by running command <code>devbox shell</code> in Terminal. Then use command <code>make watch-run</code> to rebuilt the website.</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo-1.webp`,
@@ -1179,7 +1179,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=6><li>After the command <code>make watch-run</code> finished, a localhost link would be generated. You need to open the link by <code>Cmd + click</code> to that link and you will have a preview of all changes you have made without affecting the main page memo.d.foundation</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=6><li>After the command <code>make watch-run</code> finished, a localhost link would be generated. You need to open the link by <code>Cmd + click</code> to that link and you will have a preview of all changes you have made without affecting the main page memo.d.foundation</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo-2.webp`,

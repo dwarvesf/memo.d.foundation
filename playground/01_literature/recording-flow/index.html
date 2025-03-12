@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>268</li><li class=span><span>Characters:
-</span>8,992</li><li class=span><span>Without Spaces:
+</span>8,760</li><li class=span><span>Without Spaces:
 </span>1,245</li><li class=span><span>Blocks:
 </span>8</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How We Set Up a Recording Workflow for Dwarves Office Hours</div><div class=tags-index style=display:none>tags: ops, workflow, recording</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How We Set Up a Recording Workflow for Dwarves Office Hours</h1></div><div class=memo-content><p>There are many interesting topics shared in the Office Hours of Dwarves Foundation, and it would be a pity if anyone missed them. Moreover, we want to share our findings with the community and encourage learning within our team. Therefore, we have introduced a recording workflow to store all the OGIF content in two forms: video and audio.</p><p>Before diving into the workflow, we ensure that the following prerequisites are met:</p><ul><li>Installed <a href=https://obsproject.com/ target=_blank>OBS Studio</a> on our laptop.</li><li>Installed Craig Bot to record the audio.</li></ul><p>This memo is essentially a playbook and recipe on how to record the Discord events.</p><h3 id=record-video-and-stream-on-youtube>Record Video and Stream on YouTube <a href=#record-video-and-stream-on-youtube></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How We Set Up a Recording Workflow for Dwarves Office Hours</div><div class=tags-index style=display:none>tags: ops, workflow, recording</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How We Set Up a Recording Workflow for Dwarves Office Hours</h1></div><div class=memo-content><p>There are many interesting topics shared in the Office Hours of Dwarves Foundation, and it would be a pity if anyone missed them. Moreover, we want to share our findings with the community and encourage learning within our team. Therefore, we have introduced a recording workflow to store all the OGIF content in two forms: video and audio.</p><p>Before diving into the workflow, we ensure that the following prerequisites are met:</p><ul><li>Installed <a href=https://obsproject.com/ target=_blank>OBS Studio</a> on our laptop.</li><li>Installed Craig Bot to record the audio.</li></ul><p>This memo is essentially a playbook and recipe on how to record the Discord events.</p><h3 id=record-video-and-stream-on-youtube>Record Video and Stream on YouTube <a href=#record-video-and-stream-on-youtube></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/recording-flow_untitled-3.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>We set up the recording screen on OBS as shown in the image below:<ul><li>We choose the window to record.</li><li>We set up <a href=https://restream.io/learn/obs-studio/how-to-multistream-with-obs/ target=_blank>streaming mode</a>.</li><li>We set up the audio input (Mute the Mic/Aux).</li></ul></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>We set up the recording screen on OBS as shown in the image below:<ul><li>We choose the window to record.</li><li>We set up <a href=https://restream.io/learn/obs-studio/how-to-multistream-with-obs/ target=_blank>streaming mode</a>.</li><li>We set up the audio input (Mute the Mic/Aux).</li></ul></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/recording-flow_untitled-4.webp`,
@@ -975,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>When the Ogif starts, we start recording on OBS and stream on YouTube.</li><li>When the Ogif ends, we stop the recording and save it.</li><li>Then, we split the recording by individual session.</li></ul><h3 id=record-audio-in-the-background-and-transcript>Record Audio in the Background and Transcript <a href=#record-audio-in-the-background-and-transcript></a></h3><p>Craig Bot is used to record audio in the background and split segments by user for AI transcription.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>When the Ogif starts, we start recording on OBS and stream on YouTube.</li><li>When the Ogif ends, we stop the recording and save it.</li><li>Then, we split the recording by individual session.</li></ul><h3 id=record-audio-in-the-background-and-transcript>Record Audio in the Background and Transcript <a href=#record-audio-in-the-background-and-transcript></a></h3><p>Craig Bot is used to record audio in the background and split segments by user for AI transcription.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/recording-flow_untitled-5.webp`,
@@ -1024,7 +1024,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>We invite the Craig Bot into the Dwarves Foundation server. If the bot is already in the server, this step can be skipped.</li><li>We invite the Craig Bot to the open voice channel to start recording by using the command <code>/join</code>.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>We invite the Craig Bot into the Dwarves Foundation server. If the bot is already in the server, this step can be skipped.</li><li>We invite the Craig Bot to the open voice channel to start recording by using the command <code>/join</code>.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/recording-flow_untitled-6.webp`,

@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/frontend/threejs</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>367</li><li class=span><span>Characters:
-</span>14,998</li><li class=span><span>Without Spaces:
+</span>14,708</li><li class=span><span>Without Spaces:
 </span>2,403</li><li class=span><span>Blocks:
 </span>16</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Cameras in ThreeJS</div><div class=tags-index style=display:none>tags: frontend, threejs</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Cameras in ThreeJS</h1></div><div class=memo-content><p><strong>ThreeJS</strong> is a JavaScript 3D library that allows developers to develop and describe data in 3 dimensions, and then convert them into 2 dimensions and display them on <a href=https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement target=_blank>HTML Canvas</a>. <a href="https://threejs.org/docs/index.html?q=camera#api/en/cameras/Camera" target=_blank><strong>Camera</strong></a> is one of the core elements of a ThreeJS project, beside <a href="https://threejs.org/docs/index.html?q=scene#api/en/scenes/Scene" target=_blank>Scene</a>, <a href="https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer" target=_blank>Renderer</a> and 3D objects (can be formed with <a href="https://threejs.org/docs/index.html?q=geometry#api/en/geometries/BoxGeometry" target=_blank>Geometries</a> and <a href="https://threejs.org/docs/index.html?q=material#api/en/materials/MeshBasicMaterial" target=_blank>Materials</a>).</p><p>This article gives basic information about characteristics of the frequently used types of camera in ThreeJS.</p><h2 id=most-commonly-used-types-of-camera-in-threejs>Most commonly used types of camera in ThreeJS <a href=#most-commonly-used-types-of-camera-in-threejs></a></h2><p>You cannot use the <code>Camera</code> class directly to initialize a new camera in ThreeJS. Instead, use the <code>PerspectiveCamera</code> or <code>OrthographicCamera</code> specifically. The <strong>perspective camera</strong> gives information about depth, distances, etc. since it represents perspective in <strong>real life</strong>. On the other hand, with an <strong>orthographic camera</strong>, all sizes are projected the same way and we can easily compare them accurately.</p><p>The image below shows the object viewed in <strong>perspective camera</strong> (upper) and in <strong>orthographic camera</strong> (lower).</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Cameras in ThreeJS</div><div class=tags-index style=display:none>tags: frontend, threejs</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Cameras in ThreeJS</h1></div><div class=memo-content><p><strong>ThreeJS</strong> is a JavaScript 3D library that allows developers to develop and describe data in 3 dimensions, and then convert them into 2 dimensions and display them on <a href=https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement target=_blank>HTML Canvas</a>. <a href="https://threejs.org/docs/index.html?q=camera#api/en/cameras/Camera" target=_blank><strong>Camera</strong></a> is one of the core elements of a ThreeJS project, beside <a href="https://threejs.org/docs/index.html?q=scene#api/en/scenes/Scene" target=_blank>Scene</a>, <a href="https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer" target=_blank>Renderer</a> and 3D objects (can be formed with <a href="https://threejs.org/docs/index.html?q=geometry#api/en/geometries/BoxGeometry" target=_blank>Geometries</a> and <a href="https://threejs.org/docs/index.html?q=material#api/en/materials/MeshBasicMaterial" target=_blank>Materials</a>).</p><p>This article gives basic information about characteristics of the frequently used types of camera in ThreeJS.</p><h2 id=most-commonly-used-types-of-camera-in-threejs>Most commonly used types of camera in ThreeJS <a href=#most-commonly-used-types-of-camera-in-threejs></a></h2><p>You cannot use the <code>Camera</code> class directly to initialize a new camera in ThreeJS. Instead, use the <code>PerspectiveCamera</code> or <code>OrthographicCamera</code> specifically. The <strong>perspective camera</strong> gives information about depth, distances, etc. since it represents perspective in <strong>real life</strong>. On the other hand, with an <strong>orthographic camera</strong>, all sizes are projected the same way and we can easily compare them accurately.</p><p>The image below shows the object viewed in <strong>perspective camera</strong> (upper) and in <strong>orthographic camera</strong> (lower).</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cameras-in-threejs_va74b4e.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Place them into the <strong>Oxyz</strong> coordinate&mldr;</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Place them into the <strong>Oxyz</strong> coordinate&mldr;</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cameras-in-threejs_uioctax.webp`,
@@ -975,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=perspective-camera>Perspective camera <a href=#perspective-camera></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=perspective-camera>Perspective camera <a href=#perspective-camera></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cameras-in-threejs_oipfgw7.webp`,
@@ -1024,8 +1024,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Some crucial attributes:</p><ul><li><strong>fov</strong> (field of view): Camera frustum <strong>vertical</strong> field of view, i.e. the angle of the view in the yOz plane, in degree. The lower the number, the narrower the view.
-<script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Some crucial attributes:</p><ul><li><strong>fov</strong> (field of view): Camera frustum <strong>vertical</strong> field of view, i.e. the angle of the view in the yOz plane, in degree. The lower the number, the narrower the view. <img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cameras-in-threejs_zkoiiim.webp`,
@@ -1076,7 +1075,7 @@ Folder:
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li><li><strong>near</strong> and <strong>far</strong>: Clipping planes at 2 points on the z axis. Note that objects with z position outside the <code>(near, far)</code> interval will <strong>not</strong> be displayed.</li></ul><pre><code class=language-javascript>const camera = new THREE.PerspectiveCamera(45, 16 / 9, 1, 1000)
 scene.add(camera)
-</code></pre><p>In the example above, a perspective camera is initialized with <code>fov</code> of 45 degree, <code>aspect-ratio</code> of 16 / 9, <code>near</code> and <code>far</code> of 1 and 1000 respectively.</p><p>Perspective camera visualization from <a href=https://r105.threejsfundamentals.org/threejs/threejs-cameras-perspective-2-scenes.html target=_blank>r105.threejsfundamentals.org</a> with <a href="https://threejs.org/docs/index.html?q=camera#api/en/helpers/CameraHelper" target=_blank><code>CameraHelper</code></a>:</p><iframe height=400 style=width:100% scrolling=no title="ThreeJS - Cameras - Perspective 2 views" src="https://codepen.io/nguyend-nam/embed/abGmYBp?default-tab=result" frameborder=no allowfullscreen></iframe><h3 id=orthographic-camera>Orthographic camera <a href=#orthographic-camera></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>In the example above, a perspective camera is initialized with <code>fov</code> of 45 degree, <code>aspect-ratio</code> of 16 / 9, <code>near</code> and <code>far</code> of 1 and 1000 respectively.</p><p>Perspective camera visualization from <a href=https://r105.threejsfundamentals.org/threejs/threejs-cameras-perspective-2-scenes.html target=_blank>r105.threejsfundamentals.org</a> with <a href="https://threejs.org/docs/index.html?q=camera#api/en/helpers/CameraHelper" target=_blank><code>CameraHelper</code></a>:</p><iframe height=400 style=width:100% scrolling=no title="ThreeJS - Cameras - Perspective 2 views" src="https://codepen.io/nguyend-nam/embed/abGmYBp?default-tab=result" frameborder=no allowfullscreen></iframe><h3 id=orthographic-camera>Orthographic camera <a href=#orthographic-camera></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cameras-in-threejs_cx1u9zi.webp`,

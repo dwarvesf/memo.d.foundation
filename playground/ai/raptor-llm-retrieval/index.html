@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>262</li><li class=span><span>Characters:
-</span>4,368</li><li class=span><span>Without Spaces:
+</span>5,900</li><li class=span><span>Without Spaces:
 </span>1,664</li><li class=span><span>Blocks:
 </span>7</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>RAPTOR: Tree-based Retrieval for Language Models</div><div class=tags-index style=display:none>tags: llm, document-processing, information-retrieval</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">RAPTOR: Tree-based Retrieval for Language Models</h1></div><div class=memo-content><h2 id=what-is-it>What is it? <a href=#what-is-it></a></h2><p>RAPTOR (Recursive Abstractive Processing for Tree-Organized Retrieval) is a new technique for improving retrieval-augmented language models, particularly for long documents: <a href=https://arxiv.org/html/2401.18059v1 target=_blank>https://arxiv.org/html/2401.18059v1</a></p><h3 id=problems-addressed>Problems addressed <a href=#problems-addressed></a></h3><p>Most existing retrieval methods only retrieve short, contiguous text chunks, limiting their ability to represent large-scale discourse structure and answer thematic questions that require integrating knowledge from multiple parts of a text.</p><h3 id=approach>Approach <a href=#approach></a></h3><ul><li>Recursively embeds, clusters, and summarizes chunks of text</li><li>Constructs a tree with different levels of summarization from bottom up</li><li>At inference time, retrieves from this tree, integrating information across lengthy documents at different levels of abstraction</li></ul><h3 id=process>Process <a href=#process></a></h3><p>The process begins by segmenting text into 100-token chunks and embedding them using SBERT. RAPTOR then employs Gaussian Mixture Models for clustering similar chunks, which are summarized using GPT-3.5-turbo. This process is repeated, building the tree from bottom up:</p><p>i. Segments text into 100-token chunks ii. Embeds chunks using SBERT iii. Clusters similar chunks iv. Summarizes clusters using GPT-3.5-turbo v. Repeats process, building tree from bottom up</p><h3 id=querying>Querying <a href=#querying></a></h3><ul><li>Collapsed tree method outperforms tree traversal</li><li>Retrieves nodes across all layers based on relevance</li><li>Uses cosine similarity for matching</li></ul><h3 id=key-features>Key features <a href=#key-features></a></h3><ul><li>Builds hierarchical tree of text summaries</li><li>Retrieves from multiple abstraction levels</li><li>Uses clustering (GMMs) and summarization (LLMs)</li><li>Offers flexible querying (tree traversal / collapsed tree)</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>RAPTOR: Tree-based Retrieval for Language Models</div><div class=tags-index style=display:none>tags: llm, document-processing, information-retrieval</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">RAPTOR: Tree-based Retrieval for Language Models</h1></div><div class=memo-content><h2 id=what-is-it>What is it? <a href=#what-is-it></a></h2><p>RAPTOR (Recursive Abstractive Processing for Tree-Organized Retrieval) is a new technique for improving retrieval-augmented language models, particularly for long documents: <a href=https://arxiv.org/html/2401.18059v1 target=_blank>https://arxiv.org/html/2401.18059v1</a></p><h3 id=problems-addressed>Problems addressed <a href=#problems-addressed></a></h3><p>Most existing retrieval methods only retrieve short, contiguous text chunks, limiting their ability to represent large-scale discourse structure and answer thematic questions that require integrating knowledge from multiple parts of a text.</p><h3 id=approach>Approach <a href=#approach></a></h3><ul><li>Recursively embeds, clusters, and summarizes chunks of text</li><li>Constructs a tree with different levels of summarization from bottom up</li><li>At inference time, retrieves from this tree, integrating information across lengthy documents at different levels of abstraction</li></ul><h3 id=process>Process <a href=#process></a></h3><p>The process begins by segmenting text into 100-token chunks and embedding them using SBERT. RAPTOR then employs Gaussian Mixture Models for clustering similar chunks, which are summarized using GPT-3.5-turbo. This process is repeated, building the tree from bottom up:</p><p>i. Segments text into 100-token chunks ii. Embeds chunks using SBERT iii. Clusters similar chunks iv. Summarizes clusters using GPT-3.5-turbo v. Repeats process, building tree from bottom up</p><h3 id=querying>Querying <a href=#querying></a></h3><ul><li>Collapsed tree method outperforms tree traversal</li><li>Retrieves nodes across all layers based on relevance</li><li>Uses cosine similarity for matching</li></ul><h3 id=key-features>Key features <a href=#key-features></a></h3><ul><li>Builds hierarchical tree of text summaries</li><li>Retrieves from multiple abstraction levels</li><li>Uses clustering (GMMs) and summarization (LLMs)</li><li>Offers flexible querying (tree traversal / collapsed tree)</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/raptor-llm-retrieval-excalidraw.webp`,
@@ -926,7 +926,56 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=benefits>Benefits: <a href=#benefits></a></h3><ul><li>Outperforms traditional methods (e.g., BM25, DPR) on QA tasks</li><li>Excels at complex queries needing multi-part info</li><li>Scales linearly with document length</li><li>Sets new SOTA on some benchmarks when paired with GPT-4</li></ul><p>Evaluation was conducted on NarrativeQA, QASPER, and QuALITY datasets, using metrics such as BLEU, ROUGE, METEOR, F1 score, and Accuracy.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script></p></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=benefits>Benefits: <a href=#benefits></a></h3><ul><li>Outperforms traditional methods (e.g., BM25, DPR) on QA tasks</li><li>Excels at complex queries needing multi-part info</li><li>Scales linearly with document length</li><li>Sets new SOTA on some benchmarks when paired with GPT-4</li></ul><p>Evaluation was conducted on NarrativeQA, QASPER, and QuALITY datasets, using metrics such as BLEU, ROUGE, METEOR, F1 score, and Accuracy.</p><p><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/raptor-llm-retrieval.pdf`,
+    altText: ``,
+    get altWidthHeight() {
+      const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
+      return this.altText.match(widthHeightRegex) ?? [];
+    },
+    get relativeSrc() {
+      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
+        return this.src;
+      }
+
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
+
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
+      }
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></div><script defer type=module>
   async function loadMentions() {
     try {
       

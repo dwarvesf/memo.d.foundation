@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>356</li><li class=span><span>Characters:
-</span>2,922</li><li class=span><span>Without Spaces:
+</span>4,516</li><li class=span><span>Without Spaces:
 </span>1,936</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,56 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Going Through use cases of the prototype design pattern and it place among the creational patterns</div><div class=tags-index style=display:none>tags: software-design, gang-of-four, software-architecture, graphical-notation</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Going Through use cases of the prototype design pattern and it place among the creational patterns</h1></div><div class=memo-content><p><script src=/js/pdf-js/pdf.mjs type=module></script></p><h2 id=problem-statement>Problem statement <a href=#problem-statement></a></h2><p>We want a copy of an object, but the config only initialized at runtime, its fields and methods were private, or its properties were manipulated through multiple processes, so it is difficult to recreate the object. For example:</p><ul><li>DB Access Object with credentials only provide in runtime.</li><li>A ledger object has transaction histories, which are protected through private fields, and exposes a Total() function to get the total balance. To replicate the whole ledger, we must recreate all its transaction histories.</li></ul><h2 id=prototype-design-pattern>Prototype design pattern <a href=#prototype-design-pattern></a></h2><p>Request a Clone of the object(Prototype) without the need to look up its class and implementation.</p><p>The target object must turn into a &lsquo;Prototype&rsquo; by having a Clone() function to mirror the object with sufficient properties for the user of the cloned object. For example:</p><pre><code>//The following example is in Go. We are building an RPG with a Hero object, and a new Skill called 'Mimic' needs to create a copy of the Hero with the same level.
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Going Through use cases of the prototype design pattern and it place among the creational patterns</div><div class=tags-index style=display:none>tags: software-design, gang-of-four, software-architecture, graphical-notation</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Going Through use cases of the prototype design pattern and it place among the creational patterns</h1></div><div class=memo-content><p><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/prototype-design-pattern.pdf`,
+    altText: ``,
+    get altWidthHeight() {
+      const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
+      return this.altText.match(widthHeightRegex) ?? [];
+    },
+    get relativeSrc() {
+      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
+        return this.src;
+      }
+
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
+
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
+      }
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=problem-statement>Problem statement <a href=#problem-statement></a></h2><p>We want a copy of an object, but the config only initialized at runtime, its fields and methods were private, or its properties were manipulated through multiple processes, so it is difficult to recreate the object. For example:</p><ul><li>DB Access Object with credentials only provide in runtime.</li><li>A ledger object has transaction histories, which are protected through private fields, and exposes a Total() function to get the total balance. To replicate the whole ledger, we must recreate all its transaction histories.</li></ul><h2 id=prototype-design-pattern>Prototype design pattern <a href=#prototype-design-pattern></a></h2><p>Request a Clone of the object(Prototype) without the need to look up its class and implementation.</p><p>The target object must turn into a &lsquo;Prototype&rsquo; by having a Clone() function to mirror the object with sufficient properties for the user of the cloned object. For example:</p><pre><code>//The following example is in Go. We are building an RPG with a Hero object, and a new Skill called 'Mimic' needs to create a copy of the Hero with the same level.
 type Hero struct {       // level, experience, and killLogIDs are private to avoid editing the Hero object
  level         int64    
  experience    int64   

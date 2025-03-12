@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/use-cases</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>535</li><li class=span><span>Characters:
-</span>12,872</li><li class=span><span>Without Spaces:
+</span>12,640</li><li class=span><span>Without Spaces:
 </span>3,179</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -938,7 +938,7 @@ from(i in TsFutureIncomes,
       )
   }
 )
-</code></pre><p>Because timescale table will be spitted into multiple chunks so if we use normal query it will have timeout issue if range too long. So we have to use <code>time_bucket</code> to let it join multiple chunks.</p><h3 id=create-cronjob-to-fill-ts_account_pnl_analysis>Create cronjob to fill ts_account_pnl_analysis <a href=#create-cronjob-to-fill-ts_account_pnl_analysis></a></h3><ul><li><p>We implement account_pnl_analysis_cronjob to backfill from today until oldest date has ts_user_trades order ts_future_incomes to calculate daily pnl</p></li><li><p>For current day, we will run interval 1 hour to update data</p></li><li><p>With this cronjob it will help us no need to recalculate from 2 tables every request so it will be fast and don&rsquo;t make database pressure</p></li></ul><h2 id=user-interface-implementation>User interface implementation <a href=#user-interface-implementation></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Because timescale table will be spitted into multiple chunks so if we use normal query it will have timeout issue if range too long. So we have to use <code>time_bucket</code> to let it join multiple chunks.</p><h3 id=create-cronjob-to-fill-ts_account_pnl_analysis>Create cronjob to fill ts_account_pnl_analysis <a href=#create-cronjob-to-fill-ts_account_pnl_analysis></a></h3><ul><li><p>We implement account_pnl_analysis_cronjob to backfill from today until oldest date has ts_user_trades order ts_future_incomes to calculate daily pnl</p></li><li><p>For current day, we will run interval 1 hour to update data</p></li><li><p>With this cronjob it will help us no need to recalculate from 2 tables every request so it will be fast and don&rsquo;t make database pressure</p></li></ul><h2 id=user-interface-implementation>User interface implementation <a href=#user-interface-implementation></a></h2><p><img x-data="{
     title: ``,
     alt: `Overview`,
     src: `assets/analysis-page/overview.jpg`,
@@ -987,7 +987,7 @@ from(i in TsFutureIncomes,
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <em>Figure 1: Future PNL Analysis Overview Tab</em></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <em>Figure 1: Future PNL Analysis Overview Tab</em></p><p><img x-data="{
     title: ``,
     alt: `Detail`,
     src: `assets/analysis-page/detail.png`,
@@ -1036,7 +1036,7 @@ from(i in TsFutureIncomes,
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <em>Figure 2: Future PNL Detail Tab</em></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <em>Figure 2: Future PNL Detail Tab</em></p><p><img x-data="{
     title: ``,
     alt: `Symbol Analysis`,
     src: `assets/analysis-page/symbol-analysis.png`,
@@ -1085,7 +1085,7 @@ from(i in TsFutureIncomes,
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <em>Figure 3: Future PNL Analysis Symbol Tab</em></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <em>Figure 3: Future PNL Analysis Symbol Tab</em></p><p><img x-data="{
     title: ``,
     alt: `Symbol Analysis`,
     src: `assets/analysis-page/funding-and-transaction.png`,

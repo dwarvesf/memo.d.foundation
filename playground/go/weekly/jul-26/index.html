@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/go/weekly</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>779</li><li class=span><span>Characters:
-</span>11,362</li><li class=span><span>Without Spaces:
+</span>11,246</li><li class=span><span>Without Spaces:
 </span>4,283</li><li class=span><span>Blocks:
 </span>32</li><li class=span><span>Est reading Time:
 </span>17m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -885,7 +885,7 @@ Folder:
   5. Wait for response and read it
   6. Parse response (decode, normalize and parse)
   7. Close connection (optional)
-</code></pre><ul><li>Measured results of sending HTTP/1.1 requests to subdomains of <code>*.wordpress.com</code> (wordpress.com has <a href=https://en.wikipedia.org/wiki/Wildcard_DNS_record target=_blank>wildcard dns</a> to prevent caching) shows that:</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><ul><li>Measured results of sending HTTP/1.1 requests to subdomains of <code>*.wordpress.com</code> (wordpress.com has <a href=https://en.wikipedia.org/wiki/Wildcard_DNS_record target=_blank>wildcard dns</a> to prevent caching) shows that:</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/http-request-timings.webp`,
@@ -934,7 +934,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Resolving DNS and opening new TLS connection is slow (~160ms) but probably not notice how slow it is because the browser will open connect once and reuse it for many requests and HTTP/2 or HTTP/3 would be faster.</p></li><li><p>Can&rsquo;t rely on reusing connections since the need of sending many requests to many different hosts in different networks.</p></li><li><p>Would get rate-limited or banned quickly.</p></li></ul></li><li><p>Solution: Spread the load on many servers</p><ul><li><p>Remove what we can from the steps: <code>Request parsing</code> and <code>DNS resolution</code>. (Simple crafted HTTP/1.1 requests by hand and <a href=https://github.com/blechschmidt/massdns target=_blank>massdns</a> to resolve thousands of DNS records in a couple of seconds)</p></li><li><p>Design the HTTP/1.1 sending mechanism:</p><ul><li><p>Multiple worker pools that piped together:</p><ol><li>Request generation pool</li><li>Sender pool</li><li>Response pool</li></ol></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Resolving DNS and opening new TLS connection is slow (~160ms) but probably not notice how slow it is because the browser will open connect once and reuse it for many requests and HTTP/2 or HTTP/3 would be faster.</p></li><li><p>Can&rsquo;t rely on reusing connections since the need of sending many requests to many different hosts in different networks.</p></li><li><p>Would get rate-limited or banned quickly.</p></li></ul></li><li><p>Solution: Spread the load on many servers</p><ul><li><p>Remove what we can from the steps: <code>Request parsing</code> and <code>DNS resolution</code>. (Simple crafted HTTP/1.1 requests by hand and <a href=https://github.com/blechschmidt/massdns target=_blank>massdns</a> to resolve thousands of DNS records in a couple of seconds)</p></li><li><p>Design the HTTP/1.1 sending mechanism:</p><ul><li><p>Multiple worker pools that piped together:</p><ol><li>Request generation pool</li><li>Sender pool</li><li>Response pool</li></ol></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cannon-diagram.webp`,

@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>780</li><li class=span><span>Characters:
-</span>7,939</li><li class=span><span>Without Spaces:
+</span>9,515</li><li class=span><span>Without Spaces:
 </span>5,316</li><li class=span><span>Blocks:
 </span>27</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -877,7 +877,56 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Evolutionary Database Design: Managing Change and Scaling with the System</div><div class=tags-index style=display:none>tags: software-development, database-management</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Evolutionary Database Design: Managing Change and Scaling with the System</h1></div><div class=memo-content><h2 id=assetsevo-dbpdf><script src=/js/pdf-js/pdf.mjs type=module></script><a href=#assetsevo-dbpdf></a></h2><h2 id=problem-statement>Problem Statement <a href=#problem-statement></a></h2><p>You&rsquo;ve built a public asset management app that’s become essential for tracking infrastructure and city resources. With early adoption secured, growth is on the horizon—but so are challenges.</p><p>As your application scales, demands rise: more users, expanding datasets, and complex regulations. Performance lags, reporting slows, and integrations strain under the load. Inconsistencies may creep in, eroding confidence in your data.</p><p>If database evolution isn’t carefully managed, your asset becomes a liability. Is your schema outgrowing its design? Are change histories getting lost? Are integrations breaking as services fall out of sync? Refactoring risks could ripple across your ecosystem.</p><p>How will you scale your database without sacrificing stability? What strategies will safeguard your growth while keeping risks in check?
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Evolutionary Database Design: Managing Change and Scaling with the System</div><div class=tags-index style=display:none>tags: software-development, database-management</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Evolutionary Database Design: Managing Change and Scaling with the System</h1></div><div class=memo-content><h2 id=assetsevo-dbpdf><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/evo-db.pdf`,
+    altText: ``,
+    get altWidthHeight() {
+      const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
+      return this.altText.match(widthHeightRegex) ?? [];
+    },
+    get relativeSrc() {
+      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
+        return this.src;
+      }
+
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
+
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
+      }
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img> <a href=#assetsevo-dbpdf></a></h2><h2 id=problem-statement>Problem Statement <a href=#problem-statement></a></h2><p>You&rsquo;ve built a public asset management app that’s become essential for tracking infrastructure and city resources. With early adoption secured, growth is on the horizon—but so are challenges.</p><p>As your application scales, demands rise: more users, expanding datasets, and complex regulations. Performance lags, reporting slows, and integrations strain under the load. Inconsistencies may creep in, eroding confidence in your data.</p><p>If database evolution isn’t carefully managed, your asset becomes a liability. Is your schema outgrowing its design? Are change histories getting lost? Are integrations breaking as services fall out of sync? Refactoring risks could ripple across your ecosystem.</p><p>How will you scale your database without sacrificing stability? What strategies will safeguard your growth while keeping risks in check?
 We must tackle these key challenges:</p><ul><li><p>Databases growing beyond initial design assumptions, requiring schema modifications and optimizations.</p></li><li><p>Poor repository structuring, making it hard to track changes and ensure consistency.</p></li><li><p>Integration issues as different services rely on outdated or conflicting database versions.</p></li><li><p>Risks associated with refactoring, especially when making breaking changes that impact multiple services.</p></li></ul><p>Ensuring that databases evolve effectively alongside software applications requires a combination of <strong>knowledge sharing, structured repository management, continuous integration, and controlled refactoring</strong>.</p><h2 id=evolutionary-database-design>Evolutionary Database Design <a href=#evolutionary-database-design></a></h2><p>Evolutionary Database Design ensures that database changes are made efficiently, without disrupting dependent systems. The key principles include:</p><ul><li><strong>Knowledge Sharing</strong>: Effective collaboration between DBAs and developers.</li><li><strong>Repository Structure</strong>: Storing and versioning database changes systematically.</li><li><strong>Continuous Integration</strong>: Automating verification and preventing schema conflicts.</li><li><strong>Refactoring</strong>: Managing schema changes and database access modifications.</li></ul><h2 id=knowledge-sharing>Knowledge Sharing <a href=#knowledge-sharing></a></h2><p>DBAs acquire their knowledge through hands-on experience, documentation reviews, and collaboration with developers and system architects. They proactively maintain database understanding across teams by:</p><ul><li><p>Maintaining a centralized knowledge base to capture schema changes, dependencies, historical decisions, and approved modifications.</p></li><li><p>Conducting regular knowledge-sharing sessions to educate developers on database best practices and recent updates.</p></li><li><p>Assessing change requests to evaluate their impact on upstream/downstream services and provide guidance to developers.</p></li><li><p>Proactively proposing alternative solutions when a requested change poses risks or inefficiencies.</p></li></ul><h3 id=example>Example <a href=#example></a></h3><p>A developer requests to add a &ldquo;Last Login&rdquo; column to the User table. The DBA reviews its impact on authentication services, suggests indexing for performance optimization, and documents the change in the repository while also updating relevant teams.</p><h2 id=database-repository-structure>Database Repository Structure <a href=#database-repository-structure></a></h2><p>A Database Repository is essential for managing database changes in a structured and controlled manner. It provides a centralized location for tracking modifications, ensuring consistency, and facilitating collaboration between DBAs and developers. A well-maintained repository helps prevent conflicts, enables smooth rollbacks, and supports efficient database evolution.</p><h3 id=key-components>Key Components <a href=#key-components></a></h3><ul><li><p><strong>Schema Definitions & Migrations</strong>: Versioned SQL scripts that define database structures and modifications over time.</p></li><li><p><strong>Configuration & Credentials</strong>: Environment-specific settings required for database connections and security.</p></li><li><p><strong>Change Documentation</strong>: Records of schema updates, rationale, and potential impacts to ensure traceability.</p></li><li><p><strong>Version Control System</strong>: A tool (e.g., Git) to track changes, enable rollbacks, and deploy updates across different environments (Development, QA, Production).</p></li></ul><h3 id=example-1>Example <a href=#example-1></a></h3><p>A financial services company experiences inconsistent transaction records after a recent database update. To debug the issue, the team sets up a simulation environment using a snapshot from the Database Repository. By replaying the transaction logs, they identify a schema mismatch between the new and old versions, which caused data to be improperly formatted. The DBA creates a corrective migration script, validates it in the simulation, and then applies it to production, restoring data integrity without further disruption. The DBA also documents the reason for the migration, detailing the schema mismatch, its impact, and the corrective actions taken to prevent similar issues in the future.</p><h2 id=continuous-integration>Continuous Integration <a href=#continuous-integration></a></h2><p>Every database change follows a structured verification process:</p><ol><li>Schema changes are tested for compatibility.</li><li>Data migrations are validated to prevent corruption.</li><li>Notifications are sent for schema conflicts before deployment.</li></ol><h3 id=example-2>Example: <a href=#example-2></a></h3><p>A developer modifies an existing table, but <strong>CI detects a conflict</strong> with another service. The issue is flagged early, allowing necessary adjustments before deployment.</p><h2 id=database-refactoring>Database Refactoring <a href=#database-refactoring></a></h2><p>Refactoring involves updating schema, migrating data, and modifying database access code. There are two types of changes:</p><ul><li><strong>Non-breaking changes</strong> (e.g., adding a column) can be implemented without affecting existing services.</li><li><strong>Breaking changes</strong> (e.g., splitting tables, enforcing non-null constraints) require transitional phases to prevent failures.</li></ul><h3 id=example-3>Example: <a href=#example-3></a></h3><p>A company decides to split the &ldquo;Orders&rdquo; table into <strong>Customer_Orders</strong> and <strong>Product_Orders</strong>. A transitional phase allows both old and new structures to coexist until all services update their queries.</p><h2 id=summary>Summary <a href=#summary></a></h2><p>Effective database evolution requires structured communication, versioned changes, and proactive conflict resolution. Utilizing <strong>clear documentation, version control, and automation</strong>, teams can maintain database integrity while adapting to system growth. Visual representations, such as uniform diagrams and migration scripts, help communicate changes effectively. A well-managed database repository serves as a single source of truth for development and operational teams.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://martinfowler.com/articles/evodb.html#DbasCollaborateCloselyWithDevelopers target=_blank>https://martinfowler.com/articles/evodb.html#DbasCollaborateCloselyWithDevelopers</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {

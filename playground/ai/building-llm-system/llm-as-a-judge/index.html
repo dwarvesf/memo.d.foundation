@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai/building-llm-system</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>823</li><li class=span><span>Characters:
-</span>10,239</li><li class=span><span>Without Spaces:
+</span>10,123</li><li class=span><span>Without Spaces:
 </span>4,688</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -884,7 +884,7 @@ Q: {{question}}
 A: {{answer}}
 Score:
 &quot;&quot;&quot;
-</code></pre><p>The idea is simple: give an AI language model a set of criteria and let it evaluate responses for you.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>The idea is simple: give an AI language model a set of criteria and let it evaluate responses for you.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/llm-as-a-judge-architecture.webp`,
@@ -942,7 +942,7 @@ Summary: [Summary]
 Explain your reasoning step by step then answer (yes or no) the question:
 
 &quot;&quot;&quot;
-</code></pre><p><strong>Confining LLM judgements</strong></p><p>Instead of giving LLMs the entire generated output to evaluate, you can consider breaking it down into more fine-grained evaluations. For example, for question-answer-generation (QAG), you can first extract all sentences in output and pass each of them through LLM with <code>prompt = Is this sentence relevant to the input? answer yes or no only</code>. After that, calculate the proportion of relevant sentences. This proportion becomes the &ldquo;answer relevancy score.&rdquo;</p><p><strong>Using LLM judges in LLM evaluation metrics</strong></p><p>LLM judges can be and are currently most widely used to evaluate LLM systems by incorporating it as a scorer in an LLM evaluation metric.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><strong>Confining LLM judgements</strong></p><p>Instead of giving LLMs the entire generated output to evaluate, you can consider breaking it down into more fine-grained evaluations. For example, for question-answer-generation (QAG), you can first extract all sentences in output and pass each of them through LLM with <code>prompt = Is this sentence relevant to the input? answer yes or no only</code>. After that, calculate the proportion of relevant sentences. This proportion becomes the &ldquo;answer relevancy score.&rdquo;</p><p><strong>Using LLM judges in LLM evaluation metrics</strong></p><p>LLM judges can be and are currently most widely used to evaluate LLM systems by incorporating it as a scorer in an LLM evaluation metric.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/llm-as-a-judge-metrics.webp`,

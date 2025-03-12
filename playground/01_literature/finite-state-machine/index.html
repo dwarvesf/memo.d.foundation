@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>596</li><li class=span><span>Characters:
-</span>9,500</li><li class=span><span>Without Spaces:
+</span>9,326</li><li class=span><span>Without Spaces:
 </span>2,762</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -876,7 +876,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Finite State Machine</div><div class=tags-index style=display:none>tags: engineering, modeling</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Finite State Machine</h1></div><div class=memo-content><p>A Finite State Machine is a model of computation based on a hypothetical machine made of one or more states. Only one single state of this machine can be active at the same time. It means the machine has to transition from one state to another in to perform different actions</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Finite State Machine</div><div class=tags-index style=display:none>tags: engineering, modeling</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Finite State Machine</h1></div><div class=memo-content><p>A Finite State Machine is a model of computation based on a hypothetical machine made of one or more states. Only one single state of this machine can be active at the same time. It means the machine has to transition from one state to another in to perform different actions</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/finite-state-machine_db5600646453d67b0df29dfa3c9dc5b0_md5.webp`,
@@ -925,7 +925,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Above image is a simple FSM, each circle is a <code>state</code> and arrow is an <code>event</code> or <code>action</code>.</p><h3 id=pros-and-cons>Pros and Cons <a href=#pros-and-cons></a></h3><p><strong>Pros</strong></p><ul><li>State machines are good firewalls</li><li>Let say, bugs in our software are the results of actions dispatched in the wrong state. They leave our app in the state that we don&rsquo;t know about, and this breaks our program or lead to incorrect behavior.</li><li>Straightforward</li></ul><p><strong>Cons</strong></p><ul><li>Scalability is a nightmare</li><li>FSM works well when we have a well-organized set of states and transitions, when we add some additional states we have to re-define a logic between themConcurrency</li><li>When running multiple state machines in parallel, you either end up with deadlocks or you have edit them all in a way they are compatible.</li></ul><h3 id=thinking-in-term-of-states-instead-of-transitions>Thinking in term of states (instead of transitions) <a href=#thinking-in-term-of-states-instead-of-transitions></a></h3><p>(Okay, tbh the concept of FSM is eye-opening for me :kappa:)</p><p>We will try to solve a very simple problem that we face everyday. We want to fetch data from a back-end API and display to the user</p><p>Before get into state machines, my workflow for building such a feature is something like this:</p><ul><li>We display a fetch-data button.</li><li>The user clicks the fetch-data button.</li><li>Fire the request to the back end.</li><li>Retrieve the data and parse it.</li><li>Show it to the user.</li><li>Or, if there is an error, display the error message and show the fetch-data button so that we can trigger the process again.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Above image is a simple FSM, each circle is a <code>state</code> and arrow is an <code>event</code> or <code>action</code>.</p><h3 id=pros-and-cons>Pros and Cons <a href=#pros-and-cons></a></h3><p><strong>Pros</strong></p><ul><li>State machines are good firewalls</li><li>Let say, bugs in our software are the results of actions dispatched in the wrong state. They leave our app in the state that we don&rsquo;t know about, and this breaks our program or lead to incorrect behavior.</li><li>Straightforward</li></ul><p><strong>Cons</strong></p><ul><li>Scalability is a nightmare</li><li>FSM works well when we have a well-organized set of states and transitions, when we add some additional states we have to re-define a logic between themConcurrency</li><li>When running multiple state machines in parallel, you either end up with deadlocks or you have edit them all in a way they are compatible.</li></ul><h3 id=thinking-in-term-of-states-instead-of-transitions>Thinking in term of states (instead of transitions) <a href=#thinking-in-term-of-states-instead-of-transitions></a></h3><p>(Okay, tbh the concept of FSM is eye-opening for me :kappa:)</p><p>We will try to solve a very simple problem that we face everyday. We want to fetch data from a back-end API and display to the user</p><p>Before get into state machines, my workflow for building such a feature is something like this:</p><ul><li>We display a fetch-data button.</li><li>The user clicks the fetch-data button.</li><li>Fire the request to the back end.</li><li>Retrieve the data and parse it.</li><li>Show it to the user.</li><li>Or, if there is an error, display the error message and show the fetch-data button so that we can trigger the process again.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/finite-state-machine_93ba1268646d3675466aa8887079d580_md5.webp`,
@@ -981,7 +981,7 @@ Folder:
 
     If there is an error while making the request or parsing the data, we transition to an “error” state.
 </code></pre><p>error: We show an error message and display the fetch-data button. This state accepts one action:
-retry: When the user clicks the retry button, we fire the request again and transition the machine to the “fetching” state.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+retry: When the user clicks the retry button, we fire the request again and transition the machine to the “fetching” state.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/finite-state-machine_b5d7d35ae8b3b4cbd6c0c9d8589d4dae_md5.webp`,

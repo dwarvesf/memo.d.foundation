@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,159</li><li class=span><span>Characters:
-</span>24,108</li><li class=span><span>Without Spaces:
+</span>23,644</li><li class=span><span>Without Spaces:
 </span>6,381</li><li class=span><span>Blocks:
 </span>29</li><li class=span><span>Est reading Time:
 </span>18m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -876,7 +876,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Kubernetes Helm 101</div><div class=tags-index style=display:none>tags: k8s</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Kubernetes Helm 101</h1></div><div class=memo-content><p>In recent years, Kubernetes has exploded tremendously. At the same time, it creates new communities including ecosystems that make it easier to develop and deploy complex applications. If Kubernetes means the shipman of the ship, then Helm is the steering wheel of that shipman in the career of every DevOps and Developer.</p><p><strong>Helm is a Package Manager for Kubernetes</strong>, analogous to NPM or YARN. However, it’s not just the Package Manager, it is also a Deployment Management for Kubernetes. In simpler terms, instead of having to define various Kubernetes resources to deploy an application, with Helm you just type a few commands in the terminal and enter, done.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Kubernetes Helm 101</div><div class=tags-index style=display:none>tags: k8s</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Kubernetes Helm 101</h1></div><div class=memo-content><p>In recent years, Kubernetes has exploded tremendously. At the same time, it creates new communities including ecosystems that make it easier to develop and deploy complex applications. If Kubernetes means the shipman of the ship, then Helm is the steering wheel of that shipman in the career of every DevOps and Developer.</p><p><strong>Helm is a Package Manager for Kubernetes</strong>, analogous to NPM or YARN. However, it’s not just the Package Manager, it is also a Deployment Management for Kubernetes. In simpler terms, instead of having to define various Kubernetes resources to deploy an application, with Helm you just type a few commands in the terminal and enter, done.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/kubernetes-helm-101_6a409c81c3372fda59fd6217eab2fabc_md5.webp`,
@@ -925,7 +925,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In this article, we will learn about Helm, a powerful tool that makes life working with Kubernetes easier than ever. Although these terms are quite common with developers today, we will skim a jiffy for those who don’t know:</p><ul><li><strong>Containerization</strong>: <em>a next-generation virtualization and automation solution after Hypervisor Virtualization</em>. It widely applied today because of the breakthrough effect with outstanding advantages in creating and deploying applications faster, more scalable and more securely than traditional methods.</li><li><strong>Docker</strong>: <em>a number one software to create, manage and run containers.</em> Most chosen for all popular <em>Containerization</em> applications today. Many large cloud solutions like Google Cloud, Amazon Web Services, Microsoft Azure are using it.</li><li><strong>Kubernetes</strong>: <em>a famous open source used for container orchestration</em>. With the rise of <em>Containerization</em>, the management and coordination of container-based applications became complicated and difficult, making Kubernetes an effective and indispensable solution for systems using Containerization</li></ul><h2 id=helm-overview>Helm Overview <a href=#helm-overview></a></h2><h3 id=concepts>Concepts <a href=#concepts></a></h3><p>Helm has 4 basic concepts:</p><ul><li><strong>Chart</strong>: a collection of YAML files; bundle of the Kubernetes resources needed to build a Kubernetes application. For ease of visualization, Helm Chart can be compared like a Docker Image. Of course, Helm also has a Helm Hub where to search and share Charts for popular apps</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In this article, we will learn about Helm, a powerful tool that makes life working with Kubernetes easier than ever. Although these terms are quite common with developers today, we will skim a jiffy for those who don’t know:</p><ul><li><strong>Containerization</strong>: <em>a next-generation virtualization and automation solution after Hypervisor Virtualization</em>. It widely applied today because of the breakthrough effect with outstanding advantages in creating and deploying applications faster, more scalable and more securely than traditional methods.</li><li><strong>Docker</strong>: <em>a number one software to create, manage and run containers.</em> Most chosen for all popular <em>Containerization</em> applications today. Many large cloud solutions like Google Cloud, Amazon Web Services, Microsoft Azure are using it.</li><li><strong>Kubernetes</strong>: <em>a famous open source used for container orchestration</em>. With the rise of <em>Containerization</em>, the management and coordination of container-based applications became complicated and difficult, making Kubernetes an effective and indispensable solution for systems using Containerization</li></ul><h2 id=helm-overview>Helm Overview <a href=#helm-overview></a></h2><h3 id=concepts>Concepts <a href=#concepts></a></h3><p>Helm has 4 basic concepts:</p><ul><li><strong>Chart</strong>: a collection of YAML files; bundle of the Kubernetes resources needed to build a Kubernetes application. For ease of visualization, Helm Chart can be compared like a Docker Image. Of course, Helm also has a Helm Hub where to search and share Charts for popular apps</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/kubernetes-helm-101_6a409c81c3372fda59fd6217eab2fabc_md5.webp`,
@@ -974,7 +974,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Config</strong>: a configuration in the values.yaml file, which contains configuration explicit to a release of Kubernetes application. It can be the config for service, ingress, deployment, etc. until specific applications such as Kafka, Consul, Vault, NATS-streaming, etc.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Config</strong>: a configuration in the values.yaml file, which contains configuration explicit to a release of Kubernetes application. It can be the config for service, ingress, deployment, etc. until specific applications such as Kafka, Consul, Vault, NATS-streaming, etc.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/kubernetes-helm-101_ea686ec580638794529f8054ef266a45_md5.webp`,
@@ -1023,7 +1023,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Release</strong>: a chart instance is loaded into Kubernetes. It can be viewed as a version of the Kubernetes application running based on Chart and associated with a specific Config.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Release</strong>: a chart instance is loaded into Kubernetes. It can be viewed as a version of the Kubernetes application running based on Chart and associated with a specific Config.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/kubernetes-helm-101_17c2731e7fc3be306d1da3317bbee37a_md5.webp`,
@@ -1072,7 +1072,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Repositories</strong>: a repository of published Charts. These can be private repositories that are only used within the company or public through the Helm Hub. Some Charts may have different versions of many companies or publishers. Particularly, Charts in a Stable repository must always meet the criteria from the Technical Requirements of Helm.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><strong>Repositories</strong>: a repository of published Charts. These can be private repositories that are only used within the company or public through the Helm Hub. Some Charts may have different versions of many companies or publishers. Particularly, Charts in a Stable repository must always meet the criteria from the Technical Requirements of Helm.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/kubernetes-helm-101_426db2b83abcad55d8b8ce46b11fa2d0_md5.webp`,
@@ -1121,7 +1121,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=architecture>Architecture <a href=#architecture></a></h2><p>Helm has a fairly simple client-server architecture, including a CLI client and an in-cluster server running in the Kubernetes cluster:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=architecture>Architecture <a href=#architecture></a></h2><p>Helm has a fairly simple client-server architecture, including a CLI client and an in-cluster server running in the Kubernetes cluster:</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/kubernetes-helm-101_63fcd3d5115887bdd2e46fd0f8c337b7_md5.webp`,
@@ -1181,7 +1181,7 @@ helm repo update
 
 # Install Kafka
 helm install bitnami/kafka --name kafka --namespace queue
-</code></pre><p>Now, it already installed on your Kubernetes cluster, but it may not work properly for your needs. For me, I usually looking for a values.yaml file, and store it locally to save a specific configuration for instance of the application.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Now, it already installed on your Kubernetes cluster, but it may not work properly for your needs. For me, I usually looking for a values.yaml file, and store it locally to save a specific configuration for instance of the application.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/kubernetes-helm-101_cf8bf24ef2e60c2dbc46df36ee6a9639_md5.webp`,
@@ -1234,7 +1234,7 @@ helm install bitnami/kafka --name kafka --namespace queue
   --name kafka-prod \
   --namespace queue-production \
   -f bitnami/values-prod.yaml
-</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/kubernetes-helm-101_f864eb297f5f2ff0a55adc3876a07a3c_md5.webp`,

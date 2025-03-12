@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/frontend</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>239</li><li class=span><span>Characters:
-</span>8,170</li><li class=span><span>Without Spaces:
+</span>7,996</li><li class=span><span>Without Spaces:
 </span>1,543</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -878,7 +878,7 @@ Folder:
         }
       },
     }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>URL formats for sharing via social networks</div><div class=tags-index style=display:none>tags: frontend, social-networks</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">URL formats for sharing via social networks</h1></div><div class=memo-content><h2 id=why>Why? <a href=#why></a></h2><p>With the rise of social platforms like Facebook, Twitter and LinkedIn, it&rsquo;s easier than ever to share URLs with a large audience quickly and efficiently. However, each social network has its own unique way of handling URLs, and understanding the correct formatting can make a significant difference in the visibility and engagement of your shared content.</p><h2 id=facebook>Facebook <a href=#facebook></a></h2><pre><code class=language-javascript>;`https://www.facebook.com/sharer.php?u=${url}`
-</code></pre><p>This format allows you to share a specific URL with your <a href=https://about.meta.com/technologies/facebook-app/ target=_blank>Facebook</a> friends and followers. By replacing <code>url</code> with the actual URL, you can create a link that shows a dialog with the content you want to share.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>This format allows you to share a specific URL with your <a href=https://about.meta.com/technologies/facebook-app/ target=_blank>Facebook</a> friends and followers. By replacing <code>url</code> with the actual URL, you can create a link that shows a dialog with the content you want to share.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/url-formats-for-sharing-via-social-networks_hmijfth.webp`,
@@ -928,7 +928,7 @@ Folder:
         .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=messenger>Messenger <a href=#messenger></a></h2><p>Sharing via <a href=https://about.meta.com/technologies/messenger/ target=_blank>Messenger</a> is another way to share a URL with your Facebook friends and contacts.</p><pre><code class=language-javascript>;`https://www.facebook.com/dialog/send?app_id=${appId}&amp;display=popup&amp;link=${url}&amp;redirect_uri=${url}`
-</code></pre><p>To use this format, you&rsquo;ll need to replace <code>${appId}</code> with your Facebook app ID and <code>${url}</code> with the URL you want to share.</p><blockquote><p>Follow this <a href=https://developers.facebook.com/docs/development/create-an-app target=_blank>documentation</a> to create a Facebook app and get the app ID.</p></blockquote><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>To use this format, you&rsquo;ll need to replace <code>${appId}</code> with your Facebook app ID and <code>${url}</code> with the URL you want to share.</p><blockquote><p>Follow this <a href=https://developers.facebook.com/docs/development/create-an-app target=_blank>documentation</a> to create a Facebook app and get the app ID.</p></blockquote><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/url-formats-for-sharing-via-social-networks_yrq15em.webp`,
@@ -982,7 +982,7 @@ Folder:
 }
 
 const sharingUrl = `https://button-share.zalo.me/share_external?d=${encodeB64(JSON.stringify({ url }))}`
-</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/url-formats-for-sharing-via-social-networks_5gtifrk.webp`,

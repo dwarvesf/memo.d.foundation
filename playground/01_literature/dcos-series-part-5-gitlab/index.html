@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>303</li><li class=span><span>Characters:
-</span>11,780</li><li class=span><span>Without Spaces:
+</span>11,490</li><li class=span><span>Without Spaces:
 </span>1,712</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -876,7 +876,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Dcos Series Part 5 Gitlab</div><div class=tags-index style=display:none>tags: dcos</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Dcos Series Part 5 Gitlab</h1></div><div class=memo-content><p>Gitlab an open source developer tool (like Github) that allows you to host git repositories, review code, track issues, host Docker images and perform continuous integration, and it is very compatible for a small team wit CE version.</p><p>DC/OS supports us to run our own private Gitlab to manage source code in house. This article will let you know how to setup Gitlab with HTTPS.</p><h2 id=installing>Installing <a href=#installing></a></h2><p>You just need to go <code>Universe</code> > <code>Packages</code> and choose <code>Gitlab</code> to install it with <code>Advanced Installation</code>. We also may change these settings to have a smoothly Gitlab.</p><ol><li>Setting up your gitlab domain</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Dcos Series Part 5 Gitlab</div><div class=tags-index style=display:none>tags: dcos</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Dcos Series Part 5 Gitlab</h1></div><div class=memo-content><p>Gitlab an open source developer tool (like Github) that allows you to host git repositories, review code, track issues, host Docker images and perform continuous integration, and it is very compatible for a small team wit CE version.</p><p>DC/OS supports us to run our own private Gitlab to manage source code in house. This article will let you know how to setup Gitlab with HTTPS.</p><h2 id=installing>Installing <a href=#installing></a></h2><p>You just need to go <code>Universe</code> > <code>Packages</code> and choose <code>Gitlab</code> to install it with <code>Advanced Installation</code>. We also may change these settings to have a smoothly Gitlab.</p><ol><li>Setting up your gitlab domain</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-5---gitlab_4a171771af9dd3725d809a02f3cbd80a_md5.webp`,
@@ -925,7 +925,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li>Setting up email client</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li>Setting up email client</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-5---gitlab_0a331d4343f65dc0f3d0a1d28fcd08a6_md5.webp`,
@@ -974,7 +974,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=3><li>Set a specific private node IP, so when we need to restart or upgrade new gitlab version, we wont lost data</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=3><li>Set a specific private node IP, so when we need to restart or upgrade new gitlab version, we wont lost data</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-5---gitlab_07cb48f22769c4bdb7555e122aa2c24c_md5.webp`,
@@ -1023,7 +1023,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>After all, we can do <code>Review and Install</code>. If everything is OK, Gitlab service will be like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>After all, we can do <code>Review and Install</code>. If everything is OK, Gitlab service will be like this:</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-5---gitlab_1293c7d7f3ddd11d274b6a78461f93a5_md5.webp`,
@@ -1082,7 +1082,7 @@ $ sudo mv cert.pem /srv/marathon-lb/domains/ssl/example-git-domain.com
     &quot;hostPath&quot;: &quot;/srv/marathon-lb/ssl/domains&quot;,
     &quot;mode&quot;: &quot;RO&quot;
   }
-</code></pre><ul><li>Add <code>"/etc/ssl/domains/example-git-domain.com/cert.pem"\</code>to <code>args</code>in <code>JSON Editor</code></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><ul><li>Add <code>"/etc/ssl/domains/example-git-domain.com/cert.pem"\</code>to <code>args</code>in <code>JSON Editor</code></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-5---gitlab_6d0a8c8c9d3f0ea69d31fd97da4de9b1_md5.webp`,

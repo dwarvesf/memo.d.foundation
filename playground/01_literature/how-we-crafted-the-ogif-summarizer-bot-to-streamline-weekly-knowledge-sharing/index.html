@@ -843,7 +843,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>419</li><li class=span><span>Characters:
-</span>16,452</li><li class=span><span>Without Spaces:
+</span>16,046</li><li class=span><span>Without Spaces:
 </span>2,475</li><li class=span><span>Blocks:
 </span>21</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -879,7 +879,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How we crafted the OGIF summarizer bot to streamline weekly knowledge-sharing</div><div class=tags-index style=display:none>tags: AI, OGIF, guidelines</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How we crafted the OGIF summarizer bot to streamline weekly knowledge-sharing</h1></div><div class=memo-content><h3 id=whats-ogif>What’s OGIF? <a href=#whats-ogif></a></h3><p>OGIF stands for &ldquo;Oh God It’s Friday.&rdquo; It’s our weekly Friday tradition where members share 10-minute talks. The team hops on Discord to share and discuss diverse topics like software development, engineering patterns, industry trends, finance, entrepreneurship, blockchain, AI, and a mix of other cool stuff. It’s a quick, engaging way to learn something new.</p><p>We value the importance of sharing our work with other people at Dwarves. And it&rsquo;s a chance for people who don&rsquo;t work directly on development to feel included in the process.</p><h3 id=meet-the-ogif-memo-summarizer>Meet the OGIF memo summarizer <a href=#meet-the-ogif-memo-summarizer></a></h3><p>Working in collaboration with my colleague @innno_, we crafted a chatbot using Dify. This bot transcribes YouTube videos and extracts key points from our OGIF sessions. The result? A major boost in our ability to review and reference the knowledge shared during these meetings.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>How we crafted the OGIF summarizer bot to streamline weekly knowledge-sharing</div><div class=tags-index style=display:none>tags: AI, OGIF, guidelines</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">How we crafted the OGIF summarizer bot to streamline weekly knowledge-sharing</h1></div><div class=memo-content><h3 id=whats-ogif>What’s OGIF? <a href=#whats-ogif></a></h3><p>OGIF stands for &ldquo;Oh God It’s Friday.&rdquo; It’s our weekly Friday tradition where members share 10-minute talks. The team hops on Discord to share and discuss diverse topics like software development, engineering patterns, industry trends, finance, entrepreneurship, blockchain, AI, and a mix of other cool stuff. It’s a quick, engaging way to learn something new.</p><p>We value the importance of sharing our work with other people at Dwarves. And it&rsquo;s a chance for people who don&rsquo;t work directly on development to feel included in the process.</p><h3 id=meet-the-ogif-memo-summarizer>Meet the OGIF memo summarizer <a href=#meet-the-ogif-memo-summarizer></a></h3><p>Working in collaboration with my colleague @innno_, we crafted a chatbot using Dify. This bot transcribes YouTube videos and extracts key points from our OGIF sessions. The result? A major boost in our ability to review and reference the knowledge shared during these meetings.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing_crafting-ogif-summarize-bot-7.webp`,
@@ -928,7 +928,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=how-it-works>How it works? <a href=#how-it-works></a></h3><p><strong>YouTube Transcription</strong>: We integrated a YouTube transcription workflow as a function-calling tool for our chatbot.</p><p><strong>Intelligent Summarization</strong>: The chatbot generates structured summaries from the transcribed content using a well-designed prompt.</p><p><strong>Three-Tier Summary Structure</strong>:</p><ol><li><strong>Short Summary</strong>: 3-5 key timestamps with brief descriptions of the most important topics.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=how-it-works>How it works? <a href=#how-it-works></a></h3><p><strong>YouTube Transcription</strong>: We integrated a YouTube transcription workflow as a function-calling tool for our chatbot.</p><p><strong>Intelligent Summarization</strong>: The chatbot generates structured summaries from the transcribed content using a well-designed prompt.</p><p><strong>Three-Tier Summary Structure</strong>:</p><ol><li><strong>Short Summary</strong>: 3-5 key timestamps with brief descriptions of the most important topics.</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing_crafting-ogif-summarize-bot-1.webp`,
@@ -977,7 +977,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li><strong>Detailed Summary</strong>: Comprehensive timestamps, each with 2-3 bullet points providing in-depth information.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=2><li><strong>Detailed Summary</strong>: Comprehensive timestamps, each with 2-3 bullet points providing in-depth information.</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing_crafting-ogif-summarize-bot-2.webp`,
@@ -1026,7 +1026,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=3><li><strong>Languages:</strong> The summary is available in both English and Vietnamese.</li></ol><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=3><li><strong>Languages:</strong> The summary is available in both English and Vietnamese.</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing_crafting-ogif-summarize-bot-3.webp`,
@@ -1075,7 +1075,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=the-prompt>The prompt <a href=#the-prompt></a></h3><p>The core of our summarizer is the prompt we’ve meticulously designed. Here’s what it does:</p><ul><li><p>Generates structured summaries with accurate timestamps.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=the-prompt>The prompt <a href=#the-prompt></a></h3><p>The core of our summarizer is the prompt we’ve meticulously designed. Here’s what it does:</p><ul><li><p>Generates structured summaries with accurate timestamps.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing_crafting-ogif-summarize-bot-4.webp`,
@@ -1124,7 +1124,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Creates clickable links to specific points in the video.</p></li><li><p>Offers both a quick overview and detailed insights.</p></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Creates clickable links to specific points in the video.</p></li><li><p>Offers both a quick overview and detailed insights.</p></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing_crafting-ogif-summarize-bot-5.webp`,
@@ -1173,7 +1173,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Maintains consistent formatting for easy reading.</li><li>Provides a comprehensive overview of the video content.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>Maintains consistent formatting for easy reading.</li><li>Provides a comprehensive overview of the video content.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing_crafting-ogif-summarize-bot-6.webp`,

@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/go/weekly</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>264</li><li class=span><span>Characters:
-</span>14,693</li><li class=span><span>Without Spaces:
+</span>14,345</li><li class=span><span>Without Spaces:
 </span>2,147</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Go Commentary #6: GUI Framework, Leadership Change</div><div class=tags-index style=display:none>tags: golang, go-weekly, networking</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Go Commentary #6: GUI Framework, Leadership Change</h1></div><div class=memo-content><h2 id=cogent-core-a-new-gui-framework-for-gohttpswwwcogentcoreorgbloginitial-release><a href=https://www.cogentcore.org/blog/initial-release target=_blank>Cogent Core: A New GUI Framework for Go</a> <a href=#cogent-core-a-new-gui-framework-for-gohttpswwwcogentcoreorgbloginitial-release></a></h2><ul><li><p>GUI framework written in Go that allows you Code Once, Rune Everywhere (Core) (macOS, Windows, Linux, iOS, Android and web)</p></li><li><p>The same Cogent Core app running on many devices using the same code:</p></li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Go Commentary #6: GUI Framework, Leadership Change</div><div class=tags-index style=display:none>tags: golang, go-weekly, networking</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Go Commentary #6: GUI Framework, Leadership Change</h1></div><div class=memo-content><h2 id=cogent-core-a-new-gui-framework-for-gohttpswwwcogentcoreorgbloginitial-release><a href=https://www.cogentcore.org/blog/initial-release target=_blank>Cogent Core: A New GUI Framework for Go</a> <a href=#cogent-core-a-new-gui-framework-for-gohttpswwwcogentcoreorgbloginitial-release></a></h2><ul><li><p>GUI framework written in Go that allows you Code Once, Rune Everywhere (Core) (macOS, Windows, Linux, iOS, Android and web)</p></li><li><p>The same Cogent Core app running on many devices using the same code:</p></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cogent-core-multi-devices.png`,
@@ -958,7 +958,7 @@ sl := []language{{&quot;Go&quot;, 10}, {&quot;Python&quot;, 5}}
 core.NewTable(b).SetSlice(&amp;sl).OnChange(func(e events.Event) {
 	core.MessageSnackbar(b, fmt.Sprintf(&quot;Languages: %v&quot;, sl))
 })
-</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cogent-core-widgets.png`,
@@ -1018,7 +1018,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
 	{2, 1600, 930},
 	{3, 1400, 682},
 })
-</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cogent-core-plots.png`,
@@ -1067,7 +1067,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Key features:</p><ul><li><p>A full set of GUI widgets, with built-in support for most elements of <a href=https://m3.material.io/ target=_blank>Material 3</a> standard</p><ul><li>tooltips</li><li>drag-and-drop</li><li>sprites</li><li>popup completion</li><li>full text editor with code highlighting</li><li>&mldr;</li></ul></li><li><p>Extension styling properties makes styling easy</p></li><li><p>Responsive widget elements enables 1 codebase run across platforms</p></li><li><p>Transparent implementation of widgets makes customization easy</p></li><li><p>Dynamic color system</p></li><li><p>&mldr;</p></li></ul></li><li><p>Full software ecosystem</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Key features:</p><ul><li><p>A full set of GUI widgets, with built-in support for most elements of <a href=https://m3.material.io/ target=_blank>Material 3</a> standard</p><ul><li>tooltips</li><li>drag-and-drop</li><li>sprites</li><li>popup completion</li><li>full text editor with code highlighting</li><li>&mldr;</li></ul></li><li><p>Extension styling properties makes styling easy</p></li><li><p>Responsive widget elements enables 1 codebase run across platforms</p></li><li><p>Transparent implementation of widgets makes customization easy</p></li><li><p>Dynamic color system</p></li><li><p>&mldr;</p></li></ul></li><li><p>Full software ecosystem</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cogent-core-neural-network.png`,
@@ -1116,7 +1116,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cogent-core-cogent-code.png`,
@@ -1165,7 +1165,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/cogent-core-cogent-canvas.png`,

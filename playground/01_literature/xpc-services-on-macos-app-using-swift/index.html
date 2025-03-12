@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>2,203</li><li class=span><span>Characters:
-</span>20,042</li><li class=span><span>Without Spaces:
+</span>19,926</li><li class=span><span>Without Spaces:
 </span>12,152</li><li class=span><span>Blocks:
 </span>44</li><li class=span><span>Est reading Time:
 </span>11m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -893,7 +893,7 @@ Folder:
     // The resume method never returns.
     exit(EXIT_FAILURE);
 }
-</code></pre><p>Add the appropriate key/value pairs to the helper’s Info.plist to tell launchd the name of the service. These are described in XPC Service Property List Keys.</p><h3 id=using-the-service>Using the Service <a href=#using-the-service></a></h3><p>The way you use an XPC service depends on whether you are working with the C API (XPC Services) or the Objective-C API (NSXPCConnection).</p><p>Using the Objective-C NSXPCConnection API The Objective-C NSXPCConnection API provides a high-level remote procedure call interface that allows you to call methods on objects in one process from another process (usually an application calling a method in an XPC service). The NSXPCConnection API automatically serializes data structures and objects for transmission and deserializes them on the other end. As a result, calling a method on a remote object behaves much like calling a method on a local object.</p><p>To use the NSXPCConnection API, you must create the following:</p><ul><li>An interface. This mainly consists of a protocol that describes what methods should be callable from the remote process. This is described in Designing an Interface</li><li>A connection object on both sides. On the service side, this was described previously in Creating the Service. On the client side, this is described in Connecting to and Using an Interface.</li><li>A listener. This code in the XPC service accepts connections. This is described in Accepting a Connection in the Helper. Messages.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Add the appropriate key/value pairs to the helper’s Info.plist to tell launchd the name of the service. These are described in XPC Service Property List Keys.</p><h3 id=using-the-service>Using the Service <a href=#using-the-service></a></h3><p>The way you use an XPC service depends on whether you are working with the C API (XPC Services) or the Objective-C API (NSXPCConnection).</p><p>Using the Objective-C NSXPCConnection API The Objective-C NSXPCConnection API provides a high-level remote procedure call interface that allows you to call methods on objects in one process from another process (usually an application calling a method in an XPC service). The NSXPCConnection API automatically serializes data structures and objects for transmission and deserializes them on the other end. As a result, calling a method on a remote object behaves much like calling a method on a local object.</p><p>To use the NSXPCConnection API, you must create the following:</p><ul><li>An interface. This mainly consists of a protocol that describes what methods should be callable from the remote process. This is described in Designing an Interface</li><li>A connection object on both sides. On the service side, this was described previously in Creating the Service. On the client side, this is described in Connecting to and Using an Interface.</li><li>A listener. This code in the XPC service accepts connections. This is described in Accepting a Connection in the Helper. Messages.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/xpc-services-on-macos-app-using-swift_4f420a9f1bcea4a66160e3c83f2c0870_md5.webp`,
@@ -956,7 +956,7 @@ Folder:
      initWithServiceName:@&quot;com.example.monster&quot;];
 myConnection.remoteObjectInterface = myCookieInterface;
 [myConnection resume];
-</code></pre><p>Note: For communicating with XPC services outside your app bundle, you can also configure an XPC connection with the initWithMachServiceName: method.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Note: For communicating with XPC services outside your app bundle, you can also configure an XPC connection with the initWithMachServiceName: method.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/xpc-services-on-macos-app-using-swift_87c72866837ca130efa881629660714f_md5.webp`,

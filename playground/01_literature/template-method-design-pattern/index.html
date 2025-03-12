@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>895</li><li class=span><span>Characters:
-</span>13,397</li><li class=span><span>Without Spaces:
+</span>14,823</li><li class=span><span>Without Spaces:
 </span>4,962</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>11m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,56 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>A Tour of Template method pattern with Golang</div><div class=tags-index style=display:none>tags: design-pattern, behavioral-pattern, gang-of-four, golang</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">A Tour of Template method pattern with Golang</h1></div><div class=memo-content><p><script src=/js/pdf-js/pdf.mjs type=module></script></p><h2 id=problem>Problem <a href=#problem></a></h2><p>Just imagine we need to implement a registration feature for our applications (web, mobile). A typical registration will have some basic steps such as fill in the form, verify account, redirect to login page, etc.</p><p>At the beginning, our apps only supported verification via email. After months, the team realized that the amount of mobile users significantly increased. So we decided to support more verification methods via SMS/authenticator app or allow to register without verification.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>A Tour of Template method pattern with Golang</div><div class=tags-index style=display:none>tags: design-pattern, behavioral-pattern, gang-of-four, golang</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">A Tour of Template method pattern with Golang</h1></div><div class=memo-content><p><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/template-method-design-pattern.pdf`,
+    altText: ``,
+    get altWidthHeight() {
+      const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
+      return this.altText.match(widthHeightRegex) ?? [];
+    },
+    get relativeSrc() {
+      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
+        return this.src;
+      }
+
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
+
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
+      }
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=problem>Problem <a href=#problem></a></h2><p>Just imagine we need to implement a registration feature for our applications (web, mobile). A typical registration will have some basic steps such as fill in the form, verify account, redirect to login page, etc.</p><p>At the beginning, our apps only supported verification via email. After months, the team realized that the amount of mobile users significantly increased. So we decided to support more verification methods via SMS/authenticator app or allow to register without verification.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/template-method-design-pattern_template-method-problem.webp`,
@@ -926,7 +975,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=concept>Concept <a href=#concept></a></h2><p><strong>Template method</strong> is one of <strong>Behavioral design patterns</strong>. It can be defined by the followings:</p><ul><li>Defines skeleton of an algorithm</li><li>Lets subclasses override specific steps of the algorithm without changing its overall structure</li></ul><h2 id=solution-by-template-method>Solution by Template method <a href=#solution-by-template-method></a></h2><p>The Template method offers us an answer to those issues from the above scenario. By applying the pattern, we break the operation (registration) down into multiple steps (receive user form, verify, welcome, redirect to login page, etc.) and create a method which invokes the steps in a specific order. Basically we construct a <strong>template</strong> by calling the steps inside a <strong>method</strong>. That&rsquo;s why the template is called <strong>Template method</strong>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=concept>Concept <a href=#concept></a></h2><p><strong>Template method</strong> is one of <strong>Behavioral design patterns</strong>. It can be defined by the followings:</p><ul><li>Defines skeleton of an algorithm</li><li>Lets subclasses override specific steps of the algorithm without changing its overall structure</li></ul><h2 id=solution-by-template-method>Solution by Template method <a href=#solution-by-template-method></a></h2><p>The Template method offers us an answer to those issues from the above scenario. By applying the pattern, we break the operation (registration) down into multiple steps (receive user form, verify, welcome, redirect to login page, etc.) and create a method which invokes the steps in a specific order. Basically we construct a <strong>template</strong> by calling the steps inside a <strong>method</strong>. That&rsquo;s why the template is called <strong>Template method</strong>.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/template-method-design-pattern_template-method-solution.webp`,
@@ -976,7 +1025,7 @@ Folder:
         .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>All work above can be put together inside a single place (aka base class/type). The steps can either be abstract, or have default implementation:</p><ul><li><strong>For common steps</strong>: code are identical, we define default implementation to avoid code duplication and let every subclasses to have the ability to reuse the code.</li><li><strong>For other steps</strong>: code are unique and independent between cases, we can do one of the followings for each:<ul><li><strong>Declare as <code>abstract</code></strong>: require every subclass to have their own unique implementation</li><li><strong>Write default implementation</strong>: any subclass with different logic can feel free to override the step</li><li><strong>Using <code>hooks</code></strong>: Has default implementation with empty body. Only used when the step is not mandatory in our main operation. The operation would work even if there is appearance of that step or not.
-<em>e.g.</em> The registration feature would behave normally even if we remove <em>welcome</em> step</li></ul></li></ul><h3 id=structure>Structure <a href=#structure></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+<em>e.g.</em> The registration feature would behave normally even if we remove <em>welcome</em> step</li></ul></li></ul><h3 id=structure>Structure <a href=#structure></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/template-method-design-pattern_template-method-structure.webp`,

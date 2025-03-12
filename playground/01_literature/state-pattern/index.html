@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>439</li><li class=span><span>Characters:
-</span>12,978</li><li class=span><span>Without Spaces:
+</span>12,688</li><li class=span><span>Without Spaces:
 </span>2,602</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>State Pattern</div><div class=tags-index style=display:none>tags: design-pattern, gang-of-four, behavior-patterns</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">State Pattern</h1></div><div class=memo-content><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>State Pattern</div><div class=tags-index style=display:none>tags: design-pattern, gang-of-four, behavior-patterns</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">State Pattern</h1></div><div class=memo-content><p><img x-data="{
     title: ``,
     alt: `State Pattern`,
     src: `assets/state-pattern_state-en-2x.webp`,
@@ -926,7 +926,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><blockquote><p>The State Design Pattern is a behavioral design pattern that allows an object to change its behavior when its internal state changes. This pattern is particularly useful for scenarios where an object can exist in multiple states and its behavior varies based on these states.</p></blockquote><h2 id=example-scenario>Example Scenario <a href=#example-scenario></a></h2><p>Consider a Document class with three states: Draft, Moderation, and Published. The publish method behaves differently in each state:</p><ul><li>Draft: Moves the document to Moderation.</li><li>Moderation: Publishes the document if the current user is an administrator.</li><li>Published: Does nothing.</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><blockquote><p>The State Design Pattern is a behavioral design pattern that allows an object to change its behavior when its internal state changes. This pattern is particularly useful for scenarios where an object can exist in multiple states and its behavior varies based on these states.</p></blockquote><h2 id=example-scenario>Example Scenario <a href=#example-scenario></a></h2><p>Consider a Document class with three states: Draft, Moderation, and Published. The publish method behaves differently in each state:</p><ul><li>Draft: Moves the document to Moderation.</li><li>Moderation: Publishes the document if the current user is an administrator.</li><li>Published: Does nothing.</li></ul><p><img x-data="{
     title: ``,
     alt: `Document state change`,
     src: `assets/state-pattern_problem2-en-2x.webp`,
@@ -991,7 +991,7 @@ Folder:
                 // Do nothing.
                 break
     // ...
-</code></pre><ul><li>Monstrous Conditionals: As the number of states and transitions increases, the conditional logic becomes complex and difficult to manage.</li><li>Maintenance Difficulty: Changes to the state transitions require updating conditionals in multiple places, increasing the risk of errors</li><li>Scalability Issues: Predicting all possible states and transitions at the design stage is challenging, and the state machine can become bloated over time as new states and behaviors are added.</li></ul><h3 id=solution-using-state-pattern>Solution using State pattern <a href=#solution-using-state-pattern></a></h3><p>The State pattern addresses these issues by encapsulating state-specific behavior into separate state classes. This way, the context class delegates the behavior to the state objects, making the code cleaner and easier to manage.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><ul><li>Monstrous Conditionals: As the number of states and transitions increases, the conditional logic becomes complex and difficult to manage.</li><li>Maintenance Difficulty: Changes to the state transitions require updating conditionals in multiple places, increasing the risk of errors</li><li>Scalability Issues: Predicting all possible states and transitions at the design stage is challenging, and the state machine can become bloated over time as new states and behaviors are added.</li></ul><h3 id=solution-using-state-pattern>Solution using State pattern <a href=#solution-using-state-pattern></a></h3><p>The State pattern addresses these issues by encapsulating state-specific behavior into separate state classes. This way, the context class delegates the behavior to the state objects, making the code cleaner and easier to manage.</p><p><img x-data="{
     title: ``,
     alt: `Solution`,
     src: `assets/state-pattern_solution-en-2x.webp`,
@@ -1040,7 +1040,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=concept-of-state-pattern>Concept of State pattern <a href=#concept-of-state-pattern></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=concept-of-state-pattern>Concept of State pattern <a href=#concept-of-state-pattern></a></h2><p><img x-data="{
     title: ``,
     alt: `Finite-State Machine`,
     src: `assets/state-pattern_problem1-2x.webp`,
@@ -1089,7 +1089,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In the State Design Pattern, the state of an object is represented by a set of state-specific classes. The object, known as the context, delegates state-specific behavior to the current state object. As the state of the context changes, it transitions between different state objects, each of which implements a particular set of behaviors.</p><h3 id=structure>Structure <a href=#structure></a></h3><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In the State Design Pattern, the state of an object is represented by a set of state-specific classes. The object, known as the context, delegates state-specific behavior to the current state object. As the state of the context changes, it transitions between different state objects, each of which implements a particular set of behaviors.</p><h3 id=structure>Structure <a href=#structure></a></h3><p><img x-data="{
     title: ``,
     alt: `Structure`,
     src: `assets/state-pattern_structure-en-2x.webp`,

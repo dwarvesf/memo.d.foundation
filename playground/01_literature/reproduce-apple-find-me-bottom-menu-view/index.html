@@ -840,7 +840,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>187</li><li class=span><span>Characters:
-</span>17,322</li><li class=span><span>Without Spaces:
+</span>16,800</li><li class=span><span>Without Spaces:
 </span>1,056</li><li class=span><span>Blocks:
 </span>23</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -876,7 +876,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Reproduce Apple Find Me Bottom Menu View</div><div class=tags-index style=display:none>tags: swift</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Reproduce Apple Find Me Bottom Menu View</h1></div><div class=memo-content><p>Today we are going to recreate Find Me Bottom Menu view in few lines of code.</p><p>Device list Bottom Menu has three states: Collapsed, HalfExpanded and Expanded like images below</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Reproduce Apple Find Me Bottom Menu View</div><div class=tags-index style=display:none>tags: swift</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Reproduce Apple Find Me Bottom Menu View</h1></div><div class=memo-content><p>Today we are going to recreate Find Me Bottom Menu view in few lines of code.</p><p>Device list Bottom Menu has three states: Collapsed, HalfExpanded and Expanded like images below</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_da7e32fb18ad8af53dffd592a0e683f5_md5.webp`,
@@ -925,7 +925,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>What we should do:</p><ol><li>Bottom View can update itself height follow user finger position when dragging (Pan Gesture)</li><li>Bottom View can automatically resize its height base on the direction of dragging and position compare to “half position”</li></ol><p>Create an XCode project, add a new UIView and named it to BottomMenuView.</p><p>Add a PanView as a subview of BottomMenuView and set constrain leading, trailing, top equal to superview, set height constrain to 44.0, PanView using to tracking user finger using UIPanGestureReconizer</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>What we should do:</p><ol><li>Bottom View can update itself height follow user finger position when dragging (Pan Gesture)</li><li>Bottom View can automatically resize its height base on the direction of dragging and position compare to “half position”</li></ol><p>Create an XCode project, add a new UIView and named it to BottomMenuView.</p><p>Add a PanView as a subview of BottomMenuView and set constrain leading, trailing, top equal to superview, set height constrain to 44.0, PanView using to tracking user finger using UIPanGestureReconizer</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_dabaf075b757602a5af2c6bfcead3283_md5.webp`,
@@ -974,7 +974,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Add a bottom constraint for PanView, make outlet for our PanView and bottom constraint. (don’t worry if Xcode warning ⚠️ conflict constraint)</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Add a bottom constraint for PanView, make outlet for our PanView and bottom constraint. (don’t worry if Xcode warning ⚠️ conflict constraint)</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_8fbb0902507f83afa2b0ef1bc5f830a0_md5.webp`,
@@ -1023,7 +1023,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Now let&rsquo;s coding.</p><p>Define some variables to set menu height</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Now let&rsquo;s coding.</p><p>Define some variables to set menu height</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_8a481af07dd3642e0a3001689f596f77_md5.webp`,
@@ -1072,7 +1072,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Add pan gesture to panView and handle pan event</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Add pan gesture to panView and handle pan event</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_ab8aae75b6f84f7d28901126d81f38d0_md5.webp`,
@@ -1121,7 +1121,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Update height of menu base on user dragging direction and position</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Update height of menu base on user dragging direction and position</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_e66f07cbd639a062efd2fc0a52315a9c_md5.webp`,
@@ -1170,7 +1170,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Setup our UI and init heigh for menu in aweakFromNib</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Setup our UI and init heigh for menu in aweakFromNib</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_11c6fff8357d4f0172bb2ecf6a315d63_md5.webp`,
@@ -1219,7 +1219,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Finally, test out the menu</p><p>by add to the view controller</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Finally, test out the menu</p><p>by add to the view controller</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_f864eb297f5f2ff0a55adc3876a07a3c_md5.webp`,
@@ -1268,7 +1268,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/reproduce-apple-find-me-bottom-menu-view_097b369938a9fd77abad168060e62307_md5.webp`,

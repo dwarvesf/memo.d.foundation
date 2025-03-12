@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/frontend</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>658</li><li class=span><span>Characters:
-</span>19,545</li><li class=span><span>Without Spaces:
+</span>19,139</li><li class=span><span>Without Spaces:
 </span>4,684</li><li class=span><span>Blocks:
 </span>32</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Remove Unused CSS Styles From Bootstrap Using Purgecss</div><div class=tags-index style=display:none>tags: css, frontend</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Remove Unused CSS Styles From Bootstrap Using Purgecss</h1></div><div class=memo-content><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Remove Unused CSS Styles From Bootstrap Using Purgecss</div><div class=tags-index style=display:none>tags: css, frontend</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Remove Unused CSS Styles From Bootstrap Using Purgecss</h1></div><div class=memo-content><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_50067f1125ee42d2d68068bd93443235_md5.webp`,
@@ -945,7 +945,7 @@ Folder:
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre><p>Now look at</p><pre><code class=language-javascript>bootstrap - grid.min.css
-</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_50067f1125ee42d2d68068bd93443235_md5.webp`,
@@ -995,7 +995,7 @@ Folder:
         .trim('-');
     }
   }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Quite huge isn’t it? Thanks to PurgeCss here is the CSS file after being purged will only contain parts of the CSS file (only used selectors), as you can see horizontal scrollbar is not very long:</p><h2 id=usage>Usage <a href=#usage></a></h2><p>PurgeCSS can be installed with npm package</p><pre><code class=language-javascript>npm i --save-dev purgecss
-</code></pre><p>Basically, you run it against your CSS files and your HTML/JavaScript files. It will parse and analyze which CSS content will be used and remove unused CSS content.</p><p>PurgeCSS can be used as a CLI. This is our project structure, we gonna need to transform CSS files so we have to download bootstrap distro and get file we want to transform.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Basically, you run it against your CSS files and your HTML/JavaScript files. It will parse and analyze which CSS content will be used and remove unused CSS content.</p><p>PurgeCSS can be used as a CLI. This is our project structure, we gonna need to transform CSS files so we have to download bootstrap distro and get file we want to transform.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_a903c03602f38038a2c4e4eb4344e0b9_md5.webp`,
@@ -1056,7 +1056,7 @@ Folder:
     &quot;build&quot;: &quot;purgecss --css bootstrap-grid.min.css --content index.html --out dist/&quot;
   }
 }
-</code></pre><p>Then run npm run build, you should see new bootstrap-grid.min.css in dist folder with unused CSS content being removed</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Then run npm run build, you should see new bootstrap-grid.min.css in dist folder with unused CSS content being removed</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_04ee21f4b60188ce76c21df96695e6cf_md5.webp`,
@@ -1105,7 +1105,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_dd640e027b4421ee74d88c2864f0c9ed_md5.webp`,
@@ -1198,7 +1198,7 @@ module.exports = {
     }),
   ],
 }
-</code></pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code>// Import CSS Grid min CSS</code></p><p><code>import 'bootstrap/dist/css/bootstrap-grid.min.css'</code></p><p>Here is the build output which includes CSS grid file</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code>// Import CSS Grid min CSS</code></p><p><code>import 'bootstrap/dist/css/bootstrap-grid.min.css'</code></p><p>Here is the build output which includes CSS grid file</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_429bb8c82f4e38465293c6f79d782394_md5.webp`,
@@ -1297,7 +1297,7 @@ module.exports = {
     }),
   ],
 }
-</code></pre><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_97c7bfa1adf49d7c225f00976d99eb8c_md5.webp`,

@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/frontend</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>253</li><li class=span><span>Characters:
-</span>8,323</li><li class=span><span>Without Spaces:
+</span>8,149</li><li class=span><span>Without Spaces:
 </span>1,611</li><li class=span><span>Blocks:
 </span>12</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Prevent Layout Thrashing</div><div class=tags-index style=display:none>tags: frontend, web-performance, performance</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Prevent Layout Thrashing</h1></div><div class=memo-content><h2 id=what-is-layout-thrashing>What is Layout Thrashing <a href=#what-is-layout-thrashing></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Prevent Layout Thrashing</div><div class=tags-index style=display:none>tags: frontend, web-performance, performance</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Prevent Layout Thrashing</h1></div><div class=memo-content><h2 id=what-is-layout-thrashing>What is Layout Thrashing <a href=#what-is-layout-thrashing></a></h2><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/prevent-layout-thrashing_layout-thrashing.webp`,
@@ -937,7 +937,7 @@ document.body.appendChild(someBox)
 
 //read/measure
 const color = getComputedStyle(someOtherBox).color
-</code></pre><p>Mixing Layout Read & Layout Mutation must wait for the browser to recalculate the layout and reflow to return your Layout value.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>Mixing Layout Read & Layout Mutation must wait for the browser to recalculate the layout and reflow to return your Layout value.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/prevent-layout-thrashing_dont-touch-me.webp`,
@@ -1006,7 +1006,7 @@ function resizeAllParagraphsToMatchBoxWidth(paragraphs, box) {
     })
   })
 }
-</code></pre><h2 id=how-to-debug>How to debug <a href=#how-to-debug></a></h2><p>Open <code>Performance Tab</code> on Dev tool, slow down your CPU, and click <code>Start Profiling</code>.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h2 id=how-to-debug>How to debug <a href=#how-to-debug></a></h2><p>Open <code>Performance Tab</code> on Dev tool, slow down your CPU, and click <code>Start Profiling</code>.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/prevent-layout-thrashing_layout-thrashing-debug.webp`,

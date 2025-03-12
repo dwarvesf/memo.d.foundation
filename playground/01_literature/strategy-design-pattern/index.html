@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/01_literature</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>436</li><li class=span><span>Characters:
-</span>3,817</li><li class=span><span>Without Spaces:
+</span>5,410</li><li class=span><span>Without Spaces:
 </span>2,520</li><li class=span><span>Blocks:
 </span>8</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,56 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Strategy design pattern, the concept, use cases and difference with the state design pattern</div><div class=tags-index style=display:none>tags: design-pattern, gang-of-four, strategy-design-pattern, behavior-pattern</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Strategy design pattern, the concept, use cases and difference with the state design pattern</h1></div><div class=memo-content><p><script src=/js/pdf-js/pdf.mjs type=module></script></p><h2 id=problem-statement>Problem statement <a href=#problem-statement></a></h2><p>The separation of a renowned cookbook, by cuisine culture, into distinct cookbooks(strategies on how to cook dishes): The owner restaurant of the cookbook keeps a single cookbook to prevent the leaking of trade secrets. To maintain standards, the head cooks must use the cookbook to follow the complicated recipes. When the restaurant grows, conflicts happen between head cooks taking turns to use the single cookbook.</p><p>=> The cookbook divides into multiple cookbooks based on their type(appetizer, main dish, side dish, &mldr;) and cuisine culture(asian, french, italy, &mldr;). The head cook selects the cook books(strategies) by their station and their dish&rsquo;s cuisine.</p><h2 id=strategy-design-pattern><code>Strategy</code> design pattern <a href=#strategy-design-pattern></a></h2><p>Strategy design pattern is about grouping classes with similar functionality, an interface is created to represent their functions, and each class has implementation following the interface.</p><p>To choose the correct strategy, the context uses the provided information and selects the appropriate implementation/strategy of the interface.</p><p>Example:</p><pre><code class=language-go>// Given an interface to group classes with similar functionality
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Strategy design pattern, the concept, use cases and difference with the state design pattern</div><div class=tags-index style=display:none>tags: design-pattern, gang-of-four, strategy-design-pattern, behavior-pattern</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Strategy design pattern, the concept, use cases and difference with the state design pattern</h1></div><div class=memo-content><p><img x-data="{
+    title: ``,
+    alt: ``,
+    src: `assets/strategy-design-pattern.pdf`,
+    altText: ``,
+    get altWidthHeight() {
+      const widthHeightRegex = /^(\d+)(?!x)(\d*)$/g;
+      return this.altText.match(widthHeightRegex) ?? [];
+    },
+    get relativeSrc() {
+      if (this.src.startsWith('http://') || this.src.startsWith('https://')) {
+        return this.src;
+      }
+
+      let currentUrlParts = this.currentUrl.split('/');
+      currentUrlParts.shift();
+      currentUrlParts.pop();
+      currentUrlParts.pop();
+      const relativeUrl = currentUrlParts.length > 0 ? `/${currentUrlParts.join('/')}/` : '';
+
+      let path = this.src;
+      if (path.match(/^assets/)) {
+         path = `${relativeUrl}/${path}`;
+      } else {
+         path = `/${path}`;
+      }
+
+      // Split path and slugify each component
+      const pathParts = path.split('/').map(part => {
+        if (part === '' || part === '.' || part === '..') return part;
+        
+        // Handle the filename separately to preserve extension
+        if (part.includes('.')) {
+          const [name, ext] = part.split('.');
+          return `${this.slugify(name)}.${ext}`;
+        }
+        return this.slugify(part);
+      });
+
+      return pathParts.join('/').toLowerCase();
+    },
+    slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s_-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=problem-statement>Problem statement <a href=#problem-statement></a></h2><p>The separation of a renowned cookbook, by cuisine culture, into distinct cookbooks(strategies on how to cook dishes): The owner restaurant of the cookbook keeps a single cookbook to prevent the leaking of trade secrets. To maintain standards, the head cooks must use the cookbook to follow the complicated recipes. When the restaurant grows, conflicts happen between head cooks taking turns to use the single cookbook.</p><p>=> The cookbook divides into multiple cookbooks based on their type(appetizer, main dish, side dish, &mldr;) and cuisine culture(asian, french, italy, &mldr;). The head cook selects the cook books(strategies) by their station and their dish&rsquo;s cuisine.</p><h2 id=strategy-design-pattern><code>Strategy</code> design pattern <a href=#strategy-design-pattern></a></h2><p>Strategy design pattern is about grouping classes with similar functionality, an interface is created to represent their functions, and each class has implementation following the interface.</p><p>To choose the correct strategy, the context uses the provided information and selects the appropriate implementation/strategy of the interface.</p><p>Example:</p><pre><code class=language-go>// Given an interface to group classes with similar functionality
 type Calculation interface {
  func Calculate(x, y int) int // calculate two numbers: x and y, return int result
 }

@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>730</li><li class=span><span>Characters:
-</span>11,863</li><li class=span><span>Without Spaces:
+</span>11,689</li><li class=span><span>Without Spaces:
 </span>4,455</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = &#39;...&#39;
         }
       },
-    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Evaluate Chatbot Agent by User Simulation</div><div class=tags-index style=display:none>tags: llm, ai-agents, ai-evaluation</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Evaluate Chatbot Agent by User Simulation</h1></div><div class=memo-content><p>When building a chatbot agent, it&rsquo;s important to evaluate its performance and user satisfaction. One effective method is user simulation, which involves creating virtual users to interact with the chatbot and assess its responses. This approach allows for a more realistic evaluation of the chatbot&rsquo;s capabilities and user experience.</p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>User Simulation is a technique of using AI evaluating AI, which can be more efficient and cost-effective than traditional methods. To implement this method in this tutorial, we will use langchain/langgraph/langsmith to create a simulated user and evaluate the chatbot&rsquo;s performance.</p><h2 id=system-design>System Design <a href=#system-design></a></h2><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }'><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Evaluate Chatbot Agent by User Simulation</div><div class=tags-index style=display:none>tags: llm, ai-agents, ai-evaluation</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Evaluate Chatbot Agent by User Simulation</h1></div><div class=memo-content><p>When building a chatbot agent, it&rsquo;s important to evaluate its performance and user satisfaction. One effective method is user simulation, which involves creating virtual users to interact with the chatbot and assess its responses. This approach allows for a more realistic evaluation of the chatbot&rsquo;s capabilities and user experience.</p><h2 id=introduction>Introduction <a href=#introduction></a></h2><p>User Simulation is a technique of using AI evaluating AI, which can be more efficient and cost-effective than traditional methods. To implement this method in this tutorial, we will use langchain/langgraph/langsmith to create a simulated user and evaluate the chatbot&rsquo;s performance.</p><h2 id=system-design>System Design <a href=#system-design></a></h2><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/simulated-user.webp`,
@@ -1003,7 +1003,7 @@ async function didSucceed(rootRun: Run, example: Example): Promise&lt;Evaluation
   evaluators: [didSucceed as any],
   experimentPrefix: 'testing-simulated-user-1',
 })
-</code></pre><h3 id=5-result>5. Result <a href=#5-result></a></h3><ul><li>Conversation:</li></ul><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><h3 id=5-result>5. Result <a href=#5-result></a></h3><ul><li>Conversation:</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/eval-simulation-chatbot.webp`,
@@ -1052,7 +1052,7 @@ async function didSucceed(rootRun: Run, example: Example): Promise&lt;Evaluation
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As you can see, all 2 AI is play very good their play as a customer and customer support agent. Besides that, it seem the customer is failed to get a refund for the trip. Now let check whether the evaluator give a correct score or not.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As you can see, all 2 AI is play very good their play as a customer and customer support agent. Besides that, it seem the customer is failed to get a refund for the trip. Now let check whether the evaluator give a correct score or not.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/simulated-conversation-eval.webp`,

@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/ai</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>565</li><li class=span><span>Characters:
-</span>6,604</li><li class=span><span>Without Spaces:
+</span>6,546</li><li class=span><span>Without Spaces:
 </span>3,169</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div></div><main x-data='{
@@ -892,7 +892,7 @@ Some users may ask questions that are irrelevant or inappropriate for the ecomme
 That is the end of the prompt. What is your decision? Please answer with yes or no, then explain your reasoning step by step.
 &quot;&quot;&quot;
 </code></pre><p>The effectiveness of this check largely depends on the sophistication of the LLM and the quality of the validation prompt. However, it&rsquo;s a relatively simple and often effective method for handling malicious prompts.</p><h2 id=training-the-model>Training the Model <a href=#training-the-model></a></h2><p>If you use model from ChatGPT, you will observe some kind of security layer. For example when asking <code>How do you steal money from a bank?</code> the model will respond with a rejection:</p><pre><code>I'm sorry, but I can't assist with that request.
-</code></pre><p>This is because ChatGPT is trained to align with human preferences and to be more constrained and safer in its responses, using techniques like Reinforcement Learning from Human Feedback. However, it&rsquo;s important to regularly update the system to keep pace with user creativity, as there are numerous ways to circumvent these safeguards, as shown in the following example:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>This is because ChatGPT is trained to align with human preferences and to be more constrained and safer in its responses, using techniques like Reinforcement Learning from Human Feedback. However, it&rsquo;s important to regularly update the system to keep pace with user creativity, as there are numerous ways to circumvent these safeguards, as shown in the following example:</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/adversarial-prompting_by-pass-gpt-safety-check.webp`,

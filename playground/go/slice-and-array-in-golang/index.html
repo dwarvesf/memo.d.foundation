@@ -841,7 +841,7 @@ Tags:
 Folder:
 </span>playground/go</li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>866</li><li class=span><span>Characters:
-</span>14,926</li><li class=span><span>Without Spaces:
+</span>14,636</li><li class=span><span>Without Spaces:
 </span>3,839</li><li class=span><span>Blocks:
 </span>28</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><main x-data="{
@@ -877,7 +877,7 @@ Folder:
           this.loadText = '...'
         }
       },
-    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Slice And Array In Golang</div><div class=tags-index style=display:none>tags: data-structures, golang</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Slice And Array In Golang</h1></div><div class=memo-content><h3 id=array>Array <a href=#array></a></h3><p><strong>TL;DR:</strong> The differences between array in Go and C:</p><ul><li>Arrays are values. Assigning one array to another copies all the elements.</li><li>In particular, if you pass an array to a function, it will receive a copy of the array, not a pointer to it.</li><li>The size of an array is part of its type. The types [4]int and [5]int are distinct.</li></ul><p>In Go language, the terminology <code>Array</code> has a bit different from another language like C, JS, &mldr; In Go, the <code>array has a fixed length and type </code>Take a look of array implementation in Go.</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+    }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Slice And Array In Golang</div><div class=tags-index style=display:none>tags: data-structures, golang</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Slice And Array In Golang</h1></div><div class=memo-content><h3 id=array>Array <a href=#array></a></h3><p><strong>TL;DR:</strong> The differences between array in Go and C:</p><ul><li>Arrays are values. Assigning one array to another copies all the elements.</li><li>In particular, if you pass an array to a function, it will receive a copy of the array, not a pointer to it.</li><li>The size of an array is part of its type. The types [4]int and [5]int are distinct.</li></ul><p>In Go language, the terminology <code>Array</code> has a bit different from another language like C, JS, &mldr; In Go, the <code>array has a fixed length and type </code>Take a look of array implementation in Go.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/slice-and-array-in-golang_a650b13e6028a391f8acdc858b08c372_md5.webp`,
@@ -944,7 +944,7 @@ b := [3]int{1,1,1}
 // each other
 
 fmt.Println(a == b) // true
-</code></pre><p>For representation for an array of [4]int in memory is for integer value laid out <code>sequentially</code></p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>For representation for an array of [4]int in memory is for integer value laid out <code>sequentially</code></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/slice-and-array-in-golang_8327bf995dd32badeef1e1d0eb4eeda5_md5.webp`,
@@ -1029,7 +1029,7 @@ fmt.Println(cap(a)) // 8
 	len int
 	cap int
 }
-</code></pre><p>For example, if we create a slice by using make([]byte,5), the slice will be structured like this:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+</code></pre><p>For example, if we create a slice by using make([]byte,5), the slice will be structured like this:</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/slice-and-array-in-golang_f18621d9bf057f8c2ea818ca438379c3_md5.webp`,
@@ -1078,7 +1078,7 @@ fmt.Println(cap(a)) // 8
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>A slice cannot be grown beyond its capacity. Attempting to do so will cause a runtime panic, just as when indexing outside the bounds of a slice or array. Similarly, slices cannot be re-sliced below zero to access earlier elements in the array.</p><p><strong>So the question is, What if we <code>*append*</code> an element to a slice which has reached its capacity?</strong></p><h3 id=append>Append <a href=#append></a></h3><p>Let&rsquo;s dig into a source code (go/src/reflect/value)</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>A slice cannot be grown beyond its capacity. Attempting to do so will cause a runtime panic, just as when indexing outside the bounds of a slice or array. Similarly, slices cannot be re-sliced below zero to access earlier elements in the array.</p><p><strong>So the question is, What if we <code>*append*</code> an element to a slice which has reached its capacity?</strong></p><h3 id=append>Append <a href=#append></a></h3><p>Let&rsquo;s dig into a source code (go/src/reflect/value)</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/slice-and-array-in-golang_1f1383e462f5fa432205e471759c4051_md5.webp`,
@@ -1127,7 +1127,7 @@ fmt.Println(cap(a)) // 8
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>so the <code>append</code> built in function do a few things here:</p><p>First, it will check an input value, if it&rsquo;s not a <code>Slice</code> the program will throw a panic, then the interesting things here is <code>grow</code> function , it will take an old slice and length of the new slice we want to append. Let take a look at <code>grow</code> function:</p><p><script src=/js/pdf-js/pdf.mjs type=module></script><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>so the <code>append</code> built in function do a few things here:</p><p>First, it will check an input value, if it&rsquo;s not a <code>Slice</code> the program will throw a panic, then the interesting things here is <code>grow</code> function , it will take an old slice and length of the new slice we want to append. Let take a look at <code>grow</code> function:</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/slice-and-array-in-golang_de7599e21a9ed4cf0e4a9d31169129e2_md5.webp`,
