@@ -2,12 +2,11 @@ nav.menu {
   position: sticky;
   top: 57px;
   padding: 1.5rem 0rem 0rem 0.5rem;
-  line-height: 22px;
   white-space: nowrap;
   grid-area: nav;
   height: calc(100svh - 32px - 61px);
   white-space: wrap;
-  font-size: 0.875rem;
+  font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -20,7 +19,7 @@ nav.menu {
 
 details {
   overflow: hidden;
-  font-size: 0.875rem;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -242,7 +241,7 @@ nav.menu ul {
     display: flex;
 
     a {
-      padding: 5px;
+      padding: 2px;
       padding-left: 0px;
       display: inline-block;
       &:focus {
