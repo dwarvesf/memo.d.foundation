@@ -460,12 +460,33 @@ defmodule Memo.ExportMarkdown do
   end
 
   defp replace_path_prefix(path, old_prefix, new_prefix) do
-    # Extract the base names without any path components
-    old_base = Path.basename(old_prefix)
-    new_base = Path.basename(new_prefix)
+    # For relative paths, we need to handle the full path including the relative prefix
+    # This ensures paths like "../../vault/file.md" become "../../public/content/file.md"
 
-    # Handle both relative and absolute paths
-    # This works with paths like "../../vault" and "../../content"
-    String.replace(path, ~r"(^|/)#{old_base}(/|$)", "\\1#{new_base}\\2")
+    # Normalize paths to ensure consistent handling
+    normalized_path = Path.expand(path)
+    normalized_old_prefix = Path.expand(old_prefix)
+
+    # Get the relative part of the path after the old_prefix
+    relative_part = Path.relative_to(normalized_path, normalized_old_prefix)
+
+    # If the path starts with the old_prefix (i.e., relative_part is different from the original path)
+    if relative_part != normalized_path do
+      # Join the new_prefix with the relative part
+      result = Path.join(new_prefix, relative_part)
+
+      # If the original path was relative (started with "../"), preserve that style
+      if String.starts_with?(path, "../") do
+        result
+      else
+        # Otherwise, normalize the result
+        Path.expand(result)
+      end
+    else
+      # Fallback to the original method if the path doesn't start with old_prefix
+      old_base = Path.basename(old_prefix)
+      new_base = Path.basename(new_prefix)
+      String.replace(path, ~r"(^|/)#{old_base}(/|$)", "\\1#{new_base}\\2")
+    end
   end
 end

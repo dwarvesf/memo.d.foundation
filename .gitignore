@@ -84,6 +84,7 @@ node_modules
 # next.js build
 .next
 out
+public/content
 
 # cache
 .memo_export_cache.json

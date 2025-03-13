@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { slug } = params as { slug: string[] };
 
     // Construct the file path from the slug
-    const filePath = path.join(process.cwd(), 'content', ...slug) + '.md';
+    const filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
 
     // Check if the file exists
     if (!fs.existsSync(filePath)) {
