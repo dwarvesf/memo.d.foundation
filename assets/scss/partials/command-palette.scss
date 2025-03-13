@@ -158,6 +158,7 @@ div:has(> .cmd-results-list) {
     text-align: center;
     font-weight: 500;
     line-height: 1.1;
+    font-family: charter, Georgia, Cambria, serif;
   }
 
   .cmd-preview-description {
@@ -165,12 +166,14 @@ div:has(> .cmd-results-list) {
     font-weight: 500;
     color: var(--secondary-font-color-light);
     width: 100%;
+    font-family: charter, Georgia, Cambria, serif;
   }
 
   .cmd-preview-recap {
     align-self: flex-start;
     margin-top: 32px;
     color: var(--secondary-font-color-light-var2);
+    font-family: charter, Georgia, Cambria, serif;
 
     >span {
       text-transform: uppercase;
@@ -259,6 +262,7 @@ div:has(> .cmd-results-list) {
 }
 
 .cmd-matching-line {
+
   span {
     color: var(--primary-color);
     font-weight: 500;

@@ -12,20 +12,21 @@ body {
   margin: 0px;
   padding: 0px;
   background-color: var(--primary-background-color-light);
-  line-height: 1.75;
+  line-height: 1.5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   hyphens: auto;
   overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+main{
+  font-family: charter, Georgia, Cambria, serif;
 }
 
 strong {
   font-weight: 600;
-}
-
-html[data-theme="dark"] main {
-  font-weight: 300;
 }
 
 h1,
@@ -45,13 +46,13 @@ h1 {
 }
 
 h2 {
-  font-size: 28px !important;
+  font-size: 26px !important;
   color: var(--primary-color);
   margin: var(--heading-margin) 0px 0px !important;
 }
 
 h3 {
-  font-size: 22px !important;
+  font-size: 21px !important;
   margin: var(--heading-margin) 0px 0px !important;
 }
 
@@ -218,7 +219,7 @@ iframe {
 
 html[data-theme="light"] {
   h1,
-  // h2,
+  h2,
   h3,
   h4,
   h5 {
