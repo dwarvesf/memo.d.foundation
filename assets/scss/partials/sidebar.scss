@@ -1,5 +1,5 @@
 .sidebar {
-  z-index: 10;
+  z-index: 51; // Higher than the header
   box-sizing: border-box;
   position: fixed;
   top: 0;
@@ -13,75 +13,104 @@
   flex-direction: column;
   overflow: visible; /* Changed from hidden to visible to allow tooltips to show */
   border-right: 1px solid var(--border-color-light);
-  padding: 0 10px;
-
-  .sidebar-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 16px 0;
-    padding: 0;
-    height: 40px;
-    position: relative;
-
-    svg {
-      min-width: 24px;
-      width: 24px;
-      height: 24px;
-      padding: 0px 8px;
-      flex-shrink: 0;
-    }
-
-    span {
-      display: none; /* Hide the text completely */
-    }
-  }
+  transition: transform 0.3s ease;
 
   .sidebar-nav {
     display: flex;
     flex-direction: column;
     flex: 1;
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+  &-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+    padding: 0 0.5rem;
+    height: 40px;
+    position: relative;
+    gap: 0.5rem;
 
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 0;
-      text-decoration: none;
-      color: #23252c;
-      transition: background-color 0.2s ease;
-      border-radius: 8px;
-      position: relative;
+    svg {
+      min-width: 24px;
+      width: 24px;
+      height: 26px;
+      flex-shrink: 0;
+    }
 
-      &:hover {
-        background-color: #ededed;
-      }
+    span {
+      display: none; /* Hide the text completely */
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 14.849px;
+      color: var(--text-text-primary);
+    }
+  }
+  &-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--secondary-black);
+    transition: background-color 0.2s ease;
+    border-radius: 8px;
+    position: relative;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    font-weight: 500;
+    &:hover {
+      background-color: #ededed;
+    }
+    &.active {
+      color: var(--primary-color);
+    }
 
-      svg,
-      img {
-        min-width: 24px;
+    svg,
+    img {
+      min-width: 24px;
+      width: 24px;
+      height: 24px;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+    &-icon{
+    
+      padding: 8px;
+     
+     &::before{
+        content: "";
+        display: block;
         width: 24px;
         height: 24px;
-        padding: 0px 8px;
-        flex-shrink: 0;
-      }
-
-      span {
-        display: none; /* Hide the text as it will be in the tooltip */
-      }
+        mask-image: var(--src);
+      background-color: currentColor;
+     }
+    }
+    span {
+      display: none; /* Hide the text as it will be in the tooltip */
     }
   }
 }
 
 // Dark theme support
 html[data-theme="dark"] {
+  .sidebar-logo{
+   span{
+    color: #dadada;
+   }
+  }
   .sidebar {
     background-color: var(--primary-background-color);
     border-right: 1px solid var(--border-color);
-
+   
     .sidebar-item {
       color: #dadada;
-
+      &.active {
+        color: var(--primary-color);
+      }
       &:hover {
         background-color: #252525;
       }
@@ -135,19 +164,19 @@ html[data-theme="dark"] {
     transform: rotate(45deg);
   }
 
-  &[data-popper-placement^="top"]>.arrow {
+  &[data-popper-placement^="top"] > .arrow {
     bottom: -4px;
   }
 
-  &[data-popper-placement^="bottom"]>.arrow {
+  &[data-popper-placement^="bottom"] > .arrow {
     top: -4px;
   }
 
-  &[data-popper-placement^="left"]>.arrow {
+  &[data-popper-placement^="left"] > .arrow {
     right: -4px;
   }
 
-  &[data-popper-placement^="right"]>.arrow {
+  &[data-popper-placement^="right"] > .arrow {
     left: -4px;
   }
 }
@@ -165,7 +194,6 @@ html[data-theme="dark"] {
 @media (max-width: 1100px) {
   .sidebar {
     width: 56px;
-    padding: 0 12px;
     z-index: 1000;
     transition: transform 0.3s ease;
     transform: translateX(-100%);
@@ -190,5 +218,44 @@ html[data-theme="dark"] {
       display: none !important;
     }
   }
+}
 
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 200px;
+    &-item {
+      justify-content: flex-start;
+      span {
+        display: inline-block;
+      }
+    }
+    &-logo {
+      justify-content: flex-start;
+      span {
+        display: inline-block;
+      }
+    }
+  }
+  .sidebar-tooltip {
+    display: none !important;
+  }
+}
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.50);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  
+  @media screen and (max-width: 1100px) {
+    .mobile-visible ~ & {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
 }

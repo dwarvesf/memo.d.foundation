@@ -91,7 +91,7 @@
     <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
   <!-- Prism Themes -->
   <link rel="stylesheet" id="prism-light" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-light.min.css" integrity="sha512-hS/3ZdmvOJPB/KZXZF9mUeMQuoNmo6BSiJHdUajzlhIs0CTBZMmJbtBkxMJAx7nm7IvigDv8N925UeuM0M96gg==" crossorigin="anonymous" referrerpolicy="no-referrer" media="(prefers-color-scheme: light)" />
@@ -330,10 +330,15 @@
       x-data
       @click="document.querySelector('.sidebar').classList.toggle('mobile-visible')"
       aria-label="Toggle sidebar">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
+   <!-- Logo and title -->
+ <a href="/" class="header-logo" >
+  {{ partial "logo.html" . }}
+  <span>Dwarves<br/>Memo</span>
+</a>
     <div class="header-spacer"></div>
     {{ partial "command-palette.html" . }}
     <div>
@@ -357,6 +362,7 @@
           </g>
         </svg>
       </button>
+   
       <div class="btn-reading-mode-toggler-tooltip" role="tooltip">
         <span>Reading Mode</span>
         <div x-data="{ modifier: window.navigator.userAgent.includes('Macintosh') ? '⌘':'ctrl'}">
