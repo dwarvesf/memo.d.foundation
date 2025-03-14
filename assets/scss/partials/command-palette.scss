@@ -56,6 +56,7 @@
   justify-content: center;
   z-index: 1000;
   min-width: 100vw;
+  padding: 0 0.5rem;
 }
 
 .cmd-modal {
@@ -94,7 +95,8 @@
   padding: 16px;
 }
 
-.cmd-results {}
+.cmd-results {
+}
 
 .cmd-results-active {
   display: block;
@@ -175,7 +177,7 @@ div:has(> .cmd-results-list) {
     color: var(--secondary-font-color-light-var2);
     font-family: charter, Georgia, Cambria, serif;
 
-    >span {
+    > span {
       text-transform: uppercase;
       text-decoration: underline;
       text-decoration-skip-ink: auto;
@@ -202,7 +204,7 @@ div:has(> .cmd-results-list) {
   display: flex;
   flex-direction: column;
 
-  >span {
+  > span {
     background-color: var(--primary-border-color-light);
     padding: 6px 12px;
     text-transform: capitalize;
@@ -216,14 +218,14 @@ div:has(> .cmd-results-list) {
   background-color: transparent;
   transition: background-color 0.05s ease-in;
 
-  >* {
+  > * {
     outline: none;
   }
 
   &.cmd-result-selected {
     background-color: var(--primary-color);
 
-    >a {
+    > a {
       color: white !important;
     }
 
@@ -236,7 +238,7 @@ div:has(> .cmd-results-list) {
     }
   }
 
-  >a {
+  > a {
     color: var(--primary-font-color-light);
     position: relative;
     width: 100%;
@@ -262,7 +264,6 @@ div:has(> .cmd-results-list) {
 }
 
 .cmd-matching-line {
-
   span {
     color: var(--primary-color);
     font-weight: 500;
@@ -296,6 +297,9 @@ div:has(> .cmd-results-list) {
 
 @media only screen and (max-width: 768px) {
   .cmd-search-button {
+    width: 135px;
+  }
+  .cmd-result-preview{
     display: none;
   }
 }
@@ -334,7 +338,7 @@ html[data-theme="dark"] {
   }
 
   .cmd-results-group {
-    >span {
+    > span {
       background-color: var(--primary-border-color);
     }
   }
