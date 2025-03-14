@@ -331,6 +331,9 @@ html[data-theme="dark"] {
       filter: brightness(1.5);
     }
   }
+  .cmd-search-button-mobile{
+    color: var(--secondary-font-color);
+  }
 
   .cmd-modal,
   .cmd-search-input,

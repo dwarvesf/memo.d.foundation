@@ -610,4 +610,7 @@ html[data-theme="dark"] {
   .header-logo span {
     color: #dadada;
   }
+  .header-divider {
+    background-color: var(--primary-border-color);
+  }
 }
