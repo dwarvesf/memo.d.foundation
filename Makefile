@@ -10,6 +10,10 @@ fetch:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.UpdateGitSettings.run()'
 	@./git-fetch.sh
 
+fetch-force:
+	@cd lib/obsidian-compiler && mix run -e 'Memo.UpdateGitSettings.run()'
+	@./git-fetch.sh --force
+
 build:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../public/content")'
 	@pnpm run build
