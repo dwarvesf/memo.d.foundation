@@ -1,0 +1,16 @@
+.footnotes {
+  ol {
+    margin-top: 0;
+    padding-top: 0.5rem;
+    padding-inline-start: 1.25rem;
+    li::marker {
+      font-size: 13px;
+      line-height: 130%;
+    }
+  }
+  p {
+    margin-top: 0;
+    font-size: 13px;
+    line-height: 130%;
+  }
+}
