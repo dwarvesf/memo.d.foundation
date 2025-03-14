@@ -491,6 +491,10 @@ nav.menu > .tab-menu {
       background-color: var(--primary-background-color);
       border-bottom: 1px solid var(--border-color);
     }
+
+    #sidebar-toggle {
+      color: var(--secondary-font-color);
+    }
   }
 
   #sidebar-toggle {
@@ -499,7 +503,7 @@ nav.menu > .tab-menu {
     border: none;
     cursor: pointer;
     padding: 0;
-    color: var(--secondary-font-color-light-var2);
+    color: var(--secondary-font-color-light);
 
     @media (max-width: 1100px) {
       display: flex;
@@ -507,6 +511,7 @@ nav.menu > .tab-menu {
       justify-content: center;
     }
   }
+
 
   nav.menu {
     nav.tab-menu {
@@ -610,7 +615,8 @@ html[data-theme="dark"] {
   .header-logo span {
     color: #dadada;
   }
+
   .header-divider {
-    background-color: var(--primary-border-color);
+    background-color: var(--border-color);
   }
 }
