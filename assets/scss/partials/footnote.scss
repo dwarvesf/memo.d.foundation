@@ -8,9 +8,14 @@
       line-height: 130%;
     }
   }
+
   p {
     margin-top: 0;
     font-size: 13px;
     line-height: 130%;
+  }
+
+  a:not([role="doc-backlink"]){
+    color: var(--primary-color);
   }
 }
