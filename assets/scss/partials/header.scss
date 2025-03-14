@@ -462,8 +462,8 @@ nav.menu > .tab-menu {
 }
 
 @media only screen and (max-width: 1100px) {
-  .tab-header{
-    border-bottom: 1px solid var( --primary-border-color-light);
+  .tab-header {
+    border-bottom: 1px solid var(--primary-border-color-light);
   }
   .btn-theme-toggler {
     min-width: auto;
@@ -491,7 +491,6 @@ nav.menu > .tab-menu {
       background-color: var(--primary-background-color);
       border-bottom: 1px solid var(--border-color);
     }
-
   }
 
   #sidebar-toggle {
@@ -560,7 +559,6 @@ html[data-theme="dark"] {
 }
 
 .header-logo {
-
   display: none;
   align-items: center;
   justify-content: flex-start;
@@ -568,7 +566,7 @@ html[data-theme="dark"] {
   position: relative;
   gap: 0.5rem;
   @media screen and (max-width: 1100px) {
-      display: flex;
+    display: flex;
   }
   svg {
     width: 29px;
@@ -588,8 +586,28 @@ html[data-theme="dark"] {
   }
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  @media screen and (max-width: 768px) {
+    gap: 0.25rem;
+  }
+}
+
+.header-divider {
+  display: none;
+  height: 24px;
+  width: 1px;
+  background-color: var(--primary-border-color-light);
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+}
+
 html[data-theme="dark"] {
   .header-logo span {
-    color:  #dadada;
+    color: #dadada;
   }
 }

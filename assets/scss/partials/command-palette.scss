@@ -295,9 +295,27 @@ div:has(> .cmd-results-list) {
   padding: 8px 12px;
 }
 
+.cmd-search-button-mobile{
+  display: none;
+  align-items: center;
+  border-radius: 8px;
+  background: none;
+  color: var(--primary-font-color-light);
+  font: var(--font-monospace);
+  justify-content: space-between;
+  padding: 6px 12px;
+  width: 40px;
+  height: 40px;
+  transition: all 0.1s ease-in-out;
+  border: none;
+ 
+}
 @media only screen and (max-width: 768px) {
   .cmd-search-button {
-    width: 135px;
+   display: none;
+  }
+  .cmd-search-button-mobile{
+    display: flex;
   }
   .cmd-result-preview{
     display: none;
