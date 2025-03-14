@@ -20,21 +20,33 @@ a {
   color: var(--primary-color) !important;
 }
 
-main {
-  a {
-    text-decoration: underline var(--neutral-100);
-    -webkit-text-decoration: underline var(--neutral-100);
-    text-decoration-skip-ink: auto;
-    color: #23252c;
-    transition: all 150ms ease-in-out;
+main a {
+  text-decoration: underline var(--neutral-100);
+  -webkit-text-decoration: underline var(--neutral-100);
+  text-decoration-skip-ink: auto;
+  color: #23252c;
+  transition: all 150ms ease-in-out;
+}
 
-    &:hover {
-      color: var(--primary-color) !important;
-      text-decoration: underline var(--primary-color);
-      -webkit-text-decoration: underline var(--primary-color);
-    }
+main a:hover {
+  color: var(--primary-color) !important;
+  text-decoration: underline var(--primary-color);
+  -webkit-text-decoration: underline var(--primary-color);
+}
+
+html[data-theme="dark"] {
+  main a {
+    text-decoration: underline var(--secondary-font-color-light-var2);
+    -webkit-text-decoration: underline var(--secondary-font-color-light-var2);
   }
 
+  main a:hover {
+    text-decoration-color:  var(--primary-color);
+    -webkit-text-decoration-color: var(--primary-color);
+  }
+}
+
+main {
   h1 {
     :not(.pagetitle) {
       border-bottom: 1px solid var(--Neutral-200);
