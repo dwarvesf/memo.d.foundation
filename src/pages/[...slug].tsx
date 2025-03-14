@@ -22,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // This function is called at build time to generate all possible paths
   // When using "output: export" we need to pre-render all paths
   // that will be accessible in the exported static site
-  const contentDir = path.join(process.cwd(), 'content');
+  const contentDir = path.join(process.cwd(), 'public/content');
   
   const paths = getAllMarkdownFiles(contentDir).map(slugArray => ({
     params: { slug: slugArray }
