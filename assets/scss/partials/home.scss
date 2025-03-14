@@ -138,7 +138,6 @@
     &-desc {
       font-weight: 400;
       font-size: 14px;
-      color: var(--secondary-black);
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -186,7 +185,7 @@
       img {
         width: 64px;
         height: 64px;
-        border: 1px solid var(--secondary-medium-grey);
+        border: 1px solid var(--border-color-light);
         border-radius: 9999px;
         object-fit: cover;
         object-position: 50%;
@@ -195,7 +194,6 @@
     }
     &-title {
       padding: 0.625rem 0.75rem;
-      color: var(--secondary-black);
       font-size: 17px;
       font-weight: 600;
       line-height: 25px;
