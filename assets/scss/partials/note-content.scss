@@ -46,8 +46,8 @@
   }
 }
 
-.memo-content > *:first-child,
-.memo-content > *:first-child > *,
+.memo-content > *:first-child(:not(.profile)),
+.memo-content > *:first-child(:not(.profile)) > *,
 .note-title + * {
   margin-top: 0px !important;
 }
