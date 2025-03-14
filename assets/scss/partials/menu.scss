@@ -1,7 +1,7 @@
 nav.menu {
   position: sticky;
   top: 57px;
-  padding: 1.5rem 0rem 0rem 0.5rem;
+  padding: 1.3rem 0rem 0rem 0.5rem;
   white-space: nowrap;
   grid-area: nav;
   height: calc(100svh - 32px - 61px);
@@ -393,7 +393,6 @@ html[data-theme="dark"] {
 
 #sidebar {
   padding-left:80px;
-  width: 350px;
   z-index: 2;
 
   & > div {
