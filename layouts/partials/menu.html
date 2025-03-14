@@ -152,7 +152,6 @@
 {{ $authors := .Params.authors }}
 <nav x-data id="sidebar" :class="{ 'menu scrollbar-hidden': true, 'show': $store.sidebar.open }">
   <div>
-    {{ partial "tab-menu.html" . }}
     <section class="site-nav" x-data="{
           currentUrl: `{{ .RelPermalink }}`,
           get pinnedData() {

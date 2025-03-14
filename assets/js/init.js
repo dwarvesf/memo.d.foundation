@@ -143,7 +143,6 @@ const handleOutsideClick = (e) => {
 
   if (!sidebar.contains(e.target)) {
     if (btn.contains(e.target)) {
-      sidebar.classList.add("menu-reading-mode");
     } else {
       Alpine.store("sidebar").close();
     }
