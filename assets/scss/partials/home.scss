@@ -188,7 +188,7 @@
     margin-top: 0;
     white-space: nowrap;
   }
-  .icon-h-list-item:hover .icon-h-list-item-title {
+  &:hover .icon-h-list-item-title {
     color: var(--primary-color);
   }
 }
