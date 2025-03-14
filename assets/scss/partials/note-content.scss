@@ -317,7 +317,7 @@ html[data-reading-mode="true"] {
           display: flex;
           align-items: center;
           column-gap: 0.25rem;
-          color: var(--secondary-font-color-light);
+          color: var(--secondary-font-color-light-2);
         }
         font-weight: 400;
         display: flex;
@@ -561,7 +561,7 @@ html[data-theme="dark"] {
 .quote {
   margin-top: 5px;
   font-style: italic;
-  color: var(--secondary-font-color-light);
+  color: var(--secondary-font-color-light-2);
 }
 
 .col-3 {

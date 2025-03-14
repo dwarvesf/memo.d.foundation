@@ -57,11 +57,15 @@
 .cmd-idle-item-title {
   font-size: 14px;
   font-weight: 400;
-  color: #23252c;
+  color: var(--secondary-black);
+  html[data-theme='dark'] .cmd-idle-item:not(.cmd-idle-selected) & {
+    color: var( --secondary-font-color-light);
+  }
+ 
 }
 
 .cmd-idle-item-subtitle {
   font-size: 12px;
   font-weight: 400;
-  color: var(--secondary-font-color-light);
+  color: var(--secondary-foreground);
 }

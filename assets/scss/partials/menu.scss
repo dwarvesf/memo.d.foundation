@@ -312,10 +312,10 @@ html[data-theme="dark"] {
 
   details {
     li > a {
-      color: var(--secondary-font-color-light);
+      color: var(--secondary-font-color-light-2);
 
       :visited {
-        color: var(--secondary-font-color-light);
+        color: var(--secondary-font-color-light-2);
       }
     }
   }
