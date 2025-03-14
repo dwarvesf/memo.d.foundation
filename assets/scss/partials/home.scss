@@ -90,7 +90,7 @@
   &-item {
     display: flex;
     width: 100%;
-    border-bottom: 1px solid var(--border-color-light);
+    border-bottom: 1px solid var(--primary-border-color-light);
     main & {
       text-decoration: none;
       &:hover {
@@ -105,7 +105,7 @@
         height: 130px;
         object-fit: cover;
         border-radius: 4px;
-        border: 1px solid var(--border-color-light);
+        border: 1px solid var(--primary-border-color-light);
       }
     }
     &-body {
@@ -184,7 +184,7 @@
       img {
         width: 64px;
         height: 64px;
-        border: 1px solid var(--border-color-light);
+        border: 1px solid var(--primary-border-color-light);
         border-radius: 9999px;
         object-fit: cover;
         object-position: 50%;
@@ -243,7 +243,6 @@
 }
 
 html[data-theme="dark"] {
-
   .v-list {
     &-item {
       border-color: var(--border-color);
