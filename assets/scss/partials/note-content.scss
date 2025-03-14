@@ -91,7 +91,7 @@ code.button {
     "nav content pagenav"
     "nav content pagenav";
   grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-  grid-template-columns: 350px minmax(auto, var(--container-max-width)) 328px;
+  grid-template-columns: minmax(280px, 350px) minmax(600px, var(--container-max-width)) minmax(200px, 328px);
   column-gap: var(--column-gap);
   justify-content: center;
 
