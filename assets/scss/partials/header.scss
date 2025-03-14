@@ -489,9 +489,9 @@ nav.menu > .tab-menu {
   html[data-theme="dark"] {
     .tab-header {
       background-color: var(--primary-background-color);
-      border-bottom: 1px solid var(--primary-border-color);
+      border-bottom: 1px solid var(--border-color);
     }
-    
+
   }
 
   #sidebar-toggle {
@@ -560,7 +560,7 @@ html[data-theme="dark"] {
 }
 
 .header-logo {
-  
+
   display: none;
   align-items: center;
   justify-content: flex-start;
