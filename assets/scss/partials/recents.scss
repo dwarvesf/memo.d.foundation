@@ -32,6 +32,10 @@
   background-color: var(--primary-border-color-light);
 }
 
+html[data-theme='dark'] .cmd-idle-selected {
+  background-color: var(--primary-border-color);
+}
+
 .cmd-idle-icon {
   border-radius: 8px;
   width: 40px;
@@ -58,10 +62,9 @@
   font-size: 14px;
   font-weight: 400;
   color: var(--secondary-black);
-  html[data-theme='dark'] .cmd-idle-item:not(.cmd-idle-selected) & {
-    color: var( --secondary-font-color-light);
+  html[data-theme='dark'] .cmd-idle-item & {
+    color: var(--secondary-font-color-light-2);
   }
- 
 }
 
 .cmd-idle-item-subtitle {
