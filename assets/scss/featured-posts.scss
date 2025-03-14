@@ -24,7 +24,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: var(--secondary-font-color-light);
+    color: var(--secondary-font-color-light-2);
     font-size: 15px;
     line-height: 1.5;
   }
@@ -47,7 +47,7 @@ html[data-theme="dark"] {
     }
 
     .featured-post-authors {
-      color: var(--secondary-font-color-light);
+      color: var(--secondary-font-color-light-2);
     }
   }
 }
