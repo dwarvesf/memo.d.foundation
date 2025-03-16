@@ -1,26 +1,166 @@
 @import "tailwindcss";
+@import "tailwindcss/preflight" layer(base);
+@import "tailwindcss/utilities" layer(utilities);
+@config "../../tailwind.config.mjs";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FFFFFF;
+  --foreground: #1e1e1e;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="dark"] {
+  --background: #1e1e1e;
+  --foreground: #FFFFFF;
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Base colors */
+    --background: #ffffff;
+    --foreground: #171717;
+
+    /* Primary colors from Hugo variables.scss */
+    --primary: #e13f5e;
+    --primary-hover: #d95870;
+    --primary-foreground: #ffffff;
+    --primary-light: rgba(255, 160, 179, 0.125);
+
+    /* Border colors */
+    --border: #ededed;
+    --border-hover: #d1d1d1;
+    --input: #ededed;
+    --input-hover: #d1d1d1;
+
+    /* Card and container styling */
+    --card: #ffffff;
+    --card-foreground: #171717;
+    --card-hover: #f8f8f8;
+    --container-max-width: 770px;
+
+    /* Other UI elements */
+    --muted: #f8f8f8;
+    --muted-foreground: #636466;
+
+    /* Font */
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-sans: 'Public Sans', sans-serif;
+
+    /* Radius */
+    --radius: 0.5rem;
+  }
+
+  [data-theme="dark"] {
+    --background: #1e1e1e;
+    --foreground: #e8e8e8;
+
+    --border: #282828;
+    --border-hover: #3d3d3d;
+    --input: #282828;
+    --input-hover: #3d3d3d;
+
+    --card: #282828;
+    --card-foreground: #e8e8e8;
+    --card-hover: #303030;
+
+    --muted: #202020;
+    --muted-foreground: #9B9B9B;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    border-color: hsl(220, 13%, 91%);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    transition-property: color, background-color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  /* Markdown styling */
+  .prose :where(h1, h2, h3, h4, h5, h6) {
+    @apply font-bold scroll-mt-20;
+  }
+
+  .prose :where(pre) {
+    @apply font-mono text-sm p-4 rounded-md bg-muted;
+  }
+
+  .prose :where(code):not(:where(pre) *) {
+    @apply bg-muted px-1.5 py-0.5 rounded font-mono text-sm;
+  }
+
+  .prose :where(a) {
+    @apply text-primary hover:underline;
+  }
+
+  .prose img {
+    @apply rounded-md;
+  }
+
+  /* Line clamp utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Table of contents styling */
+.table-of-contents {
+  @apply text-sm my-4;
+}
+
+.table-of-contents ul {
+  @apply pl-4 space-y-1;
+}
+
+.table-of-contents a {
+  @apply text-muted-foreground hover:text-primary transition-colors no-underline block py-1;
+}
+
+/* Command palette styling */
+.command-palette-open .neko,
+.command-palette-open .neko2 {
+  @apply hidden;
+}
+
+/* Backlinks styling */
+.backlinks {
+  @apply mt-12 pt-6 border-t;
+  border-color: hsl(220, 13%, 91%);
+}
+
+.backlinks h2 {
+  @apply text-xl font-bold mb-4;
+}
+
+.backlinks ul {
+  @apply space-y-2;
+}
+
+.backlinks a {
+  @apply text-primary hover:underline;
+}
+
+/* Tag styling */
+.tag {
+  @apply inline-block px-3 py-1 text-xs bg-muted rounded-full hover:bg-muted/80 transition-colors;
+}
+
+/* Prevent content jumping when scrollbar appears */
+html {
+  scrollbar-gutter: stable;
 }

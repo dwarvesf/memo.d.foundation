@@ -7,11 +7,15 @@ import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
 import { getBacklinks } from '../lib/content/backlinks';
 
+// Import components
+import { RootLayout, ContentLayout } from '../components';
+
 interface ContentPageProps {
   content: string;
-  frontmatter: Record<string, string | number | boolean | null>;
+  frontmatter: Record<string, any>;
   slug: string[];
   backlinks: string[];
+  tableOfContents?: string;
 }
 
 /**
@@ -50,7 +54,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     // Get markdown content and frontmatter
-    const { content, frontmatter } = await getMarkdownContent(filePath);
+    const { content, frontmatter, tableOfContents } = await getMarkdownContent(filePath);
     
     // Get backlinks
     const backlinks = await getBacklinks(slug);
@@ -61,6 +65,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         frontmatter: JSON.parse(JSON.stringify(frontmatter)), // Ensure serializable
         slug,
         backlinks,
+        tableOfContents: tableOfContents || null,
       },
     };
   } catch (error) {
@@ -69,33 +74,50 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 };
 
-export default function ContentPage({ content, frontmatter, slug, backlinks }: ContentPageProps) {
-  // Create a breadcrumb from the slug
-  const breadcrumb = slug.join(' / ');
+export default function ContentPage({ 
+  content, 
+  frontmatter, 
+  slug, 
+  backlinks, 
+  tableOfContents 
+}: ContentPageProps) {
+  // Format metadata for display
+  const metadata = {
+    created: frontmatter.date ? new Date(frontmatter.date).toLocaleDateString() : undefined,
+    updated: frontmatter.lastmod ? new Date(frontmatter.lastmod).toLocaleDateString() : undefined,
+    author: frontmatter.authors?.[0],
+    coAuthors: frontmatter.authors?.slice(1),
+    tags: frontmatter.tags,
+    folder: slug.slice(0, -1).join('/'),
+    // Calculate reading time based on word count (average reading speed: 200 words per minute)
+    wordCount: content.split(/\s+/).length,
+    readingTime: `${Math.ceil(content.split(/\s+/).length / 200)} min read`,
+  };
+
+  // Format backlinks for display
+  const formattedBacklinks = backlinks.map(backlink => ({
+    title: backlink.split('/').pop() || backlink,
+    url: `/${backlink}`
+  }));
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-8">
-      <div className="mb-6">
-        <span className="inline-block px-2 py-1 text-sm text-gray-600 bg-gray-100 rounded dark:bg-gray-800 dark:text-gray-300">
-          {breadcrumb}
-        </span>
-      </div>
-
-      {frontmatter.title && <h1 className="text-3xl font-bold mb-6">{frontmatter.title}</h1>}
-
-      {/* Render the HTML content safely */}
-      <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
-
-      <div className="mt-12">
-        <h2 className="text-xl font-bold mb-4">Backlinks</h2>
-        <ul>
-          {backlinks.map((backlink, index) => (
-            <li key={index}>
-              <a href={`/${backlink}`} className="text-blue-600 dark:text-blue-400 hover:underline">{backlink}</a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <RootLayout
+      title={frontmatter.title || 'Dwarves Memo'}
+      description={frontmatter.description}
+      image={frontmatter.image}
+    >
+      <ContentLayout
+        title={frontmatter.title}
+        description={frontmatter.description}
+        metadata={metadata}
+        tableOfContents={tableOfContents}
+        backlinks={formattedBacklinks}
+        hideFrontmatter={frontmatter.hide_frontmatter}
+        hideTitle={frontmatter.hide_title}
+      >
+        {/* Render the HTML content safely */}
+        <div dangerouslySetInnerHTML={{ __html: content }} />
+      </ContentLayout>
+    </RootLayout>
   );
 }
