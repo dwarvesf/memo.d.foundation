@@ -33,22 +33,22 @@ interface HomePageProps {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const contentDir = path.join(process.cwd(), 'public/content');
-    
+
     // Get all markdown files
     const allPaths = getAllMarkdownFiles(contentDir);
-    
+
     // Get the most recent posts (limit to 6)
     const recentPostsPromises = allPaths
       .slice(0, 10) // Get the first 10 files to process
       .map(async (slugArray) => {
         const filePath = path.join(contentDir, ...slugArray) + '.md';
-        
+
         if (!fs.existsSync(filePath)) {
           return null;
         }
-        
+
         const { frontmatter } = await getMarkdownContent(filePath);
-        
+
         return {
           title: frontmatter.title || slugArray[slugArray.length - 1],
           slug: '/' + slugArray.join('/'),
@@ -57,7 +57,7 @@ export const getStaticProps: GetStaticProps = async () => {
           tags: frontmatter.tags,
         };
       });
-    
+
     const recentPosts = (await Promise.all(recentPostsPromises))
       .filter(post => post !== null)
       .sort((a, b) => {
@@ -86,17 +86,17 @@ export default function Home({ featuredPosts }: HomePageProps) {
   return (
     <RootLayout title="Dwarves Memo - Home" description="Knowledge sharing platform for Dwarves Foundation">
       <div className={`${geistSans.variable} ${geistMono.variable}`}>
-        <section className="py-12 md:py-20">
+        <section className="py-12 md:py-12">
           <div className="container max-w-5xl mx-auto px-4">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Dwarves Memo</h1>
             <p className="text-xl text-muted-foreground mb-12">
               A knowledge sharing platform for the Dwarves Foundation community
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredPosts.map((post, index) => (
-                <Link 
-                  key={post.slug} 
+                <Link
+                  key={post.slug}
                   href={post.slug}
                   className="block group"
                 >
@@ -115,13 +115,13 @@ export default function Home({ featuredPosts }: HomePageProps) {
                         {post.title}
                       </h3>
                     </div>
-                    
+
                     {post.description && (
                       <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
                         {post.description}
                       </p>
                     )}
-                    
+
                     {post.date && (
                       <div className="text-xs text-muted-foreground mt-auto">
                         {new Date(post.date).toLocaleDateString()}
@@ -133,37 +133,37 @@ export default function Home({ featuredPosts }: HomePageProps) {
             </div>
           </div>
         </section>
-        
+
         <section className="py-12 bg-muted">
           <div className="container max-w-5xl mx-auto px-4 text-center">
             <h2 className="text-2xl font-bold mb-8">Explore by Category</h2>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Link 
+              <Link
                 href="/consulting"
                 className="p-6 bg-card rounded-lg border hover:border-primary transition-colors"
               >
                 <div className="text-xl font-medium mb-2">Consulting</div>
                 <p className="text-sm text-muted-foreground">Case studies and insights</p>
               </Link>
-              
-              <Link 
+
+              <Link
                 href="/earn"
                 className="p-6 bg-card rounded-lg border hover:border-primary transition-colors"
               >
                 <div className="text-xl font-medium mb-2">Earn</div>
                 <p className="text-sm text-muted-foreground">Bounties and rewards</p>
               </Link>
-              
-              <Link 
+
+              <Link
                 href="/careers/hiring"
                 className="p-6 bg-card rounded-lg border hover:border-primary transition-colors"
               >
                 <div className="text-xl font-medium mb-2">Hiring</div>
                 <p className="text-sm text-muted-foreground">Join our team</p>
               </Link>
-              
-              <Link 
+
+              <Link
                 href="/playground"
                 className="p-6 bg-card rounded-lg border hover:border-primary transition-colors"
               >

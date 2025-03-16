@@ -146,7 +146,7 @@ const CommandPalette: React.FC = () => {
   
   return (
     <div className="command-palette relative">
-      {/* Trigger button */}
+      {/* Trigger button with search icon from Hugo */}
       <button 
         className="flex items-center justify-between w-64 h-10 px-3 text-sm rounded-md border hover:border-primary transition-colors"
         style={{ backgroundColor: 'var(--muted)' }}
@@ -154,24 +154,21 @@ const CommandPalette: React.FC = () => {
       >
         <div className="flex items-center">
           <svg 
-            className="mr-2 text-muted-foreground" 
-            width="16" 
-            height="16" 
-            viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="20" 
+            height="20" 
+            viewBox="0 0 16 16" 
             fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
+            className="search-icon mr-2 text-muted-foreground"
           >
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <circle cx="6.88881" cy="6.8889" r="5.55556" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M11.3333 11.3333L14.6666 14.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <span className="text-muted-foreground">Search...</span>
         </div>
         <div className="flex items-center text-xs text-muted-foreground">
           <kbd className="px-1.5 py-0.5 border rounded" style={{ backgroundColor: 'var(--background)' }}>
-            {navigator.platform.indexOf('Mac') === 0 ? '⌘' : 'Ctrl'}
+            ⌘/Ctrl
           </kbd>
           <span className="mx-0.5">+</span>
           <kbd className="px-1.5 py-0.5 border rounded" style={{ backgroundColor: 'var(--background)' }}>K</kbd>
