@@ -101,10 +101,9 @@ code.button {
       "tabmenu tabmenu tabmenu"
       "nav content toc"
       "nav content toc";
-    grid-template-columns: minmax(280px, 350px) minmax(
-        600px,
-        var(--container-max-width)
-      ) minmax(200px, 328px);
+    grid-template-columns:
+      minmax(280px, 350px) minmax(600px, var(--container-max-width))
+      minmax(200px, 328px);
   }
   .pagenav {
     grid-area: pagenav;
@@ -117,7 +116,9 @@ code.button {
     width: 100%;
     max-width: 700px;
     position: relative;
-
+    html[data-reading-mode="true"] & {
+      display: none;
+    }
     a,
     a:focus {
       outline: none;
