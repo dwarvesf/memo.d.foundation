@@ -30,3 +30,34 @@
     background-color: var(--secondary-font-color);
   }
 }
+
+#wallet-dropdown {
+  flex-direction: column;
+  border-radius: 0.5rem;
+  overflow:hidden;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+
+  > div {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    padding: 0.875rem 0.675rem;
+    transition: background-color 0.1s ease;
+
+    &:hover {
+      background-color: var(--secondary-font-color);
+    }
+    
+    > img {
+      width: 20px;
+      height: 20px;
+      border-radius: 0.25rem;
+    }
+
+    > span {
+      font-size: 0.875rem;
+    }
+  }
+}
