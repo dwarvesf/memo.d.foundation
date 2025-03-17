@@ -52,7 +52,19 @@
     &:hover {
       color: var(--primary-color);
     }
-
+    // fix: both hover and active item highlighted on mobile
+    @media (hover: none) {
+      &.heading-level-1 {
+        color: var(--primary-font-color-light);
+      }
+      &.heading-level-2,
+      &.heading-level-3,
+      &.heading-level-4,
+      &.heading-level-5,
+      &.heading-level-6 {
+        color: var(--secondary-font-color-light-var2);
+      }
+    }
     &.active {
       color: var(--primary-color);
     }
@@ -175,3 +187,4 @@ html[data-theme="dark"] .toc .toc-modal{
   background: var(--secondary-background-color);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
+
