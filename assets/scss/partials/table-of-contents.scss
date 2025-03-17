@@ -53,7 +53,7 @@
       color: var(--primary-color);
     }
 
-    &.text-active {
+    &.active {
       color: var(--primary-color);
     }
   }
@@ -79,7 +79,7 @@ html[data-theme="dark"] {
         color: var(--primary-font-color);
       }
 
-      &.text-active {
+      &.active {
         color: var(--primary-color);
       }
     }
@@ -92,24 +92,46 @@ html{
 
 .toc {
   grid-area: toc;
+  position: relative;
+  z-index: 1;
+  width: 82px;
 }
 .toc .toc-indicators {
   position: fixed;
   top: var(--header-height);
   right: 0;
-  ul {
+  padding: 0px 8px 24px 20px;
+  cursor: pointer;
+  ul{
+    --indicator-width: 20px;
+    ul{
+      --indicator-width: 16px;
+      ul{
+        --indicator-width: 12px;
+        ul{
+          --indicator-width: 8px;
+          ul{
+            --indicator-width: 4px;
+          }
+        }
+      }
+    }
+  }
+  ul,li {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 0px 8px 24px 20px;
     height: 100%;
     list-style: none;
+    padding-left: 0;
+    text-align: right;
+    align-items: flex-end;
   }
   a {
     display: flex;
     background-color:var(--primary-border-color-light);
     height: 2px;
-    width: 16px;
+    width: var(--indicator-width);
     box-shadow: none;
     border-radius: 2px;
     margin-left: 0px;
@@ -118,4 +140,31 @@ html{
       background-color: var(--primary-border-color);
     }
   }
+}
+.toc .toc-modal{
+position: fixed;
+  top: var(--header-height);
+  right: 0;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  margin: 8px;
+  background: white;
+  padding: 1.5rem 10px;
+
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(12px);
+  transition: all 0.3s ease;
+  ul{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    list-style: none;
+  }
+}
+
+.toc-indicators:hover ~ .toc-modal,.toc-modal:hover,.toc-modal.open{
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0);
 }

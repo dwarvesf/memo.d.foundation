@@ -554,7 +554,7 @@
     </div>
     {{ end }}
     {{ partial "table-of-content.html" . }}
-  
+
     <main x-data="{
       currentUrl: `{{ .RelPermalink }}`,
       title: `{{ .Title }}`,
@@ -610,3 +610,4 @@
       {{ if .Params.toc -}}
       <aside class="toc">{{ .TableOfContents }}</aside>
       {{ end }}
+     
