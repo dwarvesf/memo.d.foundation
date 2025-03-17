@@ -145,12 +145,11 @@ html{
 position: fixed;
   top: var(--header-height);
   right: 0;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-  0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   margin: 8px;
   background: white;
   padding: 1.5rem 10px;
-
+  border-radius: 4px;
   visibility: hidden;
   opacity: 0;
   transform: translateX(12px);
@@ -167,4 +166,15 @@ position: fixed;
   visibility: visible;
   opacity: 1;
   transform: translateX(0);
+}
+
+html[data-theme="dark"] .toc .toc-indicators a{
+  background-color:var(--primary-border-color);
+}
+html[data-theme="dark"] .toc .toc-indicators a.active{
+  background-color:var(--primary-border-color-light);
+}
+html[data-theme="dark"] .toc .toc-modal{
+  background: var(--secondary-background-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
