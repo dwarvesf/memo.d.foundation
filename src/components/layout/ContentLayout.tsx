@@ -31,7 +31,6 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
   title,
   description,
   metadata,
-  // tableOfContents not used in component body
   backlinks = [],
   hideFrontmatter = false,
   hideTitle = false,
@@ -51,18 +50,18 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
           {description && <p className="text-muted-foreground">{description}</p>}
         </div>
       )}
-      
+
       {/* Main content */}
       <div className="prose dark:prose-invert max-w-none">
         {children}
       </div>
-      
+
       {/* Tags */}
       {metadata?.tags && metadata.tags.length > 0 && (
         <div className="mt-8 flex flex-wrap gap-2">
           {metadata.tags.map((tag) => (
-            <Link 
-              key={tag} 
+            <Link
+              key={tag}
               href={`/tags/${tag.toLowerCase()}`}
               className="memo-tag"
             >
@@ -71,7 +70,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
           ))}
         </div>
       )}
-      
+
       {/* Backlinks - using Hugo styling */}
       {backlinks.length > 0 && (
         <div className="backlinks">
@@ -79,7 +78,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
           <ul>
             {backlinks.map((link, index) => (
               <li key={index}>
-                <Link 
+                <Link
                   href={link.url}
                   className="text-primary hover:underline"
                 >
@@ -90,7 +89,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
           </ul>
         </div>
       )}
-      
+
       {/* Table of Contents and Metadata are rendered in the right sidebar via the RootLayout */}
       {/* This will be injected into the pagenav area by the parent component */}
       {!hideFrontmatter && metadata && (
@@ -109,7 +108,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                     {metadata.created}
                   </li>
                 )}
-                
+
                 {metadata.updated && metadata.updated !== metadata.created && (
                   <li>
                     <span>
@@ -119,7 +118,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                     {metadata.updated}
                   </li>
                 )}
-                
+
                 {metadata.author && (
                   <li>
                     <span>
@@ -131,7 +130,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                     </Link>
                   </li>
                 )}
-                
+
                 {metadata.coAuthors && metadata.coAuthors.length > 0 && (
                   <li>
                     <span>
@@ -148,7 +147,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                     ))}
                   </li>
                 )}
-                
+
                 {metadata.tags && metadata.tags.length > 0 && (
                   <li className="tags">
                     <span>
@@ -166,7 +165,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                   </li>
                 )}
               </ul>
-              
+
               {metadata.folder && (
                 <>
                   <div>Location</div>
@@ -181,7 +180,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                   </ul>
                 </>
               )}
-              
+
               <div>Stats</div>
               <ul className="reading-stats">
                 {metadata.wordCount && (
@@ -190,21 +189,21 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                     {metadata.wordCount.toLocaleString()}
                   </li>
                 )}
-                
+
                 {metadata.characterCount && (
                   <li className="span">
                     <span>Characters:</span>
                     {metadata.characterCount.toLocaleString()}
                   </li>
                 )}
-                
+
                 {metadata.blocksCount && (
                   <li className="span">
                     <span>Blocks:</span>
                     {metadata.blocksCount.toLocaleString()}
                   </li>
                 )}
-                
+
                 {metadata.readingTime && (
                   <li className="span">
                     <span>Est reading Time:</span>

@@ -79,7 +79,8 @@ export default function RootLayout({
       mediaQuery.removeEventListener('change', handleChange);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [theme, toggleReadingMode]);
+    // eslint-disable-next-line
+  }, []);
 
   // Update theme preferences when theme state changes
   useEffect(() => {

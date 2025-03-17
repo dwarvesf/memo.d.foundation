@@ -12,7 +12,8 @@ import { RootLayout, ContentLayout } from '../components';
 
 interface ContentPageProps {
   content: string;
-  frontmatter: Record<string, unknown>;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  frontmatter: Record<string, any>;
   slug: string[];
   backlinks: string[];
   tableOfContents?: string;
@@ -27,7 +28,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // When using "output: export" we need to pre-render all paths
   // that will be accessible in the exported static site
   const contentDir = path.join(process.cwd(), 'public/content');
-  
+
   const paths = getAllMarkdownFiles(contentDir).map(slugArray => ({
     params: { slug: slugArray }
   }));
@@ -54,8 +55,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     // Get markdown content and frontmatter
-    const { content, frontmatter, tableOfContents } = await getMarkdownContent(filePath);
-    
+    const { content, frontmatter} = await getMarkdownContent(filePath);
+
     // Get backlinks
     const backlinks = await getBacklinks(slug);
 
@@ -65,7 +66,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         frontmatter: JSON.parse(JSON.stringify(frontmatter)), // Ensure serializable
         slug,
         backlinks,
-        tableOfContents: tableOfContents || null,
       },
     };
   } catch (error) {
@@ -74,12 +74,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 };
 
-export default function ContentPage({ 
-  content, 
-  frontmatter, 
-  slug, 
-  backlinks, 
-  tableOfContents 
+export default function ContentPage({
+  content,
+  frontmatter,
+  slug,
+  backlinks,
 }: ContentPageProps) {
   // Format metadata for display
   const metadata = {
@@ -110,7 +109,6 @@ export default function ContentPage({
         title={frontmatter.title}
         description={frontmatter.description}
         metadata={metadata}
-        tableOfContents={tableOfContents}
         backlinks={formattedBacklinks}
         hideFrontmatter={frontmatter.hide_frontmatter}
         hideTitle={frontmatter.hide_title}
