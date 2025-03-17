@@ -94,7 +94,6 @@ html{
   grid-area: toc;
   position: relative;
   z-index: 1;
-  width: 82px;
 }
 .toc .toc-indicators {
   position: fixed;
@@ -105,14 +104,12 @@ html{
   ul{
     --indicator-width: 20px;
     ul{
-      --indicator-width: 16px;
+      --indicator-width: 15px;
       ul{
-        --indicator-width: 12px;
+        --indicator-width: 10px;
         ul{
-          --indicator-width: 8px;
-          ul{
-            --indicator-width: 4px;
-          }
+          --indicator-width: 5px;
+          
         }
       }
     }

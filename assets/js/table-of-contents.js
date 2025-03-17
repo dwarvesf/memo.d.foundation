@@ -87,12 +87,15 @@ const initScroller = () => {
 };
 
 const handleClickOnIndicator = (e) => {
-  const tocModal = document.querySelector(".toc-modal");
-  if (!tocModal) return;
   e.preventDefault();
-  tocModal?.classList.toggle("open");
+
+  // const tocModal = document.querySelector(".toc-modal");
+  // if (!tocModal) return;
+  // e.preventDefault();
+  // tocModal?.classList.toggle("open");
 }
 const closeTocModal = (e) => {
+  console.log(document.querySelector(".toc-modal"))
   document.querySelector(".toc-modal")?.classList.remove("open")
 }
 document.addEventListener("DOMContentLoaded", () => {
@@ -101,8 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const tocIndicatorsEl = document.querySelector(".toc-indicators");
   tocIndicatorsEl.addEventListener("click", handleClickOnIndicator);
-  document.addEventListener("click", (e) => {
-    if (tocIndicatorsEl.contains(e.target)) return;
-    closeTocModal(e);
-  });
+  // document.addEventListener("click", (e) => {
+  //   if (tocIndicatorsEl.contains(e.target)) return;
+  //   console.log(e.target)
+  //   closeTocModal(e);
+  // });
 });

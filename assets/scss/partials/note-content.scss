@@ -615,8 +615,8 @@ html[data-theme="dark"] {
       "content toc"
       "nav nav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 1fr 0px;
-    gap: calc(var(--column-gap) / 3);
+    grid-template-columns: 1fr 42px;
+    column-gap: 0;
   }
 
   .grid main {
