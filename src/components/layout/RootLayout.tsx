@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import Sidebar from './Sidebar';
+// Sidebar imported but not used currently
 import CommandPalette from './CommandPalette';
 
 interface RootLayoutProps {
@@ -21,6 +21,15 @@ export default function RootLayout({
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
   const [readingMode, setReadingMode] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // Define toggleReadingMode before it's used in useEffect
+  const toggleReadingMode = useCallback(() => {
+    const newReadingMode = !readingMode;
+    setReadingMode(newReadingMode);
+    if (mounted) {
+      localStorage.setItem('readingMode', newReadingMode.toString());
+    }
+  }, [readingMode, mounted]);
 
   // Only use client-side features after component is mounted
   useEffect(() => {
@@ -70,7 +79,7 @@ export default function RootLayout({
       mediaQuery.removeEventListener('change', handleChange);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [theme, toggleReadingMode]);
 
   // Update theme preferences when theme state changes
   useEffect(() => {
@@ -91,14 +100,6 @@ export default function RootLayout({
     const currentIndex = themes.indexOf(theme);
     const newTheme = themes[(currentIndex + 1) % themes.length];
     setTheme(newTheme);
-  };
-
-  const toggleReadingMode = () => {
-    const newReadingMode = !readingMode;
-    setReadingMode(newReadingMode);
-    if (mounted) {
-      localStorage.setItem('readingMode', newReadingMode.toString());
-    }
   };
 
   return (

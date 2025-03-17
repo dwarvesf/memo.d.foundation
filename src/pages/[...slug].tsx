@@ -12,7 +12,7 @@ import { RootLayout, ContentLayout } from '../components';
 
 interface ContentPageProps {
   content: string;
-  frontmatter: Record<string, any>;
+  frontmatter: Record<string, unknown>;
   slug: string[];
   backlinks: string[];
   tableOfContents?: string;

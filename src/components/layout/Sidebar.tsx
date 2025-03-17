@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 // Define navigation links
 const navLinks = [
@@ -42,7 +41,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   };
 
   // Close sidebar when clicking outside on mobile
-  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleClickOutside = () => {
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
       setIsOpen(false);
     }

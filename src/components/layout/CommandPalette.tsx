@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 
 interface SearchResult {
@@ -25,11 +25,11 @@ const CommandPalette: React.FC = () => {
   const router = useRouter();
 
   // Open/close the command palette
-  const toggleCommandPalette = () => {
+  const toggleCommandPalette = useCallback(() => {
     setIsOpen(!isOpen);
     setQuery('');
     setResults([]);
-  };
+  }, [isOpen]);
 
   // Close when clicking outside
   const handleClickOutside = (e: MouseEvent) => {
@@ -86,7 +86,7 @@ const CommandPalette: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen, results, selectedIndex, router]);
+  }, [isOpen, results, selectedIndex, router, toggleCommandPalette]);
   
   // Focus input when opened
   useEffect(() => {

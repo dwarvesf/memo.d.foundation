@@ -31,7 +31,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
   title,
   description,
   metadata,
-  tableOfContents,
+  // tableOfContents not used in component body
   backlinks = [],
   hideFrontmatter = false,
   hideTitle = false,
