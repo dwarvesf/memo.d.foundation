@@ -431,16 +431,12 @@
           {{ end }}
       {{ end }}
     {{ end }}
+    {{ if and (eq .Kind "page") (not (hasPrefix .Path "/contributor")) }}
     <div class="pagenav" x-data="{{ $data | jsonify }}">
       <div class="container">
         <div class="always-on-right-sidebar">
-          <div>
-            <label class="nav-label">On this page</label>
-            {{ .TableOfContents }}
-          </div>
-          {{ if and (eq .Kind "page") (not (hasPrefix .Path "/contributor")) }}
+        
           <div class="metadata">
-            <hr>
             <div class="stats">
               <div>Properties</div>
               <ul class="reading-properties">
@@ -552,10 +548,13 @@
               </ul>
             </div>
           </div>
-          {{ end }}
+         
         </div>
       </div>
     </div>
+    {{ end }}
+    {{ partial "table-of-content.html" . }}
+  
     <main x-data="{
       currentUrl: `{{ .RelPermalink }}`,
       title: `{{ .Title }}`,

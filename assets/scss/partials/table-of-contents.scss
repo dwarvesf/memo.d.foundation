@@ -1,8 +1,8 @@
 .table-of-contents-tree {
   max-width: 260px;
 
-  > ul > li:first-child{
-    margin-top: 0!important;
+  > ul > li:first-child {
+    margin-top: 0 !important;
   }
 
   ul {
@@ -20,7 +20,6 @@
     text-decoration: none !important;
     font-size: 13px;
     transition: color 0.2s ease;
-
 
     // Default link style (h1)
     &.heading-level-1 {
@@ -83,6 +82,40 @@ html[data-theme="dark"] {
       &.text-active {
         color: var(--primary-color);
       }
+    }
+  }
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+.toc {
+  grid-area: toc;
+}
+.toc .toc-indicators {
+  position: fixed;
+  top: var(--header-height);
+  right: 0;
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0px 8px 24px 20px;
+    height: 100%;
+    list-style: none;
+  }
+  a {
+    display: flex;
+    background-color:var(--primary-border-color-light);
+    height: 2px;
+    width: 16px;
+    box-shadow: none;
+    border-radius: 2px;
+    margin-left: 0px;
+    color: transparent;
+    &.active{
+      background-color: var(--primary-border-color);
     }
   }
 }

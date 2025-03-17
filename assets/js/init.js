@@ -149,6 +149,7 @@ const handleOutsideClick = (e) => {
   }
 
   const graphContainer = document.querySelector("#graph-container");
+  if(!graphContainer) return;
   const svg = graphContainer.querySelector("svg");
   const graphBtn = graphContainer.querySelector("button");
   if (!svg.contains(e.target) && !graphBtn.contains(e.target)) {

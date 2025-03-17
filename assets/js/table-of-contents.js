@@ -1,6 +1,5 @@
 const initTableOfContents = () => {
-  const tableOfContents = document.getElementById('TableOfContents');
-
+  const tableOfContents = document.getElementById('TableOfCsontents');
   if (!tableOfContents) return;
 
   // Add tree-like styling
@@ -42,14 +41,14 @@ const getHeadingLevel = (link) => {
 };
 
 const initScroller = () => {
-  const pagenav = document.querySelectorAll("#TableOfContents a");
+  const pagenav = document.querySelectorAll(".toc a");
 
   const update = (nav) => {
     pagenav.forEach((nav) => {
-      nav.classList.remove("text-active");
+      nav.classList.remove("active");
       nav.setAttribute("active", "false");
     });
-    nav.classList.add("text-active");
+    nav.classList.add("active");
     nav.setAttribute("active", "true");
     nav.focus({ preventScroll: true });
   };
@@ -62,7 +61,7 @@ const initScroller = () => {
     const id = target.id;
     if (!id) return;
 
-    const nav = document.querySelector(`#TableOfContents a[href='#${id}']`);
+    const nav = document.querySelector(`.toc a[href='#${id}']`);
     if (!nav) return;
 
     update(nav);
@@ -76,7 +75,7 @@ const initScroller = () => {
   for (const [i, nav] of pagenav.entries()) {
     if (!nav) continue;
     if (i === 0) {
-      nav.classList.add("text-active");
+      nav.classList.add("active");
       nav.setAttribute("active", "true");
     }
     nav.addEventListener("click", () => {
