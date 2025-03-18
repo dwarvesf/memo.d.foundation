@@ -1,8 +1,8 @@
 .table-of-contents-tree {
   max-width: 260px;
 
-  > ul > li:first-child{
-    margin-top: 0!important;
+  > ul > li:first-child {
+    margin-top: 0 !important;
   }
 
   ul {
@@ -20,24 +20,25 @@
     text-decoration: none !important;
     font-size: 13px;
     transition: color 0.2s ease;
-
-
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition: all 0.15s ease;
     // Default link style (h1)
     &.heading-level-1 {
       color: var(--primary-font-color-light);
-      padding-left: 0;
+      margin-left: 0;
     }
 
     // h2 style
     &.heading-level-2 {
       color: var(--secondary-font-color-light-var2);
-      padding-left: 1rem;
+      margin-left: 1rem;
     }
 
     // h3 style
     &.heading-level-3 {
       color: var(--secondary-font-color-light-var2);
-      padding-left: 2rem;
+      margin-left: 2rem;
       font-size: 0.9rem;
     }
 
@@ -46,15 +47,28 @@
     &.heading-level-5,
     &.heading-level-6 {
       color: var(--secondary-font-color-light-var2);
-      padding-left: 3rem;
+      margin-left: 3rem;
       font-size: 0.9rem;
     }
 
     &:hover {
-      color: var(--primary-color);
+      background-color: var(--tertiary-background-color-light);
+      color: var(--primary-font-color-light);
     }
-
-    &.text-active {
+    // fix: both hover and active item highlighted on mobile
+    @media (hover: none) {
+      &.heading-level-1 {
+        color: var(--primary-font-color-light);
+      }
+      &.heading-level-2,
+      &.heading-level-3,
+      &.heading-level-4,
+      &.heading-level-5,
+      &.heading-level-6 {
+        color: var(--secondary-font-color-light-var2);
+      }
+    }
+    &.active {
       color: var(--primary-color);
     }
   }
@@ -76,13 +90,137 @@ html[data-theme="dark"] {
         color: var(--secondary-font-color);
       }
 
-      &:hover {
-        color: var(--primary-font-color);
-      }
-
-      &.text-active {
+      &.active {
         color: var(--primary-color);
       }
     }
   }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.toc {
+  grid-area: toc;
+  position: relative;
+  z-index: 1;
+}
+.toc .toc-indicators {
+  position: fixed;
+  top: var(--header-height);
+  margin-top: 60px;
+  right: 0;
+  padding: 0px 8px 24px 20px;
+  cursor: pointer;
+  ul {
+    --indicator-width: 20px;
+    ul {
+      --indicator-width: 15px;
+      ul {
+        --indicator-width: 10px;
+        ul {
+          --indicator-width: 5px;
+        }
+      }
+    }
+  }
+  ul,
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    list-style: none;
+    padding-left: 0;
+    text-align: right;
+    align-items: flex-end;
+  }
+  a {
+    display: flex;
+    background-color: var(--primary-border-color-light);
+    height: 2px;
+    width: var(--indicator-width);
+    box-shadow: none;
+    border-radius: 2px;
+    margin-left: 0px;
+    color: transparent;
+    &.active {
+      background-color: var(--primary-border-color);
+    }
+  }
+}
+
+.toc .toc-modal {
+  position: fixed;
+  top: var(--header-height);
+  right: 0;
+  box-shadow: 0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814;
+  margin: 8px;
+  margin-top: 68px;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(12px);
+  transition: all 0.3s ease;
+  ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+  }
+  a {
+    line-height: 1rem;
+  }
+}
+
+.toc-indicators:hover ~ .toc-modal,
+.toc-modal:hover,
+.toc-modal.open {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+html[data-theme="dark"] .toc .toc-indicators a {
+  background-color: var(--border-color);
+  &.active {
+    background-color: var(--primary-border-color-light);
+  }
+}
+html[data-theme="dark"] .toc .toc-modal {
+  background: var(--secondary-background-color);
+  a {
+    &:hover {
+      background-color: var(--tertiary-background-color);
+      color: var(--primary-color);
+
+    }
+    @media (hover: none) {
+      &.heading-level-1 {
+        color: var(--primary-font-color);
+      }
+
+      &.heading-level-2,
+      &.heading-level-3,
+      &.heading-level-4,
+      &.heading-level-5,
+      &.heading-level-6 {
+        color: var(--secondary-font-color);
+      }
+
+      &.active {
+        color: var(--primary-color);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .toc .toc-indicators {
+    padding-left: 4px;
+  }
+
+
 }

@@ -1,6 +1,5 @@
 const initTableOfContents = () => {
-  const tableOfContents = document.getElementById('TableOfContents');
-
+  const tableOfContents = document.getElementById('toc-modal');
   if (!tableOfContents) return;
 
   // Add tree-like styling
@@ -42,16 +41,17 @@ const getHeadingLevel = (link) => {
 };
 
 const initScroller = () => {
-  const pagenav = document.querySelectorAll("#TableOfContents a");
-
-  const update = (nav) => {
+  const pagenav = document.querySelectorAll(".toc a");
+  const update = (navs) => {
     pagenav.forEach((nav) => {
-      nav.classList.remove("text-active");
+      nav.classList.remove("active");
       nav.setAttribute("active", "false");
     });
-    nav.classList.add("text-active");
+    navs.forEach((nav) => {
+    nav.classList.add("active");
     nav.setAttribute("active", "true");
-    nav.focus({ preventScroll: true });
+    }
+    );
   };
 
   const cb = (entries) => {
@@ -62,34 +62,41 @@ const initScroller = () => {
     const id = target.id;
     if (!id) return;
 
-    const nav = document.querySelector(`#TableOfContents a[href='#${id}']`);
-    if (!nav) return;
+    const navs = document.querySelectorAll(`.toc a[href='#${id}']`);
+    if (!navs?.length) return;
 
-    update(nav);
+    update(navs);
   };
 
   const ob = new IntersectionObserver(cb, {
     rootMargin: "-10% 0px -50% 0px",
     threshold: 0.5,
   });
-
-  for (const [i, nav] of pagenav.entries()) {
-    if (!nav) continue;
-    if (i === 0) {
-      nav.classList.add("text-active");
+  const defaultActiveHref = pagenav[0]?.href;
+  pagenav.forEach((nav) => {
+    if (!nav) return;
+    if (nav.href === defaultActiveHref) {
+      nav.classList.add("active");
       nav.setAttribute("active", "true");
     }
-    nav.addEventListener("click", () => {
-      update(nav);
-    });
     nav.classList.add("transition", "duration-200");
     const el = document.getElementById(`${nav.href.split("#")[1]}`);
     if (!(el instanceof Element)) return;
     ob.observe(el);
-  }
+  });
 };
 
+const handleClickOnIndicator = (e) => {
+  e.preventDefault();
+}
+const closeTocModal = (e) => {
+  console.log(document.querySelector(".toc-modal"))
+  document.querySelector(".toc-modal")?.classList.remove("open")
+}
 document.addEventListener("DOMContentLoaded", () => {
   initTableOfContents();
   initScroller();
+
+  const tocIndicatorsEl = document.querySelector(".toc-indicators");
+  tocIndicatorsEl.addEventListener("click", handleClickOnIndicator);
 });

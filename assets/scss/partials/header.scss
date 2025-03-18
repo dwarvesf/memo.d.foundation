@@ -3,7 +3,7 @@
   align-items: center;
   padding: 10px 20px;
   z-index: 50;
-  position: fixed;
+  position: relative;
   width: auto;
   right: 0;
   max-width: 100vw;
@@ -12,7 +12,6 @@
   box-sizing: border-box;
   column-gap: 10px;
   justify-content: flex-end;
-
   .header-spacer {
     flex: 1;
   }
@@ -95,7 +94,6 @@
 }
 
 .tab-header {
-  position: relative;
 
   & > .tab-menu {
     opacity: 0;
@@ -612,11 +610,25 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] {
+ 
   .header-logo span {
     color: #dadada;
   }
 
   .header-divider {
     background-color: var(--border-color);
+  }
+}
+
+
+.main-layout{
+  display: flex;
+  .main-body{
+    flex:1;
+    height: 100vh;
+    overflow: auto;
+  }
+  .grid{
+    width: 100%;
   }
 }
