@@ -20,7 +20,7 @@ jobs:
       - name: Update submodules
         run: |
           git submodule update --init --recursive
-          git submodule foreach --recursive 'git checkout master || git checkout main || true'
+          git submodule foreach --recursive 'git checkout main || true'
           git submodule foreach --recursive 'git pull origin $(git rev-parse --abbrev-ref HEAD) || true'
 
       - name: Get changed files
@@ -67,7 +67,7 @@ jobs:
         run: |
           # Commit changes in each submodule recursively
           git submodule foreach --recursive '
-            git add -A
+            git add ${{ steps.changed-files.outputs.files }}
             if ! git diff --staged --quiet; then
               git commit -m "Add Arweave IDs to deployed markdown files"
               git push || echo "Failed to push in $path, continuing..."
@@ -76,16 +76,16 @@ jobs:
             fi
           '
 
-      - name: Commit changes in master repository
+      - name: Commit changes in main repository
         if: steps.deploy.outputs.deployments != ''
         run: |
-          git add -A
+          git add ${{ steps.changed-files.outputs.files }}
           git diff --staged --quiet || (git commit -m "Add Arweave IDs to deployed markdown files" && git push)
 
       - name: Update submodule references
         if: steps.deploy.outputs.deployments != ''
         run: |
-          git add -A
+          git add ${{ steps.changed-files.outputs.files }}
           git diff --staged --quiet || (git commit -m "Update submodule references" && git push)
 
       - name: Display deployment results
