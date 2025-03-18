@@ -1,9 +1,6 @@
 {{ partial "header.html" . }}
 
-{{ $styles := resources.Get "scss/404.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
-<style>
-  {{$styles.Content | safeCSS}}
-</style>
+
 
 <div class="error-container">
   <div class="error-code">
