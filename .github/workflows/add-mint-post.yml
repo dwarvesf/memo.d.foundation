@@ -43,11 +43,18 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Process markdown files
+      - name: Install dependencies
+        run: npm install gray-matter crypto js-yaml tsx
+
+      - name: Run script with files
         id: deploy
         if: steps.changed-files.outputs.files != ''
+        env:
+          WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+          CONTRACT_ADDRESS: ${{ env.contractAddress }}
+          RPC_URL: ${{ env.rpcUrl }}
         run: |
-          npx tsx scripts/add-mint-contract.ts ${{ steps.changed-files.outputs.files }}
+          npx tsx scripts/add-mint-post.ts ${{ steps.changed-files.outputs.files }}
 
       - name: Configure Git for submodule
         run: |
