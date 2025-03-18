@@ -1,13 +1,22 @@
 {{ partial "header.html" . }}
-{{ $img := resources.Get "img/404.png" }}
+{{ $img := resources.Get "img/neko.svg" }}
 
 {{ $styles := resources.Get "scss/404.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
 <style>
-  {{ $styles.Content | safeCSS }}
+  {{$styles.Content | safeCSS}}
 </style>
 
-{{ with $img }}
-<img src={{ .RelPermalink }} alt="404" />
-{{ end }}
+<div class="error-container">
+  <div class="error-code">
+    <h1>4</h1>
+    {{ with $img }}
+    <img width="138" height="138" class="no-zoom" src={{ .RelPermalink }} alt="neko" />
+    {{ end }}
+    <h1>4</h1>
+  </div>
+  <h2 class="error-title">UH...OH!</h2>
+  <p class="error-quote">"Can a computer think? Can a submarine swim? Maybe that's why you're lost here."</p>
 
+<p class="error-message">It looks like you’ve drifted into uncharted waters. Return to Homepage or Search Again</p>
+</div>
 {{ partial "footer.html" . }}
