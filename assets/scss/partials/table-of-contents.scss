@@ -20,23 +20,24 @@
     text-decoration: none !important;
     font-size: 13px;
     transition: color 0.2s ease;
-
+    padding: 0.25rem;
+    border-radius: 0.25rem;
     // Default link style (h1)
     &.heading-level-1 {
       color: var(--primary-font-color-light);
-      padding-left: 0;
+      margin-left: 0;
     }
 
     // h2 style
     &.heading-level-2 {
       color: var(--secondary-font-color-light-var2);
-      padding-left: 1rem;
+      margin-left: 1rem;
     }
 
     // h3 style
     &.heading-level-3 {
       color: var(--secondary-font-color-light-var2);
-      padding-left: 2rem;
+      margin-left: 2rem;
       font-size: 0.9rem;
     }
 
@@ -45,12 +46,13 @@
     &.heading-level-5,
     &.heading-level-6 {
       color: var(--secondary-font-color-light-var2);
-      padding-left: 3rem;
+      margin-left: 3rem;
       font-size: 0.9rem;
     }
 
     &:hover {
-      color: var(--primary-color);
+      background-color: var(--tertiary-background-color-light);
+      color: var(--primary-font-color-light);
     }
     // fix: both hover and active item highlighted on mobile
     @media (hover: none) {
@@ -87,10 +89,6 @@ html[data-theme="dark"] {
         color: var(--secondary-font-color);
       }
 
-      &:hover {
-        color: var(--primary-font-color);
-      }
-
       &.active {
         color: var(--primary-color);
       }
@@ -98,7 +96,7 @@ html[data-theme="dark"] {
   }
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
@@ -110,23 +108,24 @@ html{
 .toc .toc-indicators {
   position: fixed;
   top: var(--header-height);
+  margin-top: 60px;
   right: 0;
   padding: 0px 8px 24px 20px;
   cursor: pointer;
-  ul{
+  ul {
     --indicator-width: 20px;
-    ul{
+    ul {
       --indicator-width: 15px;
-      ul{
+      ul {
         --indicator-width: 10px;
-        ul{
+        ul {
           --indicator-width: 5px;
-          
         }
       }
     }
   }
-  ul,li {
+  ul,
+  li {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -138,53 +137,82 @@ html{
   }
   a {
     display: flex;
-    background-color:var(--primary-border-color-light);
+    background-color: var(--primary-border-color-light);
     height: 2px;
     width: var(--indicator-width);
     box-shadow: none;
     border-radius: 2px;
     margin-left: 0px;
     color: transparent;
-    &.active{
+    &.active {
       background-color: var(--primary-border-color);
     }
   }
 }
-.toc .toc-modal{
-position: fixed;
+.toc .toc-modal {
+  position: fixed;
   top: var(--header-height);
   right: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 14px 28px -6px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px, rgba(84, 72, 49, 0.08) 0px 0px 0px 1px;
   margin: 8px;
+  margin-top: 68px;
+
   background: white;
-  padding: 1.5rem 10px;
-  border-radius: 4px;
+  padding: 1rem;
+  border-radius: 14px;
   visibility: hidden;
   opacity: 0;
   transform: translateX(12px);
   transition: all 0.3s ease;
-  ul{
+  ul {
     display: flex;
     flex-direction: column;
-    gap: 4px;
     list-style: none;
+  }
+  a {
+    line-height: 1rem;
   }
 }
 
-.toc-indicators:hover ~ .toc-modal,.toc-modal:hover,.toc-modal.open{
+.toc-indicators:hover ~ .toc-modal,
+.toc-modal:hover,
+.toc-modal.open {
   visibility: visible;
   opacity: 1;
   transform: translateX(0);
 }
 
-html[data-theme="dark"] .toc .toc-indicators a{
-  background-color:var(--primary-border-color);
+html[data-theme="dark"] .toc .toc-indicators a {
+  background-color: var(--primary-border-color);
+  &.active {
+    background-color: var(--primary-border-color-light);
+  }
 }
-html[data-theme="dark"] .toc .toc-indicators a.active{
-  background-color:var(--primary-border-color-light);
-}
-html[data-theme="dark"] .toc .toc-modal{
+html[data-theme="dark"] .toc .toc-modal {
   background: var(--secondary-background-color);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
+  a {
+    &:hover {
+      background-color: var(--tertiary-background-color);
+      color: var(--primary-color);
+      
+    }
+    @media (hover: none) {
+      &.heading-level-1 {
+        color: var(--primary-font-color);
+      }
 
+      &.heading-level-2,
+      &.heading-level-3,
+      &.heading-level-4,
+      &.heading-level-5,
+      &.heading-level-6 {
+        color: var(--secondary-font-color);
+      }
+
+      &.active {
+        color: var(--primary-color);
+      }
+    }
+  }
+}
