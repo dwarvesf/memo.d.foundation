@@ -54,31 +54,6 @@ function getCurrentDate() {
 }
 
 /**
- * Extracts the token ID from transaction receipt events
- * @param {Object} receipt - Transaction receipt
- * @returns {string|null} - Token ID or null if not found
- */
-function extractTokenId(receipt) {
-  try {
-    // Look for TokenTypeCreated event
-    const tokenTypeCreatedEvent = receipt.events?.find(
-      (event) => event.event === "TokenTypeCreated"
-    );
-
-    if (tokenTypeCreatedEvent && tokenTypeCreatedEvent.args) {
-      // Extract the tokenId from the event arguments
-      return tokenTypeCreatedEvent.args.tokenId.toString();
-    }
-
-    console.log("Could not find TokenTypeCreated event with tokenId");
-    return null;
-  } catch (error) {
-    console.error("Error extracting token ID from receipt:", error);
-    return null;
-  }
-}
-
-/**
  * Processes a single file and calls createTokenType with its perma_storage_id
  * @param {string} filePath - Path to the markdown file
  * @param {ethers.Contract} contract - The contract instance
@@ -107,37 +82,101 @@ async function processFile(filePath, contract) {
   const arweaveTxId = frontmatter.perma_storage_id;
   console.log(`Found perma_storage_id: ${arweaveTxId}`);
 
-  // Call the createTokenType function
-  console.log(`Creating token type with arweaveTxId: ${arweaveTxId}`);
-  const tx = await contract.createTokenType(arweaveTxId);
+  try {
+    // Check if token ID already exists for this arweaveTxId
+    // This is optional and can be used to avoid unnecessary transactions
+    try {
+      const existingTokenId = await contract.getTokenId(arweaveTxId);
+      if (existingTokenId && existingTokenId.toString() !== "0") {
+        console.log(`Token ID already exists: ${existingTokenId.toString()}`);
 
-  console.log(`Transaction submitted: ${tx.hash}`);
-  console.log("Waiting for confirmation...");
+        // Update frontmatter with minted_at and token_id
+        updateFrontmatter(filePath, {
+          minted_at: getCurrentDate(),
+          token_id: existingTokenId.toString(),
+        });
 
-  // Wait for the transaction to be mined
-  const receipt = await tx.wait();
+        console.log(`Updated ${filePath} with existing token_id`);
+        return;
+      }
+    } catch (error) {
+      // getTokenId might not exist or fail, proceed with creating new token
+      console.log(
+        "Could not check existing token ID, proceeding with creation"
+      );
+    }
 
-  console.log(`Transaction confirmed in block ${receipt.blockNumber}`);
-  console.log(`Gas used: ${receipt.gasUsed.toString()}`);
+    // Call the createTokenType function
+    console.log(`Creating token type with arweaveTxId: ${arweaveTxId}`);
+    const tx = await contract.createTokenType(arweaveTxId);
 
-  // Extract token ID from the transaction receipt
-  const tokenId = extractTokenId(receipt);
+    console.log(`Transaction submitted: ${tx.hash}`);
+    console.log("Waiting for confirmation...");
 
-  if (tokenId) {
-    console.log(`Token ID: ${tokenId}`);
+    // Wait for the transaction to be mined
+    const receipt = await tx.wait();
 
-    // Update frontmatter with minted_at and token_id
-    updateFrontmatter(filePath, {
-      minted_at: getCurrentDate(),
-      token_id: tokenId,
-    });
+    console.log(`Transaction confirmed in block ${receipt.blockNumber}`);
+    console.log(`Gas used: ${receipt.gasUsed.toString()}`);
 
-    console.log(`Updated ${filePath} with minted_at and token_id`);
-  } else {
-    console.log(`Could not extract token ID from receipt for ${filePath}`);
+    // Extract token ID from the transaction response
+    // Since createTokenType now returns the token ID directly
+    let tokenId;
+
+    // First try to get tokenId from the event
+    try {
+      const tokenTypeCreatedEvent = receipt.events?.find(
+        (event) => event.event === "TokenTypeCreated"
+      );
+
+      if (tokenTypeCreatedEvent && tokenTypeCreatedEvent.args) {
+        tokenId = tokenTypeCreatedEvent.args.tokenId.toString();
+        console.log(`Token ID from event: ${tokenId}`);
+      }
+    } catch (error) {
+      console.log(
+        "Could not extract token ID from event, will try other methods"
+      );
+    }
+
+    // If event extraction failed, try to get it from the return value
+    if (!tokenId) {
+      try {
+        // Try to get tokenId using getTokenId function after creation
+        tokenId = await contract.getTokenId(arweaveTxId);
+        tokenId = tokenId.toString();
+        console.log(`Token ID from getTokenId: ${tokenId}`);
+      } catch (error) {
+        console.log("Could not get token ID from getTokenId function");
+      }
+    }
+
+    if (tokenId) {
+      console.log(`Final Token ID: ${tokenId}`);
+
+      // Update frontmatter with minted_at and token_id
+      updateFrontmatter(filePath, {
+        minted_at: getCurrentDate(),
+        token_id: tokenId,
+      });
+
+      console.log(`Updated ${filePath} with minted_at and token_id`);
+    } else {
+      console.log(`Could not obtain token ID for ${filePath}`);
+
+      // Still update minted_at even if we couldn't get token_id
+      updateFrontmatter(filePath, {
+        minted_at: getCurrentDate(),
+      });
+
+      console.log(`Updated ${filePath} with minted_at only`);
+    }
+
+    return receipt;
+  } catch (error) {
+    console.error(`Error processing file ${filePath}:`, error);
+    throw error;
   }
-
-  return receipt;
 }
 
 /**
@@ -174,9 +213,8 @@ async function main() {
     // Create a wallet from the private key
     const wallet = new ethers.Wallet(privateKey, provider);
 
-    // Get the contract ABI from your paste.txt file (modified to reflect updated function signature)
+    // Updated contract ABI to reflect the new function signature
     const contractAbi = [
-      // Only including the relevant function for createTokenType to keep it concise
       {
         inputs: [
           {
@@ -186,11 +224,36 @@ async function main() {
           },
         ],
         name: "createTokenType",
-        outputs: [],
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
         stateMutability: "nonpayable",
         type: "function",
       },
-      // Add event for TokenTypeCreated to extract token ID
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "arweaveTxId",
+            type: "string",
+          },
+        ],
+        name: "getTokenId",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      // Event for TokenTypeCreated
       {
         anonymous: false,
         inputs: [
