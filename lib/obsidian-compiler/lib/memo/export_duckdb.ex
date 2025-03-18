@@ -37,7 +37,12 @@ defmodule Memo.ExportDuckDB do
     {"status", "TEXT"},
     {"function", "TEXT"},
     {"estimated_tokens", "BIGINT"},
-    {"total_tokens", "BIGINT"}
+    {"total_tokens", "BIGINT"},
+    {"should_deploy_perma_storage", "BOOLEAN"},
+    {"perma_storage_id", "VARCHAR"},
+    {"should_mint", "BOOLEAN"},
+    {"minted_at", "DATE"},
+    {"token_id", "VARCHAR"}
   ]
 
   def run(vaultpath, format, commits_back, pattern \\ nil) do
