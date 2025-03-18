@@ -1,20 +1,20 @@
 nav.menu {
-  position: sticky;
-  top: 57px;
-  padding: 1.3rem 0rem 0rem 0.5rem;
+  padding-top: 80px;
+  padding-bottom: 0.5rem;
   white-space: nowrap;
   grid-area: nav;
-  height: calc(100svh - 32px - 61px);
+  height: calc(100svh - 32px);
   white-space: wrap;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-  background-color: var(--primary-background-color-light);
+  background-color: var(--secondary-background-color-light);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  max-width: 350px;
 }
 
 details {
@@ -394,10 +394,8 @@ html[data-theme="dark"] {
 #sidebar {
   padding-left:80px;
   z-index: 2;
+  overflow-y: auto;
 
-  & > div {
-    overflow-y: auto;
-  }
 }
 
 @media only screen and (max-width: 1100px) {

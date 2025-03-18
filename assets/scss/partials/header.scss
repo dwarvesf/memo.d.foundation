@@ -3,7 +3,7 @@
   align-items: center;
   padding: 10px 20px;
   z-index: 50;
-  position: fixed;
+  position: sticky;
   width: auto;
   right: 0;
   max-width: 100vw;
@@ -12,7 +12,7 @@
   box-sizing: border-box;
   column-gap: 10px;
   justify-content: flex-end;
-
+  background-color: var(--primary-background-color-light);
   .header-spacer {
     flex: 1;
   }
@@ -95,7 +95,6 @@
 }
 
 .tab-header {
-  position: relative;
 
   & > .tab-menu {
     opacity: 0;
@@ -618,5 +617,19 @@ html[data-theme="dark"] {
 
   .header-divider {
     background-color: var(--border-color);
+  }
+}
+
+
+.main-layout{
+  display: flex;
+ gap: var(--column-gap);
+  .main-body{
+    flex:1;
+    height: 100vh;
+    overflow: auto;
+  }
+  .grid{
+    width: 100%;
   }
 }
