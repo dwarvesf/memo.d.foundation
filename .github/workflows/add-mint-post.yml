@@ -1,4 +1,4 @@
-name: Add post to min contract
+name: Add post to mint contract
 
 on:
   workflow_dispatch: # Keep manual trigger
