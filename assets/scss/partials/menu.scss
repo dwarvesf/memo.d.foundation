@@ -1,5 +1,5 @@
 nav.menu {
-  padding-top: 80px;
+  padding-top: 40px;
   padding-bottom: 0.5rem;
   white-space: nowrap;
   grid-area: nav;
@@ -392,7 +392,7 @@ html[data-theme="dark"] {
 }
 
 #sidebar {
-  padding-left:80px;
+  padding-left:72px;
   z-index: 2;
   overflow-y: auto;
 
@@ -460,6 +460,7 @@ html[data-reading-mode="false"] {
     transform: translateX(0%);
     opacity: 1;
     pointer-events: auto;
+    
   }
 }
 
@@ -506,7 +507,12 @@ body:has(#sidebar:is(.show)) {
     }
   }
 }
-
+html[data-reading-mode="true"] {
+  #sidebar {
+  width: 0;
+    
+  }
+}
 @media screen and (max-width: 768px) {
   #sidebar {
     width: 100vw;

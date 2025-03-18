@@ -87,21 +87,21 @@ code.button {
 .grid {
   display: inline-grid;
   grid-template-areas:
-    "tabmenu tabmenu tabmenu"
-    "content pagenav toc"
-    "content pagenav toc";
+    "tabmenu tabmenu tabmenu tabmenu"
+    "toc-space content pagenav toc"
+    "toc-space content pagenav toc";
   grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-  grid-template-columns:   minmax(600px, var(--container-max-width)) minmax(200px, 328px),
-    48px;
+  grid-template-columns: 0  minmax(600px, var(--container-max-width)) minmax(200px, 328px),
+    0;
   column-gap: var(--column-gap);
   justify-content: center;
   html[data-reading-mode="true"] & {
     grid-template-areas:
-      "tabmenu tabmenu"
-      "content toc"
-      "content toc";
-    grid-template-columns: minmax(600px, var(--container-max-width))
-      minmax(200px, 328px);
+      "tabmenu tabmenu tabmenu"
+      "toc-space content toc"
+      "toc-space content toc";
+    grid-template-columns:0  minmax(600px, var(--container-max-width))
+      0;
   }
   .pagenav {
     grid-area: pagenav;
@@ -256,7 +256,6 @@ html[data-reading-mode="true"] {
   .metadata {
     transition: all 0.2s ease-in-out;
     transform: translateX(0px);
-    padding-right: 40px;
 
     hr {
       margin: 20px 0px !important;
@@ -608,11 +607,11 @@ html[data-theme="dark"] {
   html[data-reading-mode] .grid {
     display: inline-grid;
     grid-template-areas:
-      "tabmenu tabmenu"
-      "pagenav pagenav"
-      "content toc";
+      "tabmenu tabmenu tabmenu"
+      "pagenav pagenav pagenav"
+      "toc-space content toc";
           grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns:1fr 0;
+    grid-template-columns:0 1fr 0;
     column-gap: 0;
   }
 
