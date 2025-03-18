@@ -46,12 +46,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
 
-    // Construct the file path from the slug
-    const filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
-
-    // Check if the file exists
+    // Try multiple file path options to support Hugo's _index.md convention
+    let filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
+    
+    // If the direct path doesn't exist, check if there's an _index.md file in the directory
     if (!fs.existsSync(filePath)) {
-      return { notFound: true };
+      const indexFilePath = path.join(process.cwd(), 'public/content', ...slug, '_index.md');
+      
+      if (fs.existsSync(indexFilePath)) {
+        filePath = indexFilePath;
+      } else {
+        return { notFound: true };
+      }
     }
 
     // Get markdown content and frontmatter
