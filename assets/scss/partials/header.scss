@@ -611,6 +611,9 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] {
+  .tab-header {
+    background-color: var(--primary-background-color);
+  }
   .header-logo span {
     color: #dadada;
   }
@@ -623,7 +626,7 @@ html[data-theme="dark"] {
 
 .main-layout{
   display: flex;
- gap: var(--column-gap);
+ gap: calc(var(--column-gap) / 2);
   .main-body{
     flex:1;
     height: 100vh;
