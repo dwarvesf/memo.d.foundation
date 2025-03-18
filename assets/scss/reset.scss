@@ -12,7 +12,7 @@ body {
   margin: 0px;
   padding: 0px;
   background-color: var(--primary-background-color-light);
-  line-height: 1.5;
+  line-height: 1.58;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -37,7 +37,7 @@ h5 {
   color: var(--primary-font-color);
   line-height: 1.24;
   padding: 0px !important;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 h1 {
@@ -52,22 +52,32 @@ h2 {
 
 h3 {
   font-size: 21px !important;
-  margin: var(--heading-margin) 0px 0px !important;
+  margin: var(--subheading-margin) 0px 0px !important;
 }
 
 h4 {
-  font-size: 20px !important;
-  margin: var(--element-margin) 0px 0px !important;
+  font-size: 18px !important;
+  margin: var(--subheading-margin) 0px 0px !important;
 }
 
 h5 {
   font-size: 16px !important;
-  margin: var(--element-margin) 0px 0px !important;
+  margin: var(--subheading-margin) 0px 0px !important;
 }
 
 p {
   margin-bottom: 0;
   margin-top: var(--element-margin);
+}
+
+h3 + p,
+h4 + p,
+h5 + p {
+  margin-top: var(--subsubheading-margin);
+}
+
+li > p:first-child{
+  margin-top: 0;
 }
 
 a[href^="#"] {
@@ -190,7 +200,7 @@ ol {
   padding-left: 2rem;
   display: flex;
   flex-direction: column;
-  row-gap: 8px;
+  row-gap: var(--list-item-spacing);
   margin-top: 0.5rem;
 
   > li > a {
@@ -204,10 +214,10 @@ ol {
 
 main ul,
 ol {
-  margin-top: var(--element-margin);
+  margin-top: var(--list-margin);
 
   ul, ol {
-    margin-top: calc(var(--element-margin) / 2);
+    margin-top: calc(var(--list-margin) / 2);
   }
 }
 
