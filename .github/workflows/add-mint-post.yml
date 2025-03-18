@@ -1,0 +1,88 @@
+name: Add post to mint contract
+
+on:
+  workflow_dispatch: # Keep manual trigger
+  push:
+    paths:
+      - "db/vault.parquet" # Only trigger on changes to this file
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history to determine changed files
+          submodules: "recursive" # Checkout submodules recursively
+          token: ${{ secrets.DWARVES_PAT }}
+
+      - name: Update submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule foreach --recursive 'git checkout master || git checkout main || true'
+          git submodule foreach --recursive 'git pull origin $(git rev-parse --abbrev-ref HEAD) || true'
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          # Install DuckDB
+          wget -q https://github.com/duckdb/duckdb/releases/download/v0.9.2/duckdb_cli-linux-amd64.zip
+          unzip -q duckdb_cli-linux-amd64.zip
+          chmod +x duckdb
+
+          # Query for files that have perma_storage_id = 'true'
+          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT STRING_AGG(file_path, ' ') FROM 'db/vault.parquet' WHERE should_mint = true AND minted_at IS NULL AND token_id IS NULL;" | tr -d '"')
+
+          # Output the results
+          echo "Found markdown files for permanent storage: $CHANGED_FILES"
+          echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install gray-matter crypto js-yaml tsx
+
+      - name: Run script with files
+        id: deploy
+        if: steps.changed-files.outputs.files != ''
+        env:
+          WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+          CONTRACT_ADDRESS: ${{ env.contractAddress }}
+          RPC_URL: ${{ env.rpcUrl }}
+        run: |
+          npx tsx scripts/add-mint-post.ts ${{ steps.changed-files.outputs.files }}
+
+      - name: Configure Git for submodule
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Commit changes in submodules recursively
+        if: steps.deploy.outputs.deployments != ''
+        run: |
+          # Commit changes in each submodule recursively
+          git submodule foreach --recursive '
+            git add -A
+            if ! git diff --staged --quiet; then
+              git commit -m "Add post to mint contract"
+              git push || echo "Failed to push in $path, continuing..."
+            else
+              echo "No changes to commit in $path"
+            fi
+          '
+
+      - name: Commit changes in master repository
+        if: steps.deploy.outputs.deployments != ''
+        run: |
+          git add -A
+          git diff --staged --quiet || (git commit -m "Add post to mint contract" && git push)
+
+      - name: Update submodule references
+        if: steps.deploy.outputs.deployments != ''
+        run: |
+          git add -A
+          git diff --staged --quiet || (git commit -m "Update submodule references" && git push)
