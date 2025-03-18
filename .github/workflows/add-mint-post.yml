@@ -47,7 +47,6 @@ jobs:
         run: npm install ethers@5.7.2 gray-matter crypto js-yaml tsx
 
       - name: Run script with files
-        id: deploy
         if: steps.changed-files.outputs.files != ''
         env:
           WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
@@ -62,7 +61,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
 
       - name: Commit changes in submodules recursively
-        if: steps.deploy.outputs.deployments != ''
         run: |
           # Commit changes in each submodule recursively
           git submodule foreach --recursive '
@@ -76,13 +74,11 @@ jobs:
           '
 
       - name: Commit changes in main repository
-        if: steps.deploy.outputs.deployments != ''
         run: |
           git add -A
           git diff --staged --quiet || (git commit -m "Add post to mint contract" && git push)
 
       - name: Update submodule references
-        if: steps.deploy.outputs.deployments != ''
         run: |
           git add -A
           git diff --staged --quiet || (git commit -m "Update submodule references" && git push)
