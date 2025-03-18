@@ -106,7 +106,7 @@
     padding: 12px 0.75rem;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
   }
 
   &.no-image .v-list-item-body {
@@ -115,7 +115,7 @@
   }
 
   .v-list-item-title {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 17px !important;
     margin-top: 0 !important;
   }
