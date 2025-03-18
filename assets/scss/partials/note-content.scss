@@ -599,9 +599,7 @@ html[data-theme="dark"] {
   }
 
   .pagenav {
-    .container {
-      display: none !important;
-    }
+    display: none !important;
   }
 
   html[data-reading-mode] .grid {
@@ -636,12 +634,6 @@ html[data-theme="dark"] {
       max-width: max-content;
       justify-self: left;
       justify-content: flex-start;
-    }
-  }
-
-  @media only screen and (max-width: 768px) {
-    .grid main {
-      padding-top: 0px;
     }
   }
 
