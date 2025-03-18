@@ -1,6 +1,7 @@
 nav.menu {
   padding-top: 40px;
   padding-bottom: 0.5rem;
+  padding-right: 12px;
   white-space: nowrap;
   grid-area: nav;
   height: calc(100svh - 32px);
@@ -460,7 +461,7 @@ html[data-reading-mode="false"] {
     transform: translateX(0%);
     opacity: 1;
     pointer-events: auto;
-    
+
   }
 }
 
@@ -510,7 +511,7 @@ body:has(#sidebar:is(.show)) {
 html[data-reading-mode="true"] {
   #sidebar {
   width: 0;
-    
+
   }
 }
 @media screen and (max-width: 768px) {

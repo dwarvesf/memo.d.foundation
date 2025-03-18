@@ -149,18 +149,17 @@ html {
     }
   }
 }
+
 .toc .toc-modal {
   position: fixed;
   top: var(--header-height);
   right: 0;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 14px 28px -6px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px, rgba(84, 72, 49, 0.08) 0px 0px 0px 1px;
+  box-shadow: 0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814;
   margin: 8px;
   margin-top: 68px;
-
   background: white;
   padding: 1rem;
-  border-radius: 14px;
+  border-radius: 8px;
   visibility: hidden;
   opacity: 0;
   transform: translateX(12px);
@@ -184,7 +183,7 @@ html {
 }
 
 html[data-theme="dark"] .toc .toc-indicators a {
-  background-color: var(--primary-border-color);
+  background-color: var(--border-color);
   &.active {
     background-color: var(--primary-border-color-light);
   }
@@ -195,7 +194,7 @@ html[data-theme="dark"] .toc .toc-modal {
     &:hover {
       background-color: var(--tertiary-background-color);
       color: var(--primary-color);
-      
+
     }
     @media (hover: none) {
       &.heading-level-1 {
@@ -221,6 +220,6 @@ html[data-theme="dark"] .toc .toc-modal {
   .toc .toc-indicators {
     padding-left: 4px;
   }
- 
-  
+
+
 }

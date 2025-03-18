@@ -128,7 +128,7 @@ code.button {
 
     div.container {
       position: sticky;
-      padding: 24px 0 40px 0 !important;
+      padding: 14px 0 40px 0 !important;
       overflow-y: auto;
       top: 57px;
       right: 0;
@@ -639,6 +639,12 @@ html[data-theme="dark"] {
     }
   }
 
+  @media only screen and (max-width: 768px) {
+    .grid main {
+      padding-top: 0px;
+    }
+  }
+
   main {
     justify-self: center;
     width: 100%;
@@ -707,3 +713,4 @@ iframe {
   row-gap: 24px;
   padding-left: 0;
 }
+
