@@ -95,7 +95,7 @@ code.button {
     0;
   column-gap: var(--column-gap);
   justify-content: center;
-  html[data-reading-mode="true"] & {
+  html[data-reading-mode="true"] &, &:not(:has(> .pagenav)) {
     grid-template-areas:
       "tabmenu tabmenu tabmenu"
       "toc-space content toc"
