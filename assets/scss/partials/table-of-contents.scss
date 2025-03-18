@@ -22,6 +22,7 @@
     transition: color 0.2s ease;
     padding: 0.25rem;
     border-radius: 0.25rem;
+    transition: all 0.15s ease;
     // Default link style (h1)
     &.heading-level-1 {
       color: var(--primary-font-color-light);
