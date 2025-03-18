@@ -6,7 +6,7 @@
     "elixir":    "1.18.1",
     "elixir-ls": "0.21.3",
     "nodejs":    "23.9.0",
-    "pnpm":      "10.5.2"
+    "pnpm":      "10.6.2"
   },
   "shell": {
     "init_hook": [
