@@ -18,6 +18,7 @@
       font-weight: 400;
       margin-top: 0 !important;
     }
+   
   }
   .error-title {
     font-size: 32px !important;
@@ -40,5 +41,19 @@
     line-height: 24px;
     margin-top: 20px;
   }
+ 
   
+}
+
+html[data-theme="dark"] {
+  .error-container {
+    .error-code {
+      svg{
+        path:first-child {
+          fill: var(--primary-background-color);
+        }
+      }
+    }
+   
+  }
 }
