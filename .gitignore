@@ -78,3 +78,11 @@ memo-*.tar
 # Devbox artifacts
 /.devbox/
 .aider*
+
+# mint-related
+node_modules/
+package-lock.json
+package.json
+wallet.json
+duckdb
+duckdb_*.zip
