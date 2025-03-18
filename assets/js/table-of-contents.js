@@ -47,7 +47,7 @@ const initScroller = () => {
       nav.classList.remove("active");
       nav.setAttribute("active", "false");
     });
-    navs.forEach((nav) => { 
+    navs.forEach((nav) => {
     nav.classList.add("active");
     nav.setAttribute("active", "true");
     }
@@ -88,11 +88,6 @@ const initScroller = () => {
 
 const handleClickOnIndicator = (e) => {
   e.preventDefault();
-
-  // const tocModal = document.querySelector(".toc-modal");
-  // if (!tocModal) return;
-  // e.preventDefault();
-  // tocModal?.classList.toggle("open");
 }
 const closeTocModal = (e) => {
   console.log(document.querySelector(".toc-modal"))
@@ -104,9 +99,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const tocIndicatorsEl = document.querySelector(".toc-indicators");
   tocIndicatorsEl.addEventListener("click", handleClickOnIndicator);
-  // document.addEventListener("click", (e) => {
-  //   if (tocIndicatorsEl.contains(e.target)) return;
-  //   console.log(e.target)
-  //   closeTocModal(e);
-  // });
 });
