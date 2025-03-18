@@ -93,7 +93,7 @@ code.button {
   grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
   grid-template-columns: minmax(280px, 350px)
       minmax(600px, var(--container-max-width)) minmax(200px, 328px),
-    82px;
+    48px;
   column-gap: var(--column-gap);
   justify-content: center;
   html[data-reading-mode="true"] & {
@@ -615,7 +615,7 @@ html[data-theme="dark"] {
       "content toc"
       "nav nav";
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns: 1fr 42px;
+    grid-template-columns:1fr 0;
     column-gap: 0;
   }
 
