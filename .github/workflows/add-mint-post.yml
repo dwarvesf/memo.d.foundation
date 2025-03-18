@@ -66,7 +66,7 @@ jobs:
         run: |
           # Commit changes in each submodule recursively
           git submodule foreach --recursive '
-            git add vault/${{ steps.changed-files.outputs.files }}
+            git add -A
             if ! git diff --staged --quiet; then
               git commit -m "Add post to mint contract"
               git push || echo "Failed to push in $path, continuing..."
@@ -78,11 +78,11 @@ jobs:
       - name: Commit changes in main repository
         if: steps.deploy.outputs.deployments != ''
         run: |
-          git add vault/${{ steps.changed-files.outputs.files }}
+          git add -A
           git diff --staged --quiet || (git commit -m "Add post to mint contract" && git push)
 
       - name: Update submodule references
         if: steps.deploy.outputs.deployments != ''
         run: |
-          git add vault/${{ steps.changed-files.outputs.files }}
+          git add -A
           git diff --staged --quiet || (git commit -m "Update submodule references" && git push)
