@@ -1,26 +1,26 @@
 const initTableOfContents = () => {
-  const tableOfContents = document.getElementById('toc-modal');
+  const tableOfContents = document.getElementById("toc-modal");
   if (!tableOfContents) return;
 
   // Add tree-like styling
-  tableOfContents.classList.add('table-of-contents-tree');
+  tableOfContents.classList.add("table-of-contents-tree");
 
   // Style links based on heading level
-  const links = tableOfContents.querySelectorAll('a');
-  const levels = Array.from(links).map(link => getHeadingLevel(link));
+  const links = tableOfContents.querySelectorAll("a");
+  const levels = Array.from(links).map((link) => getHeadingLevel(link));
   const minLevel = Math.min(...levels);
 
-  links.forEach(link => {
+  links.forEach((link) => {
     const level = getHeadingLevel(link) - minLevel + 1;
 
     link.classList.add(
       `heading-level-${level}`,
-      'block',
-      'text-[hsl(var(--foreground-secondary))]',
-      'hover:text-[hsl(var(--foreground))]',
-      'transition-colors',
-      'duration-200',
-      'text-[0.95rem]'
+      "block",
+      "text-[hsl(var(--foreground-secondary))]",
+      "hover:text-[hsl(var(--foreground))]",
+      "transition-colors",
+      "duration-200",
+      "text-[0.95rem]"
     );
   });
 };
@@ -31,7 +31,7 @@ const getHeadingLevel = (link) => {
   let parent = link.parentElement;
 
   while (parent) {
-    if (parent.tagName === 'UL') {
+    if (parent.tagName === "UL") {
       level++;
     }
     parent = parent.parentElement;
@@ -40,63 +40,97 @@ const getHeadingLevel = (link) => {
   return level;
 };
 
-const initScroller = () => {
-  const pagenav = document.querySelectorAll(".toc a");
-  const update = (navs) => {
-    pagenav.forEach((nav) => {
-      nav.classList.remove("active");
-      nav.setAttribute("active", "false");
-    });
-    navs.forEach((nav) => {
+const updateActiveNav = (
+  navs,
+  pagenav = document.querySelectorAll(".toc a")
+) => {
+  pagenav.forEach((nav) => {
+    nav.classList.remove("active");
+    nav.setAttribute("active", "false");
+  });
+
+  navs?.forEach((nav) => {
     nav.classList.add("active");
     nav.setAttribute("active", "true");
-    }
-    );
-  };
+  });
+};
+
+const initScroller = () => {
+  const pagenav = document.querySelectorAll(".toc a");
+  isUserClicking = false;
 
   const cb = (entries) => {
-    const [entry] = entries;
-    const { isIntersecting, target } = entry;
-    if (!isIntersecting) return;
+    if (isUserClicking) return;
+    const entry = entries.find((entry) => entry.isIntersecting&&entry.target.id);
+    if (!entry) return;
 
-    const id = target.id;
+    const id = entry.target.id;
     if (!id) return;
 
     const navs = document.querySelectorAll(`.toc a[href='#${id}']`);
     if (!navs?.length) return;
 
-    update(navs);
+    updateActiveNav(navs, pagenav);
   };
 
   const ob = new IntersectionObserver(cb, {
     rootMargin: "-10% 0px -50% 0px",
     threshold: 0.5,
   });
-  const defaultActiveHref = pagenav[0]?.href;
+  const addedMap = new Map();
+
   pagenav.forEach((nav) => {
     if (!nav) return;
-    if (nav.href === defaultActiveHref) {
-      nav.classList.add("active");
-      nav.setAttribute("active", "true");
-    }
+  
     nav.classList.add("transition", "duration-200");
-    const el = document.getElementById(`${nav.href.split("#")[1]}`);
-    if (!(el instanceof Element)) return;
+
+    const id = nav.href.split("#")[1];
+    if (addedMap.has(id)) {
+      return;
+    }
+    addedMap.set(id, true);
+
+    const el = document.getElementById(id);
+    if (!(el instanceof Element)) {
+      return;
+    }
     ob.observe(el);
   });
 };
 
 const handleClickOnIndicator = (e) => {
   e.preventDefault();
-}
-const closeTocModal = (e) => {
-  console.log(document.querySelector(".toc-modal"))
-  document.querySelector(".toc-modal")?.classList.remove("open")
-}
+};
+
+let isUserClicking = false;
+
+const handleClickLink = (e) => {
+  const targetId = e.target.getAttribute("href").substring(1);
+  const targetElement = document.getElementById(targetId);
+  if (!targetElement) return;
+
+  e.preventDefault();
+  isUserClicking = true;
+  
+  targetElement.scrollIntoView({
+    behavior: "smooth",
+  });
+  updateActiveNav(document.querySelectorAll(`.toc a[href='#${targetId}']`));
+  
+  setTimeout(() => {
+    isUserClicking = false;
+  }, 1000);
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   initTableOfContents();
   initScroller();
 
   const tocIndicatorsEl = document.querySelector(".toc-indicators");
   tocIndicatorsEl.addEventListener("click", handleClickOnIndicator);
+ 
+  const tocModalLinks = document.querySelectorAll(".toc-modal a");
+  tocModalLinks.forEach((link) => {
+    link.addEventListener("click", handleClickLink);
+  });
 });
