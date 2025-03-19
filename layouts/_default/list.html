@@ -25,17 +25,42 @@
         {{ end }}
     {{ end }}
   </ul>
-{{ end }}
+{{ else }}
+  {{ $content := .Content }}
+  {{ $hasContent := gt (len $content) 0 }}
 
-{{ .Content
-   | replaceRE 
-      `&lt;a:(\w+):(\d+)&gt;` 
-      "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.gif?size=44&quality=lossless\" alt=\":${1}:\"/>" 
-   | replaceRE 
-      `&lt;:(\w+):(\d+)&gt;` 
-      "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>" 
-   | safeHTML
-}}
+  {{ if $hasContent }}
+    {{ $content
+       | replaceRE
+          `&lt;a:(\w+):(\d+)&gt;`
+          "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.gif?size=44&quality=lossless\" alt=\":${1}:\"/>"
+       | replaceRE
+          `&lt;:(\w+):(\d+)&gt;`
+          "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>"
+       | safeHTML
+    }}
+  {{ else }}
+    {{ $currentSection := .CurrentSection }}
+    {{ $currentPath := .RelPermalink }}
+
+    <!-- List all pages under the current section path if there's no content -->
+    {{ if ne .Kind "page" }}
+      <h2>Related Pages</h2>
+      <ul class="section-list">
+        {{ range where .Site.RegularPages "Section" .Section }}
+          {{ if and (hasPrefix .RelPermalink $currentPath) (ne .RelPermalink $currentPath) }}
+            <li>
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+              {{ if .Description }}
+                <p class="page-description">{{ .Description }}</p>
+              {{ end }}
+            </li>
+          {{ end }}
+        {{ end }}
+      </ul>
+    {{ end }}
+  {{ end }}
+{{ end }}
 
 <ul>
    {{ range (.Paginate ( where .Site.RegularPages "Section" "writing" ).ByDate.Reverse).Pages }}
