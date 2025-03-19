@@ -82,23 +82,26 @@ defmodule Memo.WatchRun do
       IO.puts("Processing directory: #{vaultpath}")
 
       # Run export_markdown and export_duckdb in parallel
-      markdown_task = Task.async(fn ->
-        IO.puts("Starting markdown export...")
-        Memo.Application.export_markdown(vaultpath, exportpath)
-        IO.puts("Markdown export completed")
-      end)
+      markdown_task =
+        Task.async(fn ->
+          IO.puts("Starting markdown export...")
+          Memo.Application.export_markdown(vaultpath, exportpath)
+          IO.puts("Markdown export completed")
+        end)
 
-      duckdb_task = Task.async(fn ->
-        IO.puts("Starting DuckDB export...")
-        Memo.Application.export_duckdb(vaultpath, "parquet", "HEAD~2")
-        IO.puts("DuckDB export completed")
-      end)
+      duckdb_task =
+        Task.async(fn ->
+          IO.puts("Starting DuckDB export...")
+          Memo.Application.export_duckdb(vaultpath, "parquet", "HEAD~2")
+          IO.puts("DuckDB export completed")
+        end)
 
       # Wait for both tasks to complete
       Task.await_many([markdown_task, duckdb_task])
 
       # After both exports are complete, run npm run dev
       IO.puts("Both exports completed. Starting npm run dev...")
+
       case System.cmd("pnpm", ["run", "dev"], cd: "../..", into: IO.stream(:stdio, :line)) do
         {_, 0} -> IO.puts("npm run dev started successfully")
         {error, code} -> IO.puts("npm run dev failed with code #{code}: #{inspect(error)}")

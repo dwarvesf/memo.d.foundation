@@ -503,16 +503,17 @@ defmodule Memo.ExportMarkdown do
     # For each directory, check if it has an _index.md and create one if not
     Enum.each(directories, fn dir_path ->
       index_file_path = Path.join(dir_path, "_index.md")
-      
+
       if !File.exists?(index_file_path) do
         # Create a basic frontmatter with title based on the directory name
         dir_name = Path.basename(dir_path)
+
         content = """
         ---
         title: #{String.capitalize(dir_name)}
         ---
         """
-        
+
         # Write the file
         File.write!(index_file_path, content)
         IO.puts("Generated blank _index.md in: #{dir_path}")
@@ -529,20 +530,20 @@ defmodule Memo.ExportMarkdown do
       if Path.basename(path) == "assets" do
         []
       else
-        subdirs = 
+        subdirs =
           File.ls!(path)
-          |> Enum.filter(fn item -> 
+          |> Enum.filter(fn item ->
             full_path = Path.join(path, item)
             # Filter directories, exclude hidden dirs and "assets" dirs
-            File.dir?(full_path) && 
-              !String.starts_with?(item, ".") && 
+            File.dir?(full_path) &&
+              !String.starts_with?(item, ".") &&
               item != "assets"
           end)
           |> Enum.flat_map(fn item ->
             full_path = Path.join(path, item)
             [full_path | get_all_directories(full_path)]
           end)
-        
+
         [path | subdirs]
       end
     else
