@@ -27,6 +27,7 @@ section.mint-entry-container[data-token-id=""] {
 
     .mint-cta {
         padding: 1.5rem;
+        padding-bottom: 0.5rem;
         display: flex;
         flex-direction: column;
         row-gap: 1.5rem;
@@ -76,17 +77,48 @@ section.mint-entry-container[data-token-id=""] {
     }
 
     .mint-progress {
-        border-top: 1px solid #ece4e4;
-        padding: 0.5rem 1rem;
         display: flex;
-        position: relative;
         justify-content: center;
-
-        &>span {
+        align-items: center;
+        padding-bottom: 0.5rem;
+        
+        .mint-avatars {
+            display: flex;
+            align-items: center;
+            
+            div:has(svg) {
+                border-radius: 100%;
+                width: 20px;
+                height: 20px;
+                border: 1px solid rgb(255, 255, 255);
+                display: flex;
+                margin-right: -10px;
+                position: relative;
+                z-index: 1;
+                
+                &:nth-child(2) {
+                    z-index: 2;
+                }
+                
+                &:nth-child(3) {
+                    z-index: 3;
+                }
+                
+                &.last-avatar {
+                    margin-right: 0;
+                }
+            }
+            
+            .mint-count-badge {
+                font-size: 0.75rem;
+                margin-left: 8px;
+                color: var(--secondary-font-color-light-var2);
+            }
+        }
+        
+        .mint-count-display {
             font-size: 0.75rem;
-            font-weight: 400;
-            align-self: flex-end;
-            line-height: 100%;
+            color: var(--secondary-font-color-light-var2);
         }
     }
 }
