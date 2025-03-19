@@ -598,12 +598,18 @@ html[data-theme="dark"] {
 
 .main-layout{
   display: flex;
+  height: 100vh;
   .main-body{
     flex:1;
-    height: 100vh;
-    overflow: auto;
+    overflow-y: auto;
+    display: flex;
+    position: relative;
+    flex-direction: column;
   }
   .grid{
     width: 100%;
+    flex:1;
+    position: relative;
+    
   }
 }
