@@ -17,12 +17,6 @@ jobs:
           submodules: "recursive" # Checkout submodules recursively
           token: ${{ secrets.DWARVES_PAT }}
 
-      - name: Update submodules
-        run: |
-          git submodule update --init --recursive
-          git submodule foreach --recursive 'git checkout main || true'
-          git submodule foreach --recursive 'git pull origin $(git rev-parse --abbrev-ref HEAD) || true'
-
       - name: Get changed files
         id: changed-files
         run: |
