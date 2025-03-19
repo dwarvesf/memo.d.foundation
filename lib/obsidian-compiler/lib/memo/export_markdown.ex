@@ -126,6 +126,9 @@ defmodule Memo.ExportMarkdown do
     # Export the db directory with caching
     db_cache = export_db_directory("../../db", exportpath, cache)
 
+    # Create blank _index.md files in folders without them
+    generate_missing_index_files(exportpath)
+
     # Merge all cache entries: files, assets, and db
     new_cache = file_cache |> Map.merge(assets_cache) |> Map.merge(db_cache)
 
@@ -487,6 +490,63 @@ defmodule Memo.ExportMarkdown do
       old_base = Path.basename(old_prefix)
       new_base = Path.basename(new_prefix)
       String.replace(path, ~r"(^|/)#{old_base}(/|$)", "\\1#{new_base}\\2")
+    end
+  end
+
+  @doc """
+  Generates blank _index.md files in directories that don't have them in the export path.
+  """
+  defp generate_missing_index_files(exportpath) do
+    # Get all directories in the export path
+    directories = get_all_directories(exportpath)
+
+    # For each directory, check if it has an _index.md and create one if not
+    Enum.each(directories, fn dir_path ->
+      index_file_path = Path.join(dir_path, "_index.md")
+      
+      if !File.exists?(index_file_path) do
+        # Create a basic frontmatter with title based on the directory name
+        dir_name = Path.basename(dir_path)
+        content = """
+        ---
+        title: #{String.capitalize(dir_name)}
+        ---
+        """
+        
+        # Write the file
+        File.write!(index_file_path, content)
+        IO.puts("Generated blank _index.md in: #{dir_path}")
+      end
+    end)
+  end
+
+  @doc """
+  Gets all directories recursively in a given path
+  """
+  defp get_all_directories(path) do
+    if File.dir?(path) do
+      # Skip if the current directory is named "assets"
+      if Path.basename(path) == "assets" do
+        []
+      else
+        subdirs = 
+          File.ls!(path)
+          |> Enum.filter(fn item -> 
+            full_path = Path.join(path, item)
+            # Filter directories, exclude hidden dirs and "assets" dirs
+            File.dir?(full_path) && 
+              !String.starts_with?(item, ".") && 
+              item != "assets"
+          end)
+          |> Enum.flat_map(fn item ->
+            full_path = Path.join(path, item)
+            [full_path | get_all_directories(full_path)]
+          end)
+        
+        [path | subdirs]
+      end
+    else
+      []
     end
   end
 end
