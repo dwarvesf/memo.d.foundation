@@ -45,15 +45,11 @@
 
     <!-- List all pages under the current section path if there's no content -->
     {{ if ne .Kind "page" }}
-      <h2>Related Pages</h2>
       <ul class="section-list">
         {{ range where .Site.RegularPages "Section" .Section }}
           {{ if and (hasPrefix .RelPermalink $currentPath) (ne .RelPermalink $currentPath) }}
             <li>
               <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-              {{ if .Description }}
-                <p class="page-description">{{ .Description }}</p>
-              {{ end }}
             </li>
           {{ end }}
         {{ end }}

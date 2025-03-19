@@ -323,7 +323,7 @@
 
   {{ partial "sidebar.html" . }}
 
- 
+
   <div class="main-layout">
   {{ partial "menu.html" . }}
   <div class="main-body">
@@ -343,7 +343,7 @@
   {{ partial "logo.html" . }}
   <span>Dwarves<br/>Memo</span>
 </a><div class="header-spacer"></div>
-   <div class="header-right"> 
+   <div class="header-right">
    {{ partial "command-palette.html" . }}
    <div class="header-divider"></div>
      <button
@@ -366,7 +366,7 @@
          </g>
        </svg>
      </button>
-  
+
      <div class="btn-reading-mode-toggler-tooltip" role="tooltip">
        <span>Reading Mode</span>
        <div x-data="{ modifier: window.navigator.userAgent.includes('Macintosh') ? '⌘':'ctrl'}">
@@ -418,7 +418,7 @@
   <div class="grid">
    <div id="overlay"></div>
 
-    
+
     {{ $tags := slice }}
     {{ $tags = $tags | append (dict "tags" .Params.Tags "url" .RelPermalink) }}
 
@@ -439,7 +439,7 @@
     <div class="pagenav" x-data="{{ $data | jsonify }}">
       <div class="container">
         <div class="always-on-right-sidebar">
-        
+
           <div class="metadata">
             <div class="stats">
               <div>Properties</div>
@@ -498,7 +498,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44"/></svg>
                     Folder:
                     </span>
-                    {{ strings.TrimRight "/" .Dir }}
+                    <a href="/{{ .Dir | strings.TrimRight "/" | replaceRE "^/" "" }}">{{ .Dir | strings.TrimRight "/" | replaceRE "^/" "" }}</a>
                   </li>
                 {{ end }}
               </ul>
@@ -552,7 +552,7 @@
               </ul>
             </div>
           </div>
-         
+
         </div>
       </div>
     </div>
@@ -614,4 +614,3 @@
       {{ if .Params.toc -}}
       <aside class="toc">{{ .TableOfContents }}</aside>
       {{ end }}
-     
