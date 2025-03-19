@@ -34,11 +34,13 @@
 			<li class="term">
         <a href="{{ .Page.RelPermalink }}">{{ .Page.Name }}</a>
         {{ $tags := .Page.Params.Tags }}
+        <div>
         {{ range $t := collections.First 2 $tags }}
           {{ if ne (strings.ToLower $t) (strings.ToLower $currentTag) }}
             <a href="/tags/{{ $t }}" class="memo-tag">{{ replaceRE `-` ` ` $t }}</a>
           {{ end }}
         {{ end }}
+        </div>
       </li>
 		{{ end }}
 		</ul>
