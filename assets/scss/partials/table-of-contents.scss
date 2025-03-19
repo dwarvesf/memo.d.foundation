@@ -159,13 +159,19 @@ html {
   margin: 8px;
   margin-top: 68px;
   background: white;
-  padding: 1rem;
   border-radius: 8px;
   visibility: hidden;
   opacity: 0;
   transform: translateX(12px);
   transition: all 0.3s ease;
   width: 180px;
+  
+  nav{
+  padding: 1rem;
+
+    max-height: Min(680px, calc(100vh - var(--header-height) - 68px - 32px - 2rem));
+    overflow-y: auto;
+  }
   ul {
     display: flex;
     flex-direction: column;
