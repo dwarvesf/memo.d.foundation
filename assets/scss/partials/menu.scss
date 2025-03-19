@@ -15,7 +15,7 @@ nav.menu {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: 320px;
+  width: 360px;
 }
 
 details {
@@ -461,7 +461,6 @@ html[data-reading-mode="false"] {
     transform: translateX(0%);
     opacity: 1;
     pointer-events: auto;
-
   }
 }
 
@@ -511,7 +510,7 @@ body:has(#sidebar:is(.show)) {
 html[data-reading-mode="true"] {
   #sidebar {
   width: 0;
-
+  padding-right: 0;
   }
 }
 @media screen and (max-width: 768px) {

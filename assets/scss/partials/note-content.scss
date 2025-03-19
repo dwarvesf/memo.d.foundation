@@ -15,7 +15,7 @@
     font-style: normal;
     line-height: 42px;
     letter-spacing: -0.5px;
-    padding-bottom: 0!important;
+    padding-bottom: 0 !important;
     margin-bottom: 20px !important;
     margin-top: 0px !important;
   }
@@ -46,8 +46,8 @@
   }
 }
 
-.memo-content > h1:first-child{
-  margin-bottom: 20px!important;
+.memo-content > h1:first-child {
+  margin-bottom: 20px !important;
 }
 
 .memo-content > *:first-child:not(.profile),
@@ -95,16 +95,16 @@ code.button {
     "toc-space content pagenav toc"
     "toc-space content pagenav toc";
   grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-  grid-template-columns: 0  minmax(600px, var(--container-max-width)) minmax(200px, 328px),
+  grid-template-columns: 0 minmax(600px, var(--container-max-width))
+      minmax(200px, 280px),
     0;
   column-gap: var(--column-gap);
   justify-content: center;
-  html[data-reading-mode="true"] &, &:not(:has(> .pagenav)) {
-    grid-template-areas:
-      "tabmenu tabmenu tabmenu"
-      "toc-space content toc"
-      "toc-space content toc";
-    grid-template-columns:0  minmax(600px, var(--container-max-width))
+  html[data-reading-mode="true"] &,
+  &:not(:has(> .pagenav)) {
+    column-gap: 0;
+    grid-template-columns:
+      0 minmax(600px, var(--container-max-width)) 0
       0;
   }
   .pagenav {
@@ -115,16 +115,18 @@ code.button {
     font-weight: 500;
     line-height: 140%;
     letter-spacing: -0.0125rem;
-    width: 100%;
-    max-width: 700px;
+    width: 240px;
+    max-width:700px;
     position: relative;
-    transition: all 0.2s ease-in-out;
+    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+
     transform: translateX(0px);
     html[data-reading-mode="true"] & {
       opacity: 0;
       visibility: hidden;
-    transform: translateX(50px);
-    pointer-events: none;
+      transform: translateX(50px);
+      pointer-events: none;
+      width: 0;
     }
     a,
     a:focus {
@@ -249,14 +251,12 @@ label:not(:has(+ #TableOfContents)) {
   display: none;
 }
 
-
 .always-on-right-sidebar {
   transition: transform 0.3s ease-in-out;
   transition-delay: 0s;
 
   .metadata {
     transition: all 0.2s ease-in-out;
-  
 
     hr {
       margin: 20px 0px !important;
@@ -609,8 +609,8 @@ html[data-theme="dark"] {
       "tabmenu tabmenu tabmenu"
       "pagenav pagenav pagenav"
       "toc-space content toc";
-          grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-    grid-template-columns:0 1fr 0;
+    grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
+    grid-template-columns: 0 1fr 0;
     column-gap: 0;
   }
 
