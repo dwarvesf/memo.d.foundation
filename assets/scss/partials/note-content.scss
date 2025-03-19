@@ -118,8 +118,13 @@ code.button {
     width: 100%;
     max-width: 700px;
     position: relative;
+    transition: all 0.2s ease-in-out;
+    transform: translateX(0px);
     html[data-reading-mode="true"] & {
-      display: none;
+      opacity: 0;
+      visibility: hidden;
+    transform: translateX(50px);
+    pointer-events: none;
     }
     a,
     a:focus {
@@ -244,13 +249,6 @@ label:not(:has(+ #TableOfContents)) {
   display: none;
 }
 
-html[data-reading-mode="true"] {
-  .metadata {
-    opacity: 0;
-    transform: translateX(50px);
-    pointer-events: none;
-  }
-}
 
 .always-on-right-sidebar {
   transition: transform 0.3s ease-in-out;
@@ -258,7 +256,7 @@ html[data-reading-mode="true"] {
 
   .metadata {
     transition: all 0.2s ease-in-out;
-    transform: translateX(0px);
+  
 
     hr {
       margin: 20px 0px !important;
