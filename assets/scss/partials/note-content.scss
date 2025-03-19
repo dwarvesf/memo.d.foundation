@@ -46,6 +46,10 @@
   }
 }
 
+.memo-content > h1:first-child{
+  margin-bottom: 20px!important;
+}
+
 .memo-content > *:first-child:not(.profile),
 .memo-content > *:first-child:not(.profile) > *,
 .note-title + * {
