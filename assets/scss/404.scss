@@ -1,29 +1,90 @@
-img[alt="404"] {
-  width: 80%;
-  margin: auto;
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  font-family: charter, Georgia, Cambria, serif;
+  height: calc(
+    100vh - 60px - 24px - 10rem
+  ); // 100vh - header - footer - main padding
+  text-align: center;
+
+  .error-code {
+    display: flex;
+    gap: 22px;
+    margin-top: 0 !important;
+    align-items: flex-end;
+
+    span {
+      font-size: 140px !important;
+      line-height: 90%;
+      letter-spacing: -3.04px;
+      font-weight: 400;
+    }
+
+    svg {
+      width: 120px;
+      height: 120px;
+    }
+  }
+  .error-title {
+    font-size: 24px !important;
+    font-weight: 400;
+    line-height: 90%;
+    letter-spacing: -0.64px;
+    margin-top: 56px !important;
+  }
+  .error-quote {
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: -0.2px;
+    margin-top: 20px;
+  }
+  .error-message {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-top: 20px;
+  }
 }
 
-div.grid {
-  height: 100svh !important;
-}
-
-@media only screen and (max-width: 1100px) {
-  div.grid:has(img[alt="404"]) {
-    display: flex !important;
-    align-items: center;
-    justify-items: center;
-    height: 100svh;
-
-    .pagenav {
-      display: none !important;
+html[data-theme='dark'] {
+  .error-container {
+    .error-code {
+      svg {
+        path:first-child {
+          fill: var(--primary-background-color);
+        }
+      }
     }
   }
 }
 
-main {
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  height: 100svh;
+@media screen and (max-width: 480px) {
+  .error-container {
+    .error-code {
+      span {
+        font-size: 100px !important;
+      }
+      svg {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    .error-title {
+      font-size: 18px !important;
+      margin-top: 18px !important;
+    }
+    .error-quote {
+      font-size: 18px;
+      margin-top: 16px;
+    }
+    .error-message {
+      font-size: 14px;
+      margin-top: 14px;
+    }
+  }
 }
