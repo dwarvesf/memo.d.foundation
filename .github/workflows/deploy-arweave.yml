@@ -6,6 +6,10 @@ on:
     paths:
       - "db/vault.parquet" # Only trigger on changes to this file
 
+concurrency:
+  group: ${{ github.repository }}-workflow
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,17 +21,11 @@ jobs:
           submodules: "recursive" # Checkout submodules recursively
           token: ${{ secrets.DWARVES_PAT }}
 
-      - name: Update submodules
-        run: |
-          git submodule update --init --recursive
-          git submodule foreach --recursive 'git checkout main || true'
-          git submodule foreach --recursive 'git pull origin $(git rev-parse --abbrev-ref HEAD) || true'
-
       - name: Get changed files
         id: changed-files
         run: |
           # Install DuckDB
-          wget -q https://github.com/duckdb/duckdb/releases/download/v0.9.2/duckdb_cli-linux-amd64.zip
+          wget -q https://github.com/duckdb/duckdb/releases/download/v1.2.1/duckdb_cli-linux-amd64.zip
           unzip -q duckdb_cli-linux-amd64.zip
           chmod +x duckdb
 
