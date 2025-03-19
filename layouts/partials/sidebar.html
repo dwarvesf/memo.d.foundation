@@ -1,58 +1,114 @@
 <!-- Sidebar navigation component -->
 <div x-data="{
-    currentUrl: `{{ .RelPermalink }}`,
-    links: [
-      { title: 'Home', url: '/', icon: '{{ (resources.Get "img/home.svg").RelPermalink }}' },
-      { title: 'Consulting', url: '/consulting/', icon: '{{ (resources.Get "img/consulting.svg").RelPermalink }}' },
-      { title: 'Earn', url: '/earn/', icon: '{{ (resources.Get "img/earn.svg").RelPermalink }}' },
-      { title: 'Hiring', url: '/careers/hiring/', icon: '{{ (resources.Get "img/hiring.svg").RelPermalink }}' },
-      { title: 'Digest', url: '/updates/digest/', icon: '{{ (resources.Get "img/digest.svg").RelPermalink }}' },
-      { title: 'OGIFs', url: '/updates/ogif/', icon: '{{ (resources.Get "img/ogifs.svg").RelPermalink }}' },
-    ],
-    isActiveUrl(url) {
-      const exactMatch = this.links.find(link => link.url === this.currentUrl);
-      if(exactMatch) return this.currentUrl === url;
-      const allMatchUrls = this.links.filter(link => this.currentUrl.startsWith(link.url)).map(link => link.url);
-      const longestMatch = allMatchUrls.reduce((a, b) => a.length > b.length ? a : b);
-      if(longestMatch==='/'&&this.currentUrl!=='/') return false;
-      return longestMatch === url;
-    },
-    closeSidebar(e) {
-      const toggleBtn = document.querySelector('#sidebar-toggle');
-      if(toggleBtn.contains(e.target)) return;
-      const sidebar = document.querySelector('.sidebar');
-      if(sidebar.classList.contains('mobile-visible')) {
-        sidebar.classList.remove('mobile-visible');
-      }
+  currentUrl: `{{ .RelPermalink }}`,
+  links: [
+    { title: 'Home', url: '/', icon: '{{ (resources.Get "img/home.svg").RelPermalink }}' },
+    { title: 'Consulting', url: '/consulting/', icon: '{{ (resources.Get "img/consulting.svg").RelPermalink }}' },
+    { title: 'Earn', url: '/earn/', icon: '{{ (resources.Get "img/earn.svg").RelPermalink }}' },
+    { title: 'Hiring', url: '/careers/hiring/', icon: '{{ (resources.Get "img/hiring.svg").RelPermalink }}' },
+    { title: 'Digest', url: '/updates/digest/', icon: '{{ (resources.Get "img/digest.svg").RelPermalink }}' },
+    { title: 'OGIFs', url: '/updates/ogif/', icon: '{{ (resources.Get "img/ogifs.svg").RelPermalink }}' },
+  ],
+  isActiveUrl(url) {
+    const exactMatch = this.links.find(link => link.url === this.currentUrl);
+    if(exactMatch) return this.currentUrl === url;
+    const allMatchUrls = this.links.filter(link => this.currentUrl.startsWith(link.url)).map(link => link.url);
+    const longestMatch = allMatchUrls.reduce((a, b) => a.length > b.length ? a : b);
+    if(longestMatch==='/'&&this.currentUrl!=='/') return false;
+    return longestMatch === url;
+  },
+  closeSidebar(e) {
+    const toggleBtn = document.querySelector('#sidebar-toggle');
+    if(toggleBtn.contains(e.target)) return;
+    const sidebar = document.querySelector('.sidebar');
+    if(sidebar.classList.contains('mobile-visible')) {
+      sidebar.classList.remove('mobile-visible');
     }
-  }"
-  class="sidebar"
-  @click.outside="closeSidebar",
+  }
+}"
+class="sidebar"
+@click.outside="closeSidebar",
 >
 
- <!-- Logo and title -->
- <a href="/" class="sidebar-logo" id="sidebar-logo">
-  {{ partial "logo.html" . }}
-  <span>Dwarves<br/>Memo</span>
-</a>
+  <!-- Logo and title -->
+  <a href="/" class="sidebar-logo" id="sidebar-logo">
+    {{ partial "logo.html" . }}
+    <span>Dwarves<br />Memo</span>
+  </a>
 
 
   <!-- Navigation items -->
   <nav class="sidebar-nav">
     <template x-for="(item, index) in links" :key="item.url">
       <div class="nav-item-container">
-        <a :href="item.url"
-           class="sidebar-item"
-           :class="{ 'active': isActiveUrl(item.url) }"
-           :id="'sidebar-item-' + index">
-           <!-- use mask-image to custom svg color -->
-          <div  :style="'--src: url(\'' + item.icon + '\');'" alt="" width="24" height="24" class="sidebar-item-icon"></div>
+        <a :href="item.url" class="sidebar-item" :class="{ 'active': isActiveUrl(item.url) }"
+          :id="'sidebar-item-' + index">
+          <!-- use mask-image to custom svg color -->
+          <div :style="'--src: url(\'' + item.icon + '\');'" alt="" width="24" height="24" class="sidebar-item-icon">
+          </div>
           <span x-text="item.title"></span>
         </a>
       </div>
     </template>
   </nav>
+  <div class="sidebar-bottom">
+    <div class="theme-toggler" x-data="{
+    theme: $persist('system'),
+    toggleTheme() {
+      switch (this.theme) {
+        case 'light': this.theme = 'dark'; break;
+        case 'dark': this.theme = 'light'; break;
+        default: this.theme = 'system'
+      }
+      document.documentElement.setAttribute('data-theme', this.theme);
+    },
+    init() {
+      if (this.theme === 'system') {
+        const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        this.theme = isDarkMode ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', this.theme);
+    }
+  }">
+      <button class="btn-theme-toggler" x-on:click="toggleTheme()" x-bind:class="{ 'dark': theme === 'dark' }">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" x-bind:class="{'hidden': theme === 'light'}">
+          <path fill="currentColor"
+            d="M11.25 3.94225V1.25H12.75V3.94225H11.25ZM11.25 22.75V20.0578H12.75V22.75H11.25ZM20.0578 12.75V11.25H22.75V12.75H20.0578ZM1.25 12.75V11.25H3.94225V12.75H1.25ZM18.5077 6.54625L17.4538 5.49225L19.05 3.8655L20.1345 4.95L18.5077 6.54625ZM4.95 20.1345L3.8655 19.05L5.49225 17.4538L6.54625 18.5077L4.95 20.1345ZM19.05 20.1345L17.4538 18.5077L18.5077 17.4538L20.1345 19.05L19.05 20.1345ZM5.49225 6.54625L3.8655 4.95L4.95 3.8655L6.54625 5.49225L5.49225 6.54625ZM12.0022 17.5C10.4751 17.5 9.17625 16.9655 8.10575 15.8965C7.03525 14.8275 6.5 13.5294 6.5 12.0022C6.5 10.4751 7.0345 9.17625 8.1035 8.10575C9.1725 7.03525 10.4706 6.5 11.9978 6.5C13.5249 6.5 14.8238 7.0345 15.8943 8.1035C16.9648 9.1725 17.5 10.4706 17.5 11.9978C17.5 13.5249 16.9655 14.8238 15.8965 15.8943C14.8275 16.9648 13.5294 17.5 12.0022 17.5ZM12 16C13.1167 16 14.0625 15.6125 14.8375 14.8375C15.6125 14.0625 16 13.1167 16 12C16 10.8833 15.6125 9.9375 14.8375 9.1625C14.0625 8.3875 13.1167 8 12 8C10.8833 8 9.9375 8.3875 9.1625 9.1625C8.3875 9.9375 8 10.8833 8 12C8 13.1167 8.3875 14.0625 9.1625 14.8375C9.9375 15.6125 10.8833 16 12 16Z"
+            fill="#23252C" />
 
+        </svg>
+        <svg viewBox="0 0 20 20" width="24" height="24" x-bind:class="{'hidden': theme === 'dark'}">
+          <path
+            d="M16.667 12.3249L17.3564 12.6202C17.4795 12.3329 17.4115 11.9994 17.1857 11.7832C16.96 11.567 16.6239 11.5135 16.3421 11.6489L16.667 12.3249ZM8.19804 2.3999L8.79449 2.85459C8.9845 2.60535 8.99949 2.26424 8.83208 1.99928C8.66467 1.73433 8.35016 1.60141 8.04348 1.666L8.19804 2.3999ZM13.6635 12.2548C10.3006 12.2548 7.60587 9.59905 7.60587 6.36135L6.10587 6.36135C6.10587 10.4618 9.50689 13.7548 13.6635 13.7548L13.6635 12.2548ZM16.3421 11.6489C15.5358 12.0364 14.6271 12.2548 13.6635 12.2548L13.6635 13.7548C14.8559 13.7548 15.9863 13.4841 16.9918 13.0009L16.3421 11.6489ZM15.9776 12.0295C14.9688 14.384 12.579 16.0499 9.77963 16.0499L9.77963 17.5499C13.1836 17.5499 16.1131 15.5222 17.3564 12.6202L15.9776 12.0295ZM9.77963 16.0499C6.05539 16.0499 3.06774 13.1083 3.06774 9.51796L1.56774 9.51796C1.56774 13.971 5.26169 17.5499 9.77963 17.5499L9.77963 16.0499ZM3.06774 9.51796C3.06774 6.3999 5.31884 3.77274 8.3526 3.1338L8.04348 1.666C4.35439 2.44295 1.56774 5.65176 1.56774 9.51796L3.06774 9.51796ZM7.60587 6.36135C7.60587 5.04819 8.0465 3.83578 8.79449 2.85459L7.60159 1.94521C6.66318 3.17619 6.10587 4.70542 6.10587 6.36135L7.60587 6.36135Z"
+            fill="currentColor" />
+          <path
+            d="M13.9357 2.46517C13.5852 2.2404 13.1672 2.64169 13.4007 2.97822L13.8173 3.57826C13.9864 3.82156 14.0766 4.10745 14.0766 4.3999C14.0766 4.69235 13.9864 4.97825 13.8173 5.22154L13.4007 5.82158C13.1672 6.15811 13.5858 6.55941 13.9364 6.33463L14.5607 5.93461C14.8141 5.77233 15.1119 5.68573 15.4165 5.68573C15.7211 5.68573 16.0189 5.77233 16.2723 5.93461L16.8973 6.33463C17.2478 6.55941 17.6658 6.15811 17.4317 5.82158L17.015 5.22154C16.846 4.97825 16.7558 4.69235 16.7558 4.3999C16.7558 4.10745 16.846 3.82156 17.015 3.57826L17.4317 2.97822C17.6658 2.64169 17.2478 2.2404 16.8966 2.46517L16.2723 2.8652C16.0189 3.02747 15.7211 3.11407 15.4165 3.11407C15.1119 3.11407 14.8141 3.02747 14.5607 2.8652L13.9357 2.46517Z"
+            fill="currentColor" fill-opacity="0.25" />
+        </svg>
+      </button>
+      <span x-text="theme === 'dark'? 'Light mode' : 'Night mode'" class="theme-toggler-text"></span>
+      <button class="btn-theme-switcher" x-on:click="toggleTheme()" x-bind:class="{ 'dark': theme === 'dark' }">
+
+        <div class="btn-theme-switcher-icon">
+
+          <svg viewBox="0 0 20 20" width="24" height="24" x-bind:class="{'hidden': theme === 'light'}">
+            <path
+              d="M16.667 12.3249L17.3564 12.6202C17.4795 12.3329 17.4115 11.9994 17.1857 11.7832C16.96 11.567 16.6239 11.5135 16.3421 11.6489L16.667 12.3249ZM8.19804 2.3999L8.79449 2.85459C8.9845 2.60535 8.99949 2.26424 8.83208 1.99928C8.66467 1.73433 8.35016 1.60141 8.04348 1.666L8.19804 2.3999ZM13.6635 12.2548C10.3006 12.2548 7.60587 9.59905 7.60587 6.36135L6.10587 6.36135C6.10587 10.4618 9.50689 13.7548 13.6635 13.7548L13.6635 12.2548ZM16.3421 11.6489C15.5358 12.0364 14.6271 12.2548 13.6635 12.2548L13.6635 13.7548C14.8559 13.7548 15.9863 13.4841 16.9918 13.0009L16.3421 11.6489ZM15.9776 12.0295C14.9688 14.384 12.579 16.0499 9.77963 16.0499L9.77963 17.5499C13.1836 17.5499 16.1131 15.5222 17.3564 12.6202L15.9776 12.0295ZM9.77963 16.0499C6.05539 16.0499 3.06774 13.1083 3.06774 9.51796L1.56774 9.51796C1.56774 13.971 5.26169 17.5499 9.77963 17.5499L9.77963 16.0499ZM3.06774 9.51796C3.06774 6.3999 5.31884 3.77274 8.3526 3.1338L8.04348 1.666C4.35439 2.44295 1.56774 5.65176 1.56774 9.51796L3.06774 9.51796ZM7.60587 6.36135C7.60587 5.04819 8.0465 3.83578 8.79449 2.85459L7.60159 1.94521C6.66318 3.17619 6.10587 4.70542 6.10587 6.36135L7.60587 6.36135Z"
+              fill="currentColor" />
+            <path
+              d="M13.9357 2.46517C13.5852 2.2404 13.1672 2.64169 13.4007 2.97822L13.8173 3.57826C13.9864 3.82156 14.0766 4.10745 14.0766 4.3999C14.0766 4.69235 13.9864 4.97825 13.8173 5.22154L13.4007 5.82158C13.1672 6.15811 13.5858 6.55941 13.9364 6.33463L14.5607 5.93461C14.8141 5.77233 15.1119 5.68573 15.4165 5.68573C15.7211 5.68573 16.0189 5.77233 16.2723 5.93461L16.8973 6.33463C17.2478 6.55941 17.6658 6.15811 17.4317 5.82158L17.015 5.22154C16.846 4.97825 16.7558 4.69235 16.7558 4.3999C16.7558 4.10745 16.846 3.82156 17.015 3.57826L17.4317 2.97822C17.6658 2.64169 17.2478 2.2404 16.8966 2.46517L16.2723 2.8652C16.0189 3.02747 15.7211 3.11407 15.4165 3.11407C15.1119 3.11407 14.8141 3.02747 14.5607 2.8652L13.9357 2.46517Z"
+              fill="currentColor" fill-opacity="0.25" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none"
+            x-bind:class="{'hidden': theme === 'dark'}">
+            <path
+              d="M6.49902 11H5.49902V9.5H6.49902V11ZM9.18102 9.889L8.12052 8.8285L8.82752 8.1215L9.88852 9.1825L9.18202 9.889H9.18102ZM2.81702 9.889L2.10952 9.182L3.16952 8.121L3.87702 8.828L2.81702 9.8885V9.889ZM5.99902 8.5035C4.61651 8.50295 3.49616 7.38185 3.49652 5.99933C3.49689 4.61682 4.61784 3.49632 6.00036 3.4965C7.38287 3.49668 8.50352 4.61749 8.50352 6C8.50214 7.38246 7.38149 8.50267 5.99902 8.5035ZM5.99902 4.4965C5.16879 4.49705 4.49616 5.17044 4.49652 6.00067C4.49689 6.8309 5.17013 7.50368 6.00036 7.5035C6.83059 7.50332 7.50352 6.83023 7.50352 6C7.5027 5.16959 6.82943 4.49678 5.99902 4.4965ZM10.999 6.5H9.49902V5.5H10.999V6.5ZM2.49902 6.5H0.999023V5.5H2.49902V6.5ZM8.82702 3.879L8.12052 3.1715L9.18102 2.1105L9.88852 2.818L8.82752 3.8785L8.82702 3.879ZM3.17052 3.879L2.11052 2.8185L2.81802 2.1115L3.87802 3.1725L3.17102 3.8785L3.17052 3.879ZM6.49902 2.5H5.49902V1H6.49902V2.5Z"
+              fill="currentColor" />
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
 </div>
 <div class="sidebar-overlay"></div>
 

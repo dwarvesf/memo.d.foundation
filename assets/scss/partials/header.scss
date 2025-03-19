@@ -273,30 +273,7 @@ html[data-theme="dark"] {
   }
 }
 
-.btn-theme-toggler {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-items: center;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
 
-  svg {
-    height: 20px;
-    width: 20px;
-  }
-
-  :hover {
-    opacity: 0.8;
-  }
-
-  .hidden {
-    display: none;
-  }
-}
 
 .btn-reading-mode-toggler {
   min-width: 48px;
@@ -463,9 +440,7 @@ nav.menu > .tab-menu {
   .tab-header {
     border-bottom: 1px solid var(--primary-border-color-light);
   }
-  .btn-theme-toggler {
-    min-width: auto;
-  }
+ 
 
   .btn-reading-mode-toggler {
     display: none;
