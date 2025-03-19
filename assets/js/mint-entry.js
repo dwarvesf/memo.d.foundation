@@ -160,26 +160,26 @@ function getTokenId() {
     console.error("Mint entry container not found");
     return null;
   }
-  
+
   const tokenId = container.getAttribute('data-token-id');
   if (!tokenId) {
     console.error("Token ID not found in data attribute");
     return null;
   }
-  
+
   return parseInt(tokenId, 10);
 }
 
 window.addEventListener("load", () => {
   initializeMintingInterface();
   setupEventListeners();
-  
+
   // Set NFT contract address in the verification section
   updateNFTContractAddress();
-  
+
   // Start fetching the mint count to update the progress bar, even before wallet connection
   fetchAndUpdateMintCount();
-  
+
   // Listen for wallet connection/disconnection events
   window.addEventListener("wallet:connectionChanged", async (event) => {
     const { connected, wallet } = event.detail;
@@ -198,14 +198,14 @@ async function fetchAndUpdateMintCount() {
       console.error("Cannot fetch mint count: Token ID is not available");
       return;
     }
-    
+
     // Create a read-only provider and contract instance
     const readProvider = new ethers.providers.JsonRpcProvider(ACTIVE_CHAIN.rpcUrls[0]);
     const readOnlyContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, readProvider);
-    
+
     // Get the mint count for this token ID
     const mintCount = await readOnlyContract.getMintCountByTokenId(tokenId);
-    
+
     // Update the UI with the actual mint count
     updateMintProgressUI(mintCount.toNumber());
   } catch (error) {
@@ -218,7 +218,50 @@ function updateMintProgressUI(count) {
   const mintCountDisplay = document.querySelector('.mint-count-display');
   
   if (mintCountDisplay) {
-    mintCountDisplay.textContent = `${count} collected`;
+    // Clear previous content
+    mintCountDisplay.innerHTML = '';
+    
+    if (count > 0) {
+      // Create avatar container
+      const avatarContainer = document.createElement('div');
+      avatarContainer.className = 'mint-avatars';
+      
+      // Always display exactly 3 avatars (or less if count < 3)
+      const displayCount = Math.min(count, 3);
+      for (let i = 0; i < displayCount; i++) {
+        // Generate random values for identicons
+        const randomValue = Math.random().toString(36).substring(2, 10);
+        
+        // Create div container for the SVG
+        const div = document.createElement('div');
+        
+        // Add to container
+        avatarContainer.appendChild(div);
+        
+        // Render the identicon SVG inside the div
+        if (window.jdenticon) {
+          div.innerHTML = window.jdenticon.toSvg(randomValue, 16);
+        }
+        
+        // Set proper CSS class to ensure z-index works correctly
+        if (i === displayCount - 1) {
+          div.classList.add('last-avatar');
+        }
+      }
+      
+      // Add badge with count only if count > 0
+      const countText = document.createElement('span');
+      countText.className = 'mint-count-badge';
+      countText.textContent = `${count} collected`;
+      
+      avatarContainer.appendChild(countText);
+      
+      // Add the avatar container to the display
+      mintCountDisplay.appendChild(avatarContainer);
+    } else {
+      // If count is 0, show default text
+      mintCountDisplay.textContent = 'Be the first to collect';
+    }
   }
 }
 
@@ -229,7 +272,7 @@ function updateNFTContractAddress() {
     // Format address to show first 10 chars then ellipsis then last 6 chars
     const formattedAddress = `${NFT_CONTRACT_ADDRESS.substring(0, 10)}...${NFT_CONTRACT_ADDRESS.substring(NFT_CONTRACT_ADDRESS.length - 6)}`;
     nftAddressElement.textContent = formattedAddress;
-    
+
     // Add link to blockchain explorer
     const explorerUrl = ACTIVE_CHAIN.blockExplorerUrls[0] + '/address/' + NFT_CONTRACT_ADDRESS;
     const linkElement = document.createElement('a');
@@ -237,7 +280,7 @@ function updateNFTContractAddress() {
     linkElement.target = '_blank';
     linkElement.rel = 'noopener noreferrer';
     linkElement.textContent = formattedAddress;
-    
+
     nftAddressElement.textContent = '';
     nftAddressElement.appendChild(linkElement);
   }
@@ -249,7 +292,7 @@ async function initializeMintingInterface() {
   if (window.mainWallet) {
     await connectToContract(window.mainWallet);
   }
-  
+
   // Update UI with initial state
   updateMintingUI(!!window.mainWallet);
 }
@@ -259,7 +302,7 @@ async function connectToContract(walletProvider) {
   try {
     // Create ethers provider from the wallet provider
     provider = new ethers.providers.Web3Provider(walletProvider);
-    
+
     // Check if we're on the correct chain
     const network = await provider.getNetwork();
     if (network.chainId !== ACTIVE_CHAIN.chainId) {
@@ -286,18 +329,18 @@ async function connectToContract(walletProvider) {
           throw switchError;
         }
       }
-      
+
       // Refresh provider after chain switch
       provider = new ethers.providers.Web3Provider(walletProvider);
     }
-    
+
     // Get the signer and create contract instance
     signer = provider.getSigner();
     nftContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
-    
+
     // Update UI to show connected state
     updateMintingUI(true);
-    
+
   } catch (error) {
     console.error("Failed to connect to contract:", error);
     // Update UI to show error state
@@ -323,19 +366,19 @@ async function handleMintButtonClick() {
     }
     return;
   }
-  
+
   // Get the token ID for this entry
   const tokenId = getTokenId();
   if (!tokenId) {
     console.error("Cannot mint: Token ID is not available");
     return;
   }
-  
+
   // Check if user has already minted this token
   try {
     const userAddress = await signer.getAddress();
     const balance = await nftContract.balanceOf(userAddress, tokenId);
-    
+
     if (balance.gt(0)) {
       console.log("User has already minted this token");
       const mintButton = document.querySelector('.mint-cta button');
@@ -350,32 +393,32 @@ async function handleMintButtonClick() {
     console.error("Error checking if user already minted:", error);
     // Continue with minting attempt even if check fails
   }
-  
+
   // Get the mint button and show loading state
   const mintButton = document.querySelector('.mint-cta button');
   const originalText = mintButton.textContent;
   mintButton.textContent = "Minting...";
   mintButton.disabled = true;
-  
+
   try {
     // Call the mintNFT function on the contract with tokenId and amount
     const tx = await nftContract.mintNFT(tokenId, MINT_AMOUNT);
-    
+
     // Wait for transaction confirmation
     mintButton.textContent = "Confirming...";
     const receipt = await tx.wait();
-    
+
     // Look for the TokenMinted event
-    const mintEvent = receipt.events.find(event => 
-      event.event === 'TokenMinted' || 
+    const mintEvent = receipt.events.find(event =>
+      event.event === 'TokenMinted' ||
       (event.topics && event.topics[0] === ethers.utils.id("TokenMinted(address,uint256,uint256)"))
     );
-    
+
     // Don't update verification data - it's not meant to be changed
-    
+
     // Update the mint count and progress bar
     updateMintProgress();
-    
+
     // Restore button state
     mintButton.textContent = "Minted";
     mintButton.disabled = true;
@@ -399,15 +442,9 @@ async function updateMintProgress() {
       console.error("Cannot update mint progress: Token ID is not available");
       return;
     }
-    
-    // If we have a connected provider and contract, use it
-    if (nftContract) {
-      const mintCount = await nftContract.getMintCountByTokenId(tokenId);
-      updateMintProgressUI(mintCount.toNumber());
-    } else {
-      // If no connected wallet, use the read-only approach instead
-      await fetchAndUpdateMintCount();
-    }
+
+    // If no connected wallet, use the read-only approach instead
+    await fetchAndUpdateMintCount();
   } catch (error) {
     console.error("Failed to update mint progress:", error);
   }
@@ -417,7 +454,7 @@ async function updateMintProgress() {
 async function updateMintingUI(connected = false, errorMessage = null) {
   const mintButton = document.querySelector('.mint-cta button');
   const entryContainer = document.querySelector('.mint-entry-container');
-  
+
   if (connected) {
     // Update UI for connected state
     if (mintButton) {
@@ -446,7 +483,7 @@ async function updateMintingUI(connected = false, errorMessage = null) {
         mintButton.disabled = false;
       }
     }
-    
+
     // Fetch and display the current mint progress
     updateMintProgress();
   } else {

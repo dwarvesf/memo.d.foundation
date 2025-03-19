@@ -53,6 +53,10 @@
     <span>Verification</span>
     <span>This entry has been permanently stored onchain and signed by its creator.</span>
     <dl>
+      <dt>transaction</dt>
+      <dd class="mint-entry-nft-perma-storage-hash">
+        <a href="https://viewblock.io/arweave/tx/{{ .Params.perma_storage_id }}" target="_blank" rel="noopener noreferrer">{{ substr .Params.perma_storage_id 0 20 }}</a>
+      </dd>
       <dt>nft address</dt>
       <dd class="mint-entry-nft-address">Loading...</dd>
       <dt>content digest</dt>
