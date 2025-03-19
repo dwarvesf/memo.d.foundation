@@ -1,6 +1,6 @@
 .mint-entry-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 50% 50%;
     column-gap: 1.5rem;
     padding: 1.5rem 0;
     box-sizing: border-box;
@@ -26,7 +26,7 @@
         flex-direction: column;
         row-gap: 1.5rem;
 
-        img {
+        >img {
             height: 167px;
             width: 100%;
             object-fit: cover;
@@ -34,7 +34,7 @@
             overflow: hidden;
         }
 
-        span {
+        >span {
             align-self: center;
             font-size: 0.875rem;
             color: var(--secondary-font-color-light-var2);
@@ -43,7 +43,7 @@
             line-height: 100%;
         }
 
-        button {
+        >button {
             height: 40px;
             background-color: var(--primary-color);
             padding: 0.5rem;
@@ -58,68 +58,30 @@
             &:hover {
                 filter: brightness(1.05);
             }
+
+            &.already-minted {
+                opacity: 0.5;
+                cursor: not-allowed;
+
+                &:hover {
+                    filter: brightness(1);
+                }
+            }
         }
     }
 
     .mint-progress {
-        height: 72px;
         border-top: 1px solid #ece4e4;
-        padding: 1rem 1.5rem;
+        padding: 0.5rem 1rem;
         display: flex;
-        flex-direction: column;
-        justify-content: space-around;
         position: relative;
+        justify-content: center;
 
-        & > span {
+        &>span {
             font-size: 0.75rem;
             font-weight: 400;
             align-self: flex-end;
             line-height: 100%;
-        }
-
-        --progress: 10.5%;
-
-        .mint-progress-label {
-            width: 24px;;
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            left: calc(1.5rem + var(--progress));
-            bottom: 1rem;
-            transform: translateX(-50%);
-            row-gap: 0.5rem;
-
-            span {
-                color: var(--primary-color);
-                font-size: 0.75rem;
-                font-weight: 400;
-                white-space: nowrap;
-                text-align: center;
-                line-height: 100%;
-            }
-
-            img {
-                width: 24px;
-                height: 24px;
-            }
-        }
-
-        progress {
-            appearance: none;
-            width: 100%;
-            height: 0.5rem;
-            border-radius: 0.5rem;
-            overflow: hidden;
-
-            &::-webkit-progress-bar {
-                background-color: white;
-                border-radius: 0.5rem;
-            }
-
-            &::-webkit-progress-value {
-                background-color: var(--primary-color);
-            }
         }
     }
 }
@@ -185,6 +147,68 @@
 
         dt:not(:first-child) {
             margin-top: 1rem;
+        }
+    }
+}
+
+.nft-preview {
+    border-radius: 0.25rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    width: 192px;
+    height: 192px;
+    overflow: hidden;
+    margin: 0 auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+
+    img.nft-preview-image {
+        object-fit: cover;
+        flex-shrink: 1;
+        min-height: 0;
+    }
+
+    span.nft-preview-title {
+        flex-shrink: 0;
+        margin-top: auto;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.625rem;
+        font-weight: 500;
+        line-height: 140%;
+    }
+
+    .nft-preview-author-name-container {
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.25rem;
+    }
+
+
+    .nft-preview-author {
+        flex-shrink: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.15);
+        padding: 0.5rem 0.75rem;
+        display: flex;
+        align-items: center;
+        column-gap: 0.25rem;
+
+        img.nft-preview-author-avatar {
+            width: 16px;
+            height: 16px;
+            border-radius: 100%;
+        }
+
+        span.nft-preview-author-name {
+            font-size: 0.625rem;
+            font-weight: 400;
+            line-height: 130%;
+        }
+
+        .nft-preview-author-role {
+            font-size: 0.5rem;
+            font-weight: 400;
+            line-height: 130%;
+            color: #9b9b9b;
         }
     }
 }
