@@ -1,3 +1,8 @@
+section.mint-entry-container:not([data-token-id]),
+section.mint-entry-container[data-token-id=""] {
+    display: none;
+}
+
 .mint-entry-container {
     display: grid;
     grid-template-columns: 50% 50%;
