@@ -72,6 +72,7 @@ export default function RootLayout({
       }
     };
 
+    // Add event listeners
     mediaQuery.addEventListener('change', handleChange);
     window.addEventListener('keydown', handleKeyDown);
 
@@ -104,25 +105,10 @@ export default function RootLayout({
   };
 
   return (
-    <div className={`${readingMode ? 'reading-mode' : ''} min-h-screen flex transition-colors`}
+    <div className={`${readingMode ? 'reading-mode' : ''} min-h-screen flex transition-colors has-sidebar`}
          style={{ backgroundColor: 'var(--background)', color: 'var(--foreground)' }}>
-      {/* Sidebar navigation - commented out for now */}
-      {/* <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} /> */}
-
-      <div className="flex-1 flex flex-col">
-        <Head>
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <meta property="og:title" content={title} />
-          <meta property="og:description" content={description} />
-          {image && <meta property="og:image" content={image} />}
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-          <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
-        </Head>
-
+      {/* Main layout wrapper matching Hugo structure */}
+      <div className="main-layout">
         {/* Top header with search */}
         <div className="tab-header">
           {/* Mobile toggle button */}
@@ -130,7 +116,6 @@ export default function RootLayout({
             id="sidebar-toggle"
             aria-label="Toggle sidebar"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="md:hidden"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -138,7 +123,7 @@ export default function RootLayout({
           </button>
 
           {/* Logo (shown on mobile) */}
-          <Link href="/" className="header-logo md:hidden">
+          <Link href="/" className="header-logo">
             <svg className="no-zoom" width="24" height="24" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.41664 20C1.08113 20 0 18.8812 0 17.4991V2.50091C0 1.11883 1.08113 0 2.41664 0L8.46529 0.00731261C13.8427 0.00731261 18.1954 4.55576 18.1248 10.1353C18.0541 15.6271 13.6307 20 8.32397 20H2.41664Z" fill="var(--primary-color)"/>
               <path d="M3.63209 15.6271H3.32118C3.15159 15.6271 3.01733 15.4881 3.01733 15.3126V12.8044C3.01733 12.6289 3.15159 12.49 3.32118 12.49H5.74488C5.91447 12.49 6.04873 12.6289 6.04873 12.8044V13.1262C6.04873 14.5082 4.9676 15.6271 3.63209 15.6271Z" fill="white"/>
@@ -217,25 +202,40 @@ export default function RootLayout({
         <div className="grid">
           <div id="overlay"></div>
 
-          {/* Menu - commented out for now since sidebar is hidden */}
-          {/* <nav id="sidebar" className="menu scrollbar-hidden">
-            Dynamic menu content will be added here
-          </nav> */}
-
-          {/* Right sidebar for table of contents */}
+          {/* Right sidebar for metadata and TOC */}
           <div className="pagenav">
             <div className="container">
               <div className="always-on-right-sidebar">
                 <div>
                   <label className="nav-label">On this page</label>
                   {/* Table of Contents will be rendered here */}
+                  <div className="table-of-contents" id="TableOfContents"></div>
                 </div>
+                {/* Metadata is rendered directly by children through sidebar-metadata */}
               </div>
+            </div>
+            <div className="sidebar-hover-indicator">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
             </div>
           </div>
 
-          {/* Main content */}
-          <main className="flex-1 overflow-auto">
+          {/* Main content area */}
+          <main>
+            <Head>
+              <title>{title}</title>
+              <meta name="description" content={description} />
+              <meta property="og:title" content={title} />
+              <meta property="og:description" content={description} />
+              {image && <meta property="og:image" content={image} />}
+              <link rel="icon" href="/favicon.ico" />
+              <link rel="preconnect" href="https://fonts.googleapis.com" />
+              <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+              <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+              <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+            </Head>
+
             {/* Yggdrasil tree background (from Hugo) */}
             <img
               className="yggdrasil-tree no-zoom"

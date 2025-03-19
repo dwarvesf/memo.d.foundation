@@ -3,6 +3,128 @@
 @import "tailwindcss/utilities" layer(utilities);
 @config "../../tailwind.config.mjs";
 
+/* Additional Hugo styles for the [...slug].tsx page */
+.memo-content {
+  max-width: 100%;
+  width: 100%;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.pagetitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  margin-top: 0 !important;
+}
+
+.has-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* Article content */
+.article-content {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+/* Subscription component */
+.subscription {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  padding: 2rem 0;
+  background-color: var(--muted);
+  border-radius: 0.5rem;
+}
+
+.subscription .container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.subscription .section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.subscription .section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.subscription .section-header p {
+  color: var(--secondary-font-color);
+}
+
+.subscription-form {
+  display: flex;
+  justify-content: center;
+}
+
+.form-inputs {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.form-inputs input[type="email"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.form-inputs input[type="email"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover-color);
+}
+
 :root {
   --background: #FFFFFF;
   --foreground: #1e1e1e;
@@ -383,7 +505,29 @@
 }
 
 .table-of-contents a {
-  @apply text-muted-foreground hover:text-primary transition-colors no-underline block py-1;
+  @apply text-muted-foreground hover:text-primary transition-colors no-underline block py-1 px-2 rounded;
+}
+
+.table-of-contents a:hover {
+  background-color: var(--muted);
+}
+
+.table-of-contents a.active {
+  color: var(--primary);
+  font-weight: 500;
+  position: relative;
+}
+
+.table-of-contents a.active::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 70%;
+  background-color: var(--primary);
+  border-radius: 2px;
 }
 
 .nav-label {
@@ -392,6 +536,43 @@
   color: var(--secondary-font-color-light);
   margin-bottom: 8px;
   display: block;
+}
+
+/* Indicator for sidebar hover */
+.pagenav::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 30px;
+  background-color: var(--primary);
+  border-radius: 0 2px 2px 0;
+}
+
+.sidebar-hover-indicator {
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--background);
+  color: var(--primary);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--primary);
+  box-shadow: 0 0 5px rgba(225, 63, 94, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 20;
+}
+
+.pagenav:hover .sidebar-hover-indicator {
+  transform: translateY(-50%) rotate(180deg);
+  box-shadow: 0 0 8px rgba(225, 63, 94, 0.5);
 }
 
 /* Sidebar styling */
@@ -761,24 +942,33 @@ input[type="checkbox"]:checked {
 /* Main content styling */
 main {
   flex: 1;
-  overflow: auto;
-  padding-top: 64px; /* Add padding to account for the fixed header */
-  margin: 0 auto; /* Center content */
+  overflow: visible;
+  padding-top: 0; /* Remove top padding, we'll handle this with margins */
+  margin: 80px auto 0; /* Add margin-top to account for header height, center content horizontally */
   max-width: var(--container-max-width); /* Max width for content */
   width: 100%;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
 }
 
 .reading-mode main {
   max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 4rem 1rem;
+  margin: 80px auto 0;
+  padding: 0 1.5rem;
+}
+
+.reading-mode .grid {
+  padding-right: 0; /* Remove padding in reading mode */
 }
 
 .reading-mode .pagenav {
-  opacity: 0;
-  pointer-events: none;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
 }
 
 /* Neko mascots */
@@ -816,12 +1006,11 @@ main {
 
 /* Grid layout */
 .grid {
-  display: grid;
-  /* Sidebar column commented out for now */
-  /* grid-template-columns: 240px 1fr; */
-  grid-template-columns: 1fr;
+  display: flex;
   position: relative;
   min-height: calc(100vh - 64px);
+  padding-right: 30px; /* Just enough space for the hover indicator */
+  width: 100%;
 }
 
 /* Overlay */
@@ -845,18 +1034,35 @@ main {
 
 /* Pagenav */
 .pagenav {
-  position: absolute;
+  position: fixed;
   top: 64px;
+  right: 0;
+  width: 280px;
   height: calc(100vh - 64px);
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  background-color: var(--background);
+  border-left: 1px solid var(--border);
+  z-index: 10;
+  transition: all 0.3s ease;
+  transform: translateX(calc(100% - 30px));
+}
+
+.pagenav:hover {
+  transform: translateX(0);
 }
 
 .always-on-right-sidebar {
-  position: sticky;
-  top: 6rem;
+  position: relative;
+  margin-top: 0;
+}
+
+/* Sidebar metadata specific styling */
+#sidebar-metadata {
+  display: block;
+  margin-top: 2rem;
 }
 
 .metadata {
@@ -922,14 +1128,18 @@ main {
 /* Page title */
 .note-title {
   margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .note-title h1 {
   margin-top: 0 !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .clear-title {
   border-bottom: none !important;
+  padding-bottom: 0;
 }
 
 @media (max-width: 1024px) {
