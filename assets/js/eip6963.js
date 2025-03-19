@@ -18,33 +18,48 @@ let mainWallet = null;
 let dropdownVisible = false;
 let popperInstance = null;
 let dropdown = null;
+let isDisconnected = localStorage.getItem('isDisconnected') === 'true' || false;
+let connectedRdns = localStorage.getItem('connectedRdns') || null;
 
-const getAccounts = (wallet) => {
-  if (!wallet) return;
+const getAccounts = async (wallet) => {
+  if (!wallet) return [];
   try {
-    return wallet._state?.accounts;
+    const accounts = await wallet.request({ method: "eth_accounts" });
+    return accounts;
   } catch (error) {
     console.error("Cannot get wallet's accounts", error);
+    return [];
   }
 };
 
 // Connect to the selected provider using eth_requestAccounts.
 const connectWithProvider = async (wallet) => {
   if (!wallet) return;
-  const accs = getAccounts(wallet);
+  
   try {
-    if (accs?.[0]) {
-      await wallet.request({
-        method: "wallet_revokePermissions",
-        params: [
-          {
-            eth_accounts: {},
-          },
-        ],
-      });
+    const accounts = await getAccounts(wallet);
+
+    if (!isDisconnected && accounts?.length) {
+      // we cannot really disconnect from the provider, so we just set the mainWallet to null
+      mainWallet = null;
+      window.mainWallet = null;
+      isDisconnected = true
+      localStorage.setItem('isDisconnected', isDisconnected);
+      updateButton([], document.querySelector('.connect-wallet'));
+      // Dispatch disconnect event
+      window.dispatchEvent(new CustomEvent("wallet:connectionChanged", { 
+        detail: { connected: false, wallet: null }
+      }));
       return;
     }
-    await wallet.request({ method: "eth_requestAccounts" });
+    isDisconnected = false
+    localStorage.setItem('isDisconnected', isDisconnected);
+    await wallet.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }] }).catch(() => null)
+    await wallet.request({ method: "eth_requestAccounts" })
+    // Dispatch connect event
+    window.dispatchEvent(new CustomEvent("wallet:connectionChanged", { 
+      detail: { connected: true, wallet: wallet }
+    }));
   } catch (error) {
     console.error("Failed to connect/disconnect provider:", error);
   }
@@ -55,15 +70,23 @@ const connectWithProvider = async (wallet) => {
   }
 };
 
-function updateButton(accs, connectBtn) {
-  if (!accs || !accs.length) {
+async function updateButton(accounts, connectBtn) {
+  if (!accounts || !accounts.length || localStorage.getItem('isDisconnected') === 'true') {
     connectBtn.innerHTML = "Connect";
     connectBtn.classList.remove("wallet-connected");
+    // Dispatch disconnect event when accounts change to empty
+    window.dispatchEvent(new CustomEvent("wallet:connectionChanged", { 
+      detail: { connected: false, wallet: null }
+    }));
     return;
   }
-  const acc = accs[0];
+  const acc = accounts[0];
   connectBtn.innerHTML = `${acc.slice(0, 5)}...${acc.slice(-2)}`;
   connectBtn.classList.add("wallet-connected");
+  // Dispatch connect event when accounts change and are available
+  window.dispatchEvent(new CustomEvent("wallet:connectionChanged", { 
+    detail: { connected: true, wallet: mainWallet }
+  }));
 }
 
 // Create dropdown element for wallet selection
@@ -103,9 +126,12 @@ function populateDropdown() {
 
       item.addEventListener('click', async () => {
         mainWallet = walletInfo.provider;
+        window.mainWallet = mainWallet;
         await connectWithProvider(mainWallet);
-        const accs = getAccounts(mainWallet);
-        updateButton(accs, document.querySelector('.connect-wallet'));
+        const accs = await getAccounts(mainWallet);
+        await updateButton(accs, document.querySelector('.connect-wallet'));
+        connectedRdns = rdns;
+        localStorage.setItem('connectedRdns', connectedRdns);
       });
 
       dropdown.appendChild(item);
@@ -170,18 +196,21 @@ function handleClickOutside(event) {
 }
 
 // Display detected providers as connect buttons.
-function listProviders() {
+async function listProviders() {
   const connectBtn = document.querySelector(".connect-wallet");
   if (!connectBtn) return;
 
   // Create click handler for the connect button
-  connectBtn.addEventListener("click", (e) => {
+  connectBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
 
     // If already connected, disconnect when clicked
-    if (mainWallet && getAccounts(mainWallet)?.length) {
-      connectWithProvider(mainWallet);
-      return;
+    if (mainWallet && localStorage.getItem('isDisconnected') === 'false') {
+      const accounts = await getAccounts(mainWallet);
+      if (accounts && accounts.length) {
+        await connectWithProvider(mainWallet);
+        return;
+      }
     }
 
     // If not connected and we have multiple wallets, show dropdown
@@ -195,7 +224,8 @@ function listProviders() {
     } else if (availableWallets.length === 1) {
       // If only one wallet is available, connect directly
       mainWallet = availableWallets[0].provider;
-      connectWithProvider(mainWallet);
+      window.mainWallet = mainWallet;
+      await connectWithProvider(mainWallet);
     }
   });
 
@@ -209,28 +239,32 @@ function listProviders() {
     }
   });
 
-  window.addEventListener("eip6963:announceProvider", (event) => {
+  window.addEventListener("eip6963:announceProvider", async (event) => {
     const { info, provider } = event.detail;
     if (rdnsMap.has(info.rdns)) {
       const walletInfo = rdnsMap.get(info.rdns);
       walletInfo.provider = provider;
       rdnsMap.set(info.rdns, walletInfo);
-      console.log(walletInfo)
 
       // Setup account change listener
-      provider.on("accountsChanged", (accs) => {
+      provider.on("accountsChanged", async (accounts) => {
         if (mainWallet === provider) {
-          updateButton(accs, connectBtn);
+          window.mainWallet = mainWallet;
+          await updateButton(accounts, connectBtn);
         }
       });
 
-      // If no wallet is selected yet, use the first one
-      if (!mainWallet) {
-        mainWallet = provider;
-        const accs = getAccounts(mainWallet);
-        updateButton(accs, connectBtn);
-
-        return;
+      // If no wallet is selected yet, use the stored connectedRdns
+      if (!mainWallet && connectedRdns === info.rdns) {
+        const accounts = await getAccounts(provider);
+        if (accounts?.length) {
+          mainWallet = provider;
+          window.mainWallet = mainWallet;
+          await updateButton(accounts, connectBtn);
+          connectedRdns = info.rdns;
+          localStorage.setItem('connectedRdns', connectedRdns);
+          return;
+        }
       }
     }
   });
@@ -239,21 +273,7 @@ function listProviders() {
   window.dispatchEvent(new Event("eip6963:requestProvider"));
 }
 
-// Load Popper.js from CDN if not already available
-function loadPopper() {
-  if (window.Popper) return Promise.resolve();
-
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js';
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-}
-
 // Initialize when the page loads
-window.addEventListener("load", async () => {
-  await loadPopper();
+window.addEventListener("load", () => {
   listProviders();
 });
