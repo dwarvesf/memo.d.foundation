@@ -1,6 +1,8 @@
 {{ partial "header.html" . }}
 
 <section class="contributors-list">
+  {{ with .Content }}{{ . }}{{ end }}
+
   <ul class="contributors">
     {{ $authors := slice }}
     {{ range site.RegularPages }}
