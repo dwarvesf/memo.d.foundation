@@ -17,7 +17,7 @@ nav.menu {
   box-sizing: border-box;
   width: 360px;
   @include responsive(lg) {
-    width: calc(72px + 200px + 32px);
+    width: calc(72px + 200px + 28px);
   }
 }
 

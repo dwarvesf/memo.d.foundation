@@ -168,8 +168,8 @@ code.button {
     }
   }
   @include responsive(lg) {
-    --container-max-width: 646px;
-    --column-gap:32px;
+    --container-max-width: 695px;
+    --column-gap:28px;
    
   }
   @include responsive(md) {
