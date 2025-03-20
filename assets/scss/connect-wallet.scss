@@ -31,6 +31,56 @@
   }
 }
 
+.connect-wallet.no-wallet {
+  opacity: 0.5;
+  cursor: not-allowed;
+  
+  &:hover {
+    filter: brightness(1);
+  }
+}
+
+/* Tooltip styles */
+.wallet-tooltip {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 10;
+  display: none;
+}
+
+.wallet-tooltip[data-show] {
+  display: block;
+}
+
+.wallet-tooltip-arrow,
+.wallet-tooltip-arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+}
+
+.wallet-tooltip-arrow {
+  visibility: hidden;
+}
+
+.wallet-tooltip-arrow::before {
+  visibility: visible;
+  content: '';
+  transform: rotate(45deg);
+}
+
+.wallet-tooltip[data-popper-placement^='top'] > .wallet-tooltip-arrow {
+  bottom: -4px;
+}
+
+.wallet-tooltip[data-popper-placement^='bottom'] > .wallet-tooltip-arrow {
+  top: -4px;
+}
+
 #wallet-dropdown {
   flex-direction: column;
   border-radius: 0.25rem;

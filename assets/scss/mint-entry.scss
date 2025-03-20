@@ -60,6 +60,7 @@ section.mint-entry-container[data-token-id=""] {
             border: none;
             cursor: pointer;
             transition: all 0.1s ease;
+            position: relative;
 
             &:hover {
                 filter: brightness(1.05);
@@ -90,14 +91,22 @@ section.mint-entry-container[data-token-id=""] {
                 border-radius: 100%;
                 width: 24px;
                 height: 24px;
-                border: 1px solid rgb(255, 255, 255);
+                border: 1px solid lightgrey;
                 background-color: white;
                 display: flex;
+                justify-content: center;
+                align-items: center;
                 margin-right: -10px;
                 position: relative;
+                overflow: hidden;
                 
                 &.last-avatar {
                     margin-right: 0;
+                }
+                
+                svg {
+                    width: 30px;
+                    height: 30px;
                 }
             }
             
