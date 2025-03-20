@@ -16,6 +16,9 @@ nav.menu {
   flex-direction: column;
   box-sizing: border-box;
   width: 360px;
+  @include responsive(lg) {
+    width: calc(72px + 200px + 28px);
+  }
 }
 
 details {
@@ -399,7 +402,7 @@ html[data-theme="dark"] {
 
 }
 
-@media only screen and (max-width: 1100px) {
+@include responsive(md) {
   nav.menu ul {
     width: 100%;
   }
@@ -486,7 +489,7 @@ body:has(#sidebar:is(.show)) {
   }
 }
 
-@media only screen and (max-width: 1100px) {
+@include responsive(md) {
   #sidebar {
     position: fixed !important;
     transition: transform 0.2s ease-in-out, opacity 0.1s ease-in-out !important;

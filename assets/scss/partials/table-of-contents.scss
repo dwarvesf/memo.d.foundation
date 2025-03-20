@@ -225,7 +225,7 @@ html[data-theme="dark"] .toc .toc-modal {
   }
 }
 
-@media screen and (max-width: 1100px) {
+@include responsive(md) {
   .toc .toc-indicators {
     padding-left: 4px;
   }
