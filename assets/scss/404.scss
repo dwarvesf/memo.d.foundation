@@ -15,17 +15,19 @@
     gap: 22px;
     margin-top: 0 !important;
     align-items: flex-end;
-
     span {
       font-size: 140px !important;
       line-height: 90%;
       letter-spacing: -3.04px;
       font-weight: 400;
+    border: none;
+
     }
 
     svg {
       width: 120px;
       height: 120px;
+      border: none;
     }
   }
   .error-title {

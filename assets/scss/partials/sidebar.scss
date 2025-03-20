@@ -191,7 +191,7 @@ html[data-theme="dark"] {
 }
 
 // Mobile adjustments
-@media (max-width: 1100px) {
+@include responsive(md) {
   .sidebar {
     width: 56px;
     z-index: 1000;
@@ -221,7 +221,7 @@ html[data-theme="dark"] {
   }
 }
 
-@media (max-width: 1100px) {
+@include responsive(md) {
   .sidebar {
     width: 232px;
     &-item {
@@ -253,7 +253,7 @@ html[data-theme="dark"] {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 
-  @media screen and (max-width: 1100px) {
+  @include responsive(md) {
     .mobile-visible ~ & {
       opacity: 1;
       visibility: visible;
@@ -286,7 +286,7 @@ html[data-theme="dark"] {
   }
 }
 
-@media screen and (max-width: 1100px) {
+@include responsive(md) {
   .btn-theme-toggler {
     min-width: auto;
   }
@@ -363,7 +363,7 @@ html[data-theme="dark"] {
 
 
 }
-@media screen and (max-width: 1100px) {
+@include responsive(md) {
   .theme-toggler-text, .btn-theme-switcher {
     display: flex;
   }
