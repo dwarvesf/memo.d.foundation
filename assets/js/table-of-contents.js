@@ -57,6 +57,11 @@ const updateActiveNav = (
 
 const initScroller = () => {
   const pagenav = document.querySelectorAll(".toc a");
+  if (!pagenav.length) {
+    document.querySelector(".toc-indicators").style.display = "none"
+    return;
+    
+  }
   isUserClicking = false;
 
   const cb = (entries) => {
