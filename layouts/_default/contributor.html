@@ -1,0 +1,22 @@
+{{ range $name := (slice) }}
+  {{ $name = $name | urlize }}
+  {{ $scratch := newScratch }}
+
+  {{ range site.RegularPages }}
+    {{ with .Params.authors }}
+      {{ range . }}
+        {{ $authorName := . | urlize }}
+        {{ if eq $authorName $name }}
+          {{ $scratch.Add "pages" (slice .) }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ if gt ($scratch.Get "pages" | len) 0 }}
+    {{ $path := printf "contributors/%s" $name }}
+    {{ with $path }}
+      <a href="{{ . | absURL }}">{{ $name | humanize }}</a>
+    {{ end }}
+  {{ end }}
+{{ end }}
