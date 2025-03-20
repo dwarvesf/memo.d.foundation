@@ -264,7 +264,7 @@ html[data-theme="dark"] {
   }
 }
 
-@media only screen and (max-width: 1100px) {
+@include responsive(md) {
   .DocSearch {
     width: 100% !important;
     height: 50px !important;
@@ -436,7 +436,7 @@ nav.menu > .tab-menu {
   display: none;
 }
 
-@media only screen and (max-width: 1100px) {
+@include responsive(md) {
   .tab-header {
     border-bottom: 1px solid var(--primary-border-color-light);
   }
@@ -478,7 +478,7 @@ nav.menu > .tab-menu {
     padding: 0;
     color: var(--secondary-font-color-light);
 
-    @media (max-width: 1100px) {
+    @include responsive(md) {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -518,15 +518,15 @@ img.yggdrasil-tree {
   bottom: calc(32px);
   left: 50%;
   transform: translateX(-50%);
-  width: 60vw;
+  width: 20vw;
   object-fit: contain;
   opacity: 0.03;
   z-index: -10;
 }
 
-@media screen and (min-width: 1100px) {
+@include responsive(md) {
   img.yggdrasil-tree {
-    width: 20vw;
+    width: 60vw;
   }
 }
 
@@ -543,7 +543,7 @@ html[data-theme="dark"] {
   height: 2rem;
   position: relative;
   gap: 0.5rem;
-  @media screen and (max-width: 1100px) {
+  @include responsive(md) {
     display: flex;
   }
   svg {
