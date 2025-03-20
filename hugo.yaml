@@ -59,3 +59,4 @@ markup:
     endLevel: 5
     ordered: false
     startLevel: 2
+capitalizeListTitles: false
