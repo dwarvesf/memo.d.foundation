@@ -17,9 +17,96 @@ const rdnsMap = new Map([
 let mainWallet = null;
 let dropdownVisible = false;
 let popperInstance = null;
+let tooltipInstance = null;
 let dropdown = null;
+let tooltip = null;
 let isDisconnected = localStorage.getItem('isDisconnected') === 'true' || false;
 let connectedRdns = localStorage.getItem('connectedRdns') || null;
+
+// Create tooltip element for no wallet warning
+function createTooltip() {
+  if (tooltip) return tooltip;
+  
+  tooltip = document.createElement('div');
+  tooltip.className = 'wallet-tooltip';
+  tooltip.innerHTML = 'Please install a wallet extension (e.g. Rabby) to connect';
+  
+  const arrow = document.createElement('div');
+  arrow.className = 'wallet-tooltip-arrow';
+  tooltip.appendChild(arrow);
+  
+  document.body.appendChild(tooltip);
+  return tooltip;
+}
+
+// Show tooltip for no wallet warning
+function showTooltip(referenceElement) {
+  if (!tooltip) {
+    tooltip = createTooltip();
+  }
+  
+  tooltip.setAttribute('data-show', '');
+  
+  if (tooltipInstance) {
+    tooltipInstance.setOptions((options) => ({
+      ...options,
+      modifiers: [
+        ...options.modifiers,
+        { name: 'eventListeners', enabled: true },
+      ],
+    }));
+    tooltipInstance.update();
+  } else {
+    tooltipInstance = Popper.createPopper(referenceElement, tooltip, {
+      placement: 'bottom',
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, 8],
+          },
+        },
+        {
+          name: 'arrow',
+          options: {
+            element: tooltip.querySelector('.wallet-tooltip-arrow'),
+          },
+        },
+      ],
+    });
+  }
+}
+
+// Hide tooltip for no wallet warning
+function hideTooltip() {
+  if (!tooltip) return;
+  
+  tooltip.removeAttribute('data-show');
+  
+  if (tooltipInstance) {
+    tooltipInstance.setOptions((options) => ({
+      ...options,
+      modifiers: [
+        ...options.modifiers,
+        { name: 'eventListeners', enabled: false },
+      ],
+    }));
+  }
+}
+
+// Helper function to update the RDNS for a provider
+const updateRdnsForProvider = (provider) => {
+  if (!provider) return null;
+  
+  for (const [rdns, walletInfo] of rdnsMap.entries()) {
+    if (walletInfo.provider === provider) {
+      connectedRdns = rdns;
+      localStorage.setItem('connectedRdns', connectedRdns);
+      return rdns;
+    }
+  }
+  return null;
+};
 
 const getAccounts = async (wallet) => {
   if (!wallet) return [];
@@ -35,6 +122,7 @@ const getAccounts = async (wallet) => {
 // Connect to the selected provider using eth_requestAccounts.
 const connectWithProvider = async (wallet) => {
   if (!wallet) return;
+  const connectBtn = document.querySelector('.connect-wallet');
   
   try {
     const accounts = await getAccounts(wallet);
@@ -45,7 +133,7 @@ const connectWithProvider = async (wallet) => {
       window.mainWallet = null;
       isDisconnected = true
       localStorage.setItem('isDisconnected', isDisconnected);
-      updateButton([], document.querySelector('.connect-wallet'));
+      updateButton([], connectBtn);
       // Dispatch disconnect event
       window.dispatchEvent(new CustomEvent("wallet:connectionChanged", { 
         detail: { connected: false, wallet: null }
@@ -55,7 +143,13 @@ const connectWithProvider = async (wallet) => {
     isDisconnected = false
     localStorage.setItem('isDisconnected', isDisconnected);
     await wallet.request({ method: "wallet_requestPermissions", params: [{ eth_accounts: {} }] }).catch(() => null)
-    await wallet.request({ method: "eth_requestAccounts" })
+    const newAccounts = await wallet.request({ method: "eth_requestAccounts" });
+    
+    // Update the button with the connected account
+    if (newAccounts && newAccounts.length) {
+      await updateButton(newAccounts, connectBtn);
+    }
+    
     // Dispatch connect event
     window.dispatchEvent(new CustomEvent("wallet:connectionChanged", { 
       detail: { connected: true, wallet: wallet }
@@ -130,8 +224,7 @@ function populateDropdown() {
         await connectWithProvider(mainWallet);
         const accs = await getAccounts(mainWallet);
         await updateButton(accs, document.querySelector('.connect-wallet'));
-        connectedRdns = rdns;
-        localStorage.setItem('connectedRdns', connectedRdns);
+        updateRdnsForProvider(mainWallet);
       });
 
       dropdown.appendChild(item);
@@ -161,7 +254,7 @@ function showDropdown(referenceElement) {
 
   // Use Popper for positioning
   popperInstance = Popper.createPopper(referenceElement, dropdown, {
-    placement: 'bottom-start',
+    placement: 'bottom-end',
     modifiers: [
       {
         name: 'offset',
@@ -226,6 +319,13 @@ async function listProviders() {
       mainWallet = availableWallets[0].provider;
       window.mainWallet = mainWallet;
       await connectWithProvider(mainWallet);
+      
+      // Find the RDNS for this provider and update it
+      updateRdnsForProvider(mainWallet);
+      
+      // Get accounts and update the button UI
+      const accounts = await getAccounts(mainWallet);
+      await updateButton(accounts, connectBtn);
     }
   });
 
@@ -261,8 +361,7 @@ async function listProviders() {
           mainWallet = provider;
           window.mainWallet = mainWallet;
           await updateButton(accounts, connectBtn);
-          connectedRdns = info.rdns;
-          localStorage.setItem('connectedRdns', connectedRdns);
+          updateRdnsForProvider(mainWallet);
           return;
         }
       }
@@ -276,4 +375,22 @@ async function listProviders() {
 // Initialize when the page loads
 window.addEventListener("load", () => {
   listProviders();
+  
+  // Check for supported wallets after a delay to allow extensions to load
+  setTimeout(() => {
+    const availableWallets = Array.from(rdnsMap.values()).filter(w => w.provider);
+    const connectBtn = document.querySelector('.connect-wallet');
+    
+    if (connectBtn && availableWallets.length === 0) {
+      // No supported wallets found
+      connectBtn.disabled = true;
+      connectBtn.classList.add('no-wallet');
+      
+      // Setup tooltip events
+      connectBtn.addEventListener('mouseenter', () => showTooltip(connectBtn));
+      connectBtn.addEventListener('mouseleave', hideTooltip);
+      connectBtn.addEventListener('focus', () => showTooltip(connectBtn));
+      connectBtn.addEventListener('blur', hideTooltip);
+    }
+  }, 500); // Wait 1.5s to check for wallets
 });
