@@ -27,7 +27,7 @@ section.mint-entry-container[data-token-id=""] {
 
     .mint-cta {
         padding: 1.5rem;
-        padding-bottom: 0.5rem;
+        padding-bottom: 1rem;
         display: flex;
         flex-direction: column;
         row-gap: 1.5rem;
@@ -80,7 +80,7 @@ section.mint-entry-container[data-token-id=""] {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-bottom: 0.5rem;
+        padding-bottom: 1rem;
         
         .mint-avatars {
             display: flex;
@@ -88,21 +88,13 @@ section.mint-entry-container[data-token-id=""] {
             
             div:has(svg) {
                 border-radius: 100%;
-                width: 20px;
-                height: 20px;
+                width: 24px;
+                height: 24px;
                 border: 1px solid rgb(255, 255, 255);
+                background-color: white;
                 display: flex;
                 margin-right: -10px;
                 position: relative;
-                z-index: 1;
-                
-                &:nth-child(2) {
-                    z-index: 2;
-                }
-                
-                &:nth-child(3) {
-                    z-index: 3;
-                }
                 
                 &.last-avatar {
                     margin-right: 0;
@@ -110,14 +102,22 @@ section.mint-entry-container[data-token-id=""] {
             }
             
             .mint-count-badge {
-                font-size: 0.75rem;
-                margin-left: 8px;
-                color: var(--secondary-font-color-light-var2);
+                position: relative;
+                font-size: 14px;
+                margin-left: -10px;
+                color: #E13F5E;
+                background-color: #FCE7EB;
+                border: 1px solid #FCCED7;
+                border-radius: 12px;
+                padding: 1px 8px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
             }
         }
         
         .mint-count-display {
-            font-size: 0.75rem;
+            font-size: 0.875rem;
             color: var(--secondary-font-color-light-var2);
         }
     }

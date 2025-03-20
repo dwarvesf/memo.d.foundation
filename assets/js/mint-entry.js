@@ -13,7 +13,12 @@ const CHAIN_CONFIG = {
       symbol: "ETH",
       decimals: 18
     },
-    rpcUrls: ["https://sepolia.base.org"],
+    rpcUrls: [
+      "https://sepolia.base.org", 
+      "https://base-sepolia-rpc.publicnode.com", 
+      "https://sepolia.base.meowrpc.com",
+      "https://base-sepolia.blockpi.network/v1/rpc/public"
+    ],
     blockExplorerUrls: ["https://sepolia.basescan.org"]
   },
   // Base mainnet (for future use)
@@ -26,7 +31,13 @@ const CHAIN_CONFIG = {
       symbol: "ETH",
       decimals: 18
     },
-    rpcUrls: ["https://mainnet.base.org"],
+    rpcUrls: [
+      "https://mainnet.base.org", 
+      "https://base.meowrpc.com",
+      "https://base.publicnode.com", 
+      "https://1rpc.io/base",
+      "https://base-mainnet.public.blastapi.io"
+    ],
     blockExplorerUrls: ["https://basescan.org"]
   }
 };
@@ -144,6 +155,14 @@ const NFT_CONTRACT_ABI = [
   }
 ];
 
+// Create event filtering interface
+const EVENT_INTERFACE = new ethers.utils.Interface([
+  "event TokenMinted(address indexed to, uint256 indexed tokenId, uint256 amount)"
+]);
+
+// Cache for collector addresses to avoid redundant fetches
+let collectorAddressesCache = {};
+
 // Main contract object
 let nftContract = null;
 // Current provider and signer
@@ -190,6 +209,53 @@ window.addEventListener("load", () => {
   });
 });
 
+// Fetch collector addresses by filtering events for a specific token ID
+async function fetchCollectorAddresses(tokenId) {
+  // Check cache first
+  if (collectorAddressesCache[tokenId]) {
+    return collectorAddressesCache[tokenId];
+  }
+
+  try {
+    // Create a read-only provider
+    const readProvider = new ethers.providers.JsonRpcProvider(ACTIVE_CHAIN.rpcUrls[1]);
+
+    // Create filter for TokenMinted events with this tokenId
+    const filter = {
+      address: NFT_CONTRACT_ADDRESS,
+      topics: [
+        ethers.utils.id("TokenMinted(address,uint256,uint256)"),
+        null,
+        ethers.utils.hexZeroPad(ethers.utils.hexlify(tokenId), 32)
+      ]
+    };
+
+    const currentBlock = await readProvider.getBlockNumber();
+    // Query for events - get logs from the last 10000 blocks or set a specific range if needed
+    const logs = await readProvider.getLogs({
+      ...filter,
+      fromBlock: currentBlock - 40000, // Adjust this range as needed
+      toBlock: "latest"
+    });
+
+    // Extract collector addresses from events
+    const collectors = [];
+    for (const log of logs) {
+      const parsedLog = EVENT_INTERFACE.parseLog(log);
+      const collectorAddress = parsedLog.args.to;
+      collectors.push(collectorAddress);
+    }
+
+    // Store in cache
+    collectorAddressesCache[tokenId] = collectors;
+
+    return collectors;
+  } catch (error) {
+    console.error("Failed to fetch collector addresses:", error);
+    return [];
+  }
+}
+
 // Fetch the current mint count and update the progress without requiring a connected wallet
 async function fetchAndUpdateMintCount() {
   try {
@@ -206,56 +272,60 @@ async function fetchAndUpdateMintCount() {
     // Get the mint count for this token ID
     const mintCount = await readOnlyContract.getMintCountByTokenId(tokenId);
 
-    // Update the UI with the actual mint count
-    updateMintProgressUI(mintCount.toNumber());
+    // Fetch collector addresses based on events
+    const collectors = await fetchCollectorAddresses(tokenId);
+
+    // Update the UI with the actual mint count and collectors
+    updateMintProgressUI(mintCount.toNumber(), collectors.reverse());
   } catch (error) {
     console.error("Failed to fetch mint count:", error);
   }
 }
 
-// Helper function to update the mint progress UI with a specific count
-function updateMintProgressUI(count) {
+// Helper function to update the mint progress UI with a specific count and collector addresses
+function updateMintProgressUI(count, collectors = []) {
   const mintCountDisplay = document.querySelector('.mint-count-display');
-  
+
   if (mintCountDisplay) {
     // Clear previous content
     mintCountDisplay.innerHTML = '';
-    
+
     if (count > 0) {
       // Create avatar container
       const avatarContainer = document.createElement('div');
       avatarContainer.className = 'mint-avatars';
-      
-      // Always display exactly 3 avatars (or less if count < 3)
+
+      // Display up to 3 collector avatars (or less if count < 3)
       const displayCount = Math.min(count, 3);
       for (let i = 0; i < displayCount; i++) {
-        // Generate random values for identicons
-        const randomValue = Math.random().toString(36).substring(2, 10);
-        
         // Create div container for the SVG
         const div = document.createElement('div');
-        
+
+        // Generate identicon based on actual collector address if available
+        // Otherwise fall back to a random value
+        const address = collectors && collectors[i] ? collectors[i] : Math.random().toString(36).substring(2, 10);
+
         // Add to container
         avatarContainer.appendChild(div);
-        
+
         // Render the identicon SVG inside the div
         if (window.jdenticon) {
-          div.innerHTML = window.jdenticon.toSvg(randomValue, 16);
+          div.innerHTML = window.jdenticon.toSvg(address, 24);
         }
-        
+
         // Set proper CSS class to ensure z-index works correctly
         if (i === displayCount - 1) {
           div.classList.add('last-avatar');
         }
       }
-      
+
       // Add badge with count only if count > 0
       const countText = document.createElement('span');
       countText.className = 'mint-count-badge';
       countText.textContent = `${count} collected`;
-      
+
       avatarContainer.appendChild(countText);
-      
+
       // Add the avatar container to the display
       mintCountDisplay.appendChild(avatarContainer);
     } else {
@@ -408,13 +478,10 @@ async function handleMintButtonClick() {
     mintButton.textContent = "Confirming...";
     const receipt = await tx.wait();
 
-    // Look for the TokenMinted event
-    const mintEvent = receipt.events.find(event =>
-      event.event === 'TokenMinted' ||
-      (event.topics && event.topics[0] === ethers.utils.id("TokenMinted(address,uint256,uint256)"))
-    );
-
-    // Don't update verification data - it's not meant to be changed
+    // Clear the collector address cache for this token ID to force refresh
+    if (collectorAddressesCache[tokenId]) {
+      delete collectorAddressesCache[tokenId];
+    }
 
     // Update the mint count and progress bar
     updateMintProgress();
