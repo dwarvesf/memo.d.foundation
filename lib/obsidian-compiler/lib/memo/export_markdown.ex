@@ -126,6 +126,9 @@ defmodule Memo.ExportMarkdown do
     # Export the db directory with caching
     db_cache = export_db_directory("../../db", exportpath, cache)
 
+    # Generate contributor files
+    generate_contributor_files(exportpath)
+
     # Create blank _index.md files in folders without them
     generate_missing_index_files(exportpath)
 
@@ -493,9 +496,6 @@ defmodule Memo.ExportMarkdown do
     end
   end
 
-  @doc """
-  Generates blank _index.md files in directories that don't have them in the export path.
-  """
   defp generate_missing_index_files(exportpath) do
     # Get all directories in the export path
     directories = get_all_directories(exportpath)
@@ -521,9 +521,6 @@ defmodule Memo.ExportMarkdown do
     end)
   end
 
-  @doc """
-  Gets all directories recursively in a given path
-  """
   defp get_all_directories(path) do
     if File.dir?(path) do
       # Skip if the current directory is named "assets"
@@ -548,6 +545,78 @@ defmodule Memo.ExportMarkdown do
       end
     else
       []
+    end
+  end
+
+  defp generate_contributor_files(exportpath) do
+    # Create the contributor directory
+    contributor_dir = Path.join(exportpath, "contributor")
+    File.mkdir_p!(contributor_dir)
+
+    # Create _index.md in the contributor directory
+    index_content = """
+    ---
+    title: Contributors
+    ---
+    """
+    index_path = Path.join(contributor_dir, "_index.md")
+    File.write!(index_path, index_content)
+    IO.puts("Generated contributor _index.md: #{index_path}")
+
+    # Query DuckDB for unique authors
+    query = """
+    WITH unnested_authors AS (
+      SELECT unnest(authors) AS author_name
+      FROM vault
+      WHERE
+        authors IS NOT NULL
+        AND title IS NOT NULL
+        AND title != ''
+        AND description IS NOT NULL
+        AND description != ''
+    )
+    SELECT DISTINCT author_name
+    FROM unnested_authors
+    WHERE author_name IS NOT NULL AND author_name != ''
+    ORDER BY author_name;
+    """
+
+    case DuckDBUtils.execute_query_temp(query) do
+      {:ok, result} ->
+        # Handle different result formats - could be a list of maps or a struct with rows
+        authors = cond do
+          is_list(result) && Enum.all?(result, &is_map/1) ->
+            # Format is list of maps with author_name key
+            result
+            |> Enum.map(fn map -> Map.get(map, "author_name") end)
+            |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
+
+          is_map(result) && Map.has_key?(result, :rows) ->
+            # Format is struct with rows field
+            result.rows
+            |> Enum.map(fn [author_name] -> author_name end)
+            |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
+
+          true ->
+            IO.puts("Unexpected DuckDB result format: #{inspect(result)}")
+            []
+        end
+
+        # Create a file for each author
+        Enum.each(authors, fn author_name ->
+          slug = Slugify.slugify(author_name)
+          file_content = """
+          ---
+          title: #{author_name}
+          ---
+          """
+          file_path = Path.join(contributor_dir, "#{slug}.md")
+          File.write!(file_path, file_content)
+          IO.puts("Generated contributor file: #{file_path}")
+        end)
+
+      {:error, error} ->
+        IO.puts("Error fetching authors from DuckDB: #{error}")
     end
   end
 end
