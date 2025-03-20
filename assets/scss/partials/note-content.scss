@@ -121,6 +121,9 @@ code.button {
     transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
 
     transform: translateX(0px);
+    @include responsive(lg) {
+      width: 200px;
+    }
     html[data-reading-mode="true"] & {
       opacity: 0;
       visibility: hidden;
@@ -163,6 +166,14 @@ code.button {
         }
       }
     }
+  }
+  @include responsive(lg) {
+    --container-max-width: 646px;
+    --column-gap:32px;
+   
+  }
+  @include responsive(md) {
+    --container-max-width: 730px;
   }
 }
 

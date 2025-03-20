@@ -16,6 +16,9 @@ nav.menu {
   flex-direction: column;
   box-sizing: border-box;
   width: 360px;
+  @include responsive(lg) {
+    width: calc(72px + 200px + 32px);
+  }
 }
 
 details {
