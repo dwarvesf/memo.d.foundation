@@ -29,11 +29,25 @@ security:
     - ^ALGOLIA_
 taxonomies:
   tag: tags
+
+# Add custom output format for contributors
+outputFormats:
+  Contributor:
+    path: "contributor"
+    mediaType: "text/html"
+
+# Extend your outputs configuration
 outputs:
   home:
   - html
   - rss
   - json
+  - Contributor
+
+# Add permalink pattern for contributor pages
+permalinks:
+  contributors: "/contributor/:filename/"
+
 markup:
   highlight:
     anchorLineNos: false
