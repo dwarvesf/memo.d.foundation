@@ -70,7 +70,7 @@
   margin-top: 10vh;
   border-radius: 8px;
   width: 100%;
-  max-width: 750px;
+  max-width: 800px;
   z-index: 1001;
   display: flex;
   flex-direction: column;
@@ -135,7 +135,7 @@ div:has(> .cmd-results-list) {
 
 .cmd-results-list {
   flex: 1;
-  flex-basis: 50%;
+  flex-basis: 40%;
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -147,7 +147,7 @@ div:has(> .cmd-results-list) {
 .cmd-result-preview {
   overflow: auto;
   flex: 1;
-  flex-basis: 50%;
+  flex-basis: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,7 +167,7 @@ div:has(> .cmd-results-list) {
 
   .cmd-preview-path {
     margin-top: 14px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
   }
 
