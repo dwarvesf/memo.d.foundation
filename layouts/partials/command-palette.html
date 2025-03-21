@@ -12,8 +12,10 @@
 
   const authorRe = /author:([^\s]*)/g;
   const tagRe = /tag:([^\s]*)/g
-  const hashtagRe = /#([^\s#]+)/g; // Match hashtags anywhere in tokens
   const titleRe = /title:([^\s]*)/g;
+
+  const hashtagRe = /#([^\s#]+)/g; // Match hashtags anywhere in tokens
+  const atMentionRe = /@([^\s@]+)/g;  // Match @username format
 
   const getMatchingLines = (s, pattern) => {
     const lines = s.split("\n");
@@ -69,6 +71,15 @@
         console.log(filters.authors)
         return false;
       }
+
+      // Handle @mention format for authors
+      const atMentionMatch = [...token.matchAll(atMentionRe)];
+      if (atMentionMatch?.length) {
+        filters.authors = filters.authors.concat(atMentionMatch.map(m => m[1]));
+        // Remove the token from query completely
+        return false;
+      }
+
       const tagMatch = [...token.matchAll(tagRe)];
       if (tagMatch?.length) {
         filters.tags = filters.tags.concat(tagMatch.map(m => m[1]));
