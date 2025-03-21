@@ -100,8 +100,7 @@ code.button {
     0;
   column-gap: var(--column-gap);
   justify-content: center;
-  html[data-reading-mode="true"] &,
-  &:not(:has(> .pagenav)) {
+  html[data-reading-mode="true"] &{
     column-gap: 0;
     grid-template-columns:
       0 minmax(600px, var(--container-max-width)) 0

@@ -397,8 +397,8 @@
           {{ end }}
       {{ end }}
     {{ end }}
-    {{ if and (eq .Kind "page") (not (hasPrefix .Path "/contributor")) }}
     <div class="pagenav" x-data="{{ $data | jsonify }}">
+      {{ if and (eq .Kind "page") (not (hasPrefix .Path "/contributor")) }}
       <div class="container">
         <div class="always-on-right-sidebar">
 
@@ -517,8 +517,8 @@
 
         </div>
       </div>
+      {{ end }}
     </div>
-    {{ end }}
     {{ partial "table-of-content.html" . }}
 
     <main x-data="{
