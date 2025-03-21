@@ -196,6 +196,16 @@ const updatePrismStylesheets = () => {
       if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
         const isDark = mutation.target.getAttribute('data-theme') === 'dark';
         updateStylesheets(isDark);
+        const iframe = document.querySelector('.utterances-frame');
+        if (iframe) {
+          const theme = isDark ? 'github-dark' : 'github-light'
+          const message = {
+              type: 'set-theme',
+              theme: theme
+          };
+           iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+        }
+       
       }
     });
   });

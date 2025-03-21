@@ -1,0 +1,25 @@
+<!-- Get the first path segment from Hugo -->
+{{ $path := index (split .RelPermalink "/") 1 }}
+
+<!-- Define the repository mapping -->
+{{ $repoMap := dict 
+   "playbook" "dwarvesf/playbook"
+   "handbook" "dwarvesf/handbook"
+   "playground" "dwarvesf/playground"
+   "careers" "dwarvesf/WeAreHiring"
+   "" "dwarvesf/brainery"
+}}
+
+<!-- Default to brainery if path not found in map -->
+{{ $repo := index $repoMap $path | default "dwarvesf/brainery" }}
+<script x-data="{
+    theme: $persist('system')
+  }" 
+  src="https://utteranc.es/client.js" 
+  repo="{{ $repo }}"
+  issue-term="pathname" 
+  :theme="theme === 'dark' ? 'github-dark' : 'github-light'" 
+  crossorigin="anonymous"
+  label="comments" 
+  async>
+</script>
