@@ -12,6 +12,7 @@
 
   const authorRe = /author:([^\s]*)/g;
   const tagRe = /tag:([^\s]*)/g
+  const hashtagRe = /#([^\s#]+)/g; // Match hashtags anywhere in tokens
   const titleRe = /title:([^\s]*)/g;
 
   const getMatchingLines = (s, pattern) => {
@@ -74,6 +75,15 @@
         return false;
       }
 
+      // Handle hashtags (#tag format) - keep the token if it contains content besides the hashtag
+      const hashtagMatch = [...token.matchAll(hashtagRe)];
+      if (hashtagMatch?.length) {
+        filters.tags = filters.tags.concat(hashtagMatch.map(m => m[1]));
+        // Remove the token from query completely regardless of whether it's just a hashtag
+        // or contains other content, to strip #tags from the result
+        return false;
+      }
+
       if (titleMatch?.length) {
         filters.title = titleMatch[0][1];
         return false;
@@ -84,6 +94,22 @@
 
     return { filters, query: stripFilters.join(" ").trim() };
   }
+
+  const stringify = (obj) => {
+    if (obj === null) return 'null';
+    if (obj === undefined) return 'undefined';
+    if (typeof obj === 'string') return `'${obj.replace(/'/g, "\\'")}'`;
+    if (typeof obj === 'number' || typeof obj === 'boolean') return String(obj);
+    if (Array.isArray(obj)) {
+      return '[' + obj.map(item => stringify(item)).join(',') + ']';
+    }
+    if (typeof obj === 'object') {
+      return '{' + Object.entries(obj)
+        .map(([key, value]) => `'${key}':${stringify(value)}`)
+        .join(',') + '}';
+    }
+    return String(obj);
+  };
 
   function calculateRRFScore(fullTextRank, similarityRank, k = 60) {
     return 1 / (k + fullTextRank) + 1 / (k + similarityRank);
@@ -102,10 +128,8 @@
       return;
     }
 
-    const queryEmbeddings = await window.getEmbeddings(query);
-
-    try {
-      console.time("Running hybrid search");
+    window.getDuckDB().then(async (conn) => {
+      console.time("Running search");
       const queryStr = `
         SELECT
           title,
@@ -114,28 +138,27 @@
           tags,
           md_content,
           spr_content,
-          fts_main_vault.match_bm25(file_path, '${query}') AS full_text_score,
-          ${queryEmbeddings ? `array_cosine_similarity(${JSON.stringify(Array.from(queryEmbeddings.data))}::FLOAT[1024], embeddings_spr_custom)` : "1"} AS similarity
+          fts_main_vault.match_bm25(file_path, '${query}') AS full_text_score
         FROM vault
         WHERE
-          embeddings_spr_custom IS NOT NULL
-          AND title IS NOT NULL
+          title IS NOT NULL
           ${filters.title ? `AND title ILIKE '%${filters.title}%'` : ""}
           AND tags IS NOT NULL
-          ${filters.tags.length ? `AND tags @> '${JSON.stringify(filters.tags)}'::jsonb` : ""}
+          ${filters.tags.length ? `AND tags @> ${stringify(filters.tags)}` : ""}
           AND (NOT hiring OR hiring IS NULL)
           AND (NOT draft OR draft IS NULL)
-          ${filters.authors.length ? `AND authors @> '${JSON.stringify(filters.authors)}'::jsonb` : ""}
+          ${filters.authors.length ? `AND authors @> ${stringify(filters.authors)}` : ""}
         ORDER BY
-          full_text_score DESC,
-          similarity DESC
+          full_text_score DESC
         LIMIT 10;
       `;
 
-      const response = await window.queryAPI(queryStr);
-      const hybridSearchParsedData = response.result;
+      console.log(queryStr)
 
-      const searchResults = hybridSearchParsedData.map((row) => {
+      const search = await conn.prepare(queryStr);
+      const searchData = await search.query();
+      const searchParsedData = window.parseDuckDBData(searchData);
+      const searchResults = searchParsedData.map((row) => {
         const filePaths = row.file_path.split("/");
         filePaths.pop();
         row.category = filePaths.join(" > ");
@@ -160,10 +183,8 @@
 
       dispatchSearchResults(result);
       console.log(searchResults);
-      console.timeEnd("Running hybrid search");
-    } catch (error) {
-      console.error("Error running search:", error);
-    }
+      console.timeEnd("Running search");
+    });
   });
 
   function dispatchSearchResults(result) {
@@ -495,7 +516,7 @@
       <kbd class="memo-tag">K</kbd>
     </span>
   </button>
-  <button class="cmd-search-button-mobile" @click="openPalette()">{{ partial "search-icon.html" . }}</button>  
+  <button class="cmd-search-button-mobile" @click="openPalette()">{{ partial "search-icon.html" . }}</button>
   <div @keydown.enter.stop.document="goto()" @keydown.ctrl.j.prevent.document="next()"
     @keydown.ctrl.k.prevent.document="prev()" @keydown.arrow-down.document="next()"
     @keydown.arrow-up.document="prev()" class="cmd-overlay"
