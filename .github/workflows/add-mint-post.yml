@@ -16,12 +16,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository with submodules
-        uses: actions/checkout@v3
+      - name: Checkout contents repo
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetch all history to determine changed files
-          submodules: "recursive" # Checkout submodules recursively
           token: ${{ secrets.DWARVES_PAT }}
+          submodules: recursive
+          fetch-depth: 0
 
       - name: Get changed files
         id: changed-files
