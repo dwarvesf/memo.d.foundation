@@ -50,8 +50,39 @@ defmodule Memo.ExportMarkdown do
   end
 
   defp process_directory(all_valid_files, all_assets, vault_dir, exportpath, ignored_patterns) do
-    Flow.from_enumerable(all_valid_files)
-    |> Flow.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
+    # Group files by their parent directory
+    files_by_folder = 
+      all_valid_files
+      |> Enum.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
+      |> Enum.group_by(fn file -> Path.dirname(file) end)
+      
+    # Process files, README.md files will automatically be converted to _index.md in process_file
+    valid_files =
+      all_valid_files
+      |> Enum.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
+    
+    # Identify directories with both README.md and _index.md
+    dirs_with_readme = 
+      files_by_folder
+      |> Enum.filter(fn {_dir, files} -> 
+        Enum.any?(files, fn file -> Path.basename(file) == "README.md" end)
+      end)
+      |> Enum.map(fn {dir, _files} -> dir end)
+      |> MapSet.new()
+    
+    # Filter out _index.md files in directories that have README.md
+    files_to_process =
+      valid_files
+      |> Enum.filter(fn file ->
+        basename = Path.basename(file)
+        dir = Path.dirname(file)
+        
+        # Keep all files except _index.md files where README.md exists
+        !(basename == "_index.md" && MapSet.member?(dirs_with_readme, dir))
+      end)
+    
+    # Process all files
+    Flow.from_enumerable(files_to_process)
     |> Flow.map(&process_file(&1, vault_dir, exportpath, all_valid_files))
     |> Flow.run()
 
@@ -122,14 +153,28 @@ defmodule Memo.ExportMarkdown do
     converted_content = KatexUtils.wrap_multiline_katex(converted_content)
 
     export_file = replace_path_prefix(file, vaultpath, exportpath)
+    
+    # First apply slugification to the path (but not the filename)
+    export_dir = Path.dirname(export_file)
+    slugified_dir = Slugify.slugify_directory(export_dir)
+    basename = Path.basename(export_file)
+    
+    # Handle README.md conversion - AFTER slugifying the directory
+    # but BEFORE slugifying the filename
+    final_basename = 
+      if Path.basename(file) == "README.md" do
+        "_index.md"  # Don't slugify this special filename
+      else
+        Slugify.slugify_filename(basename)
+      end
+    
+    final_path = Path.join(slugified_dir, final_basename)
+    
+    # Ensure directory exists
+    File.mkdir_p!(slugified_dir)
 
-    slugified_export_file = Slugify.slugify_path(export_file)
-
-    export_dir = Path.dirname(slugified_export_file)
-    File.mkdir_p!(export_dir)
-
-    File.write!(slugified_export_file, converted_content)
-    IO.puts("Exported: #{inspect(file)} -> #{inspect(slugified_export_file)}")
+    File.write!(final_path, converted_content)
+    IO.puts("Exported: #{inspect(file)} -> #{inspect(final_path)}")
   end
 
   defp process_duckdb_queries(content) do
