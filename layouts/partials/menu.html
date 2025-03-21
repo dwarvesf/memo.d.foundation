@@ -66,7 +66,7 @@
       return;
     }
 
-    try {
+    window.getDuckDB().then(async (conn) => {
       console.time('Refreshing navigation menu')
       const queryStr = `
         WITH recursive_paths AS (
@@ -100,9 +100,12 @@
         ORDER BY grouped_path DESC;
       `;
 
-      const response = await window.queryAPI(queryStr);
-      const parsedData = response.result;
+      console.log('Executing menu navigation query');
+      const search = await conn.prepare(queryStr);
+      const searchData = await search.query();
+      const parsedData = window.parseDuckDBData(searchData);
       console.log(parsedData);
+
       const duckDBMenuData = nestPaths(parsedData);
       const event = new CustomEvent('duckdb-menu', {
         detail: {
@@ -114,12 +117,20 @@
 
       console.log(duckDBMenuData);
       console.timeEnd('Refreshing navigation menu')
-    } catch (error) {
-      console.error('Error refreshing navigation menu:', error);
-    }
+    });
   }
 
-  refreshNavigationMenu();
+  if (window.getDuckDB) {
+    refreshNavigationMenu();
+  } else {
+    window.addEventListener('load', () => {
+      if (window.getDuckDB) {
+        refreshNavigationMenu();
+      } else {
+        console.warn('getDuckDB not available for menu navigation');
+      }
+    });
+  }
 </script>
 
 {{ $currentPage := .Sites.First.Home }}
