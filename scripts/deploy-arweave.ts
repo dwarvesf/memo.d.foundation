@@ -59,7 +59,7 @@ function resolvePath(filePath, path: string): string {
   
   // Remove leading slash if present
   let cleanPath = path.startsWith('/') ? path.substring(1) : path;
-  cleanPath = resolve(filePath, cleanPath);
+  cleanPath = resolve(filePath.split("/").slice(0, -1).join("/"), cleanPath);
   
   // Prefix with "vault" and normalize any double slashes
   const resolvedPath = cleanPath.replace(/\/+/g, '/');
