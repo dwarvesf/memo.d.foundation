@@ -240,7 +240,7 @@ async function processFile(
 
 // Main execution
 async function main() {
-  const filePaths = process.argv.slice(2);
+  const filePaths = process.argv[2].split(',');
   const walletPath = "./wallet.json";
 
   const results: OutputResult[] = [];
