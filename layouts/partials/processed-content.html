@@ -1,25 +1,54 @@
+<!-- Start by capturing the content -->
+{{- $content := .Content -}}
 <!-- Wrap tables to make use of overflow-x property (plus the tabindex thing) -->
-{{ $table := `(<table>(?:.|\n)+?</table>)` }}
-{{ $improvedTable := printf `<div class="table-container" tabindex="0"> ${1} </div>` }}
-
-<!-- Define regex patterns for Discord emojis -->
-{{ $animatedEmojiPattern := `&lt;a:(\w+):(\d+)&gt;` }}
-{{ $staticEmojiPattern := `&lt;:(\w+):(\d+)&gt;` }}
+<!-- Define patterns for tables and Discord emojis -->
+{{- $table := `(<table>(?:.|\n)+?</table>)` -}}
+{{- $improvedTable := printf `<div class="table-container" tabindex="0"> ${1} </div>` -}}
+{{- $animatedEmojiPattern := `&lt;a:(\w+):(\d+)&gt;` -}}
+{{- $staticEmojiPattern := `&lt;:(\w+):(\d+)&gt;` -}}
 
 <!-- Define replacements for Discord emojis -->
-{{ $animatedEmojiReplacement := "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.gif?size=44&quality=lossless\" alt=\":${1}:\"/>" }}
-{{ $staticEmojiReplacement := "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>" }}
+{{- $animatedEmojiReplacement := "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.gif?size=44&quality=lossless\" alt=\":${1}:\"/>" -}}
+{{- $staticEmojiReplacement := "<img class=\"emoji\" src=\"https://cdn.discordapp.com/emojis/${2}.webp?size=44&quality=lossless\" alt=\":${1}:\"/>" -}}
 
-<!--
-  This is doing multiple things:
-  
-  * Making tables scrollable
-  * Converting Discord emoji references to images (both animated and static)
--->
-  
-{{ .Content 
-   | replaceRE $table $improvedTable
-   | replaceRE $animatedEmojiPattern $animatedEmojiReplacement
-   | replaceRE $staticEmojiPattern $staticEmojiReplacement
-   | safeHTML 
-}}
+<!-- Apply symbol replacements - excluding code blocks -->
+{{- $codeBlocks := slice -}}
+{{- $codePattern := `<code[^>]*>(?:.|\n)*?</code>` -}}
+{{- $codeBlockCounter := 0 -}}
+
+<!-- Replace code blocks with placeholders -->
+{{- $tempContent := $content -}}
+{{- range $match := findRE $codePattern $content -1 -}}
+    {{- $placeholder := printf "CODE_BLOCK_PLACEHOLDER_%d" $codeBlockCounter -}}
+    {{- $codeBlocks = $codeBlocks | append (dict "placeholder" $placeholder "content" $match) -}}
+    {{- $tempContent = replace $tempContent $match $placeholder -}}
+    {{- $codeBlockCounter = add $codeBlockCounter 1 -}}
+{{- end -}}
+
+<!-- Apply replacements to content with code blocks removed -->
+{{- $tempContent = replaceRE `&ndash;&gt;` `⟶` $tempContent -}}
+{{- $tempContent = replaceRE `-&gt;` `→` $tempContent -}}
+{{- $tempContent = replaceRE `&lt;-` `←` $tempContent -}}
+{{- $tempContent = replaceRE `&lt;=&gt;` `⇔` $tempContent -}}
+{{- $tempContent = replaceRE `=&gt;` `⇒` $tempContent -}}
+{{- $tempContent = replaceRE `([^&lt;])&gt;=` `$1≥` $tempContent -}}
+{{- $tempContent = replaceRE `([^&lt;])&lt;=([^>])` `$1≤$2` $tempContent -}}
+{{- $tempContent = replaceRE `==` `≡` $tempContent -}}
+{{- $tempContent = replaceRE `!=` `≠` $tempContent -}}
+
+<!-- Restore code blocks -->
+{{- range $block := $codeBlocks -}}
+    {{- $tempContent = replace $tempContent $block.placeholder $block.content -}}
+{{- end -}}
+
+<!-- Use the processed content for further operations -->
+{{- $content = $tempContent -}}
+
+<!-- Apply table wrapping -->
+{{- $content = replaceRE $table $improvedTable $content -}}
+
+<!-- Apply Discord emoji replacements -->
+{{- $content = replaceRE $animatedEmojiPattern $animatedEmojiReplacement $content -}}
+{{- $content = replaceRE $staticEmojiPattern $staticEmojiReplacement $content -}}
+
+{{ $content | safeHTML }}
