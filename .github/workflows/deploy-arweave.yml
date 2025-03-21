@@ -3,6 +3,8 @@ name: Deploy Markdown to Arweave
 on:
   workflow_dispatch: # Keep manual trigger
   push:
+    branches:
+      - main
     paths:
       - "db/vault.parquet" # Only trigger on changes to this file
 
