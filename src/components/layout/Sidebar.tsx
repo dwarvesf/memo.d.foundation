@@ -19,20 +19,20 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   const router = useRouter();
-  
+
   // Close sidebar when changing routes
   useEffect(() => {
     const handleRouteChange = () => {
       setIsOpen(false);
     };
-    
+
     router.events.on('routeChangeComplete', handleRouteChange);
-    
+
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router, setIsOpen]);
-  
+
   // Check if current path matches link
   const isActiveUrl = (url: string) => {
     const linkUrlRoot = url.split('/')[1];
@@ -46,23 +46,23 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       setIsOpen(false);
     }
   };
-  
+
   return (
     <>
       {/* Sidebar overlay - only shown on mobile when sidebar is open */}
       {isOpen && (
-        <div 
-          className="sidebar-overlay fixed inset-0 z-20 bg-black/50 md:hidden" 
+        <div
+          className="sidebar-overlay fixed inset-0 z-20 bg-black/50 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
-      
+
       {/* Sidebar */}
-      <div 
+      <div
         className={`sidebar fixed top-0 left-0 z-40 h-full flex flex-col md:translate-x-0 ${
           isOpen ? 'mobile-visible' : ''
         }`}
-        onClick={(e) => e.target === e.currentTarget && handleClickOutside(e)}
+        onClick={(e) => e.target === e.currentTarget && handleClickOutside()}
       >
         {/* Logo and title */}
         <Link href="/" className="sidebar-logo">
@@ -74,20 +74,20 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           </svg>
           <span>Dwarves<br/>Memo</span>
         </Link>
-        
+
         {/* Navigation items */}
         <nav className="sidebar-nav">
           {navLinks.map((item, index) => (
             <div className="nav-item-container" key={index}>
-              <Link 
+              <Link
                 href={item.url}
                 className={`sidebar-item ${isActiveUrl(item.url) ? 'active' : ''}`}
                 id={`sidebar-item-${index}`}
               >
-                <div 
+                <div
                   className="sidebar-item-icon"
-                  style={{ 
-                    '--src': `url('${item.icon}')` 
+                  style={{
+                    '--src': `url('${item.icon}')`
                   } as React.CSSProperties}
                 ></div>
                 <span>{item.title}</span>
@@ -136,7 +136,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           </div>
         </footer>
       </div>
-      
+
       {/* Tooltips container (outside the sidebar to avoid overflow issues) */}
       <div className="tooltips-container">
         {navLinks.map((item, index) => (
