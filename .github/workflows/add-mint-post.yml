@@ -32,7 +32,7 @@ jobs:
           chmod +x duckdb
 
           # Query for files that have perma_storage_id = 'true'
-          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT STRING_AGG(file_path, ' ') FROM 'db/vault.parquet' WHERE should_mint = true AND minted_at IS NULL AND token_id IS NULL;" | tr -d '"')
+          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT STRING_AGG(file_path, ',') FROM 'db/vault.parquet' WHERE should_mint = true AND minted_at IS NULL AND token_id IS NULL;" | tr -d '"')
 
           # Output the results
           echo "Found markdown files for permanent storage: $CHANGED_FILES"
@@ -53,14 +53,7 @@ jobs:
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
           RPC_URL: ${{ vars.RPC_URL }}
         run: |
-          # Convert space-separated list into array of quoted paths with vault/ prefix
-          FILES=()
-          for file in ${{ steps.changed-files.outputs.files }}; do
-            FILES+=("vault/$file")
-          done
-          
-          # Call the script with all files
-          npx tsx scripts/add-mint-post.ts "${FILES[@]}"
+          npx tsx scripts/add-mint-post.ts ${{ steps.changed-files.outputs.files }}
 
       - name: Configure Git for submodule
         run: |

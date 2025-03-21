@@ -185,7 +185,7 @@ async function processFile(filePath, contract) {
 async function main() {
   try {
     // Get command line arguments (file paths)
-    const filePaths = process.argv.slice(2);
+    const filePaths = process.argv[2].split(',');
 
     if (filePaths.length === 0) {
       console.log("No files to process");

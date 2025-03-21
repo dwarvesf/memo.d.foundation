@@ -32,7 +32,7 @@ jobs:
           chmod +x duckdb
 
           # Query for files that have perma_storage_id = 'true'
-          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT STRING_AGG(file_path, ' ') FROM 'db/vault.parquet' WHERE should_deploy_perma_storage = true AND perma_storage_id IS NULL;" | tr -d '"')
+          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT STRING_AGG(file_path, ',') FROM 'db/vault.parquet' WHERE should_deploy_perma_storage = true AND perma_storage_id IS NULL;" | tr -d '"')
 
           # Output the results
           echo "Found markdown files for permanent storage: $CHANGED_FILES"
@@ -55,14 +55,7 @@ jobs:
         id: deploy
         if: steps.changed-files.outputs.files != ''
         run: |
-          # Convert space-separated list into array of quoted paths with vault/ prefix
-          FILES=()
-          for file in ${{ steps.changed-files.outputs.files }}; do
-            FILES+=("vault/$file")
-          done
-          
-          # Call the script with all files
-          npx tsx scripts/deploy-arweave.ts "${FILES[@]}"
+          npx tsx scripts/deploy-arweave.ts ${{ steps.changed-files.outputs.files }}
 
       - name: Configure Git for submodule
         run: |
