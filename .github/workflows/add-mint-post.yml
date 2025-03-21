@@ -53,7 +53,14 @@ jobs:
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
           RPC_URL: ${{ vars.RPC_URL }}
         run: |
-          npx tsx scripts/add-mint-post.ts vault/${{ steps.changed-files.outputs.files }}
+          # Convert space-separated list into array of quoted paths with vault/ prefix
+          FILES=()
+          for file in ${{ steps.changed-files.outputs.files }}; do
+            FILES+=("vault/$file")
+          done
+          
+          # Call the script with all files
+          npx tsx scripts/add-mint-post.ts "${FILES[@]}"
 
       - name: Configure Git for submodule
         run: |
