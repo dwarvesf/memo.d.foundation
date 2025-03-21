@@ -240,7 +240,7 @@ async function processFile(
 
 // Main execution
 async function main() {
-  const filePaths = process.argv[2].split(',');
+  const filePaths = process.argv[2].split(',').map(path => `vault/${path}`);
   const walletPath = "./wallet.json";
 
   const results: OutputResult[] = [];
