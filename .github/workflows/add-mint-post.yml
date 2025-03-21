@@ -55,30 +55,11 @@ jobs:
         run: |
           npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
 
-      - name: Configure Git for submodule
+      - name: Commit and push changes
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-
-      - name: Commit changes in submodules recursively
-        run: |
-          # Commit changes in each submodule recursively
-          git submodule foreach --recursive '
-            git add -A
-            if ! git diff --staged --quiet; then
-              git commit -m "Add post to mint contract"
-              git push || echo "Failed to push in $path, continuing..."
-            else
-              echo "No changes to commit in $path"
-            fi
-          '
-
-      - name: Commit changes in main repository
-        run: |
-          git add -A
-          git diff --staged --quiet || (git commit -m "Add post to mint contract" && git push)
-
-      - name: Update submodule references
-        run: |
-          git add -A
-          git diff --staged --quiet || (git commit -m "Update submodule references" && git push)
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git submodule foreach --recursive "git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
+          git add --all
+          git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
+          git push
