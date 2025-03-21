@@ -11,15 +11,15 @@ const CHAIN_CONFIG = {
     nativeCurrency: {
       name: "Ethereum",
       symbol: "ETH",
-      decimals: 18
+      decimals: 18,
     },
     rpcUrls: [
-      "https://sepolia.base.org", 
-      "https://base-sepolia-rpc.publicnode.com", 
+      "https://sepolia.base.org",
+      "https://base-sepolia-rpc.publicnode.com",
       "https://sepolia.base.meowrpc.com",
-      "https://base-sepolia.blockpi.network/v1/rpc/public"
+      "https://base-sepolia.blockpi.network/v1/rpc/public",
     ],
-    blockExplorerUrls: ["https://sepolia.basescan.org"]
+    blockExplorerUrls: ["https://sepolia.basescan.org"],
   },
   // Base mainnet (for future use)
   mainnet: {
@@ -29,135 +29,135 @@ const CHAIN_CONFIG = {
     nativeCurrency: {
       name: "Ethereum",
       symbol: "ETH",
-      decimals: 18
+      decimals: 18,
     },
     rpcUrls: [
-      "https://mainnet.base.org", 
+      "https://mainnet.base.org",
       "https://base.meowrpc.com",
-      "https://base.publicnode.com", 
+      "https://base.publicnode.com",
       "https://1rpc.io/base",
-      "https://base-mainnet.public.blastapi.io"
+      "https://base-mainnet.public.blastapi.io",
     ],
-    blockExplorerUrls: ["https://basescan.org"]
-  }
+    blockExplorerUrls: ["https://basescan.org"],
+  },
 };
 
 // Set active network - change this to 'mainnet' when deploying to production
-const ACTIVE_NETWORK = 'testnet';
+const ACTIVE_NETWORK = "testnet";
 const ACTIVE_CHAIN = CHAIN_CONFIG[ACTIVE_NETWORK];
 
 // Only including the functions we need for the ABI
 const NFT_CONTRACT_ABI = [
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
       },
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
     ],
-    "name": "mintNFT",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "mintNFT",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
     ],
-    "name": "readNFT",
-    "outputs": [
+    name: "readNFT",
+    outputs: [
       {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
     ],
-    "name": "getMintCountByTokenId",
-    "outputs": [
+    name: "getMintCountByTokenId",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
+        internalType: "address",
+        name: "account",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
     ],
-    "name": "balanceOf",
-    "outputs": [
+    name: "balanceOf",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
       },
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
+        indexed: true,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
     ],
-    "name": "TokenMinted",
-    "type": "event"
-  }
+    name: "TokenMinted",
+    type: "event",
+  },
 ];
 
 // Create event filtering interface
 const EVENT_INTERFACE = new ethers.utils.Interface([
-  "event TokenMinted(address indexed to, uint256 indexed tokenId, uint256 amount)"
+  "event TokenMinted(address indexed to, uint256 indexed tokenId, uint256 amount)",
 ]);
 
 // Cache for collector addresses to avoid redundant fetches
@@ -174,13 +174,13 @@ const MINT_AMOUNT = 1;
 
 // Function to get the token ID from the container's data attribute
 function getTokenId() {
-  const container = document.querySelector('.mint-entry-container');
+  const container = document.querySelector(".mint-entry-container");
   if (!container) {
     console.error("Mint entry container not found");
     return null;
   }
 
-  const tokenId = container.getAttribute('data-token-id');
+  const tokenId = container.getAttribute("data-token-id");
   if (!tokenId) {
     console.error("Token ID not found in data attribute");
     return null;
@@ -218,7 +218,9 @@ async function fetchCollectorAddresses(tokenId) {
 
   try {
     // Create a read-only provider
-    const readProvider = new ethers.providers.JsonRpcProvider(ACTIVE_CHAIN.rpcUrls[1]);
+    const readProvider = new ethers.providers.JsonRpcProvider(
+      ACTIVE_CHAIN.rpcUrls[1]
+    );
 
     // Create filter for TokenMinted events with this tokenId
     const filter = {
@@ -226,8 +228,8 @@ async function fetchCollectorAddresses(tokenId) {
       topics: [
         ethers.utils.id("TokenMinted(address,uint256,uint256)"),
         null,
-        ethers.utils.hexZeroPad(ethers.utils.hexlify(tokenId), 32)
-      ]
+        ethers.utils.hexZeroPad(ethers.utils.hexlify(tokenId), 32),
+      ],
     };
 
     const currentBlock = await readProvider.getBlockNumber();
@@ -235,7 +237,7 @@ async function fetchCollectorAddresses(tokenId) {
     const logs = await readProvider.getLogs({
       ...filter,
       fromBlock: currentBlock - 40000, // Adjust this range as needed
-      toBlock: "latest"
+      toBlock: "latest",
     });
 
     // Extract collector addresses from events
@@ -266,8 +268,14 @@ async function fetchAndUpdateMintCount() {
     }
 
     // Create a read-only provider and contract instance
-    const readProvider = new ethers.providers.JsonRpcProvider(ACTIVE_CHAIN.rpcUrls[0]);
-    const readOnlyContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, readProvider);
+    const readProvider = new ethers.providers.JsonRpcProvider(
+      ACTIVE_CHAIN.rpcUrls[0]
+    );
+    const readOnlyContract = new ethers.Contract(
+      NFT_CONTRACT_ADDRESS,
+      NFT_CONTRACT_ABI,
+      readProvider
+    );
 
     // Get the mint count for this token ID
     const mintCount = await readOnlyContract.getMintCountByTokenId(tokenId);
@@ -284,26 +292,29 @@ async function fetchAndUpdateMintCount() {
 
 // Helper function to update the mint progress UI with a specific count and collector addresses
 function updateMintProgressUI(count, collectors = []) {
-  const mintCountDisplay = document.querySelector('.mint-count-display');
+  const mintCountDisplay = document.querySelector(".mint-count-display");
 
   if (mintCountDisplay) {
     // Clear previous content
-    mintCountDisplay.innerHTML = '';
+    mintCountDisplay.innerHTML = "";
 
     if (count > 0) {
       // Create avatar container
-      const avatarContainer = document.createElement('div');
-      avatarContainer.className = 'mint-avatars';
+      const avatarContainer = document.createElement("div");
+      avatarContainer.className = "mint-avatars";
 
       // Display up to 3 collector avatars (or less if count < 3)
       const displayCount = Math.min(count, 3);
       for (let i = 0; i < displayCount; i++) {
         // Create div container for the SVG
-        const div = document.createElement('div');
+        const div = document.createElement("div");
 
         // Generate identicon based on actual collector address if available
         // Otherwise fall back to a random value
-        const address = collectors && collectors[i] ? collectors[i] : Math.random().toString(36).substring(2, 10);
+        const address =
+          collectors && collectors[i]
+            ? collectors[i]
+            : Math.random().toString(36).substring(2, 10);
 
         // Add to container
         avatarContainer.appendChild(div);
@@ -315,13 +326,13 @@ function updateMintProgressUI(count, collectors = []) {
 
         // Set proper CSS class to ensure z-index works correctly
         if (i === displayCount - 1) {
-          div.classList.add('last-avatar');
+          div.classList.add("last-avatar");
         }
       }
 
       // Add badge with count only if count > 0
-      const countText = document.createElement('span');
-      countText.className = 'mint-count-badge';
+      const countText = document.createElement("span");
+      countText.className = "mint-count-badge";
       countText.textContent = `${count} collected`;
 
       avatarContainer.appendChild(countText);
@@ -330,28 +341,32 @@ function updateMintProgressUI(count, collectors = []) {
       mintCountDisplay.appendChild(avatarContainer);
     } else {
       // If count is 0, show default text
-      mintCountDisplay.textContent = 'Be the first to collect';
+      mintCountDisplay.textContent = "Be the first to collect";
     }
   }
 }
 
 // Update the NFT contract address in the verification section
 function updateNFTContractAddress() {
-  const nftAddressElement = document.querySelector('.mint-entry-nft-address');
+  const nftAddressElement = document.querySelector(".mint-entry-nft-address");
   if (nftAddressElement) {
     // Format address to show first 10 chars then ellipsis then last 6 chars
-    const formattedAddress = `${NFT_CONTRACT_ADDRESS.substring(0, 10)}...${NFT_CONTRACT_ADDRESS.substring(NFT_CONTRACT_ADDRESS.length - 6)}`;
+    const formattedAddress = `${NFT_CONTRACT_ADDRESS.substring(
+      0,
+      10
+    )}...${NFT_CONTRACT_ADDRESS.substring(NFT_CONTRACT_ADDRESS.length - 6)}`;
     nftAddressElement.textContent = formattedAddress;
 
     // Add link to blockchain explorer
-    const explorerUrl = ACTIVE_CHAIN.blockExplorerUrls[0] + '/address/' + NFT_CONTRACT_ADDRESS;
-    const linkElement = document.createElement('a');
+    const explorerUrl =
+      ACTIVE_CHAIN.blockExplorerUrls[0] + "/address/" + NFT_CONTRACT_ADDRESS;
+    const linkElement = document.createElement("a");
     linkElement.href = explorerUrl;
-    linkElement.target = '_blank';
-    linkElement.rel = 'noopener noreferrer';
+    linkElement.target = "_blank";
+    linkElement.rel = "noopener noreferrer";
     linkElement.textContent = formattedAddress;
 
-    nftAddressElement.textContent = '';
+    nftAddressElement.textContent = "";
     nftAddressElement.appendChild(linkElement);
   }
 }
@@ -380,20 +395,14 @@ async function connectToContract(walletProvider) {
       try {
         await walletProvider.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: ACTIVE_CHAIN.chainIdHex }]
+          params: [{ chainId: ACTIVE_CHAIN.chainIdHex }],
         });
       } catch (switchError) {
         // If the chain hasn't been added, try to add it
-        if (switchError.code === 4902) {
+        if (switchError.code === -32603) {
           await walletProvider.request({
             method: "wallet_addEthereumChain",
-            params: [{
-              chainId: ACTIVE_CHAIN.chainIdHex,
-              chainName: ACTIVE_CHAIN.chainName,
-              nativeCurrency: ACTIVE_CHAIN.nativeCurrency,
-              rpcUrls: ACTIVE_CHAIN.rpcUrls,
-              blockExplorerUrls: ACTIVE_CHAIN.blockExplorerUrls
-            }]
+            params: [ACTIVE_CHAIN],
           });
         } else {
           throw switchError;
@@ -406,11 +415,14 @@ async function connectToContract(walletProvider) {
 
     // Get the signer and create contract instance
     signer = provider.getSigner();
-    nftContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
+    nftContract = new ethers.Contract(
+      NFT_CONTRACT_ADDRESS,
+      NFT_CONTRACT_ABI,
+      signer
+    );
 
     // Update UI to show connected state
     updateMintingUI(true);
-
   } catch (error) {
     console.error("Failed to connect to contract:", error);
     // Update UI to show error state
@@ -420,9 +432,9 @@ async function connectToContract(walletProvider) {
 
 // Set up event listeners for the UI
 function setupEventListeners() {
-  const mintButton = document.querySelector('.mint-cta button');
+  const mintButton = document.querySelector(".mint-cta button");
   if (mintButton) {
-    mintButton.addEventListener('click', handleMintButtonClick);
+    mintButton.addEventListener("click", handleMintButtonClick);
   }
 }
 
@@ -430,7 +442,7 @@ function setupEventListeners() {
 async function handleMintButtonClick() {
   if (!nftContract || !signer) {
     // If wallet isn't connected, trigger the connect wallet action
-    const connectWalletButton = document.querySelector('.connect-wallet');
+    const connectWalletButton = document.querySelector(".connect-wallet");
     if (connectWalletButton) {
       connectWalletButton.click();
     }
@@ -451,7 +463,7 @@ async function handleMintButtonClick() {
 
     if (balance.gt(0)) {
       console.log("User has already minted this token");
-      const mintButton = document.querySelector('.mint-cta button');
+      const mintButton = document.querySelector(".mint-cta button");
       if (mintButton) {
         mintButton.textContent = "Minted";
         mintButton.disabled = true;
@@ -465,7 +477,7 @@ async function handleMintButtonClick() {
   }
 
   // Get the mint button and show loading state
-  const mintButton = document.querySelector('.mint-cta button');
+  const mintButton = document.querySelector(".mint-cta button");
   const originalText = mintButton.textContent;
   mintButton.textContent = "Minting...";
   mintButton.disabled = true;
@@ -519,8 +531,8 @@ async function updateMintProgress() {
 
 // Update the UI based on connection state
 async function updateMintingUI(connected = false, errorMessage = null) {
-  const mintButton = document.querySelector('.mint-cta button');
-  const entryContainer = document.querySelector('.mint-entry-container');
+  const mintButton = document.querySelector(".mint-cta button");
+  const entryContainer = document.querySelector(".mint-entry-container");
 
   if (connected) {
     // Update UI for connected state
@@ -556,7 +568,9 @@ async function updateMintingUI(connected = false, errorMessage = null) {
   } else {
     // Update UI for disconnected state
     if (mintButton) {
-      mintButton.textContent = errorMessage ? "Error" : "Connect Wallet to Mint";
+      mintButton.textContent = errorMessage
+        ? "Error"
+        : "Connect Wallet to Mint";
       mintButton.disabled = !!errorMessage;
       mintButton.classList.remove("already-minted");
     }

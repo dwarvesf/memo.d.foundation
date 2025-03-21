@@ -31,10 +31,21 @@
   }
 }
 
+.connect-wallet.wrong-chain {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: #e68900;
+    filter: brightness(1);
+  }
+}
+
 .connect-wallet.no-wallet {
   opacity: 0.5;
   cursor: not-allowed;
-  
+
   &:hover {
     filter: brightness(1);
   }
@@ -69,22 +80,22 @@
 
 .wallet-tooltip-arrow::before {
   visibility: visible;
-  content: '';
+  content: "";
   transform: rotate(45deg);
 }
 
-.wallet-tooltip[data-popper-placement^='top'] > .wallet-tooltip-arrow {
+.wallet-tooltip[data-popper-placement^="top"] > .wallet-tooltip-arrow {
   bottom: -4px;
 }
 
-.wallet-tooltip[data-popper-placement^='bottom'] > .wallet-tooltip-arrow {
+.wallet-tooltip[data-popper-placement^="bottom"] > .wallet-tooltip-arrow {
   top: -4px;
 }
 
 #wallet-dropdown {
   flex-direction: column;
   border-radius: 0.25rem;
-  overflow:hidden;
+  overflow: hidden;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 
@@ -99,7 +110,7 @@
     &:hover {
       background-color: var(--secondary-font-color);
     }
-    
+
     > img {
       width: 20px;
       height: 20px;
