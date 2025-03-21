@@ -981,29 +981,30 @@ export const server = setupServer(...handlers)
 })
 
 afterAll(() =&gt; server.close())
-</code></pre><p>Basic example of an integration test over the <code>App</code> component.</p><pre><code class=language-js>// src/mocks/browser.js
-import { setupWorker } from 'msw'
-import { handlers } from './handlers' // list of request handlers
+</code></pre><p>Basic example of an integration test over the <code>App</code> component.</p><pre><code class=language-js>import React from 'react'
+import { render, screen } from '@testing-library/react'
+import App from './App'
 
-// This configures a Service Worker with the given request handlers.
-export const worker = setupWorker(...handlers)
-</code>0</pre><p>you also can add additional handlers during runtime to handle different scenarios in different tests. Here&rsquo;s an example:</p><pre><code class=language-js>// src/mocks/browser.js
-import { setupWorker } from 'msw'
-import { handlers } from './handlers' // list of request handlers
+test('passes', async () =&gt; {
+  render(&lt;App /&gt;)
 
-// This configures a Service Worker with the given request handlers.
-export const worker = setupWorker(...handlers)
-</code>1</pre><p>The <code class=language-js>// src/mocks/browser.js
-import { setupWorker } from 'msw'
-import { handlers } from './handlers' // list of request handlers
-// This configures a Service Worker with the given request handlers.
-export const worker = setupWorker(...handlers)
-</code>2 function allows us to add a runtime handler to our mock server. However, it&rsquo;s important to note that any handlers added in runtime will be removed when <code class=language-js>// src/mocks/browser.js
-import { setupWorker } from 'msw'
-import { handlers } from './handlers' // list of request handlers
-// This configures a Service Worker with the given request handlers.
-export const worker = setupWorker(...handlers)
-</code>3 is called.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://blog.openreplay.com/mocking-api-servers-with-mock-service-worker-msw/ target=_blank>Mocking API Servers with Mock Service Worker (MSW)</a></li><li><a href=https://mswjs.io/docs/ target=_blank>MSW Documentation</a></li></ul></div><script defer type=module>
+  expect(
+    // Expect the mocked response to be present in the DOM.
+    await screen.findByText(`Dwarves`),
+  ).toBeInTheDocument()
+})
+</code></pre><p>you also can add additional handlers during runtime to handle different scenarios in different tests. Here&rsquo;s an example:</p><pre><code class=language-js>test('handle error responses', async () =&gt; {
+  render(&lt;App /&gt;)
+  // a runtime handler which
+  server.use(
+    rest.get('https:/example.com/api/usage', (req, res, ctx) =&gt; {
+      return res(ctx.json({ message: 'Internal Server Error' }))
+    }),
+  )
+  const errorElement = screen.getByText('Internal Server Error', { className: 'error' })
+  expect(errorElement).toBeInTheDocument()
+})
+</code></pre><p>The <code>server.use</code> function allows us to add a runtime handler to our mock server. However, it&rsquo;s important to note that any handlers added in runtime will be removed when <code>server.resetHandlers()</code> is called.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://blog.openreplay.com/mocking-api-servers-with-mock-service-worker-msw/ target=_blank>Mocking API Servers with Mock Service Worker (MSW)</a></li><li><a href=https://mswjs.io/docs/ target=_blank>MSW Documentation</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

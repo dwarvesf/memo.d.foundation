@@ -945,113 +945,26 @@ Folder:
 .layer-2 {
   transform: translateZ(-1px);
 }
-</code></pre><p>The <code>parallax</code> class is where the parallax magic happens:</p><ul><li>Defining the <code>height</code> and <code>perspective</code> style properties of an element will lock the perspective to its centre, creating a fixed origin 3D viewport.</li><li>Setting <code>overflow-y: auto</code> will allow the content inside the element to scroll in the usual way, but now descendant elements will be rendered relative to the fixed perspective. This is the key to creating the parallax effect.</li></ul><p>The <code>layer</code> class defines a layer of content to which the parallax effect will be applied. The <code>absolute</code> position is optional, for the sake of display. You&rsquo;ll see what I meant in a moment.</p><p>Finally, the <code>layer-{{n}}</code> class is used to set Z offset of the layers. If we consider the <code>parallax</code> container is a camera viewport, the Z offset will determine whether a layer is farther away, or closer to the viewport. <strong>The farther away a layer is, the slower it&rsquo;ll appear to be scrolling.</strong></p><p>Check it out in the CodePen below:</p><iframe height=400 style=width:100% scrolling=no title="Pure CSS Parallax (1) - Barebones" src="https://codepen.io/ngolapnguyen/embed/wvjGRRp?default-tab=result" frameborder=no></iframe><h2 id=common-practices>Common practices <a href=#common-practices></a></h2><h3 id=parallax-with-multiple-sections>Parallax with multiple sections <a href=#parallax-with-multiple-sections></a></h3><p>Most parallax sites break the page into distinct sections where different effects can be applied. Here&rsquo;s how to do that.</p><p>First, we need a <code class=language-html>&lt;div class="parallax">
-&lt;div class="layer layer-1">...&lt;/div>
-&lt;div class="layer layer-2">...&lt;/div>
-...
-&lt;/div>
-</code>1 element to group our layers together:</p><pre><code class=language-html>&lt;div class=&quot;parallax&quot;&gt;
-  &lt;div class=&quot;layer layer-1&quot;&gt;...&lt;/div&gt;
-  &lt;div class=&quot;layer layer-2&quot;&gt;...&lt;/div&gt;
+</code></pre><p>The <code>parallax</code> class is where the parallax magic happens:</p><ul><li>Defining the <code>height</code> and <code>perspective</code> style properties of an element will lock the perspective to its centre, creating a fixed origin 3D viewport.</li><li>Setting <code>overflow-y: auto</code> will allow the content inside the element to scroll in the usual way, but now descendant elements will be rendered relative to the fixed perspective. This is the key to creating the parallax effect.</li></ul><p>The <code>layer</code> class defines a layer of content to which the parallax effect will be applied. The <code>absolute</code> position is optional, for the sake of display. You&rsquo;ll see what I meant in a moment.</p><p>Finally, the <code>layer-{{n}}</code> class is used to set Z offset of the layers. If we consider the <code>parallax</code> container is a camera viewport, the Z offset will determine whether a layer is farther away, or closer to the viewport. <strong>The farther away a layer is, the slower it&rsquo;ll appear to be scrolling.</strong></p><p>Check it out in the CodePen below:</p><iframe height=400 style=width:100% scrolling=no title="Pure CSS Parallax (1) - Barebones" src="https://codepen.io/ngolapnguyen/embed/wvjGRRp?default-tab=result" frameborder=no></iframe><h2 id=common-practices>Common practices <a href=#common-practices></a></h2><h3 id=parallax-with-multiple-sections>Parallax with multiple sections <a href=#parallax-with-multiple-sections></a></h3><p>Most parallax sites break the page into distinct sections where different effects can be applied. Here&rsquo;s how to do that.</p><p>First, we need a <code>group</code> element to group our layers together:</p><pre><code class=language-html>&lt;div class=&quot;parallax&quot;&gt;
+  &lt;div class=&quot;group&quot;&gt;
+    &lt;div class=&quot;layer layer-1&quot;&gt;Layer 1.1&lt;/div&gt;
+    &lt;div class=&quot;layer layer-2&quot;&gt;Layer 1.2&lt;/div&gt;
+    &lt;div class=&quot;layer layer-3&quot;&gt;Layer 1.3&lt;/div&gt;
+  &lt;/div&gt;
   ...
 &lt;/div&gt;
-</code>2</pre><p>And now the styles:</p><pre><code class=language-html>&lt;div class=&quot;parallax&quot;&gt;
-  &lt;div class=&quot;layer layer-1&quot;&gt;...&lt;/div&gt;
-  &lt;div class=&quot;layer layer-2&quot;&gt;...&lt;/div&gt;
+</code></pre><p>And now the styles:</p><pre><code class=language-css>.group {
   ...
-&lt;/div&gt;
-</code>3</pre><p>The property <code class=language-html>&lt;div class="parallax">
-&lt;div class="layer layer-1">...&lt;/div>
-&lt;div class="layer layer-2">...&lt;/div>
-...
-&lt;/div>
-</code>4 prevents the browser from flattening the <code>layer</code> elements, indicating that children of the element should be positioned in the 3D-space. More on the property <a href=https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style target=_blank>here</a>.</p><p>One important rule to keep in mind when grouping elements is, <strong>we cannot clip the content of a group</strong>. Setting <code class=language-html>&lt;div class="parallax">
-&lt;div class="layer layer-1">...&lt;/div>
-&lt;div class="layer layer-2">...&lt;/div>
-...
-&lt;/div>
-</code>6 on a <code class=language-html>&lt;div class="parallax">
-&lt;div class="layer layer-1">...&lt;/div>
-&lt;div class="layer layer-2">...&lt;/div>
-...
-&lt;/div>
-</code>1 will break the parallax effect. Unclipped content will result in descendant elements overflowing, so we need to be creative with the <code class=language-html>&lt;div class="parallax">
-&lt;div class="layer layer-1">...&lt;/div>
-&lt;div class="layer layer-2">...&lt;/div>
-...
-&lt;/div>
-</code>8 values of the groups to ensure content is correctly revealed/hidden as the visitor scrolls through the document.</p><h3 id=depth-correction>Depth correction <a href=#depth-correction></a></h3><p>True to 3D transforms, elements that are farther away from the viewport will appear smaller than those that are closer. If we want them to appear to be rendered as their original size (e.g. same font-size and all), we can use the <code class=language-html>&lt;div class="parallax">
-&lt;div class="layer layer-1">...&lt;/div>
-&lt;div class="layer layer-2">...&lt;/div>
-...
-&lt;/div>
-</code>9 transform to do that:</p><pre><code class=language-css>.parallax {
-  perspective: 1px;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+  transform-style: preserve-3d;
 }
-
-.layer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+</code></pre><p>The property <code>transform-style: preserve-3d</code> prevents the browser from flattening the <code>layer</code> elements, indicating that children of the element should be positioned in the 3D-space. More on the property <a href=https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style target=_blank>here</a>.</p><p>One important rule to keep in mind when grouping elements is, <strong>we cannot clip the content of a group</strong>. Setting <code>overflow: hidden</code> on a <code>group</code> will break the parallax effect. Unclipped content will result in descendant elements overflowing, so we need to be creative with the <code>z-index</code> values of the groups to ensure content is correctly revealed/hidden as the visitor scrolls through the document.</p><h3 id=depth-correction>Depth correction <a href=#depth-correction></a></h3><p>True to 3D transforms, elements that are farther away from the viewport will appear smaller than those that are closer. If we want them to appear to be rendered as their original size (e.g. same font-size and all), we can use the <code>scale</code> transform to do that:</p><pre><code class=language-css>.layer-2 {
+  transform: translateZ(-1px) scale(2);
 }
-
-.layer-1 {
-  transform: translateZ(0);
+</code></pre><p>The scale factor can be calculated with the following formula:</p><pre><code>scale = 1 + (translateZ * -1) / perspective
+</code></pre><h3 id=debugging>Debugging <a href=#debugging></a></h3><p>When you are working with parallax, it can be easier to get lost among the different layers. Taking a different perspective will allow you to know where everything is in the 3D space - which you can do by applying simple transform to the group elements:</p><pre><code class=language-css>.group {
+  transform: translate3d(700px, 0, -800px) rotateY(30deg);
 }
-
-.layer-2 {
-  transform: translateZ(-1px);
-}
-</code>0</pre><p>The scale factor can be calculated with the following formula:</p><pre><code class=language-css>.parallax {
-  perspective: 1px;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.layer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.layer-1 {
-  transform: translateZ(0);
-}
-
-.layer-2 {
-  transform: translateZ(-1px);
-}
-</code>1</pre><h3 id=debugging>Debugging <a href=#debugging></a></h3><p>When you are working with parallax, it can be easier to get lost among the different layers. Taking a different perspective will allow you to know where everything is in the 3D space - which you can do by applying simple transform to the group elements:</p><pre><code class=language-css>.parallax {
-  perspective: 1px;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.layer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.layer-1 {
-  transform: translateZ(0);
-}
-
-.layer-2 {
-  transform: translateZ(-1px);
-}
-</code>2</pre><p>You can try out all the common practices I have mentioned in the CodePen below:</p><iframe height=400 style=width:100% scrolling=no title="Pure CSS Parallax (2) - Common Practices" src="https://codepen.io/ngolapnguyen/embed/XWqdOJr?default-tab=result" frameborder=no allowfullscreen></iframe><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://keithclark.co.uk/articles/pure-css-parallax-websites/ target=_blank>https://keithclark.co.uk/articles/pure-css-parallax-websites/</a></li><li><a href=https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style target=_blank>https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style</a></li><li><a href="https://www.youtube.com/watch?v=1wfeqDyMUx4" target=_blank>https://www.youtube.com/watch?v=1wfeqDyMUx4</a></li></ul></div><script defer type=module>
+</code></pre><p>You can try out all the common practices I have mentioned in the CodePen below:</p><iframe height=400 style=width:100% scrolling=no title="Pure CSS Parallax (2) - Common Practices" src="https://codepen.io/ngolapnguyen/embed/XWqdOJr?default-tab=result" frameborder=no allowfullscreen></iframe><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://keithclark.co.uk/articles/pure-css-parallax-websites/ target=_blank>https://keithclark.co.uk/articles/pure-css-parallax-websites/</a></li><li><a href=https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style target=_blank>https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style</a></li><li><a href="https://www.youtube.com/watch?v=1wfeqDyMUx4" target=_blank>https://www.youtube.com/watch?v=1wfeqDyMUx4</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

@@ -931,7 +931,77 @@ test/component/nginx-app-protect/monitoring/monitoring_test.go:15:8: &quot;githu
 src/core/metrics/sources/nginx_plus.go:75:2: field streamEndpoints is unused (U1000)
 src/core/metrics/sources/nginx_plus_test.go:94:2: var availableZones is unused (U1000)
 </code></pre><p>to detect code quality problems:</p><pre><code class=language-bash>src/core/nginx.go:791:4: ineffective break statement. Did you mean to break out of the outer loop? (SA4011)
-</code></pre></li><li><p><code>golang-announce@googlegroups.com</code>0</p><pre><code>golang-announce@googlegroups.com</code>1</pre><p>e.g: test on NGIX Agent cloned repo</p><pre><code>golang-announce@googlegroups.com</code>2</pre><p>suggestions for improving the code:</p><pre><code>golang-announce@googlegroups.com</code>3</pre><pre><code>golang-announce@googlegroups.com</code>4</pre></li><li><p>Detect race conditions</p><pre><code>golang-announce@googlegroups.com</code>5</pre></li></ul></li><li><p>Scanning source code for vulnerabilities</p><ul><li><p><code>golang-announce@googlegroups.com</code>6</p><pre><code>golang-announce@googlegroups.com</code>7</pre><pre><code>golang-announce@googlegroups.com</code>8</pre><pre><code>golang-announce@googlegroups.com</code>9</pre><pre><code>go.mod</code>0</pre></li><li><p><code>go.mod</code>1</p><pre><code>go.mod</code>2</pre><p>e.g: test on <a href=https://github.com/CyberRoute/bruter target=_blank>brutus</a> repo - an open-source experimental <a href=https://en.wikipedia.org/wiki/Open-source_intelligence target=_blank>OSINT</a> app for testing web server configuration.</p><pre><code>go.mod</code>3</pre><p>spotted <a href=https://cwe.mitre.org/data/definitions/295.html target=_blank>CWE-295</a></p><pre><code>go.mod</code>4</pre></li></ul></li><li><p>Fuzzing</p><ul><li><p>Extremely helpful in finding potential security flaws like buffer overflows, SQL injections, DoS attacks and XSS attacks</p></li><li><p>Further read on <a href=/playground/go/weekly/nov-01/>Fuzzing test HTTP services Golang</a></p></li></ul></li></ul><hr><p><a href=https://jarosz.dev/article/writing-secure-go-code/ target=_blank>https://jarosz.dev/article/writing-secure-go-code/</a></p><p><a href=https://github.com/CyberRoute/bruter target=_blank>https://github.com/CyberRoute/bruter</a></p><p><a href=https://en.wikipedia.org/wiki/Open-source_intelligence target=_blank>https://en.wikipedia.org/wiki/Open-source_intelligence</a></p><p><a href=https://cwe.mitre.org/data/definitions/295.html target=_blank>https://cwe.mitre.org/data/definitions/295.html</a></p></div><script defer type=module>
+</code></pre></li><li><p><code>golangci-lint</code></p><pre><code>go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+</code></pre><p>e.g: test on NGIX Agent cloned repo</p><pre><code>➜  agent git:(main) ✗ golangci-lint run ./...
+</code></pre><p>suggestions for improving the code:</p><pre><code>src/extensions/nginx-app-protect/monitoring/processor/nap_test.go:60:14: S1025: the argument is already a string, there's no need to use fmt. Sprintf (gosimple)
+logEntry: fmt.Sprintf(`%s`, func() string {
+^
+</code></pre><pre><code>src/plugins/common.go:85:5: S1009: should omit nil check; len() for []string is defined as zero (gosimple)
+if loadedConfig.Extensions != nil &amp;&amp; len(loadedConfig.Extensions) &gt; 0 {
+    ^
+</code></pre></li><li><p>Detect race conditions</p><pre><code>go test -race
+</code></pre></li></ul></li><li><p>Scanning source code for vulnerabilities</p><ul><li><p><code>govulncheck</code></p><pre><code>go install golang.org/x/vuln/cmd/govulncheck@latest
+</code></pre><pre><code>  ➜  habit git:(main) ✗ govulncheck
+  No vulnerabilities found.
+</code></pre><pre><code>➜  habit git:(main) ✗ govulncheck -mode binary -show verbose habit
+</code></pre><pre><code>Scanning your binary for known vulnerabilities...
+
+Fetching vulnerabilities from the database...
+
+Checking the binary against the vulnerabilities...
+
+=== Symbol Results ===
+
+No vulnerabilities found.
+
+=== Package Results ===
+
+Vulnerability #1: GO-2023-2186
+    Incorrect detection of reserved device names on Windows in path/filepath
+  More info: https://pkg.go.dev/vuln/GO-2023-2186
+  Standard library
+    Found in: path/filepath@go1.20.5
+    Fixed in: path/filepath@go1.20.11
+
+=== Module Results ===
+
+Vulnerability #1: GO-2024-3107
+    Stack exhaustion in Parse in go/build/constraint
+  More info: https://pkg.go.dev/vuln/GO-2024-3107
+  Standard library
+    Found in: stdlib@go1.20.5
+    Fixed in: stdlib@go1.22.7
+...
+
+Vulnerability #18: GO-2023-1878
+    Insufficient sanitisation of Host header in net/http
+  More info: https://pkg.go.dev/vuln/GO-2023-1878
+  Standard library
+    Found in: stdlib@go1.20.5
+    Fixed in: stdlib@go1.20.6
+
+Your code is affected by 0 vulnerabilities.
+This scan also found 1 vulnerability in packages you import and 18
+vulnerabilities in modules you require, but your code doesn't appear to call
+these vulnerabilities.
+</code></pre></li><li><p><code>gosec</code></p><pre><code>go install github.com/securego/gosec/v2/cmd/gosec@latest
+</code></pre><p>e.g: test on <a href=https://github.com/CyberRoute/bruter target=_blank>brutus</a> repo - an open-source experimental <a href=https://en.wikipedia.org/wiki/Open-source_intelligence target=_blank>OSINT</a> app for testing web server configuration.</p><pre><code>gosec ./...
+</code></pre><p>spotted <a href=https://cwe.mitre.org/data/definitions/295.html target=_blank>CWE-295</a></p><pre><code>...
+
+[/.../bruter/pkg/fuzzer/randomua.go:69] - G404 (CWE-338): Use of weak random number generator (math/rand or math/rand/v2 instead of crypto/rand) (Confidence: MEDIUM, Severity: HIGH)
+    68:
+  &gt; 69:  randomIndex := rand.Intn(len(userAgents))
+    70:  return userAgents[randomIndex]
+
+...
+
+[/.../bruter/pkg/server/config.go:40] - G402 (CWE-295): TLS InsecureSkipVerify set true. (Confidence: HIGH, Severity: HIGH)
+    39:  customTransport := &amp;http.Transport{
+  &gt; 40:   TLSClientConfig: &amp;tls.Config{InsecureSkipVerify: true},
+    41:  }
+
+...
+</code></pre></li></ul></li><li><p>Fuzzing</p><ul><li><p>Extremely helpful in finding potential security flaws like buffer overflows, SQL injections, DoS attacks and XSS attacks</p></li><li><p>Further read on <a href=/playground/go/weekly/nov-01/>Fuzzing test HTTP services Golang</a></p></li></ul></li></ul><hr><p><a href=https://jarosz.dev/article/writing-secure-go-code/ target=_blank>https://jarosz.dev/article/writing-secure-go-code/</a></p><p><a href=https://github.com/CyberRoute/bruter target=_blank>https://github.com/CyberRoute/bruter</a></p><p><a href=https://en.wikipedia.org/wiki/Open-source_intelligence target=_blank>https://en.wikipedia.org/wiki/Open-source_intelligence</a></p><p><a href=https://cwe.mitre.org/data/definitions/295.html target=_blank>https://cwe.mitre.org/data/definitions/295.html</a></p></div><script defer type=module>
   async function loadMentions() {
     try {
       

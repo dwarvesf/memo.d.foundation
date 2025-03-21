@@ -955,207 +955,153 @@ function useDocumentTitle(title) {
   useDocumentTitle('Home - My App')
   return &lt;div&gt;Welcome to the Home Page&lt;/div&gt;
 }
-</code></pre><p><strong>Benefits</strong>:</p><ul><li><strong>Isolation of side effects</strong>: The document title logic is separate from the component&rsquo;s main UI, simplifying the component.</li><li><strong>Reusability</strong>: <code>useDocumentTitle</code> can be reused across pages or components that need to set the document title.</li></ul><h3 id=dependency-management-in-hooks>Dependency management in hooks <a href=#dependency-management-in-hooks></a></h3><p>Custom hooks require careful handling of dependencies to avoid bugs, stale data, or unintended behaviors. <code>useEffect</code>, <code>useMemo</code>, and <code class=language-jsx>import { useState, useEffect } from 'react'
-function useFetch(url) {
-const [data, setData] = useState(null)
-const [loading, setLoading] = useState(true)
-const [error, setError] = useState(null)
-useEffect(() => {
-setLoading(true)
-fetch(url)
-.then((response) => response.json())
-.then((data) => setData(data))
-.catch((error) => setError(error))
-.finally(() => setLoading(false))
-}, [url])
-return { data, loading, error }
-}
-</code>0 hooks depend on stable dependencies to function predictably.</p><p><strong>Example: Managing dependencies with <code>useMemo</code></strong></p><p>Suppose we need to calculate an expensive value in a hook, which depends on certain props or state. Using <code>useMemo</code> ensures the computation only runs when necessary.</p><pre><code class=language-jsx>import { useState, useEffect } from 'react'
+</code></pre><p><strong>Benefits</strong>:</p><ul><li><strong>Isolation of side effects</strong>: The document title logic is separate from the component&rsquo;s main UI, simplifying the component.</li><li><strong>Reusability</strong>: <code>useDocumentTitle</code> can be reused across pages or components that need to set the document title.</li></ul><h3 id=dependency-management-in-hooks>Dependency management in hooks <a href=#dependency-management-in-hooks></a></h3><p>Custom hooks require careful handling of dependencies to avoid bugs, stale data, or unintended behaviors. <code>useEffect</code>, <code>useMemo</code>, and <code>useCallback</code> hooks depend on stable dependencies to function predictably.</p><p><strong>Example: Managing dependencies with <code>useMemo</code></strong></p><p>Suppose we need to calculate an expensive value in a hook, which depends on certain props or state. Using <code>useMemo</code> ensures the computation only runs when necessary.</p><pre><code class=language-js>import { useMemo } from 'react'
 
-function useFetch(url) {
+function useExpensiveCalculation(data) {
+  const result = useMemo(() =&gt; {
+    // Expensive calculation here
+    return data.reduce((sum, num) =&gt; sum + num, 0)
+  }, [data])
+
+  return result
+}
+</code></pre><p>Usage:</p><pre><code class=language-js>function Stats({ numbers }) {
+  const total = useExpensiveCalculation(numbers)
+  return &lt;div&gt;Total: {total}&lt;/div&gt;
+}
+</code></pre><p><strong>Benefits</strong>:</p><ul><li><strong>Efficiency</strong>: By memoizing the result, we avoid recalculating every render, improving performance.</li><li><strong>Stable dependencies</strong>: Carefully setting dependencies ensures the calculation only reruns when <code>data</code> changes.</li></ul><blockquote><p>In the future, this step will be handled automatically by <a href=https://react.dev/learn/react-compiler#what-does-the-compiler-do target=_blank>React compiler</a></p></blockquote><h3 id=combining-multiple-custom-hooks>Combining multiple custom hooks <a href=#combining-multiple-custom-hooks></a></h3><p>For more complex scenarios, multiple custom hooks can be combined, keeping components modular and avoiding deeply nested hooks. You can chain hooks to build up increasingly complex functionality without cluttering a single hook.</p><p><strong>Example: Using <code>useAuth</code> and <code>useFetch</code> together</strong></p><pre><code class=language-js>// useAuth.js import { useState } from &quot;react&quot;;
+
+function useAuth() {
+  const [user, setUser] = useState(null)
+
+  const login = (userData) =&gt; setUser(userData)
+  const logout = () =&gt; setUser(null)
+
+  return { user, login, logout }
+}
+
+// useUserData.js import useFetch from &quot;./useFetch&quot;;
+
+function useUserData(userId) {
+  const { data, loading, error } = useFetch(`/api/users/${userId}`)
+  return { data, loading, error }
+}
+
+// Usage in a component
+
+function Dashboard({ userId }) {
+  const { user, login, logout } = useAuth()
+  const { data: userData, loading } = useUserData(userId)
+
+  return (
+    &lt;div&gt;
+      {user ? (
+        &lt;div&gt;
+          &lt;button onClick={logout}&gt;Logout&lt;/button&gt;
+          {loading ? &lt;p&gt;Loading user data...&lt;/p&gt; : &lt;p&gt;Welcome, {userData.name}&lt;/p&gt;}
+        &lt;/div&gt;
+      ) : (
+        &lt;button onClick={() =&gt; login({ id: userId, name: 'John Doe' })}&gt;Login&lt;/button&gt;
+      )}
+    &lt;/div&gt;
+  )
+}
+</code></pre><p><strong>Benefits</strong>:</p><ul><li><strong>Modularity</strong>: Each hook handles a specific concern (auth or fetching data), so they&rsquo;re independently reusable and testable.</li><li><strong>Encapsulation</strong>: The component doesn&rsquo;t need to understand the logic inside each hook, only the returned data and functions.</li></ul><h3 id=best-practices-for-custom-hooks>Best practices for custom hooks <a href=#best-practices-for-custom-hooks></a></h3><p><strong>Use clear naming conventions</strong>: Name hooks descriptively, starting with <code>use</code>, such as <code>useAuth</code>, <code>useFetchData</code>, or <code>useToggle</code>. This helps with readability and code consistency.</p><p><strong>Return only necessary data and functions</strong>: Custom hooks should return only the data and functions the component actually needs. This minimizes the hook&rsquo;s API surface and reduces complexity.</p><pre><code class=language-js>// Better: return only what's needed
+function useToggle(initialState = false) {
+  const [state, setState] = useState(initialState)
+  const toggle = () =&gt; setState((prev) =&gt; !prev)
+  return [state, toggle]
+}
+</code></pre><p><strong>Handle edge cases and errors gracefully</strong>: Build error handling directly into hooks, where applicable. This keeps components from dealing with low-level error handling, focusing only on displaying relevant information to the user.</p><pre><code class=language-js>function useFetch(url) {
   const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() =&gt; {
-    setLoading(true)
     fetch(url)
       .then((response) =&gt; response.json())
-      .then((data) =&gt; setData(data))
-      .catch((error) =&gt; setError(error))
-      .finally(() =&gt; setLoading(false))
+      .then(setData)
+      .catch(setError)
   }, [url])
 
+  return { data, error }
+}
+</code></pre><p><strong>Encapsulate complex state logic</strong>: If you find yourself managing complex state logic (e.g., multiple variables, resetting state), consider using <code>useReducer</code> within the hook.</p><pre><code class=language-jsx>import { useReducer } from 'react'
+
+function formReducer(state, action) {
+  switch (action.type) {
+    case 'update':
+      return { ...state, [action.field]: action.value }
+    case 'reset':
+      return action.initialState
+    default:
+      return state
+  }
+}
+
+function useForm(initialState) {
+  const [state, dispatch] = useReducer(formReducer, initialState)
+
+  const updateField = (field, value) =&gt; dispatch({ type: 'update', field, value })
+  const resetForm = () =&gt; dispatch({ type: 'reset', initialState })
+
+  return [state, updateField, resetForm]
+}
+</code></pre><p><strong>Testing custom hooks</strong>: Test custom hooks in isolation to ensure they behave as expected under various scenarios. Tools like <strong>React testing library&rsquo;s <code>renderHook</code></strong> make it easy to test hooks directly.</p><pre><code class=language-js>import { renderHook, act } from '@testing-library/react-hooks'
+import useToggle from './useToggle'
+
+test('should toggle state', () =&gt; {
+  const { result } = renderHook(() =&gt; useToggle())
+
+  act(() =&gt; {
+    result.current[1]() // Call toggle function
+  })
+
+  expect(result.current[0]).toBe(true) // Assert the toggled state
+})
+</code></pre><h3 id=combining-techniques-in-a-custom-hook-system>Combining techniques in a custom hook system <a href=#combining-techniques-in-a-custom-hook-system></a></h3><p>Imagine you need a custom hook system for managing user authentication, including login, logout, fetching user data, and handling user permissions. We&rsquo;ll create modular hooks that interact but remain individually reusable.</p><ol><li><strong><code>useAuth</code> for authentication</strong>: Manages login and logout functions and holds user session data.</li><li><strong><code>useUserData</code> for data fetching</strong>: Fetches user-specific data from the server.</li><li><strong><code>usePermissions</code> for role-based access</strong>: Checks permissions based on the user&rsquo;s roles.</li></ol><p><strong>Combining custom hooks</strong>:</p><pre><code class=language-js>// useAuth.js
+function useAuth() {
+  const [user, setUser] = useState(null)
+
+  const login = (userData) =&gt; setUser(userData)
+  const logout = () =&gt; setUser(null)
+
+  return { user, login, logout }
+}
+
+// useUserData.js
+import useFetch from './useFetch'
+
+function useUserData(userId) {
+  const { data, loading, error } = useFetch(`/api/users/${userId}`)
   return { data, loading, error }
 }
-</code>3</pre><p>Usage:</p><pre><code class=language-jsx>import { useState, useEffect } from 'react'
 
-function useFetch(url) {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+// usePermissions.js
+function usePermissions(userRoles = []) {
+  const hasPermission = (permission) =&gt; userRoles.includes(permission)
+  return { hasPermission }
+}
 
-  useEffect(() =&gt; {
-    setLoading(true)
-    fetch(url)
-      .then((response) =&gt; response.json())
-      .then((data) =&gt; setData(data))
-      .catch((error) =&gt; setError(error))
-      .finally(() =&gt; setLoading(false))
-  }, [url])
+// Usage in a component
+function AdminDashboard({ userId }) {
+  const { user, login, logout } = useAuth()
+  const { data: userData, loading: dataLoading } = useUserData(userId)
+  const { hasPermission } = usePermissions(userData ? userData.roles : [])
 
-  return { data, loading, error }
+  return (
+    &lt;div&gt;
+      {user ? (
+        &lt;div&gt;
+          &lt;button onClick={logout}&gt;Logout&lt;/button&gt;
+          {dataLoading ? &lt;p&gt;Loading user data...&lt;/p&gt; : hasPermission('admin') ? &lt;p&gt;Welcome, Admin {userData.name}&lt;/p&gt; : &lt;p&gt;Access denied&lt;/p&gt;}
+        &lt;/div&gt;
+      ) : (
+        &lt;button onClick={() =&gt; login({ id: userId, name: 'Jane Doe' })}&gt;Login&lt;/button&gt;
+      )}
+    &lt;/div&gt;
+  )
 }
-</code>4</pre><p><strong>Benefits</strong>:</p><ul><li><strong>Efficiency</strong>: By memoizing the result, we avoid recalculating every render, improving performance.</li><li><strong>Stable dependencies</strong>: Carefully setting dependencies ensures the calculation only reruns when <code class=language-jsx>import { useState, useEffect } from 'react'
-function useFetch(url) {
-const [data, setData] = useState(null)
-const [loading, setLoading] = useState(true)
-const [error, setError] = useState(null)
-useEffect(() => {
-setLoading(true)
-fetch(url)
-.then((response) => response.json())
-.then((data) => setData(data))
-.catch((error) => setError(error))
-.finally(() => setLoading(false))
-}, [url])
-return { data, loading, error }
-}
-</code>5 changes.</li></ul><blockquote><p>In the future, this step will be handled automatically by <a href=https://react.dev/learn/react-compiler#what-does-the-compiler-do target=_blank>React compiler</a></p></blockquote><h3 id=combining-multiple-custom-hooks>Combining multiple custom hooks <a href=#combining-multiple-custom-hooks></a></h3><p>For more complex scenarios, multiple custom hooks can be combined, keeping components modular and avoiding deeply nested hooks. You can chain hooks to build up increasingly complex functionality without cluttering a single hook.</p><p><strong>Example: Using <code class=language-jsx>import { useState, useEffect } from 'react'
-function useFetch(url) {
-const [data, setData] = useState(null)
-const [loading, setLoading] = useState(true)
-const [error, setError] = useState(null)
-useEffect(() => {
-setLoading(true)
-fetch(url)
-.then((response) => response.json())
-.then((data) => setData(data))
-.catch((error) => setError(error))
-.finally(() => setLoading(false))
-}, [url])
-return { data, loading, error }
-}
-</code>6 and <code>useFetch</code> together</strong></p><pre><code class=language-jsx>import { useState, useEffect } from 'react'
-
-function useFetch(url) {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() =&gt; {
-    setLoading(true)
-    fetch(url)
-      .then((response) =&gt; response.json())
-      .then((data) =&gt; setData(data))
-      .catch((error) =&gt; setError(error))
-      .finally(() =&gt; setLoading(false))
-  }, [url])
-
-  return { data, loading, error }
-}
-</code>8</pre><p><strong>Benefits</strong>:</p><ul><li><strong>Modularity</strong>: Each hook handles a specific concern (auth or fetching data), so they&rsquo;re independently reusable and testable.</li><li><strong>Encapsulation</strong>: The component doesn&rsquo;t need to understand the logic inside each hook, only the returned data and functions.</li></ul><h3 id=best-practices-for-custom-hooks>Best practices for custom hooks <a href=#best-practices-for-custom-hooks></a></h3><p><strong>Use clear naming conventions</strong>: Name hooks descriptively, starting with <code class=language-jsx>import { useState, useEffect } from 'react'
-function useFetch(url) {
-const [data, setData] = useState(null)
-const [loading, setLoading] = useState(true)
-const [error, setError] = useState(null)
-useEffect(() => {
-setLoading(true)
-fetch(url)
-.then((response) => response.json())
-.then((data) => setData(data))
-.catch((error) => setError(error))
-.finally(() => setLoading(false))
-}, [url])
-return { data, loading, error }
-}
-</code>9, such as <code class=language-jsx>import { useState, useEffect } from 'react'
-function useFetch(url) {
-const [data, setData] = useState(null)
-const [loading, setLoading] = useState(true)
-const [error, setError] = useState(null)
-useEffect(() => {
-setLoading(true)
-fetch(url)
-.then((response) => response.json())
-.then((data) => setData(data))
-.catch((error) => setError(error))
-.finally(() => setLoading(false))
-}, [url])
-return { data, loading, error }
-}
-</code>6, <code class=language-js>function UserProfile({ userId }) {
-const { data, loading, error } = useFetch(`/api/users/${userId}`)
-if (loading) return &lt;p>Loading...&lt;/p>
-if (error) return &lt;p>Error loading data.&lt;/p>
-return &lt;div>{data.name}&lt;/div>
-}
-</code>1, or <code class=language-js>function UserProfile({ userId }) {
-const { data, loading, error } = useFetch(`/api/users/${userId}`)
-if (loading) return &lt;p>Loading...&lt;/p>
-if (error) return &lt;p>Error loading data.&lt;/p>
-return &lt;div>{data.name}&lt;/div>
-}
-</code>2. This helps with readability and code consistency.</p><p><strong>Return only necessary data and functions</strong>: Custom hooks should return only the data and functions the component actually needs. This minimizes the hook&rsquo;s API surface and reduces complexity.</p><pre><code class=language-js>function UserProfile({ userId }) {
-  const { data, loading, error } = useFetch(`/api/users/${userId}`)
-
-  if (loading) return &lt;p&gt;Loading...&lt;/p&gt;
-  if (error) return &lt;p&gt;Error loading data.&lt;/p&gt;
-
-  return &lt;div&gt;{data.name}&lt;/div&gt;
-}
-</code>3</pre><p><strong>Handle edge cases and errors gracefully</strong>: Build error handling directly into hooks, where applicable. This keeps components from dealing with low-level error handling, focusing only on displaying relevant information to the user.</p><pre><code class=language-js>function UserProfile({ userId }) {
-  const { data, loading, error } = useFetch(`/api/users/${userId}`)
-
-  if (loading) return &lt;p&gt;Loading...&lt;/p&gt;
-  if (error) return &lt;p&gt;Error loading data.&lt;/p&gt;
-
-  return &lt;div&gt;{data.name}&lt;/div&gt;
-}
-</code>4</pre><p><strong>Encapsulate complex state logic</strong>: If you find yourself managing complex state logic (e.g., multiple variables, resetting state), consider using <code class=language-js>function UserProfile({ userId }) {
-const { data, loading, error } = useFetch(`/api/users/${userId}`)
-if (loading) return &lt;p>Loading...&lt;/p>
-if (error) return &lt;p>Error loading data.&lt;/p>
-return &lt;div>{data.name}&lt;/div>
-}
-</code>5 within the hook.</p><pre><code class=language-js>function UserProfile({ userId }) {
-  const { data, loading, error } = useFetch(`/api/users/${userId}`)
-
-  if (loading) return &lt;p&gt;Loading...&lt;/p&gt;
-  if (error) return &lt;p&gt;Error loading data.&lt;/p&gt;
-
-  return &lt;div&gt;{data.name}&lt;/div&gt;
-}
-</code>6</pre><p><strong>Testing custom hooks</strong>: Test custom hooks in isolation to ensure they behave as expected under various scenarios. Tools like <strong>React testing library&rsquo;s <code class=language-js>function UserProfile({ userId }) {
-const { data, loading, error } = useFetch(`/api/users/${userId}`)
-if (loading) return &lt;p>Loading...&lt;/p>
-if (error) return &lt;p>Error loading data.&lt;/p>
-return &lt;div>{data.name}&lt;/div>
-}
-</code>7</strong> make it easy to test hooks directly.</p><pre><code class=language-js>function UserProfile({ userId }) {
-  const { data, loading, error } = useFetch(`/api/users/${userId}`)
-
-  if (loading) return &lt;p&gt;Loading...&lt;/p&gt;
-  if (error) return &lt;p&gt;Error loading data.&lt;/p&gt;
-
-  return &lt;div&gt;{data.name}&lt;/div&gt;
-}
-</code>8</pre><h3 id=combining-techniques-in-a-custom-hook-system>Combining techniques in a custom hook system <a href=#combining-techniques-in-a-custom-hook-system></a></h3><p>Imagine you need a custom hook system for managing user authentication, including login, logout, fetching user data, and handling user permissions. We&rsquo;ll create modular hooks that interact but remain individually reusable.</p><ol><li><strong><code class=language-jsx>import { useState, useEffect } from 'react'
-function useFetch(url) {
-const [data, setData] = useState(null)
-const [loading, setLoading] = useState(true)
-const [error, setError] = useState(null)
-useEffect(() => {
-setLoading(true)
-fetch(url)
-.then((response) => response.json())
-.then((data) => setData(data))
-.catch((error) => setError(error))
-.finally(() => setLoading(false))
-}, [url])
-return { data, loading, error }
-}
-</code>6 for authentication</strong>: Manages login and logout functions and holds user session data.</li><li><strong><code>useFetch</code>0 for data fetching</strong>: Fetches user-specific data from the server.</li><li><strong><code>useFetch</code>1 for role-based access</strong>: Checks permissions based on the user&rsquo;s roles.</li></ol><p><strong>Combining custom hooks</strong>:</p><pre><code>useFetch</code>2</pre><p>By modularizing each piece of the authentication system into separate custom hooks, we ensure that each hook is individually testable, reusable, and manageable. This approach keeps the <code>useFetch</code>3 component focused on rendering, with minimal logic.</p><h3 id=summary>Summary <a href=#summary></a></h3><p>Custom hooks provide a powerful way to architect stateful and reusable logic in React applications. By following best practices and focusing on modularity, you can create hooks that are easy to test, maintain, and scale across complex applications. The approach to combining, organizing, and testing these hooks leads to clean, efficient, and high-quality code.</p></div><script defer type=module>
+</code></pre><p>By modularizing each piece of the authentication system into separate custom hooks, we ensure that each hook is individually testable, reusable, and manageable. This approach keeps the <code>AdminDashboard</code> component focused on rendering, with minimal logic.</p><h3 id=summary>Summary <a href=#summary></a></h3><p>Custom hooks provide a powerful way to architect stateful and reusable logic in React applications. By following best practices and focusing on modularity, you can create hooks that are easy to test, maintain, and scale across complex applications. The approach to combining, organizing, and testing these hooks leads to clean, efficient, and high-quality code.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

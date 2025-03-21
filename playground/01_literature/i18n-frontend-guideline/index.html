@@ -946,7 +946,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -995,7 +995,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1015,7 +1015,110 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>With Next.js, there is built-in support for internationalized routing since <code>i18next</code>0</p><pre><code>i18next</code>1</pre><h2 id=supports-ltr-and-rtl-text>Supports LTR and RTL text <a href=#supports-ltr-and-rtl-text></a></h2><p>For some languages, such as Arabic, the letters are arranged from right to left. To ensure that your application supports Right-To-Left (<strong>RTL</strong>) layout rendering for such languages, you need to add <strong>LTR</strong> or <strong>RTL</strong> support.</p><p>To add <strong>LTR</strong> or <strong>RTL</strong> support to the application, we will set the <code>i18next</code>2 attribute on the <code>i18next</code>3 element dynamically in the <code>i18next</code>4 file.</p><p>You can also set the <code>i18next</code>2 attribute on global components such as <code>i18next</code>6 and <code>i18next</code>7.</p><p>Here&rsquo;s an example of setting the <code>i18next</code>2 attribute dynamically in the <code>i18next</code>9 component:</p><pre><code>React.js</code>0</pre><p>Here&rsquo;s an example of setting the <code>React.js</code>1 attribute on a global <code>React.js</code>2 component:</p><pre><code>React.js</code>3</pre><h2 id=formatting>Formatting <a href=#formatting></a></h2><p>Starting from <strong>i18next version 21.3.0</strong>, you can take advantage of the built-in formatting functions based on the <strong><a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl target=_blank>Intl API</a></strong> for the following formats:</p><ul><li><strong>Number</strong></li><li><strong>Currency</strong></li><li><strong>DateTime</strong></li><li><strong>RelativeTime</strong></li><li><strong>List</strong></li></ul><p>With these built-in formatting functions, you can easily format and localize various types of data in your application to match the user&rsquo;s preferred language and regional settings, improving the overall user experience of your application.</p><p>Here&rsquo;s an example of how you can use them:</p><pre><code>React.js</code>4</pre><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Multilingual is a very important function for web or mobile applications nowadays, Users will come from all over the world and always ask for support for their language. Above is a guide to help you install multi-language for your application or website, You can implement it according to the instructions to automatically find the user&rsquo;s language, setup multi-language by domain or subpath, support LTR and RTL text, and finally format of number, currency, time, list…</p><p>If you have a difficult problem that you would like us to help you on, please feel free to submit a challenge request here.</p><p><strong>Come be with us</strong>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>With Next.js, there is built-in support for internationalized routing since <code>v10.0.0</code></p><pre><code class=language-javascript>// next.config.js
+module.exports = {
+  i18n: {
+    locales: ['en-US', 'fr', 'nl-NL', 'nl-BE'],
+    defaultLocale: 'en-US',
+    domains: [
+      {
+        // Note: subdomains must be included in the domain value to be matched
+        // e.g. www.example.com should be used if that is the expected hostname
+        domain: 'example.com',
+        defaultLocale: 'en-US',
+      },
+      {
+        domain: 'example.fr',
+        defaultLocale: 'fr',
+      },
+      {
+        domain: 'example.nl',
+        defaultLocale: 'nl-NL',
+        // specify other locales that should be redirected to this domain
+        locales: ['nl-BE'],
+      },
+    ],
+  },
+}
+</code></pre><h2 id=supports-ltr-and-rtl-text>Supports LTR and RTL text <a href=#supports-ltr-and-rtl-text></a></h2><p>For some languages, such as Arabic, the letters are arranged from right to left. To ensure that your application supports Right-To-Left (<strong>RTL</strong>) layout rendering for such languages, you need to add <strong>LTR</strong> or <strong>RTL</strong> support.</p><p>To add <strong>LTR</strong> or <strong>RTL</strong> support to the application, we will set the <code>dir</code> attribute on the <code>body</code> element dynamically in the <code>index.html</code> file.</p><p>You can also set the <code>dir</code> attribute on global components such as <code>Header</code> and <code>Footer</code>.</p><p>Here&rsquo;s an example of setting the <code>dir</code> attribute dynamically in the <code>App</code> component:</p><pre><code class=language-javascript>import React from 'react';
+import { useTranslation } from 'react-i18next';
+import './App.css';
+
+function App()  {
+    const { t, i18n } = useTranslation();
+    document.body.dir = i18n.dir(); // return ltr or rtl of current language
+    return (
+      &lt;div className=&quot;App&quot;&gt;
+        {t('welcome')}
+      &lt;/div&gt;
+    );
+}
+
+export default App;
+</code></pre><p>Here&rsquo;s an example of setting the <code>**dir**</code> attribute on a global <code>**Header**</code> component:</p><pre><code class=language-javascript>import { useEffect } from 'react';
+import { useTranslation } from 'next-i18next';
+
+const Header = () =&gt; {
+  const { t, i18n } = useTranslation('common');
+  const localeDir = i18n.dir(); // return ltr or rtl of current language
+
+  useEffect(() =&gt; {
+    document.querySelector('html')?.setAttribute('dir', localeDir);
+  }, [localeDir]);
+
+  return (
+    &lt;header&gt;
+				{...}
+    &lt;/header&gt;
+  );
+};
+
+export default Header;
+</code></pre><h2 id=formatting>Formatting <a href=#formatting></a></h2><p>Starting from <strong>i18next version 21.3.0</strong>, you can take advantage of the built-in formatting functions based on the <strong><a href=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl target=_blank>Intl API</a></strong> for the following formats:</p><ul><li><strong>Number</strong></li><li><strong>Currency</strong></li><li><strong>DateTime</strong></li><li><strong>RelativeTime</strong></li><li><strong>List</strong></li></ul><p>With these built-in formatting functions, you can easily format and localize various types of data in your application to match the user&rsquo;s preferred language and regional settings, improving the overall user experience of your application.</p><p>Here&rsquo;s an example of how you can use them:</p><pre><code class=language-javascript>// Translation JSON
+{
+  &quot;number&quot;: &quot;Number: {{val, number}}&quot;,
+  &quot;currency&quot;: &quot;Currency: {{val, currency(USD)}}&quot;,
+  &quot;dateTime&quot;: &quot;Date/Time: {{val, datetime}}&quot;,
+  &quot;relativeTime&quot;: &quot;Relative Time: {{val, relativetime}}&quot;,
+  &quot;list&quot;: &quot;List: {{val, list}}&quot;,
+  &quot;weekdays&quot;: [
+    &quot;Monday&quot;,
+    &quot;Tuesday&quot;,
+    &quot;Wednesday&quot;,
+    &quot;Thursday&quot;,
+    &quot;Friday&quot;
+  ]
+}
+
+// Number
+i18next.t('number', { val: 1000 }); // --&gt; Number: 1,000
+i18next.t('number', { val: 1000.1, formatParams: { val: { minimumFractionDigits: 3 } } }); // --&gt; Number: 1,000.100
+
+// Currency
+i18next.t('currency', { val: 2000 }); // --&gt; Currency: $2,000.00
+i18next.t('currency', {
+  val: 2000.12,
+  currency: 'CAD',
+  locale: 'fr-CA'
+}); // --&gt; Currency: 2 000,12 $ CA
+
+// DateTime
+i18next.t('dateTime', { val: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)) }); // --&gt; Date/Time: 12/20/2012
+i18next.t('dateTime', {
+  val: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)),
+  formatParams: {
+    val: { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
+  },
+}); // --&gt; Date/Time: Thursday, December 20, 2012
+
+// RelativeTime
+i18next.t('relativeTime', { val: 3 }); // --&gt; Relative Time: in 3 days
+
+// List
+i18next.t('list', {
+  val: i18next.t('weekdays', { returnObjects: true }),
+}); // --&gt; List: Monday, Tuesday, Wednesday, Thursday, and Friday
+</code></pre><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Multilingual is a very important function for web or mobile applications nowadays, Users will come from all over the world and always ask for support for their language. Above is a guide to help you install multi-language for your application or website, You can implement it according to the instructions to automatically find the user&rsquo;s language, setup multi-language by domain or subpath, support LTR and RTL text, and finally format of number, currency, time, list…</p><p>If you have a difficult problem that you would like us to help you on, please feel free to submit a challenge request here.</p><p><strong>Come be with us</strong>
 We’d love to have you in our next chapter, by all means.</p><ul><li>Discover what we do: <a href=http://dwarves.foundation/ target=_blank>dwarves.foundation</a></li><li>Meet our team: <a href=http://discord.gg/dwarvesv target=_blank>discord.gg/dwarvesv</a></li><li>Join the squad: <a href=http://careers.d.foundation/ target=_blank>careers.d.foundation</a></li></ul><p>Follow our journey</p><ul><li>Fanpage: <a href=http://facebook.com/dwarvesf target=_blank>facebook.com/dwarvesf</a></li><li>LinkedIn: <a href=http://linkedin.com/company/dwarvesf target=_blank>linkedin.com/company/dwarvesf</a></li><li>Substack: <a href=https://note.d.foundation/ target=_blank>https://note.d.foundation/</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {

@@ -948,7 +948,7 @@ You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p>
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -997,7 +997,7 @@ You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p>
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1050,7 +1050,7 @@ git config --global user.name &quot;Your Name&quot;
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1099,7 +1099,7 @@ git config --global user.name &quot;Your Name&quot;
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1151,7 +1151,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1171,7 +1171,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=4><li>To preview all the changes on website, open devbox by running command <code>curl -fsSL https://get.jetpack.io/devbox | bash</code>0 in Terminal. Then use command <code>curl -fsSL https://get.jetpack.io/devbox | bash</code>1 to rebuilt the website.</li></ol><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=4><li>To preview all the changes on website, open devbox by running command <code>devbox shell</code> in Terminal. Then use command <code>make watch-run</code> to rebuilt the website.</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo-1.webp`,
@@ -1200,7 +1200,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1220,7 +1220,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=6><li>After the command <code>curl -fsSL https://get.jetpack.io/devbox | bash</code>1 finished, a localhost link would be generated. You need to open the link by <code>curl -fsSL https://get.jetpack.io/devbox | bash</code>3 to that link and you will have a preview of all changes you have made without affecting the main page memo.d.foundation</li></ol><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ol start=6><li>After the command <code>make watch-run</code> finished, a localhost link would be generated. You need to open the link by <code>Cmd + click</code> to that link and you will have a preview of all changes you have made without affecting the main page memo.d.foundation</li></ol><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-to-set-up-environment-for-editing-memo-2.webp`,
@@ -1249,7 +1249,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1269,7 +1269,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Note: If the localhost link has error, please run <code>curl -fsSL https://get.jetpack.io/devbox | bash</code>0 and <code>curl -fsSL https://get.jetpack.io/devbox | bash</code>1 again</p><p>On the next post, we will talk about <a href=https://memo.d.foundation/playground/_memo/how-to-push-content-on-note-d/>how to push content on memo.d.foundation</a>.</p></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Note: If the localhost link has error, please run <code>devbox shell</code> and <code>make watch-run</code> again</p><p>On the next post, we will talk about <a href=https://memo.d.foundation/playground/_memo/how-to-push-content-on-note-d/>how to push content on memo.d.foundation</a>.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

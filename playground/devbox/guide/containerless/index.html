@@ -941,49 +941,65 @@ devbox add go
 # 2024/07/28 17:00:10 Error connecting to database: &quot;dial tcp 125.235.4.59:5432: connect: operation timed out&quot;
 # exit status 1
 </code></pre><p>Oops! No database. But don&rsquo;t worry, Devbox has your back.</p><h2 id=postgresql-to-the-rescue>PostgreSQL to the Rescue <a href=#postgresql-to-the-rescue></a></h2><p>Add PostgreSQL to your Devbox:</p><pre><code class=language-bash>devbox add postgresql
-</code></pre><p>Devbox doesn&rsquo;t just install PostgreSQL. It sets up a whole environment:</p><ul><li>Creates a <code>process-compose.yaml</code> for you</li><li>Sets up <code>PGHOST</code> and <code>PGDATA</code> environment variables</li><li>Gives you commands to manage your database</li></ul><p>Initialize your database:</p><pre><code>devbox.json</code>0</pre><h2 id=fire-it-up>Fire It Up <a href=#fire-it-up></a></h2><p>Now you&rsquo;ve got options to start your services:</p><ul><li>For background mode: <code>devbox.json</code>1</li><li>For monitoring mode: <code>devbox.json</code>2</li></ul><p>Create your database:</p><pre><code>devbox.json</code>3</pre><h2 id=the-moment-of-truth>The Moment of Truth <a href=#the-moment-of-truth></a></h2><p>Update your Go code with the new database details:</p><pre><code>devbox.json</code>4</pre><p>Run it:</p><pre><code>devbox.json</code>5</pre><h2 id=more-than-just-postgresql>More than just Postgresql <a href=#more-than-just-postgresql></a></h2><p>Remember that <code>devbox.json</code> we started with? Forget it. Let&rsquo;s look at a real-world example that&rsquo;ll knock your socks off:</p><pre><code>devbox.json</code>7</pre><p>This isn&rsquo;t just a configuration file. It&rsquo;s a manifesto for containerless development.</p><h2 id=breaking-it-down>Breaking It Down <a href=#breaking-it-down></a></h2><p>Let&rsquo;s unpack this beast:</p><ol><li><p><strong>Multiple Languages</strong>: Node.js, Python, and Elixir all living in harmony. No &ldquo;it works on my machine&rdquo; excuses here.</p></li><li><p><strong>Precise Versioning</strong>: Every package is pinned to a specific version. Reproducibility? Check.</p></li><li><p><strong>System Libraries</strong>: Pango, Cairo, libpng - we&rsquo;re not just installing runtimes, we&rsquo;re building a complete system.</p></li><li><p><strong>Databases and Messaging</strong>: PostgreSQL, Redis, and Kafka. A full backend stack without a single <code>devbox.json</code>8 in sight.</p></li><li><p><strong>Custom Packages</strong>: See that <code>devbox.json</code>9? That&rsquo;s a custom package pulled straight from GitHub. Try doing that easily with Docker.</p></li></ol><h2 id=the-magic-of-devbox-services>The Magic of Devbox Services <a href=#the-magic-of-devbox-services></a></h2><p>With Devbox Services, you&rsquo;re not just installing these packages - you&rsquo;re orchestrating them. Check out these scripts:</p><pre><code class=language-json>{
-  &quot;$schema&quot;: &quot;https://raw.githubusercontent.com/jetify-com/devbox/0.12.0/.schema/devbox.schema.json&quot;,
-  &quot;packages&quot;: [],
-  &quot;shell&quot;: {
-    &quot;init_hook&quot;: [
-      &quot;echo 'Welcome to devbox!' &gt; /dev/null&quot;
-    ],
-    &quot;scripts&quot;: {
-      &quot;test&quot;: [
-        &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
-      ]
-    }
-  }
+</code></pre><p>Devbox doesn&rsquo;t just install PostgreSQL. It sets up a whole environment:</p><ul><li>Creates a <code>process-compose.yaml</code> for you</li><li>Sets up <code>PGHOST</code> and <code>PGDATA</code> environment variables</li><li>Gives you commands to manage your database</li></ul><p>Initialize your database:</p><pre><code class=language-bash>initdb --username=yourusername
+</code></pre><h2 id=fire-it-up>Fire It Up <a href=#fire-it-up></a></h2><p>Now you&rsquo;ve got options to start your services:</p><ul><li>For background mode: <code>devbox services start</code></li><li>For monitoring mode: <code>devbox services up</code></li></ul><p>Create your database:</p><pre><code class=language-bash>createdb bookstore --username=yourusername --password
+# Enter your password when prompted
+</code></pre><h2 id=the-moment-of-truth>The Moment of Truth <a href=#the-moment-of-truth></a></h2><p>Update your Go code with the new database details:</p><pre><code class=language-go>const (
+    host     = &quot;localhost&quot;
+    port     = 5432
+    user     = &quot;yourusername&quot;
+    password = &quot;yourpassword&quot;
+    dbname   = &quot;bookstore&quot;
+)
+</code></pre><p>Run it:</p><pre><code class=language-bash>go run main.go
+# Successfully connected to the database!
+# 2024/07/28 20:43:46 Starting server on :8080
+</code></pre><h2 id=more-than-just-postgresql>More than just Postgresql <a href=#more-than-just-postgresql></a></h2><p>Remember that <code>devbox.json</code> we started with? Forget it. Let&rsquo;s look at a real-world example that&rsquo;ll knock your socks off:</p><pre><code class=language-json>{
+  &quot;$schema&quot;: &quot;https://raw.githubusercontent.com/jetpack-io/devbox/0.10.1/.schema/devbox.schema.json&quot;,
+  &quot;packages&quot;: {
+    &quot;github:NixOS/nixpkgs#darwin.apple_sdk.frameworks.CoreText&quot;: &quot;&quot;,
+    &quot;nodejs&quot;: &quot;18&quot;,
+    &quot;pnpm_8&quot;: &quot;8.15.9&quot;,
+    &quot;pkg-config&quot;: &quot;0.29.2&quot;,
+    &quot;pango&quot;: {
+      &quot;version&quot;: &quot;1.52.2&quot;,
+      &quot;outputs&quot;: [&quot;dev&quot;]
+    },
+    &quot;libpng&quot;: &quot;1.6.43&quot;,
+    &quot;giflib&quot;: &quot;5.2.2&quot;,
+    &quot;librsvg&quot;: {
+      &quot;version&quot;: &quot;2.58.2&quot;,
+      &quot;outputs&quot;: [&quot;dev&quot;]
+    },
+    &quot;python3&quot;: &quot;3.11.9&quot;,
+    &quot;pixman&quot;: &quot;0.43.4&quot;,
+    &quot;cairo&quot;: {
+      &quot;version&quot;: &quot;1.18.0&quot;,
+      &quot;outputs&quot;: [&quot;dev&quot;]
+    },
+    &quot;libjpeg&quot;: {
+      &quot;version&quot;: &quot;3.0.3&quot;,
+      &quot;outputs&quot;: [&quot;dev&quot;]
+    },
+    &quot;elixir&quot;: &quot;1.15.7&quot;,
+    &quot;github:baenv/timescalepg-fake#postgresql&quot;: &quot;&quot;,
+    &quot;redis&quot;: &quot;7.2.5&quot;,
+    &quot;redis-plus-plus&quot;: &quot;1.3.12&quot;,
+    &quot;apacheKafka&quot;: {
+      &quot;version&quot;: &quot;2.13-3.8.0&quot;,
+      &quot;outputs&quot;: [&quot;out&quot;]
+    },
+    &quot;kafkactl&quot;: &quot;5.0.6&quot;,
+    &quot;zookeeper&quot;: &quot;3.9.2&quot;
+  },
+  // ... (env and shell configurations omitted for brevity)
 }
-</code>0</pre><p>Start Zookeeper and Kafka with a simple <code class=language-json>{
-"$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.12.0/.schema/devbox.schema.json",
-"packages": [],
-"shell": {
-"init_hook": [
-"echo 'Welcome to devbox!' > /dev/null"
-],
-"scripts": {
-"test": [
-"echo \"Error: no test specified\" && exit 1"
-]
+</code></pre><p>This isn&rsquo;t just a configuration file. It&rsquo;s a manifesto for containerless development.</p><h2 id=breaking-it-down>Breaking It Down <a href=#breaking-it-down></a></h2><p>Let&rsquo;s unpack this beast:</p><ol><li><p><strong>Multiple Languages</strong>: Node.js, Python, and Elixir all living in harmony. No &ldquo;it works on my machine&rdquo; excuses here.</p></li><li><p><strong>Precise Versioning</strong>: Every package is pinned to a specific version. Reproducibility? Check.</p></li><li><p><strong>System Libraries</strong>: Pango, Cairo, libpng - we&rsquo;re not just installing runtimes, we&rsquo;re building a complete system.</p></li><li><p><strong>Databases and Messaging</strong>: PostgreSQL, Redis, and Kafka. A full backend stack without a single <code>docker-compose.yml</code> in sight.</p></li><li><p><strong>Custom Packages</strong>: See that <code>github:baenv/timescalepg-fake#postgresql</code>? That&rsquo;s a custom package pulled straight from GitHub. Try doing that easily with Docker.</p></li></ol><h2 id=the-magic-of-devbox-services>The Magic of Devbox Services <a href=#the-magic-of-devbox-services></a></h2><p>With Devbox Services, you&rsquo;re not just installing these packages - you&rsquo;re orchestrating them. Check out these scripts:</p><pre><code class=language-json>&quot;scripts&quot;: {
+  &quot;zookeeper&quot;: &quot;sudo $DEVBOX_PACKAGES_DIR/bin/zkServer.sh --config $KAFKA_CONFIG start-foreground&quot;,
+  &quot;kafka&quot;: &quot;sudo $DEVBOX_PACKAGES_DIR/bin/kafka-server-start.sh $KAFKA_CONFIG/server.properties&quot;,
+  // ... more scripts omitted
 }
-}
-}
-</code>1 and <code class=language-json>{
-"$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.12.0/.schema/devbox.schema.json",
-"packages": [],
-"shell": {
-"init_hook": [
-"echo 'Welcome to devbox!' > /dev/null"
-],
-"scripts": {
-"test": [
-"echo \"Error: no test specified\" && exit 1"
-]
-}
-}
-}
-</code>2. No Docker, no fuss.</p><h2 id=why-this-matters>Why This Matters <a href=#why-this-matters></a></h2><ol><li><strong>Speed</strong>: No container overhead means faster startup times and lower resource usage.</li><li><strong>Flexibility</strong>: Need to add a system library? Just add it to your <code>devbox.json</code>. No need to rebuild a Docker image.</li><li><strong>Transparency</strong>: Everything is defined in one file. No hidden layers, no mysterious base images.</li><li><strong>Reproducibility</strong>: Every developer gets the exact same environment, down to the system libraries.</li></ol><h2 id=the-bottom-line>The Bottom Line <a href=#the-bottom-line></a></h2><p>Containers had their moment. But for local development, Devbox offers a level of control and simplicity that containers can&rsquo;t match. It&rsquo;s not just about running your code - it&rsquo;s about crafting the perfect environment for it to thrive.</p><p>Ready to leave containers behind? Give Devbox a shot. Your future self (and your team) will thank you.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://www.jetify.com/devbox/docs/guides/services/ target=_blank>Devbox Services Guide</a></li><li><a href=https://www.jetify.com/devbox/docs/guides/plugins/ target=_blank>Devbox Plugins Guide</a></li><li><a href=https://www.jetify.com/devbox/docs/guides/creating_plugins/ target=_blank>Creating Custom Devbox Plugins</a></li></ul></div><script defer type=module>
+</code></pre><p>Start Zookeeper and Kafka with a simple <code>devbox run zookeeper</code> and <code>devbox run kafka</code>. No Docker, no fuss.</p><h2 id=why-this-matters>Why This Matters <a href=#why-this-matters></a></h2><ol><li><strong>Speed</strong>: No container overhead means faster startup times and lower resource usage.</li><li><strong>Flexibility</strong>: Need to add a system library? Just add it to your <code>devbox.json</code>. No need to rebuild a Docker image.</li><li><strong>Transparency</strong>: Everything is defined in one file. No hidden layers, no mysterious base images.</li><li><strong>Reproducibility</strong>: Every developer gets the exact same environment, down to the system libraries.</li></ol><h2 id=the-bottom-line>The Bottom Line <a href=#the-bottom-line></a></h2><p>Containers had their moment. But for local development, Devbox offers a level of control and simplicity that containers can&rsquo;t match. It&rsquo;s not just about running your code - it&rsquo;s about crafting the perfect environment for it to thrive.</p><p>Ready to leave containers behind? Give Devbox a shot. Your future self (and your team) will thank you.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://www.jetify.com/devbox/docs/guides/services/ target=_blank>Devbox Services Guide</a></li><li><a href=https://www.jetify.com/devbox/docs/guides/plugins/ target=_blank>Devbox Plugins Guide</a></li><li><a href=https://www.jetify.com/devbox/docs/guides/creating_plugins/ target=_blank>Creating Custom Devbox Plugins</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

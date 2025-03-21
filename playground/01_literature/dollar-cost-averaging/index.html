@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -997,7 +997,7 @@ Suppose an investor decides to invest $3,000 over 6 months by buying $1,000 of a
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

@@ -936,35 +936,77 @@ int main() {
     result = 10 / 0
 except ZeroDivisionError as e:
     print(f&quot;Error occurred: {e}&quot;)
-</code></pre><p><strong>Pros</strong>:</p><ul><li>Clean separation between normal logic and error-handling logic.</li><li>Handles deep errors without cluttering every function with return value checks.</li><li>Allows for handling different types of exceptions.</li></ul><p><strong>Cons</strong>:</p><ul><li>Can add runtime overhead.</li><li>Misuse can lead to code that’s hard to debug, especially if exceptions are caught but not properly handled.</li></ul><h3 id=3error-objects-or-results>3. Error Objects or Results <a href=#3error-objects-or-results></a></h3><p>This pattern forces the function to return an object that explicitly represents either a successful result or an error. It is commonly used in functional programming languages like Rust, Haskell, and also in Swift. In Rust, for example, the <code>Result</code> type can be <code>Ok</code> for success or <code>Err</code> for failure.</p><p>Embrace this pattern when available. It forces you to <strong>deal with both success and error cases</strong>explicitly, reducing the likelihood of missed error handling.</p><p><strong>Example</strong> (Rust):</p><pre><code>-1</code>0</pre><p><strong>Pros</strong>:</p><ul><li>Forces explicit error handling, making it harder to ignore errors.</li><li>More functional and compositional, especially useful for chaining operations.</li></ul><p><strong>Cons</strong>:</p><ul><li>Can be verbose, especially if multiple layers of functions need to return and propagate <code>Result</code> types.</li></ul><h3 id=4assertions>4. Assertions <a href=#4assertions></a></h3><p>Assertions are a debugging tool that checks if certain conditions hold true. If the assertion fails, the program crashes, usually with a helpful error message. This pattern is mainly used for development and debugging, not for production error handling.</p><p><strong>Don’t use assertions for regular error handling</strong>. They are meant for development and debugging purposes, not for catching user-facing errors in production.</p><p><strong>Example</strong> (Python):</p><pre><code>-1</code>2</pre><p><strong>Pros</strong>:</p><ul><li>Simple and effective for catching bugs during development.</li><li>Forces assumptions to be explicitly stated in the code.</li></ul><p><strong>Cons</strong>:</p><ul><li>Typically disabled in production, so they don’t handle errors in live environments.</li><li>Not suitable for recoverable errors.</li></ul><h3 id=5callbacks-error-first>5. Callbacks (Error-First) <a href=#5callbacks-error-first></a></h3><p>In environments that deal with asynchronous operations, like Node.js, error-first callbacks are a common pattern. The first parameter of the callback is an error (if any), and the second is the result.</p><p>When using callbacks, <strong>always check the error argument</strong> first. Don’t forget to handle errors properly in every callback.</p><p><strong>Example</strong> (JavaScript):</p><pre><code>-1</code>3</pre><p><strong>Pros</strong>:</p><ul><li>Works well for asynchronous operations.</li><li>Error handling is explicit.</li></ul><p><strong>Cons</strong>:</p><ul><li>Can lead to &ldquo;callback hell&rdquo; when multiple asynchronous operations are nested.</li></ul><h3 id=6promise-based-error-handling>6. Promise-Based Error Handling <a href=#6promise-based-error-handling></a></h3><p>Promises are an evolution of callbacks, mainly used in asynchronous programming (e.g., JavaScript). They allow for cleaner handling of asynchronous operations, using <code>-1</code>4 for success and <code>-1</code>5 for errors.</p><p>Use Promises to make your asynchronous code more readable. Pay attention to the <strong>promise chain</strong>, and always handle <code>-1</code>5 for potential errors.</p><p><strong>Example</strong> (JavaScript):</p><pre><code>-1</code>7</pre><p><strong>Pros</strong>:</p><ul><li>Cleaner and more readable than callbacks, especially when using <code>-1</code>8.</li><li>Easier to handle chained asynchronous operations.</li></ul><p><strong>Cons</strong>:</p><ul><li>Errors in promise chains can be tricky to debug if <code>-1</code>5 blocks are misused or omitted.</li></ul><h3 id=7pattern-matching>7. Pattern Matching <a href=#7pattern-matching></a></h3><p>Pattern matching is used in functional languages like Haskell, Rust, and Scala to handle different outcomes of a computation. This allows developers to decompose data structures and handle each case explicitly.</p><p>Pattern matching is powerful, but be sure to <strong>handle all possible cases</strong>. If you miss one, your program might crash or behave unexpectedly.</p><p><strong>Example</strong> (Rust):</p><pre><code class=language-c>int divide(int a, int b, int *result) {
-    if (b == 0) {
-        return -1;  // error: division by zero
+</code></pre><p><strong>Pros</strong>:</p><ul><li>Clean separation between normal logic and error-handling logic.</li><li>Handles deep errors without cluttering every function with return value checks.</li><li>Allows for handling different types of exceptions.</li></ul><p><strong>Cons</strong>:</p><ul><li>Can add runtime overhead.</li><li>Misuse can lead to code that’s hard to debug, especially if exceptions are caught but not properly handled.</li></ul><h3 id=3error-objects-or-results>3. Error Objects or Results <a href=#3error-objects-or-results></a></h3><p>This pattern forces the function to return an object that explicitly represents either a successful result or an error. It is commonly used in functional programming languages like Rust, Haskell, and also in Swift. In Rust, for example, the <code>Result</code> type can be <code>Ok</code> for success or <code>Err</code> for failure.</p><p>Embrace this pattern when available. It forces you to <strong>deal with both success and error cases</strong>explicitly, reducing the likelihood of missed error handling.</p><p><strong>Example</strong> (Rust):</p><pre><code class=language-rust>fn divide(a: i32, b: i32) -&gt; Result&lt;i32, String&gt; {
+    if b == 0 {
+        return Err(&quot;Division by zero&quot;.to_string());
     }
-    *result = a / b;
-    return 0;  // success
+    Ok(a / b)
 }
 
-int main() {
-    int result;
-    if (divide(10, 0, &amp;result) != 0) {
-        printf(&quot;Error: Division by zero!\n&quot;);
+fn main() {
+    match divide(10, 0) {
+        Ok(result) =&gt; println!(&quot;Result: {}&quot;, result),
+        Err(e) =&gt; println!(&quot;Error: {}&quot;, e),
     }
 }
-</code>0</pre><p><strong>Pros</strong>:</p><ul><li>Forces exhaustive handling of different error cases.</li><li>Provides a clear and readable syntax for handling both success and error cases.</li></ul><p><strong>Cons</strong>:</p><ul><li>Can be overcomplicated for simple error handling needs.</li></ul><h3 id=8panic-crash>8. Panic (Crash) <a href=#8panic-crash></a></h3><p>Some languages like Rust and Go use panics for non-recoverable errors. A panic results in the program crashing. In Rust, panics can be caught, but in general, this pattern is reserved for situations where the program can&rsquo;t reasonably continue.</p><p><strong>Use panics sparingly</strong>. They should only be used for truly exceptional, unrecoverable errors, not for ordinary cases like bad user input.</p><p><strong>Example</strong> (Go):</p><pre><code class=language-c>int divide(int a, int b, int *result) {
-    if (b == 0) {
-        return -1;  // error: division by zero
+</code></pre><p><strong>Pros</strong>:</p><ul><li>Forces explicit error handling, making it harder to ignore errors.</li><li>More functional and compositional, especially useful for chaining operations.</li></ul><p><strong>Cons</strong>:</p><ul><li>Can be verbose, especially if multiple layers of functions need to return and propagate <code>Result</code> types.</li></ul><h3 id=4assertions>4. Assertions <a href=#4assertions></a></h3><p>Assertions are a debugging tool that checks if certain conditions hold true. If the assertion fails, the program crashes, usually with a helpful error message. This pattern is mainly used for development and debugging, not for production error handling.</p><p><strong>Don’t use assertions for regular error handling</strong>. They are meant for development and debugging purposes, not for catching user-facing errors in production.</p><p><strong>Example</strong> (Python):</p><pre><code class=language-python>def divide(a, b):
+    assert b != 0, &quot;Division by zero!&quot;
+    return a / b
+
+divide(10, 0)  # This will raise an AssertionError
+</code></pre><p><strong>Pros</strong>:</p><ul><li>Simple and effective for catching bugs during development.</li><li>Forces assumptions to be explicitly stated in the code.</li></ul><p><strong>Cons</strong>:</p><ul><li>Typically disabled in production, so they don’t handle errors in live environments.</li><li>Not suitable for recoverable errors.</li></ul><h3 id=5callbacks-error-first>5. Callbacks (Error-First) <a href=#5callbacks-error-first></a></h3><p>In environments that deal with asynchronous operations, like Node.js, error-first callbacks are a common pattern. The first parameter of the callback is an error (if any), and the second is the result.</p><p>When using callbacks, <strong>always check the error argument</strong> first. Don’t forget to handle errors properly in every callback.</p><p><strong>Example</strong> (JavaScript):</p><pre><code class=language-javascript>function divide(a, b, callback) {
+    if (b === 0) {
+        return callback(new Error(&quot;Division by zero&quot;), null);
     }
-    *result = a / b;
-    return 0;  // success
+    callback(null, a / b);
 }
 
-int main() {
-    int result;
-    if (divide(10, 0, &amp;result) != 0) {
-        printf(&quot;Error: Division by zero!\n&quot;);
+divide(10, 0, (err, result) =&gt; {
+    if (err) {
+        console.error(err.message);
+    } else {
+        console.log(result);
+    }
+});
+</code></pre><p><strong>Pros</strong>:</p><ul><li>Works well for asynchronous operations.</li><li>Error handling is explicit.</li></ul><p><strong>Cons</strong>:</p><ul><li>Can lead to &ldquo;callback hell&rdquo; when multiple asynchronous operations are nested.</li></ul><h3 id=6promise-based-error-handling>6. Promise-Based Error Handling <a href=#6promise-based-error-handling></a></h3><p>Promises are an evolution of callbacks, mainly used in asynchronous programming (e.g., JavaScript). They allow for cleaner handling of asynchronous operations, using <code>.then()</code> for success and <code>.catch()</code> for errors.</p><p>Use Promises to make your asynchronous code more readable. Pay attention to the <strong>promise chain</strong>, and always handle <code>.catch()</code> for potential errors.</p><p><strong>Example</strong> (JavaScript):</p><pre><code class=language-javascript>function divide(a, b) {
+    return new Promise((resolve, reject) =&gt; {
+        if (b === 0) reject(new Error(&quot;Division by zero&quot;));
+        else resolve(a / b);
+    });
+}
+
+divide(10, 0)
+    .then(result =&gt; console.log(result))
+    .catch(error =&gt; console.error(error.message));
+</code></pre><p><strong>Pros</strong>:</p><ul><li>Cleaner and more readable than callbacks, especially when using <code>async/await</code>.</li><li>Easier to handle chained asynchronous operations.</li></ul><p><strong>Cons</strong>:</p><ul><li>Errors in promise chains can be tricky to debug if <code>.catch()</code> blocks are misused or omitted.</li></ul><h3 id=7pattern-matching>7. Pattern Matching <a href=#7pattern-matching></a></h3><p>Pattern matching is used in functional languages like Haskell, Rust, and Scala to handle different outcomes of a computation. This allows developers to decompose data structures and handle each case explicitly.</p><p>Pattern matching is powerful, but be sure to <strong>handle all possible cases</strong>. If you miss one, your program might crash or behave unexpectedly.</p><p><strong>Example</strong> (Rust):</p><pre><code class=language-rust>fn divide(a: i32, b: i32) -&gt; Result&lt;i32, String&gt; {
+    if b == 0 {
+        Err(&quot;Division by zero&quot;.to_string())
+    } else {
+        Ok(a / b)
     }
 }
-</code>1</pre><p><strong>Pros</strong>:</p><ul><li>Useful for catching serious, non-recoverable errors.</li><li>Forces developers to think about critical error scenarios.</li></ul><p><strong>Cons</strong>:</p><ul><li>Crashes the program, which may not be desirable in production.</li><li>Can be overused in scenarios where graceful error handling is possible.</li></ul></div><script defer type=module>
+
+fn main() {
+    match divide(10, 0) {
+        Ok(result) =&gt; println!(&quot;Result: {}&quot;, result),
+        Err(e) =&gt; println!(&quot;Error: {}&quot;, e),
+    }
+}
+</code></pre><p><strong>Pros</strong>:</p><ul><li>Forces exhaustive handling of different error cases.</li><li>Provides a clear and readable syntax for handling both success and error cases.</li></ul><p><strong>Cons</strong>:</p><ul><li>Can be overcomplicated for simple error handling needs.</li></ul><h3 id=8panic-crash>8. Panic (Crash) <a href=#8panic-crash></a></h3><p>Some languages like Rust and Go use panics for non-recoverable errors. A panic results in the program crashing. In Rust, panics can be caught, but in general, this pattern is reserved for situations where the program can&rsquo;t reasonably continue.</p><p><strong>Use panics sparingly</strong>. They should only be used for truly exceptional, unrecoverable errors, not for ordinary cases like bad user input.</p><p><strong>Example</strong> (Go):</p><pre><code class=language-go>package main
+
+import &quot;fmt&quot;
+
+func divide(a, b int) int {
+    if b == 0 {
+        panic(&quot;Division by zero!&quot;)
+    }
+    return a / b
+}
+
+func main() {
+    fmt.Println(divide(10, 0))
+}
+</code></pre><p><strong>Pros</strong>:</p><ul><li>Useful for catching serious, non-recoverable errors.</li><li>Forces developers to think about critical error scenarios.</li></ul><p><strong>Cons</strong>:</p><ul><li>Crashes the program, which may not be desirable in production.</li><li>Can be overused in scenarios where graceful error handling is possible.</li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

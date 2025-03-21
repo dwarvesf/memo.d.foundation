@@ -945,52 +945,7 @@ body {
   animation: rotate auto linear;
   animation-timeline: scroll(root, block);
 }
-</code></pre><p>The <code>scroll()</code> function requires two arguments: <code>&lt;scroller></code> and <code>&lt;axis></code>. Here are the accepted values for each argument:</p><p>For the <code>&lt;scroller></code> argument:</p><p><strong>nearest</strong>: Uses the nearest ancestor scroll container (default). <strong>root</strong>: Uses the document viewport as the scroll container. <strong>self</strong>: Uses the element itself as the scroll container.</p><p>For the <code>&lt;axis></code> argument:</p><p><strong>block</strong>: Measures the progress along the block axis of the scroll container (default). <strong>inline</strong>: Measures the progress along the inline axis of the scroll container. <strong>y</strong>: Measures the progress along the y-axis of the scroll container. <strong>x</strong>: Measures the progress along the x-axis of the scroll container.</p><p>In our case, to bind an animation to the root scroller on the block axis, you can use the simplified syntax <code>svg {
-position: fixed;
-top: 50%;
-left: 50%;
-margin-top: -50px;
-margin-left: -50px;
-}
-@keyframes rotate {
-to {
-transform: rotate(360deg);
-}
-}
-body {
-min-height: 500vh;
-}
-</code>0. Also, note that when using a Scroll Progress Timeline, it does not make sense to set the <code>svg {
-position: fixed;
-top: 50%;
-left: 50%;
-margin-top: -50px;
-margin-left: -50px;
-}
-@keyframes rotate {
-to {
-transform: rotate(360deg);
-}
-}
-body {
-min-height: 500vh;
-}
-</code>1 in seconds. Instead, you should set it to <code>svg {
-position: fixed;
-top: 50%;
-left: 50%;
-margin-top: -50px;
-margin-left: -50px;
-}
-@keyframes rotate {
-to {
-transform: rotate(360deg);
-}
-}
-body {
-min-height: 500vh;
-}
-</code>2.</p><p>You can find the full code of this example at this <a href=https://codepen.io/Levi-ackerman/pen/BaqeENy target=_blank>link</a></p><p>Note: Make sure you run this example in Chrome 115 or above with the &lsquo;Experimental Web Platform Features&rsquo; enabled.</p><p>That&rsquo;s it! With just a few lines of CSS code, we&rsquo;ve created an awesome scroll animation. You can create many amazing animations with Scroll-driven Animation. To discover more examples, please check the reference link.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://scroll-driven-animations.style target=_blank>https://scroll-driven-animations.style</a></li><li><a href=https://developer.chrome.com/articles/scroll-driven-animations target=_blank>https://developer.chrome.com/articles/scroll-driven-animations</a></li><li><a href="https://www.youtube.com/watch?v=oDcb3fvtETs&amp;t=335s" target=_blank>https://www.youtube.com/watch?v=oDcb3fvtETs&t=335s</a></li></ul></div><script defer type=module>
+</code></pre><p>The <code>scroll()</code> function requires two arguments: <code>&lt;scroller></code> and <code>&lt;axis></code>. Here are the accepted values for each argument:</p><p>For the <code>&lt;scroller></code> argument:</p><p><strong>nearest</strong>: Uses the nearest ancestor scroll container (default). <strong>root</strong>: Uses the document viewport as the scroll container. <strong>self</strong>: Uses the element itself as the scroll container.</p><p>For the <code>&lt;axis></code> argument:</p><p><strong>block</strong>: Measures the progress along the block axis of the scroll container (default). <strong>inline</strong>: Measures the progress along the inline axis of the scroll container. <strong>y</strong>: Measures the progress along the y-axis of the scroll container. <strong>x</strong>: Measures the progress along the x-axis of the scroll container.</p><p>In our case, to bind an animation to the root scroller on the block axis, you can use the simplified syntax <code>scroll(root block)</code>. Also, note that when using a Scroll Progress Timeline, it does not make sense to set the <code>animation-duration</code> in seconds. Instead, you should set it to <code>auto</code>.</p><p>You can find the full code of this example at this <a href=https://codepen.io/Levi-ackerman/pen/BaqeENy target=_blank>link</a></p><p>Note: Make sure you run this example in Chrome 115 or above with the &lsquo;Experimental Web Platform Features&rsquo; enabled.</p><p>That&rsquo;s it! With just a few lines of CSS code, we&rsquo;ve created an awesome scroll animation. You can create many amazing animations with Scroll-driven Animation. To discover more examples, please check the reference link.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://scroll-driven-animations.style target=_blank>https://scroll-driven-animations.style</a></li><li><a href=https://developer.chrome.com/articles/scroll-driven-animations target=_blank>https://developer.chrome.com/articles/scroll-driven-animations</a></li><li><a href="https://www.youtube.com/watch?v=oDcb3fvtETs&amp;t=335s" target=_blank>https://www.youtube.com/watch?v=oDcb3fvtETs&t=335s</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

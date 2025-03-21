@@ -976,7 +976,7 @@ function Counter(name) {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ function Counter(name) {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As you can see in the below picture, the rendering flow of React should be:</p><p>JSX &ndash;<em>(React)</em>⟶ UI trees &ndash;<em>(React DOM)</em>⟶ DOM</p><h2 id=state-is-tied-to-a-position-in-the-tree>State is tied to a position in the tree <a href=#state-is-tied-to-a-position-in-the-tree></a></h2><ul><li>Actually, the component has <em>no state</em>. The state is stored in React and associated with the correct component based on its <strong>position</strong> in the UI tree.</li><li>React preserves a component’s state for as long as it’s being rendered at its position in the UI tree.</li><li>For example:</li></ul><pre><code class=language-js>function Counter() {
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As you can see in the below picture, the rendering flow of React should be:</p><p>JSX &ndash;<em>(React)</em>&ndash;> UI trees &ndash;<em>(React DOM)</em>&ndash;> DOM</p><h2 id=state-is-tied-to-a-position-in-the-tree>State is tied to a position in the tree <a href=#state-is-tied-to-a-position-in-the-tree></a></h2><ul><li>Actually, the component has <em>no state</em>. The state is stored in React and associated with the correct component based on its <strong>position</strong> in the UI tree.</li><li>React preserves a component’s state for as long as it’s being rendered at its position in the UI tree.</li><li>For example:</li></ul><pre><code class=language-js>function Counter() {
   const [score, setScore] = useState(0)
 
   return &lt;div&gt;...&lt;/div&gt;
@@ -1008,7 +1008,7 @@ return (
     &lt;Counter /&gt;
   &lt;/div&gt;
 )
-</code></pre><ul><li>Q: Is the two <code>&lt;Counter /></code> components the same?</li><li>A: <strong>No!</strong> <strong>These are two separate counters because each is rendered at its own position in the tree</strong> ⇒ each of them will get its own, independent <code>score</code> state.</li><li>In case the <code>&lt;Counter /></code> get removed → React discards its state</li></ul><h2 id=preserves-state>Preserves state <a href=#preserves-state></a></h2><ul><li>Take a look on the below example</li></ul><pre><code class=language-js>const [isFancy, setIsFancy] = useState(false);
+</code></pre><ul><li>Q: Is the two <code>&lt;Counter /></code> components the same?</li><li>A: <strong>No!</strong> <strong>These are two separate counters because each is rendered at its own position in the tree</strong> => each of them will get its own, independent <code>score</code> state.</li><li>In case the <code>&lt;Counter /></code> get removed -> React discards its state</li></ul><h2 id=preserves-state>Preserves state <a href=#preserves-state></a></h2><ul><li>Take a look on the below example</li></ul><pre><code class=language-js>const [isFancy, setIsFancy] = useState(false);
 
  return (
   &lt;div&gt;
@@ -1020,7 +1020,7 @@ return (
   &lt;/div&gt;
   ...
 )
-</code></pre><ul><li>Q: Are <code>&lt;Counter isFancy={true} /></code> and <code>&lt;Counter isFancy={false} /></code> the same component?</li><li>A: <strong>Yes!</strong> Because: same component + same position + with React&rsquo;s perspective → it&rsquo;s the same Counter.</li><li>Q: Why do I say it is the same position?</li><li>A: Take a look at the UI Tree section, that it&rsquo;s the <strong>position of the UI tree</strong>, not in the JSX markup</li></ul><p>⇒ <strong>Same component + Same position → Preserve state</strong></p><h2 id=different-components-at-the-same-position-reset-state>Different components at the same position reset state <a href=#different-components-at-the-same-position-reset-state></a></h2><pre><code class=language-js>const [isPaused, setIsPaused] = useState(false);
+</code></pre><ul><li>Q: Are <code>&lt;Counter isFancy={true} /></code> and <code>&lt;Counter isFancy={false} /></code> the same component?</li><li>A: <strong>Yes!</strong> Because: same component + same position + with React&rsquo;s perspective -> it&rsquo;s the same Counter.</li><li>Q: Why do I say it is the same position?</li><li>A: Take a look at the UI Tree section, that it&rsquo;s the <strong>position of the UI tree</strong>, not in the JSX markup</li></ul><p>=> <strong>Same component + Same position -> Preserve state</strong></p><h2 id=different-components-at-the-same-position-reset-state>Different components at the same position reset state <a href=#different-components-at-the-same-position-reset-state></a></h2><pre><code class=language-js>const [isPaused, setIsPaused] = useState(false);
 
  return (
   &lt;div&gt;
@@ -1032,37 +1032,7 @@ return (
   &lt;/div&gt;
   ...
 )
-</code></pre><ul><li>In this example, we switch between <em>different</em> component types at the same position. Initially, the first child of <code>&lt;div></code> contained a <code class=language-js>function Counter() {
-const [score, setScore] = useState(0)
-return &lt;div>...&lt;/div>
-}
-return (
-&lt;div>
-&lt;Counter />
-&lt;Counter />
-&lt;/div>
-)
-</code>0. But when swapped in a <code class=language-js>function Counter() {
-const [score, setScore] = useState(0)
-return &lt;div>...&lt;/div>
-}
-return (
-&lt;div>
-&lt;Counter />
-&lt;Counter />
-&lt;/div>
-)
-</code>1, React removed the <code class=language-js>function Counter() {
-const [score, setScore] = useState(0)
-return &lt;div>...&lt;/div>
-}
-return (
-&lt;div>
-&lt;Counter />
-&lt;Counter />
-&lt;/div>
-)
-</code>0 from the UI tree and destroyed its state</li></ul><p><img x-data="{
+</code></pre><ul><li>In this example, we switch between <em>different</em> component types at the same position. Initially, the first child of <code>&lt;div></code> contained a <code>Counter</code>. But when swapped in a <code>p</code>, React removed the <code>Counter</code> from the UI tree and destroyed its state</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/preserving-and-resetting-state-in-react_diff-comp-same-position.webp`,
@@ -1091,7 +1061,7 @@ return (
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1111,31 +1081,17 @@ return (
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>⇒ <strong>Different component + Same position → Reset the state of its entire subtree</strong></p><h2 id=resetting-state-at-the-same-position>Resetting state at the same position <a href=#resetting-state-at-the-same-position></a></h2><p>By default, React preserves state of a component while it stays at the same position. But we have ability to reset the state.</p><p>Back to the example at the beginning of the article</p><pre><code class=language-js>function Counter() {
-  const [score, setScore] = useState(0)
-
-  return &lt;div&gt;...&lt;/div&gt;
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>=> <strong>Different component + Same position -> Reset the state of its entire subtree</strong></p><h2 id=resetting-state-at-the-same-position>Resetting state at the same position <a href=#resetting-state-at-the-same-position></a></h2><p>By default, React preserves state of a component while it stays at the same position. But we have ability to reset the state.</p><p>Back to the example at the beginning of the article</p><pre><code class=language-js>// Approach 1
+{
+  isPlayerA ? &lt;Counter name=&quot;A&quot; /&gt; : &lt;Counter name=&quot;B&quot; /&gt;
 }
-
-return (
-  &lt;div&gt;
-    &lt;Counter /&gt;
-    &lt;Counter /&gt;
-  &lt;/div&gt;
-)
-</code>3</pre><ul><li>Q: If we use approach 1, what happens?</li><li>A: Because the counter component in two case is the same component + same position ⇒ The state still the same. That makes a bug, although the name props changed, but the <code>score</code> still stay. It&rsquo;s normal in React, but it isn&rsquo;t what we want, right? We have 2 options for it</li></ul><h3 id=option-1-rendering-component-with-different-positions>Option 1: Rendering component with different positions <a href=#option-1-rendering-component-with-different-positions></a></h3><ul><li>It&rsquo;s exactly what Approach 2 does, rendering component with different positions</li></ul><pre><code class=language-js>function Counter() {
-  const [score, setScore] = useState(0)
-
-  return &lt;div&gt;...&lt;/div&gt;
+</code></pre><ul><li>Q: If we use approach 1, what happens?</li><li>A: Because the counter component in two case is the same component + same position => The state still the same. That makes a bug, although the name props changed, but the <code>score</code> still stay. It&rsquo;s normal in React, but it isn&rsquo;t what we want, right? We have 2 options for it</li></ul><h3 id=option-1-rendering-component-with-different-positions>Option 1: Rendering component with different positions <a href=#option-1-rendering-component-with-different-positions></a></h3><ul><li>It&rsquo;s exactly what Approach 2 does, rendering component with different positions</li></ul><pre><code class=language-js>{
+  isPlayerA &amp;&amp; &lt;Counter name=&quot;A&quot; /&gt;
 }
-
-return (
-  &lt;div&gt;
-    &lt;Counter /&gt;
-    &lt;Counter /&gt;
-  &lt;/div&gt;
-)
-</code>5</pre><p><img x-data="{
+{
+  !isPlayerA &amp;&amp; &lt;Counter name=&quot;B&quot; /&gt;
+}
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/preserving-and-resetting-state-in-react_opt1-diff-position.webp`,
@@ -1164,7 +1120,7 @@ return (
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1184,19 +1140,10 @@ return (
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=option-2-resetting-state-with-a-key-recommendation>Option 2: Resetting state with a key (recommendation) <a href=#option-2-resetting-state-with-a-key-recommendation></a></h3><pre><code class=language-js>function Counter() {
-  const [score, setScore] = useState(0)
-
-  return &lt;div&gt;...&lt;/div&gt;
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=option-2-resetting-state-with-a-key-recommendation>Option 2: Resetting state with a key (recommendation) <a href=#option-2-resetting-state-with-a-key-recommendation></a></h3><pre><code class=language-js>{
+  isPlayerA ? &lt;Counter name=&quot;A&quot; key=&quot;A&quot; /&gt; : &lt;Counter name=&quot;B&quot; key=&quot;B&quot; /&gt;
 }
-
-return (
-  &lt;div&gt;
-    &lt;Counter /&gt;
-    &lt;Counter /&gt;
-  &lt;/div&gt;
-)
-</code>6</pre><ul><li>Keys aren’t just for lists! You can use keys to make React distinguish between any components. By default, React uses order within the parent (first Counter component, second Counter component,&mldr;). By using key, React will know A&rsquo;s counter, B&rsquo;s counter ⇒ React won&rsquo;t share state between them.</li></ul><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://beta.reactjs.org/learn/preserving-and-resetting-state target=_blank>https://beta.reactjs.org/learn/preserving-and-resetting-state</a></li></ul></div><script defer type=module>
+</code></pre><ul><li>Keys aren’t just for lists! You can use keys to make React distinguish between any components. By default, React uses order within the parent (first Counter component, second Counter component,&mldr;). By using key, React will know A&rsquo;s counter, B&rsquo;s counter => React won&rsquo;t share state between them.</li></ul><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://beta.reactjs.org/learn/preserving-and-resetting-state target=_blank>https://beta.reactjs.org/learn/preserving-and-resetting-state</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

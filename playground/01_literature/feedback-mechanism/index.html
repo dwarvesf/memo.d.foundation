@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1045,7 +1045,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1094,7 +1094,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1114,7 +1114,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>chat_feedback table:</strong></p><ul><li><code>id</code> A unique identifier for each feedback entry.</li><li><code>thread_id</code> Links the feedback to a specific conversation thread.</li><li><code>chat_id</code> Identifies the particular message within the thread that the feedback refers to.</li><li><code>type_id</code> Categorizes the type of feedback provided. We can define enum type_id for storing specify facts.</li><li><code>notes</code> Allows users to add specific comments or details about their feedback.</li></ul><p><strong>Relationships:</strong></p><ul><li><code>chat_feedback.thread_id</code> references <code>threads.id</code> This links feedback to the appropriate conversation thread, ensuring we can trace feedback back to the entire conversation context. When we need to load history chat, we can count total thumbs-up and thumbs-down user reactions there are.</li><li><code>chat_feedback.chat_id</code> references <a href=http://chats.id target=_blank><code>chats.id</code></a> This connects the feedback to the specific message. We can render history chat again, improving the user experience of specific chats.</li><li><code>chat_feedback.type_id</code> references <code>thread_id</code>0 This categorizes the feedback, making it easier to analyze patterns and specific issues.</li></ul><p><strong>feedback_type table:</strong></p><ul><li><code>id</code> A unique identifier for each type of feedback.</li><li><code>thread_id</code>2 A descriptive name for the feedback type.</li></ul><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>chat_feedback table:</strong></p><ul><li><code>id</code> A unique identifier for each feedback entry.</li><li><code>thread_id</code> Links the feedback to a specific conversation thread.</li><li><code>chat_id</code> Identifies the particular message within the thread that the feedback refers to.</li><li><code>type_id</code> Categorizes the type of feedback provided. We can define enum type_id for storing specify facts.</li><li><code>notes</code> Allows users to add specific comments or details about their feedback.</li></ul><p><strong>Relationships:</strong></p><ul><li><code>chat_feedback.thread_id</code> references <code>threads.id</code> This links feedback to the appropriate conversation thread, ensuring we can trace feedback back to the entire conversation context. When we need to load history chat, we can count total thumbs-up and thumbs-down user reactions there are.</li><li><code>chat_feedback.chat_id</code> references <a href=http://chats.id target=_blank><code>chats.id</code></a> This connects the feedback to the specific message. We can render history chat again, improving the user experience of specific chats.</li><li><code>chat_feedback.type_id</code> references <code>feedback_type.id</code> This categorizes the feedback, making it easier to analyze patterns and specific issues.</li></ul><p><strong>feedback_type table:</strong></p><ul><li><code>id</code> A unique identifier for each type of feedback.</li><li><code>name</code> A descriptive name for the feedback type.</li></ul><p><img x-data="{
     title: ``,
     alt: `History chat UI`,
     src: `assets/history_chat_feedback.webp`,
@@ -1143,7 +1143,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1192,7 +1192,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1212,7 +1212,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>We need to track user feedback by <code>chat_id</code> and <code>thread_id</code>, as well as <code>thread_id</code>5 and <code>notes</code>. We will provide a selection to describe how users interact with the LLM response, which will be stored in <code>type_id</code>. We define the types of feedback in the feedback_type table, and we can define common facts for the user to easily choose.</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>We need to track user feedback by <code>chat_id</code> and <code>thread_id</code>, as well as <code>feedback_type</code> and <code>notes</code>. We will provide a selection to describe how users interact with the LLM response, which will be stored in <code>type_id</code>. We define the types of feedback in the feedback_type table, and we can define common facts for the user to easily choose.</p><p><img x-data="{
     title: ``,
     alt: `Feedback form UI`,
     src: `assets/ui_feedback_form.webp`,
@@ -1241,7 +1241,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

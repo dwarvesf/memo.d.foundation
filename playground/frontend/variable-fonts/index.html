@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1045,7 +1045,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1094,7 +1094,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1143,7 +1143,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1172,15 +1172,7 @@ Folder:
   ...
   font-variation-settings: 'wght' 500, 'GRADE' 0.5;
 }
-</code></pre><p>You will notice that in the example above, 1 tag is lowercase, and the other is uppercase. It is to differentiate between <strong>registered axes</strong> & <strong>custom axes</strong>. Registered axes will always be lowercase, whereas custom axes will always be uppercase.</p><p>By default, there are 5 <a href=https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg#registered-axis-tags target=_blank>registered axes</a>, which control known, predictable features of the font:</p><ul><li>Weight - <code>wght</code></li><li>Width - <code>wdth</code></li><li>Optical size - <code>opsz</code></li><li>Slant - <code class=language-css>@font-face {
-font-family: 'Roboto Flex';
-src: url('RobotoFlex-VF.woff2') format('woff2') tech('variations'), url('RobotoFlex-VF.woff2') format('woff2-variations');
-}
-</code>0</li><li>Italics - <code class=language-css>@font-face {
-font-family: 'Roboto Flex';
-src: url('RobotoFlex-VF.woff2') format('woff2') tech('variations'), url('RobotoFlex-VF.woff2') format('woff2-variations');
-}
-</code>1</li></ul><p>Beyond that, we depends on how the fonts were built & what custom axes they are using. Check out <a href=https://v-fonts.com/fonts/roboto-flex target=_blank>this site</a> for another good example on all the axes a font can have.</p><p><img x-data="{
+</code></pre><p>You will notice that in the example above, 1 tag is lowercase, and the other is uppercase. It is to differentiate between <strong>registered axes</strong> & <strong>custom axes</strong>. Registered axes will always be lowercase, whereas custom axes will always be uppercase.</p><p>By default, there are 5 <a href=https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg#registered-axis-tags target=_blank>registered axes</a>, which control known, predictable features of the font:</p><ul><li>Weight - <code>wght</code></li><li>Width - <code>wdth</code></li><li>Optical size - <code>opsz</code></li><li>Slant - <code>slnt</code></li><li>Italics - <code>ital</code></li></ul><p>Beyond that, we depends on how the fonts were built & what custom axes they are using. Check out <a href=https://v-fonts.com/fonts/roboto-flex target=_blank>this site</a> for another good example on all the axes a font can have.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/variable-fonts_variable_fonts_06.webp`,
@@ -1209,7 +1201,7 @@ src: url('RobotoFlex-VF.woff2') format('woff2') tech('variations'), url('RobotoF
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

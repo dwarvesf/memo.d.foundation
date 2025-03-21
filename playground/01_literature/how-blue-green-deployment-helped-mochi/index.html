@@ -954,17 +954,90 @@ spec:
       autoPromotionEnabled: false
       activeService: mochiapp
       previewService: mochiapp-preview
-</code></pre><p>The <code>bluegreen-rollout.yaml</code> file is structured similarly to a typical deployment file, but with the added <code>strategy</code> section. Here, we specified the <code>activeService</code> to update with the new template hash during promotion (required), and the <code>previewService</code> to update with the new template hash before (optional).</p><p>Next, we created the <code>ingress.yaml</code> and <code>service.yaml</code> files, which contained the respective configurations for ingress and service resources:</p><pre><code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>0</pre><pre><code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>1</pre><h2 id=applying-resources-to-the-cluster-and-testing>Applying Resources to the Cluster and Testing <a href=#applying-resources-to-the-cluster-and-testing></a></h2><p>We applied the resource files to the Kubernetes cluster using <code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>2 commands. The application was deployed to the active environment and could be viewed on the production domain - <code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>3.</p><pre><code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>4</pre><p><img x-data="{
+</code></pre><p>The <code>bluegreen-rollout.yaml</code> file is structured similarly to a typical deployment file, but with the added <code>strategy</code> section. Here, we specified the <code>activeService</code> to update with the new template hash during promotion (required), and the <code>previewService</code> to update with the new template hash before (optional).</p><p>Next, we created the <code>ingress.yaml</code> and <code>service.yaml</code> files, which contained the respective configurations for ingress and service resources:</p><pre><code class=language-bash># ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mochiapp
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - mochiapp.bluegreen.domain
+      secretName: mochiapp.bluegreen.domain-tls
+  rules:
+    - host: mochiapp.bluegreen.xyz
+      http:
+        paths:
+          - pathType: Prefix
+            path: &quot;/&quot;
+            backend:
+              service:
+                name: mochiapp
+                port:
+                  name: http
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mochiapp-preview
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - preview.mochiapp.xyz
+      secretName: preview-mochiapp.bluegreen.domain-tls
+  rules:
+    - host: preview-mochiapp.bluegreen.domain
+      http:
+        paths:
+          - pathType: Prefix
+            path: &quot;/&quot;
+            backend:
+              service:
+                name: mochiapp-preview
+                port:
+                  name: http
+</code></pre><pre><code class=language-bash># service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mochiapp
+  labels:
+    app: mochiapp
+spec:
+  selector:
+    app: mochiapp
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mochiapp-preview
+  labels:
+    app: mochiapp
+spec:
+  selector:
+    app: mochiapp
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  type: ClusterIP
+</code></pre><h2 id=applying-resources-to-the-cluster-and-testing>Applying Resources to the Cluster and Testing <a href=#applying-resources-to-the-cluster-and-testing></a></h2><p>We applied the resource files to the Kubernetes cluster using <code>**kubectl apply**</code> commands. The application was deployed to the active environment and could be viewed on the production domain - <code>mochiapp.bluegreen.domain</code>.</p><pre><code class=language-bash>kubectl apply -f app/bluegreen-rollout.yaml
+kubectl apply -f app/service.yaml
+kubectl apply -f app/ingress.yaml
+</code></pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-blue-green-deployment-helped-mochi_f711c252bf191800d3184c8839221899_md5.webp`,
@@ -993,7 +1066,7 @@ kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/rele
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1013,17 +1086,13 @@ kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/rele
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>When releasing a new version, we changed the image of the application and applied the changes to the cluster. Argo rollouts created a new ReplicaSet with the new image and initiated the rollout of the updated version in the preview environment, accessible at the preview domain - <code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>5.</p><pre><code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>6</pre><pre><code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>7</pre><p>Once the updated application version was thoroughly tested, we promoted it to the active environment using a specific command. The updated application was then accessible on the active environment in the blue domain.</p><pre><code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>8</pre><p>With the deployment complete, the updated application was accessible on the active environment in the blue domain - <code class=language-bash>kubectl create namespace argo-rollouts
-kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-</code>3.</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>When releasing a new version, we changed the image of the application and applied the changes to the cluster. Argo rollouts created a new ReplicaSet with the new image and initiated the rollout of the updated version in the preview environment, accessible at the preview domain - <code>preview-mochiapp.bluegreen.domain</code>.</p><pre><code class=language-bash># bluegreen-rollout.yaml
+containers:
+	- name: myapp
+	  image: argoproj/rollouts-demo:green
+</code></pre><pre><code class=language-bash>kubectl apply -f app/bluegreen-rollout.yaml
+</code></pre><p>Once the updated application version was thoroughly tested, we promoted it to the active environment using a specific command. The updated application was then accessible on the active environment in the blue domain.</p><pre><code class=language-bash>kubectl argo rollouts promote mochi
+</code></pre><p>With the deployment complete, the updated application was accessible on the active environment in the blue domain - <code>mochiapp.bluegreen.domain</code>.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-blue-green-deployment-helped-mochi_dbebe30b5e9fa94fd865c1c66b41c5f6_md5.webp`,
@@ -1052,7 +1121,7 @@ kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/rele
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1101,7 +1170,7 @@ kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/rele
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1150,7 +1219,7 @@ kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/rele
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

@@ -966,7 +966,61 @@ func GetConfig() (Config, error) {
     })
     return config, err
 }
-</code></pre><ul><li>From Go 1.21, we get: <code>OnceFunc</code>, <code>OnceValue</code> and <code>OnceValues</code></li></ul><pre><code>GetConfig()</code>0</pre><ul><li>Example use:</li></ul><pre><code>GetConfig()</code>1</pre><h3 id=how-it-works>How it works? <a href=#how-it-works></a></h3><ul><li>The implementation of Once</li></ul><pre><code>GetConfig()</code>2</pre><ul><li>Simply use mutex to lock and allows only 1 goroutine to enter; then if <code>GetConfig()</code>3 is still 0 (function f hasn&rsquo;t run yet) set done to 1 and runs f()</li></ul><p>⇒ Original version of sync.Once, written by Rob Pike in 2010</p><pre><code>GetConfig()</code>4</pre><ul><li>Not performant since it always locks first (goroutines wait on each other) whenever Do(f) is called.</li></ul><p>⇒ check the flag done first before the lock</p><pre><code>GetConfig()</code>5</pre><ul><li>This introduces the race condition</li></ul><p><img x-data="{
+</code></pre><ul><li>From Go 1.21, we get: <code>OnceFunc</code>, <code>OnceValue</code> and <code>OnceValues</code></li></ul><pre><code class=language-go>// If f panics, the returned function will panic with the same value on every call. (cached)
+func OnceFunc(f func()) func() { 
+  ...
+}
+
+// returns the value returned by f
+func OnceValue[T any](f func() T) func() T {
+  ...
+}
+
+// returns the values returned by f
+func OnceValues[T1, T2 any](f func() (T1, T2)) func() (T1, T2) {
+  ...
+}
+</code></pre><ul><li>Example use:</li></ul><pre><code class=language-go>var config Config
+
+var getConfigOnce = sync.OnceValues(fetchConfig)
+
+func main() {
+  var err error
+
+  config, err = getConfigOnce()
+  if err != nil {
+    log.Fatalf(&quot;Failed to fetch config: %v&quot;, err)
+  }
+  ...
+}
+</code></pre><h3 id=how-it-works>How it works? <a href=#how-it-works></a></h3><ul><li>The implementation of Once</li></ul><pre><code class=language-go>type Once struct {
+	done atomic.Uint32
+	m    Mutex
+}
+</code></pre><ul><li>Simply use mutex to lock and allows only 1 goroutine to enter; then if <code>done</code> is still 0 (function f hasn&rsquo;t run yet) set done to 1 and runs f()</li></ul><p>=> Original version of sync.Once, written by Rob Pike in 2010</p><pre><code class=language-go>func (o *Once) Do(f func()) {
+	o.m.Lock()
+	defer o.m.Unlock()
+
+	if o.done.Load() == 0 {
+		o.done.Store(1)
+		f()
+	}
+}
+</code></pre><ul><li>Not performant since it always locks first (goroutines wait on each other) whenever Do(f) is called.</li></ul><p>=> check the flag done first before the lock</p><pre><code class=language-go>func (o *Once) Do(f func()) {
+  if atomic.LoadUint32(&amp;o.done) == 1 {
+    return
+  }
+
+  // slow path
+  o.m.Lock()
+  defer o.m.Unlock()
+
+  if o.done.Load() == 0 {
+    o.done.Store(1)
+    f()
+  }
+}
+</code></pre><ul><li>This introduces the race condition</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/go-sync-once-done-mistake.webp`,
@@ -995,7 +1049,7 @@ func GetConfig() (Config, error) {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1015,7 +1069,36 @@ func GetConfig() (Config, error) {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>⇒ add defer to when setting flag</p><pre><code>GetConfig()</code>6</pre><ul><li>Since Go compiler supports inlining (taking the function&rsquo;s code and paste it directly to where the function is called) optimization</li></ul><pre><code>GetConfig()</code>7</pre><hr><p><a href=https://victoriametrics.com/blog/go-sync-once/ target=_blank>https://victoriametrics.com/blog/go-sync-once/</a></p><p><a href=https://go.dev/ref/mem target=_blank>https://go.dev/ref/mem</a></p></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>=> add defer to when setting flag</p><pre><code class=language-go>func (o *Once) Do(f func()) {
+  if o.done.Load() == 1 {
+    return
+  }
+
+  // slow path
+  o.m.Lock()
+  defer o.m.Unlock()
+
+  if o.done.Load() == 0 {
+    defer o.done.Store(1)
+    f()
+  }
+}
+</code></pre><ul><li>Since Go compiler supports inlining (taking the function&rsquo;s code and paste it directly to where the function is called) optimization</li></ul><pre><code class=language-go>func (o *Once) Do(f func()) {
+	if o.done.Load() == 0 {
+		o.doSlow(f)
+	}
+}
+
+func (o *Once) doSlow(f func()) {
+	o.m.Lock()
+	defer o.m.Unlock()
+
+	if o.done.Load() == 0 {
+		defer o.done.Store(1)
+		f()
+	}
+}
+</code></pre><hr><p><a href=https://victoriametrics.com/blog/go-sync-once/ target=_blank>https://victoriametrics.com/blog/go-sync-once/</a></p><p><a href=https://go.dev/ref/mem target=_blank>https://go.dev/ref/mem</a></p></div><script defer type=module>
   async function loadMentions() {
     try {
       

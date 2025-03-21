@@ -946,7 +946,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1008,7 +1008,7 @@ $ brew upgrade
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1028,7 +1028,7 @@ $ brew upgrade
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Basically, when you use homebrew, it will create a separate folder on your machine. Everything usually will be installed in <code>/usr/local/Cellar</code> and all formulas was stored at <code>/usr/local/Library/Formula.</code></p><p>So in short, if you want to contribute a new one, you need to create a new formula in your local and submit a pull request to <code>yum</code>0</p><h3 id=fork-from-homebrew>Fork from Homebrew <a href=#fork-from-homebrew></a></h3><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Basically, when you use homebrew, it will create a separate folder on your machine. Everything usually will be installed in <code>/usr/local/Cellar</code> and all formulas was stored at <code>/usr/local/Library/Formula.</code></p><p>So in short, if you want to contribute a new one, you need to create a new formula in your local and submit a pull request to <code>https://github.com/Homebrew/homebrew.</code></p><h3 id=fork-from-homebrew>Fork from Homebrew <a href=#fork-from-homebrew></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_023366a1f0837a41a52f37788092a6fa_md5.webp`,
@@ -1057,7 +1057,7 @@ $ brew upgrade
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1077,7 +1077,47 @@ $ brew upgrade
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For us, we will have a repo called <code>yum</code>1 which we can clone and start from there.</p><h3 id=create-new-formula>Create new formula <a href=#create-new-formula></a></h3><p>Make sure you have installed <code>brew</code> on your machine (you have to!) and your new formula must meets all their Acceptable Formulae requirements.</p><p>Then we can start from create a new branch (like git workflow) or not. For us we skip it and use the master branch (plot twist: we forgot to do this step)</p><p>We move to the step of create new formula by run the command</p><pre><code>yum</code>3</pre><p>Example for us, we use the archive url of our github repo <a href=https://github.com/dwarvesf/glod-cli/archive/1.0.3.2.tar.gz target=_blank>https://github.com/dwarvesf/glod-cli/archive/1.0.3.2.tar.gz</a>. You can get it by combining</p><pre><code>yum</code>4</pre><p>This command will help to create a local formula in <code>yum</code>5 and open with your default $EDITOR. You have to write a small Ruby script to <code>yum</code>6 and <code>yum</code>7 the formula. You can refer to other formulas to make it easier. Check out the main repo <code>yum</code>8 or the forked one. If you have Go formula like us, you can easily search for more than 100 existed Go formulas. It’s a great source for references.</p><p>Our formula looks like this:</p><pre><code>yum</code>9</pre><h3 id=install-debug-local-formula>Install/ Debug local formula <a href=#install-debug-local-formula></a></h3><pre><code>brew</code>0</pre><p>This command will help to install your formula at /usr/local/Library/Formula. Happy debugging until you can install it smoothly.</p><p>Sometimes you will need to uninstall the formula, you can use this command</p><pre><code>brew</code>1</pre><h3 id=test-the-formula>Test the formula <a href=#test-the-formula></a></h3><p>One note for the test block, there are still a lot of formula that try to cheat by printing out the help or version. As a good contributor, you should write good tests for your formulas or your pull request will be rejected (like us)</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>For us, we will have a repo called <code>dwarvesf/homebrew</code> which we can clone and start from there.</p><h3 id=create-new-formula>Create new formula <a href=#create-new-formula></a></h3><p>Make sure you have installed <code>brew</code> on your machine (you have to!) and your new formula must meets all their Acceptable Formulae requirements.</p><p>Then we can start from create a new branch (like git workflow) or not. For us we skip it and use the master branch (plot twist: we forgot to do this step)</p><p>We move to the step of create new formula by run the command</p><pre><code class=language-javascript>$ brew create &lt;URL.tar.gz&gt;
+</code></pre><p>Example for us, we use the archive url of our github repo <a href=https://github.com/dwarvesf/glod-cli/archive/1.0.3.2.tar.gz target=_blank>https://github.com/dwarvesf/glod-cli/archive/1.0.3.2.tar.gz</a>. You can get it by combining</p><pre><code class=language-javascript>https://github.com/&lt;YOUR REPO&gt;/archive/&lt;COMMIT SHA | TAG&gt;.tar.g
+</code></pre><p>This command will help to create a local formula in <code>/usr/local/Library/Formula</code> and open with your default $EDITOR. You have to write a small Ruby script to <code>install</code> and <code>test</code> the formula. You can refer to other formulas to make it easier. Check out the main repo <code>https://github.com/Homebrew/homebrew/tree/master/Library/Formula</code> or the forked one. If you have Go formula like us, you can easily search for more than 100 existed Go formulas. It’s a great source for references.</p><p>Our formula looks like this:</p><pre><code class=language-javascript>require &quot;language/go&quot;
+
+class GlodCli &lt; Formula
+  desc &quot;Glod command-line interface tools&quot;
+  homepage &quot;https://github.com/dwarvesf/glod-cli&quot;
+  url &quot;https://github.com/dwarvesf/glod-cli/archive/1.0.3.2.tar.gz&quot;
+  sha256 &quot;1826e8b5398f10a12d5f315a9f5a670f05ac3e0f6ead7c4edddf621c2260ae6c&quot;
+
+  depends_on &quot;go&quot; =&gt; :build
+  depends_on &quot;godep&quot; =&gt; :build
+
+  go_resource &quot;github.com/kr/fs&quot; do
+    url &quot;https://github.com/kr/fs.git&quot;, :revision =&gt; &quot;2788f0dbd16903de03cb8186e5c7d97b69ad387b&quot;
+  end
+
+  def install
+    ENV[&quot;GOPATH&quot;] = buildpath
+    ENV[&quot;GO15VENDOREXPERIMENT&quot;] = &quot;0&quot;
+    mkdir_p buildpath/&quot;src/github.com/dwarvesf/&quot;
+    ln_s buildpath, buildpath/&quot;src/github.com/dwarvesf/glod-cli&quot;
+    Language::Go.stage_deps resources, buildpath/&quot;src&quot;
+
+    system &quot;godep&quot;, &quot;go&quot;, &quot;build&quot;, &quot;-o&quot;, &quot;glod-cli&quot;, &quot;.&quot;
+    bin.install &quot;glod-cli&quot;
+  end
+
+  test do
+    output = shell_output(bin/&quot;glod-cli --version&quot;)
+    assert_match &quot;glod-cli version #{version}\n&quot;, output
+
+    system bin/&quot;glod-cli&quot;, &quot;http://mp3.zing.vn/bai-hat/Hello-Vietnam-Pham-Quynh-Anh/ZWZ9C8EB.html&quot;
+    sleep 2
+    assert File.exist?(&quot;Hello Vietnam.mp3&quot;)
+  end
+end
+</code></pre><h3 id=install-debug-local-formula>Install/ Debug local formula <a href=#install-debug-local-formula></a></h3><pre><code class=language-javascript>$ brew install --verbose --debug $FORMULA
+</code></pre><p>This command will help to install your formula at /usr/local/Library/Formula. Happy debugging until you can install it smoothly.</p><p>Sometimes you will need to uninstall the formula, you can use this command</p><pre><code class=language-javascript>$ brew unlink $FORMULA
+$ brew cleanup
+</code></pre><h3 id=test-the-formula>Test the formula <a href=#test-the-formula></a></h3><p>One note for the test block, there are still a lot of formula that try to cheat by printing out the help or version. As a good contributor, you should write good tests for your formulas or your pull request will be rejected (like us)</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_8af79f8ad176a520effb9282ffd621de_md5.webp`,
@@ -1106,7 +1146,7 @@ $ brew upgrade
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1126,7 +1166,10 @@ $ brew upgrade
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><pre><code>brew</code>2</pre><p>Those tests should be passed to make sure your formula is qualified. The second command is provided to check if your formula have</p><ul><li>More than 50 stars</li><li>More than 20 fork</li><li>More than 20 watchers</li><li>And initialized more than 30 days</li></ul><h3 id=submit-pull-request>Submit pull request <a href=#submit-pull-request></a></h3><p>Bravo! It’s really great if you can get here, your formula is qualified. Let’s copy the local formula to your git repo. Example</p><pre><code>brew</code>3</pre><p>Commit and push your changes to <strong>YOUR</strong> Github. Then we open the Github Repo (still yours), click on button <code>brew</code>4 and we get</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><pre><code class=language-javascript>$ brew test $FORMULA
+$ brew audit --strict --online $FORMULA
+</code></pre><p>Those tests should be passed to make sure your formula is qualified. The second command is provided to check if your formula have</p><ul><li>More than 50 stars</li><li>More than 20 fork</li><li>More than 20 watchers</li><li>And initialized more than 30 days</li></ul><h3 id=submit-pull-request>Submit pull request <a href=#submit-pull-request></a></h3><p>Bravo! It’s really great if you can get here, your formula is qualified. Let’s copy the local formula to your git repo. Example</p><pre><code class=language-javascript>$ cp -f /usr/local/Library/Formula/glod-cli.rb ~/Workspace/dwarvesf/homebrew/Library/Formula
+</code></pre><p>Commit and push your changes to <strong>YOUR</strong> Github. Then we open the Github Repo (still yours), click on button <code>New pull request</code> and we get</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-we-contribute-to-homebrew_6b2b8ce5d8671f85ddf41e15f637dd04_md5.webp`,
@@ -1155,7 +1198,7 @@ $ brew upgrade
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1204,7 +1247,7 @@ $ brew upgrade
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1253,7 +1296,7 @@ $ brew upgrade
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

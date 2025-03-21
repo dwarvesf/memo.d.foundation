@@ -931,22 +931,12 @@ type Stringer interface {
 func ToString[T Stringer](val T) string {
     return val.String()
 }
-</code></pre><p>In this example, only types that implement the <code>Stringer</code> interface can be used as <code>T</code>, ensuring type safety at compile time.</p><h3 id=3compile-time-checking>3. Compile-Time Checking <a href=#3compile-time-checking></a></h3><p>Go’s compiler checks the types at compile time. If the provided type doesn’t satisfy the constraint, the program won’t compile, ensuring that incorrect types are not passed to a function or data structure. This is crucial for maintaining Go’s philosophy of simplicity and robustness in type safety.</p><h3 id=4underlying-type-consistency>4. Underlying Type Consistency <a href=#4underlying-type-consistency></a></h3><p>Go also leverages underlying types in some constraints. For example, the <code>comparable</code> constraint ensures that the type parameter can be compared using <code class=language-go>func Print[T any](items []T) {
-for _, item := range items {
-fmt.Println(item)
+</code></pre><p>In this example, only types that implement the <code>Stringer</code> interface can be used as <code>T</code>, ensuring type safety at compile time.</p><h3 id=3compile-time-checking>3. Compile-Time Checking <a href=#3compile-time-checking></a></h3><p>Go’s compiler checks the types at compile time. If the provided type doesn’t satisfy the constraint, the program won’t compile, ensuring that incorrect types are not passed to a function or data structure. This is crucial for maintaining Go’s philosophy of simplicity and robustness in type safety.</p><h3 id=4underlying-type-consistency>4. Underlying Type Consistency <a href=#4underlying-type-consistency></a></h3><p>Go also leverages underlying types in some constraints. For example, the <code>comparable</code> constraint ensures that the type parameter can be compared using <code>==</code> or <code>!=</code>. For this to work, the compiler ensures that any type passed to a function constrained by <code>comparable</code> supports these operations, preventing runtime errors.</p><h3 id=5explicit-and-simple-type-inference>5. Explicit and Simple Type Inference <a href=#5explicit-and-simple-type-inference></a></h3><p>Go simplifies type safety by inferring types when possible. If the compiler can deduce the type parameter from the context, you don’t need to explicitly specify it, but the compiler still checks that the type is valid according to the constraints.</p><p>Example with inferred type:</p><pre><code class=language-go>func Add[T int | float64](a, b T) T {
+    return a + b
 }
-}
-</code>1 or <code class=language-go>func Print[T any](items []T) {
-for _, item := range items {
-fmt.Println(item)
-}
-}
-</code>2. For this to work, the compiler ensures that any type passed to a function constrained by <code>comparable</code> supports these operations, preventing runtime errors.</p><h3 id=5explicit-and-simple-type-inference>5. Explicit and Simple Type Inference <a href=#5explicit-and-simple-type-inference></a></h3><p>Go simplifies type safety by inferring types when possible. If the compiler can deduce the type parameter from the context, you don’t need to explicitly specify it, but the compiler still checks that the type is valid according to the constraints.</p><p>Example with inferred type:</p><pre><code class=language-go>func Print[T any](items []T) {
-    for _, item := range items {
-        fmt.Println(item)
-    }
-}
-</code>4</pre><h3 id=commutative-diagram>Commutative Diagram <a href=#commutative-diagram></a></h3><span>$$
+
+result := Add(3.0, 4.5) // Go infers T as float64
+</code></pre><h3 id=commutative-diagram>Commutative Diagram <a href=#commutative-diagram></a></h3><span>$$
 \begin{CD}
 \text{GenericCode} @>\text{Parse}>> \text{AST} @>\text{TypeCheck}>> \text{TypedAST} \\
 @V\text{Instantiate}VV @V\text{Infer}VV @VV\text{Compile}V \\

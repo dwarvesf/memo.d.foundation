@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1020,7 +1020,7 @@ Folder:
 Each asset has one and only one record in this table, it contains general permission details for the asset.
 <code>Public Role</code> field: Showing the role of guest user when accessing the file</p><ul><li>EDITOR: Can view and edit</li><li>VIEWER: Can only view</li><li>NO_ACCESS: Cannot access the asset</li></ul><p><code>Child Role</code> field: Show the permission workspace members and only have value</p><ul><li>FULL_ACCESS: Can perform all operations</li><li>EDITOR: Can view and edit</li><li>VIEWER: Can only view</li><li>NO_ACCESS: Cannot access the asset</li><li>INHERIT: Inherit from parent folder</li></ul><p><code>Is Inherit</code> field: <code>true</code> if the permission for this asset is inherit from the parent</p><p><strong>SubPermission</strong>
 An asset can have many records in this table, showing role for a specific email
-Role field: Show the permission for an invitee or project members in this record</p><ul><li>FULL_ACCESS: Can perform all operations</li><li>EDITOR: Can view and edit</li><li>VIEWER: Can only view</li><li>NO_ACCESS: Cannot access the asset</li><li>INHERIT: Inherit from parent folder</li></ul><h3 id=logic>Logic <a href=#logic></a></h3><p><strong>Permission Hierarchy</strong></p><p>Permissions are checked in this order:</p><ul><li>Direct user permission on the asset in SubPermission table</li><li>Main permission&rsquo;s childRole (default for workspace members)</li><li>Inherited permission from parent directories</li></ul><p><strong>Permission record rules:</strong></p><ul><li>When init an asset, we will create a record in MainPermission, with <code>isInherit = true</code> and <code>childRole = 'INHERIT'</code>, this means the asset inherit permission from parent directories.</li><li>If there is any update in the permission, the <code>isInherit = false</code> and <code>chilRole</code> value will be set as specific permission but not <code>INHERIT</code>.</li></ul><h2 id=sharing-file>Sharing file <a href=#sharing-file></a></h2><h3 id=functional-requirement>Functional requirement: <a href=#functional-requirement></a></h3><ul><li><strong>Setting Public Access</strong><ul><li>Asset owners can set the <code>publicRole</code> in the permission table.</li><li>The role can be either <code>Child Role</code>0 <code>Child Role</code>1 or <code>Child Role</code>2.</li></ul></li><li><strong>Accessing Public Assets</strong><ul><li>When a guest user attempts to access a public asset, the system checks the <code>publicRole</code>.</li><li>Based on the <code>publicRole</code>, the user is granted view or edit permissions.</li><li>If the user is not logged in, they are restricted to view-only access.</li></ul></li></ul><p><img x-data="{
+Role field: Show the permission for an invitee or project members in this record</p><ul><li>FULL_ACCESS: Can perform all operations</li><li>EDITOR: Can view and edit</li><li>VIEWER: Can only view</li><li>NO_ACCESS: Cannot access the asset</li><li>INHERIT: Inherit from parent folder</li></ul><h3 id=logic>Logic <a href=#logic></a></h3><p><strong>Permission Hierarchy</strong></p><p>Permissions are checked in this order:</p><ul><li>Direct user permission on the asset in SubPermission table</li><li>Main permission&rsquo;s childRole (default for workspace members)</li><li>Inherited permission from parent directories</li></ul><p><strong>Permission record rules:</strong></p><ul><li>When init an asset, we will create a record in MainPermission, with <code>isInherit = true</code> and <code>childRole = 'INHERIT'</code>, this means the asset inherit permission from parent directories.</li><li>If there is any update in the permission, the <code>isInherit = false</code> and <code>chilRole</code> value will be set as specific permission but not <code>INHERIT</code>.</li></ul><h2 id=sharing-file>Sharing file <a href=#sharing-file></a></h2><h3 id=functional-requirement>Functional requirement: <a href=#functional-requirement></a></h3><ul><li><strong>Setting Public Access</strong><ul><li>Asset owners can set the <code>publicRole</code> in the permission table.</li><li>The role can be either <code>VIEWER,</code> <code>EDITOR</code> or <code>NO_ASSET</code>.</li></ul></li><li><strong>Accessing Public Assets</strong><ul><li>When a guest user attempts to access a public asset, the system checks the <code>publicRole</code>.</li><li>Based on the <code>publicRole</code>, the user is granted view or edit permissions.</li><li>If the user is not logged in, they are restricted to view-only access.</li></ul></li></ul><p><img x-data="{
     title: ``,
     alt: `Sharing file Diagram`,
     src: `assets/design-file-sharing-system_5.webp`,
@@ -1049,7 +1049,7 @@ Role field: Show the permission for an invitee or project members in this record
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1069,7 +1069,7 @@ Role field: Show the permission for an invitee or project members in this record
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=key-components>Key Components <a href=#key-components></a></h3><p><strong><code>publicRole</code> in Permission Table</strong></p><ul><li><strong>publicRole:</strong> Defines the level of access for public users.<ul><li><code>Child Role</code>6: Allows public users to view the asset.</li><li><code>Child Role</code>1: Allows public users to edit the asset.</li><li><code>Child Role</code>2: value means the files is not allow public asset</li></ul></li></ul><h2 id=password-protection-feature>Password Protection Feature <a href=#password-protection-feature></a></h2><h3 id=functional-requirement-1>Functional requirement <a href=#functional-requirement-1></a></h3><p>The password protection feature allows users to set a password on their assets to restrict access. If an asset has a password, any user attempting to access the file must provide the correct password.</p><h3 id=key-components-1>Key Components <a href=#key-components-1></a></h3><p><strong><code>Child Role</code>9 in Permission Table</strong></p><ul><li><strong>passwordHash:</strong> Stores the hashed password for the asset.</li><li>When this field has a value, password protection is enabled for the asset.</li><li>The password is securely hashed before being stored to ensure security.</li></ul><h3 id=workflow>Workflow <a href=#workflow></a></h3><p>To make it easy to understand, I will show the workflow for getting file details. This process also applies to other features like updating and setting permissions.</p><p>The idea is that the user will get an <code>Is Inherit</code>0 by using <code>Is Inherit</code>1. Then, add it to the header for authorization when calling <code>Is Inherit</code>2 to get detailed info.</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=key-components>Key Components <a href=#key-components></a></h3><p><strong><code>publicRole</code> in Permission Table</strong></p><ul><li><strong>publicRole:</strong> Defines the level of access for public users.<ul><li><code>VIEWER</code>: Allows public users to view the asset.</li><li><code>EDITOR</code>: Allows public users to edit the asset.</li><li><code>NO_ASSET</code>: value means the files is not allow public asset</li></ul></li></ul><h2 id=password-protection-feature>Password Protection Feature <a href=#password-protection-feature></a></h2><h3 id=functional-requirement-1>Functional requirement <a href=#functional-requirement-1></a></h3><p>The password protection feature allows users to set a password on their assets to restrict access. If an asset has a password, any user attempting to access the file must provide the correct password.</p><h3 id=key-components-1>Key Components <a href=#key-components-1></a></h3><p><strong><code>passwordHash</code> in Permission Table</strong></p><ul><li><strong>passwordHash:</strong> Stores the hashed password for the asset.</li><li>When this field has a value, password protection is enabled for the asset.</li><li>The password is securely hashed before being stored to ensure security.</li></ul><h3 id=workflow>Workflow <a href=#workflow></a></h3><p>To make it easy to understand, I will show the workflow for getting file details. This process also applies to other features like updating and setting permissions.</p><p>The idea is that the user will get an <code>asset-file-token</code> by using <code>GET /assets/:id/login</code>. Then, add it to the header for authorization when calling <code>GET /assets/:id</code> to get detailed info.</p><p><img x-data="{
     title: ``,
     alt: `Password workflow`,
     src: `assets/design-file-sharing-system_6.webp`,
@@ -1098,7 +1098,7 @@ Role field: Show the permission for an invitee or project members in this record
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

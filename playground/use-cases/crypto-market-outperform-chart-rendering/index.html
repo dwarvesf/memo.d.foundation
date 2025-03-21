@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -997,7 +997,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1046,7 +1046,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1108,48 +1108,14 @@ bar.SetXAxis(xAxis).
     AddSeries(&quot;BTC Perf&quot;, yAxisLongPerf)
 
 line.Overlap(bar)
-</code></pre><p><em>Code 2: Code snippet demonstrates how to create a mixed chart using the <strong>go-echarts</strong> library</em></p><p>To combine line and bar charts to visualize market performance, PnL, and BTC/Altcoin performance. The process begins with defining a line chart using the <code>charts.NewLine()</code> function. This line chart is configured with global options such as the title, X-axis for time, and a Y-axis labeled &ldquo;Performance (%)&rdquo;, which ranges from <code>-maxPerf</code> to <code>maxPerf</code>. This setup ensures that the performance data is plotted on a dedicated axis, making it easy to interpret trends over time.</p><p>Next, a secondary Y-axis is added to represent PnL, labeled &ldquo;PnL ($)&rdquo;. This axis is configured with its own range (<code>-maxPnL</code> to <code>maxPnL</code>) and includes an axis line centered on zero for better visual balance. By extending the Y-axis with this configuration, the chart supports two distinct datasets on different scales, ensuring both performance and PnL are displayed clearly without visual clutter.</p><p>The <code>line.AddSeries</code> method is used to add the performance data and unrealized PnL data to the chart. Each dataset is represented as a separate line, with the PnL data assigned to the secondary Y-axis using <code>charts.WithLineChartOpts(opts.LineChart{YAxisIndex: 1})</code>. This approach ensures that performance and PnL are plotted on their respective axes, maintaining the clarity of the visualization.</p><p>To include BTC and Altcoin performance data, a bar chart is created using <code class=language-go>performanceMap := make(map[string]Performance)
-for _, perf := range performances {
-performanceMap[perf.Time.Format("2006-01-02 15:04:05")] = perf
-}
-pnlMap := make(map[string]Pnl)
-for _, pnl := range pnls {
-pnlMap[pnl.Time.Format("2006-01-02 15:04:05")] = pnl
-}
-</code>0. This bar chart shares the same X-axis as the line chart and is populated with series for &ldquo;AltCoin Perf&rdquo; and &ldquo;BTC Perf&rdquo; using the <code class=language-go>performanceMap := make(map[string]Performance)
-for _, perf := range performances {
-performanceMap[perf.Time.Format("2006-01-02 15:04:05")] = perf
-}
-pnlMap := make(map[string]Pnl)
-for _, pnl := range pnls {
-pnlMap[pnl.Time.Format("2006-01-02 15:04:05")] = pnl
-}
-</code>1 method. The bar chart highlights how the performance of these two asset classes changes over time, complementing the overall visualization.</p><p>The <code class=language-go>performanceMap := make(map[string]Performance)
-for _, perf := range performances {
-performanceMap[perf.Time.Format("2006-01-02 15:04:05")] = perf
-}
-pnlMap := make(map[string]Pnl)
-for _, pnl := range pnls {
-pnlMap[pnl.Time.Format("2006-01-02 15:04:05")] = pnl
-}
-</code>2 method combines the line and bar charts into a single cohesive visualization. This allows the user to analyze market trends, PnL changes, and asset performance simultaneously within one chart.</p><p>After all, we may still missing something. Yes it is the area to represent the boundaries of trade rounds. It is a bit easy, <strong>go-echart</strong> provides us the option <code class=language-go>performanceMap := make(map[string]Performance)
-for _, perf := range performances {
-performanceMap[perf.Time.Format("2006-01-02 15:04:05")] = perf
-}
-pnlMap := make(map[string]Pnl)
-for _, pnl := range pnls {
-pnlMap[pnl.Time.Format("2006-01-02 15:04:05")] = pnl
-}
-</code>3 to integrate the mark areas to the line chart. Our business is construct each area boundaries by specify its coordinates using trade round start, end time.</p><pre><code class=language-go>performanceMap := make(map[string]Performance)
-for _, perf := range performances {
-    performanceMap[perf.Time.Format(&quot;2006-01-02 15:04:05&quot;)] = perf
-}
-
-pnlMap := make(map[string]Pnl)
-for _, pnl := range pnls {
-    pnlMap[pnl.Time.Format(&quot;2006-01-02 15:04:05&quot;)] = pnl
-}
-</code>4</pre><p><em>Code 3: Code snippet to construct MarkAreaNameCoordItem depend on trade period</em></p><h3 id=conclusions>Conclusions <a href=#conclusions></a></h3><p>This project demonstrates how we can combine Golang and go-echarts to build powerful visualizations that provide deep insights into crypto trading performance. By integrating market trends, historical PnL data, and trading rounds into a single chart, we create a tool that allows traders to make informed decisions with clarity and precision.</p><p>The challenges of aligning multiple datasets, ensuring readability, and maintaining meaningfulness were overcome with careful design and thoughtful implementation. This visualization not only simplifies the analysis of complex trading data but also empowers users to refine their strategies and improve efficiency. As the crypto market continues to evolve, tools like these will be indispensable for staying ahead of the curve.</p></div><script defer type=module>
+</code></pre><p><em>Code 2: Code snippet demonstrates how to create a mixed chart using the <strong>go-echarts</strong> library</em></p><p>To combine line and bar charts to visualize market performance, PnL, and BTC/Altcoin performance. The process begins with defining a line chart using the <code>charts.NewLine()</code> function. This line chart is configured with global options such as the title, X-axis for time, and a Y-axis labeled &ldquo;Performance (%)&rdquo;, which ranges from <code>-maxPerf</code> to <code>maxPerf</code>. This setup ensures that the performance data is plotted on a dedicated axis, making it easy to interpret trends over time.</p><p>Next, a secondary Y-axis is added to represent PnL, labeled &ldquo;PnL ($)&rdquo;. This axis is configured with its own range (<code>-maxPnL</code> to <code>maxPnL</code>) and includes an axis line centered on zero for better visual balance. By extending the Y-axis with this configuration, the chart supports two distinct datasets on different scales, ensuring both performance and PnL are displayed clearly without visual clutter.</p><p>The <code>line.AddSeries</code> method is used to add the performance data and unrealized PnL data to the chart. Each dataset is represented as a separate line, with the PnL data assigned to the secondary Y-axis using <code>charts.WithLineChartOpts(opts.LineChart{YAxisIndex: 1})</code>. This approach ensures that performance and PnL are plotted on their respective axes, maintaining the clarity of the visualization.</p><p>To include BTC and Altcoin performance data, a bar chart is created using <code>charts.NewBar()</code>. This bar chart shares the same X-axis as the line chart and is populated with series for &ldquo;AltCoin Perf&rdquo; and &ldquo;BTC Perf&rdquo; using the <code>AddSeries</code> method. The bar chart highlights how the performance of these two asset classes changes over time, complementing the overall visualization.</p><p>The <code>line.Overlap(bar)</code> method combines the line and bar charts into a single cohesive visualization. This allows the user to analyze market trends, PnL changes, and asset performance simultaneously within one chart.</p><p>After all, we may still missing something. Yes it is the area to represent the boundaries of trade rounds. It is a bit easy, <strong>go-echart</strong> provides us the option <code>charts.WithMarkAreaNameCoordItemOpts</code> to integrate the mark areas to the line chart. Our business is construct each area boundaries by specify its coordinates using trade round start, end time.</p><pre><code class=language-go>opts.MarkAreaNameCoordItem{
+				Coordinate0: []interface{}{trade.OpenedTime.Format(&quot;2006-01-02 15:04:05&quot;), -maxYAxis},
+				Coordinate1: []interface{}{trade.ClosedTime.Format(&quot;2006-01-02 15:04:05&quot;), maxYAxis},
+				ItemStyle: &amp;opts.ItemStyle{
+					Color: &quot;rgba(255, 255, 255, 0.3)&quot;, // White color with blur effect
+				},
+			},
+</code></pre><p><em>Code 3: Code snippet to construct MarkAreaNameCoordItem depend on trade period</em></p><h3 id=conclusions>Conclusions <a href=#conclusions></a></h3><p>This project demonstrates how we can combine Golang and go-echarts to build powerful visualizations that provide deep insights into crypto trading performance. By integrating market trends, historical PnL data, and trading rounds into a single chart, we create a tool that allows traders to make informed decisions with clarity and precision.</p><p>The challenges of aligning multiple datasets, ensuring readability, and maintaining meaningfulness were overcome with careful design and thoughtful implementation. This visualization not only simplifies the analysis of complex trading data but also empowers users to refine their strategies and improve efficiency. As the crypto market continues to evolve, tools like these will be indispensable for staying ahead of the curve.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

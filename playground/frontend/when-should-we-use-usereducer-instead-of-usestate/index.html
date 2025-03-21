@@ -968,7 +968,57 @@ Folder:
     &lt;/&gt;
   )
 }
-</code></pre><p>Do not forget that there are two ways to update state now and make sure you pick the right one or else the curried function will be meaningless.</p><h2 id=adopting-usereducer-as-an-alternative-to-usestate>Adopting <code>useReducer</code> as an alternative to <code>useState</code> <a href=#adopting-usereducer-as-an-alternative-to-usestate></a></h2><p>Many people know <code>useReducer</code>, but a small number of them actually want to use it. With <code>useReducer</code>, we could rewrite the code to be like this:</p><pre><code>useState</code>3</pre><p>The <code>useReducer</code> hook helps you control transformations from state A to state B. This guarantees your states are always valid, in a fully <strong>centralized</strong> way. So with this model, even if the code becomes more complex, new states are added, we can still manage and maintain them without so much effort.</p><pre><code>useState</code>5</pre><h2 id=other-use-cases-for-usereducer>Other use cases for <code>useReducer</code> <a href=#other-use-cases-for-usereducer></a></h2><p>As can be seen from code above, <code>useReducer</code> might replace <code>useState</code> for &ldquo;complex state&rdquo;, and moreover we do not need to follow the redux style. I still believe <code>useReducer</code> is underestimated.</p><p>Here is an example of toggling state with <code>useReducer</code>:</p><pre><code>useReducer</code>1</pre><p>The implementation is simple, and it really shows the flexibility of <code>useReducer</code>.</p><p>If you love Redux, sure, you can adhere the action-based pattern as well. It is important to keep in mind that you must always treat the state value of the <code>useReducer</code> hook as immutable. To avoid running into this problem, <code>useReducer</code>4 is one of the best choice.</p><h2 id=the-conclusion>The conclusion <a href=#the-conclusion></a></h2><p>In general, developers prefer <code>useState</code> to <code>useReducer</code>. It is not their fault since <code>useState</code> is more familiar and introduced from the very first tutorial of hooks. However, the ability to supply a function that controls state transitions of <code>useReducer</code> is great and surely worth your consideration.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://dev.to/builderio/a-cure-for-react-usestate-hell-1ldi target=_blank>https://dev.to/builderio/a-cure-for-react-usestate-hell-1ldi</a></li></ul></div><script defer type=module>
+</code></pre><p>Do not forget that there are two ways to update state now and make sure you pick the right one or else the curried function will be meaningless.</p><h2 id=adopting-usereducer-as-an-alternative-to-usestate>Adopting <code>useReducer</code> as an alternative to <code>useState</code> <a href=#adopting-usereducer-as-an-alternative-to-usestate></a></h2><p>Many people know <code>useReducer</code>, but a small number of them actually want to use it. With <code>useReducer</code>, we could rewrite the code to be like this:</p><pre><code class=language-jsx>function EditCalendarEvent() {
+  const [event, updateEvent] = useReducer(
+    (prev, next) =&gt; {
+      return { ...prev, ...next }
+    },
+    { title: '', description: '', attendees: [] },
+  )
+
+  return (
+    &lt;&gt;
+      &lt;input value={event.title} onChange={(e) =&gt; updateEvent({ title: e.target.value })} /&gt;
+      {/* ... */}
+    &lt;/&gt;
+  )
+}
+</code></pre><p>The <code>useReducer</code> hook helps you control transformations from state A to state B. This guarantees your states are always valid, in a fully <strong>centralized</strong> way. So with this model, even if the code becomes more complex, new states are added, we can still manage and maintain them without so much effort.</p><pre><code class=language-jsx>function EditCalendarEvent() {
+  const [event, updateEvent] = useReducer(
+    (prev, next) =&gt; {
+      const newEvent = { ...prev, ...next }
+
+      // Ensure that the start date is never after the end date
+      if (newEvent.startDate &gt; newEvent.endDate) {
+        newEvent.endDate = newEvent.startDate
+      }
+
+      // Ensure that the title is never more than 100 chars
+      if (newEvent.title.length &gt; 100) {
+        newEvent.title = newEvent.title.substring(0, 100)
+      }
+      return newEvent
+    },
+    { title: '', description: '', attendees: [] },
+  )
+
+  return (
+    &lt;&gt;
+      &lt;input value={event.title} onChange={(e) =&gt; updateEvent({ title: e.target.value })} /&gt;
+      {/* ... */}
+    &lt;/&gt;
+  )
+}
+</code></pre><h2 id=other-use-cases-for-usereducer>Other use cases for <code>useReducer</code> <a href=#other-use-cases-for-usereducer></a></h2><p>As can be seen from code above, <code>useReducer</code> might replace <code>useState</code> for &ldquo;complex state&rdquo;, and moreover we do not need to follow the redux style. I still believe <code>useReducer</code> is underestimated.</p><p>Here is an example of toggling state with <code>useReducer</code>:</p><pre><code class=language-jsx>function EditCalendarEvent() {
+  const [value, toggleValue] = useReducer((prev) =&gt; !prev, false)
+
+  return (
+    &lt;&gt;
+      &lt;button onClick={toggleValue}&gt;Toggle&lt;/button&gt;
+    &lt;/&gt;
+  )
+}
+</code></pre><p>The implementation is simple, and it really shows the flexibility of <code>useReducer</code>.</p><p>If you love Redux, sure, you can adhere the action-based pattern as well. It is important to keep in mind that you must always treat the state value of the <code>useReducer</code> hook as immutable. To avoid running into this problem, <code>Immer</code> is one of the best choice.</p><h2 id=the-conclusion>The conclusion <a href=#the-conclusion></a></h2><p>In general, developers prefer <code>useState</code> to <code>useReducer</code>. It is not their fault since <code>useState</code> is more familiar and introduced from the very first tutorial of hooks. However, the ability to supply a function that controls state transitions of <code>useReducer</code> is great and surely worth your consideration.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://dev.to/builderio/a-cure-for-react-usestate-hell-1ldi target=_blank>https://dev.to/builderio/a-cure-for-react-usestate-hell-1ldi</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

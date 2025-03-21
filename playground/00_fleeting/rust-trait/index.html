@@ -932,28 +932,41 @@ impl Shape for Circle {
     }
 }
 
-</code></pre><p>Now, instances of <code>Circle</code> can leverage the functionality provided by the <code>Shape</code> trait.</p><h2 id=default-implementation>Default Implementation <a href=#default-implementation></a></h2><p>Rust allows you to provide default implementations for trait methods. This means that implementing types can choose to override the default behavior if needed. Let&rsquo;s enhance our <code>Shape</code> trait with a default method for <code class=language-rust>trait Shape {
-fn area(&amp;self) -> f64;
-}
-</code>0:</p><pre><code class=language-rust>trait Shape {
+</code></pre><p>Now, instances of <code>Circle</code> can leverage the functionality provided by the <code>Shape</code> trait.</p><h2 id=default-implementation>Default Implementation <a href=#default-implementation></a></h2><p>Rust allows you to provide default implementations for trait methods. This means that implementing types can choose to override the default behavior if needed. Let&rsquo;s enhance our <code>Shape</code> trait with a default method for <code>perimeter</code>:</p><pre><code class=language-rust>trait Shape {
     fn area(&amp;self) -&gt; f64;
+
+    fn perimeter(&amp;self) -&gt; f64 {
+        0.0 // Default implementation for perimeter
+    }
 }
-</code>1</pre><p>Now, any type implementing <code>Shape</code> will automatically have a default <code class=language-rust>trait Shape {
-fn area(&amp;self) -> f64;
+
+struct Circle {
+    radius: f64,
 }
-</code>0 method, but it can choose to provide its own implementation.</p><h2 id=trait-as-parameters>Trait as Parameters <a href=#trait-as-parameters></a></h2><p>Traits can be used as parameters to functions, enabling polymorphism and enhancing the flexibility of your code. Consider a function that calculates and prints the area of any type implementing the <code>Shape</code> trait:</p><pre><code class=language-rust>trait Shape {
-    fn area(&amp;self) -&gt; f64;
+
+impl Shape for Circle {
+    fn area(&amp;self) -&gt; f64 {
+        std::f64::consts::PI * self.radius * self.radius
+    }
 }
-</code>5</pre><p>Here, the <code class=language-rust>trait Shape {
-fn area(&amp;self) -> f64;
+
+</code></pre><p>Now, any type implementing <code>Shape</code> will automatically have a default <code>perimeter</code> method, but it can choose to provide its own implementation.</p><h2 id=trait-as-parameters>Trait as Parameters <a href=#trait-as-parameters></a></h2><p>Traits can be used as parameters to functions, enabling polymorphism and enhancing the flexibility of your code. Consider a function that calculates and prints the area of any type implementing the <code>Shape</code> trait:</p><pre><code class=language-rust>fn print_area(shape: impl Shape) {
+    println!(&quot;Area: {}&quot;, shape.area());
 }
-</code>6 function takes any type that implements the <code>Shape</code> trait as a parameter. This allows us to use the function with various shapes without modifying its code.</p><h2 id=trait-bound>Trait Bound <a href=#trait-bound></a></h2><p>To make functions even more flexible, you can use trait bounds to specify that a generic type must implement a certain trait. For instance:</p><pre><code class=language-rust>trait Shape {
-    fn area(&amp;self) -&gt; f64;
+
+fn main() {
+    let circle = Circle { radius: 3.0 };
+    print_area(circle);
 }
-</code>8</pre><p>Now, the <code class=language-rust>trait Shape {
-fn area(&amp;self) -> f64;
+</code></pre><p>Here, the <code>print_area</code> function takes any type that implements the <code>Shape</code> trait as a parameter. This allows us to use the function with various shapes without modifying its code.</p><h2 id=trait-bound>Trait Bound <a href=#trait-bound></a></h2><p>To make functions even more flexible, you can use trait bounds to specify that a generic type must implement a certain trait. For instance:</p><pre><code class=language-rust>fn print_area&lt;T: Shape&gt;(shape: T) {
+    println!(&quot;Area: {}&quot;, shape.area());
 }
-</code>6 function can accept any type <code>Shape</code>0 as long as it implements the <code>Shape</code> trait.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Traits in Rust provide a powerful mechanism for defining shared behavior, promoting code reuse and adding polymorphism in our code. By understanding how to implement traits, provide default behavior, use traits as parameters, and apply trait bounds, you can leverage this feature to write more modular and adaptable Rust code.</p></div><script defer type=module>
+
+fn main() {
+    let circle = Circle { radius: 3.0 };
+    print_area(circle);
+}
+</code></pre><p>Now, the <code>print_area</code> function can accept any type <code>T</code> as long as it implements the <code>Shape</code> trait.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Traits in Rust provide a powerful mechanism for defining shared behavior, promoting code reuse and adding polymorphism in our code. By understanding how to implement traits, provide default behavior, use traits as parameters, and apply trait bounds, you can leverage this feature to write more modular and adaptable Rust code.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

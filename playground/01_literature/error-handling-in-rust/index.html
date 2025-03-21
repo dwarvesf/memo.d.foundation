@@ -946,61 +946,158 @@ fn main() {
         None =&gt; println!(&quot;Element not found&quot;),
     }
 }
-</code></pre><h3 id=working-with-result>Working with <strong><code>Result</code></strong> <a href=#working-with-result></a></h3><p><strong><code>Result</code></strong> is similar to <strong><code>Option</code></strong> but includes an <strong><code>panic!</code>3</strong> variant to hold information about the error that occurred. This makes it suitable for functions that may return an error.</p><pre><code>panic!</code>4</pre><h3 id=unwrap-and-expect-proceed-with-caution><strong><code>panic!</code>5 and <code>panic!</code>6: Proceed with Caution</strong> <a href=#unwrap-and-expect-proceed-with-caution></a></h3><p>The <strong><code>panic!</code>5</strong> and <strong><code>panic!</code>6</strong> methods are convenient but should be used judiciously. They extract the value from <strong><code>Option</code></strong> or <strong><code>Result</code></strong> and panic if the value is <strong><code class=language-rust>fn main() {
-let divisor = 0;
-if divisor == 0 {
-panic!("Division by zero error occurred!");
-}
-let result = 10 / divisor;
-println!("Result: {}", result);
-}
-</code>1</strong> or <strong><code>panic!</code>3</strong>. While they can simplify code, excessive use may lead to unexpected panics.</p><pre><code class=language-rust>fn main() {
-    let divisor = 0;
+</code></pre><h3 id=working-with-result>Working with <strong><code>Result</code></strong> <a href=#working-with-result></a></h3><p><strong><code>Result</code></strong> is similar to <strong><code>Option</code></strong> but includes an <strong><code>Err</code></strong> variant to hold information about the error that occurred. This makes it suitable for functions that may return an error.</p><pre><code class=language-rust>use std::fs::File;
 
-    if divisor == 0 {
-        panic!(&quot;Division by zero error occurred!&quot;);
+fn open_file(file_path: &amp;str) -&gt; Result&lt;File, std::io::Error&gt; {
+    File::open(file_path)
+}
+
+fn main() {
+    let file_path = &quot;example.txt&quot;;
+    match open_file(&amp;file_path) {
+        Ok(file) =&gt; {
+            // File opened successfully, continue with further operations
+            println!(&quot;File opened successfully!&quot;);
+            // ...
+        }
+        Err(error) =&gt; {
+            // Error occurred while opening the file, handle it appropriately
+            println!(&quot;Error opening file: {}&quot;, error);
+            // ...
+        }
     }
+}
 
-    let result = 10 / divisor;
-    println!(&quot;Result: {}&quot;, result);
-}
-</code>3</pre><h3 id=early-return-error-handling-with-><strong>Early-Return Error Handling with <code class=language-rust>fn main() {
-let divisor = 0;
-if divisor == 0 {
-panic!("Division by zero error occurred!");
-}
-let result = 10 / divisor;
-println!("Result: {}", result);
-}
-</code>4</strong> <a href=#early-return-error-handling-with-></a></h3><p>The <strong><code class=language-rust>fn main() {
-let divisor = 0;
-if divisor == 0 {
-panic!("Division by zero error occurred!");
-}
-let result = 10 / divisor;
-println!("Result: {}", result);
-}
-</code>4</strong> operator provides a concise way to propagate errors early in a function. It can be used with functions that return <strong><code>Result</code></strong> or <strong><code>Option</code></strong>, automatically unwrapping the value or returning early on an error.</p><pre><code class=language-rust>fn main() {
-    let divisor = 0;
+</code></pre><h3 id=unwrap-and-expect-proceed-with-caution><strong><code>unwrap</code> and <code>expect</code>: Proceed with Caution</strong> <a href=#unwrap-and-expect-proceed-with-caution></a></h3><p>The <strong><code>unwrap</code></strong> and <strong><code>expect</code></strong> methods are convenient but should be used judiciously. They extract the value from <strong><code>Option</code></strong> or <strong><code>Result</code></strong> and panic if the value is <strong><code>None</code></strong> or <strong><code>Err</code></strong>. While they can simplify code, excessive use may lead to unexpected panics.</p><pre><code class=language-rust>use std::fs::File;
 
-    if divisor == 0 {
-        panic!(&quot;Division by zero error occurred!&quot;);
+fn open_file(file_path: &amp;str) -&gt; Result&lt;File, std::io::Error&gt; {
+    File::open(file_path)
+}
+
+fn main() {
+    let file_path = &quot;example.txt&quot;;
+    let file = open_file(&amp;file_path).unwrap();
+
+    println!(&quot;File opened successfully!&quot;);
+}
+</code></pre><h3 id=early-return-error-handling-with-><strong>Early-Return Error Handling with <code>?</code></strong> <a href=#early-return-error-handling-with-></a></h3><p>The <strong><code>?</code></strong> operator provides a concise way to propagate errors early in a function. It can be used with functions that return <strong><code>Result</code></strong> or <strong><code>Option</code></strong>, automatically unwrapping the value or returning early on an error.</p><pre><code class=language-rust>use std::fs::File;
+use std::io::{self, Read};
+
+// A function that reads a file and returns the content as a String
+fn read_file_content(file_path: &amp;str) -&gt; Result&lt;String, io::Error&gt; {
+    // Attempt to open the file
+    let mut file = File::open(file_path)?;
+
+    // Read the content of the file into a String
+    let mut content = String::new();
+    
+    // Use the ? operator to handle the Result returned by read_to_string
+    // If an error occurs, it is returned immediately.
+    file.read_to_string(&amp;mut content)?;
+
+    // Return the content
+    Ok(content)
+}
+
+fn main() {
+    // Specify the file path
+    let file_path = &quot;example.txt&quot;;
+
+    // Attempt to read the file and handle the result
+    match read_file_content(file_path) {
+        Ok(content) =&gt; {
+            println!(&quot;File content:\n{}&quot;, content);
+        }
+        Err(error) =&gt; {
+            eprintln!(&quot;Error reading the file: {}&quot;, error);
+            // Handle the error as needed
+        }
     }
-
-    let result = 10 / divisor;
-    println!(&quot;Result: {}&quot;, result);
 }
-</code>8</pre><h3 id=handling-multiple-errors-creating-custom-errors><strong>Handling Multiple Errors: Creating Custom Errors</strong> <a href=#handling-multiple-errors-creating-custom-errors></a></h3><p>Up until now, our focus has been on handling a single error. However, what if your function has the potential to return multiple errors, and you want the caller to precisely identify and handle each error scenario? In such cases, Rust allows you to implement your own custom error types.</p><pre><code class=language-rust>fn main() {
-    let divisor = 0;
+</code></pre><h3 id=handling-multiple-errors-creating-custom-errors><strong>Handling Multiple Errors: Creating Custom Errors</strong> <a href=#handling-multiple-errors-creating-custom-errors></a></h3><p>Up until now, our focus has been on handling a single error. However, what if your function has the potential to return multiple errors, and you want the caller to precisely identify and handle each error scenario? In such cases, Rust allows you to implement your own custom error types.</p><pre><code class=language-rust>#[derive(Debug)]
+enum MyError {
+    Io(std::io::Error),
+    Parse(std::num::ParseIntError),
+}
 
-    if divisor == 0 {
-        panic!(&quot;Division by zero error occurred!&quot;);
+fn read_and_parse(path: &amp;str) -&gt; Result&lt;i32, MyError&gt; {
+    let file_content = std::fs::read_to_string(path);
+
+    match file_content {
+        Ok(file_content) =&gt; match file_content.trim().parse::&lt;i32&gt;() {
+            Ok(num) =&gt; Ok(num),
+            Err(err) =&gt; Err(MyError::Parse(err)),
+        },
+        Err(err) =&gt; Err(MyError::Io(err)),
     }
-
-    let result = 10 / divisor;
-    println!(&quot;Result: {}&quot;, result);
 }
-</code>9</pre><p>Notice that we can&rsquo;t use <strong>?</strong> on <strong>std::fs::read_to_string(path)</strong> because if an error occurs, <strong>?</strong> will attempt to convert the errors (std::io::Error or std::num::ParseIntError) to our custom error, MyError. However, it doesn&rsquo;t know how to perform this conversion. To address this, we have to implement the <code>Option</code>0 trait on our custom error.</p><pre><code>Option</code>1</pre><h2 id=making-your-error-composable><strong>Making Your Error Composable</strong> <a href=#making-your-error-composable></a></h2><p>While our custom error solution is functional, seasoned developers often recommend implementing the <strong><code>Option</code>2</strong> trait for custom errors. By embracing this practice, our error becomes easily composable with other parts of the program, offering users the ability to obtain a string representation of an error. This is achieved by ensuring implementations for both <strong><code>Option</code>3</strong> and <strong><code>Option</code>4</strong> are provided.</p><pre><code>Option</code>5</pre><h2 id=references>References: <a href=#references></a></h2><ul><li><a href=https://doc.rust-lang.org/book/ch09-00-error-handling.html target=_blank>https://doc.rust-lang.org/book/ch09-00-error-handling.html</a></li><li><a href=https://blog.burntsushi.net/rust-error-handling/ target=_blank>https://blog.burntsushi.net/rust-error-handling/</a></li></ul></div><script defer type=module>
+
+fn main() {
+    let file_path = &quot;example.txt&quot;;
+
+    match read_and_parse(file_path) {
+        Ok(parsed_value) =&gt; {
+            println!(&quot;File content parsed successfully: {}&quot;, parsed_value);
+        }
+        Err(my_error) =&gt; {
+            eprintln!(&quot;Error: {:?}&quot;, my_error);
+
+            // You can also perform specific error handling based on the error variant
+            match my_error {
+                MyError::Io(io_error) =&gt; {
+                    eprintln!(&quot;IO Error Details: {}&quot;, io_error);
+                    // Additional IO error handling logic can be added here
+                }
+                MyError::Parse(parse_error) =&gt; {
+                    eprintln!(&quot;Parse Error Details: {}&quot;, parse_error);
+                    // Additional parse error handling logic can be added here
+                }
+            }
+        }
+    }
+}
+</code></pre><p>Notice that we can&rsquo;t use <strong>?</strong> on <strong>std::fs::read_to_string(path)</strong> because if an error occurs, <strong>?</strong> will attempt to convert the errors (std::io::Error or std::num::ParseIntError) to our custom error, MyError. However, it doesn&rsquo;t know how to perform this conversion. To address this, we have to implement the <code>From</code> trait on our custom error.</p><pre><code class=language-rust>impl From&lt;std::io::Error&gt; for MyError {
+    fn from(err: std::io::Error) -&gt; MyError {
+        MyError::Io(err)
+    }
+}
+
+impl From&lt;std::num::ParseIntError&gt; for MyError {
+    fn from(err: std::num::ParseIntError) -&gt; MyError {
+        MyError::Parse(err)
+    }
+}
+
+// We can finally rewrite read_and_parse
+fn read_and_parse(path: &amp;str) -&gt; Result&lt;i32, MyError&gt; {
+    let file_content = std::fs::read_to_string(path)?;
+    let num = file_content.trim().parse::&lt;i32&gt;()?;
+    Ok(num)
+}
+</code></pre><h2 id=making-your-error-composable><strong>Making Your Error Composable</strong> <a href=#making-your-error-composable></a></h2><p>While our custom error solution is functional, seasoned developers often recommend implementing the <strong><code>std::error::Error</code></strong> trait for custom errors. By embracing this practice, our error becomes easily composable with other parts of the program, offering users the ability to obtain a string representation of an error. This is achieved by ensuring implementations for both <strong><code>fmt::Debug</code></strong> and <strong><code>fmt::Display</code></strong> are provided.</p><pre><code class=language-rust>#[derive(Debug)]
+enum MyError {
+    Io(std::io::Error),
+    Parse(std::num::ParseIntError),
+}
+
+impl std::error::Error for MyError {
+    fn source(&amp;self) -&gt; Option&lt;&amp;(dyn std::error::Error + 'static)&gt; {
+        match self {
+            MyError::Io(err) =&gt; Some(err),
+            MyError::Parse(err) =&gt; Some(err),
+        }
+    }
+}
+
+impl std::fmt::Display for MyError {
+    fn fmt(&amp;self, f: &amp;mut std::fmt::Formatter&lt;'_&gt;) -&gt; std::fmt::Result {
+        match self {
+            MyError::Io(err) =&gt; write!(f, &quot;IO error: {}&quot;, err),
+            MyError::Parse(err) =&gt; write!(f, &quot;Parse error: {}&quot;, err),
+        }
+    }
+}
+</code></pre><h2 id=references>References: <a href=#references></a></h2><ul><li><a href=https://doc.rust-lang.org/book/ch09-00-error-handling.html target=_blank>https://doc.rust-lang.org/book/ch09-00-error-handling.html</a></li><li><a href=https://blog.burntsushi.net/rust-error-handling/ target=_blank>https://blog.burntsushi.net/rust-error-handling/</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

@@ -956,7 +956,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1005,7 +1005,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1054,7 +1054,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1103,7 +1103,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1152,7 +1152,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1201,7 +1201,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1250,7 +1250,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1299,7 +1299,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1348,7 +1348,7 @@ RUN some-expensive-operation
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1379,7 +1379,7 @@ processes:
     availability:
       restart: &quot;always&quot;%   
 
-</code></pre><p>If you familiar with docker-compose, I think it is easy to understand process-compose as well. By standing all <code>process-compose.yaml</code> both from the root of project and in the <code>.devbox/</code>, you can manage how many services are ready to serve by using <code>RUN apt-get install -yq vim</code>0. Then when you enter <code>RUN apt-get install -yq vim</code>1, all services in this project will be instructed to run. The special point here is that you can custom the <code>process-compose.yaml</code> at the root of project to get the same result as docker-compose without using container.</p><p>You also can run different Devbox shells parallel, but can’t run different services from different shells using the same port because we have no separate network here. Take a look at the following example when I try running 2 Postgresql services in different shells with the same port.</p><p><img x-data="{
+</code></pre><p>If you familiar with docker-compose, I think it is easy to understand process-compose as well. By standing all <code>process-compose.yaml</code> both from the root of project and in the <code>.devbox/</code>, you can manage how many services are ready to serve by using <code>devbox services ls</code>. Then when you enter <code>devbox services up</code>, all services in this project will be instructed to run. The special point here is that you can custom the <code>process-compose.yaml</code> at the root of project to get the same result as docker-compose without using container.</p><p>You also can run different Devbox shells parallel, but can’t run different services from different shells using the same port because we have no separate network here. Take a look at the following example when I try running 2 Postgresql services in different shells with the same port.</p><p><img x-data="{
     title: ``,
     alt: `Image10`,
     src: `assets/devbox-nix-and-our-devbox-adoption_10.webp`,
@@ -1408,7 +1408,7 @@ processes:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1428,7 +1428,18 @@ processes:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>So depending on what applications you are running, you will have the proper way to config different ports. For example, can change add one more argument to change the default port of Postgresql in the <code>process-compose.yaml</code> to get parallel processes.</p><pre><code>RUN apt-get install -yq vim</code>4</pre><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>So depending on what applications you are running, you will have the proper way to config different ports. For example, can change add one more argument to change the default port of Postgresql in the <code>process-compose.yaml</code> to get parallel processes.</p><pre><code class=language-BASH>version: &quot;0.5&quot;
+
+processes:
+  postgresql:
+    command: &quot;pg_ctl start -o \&quot;-k $PGHOST -p 5433\&quot;&quot;
+    is_daemon: true
+    shutdown: 
+      command: &quot;pg_ctl stop -m fast&quot;
+    availability:
+      restart: &quot;always&quot;
+
+</code></pre><p><img x-data="{
     title: ``,
     alt: `Image11`,
     src: `assets/devbox-nix-and-our-devbox-adoption_11.webp`,
@@ -1457,7 +1468,7 @@ processes:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

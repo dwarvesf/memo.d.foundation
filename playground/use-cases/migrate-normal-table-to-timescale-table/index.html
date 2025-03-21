@@ -956,210 +956,70 @@ SELECT create_hypertable('ts_user_trades', 'time',
 );
 </code></pre><h4 id=ts_user_trades-indices-explain>ts_user_trades indices explain <a href=#ts_user_trades-indices-explain></a></h4><p><strong>1. Unique index</strong></p><pre><code class=language-SQL>CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, &quot;time&quot;);
 </code></pre><p>Three columns <code>account_id</code>, <code>symbol</code>, <code>trade_id</code> can detect duplicate data but we need to add time to unique index for hypertable also</p><p><strong>2. Index <code>account_id</code>, <code>time</code></strong></p><pre><code class=language-sql>CREATE INDEX ts_user_trades_account_id_time_index ON public.ts_user_trades USING btree (account_id, &quot;time&quot;);
-</code></pre><p>This index for optimize query <code>incomes</code>0</p><p><strong>3. Index <code>account_id</code>, <code>time</code>, <code>symbol</code></strong></p><pre><code>incomes</code>4</pre><p>This index for optimize query <code>incomes</code>5</p><p><strong>4. Hypertable</strong></p><pre><code>incomes</code>6</pre><p>User trading activity is sporadic, but when trades occur, they tend to cluster into periods of high volume within the same minute.</p><p>We choose interval 1 day to balance chunk number and size per chunk to make sure each chunk less than 300MB for optimized query</p><h3 id=new-ts_future_incomes>New ts_future_incomes <a href=#new-ts_future_incomes></a></h3><pre><code>incomes</code>7</pre><h4 id=ts_user_trades-indices-explain-1>ts_user_trades indices explain <a href=#ts_user_trades-indices-explain-1></a></h4><p><strong>1. Unique index</strong></p><pre><code>incomes</code>8</pre><p>Avoid duplicate data</p><p><strong>2. Index <code>account_id</code>, <code class=language-sql>CREATE TABLE "public"."ts_user_trades" (
-"id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-"buyer" bool,
-"commission" numeric,
-"commission_asset" text,
-"trade_id" int8 NOT NULL,
-"maker" bool,
-"order_id" int8,
-"price" numeric,
-"qty" numeric,
-"quote_qty" numeric,
-"realized_pnl" numeric,
-"side" text,
-"position_side" text,
-"symbol" text,
-"time" timestamptz NOT NULL,
-"time_unix" int8,
-"account_id" uuid,
-"is_locked_position" bool DEFAULT false,
-"created_at" timestamptz NOT NULL DEFAULT now(),
-"updated_at" timestamptz NOT NULL DEFAULT now(),
-CONSTRAINT "ts_user_trades_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "public"."accounts"("id"),
-PRIMARY KEY ("id","time")
-);
--- Indices
-CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, "time");
-CREATE INDEX ts_user_trades_account_id_time_index ON public.ts_user_trades USING btree (account_id, "time");
-CREATE INDEX ts_user_trades_account_id_symbol_time_index ON public.ts_user_trades USING btree (account_id, symbol, "time");
-SELECT create_hypertable('ts_user_trades', 'time',
-chunk_time_interval => INTERVAL '1 day',
-if_not_exists => TRUE
-);
-</code>0, and <code>time</code></strong></p><pre><code class=language-sql>CREATE TABLE &quot;public&quot;.&quot;ts_user_trades&quot; (
-    &quot;id&quot; uuid NOT NULL DEFAULT uuid_generate_v4(),
-    &quot;buyer&quot; bool,
-    &quot;commission&quot; numeric,
-    &quot;commission_asset&quot; text,
-    &quot;trade_id&quot; int8 NOT NULL,
-    &quot;maker&quot; bool,
-    &quot;order_id&quot; int8,
-    &quot;price&quot; numeric,
-    &quot;qty&quot; numeric,
-    &quot;quote_qty&quot; numeric,
-    &quot;realized_pnl&quot; numeric,
-    &quot;side&quot; text,
-    &quot;position_side&quot; text,
-    &quot;symbol&quot; text,
-    &quot;time&quot; timestamptz NOT NULL,
-    &quot;time_unix&quot; int8,
-    &quot;account_id&quot; uuid,
-    &quot;is_locked_position&quot; bool DEFAULT false,
-    &quot;created_at&quot; timestamptz NOT NULL DEFAULT now(),
-    &quot;updated_at&quot; timestamptz NOT NULL DEFAULT now(),
-    CONSTRAINT &quot;ts_user_trades_account_id_fkey&quot; FOREIGN KEY (&quot;account_id&quot;) REFERENCES &quot;public&quot;.&quot;accounts&quot;(&quot;id&quot;),
-    PRIMARY KEY (&quot;id&quot;,&quot;time&quot;)
-);
-
--- Indices
-CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, &quot;time&quot;);
-
-CREATE INDEX ts_user_trades_account_id_time_index ON public.ts_user_trades USING btree (account_id, &quot;time&quot;);
-
-CREATE INDEX ts_user_trades_account_id_symbol_time_index ON public.ts_user_trades USING btree (account_id, symbol, &quot;time&quot;);
-
-SELECT create_hypertable('ts_user_trades', 'time',
+</code></pre><p>This index for optimize query <code>WHERE account_id = {id} AND time BETWEEN {time1} and {time2}</code></p><p><strong>3. Index <code>account_id</code>, <code>time</code>, <code>symbol</code></strong></p><pre><code class=language-sql>CREATE INDEX ts_user_trades_account_id_symbol_time_index ON public.ts_user_trades USING btree (account_id, symbol, &quot;time&quot;);
+</code></pre><p>This index for optimize query <code>WHERE account_id = {id} AND symbol in {symbols} AND time BETWEEN {time1} and {time2}</code></p><p><strong>4. Hypertable</strong></p><pre><code class=language-sql>SELECT create_hypertable('ts_user_trades', 'time',
   chunk_time_interval =&gt; INTERVAL '1 day',
   if_not_exists =&gt; TRUE
 );
-</code>2</pre><p>This index for optimize query <code class=language-sql>CREATE TABLE "public"."ts_user_trades" (
-"id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-"buyer" bool,
-"commission" numeric,
-"commission_asset" text,
-"trade_id" int8 NOT NULL,
-"maker" bool,
-"order_id" int8,
-"price" numeric,
-"qty" numeric,
-"quote_qty" numeric,
-"realized_pnl" numeric,
-"side" text,
-"position_side" text,
-"symbol" text,
-"time" timestamptz NOT NULL,
-"time_unix" int8,
-"account_id" uuid,
-"is_locked_position" bool DEFAULT false,
-"created_at" timestamptz NOT NULL DEFAULT now(),
-"updated_at" timestamptz NOT NULL DEFAULT now(),
-CONSTRAINT "ts_user_trades_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "public"."accounts"("id"),
-PRIMARY KEY ("id","time")
-);
--- Indices
-CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, "time");
-CREATE INDEX ts_user_trades_account_id_time_index ON public.ts_user_trades USING btree (account_id, "time");
-CREATE INDEX ts_user_trades_account_id_symbol_time_index ON public.ts_user_trades USING btree (account_id, symbol, "time");
-SELECT create_hypertable('ts_user_trades', 'time',
-chunk_time_interval => INTERVAL '1 day',
-if_not_exists => TRUE
-);
-</code>3</p><p><strong>3. Index <code>account_id</code>, <code>symbol</code>, <code class=language-sql>CREATE TABLE "public"."ts_user_trades" (
-"id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-"buyer" bool,
-"commission" numeric,
-"commission_asset" text,
-"trade_id" int8 NOT NULL,
-"maker" bool,
-"order_id" int8,
-"price" numeric,
-"qty" numeric,
-"quote_qty" numeric,
-"realized_pnl" numeric,
-"side" text,
-"position_side" text,
-"symbol" text,
-"time" timestamptz NOT NULL,
-"time_unix" int8,
-"account_id" uuid,
-"is_locked_position" bool DEFAULT false,
-"created_at" timestamptz NOT NULL DEFAULT now(),
-"updated_at" timestamptz NOT NULL DEFAULT now(),
-CONSTRAINT "ts_user_trades_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "public"."accounts"("id"),
-PRIMARY KEY ("id","time")
-);
--- Indices
-CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, "time");
-CREATE INDEX ts_user_trades_account_id_time_index ON public.ts_user_trades USING btree (account_id, "time");
-CREATE INDEX ts_user_trades_account_id_symbol_time_index ON public.ts_user_trades USING btree (account_id, symbol, "time");
-SELECT create_hypertable('ts_user_trades', 'time',
-chunk_time_interval => INTERVAL '1 day',
-if_not_exists => TRUE
-);
-</code>0, and <code>time</code></strong></p><pre><code class=language-sql>CREATE TABLE &quot;public&quot;.&quot;ts_user_trades&quot; (
+</code></pre><p>User trading activity is sporadic, but when trades occur, they tend to cluster into periods of high volume within the same minute.</p><p>We choose interval 1 day to balance chunk number and size per chunk to make sure each chunk less than 300MB for optimized query</p><h3 id=new-ts_future_incomes>New ts_future_incomes <a href=#new-ts_future_incomes></a></h3><pre><code class=language-sql>CREATE TABLE &quot;public&quot;.&quot;ts_future_incomes&quot; (
     &quot;id&quot; uuid NOT NULL DEFAULT uuid_generate_v4(),
-    &quot;buyer&quot; bool,
-    &quot;commission&quot; numeric,
-    &quot;commission_asset&quot; text,
-    &quot;trade_id&quot; int8 NOT NULL,
-    &quot;maker&quot; bool,
-    &quot;order_id&quot; int8,
-    &quot;price&quot; numeric,
-    &quot;qty&quot; numeric,
-    &quot;quote_qty&quot; numeric,
-    &quot;realized_pnl&quot; numeric,
-    &quot;side&quot; text,
-    &quot;position_side&quot; text,
+    &quot;account_id&quot; uuid NOT NULL,
     &quot;symbol&quot; text,
-    &quot;time&quot; timestamptz NOT NULL,
-    &quot;time_unix&quot; int8,
-    &quot;account_id&quot; uuid,
+    &quot;income_type&quot; text NOT NULL,
+    &quot;income&quot; numeric,
+    &quot;asset&quot; text,
+    &quot;info&quot; text,
+    &quot;time&quot; timestamptz,
+    &quot;time_unix&quot; int8 NOT NULL,
+    &quot;trade_id&quot; text,
+    &quot;tran_id&quot; text,
     &quot;is_locked_position&quot; bool DEFAULT false,
+    &quot;is_notify&quot; bool DEFAULT false,
     &quot;created_at&quot; timestamptz NOT NULL DEFAULT now(),
     &quot;updated_at&quot; timestamptz NOT NULL DEFAULT now(),
-    CONSTRAINT &quot;ts_user_trades_account_id_fkey&quot; FOREIGN KEY (&quot;account_id&quot;) REFERENCES &quot;public&quot;.&quot;accounts&quot;(&quot;id&quot;),
-    PRIMARY KEY (&quot;id&quot;,&quot;time&quot;)
+    CONSTRAINT &quot;ts_future_incomes_account_id_fkey&quot; FOREIGN KEY (&quot;account_id&quot;) REFERENCES &quot;public&quot;.&quot;accounts&quot;(&quot;id&quot;),
+    PRIMARY KEY (&quot;id&quot;,&quot;account_id&quot;,&quot;income_type&quot;,&quot;time_unix&quot;)
 );
 
 -- Indices
-CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, &quot;time&quot;);
+CREATE UNIQUE INDEX ts_future_incomes_account_id_income_type_tran_id_time_unix_inde ON public.ts_future_incomes USING btree (account_id, income_type, tran_id, time_unix);
 
-CREATE INDEX ts_user_trades_account_id_time_index ON public.ts_user_trades USING btree (account_id, &quot;time&quot;);
+-- This index for optimize query WHERE account_id = {id} AND income_type = {income_type} AND time BETWEEN {time1} and {time2}
+CREATE INDEX ts_future_incomes_account_id_income_type_time_index ON public.ts_future_incomes USING btree (account_id, income_type, &quot;time&quot;);
 
-CREATE INDEX ts_user_trades_account_id_symbol_time_index ON public.ts_user_trades USING btree (account_id, symbol, &quot;time&quot;);
+-- This index for optimize query WHERE account_id = {id} AND income_type = {income_type} AND time BETWEEN {time1} and {time2} and symbol = {symbol}
+CREATE INDEX ts_future_incomes_account_id_symbol_income_type_time_index ON public.ts_future_incomes USING btree (account_id, symbol, income_type, &quot;time&quot;);
 
-SELECT create_hypertable('ts_user_trades', 'time',
-  chunk_time_interval =&gt; INTERVAL '1 day',
-  if_not_exists =&gt; TRUE
-);
-</code>8</pre><p>This index for optimize query <code class=language-sql>CREATE TABLE "public"."ts_user_trades" (
-"id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-"buyer" bool,
-"commission" numeric,
-"commission_asset" text,
-"trade_id" int8 NOT NULL,
-"maker" bool,
-"order_id" int8,
-"price" numeric,
-"qty" numeric,
-"quote_qty" numeric,
-"realized_pnl" numeric,
-"side" text,
-"position_side" text,
-"symbol" text,
-"time" timestamptz NOT NULL,
-"time_unix" int8,
-"account_id" uuid,
-"is_locked_position" bool DEFAULT false,
-"created_at" timestamptz NOT NULL DEFAULT now(),
-"updated_at" timestamptz NOT NULL DEFAULT now(),
-CONSTRAINT "ts_user_trades_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "public"."accounts"("id"),
-PRIMARY KEY ("id","time")
-);
--- Indices
-CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, "time");
-CREATE INDEX ts_user_trades_account_id_time_index ON public.ts_user_trades USING btree (account_id, "time");
-CREATE INDEX ts_user_trades_account_id_symbol_time_index ON public.ts_user_trades USING btree (account_id, symbol, "time");
-SELECT create_hypertable('ts_user_trades', 'time',
-chunk_time_interval => INTERVAL '1 day',
-if_not_exists => TRUE
-);
-</code>9</p><p><strong>4. Hypertable</strong></p><pre><code class=language-SQL>CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, &quot;time&quot;);
-</code>0</pre><p>We store two types of transactions in ts_future_incomes: FUNDING_FEE and TRANSFER.</p><p>For FUNDING_FEE transactions:</p><ul><li>Each symbol generates 4-8 fees per account per day</li><li>With 320 positions per account across 200 accounts, this results in:<ul><li>Daily records: 320 × 200 × 8 = 512,000</li><li>Weekly chunk size: 512,000 × 7 = 3,584,000</li></ul></li></ul><p>The resulting chunk size is within acceptable limits.</p><h2 id=migration-plan>Migration plan <a href=#migration-plan></a></h2><h3 id=dual-write>Dual Write <a href=#dual-write></a></h3><p>To make sure new tables have new data same as old tables we insert both of tables to make sure we don&rsquo;t lost new data and can rollback to old table if we have problem</p><h3 id=backfilling>Backfilling <a href=#backfilling></a></h3><h4 id=create-migrator-to-import-data-from-old-table-from-new-timescale-table>Create migrator to import data from old table from new timescale table <a href=#create-migrator-to-import-data-from-old-table-from-new-timescale-table></a></h4><p><strong>How migrator work</strong></p><ol><li>Compare total record between old and new</li><li>If not equal we will get min time from new ts_user_trades to continue backfill</li><li>Get data from old table with query <code class=language-SQL>CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, "time");
-</code>1</li><li>Increase min_time if latest record oldest than min_time 1 hours to reset offset back to 0 (The offset is bigger, the query time is longer)</li><li>Backfill until no data in query</li></ol><pre><code class=language-SQL>CREATE UNIQUE INDEX ts_user_trades_account_id_symbol_trade_id_time_index ON public.ts_user_trades USING btree (account_id, symbol, trade_id, &quot;time&quot;);
-</code>2</pre><h3 id=validate-data>Validate data <a href=#validate-data></a></h3><p>We need to replace new query to old query function by function to retest to make sure correct data and acceptable query time</p><h3 id=change-primary-table-to-new-table>Change primary table to new table <a href=#change-primary-table-to-new-table></a></h3><p>After everything is work fine, we can replace primary table to new table then consider to remove old tables if needed to save data storage</p></div><script defer type=module>
+SELECT create_hypertable(
+  'ts_future_incomes',
+  'time_unix',
+  chunk_time_interval =&gt; 604800000, -- 7 days in milliseconds
+  create_default_indexes =&gt; false
+)
+</code></pre><h4 id=ts_user_trades-indices-explain-1>ts_user_trades indices explain <a href=#ts_user_trades-indices-explain-1></a></h4><p><strong>1. Unique index</strong></p><pre><code class=language-SQL>CREATE UNIQUE INDEX ts_future_incomes_account_id_income_type_tran_id_time_unix_inde ON public.ts_future_incomes USING btree (account_id, income_type, tran_id, time_unix);
+</code></pre><p>Avoid duplicate data</p><p><strong>2. Index <code>account_id</code>, <code>income_type</code>, and <code>time</code></strong></p><pre><code class=language-sql>CREATE INDEX ts_future_incomes_account_id_income_type_time_index ON public.ts_future_incomes USING btree (account_id, income_type, &quot;time&quot;);
+</code></pre><p>This index for optimize query <code>WHERE account_id = {id} AND income_type = {income_type} AND time BETWEEN {time1} and {time2}</code></p><p><strong>3. Index <code>account_id</code>, <code>symbol</code>, <code>income_type</code>, and <code>time</code></strong></p><pre><code class=language-sql>CREATE INDEX ts_future_incomes_account_id_symbol_income_type_time_index ON public.ts_future_incomes USING btree (account_id, symbol, income_type, &quot;time&quot;);
+</code></pre><p>This index for optimize query <code>WHERE account_id = {id} AND symbol in {symbols} AND income_type = {income_type} AND time BETWEEN {time1} and {time2} AND</code></p><p><strong>4. Hypertable</strong></p><pre><code class=language-sql>SELECT create_hypertable(
+  'ts_future_incomes',
+  'time_unix',
+  chunk_time_interval =&gt; 604800000, -- 7 days in milliseconds
+  create_default_indexes =&gt; false
+)
+</code></pre><p>We store two types of transactions in ts_future_incomes: FUNDING_FEE and TRANSFER.</p><p>For FUNDING_FEE transactions:</p><ul><li>Each symbol generates 4-8 fees per account per day</li><li>With 320 positions per account across 200 accounts, this results in:<ul><li>Daily records: 320 × 200 × 8 = 512,000</li><li>Weekly chunk size: 512,000 × 7 = 3,584,000</li></ul></li></ul><p>The resulting chunk size is within acceptable limits.</p><h2 id=migration-plan>Migration plan <a href=#migration-plan></a></h2><h3 id=dual-write>Dual Write <a href=#dual-write></a></h3><p>To make sure new tables have new data same as old tables we insert both of tables to make sure we don&rsquo;t lost new data and can rollback to old table if we have problem</p><h3 id=backfilling>Backfilling <a href=#backfilling></a></h3><h4 id=create-migrator-to-import-data-from-old-table-from-new-timescale-table>Create migrator to import data from old table from new timescale table <a href=#create-migrator-to-import-data-from-old-table-from-new-timescale-table></a></h4><p><strong>How migrator work</strong></p><ol><li>Compare total record between old and new</li><li>If not equal we will get min time from new ts_user_trades to continue backfill</li><li>Get data from old table with query <code>WHERE time &lt; {min_time} ORDER BY time DESC, trade_id DESC OFFSET {offset} LIMIT 1000</code></li><li>Increase min_time if latest record oldest than min_time 1 hours to reset offset back to 0 (The offset is bigger, the query time is longer)</li><li>Backfill until no data in query</li></ol><pre><code class=language-mermaid>flowchart TD
+    A[Start] --&gt; B[Compare total records&lt;br&gt;between old and new tables]
+    B --&gt; C{Records equal?}
+    C --&gt;|Yes| D[End]
+    C --&gt;|No| E[Get min timestamp from&lt;br&gt;new ts_user_trades]
+    E --&gt; F[Query old table with:&lt;br&gt;WHERE time &lt; min_time&lt;br&gt;ORDER BY time DESC, trade_id DESC&lt;br&gt;OFFSET offset LIMIT 1000]
+    F --&gt; G[Process batch]
+    G --&gt; H{Latest record&lt;br&gt;&gt; min_time - 1hr?}
+    H --&gt;|Yes| I[Reset offset to 0&lt;br&gt;Update min_time to latest record time]
+    H --&gt;|No| J[Increase offset by 1000]
+    I --&gt; K{Query returned&lt;br&gt;data?}
+    J --&gt; K
+    K --&gt;|Yes| F
+    K --&gt;|No| D
+</code></pre><h3 id=validate-data>Validate data <a href=#validate-data></a></h3><p>We need to replace new query to old query function by function to retest to make sure correct data and acceptable query time</p><h3 id=change-primary-table-to-new-table>Change primary table to new table <a href=#change-primary-table-to-new-table></a></h3><p>After everything is work fine, we can replace primary table to new table then consider to remove old tables if needed to save data storage</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

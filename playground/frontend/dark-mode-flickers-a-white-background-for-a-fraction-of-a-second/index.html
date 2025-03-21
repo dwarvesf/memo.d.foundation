@@ -950,7 +950,7 @@ if (window.localStorage.getItem('theme') === 'dark') {
     &lt;script src=&quot;./main.js&quot; /&gt;
   &lt;/body&gt;
 &lt;/html&gt;
-</code></pre><p>By doing this, the page rendering will be blocked when the engine detects the <code>dark</code>0 inside the <code>&lt;head></code> tag. While the renderer is idle, the JavaScript interpreter will assign the <code>dark</code> value to the CSS class list of <code>&lt;html></code> before the <code>dark</code>4 is loaded.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://stackoverflow.com/questions/63033412/dark-mode-flickers-a-white-background-for-a-millisecond-on-reload target=_blank>https://stackoverflow.com/questions/63033412/dark-mode-flickers-a-white-background-for-a-millisecond-on-reload</a></li></ul></div><script defer type=module>
+</code></pre><p>By doing this, the page rendering will be blocked when the engine detects the <code>&lt;script></code> inside the <code>&lt;head></code> tag. While the renderer is idle, the JavaScript interpreter will assign the <code>dark</code> value to the CSS class list of <code>&lt;html></code> before the <code>dark.css</code> is loaded.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://stackoverflow.com/questions/63033412/dark-mode-flickers-a-white-background-for-a-millisecond-on-reload target=_blank>https://stackoverflow.com/questions/63033412/dark-mode-flickers-a-white-background-for-a-millisecond-on-reload</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

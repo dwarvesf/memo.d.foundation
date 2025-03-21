@@ -946,7 +946,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -995,7 +995,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1044,7 +1044,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1101,7 +1101,11 @@ Get detailed command description with 'dcos &lt;command&gt; --help'.
 }
 </code></pre><p><strong>Note</strong>
 By default, applications will be deployed to <code>private node</code>, so if you want to deploy to <code>public node</code>, you can add <code>"acceptedResourceRoles": ["slave_public"]</code> to <code>my-app.json</code></p><ol start=2><li>Add your app to Marathon:</li></ol><pre><code class=language-javascript>$ dcos marathon app add &lt;my-app.json&gt;
-</code></pre><p>If this is added successfully, output will be something like this:</p><pre><code>Services</code>0</pre><ol start=3><li>Verify that the app is added with this command:</li></ol><pre><code>Services</code>1</pre><p>The output can be look like this:</p><pre><code>Services</code>2</pre><ol start=4><li>Check application on DC/OS GUI</li></ol><p>Click on <code>Services</code> tab, you will see list of applications that you are running. To check application’s information, just click on service and choose service ID that you want to see</p><p><img x-data="{
+</code></pre><p>If this is added successfully, output will be something like this:</p><pre><code class=language-javascript>Created deployment d562b50a-17b0-44ce-b7d2-02a0c3cc799e
+</code></pre><ol start=3><li>Verify that the app is added with this command:</li></ol><pre><code class=language-javascript>$ dcos marathon app list
+</code></pre><p>The output can be look like this:</p><pre><code class=language-javascript>ID      MEM  CPUS  TASKS  HEALTH  DEPLOYMENT  CONTAINER  CMD
+/nginx   64  0.1    0/1    ---      scale       DOCKER   None
+</code></pre><ol start=4><li>Check application on DC/OS GUI</li></ol><p>Click on <code>Services</code> tab, you will see list of applications that you are running. To check application’s information, just click on service and choose service ID that you want to see</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-2---deploy-simple-applications_377366f7ddcabc286a3d6d1e505eb94f_md5.webp`,
@@ -1130,7 +1134,7 @@ By default, applications will be deployed to <code>private node</code>, so if yo
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1150,7 +1154,7 @@ By default, applications will be deployed to <code>private node</code>, so if yo
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As the picture above, you can check your application directly via <code>Services</code>4</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>As the picture above, you can check your application directly via <code>Endpoint</code></p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-2---deploy-simple-applications_82cc4eeeaae867eb9bcafc54c0f7eda5_md5.webp`,
@@ -1179,7 +1183,7 @@ By default, applications will be deployed to <code>private node</code>, so if yo
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

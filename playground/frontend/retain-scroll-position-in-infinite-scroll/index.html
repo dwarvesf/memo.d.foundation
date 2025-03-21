@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -985,82 +985,32 @@ export default function createRetainPositionStore&lt;
 </code></pre><p>Let&rsquo;s begin by creating a <code>createRetainPositionStore</code> that takes in a key that we will use to store and retrieve data from the session storage.</p><p>We will also implement two functions inside, one to handle the behaviors before routing happens, and another one for those when we go back to the page and want to retain the scroll position. Both of them accept the parameter of <code>swr</code> which is the <a href=https://swr.vercel.app/docs/pagination.en-US#return-values target=_blank>response</a> of the <code>useSWRInfinite()</code>.</p><pre><code class=language-javascript>function handleSaveStates({ swr }: { swr: T }) {
   sessionStorage.setItem(storeKey, JSON.stringify({ swrSize: swr.size, scrollPosition: window.scrollY }))
 }
-</code></pre><p>The function above simply stores an object with <code>swrSize</code> and <code>scrollPosition</code> to the session storage. When a user clicks on an item and is navigated to the detail page, we call this function along with the routing function to store the vertical scroll position (<code>scrollPosition</code>) and also the number of pages (or a group of several consecutive items) that infinite scroll already loaded (<code>swrSize</code>).</p><pre><code class=language-javascript>export const LIST_STATES_KEY = 'infinite-scroll-list-states'
+</code></pre><p>The function above simply stores an object with <code>swrSize</code> and <code>scrollPosition</code> to the session storage. When a user clicks on an item and is navigated to the detail page, we call this function along with the routing function to store the vertical scroll position (<code>scrollPosition</code>) and also the number of pages (or a group of several consecutive items) that infinite scroll already loaded (<code>swrSize</code>).</p><pre><code class=language-javascript>function useRetainPosition({ swr }: { swr: T }) {
+  const documentHeight = document?.documentElement.scrollHeight || 0
+  const listStates = JSON.parse(sessionStorage.getItem(storeKey) || '{}')
 
-export default function createRetainPositionStore&lt;
-	T extends SWRInfiniteResponse&lt;any, any&gt;,
-&gt;(storeKey = LIST_STATES_KEY) {
-	function useRetainPosition({ swr }: { swr: T }) {
-		// ...
-	}
+  useEffect(() =&gt; {
+    if (typeof listStates.scrollPosition !== 'number') {
+      return undefined
+    }
 
-	function handleSaveStates({ swr }: { swr: T }) {
-		// ...
-	}
+    if (documentHeight &gt; listStates.scrollPosition) {
+      window.scrollTo(0, listStates.scrollPosition)
+      sessionStorage.removeItem(storeKey)
+    }
+  }, [documentHeight, listStates.scrollPosition])
 
-	return { useRetainPosition, handleSaveStates }
+  useEffect(() =&gt; {
+    if (typeof listStates.swrSize !== 'number') {
+      return undefined
+    }
+
+    if (listStates.swrSize &gt; 1) {
+      swr.setSize(listStates.swrSize)
+    }
+  }, [listStates.swrSize, swr])
 }
-</code>0</pre><p>The hook <code class=language-javascript>export const LIST_STATES_KEY = 'infinite-scroll-list-states'
-export default function createRetainPositionStore&lt;
-T extends SWRInfiniteResponse&lt;any, any>,
->(storeKey = LIST_STATES_KEY) {
-function useRetainPosition({ swr }: { swr: T }) {
-// ...
-}
-function handleSaveStates({ swr }: { swr: T }) {
-// ...
-}
-return { useRetainPosition, handleSaveStates }
-}
-</code>1 is called in the listing page that uses the infinite scroll technique, so that everytime we visit the page, the two <code class=language-javascript>export const LIST_STATES_KEY = 'infinite-scroll-list-states'
-export default function createRetainPositionStore&lt;
-T extends SWRInfiniteResponse&lt;any, any>,
->(storeKey = LIST_STATES_KEY) {
-function useRetainPosition({ swr }: { swr: T }) {
-// ...
-}
-function handleSaveStates({ swr }: { swr: T }) {
-// ...
-}
-return { useRetainPosition, handleSaveStates }
-}
-</code>2s help us to retrieve the data from the session storage. The <code>scrollPosition</code> is used for scrolling the page to the previous position. The <code>swrSize</code>, on the other hand, is passed to the <code class=language-javascript>export const LIST_STATES_KEY = 'infinite-scroll-list-states'
-export default function createRetainPositionStore&lt;
-T extends SWRInfiniteResponse&lt;any, any>,
->(storeKey = LIST_STATES_KEY) {
-function useRetainPosition({ swr }: { swr: T }) {
-// ...
-}
-function handleSaveStates({ swr }: { swr: T }) {
-// ...
-}
-return { useRetainPosition, handleSaveStates }
-}
-</code>5 function to tell <code>swr</code> how many pages already loaded before we were navigated to the item detail page.</p><p>This makes sense since as mentioned above, when user clicks on an item and is navigated to the detail page, we will store those data to the session storage, and when user wants to go back to the listing page, <code class=language-javascript>export const LIST_STATES_KEY = 'infinite-scroll-list-states'
-export default function createRetainPositionStore&lt;
-T extends SWRInfiniteResponse&lt;any, any>,
->(storeKey = LIST_STATES_KEY) {
-function useRetainPosition({ swr }: { swr: T }) {
-// ...
-}
-function handleSaveStates({ swr }: { swr: T }) {
-// ...
-}
-return { useRetainPosition, handleSaveStates }
-}
-</code>1 can retrieve those data and the page will be scrolled to the previous position. After calling <code class=language-javascript>export const LIST_STATES_KEY = 'infinite-scroll-list-states'
-export default function createRetainPositionStore&lt;
-T extends SWRInfiniteResponse&lt;any, any>,
->(storeKey = LIST_STATES_KEY) {
-function useRetainPosition({ swr }: { swr: T }) {
-// ...
-}
-function handleSaveStates({ swr }: { swr: T }) {
-// ...
-}
-return { useRetainPosition, handleSaveStates }
-}
-</code>8, don&rsquo;t forget to remove the relating data from the session storage to prevent unwanted scrolling behaviors of the page in the future.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://www.explainxkcd.com/wiki/index.php/1309:_Infinite_Scrolling target=_blank>https://www.explainxkcd.com/wiki/index.php/1309:_Infinite_Scrolling</a></li></ul></div><script defer type=module>
+</code></pre><p>The hook <code>useRetainPosition</code> is called in the listing page that uses the infinite scroll technique, so that everytime we visit the page, the two <code>useEffect</code>s help us to retrieve the data from the session storage. The <code>scrollPosition</code> is used for scrolling the page to the previous position. The <code>swrSize</code>, on the other hand, is passed to the <code>setSize</code> function to tell <code>swr</code> how many pages already loaded before we were navigated to the item detail page.</p><p>This makes sense since as mentioned above, when user clicks on an item and is navigated to the detail page, we will store those data to the session storage, and when user wants to go back to the listing page, <code>useRetainPosition</code> can retrieve those data and the page will be scrolled to the previous position. After calling <code>window.scrollTo(0, listStates.scrollPosition)</code>, don&rsquo;t forget to remove the relating data from the session storage to prevent unwanted scrolling behaviors of the page in the future.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://www.explainxkcd.com/wiki/index.php/1309:_Infinite_Scrolling target=_blank>https://www.explainxkcd.com/wiki/index.php/1309:_Infinite_Scrolling</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

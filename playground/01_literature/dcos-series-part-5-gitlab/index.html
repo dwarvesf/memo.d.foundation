@@ -946,7 +946,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -995,7 +995,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1044,7 +1044,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1093,7 +1093,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1113,7 +1113,17 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=setting-https>Setting HTTPS <a href=#setting-https></a></h2><p>By default, Gitlab on DC/OS doesn’t supprt <code>HTTPS</code>, but we can customize a bit to make it more secure. To do that, we need to do a few things below to enable <code>HTTPS</code>, ok let’s do it now:</p><ol><li><code>Edit</code> service Gitlab and add below setting to env <code>GITLAB_OMNIBUS_CONFIG</code> then <code>Review & Run</code> it:</li></ol><pre><code>Packages</code>0</pre><ol start=2><li>Copy your <code>Packages</code>1 files to public node which is running <code>Packages</code>2. For me, I will copy and paste it to<code>Packages</code>3</li></ol><pre><code>Packages</code>4</pre><ol start=3><li>Config <code>Packages</code>2 service:</li></ol><ul><li>Add new sharing volumes</li></ul><pre><code>Packages</code>6</pre><ul><li>Add <code>Packages</code>7to <code>Packages</code>8in <code>Packages</code>9</li></ul><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=setting-https>Setting HTTPS <a href=#setting-https></a></h2><p>By default, Gitlab on DC/OS doesn’t supprt <code>HTTPS</code>, but we can customize a bit to make it more secure. To do that, we need to do a few things below to enable <code>HTTPS</code>, ok let’s do it now:</p><ol><li><code>Edit</code> service Gitlab and add below setting to env <code>GITLAB_OMNIBUS_CONFIG</code> then <code>Review & Run</code> it:</li></ol><pre><code class=language-plain_text>nginx['proxy_set_headers'] = {   \&quot;X-Forwarded-Proto\&quot; =&gt; \&quot;https\&quot;,   \&quot;X-Forwarded-Ssl\&quot; =&gt; \&quot;on\&quot;  }
+</code></pre><ol start=2><li>Copy your <code>.pem</code> files to public node which is running <code>marathon-lb</code>. For me, I will copy and paste it to<code>/srv/marathon-lb/domains/example-git-domain.com</code></li></ol><pre><code class=language-plain_text>$ scp cert.pem core@public-ip:~
+$ ssh core@public-ip
+$ sudo mkdir -p /srv/marathon-lb/domains/ssl/example-git-domain.com
+$ sudo mv cert.pem /srv/marathon-lb/domains/ssl/example-git-domain.com
+</code></pre><ol start=3><li>Config <code>marathon-lb</code> service:</li></ol><ul><li>Add new sharing volumes</li></ul><pre><code class=language-plain_text>  {
+    &quot;containerPath&quot;: &quot;/etc/ssl/domains&quot;,
+    &quot;hostPath&quot;: &quot;/srv/marathon-lb/ssl/domains&quot;,
+    &quot;mode&quot;: &quot;RO&quot;
+  }
+</code></pre><ul><li>Add <code>"/etc/ssl/domains/example-git-domain.com/cert.pem"\</code>to <code>args</code>in <code>JSON Editor</code></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/dcos-series-part-5---gitlab_6d0a8c8c9d3f0ea69d31fd97da4de9b1_md5.webp`,
@@ -1142,7 +1152,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1162,7 +1172,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p><code>Review & Run</code> marathon-lb again to update new changes</p></li><li><p>After updating those settings, you now can go to <code>Gitlab</code>1 to enjoy your result.</p></li></ul><p>If you face anything weird while setting up your Gitlab, you can contact me via <code>Gitlab</code>2</p></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p><code>Review & Run</code> marathon-lb again to update new changes</p></li><li><p>After updating those settings, you now can go to <code>your-gitlab-domain.com</code> to enjoy your result.</p></li></ul><p>If you face anything weird while setting up your Gitlab, you can contact me via <code>quang@dwarvesf.com.</code></p></div><script defer type=module>
   async function loadMentions() {
     try {
       

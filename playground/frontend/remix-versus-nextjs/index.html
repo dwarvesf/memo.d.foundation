@@ -941,22 +941,25 @@ export default function App() {
     &lt;/div&gt;
   );
 }
-</code></pre><h3 id=data-mutation>Data Mutation <a href=#data-mutation></a></h3><p>Next.js doesn&rsquo;t do anything for mutations. Basically, we would have to handle everything from creating a form, fetching data, managing state, adding event handlers, to finally dealing with errors, interruptions, and race conditions.</p><p>Data mutations in Remix are built on top of two fundamental web APIs: <code class=language-javascript>pages/index.js ==> /
-pages/users/index.js ==> /users
-pages/users/create.js ==> /users/create
-</code>0 and HTTP. All we have to do is to use a <code class=language-javascript>pages/index.js ==> /
-pages/users/index.js ==> /users
-pages/users/create.js ==> /users/create
-</code>1 component (works identically to <code class=language-javascript>pages/index.js ==> /
-pages/users/index.js ==> /users
-pages/users/create.js ==> /users/create
-</code>0 with a couple of extra goodies for optimistic UI etc.) and a route function named <code class=language-javascript>pages/index.js ==> /
-pages/users/index.js ==> /users
-pages/users/create.js ==> /users/create
-</code>3. When the user submits a form, Remix with call the action for the form and reload all of the data on the page. This ensures that any updates to the data are reflected in the UI.</p><pre><code class=language-javascript>pages/index.js ==&gt; /
-pages/users/index.js ==&gt; /users
-pages/users/create.js ==&gt; /users/create
-</code>4</pre><h3 id=error-handling>Error Handling <a href=#error-handling></a></h3><p>Next.js define some custom pages for certain status errors like 404 or 500 errors. However, some errors around data and rendering are not supported.</p><p>Remix has an error boundary for handling errors. When we create a route component, we can also define an error boundary for catching any errors that occur in the route component. It likes having two components in a route file, with one being the actual route component and one being the fallback when errors happen in the former. One noteworthy thing is when there is an error in a nested component route and this route has no error boundary, the error bubbles up the nested tree until caught by a parent’s error boundary.</p><p><img x-data="{
+</code></pre><h3 id=data-mutation>Data Mutation <a href=#data-mutation></a></h3><p>Next.js doesn&rsquo;t do anything for mutations. Basically, we would have to handle everything from creating a form, fetching data, managing state, adding event handlers, to finally dealing with errors, interruptions, and race conditions.</p><p>Data mutations in Remix are built on top of two fundamental web APIs: <code>&lt;form></code> and HTTP. All we have to do is to use a <code>&lt;Form></code> component (works identically to <code>&lt;form></code> with a couple of extra goodies for optimistic UI etc.) and a route function named <code>action</code>. When the user submits a form, Remix with call the action for the form and reload all of the data on the page. This ensures that any updates to the data are reflected in the UI.</p><pre><code class=language-javascript>export const action = async ({ request }) =&gt; {
+  const form = await request.formData()
+  const content = form.get('content')
+  return redirect('/')
+}
+
+export default function App() {
+  return (
+    &lt;div&gt;
+      &lt;Form method=&quot;POST&quot;&gt;
+        &lt;label htmlFor=&quot;content&quot;&gt;
+          Content: &lt;textarea name=&quot;content&quot; /&gt;
+        &lt;/label&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Add New&quot; /&gt;
+      &lt;/Form&gt;
+    &lt;/div&gt;
+  )
+}
+</code></pre><h3 id=error-handling>Error Handling <a href=#error-handling></a></h3><p>Next.js define some custom pages for certain status errors like 404 or 500 errors. However, some errors around data and rendering are not supported.</p><p>Remix has an error boundary for handling errors. When we create a route component, we can also define an error boundary for catching any errors that occur in the route component. It likes having two components in a route file, with one being the actual route component and one being the fallback when errors happen in the former. One noteworthy thing is when there is an error in a nested component route and this route has no error boundary, the error bubbles up the nested tree until caught by a parent’s error boundary.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remix-versus-nextjs_a7d49c4d71418c892f72a5c2a7dbee19_md5.webp`,
@@ -985,7 +988,7 @@ pages/users/create.js ==&gt; /users/create
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

@@ -943,74 +943,51 @@ Folder:
   padding: 20px;
 }
 </code></pre><p>Another example would be Tailwind&rsquo;s JIT mode:</p><pre><code class=language-html>&lt;div className=&quot;bg-[#FFF] font-[24px]&quot;&gt;...&lt;/div&gt;
-</code></pre><p><strong>Advantages</strong></p><ul><li>Easy to use.</li><li>Stylesheets generated during the build process are fully optimized with no unused styles.</li><li>Much more flexible & spontaneous (&mldr; just like inline style).</li></ul><h2 id=purposes>Purposes <a href=#purposes></a></h2><h3 id=atomic-css-keeps-things-simple>Atomic CSS keeps things simple <a href=#atomic-css-keeps-things-simple></a></h3><ul><li>Classes are immutable. They only do one thing.</li><li>Naming is straight forward. It&rsquo;s easy to tell what a class does at a glance.</li><li>Using a utility class in an HTML file is unambiguous - we know what we are changing, without concern of breaking something, somewhere else.</li><li>Easy to pick-up without diving too deep into actual stylesheets.</li></ul><h3 id=atomic-css-keeps-things-consistent>Atomic CSS keeps things consistent <a href=#atomic-css-keeps-things-consistent></a></h3><ul><li>Unit-based so styles are consistent & scalable. Let&rsquo;s look into how Tailwind setup their default styles again:<ul><li><code>m-4 -> margin: 1rem</code>, <code>m-8 -> margin: 2rem</code> → 1 unit ~ 0.25rem. With this, when we see <code>m-40</code>, we can easily deduce that it&rsquo;s <code>10rem</code>.</li></ul></li><li>Designs that follow an atomic system will be easier for developers to implement.<ul><li>An offset of 1 or 2 pixels while dragging components around in Figma might be neglectible, but applying those styles to the app will bloat it with &ldquo;magic numbers&rdquo; that feel random & irrelevant.</li><li>With designers & developers agreeing on a common styling system, developers still know what they have to use when encountering &ldquo;magic numbers&rdquo; in the design. They can see a <code>padding: 63px</code> and know the designers actually meant <code class=language-css># 1 unit ~ 0.25rem .m-4 {
-margin: 1rem;
+</code></pre><p><strong>Advantages</strong></p><ul><li>Easy to use.</li><li>Stylesheets generated during the build process are fully optimized with no unused styles.</li><li>Much more flexible & spontaneous (&mldr; just like inline style).</li></ul><h2 id=purposes>Purposes <a href=#purposes></a></h2><h3 id=atomic-css-keeps-things-simple>Atomic CSS keeps things simple <a href=#atomic-css-keeps-things-simple></a></h3><ul><li>Classes are immutable. They only do one thing.</li><li>Naming is straight forward. It&rsquo;s easy to tell what a class does at a glance.</li><li>Using a utility class in an HTML file is unambiguous - we know what we are changing, without concern of breaking something, somewhere else.</li><li>Easy to pick-up without diving too deep into actual stylesheets.</li></ul><h3 id=atomic-css-keeps-things-consistent>Atomic CSS keeps things consistent <a href=#atomic-css-keeps-things-consistent></a></h3><ul><li>Unit-based so styles are consistent & scalable. Let&rsquo;s look into how Tailwind setup their default styles again:<ul><li><code>m-4 -> margin: 1rem</code>, <code>m-8 -> margin: 2rem</code> -> 1 unit ~ 0.25rem. With this, when we see <code>m-40</code>, we can easily deduce that it&rsquo;s <code>10rem</code>.</li></ul></li><li>Designs that follow an atomic system will be easier for developers to implement.<ul><li>An offset of 1 or 2 pixels while dragging components around in Figma might be neglectible, but applying those styles to the app will bloat it with &ldquo;magic numbers&rdquo; that feel random & irrelevant.</li><li>With designers & developers agreeing on a common styling system, developers still know what they have to use when encountering &ldquo;magic numbers&rdquo; in the design. They can see a <code>padding: 63px</code> and know the designers actually meant <code>padding: 64px</code> (divisible by 4).</li></ul></li></ul><h3 id=atomic-css-is-not-inline-styles>Atomic CSS is not inline styles <a href=#atomic-css-is-not-inline-styles></a></h3><p>Inline styles have long been deemed a bad practice, and many people dislike Atomic CSS because they think <em>it shares the same suffer with inline styles</em>.</p><p>Here’s an example:</p><blockquote><p>What if we want to change everything with a <code>.black</code> class to be navy instead?</p></blockquote><p>An easy solution would be finding all instances of <code>.black</code> with our Text Editor and replace them manually. However, it&rsquo;s a <em>tedious</em> deed, and exactly what is frowned upon by the community. People value <em>reusability</em>.</p><p><strong>But we do have reusability with Atomic CSS</strong> (along with many other things).</p><h4 id=reusability>Reusability <a href=#reusability></a></h4><p>Reusability of Atomic CSS comes from the way we use them. With libraries such as React, it&rsquo;s easy to define a <em>reusable</em> component, with all the styles bundled inside. Now changing the color of a widely-used button is a one-line operation:</p><pre><code class=language-jsx>export const CommonButton = () =&gt; {
+  return (
+    &lt;button type=&quot;button&quot; className=&quot;bg-primary&quot;&gt;
+      Button
+    &lt;/button&gt;
+  )
 }
-.m-8 {
-margin: 2rem;
+</code></pre><p>Combining with suitable tools, we can make it even more flexibile:</p><pre><code class=language-jsx>import { css } from '@linaria/core'
+
+const reusableButtonClassName = css`
+  @apply p-2 rounded bg-white font-base border-secondary;
+  line-height: 1;
+
+  @screen md {
+    @apply font-xl;
+  }
+`
+
+const reusableActiveButtonClassName = css`
+  @apply border-primary;
+`
+
+export const CommonButton = ({ isActive }) =&gt; {
+  return (
+    &lt;button type=&quot;button&quot; className={['reusableButtonClassName', isActive &amp;&amp; 'reusableActiveButtonClassName']}&gt;
+      Button
+    &lt;/button&gt;
+  )
 }
-</code>0 (divisible by 4).</li></ul></li></ul><h3 id=atomic-css-is-not-inline-styles>Atomic CSS is not inline styles <a href=#atomic-css-is-not-inline-styles></a></h3><p>Inline styles have long been deemed a bad practice, and many people dislike Atomic CSS because they think <em>it shares the same suffer with inline styles</em>.</p><p>Here’s an example:</p><blockquote><p>What if we want to change everything with a <code class=language-css># 1 unit ~ 0.25rem .m-4 {
-margin: 1rem;
-}
-.m-8 {
-margin: 2rem;
-}
-</code>1 class to be navy instead?</p></blockquote><p>An easy solution would be finding all instances of <code class=language-css># 1 unit ~ 0.25rem .m-4 {
-margin: 1rem;
-}
-.m-8 {
-margin: 2rem;
-}
-</code>1 with our Text Editor and replace them manually. However, it&rsquo;s a <em>tedious</em> deed, and exactly what is frowned upon by the community. People value <em>reusability</em>.</p><p><strong>But we do have reusability with Atomic CSS</strong> (along with many other things).</p><h4 id=reusability>Reusability <a href=#reusability></a></h4><p>Reusability of Atomic CSS comes from the way we use them. With libraries such as React, it&rsquo;s easy to define a <em>reusable</em> component, with all the styles bundled inside. Now changing the color of a widely-used button is a one-line operation:</p><pre><code class=language-css># 1 unit ~ 0.25rem .m-4 {
-  margin: 1rem;
+</code></pre><p>As you can see, we are utilizing the strength of both Atomic CSS and <a href>css-in-js</a>.</p><h4 id=abstraction>Abstraction <a href=#abstraction></a></h4><p>With atomic classes, it is possible to create abstractions that would be impossible with inline styles.</p><pre><code class=language-html>&lt;p style=&quot;font-family: helvetica; color: rgb(20, 20, 20)&quot;&gt;Inline styles suck.&lt;/p&gt;
+&lt;p class=&quot;helvetica rgb202020&quot;&gt;Badly written CSS isn't very different.&lt;/p&gt;
+&lt;p class=&quot;sans-serif color-dark&quot;&gt;Utility classes allow for abstraction.&lt;/p&gt;
+</code></pre><p>The first two examples shown above would require a manual find-and-replace in order to update styling were the design to change. The styles in the third example can be adjusted in a single place within a stylesheet.</p><h4 id=tooling>Tooling <a href=#tooling></a></h4><p>Sass, Less, PostCSS, Autoprefixer… The CSS community has created a lot of useful tools that weren’t available for inline styles.</p><h4 id=brevity>Brevity <a href=#brevity></a></h4><p>Rather than writing out verbose inline styles, atomic classes can be terse abbreviations of declarations. It’s less typing: <code>mt-0</code> vs <code>margin-top: 0</code>, <code>flex</code> vs <code>display: flex</code>, etc.</p><h4 id=specificity>Specificity <a href=#specificity></a></h4><p>Inline styles have the 2nd highest level of specificity (only less than <code>!important</code>) .The lower specificity of atomic classes compared to inline styles is a good thing. It allows more versatility.</p><h4 id=possibilities>Possibilities <a href=#possibilities></a></h4><p>Utility classes can do things inline styles can&rsquo;t.</p><p>Inline styles do not support media queries, pseudo selectors, <code>@supports</code>, or CSS animations. Perhaps you have a single hover effect you want to apply to disparate elements rather than to only one component.</p><pre><code class=language-css>.circle {
+  border-radius: 50%;
 }
 
-.m-8 {
-  margin: 2rem;
+.hover-radius-0:hover {
+  border-radius: 0;
 }
-</code>3</pre><p>Combining with suitable tools, we can make it even more flexibile:</p><pre><code class=language-css># 1 unit ~ 0.25rem .m-4 {
-  margin: 1rem;
+</code></pre><p>Simple reusable media query rules can also be turned into a utility class. Its common to use a classname prefix for small, medium and large screen sizes. Here is an example of a flexbox class that will only apply on medium and large screen sizes:</p><pre><code class=language-css>@media (min-width: 600px) {
+  .md-flex {
+    display: flex;
+  }
 }
-
-.m-8 {
-  margin: 2rem;
-}
-</code>4</pre><p>As you can see, we are utilizing the strength of both Atomic CSS and <a href>css-in-js</a>.</p><h4 id=abstraction>Abstraction <a href=#abstraction></a></h4><p>With atomic classes, it is possible to create abstractions that would be impossible with inline styles.</p><pre><code class=language-css># 1 unit ~ 0.25rem .m-4 {
-  margin: 1rem;
-}
-
-.m-8 {
-  margin: 2rem;
-}
-</code>5</pre><p>The first two examples shown above would require a manual find-and-replace in order to update styling were the design to change. The styles in the third example can be adjusted in a single place within a stylesheet.</p><h4 id=tooling>Tooling <a href=#tooling></a></h4><p>Sass, Less, PostCSS, Autoprefixer… The CSS community has created a lot of useful tools that weren’t available for inline styles.</p><h4 id=brevity>Brevity <a href=#brevity></a></h4><p>Rather than writing out verbose inline styles, atomic classes can be terse abbreviations of declarations. It’s less typing: <code class=language-css># 1 unit ~ 0.25rem .m-4 {
-margin: 1rem;
-}
-.m-8 {
-margin: 2rem;
-}
-</code>6 vs <code class=language-css># 1 unit ~ 0.25rem .m-4 {
-margin: 1rem;
-}
-.m-8 {
-margin: 2rem;
-}
-</code>7, <code class=language-css># 1 unit ~ 0.25rem .m-4 {
-margin: 1rem;
-}
-.m-8 {
-margin: 2rem;
-}
-</code>8 vs <code class=language-css># 1 unit ~ 0.25rem .m-4 {
-margin: 1rem;
-}
-.m-8 {
-margin: 2rem;
-}
-</code>9, etc.</p><h4 id=specificity>Specificity <a href=#specificity></a></h4><p>Inline styles have the 2nd highest level of specificity (only less than <code class=language-html>&lt;div class="Bgc(#0280ae) C(#fff) P(20px)">Lorem ipsum&lt;/div>
-</code>0) .The lower specificity of atomic classes compared to inline styles is a good thing. It allows more versatility.</p><h4 id=possibilities>Possibilities <a href=#possibilities></a></h4><p>Utility classes can do things inline styles can&rsquo;t.</p><p>Inline styles do not support media queries, pseudo selectors, <code class=language-html>&lt;div class="Bgc(#0280ae) C(#fff) P(20px)">Lorem ipsum&lt;/div>
-</code>1, or CSS animations. Perhaps you have a single hover effect you want to apply to disparate elements rather than to only one component.</p><pre><code class=language-html>&lt;div class=&quot;Bgc(#0280ae) C(#fff) P(20px)&quot;&gt;Lorem ipsum&lt;/div&gt;
-</code>2</pre><p>Simple reusable media query rules can also be turned into a utility class. Its common to use a classname prefix for small, medium and large screen sizes. Here is an example of a flexbox class that will only apply on medium and large screen sizes:</p><pre><code class=language-html>&lt;div class=&quot;Bgc(#0280ae) C(#fff) P(20px)&quot;&gt;Lorem ipsum&lt;/div&gt;
-</code>3</pre><h2 id=atomic-css-is-not-all-or-nothing>Atomic CSS is not all or nothing <a href=#atomic-css-is-not-all-or-nothing></a></h2><p>There&rsquo;s no doubt CSS utilities can cover a lot of common use-cases, but it&rsquo;s not all we need. There are plenty of cases where utility classes aren’t the best option:</p><ul><li>If you need to change a lot of styles for a particular component inside of a media query.</li><li>If you want to change multiple styles conditionally during run-time, based on a component&rsquo;s state.</li></ul><p>Refer back to <a href=#Reusability>this section</a> for a sample scenario. Utility classes can coexist with other approaches. It&rsquo;s just a good idea to define base styles and sane defaults globally.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://antfu.me/posts/reimagine-atomic-css target=_blank>https://antfu.me/posts/reimagine-atomic-css</a></li><li><a href=https://css-tricks.com/growing-popularity-atomic-css/ target=_blank>https://css-tricks.com/growing-popularity-atomic-css/</a></li><li><a href=https://css-tricks.com/lets-define-exactly-atomic-css/ target=_blank>https://css-tricks.com/lets-define-exactly-atomic-css/</a></li></ul></div><script defer type=module>
+</code></pre><h2 id=atomic-css-is-not-all-or-nothing>Atomic CSS is not all or nothing <a href=#atomic-css-is-not-all-or-nothing></a></h2><p>There&rsquo;s no doubt CSS utilities can cover a lot of common use-cases, but it&rsquo;s not all we need. There are plenty of cases where utility classes aren’t the best option:</p><ul><li>If you need to change a lot of styles for a particular component inside of a media query.</li><li>If you want to change multiple styles conditionally during run-time, based on a component&rsquo;s state.</li></ul><p>Refer back to <a href=#Reusability>this section</a> for a sample scenario. Utility classes can coexist with other approaches. It&rsquo;s just a good idea to define base styles and sane defaults globally.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://antfu.me/posts/reimagine-atomic-css target=_blank>https://antfu.me/posts/reimagine-atomic-css</a></li><li><a href=https://css-tricks.com/growing-popularity-atomic-css/ target=_blank>https://css-tricks.com/growing-popularity-atomic-css/</a></li><li><a href=https://css-tricks.com/lets-define-exactly-atomic-css/ target=_blank>https://css-tricks.com/lets-define-exactly-atomic-css/</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

@@ -947,7 +947,7 @@ func main() {
   thing.Name = &quot;gramaphone&quot;
   fmt.Println(things)           // [{record} {banana}]
 }
-</code></pre><p>⇒ fix:</p><pre><code class=language-go>func findThing(things []Thing, name string) *Thing {
+</code></pre><p>=> fix:</p><pre><code class=language-go>func findThing(things []Thing, name string) *Thing {
   for i := range things {
     if things[i].Name == name {
       return &amp;things[i]
@@ -962,7 +962,7 @@ func main() {
 	y = append(y, 555)          // y = {3, 555}
 	fmt.Println(x)              // {1, 2, 3, 555, 5}
 }
-</code></pre><p>⇒ fix:</p><pre><code class=language-go>func main() {
+</code></pre><p>=> fix:</p><pre><code class=language-go>func main() {
 	x := []int{1, 2, 3, 4, 5}
 	y := x[2:3:3]
 	fmt.Println(y)

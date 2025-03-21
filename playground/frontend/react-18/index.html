@@ -983,7 +983,29 @@ startTransition(() =&gt; {
   * Layout effects are created.
   * Effects are created.
 
-</code></pre><ul><li>With Strict Mode in React 18, React will simulate unmounting and remounting the component in development mode:</li></ul><pre><code>handleClick</code>0</pre><h2 id=how-to-upgrade-to-react-18>How to upgrade to React 18 <a href=#how-to-upgrade-to-react-18></a></h2><ul><li>React 18 introduces a new root API which provides better ergonomics for managing roots. The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features.</li></ul><pre><code>handleClick</code>1</pre><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><ul><li>In a summary, React 18 comes with a few breaking changes, depending on how you use it. But all in all, it also brings out-of-the-box performance improvements including batching more by default, which removes the need to manually batch updates in application or library code.</li><li>Upgrading to React 18 should be straightforward, give it a try and let us know what you think.</li></ul></div><script defer type=module>
+</code></pre><ul><li>With Strict Mode in React 18, React will simulate unmounting and remounting the component in development mode:</li></ul><pre><code class=language-plain_text>
+* React mounts the component.
+  * Layout effects are created.
+  * Effects are created.
+* React simulates unmounting the component.
+  * Layout effects are destroyed.
+  * Effects are destroyed.
+* React simulates mounting the component with the previous state.
+  * Layout effects are created.
+  * Effects are created.
+
+</code></pre><h2 id=how-to-upgrade-to-react-18>How to upgrade to React 18 <a href=#how-to-upgrade-to-react-18></a></h2><ul><li>React 18 introduces a new root API which provides better ergonomics for managing roots. The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features.</li></ul><pre><code class=language-plain_text>// Before
+import { render } from 'react-dom';
+const container = document.getElementById('app');
+render(&lt;App tab=&quot;home&quot; /&gt;, container);
+
+// After
+import { createRoot } from 'react-dom/client';
+const container = document.getElementById('app');
+const root = createRoot(container); // createRoot(container!) if you use TypeScript
+root.render(&lt;App tab=&quot;home&quot; /&gt;);
+
+</code></pre><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><ul><li>In a summary, React 18 comes with a few breaking changes, depending on how you use it. But all in all, it also brings out-of-the-box performance improvements including batching more by default, which removes the need to manually batch updates in application or library code.</li><li>Upgrading to React 18 should be straightforward, give it a try and let us know what you think.</li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

@@ -946,7 +946,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1005,7 +1005,40 @@ UPDATE accounts SET balance = balance + 500 WHERE account_number = 'B';
 
 COMMIT;
 -- Releases the locks and commits the transaction
-</code></pre><p>In this way, another transaction that also wants to <code>SELECT FOR UPDATE</code> on the balance of A and B needs to wait until the current transaction is committed. This prevents data from conflicting.</p><p><strong>How about the advisory lock, when we should use this?</strong></p><p>Suppose you have a distributed system with multiple servers that need to process messages from a message queue. Each server is responsible for reading messages from a specific subset of the queue, and you want to ensure that no two servers process the same message at the same time.</p><p>One approach would be to use <code>SELECT ... FOR UPDATE</code> to lock the message rows as they are being processed. However, this would require all the servers to use the same database connection, which could become a bottleneck and limit scalability. Additionally, if a server crashes or loses its connection to the database, its locks would be released and the same message could potentially be processed by another server.</p><p>A better approach would be to use advisory locks. Each server could use its own database connection to acquire an advisory lock on the message ID before processing it. This would prevent other servers from processing the same message concurrently, even if they are using different database connections or even different databases.</p><p>Here&rsquo;s an example script that demonstrates the use of advisory locks in PostgreSQL:</p><pre><code>LOCK</code>0</pre><p>In general, advisory locks should be used sparingly and only when necessary. They can add complexity to the application code and can also be a source of contention and performance issues if not used correctly.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Explicit locking is the most accessible way to resolve concurrency control in high-workload databases. Depending on the context of your application or feature, you can choose the proper type/level of database locking to avoid data conflicts, considering the pros and cons. However, this is not the only option. You can also choose other methods, such as implementing a queue or a separate service that divides and rules every request to your database. I hope this post helps you choose the right way to implement your application in the future.</p><h2 id=references>REFERENCES <a href=#references></a></h2><p>[<a href=https://publish.obsidian.md/# target=_blank>1</a>] “Documentation: 15: 13.3. Explicit Locking.”, Table 13.2. Conflicting Lock Modes, PostgreSQL, <a href=https://www.postgresql.org/docs/current/explicit-locking.html target=_blank>https://www.postgresql.org/docs/current/explicit-locking.html</a>. Accessed 23 April 2023.</p><p>[<a href=https://publish.obsidian.md/# target=_blank>2</a>] “Documentation: 15: 13.3. Explicit Locking.”, Table 13.3. Conflicting Row-Level Locks, PostgreSQL, <a href=https://www.postgresql.org/docs/current/explicit-locking.html target=_blank>https://www.postgresql.org/docs/current/explicit-locking.html</a>. Accessed 23 April 2023.</p><p>[<a href=https://publish.obsidian.md/# target=_blank>3</a>] “Advisory Locks and How to Use Them.” <a href=http://shiroyasha.io/ target=_blank>shiroyasha.io</a>, 16 November 2017, <a href=https://shiroyasha.io/advisory-locks-and-how-to-use-them.html target=_blank>https://shiroyasha.io/advisory-locks-and-how-to-use-them.html</a>. Accessed 23 April 2023.</p><p>[<a href=https://publish.obsidian.md/# target=_blank>4</a>]“Richard Clayton - Distributed Locking with Postgres Advisory Locks.” Richard Clayton, 16 February 2020, <a href=https://rclayton.silvrback.com/distributed-locking-with-postgres-advisory-locks target=_blank>https://rclayton.silvrback.com/distributed-locking-with-postgres-advisory-locks</a>. Accessed 23 April 2023.</p><p>[<a href=https://publish.obsidian.md/# target=_blank>5</a>]“Locking in Databases and Isolation Mechanisms | by Denny Sam | inspiringbrilliance.” Medium, <a href=https://medium.com/inspiredbrilliance/what-are-database-locks-1aff9117c290 target=_blank>https://medium.com/inspiredbrilliance/what-are-database-locks-1aff9117c290</a>. Accessed 23 April 2023.</p></div><script defer type=module>
+</code></pre><p>In this way, another transaction that also wants to <code>SELECT FOR UPDATE</code> on the balance of A and B needs to wait until the current transaction is committed. This prevents data from conflicting.</p><p><strong>How about the advisory lock, when we should use this?</strong></p><p>Suppose you have a distributed system with multiple servers that need to process messages from a message queue. Each server is responsible for reading messages from a specific subset of the queue, and you want to ensure that no two servers process the same message at the same time.</p><p>One approach would be to use <code>SELECT ... FOR UPDATE</code> to lock the message rows as they are being processed. However, this would require all the servers to use the same database connection, which could become a bottleneck and limit scalability. Additionally, if a server crashes or loses its connection to the database, its locks would be released and the same message could potentially be processed by another server.</p><p>A better approach would be to use advisory locks. Each server could use its own database connection to acquire an advisory lock on the message ID before processing it. This would prevent other servers from processing the same message concurrently, even if they are using different database connections or even different databases.</p><p>Here&rsquo;s an example script that demonstrates the use of advisory locks in PostgreSQL:</p><pre><code class=language-sql>-- Assume we have a message queue table with an ID column and a status column
+CREATE TABLE message_queue (
+  id SERIAL PRIMARY KEY,
+  status TEXT
+);
+
+-- Function to process a message with a given ID
+CREATE OR REPLACE FUNCTION process_message(id BIGINT)
+RETURNS VOID AS &lt;span&gt;
+$$
+DECLARE
+  lock_acquired BOOLEAN;
+BEGIN
+  -- Attempt to acquire an advisory lock on the message ID
+  lock_acquired := pg_try_advisory_lock(id);
+
+  -- If the lock was acquired, update the message status and commit the transaction
+  IF lock_acquired THEN
+    UPDATE message_queue SET status = 'processing' WHERE id = $1;
+    COMMIT;
+    -- Do some processing here...
+    UPDATE message_queue SET status = 'processed' WHERE id = $1;
+    COMMIT;
+  ELSE
+    -- The lock was not acquired, so another server must be processing this message
+    RAISE NOTICE 'Could not acquire lock for message ID %', id;
+  END IF;
+END;
+$$
+&lt;/span&gt; LANGUAGE plpgsql;
+
+-- Call the process_message function with a specific message ID
+SELECT process_message(123);
+</code></pre><p>In general, advisory locks should be used sparingly and only when necessary. They can add complexity to the application code and can also be a source of contention and performance issues if not used correctly.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Explicit locking is the most accessible way to resolve concurrency control in high-workload databases. Depending on the context of your application or feature, you can choose the proper type/level of database locking to avoid data conflicts, considering the pros and cons. However, this is not the only option. You can also choose other methods, such as implementing a queue or a separate service that divides and rules every request to your database. I hope this post helps you choose the right way to implement your application in the future.</p><h2 id=references>REFERENCES <a href=#references></a></h2><p>[<a href=https://publish.obsidian.md/# target=_blank>1</a>] “Documentation: 15: 13.3. Explicit Locking.”, Table 13.2. Conflicting Lock Modes, PostgreSQL, <a href=https://www.postgresql.org/docs/current/explicit-locking.html target=_blank>https://www.postgresql.org/docs/current/explicit-locking.html</a>. Accessed 23 April 2023.</p><p>[<a href=https://publish.obsidian.md/# target=_blank>2</a>] “Documentation: 15: 13.3. Explicit Locking.”, Table 13.3. Conflicting Row-Level Locks, PostgreSQL, <a href=https://www.postgresql.org/docs/current/explicit-locking.html target=_blank>https://www.postgresql.org/docs/current/explicit-locking.html</a>. Accessed 23 April 2023.</p><p>[<a href=https://publish.obsidian.md/# target=_blank>3</a>] “Advisory Locks and How to Use Them.” <a href=http://shiroyasha.io/ target=_blank>shiroyasha.io</a>, 16 November 2017, <a href=https://shiroyasha.io/advisory-locks-and-how-to-use-them.html target=_blank>https://shiroyasha.io/advisory-locks-and-how-to-use-them.html</a>. Accessed 23 April 2023.</p><p>[<a href=https://publish.obsidian.md/# target=_blank>4</a>]“Richard Clayton - Distributed Locking with Postgres Advisory Locks.” Richard Clayton, 16 February 2020, <a href=https://rclayton.silvrback.com/distributed-locking-with-postgres-advisory-locks target=_blank>https://rclayton.silvrback.com/distributed-locking-with-postgres-advisory-locks</a>. Accessed 23 April 2023.</p><p>[<a href=https://publish.obsidian.md/# target=_blank>5</a>]“Locking in Databases and Isolation Mechanisms | by Denny Sam | inspiringbrilliance.” Medium, <a href=https://medium.com/inspiredbrilliance/what-are-database-locks-1aff9117c290 target=_blank>https://medium.com/inspiredbrilliance/what-are-database-locks-1aff9117c290</a>. Accessed 23 April 2023.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

@@ -920,7 +920,7 @@ Folder:
       },
     }"><img class="yggdrasil-tree no-zoom" src=https://memo.d.foundation/img/footer-bg.svg><div x-show=!hideTitle x-bind:class="{ 'note-title': true, 'clear-title': isClearPage() }"><div class=title-index style=display:none>Migration Planning</div><div class=tags-index style=display:none>tags: migrations</div><h1 class=pagetitle x-text="isTagPage() ? `#${title.replaceAll('-', ' ')}` : title">Migration Planning</h1></div><div class=memo-content><p><a href=https://newsletter.pragmaticengineer.com/p/real-world-engineering-challenges target=_blank>https://newsletter.pragmaticengineer.com/p/real-world-engineering-challenges</a></p><p>tl;dr
 <strong>Migration plan</strong>
-What do we need to consider?</p><ul><li>Downtime</li><li>Data consistency</li><li>Rollback plan</li><li>Observable and measurable</li><li>Team awareness</li></ul><p>Common steps</p><ul><li>Dual reads / writes → old database is primary</li><li>Backfilling</li><li>Compare and validate new database</li><li>Dual reads / writes → new database is primary</li><li>Remove old database</li></ul></div><script defer type=module>
+What do we need to consider?</p><ul><li>Downtime</li><li>Data consistency</li><li>Rollback plan</li><li>Observable and measurable</li><li>Team awareness</li></ul><p>Common steps</p><ul><li>Dual reads / writes -> old database is primary</li><li>Backfilling</li><li>Compare and validate new database</li><li>Dual reads / writes -> new database is primary</li><li>Remove old database</li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

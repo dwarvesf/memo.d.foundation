@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1011,7 +1011,11 @@ tools = [
 ]
 
 openai_agent = initialize_agent(tools, openai_llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
-</code></pre><ol start=6><li>Finally, we have an agent that can give us based on data from our red alert QA system and the internet.</li></ol><pre><code>pip</code>0</pre><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Hopefully, this gives you an idea of how langchain can be used to create an agent that take indexes and data from our transient vector database. A lot of the processing for generating these prompts happens behind the scenes, so that we only need to worry about loading and consolidating which data we need to use as indexes for LLMs.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://python.langchain.com/en/latest/modules/indexes/getting_started.html target=_blank>https://python.langchain.com/en/latest/modules/indexes/getting_started.html</a></li><li><a href=https://github.com/kenhuangus/ChatGPT-FAQ/blob/main/vectorDB.md target=_blank>https://github.com/kenhuangus/ChatGPT-FAQ/blob/main/vectorDB.md</a></li></ul></div><script defer type=module>
+</code></pre><ol start=6><li>Finally, we have an agent that can give us based on data from our red alert QA system and the internet.</li></ol><pre><code class=language-python>query = 'What Discord username wrote &quot;i18n Frontend Guideline&quot;? What is his age in roman numerics?'
+openai_agent.run(query)
+
+# The username is An Tran and the age in Roman numerics is MMXXI.
+</code></pre><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Hopefully, this gives you an idea of how langchain can be used to create an agent that take indexes and data from our transient vector database. A lot of the processing for generating these prompts happens behind the scenes, so that we only need to worry about loading and consolidating which data we need to use as indexes for LLMs.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://python.langchain.com/en/latest/modules/indexes/getting_started.html target=_blank>https://python.langchain.com/en/latest/modules/indexes/getting_started.html</a></li><li><a href=https://github.com/kenhuangus/ChatGPT-FAQ/blob/main/vectorDB.md target=_blank>https://github.com/kenhuangus/ChatGPT-FAQ/blob/main/vectorDB.md</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

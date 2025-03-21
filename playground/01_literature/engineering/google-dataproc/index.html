@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -973,7 +973,9 @@ gcloud dataproc clusters create CLUSTER_NAME \\
   --num-workers NUM_WORKERS \\
   --worker-machine-type MACHINE_TYPE \\
   --master-machine-type MASTER_MACHINE_TYPE
-</code></pre><p>Replace the placeholders (<strong><code>CLUSTER_NAME</code></strong>, <strong><code>REGION</code></strong>, <strong><code>NUM_WORKERS</code></strong>, <strong><code>MACHINE_TYPE</code></strong>, <strong><code>MASTER_MACHINE_TYPE</code></strong>) with your desired values.</p></li></ul></li><li><p><strong>Access the Cluster:</strong></p><ul><li>Once the cluster is created, you can access the master node using SSH. You can find the SSH command in the Dataproc cluster details in the GCP Console.</li></ul></li><li><p><strong>Run Jobs:</strong></p><ul><li>Submit jobs to your Dataproc cluster using tools like Apache Spark or Hadoop. You can submit jobs using the <strong><code>Dataproc charge = # of vCPUs * hours * Dataproc price = 24 * 2 * $0.01 = $0.48</code>0</strong> command.</li></ul></li><li><p><strong>Delete the Cluster:</strong></p><ul><li><p>When you&rsquo;re done with the cluster, remember to delete it to avoid incurring unnecessary costs.</p><pre><code>Dataproc charge = # of vCPUs * hours * Dataproc price = 24 * 2 * $0.01 = $0.48</code>1</pre><p>Replace the placeholders with your cluster&rsquo;s name and region.</p></li></ul></li></ol><h2 id=how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console>How to deploy a Spark job on Dataproc (Using Google cloud console) <a href=#how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console></a></h2><h3 id=step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen>Step 1: In the created cluster click on <code>Dataproc charge = # of vCPUs * hours * Dataproc price = 24 * 2 * $0.01 = $0.48</code>2 button on the top right of the main console screen <a href=#step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen></a></h3><p><img x-data="{
+</code></pre><p>Replace the placeholders (<strong><code>CLUSTER_NAME</code></strong>, <strong><code>REGION</code></strong>, <strong><code>NUM_WORKERS</code></strong>, <strong><code>MACHINE_TYPE</code></strong>, <strong><code>MASTER_MACHINE_TYPE</code></strong>) with your desired values.</p></li></ul></li><li><p><strong>Access the Cluster:</strong></p><ul><li>Once the cluster is created, you can access the master node using SSH. You can find the SSH command in the Dataproc cluster details in the GCP Console.</li></ul></li><li><p><strong>Run Jobs:</strong></p><ul><li>Submit jobs to your Dataproc cluster using tools like Apache Spark or Hadoop. You can submit jobs using the <strong><code>gcloud dataproc jobs submit</code></strong> command.</li></ul></li><li><p><strong>Delete the Cluster:</strong></p><ul><li><p>When you&rsquo;re done with the cluster, remember to delete it to avoid incurring unnecessary costs.</p><pre><code class=language-bash>bashCopy code
+gcloud dataproc clusters delete CLUSTER_NAME --region REGION
+</code></pre><p>Replace the placeholders with your cluster&rsquo;s name and region.</p></li></ul></li></ol><h2 id=how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console>How to deploy a Spark job on Dataproc (Using Google cloud console) <a href=#how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console></a></h2><h3 id=step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen>Step 1: In the created cluster click on <code>Submit Job</code> button on the top right of the main console screen <a href=#step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen></a></h3><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-dataproc_63ff07262ca89f53636f0cbf3ac31e7f_md5.webp`,
@@ -1002,7 +1004,7 @@ gcloud dataproc clusters create CLUSTER_NAME \\
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1051,7 +1053,7 @@ gcloud dataproc clusters create CLUSTER_NAME \\
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1101,7 +1103,7 @@ gcloud dataproc clusters create CLUSTER_NAME \\
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1151,7 +1153,7 @@ gcloud dataproc clusters create CLUSTER_NAME \\
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1171,7 +1173,7 @@ gcloud dataproc clusters create CLUSTER_NAME \\
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Then press <code>Dataproc charge = # of vCPUs * hours * Dataproc price = 24 * 2 * $0.01 = $0.48</code>3 to submit the job</p></li></ul><h3 id=step-3>Step 3: <a href=#step-3></a></h3><p>After submitting the job you should be able to similar screen to this:
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Then press <code>Submit</code> to submit the job</p></li></ul><h3 id=step-3>Step 3: <a href=#step-3></a></h3><p>After submitting the job you should be able to similar screen to this:
 <img x-data="{
     title: ``,
     alt: ``,
@@ -1201,7 +1203,7 @@ gcloud dataproc clusters create CLUSTER_NAME \\
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1251,7 +1253,7 @@ gcloud dataproc clusters create CLUSTER_NAME \\
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1302,7 +1304,7 @@ Full video step by step:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
+        if (part === '' || part === '.' || part === '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
