@@ -55,7 +55,14 @@ jobs:
         id: deploy
         if: steps.changed-files.outputs.files != ''
         run: |
-          npx tsx scripts/deploy-arweave.ts vault/${{ steps.changed-files.outputs.files }}
+          # Convert space-separated list into array of quoted paths with vault/ prefix
+          FILES=()
+          for file in ${{ steps.changed-files.outputs.files }}; do
+            FILES+=("vault/$file")
+          done
+          
+          # Call the script with all files
+          npx tsx scripts/deploy-arweave.ts "${FILES[@]}"
 
       - name: Configure Git for submodule
         run: |
