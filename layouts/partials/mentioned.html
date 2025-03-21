@@ -61,30 +61,35 @@
       `;
 
       console.log('Executing mentions query for:', slug);
-      const response = await window.queryAPI(queryStr);
-      const mentionsData = response.result;
+      window.getDuckDB().then(async (conn) => {
+        console.time('Running mentions query');
+        const search = await conn.prepare(queryStr);
+        const searchData = await search.query();
+        const mentionsData = window.parseDuckDBData(searchData);
+        console.timeEnd('Running mentions query');
 
-      if (mentionsData && mentionsData.length > 0) {
-        console.log(`Found ${mentionsData.length} mentions for ${slug}`);
-        const event = new CustomEvent('page-mentions', {
-          detail: {
-            data: mentionsData,
-            loading: false,
-          },
-        });
-        window.dispatchEvent(event);
-      } else {
-        console.log('No mentions found for', slug);
-        // Signal empty results
-        window.dispatchEvent(
-          new CustomEvent('page-mentions', {
+        if (mentionsData && mentionsData.length > 0) {
+          console.log(`Found ${mentionsData.length} mentions for ${slug}`);
+          const event = new CustomEvent('page-mentions', {
             detail: {
-              data: [],
+              data: mentionsData,
               loading: false,
             },
-          }),
-        );
-      }
+          });
+          window.dispatchEvent(event);
+        } else {
+          console.log('No mentions found for', slug);
+          // Signal empty results
+          window.dispatchEvent(
+            new CustomEvent('page-mentions', {
+              detail: {
+                data: [],
+                loading: false,
+              },
+            }),
+          );
+        }
+      });
     } catch (error) {
       console.error('Error loading mentions:', error);
       // Signal error
@@ -110,16 +115,15 @@
     }),
   );
 
-  // Load mentions when the page loads
-  // Wait for queryAPI to be available
-  if (window.queryAPI) {
+  // Wait for getDuckDB to be available
+  if (window.getDuckDB) {
     loadMentions();
   } else {
     window.addEventListener('load', () => {
-      if (window.queryAPI) {
+      if (window.getDuckDB) {
         loadMentions();
       } else {
-        console.warn('queryAPI not available for mentions');
+        console.warn('getDuckDB not available for mentions');
         // Signal API unavailable
         window.dispatchEvent(
           new CustomEvent('page-mentions', {
