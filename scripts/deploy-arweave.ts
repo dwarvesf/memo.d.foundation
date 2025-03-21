@@ -3,6 +3,7 @@ import fs from "fs";
 import matter from "gray-matter";
 import crypto from "crypto";
 import yaml from "js-yaml";
+import { resolve } from "path";
 
 const DEFAULT_IMAGE = "ar://29D_NrcYOiOLMPVROGt5v3URNxftYCDK7z1-kyNPRT0";
 
@@ -51,16 +52,17 @@ function isURL(path: string): boolean {
 }
 
 // Resolve a relative path by prefixing it with "vault" and handling double slashes
-function resolvePath(path: string): string {
+function resolvePath(filePath, path: string): string {
   if (isURL(path)) {
     return path;
   }
   
   // Remove leading slash if present
-  const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  let cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  cleanPath = resolve(filePath, cleanPath);
   
   // Prefix with "vault" and normalize any double slashes
-  const resolvedPath = `vault/${cleanPath}`.replace(/\/+/g, '/');
+  const resolvedPath = cleanPath.replace(/\/+/g, '/');
   
   return resolvedPath;
 }
@@ -125,6 +127,7 @@ async function uploadImageToArweave(
 
 async function deployContent(
   walletPath: string,
+  filePath: string,
   content: string,
   title: string,
   description: string,
@@ -144,7 +147,7 @@ async function deployContent(
     const imagePath = extractFirstImage(content);
     
     if (imagePath) {
-      const resolvedPath = resolvePath(imagePath);
+      const resolvedPath = resolvePath(filePath, imagePath);
       const uploadedImageUrl = await uploadImageToArweave(walletPath, resolvedPath);
       
       if (uploadedImageUrl) {
@@ -216,6 +219,7 @@ async function processFile(
 
   const result = await deployContent(
     walletPath,
+    filePath,
     content,
     title,
     description,
