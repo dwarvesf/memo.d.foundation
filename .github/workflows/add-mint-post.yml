@@ -53,7 +53,7 @@ jobs:
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
           RPC_URL: ${{ vars.RPC_URL }}
         run: |
-          npx tsx scripts/add-mint-post.ts ${{ steps.changed-files.outputs.files }}
+          npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
 
       - name: Configure Git for submodule
         run: |

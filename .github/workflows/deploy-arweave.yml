@@ -55,7 +55,7 @@ jobs:
         id: deploy
         if: steps.changed-files.outputs.files != ''
         run: |
-          npx tsx scripts/deploy-arweave.ts ${{ steps.changed-files.outputs.files }}
+          npx tsx scripts/deploy-arweave.ts '${{ steps.changed-files.outputs.files }}'
 
       - name: Configure Git for submodule
         run: |
