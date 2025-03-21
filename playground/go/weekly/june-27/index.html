@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -967,7 +967,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Problem:</p><ul><li><p>When profiling the application: if we do it from user space (e.g: <a href=https://go.dev/blog/pprof target=_blank>pprof</a>) => result is not reliable because there will be some overhead of each layer on top of the CPU/ memory.</p></li><li><p>2 initial options:</p><ul><li><em>Edit the Kernel Source Code</em>: not really practical since the usecase is trivial amount. (pending for years to be adopted by distros)</li><li><em>Write a Kernel Model</em>: this is more practical however, regular maintenance is inevitable as keeping up with the new kernel versions + risking corrupting the Kernel (e.g: if the module has a bug => crash the whole system)</li></ul></li></ul></li><li><p>Solution:</p><ul><li><strong>BPF</strong> was originally used in Linux to filter network packets.</li><li><strong>eBPF (Extended Berkeley Packet Filter)</strong> allows to trace syscalls, user space/ library functions, network packets&mldr; => system performance, monitoring, security&mldr;</li></ul><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Problem:</p><ul><li><p>When profiling the application: if we do it from user space (e.g: <a href=https://go.dev/blog/pprof target=_blank>pprof</a>) ⇒ result is not reliable because there will be some overhead of each layer on top of the CPU/ memory.</p></li><li><p>2 initial options:</p><ul><li><em>Edit the Kernel Source Code</em>: not really practical since the usecase is trivial amount. (pending for years to be adopted by distros)</li><li><em>Write a Kernel Model</em>: this is more practical however, regular maintenance is inevitable as keeping up with the new kernel versions + risking corrupting the Kernel (e.g: if the module has a bug ⇒ crash the whole system)</li></ul></li></ul></li><li><p>Solution:</p><ul><li><strong>BPF</strong> was originally used in Linux to filter network packets.</li><li><strong>eBPF (Extended Berkeley Packet Filter)</strong> allows to trace syscalls, user space/ library functions, network packets&mldr; ⇒ system performance, monitoring, security&mldr;</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/ebpf_overview.webp`,
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1045,7 +1045,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1094,7 +1094,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1114,7 +1114,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Problem:</p><ul><li>Grab wanted to experiment this to some of their services: use self-managed database <a href=https://github.com/grab/talaria target=_blank>TalariaDB</a>, orchestrated service and a monorepo one.</li></ul></li><li><p>Results:</p><ul><li>In a service cluster&rsquo;s image that uses TalariaDB, add <code>-PGO=./talaria.PGO</code> to the <code>go build</code> command: 10% CPU usage reduction, 30% memory usage reduction and 38% volume usage reduction.</li><li>On the orchestrated service: the reduction is only around 5% &#171; the effort the enable PGO => not substaintial</li><li>Monorepo service is currently not supported since needing a seperated pprof service and a build process supporting PGO arguments to attach/retrieve pprof file</li></ul></li><li><p>Conclusion:</p><ul><li>Applicable on simple, yet low-effort deployed services</li></ul></li></ul><hr><ul><li><p><a href=https://sazak.io/articles/an-applied-introduction-to-ebpf-with-go-2024-06-06 target=_blank>https://sazak.io/articles/an-applied-introduction-to-ebpf-with-go-2024-06-06</a></p></li><li><p><a href=https://www.redhat.com/en/blog/architecting-containers-part-1-why-understanding-user-space-vs-kernel-space-matters target=_blank>https://www.redhat.com/en/blog/architecting-containers-part-1-why-understanding-user-space-vs-kernel-space-matters</a></p></li><li><p><a href=https://ebpf.io/what-is-ebpf/ target=_blank>https://ebpf.io/what-is-ebpf/</a></p></li><li><p><a href=https://www.parca.dev/docs/overview/ target=_blank>https://www.parca.dev/docs/overview/</a></p></li><li><p><a href=https://pyroscope.io/ target=_blank>https://pyroscope.io/</a></p></li><li><p><a href=https://engineering.grab.com/profile-guided-optimisation target=_blank>https://engineering.grab.com/profile-guided-optimisation</a></p></li><li><p><a href=https://go.dev/doc/pgo target=_blank>https://go.dev/doc/pgo</a></p></li></ul></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p></li><li><p>Problem:</p><ul><li>Grab wanted to experiment this to some of their services: use self-managed database <a href=https://github.com/grab/talaria target=_blank>TalariaDB</a>, orchestrated service and a monorepo one.</li></ul></li><li><p>Results:</p><ul><li>In a service cluster&rsquo;s image that uses TalariaDB, add <code>-PGO=./talaria.PGO</code> to the <code>go build</code> command: 10% CPU usage reduction, 30% memory usage reduction and 38% volume usage reduction.</li><li>On the orchestrated service: the reduction is only around 5% &#171; the effort the enable PGO ⇒ not substaintial</li><li>Monorepo service is currently not supported since needing a seperated pprof service and a build process supporting PGO arguments to attach/retrieve pprof file</li></ul></li><li><p>Conclusion:</p><ul><li>Applicable on simple, yet low-effort deployed services</li></ul></li></ul><hr><ul><li><p><a href=https://sazak.io/articles/an-applied-introduction-to-ebpf-with-go-2024-06-06 target=_blank>https://sazak.io/articles/an-applied-introduction-to-ebpf-with-go-2024-06-06</a></p></li><li><p><a href=https://www.redhat.com/en/blog/architecting-containers-part-1-why-understanding-user-space-vs-kernel-space-matters target=_blank>https://www.redhat.com/en/blog/architecting-containers-part-1-why-understanding-user-space-vs-kernel-space-matters</a></p></li><li><p><a href=https://ebpf.io/what-is-ebpf/ target=_blank>https://ebpf.io/what-is-ebpf/</a></p></li><li><p><a href=https://www.parca.dev/docs/overview/ target=_blank>https://www.parca.dev/docs/overview/</a></p></li><li><p><a href=https://pyroscope.io/ target=_blank>https://pyroscope.io/</a></p></li><li><p><a href=https://engineering.grab.com/profile-guided-optimisation target=_blank>https://engineering.grab.com/profile-guided-optimisation</a></p></li><li><p><a href=https://go.dev/doc/pgo target=_blank>https://go.dev/doc/pgo</a></p></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

@@ -969,7 +969,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1018,7 +1018,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1079,59 +1079,183 @@ Folder:
         AND (amount + next_amount = 0)
         AND (next_time - time &lt; interval '5 seconds')
     THEN 'INTERNAL_TRANSFER'
-</code></pre><p><em>Code 3: SQL query to detect type of each transfer depend on it transaction before and after it</em></p><p>It is not enough, we can list the following types, and each type has a separate way of detecting:</p><ul><li>Internal transfers (between accounts)</li><li>External transfers out (withdrawals)</li><li>External transfers in (deposits)</li></ul><p>Everything is fine, from the two above queries, we can produce the record of the transfer with sender and receiver information. But don&rsquo;t miss the balance change. To do it, we need to select proper before and after balances depending on the time of transfer. Imagine we have 100 transfers, and the total amount of records of balance snapshot reaches million or more, it is a real nightmare.</p><p>There is a more subtle way. We can group close transactions of the same account together into a group, then just only need to query the balance of the account at the beginning of the group and calculate other balances by accumulating the amount.</p><pre><code class=language-sql>SUM(CASE
-    WHEN sender_time_gap &gt; interval '20 seconds' THEN 1
-    ELSE 0
-END) OVER (
-    PARTITION BY from_account
-    ORDER BY time
-) AS sender_group
-</code></pre><p><em>Code 4: SQL to group transfers of the same account and order by time</em></p><pre><code class=language-sql>FIRST_VALUE(
-    COALESCE(
-        (SELECT current_balance
-         FROM account_current_balance_snapshots bs
-         WHERE bs.account_id = from_account
-             AND bs.created_at &lt;= time
-         ORDER BY bs.created_at DESC
-         LIMIT 1),
-        0
-    )
-) OVER (...)
-</code></pre><p><em>Code 5: SQL to find balance for the first record of each transfer group that is the result of Code 4</em></p><p>Now, we have transfer history, in this, each record has its type, and information of the records before and after it. These records are also grouped together, and the leader of each group has its balanced information. Everything readies for querying the final result. Before going to the result, we may be missing a important step that is calculate balance for each transfer in the transfer group. To do it, Postgresql provides us some other interesting window functions. Tale a look following code.</p><pre><code class=language-sql>GREATEST(0, (
-    sender_initial_balance +
-    SUM(signed_amount) OVER (
-        PARTITION BY from_account, sender_group
-        ORDER BY time
-        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-    )
-))
-</code></pre><p><em>Code 6: SQL to calculate balance for each transfer in the transfer group by using window functions ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</em></p><p>Let&rsquo;s break down the window frame <code>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code>:</p><ul><li><code>UNBOUNDED PRECEDING</code> means &ldquo;start from the very first row in the partition&rdquo;. In our case, it starts from the first transfer in the group</li><li><code>CURRENT ROW</code> specifies &ldquo;up to the transfer we&rsquo;re currently calculating&rdquo;</li><li>Together, they create a sliding window that grows as we move through the transfers, always starting from the first transfer and including all transfers up to the current one</li></ul><p>This black magic save us from the danger from self join and <code>RECURSIVE</code> when calculating the accumulated total.</p><p>After all, every we are building can be wrapped in the below chart.</p><pre><code class=language-mermaid>flowchart TD
-    subgraph Input[&quot;Data Sources&quot;]
-        FI[Future Incomes]
-        ACBS[Balance Snapshots]
-    end
-
-    subgraph Processing[&quot;Enhanced Processing&quot;]
-        RT[&quot;Transfers Pairing&lt;br/&gt;(LEAD/LAG Analysis)&quot;]
-        TWT[&quot;Type Detection&lt;br/&gt;(Internal/External Classification)&quot;]
-        TWG[&quot;Transfer Grouping&lt;br/&gt;(Time-Based Clustering)&quot;]
-        GFB[&quot;Find Initial Balance&lt;br/&gt;(Starting States)&quot;]
-        TWB[&quot;Calculate Balances&lt;br/&gt;(Running Totals)&quot;]
-    end
-
-    subgraph Output[&quot;Enhanced Output&quot;]
-        FR[&quot;Final Record:&lt;br/&gt;- Paired Transfers&lt;br/&gt;- Balance Changes&lt;br/&gt;- Transfer Types&lt;br/&gt;- Time Relationships&quot;]
-    end
-
-    %% Data flow
-    FI --&gt; RT
-    RT --&gt; TWT
-    TWT --&gt; TWG
-    TWG --&gt; GFB
-    ACBS --&gt; GFB
-    GFB --&gt; TWB
-    TWB --&gt; FR
-</code></pre><p><em>Figure 4: Upgraded process to build transfer history</em></p><h2 id=conclusions>Conclusions <a href=#conclusions></a></h2><p>From the problem to the idea and finally is the implementation, nothing is too difficult. Every normal software developer can do it even better. But to do the huge thing, we first should begin from the smaller and make it done subtly and carefully. From this small problem, I learned some things:</p><ul><li><strong>The answer may lie in the question itself.</strong> Instead of blaming Binance API for being so bad, we can take a sympathetic look at it, and see if there is anything we can get out of it.</li><li><strong>One small change can make everything better.</strong> When comparing the original transfer tracking log, and the version after upgrading with some small changes in the DB query, there is a huge difference when seeing the new one. This reminds uss that impactful solutions don&rsquo;t always require complex architectures – sometimes they just need careful refinement of existing approaches.</li><li><strong>Data challenges are often best addressed through data-driven solutions</strong>. Rather than seeking fixes elsewhere, the key is to leverage the inherent patterns and structure within the data itself.</li></ul></div><script defer type=module>
+</code></pre><p><em>Code 3: SQL query to detect type of each transfer depend on it transaction before and after it</em></p><p>It is not enough, we can list the following types, and each type has a separate way of detecting:</p><ul><li>Internal transfers (between accounts)</li><li>External transfers out (withdrawals)</li><li>External transfers in (deposits)</li></ul><p>Everything is fine, from the two above queries, we can produce the record of the transfer with sender and receiver information. But don&rsquo;t miss the balance change. To do it, we need to select proper before and after balances depending on the time of transfer. Imagine we have 100 transfers, and the total amount of records of balance snapshot reaches million or more, it is a real nightmare.</p><p>There is a more subtle way. We can group close transactions of the same account together into a group, then just only need to query the balance of the account at the beginning of the group and calculate other balances by accumulating the amount.</p><pre><code class=language-JSON>[
+	{
+    	&quot;symbol&quot;: &quot;&quot;,					// trade symbol, if existing
+    	&quot;incomeType&quot;: &quot;TRANSFER&quot;,	// income type
+    	&quot;income&quot;: &quot;-0.37500000&quot;,  // income amount
+    	&quot;asset&quot;: &quot;USDT&quot;,				// income asset
+    	&quot;info&quot;:&quot;TRANSFER&quot;,			// extra information
+    	&quot;time&quot;: 1570608000000,
+    	&quot;tranId&quot;:9689322392,		// transaction id
+    	&quot;tradeId&quot;:&quot;&quot;					// trade id, if existing
+	},
+	{
+   		&quot;symbol&quot;: &quot;BTCUSDT&quot;,
+    	&quot;incomeType&quot;: &quot;COMMISSION&quot;,
+    	&quot;income&quot;: &quot;-0.01000000&quot;,
+    	&quot;asset&quot;: &quot;USDT&quot;,
+    	&quot;info&quot;:&quot;COMMISSION&quot;,
+    	&quot;time&quot;: 1570636800000,
+    	&quot;tranId&quot;:9689322392,
+    	&quot;tradeId&quot;:&quot;2059192&quot;
+	}
+]
+</code>0</pre><p><em>Code 4: SQL to group transfers of the same account and order by time</em></p><pre><code class=language-JSON>[
+	{
+    	&quot;symbol&quot;: &quot;&quot;,					// trade symbol, if existing
+    	&quot;incomeType&quot;: &quot;TRANSFER&quot;,	// income type
+    	&quot;income&quot;: &quot;-0.37500000&quot;,  // income amount
+    	&quot;asset&quot;: &quot;USDT&quot;,				// income asset
+    	&quot;info&quot;:&quot;TRANSFER&quot;,			// extra information
+    	&quot;time&quot;: 1570608000000,
+    	&quot;tranId&quot;:9689322392,		// transaction id
+    	&quot;tradeId&quot;:&quot;&quot;					// trade id, if existing
+	},
+	{
+   		&quot;symbol&quot;: &quot;BTCUSDT&quot;,
+    	&quot;incomeType&quot;: &quot;COMMISSION&quot;,
+    	&quot;income&quot;: &quot;-0.01000000&quot;,
+    	&quot;asset&quot;: &quot;USDT&quot;,
+    	&quot;info&quot;:&quot;COMMISSION&quot;,
+    	&quot;time&quot;: 1570636800000,
+    	&quot;tranId&quot;:9689322392,
+    	&quot;tradeId&quot;:&quot;2059192&quot;
+	}
+]
+</code>1</pre><p><em>Code 5: SQL to find balance for the first record of each transfer group that is the result of Code 4</em></p><p>Now, we have transfer history, in this, each record has its type, and information of the records before and after it. These records are also grouped together, and the leader of each group has its balanced information. Everything readies for querying the final result. Before going to the result, we may be missing a important step that is calculate balance for each transfer in the transfer group. To do it, Postgresql provides us some other interesting window functions. Tale a look following code.</p><pre><code class=language-JSON>[
+	{
+    	&quot;symbol&quot;: &quot;&quot;,					// trade symbol, if existing
+    	&quot;incomeType&quot;: &quot;TRANSFER&quot;,	// income type
+    	&quot;income&quot;: &quot;-0.37500000&quot;,  // income amount
+    	&quot;asset&quot;: &quot;USDT&quot;,				// income asset
+    	&quot;info&quot;:&quot;TRANSFER&quot;,			// extra information
+    	&quot;time&quot;: 1570608000000,
+    	&quot;tranId&quot;:9689322392,		// transaction id
+    	&quot;tradeId&quot;:&quot;&quot;					// trade id, if existing
+	},
+	{
+   		&quot;symbol&quot;: &quot;BTCUSDT&quot;,
+    	&quot;incomeType&quot;: &quot;COMMISSION&quot;,
+    	&quot;income&quot;: &quot;-0.01000000&quot;,
+    	&quot;asset&quot;: &quot;USDT&quot;,
+    	&quot;info&quot;:&quot;COMMISSION&quot;,
+    	&quot;time&quot;: 1570636800000,
+    	&quot;tranId&quot;:9689322392,
+    	&quot;tradeId&quot;:&quot;2059192&quot;
+	}
+]
+</code>2</pre><p><em>Code 6: SQL to calculate balance for each transfer in the transfer group by using window functions ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</em></p><p>Let&rsquo;s break down the window frame <code class=language-JSON>[
+{
+"symbol": "", // trade symbol, if existing
+"incomeType": "TRANSFER", // income type
+"income": "-0.37500000", // income amount
+"asset": "USDT", // income asset
+"info":"TRANSFER", // extra information
+"time": 1570608000000,
+"tranId":9689322392, // transaction id
+"tradeId":"" // trade id, if existing
+},
+{
+"symbol": "BTCUSDT",
+"incomeType": "COMMISSION",
+"income": "-0.01000000",
+"asset": "USDT",
+"info":"COMMISSION",
+"time": 1570636800000,
+"tranId":9689322392,
+"tradeId":"2059192"
+}
+]
+</code>3:</p><ul><li><code class=language-JSON>[
+{
+"symbol": "", // trade symbol, if existing
+"incomeType": "TRANSFER", // income type
+"income": "-0.37500000", // income amount
+"asset": "USDT", // income asset
+"info":"TRANSFER", // extra information
+"time": 1570608000000,
+"tranId":9689322392, // transaction id
+"tradeId":"" // trade id, if existing
+},
+{
+"symbol": "BTCUSDT",
+"incomeType": "COMMISSION",
+"income": "-0.01000000",
+"asset": "USDT",
+"info":"COMMISSION",
+"time": 1570636800000,
+"tranId":9689322392,
+"tradeId":"2059192"
+}
+]
+</code>4 means &ldquo;start from the very first row in the partition&rdquo;. In our case, it starts from the first transfer in the group</li><li><code class=language-JSON>[
+{
+"symbol": "", // trade symbol, if existing
+"incomeType": "TRANSFER", // income type
+"income": "-0.37500000", // income amount
+"asset": "USDT", // income asset
+"info":"TRANSFER", // extra information
+"time": 1570608000000,
+"tranId":9689322392, // transaction id
+"tradeId":"" // trade id, if existing
+},
+{
+"symbol": "BTCUSDT",
+"incomeType": "COMMISSION",
+"income": "-0.01000000",
+"asset": "USDT",
+"info":"COMMISSION",
+"time": 1570636800000,
+"tranId":9689322392,
+"tradeId":"2059192"
+}
+]
+</code>5 specifies &ldquo;up to the transfer we&rsquo;re currently calculating&rdquo;</li><li>Together, they create a sliding window that grows as we move through the transfers, always starting from the first transfer and including all transfers up to the current one</li></ul><p>This black magic save us from the danger from self join and <code class=language-JSON>[
+{
+"symbol": "", // trade symbol, if existing
+"incomeType": "TRANSFER", // income type
+"income": "-0.37500000", // income amount
+"asset": "USDT", // income asset
+"info":"TRANSFER", // extra information
+"time": 1570608000000,
+"tranId":9689322392, // transaction id
+"tradeId":"" // trade id, if existing
+},
+{
+"symbol": "BTCUSDT",
+"incomeType": "COMMISSION",
+"income": "-0.01000000",
+"asset": "USDT",
+"info":"COMMISSION",
+"time": 1570636800000,
+"tranId":9689322392,
+"tradeId":"2059192"
+}
+]
+</code>6 when calculating the accumulated total.</p><p>After all, every we are building can be wrapped in the below chart.</p><pre><code class=language-JSON>[
+	{
+    	&quot;symbol&quot;: &quot;&quot;,					// trade symbol, if existing
+    	&quot;incomeType&quot;: &quot;TRANSFER&quot;,	// income type
+    	&quot;income&quot;: &quot;-0.37500000&quot;,  // income amount
+    	&quot;asset&quot;: &quot;USDT&quot;,				// income asset
+    	&quot;info&quot;:&quot;TRANSFER&quot;,			// extra information
+    	&quot;time&quot;: 1570608000000,
+    	&quot;tranId&quot;:9689322392,		// transaction id
+    	&quot;tradeId&quot;:&quot;&quot;					// trade id, if existing
+	},
+	{
+   		&quot;symbol&quot;: &quot;BTCUSDT&quot;,
+    	&quot;incomeType&quot;: &quot;COMMISSION&quot;,
+    	&quot;income&quot;: &quot;-0.01000000&quot;,
+    	&quot;asset&quot;: &quot;USDT&quot;,
+    	&quot;info&quot;:&quot;COMMISSION&quot;,
+    	&quot;time&quot;: 1570636800000,
+    	&quot;tranId&quot;:9689322392,
+    	&quot;tradeId&quot;:&quot;2059192&quot;
+	}
+]
+</code>7</pre><p><em>Figure 4: Upgraded process to build transfer history</em></p><h2 id=conclusions>Conclusions <a href=#conclusions></a></h2><p>From the problem to the idea and finally is the implementation, nothing is too difficult. Every normal software developer can do it even better. But to do the huge thing, we first should begin from the smaller and make it done subtly and carefully. From this small problem, I learned some things:</p><ul><li><strong>The answer may lie in the question itself.</strong> Instead of blaming Binance API for being so bad, we can take a sympathetic look at it, and see if there is anything we can get out of it.</li><li><strong>One small change can make everything better.</strong> When comparing the original transfer tracking log, and the version after upgrading with some small changes in the DB query, there is a huge difference when seeing the new one. This reminds uss that impactful solutions don&rsquo;t always require complex architectures – sometimes they just need careful refinement of existing approaches.</li><li><strong>Data challenges are often best addressed through data-driven solutions</strong>. Rather than seeking fixes elsewhere, the key is to leverage the inherent patterns and structure within the data itself.</li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

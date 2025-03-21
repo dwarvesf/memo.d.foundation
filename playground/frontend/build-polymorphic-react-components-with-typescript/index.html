@@ -957,283 +957,356 @@ const Text = ({ children, as, ...rest }: TextProps) =&gt; {
 </code></pre><p>Our <code>Text</code> component works as expected but these are some couple of issues:</p><ul><li><code>as</code> property is <code>any</code> so we can pass anything we want even invalid tag.</li><li>We want to pass more attributes which belong to the HTML tag we provide</li></ul><pre><code class=language-typescript>&lt;Text as=&quot;label&quot; htmlFor=&quot;username&quot;&gt;
   Username
 &lt;/Text&gt;
-</code></pre><p>To fix the first issue, we need <code>as</code> only accepts a valid React element type. Fortunately, we can achieve this by using : <code>React.ElementType</code>. Update the implementation:</p><pre><code class=language-typescript>import React from 'react';
-
-type TextProps&lt;C extends React.ElementType&gt; = {
-  children: React.ReactNode;
-  as?: C;
-  // other properties
-};
-
-const Text = &lt;C extends React.ElementType&gt;({ children, as }: TextProps&lt;C&gt;) =&gt; {
-  // other code
-    ...
-
-  const Component = as || 'p';
-
-  return &lt;Component&gt;{children}&lt;/Component&gt;;
-};
-</code></pre><p>Now typescript will complain if you try to pass an invalid html tag</p><pre><code class=language-typescript>// It's ok
-&lt;Text as='p'&gt;Hello world&lt;/Text&gt;
-// Error!!!! Type '&quot;vincenzo&quot;' is not assignable to type 'ElementType&lt;any&gt; | undefined'
-&lt;Text as='vincenzo'&gt;Hello world&lt;/Text&gt;
-</code></pre><p>To solve second issue, once again, React provides us a useful type <code>React.ComponentPropsWithoutRef</code>.</p><pre><code class=language-typescript>type TextProps&lt;C extends React.ElementType&gt; = {
-  children: React.ReactNode
-  as?: C
-} &amp; React.ComponentPropsWithoutRef&lt;C&gt;
-</code></pre><p>Essentially, the type of <code>TextProps</code> is an object type containing <code>children</code>, <code>as</code> and all valid component properties that correlates with <code>as</code> tag.</p><p>Now, let’s give the solution a try! We try to add <code>htmlFor</code> property to a <code>Text</code> component with <code>as</code> is <code>p</code>. That’s wrong, and righty caught by TypeScript with the error: <code>Property 'htmlFor' does not exist on type...</code></p><pre><code class=language-typescript>// It's ok
-&lt;Text as='label' htmlFor='username'&gt;
-    Username
-&lt;/Text&gt;
-// Error!!!! Property 'htmlFor' does not exist on type 'IntrinsicAttributes &amp; { children: ReactNode; as?: &quot;p&quot; | undefined; }....
-&lt;Text as='p' htmlFor='username'&gt;
-    Username
-&lt;/Text&gt;
-</code></pre><p>Our component is looking good right now but we still have an issue. The <code>as</code> property is optional, if we omit it, the component will render as <code>p</code> tag (as we expected) but Typescript can&rsquo;t know about this so it can&rsquo;t check the valid properties for this component.</p><pre><code class=language-typescript>// No error !!! But it should be
-&lt;Text htmlFor=&quot;username&quot;&gt;User&lt;/Text&gt;
-</code></pre><p>To fix this issue, we need to assign a default type for type parameters in a generic type.</p><pre><code class=language-typescript>const Text = &lt;C extends React.ElementType = 'p' /* default type */&gt;({
-  children,
-  as,
-  ...rest
-}: TextProps&lt;C&gt;) =&gt; {
-  // other code
-   ...
-
-  const Component = as || 'p';
-
-  return &lt;Component {...rest}&gt;{children}&lt;/Component&gt;;
-};
-</code></pre><p>The previous example we had should now throw an error, that is when you pass <code>htmlFor</code> to the <code>Text</code> component without an <code>as</code> prop. It&rsquo;s magic. ✨✨</p><p>We still can improve our <code>Text</code> component. As we know, some html tags have some internal properties like <code>color</code>, if we want to provide our own <code>color</code> property (or other properties), we just don&rsquo;t want to mess it up. We need to filter our own properties out of internal properties.</p><pre><code class=language-typescript>// our custom text properties
-type Props {
-    color?: 'primary' | 'secondary',
-    size?: 'sm' | 'md' | 'lg'
-}
-// omit internal properties
-Omit&lt;React.ComponentPropsWithoutRef&lt;C&gt;, keyOf Props&gt;
-</code></pre><p>The full implementation looks like</p><pre><code class=language-typescript>type Props&lt;C extends React.ElementType&gt; = {
-  children: React.ReactNode;
-  as?: C;
-  color?: 'primary' | 'secondary';
-  size?: 'sm' | 'md' | 'lg';
-  // other properties...
-};
-
-type TextProps&lt;C extends React.ElementType&gt; = Props&lt;C&gt; &amp;
-  Omit&lt;React.ComponentPropsWithoutRef&lt;C&gt;, keyof Props&lt;C&gt;&gt;;
-
-const Text = &lt;C extends React.ElementType = 'p'&gt;({
-  children,
-  as,
-  ...rest
-}: TextProps&lt;C&gt;) =&gt; {
-  // other code
-    ...
-
-  const Component = as || 'p';
-
-  return &lt;Component {...rest}&gt;{children}&lt;/Component&gt;;
-};
-</code></pre><p>Our <code>Text</code> component is strongly typed.</p><p>Now, let&rsquo;s take it one step further. We want our solution works for other components not only <code>Text</code>. To make our solution reuseable, we can add one more generic type which represent the custom component.</p><p>Before going ahead, follow the <code>separation of concerns</code> principle, we should move <code>as</code> property out of our custom properties and define its own type.</p><pre><code>type AsProp&lt;C extends React.ElementType&gt; = {
-  as?: C;
-};
-</code></pre><p>Our reuseable solution will look like</p><pre><code class=language-typescript>type AsProp&lt;C extends React.ElementType&gt; = {
-  as?: C
-}
-
-type PropWithAs&lt;C extends React.ElementType, P = {}&gt; = P &amp; AsProp&lt;C&gt;
-
-export type PolymorphicComponentProps&lt;
-  C extends React.ElementType,
-  Props = {}, // adding one more generic type
-&gt; = PropWithAs&lt;C, Props&gt; &amp; Omit&lt;React.ComponentPropsWithoutRef&lt;C&gt;, keyof PropWithAs&lt;C, Props&gt;&gt;
-</code></pre><p>Now we can go ahead and use <code>PolymorphicComponentProps</code> on our components as follows:</p><pre><code class=language-typescript>// Text component
+</code></pre><p>To fix the first issue, we need <code>as</code> only accepts a valid React element type. Fortunately, we can achieve this by using : <code class=language-typescript>import React from 'react'
 type TextProps = {
-  children: React.ReactNode;
-  color?: 'primary' | 'secondary';
-  size?: 'sm' | 'md' | 'lg';
- // other properties...
-};
+children: React.ReactNode
+size?: 'sm' | 'md' | 'lg'
+color?: 'default' | 'primary' | 'secondary'
+className?: string
+}
+const Text = ({ children, className, size, color }: TextProps) => {
+// hooks to return CSS class base on component props
+const classes = useGetClasses('Text', { size, color })
+return &lt;p className={clsx(classes, className)}>{children}&lt;/p>
+}
+</code>0. Update the implementation:</p><pre><code class=language-typescript>import React from 'react'
 
-const Text = &lt;C extends React.ElementType = 'p'&gt;({
-  children,
-  as,
-  ...rest
-}: PolymorphicComponentProps&lt;C, TextProps&gt;) =&gt; {
+type TextProps = {
+  children: React.ReactNode
+  size?: 'sm' | 'md' | 'lg'
+  color?: 'default' | 'primary' | 'secondary'
+  className?: string
+}
+
+const Text = ({ children, className, size, color }: TextProps) =&gt; {
+  // hooks to return CSS class base on component props
+  const classes = useGetClasses('Text', { size, color })
+
+  return &lt;p className={clsx(classes, className)}&gt;{children}&lt;/p&gt;
+}
+</code>1</pre><p>Now typescript will complain if you try to pass an invalid html tag</p><pre><code class=language-typescript>import React from 'react'
+
+type TextProps = {
+  children: React.ReactNode
+  size?: 'sm' | 'md' | 'lg'
+  color?: 'default' | 'primary' | 'secondary'
+  className?: string
+}
+
+const Text = ({ children, className, size, color }: TextProps) =&gt; {
+  // hooks to return CSS class base on component props
+  const classes = useGetClasses('Text', { size, color })
+
+  return &lt;p className={clsx(classes, className)}&gt;{children}&lt;/p&gt;
+}
+</code>2</pre><p>To solve second issue, once again, React provides us a useful type <code class=language-typescript>import React from 'react'
+type TextProps = {
+children: React.ReactNode
+size?: 'sm' | 'md' | 'lg'
+color?: 'default' | 'primary' | 'secondary'
+className?: string
+}
+const Text = ({ children, className, size, color }: TextProps) => {
+// hooks to return CSS class base on component props
+const classes = useGetClasses('Text', { size, color })
+return &lt;p className={clsx(classes, className)}>{children}&lt;/p>
+}
+</code>3.</p><pre><code class=language-typescript>import React from 'react'
+
+type TextProps = {
+  children: React.ReactNode
+  size?: 'sm' | 'md' | 'lg'
+  color?: 'default' | 'primary' | 'secondary'
+  className?: string
+}
+
+const Text = ({ children, className, size, color }: TextProps) =&gt; {
+  // hooks to return CSS class base on component props
+  const classes = useGetClasses('Text', { size, color })
+
+  return &lt;p className={clsx(classes, className)}&gt;{children}&lt;/p&gt;
+}
+</code>4</pre><p>Essentially, the type of <code class=language-typescript>import React from 'react'
+type TextProps = {
+children: React.ReactNode
+size?: 'sm' | 'md' | 'lg'
+color?: 'default' | 'primary' | 'secondary'
+className?: string
+}
+const Text = ({ children, className, size, color }: TextProps) => {
+// hooks to return CSS class base on component props
+const classes = useGetClasses('Text', { size, color })
+return &lt;p className={clsx(classes, className)}>{children}&lt;/p>
+}
+</code>5 is an object type containing <code class=language-typescript>import React from 'react'
+type TextProps = {
+children: React.ReactNode
+size?: 'sm' | 'md' | 'lg'
+color?: 'default' | 'primary' | 'secondary'
+className?: string
+}
+const Text = ({ children, className, size, color }: TextProps) => {
+// hooks to return CSS class base on component props
+const classes = useGetClasses('Text', { size, color })
+return &lt;p className={clsx(classes, className)}>{children}&lt;/p>
+}
+</code>6, <code>as</code> and all valid component properties that correlates with <code>as</code> tag.</p><p>Now, let’s give the solution a try! We try to add <code class=language-typescript>import React from 'react'
+type TextProps = {
+children: React.ReactNode
+size?: 'sm' | 'md' | 'lg'
+color?: 'default' | 'primary' | 'secondary'
+className?: string
+}
+const Text = ({ children, className, size, color }: TextProps) => {
+// hooks to return CSS class base on component props
+const classes = useGetClasses('Text', { size, color })
+return &lt;p className={clsx(classes, className)}>{children}&lt;/p>
+}
+</code>9 property to a <code>Text</code> component with <code>as</code> is <code>&lt;p/></code>2. That’s wrong, and righty caught by TypeScript with the error: <code>&lt;p/></code>3</p><pre><code>&lt;p/&gt;</code>4</pre><p>Our component is looking good right now but we still have an issue. The <code>as</code> property is optional, if we omit it, the component will render as <code>&lt;p/></code>2 tag (as we expected) but Typescript can&rsquo;t know about this so it can&rsquo;t check the valid properties for this component.</p><pre><code>&lt;p/&gt;</code>7</pre><p>To fix this issue, we need to assign a default type for type parameters in a generic type.</p><pre><code>&lt;p/&gt;</code>8</pre><p>The previous example we had should now throw an error, that is when you pass <code class=language-typescript>import React from 'react'
+type TextProps = {
+children: React.ReactNode
+size?: 'sm' | 'md' | 'lg'
+color?: 'default' | 'primary' | 'secondary'
+className?: string
+}
+const Text = ({ children, className, size, color }: TextProps) => {
+// hooks to return CSS class base on component props
+const classes = useGetClasses('Text', { size, color })
+return &lt;p className={clsx(classes, className)}>{children}&lt;/p>
+}
+</code>9 to the <code>Text</code> component without an <code>as</code> prop. It&rsquo;s magic. ✨✨</p><p>We still can improve our <code>Text</code> component. As we know, some html tags have some internal properties like <code>as</code>3, if we want to provide our own <code>as</code>3 property (or other properties), we just don&rsquo;t want to mess it up. We need to filter our own properties out of internal properties.</p><pre><code>as</code>5</pre><p>The full implementation looks like</p><pre><code>as</code>6</pre><p>Our <code>Text</code> component is strongly typed.</p><p>Now, let&rsquo;s take it one step further. We want our solution works for other components not only <code>Text</code>. To make our solution reuseable, we can add one more generic type which represent the custom component.</p><p>Before going ahead, follow the <code>as</code>9 principle, we should move <code>as</code> property out of our custom properties and define its own type.</p><pre><code class=language-typescript>type TextProps = {
+    children: React.ReactNode
+    as?: any // We don't know the type of this property yet
+}
+
+const Text = ({ children, as, ...rest }: TextProps) =&gt; {
     // other code
     ...
 
-  const Component = as || 'p';
+    const Component = as || 'p';
 
-  return &lt;Component {...rest}&gt;{children}&lt;/Component&gt;;
-};
-
-// Usage
-&lt;Text as='h1'&gt;Heading&lt;/Text&gt;
-&lt;Text as='label' htmlFor='username'&gt;
-Username
-&lt;/Text&gt;
-
-// Button component
-type ButtonProps = {
-  children: React.ReactNode;
-  color?: 'primary' | 'secondary';
-  size?: 'sm' | 'md' | 'lg';
- // other properties...
-};
-
-const Button = &lt;C extends React.ElementType = 'button'&gt;({
-  children,
-  as,
-  ...rest
-}: PolymorphicComponentProps&lt;C, ButtonProps&gt;) =&gt; {
-    // other code
-    ...
-
-  const Component = as || 'button';
-
-  return &lt;Component {...rest}&gt;{children}&lt;/Component&gt;;
-};
-
-// Usage
-&lt;Button&gt;Submit&lt;/Text&gt;
-&lt;Button as='a' href='/login'&gt;Login&lt;/Text&gt; // act as a link
-
-</code></pre><p>Everything works like a charm. ✨✨</p><h2 id=how-about-ref>How about <code>ref</code>? <a href=#how-about-ref></a></h2><p>To write a functional component which support Ref forwarding, we can use <code>React.forwardRef</code> function. The <code>Button</code> component will be look like</p><pre><code class=language-typescript>const Button = React.forwardRef&lt;HTMLButtonElement, ButtonProps&gt;((props, ref) =&gt; {
-  const { children, ...rest } = props
-
-  return (
-    &lt;button ref={ref} {...rest}&gt;
-      {children}
-    &lt;/button&gt;
-  )
-})
-</code></pre><p>To create polymorphic component, we need to replace <code>HTMLButtonElement</code> with a generic type <code>C</code>. Unfortunately we can&rsquo;t do that, <code>forwardRef()</code> is a function call so we can&rsquo;t define a generic type. So we came up with defining type for the function inside <code>forwardRef()</code>.</p><pre><code class=language-typescript>const Button = React.forwardRef(
-  &lt;C extends React.ElementType = 'button'&gt;(
-    props: PolymorphicComponentProps&lt;C, ButtonProps&gt;,
-    ref: unknown, // we still don't know yet
-  ) =&gt; {
-    const { as, children, ...rest } = props
-    const Component = as || 'button'
     return (
-      &lt;Component ref={ref} {...rest}&gt;
-        {children}
-      &lt;/Component&gt;
+        &lt;Component {...rest}&gt;{children}&lt;/Component&gt;
     )
-  },
-)
-</code></pre><p>So what type of the<code>ref</code> object? Remember this guy <code>React.ComponentPropsWithoutRef</code>? he has a brother named <code>React.ComponentPropsWithRef</code> which includes all the relevant component props based on the element type, plus the ref object. Let&rsquo;s define a new helper type, <code>PolymorphicRef</code>, that returns the type of the ref object for the polymorphic component.</p><pre><code class=language-typescript>type PolymorphicRef&lt;C extends React.ElementType&gt; = React.ComponentPropsWithRef&lt;C&gt;['ref']
-
-const Button = React.forwardRef(&lt;C extends React.ElementType = 'button'&gt;(props: PolymorphicComponentProps&lt;C, ButtonProps&gt;, ref: PolymorphicRef&lt;C&gt;) =&gt; {
-  const { as, children, ...rest } = props
-  const Component = as || 'button'
-  return (
-    &lt;Component ref={ref} {...rest}&gt;
-      {children}
-    &lt;/Component&gt;
-  )
-})
-</code></pre><p>Our <code>Button</code> component still isn&rsquo;t strongly typed. We need to explicitly defined the type annotation for it. <code>Button</code> component will be receive <code>ButtonProps</code> and return a JSX</p><pre><code class=language-typescript>type ButtonComponent = (props: ButtonProps) =&gt; React.ReactElement | null
-</code></pre><p>The final step is to update <code>ButtonProp</code> to support <code>PolymorphicRef</code></p><pre><code class=language-typescript>// new helper type which includes the `ref` property for the polymorphic component
-type PolymorphicComponentPropsWithRef&lt;
-  C extends React.ElementType,
-  Props = {}
-&gt;
- = PolymorphicComponentProps&lt;C, Props&gt; &amp; { ref?: PolymorphicRef&lt;C&gt; }
-
-type CustomButtonProps = {
-  children: React.ReactNode;
-  color?: 'primary' | 'secondary';
-  size?: 'sm' | 'md' | 'lg';
-};
-
-type ButtonProps&lt;C extends React.ElementType&gt; = PolymorphicComponentPropsWithRef&lt;
-  C,
-  CustomButtonProps
-&gt;
-
-type ButtonComponent = &lt;C extends React.ElementType = 'button'&gt;(
-  props: ButtonProps&lt;C&gt;,
-) =&gt; React.ReactElement | null
-
-const Button: ButtonComponent = React.forwardRef(
-  &lt;C extends React.ElementType = 'button'&gt;(
-    props: ButtonProps&lt;C&gt;,
-    ref: PolymorphicRef&lt;C&gt;
-  ) =&gt; {
-    const { as, children, ...rest } = props;
-
-    const Component = as || 'button';
-    return (
-      &lt;Component ref={ref} {...rest}&gt;
-        {children}
-      &lt;/Component&gt;
-    );
-  }
-);
-
-// Useage
-const buttonRef1 = React.useRef&lt;HTMLButtonElement | null&gt;(null);
-const buttonRef2 = React.useRef&lt;HTMLDivElement | null&gt;(null);
-
-// It's ok
-&lt;Button ref={buttonRef1}&gt;Button1&lt;/Button&gt;
-// Error!!!! Type 'MutableRefObject&lt;HTMLDivElement | null&gt;' is not assignable to type 'RefObject&lt;HTMLButtonElement&gt;'...
-&lt;Button ref={buttonRef2}&gt;Button2&lt;/Button&gt;
-
-</code></pre><p>Finally, we now have a complete solution.</p><pre><code class=language-typescript>import React from 'react'
-
-// base types
-type AsProp&lt;C extends React.ElementType&gt; = {
-  as?: C
 }
-
-type PropWithAs&lt;C extends React.ElementType, Props = {}&gt; = Props &amp; AsProp&lt;C&gt;
-
-type PolymorphicComponentProps&lt;C extends React.ElementType, Props = {}&gt; = PropWithAs&lt;C, Props&gt; &amp; Omit&lt;React.ComponentPropsWithoutRef&lt;C&gt;, keyof PropWithAs&lt;C, Props&gt;&gt;
-
-type PolymorphicRef&lt;C extends React.ElementType&gt; = React.ComponentPropsWithRef&lt;C&gt;['ref']
-
-type PolymorphicComponentPropsWithRef&lt;C extends React.ElementType, Props = {}&gt; = PolymorphicComponentProps&lt;C, Props&gt; &amp; { ref?: PolymorphicRef&lt;C&gt; }
 
 // Usage
-
-// Text component
-type CustomTextProps = {
-  children: React.ReactNode
-  color?: 'primary' | 'secondary'
-  size?: 'sm' | 'md' | 'lg'
+// display with h1 tag
+&lt;Text as='h1'&gt;Title&lt;/Text&gt;
+// display with p tag
+&lt;Text as='p'&gt;Long paragraph&lt;/Text&gt;
+</code>1</pre><p>Our reuseable solution will look like</p><pre><code class=language-typescript>type TextProps = {
+    children: React.ReactNode
+    as?: any // We don't know the type of this property yet
 }
 
-type TextProps&lt;C extends React.ElementType&gt; = PolymorphicComponentProps&lt;C, CustomTextProps&gt;
+const Text = ({ children, as, ...rest }: TextProps) =&gt; {
+    // other code
+    ...
 
-const Text = &lt;C extends React.ElementType = 'p'&gt;({ children, as, ...rest }: TextProps&lt;C&gt;) =&gt; {
-  const Component = as || 'p'
+    const Component = as || 'p';
 
-  return &lt;Component {...rest}&gt;{children}&lt;/Component&gt;
+    return (
+        &lt;Component {...rest}&gt;{children}&lt;/Component&gt;
+    )
 }
 
-// Button component
-type CustomButtonProps = {
-  children: React.ReactNode
-  color?: 'primary' | 'secondary'
-  size?: 'sm' | 'md' | 'lg'
+// Usage
+// display with h1 tag
+&lt;Text as='h1'&gt;Title&lt;/Text&gt;
+// display with p tag
+&lt;Text as='p'&gt;Long paragraph&lt;/Text&gt;
+</code>2</pre><p>Now we can go ahead and use <code class=language-typescript>type TextProps = {
+children: React.ReactNode
+as?: any // We don't know the type of this property yet
+}
+const Text = ({ children, as, ...rest }: TextProps) => {
+// other code
+...
+const Component = as || 'p';
+return (
+&lt;Component {...rest}>{children}&lt;/Component>
+)
+}
+// Usage
+// display with h1 tag
+&lt;Text as='h1'>Title&lt;/Text>
+// display with p tag
+&lt;Text as='p'>Long paragraph&lt;/Text>
+</code>3 on our components as follows:</p><pre><code class=language-typescript>type TextProps = {
+    children: React.ReactNode
+    as?: any // We don't know the type of this property yet
 }
 
-type ButtonProps&lt;C extends React.ElementType&gt; = PolymorphicComponentPropsWithRef&lt;C, CustomButtonProps&gt;
+const Text = ({ children, as, ...rest }: TextProps) =&gt; {
+    // other code
+    ...
 
-type ButtonComponent = &lt;C extends React.ElementType = 'button'&gt;(props: ButtonProps&lt;C&gt;) =&gt; React.ReactElement | null
+    const Component = as || 'p';
 
-const Button: ButtonComponent = React.forwardRef(&lt;C extends React.ElementType = 'button'&gt;(props: ButtonProps&lt;C&gt;, ref: PolymorphicRef&lt;C&gt;) =&gt; {
-  const { as, children, ...rest } = props
+    return (
+        &lt;Component {...rest}&gt;{children}&lt;/Component&gt;
+    )
+}
 
-  const Component = as || 'button'
-  return (
-    &lt;Component ref={ref} {...rest}&gt;
-      {children}
-    &lt;/Component&gt;
-  )
-})
-</code></pre><p>Congratulation, we have successfully built a strongly typed Polymorphic React Component with Typescript. 🎉🎉🎉🎉</p></div><script defer type=module>
+// Usage
+// display with h1 tag
+&lt;Text as='h1'&gt;Title&lt;/Text&gt;
+// display with p tag
+&lt;Text as='p'&gt;Long paragraph&lt;/Text&gt;
+</code>4</pre><p>Everything works like a charm. ✨✨</p><h2 id=how-about-ref>How about <code class=language-typescript>type TextProps = {
+children: React.ReactNode
+as?: any // We don't know the type of this property yet
+}
+const Text = ({ children, as, ...rest }: TextProps) => {
+// other code
+...
+const Component = as || 'p';
+return (
+&lt;Component {...rest}>{children}&lt;/Component>
+)
+}
+// Usage
+// display with h1 tag
+&lt;Text as='h1'>Title&lt;/Text>
+// display with p tag
+&lt;Text as='p'>Long paragraph&lt;/Text>
+</code>5? <a href=#how-about-ref></a></h2><p>To write a functional component which support Ref forwarding, we can use <code class=language-typescript>type TextProps = {
+children: React.ReactNode
+as?: any // We don't know the type of this property yet
+}
+const Text = ({ children, as, ...rest }: TextProps) => {
+// other code
+...
+const Component = as || 'p';
+return (
+&lt;Component {...rest}>{children}&lt;/Component>
+)
+}
+// Usage
+// display with h1 tag
+&lt;Text as='h1'>Title&lt;/Text>
+// display with p tag
+&lt;Text as='p'>Long paragraph&lt;/Text>
+</code>6 function. The <code class=language-typescript>type TextProps = {
+children: React.ReactNode
+as?: any // We don't know the type of this property yet
+}
+const Text = ({ children, as, ...rest }: TextProps) => {
+// other code
+...
+const Component = as || 'p';
+return (
+&lt;Component {...rest}>{children}&lt;/Component>
+)
+}
+// Usage
+// display with h1 tag
+&lt;Text as='h1'>Title&lt;/Text>
+// display with p tag
+&lt;Text as='p'>Long paragraph&lt;/Text>
+</code>7 component will be look like</p><pre><code class=language-typescript>type TextProps = {
+    children: React.ReactNode
+    as?: any // We don't know the type of this property yet
+}
+
+const Text = ({ children, as, ...rest }: TextProps) =&gt; {
+    // other code
+    ...
+
+    const Component = as || 'p';
+
+    return (
+        &lt;Component {...rest}&gt;{children}&lt;/Component&gt;
+    )
+}
+
+// Usage
+// display with h1 tag
+&lt;Text as='h1'&gt;Title&lt;/Text&gt;
+// display with p tag
+&lt;Text as='p'&gt;Long paragraph&lt;/Text&gt;
+</code>8</pre><p>To create polymorphic component, we need to replace <code class=language-typescript>type TextProps = {
+children: React.ReactNode
+as?: any // We don't know the type of this property yet
+}
+const Text = ({ children, as, ...rest }: TextProps) => {
+// other code
+...
+const Component = as || 'p';
+return (
+&lt;Component {...rest}>{children}&lt;/Component>
+)
+}
+// Usage
+// display with h1 tag
+&lt;Text as='h1'>Title&lt;/Text>
+// display with p tag
+&lt;Text as='p'>Long paragraph&lt;/Text>
+</code>9 with a generic type <code>Text</code>0. Unfortunately we can&rsquo;t do that, <code>Text</code>1 is a function call so we can&rsquo;t define a generic type. So we came up with defining type for the function inside <code>Text</code>1.</p><pre><code>Text</code>3</pre><p>So what type of the<code class=language-typescript>type TextProps = {
+children: React.ReactNode
+as?: any // We don't know the type of this property yet
+}
+const Text = ({ children, as, ...rest }: TextProps) => {
+// other code
+...
+const Component = as || 'p';
+return (
+&lt;Component {...rest}>{children}&lt;/Component>
+)
+}
+// Usage
+// display with h1 tag
+&lt;Text as='h1'>Title&lt;/Text>
+// display with p tag
+&lt;Text as='p'>Long paragraph&lt;/Text>
+</code>5 object? Remember this guy <code class=language-typescript>import React from 'react'
+type TextProps = {
+children: React.ReactNode
+size?: 'sm' | 'md' | 'lg'
+color?: 'default' | 'primary' | 'secondary'
+className?: string
+}
+const Text = ({ children, className, size, color }: TextProps) => {
+// hooks to return CSS class base on component props
+const classes = useGetClasses('Text', { size, color })
+return &lt;p className={clsx(classes, className)}>{children}&lt;/p>
+}
+</code>3? he has a brother named <code>Text</code>6 which includes all the relevant component props based on the element type, plus the ref object. Let&rsquo;s define a new helper type, <code>Text</code>7, that returns the type of the ref object for the polymorphic component.</p><pre><code>Text</code>8</pre><p>Our <code class=language-typescript>type TextProps = {
+children: React.ReactNode
+as?: any // We don't know the type of this property yet
+}
+const Text = ({ children, as, ...rest }: TextProps) => {
+// other code
+...
+const Component = as || 'p';
+return (
+&lt;Component {...rest}>{children}&lt;/Component>
+)
+}
+// Usage
+// display with h1 tag
+&lt;Text as='h1'>Title&lt;/Text>
+// display with p tag
+&lt;Text as='p'>Long paragraph&lt;/Text>
+</code>7 component still isn&rsquo;t strongly typed. We need to explicitly defined the type annotation for it. <code class=language-typescript>type TextProps = {
+children: React.ReactNode
+as?: any // We don't know the type of this property yet
+}
+const Text = ({ children, as, ...rest }: TextProps) => {
+// other code
+...
+const Component = as || 'p';
+return (
+&lt;Component {...rest}>{children}&lt;/Component>
+)
+}
+// Usage
+// display with h1 tag
+&lt;Text as='h1'>Title&lt;/Text>
+// display with p tag
+&lt;Text as='p'>Long paragraph&lt;/Text>
+</code>7 component will be receive <code>as</code>1 and return a JSX</p><pre><code>as</code>2</pre><p>The final step is to update <code>as</code>3 to support <code>Text</code>7</p><pre><code>as</code>5</pre><p>Finally, we now have a complete solution.</p><pre><code>as</code>6</pre><p>Congratulation, we have successfully built a strongly typed Polymorphic React Component with Typescript. 🎉🎉🎉🎉</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

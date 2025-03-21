@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -998,201 +998,16 @@ base_goerli = { key = &quot;${BLOCK_EXPLORER_API_KEY}&quot; }
 &quot;@openzeppelin-contracts&quot; = { version = &quot;5.0.2&quot;, url = &quot;https://soldeer-revisions.s3.amazonaws.com/@openzeppelin-contracts/5_0_2_14-03-2024_06:11:59_contracts.zip&quot; }
 &quot;@openzeppelin-contracts-upgradeable&quot; = { version = &quot;5.0.2&quot;, url = &quot;https://soldeer-revisions.s3.amazonaws.com/@openzeppelin-contracts-upgradeable/5_0_2_14-03-2024_06:12:07_contracts-upgradeable.zip&quot; }
 forge-std = { version = &quot;1.9.1&quot;, url = &quot;https://soldeer-revisions.s3.amazonaws.com/forge-std/v1_9_1_03-07-2024_14:44:59_forge-std-v1.9.1.zip&quot; }
-</code></pre><p>2/ Run <code>forge soldeer install</code> command to install libraries from <code>[dependencies]</code> section.</p><p>3/ Replace all content in <code>remappings.txt</code> file with the following code:</p><pre><code class=language-bash>@openzeppelin/contracts=dependencies/@openzeppelin-contracts-5.0.2
-@openzeppelin-contracts-upgradeable=dependencies/@openzeppelin-contracts-upgradeable-5.0.2
-@forge-std=dependencies/forge-std-1.9.1
-</code></pre><h3 id=prepare-some-contracts>Prepare some contracts <a href=#prepare-some-contracts></a></h3><p>In this showcase, we&rsquo;ll utilize <a href=https://github.com/dwarvesf/contract-icy-swap/blob/main/contracts/IcySwap.sol target=_blank>IcySwap</a> contract, let&rsquo;s create a file called <code>IcySwap.sol</code> in <code>src/contracts</code> folder.</p><pre><code class=language-solidity>// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
-
-import &quot;@openzeppelin/contracts/token/ERC20/IERC20.sol&quot;;
-import &quot;@openzeppelin/contracts/token/ERC20/ERC20.sol&quot;;
-import &quot;@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol&quot;;
-import &quot;@openzeppelin/contracts/utils/Pausable.sol&quot;;
-import &quot;@openzeppelin/contracts/utils/ReentrancyGuard.sol&quot;;
-import &quot;@openzeppelin/contracts/access/Ownable.sol&quot;;
-
-contract IcySwap is Ownable, Pausable, ReentrancyGuard {
-    using SafeERC20 for IERC20;
-
-    IERC20 public immutable usdc;
-    IERC20 public immutable icy;
-
-    // This conversion is follow usdc decimals: 10**6
-    // Let say we want 1 icy equal 2 usdc -&gt; conversion rate should be 2 * 10**6
-    uint256 public icyToUsdcConversionRate;
-
-    event Swap(IERC20 indexed fromToken, uint256 indexed fromAmount);
-    event ConversionRateChanged(uint256 conversionRate);
-    event WithdrawToOwner(IERC20 indexed token, uint256 amount);
-
-    constructor(address initialOwner, IERC20 _usdc, IERC20 _icy, uint256 _conversionRate)
-        Ownable(initialOwner)
-    {
-        usdc = _usdc;
-        icy = _icy;
-        icyToUsdcConversionRate = _conversionRate;
-    }
-
-    // Swap methods
-    function swap(uint256 _amountIn) external nonReentrant whenNotPaused {
-        uint256 amountOut = (_amountIn * icyToUsdcConversionRate) / (10 ** 18);
-        _swap(icy, _amountIn, usdc, amountOut);
-        emit Swap(icy, _amountIn);
-    }
-
-    // Moderate methods
-    function setConversionRate(uint256 _conversionRate) external onlyOwner {
-        icyToUsdcConversionRate = _conversionRate;
-        emit ConversionRateChanged(_conversionRate);
-    }
-
-    function pause() external onlyOwner {
-        _pause();
-    }
-
-    function unpause() external onlyOwner {
-        _unpause();
-    }
-
-    function withdrawToOwner(IERC20 _token) external onlyOwner {
-        uint256 balance = _token.balanceOf(address(this));
-        require(balance &gt; 0, &quot;contract has no balance&quot;);
-        _token.safeTransfer(msg.sender, balance);
-        emit WithdrawToOwner(_token, balance);
-    }
-
-    // Internal methods
-    function _swap(IERC20 _fromToken, uint256 _fromAmount, IERC20 _toToken, uint256 _toAmount)
-        internal
-    {
-        require(_toToken.balanceOf(address(this)) &gt;= _toAmount, &quot;out of money&quot;);
-        _fromToken.safeTransferFrom(msg.sender, address(this), _fromAmount);
-        _toToken.safeTransfer(msg.sender, _toAmount);
-    }
-}
-</code></pre><p>Next, we&rsquo;ll create 2 sample ERC20 tokens to test our swapping logic.</p><ul><li>Create a file called <code>ICY.sol</code> in <code>src/contracts</code> folder.</li></ul><pre><code class=language-solidity>//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.24;
-
-import &quot;@openzeppelin/contracts/token/ERC20/ERC20.sol&quot;;
-
-contract IcyToken is ERC20 {
-    uint256 constant _initial_supply = 1000000000 * (10 ** 18);
-
-    constructor() ERC20(&quot;IcyToken&quot;, &quot;ICY&quot;) {
-        _mint(msg.sender, _initial_supply);
-    }
-
-    function mint(address to, uint256 amount) public {
-        _mint(to, amount);
-    }
-}
-</code></pre><ul><li>Create a file called <code>USDC.sol</code> in <code>src/contracts</code> folder.</li></ul><pre><code class=language-solidity>//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.24;
-
-import &quot;@openzeppelin/contracts/token/ERC20/ERC20.sol&quot;;
-
-contract UsdcToken is ERC20 {
-    uint256 constant _initial_supply = 1000000000 * (10 ** 18);
-
-    constructor() ERC20(&quot;UsdcToken&quot;, &quot;USDC&quot;) {
-        _mint(msg.sender, _initial_supply);
-    }
-
-    function mint(address to, uint256 amount) public {
-        _mint(to, amount);
-    }
-}
-</code></pre><h2 id=the-fun-part-begins>The fun part begins <a href=#the-fun-part-begins></a></h2><p>In this part, we&rsquo;ll use <code>forge-std</code> library which provides a set of helpful <a href=https://book.getfoundry.sh/forge/cheatcodes target=_blank>Cheatcodes</a> to:</p><ul><li>Create test scripts to test <code>IcySwap</code> contract.</li><li>Create deployment script to deploy <code>IcySwap</code> contract to <code>Base Sepolia</code> testnet.</li></ul><h3 id=testing-icyswap-contract>Testing <code>IcySwap</code> contract <a href=#testing-icyswap-contract></a></h3><p>Create a file called <code>IcySwap.t.sol</code> in <code>src/test</code> folder.</p><pre><code class=language-solidity>// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.24;
-
-import &quot;@forge-std/src/Test.sol&quot;;
-import &quot;@forge-std/src/Vm.sol&quot;;
-import &quot;@forge-std/src/console2.sol&quot;;
-import &quot;@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol&quot;;
-import &quot;@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol&quot;;
-import &quot;@openzeppelin/contracts/utils/cryptography/EIP712.sol&quot;;
-
-import &quot;../contracts/IcySwap.sol&quot;;
-import &quot;../contracts/ICY.sol&quot;;
-import &quot;../contracts/USDC.sol&quot;;
-
-contract StreamPointsTest is Test {
-    IcySwap internal icySwap;
-    IcyToken internal icy;
-    UsdcToken internal usdc;
-    
-    address internal user;
-    address internal icySwapOwner;
-    address internal ICY_ADDRESS;
-    address internal USDC_ADDRESS;
-
-    function setUp() public virtual {
-        user = address(1);
-        icySwapOwner = address(2);
-
-        icy = new IcyToken();
-        usdc = new UsdcToken();
-
-        vm.startPrank(icySwapOwner);
-        icySwap = new IcySwap(
-            IERC20(address(usdc)),
-            IERC20(address(icy)),
-            2 * 10 ** 6
-        );
-        vm.stopPrank();
-    }
-
-    function test_swap() public virtual {
-        vm.startPrank(user);
-        
-        // prepare balance
-        icy.mint(user, 150 * 10 ** 18);
-        usdc.mint(address(icySwap), 150000 * 10 ** 18);
-        icy.approve(address(icySwap), type(uint256).max);
-        
-        // start swap
-        icySwap.swap(100 * 10 ** 18);
-        
-        vm.stopPrank();
-        assertEq(
-            icy.balanceOf(address(icySwap)),
-            100 * 10 ** 18,
-            &quot;failed to swap&quot;
-        );
-    }
-
-    function test_setConversionRate() public virtual {
-        vm.prank(icySwapOwner);
-        icySwap.setConversionRate(3 * 10 ** 6);
-        assertEq(
-            icySwap.icyToUsdcConversionRate(),
-            3 * 10 ** 6,
-            &quot;failed to set conversion rate&quot;
-        );
-    }
-
-    function test_withdrawToOwner() public virtual {
-        vm.startPrank(icySwapOwner);
-
-        icy.mint(address(icySwap), 150 * 10 ** 18);
-        icySwap.withdrawToOwner(icy);
-
-        vm.stopPrank();
-        assertEq(
-            icySwap.icy().balanceOf(address(icySwap)),
-            0,
-            &quot;failed to withdraw to owner&quot;
-        );
-    }
-
-    function test_RevertWhen_CallerIsNotOwner() public {
-        vm.expectRevert();
-        vm.prank(user);
-        icySwap.setConversionRate(3 * 10 ** 6);
-    }
-}
-</code></pre><p><strong>Explaination</strong></p><p>1/ In <code>setUp()</code> function, we deploy:</p><ul><li>Use cheatcode <code>vm.startPrank(icySwapOwner)</code> to start a transaction from <code>icySwapOwner</code> account to deploy <code>IcySwap</code> contract.</li><li>Deploy 2 sample ERC20 tokens <code>ICY</code> and <code>USDC</code> used for <code>ICY/USDC</code> pair swapping.</li></ul><p>2/ In each test function, we also use cheatcode <code>vm.startPrank(user)</code> to start a transaction from <code>user</code> account to interact with <code>IcySwap</code> contract. Then make assertions to check the expected results using provided methods from <code>forge-std</code> library.</p><p><strong>Run the test</strong></p><p>You can run the test with traces by using the following command:</p><pre><code class=language-bash>forge test -vvvv
-</code></pre><p><code>Traces</code> is a feature that allows you to see the internal calls of a transaction. It&rsquo;s useful for debugging and understanding how a contract works.
+</code></pre><p>2/ Run <code>Basescan</code>0 command to install libraries from <code>Basescan</code>1 section.</p><p>3/ Replace all content in <code>Basescan</code>2 file with the following code:</p><pre><code>Basescan</code>3</pre><h3 id=prepare-some-contracts>Prepare some contracts <a href=#prepare-some-contracts></a></h3><p>In this showcase, we&rsquo;ll utilize <a href=https://github.com/dwarvesf/contract-icy-swap/blob/main/contracts/IcySwap.sol target=_blank>IcySwap</a> contract, let&rsquo;s create a file called <code>Basescan</code>4 in <code>Basescan</code>5 folder.</p><pre><code>Basescan</code>6</pre><p>Next, we&rsquo;ll create 2 sample ERC20 tokens to test our swapping logic.</p><ul><li>Create a file called <code>Basescan</code>7 in <code>Basescan</code>5 folder.</li></ul><pre><code>Basescan</code>9</pre><ul><li>Create a file called <code>.env</code>0 in <code>Basescan</code>5 folder.</li></ul><pre><code>.env</code>2</pre><h2 id=the-fun-part-begins>The fun part begins <a href=#the-fun-part-begins></a></h2><p>In this part, we&rsquo;ll use <code>.env</code>3 library which provides a set of helpful <a href=https://book.getfoundry.sh/forge/cheatcodes target=_blank>Cheatcodes</a> to:</p><ul><li>Create test scripts to test <code>.env</code>4 contract.</li><li>Create deployment script to deploy <code>.env</code>4 contract to <code>.env</code>6 testnet.</li></ul><h3 id=testing-icyswap-contract>Testing <code>.env</code>4 contract <a href=#testing-icyswap-contract></a></h3><p>Create a file called <code>.env</code>8 in <code>.env</code>9 folder.</p><pre><code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY&gt;
+</code>0</pre><p><strong>Explaination</strong></p><p>1/ In <code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY>
+</code>1 function, we deploy:</p><ul><li>Use cheatcode <code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY>
+</code>2 to start a transaction from <code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY>
+</code>3 account to deploy <code>.env</code>4 contract.</li><li>Deploy 2 sample ERC20 tokens <code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY>
+</code>5 and <code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY>
+</code>6 used for <code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY>
+</code>7 pair swapping.</li></ul><p>2/ In each test function, we also use cheatcode <code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY>
+</code>8 to start a transaction from <code>BLOCK_EXPLORER_API_KEY=&lt;YOUR_KEY>
+</code>9 account to interact with <code>.env</code>4 contract. Then make assertions to check the expected results using provided methods from <code>.env</code>3 library.</p><p><strong>Run the test</strong></p><p>You can run the test with traces by using the following command:</p><pre><code>foundry.toml</code>2</pre><p><code>foundry.toml</code>3 is a feature that allows you to see the internal calls of a transaction. It&rsquo;s useful for debugging and understanding how a contract works.
 <img x-data="{
     title: ``,
     alt: ``,
@@ -1222,7 +1037,7 @@ contract StreamPointsTest is Test {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1242,31 +1057,116 @@ contract StreamPointsTest is Test {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=deploying-icyswap-contract-to-base-sepolia-testnet>Deploying <code>IcySwap</code> contract to <code>Base Sepolia</code> testnet <a href=#deploying-icyswap-contract-to-base-sepolia-testnet></a></h3><p>Before deploying <code>IcySwap</code> contract to <code>Base Sepolia</code> testnet, we need to have following environment variables in <code>.env</code> file:</p><pre><code>WALLET_PRIVATE_KEY=&lt;your_wallet_private_key&gt;
-BLOCK_EXPLORER_API_KEY=&lt;your_block_explorer_api_key_from_basescan&gt;
-</code></pre><p>Create a file called <code>IcySwap.s.sol</code> in <code>src/scripts</code> folder with the following content:</p><pre><code class=language-solidity>// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=deploying-icyswap-contract-to-base-sepolia-testnet>Deploying <code>.env</code>4 contract to <code>.env</code>6 testnet <a href=#deploying-icyswap-contract-to-base-sepolia-testnet></a></h3><p>Before deploying <code>.env</code>4 contract to <code>.env</code>6 testnet, we need to have following environment variables in <code>.env</code> file:</p><pre><code>foundry.toml</code>9</pre><p>Create a file called <code class=language-toml>[profile.default]
+src = 'contracts'
+out = 'out'
+script = 'scripts'
+libs = ['node_modules', 'dependencies']
+test = 'test'
+cache_path = 'cache_forge'
+[rpc_endpoints]
+base = "https://mainnet.base.org"
+base_sepolia = "https://sepolia.base.org"
+base_goerli = "https://goerli.base.org"
+[etherscan]
+base = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_sepolia = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_goerli = { key = "${BLOCK_EXPLORER_API_KEY}" }
+</code>0 in <code class=language-toml>[profile.default]
+src = 'contracts'
+out = 'out'
+script = 'scripts'
+libs = ['node_modules', 'dependencies']
+test = 'test'
+cache_path = 'cache_forge'
+[rpc_endpoints]
+base = "https://mainnet.base.org"
+base_sepolia = "https://sepolia.base.org"
+base_goerli = "https://goerli.base.org"
+[etherscan]
+base = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_sepolia = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_goerli = { key = "${BLOCK_EXPLORER_API_KEY}" }
+</code>1 folder with the following content:</p><pre><code class=language-toml>[profile.default]
+src = 'contracts'
+out = 'out'
+script = 'scripts'
+libs = ['node_modules', 'dependencies']
+test = 'test'
+cache_path  = 'cache_forge'
 
-import { Script, console2 } from &quot;@forge-std/src/Script.sol&quot;;
-import &quot;../contracts/IcySwap.sol&quot;;
+[rpc_endpoints]
+base = &quot;https://mainnet.base.org&quot;
+base_sepolia = &quot;https://sepolia.base.org&quot;
+base_goerli = &quot;https://goerli.base.org&quot;
 
-contract IcySwapScript is Script {
-    function setUp() public { }
+[etherscan]
+base = { key = &quot;${BLOCK_EXPLORER_API_KEY}&quot; }
+base_sepolia = { key = &quot;${BLOCK_EXPLORER_API_KEY}&quot; }
+base_goerli = { key = &quot;${BLOCK_EXPLORER_API_KEY}&quot; }
+</code>2</pre><p>In above script:</p><ul><li>We can use <code class=language-toml>[profile.default]
+src = 'contracts'
+out = 'out'
+script = 'scripts'
+libs = ['node_modules', 'dependencies']
+test = 'test'
+cache_path = 'cache_forge'
+[rpc_endpoints]
+base = "https://mainnet.base.org"
+base_sepolia = "https://sepolia.base.org"
+base_goerli = "https://goerli.base.org"
+[etherscan]
+base = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_sepolia = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_goerli = { key = "${BLOCK_EXPLORER_API_KEY}" }
+</code>3 to get the value of <code class=language-toml>[profile.default]
+src = 'contracts'
+out = 'out'
+script = 'scripts'
+libs = ['node_modules', 'dependencies']
+test = 'test'
+cache_path = 'cache_forge'
+[rpc_endpoints]
+base = "https://mainnet.base.org"
+base_sepolia = "https://sepolia.base.org"
+base_goerli = "https://goerli.base.org"
+[etherscan]
+base = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_sepolia = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_goerli = { key = "${BLOCK_EXPLORER_API_KEY}" }
+</code>4 environment variable.</li><li>Then, use <code class=language-toml>[profile.default]
+src = 'contracts'
+out = 'out'
+script = 'scripts'
+libs = ['node_modules', 'dependencies']
+test = 'test'
+cache_path = 'cache_forge'
+[rpc_endpoints]
+base = "https://mainnet.base.org"
+base_sepolia = "https://sepolia.base.org"
+base_goerli = "https://goerli.base.org"
+[etherscan]
+base = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_sepolia = { key = "${BLOCK_EXPLORER_API_KEY}" }
+base_goerli = { key = "${BLOCK_EXPLORER_API_KEY}" }
+</code>5 to start a transaction from the account with the private key to deploy <code>.env</code>4 contract.</li></ul><p>Now, we can run the deployment script to deploy & verify our contract, by running:</p><pre><code class=language-toml>[profile.default]
+src = 'contracts'
+out = 'out'
+script = 'scripts'
+libs = ['node_modules', 'dependencies']
+test = 'test'
+cache_path  = 'cache_forge'
 
-    function run() public {
-        uint256 privateKey = vm.envUint(&quot;WALLET_PRIVATE_KEY&quot;);
-        address ICY_ADDRESS= 0x78a3f816a8e26af8c09F6Da3995Ee19bd69bf7fF;
-        address USDC_ADDRESS = 0x036CbD53842c5426634e7929541eC2318f3dCF7e;
-        vm.startBroadcast(privateKey);
-        
-        IcySwap icySwap = new IcySwap(IERC20(USDC_ADDRESS), IERC20(ICY_ADDRESS), 2 * 10**6);
-        
-        vm.stopBroadcast();
-        console2.log(&quot;IcySwap address: &quot;, address(icySwap));
-    }
-}
-</code></pre><p>In above script:</p><ul><li>We can use <code>vm.envUint()</code> to get the value of <code>WALLET_PRIVATE_KEY</code> environment variable.</li><li>Then, use <code>vm.startBroadcast()</code> to start a transaction from the account with the private key to deploy <code>IcySwap</code> contract.</li></ul><p>Now, we can run the deployment script to deploy & verify our contract, by running:</p><pre><code class=language-bash>forge script scripts/IcySwap.s.sol:IcySwapScript --broadcast --verify --rpc-url base_sepolia
-</code></pre><p>And our <code>IcySwap</code> contract will be deployed to <code>Base Sepolia</code> testnet & will automatically be verified.</p><p><img x-data="{
+[rpc_endpoints]
+base = &quot;https://mainnet.base.org&quot;
+base_sepolia = &quot;https://sepolia.base.org&quot;
+base_goerli = &quot;https://goerli.base.org&quot;
+
+[etherscan]
+base = { key = &quot;${BLOCK_EXPLORER_API_KEY}&quot; }
+base_sepolia = { key = &quot;${BLOCK_EXPLORER_API_KEY}&quot; }
+base_goerli = { key = &quot;${BLOCK_EXPLORER_API_KEY}&quot; }
+</code>7</pre><p>And our <code>.env</code>4 contract will be deployed to <code>.env</code>6 testnet & will automatically be verified.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/using-foundry-for-evm-smart-contract-developement_edacb4045a35d14a161b41e829079199_md5.webp`,
@@ -1295,7 +1195,7 @@ contract IcySwapScript is Script {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1315,7 +1215,7 @@ contract IcySwapScript is Script {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=other-usages>Other Usages <a href=#other-usages></a></h2><p>Foundry is not just be here to resolve our common tasks like compiling, testing and deploying smart contracts. It also provides a lot of other features that can be used to enhance our development workflow. One of them is <code>Fork testing</code>.</p><p><a href=https://book.getfoundry.sh/forge/fork-testing target=_blank>Fork testing</a> is like a time machine that allows us to test our contracts on a forked mainnet and move to a specific block for testing.</p><p>I found an interesting repository that use Foundry to reproduce a lot of DeFi hacked incidents in the past - It&rsquo;s <a href=https://github.com/SunWeb3Sec/DeFiHackLabs target=_blank>DeFiHackLabs</a>.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://book.getfoundry.sh/getting-started/first-steps target=_blank>https://book.getfoundry.sh/getting-started/first-steps</a></li><li><a href=https://milotruck.github.io/blog/Foundry-Cheatsheet/ target=_blank>https://milotruck.github.io/blog/Foundry-Cheatsheet/</a></li><li><a href=https://github.com/SunWeb3Sec/DeFiHackLabs target=_blank>https://github.com/SunWeb3Sec/DeFiHackLabs</a></li></ul></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=other-usages>Other Usages <a href=#other-usages></a></h2><p>Foundry is not just be here to resolve our common tasks like compiling, testing and deploying smart contracts. It also provides a lot of other features that can be used to enhance our development workflow. One of them is <code>Foundry toolchain</code>0.</p><p><a href=https://book.getfoundry.sh/forge/fork-testing target=_blank>Fork testing</a> is like a time machine that allows us to test our contracts on a forked mainnet and move to a specific block for testing.</p><p>I found an interesting repository that use Foundry to reproduce a lot of DeFi hacked incidents in the past - It&rsquo;s <a href=https://github.com/SunWeb3Sec/DeFiHackLabs target=_blank>DeFiHackLabs</a>.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://book.getfoundry.sh/getting-started/first-steps target=_blank>https://book.getfoundry.sh/getting-started/first-steps</a></li><li><a href=https://milotruck.github.io/blog/Foundry-Cheatsheet/ target=_blank>https://milotruck.github.io/blog/Foundry-Cheatsheet/</a></li><li><a href=https://github.com/SunWeb3Sec/DeFiHackLabs target=_blank>https://github.com/SunWeb3Sec/DeFiHackLabs</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

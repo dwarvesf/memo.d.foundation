@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1045,7 +1045,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1094,7 +1094,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1114,36 +1114,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=creating-a-non-flat-node_modules-directoryhttpspnpmiomotivationcreating-a-non-flat-node_modules-directory>Creating a non-flat node_modules <a href=https://pnpm.io/motivation#creating-a-non-flat-node_modules-directory target=_blank>directory</a> <a href=#creating-a-non-flat-node_modules-directoryhttpspnpmiomotivationcreating-a-non-flat-node_modules-directory></a></h3><p>First of all, we must ask why NPM chooses the flat <code>node_modules</code> structure approach.</p><p>Going back in time, before the release of NPM version 3, at this point, <code>node_modules</code> in NPM were still in a non-flat structure. As shown in the example below:</p><pre><code class=language-javascript>node_modules
-└─ foo
-   ├─ index.js
-   ├─ package.json
-   └─ node_modules
-      └─ bar
-         ├─ index.js
-         └─ package.json
-</code></pre><p>This approach has some issues such as:</p><ul><li>The issue of long directory paths on the Windows operating system occurred because the package created a dependency tree that was too deep</li><li>Packages were copy-pasted in many places because they were required in different dependencies</li></ul><p>Therefore, to solve this problem, NPM decided to flatten <code>node_modules</code>. After NPM version 3, the structure of the <code>node_modules</code> directory will become like this:</p><pre><code class=language-javascript>node_modules
-├─ foo
-|  ├─ index.js
-|  └─ package.json
-└─ bar
-   ├─ index.js
-   └─ package.json
-</code></pre><p>Consequently, the source code can access dependencies that are not explicitly declared in the project. Following the example above, even though the project only uses the <strong>foo</strong> package, we can completely use the <strong>bar</strong> package without declaring it in package.json.</p><p>Unlike NPM version 3, PNPM tries to solve the issues without flattening the dependency tree. Follow the example below:</p><pre><code class=language-javascript>node_modules
-├─ foo -&gt; .registry.npmjs.org/foo/1.0.0/node_modules/foo
-└─ .registry.npmjs.org
-   ├─ foo/1.0.0/node_modules
-   |  ├─ bar -&gt; ../../bar/2.0.0/node_modules/bar
-   |  └─ foo
-   |     ├─ index.js
-   |     └─ package.json
-   └─ bar/2.0.0/node_modules
-      └─ bar
-         ├─ index.js
-         └─ package.json
----------------------------------------
--&gt;: a symlink (or junction on Windows)
-</code></pre><p>The <strong>foo</strong> package still contains its dependency <strong>bar</strong> in the form of a symlink. And what’s special is that <strong>foo</strong> doesn’t have <code>node_modules</code> inside, this way the dependency tree of <strong>foo</strong> won’t be as deep as in NPM before the release of v3.</p><p>At first glance, the structure may seem complicated, but when working on larger projects you will see that this structure is clearer than NPM/Yarn</p><h2 id=disadvantages-of-pnpm>Disadvantages of PNPM <a href=#disadvantages-of-pnpm></a></h2><p>However, there are a few disadvantages of using PNPM. One of them is that it can be slower than other package managers like Yarn or NPM when installing packages for the <a href=https://medium.com/@buffet_time/why-you-should-move-to-pnpm-82962f332418 target=_blank>first time</a>. It can also be difficult to use with some build tools like <a href=https://dev.to/stackblitz/what-is-pnpm-and-is-it-really-so-fast-and-space-efficient-29la target=_blank>Webpack</a>.</p><p>PNPM&rsquo;s node_modules layout uses <a href=https://pnpm.io/symlinked-node-modules-structure target=_blank>symbolic links to create a nested structure of dependencies</a>. This has some implications for certain setups, where Windows machines or certain permissioned Linux environments may have trouble accessing these links.</p><p>Another potential issue with PNPM is that its nested dependency structure may not be compatible with certain older packages. <a href=https://pnpm.io/limitations target=_blank>This can cause issues when trying to install packages that have dependencies that are not compatible with PNPM’s nested structure</a>.</p><h2 id=showcase><strong>Showcase</strong> <a href=#showcase></a></h2><p>Thankfully, PNPM is employed by numerous large companies, demonstrating its effectiveness. For an updated list, you can visit <a href=https://pnpm.io/users target=_blank>https://pnpm.io/users</a>.</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h3 id=creating-a-non-flat-node_modules-directoryhttpspnpmiomotivationcreating-a-non-flat-node_modules-directory>Creating a non-flat node_modules <a href=https://pnpm.io/motivation#creating-a-non-flat-node_modules-directory target=_blank>directory</a> <a href=#creating-a-non-flat-node_modules-directoryhttpspnpmiomotivationcreating-a-non-flat-node_modules-directory></a></h3><p>First of all, we must ask why NPM chooses the flat <code>node_modules</code> structure approach.</p><p>Going back in time, before the release of NPM version 3, at this point, <code>node_modules</code> in NPM were still in a non-flat structure. As shown in the example below:</p><pre><code>node_modules</code>1</pre><p>This approach has some issues such as:</p><ul><li>The issue of long directory paths on the Windows operating system occurred because the package created a dependency tree that was too deep</li><li>Packages were copy-pasted in many places because they were required in different dependencies</li></ul><p>Therefore, to solve this problem, NPM decided to flatten <code>node_modules</code>. After NPM version 3, the structure of the <code>node_modules</code> directory will become like this:</p><pre><code>node_modules</code>4</pre><p>Consequently, the source code can access dependencies that are not explicitly declared in the project. Following the example above, even though the project only uses the <strong>foo</strong> package, we can completely use the <strong>bar</strong> package without declaring it in package.json.</p><p>Unlike NPM version 3, PNPM tries to solve the issues without flattening the dependency tree. Follow the example below:</p><pre><code>node_modules</code>5</pre><p>The <strong>foo</strong> package still contains its dependency <strong>bar</strong> in the form of a symlink. And what’s special is that <strong>foo</strong> doesn’t have <code>node_modules</code> inside, this way the dependency tree of <strong>foo</strong> won’t be as deep as in NPM before the release of v3.</p><p>At first glance, the structure may seem complicated, but when working on larger projects you will see that this structure is clearer than NPM/Yarn</p><h2 id=disadvantages-of-pnpm>Disadvantages of PNPM <a href=#disadvantages-of-pnpm></a></h2><p>However, there are a few disadvantages of using PNPM. One of them is that it can be slower than other package managers like Yarn or NPM when installing packages for the <a href=https://medium.com/@buffet_time/why-you-should-move-to-pnpm-82962f332418 target=_blank>first time</a>. It can also be difficult to use with some build tools like <a href=https://dev.to/stackblitz/what-is-pnpm-and-is-it-really-so-fast-and-space-efficient-29la target=_blank>Webpack</a>.</p><p>PNPM&rsquo;s node_modules layout uses <a href=https://pnpm.io/symlinked-node-modules-structure target=_blank>symbolic links to create a nested structure of dependencies</a>. This has some implications for certain setups, where Windows machines or certain permissioned Linux environments may have trouble accessing these links.</p><p>Another potential issue with PNPM is that its nested dependency structure may not be compatible with certain older packages. <a href=https://pnpm.io/limitations target=_blank>This can cause issues when trying to install packages that have dependencies that are not compatible with PNPM’s nested structure</a>.</p><h2 id=showcase><strong>Showcase</strong> <a href=#showcase></a></h2><p>Thankfully, PNPM is employed by numerous large companies, demonstrating its effectiveness. For an updated list, you can visit <a href=https://pnpm.io/users target=_blank>https://pnpm.io/users</a>.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/what-is-pnpm-compare-to-npmyarn_55e4a8514dc89f283ed5e6b77d839d42_md5.webp`,
@@ -1172,7 +1143,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

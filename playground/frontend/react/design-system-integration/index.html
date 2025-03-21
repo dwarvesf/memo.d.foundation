@@ -1026,45 +1026,80 @@ const Modal = ({ isOpen, onClose, children }) =&gt; {
     &lt;/div&gt;
   ) : null
 }
-</code></pre><p>Tools:</p><ul><li><code>axe-core</code> and <code>eslint-plugin-jsx-a11y</code> for testing accessibility issues.</li><li><code>Storybook accessibility addon</code> to validate and fix issues while developing components.</li></ul><h3 id=6-use-context-and-theming-for-adaptable-designs>6. Use context and theming for adaptable designs <a href=#6-use-context-and-theming-for-adaptable-designs></a></h3><p>To support <strong>themes</strong> (e.g., dark and light modes), use <strong>context providers</strong> to pass theme values down to components. This enables consistent theming and allows the user to switch themes easily.</p><p><strong>Example: Theming with context</strong></p><ol><li>Create theme context:</li></ol><pre><code class=language-jsx>import React, { createContext, useContext, useState } from 'react'
-import tokens from './tokens.json'
+</code></pre><p>Tools:</p><ul><li><code>axe-core</code> and <code class=language-js>import tokens from './tokens.json'
+const Button = ({ children }) => (
+&lt;button
+style={{
+backgroundColor: tokens.colors.primary,
+color: tokens.colors.background,
+padding: tokens.spacing.medium,
+fontSize: tokens.typography.fontSize.medium,
+fontFamily: tokens.typography.fontFamily,
+}}
+>
+{children}
+&lt;/button>
+)
+</code>0 for testing accessibility issues.</li><li><code class=language-js>import tokens from './tokens.json'
+const Button = ({ children }) => (
+&lt;button
+style={{
+backgroundColor: tokens.colors.primary,
+color: tokens.colors.background,
+padding: tokens.spacing.medium,
+fontSize: tokens.typography.fontSize.medium,
+fontFamily: tokens.typography.fontFamily,
+}}
+>
+{children}
+&lt;/button>
+)
+</code>1 to validate and fix issues while developing components.</li></ul><h3 id=6-use-context-and-theming-for-adaptable-designs>6. Use context and theming for adaptable designs <a href=#6-use-context-and-theming-for-adaptable-designs></a></h3><p>To support <strong>themes</strong> (e.g., dark and light modes), use <strong>context providers</strong> to pass theme values down to components. This enables consistent theming and allows the user to switch themes easily.</p><p><strong>Example: Theming with context</strong></p><ol><li>Create theme context:</li></ol><pre><code class=language-js>import tokens from './tokens.json'
 
-const ThemeContext = createContext()
+const Button = ({ children }) =&gt; (
+  &lt;button
+    style={{
+      backgroundColor: tokens.colors.primary,
+      color: tokens.colors.background,
+      padding: tokens.spacing.medium,
+      fontSize: tokens.typography.fontSize.medium,
+      fontFamily: tokens.typography.fontFamily,
+    }}
+  &gt;
+    {children}
+  &lt;/button&gt;
+)
+</code>2</pre><ol start=2><li>Consume theme context in components:</li></ol><pre><code class=language-js>import tokens from './tokens.json'
 
-export const ThemeProvider = ({ children }) =&gt; {
-  const [theme, setTheme] = useState('light')
+const Button = ({ children }) =&gt; (
+  &lt;button
+    style={{
+      backgroundColor: tokens.colors.primary,
+      color: tokens.colors.background,
+      padding: tokens.spacing.medium,
+      fontSize: tokens.typography.fontSize.medium,
+      fontFamily: tokens.typography.fontFamily,
+    }}
+  &gt;
+    {children}
+  &lt;/button&gt;
+)
+</code>3</pre><ol start=3><li>Switch themes in app:</li></ol><pre><code class=language-js>import tokens from './tokens.json'
 
-  const toggleTheme = () =&gt; setTheme((prev) =&gt; (prev === 'light' ? 'dark' : 'light'))
-
-  const themeStyles = theme === 'light' ? tokens.light : tokens.dark
-
-  return &lt;ThemeContext.Provider value={{ theme, themeStyles, toggleTheme }}&gt;{children}&lt;/ThemeContext.Provider&gt;
-}
-
-export const useTheme = () =&gt; useContext(ThemeContext)
-</code></pre><ol start=2><li>Consume theme context in components:</li></ol><pre><code class=language-jsx>const ThemedButton = ({ label }) =&gt; {
-  const { themeStyles } = useTheme()
-  return (
-    &lt;button
-      style={{
-        backgroundColor: themeStyles.colors.primary,
-        color: themeStyles.colors.background,
-      }}
-    &gt;
-      {label}
-    &lt;/button&gt;
-  )
-}
-</code></pre><ol start=3><li>Switch themes in app:</li></ol><pre><code class=language-jsx>function App() {
-  const { toggleTheme } = useTheme()
-  return (
-    &lt;div&gt;
-      &lt;ThemedButton label=&quot;Click me&quot; /&gt;
-      &lt;button onClick={toggleTheme}&gt;Toggle Theme&lt;/button&gt;
-    &lt;/div&gt;
-  )
-}
-</code></pre><h3 id=summary>Summary <a href=#summary></a></h3><div class=table-container tabindex=0><table><thead><tr><th>Technique</th><th>Purpose</th></tr></thead><tbody><tr><td><strong>Design tokens</strong></td><td>Centralize colors, typography, and spacing for consistent styling</td></tr><tr><td><strong>Atomic components</strong></td><td>Build scalable, reusable components from basic building blocks</td></tr><tr><td><strong>Composable, flexible components</strong></td><td>Ensure flexibility for various use cases using props and dynamic styling</td></tr><tr><td><strong>Storybook</strong></td><td>Document, test, and showcase all components, ensuring design and functionality alignment</td></tr><tr><td><strong>Accessibility standards</strong></td><td>Improve usability for all users, following WCAG and ARIA best practices</td></tr><tr><td><strong>Context and theming</strong></td><td>Support adaptable designs, allowing for light and dark themes or other custom themes</td></tr></tbody></table></div><p>By integrating these techniques, you can build a design system that is robust, adaptable, and consistent, making it easier to scale and maintain the UI over time.</p></div><script defer type=module>
+const Button = ({ children }) =&gt; (
+  &lt;button
+    style={{
+      backgroundColor: tokens.colors.primary,
+      color: tokens.colors.background,
+      padding: tokens.spacing.medium,
+      fontSize: tokens.typography.fontSize.medium,
+      fontFamily: tokens.typography.fontFamily,
+    }}
+  &gt;
+    {children}
+  &lt;/button&gt;
+)
+</code>4</pre><h3 id=summary>Summary <a href=#summary></a></h3><div class=table-container tabindex=0><table><thead><tr><th>Technique</th><th>Purpose</th></tr></thead><tbody><tr><td><strong>Design tokens</strong></td><td>Centralize colors, typography, and spacing for consistent styling</td></tr><tr><td><strong>Atomic components</strong></td><td>Build scalable, reusable components from basic building blocks</td></tr><tr><td><strong>Composable, flexible components</strong></td><td>Ensure flexibility for various use cases using props and dynamic styling</td></tr><tr><td><strong>Storybook</strong></td><td>Document, test, and showcase all components, ensuring design and functionality alignment</td></tr><tr><td><strong>Accessibility standards</strong></td><td>Improve usability for all users, following WCAG and ARIA best practices</td></tr><tr><td><strong>Context and theming</strong></td><td>Support adaptable designs, allowing for light and dark themes or other custom themes</td></tr></tbody></table></div><p>By integrating these techniques, you can build a design system that is robust, adaptable, and consistent, making it easier to scale and maintain the UI over time.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

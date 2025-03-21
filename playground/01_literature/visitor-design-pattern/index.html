@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1045,7 +1045,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1186,7 +1186,1119 @@ class SpellCheckVisitor implements DocumentVisitor {
         element.accept(spellCheckVisitor);
     }
 }
-</code></pre><h3 id=explanation>Explanation <a href=#explanation></a></h3><ol><li><strong>Element Classes:</strong> We have <code>Paragraph</code>, <code>Table</code>, and <code>Image</code> classes, each implementing the <code>accept</code> method which accepts a visitor.</li><li><strong>Visitor Interface:</strong> <code>DocumentVisitor</code> is an interface with methods to visit each type of element.</li><li><strong>Concrete Visitors:</strong> <code>RenderVisitor</code>, <code>ExportVisitor</code>, and <code>SpellCheckVisitor</code> are concrete implementations of the visitor interface. Each visitor class defines the operation for each type of element.</li><li><strong>Usage:</strong> We create instances of elements and visitors. Each element accepts each visitor, which performs the appropriate operation.</li></ol><p>By using the Visitor Pattern, we can easily add new operations without modifying the element classes, adhering to the Open/Closed Principle and making the code more maintainable and scalable.</p><h2 id=applicability>Applicability <a href=#applicability></a></h2><ul><li><p><strong>Use the Visitor pattern to perform operations on all elements of a complex object structure (e.g., an object tree).</strong></p><p>This pattern allows you to execute an operation across a set of objects of different classes by having a visitor object implement multiple variants of the same operation, tailored to each target class.</p></li><li><p><strong>Use the Visitor to simplify the business logic by separating auxiliary behaviors.</strong></p><p>It helps keep the primary classes of your app focused on their main responsibilities by moving other behaviors into separate visitor classes.</p></li><li><p><strong>Use the Visitor when a behavior is relevant only to certain classes in a class hierarchy.</strong></p><p>Extract this behavior into a separate visitor class, implementing only the visiting methods for the relevant classes, leaving the rest empty.</p></li></ul><h2 id=pros-and-cons>Pros and Cons <a href=#pros-and-cons></a></h2><h3 id=advantages>Advantages <a href=#advantages></a></h3><ul><li><strong>Open/Closed Principle</strong>: Introduce new behavior for objects of different classes without modifying those classes.</li><li><strong>Single Responsibility Principle</strong>: Consolidate multiple versions of the same behavior into a single class.</li><li>A visitor object can gather useful information while working with various objects, which is beneficial for traversing complex structures like an object tree and applying the visitor to each object.</li></ul><h3 id=disadvantages>Disadvantages <a href=#disadvantages></a></h3><ul><li>All visitors need updating whenever a class is added to or removed from the element hierarchy.</li><li>Visitors may lack access to private fields and methods of the elements they work with.</li></ul><h2 id=use-cases>Use Cases <a href=#use-cases></a></h2><p>Some use cases for the Visitor Pattern:</p><h3 id=use-case-1-compiler-design>Use Case 1: Compiler Design <a href=#use-case-1-compiler-design></a></h3><p><strong>Context:</strong> In a compiler, the abstract syntax tree (AST) represents the structure of the source code. The compiler needs to perform various operations on the AST, such as type checking, code generation, and optimization.</p><p><strong>Solution:</strong> The Visitor Pattern can be used to define these operations without changing the classes representing the AST nodes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>Expression</code>, <code>Statement</code>, <code>Variable</code>, <code>Function</code></li><li><strong>Visitors:</strong> <code>TypeChecker</code>, <code>CodeGenerator</code>, <code>Optimizer</code></li></ul><h3 id=use-case-2-document-processing>Use Case 2: Document Processing <a href=#use-case-2-document-processing></a></h3><p><strong>Context:</strong> In a text processing application, different document elements (e.g., paragraphs, images, tables) need to support various operations like rendering, exporting, and spell-checking.</p><p><strong>Solution:</strong> The Visitor Pattern allows new operations to be added without modifying the element classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>Paragraph</code>, <code>Table</code>, <code>Image</code></li><li><strong>Visitors:</strong> <code>RenderVisitor</code>, <code>ExportVisitor</code>, <code>SpellCheckVisitor</code></li></ul><h3 id=use-case-3-graphics-rendering>Use Case 3: Graphics Rendering <a href=#use-case-3-graphics-rendering></a></h3><p><strong>Context:</strong> In a graphics rendering system, different shapes (e.g., circles, squares, triangles) need to support operations like drawing, resizing, and calculating the area.</p><p><strong>Solution:</strong> The Visitor Pattern can be used to add these operations without altering the shape classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>Circle</code>, <code>Square</code>, <code>Triangle</code></li><li><strong>Visitors:</strong> <code>DrawVisitor</code>, <code>ResizeVisitor</code>, <code>AreaCalculatorVisitor</code></li></ul><h3 id=use-case-4-file-system-operations>Use Case 4: File System Operations <a href=#use-case-4-file-system-operations></a></h3><p><strong>Context:</strong> In a file system management tool, different file system components (e.g., files, directories) need to support operations like searching, compression, and encryption.</p><p><strong>Solution:</strong> The Visitor Pattern allows these operations to be added without changing the component classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>File</code>, <code>Directory</code></li><li><strong>Visitors:</strong> <code>SearchVisitor</code>, <code>CompressionVisitor</code>, <code>EncryptionVisitor</code></li></ul><h3 id=use-case-5-game-development>Use Case 5: Game Development <a href=#use-case-5-game-development></a></h3><p><strong>Context:</strong> In a game, different game entities (e.g., players, enemies, obstacles) need to support various operations like rendering, updating state, and collision detection.</p><p><strong>Solution:</strong> The Visitor Pattern can be used to define these operations without modifying the entity classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>Player</code>, <code>Enemy</code>, <code>Obstacle</code></li><li><strong>Visitors:</strong> <code>RenderVisitor</code>, <code>UpdateVisitor</code>, <code>CollisionDetectionVisitor</code></li></ul><h3 id=use-case-6-e-commerce-system>Use Case 6: E-commerce System <a href=#use-case-6-e-commerce-system></a></h3><p><strong>Context:</strong> In an e-commerce application, different product types (e.g., electronics, clothing, groceries) need to support operations like applying discounts, calculating shipping costs, and generating invoices.</p><p><strong>Solution:</strong> The Visitor Pattern allows new operations to be added without changing the product classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>Electronics</code>, <code>Clothing</code>, <code>Groceries</code></li><li><strong>Visitors:</strong> <code>DiscountVisitor</code>, <code>ShippingCostVisitor</code>, <code>InvoiceGeneratorVisitor</code></li></ul><h3 id=use-case-7-network-protocols>Use Case 7: Network Protocols <a href=#use-case-7-network-protocols></a></h3><p><strong>Context:</strong> In a network protocol implementation, different types of packets (e.g., data packet, acknowledgment packet, control packet) need to support operations like serialization, deserialization, and logging.</p><p><strong>Solution:</strong> The Visitor Pattern can be used to add these operations without modifying the packet classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>DataPacket</code>, <code>AckPacket</code>, <code>ControlPacket</code></li><li><strong>Visitors:</strong> <code>SerializeVisitor</code>, <code>DeserializeVisitor</code>, <code>LoggingVisitor</code></li></ul><h3 id=use-case-8-ui-component-management>Use Case 8: UI Component Management <a href=#use-case-8-ui-component-management></a></h3><p><strong>Context:</strong> In a GUI application, different UI components (e.g., buttons, text fields, checkboxes) need to support operations like rendering, event handling, and validation.</p><p><strong>Solution:</strong> The Visitor Pattern allows these operations to be added without changing the component classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>Button</code>, <code>TextField</code>, <code>Checkbox</code></li><li><strong>Visitors:</strong> <code>RenderVisitor</code>, <code>EventHandlingVisitor</code>, <code>ValidationVisitor</code></li></ul></div><script defer type=module>
+</code></pre><h3 id=explanation>Explanation <a href=#explanation></a></h3><ol><li><strong>Element Classes:</strong> We have <code>Paragraph</code>, <code>Table</code>, and <code>Image</code> classes, each implementing the <code>accept</code> method which accepts a visitor.</li><li><strong>Visitor Interface:</strong> <code>DocumentVisitor</code> is an interface with methods to visit each type of element.</li><li><strong>Concrete Visitors:</strong> <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>0, <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>1, and <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>2 are concrete implementations of the visitor interface. Each visitor class defines the operation for each type of element.</li><li><strong>Usage:</strong> We create instances of elements and visitors. Each element accepts each visitor, which performs the appropriate operation.</li></ol><p>By using the Visitor Pattern, we can easily add new operations without modifying the element classes, adhering to the Open/Closed Principle and making the code more maintainable and scalable.</p><h2 id=applicability>Applicability <a href=#applicability></a></h2><ul><li><p><strong>Use the Visitor pattern to perform operations on all elements of a complex object structure (e.g., an object tree).</strong></p><p>This pattern allows you to execute an operation across a set of objects of different classes by having a visitor object implement multiple variants of the same operation, tailored to each target class.</p></li><li><p><strong>Use the Visitor to simplify the business logic by separating auxiliary behaviors.</strong></p><p>It helps keep the primary classes of your app focused on their main responsibilities by moving other behaviors into separate visitor classes.</p></li><li><p><strong>Use the Visitor when a behavior is relevant only to certain classes in a class hierarchy.</strong></p><p>Extract this behavior into a separate visitor class, implementing only the visiting methods for the relevant classes, leaving the rest empty.</p></li></ul><h2 id=pros-and-cons>Pros and Cons <a href=#pros-and-cons></a></h2><h3 id=advantages>Advantages <a href=#advantages></a></h3><ul><li><strong>Open/Closed Principle</strong>: Introduce new behavior for objects of different classes without modifying those classes.</li><li><strong>Single Responsibility Principle</strong>: Consolidate multiple versions of the same behavior into a single class.</li><li>A visitor object can gather useful information while working with various objects, which is beneficial for traversing complex structures like an object tree and applying the visitor to each object.</li></ul><h3 id=disadvantages>Disadvantages <a href=#disadvantages></a></h3><ul><li>All visitors need updating whenever a class is added to or removed from the element hierarchy.</li><li>Visitors may lack access to private fields and methods of the elements they work with.</li></ul><h2 id=use-cases>Use Cases <a href=#use-cases></a></h2><p>Some use cases for the Visitor Pattern:</p><h3 id=use-case-1-compiler-design>Use Case 1: Compiler Design <a href=#use-case-1-compiler-design></a></h3><p><strong>Context:</strong> In a compiler, the abstract syntax tree (AST) represents the structure of the source code. The compiler needs to perform various operations on the AST, such as type checking, code generation, and optimization.</p><p><strong>Solution:</strong> The Visitor Pattern can be used to define these operations without changing the classes representing the AST nodes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>3, <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>4, <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>5, <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>6</li><li><strong>Visitors:</strong> <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>7, <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>8, <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>9</li></ul><h3 id=use-case-2-document-processing>Use Case 2: Document Processing <a href=#use-case-2-document-processing></a></h3><p><strong>Context:</strong> In a text processing application, different document elements (e.g., paragraphs, images, tables) need to support various operations like rendering, exporting, and spell-checking.</p><p><strong>Solution:</strong> The Visitor Pattern allows new operations to be added without modifying the element classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>Paragraph</code>, <code>Table</code>, <code>Image</code></li><li><strong>Visitors:</strong> <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>0, <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>1, <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>2</li></ul><h3 id=use-case-3-graphics-rendering>Use Case 3: Graphics Rendering <a href=#use-case-3-graphics-rendering></a></h3><p><strong>Context:</strong> In a graphics rendering system, different shapes (e.g., circles, squares, triangles) need to support operations like drawing, resizing, and calculating the area.</p><p><strong>Solution:</strong> The Visitor Pattern can be used to add these operations without altering the shape classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code class=language-tsx>interface DocumentElement {
+accept(visitor: DocumentVisitor): void;
+}
+class Paragraph implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitParagraph(this);
+}
+}
+class Table implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitTable(this);
+}
+}
+class Image implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitImage(this);
+}
+}
+</code>6, <code class=language-tsx>interface DocumentElement {
+accept(visitor: DocumentVisitor): void;
+}
+class Paragraph implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitParagraph(this);
+}
+}
+class Table implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitTable(this);
+}
+}
+class Image implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitImage(this);
+}
+}
+</code>7, <code class=language-tsx>interface DocumentElement {
+accept(visitor: DocumentVisitor): void;
+}
+class Paragraph implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitParagraph(this);
+}
+}
+class Table implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitTable(this);
+}
+}
+class Image implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitImage(this);
+}
+}
+</code>8</li><li><strong>Visitors:</strong> <code class=language-tsx>interface DocumentElement {
+accept(visitor: DocumentVisitor): void;
+}
+class Paragraph implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitParagraph(this);
+}
+}
+class Table implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitTable(this);
+}
+}
+class Image implements DocumentElement {
+accept(visitor: DocumentVisitor): void {
+visitor.visitImage(this);
+}
+}
+</code>9, <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>0, <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>1</li></ul><h3 id=use-case-4-file-system-operations>Use Case 4: File System Operations <a href=#use-case-4-file-system-operations></a></h3><p><strong>Context:</strong> In a file system management tool, different file system components (e.g., files, directories) need to support operations like searching, compression, and encryption.</p><p><strong>Solution:</strong> The Visitor Pattern allows these operations to be added without changing the component classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>2, <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>3</li><li><strong>Visitors:</strong> <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>4, <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>5, <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>6</li></ul><h3 id=use-case-5-game-development>Use Case 5: Game Development <a href=#use-case-5-game-development></a></h3><p><strong>Context:</strong> In a game, different game entities (e.g., players, enemies, obstacles) need to support various operations like rendering, updating state, and collision detection.</p><p><strong>Solution:</strong> The Visitor Pattern can be used to define these operations without modifying the entity classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>7, <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>8, <code class=language-tsx>interface DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void;
+visitTable(table: Table): void;
+visitImage(image: Image): void;
+}
+class RenderVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Rendering a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Rendering a table.");
+}
+visitImage(image: Image): void {
+console.log("Rendering an image.");
+}
+}
+class ExportVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Exporting a paragraph to HTML.");
+}
+visitTable(table: Table): void {
+console.log("Exporting a table to HTML.");
+}
+visitImage(image: Image): void {
+console.log("Exporting an image to HTML.");
+}
+}
+class SpellCheckVisitor implements DocumentVisitor {
+visitParagraph(paragraph: Paragraph): void {
+console.log("Spell checking a paragraph.");
+}
+visitTable(table: Table): void {
+console.log("Spell checking a table.");
+}
+visitImage(image: Image): void {
+console.log("Spell checking an image.");
+}
+}
+</code>9</li><li><strong>Visitors:</strong> <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>0, <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>1, <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>2</li></ul><h3 id=use-case-6-e-commerce-system>Use Case 6: E-commerce System <a href=#use-case-6-e-commerce-system></a></h3><p><strong>Context:</strong> In an e-commerce application, different product types (e.g., electronics, clothing, groceries) need to support operations like applying discounts, calculating shipping costs, and generating invoices.</p><p><strong>Solution:</strong> The Visitor Pattern allows new operations to be added without changing the product classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>3, <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>4, <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>5</li><li><strong>Visitors:</strong> <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>6, <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>7, <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>8</li></ul><h3 id=use-case-7-network-protocols>Use Case 7: Network Protocols <a href=#use-case-7-network-protocols></a></h3><p><strong>Context:</strong> In a network protocol implementation, different types of packets (e.g., data packet, acknowledgment packet, control packet) need to support operations like serialization, deserialization, and logging.</p><p><strong>Solution:</strong> The Visitor Pattern can be used to add these operations without modifying the packet classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code class=language-tsx>function App() {
+const documentElements: DocumentElement[] = [
+new Paragraph(),
+new Table(),
+new Image()
+];
+const renderVisitor = new RenderVisitor();
+const exportVisitor = new ExportVisitor();
+const spellCheckVisitor = new SpellCheckVisitor();
+for (const element of documentElements) {
+element.accept(renderVisitor);
+element.accept(exportVisitor);
+element.accept(spellCheckVisitor);
+}
+}
+</code>9, <code>Paragraph</code>0, <code>Paragraph</code>1</li><li><strong>Visitors:</strong> <code>Paragraph</code>2, <code>Paragraph</code>3, <code>Paragraph</code>4</li></ul><h3 id=use-case-8-ui-component-management>Use Case 8: UI Component Management <a href=#use-case-8-ui-component-management></a></h3><p><strong>Context:</strong> In a GUI application, different UI components (e.g., buttons, text fields, checkboxes) need to support operations like rendering, event handling, and validation.</p><p><strong>Solution:</strong> The Visitor Pattern allows these operations to be added without changing the component classes.</p><p><strong>Example:</strong></p><ul><li><strong>Elements:</strong> <code>Paragraph</code>5, <code>Paragraph</code>6, <code>Paragraph</code>7</li><li><strong>Visitors:</strong> <code class=language-tsx>+-----------------+
+| DocumentVisitor |
++-----------------+
+| +visitParagraph |
+| +visitTable |
+| +visitImage |
++-----------------+
+/|\
+|
++----------------+----------------+
+| | |
++-----------------+ +-----------------+ +-------------------+
+| RenderVisitor | | ExportVisitor | | SpellCheckVisitor |
++-----------------+ +-----------------+ +-------------------+
+| +visitParagraph | | +visitParagraph | | +visitParagraph |
+| +visitTable | | +visitTable | | +visitTable |
+| +visitImage | | +visitImage | | +visitImage |
++-----------------+ +-----------------+ +-------------------+
+|
+|
+V
++---------------------------+
+| DocumentElement |
++---------------------------+
+| +accept(visitor: Visitor) |
++---------------------------+
+/|\
+|
++------------+------------+
+| |
++-----------------+ +-----------------+ +-----------------+
+| Paragraph | | Table | | Image |
++-----------------+ +-----------------+ +-----------------+
+| +accept(visitor)| | +accept(visitor)| | +accept(visitor)|
++-----------------+ +-----------------+ +-----------------+
+</code>0, <code>Paragraph</code>9, <code>Table</code>0</li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

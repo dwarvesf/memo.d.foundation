@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1045,7 +1045,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1095,7 +1095,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1168,61 +1168,7 @@ func (r *Registration) Redirect() {
   // context.Redirect('/login')
 }
 </code></pre><br><p><strong>Step 4</strong>: <code>Verify()</code> implementations
-We use composition instead of inheritance in <strong>Go</strong> by embedding struct <code>Registration</code></p><ul><li><strong>Phone (SMS)</strong></li></ul><pre><code class=language-go>type Sms struct {
-  Registration
-}
-
-func (s *Sms) Verify() {
-  // generate code
-  // send code using sms provider
-  // ...
-  println(&quot;Verification code sent to your phone&quot;)
-
-  // verify code
-  // ...
-  r.Verified = true
-  println(&quot;You have verified successfully!&quot;)
-}
-</code></pre><br><ul><li><strong>Email</strong></li></ul><pre><code class=language-go>type Email struct {
-  Registration
-}
-
-func (e *Email) Verify() {
-  // generate code
-  // send code using email provider
-  // ...
-  println(&quot;Verification code sent to your email&quot;)
-
-  // verify code
-  // ...
-  r.Verified = true
-  println(&quot;You have verified successfully!&quot;)
-}
-</code></pre><br><p>For example, we may also support non-verified registration in the future (limited features)</p><pre><code class=language-go>type NonVerified struct {
-  Registration
-}
-
-func (v *NonVerified) Verify() {
-  // nothing to do here
-}
-</code></pre><br><p><strong>Step 5</strong>: Client code <code>main.go</code> - assume that we select verification method based on user device</p><pre><code class=language-go>
-func main() {
-  // check user device
-  ua := context.Header(&quot;User-Agent&quot;)
-  var r registration.IRegistration
-  switch true {
-  case isDesktop(ua):
-    r = &amp;registration.Email{}
-  case isMobile(ua):
-    r = &amp;registration.Sms{}
-  default:
-    r = &amp;registration.NonVerified{}
-  }
-
-  // invoke template method
-  registration.Register(r)
-}
-</code></pre><h2 id=benefits--drawbacks>Benefits & Drawbacks <a href=#benefits--drawbacks></a></h2><h3 id=benefits>Benefits <a href=#benefits></a></h3><ul><li>Define constant skeleton for an operation/algorithm<br></li><li>Optimize code reusability<br></li><li>Scalable<br></li></ul><h3 id=drawbacks>Drawbacks <a href=#drawbacks></a></h3><ul><li>Tight-coupling code between client and subclasses<br></li><li>Not useful when we have too many conditions inside template method<br></li><li>Customization may cause redundant code. Adding one step for one use case would either require definining it in base class or every other subclasses<br></li><li>Wrong <em>usage</em> of inheritance might accidentally break our operation/algorithm. e.g. <code>panic()</code> inside <code>Verify()</code> implementation<br></li></ul><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://refactoring.guru/design-patterns/template-method target=_blank>https://refactoring.guru/design-patterns/template-method</a></li></ul></div><script defer type=module>
+We use composition instead of inheritance in <strong>Go</strong> by embedding struct <code>hooks</code>0</p><ul><li><strong>Phone (SMS)</strong></li></ul><pre><code>hooks</code>1</pre><br><ul><li><strong>Email</strong></li></ul><pre><code>hooks</code>2</pre><br><p>For example, we may also support non-verified registration in the future (limited features)</p><pre><code>hooks</code>3</pre><br><p><strong>Step 5</strong>: Client code <code>hooks</code>4 - assume that we select verification method based on user device</p><pre><code>hooks</code>5</pre><h2 id=benefits--drawbacks>Benefits & Drawbacks <a href=#benefits--drawbacks></a></h2><h3 id=benefits>Benefits <a href=#benefits></a></h3><ul><li>Define constant skeleton for an operation/algorithm<br></li><li>Optimize code reusability<br></li><li>Scalable<br></li></ul><h3 id=drawbacks>Drawbacks <a href=#drawbacks></a></h3><ul><li>Tight-coupling code between client and subclasses<br></li><li>Not useful when we have too many conditions inside template method<br></li><li>Customization may cause redundant code. Adding one step for one use case would either require definining it in base class or every other subclasses<br></li><li>Wrong <em>usage</em> of inheritance might accidentally break our operation/algorithm. e.g. <code>hooks</code>6 inside <code>Verify()</code> implementation<br></li></ul><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://refactoring.guru/design-patterns/template-method target=_blank>https://refactoring.guru/design-patterns/template-method</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

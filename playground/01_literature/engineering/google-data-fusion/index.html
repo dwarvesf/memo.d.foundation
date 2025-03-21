@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -997,7 +997,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1047,7 +1047,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1078,10 +1078,7 @@ gcloud data-fusion instances create [INSTANCE_NAME] \\
   --subnet=[SUBNET_NAME] \\
   --bucket-uri=gs://[BUCKET_NAME]/[DIRECTORY]
 
-</code></pre><ul><li><strong><code>-zone</code></strong>: Specify the zone for the instance.</li><li><strong><code>-network</code></strong>: Specify the VPC network name.</li><li><strong><code>-subnet</code></strong>: Specify the subnet within the network.</li><li><strong><code>-bucket-uri</code></strong>: Specify the Cloud Storage bucket URI.</li></ul></li><li><p><strong>Access Cloud Data Fusion UI:</strong> After the instance is created, you can access the Cloud Data Fusion UI using the generated endpoint. Navigate to the URL displayed in the command output.</p><pre><code class=language-bash>bashCopy code
-gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
-
-</code></pre></li><li><p><strong>Connect to the Cloud Data Fusion UI:</strong> Open the provided URL in a web browser to access the Cloud Data Fusion UI. Log in using your Google Cloud credentials.</p></li><li><p><strong>Explore and Create Pipelines:</strong> Once you&rsquo;re in the Cloud Data Fusion UI, you can start exploring and creating ETL pipelines using the visual interface.</p></li></ol><p>Remember to replace placeholders like <strong><code>[REGION]</code></strong>, <strong><code>[BUCKET_NAME]</code></strong>, <strong><code>[INSTANCE_NAME]</code></strong></p><h2 id=how-to-setup-a-simple-etl-with-google-data-fusion--with-gcp-console>How to setup a simple ETL with Google Data Fusion ( with GCP console): <a href=#how-to-setup-a-simple-etl-with-google-data-fusion--with-gcp-console></a></h2><p>In this demo we’ll setup a simple ETL pipeline to import, transform load a csv file to a Google Big query data table</p><h3 id=step-1-go-to-the-big-query-console-page-and-create-a-dataset-and-table>Step 1: go to the Big Query console page and create a dataset and table: <a href=#step-1-go-to-the-big-query-console-page-and-create-a-dataset-and-table></a></h3><ul><li>On the top left corner of the main page of Big query select add and add a dataset. Then click on the three dot simple on the left side of the data set name to add a table. Right after that. you should see this screem to add a table.<ul><li><img x-data="{
+</code></pre><ul><li><strong><code>-zone</code></strong>: Specify the zone for the instance.</li><li><strong><code>-network</code></strong>: Specify the VPC network name.</li><li><strong><code>-subnet</code></strong>: Specify the subnet within the network.</li><li><strong><code>-bucket-uri</code></strong>: Specify the Cloud Storage bucket URI.</li></ul></li><li><p><strong>Access Cloud Data Fusion UI:</strong> After the instance is created, you can access the Cloud Data Fusion UI using the generated endpoint. Navigate to the URL displayed in the command output.</p><pre><code>[BUCKET_NAME]</code>0</pre></li><li><p><strong>Connect to the Cloud Data Fusion UI:</strong> Open the provided URL in a web browser to access the Cloud Data Fusion UI. Log in using your Google Cloud credentials.</p></li><li><p><strong>Explore and Create Pipelines:</strong> Once you&rsquo;re in the Cloud Data Fusion UI, you can start exploring and creating ETL pipelines using the visual interface.</p></li></ol><p>Remember to replace placeholders like <strong><code>[REGION]</code></strong>, <strong><code>[BUCKET_NAME]</code></strong>, <strong><code>[INSTANCE_NAME]</code></strong></p><h2 id=how-to-setup-a-simple-etl-with-google-data-fusion--with-gcp-console>How to setup a simple ETL with Google Data Fusion ( with GCP console): <a href=#how-to-setup-a-simple-etl-with-google-data-fusion--with-gcp-console></a></h2><p>In this demo we’ll setup a simple ETL pipeline to import, transform load a csv file to a Google Big query data table</p><h3 id=step-1-go-to-the-big-query-console-page-and-create-a-dataset-and-table>Step 1: go to the Big Query console page and create a dataset and table: <a href=#step-1-go-to-the-big-query-console-page-and-create-a-dataset-and-table></a></h3><ul><li>On the top left corner of the main page of Big query select add and add a dataset. Then click on the three dot simple on the left side of the data set name to add a table. Right after that. you should see this screem to add a table.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_0228e14fdc9b93e5c79eacc7a7ed89a6_md5.webp`,
@@ -1110,7 +1107,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1159,7 +1156,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1208,7 +1205,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1257,7 +1254,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1277,7 +1274,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li></ul><h3 id=step-4-start-designing-your-first-pipeline>Step 4: Start designing your first pipeline <a href=#step-4-start-designing-your-first-pipeline></a></h3><ul><li>We’ll create a GCS as a source of data so on the search bar, search for ‘gcs’ and drag the ‘GCS’ simple in the <code>Source</code> section to the canvas<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li></ul><h3 id=step-4-start-designing-your-first-pipeline>Step 4: Start designing your first pipeline <a href=#step-4-start-designing-your-first-pipeline></a></h3><ul><li>We’ll create a GCS as a source of data so on the search bar, search for ‘gcs’ and drag the ‘GCS’ simple in the <code>[BUCKET_NAME]</code>4 section to the canvas<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_149533894219b81b80c9af8473dcb666_md5.webp`,
@@ -1306,7 +1303,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1326,7 +1323,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Properties</code> and you should be able to see a screen like this.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>[BUCKET_NAME]</code>5 and you should be able to see a screen like this.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_5a415fd557838d4d98816e3cc25561e4_md5.webp`,
@@ -1355,7 +1352,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1375,7 +1372,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Browse</code> to browse through the files you uploaded to GCS. Locate your csv data source file and select it.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>[BUCKET_NAME]</code>6 to browse through the files you uploaded to GCS. Locate your csv data source file and select it.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_e79e3ac84c23e2bf3f2358112b709abf_md5.webp`,
@@ -1404,7 +1401,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1424,7 +1421,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>(Optional) Enable the <code>Enable Quoted Values</code> and <code>Use First Row as Header</code> toggles and click on <code>Get Schema</code>. You should able to find your data schema on the right side of the screen<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>(Optional) Enable the <code>[BUCKET_NAME]</code>7 and <code>[BUCKET_NAME]</code>8 toggles and click on <code>[BUCKET_NAME]</code>9. You should able to find your data schema on the right side of the screen<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_5f466ca7e1d9ebc587d1c83d4dc71f8b_md5.webp`,
@@ -1453,7 +1450,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1473,7 +1470,19 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>You finished setting up the source CSV. Go on and click the <code>X</code> button on the top right next to <code>Validate</code> button.</li><li>Next, you’ll need to transform data to match you expected schema. Search for <code>wrangler</code> on the search bar and drag out <code>Wrangler</code> in the <code>Transform</code> section and drag an arrow from <code>GCS</code> box to it for Wrangler to recognize the input schema.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>You finished setting up the source CSV. Go on and click the <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>0 button on the top right next to <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>1 button.</li><li>Next, you’ll need to transform data to match you expected schema. Search for <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>2 on the search bar and drag out <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>3 in the <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>4 section and drag an arrow from <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>5 box to it for Wrangler to recognize the input schema.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_3c77659f8f80214120f60e97847544dd_md5.webp`,
@@ -1502,7 +1511,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1522,7 +1531,11 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Then click on <code>properties</code> of the the <code>Wrangler</code> box.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Then click on <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>6 of the the <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>3 box.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_acc19ad5ede5df8d029145c516c3ab45_md5.webp`,
@@ -1551,7 +1564,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1571,7 +1584,13 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Here you can transform your data. Defines you output schema on the left and properties in the middle section. Here I’ll just left it like it is since it a simple demo.</li><li>Click on the top right <code>X</code> button to go back to the canvas.</li><li>Next, you’ll need a storage for you output data. Search <code>bigquery</code> in the search box and drag out <code>Bigquery</code> box from the <code>Sink</code> section and connect it to the <code>Wrangler</code> box.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Here you can transform your data. Defines you output schema on the left and properties in the middle section. Here I’ll just left it like it is since it a simple demo.</li><li>Click on the top right <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>0 button to go back to the canvas.</li><li>Next, you’ll need a storage for you output data. Search <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>9 in the search box and drag out <code>[INSTANCE_NAME]</code>0 box from the <code>[INSTANCE_NAME]</code>1 section and connect it to the <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>3 box.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_81e1fe6503f40c31fecc7c752d0e56ac_md5.webp`,
@@ -1600,7 +1619,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1620,7 +1639,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>Properties</code> of the Bigquery box you’ll find this screen.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on <code>[BUCKET_NAME]</code>5 of the Bigquery box you’ll find this screen.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_5ef7b2f2dd57fb04cfc2610003f96a00_md5.webp`,
@@ -1649,7 +1668,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1669,7 +1688,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>You can find you input data schema on the left side of the screen. Here click on <code>Browse</code> to locate your Bigquery data table that you created in step 1 (Mine is <code>annual_enterprise_survey</code> in this case) and select it by double click.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>You can find you input data schema on the left side of the screen. Here click on <code>[BUCKET_NAME]</code>6 to locate your Bigquery data table that you created in step 1 (Mine is <code>[INSTANCE_NAME]</code>5 in this case) and select it by double click.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_fc06439858c80d305ed6a7a1ed62b650_md5.webp`,
@@ -1698,7 +1717,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1747,7 +1766,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1767,7 +1786,9 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on the <code>X</code> again to go back to the canvas. You completed your first pipeline.</li></ul><h3 id=step-5-deploy-and-run-your-pipeline>Step 5: Deploy and Run your pipeline <a href=#step-5-deploy-and-run-your-pipeline></a></h3><ul><li>Naming your pipeline ( the name must be unique in the instance). Click on the <code>Name your pipeline</code> text on the top left of the screen.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on the <code class=language-bash>bashCopy code
+gsutil mb -l [REGION] gs://[BUCKET_NAME]
+</code>0 again to go back to the canvas. You completed your first pipeline.</li></ul><h3 id=step-5-deploy-and-run-your-pipeline>Step 5: Deploy and Run your pipeline <a href=#step-5-deploy-and-run-your-pipeline></a></h3><ul><li>Naming your pipeline ( the name must be unique in the instance). Click on the <code>[INSTANCE_NAME]</code>7 text on the top left of the screen.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_a86d6d3174b32df8be3ba475f8c65a7a_md5.webp`,
@@ -1796,7 +1817,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1816,7 +1837,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Then click on <code>Deploy</code> button on the top right to deploy the pipeline.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Then click on <code>[INSTANCE_NAME]</code>8 button on the top right to deploy the pipeline.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_f77c1ab73acf0eb740cbd3f0fea3fe60_md5.webp`,
@@ -1845,7 +1866,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1894,7 +1915,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1914,7 +1935,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on the <code>Run</code> button at the top center of the screen and wait for it to execute pipelines.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>Click on the <code>[INSTANCE_NAME]</code>9 button at the top center of the screen and wait for it to execute pipelines.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_5cf5dec00239ca3db4a54f690b8ae233_md5.webp`,
@@ -1943,7 +1964,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1963,7 +1984,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>After the the status show <code>Succeeded</code> you can check your destination table for the output data.<ul><li><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></li></ul></li><li>After the the status show <code>[REGION]</code>0 you can check your destination table for the output data.<ul><li><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/google-data-fusion_b06407f4aa745186225988b9d32881cc_md5.webp`,
@@ -1992,7 +2013,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -2041,7 +2062,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

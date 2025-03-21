@@ -993,55 +993,7 @@ const store = configureStore({ reducer: { cart: cartSlice.reducer } })
 // Actions for dispatching:
 export const { addItem, removeItem } = cartSlice.actions
 export default store
-</code></pre><p><strong>Redux vs. Zustand</strong>:</p><ul><li><strong>Redux</strong>: More verbose but provides structure, middleware support, and a strong ecosystem (dev tools, middleware for async actions).</li><li><strong>Zustand</strong>: Minimal boilerplate, straightforward API, and avoids creating a global Redux-like store by encouraging state encapsulation.</li></ul><p><strong>When to use Redux or Zustand</strong>:</p><ul><li>Cross-cutting data dependencies that multiple components need access to.</li><li>Scenarios that benefit from immutability (Redux) or a reactive, hook-based approach (Zustand).</li></ul><h3 id=async-data-and-server-state-with-react-query-or-swr>Async data and server state with React Query or SWR <a href=#async-data-and-server-state-with-react-query-or-swr></a></h3><p>Tools like <code>React Query</code> and <code>SWR</code> are ideal for handling server data. They help manage caching, re-fetching, and synchronization with server data, which is particularly useful in data-intensive applications.</p><p><strong>Example use case</strong>: React Query simplifies handling server state by caching data and re-fetching when necessary. It also manages states like loading, error, and refetching automatically.</p><pre><code class=language-jsx>import { useQuery, QueryClient, QueryClientProvider } from 'react-query'
-
-const queryClient = new QueryClient()
-
-function fetchUser(userId) {
-  return fetch(`/api/user/${userId}`).then((res) =&gt; res.json())
-}
-
-function UserProfile({ userId }) {
-  const { data, error, isLoading } = useQuery(['user', userId], () =&gt; fetchUser(userId), {
-    staleTime: 5 * 60 * 1000, // Data remains fresh for 5 minutes
-  })
-
-  if (isLoading) return &lt;LoadingSpinner /&gt;
-  if (error) return &lt;ErrorDisplay message={error.message} /&gt;
-  return &lt;div&gt;User: {data.name}&lt;/div&gt;
-}
-
-// Usage in App:
-;&lt;QueryClientProvider client={queryClient}&gt;
-  &lt;UserProfile userId={1} /&gt;
-&lt;/QueryClientProvider&gt;
-</code></pre><p><strong>React Query vs. SWR</strong>:</p><ul><li><strong>React Query</strong>: More feature-rich and configurable; supports pagination, optimistic updates, and complex cache invalidation.</li><li><strong>SWR</strong>: Lightweight with a more declarative approach; suitable for simpler use cases.</li></ul><p><strong>When to use React Query or SWR</strong>:</p><ul><li>Server-side data that needs caching, synchronization, and refresh-on-focus.</li><li>Use React Query for applications with complex server data dependencies and SWR for simpler needs.</li></ul><h3 id=combined-approach-with-context--react-query>Combined approach with context + React Query <a href=#combined-approach-with-context--react-query></a></h3><p>For scalable applications, a hybrid approach works well, where:</p><ul><li>Context handles small, rarely-changing global state (like theme or user settings).</li><li>React Query or SWR manages server state (API data).</li><li>Local state and custom hooks organize isolated or ephemeral component-specific state.</li></ul><p><strong>Example hybrid structure</strong>:</p><pre><code class=language-jsx>const UserContext = React.createContext()
-
-function AppProvider({ children }) {
-  const [user, setUser] = useState(null)
-  return &lt;UserContext.Provider value={{ user, setUser }}&gt;{children}&lt;/UserContext.Provider&gt;
-}
-
-function useUserData(userId) {
-  return useQuery(['user', userId], () =&gt; fetchUser(userId), { staleTime: 5 * 60 * 1000 })
-}
-
-function UserComponent() {
-  const { user, setUser } = useContext(UserContext)
-  const { data: userData } = useUserData(user.id)
-
-  useEffect(() =&gt; {
-    if (userData) setUser(userData)
-  }, [userData, setUser])
-
-  return &lt;div&gt;Welcome, {user ? user.name : 'Guest'}!&lt;/div&gt;
-}
-
-// Usage:
-;&lt;AppProvider&gt;
-  &lt;UserComponent /&gt;
-&lt;/AppProvider&gt;
-</code></pre><p><strong>Benefits of the combined approach</strong>:</p><ul><li>Avoids overloading context with complex state management.</li><li>Improves separation of concerns by delegating responsibilities: local state for UI, context for global app state, and React Query for async/server state.</li></ul><h3 id=key-takeaways>Key takeaways <a href=#key-takeaways></a></h3><ul><li><strong>Local state</strong> for isolated, ephemeral data.</li><li><strong>Context API</strong> for lightweight global state that rarely changes.</li><li><strong>Redux/Zustand</strong> for structured, complex state management across large applications.</li><li><strong>React Query/SWR</strong> for async data, caching, and server-side synchronization.</li><li><strong>Combined approach</strong> for scalable, maintainable architecture.</li></ul></div><script defer type=module>
+</code></pre><p><strong>Redux vs. Zustand</strong>:</p><ul><li><strong>Redux</strong>: More verbose but provides structure, middleware support, and a strong ecosystem (dev tools, middleware for async actions).</li><li><strong>Zustand</strong>: Minimal boilerplate, straightforward API, and avoids creating a global Redux-like store by encouraging state encapsulation.</li></ul><p><strong>When to use Redux or Zustand</strong>:</p><ul><li>Cross-cutting data dependencies that multiple components need access to.</li><li>Scenarios that benefit from immutability (Redux) or a reactive, hook-based approach (Zustand).</li></ul><h3 id=async-data-and-server-state-with-react-query-or-swr>Async data and server state with React Query or SWR <a href=#async-data-and-server-state-with-react-query-or-swr></a></h3><p>Tools like <code>React Query</code> and <code>SWR</code> are ideal for handling server data. They help manage caching, re-fetching, and synchronization with server data, which is particularly useful in data-intensive applications.</p><p><strong>Example use case</strong>: React Query simplifies handling server state by caching data and re-fetching when necessary. It also manages states like loading, error, and refetching automatically.</p><pre><code>useReducer</code>0</pre><p><strong>React Query vs. SWR</strong>:</p><ul><li><strong>React Query</strong>: More feature-rich and configurable; supports pagination, optimistic updates, and complex cache invalidation.</li><li><strong>SWR</strong>: Lightweight with a more declarative approach; suitable for simpler use cases.</li></ul><p><strong>When to use React Query or SWR</strong>:</p><ul><li>Server-side data that needs caching, synchronization, and refresh-on-focus.</li><li>Use React Query for applications with complex server data dependencies and SWR for simpler needs.</li></ul><h3 id=combined-approach-with-context--react-query>Combined approach with context + React Query <a href=#combined-approach-with-context--react-query></a></h3><p>For scalable applications, a hybrid approach works well, where:</p><ul><li>Context handles small, rarely-changing global state (like theme or user settings).</li><li>React Query or SWR manages server state (API data).</li><li>Local state and custom hooks organize isolated or ephemeral component-specific state.</li></ul><p><strong>Example hybrid structure</strong>:</p><pre><code>useReducer</code>1</pre><p><strong>Benefits of the combined approach</strong>:</p><ul><li>Avoids overloading context with complex state management.</li><li>Improves separation of concerns by delegating responsibilities: local state for UI, context for global app state, and React Query for async/server state.</li></ul><h3 id=key-takeaways>Key takeaways <a href=#key-takeaways></a></h3><ul><li><strong>Local state</strong> for isolated, ephemeral data.</li><li><strong>Context API</strong> for lightweight global state that rarely changes.</li><li><strong>Redux/Zustand</strong> for structured, complex state management across large applications.</li><li><strong>React Query/SWR</strong> for async data, caching, and server-side synchronization.</li><li><strong>Combined approach</strong> for scalable, maintainable architecture.</li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

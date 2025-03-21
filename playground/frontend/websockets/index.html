@@ -931,38 +931,57 @@ Folder:
     Connection: Upgrade
     Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
     Sec-WebSocket-Protocol: chat
-</code></pre><ul><li><code>Sec-WebSocket-Accept</code>: is a response key to show server acceptance, the server first take the value of <code>Sec-Websocket-Key</code>, append <code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code> <em>(Globally Unique Identifier)</em> and then hashed with SHA-1</li></ul><h3 id=data-transfer>Data Transfer <a href=#data-transfer></a></h3><p>After the handshake was successful, each side can start sending or receiving data. The data property in WebSocket is <code>message</code>. For each message, the browser is only able to send and receive messages as binary or plain text.</p><p>WebSocket uses sequential <code>frames</code> for transferring message instead of <code>streaming</code>. This result in each side can exchange data independently without any blocking.</p><h4 id=framing>*Framing <a href=#framing></a></h4><p>A <code>Frame</code> is a small <code>header</code> + <code>payload</code>, the payload is similiar to other application data such as body of a HTTP message. In most basic form of WebSocket protocols include 2 type of frames:</p><ul><li>Non-control frame:<ul><li><code>text</code> - denotes sending <code>utf-8</code> encoded bytes</li><li><code>binary</code> - sending raw bytes</li><li><code>continue</code> - sending a continuation fragment of previous message</li></ul></li><li>Control frame:<ul><li><code>close</code> - denote that wanting to close, or responding to a close</li></ul><ul><li><code>ping</code></li><li><code>pong</code></li></ul></li></ul><p><em><a href=https://datatracker.ietf.org/doc/html/rfc6455#section-5.2 target=_blank>Read detail here</a></em></p><h4 id=authentication>*Authentication <a href=#authentication></a></h4><p>The protocol itself does not specify an authentication method. User can use any other mechanism used in HTTP such as TLS authentication, cookies or authentication Header <em>(Except for browser client, WebSocket api does not provide a way to modify the client handshake Header)</em>.</p><h4 id=websocket-uri>*WebSocket URI <a href=#websocket-uri></a></h4><pre><code>ws-URI = &quot;ws:&quot; &quot;//&quot; host [ &quot;:&quot; port ] path [ &quot;?&quot; query ]
-wss-URI = &quot;wss:&quot; &quot;//&quot; host [ &quot;:&quot; port ] path [ &quot;?&quot; query ]
-</code></pre><p>Note that the differences between <code>ws</code> and <code>wss</code>is:</p><ul><li><strong><code>ws</code> use <code>HTTP</code> for handshake while <code>wss</code> use <code>HTTPS</code></strong></li><li>Default port for <code>ws</code> is 80 and <code>wss</code> is port 443</li></ul><h2 id=websocket-browser-api>WebSocket Browser API <a href=#websocket-browser-api></a></h2><p>The browser provide an API for creating and managing WebSocket connection as well as exchange messages with a WebSocket server.</p><h3 id=open-websocket-connection>Open WebSocket connection <a href=#open-websocket-connection></a></h3><p>We can instantiate a new WebSocket connection, linking to the WebSocket server, and it will start connecting immediately.</p><pre><code class=language-typescript>const socket = new WebSocket('ws://localhost:8080')
-</code></pre><h3 id=websocket-events>WebSocket Events <a href=#websocket-events></a></h3><p>In total, there are 4 events we can listen to are <code>open</code>, <code>message</code>, <code>error</code>, and <code>close</code>.</p><pre><code class=language-typescript>// Connection opened
-socket.addEventListener('open', (event) =&gt; {})
-// Receive messages from server
-socket.addEventListener('message', (event) =&gt; {})
-// Connection Error
-socket.addEventListener('error', (event) =&gt; {})
-// After connection closed
-socket.addEventListener('close', (event) =&gt; {})
-</code></pre><p><strong>Sending message</strong> The <code>socket.send(body)</code> method allow sending a message to the server. The <code>body</code> argument can be a <code>string</code> or <code>binary format type</code> such as <code>ArrayBuffer</code>, <code>Blob</code>.</p><h4 id=receiving-message>Receiving message <a href=#receiving-message></a></h4><p>Access <code>event.data</code> for incomming message</p><pre><code class=language-typescript>socket.onmessage = (event) =&gt; {
-  console.log(event.data)
-}
-</code></pre><ul><li>For Text message, <code>event.data</code> will always be <code>string</code></li><li>For <code>binary type</code> message, user can choose between <code>Blob</code> and <code>ArrayBuffer</code> by assign <code>WebSocket.binaryType='arraybuffer</code> <em>(default is <code>blob</code>)</em> then <code>event.data</code> will be the appropriate type</li></ul><pre><code class=language-typescript>socket.binaryType = 'arraybuffer'
-socket.onmessage = (event) =&gt; {
-  if (event.data instanceof ArrayBuffer) {
-    // Handling binary message
-    return
-  }
-  // Handling String message
-}
-</code></pre><h3 id=rate-limiting>Rate Limiting <a href=#rate-limiting></a></h3><p>When user has a slow network connection. After calling <code>WebSocket.send(...)</code> the data will be buffered in memory and will be sent out as soon as connection get better</p><p><code>WebSocket.bufferedArmount</code> return the amount of data queued using <code>call()</code> but not yet send out to the network. <em>This value will not reset to zero if connection close.</em></p><pre><code class=language-typescript>if (socket.bufferedAmount === 0) {
-  socket.send(moreData())
-}
-</code></pre><h3 id=close-connection>Close Connection <a href=#close-connection></a></h3><p>For sending <code>close frame</code> from browser WebSocket, simply call <code>WebSocket.close(code, reason)</code>.</p><pre><code class=language-typescript>socket.close(1000, 'Complete') // both argument is optional
-socket.onclose = (event) =&gt; {
-  const { code, reason, wasClean } = event
-  console.log({ code, reason, wasClean })
-  // { code: 1000, reason: &quot;Complete&quot;, wasClean: true }
-}
-</code></pre><h4 id=common-code>*Common code <a href=#common-code></a></h4><ul><li>1000 - normal closure (default)</li><li>1006 - connection was lost (this code cannot set manually, connection close abnormally by the browser and event go to <code>WebSocket.onerror</code>)</li><li>1001 - the party is going away (server shutting down, browser leave the page)</li><li>&mldr;</li></ul><h2 id=connection-state>Connection State <a href=#connection-state></a></h2><p>User can access <code>WebSocket.readyState</code> for getting the current state of a WebSocket instance</p><ul><li><code>0</code>: CONNECTING - socket created but connection is not open yet</li><li><code>1</code>: OPEN - Connection is open and ready to communicate</li><li><code>2</code>: CLOSING - Connection is in closing process</li><li><code>3</code>: CLOSED - Connection is closed or could not be opened</li></ul></div><script defer type=module>
+</code></pre><ul><li><code>Sec-WebSocket-Accept</code>: is a response key to show server acceptance, the server first take the value of <code>Sec-Websocket-Key</code>, append <code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code> <em>(Globally Unique Identifier)</em> and then hashed with SHA-1</li></ul><h3 id=data-transfer>Data Transfer <a href=#data-transfer></a></h3><p>After the handshake was successful, each side can start sending or receiving data. The data property in WebSocket is <code>message</code>. For each message, the browser is only able to send and receive messages as binary or plain text.</p><p>WebSocket uses sequential <code>frames</code> for transferring message instead of <code>streaming</code>. This result in each side can exchange data independently without any blocking.</p><h4 id=framing>*Framing <a href=#framing></a></h4><p>A <code>Frame</code> is a small <code>Sec-WebSocket-Key</code>0 + <code>Sec-WebSocket-Key</code>1, the payload is similiar to other application data such as body of a HTTP message. In most basic form of WebSocket protocols include 2 type of frames:</p><ul><li>Non-control frame:<ul><li><code>Sec-WebSocket-Key</code>2 - denotes sending <code>Sec-WebSocket-Key</code>3 encoded bytes</li><li><code>Sec-WebSocket-Key</code>4 - sending raw bytes</li><li><code>Sec-WebSocket-Key</code>5 - sending a continuation fragment of previous message</li></ul></li><li>Control frame:<ul><li><code>Sec-WebSocket-Key</code>6 - denote that wanting to close, or responding to a close</li></ul><ul><li><code>Sec-WebSocket-Key</code>7</li><li><code>Sec-WebSocket-Key</code>8</li></ul></li></ul><p><em><a href=https://datatracker.ietf.org/doc/html/rfc6455#section-5.2 target=_blank>Read detail here</a></em></p><h4 id=authentication>*Authentication <a href=#authentication></a></h4><p>The protocol itself does not specify an authentication method. User can use any other mechanism used in HTTP such as TLS authentication, cookies or authentication Header <em>(Except for browser client, WebSocket api does not provide a way to modify the client handshake Header)</em>.</p><h4 id=websocket-uri>*WebSocket URI <a href=#websocket-uri></a></h4><pre><code>Sec-WebSocket-Key</code>9</pre><p>Note that the differences between <code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>0 and <code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>1is:</p><ul><li><strong><code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>0 use <code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>3 for handshake while <code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>1 use <code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>5</strong></li><li>Default port for <code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>0 is 80 and <code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>1 is port 443</li></ul><h2 id=websocket-browser-api>WebSocket Browser API <a href=#websocket-browser-api></a></h2><p>The browser provide an API for creating and managing WebSocket connection as well as exchange messages with a WebSocket server.</p><h3 id=open-websocket-connection>Open WebSocket connection <a href=#open-websocket-connection></a></h3><p>We can instantiate a new WebSocket connection, linking to the WebSocket server, and it will start connecting immediately.</p><pre><code class=language-javascript>HTTP/1.1 101 Switching Protocols
+    Upgrade: websocket
+    Connection: Upgrade
+    Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+    Sec-WebSocket-Protocol: chat
+</code>8</pre><h3 id=websocket-events>WebSocket Events <a href=#websocket-events></a></h3><p>In total, there are 4 events we can listen to are <code class=language-javascript>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+</code>9, <code>message</code>, <code>Sec-WebSocket-Accept</code>1, and <code>Sec-WebSocket-Key</code>6.</p><pre><code>Sec-WebSocket-Accept</code>3</pre><p><strong>Sending message</strong> The <code>Sec-WebSocket-Accept</code>4 method allow sending a message to the server. The <code>Sec-WebSocket-Accept</code>5 argument can be a <code>Sec-WebSocket-Accept</code>6 or <code>Sec-WebSocket-Accept</code>7 such as <code>Sec-WebSocket-Accept</code>8, <code>Sec-WebSocket-Accept</code>9.</p><h4 id=receiving-message>Receiving message <a href=#receiving-message></a></h4><p>Access <code>Sec-Websocket-Key</code>0 for incomming message</p><pre><code>Sec-Websocket-Key</code>1</pre><ul><li>For Text message, <code>Sec-Websocket-Key</code>0 will always be <code>Sec-WebSocket-Accept</code>6</li><li>For <code>Sec-Websocket-Key</code>4 message, user can choose between <code>Sec-WebSocket-Accept</code>9 and <code>Sec-WebSocket-Accept</code>8 by assign <code>Sec-Websocket-Key</code>7 <em>(default is <code>Sec-Websocket-Key</code>8)</em> then <code>Sec-Websocket-Key</code>0 will be the appropriate type</li></ul><pre><code>&quot;258EAFA5-E914-47DA-95CA-C5AB0DC85B11&quot;</code>0</pre><h3 id=rate-limiting>Rate Limiting <a href=#rate-limiting></a></h3><p>When user has a slow network connection. After calling <code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code>1 the data will be buffered in memory and will be sent out as soon as connection get better</p><p><code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code>2 return the amount of data queued using <code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code>3 but not yet send out to the network. <em>This value will not reset to zero if connection close.</em></p><pre><code>&quot;258EAFA5-E914-47DA-95CA-C5AB0DC85B11&quot;</code>4</pre><h3 id=close-connection>Close Connection <a href=#close-connection></a></h3><p>For sending <code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code>5 from browser WebSocket, simply call <code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code>6.</p><pre><code>&quot;258EAFA5-E914-47DA-95CA-C5AB0DC85B11&quot;</code>7</pre><h4 id=common-code>*Common code <a href=#common-code></a></h4><ul><li>1000 - normal closure (default)</li><li>1006 - connection was lost (this code cannot set manually, connection close abnormally by the browser and event go to <code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code>8)</li><li>1001 - the party is going away (server shutting down, browser leave the page)</li><li>&mldr;</li></ul><h2 id=connection-state>Connection State <a href=#connection-state></a></h2><p>User can access <code>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</code>9 for getting the current state of a WebSocket instance</p><ul><li><code>message</code>0: CONNECTING - socket created but connection is not open yet</li><li><code>message</code>1: OPEN - Connection is open and ready to communicate</li><li><code>message</code>2: CLOSING - Connection is in closing process</li><li><code>message</code>3: CLOSED - Connection is closed or could not be opened</li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

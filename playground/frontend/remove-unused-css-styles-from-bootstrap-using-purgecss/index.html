@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1015,7 +1015,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1065,7 +1065,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1126,7 +1126,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1175,7 +1175,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1195,51 +1195,10 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>You can view full CLI options at [https://www.purgecss.com/cli](https://www.purgecss.com/cli%5C)</p><p>Example repository: [https://github.com/PhmNgocNghia/purge-css-demo-cli](https://github.com/PhmNgocNghia/purge%5C-css%5C-demo%5C-cli%5C)</p><h2 id=setup-using-webpack>Setup using Webpack <a href=#setup-using-webpack></a></h2><p>Purge CSS can be used together with built tools such as webpack, gulp, grunt,… etc. You can view it’s documentation at [https://www.purgecss.com/](https://www.purgecss.com/%5C)</p><p>I’m going to demonstrate how to integrate with Webpack. This is my simple project which integrate project and Webpack</p><pre><code class=language-javascript>var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
-module.exports = {
-  mode: 'production',
-  entry: './src/index.js',
-  output: {
-    filename: '[name].js',
-    path: __dirname + '/dist',
-  },
-  module: {
-    rules: [
-      // javascript = babel + uglify
-      {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: [{ loader: 'babel-loader' }],
-      },
-
-      // css file: extract to css file with mini extract plugin
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      },
-    ],
-  },
-
-  // uglifyjs
-  optimization: {
-    minimizer: [new UglifyJsPlugin()],
-  },
-
-  // plugin
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './index.html',
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    }),
-  ],
-}
-</code></pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code>// Import CSS Grid min CSS</code></p><p><code>import 'bootstrap/dist/css/bootstrap-grid.min.css'</code></p><p>Here is the build output which includes CSS grid file</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>You can view full CLI options at [https://www.purgecss.com/cli](https://www.purgecss.com/cli%5C)</p><p>Example repository: [https://github.com/PhmNgocNghia/purge-css-demo-cli](https://github.com/PhmNgocNghia/purge%5C-css%5C-demo%5C-cli%5C)</p><h2 id=setup-using-webpack>Setup using Webpack <a href=#setup-using-webpack></a></h2><p>Purge CSS can be used together with built tools such as webpack, gulp, grunt,… etc. You can view it’s documentation at [https://www.purgecss.com/](https://www.purgecss.com/%5C)</p><p>I’m going to demonstrate how to integrate with Webpack. This is my simple project which integrate project and Webpack</p><pre><code class=language-javascript>bootstrap - grid.min.css
+</code>0</pre><p>In my index.js file, I simply import bootstrap grid CSS.</p><p><code class=language-javascript>bootstrap - grid.min.css
+</code>1</p><p><code class=language-javascript>bootstrap - grid.min.css
+</code>2</p><p>Here is the build output which includes CSS grid file</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_429bb8c82f4e38465293c6f79d782394_md5.webp`,
@@ -1268,7 +1227,7 @@ module.exports = {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1288,57 +1247,9 @@ module.exports = {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>To use PurgeCss with Webpack simply install this Webpack plugin: <code>npm i purgecss-webpack-plugin -D</code></p><p>Then add it to plugin section in Webpack config file</p><pre><code class=language-javascript>var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const PurgecssPlugin = require('purgecss-webpack-plugin')
-const glob = require('glob')
-const path = require('path')
-
-module.exports = {
-  mode: 'production',
-  entry: './src/index.js',
-  output: {
-    filename: '[name].js',
-    path: __dirname + '/dist',
-  },
-  module: {
-    rules: [
-      // javascript = babel + uglify
-      {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: [{ loader: 'babel-loader' }],
-      },
-
-      // css file: extract to css file with mini extract plugin
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      },
-    ],
-  },
-
-  // uglifyjs
-  optimization: {
-    minimizer: [new UglifyJsPlugin()],
-  },
-
-  // plugin
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    }),
-    new PurgecssPlugin({
-      paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
-    }),
-  ],
-}
-</code></pre><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>To use PurgeCss with Webpack simply install this Webpack plugin: <code class=language-javascript>bootstrap - grid.min.css
+</code>3</p><p>Then add it to plugin section in Webpack config file</p><pre><code class=language-javascript>bootstrap - grid.min.css
+</code>4</pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/remove-unused-css-styles-from-bootstrap-using-purgecss_97c7bfa1adf49d7c225f00976d99eb8c_md5.webp`,
@@ -1367,7 +1278,7 @@ module.exports = {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1387,7 +1298,8 @@ module.exports = {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Full example repository: [https://github.com/PhmNgocNghia/purge-css-example-webpack](https://github.com/PhmNgocNghia/purge%5C-css%5C-example%5C-webpack%5C)</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>With PurgeCSS, our <code>bootstrap-grid.main.css</code> file reduce from <strong>47kb</strong> to <strong>601byte</strong>. All unused selectors has been removed. You can view the documentation at [https://www.purgecss.com/](https://www.purgecss.com/%5C) which contain details instruction and api references.</p><p>Not only bootstrap, you can use PurgeCSS with many css libraries such as TailwindCSS, Zurb foundation,&mldr; etc.</p></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Full example repository: [https://github.com/PhmNgocNghia/purge-css-example-webpack](https://github.com/PhmNgocNghia/purge%5C-css%5C-example%5C-webpack%5C)</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>With PurgeCSS, our <code class=language-javascript>bootstrap - grid.min.css
+</code>5 file reduce from <strong>47kb</strong> to <strong>601byte</strong>. All unused selectors has been removed. You can view the documentation at [https://www.purgecss.com/](https://www.purgecss.com/%5C) which contain details instruction and api references.</p><p>Not only bootstrap, you can use PurgeCSS with many css libraries such as TailwindCSS, Zurb foundation,&mldr; etc.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

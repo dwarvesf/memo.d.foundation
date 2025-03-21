@@ -975,7 +975,7 @@ for i := 0; i &lt; typ.NumField(); i++ {
 for i := 0; i &lt; typ.NumMethod(); i++ {
   fmt.Printf(&quot;method %d: %s\n&quot;, i, typ.Method(i).Name)
 }
-</code></pre><ul><li><p><a href=https://go.dev/blog/laws-of-reflection target=_blank>Laws of Reflection</a></p><ul><li><p>Reflection goes from interface value to reflection object</p></li><li><p>Reflection goes from reflection object to interface value</p></li><li><p>To modify a reflection object, the value must be settable</p></li></ul><p>=> In short, the <em>Interface</em> method is the inverse of the <em>ValueOf</em> function, except that its result is always of static type interface{}.
+</code></pre><ul><li><p><a href=https://go.dev/blog/laws-of-reflection target=_blank>Laws of Reflection</a></p><ul><li><p>Reflection goes from interface value to reflection object</p></li><li><p>Reflection goes from reflection object to interface value</p></li><li><p>To modify a reflection object, the value must be settable</p></li></ul><p>⇒ In short, the <em>Interface</em> method is the inverse of the <em>ValueOf</em> function, except that its result is always of static type interface{}.
 Reiterating: Reflection goes from interface values to reflection objects and back again.</p></li><li><p>Zeroth Law: Use reflect at your own peril. Misuse it, and it will <em>panic</em> with no regrets.</p></li></ul><hr><p><a href=https://www.bytesizego.com/blog/go-embed target=_blank>https://www.bytesizego.com/blog/go-embed</a></p><p><a href=https://www.dolthub.com/blog/2024-10-04-reflecting-on-reflect/ target=_blank>https://www.dolthub.com/blog/2024-10-04-reflecting-on-reflect/</a></p></div><script defer type=module>
   async function loadMentions() {
     try {

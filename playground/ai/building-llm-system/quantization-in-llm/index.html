@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1045,7 +1045,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1098,7 +1098,7 @@ $$w = \frac{-128 - 40}{6.8763} = -24.431743$$</p><p>You can see there is some di
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1147,7 +1147,7 @@ $$w = \frac{-128 - 40}{6.8763} = -24.431743$$</p><p>You can see there is some di
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1196,7 +1196,7 @@ $$w = \frac{-128 - 40}{6.8763} = -24.431743$$</p><p>You can see there is some di
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1216,7 +1216,7 @@ $$w = \frac{-128 - 40}{6.8763} = -24.431743$$</p><p>You can see there is some di
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>GGUF&rsquo;s core objectives include:</p><ul><li><strong>Efficiency</strong>: Enabling large model deployment on resource-constrained devices</li><li><strong>Compatibility</strong>: Supporting diverse model architectures, sizes, and quantization levels</li><li><strong>Scalability</strong>: Managing extensive models beyond GGML limitations</li></ul><h2 id=naming-quantizated-model>Naming quantizated model <a href=#naming-quantizated-model></a></h2><p>In some platform like HuggingFace, sometimes you will see models with name like <code>author/{model_name}:q8_0</code>, <code>q4_0</code>, <code>q4_1</code>, <code>q5_0</code>, <code>q5_1</code>, <code>q6_k</code>, <code>q8_k</code>, <code>q2_k</code>, <code>q3_k</code>. It means that the model is quantized with the specified quantization method. The number after the <code>q</code> represents the number of bits used to represent the weights (and activations). The letter after the number represents the type of quantization method used. For example, <code>q8_0</code> means that the model is quantized with 8 bits and using uniform quantization to represent the weights (and activations). <code>q4_1</code> means that the model is quantized with 4 bits and using uniform quantization to represent the sign of the weights (and activations). <code>q6_k</code> means that the model is quantized with 6 bits and the k-means algorithm is used to cluster the weights (and activations).</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Quantization stands as a pivotal technique in LLM optimization, enabling efficient model deployment across various hardware platforms. Through precision reduction, quantization dramatically decreases memory and computational demands, facilitating model deployment on resource-limited devices.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://medium.com/@lmpo/understanding-model-quantization-for-llms-1573490d44ad target=_blank>https://medium.com/@lmpo/understanding-model-quantization-for-llms-1573490d44ad</a></li><li><a href=https://www.datacamp.com/tutorial/quantization-for-large-language-models target=_blank>https://www.datacamp.com/tutorial/quantization-for-large-language-models</a></li><li><a href=https://medium.com/@vimalkansal/understanding-the-gguf-format-a-comprehensive-guide-67de48848256 target=_blank>https://medium.com/@vimalkansal/understanding-the-gguf-format-a-comprehensive-guide-67de48848256</a></li><li><a href=https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-quantization target=_blank>https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-quantization</a></li></ul></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>GGUF&rsquo;s core objectives include:</p><ul><li><strong>Efficiency</strong>: Enabling large model deployment on resource-constrained devices</li><li><strong>Compatibility</strong>: Supporting diverse model architectures, sizes, and quantization levels</li><li><strong>Scalability</strong>: Managing extensive models beyond GGML limitations</li></ul><h2 id=naming-quantizated-model>Naming quantizated model <a href=#naming-quantizated-model></a></h2><p>In some platform like HuggingFace, sometimes you will see models with name like <code>author/{model_name}:q8_0</code>, <code>q4_0</code>, <code>q4_1</code>, <code>q5_0</code>, <code>q5_1</code>, <code>q6_k</code>, <code>q8_k</code>, <code>INT8</code>0, <code>INT8</code>1. It means that the model is quantized with the specified quantization method. The number after the <code>INT8</code>2 represents the number of bits used to represent the weights (and activations). The letter after the number represents the type of quantization method used. For example, <code>INT8</code>3 means that the model is quantized with 8 bits and using uniform quantization to represent the weights (and activations). <code>q4_1</code> means that the model is quantized with 4 bits and using uniform quantization to represent the sign of the weights (and activations). <code>q6_k</code> means that the model is quantized with 6 bits and the k-means algorithm is used to cluster the weights (and activations).</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>Quantization stands as a pivotal technique in LLM optimization, enabling efficient model deployment across various hardware platforms. Through precision reduction, quantization dramatically decreases memory and computational demands, facilitating model deployment on resource-limited devices.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://medium.com/@lmpo/understanding-model-quantization-for-llms-1573490d44ad target=_blank>https://medium.com/@lmpo/understanding-model-quantization-for-llms-1573490d44ad</a></li><li><a href=https://www.datacamp.com/tutorial/quantization-for-large-language-models target=_blank>https://www.datacamp.com/tutorial/quantization-for-large-language-models</a></li><li><a href=https://medium.com/@vimalkansal/understanding-the-gguf-format-a-comprehensive-guide-67de48848256 target=_blank>https://medium.com/@vimalkansal/understanding-the-gguf-format-a-comprehensive-guide-67de48848256</a></li><li><a href=https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-quantization target=_blank>https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-quantization</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

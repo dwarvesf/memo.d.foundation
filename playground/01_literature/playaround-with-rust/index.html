@@ -923,51 +923,9 @@ Folder:
 </code></pre><p>It creates variable <code>x</code> in the stack, len 5, cap 5, ptr to heap contain content. When assigning <code>y = x</code>, Rust disable the <code>x in the stack(no longer usable), and create new y</code> have ptr to ptr of <code>x</code></p><p>Let&rsquo;s take another example</p><pre><code class=language-javascript>let x = 5;
 
 let y = x;
-</code></pre><p><code>x</code> still usable after assign. The reason for that is an integer in Rust is saved in stack -> implemented Copy trait. The price of a copy in the stack does not as expensive as the other heap types(String).</p><p>Therefore, Rust let users do this by implement <code>Copy</code> trait for some types that save in stack(integer type, boolean type, floating-point type, character type, tuple that only contain above types). Other types that allocating memory in the heap when implementing Drop trait. That mean variables of that type will drop if out of scope. And if a user tries to implement Copy trait for this will raise compile-time error.</p><h3 id=immutable>Immutable <a href=#immutable></a></h3><p>Variables in Rust immutable by default, can not change throughout its lifetime. Thus, it resolves the problem of safety in Rust. If things are immutable by default, Rust compiler can easily pick up any side-affect, mutability during compile-time and guarantee application correctness.</p><h2 id=variable-declaration>Variable Declaration <a href=#variable-declaration></a></h2><h3 id=go>Go <a href=#go></a></h3><pre><code class=language-javascript>var x int // x = 0 -- a.k.a zero value
+</code></pre><p><code>x</code> still usable after assign. The reason for that is an integer in Rust is saved in stack → implemented Copy trait. The price of a copy in the stack does not as expensive as the other heap types(String).</p><p>Therefore, Rust let users do this by implement <code>Copy</code> trait for some types that save in stack(integer type, boolean type, floating-point type, character type, tuple that only contain above types). Other types that allocating memory in the heap when implementing Drop trait. That mean variables of that type will drop if out of scope. And if a user tries to implement Copy trait for this will raise compile-time error.</p><h3 id=immutable>Immutable <a href=#immutable></a></h3><p>Variables in Rust immutable by default, can not change throughout its lifetime. Thus, it resolves the problem of safety in Rust. If things are immutable by default, Rust compiler can easily pick up any side-affect, mutability during compile-time and guarantee application correctness.</p><h2 id=variable-declaration>Variable Declaration <a href=#variable-declaration></a></h2><h3 id=go>Go <a href=#go></a></h3><pre><code class=language-javascript>var x int // x = 0 -- a.k.a zero value
 </code></pre><h3 id=rust>Rust <a href=#rust></a></h3><pre><code class=language-javascript>let x: i64 // x is un-addresable value, cannot be use util set x = somevalue
-</code></pre><h2 id=expression-base-language>Expression-base language <a href=#expression-base-language></a></h2><p>Rust is <em>primarily</em> an expression language. This means that most forms of value-producing or effect-causing evaluation are directed by the uniform syntax category of <em>expressions</em>. Each kind of expression can typically <em>nest</em> within each other kind of expression, and rules for evaluation of expressions involve specifying both the value produced by the expression and the order in which its sub-expressions are themselves evaluated.</p><p>In contrast, statements in Rust serve <em>mostly</em> to contain and explicitly sequence expression evaluation.</p><p>Rust allow user do something like</p><pre><code class=language-javascript>let y = if x == 5 {  
-    10 // y = 10           
- } else {     
-    15 // y =15  
-}
-</code></pre><h2 id=lifetime>Lifetime <a href=#lifetime></a></h2><p>Because of the borrowing. The way Rust compiler check if you are trying to use a variable that borrowed by the other. Rust will compile this</p><pre><code class=language-javascript>fn main() {
-    let x;
-    {
-        let y = 5;
-        x= &amp;y
-    }
-    println!(&quot;{}&quot;,x)
-}
-</code></pre><p>into this</p><pre><code class=language-javascript>fn main() {
-   'a: {
-        let x;
-        'b: {
-            let y = 5;// y have an amount of 'b lifetime(let say: 10 energy)
-            x= &amp;y// so y will be no longer valid when it out of energy
-        }// when y go here, it runs out of energy &lt;=&gt; energy = 0
-// therefore, Rust compiler can know that, oh, y is no longer exist 
-// and then x trying to borrow it
-// x is now borrowing from the deallocated memory
-    println!(&quot;{}&quot;,x) 
-   }
-}
-</code></pre><p>Hence, we can say, no matter what we do with <strong>borrowing</strong>, Rust must know the lifetime of parameter, it we don&rsquo;t provide it, Rust stopping what you do by the error: <em>missing lifetime specifier</em>.**</p><p><em>E.g:</em> When you are trying to put the function parameter by borrow some variable, or trying to borrow the function parameter inside function, Rust need to know the lifetime of it, otherwise, Rust compiler will stopping by the error</p><pre><code class=language-javascript>fn largest(x: &amp;i64,y: &amp;i64) -&gt; &amp;i64 {
-    if x &gt; y {
-        x
-    } else {
-        y
-    }
-}
-
-fn main() {
-        let x;
-        {
-            let y = 5; 
-            x = &amp;y;
-            println!(&quot;{}&quot;, largest(&amp;x, &amp;y))
-        }
-}
-</code></pre><p><img x-data="{
+</code></pre><h2 id=expression-base-language>Expression-base language <a href=#expression-base-language></a></h2><p>Rust is <em>primarily</em> an expression language. This means that most forms of value-producing or effect-causing evaluation are directed by the uniform syntax category of <em>expressions</em>. Each kind of expression can typically <em>nest</em> within each other kind of expression, and rules for evaluation of expressions involve specifying both the value produced by the expression and the order in which its sub-expressions are themselves evaluated.</p><p>In contrast, statements in Rust serve <em>mostly</em> to contain and explicitly sequence expression evaluation.</p><p>Rust allow user do something like</p><pre><code>x</code>0</pre><h2 id=lifetime>Lifetime <a href=#lifetime></a></h2><p>Because of the borrowing. The way Rust compiler check if you are trying to use a variable that borrowed by the other. Rust will compile this</p><pre><code>x</code>1</pre><p>into this</p><pre><code>x</code>2</pre><p>Hence, we can say, no matter what we do with <strong>borrowing</strong>, Rust must know the lifetime of parameter, it we don&rsquo;t provide it, Rust stopping what you do by the error: <em>missing lifetime specifier</em>.**</p><p><em>E.g:</em> When you are trying to put the function parameter by borrow some variable, or trying to borrow the function parameter inside function, Rust need to know the lifetime of it, otherwise, Rust compiler will stopping by the error</p><pre><code>x</code>3</pre><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/playaround-with-rust_8b2e8ecd35a0b2b6be39e220dcb4c333_md5.webp`,
@@ -996,7 +954,7 @@ fn main() {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1016,14 +974,7 @@ fn main() {
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In order to correct the function, we just put the lifetime in parameter like:</p><pre><code class=language-javascript>fn largest(x: &amp;i64, y: &amp;i64) -&gt; &amp;i64 {
-   if x &gt; y {
-       x
-   } else {
-       y
-   }
-}
-</code></pre></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>In order to correct the function, we just put the lifetime in parameter like:</p><pre><code>x</code>4</pre></div><script defer type=module>
   async function loadMentions() {
     try {
       

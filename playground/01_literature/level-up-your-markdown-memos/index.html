@@ -946,7 +946,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1000,7 +1000,7 @@ These are titles that represent the content of each paragraph and include H2, H3
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1049,7 +1049,7 @@ These are titles that represent the content of each paragraph and include H2, H3
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1069,15 +1069,7 @@ These are titles that represent the content of each paragraph and include H2, H3
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Table of content (ToC) acts as a &ldquo;map&rdquo; to help readers grasp information in the most clear way. To fully display all headings in &ldquo;On this page&rdquo;, the following must be observed:</p><ul><li>Use the correct heading level for each section and subsection in the article</li><li>ToC only shows the first two heading levels: <code>## header 2</code> and <code>### header 3</code> (not showing <code># header 1</code> )</li><li>Use <code>## header 2</code> for main sections and <code>### header 3</code> for subsections</li><li>Limit the use of heading <code>#### header 4</code> to ensure readability of the article</li><li>Avoid using text formatting like <code>**</code> or adding links directly within headings can cause ToC errors.</li></ul><p>Following these rules will help you create a scientific, easy-to-read Markdown article that fully displays all headings in the ToC of the memo.</p><p>Example:</p><pre><code class=language-bash>## Meetings start on time
-Paragraph
-## Meetings happen in regular hours
-Paragraph
-## Meetings should have a video option
-Paragraph
-## Prerequisites for successful meetings
-Paragraph
-</code></pre><p>Result:
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Table of content (ToC) acts as a &ldquo;map&rdquo; to help readers grasp information in the most clear way. To fully display all headings in &ldquo;On this page&rdquo;, the following must be observed:</p><ul><li>Use the correct heading level for each section and subsection in the article</li><li>ToC only shows the first two heading levels: <code>## header 2</code> and <code>### header 3</code> (not showing <code># header 1</code> )</li><li>Use <code>## header 2</code> for main sections and <code>### header 3</code> for subsections</li><li>Limit the use of heading <code>#</code>2 to ensure readability of the article</li><li>Avoid using text formatting like <code>#</code>3 or adding links directly within headings can cause ToC errors.</li></ul><p>Following these rules will help you create a scientific, easy-to-read Markdown article that fully displays all headings in the ToC of the memo.</p><p>Example:</p><pre><code>#</code>4</pre><p>Result:
 <img x-data="{
     title: ``,
     alt: ``,
@@ -1107,7 +1099,7 @@ Paragraph
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1156,7 +1148,7 @@ Paragraph
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1176,22 +1168,7 @@ Paragraph
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>After you&rsquo;ve built your fancy list, take a quick minute to double-check it. Scan through and make sure the numbers are counting up (or down) the way they should. A quick proofread can save you a headache later.</p><p>For example:</p><pre><code class=language-bash>1. First list item
-   1. Ordered nested list item
-2. Second list item
-   - Unordered nested list item
-</code></pre><p>Result:</p><ol><li>First list item<ol><li>Ordered nested list item</li></ol></li><li>Second list item<ul><li>Unordered nested list item</li></ul></li></ol><h2 id=task-list-glitches>Task list glitches <a href=#task-list-glitches></a></h2><p>In the process of crafting task lists, it is not uncommon to encounter specific glitches that can hinder their functionality. These glitches can be categorized into two main areas:</p><p><strong>Syntax errors:</strong></p><ul><li>Missing <code>-</code> or <code>*</code>: Each line in a task list must start with a <code>-</code> or <code>*</code> character.</li><li>Incorrect use of <code>-</code> and <code>*</code>: <code>-</code> and <code>*</code> characters cannot be mixed in the same task list.</li></ul><p><strong>Formatting errors:</strong></p><ul><li>Numbering should be used <code>#</code> to number tasks.</li><li>Indentation should be used to distinguish between task levels.</li></ul><p>For example:</p><pre><code class=language-bash>## Task List
-
-### Task 1
-
-- [x] Subtask 1
-- [ ] Subtask 2
-
-### Task 2
-
-- [ ] Subtask 1
-- [ ] Subtask 2
-</code></pre><h2 id=screenshots-that-flop>Screenshots that flop <a href=#screenshots-that-flop></a></h2><p>We all know a picture is worth a thousand words, and screenshots are like tiny picture warriors fighting for clarity. But not all screenshots are created equal.</p><ul><li><strong>Display images with incorrect aspect ratio:</strong> Design your images in a horizontal rectangular frame with an aspect ratio of <code>21:9</code>, <code>16:9</code>, or <code>4:3</code>. Avoid using vertical rectangles as it will enlarge the image and affect the layout of your document.</li><li><strong>Low Resolution:</strong> A blurry or pixelated screenshot can be frustrating and impede understanding. Make sure the screenshot resolution is high enough to clearly.</li></ul><p>Lots of people use different screenshot tools, kind of like having a favorite app for every task. For instance, on my Windows, I rock ShareX, while on Mac, <a href=https://memo.d.foundation/playground/how-to-take-better-screenshots-on-mac/>Cleanshot</a> is my go-to. Because different tools offer different features! The point is, if you need more than the basics, there&rsquo;s a whole world of screenshot tools out there to explore. They cater to all sorts of needs, from quick captures to fancy edits.</p><p>Remember, a well-made screenshot can be a superhero in presentations, tutorials, or any situation where you need crystal-clear visuals. Think of it as a shortcut – a way to explain something complex with a simple picture. So go forth and conquer the world of screenshots – you&rsquo;ve got this!</p><blockquote><p><strong>Tip</strong>: You can use <a href=https://getbackr.vercel.app/ target=_blank><strong>Backr</strong></a> tool to set stunning backgrounds and create visuals that grab attention for your Memo posts.</p></blockquote><h2 id=buried-in-links>Buried in links <a href=#buried-in-links></a></h2><p>While links are super helpful, including too many can throw a wrench in your reader&rsquo;s journey. A long list can be visually overwhelming, making it tough to find the key info they&rsquo;re after. Plus, with a bunch of links, it&rsquo;s easy to lose track of which ones they&rsquo;ve already clicked. So, use links strategically to avoid information overload and keep your reader focused.</p><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>After you&rsquo;ve built your fancy list, take a quick minute to double-check it. Scan through and make sure the numbers are counting up (or down) the way they should. A quick proofread can save you a headache later.</p><p>For example:</p><pre><code>#</code>5</pre><p>Result:</p><ol><li>First list item<ol><li>Ordered nested list item</li></ol></li><li>Second list item<ul><li>Unordered nested list item</li></ul></li></ol><h2 id=task-list-glitches>Task list glitches <a href=#task-list-glitches></a></h2><p>In the process of crafting task lists, it is not uncommon to encounter specific glitches that can hinder their functionality. These glitches can be categorized into two main areas:</p><p><strong>Syntax errors:</strong></p><ul><li>Missing <code>#</code>6 or <code>#</code>7: Each line in a task list must start with a <code>#</code>6 or <code>#</code>7 character.</li><li>Incorrect use of <code>#</code>6 and <code>#</code>7: <code>#</code>6 and <code>#</code>7 characters cannot be mixed in the same task list.</li></ul><p><strong>Formatting errors:</strong></p><ul><li>Numbering should be used <code>#</code> to number tasks.</li><li>Indentation should be used to distinguish between task levels.</li></ul><p>For example:</p><pre><code>#</code>5</pre><h2 id=screenshots-that-flop>Screenshots that flop <a href=#screenshots-that-flop></a></h2><p>We all know a picture is worth a thousand words, and screenshots are like tiny picture warriors fighting for clarity. But not all screenshots are created equal.</p><ul><li><strong>Display images with incorrect aspect ratio:</strong> Design your images in a horizontal rectangular frame with an aspect ratio of <code>#</code>6, <code>#</code>7, or <code>#</code>8. Avoid using vertical rectangles as it will enlarge the image and affect the layout of your document.</li><li><strong>Low Resolution:</strong> A blurry or pixelated screenshot can be frustrating and impede understanding. Make sure the screenshot resolution is high enough to clearly.</li></ul><p>Lots of people use different screenshot tools, kind of like having a favorite app for every task. For instance, on my Windows, I rock ShareX, while on Mac, <a href=https://memo.d.foundation/playground/how-to-take-better-screenshots-on-mac/>Cleanshot</a> is my go-to. Because different tools offer different features! The point is, if you need more than the basics, there&rsquo;s a whole world of screenshot tools out there to explore. They cater to all sorts of needs, from quick captures to fancy edits.</p><p>Remember, a well-made screenshot can be a superhero in presentations, tutorials, or any situation where you need crystal-clear visuals. Think of it as a shortcut – a way to explain something complex with a simple picture. So go forth and conquer the world of screenshots – you&rsquo;ve got this!</p><blockquote><p><strong>Tip</strong>: You can use <a href=https://getbackr.vercel.app/ target=_blank><strong>Backr</strong></a> tool to set stunning backgrounds and create visuals that grab attention for your Memo posts.</p></blockquote><h2 id=buried-in-links>Buried in links <a href=#buried-in-links></a></h2><p>While links are super helpful, including too many can throw a wrench in your reader&rsquo;s journey. A long list can be visually overwhelming, making it tough to find the key info they&rsquo;re after. Plus, with a bunch of links, it&rsquo;s easy to lose track of which ones they&rsquo;ve already clicked. So, use links strategically to avoid information overload and keep your reader focused.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/level-up-your-markdown-memos_image5.webp`,
@@ -1220,7 +1197,7 @@ Paragraph
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1240,15 +1217,7 @@ Paragraph
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Use hyperlinks instead of plain text links</strong></p><p>Hyperlinks allow readers to hover over the link to see the destination URL before clicking. This helps them decide whether the link is relevant to them and avoid clicking on unwanted links.</p><p>In addition, you should use links sparingly and only link to important and useful information.</p><p>References for links support two formats:</p><ul><li>External links: <code>[text] (http://example.com)</code>. Shows all links to <code>http://example.com</code>.</li><li>Internal links: <code>[text] (.file.md)</code>. Shows all links to <code>file.md</code></li></ul><h2 id=code-blockception>Code Blockception <a href=#code-blockception></a></h2><p>Nested code errors can occur when you use block code within another block code. This can happen when you&rsquo;re trying to format code within a code block, or when you&rsquo;re trying to include code within a blockquote.</p><p>To avoid nested code errors, you can use triple backticks ``` in a fenced code block, wrap them inside quadruple backticks ````.</p><pre><code class=language-plain-text>````
-```
-Look! You can see my backticks.
-```
-````
-</code></pre><p>If you&rsquo;re going for a plain-text look, go ahead and use <code>plain-text</code>. But if you want to add a little somethin&rsquo; somethin&rsquo;, you can use code highlighting formats like <code>javascript</code>, <code>bash</code>, <code>markdown</code>,… It&rsquo;s totally up to you!</p><p>For example:</p><pre><code class=language-plain-text>```plain-text
-Look! You can see my backticks.
-```
-</code></pre><h2 id=horizontal-rule-overload>Horizontal rule overload <a href=#horizontal-rule-overload></a></h2><p>Horizontal rules (use three or more stars <code>***</code>, hyphens <code>---</code>, or underscore <code>___</code>) can be a great way to break up your text and make it easier to read. But too many can make your text look cluttered and hard to follow.</p><p>Common mistakes to avoid:</p><ul><li><strong>Double trouble in the title:</strong> Make sure you only use one horizontal rule in your title. Too many can make it look messy.</li><li><strong>Horizontal rule overload:</strong> Use horizontal rules sparingly. Too many can make your text look choppy and hard to read.</li></ul><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p><strong>Use hyperlinks instead of plain text links</strong></p><p>Hyperlinks allow readers to hover over the link to see the destination URL before clicking. This helps them decide whether the link is relevant to them and avoid clicking on unwanted links.</p><p>In addition, you should use links sparingly and only link to important and useful information.</p><p>References for links support two formats:</p><ul><li>External links: <code>#</code>9. Shows all links to <code>title:</code>0.</li><li>Internal links: <code>title:</code>1. Shows all links to <code>title:</code>2</li></ul><h2 id=code-blockception>Code Blockception <a href=#code-blockception></a></h2><p>Nested code errors can occur when you use block code within another block code. This can happen when you&rsquo;re trying to format code within a code block, or when you&rsquo;re trying to include code within a blockquote.</p><p>To avoid nested code errors, you can use triple backticks ``` in a fenced code block, wrap them inside quadruple backticks ````.</p><pre><code>title:</code>3</pre><p>If you&rsquo;re going for a plain-text look, go ahead and use <code>title:</code>4. But if you want to add a little somethin&rsquo; somethin&rsquo;, you can use code highlighting formats like <code>title:</code>5, <code>title:</code>6, <code>title:</code>7,… It&rsquo;s totally up to you!</p><p>For example:</p><pre><code>title:</code>8</pre><h2 id=horizontal-rule-overload>Horizontal rule overload <a href=#horizontal-rule-overload></a></h2><p>Horizontal rules (use three or more stars <code>title:</code>9, hyphens <code>##</code>0, or underscore <code>##</code>1) can be a great way to break up your text and make it easier to read. But too many can make your text look cluttered and hard to follow.</p><p>Common mistakes to avoid:</p><ul><li><strong>Double trouble in the title:</strong> Make sure you only use one horizontal rule in your title. Too many can make it look messy.</li><li><strong>Horizontal rule overload:</strong> Use horizontal rules sparingly. Too many can make your text look choppy and hard to read.</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/level-up-your-markdown-memos_image6.webp`,
@@ -1277,7 +1246,7 @@ Look! You can see my backticks.
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1326,7 +1295,7 @@ Look! You can see my backticks.
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1346,10 +1315,7 @@ Look! You can see my backticks.
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Using the grey text formatting for your callouts can blend them in with the background, making them less noticeable and defeating their purpose.</p><p><strong>Fix it:</strong> Want your callouts to shout &ldquo;Hey, look at me!&rdquo;? Use black or a contrasting color to make them pop against the background. This will help your readers easily identify important information.</p><p><strong>Not using spaces to break for sub-lines</strong></p><p>This is the simplest and most common way to break lines in a callout. Add the <code>> ></code> character at the position where you want to break the line in the callout content.</p><p>You can break callouts in multiple levels.</p><pre><code class=language-plain-text>&gt; Can callouts break the line?
-&gt; &gt; Yes!, they can.
-&gt; &gt; &gt; You can even use multiple layers of breaking.
-</code></pre><p>Result:</p><blockquote><p>Can callouts break the line?</p><blockquote><p>Yes!, they can.</p><blockquote><p>You can even use multiple layers of breaking.</p></blockquote></blockquote></blockquote></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>Using the grey text formatting for your callouts can blend them in with the background, making them less noticeable and defeating their purpose.</p><p><strong>Fix it:</strong> Want your callouts to shout &ldquo;Hey, look at me!&rdquo;? Use black or a contrasting color to make them pop against the background. This will help your readers easily identify important information.</p><p><strong>Not using spaces to break for sub-lines</strong></p><p>This is the simplest and most common way to break lines in a callout. Add the <code>##</code>2 character at the position where you want to break the line in the callout content.</p><p>You can break callouts in multiple levels.</p><pre><code>##</code>3</pre><p>Result:</p><blockquote><p>Can callouts break the line?</p><blockquote><p>Yes!, they can.</p><blockquote><p>You can even use multiple layers of breaking.</p></blockquote></blockquote></blockquote></div><script defer type=module>
   async function loadMentions() {
     try {
       

@@ -926,19 +926,7 @@ Folder:
     display: none;
   }
 }
-</code></pre><p>Additionally, Containers can be named with <code>container-name</code> property. This allows us to query a specific container.</p><pre><code class=language-css>.sidebar {
-  container-type: inline-size;
-  container-name: my-sidebar;
-}
-</code></pre><p>or shorthand syntax</p><pre><code class=language-css>.sidebar {
-  container: my-sidebar / inline-size;
-}
-</code></pre><p>Then, to query a specific container, we can use <code>@container</code> with <code>container-name</code>.</p><pre><code class=language-css>@container my-sidebar (min-width: 300px) {
-  .content {
-    display: none;
-  }
-}
-</code></pre><h2 id=browser-support>Browser Support <a href=#browser-support></a></h2><p>Currently, Container Queries is only available in <a href="https://caniuse.com/?search=Container%20Queries" target=_blank>modern browsers</a>:</p><ul><li>Chrome 105+</li><li>Safari 15+</li><li>Edge 105+</li></ul><p>Universal support can be achieved by using <a href=https://github.com/GoogleChromeLabs/container-query-polyfill target=_blank>Polyfill</a>.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries target=_blank>https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries</a></li><li><a href=https://javascript.plainenglish.io/css-container-queries-3393fbeb6ea8 target=_blank>https://javascript.plainenglish.io/css-container-queries-3393fbeb6ea8</a></li><li><a href=https://ishadeed.com/article/container-queries-are-finally-here/ target=_blank>https://ishadeed.com/article/container-queries-are-finally-here/</a></li><li><a href=https://developer.chrome.com/docs/devtools/css/container-queries/ target=_blank>https://developer.chrome.com/docs/devtools/css/container-queries/</a></li></ul></div><script defer type=module>
+</code></pre><p>Additionally, Containers can be named with <code>container-name</code> property. This allows us to query a specific container.</p><pre><code>size</code>0</pre><p>or shorthand syntax</p><pre><code>size</code>1</pre><p>Then, to query a specific container, we can use <code>@container</code> with <code>container-name</code>.</p><pre><code>size</code>4</pre><h2 id=browser-support>Browser Support <a href=#browser-support></a></h2><p>Currently, Container Queries is only available in <a href="https://caniuse.com/?search=Container%20Queries" target=_blank>modern browsers</a>:</p><ul><li>Chrome 105+</li><li>Safari 15+</li><li>Edge 105+</li></ul><p>Universal support can be achieved by using <a href=https://github.com/GoogleChromeLabs/container-query-polyfill target=_blank>Polyfill</a>.</p><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries target=_blank>https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries</a></li><li><a href=https://javascript.plainenglish.io/css-container-queries-3393fbeb6ea8 target=_blank>https://javascript.plainenglish.io/css-container-queries-3393fbeb6ea8</a></li><li><a href=https://ishadeed.com/article/container-queries-are-finally-here/ target=_blank>https://ishadeed.com/article/container-queries-are-finally-here/</a></li><li><a href=https://developer.chrome.com/docs/devtools/css/container-queries/ target=_blank>https://developer.chrome.com/docs/devtools/css/container-queries/</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

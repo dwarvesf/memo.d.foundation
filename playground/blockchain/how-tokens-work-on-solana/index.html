@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -996,7 +996,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1016,7 +1016,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Now, you have a <code>mint account</code> and a <code>token account</code>. Let&rsquo;s mint some tokens. To mint, you just send the <code>mint</code> instruction to the token program, which tells the program how many tokens to mint and whom to mint them to. Only one user is allowed to mint a token of a particular type (the <code>mint authority</code> which mentioned above)</p></li><li><p>To transfer tokens, no surprises, you send the <code>transfer</code> instruction to the token program, which tells it how many tokens to transfer and whom to transfer them. Note that the recipient must also own a <code>token account</code> for the type of token you&rsquo;re transferring.</p></li></ul><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li><p>Now, you have a <code>mint account</code> and a <code>token account</code>. Let&rsquo;s mint some tokens. To mint, you just send the <code>mint account</code>2 instruction to the token program, which tells the program how many tokens to mint and whom to mint them to. Only one user is allowed to mint a token of a particular type (the <code>mint authority</code> which mentioned above)</p></li><li><p>To transfer tokens, no surprises, you send the <code>mint account</code>4 instruction to the token program, which tells it how many tokens to transfer and whom to transfer them. Note that the recipient must also own a <code>token account</code> for the type of token you&rsquo;re transferring.</p></li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/how-tokens-work-on-solana_c2fz6whh.webp`,
@@ -1045,7 +1045,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1065,7 +1065,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>What about NFTs? To create an NFT, you also use the same token program (what!!!), but these are some differences in how they are created and minted.</li><li>As you know, an NFT is just a token that has one <code>total supply</code> and zero <code>decimal</code>. To create an NFT, you just need to create a <code>mint account</code> which has zero <code>decimal</code>. After that, you mint only one token of this NFT and disable future minting. This ensures there will only ever be one.</li><li>In practice, most people use Candy Machine to create NFTs, which abstracts all this complexity away.</li><li>But how can I config the name and symbol for my token? To do that, you need to create a pull request to <a href=https://github.com/solana-labs/token-list target=_blank>Solana Token Registry</a>. Include a JSON file containing your token metadata (chain id, address, symbol, logo, name &mldr;). Click <a href=https://github.com/solana-labs/token-list target=_blank>here</a> for more information.</li></ul><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://spl.solana.com/token target=_blank>https://spl.solana.com/token</a></li><li><a href=https://spl.solana.com/associated-token-account target=_blank>https://spl.solana.com/associated-token-account</a></li><li><a href=https://twitter.com/pencilflip/status/1454141877972779013 target=_blank>https://twitter.com/pencilflip/status/1454141877972779013</a></li></ul></div><script defer type=module>
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><ul><li>What about NFTs? To create an NFT, you also use the same token program (what!!!), but these are some differences in how they are created and minted.</li><li>As you know, an NFT is just a token that has one <code>total supply</code> and zero <code>mint account</code>7. To create an NFT, you just need to create a <code>mint account</code> which has zero <code>mint account</code>7. After that, you mint only one token of this NFT and disable future minting. This ensures there will only ever be one.</li><li>In practice, most people use Candy Machine to create NFTs, which abstracts all this complexity away.</li><li>But how can I config the name and symbol for my token? To do that, you need to create a pull request to <a href=https://github.com/solana-labs/token-list target=_blank>Solana Token Registry</a>. Include a JSON file containing your token metadata (chain id, address, symbol, logo, name &mldr;). Click <a href=https://github.com/solana-labs/token-list target=_blank>here</a> for more information.</li></ul><h2 id=reference>Reference <a href=#reference></a></h2><ul><li><a href=https://spl.solana.com/token target=_blank>https://spl.solana.com/token</a></li><li><a href=https://spl.solana.com/associated-token-account target=_blank>https://spl.solana.com/associated-token-account</a></li><li><a href=https://twitter.com/pencilflip/status/1454141877972779013 target=_blank>https://twitter.com/pencilflip/status/1454141877972779013</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

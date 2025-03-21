@@ -993,7 +993,7 @@ Encode/sample=10000-2   16.000 ± 0%   2.000 ± 0%  -87.50% (p=0.002 n=6)
 geomean                  6.840        2.000       -70.76%
 ¹ all samples are equal
 
-</code></pre><p>-> Limitations:</p><ul><li><p><strong>Difficult to track changes</strong>: easy to lost track of when current optimizations are not helping, and need to revert to previous states.</p></li><li><p><strong>Accidental benchmark changes</strong>: Unintentional modifications to the benchmark code can lead to unreliable comparisons and are hard to notice in this flow.</p></li><li><p><strong>Limited collaboration</strong>: hard to share/replicate, esp for bigger projects, where reviews need to ensure the reliability of the author’s benchmark/claimed results.</p></li></ul></li><li><p>New-school:</p></li></ul><pre><code class=language-bash>  export bench=allcases &amp;&amp; go test \
+</code></pre><p>→ Limitations:</p><ul><li><p><strong>Difficult to track changes</strong>: easy to lost track of when current optimizations are not helping, and need to revert to previous states.</p></li><li><p><strong>Accidental benchmark changes</strong>: Unintentional modifications to the benchmark code can lead to unreliable comparisons and are hard to notice in this flow.</p></li><li><p><strong>Limited collaboration</strong>: hard to share/replicate, esp for bigger projects, where reviews need to ensure the reliability of the author’s benchmark/claimed results.</p></li></ul></li><li><p>New-school:</p></li></ul><pre><code class=language-bash>  export bench=allcases &amp;&amp; go test \
   -run '^$' -bench '^BenchmarkFoo' \
   -benchtime 5s -count 6 -cpu 2 -benchmem -timeout 999m \
   | tee ${bench}.txt 
@@ -1106,27 +1106,19 @@ Encode 10000 zstd protobuf               16.000 ± 0%   2.000 ± 0%  -87.50% (p=
 geomean                                   6.840        2.000       -70.76%
 ¹ all samples are equal
 
-</code></pre><p>-> Limitations:</p><ul><li>Rerunning benchmarks with a large amount of cases takes significantly time (slower feedback loop!).</li><li>It yields more complex benchmarking code, which makes it hard to iterate on, and spot places where you benchmark the testing code vs the portion of the code you wanted to.</li><li>For continuous production use, it does not make sense to commit that benchmark with all cases, which are no longer being continued. It fits better to capture such a benchmark in some remote branch for future reference though.</li></ul><p>Conclusion:</p><ul><li><p>Should use both in a hybrid approach, depending on your goals.</p></li><li><p>Can even use more features like <code>-format csv</code> to export to sheets and render charts</p></li></ul><h2 id=go-plan9-memo-speeding-up-calculations-450httpspehringerinfogo_plan9_memohtml><a href=https://pehringer.info/go_plan9_memo.html target=_blank>Go Plan9 Memo, Speeding Up Calculations 450%</a> <a href=#go-plan9-memo-speeding-up-calculations-450httpspehringerinfogo_plan9_memohtml></a></h2><p>Context</p><ul><li><p>want more power than Go&rsquo;s concurrency, encounter SIMD - Same Instruction Muliple Data, that many languages either have compiler optimizations use simd or libs that support it.</p></li><li><p>&ldquo;I just want a package that offers a thin abstraction layer over arithmetic and bitwise simd operations.&rdquo;</p></li><li><p>Go&rsquo;s assembler uses <a href=https://9p.io/plan9/ target=_blank>Plan9</a>&rsquo;s assemblers guidance which uses target platforms instructions and registers with slight modifications to their names and usage. This means that x86 Plan9 is different then say arm Plan9.</p><pre><code>example
-┣━ AddInts_amd64.s
-┗━ main.go
-</code></pre><pre><code>// +build amd64
-
-TEXT ·AddInts(SB), 4, $0
-    MOVL    left+0(FP), AX
-    MOVL    right+8(FP), BX
-    ADDL    BX, AX
-    MOVL    AX, int+16(FP)
-    RET
-</code></pre><pre><code class=language-go>package main
-
-import &quot;fmt&quot;
-
-func AddInts(left, right) int
-
-func main() {
-    fmt.Println(&quot;1 + 2 = &quot;, AddInts(1, 2))
-}
-</code></pre><p><strong>LINE 1</strong>: The file contains amd64 specific instructions, so we need to include a Go build tag to make sure Go does not try to compile this file for non x86 machines.</p><p><strong>LINE 3</strong>: You can think of this line as the functions declaration. TEXT declares that this is a function or text section. ·AddInts(SB) specifies our functions name. 4 represents “NOSPLIT” which we need for some reason. And $0 is the size of the function’s stack frame (used for local variables). It’s zero in this case because we can easily fit everything into the registers.</p><p><strong>LINE 4 & 5</strong>: Go’s calling convention is to put the function arguments onto the stack. So we MOVe both Long 32-bit values into the AX and BX registers by dereferencing the frame pointer (FP) with the appropriate offsets. The first argument is stored at offset 0. The second argument is stored at offset 8 (int’s only need 4 bytes but I think Go offsets all arguments by 8 to maintain memory alignment).</p><p><strong>LINE 6</strong>: Add the Long 32-bit value in AX (left) with the Long 32-bit value in BX. And store the resulting Long 32-bit value in AX.</p><p><strong>LINE 7 & 8</strong>: Go’s calling convention (as far as I can tell) is to put the function return values after its arguments on the stack. So we MOVe the Long 32-bit values in the AX register onto the stack by dereferencing the frame pointer (FP) with the appropriate offset. Which is 16 in this case.</p><p><img x-data="{
+</code></pre><p>→ Limitations:</p><ul><li>Rerunning benchmarks with a large amount of cases takes significantly time (slower feedback loop!).</li><li>It yields more complex benchmarking code, which makes it hard to iterate on, and spot places where you benchmark the testing code vs the portion of the code you wanted to.</li><li>For continuous production use, it does not make sense to commit that benchmark with all cases, which are no longer being continued. It fits better to capture such a benchmark in some remote branch for future reference though.</li></ul><p>Conclusion:</p><ul><li><p>Should use both in a hybrid approach, depending on your goals.</p></li><li><p>Can even use more features like <code>-format csv</code> to export to sheets and render charts</p></li></ul><h2 id=go-plan9-memo-speeding-up-calculations-450httpspehringerinfogo_plan9_memohtml><a href=https://pehringer.info/go_plan9_memo.html target=_blank>Go Plan9 Memo, Speeding Up Calculations 450%</a> <a href=#go-plan9-memo-speeding-up-calculations-450httpspehringerinfogo_plan9_memohtml></a></h2><p>Context</p><ul><li><p>want more power than Go&rsquo;s concurrency, encounter SIMD - Same Instruction Muliple Data, that many languages either have compiler optimizations use simd or libs that support it.</p></li><li><p>&ldquo;I just want a package that offers a thin abstraction layer over arithmetic and bitwise simd operations.&rdquo;</p></li><li><p>Go&rsquo;s assembler uses <a href=https://9p.io/plan9/ target=_blank>Plan9</a>&rsquo;s assemblers guidance which uses target platforms instructions and registers with slight modifications to their names and usage. This means that x86 Plan9 is different then say arm Plan9.</p><pre><code class=language-bash>  export bench=v1 &amp;&amp; go test \
+  -run '^$' -bench '^BenchmarkFoo' \
+  -benchtime 5s -count 6 -cpu 2 -benchmem -timeout 999m \
+  | tee ${bench}.txt 
+</code>0</pre><pre><code class=language-bash>  export bench=v1 &amp;&amp; go test \
+  -run '^$' -bench '^BenchmarkFoo' \
+  -benchtime 5s -count 6 -cpu 2 -benchmem -timeout 999m \
+  | tee ${bench}.txt 
+</code>1</pre><pre><code class=language-bash>  export bench=v1 &amp;&amp; go test \
+  -run '^$' -bench '^BenchmarkFoo' \
+  -benchtime 5s -count 6 -cpu 2 -benchmem -timeout 999m \
+  | tee ${bench}.txt 
+</code>2</pre><p><strong>LINE 1</strong>: The file contains amd64 specific instructions, so we need to include a Go build tag to make sure Go does not try to compile this file for non x86 machines.</p><p><strong>LINE 3</strong>: You can think of this line as the functions declaration. TEXT declares that this is a function or text section. ·AddInts(SB) specifies our functions name. 4 represents “NOSPLIT” which we need for some reason. And $0 is the size of the function’s stack frame (used for local variables). It’s zero in this case because we can easily fit everything into the registers.</p><p><strong>LINE 4 & 5</strong>: Go’s calling convention is to put the function arguments onto the stack. So we MOVe both Long 32-bit values into the AX and BX registers by dereferencing the frame pointer (FP) with the appropriate offsets. The first argument is stored at offset 0. The second argument is stored at offset 8 (int’s only need 4 bytes but I think Go offsets all arguments by 8 to maintain memory alignment).</p><p><strong>LINE 6</strong>: Add the Long 32-bit value in AX (left) with the Long 32-bit value in BX. And store the resulting Long 32-bit value in AX.</p><p><strong>LINE 7 & 8</strong>: Go’s calling convention (as far as I can tell) is to put the function return values after its arguments on the stack. So we MOVe the Long 32-bit values in the AX register onto the stack by dereferencing the frame pointer (FP) with the appropriate offset. Which is 16 in this case.</p><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/smallvectorsfloat32addition.png`,
@@ -1155,7 +1147,7 @@ func main() {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1205,7 +1197,7 @@ func main() {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1255,7 +1247,7 @@ func main() {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

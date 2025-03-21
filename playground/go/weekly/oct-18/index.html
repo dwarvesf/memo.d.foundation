@@ -1007,7 +1007,7 @@ func (m *Map) Clear()
     p atomic.Pointer[any]
   }
 </code></pre><ul><li><p>readonly map is where the fast, lock-free lookups happen; built around an atomic.Pointer, which lets multiple goroutines access it without needing to lock anything. (ideal for scenarios where data is mostly being read and not frequently modified)
-=> the readonly map might not always hold the most up-to-date data, therefore dirty map</p></li><li><p>dirty map stores any new entries that get added while the readonly map is still being used for lookups</p></li></ul><p><img x-data="{
+⇒ the readonly map might not always hold the most up-to-date data, therefore dirty map</p></li><li><p>dirty map stores any new entries that get added while the readonly map is still being used for lookups</p></li></ul><p><img x-data="{
     title: ``,
     alt: `syncmap_structure`,
     src: `assets/syncmap_structure.png`,
@@ -1036,7 +1036,7 @@ func (m *Map) Clear()
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1056,7 +1056,7 @@ func (m *Map) Clear()
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>=> dirty map contains all the data from the readonly map, along with any new entries that haven’t yet been promoted to the readonly map</p><ul><li>when you update a value, all you need to do is update this pointer. Since both the readonly and dirty maps point to the same entry</li></ul><p><img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><p>⇒ dirty map contains all the data from the readonly map, along with any new entries that haven’t yet been promoted to the readonly map</p><ul><li>when you update a value, all you need to do is update this pointer. Since both the readonly and dirty maps point to the same entry</li></ul><p><img x-data="{
     title: ``,
     alt: `double_pointer_indirection_syncmap`,
     src: `assets/double_pointer_indirection_syncmap.png`,
@@ -1085,7 +1085,7 @@ func (m *Map) Clear()
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1134,7 +1134,7 @@ func (m *Map) Clear()
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

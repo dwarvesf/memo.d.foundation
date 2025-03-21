@@ -956,7 +956,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -976,25 +976,7 @@ Folder:
         .replace(/-+/g, '-')
         .trim('-');
     }
-  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=cross-origin-communication>Cross Origin Communication <a href=#cross-origin-communication></a></h2><p>Cross origin communication occurs when the iframe and the parent window come from different origins. The <a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage target=_blank>postMessage</a> interface allows windows to communicate regardless of their origins.</p><p>This method is an exception to the &ldquo;Same Origin&rdquo; policy, enabling windows from different origins to exchange information if both parties agree and implement corresponding JavaScript functions, ensuring user safety.</p><p>Here&rsquo;s how the communication happens:</p><ul><li>Both the iframe and its parent window can communicate using the <code>postMessage</code> method.</li><li>The parent window uses <code>iframe.contentWindow.postMessage</code> to send messages to the iframe.</li><li>The iframe sends messages to the parent window using <code>window.parent.postMessage</code>.</li><li>Both parties receive messages using <code>window.addEventListener('message')</code>.</li></ul><p>Here&rsquo;s an example of cross origin communication:</p><pre><code class=language-html>&lt;iframe src=&quot;http://example.com&quot; name=&quot;example&quot;&gt;&lt;/iframe&gt;
-&lt;script&gt;
-  let iframe = window.frames.example
-  // target origin is *
-  iframe.contentWindow.postMessage('message', '*')
-&lt;/script&gt;
-</code></pre><pre><code class=language-js>// http://example.com internal script
-window.addEventListener('message', function (event) {
-  if (event.origin != 'http://source.com') {
-    // something from an unknown domain, let's ignore it
-    return
-  }
-
-  alert('received: ' + event.data)
-
-  // can message back using event.source.postMessage(...)
-  // or window.parent.postMessage(...)
-})
-</code></pre><p>Use cases for cross origin communication include embedded widgets like chatboxes. <img x-data="{
+  }" :src=relativeSrc :title=title :alt=alt :style="{ width: altWidthHeight[0] + 'px', height: altWidthHeight[1] + 'px' }" onerror="this.onerror=null" class=content-img></p><h2 id=cross-origin-communication>Cross Origin Communication <a href=#cross-origin-communication></a></h2><p>Cross origin communication occurs when the iframe and the parent window come from different origins. The <a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage target=_blank>postMessage</a> interface allows windows to communicate regardless of their origins.</p><p>This method is an exception to the &ldquo;Same Origin&rdquo; policy, enabling windows from different origins to exchange information if both parties agree and implement corresponding JavaScript functions, ensuring user safety.</p><p>Here&rsquo;s how the communication happens:</p><ul><li>Both the iframe and its parent window can communicate using the <code>postMessage</code> method.</li><li>The parent window uses <code>iframe.contentWindow.postMessage</code> to send messages to the iframe.</li><li>The iframe sends messages to the parent window using <code>window.parent.postMessage</code>.</li><li>Both parties receive messages using <code>www.</code>0.</li></ul><p>Here&rsquo;s an example of cross origin communication:</p><pre><code>www.</code>1</pre><pre><code>www.</code>2</pre><p>Use cases for cross origin communication include embedded widgets like chatboxes. <img x-data="{
     title: ``,
     alt: ``,
     src: `assets/window-and-iframe-communication_window-iframe-chatbox.webp`,
@@ -1023,7 +1005,7 @@ window.addEventListener('message', function (event) {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

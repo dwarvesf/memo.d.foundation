@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -993,35 +993,11 @@ Folder:
   &quot;path:path/to/plugin.json&quot;,
   &quot;plugin:php-config&quot;
 ]
-</code></pre><p>Need more firepower? Use <code>include</code> to add extra configurations:</p><ul><li>Pull plugins from GitHub</li><li>Use local plugins</li><li>Activate built-in plugins</li></ul><h2 id=put-it-all-together>Put It All Together <a href=#put-it-all-together></a></h2><p>Here&rsquo;s what a fully-loaded <code>devbox.json</code> might look like:</p><pre><code class=language-json>{
-  &quot;packages&quot;: [
-    &quot;rustup@latest&quot;,
-    &quot;libiconv@latest&quot;
-  ],
-  &quot;env&quot;: {
-    &quot;PROJECT_DIR&quot;: &quot;$PWD&quot;
-  },
-  &quot;shell&quot;: {
-    &quot;init_hook&quot;: [
-      &quot;. conf/set-env.sh&quot;,
-      &quot;rustup default stable&quot;,
-      &quot;cargo fetch&quot;
-    ],
-    &quot;scripts&quot;: {
-      &quot;build-docs&quot;: &quot;cargo doc&quot;,
-      &quot;start&quot;: &quot;cargo run&quot;,
-      &quot;run_test&quot;: [
-        &quot;cargo test -- --show-output&quot;
-      ]
-    }
-  },
-  &quot;include&quot;: [
-    &quot;github:org/repo/ref?dir=&lt;path-to-plugin&gt;&quot;,
-    &quot;path:path/to/plugin.json&quot;,
-    &quot;plugin:php-config&quot;
-  ]
-}
-</code></pre><h2 id=the-bottom-line>The Bottom Line <a href=#the-bottom-line></a></h2><p>Your <code>devbox.json</code> is more than just a config file - it&rsquo;s a blueprint for the perfect dev environment. Spend some time getting it right, and you&rsquo;ll save countless hours down the road.</p><p>Remember, a well-crafted <code>devbox.json</code> is like a good pair of shoes: it should fit perfectly and take you anywhere you want to go.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://www.jetify.com/devbox/docs/configuration/ target=_blank>Devbox.json Configuration Reference</a></li><li><a href=https://www.jetify.com/devbox/docs/cli_reference/devbox_search/ target=_blank>Devbox Search Command</a></li><li><a href=https://www.jetify.com/devbox/docs/guides/plugins/ target=_blank>Devbox Plugins Guide</a></li></ul></div><script defer type=module>
+</code></pre><p>Need more firepower? Use <code>include</code> to add extra configurations:</p><ul><li>Pull plugins from GitHub</li><li>Use local plugins</li><li>Activate built-in plugins</li></ul><h2 id=put-it-all-together>Put It All Together <a href=#put-it-all-together></a></h2><p>Here&rsquo;s what a fully-loaded <code>devbox.json</code> might look like:</p><pre><code class=language-json>&quot;packages&quot;: [
+  &quot;rustup@latest&quot;,
+  &quot;libiconv@latest&quot;
+]
+</code>1</pre><h2 id=the-bottom-line>The Bottom Line <a href=#the-bottom-line></a></h2><p>Your <code>devbox.json</code> is more than just a config file - it&rsquo;s a blueprint for the perfect dev environment. Spend some time getting it right, and you&rsquo;ll save countless hours down the road.</p><p>Remember, a well-crafted <code>devbox.json</code> is like a good pair of shoes: it should fit perfectly and take you anywhere you want to go.</p><h2 id=references>References <a href=#references></a></h2><ul><li><a href=https://www.jetify.com/devbox/docs/configuration/ target=_blank>Devbox.json Configuration Reference</a></li><li><a href=https://www.jetify.com/devbox/docs/cli_reference/devbox_search/ target=_blank>Devbox Search Command</a></li><li><a href=https://www.jetify.com/devbox/docs/guides/plugins/ target=_blank>Devbox Plugins Guide</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       

@@ -946,7 +946,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -995,22 +995,37 @@ registry:
     - ~/docker_registry_tls/data:/var/lib/registry
     - ~/docker_registry_tls/certs:/certs
     - ~/docker_registry_tls/auth:/auth
-</code></pre><p>And run <code>$ docker-compose up -d</code></p><h3 id=client-1>Client <a href=#client-1></a></h3><p>Create <code>ca.crt</code> for each client with content of <code>ca.crt</code> file that you’ve created above:</p><pre><code class=language-javascript>$ sudo mkdir -p /etc/docker/certs.d/&lt;your-hub-domain&gt;/
-$ sudo vim /etc/docker/certs.d/&lt;your-hub-domain&gt;/ca.crt
-</code></pre><p>Try to login</p><pre><code class=language-javascript>$ docker login &lt;your-hub-domain&gt;
-</code></pre><p>That’s all, now you can login to your hub and pull, push whatever you want</p><h2 id=issue>Issue <a href=#issue></a></h2><p>You may get some troubles like:</p><pre><code class=language-javascript>FATA[0000] Error response from daemon: v1 ping attempt failed with error:
-Get https://myregistrydomain.com:5000/v1/_ping: tls: oversized record received with length 20527.
-If this private registry supports only HTTP or HTTPS with an unknown CA certificate,please add
-`--insecure-registry myregistrydomain.com:5000` to the daemon's arguments.
-In the case of HTTPS, if you have access to the registry's CA certificate, no need for the flag;
-simply place the CA certificate at /etc/docker/certs.d/myregistrydomain.com:5000/ca.crt
-</code></pre><h2 id=solution>Solution <a href=#solution></a></h2><h3 id=insecure-registry>Insecure registry <a href=#insecure-registry></a></h3><ul><li>Linux</li><li>Redhat</li><li>On some distributions, e.g. Oracle Linux 6, the Shared System Certificates feature needs to be manually enabled:</li><li>or you can open /etc/default/docker and add the following at the end</li></ul><h3 id=note>Note <a href=#note></a></h3><p>If you use <code>boot2docker</code> (Mac), you may do some steps below:</p><pre><code class=language-javascript>$ docker-machine ssh &lt;your-machine&gt;
-</code></pre><pre><code class=language-javascript>$ cd /var/lib/boot2docker &amp;&amp; sudo vi profile
-</code></pre><p>and you need to add <code>--insecure-registry=&lt;your-domain></code> (dont need to include port if your hub server use port 443) inside EXTRA_ARGS like:</p><pre><code class=language-javascript>EXTRA_ARGS='
---label provider=virtualbox
---insecure-registry=&lt;your-domain&gt;
-'
-</code></pre><p>Exit and <code>docker-machine restart &lt;your-machine></code>.</p><p>Now you can login to your hub and pull-push your image.</p></div><script defer type=module>
+</code></pre><p>And run <code>$ docker-compose up -d</code></p><h3 id=client-1>Client <a href=#client-1></a></h3><p>Create <code class=language-javascript>$ docker pull ubuntu && docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>0 for each client with content of <code class=language-javascript>$ docker pull ubuntu && docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>0 file that you’ve created above:</p><pre><code class=language-javascript>$ docker pull ubuntu &amp;&amp; docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>2</pre><p>Try to login</p><pre><code class=language-javascript>$ docker pull ubuntu &amp;&amp; docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>3</pre><p>That’s all, now you can login to your hub and pull, push whatever you want</p><h2 id=issue>Issue <a href=#issue></a></h2><p>You may get some troubles like:</p><pre><code class=language-javascript>$ docker pull ubuntu &amp;&amp; docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>4</pre><h2 id=solution>Solution <a href=#solution></a></h2><h3 id=insecure-registry>Insecure registry <a href=#insecure-registry></a></h3><ul><li>Linux</li><li>Redhat</li><li>On some distributions, e.g. Oracle Linux 6, the Shared System Certificates feature needs to be manually enabled:</li><li>or you can open /etc/default/docker and add the following at the end</li></ul><h3 id=note>Note <a href=#note></a></h3><p>If you use <code class=language-javascript>$ docker pull ubuntu && docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>5 (Mac), you may do some steps below:</p><pre><code class=language-javascript>$ docker pull ubuntu &amp;&amp; docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>6</pre><pre><code class=language-javascript>$ docker pull ubuntu &amp;&amp; docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>7</pre><p>and you need to add <code class=language-javascript>$ docker pull ubuntu && docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>8 (dont need to include port if your hub server use port 443) inside EXTRA_ARGS like:</p><pre><code class=language-javascript>$ docker pull ubuntu &amp;&amp; docker tag ubuntu your-domain:5000/ubuntu
+$ docker push your-domain:5000/ubuntu
+$ docker pull your-domain:5000/ubuntu
+</code>9</pre><p>Exit and <code>localhost</code>0.</p><p>Now you can login to your hub and pull-push your image.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

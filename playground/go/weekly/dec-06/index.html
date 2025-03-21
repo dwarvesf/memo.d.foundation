@@ -922,64 +922,25 @@ Folder:
 	nodeList = []*Node  // nodeList and []*Node are identical types
 	Polar    = polar    // Polar and polar denote identical types
 )
-</code></pre><p>=> Specs:</p><pre><code class=language-go>type set[P comparable] = map[P]bool
+</code></pre><p>⇒ Specs:</p><pre><code class=language-go>type set[P comparable] = map[P]bool
 type A[P any] = P    // illegal: P is a type parameter
-</code></pre><p>=> the feature can be disabled by setting <code>GOEXPERIMENT=noaliastypeparams</code>; but the <code>aliastypeparams</code> setting will be removed for Go 1.25.</p><ul><li><p>Some updates for tools <code>go tool</code> or <code>-tool</code> flag, new <code>tests</code> analyzer for <code>go vet</code></p></li><li><p>Some updates for Cgo, Runtime, Compiler, Linker, Bootstrap</p></li><li><p>Some updates for stdlibs:</p><ul><li><p>The new <code>os.Root</code> type provides the ability to perform filesystem operations within a specific directory.</p></li><li><p>The <code>os.OpenRoot</code> function opens a directory and returns an <code>os.Root</code>. Methods on <code>os.Root</code> operate within the directory and do not permit paths that refer to locations outside the directory, including ones that follow symbolic links out of the directory.</p><p><code>os.Root.Open</code> opens a file for reading.</p><p><code>os.Root.Create</code> creates a file.</p><p><code>os.Root.OpenFile</code> is the generalized open call.</p><p><code>os.Root.Mkdir</code> creates a directory.</p></li><li><p>Some updates for <code>crypto</code>, <code>hash</code> package</p></li><li><p>Some updates for <code>net/http</code> including support for HTTP/2 protocol settings in <code>Transport</code> and <code>Server</code></p></li><li><p>New implementation for <code>sync.Map</code> that will improve overall performance and resolve some long-standing issues</p></li></ul></li></ul><h2 id=weak-pointers-in-go-why-they-matter-nowhttpsvictoriametricscombloggo-weak-pointer><a href=https://victoriametrics.com/blog/go-weak-pointer/ target=_blank>Weak Pointers in Go: Why They Matter Now</a> <a href=#weak-pointers-in-go-why-they-matter-nowhttpsvictoriametricscombloggo-weak-pointer></a></h2><h3 id=definition>Definition: <a href=#definition></a></h3><p>A type of reference to an object that does not prevent the object from being garbage collected</p><p>=> <code>weak</code> package:</p><pre><code class=language-go>type Pointer[T any] struct {
-	u unsafe.Pointer
-}
-
-// Make creates a weak pointer from a strong pointer to some value of type T.
-func Make[T any](ptr *T) Pointer[T] {
-  //...
-}
-</code></pre><ul><li>If the memory they’re pointing to gets cleaned up, the weak pointer automatically becomes <code>nil</code> — so there’s no risk of accidentally pointing to freed memory => they are safe</li></ul><pre><code class=language-go>type T struct {
-  a int
-  b int
-}
-
-func main() {
-  a := new(string)
-  println(&quot;original:&quot;, a)
-
-  // make a weak pointer
-  weakA := weak.Make(a)
-
-  runtime.GC()
-
-  // use weakA
-  strongA := weakA.Strong()
-  println(&quot;strong:&quot;, strongA, a)
-
-  runtime.GC()
-
-  // use weakA again
-  strongA = weakA.Strong()
-  println(&quot;strong:&quot;, strongA)
-}
-
-// Output:
-// original: 0x1400010c670
-// strong: 0x1400010c670 0x1400010c670
-// strong: 0x0
-</code></pre><ul><li>After the first garbage collection <code>runtime.GC()</code>, the weak pointer weakA still points to the memory because we’re still using the variable a in the <code>println("strong:", strongA, a)</code> line. The memory can’t be cleaned up yet since it’s in use.</li><li>But when the second garbage collection runs, the strong reference (a) isn’t used anymore. That means the garbage collector can safely clean up the memory, leaving <code>weakA.Strong()</code> to return <code>nil</code>.</li></ul><h3 id=use-case>Use case <a href=#use-case></a></h3><ul><li>Canonicalization maps, where you only want to keep one copy of a piece of data around</li><li>Initial purpose is in internal packages, e.g: <code>unique</code></li></ul><pre><code class=language-go>func main() {
-	h1 := unique.Make(&quot;Hello&quot;)
-	h2 := unique.Make(&quot;Hello&quot;)
-	w1 := unique.Make(&quot;World&quot;)
-
-	fmt.Println(&quot;h1:&quot;, h1)
-	fmt.Println(&quot;h2:&quot;, h2)
-	fmt.Println(&quot;w1:&quot;, w1)
-	fmt.Println(&quot;h1 == h2:&quot;, h1 == h2)
-	fmt.Println(&quot;h1 == w1:&quot;, h1 == w1)
-}
-
-// Output:
-// h1: {0x14000090270}
-// h2: {0x14000090270}
-// w1: {0x14000090280}
-// h1 == h2: true
-// h1 == w1: false
-</code></pre><h3 id=how-does-it-work>How does it work <a href=#how-does-it-work></a></h3><ul><li>Having a in-between tiny object (8bytes)</li></ul><p><img x-data="{
+</code></pre><p>⇒ the feature can be disabled by setting <code>GOEXPERIMENT=noaliastypeparams</code>; but the <code>aliastypeparams</code> setting will be removed for Go 1.25.</p><ul><li><p>Some updates for tools <code>go tool</code> or <code>-tool</code> flag, new <code>tests</code> analyzer for <code>go vet</code></p></li><li><p>Some updates for Cgo, Runtime, Compiler, Linker, Bootstrap</p></li><li><p>Some updates for stdlibs:</p><ul><li><p>The new <code>os.Root</code> type provides the ability to perform filesystem operations within a specific directory.</p></li><li><p>The <code>os.OpenRoot</code> function opens a directory and returns an <code>os.Root</code>. Methods on <code>os.Root</code> operate within the directory and do not permit paths that refer to locations outside the directory, including ones that follow symbolic links out of the directory.</p><p><code class=language-go>type set[P comparable] = map[P]bool
+type A[P any] = P // illegal: P is a type parameter
+</code>2 opens a file for reading.</p><p><code class=language-go>type set[P comparable] = map[P]bool
+type A[P any] = P // illegal: P is a type parameter
+</code>3 creates a file.</p><p><code class=language-go>type set[P comparable] = map[P]bool
+type A[P any] = P // illegal: P is a type parameter
+</code>4 is the generalized open call.</p><p><code class=language-go>type set[P comparable] = map[P]bool
+type A[P any] = P // illegal: P is a type parameter
+</code>5 creates a directory.</p></li><li><p>Some updates for <code class=language-go>type set[P comparable] = map[P]bool
+type A[P any] = P // illegal: P is a type parameter
+</code>6, <code class=language-go>type set[P comparable] = map[P]bool
+type A[P any] = P // illegal: P is a type parameter
+</code>7 package</p></li><li><p>Some updates for <code class=language-go>type set[P comparable] = map[P]bool
+type A[P any] = P // illegal: P is a type parameter
+</code>8 including support for HTTP/2 protocol settings in <code class=language-go>type set[P comparable] = map[P]bool
+type A[P any] = P // illegal: P is a type parameter
+</code>9 and <code>GOEXPERIMENT=noaliastypeparams</code>0</p></li><li><p>New implementation for <code>GOEXPERIMENT=noaliastypeparams</code>1 that will improve overall performance and resolve some long-standing issues</p></li></ul></li></ul><h2 id=weak-pointers-in-go-why-they-matter-nowhttpsvictoriametricscombloggo-weak-pointer><a href=https://victoriametrics.com/blog/go-weak-pointer/ target=_blank>Weak Pointers in Go: Why They Matter Now</a> <a href=#weak-pointers-in-go-why-they-matter-nowhttpsvictoriametricscombloggo-weak-pointer></a></h2><h3 id=definition>Definition: <a href=#definition></a></h3><p>A type of reference to an object that does not prevent the object from being garbage collected</p><p>⇒ <code>GOEXPERIMENT=noaliastypeparams</code>2 package:</p><pre><code>GOEXPERIMENT=noaliastypeparams</code>3</pre><ul><li>If the memory they’re pointing to gets cleaned up, the weak pointer automatically becomes <code>GOEXPERIMENT=noaliastypeparams</code>4 — so there’s no risk of accidentally pointing to freed memory ⇒ they are safe</li></ul><pre><code>GOEXPERIMENT=noaliastypeparams</code>5</pre><ul><li>After the first garbage collection <code>GOEXPERIMENT=noaliastypeparams</code>6, the weak pointer weakA still points to the memory because we’re still using the variable a in the <code>GOEXPERIMENT=noaliastypeparams</code>7 line. The memory can’t be cleaned up yet since it’s in use.</li><li>But when the second garbage collection runs, the strong reference (a) isn’t used anymore. That means the garbage collector can safely clean up the memory, leaving <code>GOEXPERIMENT=noaliastypeparams</code>8 to return <code>GOEXPERIMENT=noaliastypeparams</code>4.</li></ul><h3 id=use-case>Use case <a href=#use-case></a></h3><ul><li>Canonicalization maps, where you only want to keep one copy of a piece of data around</li><li>Initial purpose is in internal packages, e.g: <code>aliastypeparams</code>0</li></ul><pre><code>aliastypeparams</code>1</pre><h3 id=how-does-it-work>How does it work <a href=#how-does-it-work></a></h3><ul><li>Having a in-between tiny object (8bytes)</li></ul><p><img x-data="{
     title: ``,
     alt: ``,
     src: `assets/weak-pointer-indirection-reference.webp`,
@@ -1008,7 +969,7 @@ func main() {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -1057,7 +1018,7 @@ func main() {
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {

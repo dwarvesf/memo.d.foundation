@@ -947,7 +947,7 @@ Folder:
 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
-        if (part === '' || part === '.' || part === '..') return part;
+        if (part ≡= '' || part ≡= '.' || part ≡= '..') return part;
         
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
@@ -977,21 +977,35 @@ Folder:
 	name string
 	options string[] [ref: &lt;&gt; options.id]
 }
-</code></pre><p>The <code>fields</code> table is where the magic begins. The <code>type</code> column can be <code>text</code>, <code>checkbox</code>, <code>select</code>, <code>users</code>, etc., determining how a field&rsquo;s value should be extracted from <code>values</code> and how it should be handled on the front-end.</p><p>For select-type fields, options are saved through a many-to-many relation with the <code>options</code> table.</p><h3 id=values-table><code>values</code> table <a href=#values-table></a></h3><pre><code class=language-dbml>Table values {
-	id string [pk]
-	field string [ref: &gt; fields.id]
-	text varchar
-	checkbox boolean
-	select string[] [ref: &lt;&gt; options.id]
-	users string[] [ref: &lt;&gt; users.id]
-	...
+</code></pre><p>The <code>fields</code> table is where the magic begins. The <code>type</code> column can be <code>text</code>, <code>checkbox</code>, <code class=language-dbml>Table tasks {
+id string [pk]
+values string [ref: &lt;> values.id]
 }
-</code></pre><p>This table maps back to <code>fields</code> with a 1-to-1 relationship, using multiple columns to save a field’s value depending on its type.</p><h3 id=options-table><code>options</code> table <a href=#options-table></a></h3><pre><code class=language-dbml>Table options {
-	id string [pk]
-	label string
-	value string
+</code>0, <code class=language-dbml>Table tasks {
+id string [pk]
+values string [ref: &lt;> values.id]
 }
-</code></pre><p>Lastly, the <code>options</code> table stores the available options for select-type fields, linking each option to a field via its ID.</p><h2 id=the-decisions>The decisions <a href=#the-decisions></a></h2><h3 id=decision-1-break-things-down-into-smaller-models>Decision 1: Break things down into smaller models <a href=#decision-1-break-things-down-into-smaller-models></a></h3><p>When building an extensible object, separating the object from its fields was essential. By doing this, adding or removing fields became as simple as adding or removing a relation, allowing one task to have a completely different set of fields from another. Select options are also meant to be extensible, so we decided to move them into their own table as well.</p><h3 id=decision-2-tasks-should-hold-relations-to-values-instead-of-fields>Decision 2: <code>tasks</code> should hold relations to <code>values</code> instead of <code>fields</code> <a href=#decision-2-tasks-should-hold-relations-to-values-instead-of-fields></a></h3><p>Another crucial decision we made was to have the <code>tasks</code> table hold relations to the <code>values</code> table rather than directly to the <code>fields</code> table. At first glance, it might seem simpler to link tasks directly to fields, but this approach would have limited the flexibility we were aiming for.</p><p>By connecting tasks to values instead, we created a system where each task can have its own unique set of values, all while using the same underlying fields. This means that different tasks can share the same field definitions but still hold different data.</p><p>Doing things this way might feel a bit counter-intuitive, in the sense that the data flows from tasks → values → fields. However, it allowed us to simplify the relationships in our model. By cutting out the many-to-many relation between tasks and fields, we made the system more efficient. When removing a field, we&rsquo;re actually just removing one relation from the <code>values</code> table, and the corresponding field goes away along with the value.</p><h2 id=the-challenges>The challenges <a href=#the-challenges></a></h2><h3 id=filtering--pagination>Filtering & Pagination <a href=#filtering--pagination></a></h3><p>One of the main challenges we encountered was filtering and pagination. With our model involving multiple tables—tasks, fields, values, and options—queries often required complex joins. This setup had the potential to cause performance issues, especially as the dataset grew.</p><p>We rely heavily on Common Table Expressions (CTEs) to streamline our queries and improve performance. However, this solution still required careful management to ensure that the system remained efficient under heavy loads.</p><h3 id=cross-team-collaboration>Cross-team collaboration <a href=#cross-team-collaboration></a></h3><p>Another challenge we faced was enabling cross-team collaboration. Since fields are scoped to each team, it became tricky when users needed to collaborate across different teams.</p><p>For instance, a field that exists in one team might not be present in another team where they are invited as guests. This limitation made collaboration difficult for our specific use case, as we don’t currently support a unified team workspace.</p><p>While we’ve implemented some solutions to mitigate this issue, it remains an ongoing challenge, and we’re still exploring better approaches to handle this scenario.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In the end, the model we designed has been working well for our use cases, providing the flexibility and extensibility we set out to achieve. While there are still areas for improvement, particularly with cross-team collaboration, the foundation we&rsquo;ve built offers plenty of room to grow. All in all, it’s been a fun journey, tackling challenges and finding creative solutions along the way.</p></div><script defer type=module>
+</code>1, etc., determining how a field&rsquo;s value should be extracted from <code>values</code> and how it should be handled on the front-end.</p><p>For select-type fields, options are saved through a many-to-many relation with the <code class=language-dbml>Table tasks {
+id string [pk]
+values string [ref: &lt;> values.id]
+}
+</code>3 table.</p><h3 id=values-table><code>values</code> table <a href=#values-table></a></h3><pre><code class=language-dbml>Table tasks {
+	id string [pk]
+	values string [ref: &lt;&gt; values.id]
+}
+</code>5</pre><p>This table maps back to <code>fields</code> with a 1-to-1 relationship, using multiple columns to save a field’s value depending on its type.</p><h3 id=options-table><code class=language-dbml>Table tasks {
+id string [pk]
+values string [ref: &lt;> values.id]
+}
+</code>3 table <a href=#options-table></a></h3><pre><code class=language-dbml>Table tasks {
+	id string [pk]
+	values string [ref: &lt;&gt; values.id]
+}
+</code>8</pre><p>Lastly, the <code class=language-dbml>Table tasks {
+id string [pk]
+values string [ref: &lt;> values.id]
+}
+</code>3 table stores the available options for select-type fields, linking each option to a field via its ID.</p><h2 id=the-decisions>The decisions <a href=#the-decisions></a></h2><h3 id=decision-1-break-things-down-into-smaller-models>Decision 1: Break things down into smaller models <a href=#decision-1-break-things-down-into-smaller-models></a></h3><p>When building an extensible object, separating the object from its fields was essential. By doing this, adding or removing fields became as simple as adding or removing a relation, allowing one task to have a completely different set of fields from another. Select options are also meant to be extensible, so we decided to move them into their own table as well.</p><h3 id=decision-2-tasks-should-hold-relations-to-values-instead-of-fields>Decision 2: <code>tasks</code> should hold relations to <code>values</code> instead of <code>fields</code> <a href=#decision-2-tasks-should-hold-relations-to-values-instead-of-fields></a></h3><p>Another crucial decision we made was to have the <code>tasks</code> table hold relations to the <code>values</code> table rather than directly to the <code>fields</code> table. At first glance, it might seem simpler to link tasks directly to fields, but this approach would have limited the flexibility we were aiming for.</p><p>By connecting tasks to values instead, we created a system where each task can have its own unique set of values, all while using the same underlying fields. This means that different tasks can share the same field definitions but still hold different data.</p><p>Doing things this way might feel a bit counter-intuitive, in the sense that the data flows from tasks → values → fields. However, it allowed us to simplify the relationships in our model. By cutting out the many-to-many relation between tasks and fields, we made the system more efficient. When removing a field, we&rsquo;re actually just removing one relation from the <code>values</code> table, and the corresponding field goes away along with the value.</p><h2 id=the-challenges>The challenges <a href=#the-challenges></a></h2><h3 id=filtering--pagination>Filtering & Pagination <a href=#filtering--pagination></a></h3><p>One of the main challenges we encountered was filtering and pagination. With our model involving multiple tables—tasks, fields, values, and options—queries often required complex joins. This setup had the potential to cause performance issues, especially as the dataset grew.</p><p>We rely heavily on Common Table Expressions (CTEs) to streamline our queries and improve performance. However, this solution still required careful management to ensure that the system remained efficient under heavy loads.</p><h3 id=cross-team-collaboration>Cross-team collaboration <a href=#cross-team-collaboration></a></h3><p>Another challenge we faced was enabling cross-team collaboration. Since fields are scoped to each team, it became tricky when users needed to collaborate across different teams.</p><p>For instance, a field that exists in one team might not be present in another team where they are invited as guests. This limitation made collaboration difficult for our specific use case, as we don’t currently support a unified team workspace.</p><p>While we’ve implemented some solutions to mitigate this issue, it remains an ongoing challenge, and we’re still exploring better approaches to handle this scenario.</p><h2 id=conclusion>Conclusion <a href=#conclusion></a></h2><p>In the end, the model we designed has been working well for our use cases, providing the flexibility and extensibility we set out to achieve. While there are still areas for improvement, particularly with cross-team collaboration, the foundation we&rsquo;ve built offers plenty of room to grow. All in all, it’s been a fun journey, tackling challenges and finding creative solutions along the way.</p></div><script defer type=module>
   async function loadMentions() {
     try {
       

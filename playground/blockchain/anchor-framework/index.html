@@ -948,60 +948,88 @@ mod basic_0 {
 
 #[derive(Accounts)]
 pub struct Initialize {}
-</code></pre><p>A smart contract program on Solana will have the following structure:</p><pre><code>processor.rs
-instruction.rs
-errors.rs
-state.rs
-lib.rs
-</code></pre><p>Next we will run the program build command:</p><pre><code>anchor build
-</code></pre><p>If you don&rsquo;t use the anchor, it will be equivalent to the command</p><pre><code>cargo build-bpf
-</code></pre><h5 id=note-if-you-build-error-you-need-to-update-anchor-lang-to-version-0242>Note if you build error, you need to update anchor-lang to version 0.24.2 <a href=#note-if-you-build-error-you-need-to-update-anchor-lang-to-version-0242></a></h5><p>In addition, it will run additional commands to generate the IDL file</p><pre><code>anchor idl parse -f program/src/lib.rs -o target/idl/basic_0.json.
-</code></pre><p>Similar to Ethereum, you will build a target directory, in addition it will generate a target/idl/basic_0.json file, this file is similar to the ABI.json file. Note that the idl file will also be used to generate the client source code on JS and Golang</p><p>Next, we will deploy the program, notice that you need to select the environment to deploy via the command:</p><pre><code>solana config set --url localhost
-- devnet
-solana config set --url devnet
-- testnet
-solana config set --url testnet
-- Mainnet-beta
-solana config set --url mainnet-beta
-</code></pre><p>Command to deploy to the network:</p><pre><code>anchor deploy
-</code></pre><p>After running this command, your program has been deployed to the blockchain. You can continue to create transactions with it by creating a client.</p><p>build successfully, you will get a log that looks like this: To deploy this program run:</p><pre><code>  $ solana program deploy /Volumes/WORKS/Dropbox/Blockchain/solana/SolTwit/target/deploy/sol_twit.so
-</code></pre><h4 id=anchor-cli>Anchor CLI <a href=#anchor-cli></a></h4><pre><code>USAGE:
-    anchor &lt;SUBCOMMAND&gt;
+</code></pre><p>A smart contract program on Solana will have the following structure:</p><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
 
-FLAGS:
-    -h, --help       Prints help information
-    -V, --version    Prints version information
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
 
-SUBCOMMANDS:
-    build      Builds the workspace
-    cluster    Cluster commands
-    deploy     Deploys each program in the workspace
-    expand     Expands the macros of a program or the workspace
-    help       Prints this message or the help of the given subcommand(s)
-    idl        Commands for interacting with interface definitions
-    init       Initializes a workspace
-    migrate    Runs the deploy migration script
-    new        Creates a new program
-    shell      Starts a node shell with an Anchor client setup according to the local config
-    test       Runs integration tests against a localnetwork
-    upgrade    Upgrades a single program. The configured wallet must be the upgrade authority
-    verify     Verifies the on-chain bytecode matches the locally compiled artifact. Run this
-               command inside a program subdirectory, i.e., in the dir containing the program's
-               Cargo.toml
-</code></pre><h4 id=anchor-version-manager>Anchor Version Manager <a href=#anchor-version-manager></a></h4><p>Anchor Version Manager (avm) is provided to manage multiple installations of the anchor-cli binary. This may be required to produce verifiable builds, or if you&rsquo;d prefer to work with an alternate version. Like NVM, some command we should remember:</p><pre><code>USAGE:
-    avm &lt;SUBCOMMAND&gt;
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>0</pre><p>Next we will run the program build command:</p><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
 
-OPTIONS:
-    -h, --help       Print help information
-    -V, --version    Print version information
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
 
-SUBCOMMANDS:
-    help         Print this message or the help of the given subcommand(s)
-    install      Install a version of Anchor
-    list         List available versions of Anchor
-    uninstall    Uninstall a version of Anchor
-    use          Use a specific version of Anchor
-</code></pre><h4 id=basic-concepts-to-know-before-starting-development>Basic concepts to know before starting development <a href=#basic-concepts-to-know-before-starting-development></a></h4><ul><li><strong>Account</strong>: A record in Solana Ledger to store information or a executable program, Save funds called lamports. expressed through an address by a key aka public key</li><li><strong>Account owner</strong>: The address of the program that owns the account. Only the owner program can edit the account</li><li><strong>Block</strong>: A block of data, continuously generated and covered by votes. Contains transaction information.</li><li><strong>BPF loader</strong>: The Solana program that owns and loads BPF smart contract programs, allowing the program to interface with the runtime.</li><li><strong>keypair</strong>: A public key and corresponding private key for accessing an account.</li><li><strong>lamport</strong>: A fractional native token with the value of 0.000000001 sol.</li><li><strong>leader</strong>: The role of a validator when it is appending entries to the ledger.</li><li><strong>leader schedule</strong>: A sequence of validator public keys mapped to slots. The cluster uses the leader schedule to determine which validator is the leader at any moment in time.</li></ul><h4 id=example-and-template-code>Example and template code <a href=#example-and-template-code></a></h4><ul><li><a href=https://github.com/thanhpn/solana-anchor-template target=_blank>https://github.com/thanhpn/solana-anchor-template</a></li></ul><h3 id=reference>Reference <a href=#reference></a></h3><ul><li><a href=https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html target=_blank>https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html</a></li><li><a href=https://book.anchor-lang.com/introduction/what_is_anchor.html target=_blank>https://book.anchor-lang.com/introduction/what_is_anchor.html</a></li><li><a href=https://www.rust-lang.org target=_blank>https://www.rust-lang.org</a></li><li><a href=https://docs.rs/solana/latest/solana/ target=_blank>https://docs.rs/solana/latest/solana/</a></li></ul></div><script defer type=module>
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>1</pre><p>If you don&rsquo;t use the anchor, it will be equivalent to the command</p><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
+
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
+
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>2</pre><h5 id=note-if-you-build-error-you-need-to-update-anchor-lang-to-version-0242>Note if you build error, you need to update anchor-lang to version 0.24.2 <a href=#note-if-you-build-error-you-need-to-update-anchor-lang-to-version-0242></a></h5><p>In addition, it will run additional commands to generate the IDL file</p><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
+
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
+
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>3</pre><p>Similar to Ethereum, you will build a target directory, in addition it will generate a target/idl/basic_0.json file, this file is similar to the ABI.json file. Note that the idl file will also be used to generate the client source code on JS and Golang</p><p>Next, we will deploy the program, notice that you need to select the environment to deploy via the command:</p><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
+
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
+
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>4</pre><p>Command to deploy to the network:</p><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
+
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
+
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>5</pre><p>After running this command, your program has been deployed to the blockchain. You can continue to create transactions with it by creating a client.</p><p>build successfully, you will get a log that looks like this: To deploy this program run:</p><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
+
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
+
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>6</pre><h4 id=anchor-cli>Anchor CLI <a href=#anchor-cli></a></h4><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
+
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
+
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>7</pre><h4 id=anchor-version-manager>Anchor Version Manager <a href=#anchor-version-manager></a></h4><p>Anchor Version Manager (avm) is provided to manage multiple installations of the anchor-cli binary. This may be required to produce verifiable builds, or if you&rsquo;d prefer to work with an alternate version. Like NVM, some command we should remember:</p><pre><code>[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
+
+[programs.devnet]
+basic_0 = &quot;2Fcoq3dKjpZiKko9Ho4NZguunJsd9AiGHheF8VHPnk7D&quot;
+
+[scripts]
+test = &quot;yarn run mocha -t 1000000 tests/&quot;
+</code>8</pre><h4 id=basic-concepts-to-know-before-starting-development>Basic concepts to know before starting development <a href=#basic-concepts-to-know-before-starting-development></a></h4><ul><li><strong>Account</strong>: A record in Solana Ledger to store information or a executable program, Save funds called lamports. expressed through an address by a key aka public key</li><li><strong>Account owner</strong>: The address of the program that owns the account. Only the owner program can edit the account</li><li><strong>Block</strong>: A block of data, continuously generated and covered by votes. Contains transaction information.</li><li><strong>BPF loader</strong>: The Solana program that owns and loads BPF smart contract programs, allowing the program to interface with the runtime.</li><li><strong>keypair</strong>: A public key and corresponding private key for accessing an account.</li><li><strong>lamport</strong>: A fractional native token with the value of 0.000000001 sol.</li><li><strong>leader</strong>: The role of a validator when it is appending entries to the ledger.</li><li><strong>leader schedule</strong>: A sequence of validator public keys mapped to slots. The cluster uses the leader schedule to determine which validator is the leader at any moment in time.</li></ul><h4 id=example-and-template-code>Example and template code <a href=#example-and-template-code></a></h4><ul><li><a href=https://github.com/thanhpn/solana-anchor-template target=_blank>https://github.com/thanhpn/solana-anchor-template</a></li></ul><h3 id=reference>Reference <a href=#reference></a></h3><ul><li><a href=https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html target=_blank>https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html</a></li><li><a href=https://book.anchor-lang.com/introduction/what_is_anchor.html target=_blank>https://book.anchor-lang.com/introduction/what_is_anchor.html</a></li><li><a href=https://www.rust-lang.org target=_blank>https://www.rust-lang.org</a></li><li><a href=https://docs.rs/solana/latest/solana/ target=_blank>https://docs.rs/solana/latest/solana/</a></li></ul></div><script defer type=module>
   async function loadMentions() {
     try {
       
