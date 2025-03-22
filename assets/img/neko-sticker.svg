@@ -1,0 +1,17 @@
+<svg width="168" height="168" viewBox="0 0 168 168" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M56.5 7.5H71.5L76.5 36.5H115.5V12.5L120.5 7.5H135.5L152 24L162 43.5L160.5 136L152 152L138 154.5L135 164H50.5L21 132.5V58L29.5 52.5L32 40L38.5 39.5V25.5L56.5 7.5Z" fill="#FAFAFA"/>
+<path d="M117 111H141V119H117V111Z" fill="black"/>
+<path d="M117 127H133V135H117V127Z" fill="black"/>
+<path d="M80 103V111H64V103H80Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M56 0V8H48V16H40V24H32V40H24V56H16V112H0V120H16V128H8V136H24V144H31V152H39V160H47V168H136V160H152V152H160V136H168V40H160V24H152V16H144V8H136V0H120V8H112V32H80V8H72V0H56ZM72 8V40H120V8H136V16H144V24H152V40H160V136H152V152H136V160H47V152H39V144H32V136H24V56H32V40H40V24H48V16H56V8H72Z" fill="black"/>
+<rect x="72" y="40" width="8" height="8" fill="black"/>
+<rect x="96" y="40" width="8" height="8" fill="black"/>
+<rect x="72" y="48" width="8" height="8" fill="black"/>
+<rect x="152" y="72" width="8" height="8" fill="black"/>
+<rect x="152" y="80" width="8" height="8" fill="black"/>
+<rect x="152" y="96" width="8" height="8" fill="black"/>
+<rect x="144" y="72" width="8" height="8" fill="black"/>
+<rect x="96" y="48" width="8" height="8" fill="black"/>
+<rect x="80" y="40" width="8" height="8" fill="black"/>
+<rect x="104" y="40" width="8" height="8" fill="black"/>
+</svg>
