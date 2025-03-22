@@ -111,6 +111,24 @@ Once the article is stored on Arweave and registered in the NFT contract, reader
 - Token previews with author attribution
 - Network validation with automatic chain switching
 
+## Required Secrets and Variables
+
+The web3 integration requires several secrets and variables to be configured in your GitHub repository. These are used by the automated workflows for permanent storage and NFT contract integration.
+
+### Secrets
+
+- **`ARWEAVE_WALLET_JSON`**: The JSON keyfile of the Arweave wallet responsible for uploading content to Arweave permanent storage. This wallet must be funded with enough AR tokens to cover storage costs.
+
+- **`WALLET_PRIVATE_KEY`**: The private key of the Ethereum/Base wallet that calls methods on the ERC-1155 contract. This wallet is used to add new token IDs whenever an article is flagged as ready to mint. It must have enough ETH to cover gas fees on the Base network.
+
+### Variables
+
+- **`CONTRACT_ADDRESS`**: The address of the ERC-1155 contract deployed on the Base chain. This is the contract that manages the NFT collection for all mintable articles.
+
+- **`RPC_URL`** (Optional): A custom RPC URL for the Base chain. If not provided, the workflow will use default public RPC endpoints.
+
+> **Security Note**: Never commit these secrets directly to your repository. Always use GitHub's encrypted secrets feature to store sensitive information like wallet keys and JSON files.
+
 ## Development Workflow
 
 This repository uses GitHub Actions to automate the web3 integration process:
