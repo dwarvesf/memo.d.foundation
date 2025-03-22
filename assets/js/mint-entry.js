@@ -155,11 +155,6 @@ const NFT_CONTRACT_ABI = [
   },
 ];
 
-// Create event filtering interface
-const EVENT_INTERFACE = new ethers.utils.Interface([
-  "event TokenMinted(address indexed to, uint256 indexed tokenId, uint256 amount)",
-]);
-
 // Cache for collector addresses to avoid redundant fetches
 let collectorAddressesCache = {};
 
@@ -217,40 +212,22 @@ async function fetchCollectorAddresses(tokenId) {
   }
 
   try {
-    // Create a read-only provider
-    const readProvider = new ethers.providers.JsonRpcProvider(
-      ACTIVE_CHAIN.rpcUrls[1]
-    );
-
-    // Create filter for TokenMinted events with this tokenId
-    const filter = {
-      address: NFT_CONTRACT_ADDRESS,
-      topics: [
-        ethers.utils.id("TokenMinted(address,uint256,uint256)"),
-        null,
-        ethers.utils.hexZeroPad(ethers.utils.hexlify(tokenId), 32),
-      ],
-    };
-
-    const currentBlock = await readProvider.getBlockNumber();
-    // Query for events - get logs from the last 10000 blocks or set a specific range if needed
-    const logs = await readProvider.getLogs({
-      ...filter,
-      fromBlock: currentBlock - 40000, // Adjust this range as needed
-      toBlock: "latest",
-    });
-
-    // Extract collector addresses from events
-    const collectors = [];
-    for (const log of logs) {
-      const parsedLog = EVENT_INTERFACE.parseLog(log);
-      const collectorAddress = parsedLog.args.to;
-      collectors.push(collectorAddress);
+    // Use the new API endpoint to fetch minters
+    const apiUrl = `https://dwarves-memo-nft-api-dev.up.railway.app/minters/${tokenId}`;
+    
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
     }
-
+    
+    const data = await response.json();
+    
+    // Extract minter addresses from the API response
+    const collectors = data.data.map(item => item.minter);
+    
     // Store in cache
     collectorAddressesCache[tokenId] = collectors;
-
+    
     return collectors;
   } catch (error) {
     console.error("Failed to fetch collector addresses:", error);
@@ -267,26 +244,43 @@ async function fetchAndUpdateMintCount() {
       return;
     }
 
-    // Create a read-only provider and contract instance
-    const readProvider = new ethers.providers.JsonRpcProvider(
-      ACTIVE_CHAIN.rpcUrls[0]
-    );
-    const readOnlyContract = new ethers.Contract(
-      NFT_CONTRACT_ADDRESS,
-      NFT_CONTRACT_ABI,
-      readProvider
-    );
+    // Fetch data from the API endpoint
+    const apiUrl = `https://dwarves-memo-nft-api-dev.up.railway.app/minters/${tokenId}`;
+    const response = await fetch(apiUrl);
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Extract collector addresses and total mint count
+    const collectors = data.data.map(item => item.minter);
+    const mintCount = data.total;
 
-    // Get the mint count for this token ID
-    const mintCount = await readOnlyContract.getMintCountByTokenId(tokenId);
-
-    // Fetch collector addresses based on events
-    const collectors = await fetchCollectorAddresses(tokenId);
-
-    // Update the UI with the actual mint count and collectors
-    updateMintProgressUI(mintCount.toNumber(), collectors.reverse());
+    // Update the UI with the mint count and collectors
+    updateMintProgressUI(mintCount, collectors.reverse());
   } catch (error) {
     console.error("Failed to fetch mint count:", error);
+    
+    // Fallback to contract call if API fails
+    try {
+      // Create a read-only provider and contract instance
+      const readProvider = new ethers.providers.JsonRpcProvider(
+        ACTIVE_CHAIN.rpcUrls[0]
+      );
+      const readOnlyContract = new ethers.Contract(
+        NFT_CONTRACT_ADDRESS,
+        NFT_CONTRACT_ABI,
+        readProvider
+      );
+
+      // Get the mint count for this token ID
+      const mintCount = await readOnlyContract.getMintCountByTokenId(tokenId);
+      updateMintProgressUI(mintCount.toNumber(), []);
+    } catch (fallbackError) {
+      console.error("Fallback mint count fetch failed:", fallbackError);
+    }
   }
 }
 
@@ -522,7 +516,12 @@ async function updateMintProgress() {
       return;
     }
 
-    // If no connected wallet, use the read-only approach instead
+    // Clear the collector address cache for this token ID to force refresh
+    if (collectorAddressesCache[tokenId]) {
+      delete collectorAddressesCache[tokenId];
+    }
+
+    // Use the fetchAndUpdateMintCount function which now uses the API
     await fetchAndUpdateMintCount();
   } catch (error) {
     console.error("Failed to update mint progress:", error);
