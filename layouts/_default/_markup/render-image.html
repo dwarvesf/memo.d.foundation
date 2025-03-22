@@ -33,7 +33,7 @@
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -42,7 +42,7 @@
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -61,7 +61,7 @@
   onerror="this.onerror = null"
 ></video>
 {{- else -}}
-<img 
+<img
   x-data="{
     title: `{{- with .Title }}{{ . | safeHTML }}{{- end -}}`,
     alt: `{{- with .Text }}{{ . | safeHTML }}{{- end -}}`,
@@ -92,7 +92,7 @@
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -101,7 +101,7 @@
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
