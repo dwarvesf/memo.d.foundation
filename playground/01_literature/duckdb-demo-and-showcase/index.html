@@ -256,7 +256,8 @@
                   .replace(/\/+/g, '/')  // Replace multiple slashes with a single slash
                   .toLowerCase()
                   .split('/')
-                  .map(segment => segment.replace(/^-+|-+$/g, '').replace(/_index$/, ''))  // Clean each path segment and remove _index suffix
+                  .map(segment => segment.replace(/^-+|-+$/g, '').replace(/_index$/, '').replace(/^readme$/, ''))  // Clean each path segment and remove _index suffix and readme
+                  .filter(segment => segment !== '')  // Filter out empty segments after readme removal
                   .join('/')}/`
                 const isActive = location.pathname === path;
                 html += `
