@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>2,425</li><li class=span><span>Characters:
-</span>31,583</li><li class=span><span>Without Spaces:
+</span>31,772</li><li class=span><span>Without Spaces:
 </span>13,509</li><li class=span><span>Blocks:
 </span>44</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction>Introduction</a></li><li><a href=#approaching-blockchain-layer-2>Approaching Blockchain Layer 2</a></li><li><a href=#zero-knowledge-ethereum-virtual-machine-zkevm>Zero-Knowledge <strong>Ethereum Virtual Machine</strong> (zkEVM)</a></li><li><a href=#system-requirements>System Requirements</a></li><li><a href=#approach-to-solving-the-requirements>Approach to solving the requirements</a></li><li><a href=#design-the-system>Design the system</a><ul><li><a href=#system-overview>System Overview</a></li></ul></li><li><a href=#components>Components</a><ul><li><a href=#zkprover-component>ZkProver Component</a></li><li><a href=#state-machine-component>State machine Component</a></li><li><a href=#aggregator-component>Aggregator Component</a></li><li><a href=#executor-component>Executor Component</a></li><li><a href=#statedb-component>StateDB Component</a></li><li><a href=#l2-state>L2 State</a></li><li><a href=#sequencer-component>Sequencer Component</a></li><li><a href=#bridge-component>Bridge Component</a></li><li><a href=#smart-contract>Smart contract</a></li><li><a href=#rpc>RPC</a></li><li><a href=#final-node-component-diagram>Final Node component diagram</a></li><li><a href=#transaction-flow>Transaction Flow</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction>Introduction</a></li><li><a href=#approaching-blockchain-layer-2>Approaching Blockchain Layer 2</a></li><li><a href=#zero-knowledge-ethereum-virtual-machine-zkevm>Zero-Knowledge <strong>Ethereum Virtual Machine</strong> (zkEVM)</a></li><li><a href=#system-requirements>System Requirements</a></li><li><a href=#approach-to-solving-the-requirements>Approach to solving the requirements</a></li><li><a href=#design-the-system>Design the system</a><ul><li><a href=#system-overview>System Overview</a></li></ul></li><li><a href=#components>Components</a><ul><li><a href=#zkprover-component>ZkProver Component</a></li><li><a href=#state-machine-component>State machine Component</a></li><li><a href=#aggregator-component>Aggregator Component</a></li><li><a href=#executor-component>Executor Component</a></li><li><a href=#statedb-component>StateDB Component</a></li><li><a href=#l2-state>L2 State</a></li><li><a href=#sequencer-component>Sequencer Component</a></li><li><a href=#bridge-component>Bridge Component</a></li><li><a href=#smart-contract>Smart contract</a></li><li><a href=#rpc>RPC</a></li><li><a href=#final-node-component-diagram>Final Node component diagram</a></li><li><a href=#transaction-flow>Transaction Flow</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1045,7 +1045,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1054,7 +1054,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1094,7 +1094,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1103,7 +1103,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1143,7 +1143,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1152,7 +1152,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1192,7 +1192,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1201,7 +1201,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1241,7 +1241,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1250,7 +1250,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

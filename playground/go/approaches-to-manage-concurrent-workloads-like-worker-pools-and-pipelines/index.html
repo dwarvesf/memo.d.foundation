@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/go>playground/go</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>5,094</li><li class=span><span>Characters:
-</span>37,684</li><li class=span><span>Without Spaces:
+</span>37,711</li><li class=span><span>Without Spaces:
 </span>26,944</li><li class=span><span>Blocks:
 </span>37</li><li class=span><span>Est reading Time:
 </span>25m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction>Introduction</a></li><li><a href=#introduction-1>Introduction</a></li><li><a href=#the-patterns>The Patterns</a></li><li><a href=#the-workers-pool-pattern>The Workers Pool pattern</a></li><li><a href=#the-patterns-1>The Patterns</a><ul><li><a href=#the-disadvantages-of-this-pattern>The disadvantages of this pattern</a></li><li><a href=#the-disadvantages-of-this-pattern-1>The disadvantages of this pattern</a></li></ul></li><li><a href=#the-semaphore-pattern>The Semaphore pattern</a><ul><li><a href=#the-disadvantages-of-this-pattern-2>The disadvantages of this pattern</a></li></ul></li><li><a href=#considering-the-number-of-goroutines>Considering the number of goroutines</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction>Introduction</a></li><li><a href=#introduction-1>Introduction</a></li><li><a href=#the-patterns>The Patterns</a></li><li><a href=#the-workers-pool-pattern>The Workers Pool pattern</a></li><li><a href=#the-patterns-1>The Patterns</a><ul><li><a href=#the-disadvantages-of-this-pattern>The disadvantages of this pattern</a></li><li><a href=#the-disadvantages-of-this-pattern-1>The disadvantages of this pattern</a></li></ul></li><li><a href=#the-semaphore-pattern>The Semaphore pattern</a><ul><li><a href=#the-disadvantages-of-this-pattern-2>The disadvantages of this pattern</a></li></ul></li><li><a href=#considering-the-number-of-goroutines>Considering the number of goroutines</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -1178,7 +1178,7 @@ semaCh: make(chan struct{}, maxReq),
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1187,7 +1187,7 @@ semaCh: make(chan struct{}, maxReq),
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

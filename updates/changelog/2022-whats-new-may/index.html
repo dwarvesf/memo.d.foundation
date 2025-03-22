@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/updates/changelog>updates/changelog</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>477</li><li class=span><span>Characters:
-</span>11,171</li><li class=span><span>Without Spaces:
+</span>11,279</li><li class=span><span>Without Spaces:
 </span>2,329</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#foundation>Foundation</a><ul><li><a href=#project-allocation>Project Allocation</a></li><li><a href=#our-view-on-blockchain>Our view on Blockchain</a></li></ul></li><li><a href=#growth>Growth</a><ul><li><a href=#kicking-off-apprenticeship-training>Kicking off Apprenticeship Training</a></li><li><a href=#onboarding-new-interns>Onboarding new Interns</a></li><li><a href=#data-team-form-up>Data Team Form-up</a></li><li><a href=#revisit-the-radio-talks>Revisit the Radio Talks</a></li></ul></li><li><a href=#team>Team</a><ul><li><a href=#dalat-office>Dalat Office</a></li></ul></li><li><a href=#coming-up-next>Coming up next</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#foundation>Foundation</a><ul><li><a href=#project-allocation>Project Allocation</a></li><li><a href=#our-view-on-blockchain>Our view on Blockchain</a></li></ul></li><li><a href=#growth>Growth</a><ul><li><a href=#kicking-off-apprenticeship-training>Kicking off Apprenticeship Training</a></li><li><a href=#onboarding-new-interns>Onboarding new Interns</a></li><li><a href=#data-team-form-up>Data Team Form-up</a></li><li><a href=#revisit-the-radio-talks>Revisit the Radio Talks</a></li></ul></li><li><a href=#team>Team</a><ul><li><a href=#dalat-office>Dalat Office</a></li></ul></li><li><a href=#coming-up-next>Coming up next</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

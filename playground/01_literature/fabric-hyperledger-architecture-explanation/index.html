@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>998</li><li class=span><span>Characters:
-</span>17,126</li><li class=span><span>Without Spaces:
+</span>17,261</li><li class=span><span>Without Spaces:
 </span>5,654</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#key-concept-of-blockchain-in-hyperledger>Key concept of Blockchain in Hyperledger</a><ul><li><a href=#a-distributed-ledger>A Distributed Ledger</a></li><li><a href=#smart-contracts>Smart Contracts</a></li><li><a href=#consensus>Consensus</a></li></ul></li><li><a href=#hyperledger-fabric-models>Hyperledger Fabric Models</a><ul><li><a href=#assets>Assets</a></li><li><a href=#chaincode>Chaincode</a></li><li><a href=#ledger>Ledger</a></li><li><a href=#permissioned-vs-permissionless>Permissioned Vs Permissionless</a></li></ul></li><li><a href=#hyperledger-architecture>Hyperledger Architecture</a><ul><li><a href=#identity>Identity</a></li><li><a href=#pkis-public-key-infrastructure>PKIs (public key infrastructure)</a></li><li><a href=#msp-membership-service-provider>MSP (Membership Service Provider)</a></li></ul></li><li><a href=#transaction-flow-from-application>Transaction Flow from Application</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#key-concept-of-blockchain-in-hyperledger>Key concept of Blockchain in Hyperledger</a><ul><li><a href=#a-distributed-ledger>A Distributed Ledger</a></li><li><a href=#smart-contracts>Smart Contracts</a></li><li><a href=#consensus>Consensus</a></li></ul></li><li><a href=#hyperledger-fabric-models>Hyperledger Fabric Models</a><ul><li><a href=#assets>Assets</a></li><li><a href=#chaincode>Chaincode</a></li><li><a href=#ledger>Ledger</a></li><li><a href=#permissioned-vs-permissionless>Permissioned Vs Permissionless</a></li></ul></li><li><a href=#hyperledger-architecture>Hyperledger Architecture</a><ul><li><a href=#identity>Identity</a></li><li><a href=#pkis-public-key-infrastructure>PKIs (public key infrastructure)</a></li><li><a href=#msp-membership-service-provider>MSP (Membership Service Provider)</a></li></ul></li><li><a href=#transaction-flow-from-application>Transaction Flow from Application</a></li></ul></nav></div></div><main x-data="{
@@ -948,7 +948,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1144,7 +1144,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1153,7 +1153,7 @@ Both are unalterable digitally signed ledgers which are distributed through peer
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

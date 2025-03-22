@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>2,060</li><li class=span><span>Characters:
-</span>29,926</li><li class=span><span>Without Spaces:
+</span>30,169</li><li class=span><span>Without Spaces:
 </span>11,154</li><li class=span><span>Blocks:
 </span>43</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#intro>Intro</a></li><li><a href=#understand-blockchain>Understand Blockchain</a><ul><li><a href=#why-blockchain>Why Blockchain?</a></li><li><a href=#what-is-blockchain>What is Blockchain</a></li><li><a href=#how-it-works>How it works</a></li><li><a href=#value-proposition>Value proposition</a></li></ul></li><li><a href=#help-user-to-believe-in-the-value-of-blockchain>Help user to believe in the value of Blockchain</a><ul><li><a href=#blockchain-design-principles>Blockchain design principles</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#intro>Intro</a></li><li><a href=#understand-blockchain>Understand Blockchain</a><ul><li><a href=#why-blockchain>Why Blockchain?</a></li><li><a href=#what-is-blockchain>What is Blockchain</a></li><li><a href=#how-it-works>How it works</a></li><li><a href=#value-proposition>Value proposition</a></li></ul></li><li><a href=#help-user-to-believe-in-the-value-of-blockchain>Help user to believe in the value of Blockchain</a><ul><li><a href=#blockchain-design-principles>Blockchain design principles</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data="{
@@ -950,7 +950,7 @@ Blockchain operates in a decentralized form, which makes all information and tra
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Blockchain operates in a decentralized form, which makes all information and tra
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Blockchain operates in a decentralized form, which makes all information and tra
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Blockchain operates in a decentralized form, which makes all information and tra
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Blockchain operates in a decentralized form, which makes all information and tra
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Blockchain operates in a decentralized form, which makes all information and tra
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1100,7 +1100,7 @@ No one can tamper data in a Blockchain network and thus it’s an immutable plat
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1109,7 +1109,7 @@ No one can tamper data in a Blockchain network and thus it’s an immutable plat
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1149,7 +1149,7 @@ No one can tamper data in a Blockchain network and thus it’s an immutable plat
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1158,7 +1158,7 @@ No one can tamper data in a Blockchain network and thus it’s an immutable plat
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1199,7 +1199,7 @@ In order to create trust in the new technology, users need to understand and see
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1208,7 +1208,7 @@ In order to create trust in the new technology, users need to understand and see
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1249,7 +1249,7 @@ Establishing visual consistency across products and the customer experience is e
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1258,7 +1258,7 @@ Establishing visual consistency across products and the customer experience is e
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1299,7 +1299,7 @@ The system is cross-border operated, in which users are the center of the proces
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1308,7 +1308,7 @@ The system is cross-border operated, in which users are the center of the proces
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1349,7 +1349,7 @@ Blockchain is known as a one-way action that keeps the network safe and transpar
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1358,7 +1358,7 @@ Blockchain is known as a one-way action that keeps the network safe and transpar
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

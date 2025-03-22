@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>839</li><li class=span><span>Characters:
-</span>24,588</li><li class=span><span>Without Spaces:
+</span>24,858</li><li class=span><span>Without Spaces:
 </span>4,372</li><li class=span><span>Blocks:
 </span>27</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#preface>Preface</a></li><li><a href=#prompting-techniques>Prompting techniques</a><ul><li><a href=#instruction-prompting>Instruction prompting</a></li><li><a href=#least-to-most-prompting>Least-to-most prompting</a></li><li><a href=#prompting-for-use-with-tools>Prompting for use with tools</a></li><li><a href=#pre-context-to-fix-mistakes-and-errors>Pre-context to fix mistakes and errors</a></li></ul></li><li><a href=#risks-of-adversarial-prompting>Risks of Adversarial Prompting</a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#preface>Preface</a></li><li><a href=#prompting-techniques>Prompting techniques</a><ul><li><a href=#instruction-prompting>Instruction prompting</a></li><li><a href=#least-to-most-prompting>Least-to-most prompting</a></li><li><a href=#prompting-for-use-with-tools>Prompting for use with tools</a></li><li><a href=#pre-context-to-fix-mistakes-and-errors>Pre-context to fix mistakes and errors</a></li></ul></li><li><a href=#risks-of-adversarial-prompting>Risks of Adversarial Prompting</a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1045,7 +1045,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1054,7 +1054,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1094,7 +1094,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1103,7 +1103,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1143,7 +1143,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1152,7 +1152,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1192,7 +1192,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1201,7 +1201,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1241,7 +1241,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1250,7 +1250,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1290,7 +1290,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1299,7 +1299,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1339,7 +1339,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1348,7 +1348,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1388,7 +1388,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1397,7 +1397,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

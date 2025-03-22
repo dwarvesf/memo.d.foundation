@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/blockchain>playground/blockchain</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>459</li><li class=span><span>Characters:
-</span>5,322</li><li class=span><span>Without Spaces:
+</span>5,349</li><li class=span><span>Without Spaces:
 </span>2,454</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#tools-used-in-the-swap>Tools Used in the Swap</a></li><li><a href=#why-its-not-a-direct-swap>Why It’s Not a Direct Swap</a></li><li><a href=#how-the-swap-works>How the Swap Works</a></li><li><a href=#how-the-price-is-set>How the Price Is Set</a><ul><li><a href=#adjusting-for-bitcoin-price-changes>Adjusting for Bitcoin Price Changes</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#tools-used-in-the-swap>Tools Used in the Swap</a></li><li><a href=#why-its-not-a-direct-swap>Why It’s Not a Direct Swap</a></li><li><a href=#how-the-swap-works>How the Swap Works</a></li><li><a href=#how-the-price-is-set>How the Price Is Set</a><ul><li><a href=#adjusting-for-bitcoin-price-changes>Adjusting for Bitcoin Price Changes</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Icy-Backend: A system that receives your swap request, tracks it, and triggers t
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Icy-Backend: A system that receives your swap request, tracks it, and triggers t
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

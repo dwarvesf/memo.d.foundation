@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/use-cases>playground/use-cases</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,755</li><li class=span><span>Characters:
-</span>16,993</li><li class=span><span>Without Spaces:
+</span>17,047</li><li class=span><span>Without Spaces:
 </span>9,044</li><li class=span><span>Blocks:
 </span>31</li><li class=span><span>Est reading Time:
 </span>20m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#limitations-of-binance-income-history>Limitations of Binance income history</a></li><li><a href=#our-approach-to-transfer-history-mapping>Our approach to transfer history mapping</a><ul><li><a href=#current-implementation>Current implementation</a></li><li><a href=#how-to-make-it-better>How to make it better?</a></li></ul></li><li><a href=#conclusions>Conclusions</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#limitations-of-binance-income-history>Limitations of Binance income history</a></li><li><a href=#our-approach-to-transfer-history-mapping>Our approach to transfer history mapping</a><ul><li><a href=#current-implementation>Current implementation</a></li><li><a href=#how-to-make-it-better>How to make it better?</a></li></ul></li><li><a href=#conclusions>Conclusions</a></li></ul></nav></div></div><main x-data='{
@@ -970,7 +970,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -979,7 +979,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1019,7 +1019,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1028,7 +1028,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

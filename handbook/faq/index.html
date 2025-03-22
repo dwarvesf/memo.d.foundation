@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/handbook>handbook</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,915</li><li class=span><span>Characters:
-</span>18,604</li><li class=span><span>Without Spaces:
+</span>18,658</li><li class=span><span>Without Spaces:
 </span>9,382</li><li class=span><span>Blocks:
 </span>98</li><li class=span><span>Est reading Time:
 </span>18m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#people-operations>People Operations</a><ul><li><a href=#the-culture>The Culture</a></li><li><a href=#employee-contract>Employee Contract</a></li><li><a href=#team-email>Team Email</a></li><li><a href=#benefit>Benefit</a><ul><li><a href=#education-allowance>Education Allowance</a></li><li><a href=#bao-minh-insurance>Bao Minh Insurance</a></li></ul></li></ul></li><li><a href=#finance-operations>Finance Operations</a><ul><li><a href=#payroll>Payroll</a></li><li><a href=#wise>Wise</a></li></ul></li><li><a href=#project-operations>Project Operations</a><ul><li><a href=#general-questions>General questions</a><ul><li><a href=#project-bonus>Project Bonus</a></li><li><a href=#refferal-bonus>Refferal bonus</a></li></ul></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#people-operations>People Operations</a><ul><li><a href=#the-culture>The Culture</a></li><li><a href=#employee-contract>Employee Contract</a></li><li><a href=#team-email>Team Email</a></li><li><a href=#benefit>Benefit</a><ul><li><a href=#education-allowance>Education Allowance</a></li><li><a href=#bao-minh-insurance>Bao Minh Insurance</a></li></ul></li></ul></li><li><a href=#finance-operations>Finance Operations</a><ul><li><a href=#payroll>Payroll</a></li><li><a href=#wise>Wise</a></li></ul></li><li><a href=#project-operations>Project Operations</a><ul><li><a href=#general-questions>General questions</a><ul><li><a href=#project-bonus>Project Bonus</a></li><li><a href=#refferal-bonus>Refferal bonus</a></li></ul></li></ul></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature/design>playground/01_literature/design</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>712</li><li class=span><span>Characters:
-</span>15,094</li><li class=span><span>Without Spaces:
+</span>15,202</li><li class=span><span>Without Spaces:
 </span>4,092</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#voice-user-interface-vui>Voice user interface (VUI)</a><ul><li><a href=#the-future-of-vui>The future of VUI</a></li><li><a href=#products-leading-vui-trends>Products leading VUI trends</a></li></ul></li><li><a href=#augmented-reality-ar-and-virtual-reality-vr>Augmented reality (AR) and virtual reality (VR)</a><ul><li><a href=#growth-forecast>Growth forecast</a></li><li><a href=#practical-applications-in-ux>Practical applications in UX</a></li><li><a href=#products-leading-arvr-trends>Products leading AR/VR trends</a></li></ul></li><li><a href=#modular-design-systems>Modular design systems</a><ul><li><a href=#benefits>Benefits</a></li><li><a href=#examples>Examples</a></li><li><a href=#application-in-design--development>Application in design & development</a></li></ul></li><li><a href=#ai-tools-for-ux-ui-and-product-designers>AI tools for UX, UI, and product designers</a><ul><li><a href=#for-ux--research>For UX & research</a></li><li><a href=#for-ui-design>For UI design</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#voice-user-interface-vui>Voice user interface (VUI)</a><ul><li><a href=#the-future-of-vui>The future of VUI</a></li><li><a href=#products-leading-vui-trends>Products leading VUI trends</a></li></ul></li><li><a href=#augmented-reality-ar-and-virtual-reality-vr>Augmented reality (AR) and virtual reality (VR)</a><ul><li><a href=#growth-forecast>Growth forecast</a></li><li><a href=#practical-applications-in-ux>Practical applications in UX</a></li><li><a href=#products-leading-arvr-trends>Products leading AR/VR trends</a></li></ul></li><li><a href=#modular-design-systems>Modular design systems</a><ul><li><a href=#benefits>Benefits</a></li><li><a href=#examples>Examples</a></li><li><a href=#application-in-design--development>Application in design & development</a></li></ul></li><li><a href=#ai-tools-for-ux-ui-and-product-designers>AI tools for UX, UI, and product designers</a><ul><li><a href=#for-ux--research>For UX & research</a></li><li><a href=#for-ui-design>For UI design</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

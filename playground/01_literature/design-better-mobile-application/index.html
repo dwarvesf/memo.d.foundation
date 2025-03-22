@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>723</li><li class=span><span>Characters:
-</span>12,154</li><li class=span><span>Without Spaces:
+</span>12,235</li><li class=span><span>Without Spaces:
 </span>3,810</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction-to-ios--android>Introduction to iOS & Android</a><ul><li><a href=#adjustment--privacy>Adjustment & Privacy</a></li><li><a href=#hardware>Hardware</a></li><li><a href=#performance>Performance</a></li><li><a href=#application-upload-on-appstore-ch-play>Application Upload on Appstore/ CH Play</a></li><li><a href=#version-updates>Version Updates</a></li><li><a href=#language>Language</a></li><li><a href=#development-environment>Development Environment</a></li><li><a href=#programmed-in>Programmed in</a></li><li><a href=#open-source>Open Source</a></li><li><a href=#development-cost>Development Cost</a></li></ul></li><li><a href=#the-platforms-to-build-application>The Platforms to build Application</a><ul><li><a href=#pros--cons-of-each-platform>Pros & Cons of each Platform</a></li></ul></li><li><a href=#useful-tips-to-create-effective-mobile-application>Useful tips to create effective Mobile Application</a><ul><li><a href=#read-the-human-interface-guidelines>Read the Human Interface Guidelines</a></li><li><a href=#talk-to-developers>Talk to Developers</a></li><li><a href=#component-structure-between-android--ios>Component Structure between Android & iOS</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction-to-ios--android>Introduction to iOS & Android</a><ul><li><a href=#adjustment--privacy>Adjustment & Privacy</a></li><li><a href=#hardware>Hardware</a></li><li><a href=#performance>Performance</a></li><li><a href=#application-upload-on-appstore-ch-play>Application Upload on Appstore/ CH Play</a></li><li><a href=#version-updates>Version Updates</a></li><li><a href=#language>Language</a></li><li><a href=#development-environment>Development Environment</a></li><li><a href=#programmed-in>Programmed in</a></li><li><a href=#open-source>Open Source</a></li><li><a href=#development-cost>Development Cost</a></li></ul></li><li><a href=#the-platforms-to-build-application>The Platforms to build Application</a><ul><li><a href=#pros--cons-of-each-platform>Pros & Cons of each Platform</a></li></ul></li><li><a href=#useful-tips-to-create-effective-mobile-application>Useful tips to create effective Mobile Application</a><ul><li><a href=#read-the-human-interface-guidelines>Read the Human Interface Guidelines</a></li><li><a href=#talk-to-developers>Talk to Developers</a></li><li><a href=#component-structure-between-android--ios>Component Structure between Android & iOS</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1045,7 +1045,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1054,7 +1054,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,847</li><li class=span><span>Characters:
-</span>21,070</li><li class=span><span>Without Spaces:
+</span>21,124</li><li class=span><span>Without Spaces:
 </span>11,466</li><li class=span><span>Blocks:
 </span>30</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#when-bottom-up-meets-top-down>When bottom-up meets top-down</a></li><li><a href=#the-great-mindset-shift>The great mindset shift</a><ul><li><a href=#the-application-developers-view>The application developer&rsquo;s view:</a></li><li><a href=#the-data-engineers-view>The Data Engineer&rsquo;s view:</a></li></ul></li><li><a href=#a-real-world-example-project-reporting>A real-world example: Project reporting</a><ul><li><a href=#implementation-details>Implementation details</a></li></ul></li><li><a href=#the-orchestra-of-automation>The orchestra of automation</a></li><li><a href=#the-data-engineers-mental-models>The Data Engineer&rsquo;s mental models</a></li><li><a href=#architectural-decisions-that-shape-systems>Architectural decisions that shape systems</a><ul><li><a href=#1-storage-format-the-foundation-of-scale>1. Storage format: The foundation of scale</a></li><li><a href=#2-query-engine-the-power-of-perspective>2. Query engine: The power of perspective</a></li><li><a href=#3-orchestration-the-conductors-podium>3. Orchestration: The conductor&rsquo;s podium</a></li></ul></li><li><a href=#the-data-engineering-toolbox-a-systems-approach>The data engineering toolbox: A systems approach</a><ul><li><a href=#processing-engines>Processing engines</a></li><li><a href=#storage-solutions>Storage solutions</a></li><li><a href=#orchestration-tools>Orchestration tools</a></li></ul></li><li><a href=#understanding-the-evolution>Understanding the evolution</a></li><li><a href=#the-path-forward-from-components-to-systems>The path forward: From components to systems</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#when-bottom-up-meets-top-down>When bottom-up meets top-down</a></li><li><a href=#the-great-mindset-shift>The great mindset shift</a><ul><li><a href=#the-application-developers-view>The application developer&rsquo;s view:</a></li><li><a href=#the-data-engineers-view>The Data Engineer&rsquo;s view:</a></li></ul></li><li><a href=#a-real-world-example-project-reporting>A real-world example: Project reporting</a><ul><li><a href=#implementation-details>Implementation details</a></li></ul></li><li><a href=#the-orchestra-of-automation>The orchestra of automation</a></li><li><a href=#the-data-engineers-mental-models>The Data Engineer&rsquo;s mental models</a></li><li><a href=#architectural-decisions-that-shape-systems>Architectural decisions that shape systems</a><ul><li><a href=#1-storage-format-the-foundation-of-scale>1. Storage format: The foundation of scale</a></li><li><a href=#2-query-engine-the-power-of-perspective>2. Query engine: The power of perspective</a></li><li><a href=#3-orchestration-the-conductors-podium>3. Orchestration: The conductor&rsquo;s podium</a></li></ul></li><li><a href=#the-data-engineering-toolbox-a-systems-approach>The data engineering toolbox: A systems approach</a><ul><li><a href=#processing-engines>Processing engines</a></li><li><a href=#storage-solutions>Storage solutions</a></li><li><a href=#orchestration-tools>Orchestration tools</a></li></ul></li><li><a href=#understanding-the-evolution>Understanding the evolution</a></li><li><a href=#the-path-forward-from-components-to-systems>The path forward: From components to systems</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1083,7 +1083,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1092,7 +1092,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

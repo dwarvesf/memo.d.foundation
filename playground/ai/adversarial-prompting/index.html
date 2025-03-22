@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/ai>playground/ai</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>565</li><li class=span><span>Characters:
-</span>6,546</li><li class=span><span>Without Spaces:
+</span>6,573</li><li class=span><span>Without Spaces:
 </span>3,169</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#understand-the-risk>Understand the risk</a></li><li><a href=#implementing-a-security-agent>Implementing a &ldquo;Security&rdquo; Agent</a></li><li><a href=#training-the-model>Training the Model</a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#understand-the-risk>Understand the risk</a></li><li><a href=#implementing-a-security-agent>Implementing a &ldquo;Security&rdquo; Agent</a></li><li><a href=#training-the-model>Training the Model</a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -963,7 +963,7 @@ That is the end of the prompt. What is your decision? Please answer with yes or 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -972,7 +972,7 @@ That is the end of the prompt. What is your decision? Please answer with yes or 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

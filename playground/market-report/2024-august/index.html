@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playground/market-report>playground/market-report</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,308</li><li class=span><span>Characters:
-</span>20,686</li><li class=span><span>Without Spaces:
+</span>20,821</li><li class=span><span>Without Spaces:
 </span>8,116</li><li class=span><span>Blocks:
 </span>31</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#key-takeaways>Key takeaways</a></li><li><a href=#ai-and-llm-are-starting-to-make-a-real-impact-on-programming>AI and LLM are starting to make a real impact on programming</a><ul><li><a href=#cursor--claude-35-sonnet-the-future-of-programming-is-english-and-tab-tab>Cursor + Claude 3.5 Sonnet: The future of programming is English and tab-tab</a></li><li><a href=#amazon-developers-embrace-79-of-auto-generated-code-reviews-for-upgrading-foundation-software>Amazon developers embrace 79% of auto-generated code reviews for upgrading foundation software</a></li></ul></li><li><a href=#the-next-thing-after-generative-ui-is-generative-apps>The next thing after generative UI is generative apps</a></li><li><a href=#new-features-open-more-opportunities>New features open more opportunities</a><ul><li><a href=#prompt-caching-by-anthropic><strong>Prompt caching by Anthropic</strong></a></li><li><a href=#structured-output-by-openai>Structured output by OpenAI</a></li><li><a href=#gpt-4o-supports-fine-tuning>GPT-4o supports fine-tuning</a></li></ul></li><li><a href=#flux-1-and-deep-live-cam-new-achievements-in-open-media-models>Flux 1 and Deep Live Cam: New achievements in open media models</a></li><li><a href=#shadcn-v0-tailwind-the-new-standard-for-ui-development>Shadcn, v0, Tailwind: The new standard for UI development</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#key-takeaways>Key takeaways</a></li><li><a href=#ai-and-llm-are-starting-to-make-a-real-impact-on-programming>AI and LLM are starting to make a real impact on programming</a><ul><li><a href=#cursor--claude-35-sonnet-the-future-of-programming-is-english-and-tab-tab>Cursor + Claude 3.5 Sonnet: The future of programming is English and tab-tab</a></li><li><a href=#amazon-developers-embrace-79-of-auto-generated-code-reviews-for-upgrading-foundation-software>Amazon developers embrace 79% of auto-generated code reviews for upgrading foundation software</a></li></ul></li><li><a href=#the-next-thing-after-generative-ui-is-generative-apps>The next thing after generative UI is generative apps</a></li><li><a href=#new-features-open-more-opportunities>New features open more opportunities</a><ul><li><a href=#prompt-caching-by-anthropic><strong>Prompt caching by Anthropic</strong></a></li><li><a href=#structured-output-by-openai>Structured output by OpenAI</a></li><li><a href=#gpt-4o-supports-fine-tuning>GPT-4o supports fine-tuning</a></li></ul></li><li><a href=#flux-1-and-deep-live-cam-new-achievements-in-open-media-models>Flux 1 and Deep Live Cam: New achievements in open media models</a></li><li><a href=#shadcn-v0-tailwind-the-new-standard-for-ui-development>Shadcn, v0, Tailwind: The new standard for UI development</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1097,7 +1097,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1106,7 +1106,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1146,7 +1146,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1155,7 +1155,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

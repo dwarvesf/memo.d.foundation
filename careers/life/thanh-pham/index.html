@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/careers/life>careers/life</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>621</li><li class=span><span>Characters:
-</span>6,172</li><li class=span><span>Without Spaces:
+</span>6,199</li><li class=span><span>Without Spaces:
 </span>2,968</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><ul><li><a href=#my-job-is-to-ensure-a-healthy-environment-for-everyone-to-thrive>My job is to ensure a healthy environment for everyone to thrive.</a></li><li><a href=#career-path-is-built-based-on-teammates-expectation>Career path is built based on teammate’s expectation.</a></li><li><a href=#the-key-for-a-stable-product-quality-connecting-the-key-roles>The key for a stable product quality: Connecting the key roles.</a></li><li><a href=#omw-to-becoming-cto>Omw to becoming CTO.</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><ul><li><a href=#my-job-is-to-ensure-a-healthy-environment-for-everyone-to-thrive>My job is to ensure a healthy environment for everyone to thrive.</a></li><li><a href=#career-path-is-built-based-on-teammates-expectation>Career path is built based on teammate’s expectation.</a></li><li><a href=#the-key-for-a-stable-product-quality-connecting-the-key-roles>The key for a stable product quality: Connecting the key roles.</a></li><li><a href=#omw-to-becoming-cto>Omw to becoming CTO.</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

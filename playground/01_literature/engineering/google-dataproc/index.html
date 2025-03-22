@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature/engineering>playground/01_literature/engineering</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,253</li><li class=span><span>Characters:
-</span>25,340</li><li class=span><span>Without Spaces:
+</span>25,557</li><li class=span><span>Without Spaces:
 </span>6,721</li><li class=span><span>Blocks:
 </span>36</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction>Introduction</a></li><li><a href=#use-cases>Use cases</a></li><li><a href=#pricing>Pricing</a></li><li><a href=#how-to-setup-a-dataproc-cluster>How to setup a Dataproc cluster</a><ul><li><a href=#prerequisites>Prerequisites:</a></li><li><a href=#set-up-a-dataproc-cluster>Set Up a Dataproc Cluster:</a></li></ul></li><li><a href=#how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console>How to deploy a Spark job on Dataproc (Using Google cloud console)</a><ul><li><a href=#step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen>Step 1: In the created cluster click on <code>Submit Job</code> button on the top right of the main console screen</a></li><li><a href=#step-2-fill-all-necessary-field-in-the-job-creation-modal>Step 2: Fill all necessary field in the job creation modal:</a></li><li><a href=#step-3>Step 3:</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction>Introduction</a></li><li><a href=#use-cases>Use cases</a></li><li><a href=#pricing>Pricing</a></li><li><a href=#how-to-setup-a-dataproc-cluster>How to setup a Dataproc cluster</a><ul><li><a href=#prerequisites>Prerequisites:</a></li><li><a href=#set-up-a-dataproc-cluster>Set Up a Dataproc Cluster:</a></li></ul></li><li><a href=#how-to-deploy-a-spark-job-on-dataproc-using-google-cloud-console>How to deploy a Spark job on Dataproc (Using Google cloud console)</a><ul><li><a href=#step-1-in-the-created-cluster-click-on-submit-job-button-on-the-top-right-of-the-main-console-screen>Step 1: In the created cluster click on <code>Submit Job</code> button on the top right of the main console screen</a></li><li><a href=#step-2-fill-all-necessary-field-in-the-job-creation-modal>Step 2: Fill all necessary field in the job creation modal:</a></li><li><a href=#step-3>Step 3:</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1005,7 +1005,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1014,7 +1014,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1054,7 +1054,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1063,7 +1063,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1104,7 +1104,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1113,7 +1113,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1154,7 +1154,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1163,7 +1163,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1204,7 +1204,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1213,7 +1213,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1254,7 +1254,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1263,7 +1263,7 @@ gcloud dataproc clusters delete CLUSTER_NAME --region REGION
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1305,7 +1305,7 @@ Full video step by step:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1314,7 +1314,7 @@ Full video step by step:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

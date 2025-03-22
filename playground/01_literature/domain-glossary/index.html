@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>453</li><li class=span><span>Characters:
-</span>7,119</li><li class=span><span>Without Spaces:
+</span>7,173</li><li class=span><span>Without Spaces:
 </span>2,636</li><li class=span><span>Blocks:
 </span>7</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#t1-retail-20>T1: Retail 2.0</a><ul><li><a href=#personalized-exp>Personalized Exp</a></li><li><a href=#simplified-authentication>Simplified Authentication</a></li><li><a href=#retail-30>Retail 3.0</a></li><li><a href=#retail-40>Retail 4.0</a></li><li><a href=#o2o---online-to-offline>O2O - Online to Offline</a></li></ul></li><li><a href=#t2-open-banking>T2: Open Banking</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#t1-retail-20>T1: Retail 2.0</a><ul><li><a href=#personalized-exp>Personalized Exp</a></li><li><a href=#simplified-authentication>Simplified Authentication</a></li><li><a href=#retail-30>Retail 3.0</a></li><li><a href=#retail-40>Retail 4.0</a></li><li><a href=#o2o---online-to-offline>O2O - Online to Offline</a></li></ul></li><li><a href=#t2-open-banking>T2: Open Banking</a></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

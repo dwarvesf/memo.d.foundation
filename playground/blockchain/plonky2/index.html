@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/blockchain>playground/blockchain</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,858</li><li class=span><span>Characters:
-</span>19,776</li><li class=span><span>Without Spaces:
+</span>19,857</li><li class=span><span>Without Spaces:
 </span>10,762</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction>Introduction</a></li><li><a href=#the-target-of-plonky2>The target of Plonky2</a></li><li><a href=#how-plonky2-work>How Plonky2 work</a></li><li><a href=#application-of-plonky2>Application of Plonky2</a><ul><li><a href=#blockchain-projects-using-plonky2-and-how-plonky2-improves-system-performance-and-scalability>Blockchain projects using Plonky2 and how Plonky2 improves system performance and scalability:</a></li><li><a href=#example-for-using-plonky2>Example for using Plonky2</a></li></ul></li><li><a href=#challenge-of-plonky2>Challenge of Plonky2</a><ul><li><a href=#safety-and-security-issues-when-using-plonky2>Safety and security issues when using Plonky2</a></li><li><a href=#challenges-in-implementing-and-using-plonky2-on-different-blockchain-systems>Challenges in implementing and using Plonky2 on different blockchain systems</a></li></ul></li><li><a href=#compare-plonky-2-with-others>Compare Plonky 2 with others</a><ul><li><a href=#comparison-between-plonky2-and-other-technologies-in-improving-the-performance-and-scalability-of-the-blockchain-system>Comparison between Plonky2 and other technologies in improving the performance and scalability of the blockchain system:</a></li></ul></li><li><a href=#reference>Reference</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction>Introduction</a></li><li><a href=#the-target-of-plonky2>The target of Plonky2</a></li><li><a href=#how-plonky2-work>How Plonky2 work</a></li><li><a href=#application-of-plonky2>Application of Plonky2</a><ul><li><a href=#blockchain-projects-using-plonky2-and-how-plonky2-improves-system-performance-and-scalability>Blockchain projects using Plonky2 and how Plonky2 improves system performance and scalability:</a></li><li><a href=#example-for-using-plonky2>Example for using Plonky2</a></li></ul></li><li><a href=#challenge-of-plonky2>Challenge of Plonky2</a><ul><li><a href=#safety-and-security-issues-when-using-plonky2>Safety and security issues when using Plonky2</a></li><li><a href=#challenges-in-implementing-and-using-plonky2-on-different-blockchain-systems>Challenges in implementing and using Plonky2 on different blockchain systems</a></li></ul></li><li><a href=#compare-plonky-2-with-others>Compare Plonky 2 with others</a><ul><li><a href=#comparison-between-plonky2-and-other-technologies-in-improving-the-performance-and-scalability-of-the-blockchain-system>Comparison between Plonky2 and other technologies in improving the performance and scalability of the blockchain system:</a></li></ul></li><li><a href=#reference>Reference</a></li></ul></nav></div></div><main x-data="{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

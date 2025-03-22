@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/ai>playground/ai</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,961</li><li class=span><span>Characters:
-</span>19,332</li><li class=span><span>Without Spaces:
+</span>19,359</li><li class=span><span>Without Spaces:
 </span>11,855</li><li class=span><span>Blocks:
 </span>16</li><li class=span><span>Est reading Time:
 </span>22m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#system-prompt-analysis>System Prompt Analysis</a></li><li><a href=#implications-of-using-advanced-ai-models>Implications of Using Advanced AI Models</a></li><li><a href=#broader-implications-for-data-engineering-and-analytics>Broader Implications for Data Engineering and Analytics</a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#appendix---sample-conversation-with-query-results>Appendix - Sample Conversation with Query Results</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#system-prompt-analysis>System Prompt Analysis</a></li><li><a href=#implications-of-using-advanced-ai-models>Implications of Using Advanced AI Models</a></li><li><a href=#broader-implications-for-data-engineering-and-analytics>Broader Implications for Data Engineering and Analytics</a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#appendix---sample-conversation-with-query-results>Appendix - Sample Conversation with Query Results</a></li></ul></nav></div></div><main x-data='{
@@ -960,7 +960,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -969,7 +969,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>782</li><li class=span><span>Characters:
-</span>7,628</li><li class=span><span>Without Spaces:
+</span>7,655</li><li class=span><span>Without Spaces:
 </span>4,183</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><ul><li><a href=#produce-first-secure-later>Produce first, secure later?</a></li><li><a href=#elements-of-cybersecurity>Elements of cybersecurity</a></li><li><a href=#security-should-be-built-in-not-bolt-on>Security should be built in, not bolt-on</a></li><li><a href=#the-most-important-thing-for-an-engineer-is-to-be-up-to-date-on-the-latest-security-standards>The most important thing for an engineer is to be up-to-date on the latest security standards</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><ul><li><a href=#produce-first-secure-later>Produce first, secure later?</a></li><li><a href=#elements-of-cybersecurity>Elements of cybersecurity</a></li><li><a href=#security-should-be-built-in-not-bolt-on>Security should be built in, not bolt-on</a></li><li><a href=#the-most-important-thing-for-an-engineer-is-to-be-up-to-date-on-the-latest-security-standards>The most important thing for an engineer is to be up-to-date on the latest security standards</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -949,7 +949,7 @@ Firstly, it is essential to have security measures in place from the very beginn
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -958,7 +958,7 @@ Firstly, it is essential to have security measures in place from the very beginn
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

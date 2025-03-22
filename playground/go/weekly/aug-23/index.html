@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/go/weekly>playground/go/weekly</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>294</li><li class=span><span>Characters:
-</span>7,781</li><li class=span><span>Without Spaces:
+</span>7,835</li><li class=span><span>Without Spaces:
 </span>2,260</li><li class=span><span>Blocks:
 </span>2</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#gonb-a-go-notebook-kernel-for-jupyterhttpsgithubcomjanpfeifergonb>GoNB: A Go Notebook Kernel for Jupyter</a></li><li><a href=#kubetrim-trim-your-kubeconfig-automaticallyhttpsgithubcomalexelliskubetrim>kubetrim: Trim Your KUBECONFIG Automatically</a></li><li><a href=#12-talks-from-gophercon-uk-2024httpsyoutubecomplaylistlistpldwz5uzn69ezr6d6fuj_ibsoyrc9xazfpsiidfgyzoivqqfrsvb>12 Talks from GopherCon UK 2024</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#gonb-a-go-notebook-kernel-for-jupyterhttpsgithubcomjanpfeifergonb>GoNB: A Go Notebook Kernel for Jupyter</a></li><li><a href=#kubetrim-trim-your-kubeconfig-automaticallyhttpsgithubcomalexelliskubetrim>kubetrim: Trim Your KUBECONFIG Automatically</a></li><li><a href=#12-talks-from-gophercon-uk-2024httpsyoutubecomplaylistlistpldwz5uzn69ezr6d6fuj_ibsoyrc9xazfpsiidfgyzoivqqfrsvb>12 Talks from GopherCon UK 2024</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/updates/changelog>updates/changelog</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>228</li><li class=span><span>Characters:
-</span>6,896</li><li class=span><span>Without Spaces:
+</span>6,977</li><li class=span><span>Without Spaces:
 </span>1,025</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><ul><li><a href=#claim-your-prize>Claim Your Prize</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><ul><li><a href=#claim-your-prize>Claim Your Prize</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -998,7 +998,7 @@ Hope you can travel anywhere with this combo. Please help by inputting your info
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1007,7 +1007,7 @@ Hope you can travel anywhere with this combo. Please help by inputting your info
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1047,7 +1047,7 @@ Hope you can travel anywhere with this combo. Please help by inputting your info
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1056,7 +1056,7 @@ Hope you can travel anywhere with this combo. Please help by inputting your info
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/handbook>handbook</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,066</li><li class=span><span>Characters:
-</span>9,129</li><li class=span><span>Without Spaces:
+</span>9,156</li><li class=span><span>Without Spaces:
 </span>4,944</li><li class=span><span>Blocks:
 </span>27</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#a-typical-working-day>A typical working day</a></li><li><a href=#a-working-week>A working week</a><ul><li><a href=#monday>Monday</a></li><li><a href=#tuesday>Tuesday</a></li><li><a href=#wednesday--thursday>Wednesday & Thursday</a></li><li><a href=#friday>Friday</a></li><li><a href=#saturday>Saturday</a></li></ul></li><li><a href=#what-we-work-on>What we work on</a><ul><li><a href=#products>Products</a></li><li><a href=#ventures-product>Ventures Product</a></li><li><a href=#the-tech-radar>The Tech Radar</a></li></ul></li><li><a href=#the-second-period>The second period</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#a-typical-working-day>A typical working day</a></li><li><a href=#a-working-week>A working week</a><ul><li><a href=#monday>Monday</a></li><li><a href=#tuesday>Tuesday</a></li><li><a href=#wednesday--thursday>Wednesday & Thursday</a></li><li><a href=#friday>Friday</a></li><li><a href=#saturday>Saturday</a></li></ul></li><li><a href=#what-we-work-on>What we work on</a><ul><li><a href=#products>Products</a></li><li><a href=#ventures-product>Ventures Product</a></li><li><a href=#the-tech-radar>The Tech Radar</a></li></ul></li><li><a href=#the-second-period>The second period</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ People who don&rsquo;t find a sense of purpose don&rsquo;t find us so well.</p><
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ People who don&rsquo;t find a sense of purpose don&rsquo;t find us so well.</p><
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

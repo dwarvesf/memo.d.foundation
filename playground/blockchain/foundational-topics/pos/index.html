@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/blockchain/foundational-topics>playground/blockchain/foundational-topics</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>852</li><li class=span><span>Characters:
-</span>8,683</li><li class=span><span>Without Spaces:
+</span>8,737</li><li class=span><span>Without Spaces:
 </span>4,007</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#the-proof-of-stake>The Proof of Stake</a></li><li><a href=#how-proof-of-stake-works>How proof of stake works</a><ul><li><ul><li><a href=#compare-pow-and-pos>Compare PoW and PoS</a></li></ul></li></ul></li><li><a href=#about-security>About security</a></li><li><a href=#advantages-of-pos>Advantages of PoS:</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#the-proof-of-stake>The Proof of Stake</a></li><li><a href=#how-proof-of-stake-works>How proof of stake works</a><ul><li><ul><li><a href=#compare-pow-and-pos>Compare PoW and PoS</a></li></ul></li></ul></li><li><a href=#about-security>About security</a></li><li><a href=#advantages-of-pos>Advantages of PoS:</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

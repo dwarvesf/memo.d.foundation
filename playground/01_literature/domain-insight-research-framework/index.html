@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,471</li><li class=span><span>Characters:
-</span>13,233</li><li class=span><span>Without Spaces:
+</span>13,260</li><li class=span><span>Without Spaces:
 </span>7,873</li><li class=span><span>Blocks:
 </span>28</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#what-is-domain-insight-research-dir>What is Domain Insight Research (DIR)?</a></li><li><a href=#how-we-apply-the-dir-in-our-projects>How we apply the DIR in our projects</a></li><li><a href=#three-steps-of-domain-insight-research>Three Steps of Domain Insight Research</a><ul><li><a href=#understand-the-definition>Understand the definition</a></li><li><a href=#how-the-domain-works>How the domain works</a></li><li><a href=#the-technology-methods-being-applied-in-the-market>The technology methods being applied in the market</a></li><li><a href=#value-proposition--problem-solving>Value proposition & Problem solving</a></li></ul></li><li><a href=#the-second-and-the-most-valuable-step-of-this-framework-market-research>The second and the most valuable step of this framework: Market Research</a><ul><li><a href=#our-insight-after-applying-dir-into-our-projects>Our insight after applying DIR into our projects</a></li><li><a href=#how-we-do-market-research>How we do M<strong>arket research</strong></a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#what-is-domain-insight-research-dir>What is Domain Insight Research (DIR)?</a></li><li><a href=#how-we-apply-the-dir-in-our-projects>How we apply the DIR in our projects</a></li><li><a href=#three-steps-of-domain-insight-research>Three Steps of Domain Insight Research</a><ul><li><a href=#understand-the-definition>Understand the definition</a></li><li><a href=#how-the-domain-works>How the domain works</a></li><li><a href=#the-technology-methods-being-applied-in-the-market>The technology methods being applied in the market</a></li><li><a href=#value-proposition--problem-solving>Value proposition & Problem solving</a></li></ul></li><li><a href=#the-second-and-the-most-valuable-step-of-this-framework-market-research>The second and the most valuable step of this framework: Market Research</a><ul><li><a href=#our-insight-after-applying-dir-into-our-projects>Our insight after applying DIR into our projects</a></li><li><a href=#how-we-do-market-research>How we do M<strong>arket research</strong></a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -948,7 +948,7 @@ There are different ways to conduct market research and collect data. Still, we 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ There are different ways to conduct market research and collect data. Still, we 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

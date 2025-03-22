@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playbook/operations>playbook/operations</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>265</li><li class=span><span>Characters:
-</span>12,075</li><li class=span><span>Without Spaces:
+</span>12,210</li><li class=span><span>Without Spaces:
 </span>1,538</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#weekly-activities>Weekly Activities</a><ul><li><a href=#weekly-pointseffort-report>Weekly Points/Effort Report</a></li><li><a href=#sync-up-between-project-lead-and-delivery-manager>Sync-Up Between Project Lead and Delivery Manager</a></li></ul></li><li><a href=#bi-weekly-and-monthly-activities>Bi-Weekly and Monthly Activities</a><ul><li><a href=#project-demoshowcase>Project Demo/Showcase:</a></li><li><a href=#community-call>Community Call</a></li><li><a href=#project-collect-feedback>Project Collect Feedback</a></li></ul></li><li><a href=#important-reminders>Important Reminders</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#weekly-activities>Weekly Activities</a><ul><li><a href=#weekly-pointseffort-report>Weekly Points/Effort Report</a></li><li><a href=#sync-up-between-project-lead-and-delivery-manager>Sync-Up Between Project Lead and Delivery Manager</a></li></ul></li><li><a href=#bi-weekly-and-monthly-activities>Bi-Weekly and Monthly Activities</a><ul><li><a href=#project-demoshowcase>Project Demo/Showcase:</a></li><li><a href=#community-call>Community Call</a></li><li><a href=#project-collect-feedback>Project Collect Feedback</a></li></ul></li><li><a href=#important-reminders>Important Reminders</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1144,7 +1144,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1153,7 +1153,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

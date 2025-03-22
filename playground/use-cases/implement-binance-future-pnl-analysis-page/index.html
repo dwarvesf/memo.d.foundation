@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/use-cases>playground/use-cases</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>535</li><li class=span><span>Characters:
-</span>12,640</li><li class=span><span>Without Spaces:
+</span>12,748</li><li class=span><span>Without Spaces:
 </span>3,179</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#why-we-use-phoenix-live-view-for-binance-future-pnl-analysis-page>Why we use Phoenix Live View for Binance Future PNL Analysis page</a><ul><li><a href=#real-time-data-handling>Real-Time Data Handling</a></li><li><a href=#server-side-state-management>Server-Side State Management</a></li><li><a href=#complex-calculations>Complex Calculations</a></li><li><a href=#development-efficiency>Development Efficiency</a></li></ul></li><li><a href=#how-to-optimize-query-with-timescale>How to optimize query with timescale</a><ul><li><a href=#data-source>Data Source</a></li><li><a href=#timescale-table>Timescale table</a></li><li><a href=#use-timescale-style-query-to-get-summary-data-in-date-range>Use timescale style query to get summary data in date range</a></li><li><a href=#create-cronjob-to-fill-ts_account_pnl_analysis>Create cronjob to fill ts_account_pnl_analysis</a></li></ul></li><li><a href=#user-interface-implementation>User interface implementation</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#why-we-use-phoenix-live-view-for-binance-future-pnl-analysis-page>Why we use Phoenix Live View for Binance Future PNL Analysis page</a><ul><li><a href=#real-time-data-handling>Real-Time Data Handling</a></li><li><a href=#server-side-state-management>Server-Side State Management</a></li><li><a href=#complex-calculations>Complex Calculations</a></li><li><a href=#development-efficiency>Development Efficiency</a></li></ul></li><li><a href=#how-to-optimize-query-with-timescale>How to optimize query with timescale</a><ul><li><a href=#data-source>Data Source</a></li><li><a href=#timescale-table>Timescale table</a></li><li><a href=#use-timescale-style-query-to-get-summary-data-in-date-range>Use timescale style query to get summary data in date range</a></li><li><a href=#create-cronjob-to-fill-ts_account_pnl_analysis>Create cronjob to fill ts_account_pnl_analysis</a></li></ul></li><li><a href=#user-interface-implementation>User interface implementation</a></li></ul></nav></div></div><main x-data='{
@@ -1009,7 +1009,7 @@ from(i in TsFutureIncomes,
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1018,7 +1018,7 @@ from(i in TsFutureIncomes,
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1058,7 +1058,7 @@ from(i in TsFutureIncomes,
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1067,7 +1067,7 @@ from(i in TsFutureIncomes,
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1107,7 +1107,7 @@ from(i in TsFutureIncomes,
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1116,7 +1116,7 @@ from(i in TsFutureIncomes,
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1156,7 +1156,7 @@ from(i in TsFutureIncomes,
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1165,7 +1165,7 @@ from(i in TsFutureIncomes,
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

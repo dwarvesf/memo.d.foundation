@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playground/ai>playground/ai</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>588</li><li class=span><span>Characters:
-</span>15,613</li><li class=span><span>Without Spaces:
+</span>15,775</li><li class=span><span>Without Spaces:
 </span>3,085</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#what-is-generative-ui>What is Generative UI?</a><ul><li><a href=#examples>Examples</a></li></ul></li><li><a href=#benefits>Benefits</a></li><li><a href=#popular-solution-for-generative-ui>Popular Solution for Generative UI</a><ul><li><a href=#vercel-ai-sdk>Vercel AI SDK</a><ul><li><a href=#example>Example</a></li></ul></li><li><a href=#pros>Pros:</a></li><li><a href=#cons>Cons:</a></li></ul></li><li><a href=#general-idea>General Idea</a><ul><li><a href=#approach-1>Approach 1</a></li><li><a href=#approach-2>Approach 2</a></li><li><a href=#handle-event-flow>Handle event flow</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#what-is-generative-ui>What is Generative UI?</a><ul><li><a href=#examples>Examples</a></li></ul></li><li><a href=#benefits>Benefits</a></li><li><a href=#popular-solution-for-generative-ui>Popular Solution for Generative UI</a><ul><li><a href=#vercel-ai-sdk>Vercel AI SDK</a><ul><li><a href=#example>Example</a></li></ul></li><li><a href=#pros>Pros:</a></li><li><a href=#cons>Cons:</a></li></ul></li><li><a href=#general-idea>General Idea</a><ul><li><a href=#approach-1>Approach 1</a></li><li><a href=#approach-2>Approach 2</a></li><li><a href=#handle-event-flow>Handle event flow</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1087,7 +1087,7 @@ const askGPT = async () =&gt; {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1096,7 +1096,7 @@ const askGPT = async () =&gt; {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1136,7 +1136,7 @@ const askGPT = async () =&gt; {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1145,7 +1145,7 @@ const askGPT = async () =&gt; {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1199,7 +1199,7 @@ const askGPT = async () =&gt; {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1208,7 +1208,7 @@ const askGPT = async () =&gt; {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1248,7 +1248,7 @@ const askGPT = async () =&gt; {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1257,7 +1257,7 @@ const askGPT = async () =&gt; {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

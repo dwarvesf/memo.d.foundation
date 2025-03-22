@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/updates/forward-engineering>updates/forward-engineering</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,561</li><li class=span><span>Characters:
-</span>23,715</li><li class=span><span>Without Spaces:
+</span>23,850</li><li class=span><span>Without Spaces:
 </span>9,484</li><li class=span><span>Blocks:
 </span>39</li><li class=span><span>Est reading Time:
 </span>20m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#tech-discord-highlights>#tech discord highlights</a></li><li><a href=#highlights-on-memo><strong>Highlights on Memo</strong></a><ul><li><a href=#weekly-consulting-snapshots>Weekly consulting snapshots</a></li><li><a href=#cryptocurrency--blockchain>Cryptocurrency & blockchain</a></li><li><a href=#data-engineering--architecture>Data engineering & architecture</a></li><li><a href=#frontend-development>Frontend development</a></li><li><a href=#dwarves-foundation-updates>Dwarves foundation updates</a></li><li><a href=#golang>Golang</a></li></ul></li><li><a href=#market-report-navigating-tech-tides---ai-agents-ascend-talent-reshapes-and-markets-shift>Market report: navigating tech tides - AI agents ascend, talent reshapes, and markets shift</a><ul><li><a href=#ai-agents-take-center-stage-from-no-code-to-pro-code-autonomy>AI agents take center stage: from no-code to pro-code autonomy</a></li><li><a href=#talent-and-job-market-ai-expertise-in-high-demand-traditional-roles-evolving>Talent and job market: AI expertise in high demand, traditional roles evolving</a></li><li><a href=#market-dynamics-vc-focus-regional-growth-and-blockchain-innovations>Market dynamics: VC focus, regional growth, and blockchain innovations</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#tech-discord-highlights>#tech discord highlights</a></li><li><a href=#highlights-on-memo><strong>Highlights on Memo</strong></a><ul><li><a href=#weekly-consulting-snapshots>Weekly consulting snapshots</a></li><li><a href=#cryptocurrency--blockchain>Cryptocurrency & blockchain</a></li><li><a href=#data-engineering--architecture>Data engineering & architecture</a></li><li><a href=#frontend-development>Frontend development</a></li><li><a href=#dwarves-foundation-updates>Dwarves foundation updates</a></li><li><a href=#golang>Golang</a></li></ul></li><li><a href=#market-report-navigating-tech-tides---ai-agents-ascend-talent-reshapes-and-markets-shift>Market report: navigating tech tides - AI agents ascend, talent reshapes, and markets shift</a><ul><li><a href=#ai-agents-take-center-stage-from-no-code-to-pro-code-autonomy>AI agents take center stage: from no-code to pro-code autonomy</a></li><li><a href=#talent-and-job-market-ai-expertise-in-high-demand-traditional-roles-evolving>Talent and job market: AI expertise in high demand, traditional roles evolving</a></li><li><a href=#market-dynamics-vc-focus-regional-growth-and-blockchain-innovations>Market dynamics: VC focus, regional growth, and blockchain innovations</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1097,7 +1097,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1106,7 +1106,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1146,7 +1146,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1155,7 +1155,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

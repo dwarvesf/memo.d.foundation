@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playbook/operations>playbook/operations</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,939</li><li class=span><span>Characters:
-</span>18,184</li><li class=span><span>Without Spaces:
+</span>18,238</li><li class=span><span>Without Spaces:
 </span>9,776</li><li class=span><span>Blocks:
 </span>42</li><li class=span><span>Est reading Time:
 </span>20m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#performance---p>Performance - P</a></li><li><a href=#result---r>Result - R</a><ul><li><a href=#metrics>Metrics</a></li></ul></li><li><a href=#teamwork---t>Teamwork - T</a></li><li><a href=#fire-quickly>Fire quickly</a></li><li><a href=#evaluating>Evaluating</a></li><li><a href=#incompetent-assholes-fire-fast>Incompetent Assholes (Fire fast)</a></li><li><a href=#competent-assholes-remediate-or-separate>Competent Assholes (Remediate or Separate)</a></li><li><a href=#incompetent-nice-guys-manage-or-move>Incompetent Nice Guys (Manage or Move)</a></li><li><a href=#competent-and-outstanding-nice-guys-praise-and-raise>Competent and Outstanding Nice Guys (Praise and Raise)</a></li><li><a href=#the-dark-triad>The Dark Triad</a></li><li><a href=#metrics-1>Metrics</a></li><li><a href=#contribution---c>Contribution - C</a></li><li><a href=#ranking---r>Ranking - R</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#performance---p>Performance - P</a></li><li><a href=#result---r>Result - R</a><ul><li><a href=#metrics>Metrics</a></li></ul></li><li><a href=#teamwork---t>Teamwork - T</a></li><li><a href=#fire-quickly>Fire quickly</a></li><li><a href=#evaluating>Evaluating</a></li><li><a href=#incompetent-assholes-fire-fast>Incompetent Assholes (Fire fast)</a></li><li><a href=#competent-assholes-remediate-or-separate>Competent Assholes (Remediate or Separate)</a></li><li><a href=#incompetent-nice-guys-manage-or-move>Incompetent Nice Guys (Manage or Move)</a></li><li><a href=#competent-and-outstanding-nice-guys-praise-and-raise>Competent and Outstanding Nice Guys (Praise and Raise)</a></li><li><a href=#the-dark-triad>The Dark Triad</a></li><li><a href=#metrics-1>Metrics</a></li><li><a href=#contribution---c>Contribution - C</a></li><li><a href=#ranking---r>Ranking - R</a></li></ul></nav></div></div><main x-data='{
@@ -952,7 +952,7 @@ With coefficient equal to 1</li></ul><p><em><strong>R = 0.3 \times (\frac{3 + 3 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -961,7 +961,7 @@ With coefficient equal to 1</li></ul><p><em><strong>R = 0.3 \times (\frac{3 + 3 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1001,7 +1001,7 @@ With coefficient equal to 1</li></ul><p><em><strong>R = 0.3 \times (\frac{3 + 3 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1010,7 +1010,7 @@ With coefficient equal to 1</li></ul><p><em><strong>R = 0.3 \times (\frac{3 + 3 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

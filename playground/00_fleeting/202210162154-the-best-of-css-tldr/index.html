@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/00_fleeting>playground/00_fleeting</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>303</li><li class=span><span>Characters:
-</span>7,171</li><li class=span><span>Without Spaces:
+</span>7,252</li><li class=span><span>Without Spaces:
 </span>1,530</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators></nav></div><div class=toc-modal><nav id=toc-modal></nav></div></div><main x-data="{
@@ -954,7 +954,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -963,7 +963,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1004,7 +1004,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1013,7 +1013,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1054,7 +1054,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1063,7 +1063,7 @@ c/ style system: predefined components that are built upon a layer of pure css (
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

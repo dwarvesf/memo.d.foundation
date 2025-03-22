@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,417</li><li class=span><span>Characters:
-</span>21,110</li><li class=span><span>Without Spaces:
+</span>21,191</li><li class=span><span>Without Spaces:
 </span>9,342</li><li class=span><span>Blocks:
 </span>40</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#what-is-the-visitor-design-pattern>What is the Visitor Design Pattern?</a></li><li><a href=#problem-statement>Problem statement</a></li><li><a href=#solution-with-visitor-pattern>Solution with Visitor Pattern</a></li><li><a href=#structure>Structure</a></li><li><a href=#code-example-for-problem>Code example for problem</a><ul><li><a href=#illustration>Illustration</a></li><li><a href=#element-classes>Element Classes</a></li><li><a href=#visitor-interface-and-concrete-visitors>Visitor Interface and Concrete Visitors:</a></li><li><a href=#usage>Usage</a></li><li><a href=#explanation>Explanation</a></li></ul></li><li><a href=#applicability>Applicability</a></li><li><a href=#pros-and-cons>Pros and Cons</a><ul><li><a href=#advantages>Advantages</a></li><li><a href=#disadvantages>Disadvantages</a></li></ul></li><li><a href=#use-cases>Use Cases</a><ul><li><a href=#use-case-1-compiler-design>Use Case 1: Compiler Design</a></li><li><a href=#use-case-2-document-processing>Use Case 2: Document Processing</a></li><li><a href=#use-case-3-graphics-rendering>Use Case 3: Graphics Rendering</a></li><li><a href=#use-case-4-file-system-operations>Use Case 4: File System Operations</a></li><li><a href=#use-case-5-game-development>Use Case 5: Game Development</a></li><li><a href=#use-case-6-e-commerce-system>Use Case 6: E-commerce System</a></li><li><a href=#use-case-7-network-protocols>Use Case 7: Network Protocols</a></li><li><a href=#use-case-8-ui-component-management>Use Case 8: UI Component Management</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#what-is-the-visitor-design-pattern>What is the Visitor Design Pattern?</a></li><li><a href=#problem-statement>Problem statement</a></li><li><a href=#solution-with-visitor-pattern>Solution with Visitor Pattern</a></li><li><a href=#structure>Structure</a></li><li><a href=#code-example-for-problem>Code example for problem</a><ul><li><a href=#illustration>Illustration</a></li><li><a href=#element-classes>Element Classes</a></li><li><a href=#visitor-interface-and-concrete-visitors>Visitor Interface and Concrete Visitors:</a></li><li><a href=#usage>Usage</a></li><li><a href=#explanation>Explanation</a></li></ul></li><li><a href=#applicability>Applicability</a></li><li><a href=#pros-and-cons>Pros and Cons</a><ul><li><a href=#advantages>Advantages</a></li><li><a href=#disadvantages>Disadvantages</a></li></ul></li><li><a href=#use-cases>Use Cases</a><ul><li><a href=#use-case-1-compiler-design>Use Case 1: Compiler Design</a></li><li><a href=#use-case-2-document-processing>Use Case 2: Document Processing</a></li><li><a href=#use-case-3-graphics-rendering>Use Case 3: Graphics Rendering</a></li><li><a href=#use-case-4-file-system-operations>Use Case 4: File System Operations</a></li><li><a href=#use-case-5-game-development>Use Case 5: Game Development</a></li><li><a href=#use-case-6-e-commerce-system>Use Case 6: E-commerce System</a></li><li><a href=#use-case-7-network-protocols>Use Case 7: Network Protocols</a></li><li><a href=#use-case-8-ui-component-management>Use Case 8: UI Component Management</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

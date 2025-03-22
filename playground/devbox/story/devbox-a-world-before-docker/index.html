@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playground/devbox/story>playground/devbox/story</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>921</li><li class=span><span>Characters:
-</span>11,423</li><li class=span><span>Without Spaces:
+</span>11,477</li><li class=span><span>Without Spaces:
 </span>5,630</li><li class=span><span>Blocks:
 </span>23</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#the-it-works-on-my-machine-time>The It-works-on-my-machine time</a></li><li><a href=#first-bullet-virtual-machine>First bullet: Virtual machine</a></li><li><a href=#containerization-a-breath-of-fresh-air>Containerization, a breath of fresh air!</a></li><li><a href=#the-opening-act-with-linux-containers>The opening act with Linux Containers</a></li><li><a href=#docker---innovation-of-innovation>Docker - Innovation of innovation</a></li><li><a href=#final-thoughts>Final thoughts</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#the-it-works-on-my-machine-time>The It-works-on-my-machine time</a></li><li><a href=#first-bullet-virtual-machine>First bullet: Virtual machine</a></li><li><a href=#containerization-a-breath-of-fresh-air>Containerization, a breath of fresh air!</a></li><li><a href=#the-opening-act-with-linux-containers>The opening act with Linux Containers</a></li><li><a href=#docker---innovation-of-innovation>Docker - Innovation of innovation</a></li><li><a href=#final-thoughts>Final thoughts</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

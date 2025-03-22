@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>2,203</li><li class=span><span>Characters:
-</span>19,926</li><li class=span><span>Without Spaces:
+</span>19,980</li><li class=span><span>Without Spaces:
 </span>12,152</li><li class=span><span>Blocks:
 </span>44</li><li class=span><span>Est reading Time:
 </span>11m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#xpc-for-communicating-processes>XPC for communicating processes</a></li><li><a href=#xpc-services-on-applications>XPC Services on applications</a></li><li><a href=#additional-benefits-of-xpc-services>Additional Benefits of XPC Services</a><ul><li><a href=#xpc-and-our-friendlaunchd>XPC and our friend <code>launchd</code></a></li></ul></li><li><a href=#implement-xpc-services>Implement XPC Services</a><ul><li><a href=#creating-the-service>Creating the Service</a></li><li><a href=#using-the-service>Using the Service</a></li><li><a href=#overall-architecture>Overall Architecture</a></li><li><a href=#designing-an-interface>Designing an Interface</a></li><li><a href=#connecting-to-and-using-an-interface>Connecting to and Using an Interface</a></li><li><a href=#accepting-a-connection-in-the-helper>Accepting a Connection in the Helper</a></li><li><a href=#sending-messages>Sending Messages</a></li><li><a href=#handling-errors>Handling Errors</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#xpc-for-communicating-processes>XPC for communicating processes</a></li><li><a href=#xpc-services-on-applications>XPC Services on applications</a></li><li><a href=#additional-benefits-of-xpc-services>Additional Benefits of XPC Services</a><ul><li><a href=#xpc-and-our-friendlaunchd>XPC and our friend <code>launchd</code></a></li></ul></li><li><a href=#implement-xpc-services>Implement XPC Services</a><ul><li><a href=#creating-the-service>Creating the Service</a></li><li><a href=#using-the-service>Using the Service</a></li><li><a href=#overall-architecture>Overall Architecture</a></li><li><a href=#designing-an-interface>Designing an Interface</a></li><li><a href=#connecting-to-and-using-an-interface>Connecting to and Using an Interface</a></li><li><a href=#accepting-a-connection-in-the-helper>Accepting a Connection in the Helper</a></li><li><a href=#sending-messages>Sending Messages</a></li><li><a href=#handling-errors>Handling Errors</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -964,7 +964,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -973,7 +973,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1027,7 +1027,7 @@ myConnection.remoteObjectInterface = myCookieInterface;
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1036,7 +1036,7 @@ myConnection.remoteObjectInterface = myCookieInterface;
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

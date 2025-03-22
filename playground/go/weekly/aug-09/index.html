@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/go/weekly>playground/go/weekly</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>264</li><li class=span><span>Characters:
-</span>14,345</li><li class=span><span>Without Spaces:
+</span>14,507</li><li class=span><span>Without Spaces:
 </span>2,147</li><li class=span><span>Blocks:
 </span>19</li><li class=span><span>Est reading Time:
 </span>1m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#cogent-core-a-new-gui-framework-for-gohttpswwwcogentcoreorgbloginitial-release>Cogent Core: A New GUI Framework for Go</a></li><li><a href=#russ-cox-steps-down-as-tech-lead-of-gohttpsgroupsgooglecomggolang-devc0oqbks2rzwwmgzwvx5u6aqajpli1>Russ Cox Steps Down as Tech Lead of Go</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#cogent-core-a-new-gui-framework-for-gohttpswwwcogentcoreorgbloginitial-release>Cogent Core: A New GUI Framework for Go</a></li><li><a href=#russ-cox-steps-down-as-tech-lead-of-gohttpsgroupsgooglecomggolang-devc0oqbks2rzwwmgzwvx5u6aqajpli1>Russ Cox Steps Down as Tech Lead of Go</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1029,7 +1029,7 @@ core.NewTable(b).SetSlice(&amp;sl).OnChange(func(e events.Event) {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1038,7 +1038,7 @@ core.NewTable(b).SetSlice(&amp;sl).OnChange(func(e events.Event) {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1089,7 +1089,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1098,7 +1098,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1138,7 +1138,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1147,7 +1147,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1187,7 +1187,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1196,7 +1196,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1236,7 +1236,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1245,7 +1245,7 @@ plotcore.NewPlotEditor(b).SetSlice([]Data{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

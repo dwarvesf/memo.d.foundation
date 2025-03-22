@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playground/market-report>playground/market-report</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,233</li><li class=span><span>Characters:
-</span>19,279</li><li class=span><span>Without Spaces:
+</span>19,388</li><li class=span><span>Without Spaces:
 </span>8,362</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#key-takeaways>Key takeaways</a></li><li><a href=#metas-llama-31-open-source-ai-for-everyone>Meta&rsquo;s Llama 3.1: Open source AI for everyone</a></li><li><a href=#openais-gpt-4o-mini-a-leap-in-cheap-and-customizable-ai>OpenAI&rsquo;s GPT-4o-mini: A leap in cheap and customizable AI</a></li><li><a href=#claude-sonnet-35-accelerating-technical-founder-productivity>Claude Sonnet 3.5: Accelerating technical founder productivity</a></li><li><a href=#advancements-in-ai-for-sports-and-audio-enhancing-performance-analysis-and-communication>Advancements in AI for sports and audio: Enhancing performance analysis and communication</a></li><li><a href=#cybersecurity-vulnerabilities-and-it-outages-a-wake-up-call-for-diversified-systems>Cybersecurity vulnerabilities and IT outages: A wake-up call for diversified systems</a></li><li><a href=#where-javascript-and-tech-sits-in-software-engineering>Where JavaScript and tech sits in software engineering</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#key-takeaways>Key takeaways</a></li><li><a href=#metas-llama-31-open-source-ai-for-everyone>Meta&rsquo;s Llama 3.1: Open source AI for everyone</a></li><li><a href=#openais-gpt-4o-mini-a-leap-in-cheap-and-customizable-ai>OpenAI&rsquo;s GPT-4o-mini: A leap in cheap and customizable AI</a></li><li><a href=#claude-sonnet-35-accelerating-technical-founder-productivity>Claude Sonnet 3.5: Accelerating technical founder productivity</a></li><li><a href=#advancements-in-ai-for-sports-and-audio-enhancing-performance-analysis-and-communication>Advancements in AI for sports and audio: Enhancing performance analysis and communication</a></li><li><a href=#cybersecurity-vulnerabilities-and-it-outages-a-wake-up-call-for-diversified-systems>Cybersecurity vulnerabilities and IT outages: A wake-up call for diversified systems</a></li><li><a href=#where-javascript-and-tech-sits-in-software-engineering>Where JavaScript and tech sits in software engineering</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1097,7 +1097,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1106,7 +1106,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

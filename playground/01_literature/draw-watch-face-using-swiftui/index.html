@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>721</li><li class=span><span>Characters:
-</span>45,739</li><li class=span><span>Without Spaces:
+</span>46,387</li><li class=span><span>Without Spaces:
 </span>3,243</li><li class=span><span>Blocks:
 </span>58</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><ul><li><a href=#draw-circular-bezel>Draw Circular Bezel</a></li><li><a href=#draw-ticks-markers>Draw Ticks-Markers</a></li><li><a href=#draw-numbers>Draw Numbers</a></li><li><a href=#draw-hour-minus-and-second-hands>Draw Hour, Minus, and Second Hands</a></li><li><a href=#bonus-part>Bonus part</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><ul><li><a href=#draw-circular-bezel>Draw Circular Bezel</a></li><li><a href=#draw-ticks-markers>Draw Ticks-Markers</a></li><li><a href=#draw-numbers>Draw Numbers</a></li><li><a href=#draw-hour-minus-and-second-hands>Draw Hour, Minus, and Second Hands</a></li><li><a href=#bonus-part>Bonus part</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -951,7 +951,7 @@ the Act function required center point, starting angle and ending angle, we need
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -960,7 +960,7 @@ the Act function required center point, starting angle and ending angle, we need
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1000,7 +1000,7 @@ the Act function required center point, starting angle and ending angle, we need
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1009,7 +1009,7 @@ the Act function required center point, starting angle and ending angle, we need
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1050,7 +1050,7 @@ This tick shape simple draw a line front top center down to 5 points</p><p><img 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1059,7 +1059,7 @@ This tick shape simple draw a line front top center down to 5 points</p><p><img 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1099,7 +1099,7 @@ This tick shape simple draw a line front top center down to 5 points</p><p><img 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1108,7 +1108,7 @@ This tick shape simple draw a line front top center down to 5 points</p><p><img 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1150,7 +1150,7 @@ For readable and maintainability, I create new view named Ticks for it.</p><p><i
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1159,7 +1159,7 @@ For readable and maintainability, I create new view named Ticks for it.</p><p><i
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1199,7 +1199,7 @@ For readable and maintainability, I create new view named Ticks for it.</p><p><i
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1208,7 +1208,7 @@ For readable and maintainability, I create new view named Ticks for it.</p><p><i
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1249,7 +1249,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1258,7 +1258,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1298,7 +1298,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1307,7 +1307,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1347,7 +1347,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1356,7 +1356,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1396,7 +1396,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1405,7 +1405,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1445,7 +1445,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1454,7 +1454,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1494,7 +1494,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1503,7 +1503,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1543,7 +1543,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1552,7 +1552,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1592,7 +1592,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1601,7 +1601,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1641,7 +1641,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1650,7 +1650,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1690,7 +1690,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1699,7 +1699,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1739,7 +1739,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1748,7 +1748,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1788,7 +1788,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1797,7 +1797,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1837,7 +1837,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1846,7 +1846,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1886,7 +1886,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1895,7 +1895,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1935,7 +1935,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1944,7 +1944,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1984,7 +1984,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1993,7 +1993,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -2033,7 +2033,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -2042,7 +2042,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -2082,7 +2082,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -2091,7 +2091,7 @@ Let change our Tick and Ticks View a bit to add this extra.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

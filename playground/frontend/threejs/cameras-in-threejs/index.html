@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/frontend/threejs>playground/frontend/threejs</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>367</li><li class=span><span>Characters:
-</span>14,708</li><li class=span><span>Without Spaces:
+</span>14,843</li><li class=span><span>Without Spaces:
 </span>2,403</li><li class=span><span>Blocks:
 </span>16</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#most-commonly-used-types-of-camera-in-threejs>Most commonly used types of camera in ThreeJS</a><ul><li><a href=#perspective-camera>Perspective camera</a></li><li><a href=#orthographic-camera>Orthographic camera</a></li></ul></li><li><a href=#other-types-of-camera>Other types of camera</a></li><li><a href=#reference>Reference</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#most-commonly-used-types-of-camera-in-threejs>Most commonly used types of camera in ThreeJS</a><ul><li><a href=#perspective-camera>Perspective camera</a></li><li><a href=#orthographic-camera>Orthographic camera</a></li></ul></li><li><a href=#other-types-of-camera>Other types of camera</a></li><li><a href=#reference>Reference</a></li></ul></nav></div></div><main x-data="{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1146,7 +1146,7 @@ scene.add(camera)
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1155,7 +1155,7 @@ scene.add(camera)
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

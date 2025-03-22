@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/consulting>consulting</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,061</li><li class=span><span>Characters:
-</span>19,061</li><li class=span><span>Without Spaces:
+</span>19,169</li><li class=span><span>Without Spaces:
 </span>6,278</li><li class=span><span>Blocks:
 </span>36</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#partner-perks>Partner perks</a><ul><li><a href=#flexible-commission-rate>Flexible <strong>commission rate</strong></a></li><li><a href=#innovative-solutions-endless-possibilities>Innovative solutions, endless possibilities</a></li><li><a href=#full-access-to-resources>Full access to resources</a></li><li><a href=#marketing-collaboration>Marketing collaboration</a></li><li><a href=#continuous-support>Continuous support</a></li></ul></li><li><a href=#join-us>Join us</a><ul><li><a href=#who-should-join-us>Who should join us</a></li><li><a href=#joining-our-partners-program-is-simple>Joining our Partners Program is simple</a></li></ul></li><li><a href=#dwarves-profile>Dwarves profile</a><ul><li><a href=#dwarves-build-and-ship-top-notch-software>Dwarves build and ship top-notch software</a></li></ul></li><li><a href=#facts--figures>Facts & figures</a></li><li><a href=#our-services>Our services</a></li><li><a href=#staff-augmentation>Staff augmentation</a></li><li><a href=#product-consulting--development>Product consulting & development</a><ul><li><a href=#solution>Solution</a></li><li><a href=#design>Design</a></li><li><a href=#development>Development</a></li></ul></li><li><a href=#web3-services>Web3 services</a><ul><li><a href=#console-labshttpsconsoleso-is-a-dwarves-subsidiary-focusing-on-web-30-rd-and-services>Console Labs is a Dwarves&rsquo; subsidiary focusing on web 3.0 R&amp;D and services</a></li><li><a href=#portfolio>Portfolio</a></li></ul></li><li><a href=#portfolio-1>Portfolio</a></li><li><a href=#tech-stack>Tech stack</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#partner-perks>Partner perks</a><ul><li><a href=#flexible-commission-rate>Flexible <strong>commission rate</strong></a></li><li><a href=#innovative-solutions-endless-possibilities>Innovative solutions, endless possibilities</a></li><li><a href=#full-access-to-resources>Full access to resources</a></li><li><a href=#marketing-collaboration>Marketing collaboration</a></li><li><a href=#continuous-support>Continuous support</a></li></ul></li><li><a href=#join-us>Join us</a><ul><li><a href=#who-should-join-us>Who should join us</a></li><li><a href=#joining-our-partners-program-is-simple>Joining our Partners Program is simple</a></li></ul></li><li><a href=#dwarves-profile>Dwarves profile</a><ul><li><a href=#dwarves-build-and-ship-top-notch-software>Dwarves build and ship top-notch software</a></li></ul></li><li><a href=#facts--figures>Facts & figures</a></li><li><a href=#our-services>Our services</a></li><li><a href=#staff-augmentation>Staff augmentation</a></li><li><a href=#product-consulting--development>Product consulting & development</a><ul><li><a href=#solution>Solution</a></li><li><a href=#design>Design</a></li><li><a href=#development>Development</a></li></ul></li><li><a href=#web3-services>Web3 services</a><ul><li><a href=#console-labshttpsconsoleso-is-a-dwarves-subsidiary-focusing-on-web-30-rd-and-services>Console Labs is a Dwarves&rsquo; subsidiary focusing on web 3.0 R&amp;D and services</a></li><li><a href=#portfolio>Portfolio</a></li></ul></li><li><a href=#portfolio-1>Portfolio</a></li><li><a href=#tech-stack>Tech stack</a></li></ul></nav></div></div><main x-data="{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1098,7 +1098,7 @@ Our in-house talents are selected through a strict interviewing process, with pr
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1107,7 +1107,7 @@ Our in-house talents are selected through a strict interviewing process, with pr
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/careers/additional-info>careers/additional-info</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>526</li><li class=span><span>Characters:
-</span>5,143</li><li class=span><span>Without Spaces:
+</span>5,170</li><li class=span><span>Without Spaces:
 </span>2,574</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><ul><li><a href=#rounds>Rounds</a></li><li><a href=#we-hire-the-manager-of-one>We hire the manager of one</a></li><li><a href=#sideway-program>Sideway Program</a></li><li><a href=#referral>Referral</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><ul><li><a href=#rounds>Rounds</a></li><li><a href=#we-hire-the-manager-of-one>We hire the manager of one</a></li><li><a href=#sideway-program>Sideway Program</a></li><li><a href=#referral>Referral</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -952,7 +952,7 @@ You want someone who’s capable of building something from scratch and seeing i
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -961,7 +961,7 @@ You want someone who’s capable of building something from scratch and seeing i
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

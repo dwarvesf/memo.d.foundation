@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playbook/operations>playbook/operations</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>930</li><li class=span><span>Characters:
-</span>8,335</li><li class=span><span>Without Spaces:
+</span>8,362</li><li class=span><span>Without Spaces:
 </span>4,685</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#philosophy>Philosophy</a></li><li><a href=#principles>Principles</a></li><li><a href=#heuristics>Heuristics</a></li><li><a href=#protecting-vs-growing-culture>Protecting vs. Growing Culture</a></li><li><a href=#culture-add-not-culture-fit>Culture add, not culture fit</a></li><li><a href=#offering>Offering</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#philosophy>Philosophy</a></li><li><a href=#principles>Principles</a></li><li><a href=#heuristics>Heuristics</a></li><li><a href=#protecting-vs-growing-culture>Protecting vs. Growing Culture</a></li><li><a href=#culture-add-not-culture-fit>Culture add, not culture fit</a></li><li><a href=#offering>Offering</a></li></ul></nav></div></div><main x-data='{
@@ -960,7 +960,7 @@ Hire culture-contributors who will make our culture better.</p><p><img x-data="{
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -969,7 +969,7 @@ Hire culture-contributors who will make our culture better.</p><p><img x-data="{
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

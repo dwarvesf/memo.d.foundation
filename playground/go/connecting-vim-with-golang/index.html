@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/go>playground/go</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,359</li><li class=span><span>Characters:
-</span>15,791</li><li class=span><span>Without Spaces:
+</span>15,872</li><li class=span><span>Without Spaces:
 </span>6,532</li><li class=span><span>Blocks:
 </span>36</li><li class=span><span>Est reading Time:
 </span>19m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#an-introduction-to-vim-and-how-to-use-vim-with-golang>An introduction to Vim and how to use Vim with Golang</a></li><li><a href=#what-is-vim>What is Vim</a></li><li><a href=#install-and-config>Install and Config</a></li><li><a href=#basic-usage-instruction>Basic Usage Instruction</a></li><li><a href=#using-vim-as-go-ide>Using Vim as Go IDE</a></li><li><a href=#mapping-structure-in-vim>Mapping Structure in Vim</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#an-introduction-to-vim-and-how-to-use-vim-with-golang>An introduction to Vim and how to use Vim with Golang</a></li><li><a href=#what-is-vim>What is Vim</a></li><li><a href=#install-and-config>Install and Config</a></li><li><a href=#basic-usage-instruction>Basic Usage Instruction</a></li><li><a href=#using-vim-as-go-ide>Using Vim as Go IDE</a></li><li><a href=#mapping-structure-in-vim>Mapping Structure in Vim</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data="{
@@ -990,7 +990,7 @@ filetype plugin indent on    &quot; required
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -999,7 +999,7 @@ filetype plugin indent on    &quot; required
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1055,7 +1055,7 @@ auto - pairs
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1064,7 +1064,7 @@ auto - pairs
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1104,7 +1104,7 @@ auto - pairs
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1113,7 +1113,7 @@ auto - pairs
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

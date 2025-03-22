@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>889</li><li class=span><span>Characters:
-</span>10,327</li><li class=span><span>Without Spaces:
+</span>10,354</li><li class=span><span>Without Spaces:
 </span>5,430</li><li class=span><span>Blocks:
 </span>24</li><li class=span><span>Est reading Time:
 </span>11m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#the-tech-stack>The Tech Stack</a></li><li><a href=#key-features>Key Features</a><ul><li><a href=#1-hybrid-search>1. Hybrid Search</a></li><li><a href=#2-advanced-filtering>2. Advanced Filtering</a></li><li><a href=#3-real-time-embeddings>3. Real-time Embeddings</a></li><li><a href=#4-efficient-caching>4. Efficient Caching</a></li><li><a href=#5-responsive-ui>5. Responsive UI</a></li></ul></li><li><a href=#performance-optimizations>Performance Optimizations</a></li><li><a href=#challenges-and-solutions>Challenges and Solutions</a></li><li><a href=#future-improvements>Future Improvements</a><ul><li><a href=#1-persistent-search-across-navigation>1. Persistent Search Across Navigation</a></li><li><a href=#2-further-speed-optimizations>2. Further Speed Optimizations</a></li><li><a href=#3-server-side-implementation>3. Server-Side Implementation</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#the-tech-stack>The Tech Stack</a></li><li><a href=#key-features>Key Features</a><ul><li><a href=#1-hybrid-search>1. Hybrid Search</a></li><li><a href=#2-advanced-filtering>2. Advanced Filtering</a></li><li><a href=#3-real-time-embeddings>3. Real-time Embeddings</a></li><li><a href=#4-efficient-caching>4. Efficient Caching</a></li><li><a href=#5-responsive-ui>5. Responsive UI</a></li></ul></li><li><a href=#performance-optimizations>Performance Optimizations</a></li><li><a href=#challenges-and-solutions>Challenges and Solutions</a></li><li><a href=#future-improvements>Future Improvements</a><ul><li><a href=#1-persistent-search-across-navigation>1. Persistent Search Across Navigation</a></li><li><a href=#2-further-speed-optimizations>2. Further Speed Optimizations</a></li><li><a href=#3-server-side-implementation>3. Server-Side Implementation</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

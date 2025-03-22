@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/careers/life>careers/life</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>376</li><li class=span><span>Characters:
-</span>4,769</li><li class=span><span>Without Spaces:
+</span>4,796</li><li class=span><span>Without Spaces:
 </span>1,924</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><ul><li><a href=#learning-by-doing-at-dwarves>Learning by doing at Dwarves</a></li><li><a href=#real-time-learning-at-the-office>Real-time learning at the office</a></li><li><a href=#learning-by-watching-and-doing>Learning by watching and doing</a></li><li><a href=#the-value-of-being-face-to-face>The value of being face-to-face</a></li><li><a href=#growing-with-the-whole-team>Growing with the whole team</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><ul><li><a href=#learning-by-doing-at-dwarves>Learning by doing at Dwarves</a></li><li><a href=#real-time-learning-at-the-office>Real-time learning at the office</a></li><li><a href=#learning-by-watching-and-doing>Learning by watching and doing</a></li><li><a href=#the-value-of-being-face-to-face>The value of being face-to-face</a></li><li><a href=#growing-with-the-whole-team>Growing with the whole team</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

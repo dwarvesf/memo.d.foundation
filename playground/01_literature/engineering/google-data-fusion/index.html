@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature/engineering>playground/01_literature/engineering</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,629</li><li class=span><span>Characters:
-</span>52,828</li><li class=span><span>Without Spaces:
+</span>53,449</li><li class=span><span>Without Spaces:
 </span>8,505</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction>Introduction</a></li><li><a href=#use-cases>Use Cases</a></li><li><a href=#pricing>Pricing</a></li><li><a href=#how-to-setup-data-fusion>How to setup Data fusion:</a><ul><li><a href=#prerequisites>Prerequisites:</a></li><li><a href=#steps-to-set-up-google-cloud-data-fusion>Steps to Set Up Google Cloud Data Fusion:</a></li></ul></li><li><a href=#how-to-setup-a-simple-etl-with-google-data-fusion--with-gcp-console>How to setup a simple ETL with Google Data Fusion ( with GCP console):</a><ul><li><a href=#step-1-go-to-the-big-query-console-page-and-create-a-dataset-and-table>Step 1: go to the Big Query console page and create a dataset and table:</a></li></ul></li><li><a href=#step-2-go-to-your-google-data-fusion-instance>Step 2: Go to your Google Data Fusion instance</a></li><li><a href=#step-3-preparing-you-csv-file-on-gcs>Step 3: Preparing you CSV file on GCS</a><ul><li><a href=#step-4-start-designing-your-first-pipeline>Step 4: Start designing your first pipeline</a></li><li><a href=#step-5-deploy-and-run-your-pipeline>Step 5: Deploy and Run your pipeline</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction>Introduction</a></li><li><a href=#use-cases>Use Cases</a></li><li><a href=#pricing>Pricing</a></li><li><a href=#how-to-setup-data-fusion>How to setup Data fusion:</a><ul><li><a href=#prerequisites>Prerequisites:</a></li><li><a href=#steps-to-set-up-google-cloud-data-fusion>Steps to Set Up Google Cloud Data Fusion:</a></li></ul></li><li><a href=#how-to-setup-a-simple-etl-with-google-data-fusion--with-gcp-console>How to setup a simple ETL with Google Data Fusion ( with GCP console):</a><ul><li><a href=#step-1-go-to-the-big-query-console-page-and-create-a-dataset-and-table>Step 1: go to the Big Query console page and create a dataset and table:</a></li></ul></li><li><a href=#step-2-go-to-your-google-data-fusion-instance>Step 2: Go to your Google Data Fusion instance</a></li><li><a href=#step-3-preparing-you-csv-file-on-gcs>Step 3: Preparing you CSV file on GCS</a><ul><li><a href=#step-4-start-designing-your-first-pipeline>Step 4: Start designing your first pipeline</a></li><li><a href=#step-5-deploy-and-run-your-pipeline>Step 5: Deploy and Run your pipeline</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -998,7 +998,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1007,7 +1007,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1111,7 +1111,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1120,7 +1120,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1160,7 +1160,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1169,7 +1169,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1209,7 +1209,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1218,7 +1218,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1258,7 +1258,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1267,7 +1267,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1307,7 +1307,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1316,7 +1316,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1356,7 +1356,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1365,7 +1365,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1405,7 +1405,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1414,7 +1414,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1454,7 +1454,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1463,7 +1463,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1503,7 +1503,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1512,7 +1512,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1552,7 +1552,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1561,7 +1561,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1601,7 +1601,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1610,7 +1610,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1650,7 +1650,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1659,7 +1659,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1699,7 +1699,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1708,7 +1708,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1748,7 +1748,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1757,7 +1757,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1797,7 +1797,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1806,7 +1806,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1846,7 +1846,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1855,7 +1855,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1895,7 +1895,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1904,7 +1904,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1944,7 +1944,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1953,7 +1953,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1993,7 +1993,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -2002,7 +2002,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -2042,7 +2042,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -2051,7 +2051,7 @@ gcloud data-fusion instances describe [INSTANCE_NAME] --region=[REGION]
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

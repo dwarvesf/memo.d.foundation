@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/updates/changelog>updates/changelog</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,121</li><li class=span><span>Characters:
-</span>22,608</li><li class=span><span>Without Spaces:
+</span>22,797</li><li class=span><span>Without Spaces:
 </span>5,875</li><li class=span><span>Blocks:
 </span>36</li><li class=span><span>Est reading Time:
 </span>15m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#building-smarter-systems-with-platform--data-engineering>Building smarter systems with platform & data engineering</a></li><li><a href=#sharpening-ogif-office-hours-where-learning-grows>Sharpening OGIF office hours: Where learning grows</a></li><li><a href=#team-copilots-index-smarter-tools-to-simplify-your-work>Team copilots index: Smarter tools to simplify your work</a></li><li><a href=#in-demand-skills-staying-ahead-in-market-shifts>In-demand skills: Staying ahead in market shifts</a></li><li><a href=#industry-radar-sharing-signals-that-drive-us>Industry radar: Sharing signals that drive us</a></li><li><a href=#new-service-packages-solutions-designed-for-real-needs>New service packages: solutions designed for real needs</a></li><li><a href=#high-quality-knowledge-sharing-earns-bigger-icy-rewards>High-quality knowledge sharing earns bigger ICY rewards</a></li><li><a href=#engaging-with-the-industry-showing-up-and-sharing-back>Engaging with the industry: Showing up and sharing back</a></li><li><a href=#pack-your-bags-penang-awaits-for-the-company-trip>Pack your bags: Penang awaits for the company trip</a></li><li><a href=#join-us-opportunities-in-marketing-biz-dev-and-full-stack-roles>Join us: opportunities in Marketing, Biz Dev, and Full-Stack roles</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#building-smarter-systems-with-platform--data-engineering>Building smarter systems with platform & data engineering</a></li><li><a href=#sharpening-ogif-office-hours-where-learning-grows>Sharpening OGIF office hours: Where learning grows</a></li><li><a href=#team-copilots-index-smarter-tools-to-simplify-your-work>Team copilots index: Smarter tools to simplify your work</a></li><li><a href=#in-demand-skills-staying-ahead-in-market-shifts>In-demand skills: Staying ahead in market shifts</a></li><li><a href=#industry-radar-sharing-signals-that-drive-us>Industry radar: Sharing signals that drive us</a></li><li><a href=#new-service-packages-solutions-designed-for-real-needs>New service packages: solutions designed for real needs</a></li><li><a href=#high-quality-knowledge-sharing-earns-bigger-icy-rewards>High-quality knowledge sharing earns bigger ICY rewards</a></li><li><a href=#engaging-with-the-industry-showing-up-and-sharing-back>Engaging with the industry: Showing up and sharing back</a></li><li><a href=#pack-your-bags-penang-awaits-for-the-company-trip>Pack your bags: Penang awaits for the company trip</a></li><li><a href=#join-us-opportunities-in-marketing-biz-dev-and-full-stack-roles>Join us: opportunities in Marketing, Biz Dev, and Full-Stack roles</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1096,7 +1096,7 @@ with Blockchain or Data.</li><li>Generative AI continues to make waves, with sol
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1105,7 +1105,7 @@ with Blockchain or Data.</li><li>Generative AI continues to make waves, with sol
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1145,7 +1145,7 @@ with Blockchain or Data.</li><li>Generative AI continues to make waves, with sol
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1154,7 +1154,7 @@ with Blockchain or Data.</li><li>Generative AI continues to make waves, with sol
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1194,7 +1194,7 @@ with Blockchain or Data.</li><li>Generative AI continues to make waves, with sol
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1203,7 +1203,7 @@ with Blockchain or Data.</li><li>Generative AI continues to make waves, with sol
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1243,7 +1243,7 @@ with Blockchain or Data.</li><li>Generative AI continues to make waves, with sol
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1252,7 +1252,7 @@ with Blockchain or Data.</li><li>Generative AI continues to make waves, with sol
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

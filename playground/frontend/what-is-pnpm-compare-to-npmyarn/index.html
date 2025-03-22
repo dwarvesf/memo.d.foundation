@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/frontend>playground/frontend</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>944</li><li class=span><span>Characters:
-</span>18,573</li><li class=span><span>Without Spaces:
+</span>18,708</li><li class=span><span>Without Spaces:
 </span>5,770</li><li class=span><span>Blocks:
 </span>28</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#what-is-pnpm>What is PNPM?</a></li><li><a href=#introduction>Introduction</a></li><li><a href=#advantages-of-pnpm>Advantages of PNPM</a><ul><li><a href=#saving-disk-space>Saving Disk Space</a></li><li><a href=#boosting-installation-speedhttpspnpmiomotivationboosting-installation-speed><strong>Boosting installation speed**</strong><a href=https://pnpm.io/motivation#boosting-installation-speed></a>**</a></li><li><a href=#creating-a-non-flat-node_modules-directoryhttpspnpmiomotivationcreating-a-non-flat-node_modules-directory>Creating a non-flat node_modules <a href=https://pnpm.io/motivation#creating-a-non-flat-node_modules-directory>directory</a></a></li></ul></li><li><a href=#disadvantages-of-pnpm>Disadvantages of PNPM</a></li><li><a href=#showcase><strong>Showcase</strong></a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References:</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#what-is-pnpm>What is PNPM?</a></li><li><a href=#introduction>Introduction</a></li><li><a href=#advantages-of-pnpm>Advantages of PNPM</a><ul><li><a href=#saving-disk-space>Saving Disk Space</a></li><li><a href=#boosting-installation-speedhttpspnpmiomotivationboosting-installation-speed><strong>Boosting installation speed**</strong><a href=https://pnpm.io/motivation#boosting-installation-speed></a>**</a></li><li><a href=#creating-a-non-flat-node_modules-directoryhttpspnpmiomotivationcreating-a-non-flat-node_modules-directory>Creating a non-flat node_modules <a href=https://pnpm.io/motivation#creating-a-non-flat-node_modules-directory>directory</a></a></li></ul></li><li><a href=#disadvantages-of-pnpm>Disadvantages of PNPM</a></li><li><a href=#showcase><strong>Showcase</strong></a></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References:</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1173,7 +1173,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1182,7 +1182,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

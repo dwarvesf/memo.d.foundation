@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/ai>playground/ai</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,593</li><li class=span><span>Characters:
-</span>28,147</li><li class=span><span>Without Spaces:
+</span>28,255</li><li class=span><span>Without Spaces:
 </span>11,934</li><li class=span><span>Blocks:
 </span>30</li><li class=span><span>Est reading Time:
 </span>23m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#story-map-journey-for-engineers-developing-applications-on-top-of-large-language-models-llms>Story Map: Journey for Engineers Developing Applications on top of Large Language Models (LLMs)</a><ul><li><a href=#1-understanding-ai-machine-learning-and-llms>1. Understanding AI, Machine Learning, and LLMs</a><ul><li><a href=#a-understand-prompt-engineering-and-why-its-important-for-llms-and-generative-ai>a. Understand prompt engineering and why it&rsquo;s important for LLMs and generative AI</a></li></ul></li><li><a href=#2-building-ai-applications-from-on-top-of-existing-models>2. Building AI Applications from on top of existing models</a><ul><li><a href=#a-building-chatbots-with-llms>a. Building Chatbots with LLMs</a></li><li><a href=#b-building-personal-assistants>b. Building Personal Assistants</a></li></ul></li><li><a href=#3-automating-data-collection>3. Automating Data Collection</a><ul><li><a href=#a-through-prompt-collection>a. Through Prompt collection</a></li><li><a href=#b-through-data-scraping>b. Through Data scraping</a></li></ul></li><li><a href=#4-reinforcement-learning>4. Reinforcement Learning</a></li><li><a href=#5-fine-tuning-ai-models-and-llms>5. Fine-tuning AI Models and LLMs</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#story-map-journey-for-engineers-developing-applications-on-top-of-large-language-models-llms>Story Map: Journey for Engineers Developing Applications on top of Large Language Models (LLMs)</a><ul><li><a href=#1-understanding-ai-machine-learning-and-llms>1. Understanding AI, Machine Learning, and LLMs</a><ul><li><a href=#a-understand-prompt-engineering-and-why-its-important-for-llms-and-generative-ai>a. Understand prompt engineering and why it&rsquo;s important for LLMs and generative AI</a></li></ul></li><li><a href=#2-building-ai-applications-from-on-top-of-existing-models>2. Building AI Applications from on top of existing models</a><ul><li><a href=#a-building-chatbots-with-llms>a. Building Chatbots with LLMs</a></li><li><a href=#b-building-personal-assistants>b. Building Personal Assistants</a></li></ul></li><li><a href=#3-automating-data-collection>3. Automating Data Collection</a><ul><li><a href=#a-through-prompt-collection>a. Through Prompt collection</a></li><li><a href=#b-through-data-scraping>b. Through Data scraping</a></li></ul></li><li><a href=#4-reinforcement-learning>4. Reinforcement Learning</a></li><li><a href=#5-fine-tuning-ai-models-and-llms>5. Fine-tuning AI Models and LLMs</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

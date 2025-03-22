@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>555</li><li class=span><span>Characters:
-</span>23,178</li><li class=span><span>Without Spaces:
+</span>23,448</li><li class=span><span>Without Spaces:
 </span>3,310</li><li class=span><span>Blocks:
 </span>28</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#create-an-application-with-golang>Create an Application with Golang</a></li><li><a href=#setting-up-database-on-dcos>Setting up database on DC/OS</a></li><li><a href=#deploy-application>Deploy application</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#create-an-application-with-golang>Create an Application with Golang</a></li><li><a href=#setting-up-database-on-dcos>Setting up database on DC/OS</a></li><li><a href=#deploy-application>Deploy application</a></li></ul></nav></div></div><main x-data="{
@@ -998,7 +998,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1007,7 +1007,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1047,7 +1047,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1056,7 +1056,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1096,7 +1096,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1105,7 +1105,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1145,7 +1145,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1154,7 +1154,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1194,7 +1194,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1203,7 +1203,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1243,7 +1243,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1252,7 +1252,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1292,7 +1292,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1301,7 +1301,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1341,7 +1341,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1350,7 +1350,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1432,7 +1432,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1441,7 +1441,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1481,7 +1481,7 @@ $ docker push &lt;namespace&gt;/todolist
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1490,7 +1490,7 @@ $ docker push &lt;namespace&gt;/todolist
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

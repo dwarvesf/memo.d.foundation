@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/consulting/market-report>consulting/market-report</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>725</li><li class=span><span>Characters:
-</span>11,126</li><li class=span><span>Without Spaces:
+</span>11,180</li><li class=span><span>Without Spaces:
 </span>4,606</li><li class=span><span>Blocks:
 </span>18</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#ai-sector>AI sector</a></li><li><a href=#blockchain>Blockchain</a></li><li><a href=#others>Others</a></li><li><a href=#south-east-asia-q4-2024-venture-capital-highlights>South east Asia Q4 2024 Venture Capital Highlights</a><ul><li><a href=#industry-highlights>Industry highlights</a></li><li><a href=#top-regions-for-investment>Top regions for Investment</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#ai-sector>AI sector</a></li><li><a href=#blockchain>Blockchain</a></li><li><a href=#others>Others</a></li><li><a href=#south-east-asia-q4-2024-venture-capital-highlights>South east Asia Q4 2024 Venture Capital Highlights</a><ul><li><a href=#industry-highlights>Industry highlights</a></li><li><a href=#top-regions-for-investment>Top regions for Investment</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

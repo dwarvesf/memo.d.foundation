@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,197</li><li class=span><span>Characters:
-</span>24,746</li><li class=span><span>Without Spaces:
+</span>24,989</li><li class=span><span>Without Spaces:
 </span>6,403</li><li class=span><span>Blocks:
 </span>47</li><li class=span><span>Est reading Time:
 </span>21m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#what-is-software-project>What is Software Project?</a></li><li><a href=#project-constraints>Project Constraints</a></li><li><a href=#why-does-a-project-fail>Why does a project fail</a></li><li><a href=#project-success>Project success</a></li><li><a href=#software-development-life-cycle>Software Development Life Cycle</a><ul><li><a href=#requirement-analysis>Requirement Analysis</a></li><li><a href=#planning>Planning</a></li><li><a href=#system-design>System Design</a></li><li><a href=#implementation>Implementation</a></li><li><a href=#testing>Testing</a></li><li><a href=#deployment>Deployment</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#what-is-software-project>What is Software Project?</a></li><li><a href=#project-constraints>Project Constraints</a></li><li><a href=#why-does-a-project-fail>Why does a project fail</a></li><li><a href=#project-success>Project success</a></li><li><a href=#software-development-life-cycle>Software Development Life Cycle</a><ul><li><a href=#requirement-analysis>Requirement Analysis</a></li><li><a href=#planning>Planning</a></li><li><a href=#system-design>System Design</a></li><li><a href=#implementation>Implementation</a></li><li><a href=#testing>Testing</a></li><li><a href=#deployment>Deployment</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ SDLC provides a well-structured flow of phases that help an organization to quic
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ SDLC provides a well-structured flow of phases that help an organization to quic
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1049,7 +1049,7 @@ Business-oriented is a key in this stage. There are plenty of technique being us
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1058,7 +1058,7 @@ Business-oriented is a key in this stage. There are plenty of technique being us
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1098,7 +1098,7 @@ Business-oriented is a key in this stage. There are plenty of technique being us
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1107,7 +1107,7 @@ Business-oriented is a key in this stage. There are plenty of technique being us
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1148,7 +1148,7 @@ In other words, the team should determine the feasibility of the project and how
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1157,7 +1157,7 @@ In other words, the team should determine the feasibility of the project and how
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1197,7 +1197,7 @@ In other words, the team should determine the feasibility of the project and how
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1206,7 +1206,7 @@ In other words, the team should determine the feasibility of the project and how
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1246,7 +1246,7 @@ In other words, the team should determine the feasibility of the project and how
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1255,7 +1255,7 @@ In other words, the team should determine the feasibility of the project and how
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1295,7 +1295,7 @@ In other words, the team should determine the feasibility of the project and how
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1304,7 +1304,7 @@ In other words, the team should determine the feasibility of the project and how
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1345,7 +1345,7 @@ Provide stakeholders information about the <strong>project quality</strong> then
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1354,7 +1354,7 @@ Provide stakeholders information about the <strong>project quality</strong> then
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

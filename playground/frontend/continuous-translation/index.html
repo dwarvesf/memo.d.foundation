@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/frontend>playground/frontend</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,340</li><li class=span><span>Characters:
-</span>17,048</li><li class=span><span>Without Spaces:
+</span>17,129</li><li class=span><span>Without Spaces:
 </span>8,250</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#working-with-localization>Working with localization</a><ul><li><a href=#how-localization-generally-works>How localization generally works</a></li><li><a href=#alternative-solutions-to-localization>Alternative solutions to localization</a></li><li><a href=#solution-1-google-sheets>Solution 1: Google Sheets</a></li><li><a href=#solution-2-use-a-translation-management-platform>Solution 2: Use a translation management platform</a></li><li><a href=#comparisons-between-solutions>Comparisons between solutions</a></li><li><a href=#pros-and-cons-when-integrating-continuous-translation-into-your-app>Pros and cons when integrating Continuous Translation into your app</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#working-with-localization>Working with localization</a><ul><li><a href=#how-localization-generally-works>How localization generally works</a></li><li><a href=#alternative-solutions-to-localization>Alternative solutions to localization</a></li><li><a href=#solution-1-google-sheets>Solution 1: Google Sheets</a></li><li><a href=#solution-2-use-a-translation-management-platform>Solution 2: Use a translation management platform</a></li><li><a href=#comparisons-between-solutions>Comparisons between solutions</a></li><li><a href=#pros-and-cons-when-integrating-continuous-translation-into-your-app>Pros and cons when integrating Continuous Translation into your app</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1114,7 +1114,7 @@ async function generateJSONFiles() {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1123,7 +1123,7 @@ async function generateJSONFiles() {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

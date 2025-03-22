@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>791</li><li class=span><span>Characters:
-</span>9,377</li><li class=span><span>Without Spaces:
+</span>9,431</li><li class=span><span>Without Spaces:
 </span>3,716</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>18m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#vertical-spacing>Vertical spacing</a><ul><li><a href=#spacing-within-each-paragraph>Spacing within each paragraph</a></li><li><a href=#spacing-between-two-consecutive-paragraphs>Spacing between two consecutive paragraphs</a></li><li><a href=#spacing-within-the-list-items-in-a-list>Spacing within the list items in a list</a></li><li><a href=#spacing-within-input-fields-with-labels>Spacing within input fields with labels</a></li></ul></li><li><a href=#horizontal-spacing>Horizontal spacing</a><ul><li><a href=#spacing-inside-components>Spacing inside components</a></li><li><a href=#spacing-two-components>Spacing two components</a></li><li><a href=#spacing-between-icons>Spacing between icons</a></li><li><a href=#spacing-within-components-with-icons>Spacing within components with icons</a></li></ul></li><li><a href=#in-conclusion>In conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#vertical-spacing>Vertical spacing</a><ul><li><a href=#spacing-within-each-paragraph>Spacing within each paragraph</a></li><li><a href=#spacing-between-two-consecutive-paragraphs>Spacing between two consecutive paragraphs</a></li><li><a href=#spacing-within-the-list-items-in-a-list>Spacing within the list items in a list</a></li><li><a href=#spacing-within-input-fields-with-labels>Spacing within input fields with labels</a></li></ul></li><li><a href=#horizontal-spacing>Horizontal spacing</a><ul><li><a href=#spacing-inside-components>Spacing inside components</a></li><li><a href=#spacing-two-components>Spacing two components</a></li><li><a href=#spacing-between-icons>Spacing between icons</a></li><li><a href=#spacing-within-components-with-icons>Spacing within components with icons</a></li></ul></li><li><a href=#in-conclusion>In conclusion</a></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

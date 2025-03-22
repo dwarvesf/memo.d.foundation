@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>722</li><li class=span><span>Characters:
-</span>14,867</li><li class=span><span>Without Spaces:
+</span>15,002</li><li class=span><span>Without Spaces:
 </span>4,047</li><li class=span><span>Blocks:
 </span>10</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#building-the-future-through-resilience-and-collaboration>Building the future through resilience and collaboration</a><ul><li><a href=#notable-trends>Notable trends</a></li></ul></li><li><a href=#market-insights-and-investment-landscape>Market insights and investment landscape</a><ul><li><a href=#sea-regional-highlights>SEA regional highlights</a></li><li><a href=#funding-landscape>Funding landscape</a></li><li><a href=#total-deal-value-in-usd-for-top-verticals-under-snde-theme-in-singapore-in-9m23>Total deal value in USD for top verticals under SNDE theme in Singapore in 9M23</a></li></ul></li><li><a href=#detailed-observations>Detailed observations</a></li><li><a href=#ai-landscape>AI landscape</a><ul><li><a href=#growth-and-applications>Growth and applications</a></li><li><a href=#challenges>Challenges</a></li></ul></li><li><a href=#in-general>In general</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#building-the-future-through-resilience-and-collaboration>Building the future through resilience and collaboration</a><ul><li><a href=#notable-trends>Notable trends</a></li></ul></li><li><a href=#market-insights-and-investment-landscape>Market insights and investment landscape</a><ul><li><a href=#sea-regional-highlights>SEA regional highlights</a></li><li><a href=#funding-landscape>Funding landscape</a></li><li><a href=#total-deal-value-in-usd-for-top-verticals-under-snde-theme-in-singapore-in-9m23>Total deal value in USD for top verticals under SNDE theme in Singapore in 9M23</a></li></ul></li><li><a href=#detailed-observations>Detailed observations</a></li><li><a href=#ai-landscape>AI landscape</a><ul><li><a href=#growth-and-applications>Growth and applications</a></li><li><a href=#challenges>Challenges</a></li></ul></li><li><a href=#in-general>In general</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1097,7 +1097,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1106,7 +1106,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1146,7 +1146,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1155,7 +1155,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

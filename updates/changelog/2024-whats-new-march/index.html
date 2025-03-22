@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/updates/changelog>updates/changelog</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>472</li><li class=span><span>Characters:
-</span>7,600</li><li class=span><span>Without Spaces:
+</span>7,654</li><li class=span><span>Without Spaces:
 </span>2,632</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>2m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#reporting-tech-signals-how-genai-is-changing-the-way-developers-work>Reporting Tech Signals: How GenAI is changing the way developers work</a></li><li><a href=#icy-updates-in-2024>ICY Updates in 2024</a></li><li><a href=#community-engagement-offline-meetups-in-april>Community Engagement: Offline Meetups in April</a></li><li><a href=#demo-and-showcase-give-your-screenshots-a-cleaner-look-with-backr>Demo and Showcase: Give your screenshots a cleaner look with Backr</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#reporting-tech-signals-how-genai-is-changing-the-way-developers-work>Reporting Tech Signals: How GenAI is changing the way developers work</a></li><li><a href=#icy-updates-in-2024>ICY Updates in 2024</a></li><li><a href=#community-engagement-offline-meetups-in-april>Community Engagement: Offline Meetups in April</a></li><li><a href=#demo-and-showcase-give-your-screenshots-a-cleaner-look-with-backr>Demo and Showcase: Give your screenshots a cleaner look with Backr</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

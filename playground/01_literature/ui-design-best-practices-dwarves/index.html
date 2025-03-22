@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>820</li><li class=span><span>Characters:
-</span>18,642</li><li class=span><span>Without Spaces:
+</span>18,831</li><li class=span><span>Without Spaces:
 </span>4,312</li><li class=span><span>Blocks:
 </span>25</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#versions--file-organizations>Versions & File Organizations</a><ul><li><a href=#manage-versions-by-releases>Manage versions by releases</a></li><li><a href=#manage-layers>Manage Layers</a></li><li><a href=#practical-context-conscious-data>Practical, context-conscious data</a></li></ul></li><li><a href=#design-system-file-presentation>Design System File presentation</a></li><li><a href=#how-to-manage-pages-and-master-components-using-figma-software>How to manage pages and master components using Figma software</a></li><li><a href=#naming-color-style>Naming Color Style</a></li><li><a href=#tips-when-using-the-design-system-file-in-figma>Tips when using the Design System file in Figma</a></li><li><a href=#other-conventions>Other conventions</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#versions--file-organizations>Versions & File Organizations</a><ul><li><a href=#manage-versions-by-releases>Manage versions by releases</a></li><li><a href=#manage-layers>Manage Layers</a></li><li><a href=#practical-context-conscious-data>Practical, context-conscious data</a></li></ul></li><li><a href=#design-system-file-presentation>Design System File presentation</a></li><li><a href=#how-to-manage-pages-and-master-components-using-figma-software>How to manage pages and master components using Figma software</a></li><li><a href=#naming-color-style>Naming Color Style</a></li><li><a href=#tips-when-using-the-design-system-file-in-figma>Tips when using the Design System file in Figma</a></li><li><a href=#other-conventions>Other conventions</a></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1045,7 +1045,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1054,7 +1054,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1094,7 +1094,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1103,7 +1103,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1143,7 +1143,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1152,7 +1152,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1193,7 +1193,7 @@ The developer has a way to name the color in the form of numbers (100,200,300 &m
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1202,7 +1202,7 @@ The developer has a way to name the color in the form of numbers (100,200,300 &m
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1242,7 +1242,7 @@ The developer has a way to name the color in the form of numbers (100,200,300 &m
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1251,7 +1251,7 @@ The developer has a way to name the color in the form of numbers (100,200,300 &m
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

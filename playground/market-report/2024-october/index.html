@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playground/market-report>playground/market-report</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>947</li><li class=span><span>Characters:
-</span>12,808</li><li class=span><span>Without Spaces:
+</span>12,862</li><li class=span><span>Without Spaces:
 </span>5,563</li><li class=span><span>Blocks:
 </span>21</li><li class=span><span>Est reading Time:
 </span>16m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#key-takeaways>Key takeaways</a></li><li><a href=#ai-chat-evolves-one-interface-to-rule-them-all>AI chat evolves: One interface to rule them all</a></li><li><a href=#the-unseen-investment-in-tech-infrastructure>The unseen investment in tech infrastructure</a></li><li><a href=#python-becomes-the-no-1-programming-language>Python becomes the no. 1 programming language</a></li><li><a href=#coding-assistance-anti-patterns>Coding assistance anti-patterns</a></li><li><a href=#why-techies-are-leaving-big-tech>Why techies are leaving Big Tech</a></li><li><a href=#who-is-hiring>Who is hiring?</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#key-takeaways>Key takeaways</a></li><li><a href=#ai-chat-evolves-one-interface-to-rule-them-all>AI chat evolves: One interface to rule them all</a></li><li><a href=#the-unseen-investment-in-tech-infrastructure>The unseen investment in tech infrastructure</a></li><li><a href=#python-becomes-the-no-1-programming-language>Python becomes the no. 1 programming language</a></li><li><a href=#coding-assistance-anti-patterns>Coding assistance anti-patterns</a></li><li><a href=#why-techies-are-leaving-big-tech>Why techies are leaving Big Tech</a></li><li><a href=#who-is-hiring>Who is hiring?</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

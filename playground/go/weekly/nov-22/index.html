@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/go/weekly>playground/go/weekly</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>521</li><li class=span><span>Characters:
-</span>6,452</li><li class=span><span>Without Spaces:
+</span>6,479</li><li class=span><span>Without Spaces:
 </span>2,614</li><li class=span><span>Blocks:
 </span>6</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#go-synconce-is-simple-is-it-reallyhttpsvictoriametricscombloggo-sync-once>Go sync.Once is simple&mldr; Is it really?</a><ul><li><a href=#what-is-synconce>What is sync.Once?</a></li><li><a href=#how-it-works>How it works?</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#go-synconce-is-simple-is-it-reallyhttpsvictoriametricscombloggo-sync-once>Go sync.Once is simple&mldr; Is it really?</a><ul><li><a href=#what-is-synconce>What is sync.Once?</a></li><li><a href=#how-it-works>How it works?</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -1050,7 +1050,7 @@ func main() {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1059,7 +1059,7 @@ func main() {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

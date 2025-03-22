@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,343</li><li class=span><span>Characters:
-</span>12,126</li><li class=span><span>Without Spaces:
+</span>12,153</li><li class=span><span>Without Spaces:
 </span>6,949</li><li class=span><span>Blocks:
 </span>39</li><li class=span><span>Est reading Time:
 </span>17m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#setting-writing-goals>Setting writing goals</a><ul><li><a href=#inform>Inform</a></li><li><a href=#connect>Connect</a></li><li><a href=#educate>Educate</a></li><li><a href=#express>Express</a></li><li><a href=#entertain>Entertain</a></li><li><a href=#inspire>Inspire</a></li><li><a href=#learn>Learn</a></li></ul></li><li><a href=#writing-content-instructions>Writing content instructions</a><ul><li><a href=#active-voice-matters>Active voice matters</a></li><li><a href=#add-your-point-of-view>Add your point of view</a></li><li><a href=#keep-it-scannable>Keep it scannable</a></li><li><a href=#calls-to-action>Calls to action</a></li><li><a href=#emojis-are-fine>Emojis are fine</a></li><li><a href=#exclamation-points--question-marks>Exclamation points & Question marks</a></li><li><a href=#technical-terms>Technical terms</a></li><li><a href=#tags--hashtags>Tags & Hashtags</a></li><li><a href=#copyright>Copyright</a></li><li><a href=#check-and-fix>Check and fix</a></li><li><a href=#reflect--adapt>Reflect & Adapt</a></li></ul></li><li><a href=#voice--tone>Voice & Tone</a><ul><li><a href=#authentic-voice>Authentic voice</a></li><li><a href=#appropriate-tone>Appropriate tone</a></li></ul></li><li><a href=#overall>Overall</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#setting-writing-goals>Setting writing goals</a><ul><li><a href=#inform>Inform</a></li><li><a href=#connect>Connect</a></li><li><a href=#educate>Educate</a></li><li><a href=#express>Express</a></li><li><a href=#entertain>Entertain</a></li><li><a href=#inspire>Inspire</a></li><li><a href=#learn>Learn</a></li></ul></li><li><a href=#writing-content-instructions>Writing content instructions</a><ul><li><a href=#active-voice-matters>Active voice matters</a></li><li><a href=#add-your-point-of-view>Add your point of view</a></li><li><a href=#keep-it-scannable>Keep it scannable</a></li><li><a href=#calls-to-action>Calls to action</a></li><li><a href=#emojis-are-fine>Emojis are fine</a></li><li><a href=#exclamation-points--question-marks>Exclamation points & Question marks</a></li><li><a href=#technical-terms>Technical terms</a></li><li><a href=#tags--hashtags>Tags & Hashtags</a></li><li><a href=#copyright>Copyright</a></li><li><a href=#check-and-fix>Check and fix</a></li><li><a href=#reflect--adapt>Reflect & Adapt</a></li></ul></li><li><a href=#voice--tone>Voice & Tone</a><ul><li><a href=#authentic-voice>Authentic voice</a></li><li><a href=#appropriate-tone>Appropriate tone</a></li></ul></li><li><a href=#overall>Overall</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

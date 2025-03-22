@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/blockchain>playground/blockchain</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,096</li><li class=span><span>Characters:
-</span>8,735</li><li class=span><span>Without Spaces:
+</span>8,762</li><li class=span><span>Without Spaces:
 </span>4,805</li><li class=span><span>Blocks:
 </span>36</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#1-what-is-a-liquidity-pool>1. What is a Liquidity Pool?</a></li><li><a href=#2-how-do-liquidity-pools-work>2. How do Liquidity Pools work?</a><ul><li><a href=#21-roles-of-arbitragers-in-amm>2.1. Roles of Arbitragers in AMM</a></li><li><a href=#22-depth-of-pool-and-slippage>2.2. Depth of Pool and Slippage</a></li></ul></li><li><a href=#3-how-to-provide-liquidity-into-a-pool>3. How to provide Liquidity into a Pool?</a></li><li><a href=#4-what-is-impermanent-loss>4. What is Impermanent Loss?</a><ul><li><ul><li><a href=#reference>Reference</a></li></ul></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#1-what-is-a-liquidity-pool>1. What is a Liquidity Pool?</a></li><li><a href=#2-how-do-liquidity-pools-work>2. How do Liquidity Pools work?</a><ul><li><a href=#21-roles-of-arbitragers-in-amm>2.1. Roles of Arbitragers in AMM</a></li><li><a href=#22-depth-of-pool-and-slippage>2.2. Depth of Pool and Slippage</a></li></ul></li><li><a href=#3-how-to-provide-liquidity-into-a-pool>3. How to provide Liquidity into a Pool?</a></li><li><a href=#4-what-is-impermanent-loss>4. What is Impermanent Loss?</a><ul><li><ul><li><a href=#reference>Reference</a></li></ul></li></ul></li></ul></nav></div></div><main x-data="{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

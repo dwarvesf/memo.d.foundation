@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playbook/business>playbook/business</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,625</li><li class=span><span>Characters:
-</span>13,495</li><li class=span><span>Without Spaces:
+</span>13,522</li><li class=span><span>Without Spaces:
 </span>8,955</li><li class=span><span>Blocks:
 </span>24</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><ul><li><a href=#progress>Progress</a></li><li><a href=#the-adjacent-possible>The adjacent possible</a></li><li><a href=#sketching-five-paths-to-progress>Sketching five paths to progress</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><ul><li><a href=#progress>Progress</a></li><li><a href=#the-adjacent-possible>The adjacent possible</a></li><li><a href=#sketching-five-paths-to-progress>Sketching five paths to progress</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

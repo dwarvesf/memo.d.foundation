@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>909</li><li class=span><span>Characters:
-</span>20,928</li><li class=span><span>Without Spaces:
+</span>21,117</li><li class=span><span>Without Spaces:
 </span>5,417</li><li class=span><span>Blocks:
 </span>30</li><li class=span><span>Est reading Time:
 </span>13m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#homebrew>Homebrew</a></li><li><a href=#contributing-to-homebrew>Contributing to Homebrew</a><ul><li><a href=#fork-from-homebrew>Fork from Homebrew</a></li><li><a href=#create-new-formula>Create new formula</a></li><li><a href=#install-debug-local-formula>Install/ Debug local formula</a></li><li><a href=#test-the-formula>Test the formula</a></li><li><a href=#submit-pull-request>Submit pull request</a></li></ul></li><li><a href=#acknowledgement>Acknowledgement</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#homebrew>Homebrew</a></li><li><a href=#contributing-to-homebrew>Contributing to Homebrew</a><ul><li><a href=#fork-from-homebrew>Fork from Homebrew</a></li><li><a href=#create-new-formula>Create new formula</a></li><li><a href=#install-debug-local-formula>Install/ Debug local formula</a></li><li><a href=#test-the-formula>Test the formula</a></li><li><a href=#submit-pull-request>Submit pull request</a></li></ul></li><li><a href=#acknowledgement>Acknowledgement</a></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1009,7 +1009,7 @@ $ brew upgrade
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1018,7 +1018,7 @@ $ brew upgrade
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1058,7 +1058,7 @@ $ brew upgrade
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1067,7 +1067,7 @@ $ brew upgrade
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1147,7 +1147,7 @@ $ brew cleanup
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1156,7 +1156,7 @@ $ brew cleanup
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1199,7 +1199,7 @@ $ brew audit --strict --online $FORMULA
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1208,7 +1208,7 @@ $ brew audit --strict --online $FORMULA
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1248,7 +1248,7 @@ $ brew audit --strict --online $FORMULA
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1257,7 +1257,7 @@ $ brew audit --strict --online $FORMULA
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1297,7 +1297,7 @@ $ brew audit --strict --online $FORMULA
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1306,7 +1306,7 @@ $ brew audit --strict --online $FORMULA
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

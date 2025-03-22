@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/updates/newsletter>updates/newsletter</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,216</li><li class=span><span>Characters:
-</span>12,568</li><li class=span><span>Without Spaces:
+</span>12,595</li><li class=span><span>Without Spaces:
 </span>6,320</li><li class=span><span>Blocks:
 </span>33</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><ul><li><a href=#our-view-on-the-direction-of-data>Our view on the direction of data.</a></li><li><a href=#blockchain-as-a-career-path>Blockchain as a career path</a></li><li><a href=#learning-as-the-north-star-metric>Learning as the north-star metric</a></li><li><a href=#apprenticeship-the-drawbacks-and-the-treasure>Apprenticeship: the drawbacks and the treasure</a></li><li><a href=#launching-home-like-dwarves-hubs-in-danang-and-dalat>Launching home-like Dwarves Hubs in Danang and Dalat</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><ul><li><a href=#our-view-on-the-direction-of-data>Our view on the direction of data.</a></li><li><a href=#blockchain-as-a-career-path>Blockchain as a career path</a></li><li><a href=#learning-as-the-north-star-metric>Learning as the north-star metric</a></li><li><a href=#apprenticeship-the-drawbacks-and-the-treasure>Apprenticeship: the drawbacks and the treasure</a></li><li><a href=#launching-home-like-dwarves-hubs-in-danang-and-dalat>Launching home-like Dwarves Hubs in Danang and Dalat</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

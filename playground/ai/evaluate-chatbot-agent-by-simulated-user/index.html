@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/ai>playground/ai</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>730</li><li class=span><span>Characters:
-</span>11,689</li><li class=span><span>Without Spaces:
+</span>11,770</li><li class=span><span>Without Spaces:
 </span>4,455</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction>Introduction</a></li><li><a href=#system-design>System Design</a></li><li><a href=#implementation>Implementation</a><ul><li><a href=#step-1-set-up-the-chatbot>Step 1: Set up the Chatbot</a></li><li><a href=#step-2-set-up-the-simulated-user>Step 2: Set up the Simulated User</a></li><li><a href=#step-3-evaluator-and-helper-functions>Step 3: Evaluator and helper functions</a></li><li><a href=#step-4-run-the-simulatio>Step 4: Run the simulatio</a></li><li><a href=#5-result>5. Result</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction>Introduction</a></li><li><a href=#system-design>System Design</a></li><li><a href=#implementation>Implementation</a><ul><li><a href=#step-1-set-up-the-chatbot>Step 1: Set up the Chatbot</a></li><li><a href=#step-2-set-up-the-simulated-user>Step 2: Set up the Simulated User</a></li><li><a href=#step-3-evaluator-and-helper-functions>Step 3: Evaluator and helper functions</a></li><li><a href=#step-4-run-the-simulatio>Step 4: Run the simulatio</a></li><li><a href=#5-result>5. Result</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1074,7 +1074,7 @@ async function didSucceed(rootRun: Run, example: Example): Promise&lt;Evaluation
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1083,7 +1083,7 @@ async function didSucceed(rootRun: Run, example: Example): Promise&lt;Evaluation
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1123,7 +1123,7 @@ async function didSucceed(rootRun: Run, example: Example): Promise&lt;Evaluation
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1132,7 +1132,7 @@ async function didSucceed(rootRun: Run, example: Example): Promise&lt;Evaluation
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

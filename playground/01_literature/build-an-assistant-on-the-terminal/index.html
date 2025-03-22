@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>826</li><li class=span><span>Characters:
-</span>7,730</li><li class=span><span>Without Spaces:
+</span>7,757</li><li class=span><span>Without Spaces:
 </span>4,268</li><li class=span><span>Blocks:
 </span>15</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction>Introduction</a></li><li><a href=#description>Description</a></li><li><a href=#related-works>Related works</a></li><li><a href=#challenge>Challenge</a></li><li><a href=#implementation>Implementation</a><ul><li><a href=#programming-language-and-frameworks>Programming language and frameworks</a></li><li><a href=#application-flow>Application flow</a></li><li><a href=#textrank>TextRank</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction>Introduction</a></li><li><a href=#description>Description</a></li><li><a href=#related-works>Related works</a></li><li><a href=#challenge>Challenge</a></li><li><a href=#implementation>Implementation</a><ul><li><a href=#programming-language-and-frameworks>Programming language and frameworks</a></li><li><a href=#application-flow>Application flow</a></li><li><a href=#textrank>TextRank</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

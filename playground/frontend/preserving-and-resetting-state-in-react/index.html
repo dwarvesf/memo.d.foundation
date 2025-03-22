@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/frontend>playground/frontend</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>637</li><li class=span><span>Characters:
-</span>11,345</li><li class=span><span>Without Spaces:
+</span>11,426</li><li class=span><span>Without Spaces:
 </span>3,120</li><li class=span><span>Blocks:
 </span>9</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#why-should-you-read-this-article>Why should you read this article?</a></li><li><a href=#the-ui-tree>The UI Tree</a></li><li><a href=#state-is-tied-to-a-position-in-the-tree>State is tied to a position in the tree</a></li><li><a href=#preserves-state>Preserves state</a></li><li><a href=#different-components-at-the-same-position-reset-state>Different components at the same position reset state</a></li><li><a href=#resetting-state-at-the-same-position>Resetting state at the same position</a><ul><li><a href=#option-1-rendering-component-with-different-positions>Option 1: Rendering component with different positions</a></li><li><a href=#option-2-resetting-state-with-a-key-recommendation>Option 2: Resetting state with a key (recommendation)</a></li></ul></li><li><a href=#reference>Reference</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#why-should-you-read-this-article>Why should you read this article?</a></li><li><a href=#the-ui-tree>The UI Tree</a></li><li><a href=#state-is-tied-to-a-position-in-the-tree>State is tied to a position in the tree</a></li><li><a href=#preserves-state>Preserves state</a></li><li><a href=#different-components-at-the-same-position-reset-state>Different components at the same position reset state</a></li><li><a href=#resetting-state-at-the-same-position>Resetting state at the same position</a><ul><li><a href=#option-1-rendering-component-with-different-positions>Option 1: Rendering component with different positions</a></li><li><a href=#option-2-resetting-state-with-a-key-recommendation>Option 2: Resetting state with a key (recommendation)</a></li></ul></li><li><a href=#reference>Reference</a></li></ul></nav></div></div><main x-data='{
@@ -977,7 +977,7 @@ function Counter(name) {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -986,7 +986,7 @@ function Counter(name) {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1062,7 +1062,7 @@ return (
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1071,7 +1071,7 @@ return (
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1121,7 +1121,7 @@ return (
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1130,7 +1130,7 @@ return (
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

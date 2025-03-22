@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature/design>playground/01_literature/design</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,250</li><li class=span><span>Characters:
-</span>15,215</li><li class=span><span>Without Spaces:
+</span>15,269</li><li class=span><span>Without Spaces:
 </span>7,171</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#hyper-personalization-vs-traditional-personalization>Hyper-personalization vs. traditional personalization</a></li><li><a href=#how-hyper-personalization-makes-things-personal>How hyper-personalization makes things personal</a><ul><li><ul><li><a href=#step-1-data-acquisition-and-preparation>Step 1: Data acquisition and preparation</a></li><li><a href=#step-2-choose-the-right-ai-method>Step 2: Choose the right AI method</a></li><li><a href=#step-3-train-and-test-the-system>Step 3: Train and test the system</a></li><li><a href=#step-4-keep-improving>Step 4: Keep improving</a></li></ul></li></ul></li><li><a href=#practical-applications-of-hyper-personalization>Practical applications of hyper-personalization</a></li><li><a href=#challenges-around-hyper-personalization>Challenges around hyper-personalization</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#hyper-personalization-vs-traditional-personalization>Hyper-personalization vs. traditional personalization</a></li><li><a href=#how-hyper-personalization-makes-things-personal>How hyper-personalization makes things personal</a><ul><li><ul><li><a href=#step-1-data-acquisition-and-preparation>Step 1: Data acquisition and preparation</a></li><li><a href=#step-2-choose-the-right-ai-method>Step 2: Choose the right AI method</a></li><li><a href=#step-3-train-and-test-the-system>Step 3: Train and test the system</a></li><li><a href=#step-4-keep-improving>Step 4: Keep improving</a></li></ul></li></ul></li><li><a href=#practical-applications-of-hyper-personalization>Practical applications of hyper-personalization</a></li><li><a href=#challenges-around-hyper-personalization>Challenges around hyper-personalization</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

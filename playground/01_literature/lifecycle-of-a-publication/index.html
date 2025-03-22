@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>626</li><li class=span><span>Characters:
-</span>11,636</li><li class=span><span>Without Spaces:
+</span>11,744</li><li class=span><span>Without Spaces:
 </span>3,013</li><li class=span><span>Blocks:
 </span>13</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#recording-knowledge>Recording knowledge</a></li><li><a href=#know-our-audience-and-objectives>Know our audience and objectives</a></li><li><a href=#create-content>Create content</a></li><li><a href=#publish-content>Publish content</a></li><li><a href=#talk-to-our-audience>Talk to our audience</a></li><li><a href=#refine-and-upgrade>Refine and upgrade</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#recording-knowledge>Recording knowledge</a></li><li><a href=#know-our-audience-and-objectives>Know our audience and objectives</a></li><li><a href=#create-content>Create content</a></li><li><a href=#publish-content>Publish content</a></li><li><a href=#talk-to-our-audience>Talk to our audience</a></li><li><a href=#refine-and-upgrade>Refine and upgrade</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -949,7 +949,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -958,7 +958,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -998,7 +998,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1007,7 +1007,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1047,7 +1047,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1056,7 +1056,7 @@ Whether we&rsquo;re crafting a note, article, research report, or digital post, 
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1097,7 +1097,7 @@ We already have standards and processes in place, following them and adapting th
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1106,7 +1106,7 @@ We already have standards and processes in place, following them and adapting th
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

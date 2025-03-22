@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/blockchain>playground/blockchain</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,049</li><li class=span><span>Characters:
-</span>24,497</li><li class=span><span>Without Spaces:
+</span>24,740</li><li class=span><span>Without Spaces:
 </span>5,853</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#what-is-a-bridge>What is a bridge?</a></li><li><a href=#why-do-we-need-bridges>Why do we need bridges?</a></li><li><a href=#bridge-use-case>Bridge use-case?</a></li><li><a href=#how-does-the-bridge-work>How does the bridge work?</a><ul><li><a href=#what-are-bridge-components>What are bridge components?</a></li></ul></li><li><a href=#classification-of-bridges>Classification of Bridges</a><ul><li><a href=#external-links--validators>External links & validators</a></li><li><a href=#lightweight-client--relays>Lightweight Client & Relays</a></li><li><a href=#liquidity-network>Liquidity Network</a></li></ul></li><li><a href=#depending-on-the-design-each-bridge-will-have-its-own-characteristics>Depending on the design, each bridge will have its own characteristics</a></li><li><a href=#interoperability-dilemma>Interoperability dilemma</a></li><li><a href=#risks-of-using-bridge>Risks of using bridge</a></li><li><a href=#case-study>Case study</a></li><li><a href=#reference>Reference</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#what-is-a-bridge>What is a bridge?</a></li><li><a href=#why-do-we-need-bridges>Why do we need bridges?</a></li><li><a href=#bridge-use-case>Bridge use-case?</a></li><li><a href=#how-does-the-bridge-work>How does the bridge work?</a><ul><li><a href=#what-are-bridge-components>What are bridge components?</a></li></ul></li><li><a href=#classification-of-bridges>Classification of Bridges</a><ul><li><a href=#external-links--validators>External links & validators</a></li><li><a href=#lightweight-client--relays>Lightweight Client & Relays</a></li><li><a href=#liquidity-network>Liquidity Network</a></li></ul></li><li><a href=#depending-on-the-design-each-bridge-will-have-its-own-characteristics>Depending on the design, each bridge will have its own characteristics</a></li><li><a href=#interoperability-dilemma>Interoperability dilemma</a></li><li><a href=#risks-of-using-bridge>Risks of using bridge</a></li><li><a href=#case-study>Case study</a></li><li><a href=#reference>Reference</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1144,7 +1144,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1153,7 +1153,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1193,7 +1193,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1202,7 +1202,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1242,7 +1242,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1251,7 +1251,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1291,7 +1291,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1300,7 +1300,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1340,7 +1340,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1349,7 +1349,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

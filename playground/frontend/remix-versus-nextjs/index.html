@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/frontend>playground/frontend</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>851</li><li class=span><span>Characters:
-</span>8,261</li><li class=span><span>Without Spaces:
+</span>8,288</li><li class=span><span>Without Spaces:
 </span>4,343</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction-of-remix>Introduction of Remix</a></li><li><a href=#how-is-remix-different-from-nextjs>How is Remix different from Next.js?</a><ul><li><a href=#page-rendering-strategies>Page rendering strategies</a></li><li><a href=#routing>Routing</a></li><li><a href=#data-loading>Data Loading</a></li><li><a href=#data-mutation>Data Mutation</a></li><li><a href=#error-handling>Error Handling</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction-of-remix>Introduction of Remix</a></li><li><a href=#how-is-remix-different-from-nextjs>How is Remix different from Next.js?</a><ul><li><a href=#page-rendering-strategies>Page rendering strategies</a></li><li><a href=#routing>Routing</a></li><li><a href=#data-loading>Data Loading</a></li><li><a href=#data-mutation>Data Mutation</a></li><li><a href=#error-handling>Error Handling</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -989,7 +989,7 @@ export default function App() {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -998,7 +998,7 @@ export default function App() {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

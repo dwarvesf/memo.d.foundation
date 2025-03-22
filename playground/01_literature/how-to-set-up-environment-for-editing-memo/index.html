@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>489</li><li class=span><span>Characters:
-</span>16,941</li><li class=span><span>Without Spaces:
+</span>17,130</li><li class=span><span>Without Spaces:
 </span>2,637</li><li class=span><span>Blocks:
 </span>16</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#set-up-ssh-key>Set up SSH key</a></li><li><a href=#install-the-visual-studio-code>Install the Visual Studio Code</a></li><li><a href=#install-the-devbox>Install the Devbox</a></li><li><a href=#pull-the-github-source-to-your-local-disk>Pull the Github Source to your local disk</a><ul><li><a href=#method-1-use-the-terminal>Method 1: Use the terminal</a></li><li><a href=#method-2-link-vscode-with-your-github-account>Method 2: Link VScode with your Github account</a></li></ul></li><li><a href=#setup-the-environment-on-your-laptop>Setup the environment on your laptop</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#set-up-ssh-key>Set up SSH key</a></li><li><a href=#install-the-visual-studio-code>Install the Visual Studio Code</a></li><li><a href=#install-the-devbox>Install the Devbox</a></li><li><a href=#pull-the-github-source-to-your-local-disk>Pull the Github Source to your local disk</a><ul><li><a href=#method-1-use-the-terminal>Method 1: Use the terminal</a></li><li><a href=#method-2-link-vscode-with-your-github-account>Method 2: Link VScode with your Github account</a></li></ul></li><li><a href=#setup-the-environment-on-your-laptop>Setup the environment on your laptop</a></li></ul></nav></div></div><main x-data='{
@@ -949,7 +949,7 @@ You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p>
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -958,7 +958,7 @@ You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p>
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -998,7 +998,7 @@ You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p>
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1007,7 +1007,7 @@ You can use the shortcut <code>Control + ~</code> to open Terminal.</li></ol><p>
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1051,7 +1051,7 @@ git config --global user.name &quot;Your Name&quot;
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1060,7 +1060,7 @@ git config --global user.name &quot;Your Name&quot;
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1100,7 +1100,7 @@ git config --global user.name &quot;Your Name&quot;
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1109,7 +1109,7 @@ git config --global user.name &quot;Your Name&quot;
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1152,7 +1152,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1161,7 +1161,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1201,7 +1201,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1210,7 +1210,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1250,7 +1250,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1259,7 +1259,7 @@ git submodule foreach --recursive 'git checkout main || git checkout master'
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

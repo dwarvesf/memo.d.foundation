@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>874</li><li class=span><span>Characters:
-</span>17,773</li><li class=span><span>Without Spaces:
+</span>17,908</li><li class=span><span>Without Spaces:
 </span>5,161</li><li class=span><span>Blocks:
 </span>5</li><li class=span><span>Est reading Time:
 </span>4m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#current-state-of-the-vietnam-tech-market>Current State of the Vietnam Tech Market</a><ul><li><a href=#vietnam-digital-economy-landscape>Vietnam Digital Economy Landscape</a></li></ul></li><li><a href=#tech-investment-landscape-2023>Tech Investment Landscape 2023</a></li><li><a href=#top-active-investors-in-2023>Top Active Investors in 2023</a></li><li><a href=#notable-trends-in-the-startup-ecosystem>Notable Trends in the Startup Ecosystem</a></li><li><a href=#key-invested-industries-in-first-half-of-2024-in-millions-of-usd>Key Invested Industries in First Half of 2024 (in millions of USD)</a></li><li><a href=#exit-landscape>Exit Landscape</a></li><li><a href=#latest-legal-developments>Latest Legal Developments</a></li><li><a href=#key-players-in-aifintech-in-vietnam>Key players in AI/Fintech in Vietnam</a></li><li><a href=#key-players-in-blockchaincrypto-in-apac>Key players in blockchain/crypto in APAC</a><ul><li><a href=#animoca-brands--animoca-ventures>Animoca Brands / Animoca Ventures</a></li><li><a href=#foresight-ventures>Foresight Ventures</a></li><li><a href=#hashkey-capital>HashKey Capital</a></li><li><a href=#hashed>Hashed</a></li><li><a href=#infinity-ventures-crypto>Infinity Ventures Crypto</a></li><li><a href=#iosg-ventures>IOSG Ventures</a></li><li><a href=#ngc-ventures>NGC Ventures</a></li><li><a href=#okx-ventures>OKX Ventures</a></li><li><a href=#spartan-group>Spartan Group</a></li><li><a href=#sevenx-ventures>SevenX Ventures</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#current-state-of-the-vietnam-tech-market>Current State of the Vietnam Tech Market</a><ul><li><a href=#vietnam-digital-economy-landscape>Vietnam Digital Economy Landscape</a></li></ul></li><li><a href=#tech-investment-landscape-2023>Tech Investment Landscape 2023</a></li><li><a href=#top-active-investors-in-2023>Top Active Investors in 2023</a></li><li><a href=#notable-trends-in-the-startup-ecosystem>Notable Trends in the Startup Ecosystem</a></li><li><a href=#key-invested-industries-in-first-half-of-2024-in-millions-of-usd>Key Invested Industries in First Half of 2024 (in millions of USD)</a></li><li><a href=#exit-landscape>Exit Landscape</a></li><li><a href=#latest-legal-developments>Latest Legal Developments</a></li><li><a href=#key-players-in-aifintech-in-vietnam>Key players in AI/Fintech in Vietnam</a></li><li><a href=#key-players-in-blockchaincrypto-in-apac>Key players in blockchain/crypto in APAC</a><ul><li><a href=#animoca-brands--animoca-ventures>Animoca Brands / Animoca Ventures</a></li><li><a href=#foresight-ventures>Foresight Ventures</a></li><li><a href=#hashkey-capital>HashKey Capital</a></li><li><a href=#hashed>Hashed</a></li><li><a href=#infinity-ventures-crypto>Infinity Ventures Crypto</a></li><li><a href=#iosg-ventures>IOSG Ventures</a></li><li><a href=#ngc-ventures>NGC Ventures</a></li><li><a href=#okx-ventures>OKX Ventures</a></li><li><a href=#spartan-group>Spartan Group</a></li><li><a href=#sevenx-ventures>SevenX Ventures</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data="{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1144,7 +1144,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1153,7 +1153,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

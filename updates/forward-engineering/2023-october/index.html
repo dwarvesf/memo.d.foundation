@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/updates/forward-engineering>updates/forward-engineering</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,324</li><li class=span><span>Characters:
-</span>17,565</li><li class=span><span>Without Spaces:
+</span>17,674</li><li class=span><span>Without Spaces:
 </span>7,032</li><li class=span><span>Blocks:
 </span>31</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#tech-radar>Tech Radar</a><ul><li><a href=#type-safe-server-client-development>Type-safe Server Client Development</a></li><li><a href=#ai-aided-development>AI-aided development</a></li><li><a href=#duckdb>DuckDB</a></li><li><a href=#devcontainers>Devcontainers</a></li></ul></li><li><a href=#rd-topics-and-challenges>R&amp;D Topics and Challenges</a><ul><li><a href=#research-topics>Research Topics</a></li><li><a href=#new-tools>New Tools</a></li></ul></li><li><a href=#dwarves-rewind-october-2023>Dwarves Rewind October 2023</a><ul><li><a href=#trending-and-hot-topics>Trending and Hot Topics</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#tech-radar>Tech Radar</a><ul><li><a href=#type-safe-server-client-development>Type-safe Server Client Development</a></li><li><a href=#ai-aided-development>AI-aided development</a></li><li><a href=#duckdb>DuckDB</a></li><li><a href=#devcontainers>Devcontainers</a></li></ul></li><li><a href=#rd-topics-and-challenges>R&amp;D Topics and Challenges</a><ul><li><a href=#research-topics>Research Topics</a></li><li><a href=#new-tools>New Tools</a></li></ul></li><li><a href=#dwarves-rewind-october-2023>Dwarves Rewind October 2023</a><ul><li><a href=#trending-and-hot-topics>Trending and Hot Topics</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1097,7 +1097,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1106,7 +1106,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

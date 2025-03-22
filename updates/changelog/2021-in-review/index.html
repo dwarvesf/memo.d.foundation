@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/updates/changelog>updates/changelog</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>831</li><li class=span><span>Characters:
-</span>27,986</li><li class=span><span>Without Spaces:
+</span>28,310</li><li class=span><span>Without Spaces:
 </span>4,065</li><li class=span><span>Blocks:
 </span>29</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#wrapping-up-dwarves-10>Wrapping up Dwarves 1.0</a></li><li><a href=#a-few-things-worth-celebrating>A few things worth celebrating</a><ul><li><a href=#the-team-benefits-go-up>The team benefits go up</a></li><li><a href=#making-our-marks-in-new-tech>Making our marks in new tech</a></li><li><a href=#our-vision-and-belief-stays-the-same>Our vision and belief stays the same</a></li></ul></li><li><a href=#we-are-growing-fast>We are growing fast</a><ul><li><a href=#bigger--borderless-team>Bigger & borderless team</a></li><li><a href=#forming-the-getaway-chalets>Forming the getaway chalets</a></li></ul></li><li><a href=#expanding-the-community>Expanding the Community</a></li><li><a href=#dwarves-10-in-numbers>Dwarves 1.0 In Numbers</a></li><li><a href=#highlighted-dwarves-of-2021>Highlighted Dwarves of 2021</a><ul><li><a href=#dwarves-of-2021>Dwarves of 2021</a></li></ul></li><li><a href=#new-iconic-items>New Iconic Items</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#wrapping-up-dwarves-10>Wrapping up Dwarves 1.0</a></li><li><a href=#a-few-things-worth-celebrating>A few things worth celebrating</a><ul><li><a href=#the-team-benefits-go-up>The team benefits go up</a></li><li><a href=#making-our-marks-in-new-tech>Making our marks in new tech</a></li><li><a href=#our-vision-and-belief-stays-the-same>Our vision and belief stays the same</a></li></ul></li><li><a href=#we-are-growing-fast>We are growing fast</a><ul><li><a href=#bigger--borderless-team>Bigger & borderless team</a></li><li><a href=#forming-the-getaway-chalets>Forming the getaway chalets</a></li></ul></li><li><a href=#expanding-the-community>Expanding the Community</a></li><li><a href=#dwarves-10-in-numbers>Dwarves 1.0 In Numbers</a></li><li><a href=#highlighted-dwarves-of-2021>Highlighted Dwarves of 2021</a><ul><li><a href=#dwarves-of-2021>Dwarves of 2021</a></li></ul></li><li><a href=#new-iconic-items>New Iconic Items</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1098,7 +1098,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1107,7 +1107,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1147,7 +1147,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1156,7 +1156,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1196,7 +1196,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1205,7 +1205,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1245,7 +1245,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1254,7 +1254,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1294,7 +1294,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1303,7 +1303,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1343,7 +1343,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1352,7 +1352,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1392,7 +1392,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1401,7 +1401,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1441,7 +1441,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1450,7 +1450,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1490,7 +1490,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1499,7 +1499,7 @@ And we’d love to onboard like-minded people to our Discord Network: <a href=ht
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,281</li><li class=span><span>Characters:
-</span>20,181</li><li class=span><span>Without Spaces:
+</span>20,370</li><li class=span><span>Without Spaces:
 </span>6,237</li><li class=span><span>Blocks:
 </span>27</li><li class=span><span>Est reading Time:
 </span>12m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction-to-gestalt-rules>Introduction to Gestalt rules**</a></li><li><a href=#proximity>Proximity</a></li><li><a href=#common-fate>Common Fate</a></li><li><a href=#similarity>Similarity</a></li><li><a href=#closure>Closure</a></li><li><a href=#continuation>Continuation</a></li><li><a href=#figure-ground>Figure/ Ground</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction-to-gestalt-rules>Introduction to Gestalt rules**</a></li><li><a href=#proximity>Proximity</a></li><li><a href=#common-fate>Common Fate</a></li><li><a href=#similarity>Similarity</a></li><li><a href=#closure>Closure</a></li><li><a href=#continuation>Continuation</a></li><li><a href=#figure-ground>Figure/ Ground</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ If you are new to UI Design, there would be sometimes you are quite confused abo
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ If you are new to UI Design, there would be sometimes you are quite confused abo
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1047,7 +1047,7 @@ The fact that the movement direction of elements shapes our perception of groupi
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1056,7 +1056,7 @@ The fact that the movement direction of elements shapes our perception of groupi
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1097,7 +1097,7 @@ Similarity Principle is the answer to why the button system of every application
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1106,7 +1106,7 @@ Similarity Principle is the answer to why the button system of every application
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1147,7 +1147,7 @@ The presence of the Closure Principle in UI design is shown through the iconogra
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1156,7 +1156,7 @@ The presence of the Closure Principle in UI design is shown through the iconogra
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1197,7 +1197,7 @@ The continuation principle is best described in the UI field by the alignment of
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1206,7 +1206,7 @@ The continuation principle is best described in the UI field by the alignment of
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1247,7 +1247,7 @@ There are a lot of ways to create the Figure/ Ground effect, for example, semi-t
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1256,7 +1256,7 @@ There are a lot of ways to create the Figure/ Ground effect, for example, semi-t
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

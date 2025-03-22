@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>879</li><li class=span><span>Characters:
-</span>8,826</li><li class=span><span>Without Spaces:
+</span>8,853</li><li class=span><span>Without Spaces:
 </span>4,588</li><li class=span><span>Blocks:
 </span>20</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#the-expectation>The expectation</a></li><li><a href=#the-solution>The solution</a><ul><li><a href=#tasks-table><code>tasks</code> table</a></li><li><a href=#fields-table><code>fields</code> table</a></li><li><a href=#values-table><code>values</code> table</a></li><li><a href=#options-table><code>options</code> table</a></li></ul></li><li><a href=#the-decisions>The decisions</a><ul><li><a href=#decision-1-break-things-down-into-smaller-models>Decision 1: Break things down into smaller models</a></li><li><a href=#decision-2-tasks-should-hold-relations-to-values-instead-of-fields>Decision 2: <code>tasks</code> should hold relations to <code>values</code> instead of <code>fields</code></a></li></ul></li><li><a href=#the-challenges>The challenges</a><ul><li><a href=#filtering--pagination>Filtering & Pagination</a></li><li><a href=#cross-team-collaboration>Cross-team collaboration</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#the-expectation>The expectation</a></li><li><a href=#the-solution>The solution</a><ul><li><a href=#tasks-table><code>tasks</code> table</a></li><li><a href=#fields-table><code>fields</code> table</a></li><li><a href=#values-table><code>values</code> table</a></li><li><a href=#options-table><code>options</code> table</a></li></ul></li><li><a href=#the-decisions>The decisions</a><ul><li><a href=#decision-1-break-things-down-into-smaller-models>Decision 1: Break things down into smaller models</a></li><li><a href=#decision-2-tasks-should-hold-relations-to-values-instead-of-fields>Decision 2: <code>tasks</code> should hold relations to <code>values</code> instead of <code>fields</code></a></li></ul></li><li><a href=#the-challenges>The challenges</a><ul><li><a href=#filtering--pagination>Filtering & Pagination</a></li><li><a href=#cross-team-collaboration>Cross-team collaboration</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data="{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

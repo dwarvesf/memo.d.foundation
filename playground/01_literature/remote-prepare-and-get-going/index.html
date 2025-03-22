@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>554</li><li class=span><span>Characters:
-</span>9,198</li><li class=span><span>Without Spaces:
+</span>9,252</li><li class=span><span>Without Spaces:
 </span>2,884</li><li class=span><span>Blocks:
 </span>14</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#checklist>Checklist</a></li><li><a href=#philosophy>Philosophy</a><ul><li><a href=#the-good-and-the-bad>The good and the bad</a></li></ul></li><li><a href=#things-to-prepare>Things to prepare</a><ul><li><a href=#prerequisite>Prerequisite</a></li><li><a href=#time-of-day>Time of Day</a></li><li><a href=#places-to-work>Places to work</a></li><li><a href=#tooling--setup>Tooling & Setup</a></li><li><a href=#articles>Articles</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#checklist>Checklist</a></li><li><a href=#philosophy>Philosophy</a><ul><li><a href=#the-good-and-the-bad>The good and the bad</a></li></ul></li><li><a href=#things-to-prepare>Things to prepare</a><ul><li><a href=#prerequisite>Prerequisite</a></li><li><a href=#time-of-day>Time of Day</a></li><li><a href=#places-to-work>Places to work</a></li><li><a href=#tooling--setup>Tooling & Setup</a></li><li><a href=#articles>Articles</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,609</li><li class=span><span>Characters:
-</span>24,516</li><li class=span><span>Without Spaces:
+</span>24,597</li><li class=span><span>Without Spaces:
 </span>11,847</li><li class=span><span>Blocks:
 </span>40</li><li class=span><span>Est reading Time:
 </span>8m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#introduction>Introduction</a></li><li><a href=#why-choosing-foundry>Why choosing Foundry?</a></li><li><a href=#managing-dependencies>Managing Dependencies</a></li><li><a href=#toolbox-overview>Toolbox Overview</a></li><li><a href=#showcase-preparation>Showcase Preparation</a><ul><li><a href=#configure-foundry>Configure Foundry</a></li><li><a href=#install-dependencies>Install dependencies</a></li><li><a href=#prepare-some-contracts>Prepare some contracts</a></li></ul></li><li><a href=#the-fun-part-begins>The fun part begins</a><ul><li><a href=#testing-icyswap-contract>Testing <code>IcySwap</code> contract</a></li><li><a href=#deploying-icyswap-contract-to-base-sepolia-testnet>Deploying <code>IcySwap</code> contract to <code>Base Sepolia</code> testnet</a></li></ul></li><li><a href=#other-usages>Other Usages</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#introduction>Introduction</a></li><li><a href=#why-choosing-foundry>Why choosing Foundry?</a></li><li><a href=#managing-dependencies>Managing Dependencies</a></li><li><a href=#toolbox-overview>Toolbox Overview</a></li><li><a href=#showcase-preparation>Showcase Preparation</a><ul><li><a href=#configure-foundry>Configure Foundry</a></li><li><a href=#install-dependencies>Install dependencies</a></li><li><a href=#prepare-some-contracts>Prepare some contracts</a></li></ul></li><li><a href=#the-fun-part-begins>The fun part begins</a><ul><li><a href=#testing-icyswap-contract>Testing <code>IcySwap</code> contract</a></li><li><a href=#deploying-icyswap-contract-to-base-sepolia-testnet>Deploying <code>IcySwap</code> contract to <code>Base Sepolia</code> testnet</a></li></ul></li><li><a href=#other-usages>Other Usages</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1223,7 +1223,7 @@ contract StreamPointsTest is Test {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1232,7 +1232,7 @@ contract StreamPointsTest is Test {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1296,7 +1296,7 @@ contract IcySwapScript is Script {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1305,7 +1305,7 @@ contract IcySwapScript is Script {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

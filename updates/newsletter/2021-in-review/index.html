@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/updates/newsletter>updates/newsletter</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>625</li><li class=span><span>Characters:
-</span>10,371</li><li class=span><span>Without Spaces:
+</span>10,452</li><li class=span><span>Without Spaces:
 </span>3,118</li><li class=span><span>Blocks:
 </span>17</li><li class=span><span>Est reading Time:
 </span>5m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#2021---a-year-of-innovative-reconstruction-dream-collaborations-and-our-journey-to-be-better>2021 - a year of innovative reconstruction, dream collaborations and our journey to be better</a><ul><li><a href=#in-numbers>In numbers</a></li><li><a href=#in-timeline>In timeline</a></li><li><a href=#more-room-for-like-minded-people>More room for like-minded people</a></li><li><a href=#advancing-in-tech>Advancing in tech</a></li><li><a href=#new-business-directions-and-new-partnerships>New business directions and new partnerships</a></li></ul></li><li><a href=#so-whats-in-store-for-2022>So what&rsquo;s in store for 2022?</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#2021---a-year-of-innovative-reconstruction-dream-collaborations-and-our-journey-to-be-better>2021 - a year of innovative reconstruction, dream collaborations and our journey to be better</a><ul><li><a href=#in-numbers>In numbers</a></li><li><a href=#in-timeline>In timeline</a></li><li><a href=#more-room-for-like-minded-people>More room for like-minded people</a></li><li><a href=#advancing-in-tech>Advancing in tech</a></li><li><a href=#new-business-directions-and-new-partnerships>New business directions and new partnerships</a></li></ul></li><li><a href=#so-whats-in-store-for-2022>So what&rsquo;s in store for 2022?</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1048,7 +1048,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1057,7 +1057,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

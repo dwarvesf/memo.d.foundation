@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/playground/use-cases>playground/use-cases</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,238</li><li class=span><span>Characters:
-</span>21,596</li><li class=span><span>Without Spaces:
+</span>21,758</li><li class=span><span>Without Spaces:
 </span>7,171</li><li class=span><span>Blocks:
 </span>31</li><li class=span><span>Est reading Time:
 </span>6m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#ui-design-principles-for-data-visualization>UI design principles for data visualization</a></li><li><a href=#three-key-ui-design-for-hedge-foundation>Three key UI design for Hedge Foundation</a><ul><li><a href=#1-integrate-an-interactive-dashboard-with-dynamic-charts>1. Integrate an interactive dashboard with dynamic charts</a></li><li><a href=#2-enhance-readability-through-color--layout-hierarchy>2. Enhance readability through color & layout hierarchy</a></li><li><a href=#3-select-the-right-chart-types-for-different-data-sets>3. Select the right chart types for different data sets</a></li></ul></li><li><a href=#ai-based-ui-evaluation-tools>AI-based UI evaluation tools</a></li><li><a href=#key-lessons-from-designing-ui-for-hedge-foundation>Key lessons from designing UI for Hedge Foundation</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#ui-design-principles-for-data-visualization>UI design principles for data visualization</a></li><li><a href=#three-key-ui-design-for-hedge-foundation>Three key UI design for Hedge Foundation</a><ul><li><a href=#1-integrate-an-interactive-dashboard-with-dynamic-charts>1. Integrate an interactive dashboard with dynamic charts</a></li><li><a href=#2-enhance-readability-through-color--layout-hierarchy>2. Enhance readability through color & layout hierarchy</a></li><li><a href=#3-select-the-right-chart-types-for-different-data-sets>3. Select the right chart types for different data sets</a></li></ul></li><li><a href=#ai-based-ui-evaluation-tools>AI-based UI evaluation tools</a></li><li><a href=#key-lessons-from-designing-ui-for-hedge-foundation>Key lessons from designing UI for Hedge Foundation</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -948,7 +948,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -957,7 +957,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -997,7 +997,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1006,7 +1006,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1046,7 +1046,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1055,7 +1055,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1095,7 +1095,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1104,7 +1104,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1144,7 +1144,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1153,7 +1153,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1193,7 +1193,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1202,7 +1202,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

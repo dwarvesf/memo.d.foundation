@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,807</li><li class=span><span>Characters:
-</span>17,753</li><li class=span><span>Without Spaces:
+</span>17,834</li><li class=span><span>Without Spaces:
 </span>9,472</li><li class=span><span>Blocks:
 </span>33</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#engineering-is-mathematical>Engineering is mathematical</a></li><li><a href=#the-other-differences>The other differences</a></li><li><a href=#so-what-to-learn-from-other-engineering-branches>So what to learn from other engineering branches?</a><ul><li><a href=#more-methodical-processes>More methodical processes</a></li><li><a href=#professionalism>Professionalism</a></li></ul></li><li><a href=#and-what-to-inspire-them>And what to inspire them</a><ul><li><a href=#the-openness>The Openness</a></li><li><a href=#version-control>Version Control</a></li></ul></li><li><a href=#to-summary>To summary</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#engineering-is-mathematical>Engineering is mathematical</a></li><li><a href=#the-other-differences>The other differences</a></li><li><a href=#so-what-to-learn-from-other-engineering-branches>So what to learn from other engineering branches?</a><ul><li><a href=#more-methodical-processes>More methodical processes</a></li><li><a href=#professionalism>Professionalism</a></li></ul></li><li><a href=#and-what-to-inspire-them>And what to inspire them</a><ul><li><a href=#the-openness>The Openness</a></li><li><a href=#version-control>Version Control</a></li></ul></li><li><a href=#to-summary>To summary</a></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1045,7 +1045,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1054,7 +1054,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

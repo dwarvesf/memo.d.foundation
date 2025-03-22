@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,629</li><li class=span><span>Characters:
-</span>20,910</li><li class=span><span>Without Spaces:
+</span>21,018</li><li class=span><span>Without Spaces:
 </span>8,714</li><li class=span><span>Blocks:
 </span>45</li><li class=span><span>Est reading Time:
 </span>10m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#xcode-canvas>Xcode canvas</a></li><li><a href=#combine-framework>Combine framework</a></li><li><a href=#learn-once-apply-anywhere>Learn once, Apply anywhere</a></li><li><a href=#hello-world>Hello World</a><ul><li><a href=#the-swiftui-dsl-syntax>The SwiftUI DSL syntax</a></li><li><a href=#the-layout-process>The Layout Process</a></li><li><a href=#the-state-management>The State Management</a></li></ul></li><li><a href=#however>However</a><ul><li><a href=#limited-api-coverage>Limited API Coverage</a></li><li><a href=#limited-adoption>Limited Adoption</a></li><li><a href=#limited-support>Limited Support</a></li><li><a href=#default-behavior>Default Behavior</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#xcode-canvas>Xcode canvas</a></li><li><a href=#combine-framework>Combine framework</a></li><li><a href=#learn-once-apply-anywhere>Learn once, Apply anywhere</a></li><li><a href=#hello-world>Hello World</a><ul><li><a href=#the-swiftui-dsl-syntax>The SwiftUI DSL syntax</a></li><li><a href=#the-layout-process>The Layout Process</a></li><li><a href=#the-state-management>The State Management</a></li></ul></li><li><a href=#however>However</a><ul><li><a href=#limited-api-coverage>Limited API Coverage</a></li><li><a href=#limited-adoption>Limited Adoption</a></li><li><a href=#limited-support>Limited Support</a></li><li><a href=#default-behavior>Default Behavior</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1061,7 +1061,7 @@ struct ContentView: View {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1070,7 +1070,7 @@ struct ContentView: View {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1122,7 +1122,7 @@ struct ContentView: View {
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1131,7 +1131,7 @@ struct ContentView: View {
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

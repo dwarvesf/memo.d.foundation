@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/playground/market-report>playground/market-report</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>929</li><li class=span><span>Characters:
-</span>14,586</li><li class=span><span>Without Spaces:
+</span>14,640</li><li class=span><span>Without Spaces:
 </span>5,439</li><li class=span><span>Blocks:
 </span>11</li><li class=span><span>Est reading Time:
 </span>14m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#subtle-advances-in-app-design-for-llms-pave-the-way-for-advance-assistants>Subtle advances in app design for LLMs pave the way for advance assistants</a></li><li><a href=#open-source-ai-repositories-a-surge-in-innovation>Open source AI repositories: A surge in innovation</a><ul><li><a href=#focused-evolution-of-ai-infrastructure>Focused evolution of AI infrastructure</a></li><li><a href=#the-rise-of-individual-led-application-development>The rise of individual-led application development</a></li><li><a href=#dominance-of-tech-giants-in-ai-contributions>Dominance of tech giants in AI contributions</a></li><li><a href=#rapid-development-and-visibility-of-ai-projects>Rapid development and visibility of AI projects</a></li></ul></li><li><a href=#api-techniques-and-tooling>API techniques and tooling</a><ul><li><a href=#advancements-in-model-training-and-compression>Advancements in model training and compression</a></li><li><a href=#scalable-vector-database-for-enhanced-llm-applications>Scalable vector database for enhanced LLM applications</a></li></ul></li><li><a href=#ai-startups-breaking-the-vc-barrier>AI startups breaking the VC barrier</a></li><li><a href=#other-notable-trends>Other notable trends</a></li><li><a href=#references>References</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#subtle-advances-in-app-design-for-llms-pave-the-way-for-advance-assistants>Subtle advances in app design for LLMs pave the way for advance assistants</a></li><li><a href=#open-source-ai-repositories-a-surge-in-innovation>Open source AI repositories: A surge in innovation</a><ul><li><a href=#focused-evolution-of-ai-infrastructure>Focused evolution of AI infrastructure</a></li><li><a href=#the-rise-of-individual-led-application-development>The rise of individual-led application development</a></li><li><a href=#dominance-of-tech-giants-in-ai-contributions>Dominance of tech giants in AI contributions</a></li><li><a href=#rapid-development-and-visibility-of-ai-projects>Rapid development and visibility of AI projects</a></li></ul></li><li><a href=#api-techniques-and-tooling>API techniques and tooling</a><ul><li><a href=#advancements-in-model-training-and-compression>Advancements in model training and compression</a></li><li><a href=#scalable-vector-database-for-enhanced-llm-applications>Scalable vector database for enhanced LLM applications</a></li></ul></li><li><a href=#ai-startups-breaking-the-vc-barrier>AI startups breaking the VC barrier</a></li><li><a href=#other-notable-trends>Other notable trends</a></li><li><a href=#references>References</a></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,703</li><li class=span><span>Characters:
-</span>15,493</li><li class=span><span>Without Spaces:
+</span>15,520</li><li class=span><span>Without Spaces:
 </span>9,147</li><li class=span><span>Blocks:
 </span>25</li><li class=span><span>Est reading Time:
 </span>16m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#git-branching-mode>Git branching mode</a><ul><li><a href=#the-main-branches>The main branches</a></li><li><a href=#feature>Feature</a></li><li><a href=#release>Release</a></li><li><a href=#hotfix>Hotfix</a></li><li><a href=#gitflow>Gitflow</a></li></ul></li><li><a href=#how-to-write-commit-message>How to write commit message</a></li><li><a href=#pull-request>Pull Request</a></li><li><a href=#code-review>Code Review</a><ul><li><a href=#everyone>Everyone</a></li><li><a href=#having-your-code-reviewed>Having Your Code Reviewed</a></li><li><a href=#reviewing-code>Reviewing code</a></li></ul></li><li><a href=#rebase-vs-merge>Rebase vs Merge</a><ul><li><a href=#merging-pros>Merging Pros</a></li><li><a href=#merging-cons>Merging Cons</a></li><li><a href=#rebase-pros>Rebase Pros</a></li><li><a href=#rebase-cons>Rebase Cons</a></li></ul></li><li><a href=#git-templates>Git Templates</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#git-branching-mode>Git branching mode</a><ul><li><a href=#the-main-branches>The main branches</a></li><li><a href=#feature>Feature</a></li><li><a href=#release>Release</a></li><li><a href=#hotfix>Hotfix</a></li><li><a href=#gitflow>Gitflow</a></li></ul></li><li><a href=#how-to-write-commit-message>How to write commit message</a></li><li><a href=#pull-request>Pull Request</a></li><li><a href=#code-review>Code Review</a><ul><li><a href=#everyone>Everyone</a></li><li><a href=#having-your-code-reviewed>Having Your Code Reviewed</a></li><li><a href=#reviewing-code>Reviewing code</a></li></ul></li><li><a href=#rebase-vs-merge>Rebase vs Merge</a><ul><li><a href=#merging-pros>Merging Pros</a></li><li><a href=#merging-cons>Merging Cons</a></li><li><a href=#rebase-pros>Rebase Pros</a></li><li><a href=#rebase-cons>Rebase Cons</a></li></ul></li><li><a href=#git-templates>Git Templates</a></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

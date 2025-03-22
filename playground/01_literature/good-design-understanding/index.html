@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,844</li><li class=span><span>Characters:
-</span>18,690</li><li class=span><span>Without Spaces:
+</span>18,771</li><li class=span><span>Without Spaces:
 </span>9,211</li><li class=span><span>Blocks:
 </span>40</li><li class=span><span>Est reading Time:
 </span>9m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#what-is-a-good-ux-design>What is a good UX design?</a></li><li><a href=#the-7-factors-that-influence-user-experience><strong>The 7 Factors that Influence User Experience</strong></a><ul><li><a href=#useful>Useful</a></li><li><a href=#usability>Usability</a></li><li><a href=#accessibility>Accessibility</a></li><li><a href=#desirability>Desirability</a></li><li><a href=#credibility>Credibility</a></li><li><a href=#findability>Findability</a></li><li><a href=#value>Value</a></li></ul></li><li><a href=#what-is-a-good-ui-design>What is a good UI Design</a><ul><li><a href=#color>Color</a></li><li><a href=#typography>Typography</a></li><li><a href=#layout>Layout</a></li><li><a href=#consistency>Consistency</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#what-is-a-good-ux-design>What is a good UX design?</a></li><li><a href=#the-7-factors-that-influence-user-experience><strong>The 7 Factors that Influence User Experience</strong></a><ul><li><a href=#useful>Useful</a></li><li><a href=#usability>Usability</a></li><li><a href=#accessibility>Accessibility</a></li><li><a href=#desirability>Desirability</a></li><li><a href=#credibility>Credibility</a></li><li><a href=#findability>Findability</a></li><li><a href=#value>Value</a></li></ul></li><li><a href=#what-is-a-good-ui-design>What is a good UI Design</a><ul><li><a href=#color>Color</a></li><li><a href=#typography>Typography</a></li><li><a href=#layout>Layout</a></li><li><a href=#consistency>Consistency</a></li></ul></li></ul></nav></div></div><main x-data="{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1045,7 +1045,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1054,7 +1054,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

@@ -884,7 +884,7 @@ Tags:
 Folder:
 </span><a href=/updates/forward-engineering>updates/forward-engineering</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,941</li><li class=span><span>Characters:
-</span>22,993</li><li class=span><span>Without Spaces:
+</span>23,047</li><li class=span><span>Without Spaces:
 </span>11,222</li><li class=span><span>Blocks:
 </span>34</li><li class=span><span>Est reading Time:
 </span>20m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#tech-radar>Tech Radar</a><ul><li><a href=#large-language-models>Large Language Models</a></li><li><a href=#reinforcement-learning-from-human-feedback>Reinforcement Learning from Human Feedback</a></li><li><a href=#prompt-engineering>Prompt engineering</a></li><li><a href=#vector-database>Vector Database</a></li><li><a href=#react-server-component>React Server Component</a></li><li><a href=#zod>Zod</a></li></ul></li><li><a href=#brainery>Brainery</a><ul><li><a href=#growth-and-direction>Growth and Direction</a></li><li><a href=#trending-tags>Trending Tags</a></li><li><a href=#top-contributors-and-notes>Top Contributors and Notes</a></li></ul></li><li><a href=#rd-topics-and-challenges>R&amp;D Topics and Challenges</a><ul><li><a href=#research-topics>Research Topics</a></li><li><a href=#future-challenges>Future Challenges</a></li></ul></li><li><a href=#research-narratives>Research Narratives</a><ul><li><a href=#software-design-research-group>Software Design Research Group</a></li></ul></li><li><a href=#dwarves-rewind-june-2023>Dwarves Rewind June 2023</a><ul><li><a href=#trending-and-hot-topics>Trending and Hot Topics</a></li></ul></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#tech-radar>Tech Radar</a><ul><li><a href=#large-language-models>Large Language Models</a></li><li><a href=#reinforcement-learning-from-human-feedback>Reinforcement Learning from Human Feedback</a></li><li><a href=#prompt-engineering>Prompt engineering</a></li><li><a href=#vector-database>Vector Database</a></li><li><a href=#react-server-component>React Server Component</a></li><li><a href=#zod>Zod</a></li></ul></li><li><a href=#brainery>Brainery</a><ul><li><a href=#growth-and-direction>Growth and Direction</a></li><li><a href=#trending-tags>Trending Tags</a></li><li><a href=#top-contributors-and-notes>Top Contributors and Notes</a></li></ul></li><li><a href=#rd-topics-and-challenges>R&amp;D Topics and Challenges</a><ul><li><a href=#research-topics>Research Topics</a></li><li><a href=#future-challenges>Future Challenges</a></li></ul></li><li><a href=#research-narratives>Research Narratives</a><ul><li><a href=#software-design-research-group>Software Design Research Group</a></li></ul></li><li><a href=#dwarves-rewind-june-2023>Dwarves Rewind June 2023</a><ul><li><a href=#trending-and-hot-topics>Trending and Hot Topics</a></li></ul></li></ul></nav></div></div><main x-data='{
@@ -950,7 +950,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -959,7 +959,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -999,7 +999,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1008,7 +1008,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

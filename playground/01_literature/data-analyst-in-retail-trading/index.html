@@ -881,7 +881,7 @@ Tags:
 Folder:
 </span><a href=/playground/01_literature>playground/01_literature</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>1,332</li><li class=span><span>Characters:
-</span>25,029</li><li class=span><span>Without Spaces:
+</span>25,272</li><li class=span><span>Without Spaces:
 </span>6,941</li><li class=span><span>Blocks:
 </span>36</li><li class=span><span>Est reading Time:
 </span>7m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#what-does-a-data-analyst-do>What does a Data Analyst do?</a></li><li><a href=#what-tools-do-i-use>What tools do I use?</a></li><li><a href=#data-science-hierarchy-of-needs>Data Science Hierarchy of Needs</a></li><li><a href=#case-study-data-analyst-in-retail-trading>Case Study: Data Analyst in Retail Trading</a><ul><li><a href=#system-overview>System Overview</a></li></ul></li><li><a href=#data-process>Data Process</a></li><li><a href=#types-of-data-analysts>Types of Data Analysts</a><ul><li><a href=#operation-data-analyst>Operation Data Analyst</a></li><li><a href=#finance-data-analyst>Finance Data Analyst</a></li><li><a href=#marketing-data-analyst>Marketing Data Analyst</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#what-does-a-data-analyst-do>What does a Data Analyst do?</a></li><li><a href=#what-tools-do-i-use>What tools do I use?</a></li><li><a href=#data-science-hierarchy-of-needs>Data Science Hierarchy of Needs</a></li><li><a href=#case-study-data-analyst-in-retail-trading>Case Study: Data Analyst in Retail Trading</a><ul><li><a href=#system-overview>System Overview</a></li></ul></li><li><a href=#data-process>Data Process</a></li><li><a href=#types-of-data-analysts>Types of Data Analysts</a><ul><li><a href=#operation-data-analyst>Operation Data Analyst</a></li><li><a href=#finance-data-analyst>Finance Data Analyst</a></li><li><a href=#marketing-data-analyst>Marketing Data Analyst</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div><main x-data='{
@@ -947,7 +947,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -956,7 +956,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -996,7 +996,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1005,7 +1005,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1045,7 +1045,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1054,7 +1054,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1094,7 +1094,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1103,7 +1103,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1143,7 +1143,7 @@ Folder:
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1152,7 +1152,7 @@ Folder:
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1194,7 +1194,7 @@ This model is used to track the margin of each product or transaction. We need t
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1203,7 +1203,7 @@ This model is used to track the margin of each product or transaction. We need t
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1244,7 +1244,7 @@ You need to optimize the rate of distributor gains against your company gains. I
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1253,7 +1253,7 @@ You need to optimize the rate of distributor gains against your company gains. I
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1294,7 +1294,7 @@ Tracking processes to acquire customer and customer conversion rate. In the exam
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1303,7 +1303,7 @@ Tracking processes to acquire customer and customer conversion rate. In the exam
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -1344,7 +1344,7 @@ Taken from the Pareto principle, we see that 20% of big customers will bring 80%
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1353,7 +1353,7 @@ Taken from the Pareto principle, we see that 20% of big customers will bring 80%
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text

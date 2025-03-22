@@ -882,7 +882,7 @@ Tags:
 Folder:
 </span><a href=/updates/changelog>updates/changelog</a></li></ul><div>Stats</div><ul class=reading-stats><li class=span><span>Words:
 </span>688</li><li class=span><span>Characters:
-</span>9,695</li><li class=span><span>Without Spaces:
+</span>9,749</li><li class=span><span>Without Spaces:
 </span>3,601</li><li class=span><span>Blocks:
 </span>22</li><li class=span><span>Est reading Time:
 </span>3m 0s</li></ul></div></div></div></div></div><div class=toc><div class=toc-indicators><nav id=toc-indicators><ul><li><a href=#reporting-tech-signals>Reporting tech signals</a></li><li><a href=#launching-consulting-team>Launching Consulting Team</a></li><li><a href=#monthly-top-performers>Monthly top performers</a></li><li><a href=#dwarves-of-the-year-2023>Dwarves of the Year 2023</a></li><li><a href=#performance-review>Performance Review</a></li><li><a href=#community>Community</a></li><li><a href=#join-our-team>Join our team</a></li><li><a href=#faq>FAQ</a></li></ul></nav></div><div class=toc-modal><nav id=toc-modal><ul><li><a href=#reporting-tech-signals>Reporting tech signals</a></li><li><a href=#launching-consulting-team>Launching Consulting Team</a></li><li><a href=#monthly-top-performers>Monthly top performers</a></li><li><a href=#dwarves-of-the-year-2023>Dwarves of the Year 2023</a></li><li><a href=#performance-review>Performance Review</a></li><li><a href=#community>Community</a></li><li><a href=#join-our-team>Join our team</a></li><li><a href=#faq>FAQ</a></li></ul></nav></div></div><main x-data='{
@@ -949,7 +949,7 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -958,7 +958,7 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
@@ -998,7 +998,7 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
       // Split path and slugify each component
       const pathParts = path.split('/').map(part => {
         if (part === '' || part === '.' || part === '..') return part;
-        
+
         // Handle the filename separately to preserve extension
         if (part.includes('.')) {
           const [name, ext] = part.split('.');
@@ -1007,7 +1007,7 @@ Dwarves is operated as a 50% company, 50% community. Everything we learn along t
         return this.slugify(part);
       });
 
-      return pathParts.join('/').toLowerCase();
+      return pathParts.join('/').toLowerCase().replace(/^\/+(assets\/.*)$/i, '$1');
     },
     slugify(text) {
       return text
