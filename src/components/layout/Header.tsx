@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({
   readingMode
 }) => {
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border h-[var(--header-height)] font-sans">
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 h-[var(--header-height)] font-sans">
       <div className="container-fluid px-4 h-full flex items-center justify-between max-w-[1400px] mx-auto font-sans">
         {/* Mobile sidebar toggle button */}
         <button
