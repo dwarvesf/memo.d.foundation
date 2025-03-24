@@ -298,10 +298,6 @@
   .command-palette {
     @apply relative;
   }
-
-  .command-palette-container {
-    @apply w-full max-w-2xl rounded-lg bg-white dark:bg-background border border-border shadow-lg overflow-hidden;
-  }
   
   /* Command palette open state */
   body.cmd-palette-open {
@@ -352,7 +348,7 @@
   }
 
   .animate-slideUp {
-    animation: slideUp 0.15s ease-out;
+    animation: slideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
@@ -365,7 +361,7 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(10px) scale(0.98);
   }
   to {
     opacity: 1;

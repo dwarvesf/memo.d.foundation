@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import { createPortal } from 'react-dom';
 
 interface SearchResult {
   title: string;
@@ -38,21 +39,17 @@ const CommandPalette: React.FC = () => {
 
   // Open/close the command palette
   const toggleCommandPalette = useCallback(() => {
-    // Save scroll position before opening
-    const scrollY = window.scrollY;
-
-    setIsOpen(!isOpen);
+    const newIsOpen = !isOpen;
+    
+    setIsOpen(newIsOpen);
     setQuery('');
     setResults([]);
     setGroupedResults({});
 
-    if (!isOpen) {
-      // Opening command palette
+    if (newIsOpen) {
+      // Opening command palette - just add the class to body
       document.body.classList.add('cmd-palette-open');
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-
+      
       // Set initial selection
       if (mockRecentPages.length > 0) {
         setSelectedRecent(mockRecentPages[0]);
@@ -62,13 +59,8 @@ const CommandPalette: React.FC = () => {
         setSelectedWelcomeItem(0);
       }
     } else {
-      // Closing command palette
+      // Closing command palette - simply remove the class
       document.body.classList.remove('cmd-palette-open');
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      // Restore scroll position
-      window.scrollTo(0, scrollY);
     }
   }, [isOpen]);
 
@@ -77,6 +69,10 @@ const CommandPalette: React.FC = () => {
     setIsOpen(false);
     setQuery('');
     document.body.classList.remove('cmd-palette-open');
+    // Make sure we delay focus restoration to avoid scroll position jumps
+    setTimeout(() => {
+      document.body.focus();
+    }, 50);
   };
 
   // Navigate to the selected item
@@ -378,11 +374,12 @@ const CommandPalette: React.FC = () => {
       </button>
 
       {/* Command palette modal */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4 bg-black/50 backdrop-blur-sm">
+      {isOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div
             ref={searchContainerRef}
-            className="relative z-10 w-full max-w-2xl rounded-lg bg-white dark:bg-background border border-border shadow-lg overflow-hidden"
+            className="w-full max-w-2xl rounded-lg bg-white dark:bg-background border border-border shadow-lg overflow-hidden"
+            style={{animation: 'fadeIn 0.15s ease-out'}}
           >
             {/* Search input */}
             <div className="p-4 border-b border-border">
@@ -454,7 +451,7 @@ const CommandPalette: React.FC = () => {
               {query && Object.keys(groupedResults).length === 0 && (
                 <div className="p-8 text-center text-muted-foreground flex flex-col items-center">
                   <img
-                    src="/img/404.png"
+                    src="/assets/img/404.png"
                     alt="No results"
                     className="w-32 opacity-40 dark:invert mb-2"
                   />
@@ -704,7 +701,8 @@ const CommandPalette: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
