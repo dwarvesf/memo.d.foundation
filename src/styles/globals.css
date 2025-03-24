@@ -4,7 +4,8 @@
 @config "../../tailwind.config.mjs";
 
 @layer base {
-  :root {
+  :root,
+  [data-theme="light"] {
     /* Main colors */
     --primary: #e13f5e;
     --primary-hover-color: #d95870;
@@ -26,7 +27,7 @@
     --secondary-tag-color-light: #f4f3f2;
     --border-color-light: #dbdbdb;
 
-    /* Dark theme elements */
+    /* Dark theme elements - only used in dark mode */
     --primary-font-color: #ddd;
     --secondary-font-color: #e8e8e8;
     --primary-background-color: #1e1e1e;
@@ -73,7 +74,8 @@
     --nav-sidebar-offset: 0px;
   }
 
-  .dark {
+  .dark,
+  [data-theme="dark"] {
     /* Dark theme */
     --background: #1e1e1e;
     --foreground: #e8e8e8;

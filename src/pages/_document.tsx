@@ -12,7 +12,7 @@ export default function Document() {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Head>
-      <body className="antialiased min-h-screen" style={{ backgroundColor: 'var(--background)', color: 'var(--foreground)' }}>
+      <body className="antialiased min-h-screen">
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -21,15 +21,23 @@ export default function Document() {
                 const theme = localStorage.getItem('theme') || 'system';
                 
                 if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
                   document.documentElement.setAttribute('data-theme', 'dark');
                 } else {
+                  document.documentElement.classList.remove('dark');
                   document.documentElement.setAttribute('data-theme', 'light');
                 }
                 
                 // Listen for system preference changes
                 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
                   if (localStorage.getItem('theme') === 'system') {
-                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                    if (e.matches) {
+                      document.documentElement.classList.add('dark');
+                      document.documentElement.setAttribute('data-theme', 'dark');
+                    } else {
+                      document.documentElement.classList.remove('dark');
+                      document.documentElement.setAttribute('data-theme', 'light');
+                    }
                   }
                 });
               })();

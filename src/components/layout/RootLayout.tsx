@@ -55,13 +55,16 @@ export default function RootLayout({
       if (savedTheme === 'system') {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.classList.toggle('dark', prefersDark);
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
       } else {
         document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
       }
     } else {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setTheme('system');
       document.documentElement.classList.toggle('dark', prefersDark);
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
     }
 
     // Initialize reading mode from localStorage
@@ -73,6 +76,7 @@ export default function RootLayout({
     const handleChange = (e: MediaQueryListEvent) => {
       if (theme === 'system') {
         document.documentElement.classList.toggle('dark', e.matches);
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
       }
     };
 
@@ -107,8 +111,10 @@ export default function RootLayout({
     if (theme === 'system') {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.classList.toggle('dark', prefersDark);
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
     } else {
       document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
     }
   }, [theme, mounted]);
 
