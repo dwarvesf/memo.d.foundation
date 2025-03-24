@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import TableOfContents from './TableOfContents';
@@ -17,7 +18,7 @@ interface RootLayoutProps {
       id: string;
       text: string;
       level: number;
-      children?: any[];
+      children?: Array<{ id: string; text: string; level: number; }>;
     }[];
   }[];
 }
@@ -150,15 +151,17 @@ export default function RootLayout({
             {/* Main content */}
             <main className="flex-1 p-6 pb-16 mx-auto max-w-[var(--container-max-width)] relative font-serif">
               {/* Yggdrasil tree background */}
-              <img
+              <Image
                 className="yggdrasil-tree"
                 src="/assets/img/footer-bg.svg"
                 alt=""
+                width={1920}
+                height={1080}
               />
 
               {/* Neko mascots */}
-              <img className="neko" src="/assets/img/neko.png" alt="Neko" />
-              <img className="neko2" src="/assets/img/neko-2.png" alt="Neko2" />
+              <Image className="neko" src="/assets/img/neko.png" alt="Neko" width={150} height={150} />
+              <Image className="neko2" src="/assets/img/neko-2.png" alt="Neko2" width={150} height={150} />
 
               {/* Content */}
               <div className="memo-content mb-10">

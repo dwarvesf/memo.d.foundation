@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { createPortal } from 'react-dom';
+import Image from 'next/image';
 
 interface SearchResult {
   title: string;
@@ -65,7 +66,7 @@ const CommandPalette: React.FC = () => {
   }, [isOpen]);
 
   // Close the palette
-  const close = () => {
+  const close = useCallback(() => {
     setIsOpen(false);
     setQuery('');
     document.body.classList.remove('cmd-palette-open');
@@ -73,10 +74,10 @@ const CommandPalette: React.FC = () => {
     setTimeout(() => {
       document.body.focus();
     }, 50);
-  };
+  }, []);
 
   // Navigate to the selected item
-  const goto = () => {
+  const goto = useCallback(() => {
     if (query.length > 0 && results.length > 0) {
       // Handle search results
       const selected = results[selectedIndex];
@@ -112,10 +113,10 @@ const CommandPalette: React.FC = () => {
       // In a real implementation, show a toast notification here
       close();
     }
-  };
+  }, [query, results, selectedIndex, selectedSection, selectedRecent, selectedWelcomeItem, router, close]);
 
   // Navigate through results with arrow keys
-  const navigateNext = () => {
+  const navigateNext = useCallback(() => {
     if (query.length > 0 && results.length > 0) {
       setSelectedIndex(prev => (prev + 1) % results.length);
       setSelectedSection('search');
@@ -150,9 +151,9 @@ const CommandPalette: React.FC = () => {
         setSelectedWelcomeItem(0);
       }
     }
-  };
+  }, [query, results.length, selectedSection, selectedRecent, selectedWelcomeItem]);
 
-  const navigatePrev = () => {
+  const navigatePrev = useCallback(() => {
     if (query.length > 0 && results.length > 0) {
       setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
       setSelectedSection('search');
@@ -186,7 +187,7 @@ const CommandPalette: React.FC = () => {
       setSelectedSection('welcome');
       setSelectedWelcomeItem(1); // Last welcome item
     }
-  };
+  }, [query, results.length, selectedSection, selectedRecent, selectedWelcomeItem]);
 
   // Handle keyboard shortcuts and navigation
   useEffect(() => {
@@ -239,7 +240,7 @@ const CommandPalette: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen, results, selectedIndex, selectedSection, selectedRecent, selectedWelcomeItem, router, toggleCommandPalette]);
+  }, [isOpen, results, selectedIndex, selectedSection, selectedRecent, selectedWelcomeItem, router, toggleCommandPalette, goto, navigateNext, navigatePrev, close]);
 
   // Focus input when opened
   useEffect(() => {
@@ -419,7 +420,7 @@ const CommandPalette: React.FC = () => {
                       <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground bg-muted">
                         {category}
                       </div>
-                      {categoryResults.map((result, index) => {
+                      {categoryResults.map((result) => {
                         const resultIndex = results.findIndex(r => r.file_path === result.file_path);
                         const isSelected = resultIndex === selectedIndex && selectedSection === 'search';
                         return (
@@ -450,10 +451,12 @@ const CommandPalette: React.FC = () => {
               {/* No results state */}
               {query && Object.keys(groupedResults).length === 0 && (
                 <div className="p-8 text-center text-muted-foreground flex flex-col items-center">
-                  <img
+                  <Image
                     src="/assets/img/404.png"
                     alt="No results"
                     className="w-32 opacity-40 dark:invert mb-2"
+                    width={128}
+                    height={128}
                   />
                   <p>No results found.</p>
                 </div>
@@ -554,7 +557,7 @@ const CommandPalette: React.FC = () => {
                       </svg>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-foreground">What's been hot lately</span>
+                      <span className="text-foreground">What&apos;s been hot lately</span>
                       <span className="text-xs text-muted-foreground">
                         See featured posts
                       </span>

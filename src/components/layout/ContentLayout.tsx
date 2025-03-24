@@ -31,6 +31,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
   children,
   title = "Untitled",
   description,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   image,
   metadata,
   backlinks = [],
