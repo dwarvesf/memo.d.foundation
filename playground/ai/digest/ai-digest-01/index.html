@@ -123,7 +123,14 @@
   }
 
   function hasMenuBeenRefreshed() {
-    return sessionStorage.getItem('menuRefreshed') === 'true';
+    const lastRefreshed = sessionStorage.getItem('menuRefreshedTime');
+    if (!lastRefreshed) return false;
+
+    const currentTime = new Date().getTime();
+    const lastRefreshedTime = parseInt(lastRefreshed, 10);
+
+    
+    return (currentTime - lastRefreshedTime) < 60000;
   }
 
   async function refreshNavigationMenu() {
@@ -179,7 +186,7 @@
         }
       });
       window.dispatchEvent(event);
-      sessionStorage.setItem('menuRefreshed', 'true');
+      sessionStorage.setItem('menuRefreshedTime', new Date().getTime().toString());
 
       console.log(duckDBMenuData);
       console.timeEnd('Refreshing navigation menu')
