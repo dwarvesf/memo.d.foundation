@@ -1,11 +1,12 @@
 .utterances {
-  --timeline-spacing: 4px;
-  --avatar-size: 40px;
-  --avatar-spacing: 20px;
+//   --timeline-spacing: 4px;
+//   --avatar-size: 40px;
+//   --avatar-spacing: 20px;
   margin-left: -4px;
   margin-right: -4px;
   max-width: calc(100% + 8px);
   width: calc(100% + 8px);
+  
   @media screen and (min-width: 768px) {
     margin-left: -68px;
     max-width: calc(100% + 68px);
