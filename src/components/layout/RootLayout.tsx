@@ -120,7 +120,7 @@ export default function RootLayout({
   };
 
   return (
-    <div className={`min-h-screen flex flex-col bg-background text-foreground transition-colors ${readingMode ? 'reading-mode' : ''}`}>
+    <div className={`min-h-screen flex flex-col bg-background text-foreground transition-colors font-sans ${readingMode ? 'reading-mode' : ''}`}>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -138,7 +138,7 @@ export default function RootLayout({
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
       {/* Main content area */}
-      <div className="flex flex-col ml-0 md:ml-[56px] lg:ml-[232px] min-h-screen">
+      <div className="flex flex-col ml-0 md:ml-[56px] lg:ml-[var(--nav-sidebar-width)] min-h-screen">
         {/* Header */}
         <Header 
           toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
@@ -152,39 +152,42 @@ export default function RootLayout({
         <div className="flex flex-1 relative">
           <div id="overlay" className={`fixed inset-0 bg-black/30 z-40 ${sidebarOpen ? 'block md:hidden' : 'hidden'}`}></div>
 
-          {/* Main content */}
-          <main className="relative flex-1">
-            {/* Yggdrasil tree background */}
-            <img
-              className="yggdrasil-tree"
-              src="/assets/img/footer-bg.svg"
-              alt=""
-            />
+          {/* Main layout with sidebar */}
+          <div className="flex relative w-full max-w-[1400px] mx-auto">
+            {/* Main content */}
+            <main className="flex-1 p-6 pb-16 mx-auto max-w-[var(--container-max-width)] relative font-serif">
+              {/* Yggdrasil tree background */}
+              <img
+                className="yggdrasil-tree"
+                src="/assets/img/footer-bg.svg"
+                alt=""
+              />
 
-            {/* Neko mascots */}
-            <img className="neko" src="/assets/img/neko.png" alt="Neko" />
-            <img className="neko2" src="/assets/img/neko-2.png" alt="Neko2" />
+              {/* Neko mascots */}
+              <img className="neko" src="/assets/img/neko.png" alt="Neko" />
+              <img className="neko2" src="/assets/img/neko-2.png" alt="Neko2" />
 
-            {/* Content */}
-            <div className="w-full max-w-5xl mx-auto px-4 py-8">
-              {children}
-            </div>
-          </main>
-
-          {/* Right sidebar for TOC and metadata */}
-          <aside className="right-sidebar hidden lg:block w-64 xl:w-72 shrink-0 p-4 pt-8 border-l border-border">
-            <div className="sticky top-16">
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">On this page</h3>
-                <div className="table-of-contents">
-                  {tocItems.length > 0 && <TableOfContents items={tocItems} />}
-                </div>
+              {/* Content */}
+              <div className="memo-content mb-10">
+                {children}
               </div>
-              
-              {/* Metadata section - will be populated by the content */}
-              <div className="metadata"></div>
-            </div>
-          </aside>
+            </main>
+
+            {/* Right sidebar for TOC and metadata */}
+            <aside className={`right-sidebar w-64 xl:w-72 shrink-0 p-4 pt-8 border-l border-border ${readingMode ? 'hidden' : 'hidden lg:block'}`}>
+              <div className="sticky top-16 pt-4">
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium text-muted-foreground uppercase text-[0.6875rem] tracking-wider mb-4">On this page</h3>
+                  <div className="table-of-contents">
+                    {tocItems.length > 0 && <TableOfContents items={tocItems} />}
+                  </div>
+                </div>
+                
+                {/* Metadata section - will be populated by the content */}
+                <div className="metadata"></div>
+              </div>
+            </aside>
+          </div>
         </div>
       </div>
     </div>

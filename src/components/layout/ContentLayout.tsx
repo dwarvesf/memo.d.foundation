@@ -44,53 +44,55 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
     <div className="content-layout">
       {/* Title section */}
       {!hideTitle && (
-        <div className={`mb-8 ${hideFrontmatter ? 'text-center' : ''}`}>
+        <div className={`mb-7 ${hideFrontmatter ? 'text-center' : 'flex flex-col md:flex-row justify-between items-start'}`}>
           {/* Hidden metadata for search engines */}
           <div className="hidden">{title}</div>
           {metadata?.tags && (
             <div className="hidden">tags: {metadata.tags.join(', ')}</div>
           )}
           
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
-            {formattedTitle}
-          </h1>
+          <div className="flex-1">
+            <h1 className="text-[35px] font-semibold tracking-tight leading-[42px] mb-2 mt-0 pb-0 font-serif">
+              {formattedTitle}
+            </h1>
+            
+            {description && (
+              <p className="text-muted-foreground">{description}</p>
+            )}
+          </div>
           
-          {description && (
-            <p className="text-muted-foreground">{description}</p>
+          {/* Tags in flexbox layout */}
+          {metadata?.tags && metadata.tags.length > 0 && !hideFrontmatter && (
+            <div className="flex flex-wrap gap-1.5 mt-2 md:mt-0 md:ml-4">
+              {metadata.tags.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/tags/${tag.toLowerCase()}`}
+                  className="inline-flex px-[0.5rem] py-[0.125rem] justify-center items-center rounded-[50px] bg-tag-light dark:bg-tag-dark h-fit no-underline text-foreground text-xs font-medium leading-[1.125rem]"
+                >
+                  {tag.replaceAll('-', ' ')}
+                </Link>
+              ))}
+            </div>
           )}
         </div>
       )}
 
       {/* Main content with prose styling */}
-      <div className="prose dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight max-w-none">
+      <div className="prose dark:prose-invert font-serif prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:leading-[1.24] max-w-none">
         {children}
       </div>
 
-      {/* Tags */}
-      {metadata?.tags && metadata.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-8">
-          {metadata.tags.map((tag) => (
-            <Link
-              key={tag}
-              href={`/tags/${tag.toLowerCase()}`}
-              className="inline-flex items-center rounded-md bg-muted px-3 py-1 text-sm font-medium text-foreground hover:bg-muted/80"
-            >
-              #{tag.replaceAll('-', ' ')}
-            </Link>
-          ))}
-        </div>
-      )}
-
       {/* Backlinks section */}
       {backlinks.length > 0 && (
-        <div className="mt-12 border-t border-border pt-6">
-          <h2 className="text-xl font-bold mb-4">Backlinks</h2>
-          <ul className="space-y-2">
+        <div className="mentionin mt-12 border-t border-border pt-6">
+          <h6 className="uppercase font-medium text-[10px] mb-0 font-sans">Mentioned in</h6>
+          <ul className="list-none pl-0 mt-[5px] mb-[10px] font-serif">
             {backlinks.map((link, index) => (
-              <li key={index}>
+              <li key={index} className="p-0 text-base">
                 <Link
                   href={link.url}
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline no-underline"
                 >
                   {link.title}
                 </Link>

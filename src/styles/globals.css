@@ -7,11 +7,37 @@
   :root {
     /* Main colors */
     --primary: #e13f5e;
+    --primary-hover-color: #d95870;
     --primary-foreground: #ffffff;
+    --primary-foreground-color: #ffffff;
+    --primary-color-lighten: rgba(255, 160, 179, 0.125);
+    --docsearch-primary-color: #e13f5e;
 
     /* Light theme */
     --background: #ffffff;
     --foreground: #2c2d32;
+    --primary-font-color-light: #2c2d32;
+    --primary-background-color-light: #fff;
+    --primary-border-color-light: #ededed;
+    --secondary-font-color-light: #636466;
+    --secondary-font-color-light-var2: #636466;
+    --secondary-background-color-light: #F8F8F8;
+    --tertiary-background-color-light: #ebebeb;
+    --secondary-tag-color-light: #f4f3f2;
+    --border-color-light: #dbdbdb;
+
+    /* Dark theme elements */
+    --primary-font-color: #ddd;
+    --secondary-font-color: #e8e8e8;
+    --primary-background-color: #1e1e1e;
+    --secondary-background-color: #282828;
+    --secondary-background-color-var2: #202020;
+    --tertiary-background-color: #303030;
+    --primary-border-color: #282828;
+    --secondary-tag-color: #282828;
+    --border-color: #3d3d3d;
+
+    /* Global Elements */
     --card: #ffffff;
     --card-foreground: #2c2d32;
     --popover: #ffffff;
@@ -25,11 +51,26 @@
     --input: #ededed;
     --ring: #e13f5e;
     --secondary: #303030;
+    --secondary-foreground: #9B9B9B;
+    --error-color: #d81b60;
+    --font-monospace: "IBM Plex Mono";
 
-    /* Common variables */
+    /* Spacing and Layout */
     --radius: 0.5rem;
-    --container-max-width: 42rem;
+    --container-max-width: 730px;
     --header-height: 60px;
+    --main-padding: 0px 10px 100px;
+    --main-padding-mobile: 0 1.85rem 60px;
+    --heading-margin: 22px;
+    --subheading-margin: 18px;
+    --subsubheading-margin: 6px;
+    --list-item-spacing: 6px;
+    --list-margin: 10px;
+    --element-margin: 14px;
+    --paragraph-margin: 16px;
+    --column-gap: 48px;
+    --nav-sidebar-width: 200px;
+    --nav-sidebar-offset: 0px;
   }
 
   .dark {
@@ -59,35 +100,51 @@
 
   html {
     @apply scroll-smooth overflow-x-hidden;
+    scroll-padding-top: 5rem;
   }
 
   body {
-    @apply bg-background text-foreground font-sans text-base antialiased overflow-x-hidden;
-    font-family: 'Public Sans', sans-serif;
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
+    font-family: "Public Sans", sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.58;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+
+  /* Apply serif font to .memo-content */
+  .memo-content {
+    font-family: charter, Georgia, Cambria, serif;
+    font-size: 1.0625rem;
+    letter-spacing: -0.0125rem;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight scroll-mt-20;
-  }
-
-  h1 {
-    @apply text-3xl md:text-4xl;
-  }
-
-  h2 {
-    @apply text-2xl md:text-3xl mt-8;
-  }
-
-  h3 {
-    @apply text-xl md:text-2xl mt-8;
-  }
-
-  h4 {
-    @apply text-lg md:text-xl mt-6;
+    @apply font-serif tracking-tight scroll-mt-20;
+    color: var(--foreground);
+    line-height: 1.24;
+    padding: 0 !important;
+    font-weight: 600;
   }
 
   img, video {
-    @apply max-w-full;
+    @apply max-w-full rounded-md;
+  }
+  
+  /* Custom tag styles */
+  .bg-tag-light {
+    background-color: var(--secondary-tag-color-light);
+  }
+  
+  .bg-tag-dark {
+    background-color: var(--secondary-tag-color);
+  }
+  
+  /* Fix main layout */
+  main {
+    width: 100%;
+    position: relative;
   }
 }
 
@@ -266,6 +323,27 @@
     overflow: hidden;
   }
 
+  /* Grid template areas */
+  .grid-areas-\[pagetitle_pagetitle_pagetitle_pagetitle\] {
+    grid-template-areas: "pagetitle pagetitle pagetitle pagetitle";
+  }
+  
+  .justify-right {
+    justify-content: right;
+  }
+  
+  .justify-self-right {
+    justify-self: right;
+  }
+  
+  .overflow-wrap-break-word {
+    overflow-wrap: break-word;
+  }
+  
+  .hyphens-none {
+    hyphens: none;
+  }
+
   /* Animation utilities */
   .animate-fadeIn {
     animation: fadeIn 0.1s ease-in-out forwards;
@@ -292,3 +370,5 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* We're using Tailwind's responsive classes instead of custom media queries */

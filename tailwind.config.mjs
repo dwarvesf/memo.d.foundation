@@ -73,9 +73,9 @@ const config = {
         'header-height': 'var(--header-height)',
       },
       fontFamily: {
-        sans: ['Public Sans', 'sans-serif'],
-        serif: ['charter, Georgia, Cambria, serif'],
-        mono: ['IBM Plex Mono', 'monospace'],
+        sans: ['"Public Sans"', 'sans-serif'],
+        serif: ['charter', 'Georgia', 'Cambria', 'serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -97,6 +97,9 @@ const config = {
             '--tw-prose-th-borders': 'var(--border)',
             '--tw-prose-td-borders': 'var(--border)',
             maxWidth: 'none',
+            fontFamily: 'charter, Georgia, Cambria, serif',
+            fontSize: '1.0625rem',
+            letterSpacing: '-0.0125rem',
             'code::before': {
               content: '""',
             },
@@ -104,11 +107,11 @@ const config = {
               content: '""',
             },
             code: {
-              fontFamily: 'IBM Plex Mono, monospace',
+              fontFamily: 'var(--font-monospace), monospace',
               fontSize: '0.8125rem !important',
               color: '#5c5c5c !important',
               padding: '1px 3px !important',
-              background: 'var(--muted) !important',
+              background: '#f5f5f5 !important',
             },
             'a:hover': {
               textDecoration: 'underline',
@@ -117,44 +120,65 @@ const config = {
               textDecoration: 'none',
               fontWeight: '500',
               color: 'var(--primary)',
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                bottom: '0%',
+                left: '0',
+                width: '100%',
+                height: '15%',
+                backgroundColor: 'var(--primary-color-lighten)',
+                opacity: '0',
+                transition: 'opacity 0.1s ease-in-out',
+                zIndex: '-1',
+              },
+              '&:hover::before': {
+                opacity: '1',
+              }
             },
             'h1, h2, h3, h4, h5, h6': {
               color: 'var(--foreground)',
-              fontWeight: '500',
+              fontWeight: '600',
               lineHeight: '1.24',
+              fontFamily: 'charter, Georgia, Cambria, serif',
+              padding: '0 !important'
             },
             h1: {
               fontSize: '35px !important',
-              margin: '1.5rem 0px 0px !important',
+              margin: 'var(--heading-margin) 0px 0px !important',
             },
             h2: {
               fontSize: '26px !important',
-              margin: '1.5rem 0px 0px !important',
+              margin: 'var(--heading-margin) 0px 0px !important',
             },
             h3: {
               fontSize: '21px !important',
-              margin: '1.5rem 0px 0px !important',
+              margin: 'var(--subheading-margin) 0px 0px !important',
             },
             h4: {
-              fontSize: '20px !important',
-              margin: '1rem 0px 0px !important',
+              fontSize: '18px !important',
+              margin: 'var(--subheading-margin) 0px 0px !important',
             },
             h5: {
               fontSize: '16px !important',
-              margin: '1rem 0px 0px !important',
+              margin: 'var(--subheading-margin) 0px 0px !important',
             },
             p: {
               marginBottom: '0',
-              marginTop: '1rem',
+              marginTop: 'var(--element-margin)',
+            },
+            'h3 + p, h4 + p, h5 + p': {
+              marginTop: 'var(--subsubheading-margin)',
             },
             hr: {
               all: 'initial',
               height: '1px',
               display: 'block',
-              margin: '1rem 0px !important',
+              margin: 'var(--element-margin) 0px !important',
               width: '100%',
               maxWidth: 'inherit',
-              backgroundColor: 'var(--border)',
+              backgroundColor: 'var(--primary-border-color-light)',
             },
             ul: {
               listStyleType: 'disc',
@@ -163,22 +187,27 @@ const config = {
               listStyleType: 'decimal',
             },
             'ul, ol': {
-              lineHeight: '27px',
               margin: '0',
               padding: '0',
               paddingLeft: '2rem',
               display: 'flex',
               flexDirection: 'column',
-              rowGap: '8px',
-              marginTop: '1rem',
+              rowGap: 'var(--list-item-spacing)',
+              marginTop: 'var(--list-margin)',
             },
             'ul ul, ul ol, ol ul, ol ol': {
-              marginTop: '0.5rem',
+              marginTop: 'calc(var(--list-margin) / 2)',
             },
             blockquote: {
-              padding: '0',
-              margin: '1rem 0 0 0',
+              padding: '16px 12px',
+              margin: 'var(--element-margin) 0 0 0',
               boxSizing: 'border-box',
+              borderRadius: '8px',
+              background: 'var(--primary-color-lighten)',
+              fontSize: '16px',
+              lineHeight: '1.5',
+              position: 'relative',
+              overflow: 'hidden',
             },
             'blockquote > *:first-child': {
               marginTop: '0 !important',
@@ -186,21 +215,32 @@ const config = {
             img: {
               maxWidth: '100%',
               borderRadius: '5px',
+              margin: '0px auto 0 auto',
+              maxHeight: '500px',
+            },
+            'p:has(img)': {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              margin: '0',
             },
             table: {
               width: '100%',
               borderCollapse: 'collapse',
               borderSpacing: '0',
-              marginTop: '1rem',
+              marginTop: 'var(--element-margin)',
             },
             'thead th': {
               fontWeight: '500',
-              backgroundColor: 'var(--muted)',
+              backgroundColor: 'var(--secondary-background-color-light)',
+              position: 'sticky',
+              top: '0',
+              zIndex: '1',
             },
             'tr, th, td': {
               borderCollapse: 'collapse',
               borderSpacing: '0',
-              border: '1px solid var(--border)',
+              border: '1px solid var(--border-color-light)',
             },
             'th, td': {
               padding: '10px 12px',

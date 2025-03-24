@@ -59,8 +59,8 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 z-40 h-full flex flex-col bg-background 
-          border-r border-border w-[72px] md:w-[56px] lg:w-[232px] py-4 pb-12
+        className={`fixed top-0 left-0 z-40 h-full flex flex-col bg-background font-sans
+          border-r border-border w-[72px] md:w-[56px] lg:w-[var(--nav-sidebar-width)] py-4 pb-12
           transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : 'translate-x-[-100%] md:translate-x-0'}
         `}
@@ -74,7 +74,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
             <path d="M3.32119 8.11701H10.8749C12.2105 8.11701 13.2916 6.99818 13.2916 5.6161V5.31628C13.2916 5.13347 13.1503 4.98721 12.9736 4.98721H5.44105C4.10554 4.98721 3.02441 6.10604 3.02441 7.48813V7.80257C3.02441 7.97807 3.15867 8.11701 3.32119 8.11701Z" fill="white"/>
             <path d="M3.32118 11.8684H7.24998C8.58549 11.8684 9.66661 10.7496 9.66661 9.36747V9.05303C9.66661 8.87753 9.53236 8.73859 9.36277 8.73859H3.32118C3.15159 8.73859 3.01733 8.87753 3.01733 9.05303V11.5539C3.0244 11.7294 3.15866 11.8684 3.32118 11.8684Z" fill="white"/>
           </svg>
-          <span className="hidden md:inline-block font-ibm-plex text-xs font-bold uppercase leading-tight tracking-tight">
+          <span className="hidden md:inline-block font-sans text-xs font-bold uppercase leading-tight tracking-tight">
             Dwarves<br/>Memo
           </span>
         </Link>

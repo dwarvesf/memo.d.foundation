@@ -74,19 +74,9 @@ const CommandPalette: React.FC = () => {
 
   // Close the palette
   const close = () => {
-    const scrollY = parseInt((document.body.style.top || '0').replace('-', ''), 10);
-
     setIsOpen(false);
     setQuery('');
     document.body.classList.remove('cmd-palette-open');
-
-    // Reset body position
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-
-    // Restore scroll position
-    window.scrollTo(0, scrollY);
   };
 
   // Navigate to the selected item
