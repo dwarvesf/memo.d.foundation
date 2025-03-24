@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
@@ -61,12 +62,31 @@ export async function getMarkdownContent(filePath: string) {
   // Parse frontmatter and content
   const { data: frontmatter, content } = matter(markdownContent);
 
+  // Define schema for rehype-sanitize to allow table elements
+  const schema = {
+    tagNames: [
+      // Default elements
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'img', 'ul', 'ol', 'li', 'blockquote',
+      'hr', 'em', 'strong', 'code', 'pre', 'br', 'del', 'div', 'span',
+      // Table elements
+      'table', 'thead', 'tbody', 'tr', 'th', 'td'
+    ],
+    attributes: {
+      '*': ['className', 'id'],
+      'a': ['href', 'target', 'rel'],
+      'img': ['src', 'alt', 'title'],
+      'th': ['align', 'scope', 'colspan', 'rowspan'],
+      'td': ['align', 'colspan', 'rowspan']
+    }
+  };
+
   // Process the Markdown content
   const processedContent = await unified()
     .use(remarkParse)
+    .use(remarkGfm) // Add GitHub Flavored Markdown support (including tables)
     .use(() => remarkResolveImagePaths(filePath))
-    .use(remarkRehype)
-    .use(rehypeSanitize)
+    .use(remarkRehype, { allowDangerousHtml: true }) // Allow HTML to pass through
+    .use(rehypeSanitize, schema) // Use custom schema that allows table elements
     .use(rehypeStringify)
     .process(content);
 
