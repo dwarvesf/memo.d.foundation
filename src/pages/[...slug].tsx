@@ -50,12 +50,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     // Try multiple file path options to support Hugo's _index.md convention
     let filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
-    
-    // If the direct path doesn't exist, check if there's an _index.md file in the directory
+
+    // If the direct path doesn't exist, check if there's an _index.md or readme.md file in the directory
     if (!fs.existsSync(filePath)) {
       const indexFilePath = path.join(process.cwd(), 'public/content', ...slug, '_index.md');
-      
-      if (fs.existsSync(indexFilePath)) {
+      const readmeFilePath = path.join(process.cwd(), 'public/content', ...slug, 'readme.md');
+
+      if (fs.existsSync(readmeFilePath)) {
+        // Prioritize readme.md if it exists
+        filePath = readmeFilePath;
+      } else if (fs.existsSync(indexFilePath)) {
         filePath = indexFilePath;
       } else {
         return { notFound: true };
@@ -92,15 +96,15 @@ export default function ContentPage({
   React.useEffect(() => {
     const articleContent = document.querySelector('.article-content');
     const tocContainer = document.getElementById('TableOfContents');
-    
+
     if (articleContent && tocContainer) {
       // Find all headings h2, h3, h4
       const headings = articleContent.querySelectorAll('h2, h3, h4');
-      
+
       if (headings.length > 0) {
         const toc = document.createElement('ul');
         const tocLinks: HTMLAnchorElement[] = [];
-        
+
         headings.forEach((heading) => {
           // Create slug for heading
           const headingText = heading.textContent || '';
@@ -108,10 +112,10 @@ export default function ContentPage({
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)/g, '');
-          
+
           // Set ID on the heading element
           heading.id = headingId;
-          
+
           // Create TOC item
           const listItem = document.createElement('li');
           const link = document.createElement('a');
@@ -119,52 +123,52 @@ export default function ContentPage({
           link.textContent = headingText;
           link.setAttribute('data-target', headingId);
           tocLinks.push(link);
-          
+
           // Add smooth scrolling behavior
           link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetHeading = document.getElementById(headingId);
-            
+
             if (targetHeading) {
               // Get the header height to offset the scroll position
               const headerHeight = 64; // Height of the fixed header
               const targetPosition = targetHeading.getBoundingClientRect().top + window.scrollY - headerHeight - 20; // Extra 20px padding
-              
+
               // Scroll to the target position
               window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
               });
-              
+
               // Update URL without causing page reload
               history.pushState(null, '', `#${headingId}`);
-              
+
               // Add active class to the clicked link
               tocLinks.forEach(l => l.classList.remove('active'));
               link.classList.add('active');
             }
           });
-          
+
           // Style based on heading level
           if (heading.tagName === 'H3') {
             listItem.style.paddingLeft = '1rem';
           } else if (heading.tagName === 'H4') {
             listItem.style.paddingLeft = '2rem';
           }
-          
+
           listItem.appendChild(link);
           toc.appendChild(listItem);
         });
-        
+
         tocContainer.innerHTML = '';
         tocContainer.appendChild(toc);
-        
+
         // Add scroll spy functionality
         const observer = new IntersectionObserver(
           (entries) => {
             // Find first visible heading
             const visibleEntry = entries.find(entry => entry.isIntersecting);
-            
+
             if (visibleEntry) {
               const id = visibleEntry.target.id;
               // Find the corresponding TOC link and highlight it
@@ -181,12 +185,12 @@ export default function ContentPage({
             threshold: 0.1 // Require at least 10% visibility
           }
         );
-        
+
         // Observe all headings
         headings.forEach((heading) => {
           observer.observe(heading);
         });
-        
+
       } else {
         // Hide the TOC if no headings found
         const label = document.querySelector('.nav-label');
@@ -196,7 +200,7 @@ export default function ContentPage({
         tocContainer.style.display = 'none';
       }
     }
-    
+
     // Check for initial hash in URL to highlight correct TOC item
     if (window.location.hash) {
       const id = window.location.hash.substring(1);
@@ -206,13 +210,13 @@ export default function ContentPage({
           // Get the header height to offset the scroll position
           const headerHeight = 64; // Height of the fixed header
           const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
-          
+
           // Scroll to the target position
           window.scrollTo({
             top: targetPosition,
             behavior: 'smooth'
           });
-          
+
           // Highlight the correct TOC link
           const link = document.querySelector(`a[data-target="${id}"]`);
           if (link) {
@@ -222,7 +226,7 @@ export default function ContentPage({
         }, 200); // Slightly longer timeout to ensure TOC is fully rendered
       }
     }
-    
+
   }, [content]); // Re-run when content changes
 
   // Format metadata for display
@@ -248,7 +252,7 @@ export default function ContentPage({
   }));
 
   // Don't show subscription for certain pages
-  const shouldShowSubscription = !frontmatter.hide_subscription && 
+  const shouldShowSubscription = !frontmatter.hide_subscription &&
     !['home', 'tags', 'contributor'].some(path => slug.includes(path));
 
   return (
@@ -268,7 +272,7 @@ export default function ContentPage({
         {/* Render the HTML content safely */}
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </ContentLayout>
-      
+
       {/* Only show subscription section on content pages, not special pages */}
       {shouldShowSubscription && <SubscriptionSection />}
     </RootLayout>
