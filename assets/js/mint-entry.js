@@ -171,13 +171,13 @@ const MINT_AMOUNT = 1;
 function getTokenId() {
   const container = document.querySelector(".mint-entry-container");
   if (!container) {
-    console.error("Mint entry container not found");
+    // No mint entry container on this page - this is expected on non-mintable pages
     return null;
   }
 
   const tokenId = container.getAttribute("data-token-id");
   if (!tokenId) {
-    console.error("Token ID not found in data attribute");
+    // Container exists but no token ID - also expected on certain pages
     return null;
   }
 
@@ -367,13 +367,19 @@ function updateNFTContractAddress() {
 
 // Initialize the minting interface and connect to existing wallet if available
 async function initializeMintingInterface() {
-  // Check if we already have a connected wallet from eip6963.js
-  if (window.mainWallet) {
-    await connectToContract(window.mainWallet);
-  }
+  // Get the token ID for this entry
+  const tokenId = getTokenId();
+  
+  // Only proceed if we have a valid token ID
+  if (tokenId) {
+    // Check if we already have a connected wallet from eip6963.js
+    if (window.mainWallet) {
+      await connectToContract(window.mainWallet);
+    }
 
-  // Update UI with initial state
-  updateMintingUI(!!window.mainWallet);
+    // Update UI with initial state
+    updateMintingUI(!!window.mainWallet);
+  }
 }
 
 // Connect to contract with the provided wallet
@@ -434,15 +440,6 @@ function setupEventListeners() {
 
 // Handle mint button click
 async function handleMintButtonClick() {
-  if (!nftContract || !signer) {
-    // If wallet isn't connected, trigger the connect wallet action
-    const connectWalletButton = document.querySelector(".connect-wallet");
-    if (connectWalletButton) {
-      connectWalletButton.click();
-    }
-    return;
-  }
-
   // Get the token ID for this entry
   const tokenId = getTokenId();
   if (!tokenId) {
@@ -450,6 +447,16 @@ async function handleMintButtonClick() {
     return;
   }
 
+  if (!nftContract || !signer) {
+    console.log("Wallet not connected - deferring to eip6963.js handler");
+    // eip6963.js will handle the wallet connection, we don't need to do anything here
+    // The button will have our handler called first, which prevents this from running
+    // until a wallet is connected 
+    return;
+  }
+
+  console.log("Wallet connected, proceeding with mint");
+  
   // Check if user has already minted this token
   try {
     const userAddress = await signer.getAddress();

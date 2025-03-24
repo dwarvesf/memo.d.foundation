@@ -373,7 +373,7 @@ function createDropdown() {
 }
 
 // Populate dropdown with available wallets
-function populateDropdown() {
+function populateDropdown(referenceElement) {
   if (!dropdown) return;
 
   dropdown.innerHTML = "";
@@ -399,8 +399,27 @@ function populateDropdown() {
         mainWallet = walletInfo.provider;
         window.mainWallet = mainWallet;
         await connectWithProvider(mainWallet);
+        
+        // Get accounts
         const accs = await getAccounts(mainWallet);
-        await updateButton(accs, document.querySelector(".connect-wallet"));
+        
+        // Update header connect button
+        const headerConnectBtn = document.querySelector(".connect-wallet");
+        if (headerConnectBtn) {
+          await updateButton(accs, headerConnectBtn);
+        }
+        
+        // If the click came from the mint button, trigger wallet:connectionChanged event
+        // so the mint-entry.js can update its UI
+        if (referenceElement && referenceElement.closest('.mint-cta')) {
+          window.dispatchEvent(
+            new CustomEvent("wallet:connectionChanged", {
+              detail: { connected: true, wallet: mainWallet },
+            })
+          );
+        }
+        
+        // Store provider info
         updateRdnsForProvider(mainWallet);
       });
 
@@ -416,12 +435,24 @@ function populateDropdown() {
 }
 
 // Show dropdown with Popper positioning
-function showDropdown(referenceElement) {
+function showDropdown(referenceElement, placement = "bottom-end") {
+  // If dropdown is already visible and associated with the same element, hide it
+  if (dropdownVisible && dropdown && dropdown.associatedElement === referenceElement) {
+    console.log("Toggling dropdown off");
+    hideDropdown();
+    return;
+  }
+  
+  console.log("Showing dropdown with placement:", placement);
+  
   if (!dropdown) {
     dropdown = createDropdown();
   }
 
-  populateDropdown();
+  // Store reference to the associated element
+  dropdown.associatedElement = referenceElement;
+  
+  populateDropdown(referenceElement);
   dropdown.style.display = "flex";
   dropdownVisible = true;
 
@@ -431,7 +462,7 @@ function showDropdown(referenceElement) {
 
   // Use Popper for positioning
   popperInstance = Popper.createPopper(referenceElement, dropdown, {
-    placement: "bottom-end",
+    placement: placement,
     modifiers: [
       {
         name: "offset",
@@ -452,21 +483,28 @@ function showDropdown(referenceElement) {
 // Hide dropdown
 function hideDropdown() {
   if (dropdown) {
+    console.log("Hiding dropdown");
     dropdown.style.display = "none";
     dropdownVisible = false;
+    dropdown.associatedElement = null;
+    
+    if (popperInstance) {
+      popperInstance.destroy();
+      popperInstance = null;
+    }
   }
 }
 
 // Handle click outside to close dropdown
 function handleClickOutside(event) {
-  const connectBtn = document.querySelector(".connect-wallet");
-  if (
-    dropdownVisible &&
-    dropdown &&
-    !dropdown.contains(event.target) &&
-    connectBtn &&
-    !connectBtn.contains(event.target)
-  ) {
+  // Skip processing if it's a direct button click (we handle these separately)
+  if (event.target.closest('.mint-cta button') || event.target.closest('.connect-wallet')) {
+    return;
+  }
+  
+  // Close dropdown if clicking outside dropdown
+  if (dropdownVisible && dropdown && !dropdown.contains(event.target)) {
+    console.log("Closing dropdown from outside click");
     hideDropdown();
   }
 }
@@ -530,12 +568,18 @@ async function listProviders() {
     }
   });
 
-  // Close dropdown when clicking outside
-  document.addEventListener("click", handleClickOutside);
+  // Setup inside listProviders
+  // Close dropdown when clicking outside - use capture phase to ensure it runs first
+  document.addEventListener("click", (event) => {
+    console.log("Document click:", event.target);
+    // Only process after a short delay to allow other handlers to run first
+    setTimeout(() => handleClickOutside(event), 10);
+  }, true);
 
   // Close dropdown when pressing escape key
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && dropdownVisible) {
+      console.log("Escape pressed, hiding dropdown");
       hideDropdown();
     }
   });
@@ -552,6 +596,13 @@ async function listProviders() {
         if (mainWallet === provider) {
           window.mainWallet = mainWallet;
           await updateButton(accounts, connectBtn);
+          
+          // Also dispatch event for mint-entry.js to update its UI
+          window.dispatchEvent(
+            new CustomEvent("wallet:connectionChanged", {
+              detail: { connected: accounts.length > 0, wallet: mainWallet },
+            })
+          );
         }
       });
 
@@ -560,6 +611,14 @@ async function listProviders() {
         if (mainWallet === provider) {
           const accounts = await getAccounts(provider);
           await updateButton(accounts, connectBtn);
+          
+          // Also dispatch chain changed event for mint-entry.js
+          const isCorrectChain = await checkChain(provider);
+          window.dispatchEvent(
+            new CustomEvent("wallet:chainChanged", {
+              detail: { correctChain: isCorrectChain, wallet: mainWallet },
+            })
+          );
         }
       });
 
@@ -581,27 +640,93 @@ async function listProviders() {
   window.dispatchEvent(new Event("eip6963:requestProvider"));
 }
 
+// Add a new function to handle mint button clicks
+async function handleMintButtonClick(event) {
+  // Stop event propagation to prevent immediate closing
+  event.stopPropagation();
+  
+  const mintButton = event.currentTarget;
+  console.log("Mint button clicked", mintButton);
+  
+  // Check if we have wallet providers
+  const availableWallets = Array.from(rdnsMap.values()).filter(
+    (w) => w.provider
+  );
+  
+  if (availableWallets.length === 0) {
+    // No wallets available, disable the button
+    mintButton.disabled = true;
+    mintButton.classList.add("no-wallet");
+    return;
+  }
+  
+  // If there are available wallets, show the dropdown
+  if (availableWallets.length >= 1) {
+    // Position the dropdown above the mint button
+    showDropdown(mintButton, "top");
+  }
+}
+
 // Initialize when the page loads
 window.addEventListener("load", () => {
-  listProviders();
+  // Check if we're on a page with a token_id
+  const mintEntryContainer = document.querySelector(".mint-entry-container");
+  const connectBtn = document.querySelector(".connect-wallet");
+  
+  // Only proceed if there's a mint-entry-container with token_id or the button is visible
+  if ((mintEntryContainer && mintEntryContainer.getAttribute("data-token-id")) || 
+      (connectBtn && window.getComputedStyle(connectBtn).display !== "none")) {
+    // Initialize wallet connection
+    listProviders();
 
-  // Check for supported wallets after a delay to allow extensions to load
-  setTimeout(() => {
-    const availableWallets = Array.from(rdnsMap.values()).filter(
-      (w) => w.provider
-    );
-    const connectBtn = document.querySelector(".connect-wallet");
+    // Check for supported wallets after a delay to allow extensions to load
+    setTimeout(() => {
+      const availableWallets = Array.from(rdnsMap.values()).filter(
+        (w) => w.provider
+      );
+      
+      // Setup connect button tooltip if no wallets
+      if (connectBtn && availableWallets.length === 0) {
+        // No supported wallets found
+        connectBtn.disabled = true;
+        connectBtn.classList.add("no-wallet");
 
-    if (connectBtn && availableWallets.length === 0) {
-      // No supported wallets found
-      connectBtn.disabled = true;
-      connectBtn.classList.add("no-wallet");
-
-      // Setup tooltip events
-      connectBtn.addEventListener("mouseenter", () => showTooltip(connectBtn));
-      connectBtn.addEventListener("mouseleave", hideTooltip);
-      connectBtn.addEventListener("focus", () => showTooltip(connectBtn));
-      connectBtn.addEventListener("blur", hideTooltip);
-    }
-  }, 500); // Wait 1.5s to check for wallets
+        // Setup tooltip events
+        connectBtn.addEventListener("mouseenter", () => showTooltip(connectBtn));
+        connectBtn.addEventListener("mouseleave", hideTooltip);
+        connectBtn.addEventListener("focus", () => showTooltip(connectBtn));
+        connectBtn.addEventListener("blur", hideTooltip);
+      }
+      
+      // Find mint button and add click handler
+      const mintButton = document.querySelector(".mint-cta button");
+      if (mintButton) {
+        console.log("Found mint button:", mintButton.textContent);
+        
+        if (availableWallets.length === 0) {
+          // No wallets available, disable the button
+          mintButton.disabled = true;
+          mintButton.title = "Please install a wallet extension";
+        } else {
+          // Remove any existing click event listeners to avoid duplicates
+          mintButton.removeEventListener("click", handleMintButtonClick);
+          
+          // Add click handler for the mint button to show wallet dropdown
+          mintButton.addEventListener("click", handleMintButtonClick);
+          console.log("Added click handler to mint button");
+          
+          // Ensure the class is set for identifying mint button in handleClickOutside
+          mintButton.classList.add("wallet-trigger");
+        }
+      }
+    }, 500); // Wait 0.5s to check for wallets
+  }
 });
+
+// Export wallet connection functions for use in other scripts
+window.connectWithProvider = connectWithProvider;
+window.showDropdown = showDropdown;
+window.hideDropdown = hideDropdown;
+window.updateRdnsForProvider = updateRdnsForProvider;
+window.rdnsMap = rdnsMap;
+window.updateButton = updateButton;
