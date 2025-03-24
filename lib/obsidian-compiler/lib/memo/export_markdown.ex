@@ -74,24 +74,54 @@ defmodule Memo.ExportMarkdown do
          ignored_patterns,
          cache
        ) do
+    # Group files by their parent directory
+    files_by_folder =
+      all_valid_files
+      |> Enum.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
+      |> Enum.group_by(fn file -> Path.dirname(file) end)
+
+    # Process files, README.md files will automatically be converted to _index.md in process_file
+    valid_files =
+      all_valid_files
+      |> Enum.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
+
+    # Identify directories with both README.md and _index.md
+    dirs_with_readme =
+      files_by_folder
+      |> Enum.filter(fn {_dir, files} ->
+        Enum.any?(files, fn file -> Path.basename(file) == "README.md" end)
+      end)
+      |> Enum.map(fn {dir, _files} -> dir end)
+      |> MapSet.new()
+
+    # Filter out _index.md files in directories that have README.md
+    files_to_process =
+      valid_files
+      |> Enum.filter(fn file ->
+        basename = Path.basename(file)
+        dir = Path.dirname(file)
+
+        # Keep all files except _index.md files where README.md exists
+        !(basename == "_index.md" && MapSet.member?(dirs_with_readme, dir))
+      end)
+
     # Find files that need processing (new or modified)
-    {files_to_process, files_unchanged} = filter_changed_files(all_valid_files, cache)
+    {files_to_process_changed, files_unchanged} = filter_changed_files(files_to_process, cache)
 
     # Find files that were in the cache but no longer exist (deleted)
     deleted_files = find_deleted_files(all_valid_files, cache)
 
     # Process only changed files
     file_cache =
-      if Enum.empty?(files_to_process) do
+      if Enum.empty?(files_to_process_changed) do
         IO.puts("No files have changed since last run.")
         cache
       else
-        IO.puts("Processing #{Enum.count(files_to_process)} files...")
+        IO.puts("Processing #{Enum.count(files_to_process_changed)} files...")
 
         # Process changed files - Using Enum instead of Flow to avoid protocol errors
         updated_entries =
-          files_to_process
-          |> Enum.filter(&Frontmatter.contains_required_frontmatter_keys?/1)
+          files_to_process_changed
           |> Enum.map(fn file ->
             # process_file always returns a map, no need to check for :ok
             process_file(file, vault_dir, exportpath, all_valid_files, cache)
@@ -266,20 +296,36 @@ defmodule Memo.ExportMarkdown do
       converted_content = KatexUtils.wrap_multiline_katex(converted_content)
 
       export_file = replace_path_prefix(file, vaultpath, exportpath)
-      slugified_export_file = preserve_relative_prefix_and_slugify(export_file)
 
-      export_dir = Path.dirname(slugified_export_file)
-      File.mkdir_p!(export_dir)
+      # First apply slugification to the path (but not the filename)
+      export_dir = Path.dirname(export_file)
+      slugified_dir = Slugify.slugify_directory(export_dir)
+      basename = Path.basename(export_file)
 
-      File.write!(slugified_export_file, converted_content)
-      IO.puts("Exported: #{inspect(file)} -> #{inspect(slugified_export_file)}")
+      # Handle README.md conversion - AFTER slugifying the directory
+      # but BEFORE slugifying the filename
+      final_basename =
+        if Path.basename(file) == "README.md" do
+          # Don't slugify this special filename
+          "_index.md"
+        else
+          Slugify.slugify_filename(basename)
+        end
+
+      final_path = Path.join(slugified_dir, final_basename)
+
+      # Ensure directory exists
+      File.mkdir_p!(slugified_dir)
+
+      File.write!(final_path, converted_content)
+      IO.puts("Exported: #{inspect(file)} -> #{inspect(final_path)}")
 
       # Update cache with new file information
       new_entry = %{
         "size" => size,
         "mtime" => mtime,
         "hash" => file_hash,
-        "export_path" => slugified_export_file,
+        "export_path" => final_path,
         "links" => links
       }
 
@@ -559,6 +605,7 @@ defmodule Memo.ExportMarkdown do
     title: Contributors
     ---
     """
+
     index_path = Path.join(contributor_dir, "_index.md")
     File.write!(index_path, index_content)
     IO.puts("Generated contributor _index.md: #{index_path}")
@@ -584,32 +631,35 @@ defmodule Memo.ExportMarkdown do
     case DuckDBUtils.execute_query_temp(query) do
       {:ok, result} ->
         # Handle different result formats - could be a list of maps or a struct with rows
-        authors = cond do
-          is_list(result) && Enum.all?(result, &is_map/1) ->
-            # Format is list of maps with author_name key
-            result
-            |> Enum.map(fn map -> Map.get(map, "author_name") end)
-            |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
+        authors =
+          cond do
+            is_list(result) && Enum.all?(result, &is_map/1) ->
+              # Format is list of maps with author_name key
+              result
+              |> Enum.map(fn map -> Map.get(map, "author_name") end)
+              |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
 
-          is_map(result) && Map.has_key?(result, :rows) ->
-            # Format is struct with rows field
-            result.rows
-            |> Enum.map(fn [author_name] -> author_name end)
-            |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
+            is_map(result) && Map.has_key?(result, :rows) ->
+              # Format is struct with rows field
+              result.rows
+              |> Enum.map(fn [author_name] -> author_name end)
+              |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
 
-          true ->
-            IO.puts("Unexpected DuckDB result format: #{inspect(result)}")
-            []
-        end
+            true ->
+              IO.puts("Unexpected DuckDB result format: #{inspect(result)}")
+              []
+          end
 
         # Create a file for each author
         Enum.each(authors, fn author_name ->
           slug = Slugify.slugify(author_name)
+
           file_content = """
           ---
           title: #{author_name}
           ---
           """
+
           file_path = Path.join(contributor_dir, "#{slug}.md")
           File.write!(file_path, file_content)
           IO.puts("Generated contributor file: #{file_path}")
