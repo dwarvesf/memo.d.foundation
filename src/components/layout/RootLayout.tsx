@@ -30,7 +30,7 @@ export default function RootLayout({
   tocItems = [],
 }: RootLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [readingMode, setReadingMode] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -49,36 +49,30 @@ export default function RootLayout({
 
     // Initialize theme from localStorage
     const savedTheme = localStorage?.getItem('theme') as 'light' | 'dark' | 'system' | null;
-
-    if (savedTheme) {
-      setTheme(savedTheme);
-      if (savedTheme === 'system') {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle('dark', prefersDark);
-        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-      } else {
-        document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-        document.documentElement.setAttribute('data-theme', savedTheme);
-      }
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    let initialTheme: 'light' | 'dark';
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      // If we have a direct light/dark preference, use it
+      initialTheme = savedTheme;
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme('system');
-      document.documentElement.classList.toggle('dark', prefersDark);
-      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      // For 'system' or null, use system preference
+      initialTheme = prefersDark ? 'dark' : 'light';
     }
+    
+    // Set the theme state
+    setTheme(initialTheme);
+    
+    // Apply the theme to the document
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
+    document.documentElement.setAttribute('data-theme', initialTheme);
 
     // Initialize reading mode from localStorage
     const savedReadingMode = localStorage?.getItem('readingMode') === 'true';
     setReadingMode(savedReadingMode);
 
-    // Handle system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (theme === 'system') {
-        document.documentElement.classList.toggle('dark', e.matches);
-        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-      }
-    };
+    // No need to handle system theme changes since we're not using 'system' theme anymore
+    // We'll still keep the media query for initial setup, but we won't need the change handler
 
     // Add keyboard shortcut for reading mode (Cmd/Ctrl+Shift+F)
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -91,12 +85,10 @@ export default function RootLayout({
     // Set CSS variable for header height
     document.documentElement.style.setProperty('--header-height', '60px');
 
-    // Add event listeners
-    mediaQuery.addEventListener('change', handleChange);
+    // Add keyboard event listener
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleChange);
       window.removeEventListener('keydown', handleKeyDown);
     };
     // eslint-disable-next-line
@@ -106,22 +98,17 @@ export default function RootLayout({
   useEffect(() => {
     if (!mounted) return;
 
+    // Save theme preference
     localStorage.setItem('theme', theme);
 
-    if (theme === 'system') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.toggle('dark', prefersDark);
-      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-    } else {
-      document.documentElement.classList.toggle('dark', theme === 'dark');
-      document.documentElement.setAttribute('data-theme', theme);
-    }
+    // Apply theme
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
   }, [theme, mounted]);
 
   const toggleTheme = () => {
-    const themes: ('light' | 'dark' | 'system')[] = ['light', 'dark', 'system'];
-    const currentIndex = themes.indexOf(theme);
-    const newTheme = themes[(currentIndex + 1) % themes.length];
+    // Simply toggle between light and dark
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
   };
 

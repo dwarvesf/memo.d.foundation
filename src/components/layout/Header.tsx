@@ -6,7 +6,7 @@ interface HeaderProps {
   toggleSidebar: () => void;
   toggleTheme: () => void;
   toggleReadingMode: () => void;
-  theme: 'light' | 'dark' | 'system';
+  theme: 'light' | 'dark';
   readingMode: boolean;
 }
 

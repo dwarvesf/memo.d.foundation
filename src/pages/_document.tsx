@@ -17,29 +17,23 @@ export default function Document() {
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                // Check for saved theme preference or default to system preference
-                const theme = localStorage.getItem('theme') || 'system';
+                // Get saved theme or default to system preference
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const savedTheme = localStorage.getItem('theme');
                 
-                if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                // Default to system preference if no saved preference
+                const theme = (savedTheme === 'light' || savedTheme === 'dark') 
+                  ? savedTheme 
+                  : (prefersDark ? 'dark' : 'light');
+                
+                // Apply theme
+                if (theme === 'dark') {
                   document.documentElement.classList.add('dark');
                   document.documentElement.setAttribute('data-theme', 'dark');
                 } else {
                   document.documentElement.classList.remove('dark');
                   document.documentElement.setAttribute('data-theme', 'light');
                 }
-                
-                // Listen for system preference changes
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-                  if (localStorage.getItem('theme') === 'system') {
-                    if (e.matches) {
-                      document.documentElement.classList.add('dark');
-                      document.documentElement.setAttribute('data-theme', 'dark');
-                    } else {
-                      document.documentElement.classList.remove('dark');
-                      document.documentElement.setAttribute('data-theme', 'light');
-                    }
-                  }
-                });
               })();
             `,
           }}
