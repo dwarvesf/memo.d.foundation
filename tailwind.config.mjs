@@ -10,7 +10,7 @@ const config = {
   theme: {
     extend: {
       colors: {
-        // Using CSS variables for all colors, matching Hugo
+        // Using CSS variables for all colors to match with Hugo
         primary: {
           DEFAULT: 'var(--primary)',
           hover: 'var(--primary-hover)',
@@ -36,14 +36,15 @@ const config = {
           foreground: 'var(--muted-foreground)',
         },
         secondary: {
-          DEFAULT: 'var(--secondary-foreground)',
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)',
           light: 'var(--secondary-font-color-light)',
           dark: 'var(--secondary-font-color)',
         },
         border: {
           DEFAULT: 'var(--border)',
           hover: 'var(--border-hover)',
-          light: 'var(--primary-border-color-light)',
+          light: 'var(--border-light)',
           dark: 'var(--primary-border-color)',
         },
         input: {
@@ -69,11 +70,12 @@ const config = {
         'container-max': 'var(--container-max-width)',
         'element-margin': 'var(--element-margin)',
         'heading-margin': 'var(--heading-margin)',
+        'header-height': 'var(--header-height)',
       },
       fontFamily: {
-        sans: ['var(--font-sans)'],
+        sans: ['Public Sans', 'sans-serif'],
         serif: ['charter, Georgia, Cambria, serif'],
-        mono: ['var(--font-mono)'],
+        mono: ['IBM Plex Mono', 'monospace'],
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -102,7 +104,7 @@ const config = {
               content: '""',
             },
             code: {
-              fontFamily: 'var(--font-mono)',
+              fontFamily: 'IBM Plex Mono, monospace',
               fontSize: '0.8125rem !important',
               color: '#5c5c5c !important',
               padding: '1px 3px !important',
@@ -123,33 +125,33 @@ const config = {
             },
             h1: {
               fontSize: '35px !important',
-              margin: 'var(--heading-margin) 0px 0px !important',
+              margin: '1.5rem 0px 0px !important',
             },
             h2: {
               fontSize: '26px !important',
-              margin: 'var(--heading-margin) 0px 0px !important',
+              margin: '1.5rem 0px 0px !important',
             },
             h3: {
               fontSize: '21px !important',
-              margin: 'var(--heading-margin) 0px 0px !important',
+              margin: '1.5rem 0px 0px !important',
             },
             h4: {
               fontSize: '20px !important',
-              margin: 'var(--element-margin) 0px 0px !important',
+              margin: '1rem 0px 0px !important',
             },
             h5: {
               fontSize: '16px !important',
-              margin: 'var(--element-margin) 0px 0px !important',
+              margin: '1rem 0px 0px !important',
             },
             p: {
               marginBottom: '0',
-              marginTop: 'var(--element-margin)',
+              marginTop: '1rem',
             },
             hr: {
               all: 'initial',
               height: '1px',
               display: 'block',
-              margin: 'var(--element-margin) 0px !important',
+              margin: '1rem 0px !important',
               width: '100%',
               maxWidth: 'inherit',
               backgroundColor: 'var(--border)',
@@ -168,14 +170,14 @@ const config = {
               display: 'flex',
               flexDirection: 'column',
               rowGap: '8px',
-              marginTop: 'var(--element-margin)',
+              marginTop: '1rem',
             },
             'ul ul, ul ol, ol ul, ol ol': {
-              marginTop: 'calc(var(--element-margin) / 2)',
+              marginTop: '0.5rem',
             },
             blockquote: {
               padding: '0',
-              margin: 'var(--element-margin) 0 0 0',
+              margin: '1rem 0 0 0',
               boxSizing: 'border-box',
             },
             'blockquote > *:first-child': {
@@ -189,7 +191,7 @@ const config = {
               width: '100%',
               borderCollapse: 'collapse',
               borderSpacing: '0',
-              marginTop: 'var(--element-margin)',
+              marginTop: '1rem',
             },
             'thead th': {
               fontWeight: '500',
@@ -229,10 +231,10 @@ const config = {
             '--tw-prose-td-borders': 'var(--border)',
             code: {
               color: '#b3b3b3 !important',
-              background: 'var(--secondary-background-color) !important',
+              background: 'var(--muted) !important',
             },
             pre: {
-              background: 'var(--secondary-background-color) !important',
+              background: 'var(--muted) !important',
             },
             'pre > code': {
               backgroundColor: 'transparent !important',
@@ -240,6 +242,28 @@ const config = {
           },
         },
       }),
+      // Animation keyframes
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px) scale(0.95)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.1s ease-in-out forwards',
+        slideUp: 'slideUp 0.15s ease-out',
+      },
+      zIndex: {
+        '60': '60',
+        '70': '70',
+        '80': '80',
+        '90': '90',
+        '100': '100',
+      },
     },
   },
   plugins: [

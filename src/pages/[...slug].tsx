@@ -261,20 +261,22 @@ export default function ContentPage({
       description={frontmatter.description}
       image={frontmatter.image}
     >
-      <ContentLayout
-        title={frontmatter.title}
-        description={frontmatter.description}
-        metadata={metadata}
-        backlinks={formattedBacklinks}
-        hideFrontmatter={frontmatter.hide_frontmatter}
-        hideTitle={frontmatter.hide_title}
-      >
-        {/* Render the HTML content safely */}
-        <div dangerouslySetInnerHTML={{ __html: content }} />
-      </ContentLayout>
+      <div className="content-wrapper">
+        <ContentLayout
+          title={frontmatter.title}
+          description={frontmatter.description}
+          metadata={metadata}
+          backlinks={formattedBacklinks}
+          hideFrontmatter={frontmatter.hide_frontmatter}
+          hideTitle={frontmatter.hide_title}
+        >
+          {/* Render the HTML content safely */}
+          <div className="article-content" dangerouslySetInnerHTML={{ __html: content }} />
+        </ContentLayout>
 
-      {/* Only show subscription section on content pages, not special pages */}
-      {shouldShowSubscription && <SubscriptionSection />}
+        {/* Only show subscription section on content pages, not special pages */}
+        {shouldShowSubscription && <SubscriptionSection />}
+      </div>
     </RootLayout>
   );
 }
