@@ -44,7 +44,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
     <div className="content-layout">
       {/* Title section */}
       {!hideTitle && (
-        <div className={`mb-7 ${hideFrontmatter ? 'text-center' : 'flex flex-col md:flex-row justify-between items-start'}`}>
+        <div className="mb-7 flex flex-col md:flex-row justify-between items-start">
           {/* Hidden metadata for search engines */}
           <div className="hidden">{title}</div>
           {metadata?.tags && (
