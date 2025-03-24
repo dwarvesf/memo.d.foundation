@@ -20,32 +20,34 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 h-[var(--header-height)] font-sans">
       <div className="container-fluid px-4 h-full flex items-center justify-between max-w-[1400px] mx-auto font-sans">
-        {/* Mobile sidebar toggle button */}
-        <button
-          id="sidebar-toggle"
-          onClick={toggleSidebar}
-          aria-label="Toggle sidebar"
-          className="flex items-center justify-center w-10 h-10 md:hidden focus:outline-none"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-current">
-            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+        <div className="flex items-center">
+          {/* Mobile sidebar toggle button */}
+          <button
+            id="sidebar-toggle"
+            onClick={toggleSidebar}
+            aria-label="Toggle sidebar"
+            className="flex items-center justify-center w-10 h-10 md:hidden focus:outline-none"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-current">
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
 
-        {/* Logo (shown on mobile) */}
-        <Link href="/" className="md:hidden flex items-center gap-2">
-          <svg className="min-w-6 w-6 h-7 shrink-0" width="24" height="24" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.41664 20C1.08113 20 0 18.8812 0 17.4991V2.50091C0 1.11883 1.08113 0 2.41664 0L8.46529 0.00731261C13.8427 0.00731261 18.1954 4.55576 18.1248 10.1353C18.0541 15.6271 13.6307 20 8.32397 20H2.41664Z" fill="var(--primary)"/>
-            <path d="M3.63209 15.6271H3.32118C3.15159 15.6271 3.01733 15.4881 3.01733 15.3126V12.8044C3.01733 12.6289 3.15159 12.49 3.32118 12.49H5.74488C5.91447 12.49 6.04873 12.6289 6.04873 12.8044V13.1262C6.04873 14.5082 4.9676 15.6271 3.63209 15.6271Z" fill="white"/>
-            <path d="M3.32119 8.11701H10.8749C12.2105 8.11701 13.2916 6.99818 13.2916 5.6161V5.31628C13.2916 5.13347 13.1503 4.98721 12.9736 4.98721H5.44105C4.10554 4.98721 3.02441 6.10604 3.02441 7.48813V7.80257C3.02441 7.97807 3.15867 8.11701 3.32119 8.11701Z" fill="white"/>
-            <path d="M3.32118 11.8684H7.24998C8.58549 11.8684 9.66661 10.7496 9.66661 9.36747V9.05303C9.66661 8.87753 9.53236 8.73859 9.36277 8.73859H3.32118C3.15159 8.73859 3.01733 8.87753 3.01733 9.05303V11.5539C3.0244 11.7294 3.15866 11.8684 3.32118 11.8684Z" fill="white"/>
-          </svg>
-          <span className="font-sans text-xs font-bold uppercase leading-tight tracking-tight">
-            Dwarves<br/>Memo
-          </span>
-        </Link>
+          {/* Logo (shown on mobile) */}
+          <Link href="/" className="md:hidden flex items-center gap-2">
+            <svg className="min-w-6 w-6 h-7 shrink-0" width="24" height="24" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.41664 20C1.08113 20 0 18.8812 0 17.4991V2.50091C0 1.11883 1.08113 0 2.41664 0L8.46529 0.00731261C13.8427 0.00731261 18.1954 4.55576 18.1248 10.1353C18.0541 15.6271 13.6307 20 8.32397 20H2.41664Z" fill="var(--primary)"/>
+              <path d="M3.63209 15.6271H3.32118C3.15159 15.6271 3.01733 15.4881 3.01733 15.3126V12.8044C3.01733 12.6289 3.15159 12.49 3.32118 12.49H5.74488C5.91447 12.49 6.04873 12.6289 6.04873 12.8044V13.1262C6.04873 14.5082 4.9676 15.6271 3.63209 15.6271Z" fill="white"/>
+              <path d="M3.32119 8.11701H10.8749C12.2105 8.11701 13.2916 6.99818 13.2916 5.6161V5.31628C13.2916 5.13347 13.1503 4.98721 12.9736 4.98721H5.44105C4.10554 4.98721 3.02441 6.10604 3.02441 7.48813V7.80257C3.02441 7.97807 3.15867 8.11701 3.32119 8.11701Z" fill="white"/>
+              <path d="M3.32118 11.8684H7.24998C8.58549 11.8684 9.66661 10.7496 9.66661 9.36747V9.05303C9.66661 8.87753 9.53236 8.73859 9.36277 8.73859H3.32118C3.15159 8.73859 3.01733 8.87753 3.01733 9.05303V11.5539C3.0244 11.7294 3.15866 11.8684 3.32118 11.8684Z" fill="white"/>
+            </svg>
+            <span className="font-sans text-xs font-bold uppercase leading-tight tracking-tight">
+              Dwarves<br/>Memo
+            </span>
+          </Link>
+        </div>
 
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex items-center gap-2 md:gap-4 ml-auto">
           {/* Command palette */}
           <CommandPalette />
 
