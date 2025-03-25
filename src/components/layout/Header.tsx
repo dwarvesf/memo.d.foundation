@@ -12,14 +12,12 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   toggleSidebar,
-  toggleTheme,
   toggleReadingMode,
-  theme,
   readingMode,
 }) => {
   return (
-    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-[var(--header-height)] w-full font-sans backdrop-blur">
-      <div className="container-fluid mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 font-sans">
+    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 top-0 h-[var(--header-height)] w-full shrink-0 font-sans backdrop-blur">
+      <div className="mx-auto flex h-full items-center justify-between p-2">
         <div className="flex items-center">
           {/* Mobile sidebar toggle button */}
           <button
@@ -86,49 +84,48 @@ const Header: React.FC<HeaderProps> = ({
           <CommandPalette />
 
           {/* RSS Feed Link */}
-          <a 
-            href="/feed.xml" 
-            target="_blank" 
+          <a
+            href="/feed.xml"
+            target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground hidden md:flex items-center"
+            className="text-muted-foreground hover:text-foreground hidden items-center md:flex"
             title="Subscribe to RSS Feed"
             aria-label="Subscribe to RSS Feed"
           >
-            <svg 
-              width="20" 
-              height="20" 
-              viewBox="0 0 24 24" 
-              fill="none" 
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="text-orange-500"
             >
-              <path 
-                d="M4 11C6.38695 11 8.67613 11.9482 10.364 13.636C12.0518 15.3239 13 17.6131 13 20" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <path
+                d="M4 11C6.38695 11 8.67613 11.9482 10.364 13.636C12.0518 15.3239 13 17.6131 13 20"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path 
-                d="M4 4C8.24346 4 12.3131 5.68571 15.3137 8.68629C18.3143 11.6869 20 15.7565 20 20" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <path
+                d="M4 4C8.24346 4 12.3131 5.68571 15.3137 8.68629C18.3143 11.6869 20 15.7565 20 20"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path 
-                d="M5 20C5.55228 20 6 19.5523 6 19C6 18.4477 5.55228 18 5 18C4.44772 18 4 18.4477 4 19C4 19.5523 4.44772 20 5 20Z" 
-                fill="currentColor" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <path
+                d="M5 20C5.55228 20 6 19.5523 6 19C6 18.4477 5.55228 18 5 18C4.44772 18 4 18.4477 4 19C4 19.5523 4.44772 20 5 20Z"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
           </a>
 
           <div className="bg-border hidden h-6 w-px md:block"></div>
-
           {/* Reading mode toggle */}
           <button
             className="flex w-12 cursor-pointer items-center justify-center border-0 bg-transparent outline-none hover:opacity-95 active:opacity-100 md:w-14"
@@ -200,7 +197,6 @@ const Header: React.FC<HeaderProps> = ({
               </g>
             </svg>
           </button>
-
           <div
             className="bg-secondary text-secondary-foreground absolute top-14 right-12 z-50 hidden rounded-lg p-2 text-xs font-medium shadow-md"
             role="tooltip"
@@ -222,8 +218,7 @@ const Header: React.FC<HeaderProps> = ({
             </div>
             <div className="arrow" data-popper-arrow></div>
           </div>
-
-          {/* Theme toggler */}
+          {/* Theme toggler
           <button
             className="flex h-8 w-8 cursor-pointer items-center justify-center border-0 bg-transparent"
             aria-label="Toggle theme"
@@ -257,7 +252,7 @@ const Header: React.FC<HeaderProps> = ({
                 ></path>
               </svg>
             )}
-          </button>
+          </button> */}
         </div>
       </div>
     </header>

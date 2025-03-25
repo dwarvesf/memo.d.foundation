@@ -3,8 +3,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import TableOfContents from './TableOfContents';
 import { useThemeContext } from '@/contexts/theme';
+import Footer from './Footer';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -29,7 +29,6 @@ export default function RootLayout({
   title = 'Dwarves Memo',
   description = 'Knowledge sharing platform for Dwarves Foundation',
   image,
-  tocItems = [],
 }: RootLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [readingMode, setReadingMode] = useState(false);
@@ -112,15 +111,14 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </Head>
-      <div
-        className={`bg-background text-foreground flex min-h-screen flex-col font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
-      >
-        {/* Sidebar */}
-        <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+      {/* Sidebar */}
 
-        {/* Main content area */}
-        <div className="ml-0 flex min-h-screen flex-col md:ml-[56px] lg:ml-[var(--nav-sidebar-width)]">
-          {/* Header */}
+      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+
+      <div
+        className={`bg-background text-foreground relative flex h-screen flex-col font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
+      >
+        <div className="relative flex flex-1 flex-col overflow-y-auto">
           <Header
             toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
             toggleTheme={toggleTheme}
@@ -130,68 +128,48 @@ export default function RootLayout({
           />
 
           {/* Main content grid */}
-          <div className="relative flex flex-1">
-            <div
-              id="overlay"
-              className={`fixed inset-0 z-40 bg-black/30 ${sidebarOpen ? 'block md:hidden' : 'hidden'}`}
-            ></div>
+          <div className="main-grid relative w-full flex-1 flex-col">
+            <main className="main-content relative mx-auto max-w-[var(--container-max-width)] flex-1 p-6 pb-16 font-serif">
+              {/* Yggdrasil tree background */}
+              <Image
+                className="yggdrasil-tree"
+                src="/assets/img/footer-bg.svg"
+                alt=""
+                width={1920}
+                height={1080}
+              />
 
-            {/* Main layout with sidebar */}
-            <div className="relative mx-auto flex w-full max-w-[1400px]">
-              {/* Main content */}
-              <main className="relative mx-auto max-w-[var(--container-max-width)] flex-1 p-6 pb-16 font-serif">
-                {/* Yggdrasil tree background */}
-                <Image
-                  className="yggdrasil-tree"
-                  src="/assets/img/footer-bg.svg"
-                  alt=""
-                  width={1920}
-                  height={1080}
-                />
+              {/* Neko mascots */}
+              <Image
+                className="neko"
+                src="/assets/img/neko.png"
+                alt="Neko"
+                width={150}
+                height={150}
+              />
+              <Image
+                className="neko2"
+                src="/assets/img/neko-2.png"
+                alt="Neko2"
+                width={150}
+                height={150}
+              />
 
-                {/* Neko mascots */}
-                <Image
-                  className="neko"
-                  src="/assets/img/neko.png"
-                  alt="Neko"
-                  width={150}
-                  height={150}
-                />
-                <Image
-                  className="neko2"
-                  src="/assets/img/neko-2.png"
-                  alt="Neko2"
-                  width={150}
-                  height={150}
-                />
+              {/* Content */}
+              <div className="memo-content mb-10">{children}</div>
+            </main>
 
-                {/* Content */}
-                <div className="memo-content mb-10">{children}</div>
-              </main>
-
-              {/* Right sidebar for TOC and metadata */}
-              <aside
-                className={`right-sidebar border-border w-64 shrink-0 border-l p-4 pt-8 xl:w-72 ${readingMode ? 'hidden' : 'hidden lg:block'}`}
-              >
-                <div className="sticky top-16 pt-4">
-                  <div className="mb-6">
-                    <h3 className="text-muted-foreground mb-4 text-sm text-[0.6875rem] font-medium tracking-wider uppercase">
-                      On this page
-                    </h3>
-                    <div className="table-of-contents">
-                      {tocItems.length > 0 && (
-                        <TableOfContents items={tocItems} />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Metadata section - will be populated by the content */}
-                  <div className="metadata"></div>
-                </div>
-              </aside>
-            </div>
+            <aside
+              className={`right-sidebar border-border w-64 shrink-0 border-l p-4 pt-8 xl:w-72 ${readingMode ? 'hidden' : 'hidden lg:block'}`}
+            >
+              <div className="sticky top-16 pt-4">
+                {/* Metadata section - will be populated by the content */}
+                <div className="metadata"></div>
+              </div>
+            </aside>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );

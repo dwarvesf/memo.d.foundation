@@ -83,7 +83,7 @@ const config = {
         serif: ['charter', 'Georgia', 'Cambria', 'serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
       },
-      typography: theme => ({
+      typography: () => ({
         DEFAULT: {
           css: {
             '--tw-prose-body': 'var(--foreground)',

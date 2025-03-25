@@ -13,11 +13,13 @@ export interface ThemeContextType {
   theme: 'light' | 'dark';
   setTheme: (theme: ITheme) => void;
   toggleTheme: () => void;
+  isDark: boolean;
 }
 const DefaultContextValues = {
   theme: 'light',
   setTheme: () => {},
   toggleTheme: () => {},
+  isDark: false,
 } satisfies ThemeContextType;
 
 export const ThemeContext =
@@ -68,7 +70,9 @@ export const ThemeProvider = (props: PropsWithChildren) => {
   }, [setTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{ theme, setTheme, toggleTheme, isDark: theme === 'dark' }}
+    >
       {children}
     </ThemeContext.Provider>
   );
