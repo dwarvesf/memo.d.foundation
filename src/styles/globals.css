@@ -4,8 +4,7 @@
 @config "../../tailwind.config.mjs";
 
 @layer base {
-  :root,
-  [data-theme='light'] {
+  :root {
     /* Main colors */
     --primary: #e13f5e;
     --primary-hover-color: #d95870;
@@ -15,8 +14,7 @@
     --docsearch-primary-color: #e13f5e;
 
     /* Light theme */
-    --background: #ffffff;
-    --foreground: #2c2d32;
+
     --primary-font-color-light: #2c2d32;
     --primary-background-color-light: #fff;
     --primary-border-color-light: #ededed;
@@ -39,21 +37,24 @@
     --border-color: #3d3d3d;
 
     /* Global Elements */
-    --card: #ffffff;
-    --card-foreground: #2c2d32;
-    --popover: #ffffff;
-    --popover-foreground: #2c2d32;
-    --muted: #f8f8f8;
-    --muted-foreground: #636466;
-    --accent: #f4f3f2;
-    --accent-foreground: #2c2d32;
-    --border: #ededed;
+    --background: var(--primary-background-color-light);
+    --foreground: var(--primary-font-color-light);
+    --card: var(--primary-background-color-light);
+    --card-foreground: var(--primary-font-color-light);
+    --popover: var(--primary-background-color-light);
+    --popover-foreground: var(--primary-font-color-light);
+    --muted: var(--secondary-background-color-light);
+    --muted-foreground: var(--secondary-font-color-light);
+    --accent: var(--secondary-tag-color-light);
+    --accent-foreground: var(--primary-font-color-light);
+    --border: var(--primary-border-color-light);
     --border-light: #e5e5e5;
-    --input: #ededed;
-    --ring: #e13f5e;
+    --input: var(--primary-border-color-light);
+    --ring: var(--primary);
     --secondary: #303030;
     --secondary-foreground: #9b9b9b;
     --error-color: #d81b60;
+    --tag: var(--secondary-tag-color-light);
     --font-monospace: 'IBM Plex Mono';
 
     /* Spacing and Layout */
@@ -77,21 +78,21 @@
   .dark,
   [data-theme='dark'] {
     /* Dark theme */
-    --background: #1e1e1e;
-    --foreground: #e8e8e8;
-    --card: #282828;
-    --card-foreground: #e8e8e8;
-    --popover: #282828;
-    --popover-foreground: #e8e8e8;
-    --muted: #202020;
+    --background: var(--primary-background-color);
+    --foreground: var(--secondary-font-color);
+    --card: var(--secondary-background-color);
+    --card-foreground: var(--secondary-font-color);
+    --popover: var(--secondary-background-color);
+    --popover-foreground: var(--secondary-font-color);
+    --muted: var(--secondary-background-color-var2);
     --muted-foreground: #9b9b9b;
-    --accent: #303030;
-    --accent-foreground: #e8e8e8;
-    --border: #3d3d3d;
-    --border-light: #2a2a2a;
-    --input: #3d3d3d;
-    --ring: #e13f5e;
-    --secondary: #282828;
+    --accent: var(--tertiary-background-color);
+    --accent-foreground: var(--secondary-font-color);
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--primary);
+    --secondary: var(--secondary-background-color);
+    --tag: var(--secondary-tag-color);
   }
 }
 
@@ -138,15 +139,6 @@
   img,
   video {
     @apply max-w-full rounded-md;
-  }
-
-  /* Custom tag styles */
-  .bg-tag-light {
-    background-color: var(--secondary-tag-color-light);
-  }
-
-  .bg-tag-dark {
-    background-color: var(--secondary-tag-color);
   }
 
   /* Fix main layout */

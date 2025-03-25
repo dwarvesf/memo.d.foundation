@@ -21,10 +21,15 @@ const config = {
           DEFAULT: 'var(--background)',
           light: 'var(--primary-background-color-light)',
           dark: 'var(--primary-background-color)',
-          secondary: 'var(--secondary-background-color)',
-          secondary_light: 'var(--secondary-background-color-light)',
-          tertiary: 'var(--tertiary-background-color)',
-          tertiary_light: 'var(--tertiary-background-color-light)',
+
+          secondary: {
+            DEFAULT: 'var(--secondary-background-color)',
+            light: 'var(--secondary-background-color-light)',
+          },
+          tertiary: {
+            DEFAULT: 'var(--tertiary-background-color)',
+            light: 'var(--tertiary-background-color-light)',
+          },
         },
         foreground: {
           DEFAULT: 'var(--foreground)',
@@ -57,6 +62,7 @@ const config = {
           hover: 'var(--card-hover)',
         },
         tag: {
+          DEFAULT: 'var(--tag)',
           light: 'var(--secondary-tag-color-light)',
           dark: 'var(--secondary-tag-color)',
         },
@@ -77,7 +83,7 @@ const config = {
         serif: ['charter', 'Georgia', 'Cambria', 'serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
       },
-      typography: (theme) => ({
+      typography: theme => ({
         DEFAULT: {
           css: {
             '--tw-prose-body': 'var(--foreground)',
@@ -135,14 +141,14 @@ const config = {
               },
               '&:hover::before': {
                 opacity: '1',
-              }
+              },
             },
             'h1, h2, h3, h4, h5, h6': {
               color: 'var(--foreground)',
               fontWeight: '600',
               lineHeight: '1.24',
               fontFamily: 'charter, Georgia, Cambria, serif',
-              padding: '0 !important'
+              padding: '0 !important',
             },
             h1: {
               fontSize: '35px !important',
@@ -248,7 +254,7 @@ const config = {
               verticalAlign: 'top',
               wordWrap: 'break-word',
               minWidth: '100px',
-            }
+            },
           },
         },
         dark: {
@@ -298,17 +304,15 @@ const config = {
         slideUp: 'slideUp 0.15s ease-out',
       },
       zIndex: {
-        '60': '60',
-        '70': '70',
-        '80': '80',
-        '90': '90',
-        '100': '100',
+        60: '60',
+        70: '70',
+        80: '80',
+        90: '90',
+        100: '100',
       },
     },
   },
-  plugins: [
-    typography,
-  ],
+  plugins: [typography],
 };
 
 export default config;
