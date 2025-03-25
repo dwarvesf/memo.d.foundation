@@ -69,7 +69,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                 <Link
                   key={tag}
                   href={`/tags/${tag.toLowerCase()}`}
-                  className="bg-tag-light dark:bg-tag-dark text-foreground inline-flex h-fit items-center justify-center rounded-[50px] px-[0.5rem] py-[0.125rem] text-xs leading-[1.125rem] font-medium no-underline"
+                  className="bg-tag text-foreground inline-flex h-fit items-center justify-center rounded-[50px] px-[0.5rem] py-[0.125rem] text-xs leading-[1.125rem] font-medium no-underline"
                 >
                   {tag.replaceAll('-', ' ')}
                 </Link>
