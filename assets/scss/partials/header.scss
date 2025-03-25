@@ -440,7 +440,7 @@ nav.menu > .tab-menu {
   .tab-header {
     border-bottom: 1px solid var(--primary-border-color-light);
   }
- 
+
 
   .btn-reading-mode-toggler {
     display: none;
@@ -522,6 +522,7 @@ img.yggdrasil-tree {
   object-fit: contain;
   opacity: 0.03;
   z-index: -10;
+  max-width: 360px;
 }
 
 @include responsive(md) {
@@ -585,7 +586,7 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] {
- 
+
   .header-logo span {
     color: #dadada;
   }
@@ -610,6 +611,6 @@ html[data-theme="dark"] {
     width: 100%;
     flex:1;
     position: relative;
-    
+
   }
 }

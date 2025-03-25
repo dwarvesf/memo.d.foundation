@@ -1,12 +1,22 @@
+<div x-data="{
+  theme: $persist('system'),
+  themeLoaded: false,
+  init() {
+    // Theme is considered loaded when Alpine initializes
+    this.themeLoaded = true;
+  }
+}">
 
-<script x-data="{
-    theme: $persist('system')
-  }" 
-  src="https://utteranc.es/client.js" 
-  repo="dwarvesf/memo-comments"
-  issue-term="pathname" 
-  :theme="theme === 'dark' ? 'github-dark' : 'github-light'" 
-  crossorigin="anonymous"
-  label="comments" 
-  async>
-</script>
+<!-- Only show comments when theme is loaded -->
+<template x-if="themeLoaded">
+    <script
+      src="https://utteranc.es/client.js"
+      repo="dwarvesf/memo-comments"
+      issue-term="pathname"
+      :theme="theme === 'dark' ? 'github-dark' : 'github-light'"
+      crossorigin="anonymous"
+      label="comments"
+      async>
+    </script>
+</template>
+</div>
