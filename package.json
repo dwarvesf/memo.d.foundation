@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "deploy": "gh-pages -d out",
-    "format": "prettier --write .",
+    "format": "prettier --write ./src",
     "prepare": "husky",
     "lint-staged": "lint-staged"
   },

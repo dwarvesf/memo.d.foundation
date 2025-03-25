@@ -29,10 +29,16 @@ const CommandPalette: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [groupedResults, setGroupedResults] = useState<Record<string, SearchResult[]>>({});
+  const [groupedResults, setGroupedResults] = useState<
+    Record<string, SearchResult[]>
+  >({});
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedSection, setSelectedSection] = useState<'recents' | 'welcome' | 'suggestions' | 'search'>('recents');
-  const [selectedRecent, setSelectedRecent] = useState<RecentPage | null>(mockRecentPages[0] || null);
+  const [selectedSection, setSelectedSection] = useState<
+    'recents' | 'welcome' | 'suggestions' | 'search'
+  >('recents');
+  const [selectedRecent, setSelectedRecent] = useState<RecentPage | null>(
+    mockRecentPages[0] || null,
+  );
   const [selectedWelcomeItem, setSelectedWelcomeItem] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -41,7 +47,7 @@ const CommandPalette: React.FC = () => {
   // Open/close the command palette
   const toggleCommandPalette = useCallback(() => {
     const newIsOpen = !isOpen;
-    
+
     setIsOpen(newIsOpen);
     setQuery('');
     setResults([]);
@@ -50,7 +56,7 @@ const CommandPalette: React.FC = () => {
     if (newIsOpen) {
       // Opening command palette - just add the class to body
       document.body.classList.add('cmd-palette-open');
-      
+
       // Set initial selection
       if (mockRecentPages.length > 0) {
         setSelectedRecent(mockRecentPages[0]);
@@ -113,7 +119,16 @@ const CommandPalette: React.FC = () => {
       // In a real implementation, show a toast notification here
       close();
     }
-  }, [query, results, selectedIndex, selectedSection, selectedRecent, selectedWelcomeItem, router, close]);
+  }, [
+    query,
+    results,
+    selectedIndex,
+    selectedSection,
+    selectedRecent,
+    selectedWelcomeItem,
+    router,
+    close,
+  ]);
 
   // Navigate through results with arrow keys
   const navigateNext = useCallback(() => {
@@ -134,7 +149,8 @@ const CommandPalette: React.FC = () => {
       }
     } else if (selectedSection === 'welcome') {
       const nextItem = selectedWelcomeItem + 1;
-      if (nextItem >= 2) { // 2 welcome items
+      if (nextItem >= 2) {
+        // 2 welcome items
         // Move to suggestions section
         setSelectedSection('suggestions');
       } else {
@@ -151,7 +167,13 @@ const CommandPalette: React.FC = () => {
         setSelectedWelcomeItem(0);
       }
     }
-  }, [query, results.length, selectedSection, selectedRecent, selectedWelcomeItem]);
+  }, [
+    query,
+    results.length,
+    selectedSection,
+    selectedRecent,
+    selectedWelcomeItem,
+  ]);
 
   const navigatePrev = useCallback(() => {
     if (query.length > 0 && results.length > 0) {
@@ -187,7 +209,13 @@ const CommandPalette: React.FC = () => {
       setSelectedSection('welcome');
       setSelectedWelcomeItem(1); // Last welcome item
     }
-  }, [query, results.length, selectedSection, selectedRecent, selectedWelcomeItem]);
+  }, [
+    query,
+    results.length,
+    selectedSection,
+    selectedRecent,
+    selectedWelcomeItem,
+  ]);
 
   // Handle keyboard shortcuts and navigation
   useEffect(() => {
@@ -228,7 +256,10 @@ const CommandPalette: React.FC = () => {
 
     // Close when clicking outside
     const handleClickOutside = (e: MouseEvent) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(e.target as Node)
+      ) {
         close();
       }
     };
@@ -240,7 +271,20 @@ const CommandPalette: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen, results, selectedIndex, selectedSection, selectedRecent, selectedWelcomeItem, router, toggleCommandPalette, goto, navigateNext, navigatePrev, close]);
+  }, [
+    isOpen,
+    results,
+    selectedIndex,
+    selectedSection,
+    selectedRecent,
+    selectedWelcomeItem,
+    router,
+    toggleCommandPalette,
+    goto,
+    navigateNext,
+    navigatePrev,
+    close,
+  ]);
 
   // Focus input when opened
   useEffect(() => {
@@ -266,7 +310,8 @@ const CommandPalette: React.FC = () => {
         description: 'Learn how to get started with Dwarves Memo',
         url: '/handbook/getting-started',
         category: 'Handbook',
-        matchingText: 'This handbook explains how to get started with Dwarves Memo',
+        matchingText:
+          'This handbook explains how to get started with Dwarves Memo',
         file_path: 'handbook/getting-started.md',
       },
       {
@@ -293,19 +338,23 @@ const CommandPalette: React.FC = () => {
         matchingText: 'We are looking for a technical writer to join our team',
         file_path: 'careers/open-positions/technical-writer.md',
       },
-    ].filter(item =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (item.description?.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (item.matchingText?.toLowerCase().includes(searchQuery.toLowerCase()))
+    ].filter(
+      item =>
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.matchingText?.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
     // Group results by category
-    const grouped = mockResults.reduce<Record<string, SearchResult[]>>((acc, result) => {
-      const category = result.category || 'Other';
-      if (!acc[category]) acc[category] = [];
-      acc[category].push(result);
-      return acc;
-    }, {});
+    const grouped = mockResults.reduce<Record<string, SearchResult[]>>(
+      (acc, result) => {
+        const category = result.category || 'Other';
+        if (!acc[category]) acc[category] = [];
+        acc[category].push(result);
+        return acc;
+      },
+      {},
+    );
 
     setResults(mockResults);
     setGroupedResults(grouped);
@@ -326,7 +375,7 @@ const CommandPalette: React.FC = () => {
     <div className="command-palette relative z-50">
       {/* Search button */}
       <button
-        className="hidden md:flex items-center justify-between w-40 lg:w-52 h-10 px-3 text-sm border border-border dark:border-border rounded-md hover:border-primary transition-colors bg-muted"
+        className="border-border dark:border-border hover:border-primary bg-muted hidden h-10 w-40 items-center justify-between rounded-md border px-3 text-sm transition-colors md:flex lg:w-52"
         onClick={toggleCommandPalette}
         aria-label="Open command palette"
       >
@@ -337,26 +386,40 @@ const CommandPalette: React.FC = () => {
             height="20"
             viewBox="0 0 16 16"
             fill="none"
-            className="mr-2 text-muted-foreground"
+            className="text-muted-foreground mr-2"
             aria-hidden="true"
           >
-            <circle cx="6.88881" cy="6.8889" r="5.55556" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M11.3333 11.3333L14.6666 14.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle
+              cx="6.88881"
+              cy="6.8889"
+              r="5.55556"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M11.3333 11.3333L14.6666 14.6667"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <span className="text-muted-foreground">Search...</span>
         </div>
-        <div className="flex items-center text-xs text-muted-foreground">
-          <kbd className="px-1.5 py-0.5 bg-background border rounded">
+        <div className="text-muted-foreground flex items-center text-xs">
+          <kbd className="bg-background rounded border px-1.5 py-0.5">
             ⌘/Ctrl
           </kbd>
           <span className="mx-0.5">+</span>
-          <kbd className="px-1.5 py-0.5 bg-background border rounded">K</kbd>
+          <kbd className="bg-background rounded border px-1.5 py-0.5">K</kbd>
         </div>
       </button>
 
       {/* Mobile search button */}
       <button
-        className="md:hidden flex items-center justify-center w-10 h-10 p-0 border-none bg-transparent text-foreground"
+        className="text-foreground flex h-10 w-10 items-center justify-center border-none bg-transparent p-0 md:hidden"
         onClick={toggleCommandPalette}
         aria-label="Open search"
       >
@@ -369,124 +432,211 @@ const CommandPalette: React.FC = () => {
           className="text-foreground"
           aria-hidden="true"
         >
-          <circle cx="6.88881" cy="6.8889" r="5.55556" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M11.3333 11.3333L14.6666 14.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle
+            cx="6.88881"
+            cy="6.8889"
+            r="5.55556"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M11.3333 11.3333L14.6666 14.6667"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </button>
 
       {/* Command palette modal */}
-      {isOpen && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div
-            ref={searchContainerRef}
-            className="w-full max-w-2xl rounded-lg bg-white dark:bg-background border border-border shadow-lg overflow-hidden"
-            style={{animation: 'fadeIn 0.15s ease-out'}}
-          >
-            {/* Search input */}
-            <div className="p-4 border-b border-border">
-              <div className="flex items-center">
-                <svg
-                  className="mr-2 text-muted-foreground"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search documentation..."
-                  className="flex-1 bg-transparent border-none outline-none text-foreground"
-                />
-              </div>
-            </div>
-
-            <div className="max-h-[60vh] overflow-y-auto">
-              {/* Search results */}
-              {query && Object.keys(groupedResults).length > 0 && (
-                <div className="p-2">
-                  {Object.entries(groupedResults).map(([category, categoryResults]) => (
-                    <div key={category}>
-                      <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground bg-muted">
-                        {category}
-                      </div>
-                      {categoryResults.map((result) => {
-                        const resultIndex = results.findIndex(r => r.file_path === result.file_path);
-                        const isSelected = resultIndex === selectedIndex && selectedSection === 'search';
-                        return (
-                          <button
-                            key={result.file_path}
-                            className={`w-full flex flex-col px-2 py-2 text-sm rounded-md text-left border-b border-border last:border-b-0 ${
-                              isSelected ? 'bg-primary text-white' : 'hover:bg-muted'
-                            }`}
-                            onClick={() => {
-                              router.push(result.url);
-                              close();
-                            }}
-                          >
-                            <div className="font-medium">{result.title}</div>
-                            {result.matchingText && (
-                              <div className={`text-xs truncate mt-1 ${isSelected ? 'text-white' : 'text-muted-foreground'}`}>
-                                {result.matchingText}
-                              </div>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* No results state */}
-              {query && Object.keys(groupedResults).length === 0 && (
-                <div className="p-8 text-center text-muted-foreground flex flex-col items-center">
-                  <Image
-                    src="/assets/img/404.png"
-                    alt="No results"
-                    className="w-32 opacity-40 dark:invert mb-2"
-                    width={128}
-                    height={128}
+      {isOpen &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+            <div
+              ref={searchContainerRef}
+              className="dark:bg-background border-border w-full max-w-2xl overflow-hidden rounded-lg border bg-white shadow-lg"
+              style={{ animation: 'fadeIn 0.15s ease-out' }}
+            >
+              {/* Search input */}
+              <div className="border-border border-b p-4">
+                <div className="flex items-center">
+                  <svg
+                    className="text-muted-foreground mr-2"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    value={query}
+                    onChange={e => setQuery(e.target.value)}
+                    placeholder="Search documentation..."
+                    className="text-foreground flex-1 border-none bg-transparent outline-none"
                   />
-                  <p>No results found.</p>
                 </div>
-              )}
+              </div>
 
-              {/* Recent pages when no query */}
-              {!query && mockRecentPages.length > 0 && (
-                <div className="p-2">
-                  <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                    Recents
+              <div className="max-h-[60vh] overflow-y-auto">
+                {/* Search results */}
+                {query && Object.keys(groupedResults).length > 0 && (
+                  <div className="p-2">
+                    {Object.entries(groupedResults).map(
+                      ([category, categoryResults]) => (
+                        <div key={category}>
+                          <div className="text-muted-foreground bg-muted px-2 py-1.5 text-xs font-medium">
+                            {category}
+                          </div>
+                          {categoryResults.map(result => {
+                            const resultIndex = results.findIndex(
+                              r => r.file_path === result.file_path,
+                            );
+                            const isSelected =
+                              resultIndex === selectedIndex &&
+                              selectedSection === 'search';
+                            return (
+                              <button
+                                key={result.file_path}
+                                className={`border-border flex w-full flex-col rounded-md border-b px-2 py-2 text-left text-sm last:border-b-0 ${
+                                  isSelected
+                                    ? 'bg-primary text-white'
+                                    : 'hover:bg-muted'
+                                }`}
+                                onClick={() => {
+                                  router.push(result.url);
+                                  close();
+                                }}
+                              >
+                                <div className="font-medium">
+                                  {result.title}
+                                </div>
+                                {result.matchingText && (
+                                  <div
+                                    className={`mt-1 truncate text-xs ${isSelected ? 'text-white' : 'text-muted-foreground'}`}
+                                  >
+                                    {result.matchingText}
+                                  </div>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      ),
+                    )}
                   </div>
-                  {mockRecentPages.map((page, index) => (
+                )}
+
+                {/* No results state */}
+                {query && Object.keys(groupedResults).length === 0 && (
+                  <div className="text-muted-foreground flex flex-col items-center p-8 text-center">
+                    <Image
+                      src="/assets/img/404.png"
+                      alt="No results"
+                      className="mb-2 w-32 opacity-40 dark:invert"
+                      width={128}
+                      height={128}
+                    />
+                    <p>No results found.</p>
+                  </div>
+                )}
+
+                {/* Recent pages when no query */}
+                {!query && mockRecentPages.length > 0 && (
+                  <div className="p-2">
+                    <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
+                      Recents
+                    </div>
+                    {mockRecentPages.map((page, index) => (
+                      <div
+                        key={index}
+                        className={`flex cursor-pointer items-center rounded-md px-2 py-2 text-sm ${
+                          selectedSection === 'recents' &&
+                          selectedRecent === page
+                            ? 'bg-muted'
+                            : 'hover:bg-muted'
+                        }`}
+                        onClick={() => {
+                          router.push(page.path);
+                          close();
+                        }}
+                        onMouseEnter={() => {
+                          setSelectedSection('recents');
+                          setSelectedRecent(page);
+                        }}
+                        data-recent-id={index}
+                      >
+                        <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="stroke-primary"
+                          >
+                            <path d="M12 7v14" />
+                            <path d="M16 12h2" />
+                            <path d="M16 8h2" />
+                            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+                            <path d="M6 12h2" />
+                            <path d="M6 8h2" />
+                          </svg>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-foreground">{page.title}</span>
+                          <span className="text-muted-foreground text-xs">
+                            {page.path
+                              .split('/')
+                              .filter(p => p)
+                              .join(' > ')}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Welcome section */}
+                {!query && (
+                  <div className="p-2">
+                    <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
+                      Welcome to Dwarves Memo
+                    </div>
                     <div
-                      key={index}
-                      className={`flex items-center px-2 py-2 text-sm rounded-md cursor-pointer ${
-                        selectedSection === 'recents' && selectedRecent === page
+                      className={`flex cursor-pointer items-center rounded-md px-2 py-2 text-sm ${
+                        selectedSection === 'welcome' &&
+                        selectedWelcomeItem === 0
                           ? 'bg-muted'
                           : 'hover:bg-muted'
                       }`}
                       onClick={() => {
-                        router.push(page.path);
+                        router.push('/');
                         close();
                       }}
                       onMouseEnter={() => {
-                        setSelectedSection('recents');
-                        setSelectedRecent(page);
+                        setSelectedSection('welcome');
+                        setSelectedWelcomeItem(0);
                       }}
-                      data-recent-id={index}
+                      data-welcome-id="0"
                     >
-                      <div className="cmd-idle-icon mr-3 flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24"
@@ -499,214 +649,179 @@ const CommandPalette: React.FC = () => {
                           strokeLinejoin="round"
                           className="stroke-primary"
                         >
-                          <path d="M12 7v14" />
-                          <path d="M16 12h2" />
-                          <path d="M16 8h2" />
-                          <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
-                          <path d="M6 12h2" />
-                          <path d="M6 8h2" />
+                          <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
                         </svg>
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-foreground">{page.title}</span>
-                        <span className="text-xs text-muted-foreground">
-                          {page.path.split('/').filter(p => p).join(' > ')}
+                        <span className="text-foreground">
+                          What&apos;s been hot lately
+                        </span>
+                        <span className="text-muted-foreground text-xs">
+                          See featured posts
                         </span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
 
-              {/* Welcome section */}
-              {!query && (
-                <div className="p-2">
-                  <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                    Welcome to Dwarves Memo
-                  </div>
-                  <div
-                    className={`flex items-center px-2 py-2 text-sm rounded-md cursor-pointer ${
-                      selectedSection === 'welcome' && selectedWelcomeItem === 0
-                        ? 'bg-muted'
-                        : 'hover:bg-muted'
-                    }`}
-                    onClick={() => {
-                      router.push('/');
-                      close();
-                    }}
-                    onMouseEnter={() => {
-                      setSelectedSection('welcome');
-                      setSelectedWelcomeItem(0);
-                    }}
-                    data-welcome-id="0"
-                  >
-                    <div className="cmd-idle-icon mr-3 flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="stroke-primary"
-                      >
-                        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-                      </svg>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-foreground">What&apos;s been hot lately</span>
-                      <span className="text-xs text-muted-foreground">
-                        See featured posts
-                      </span>
+                    <div
+                      className={`flex cursor-pointer items-center rounded-md px-2 py-2 text-sm ${
+                        selectedSection === 'welcome' &&
+                        selectedWelcomeItem === 1
+                          ? 'bg-muted'
+                          : 'hover:bg-muted'
+                      }`}
+                      onClick={() => {
+                        router.push('/');
+                        close();
+                      }}
+                      onMouseEnter={() => {
+                        setSelectedSection('welcome');
+                        setSelectedWelcomeItem(1);
+                      }}
+                      data-welcome-id="1"
+                    >
+                      <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="stroke-primary"
+                        >
+                          <path d="M12 17v5" />
+                          <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+                        </svg>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-foreground">Pinned note</span>
+                        <span className="text-muted-foreground text-xs">
+                          View our latest announcement
+                        </span>
+                      </div>
                     </div>
                   </div>
+                )}
 
-                  <div
-                    className={`flex items-center px-2 py-2 text-sm rounded-md cursor-pointer ${
-                      selectedSection === 'welcome' && selectedWelcomeItem === 1
-                        ? 'bg-muted'
-                        : 'hover:bg-muted'
-                    }`}
-                    onClick={() => {
-                      router.push('/');
-                      close();
-                    }}
-                    onMouseEnter={() => {
-                      setSelectedSection('welcome');
-                      setSelectedWelcomeItem(1);
-                    }}
-                    data-welcome-id="1"
-                  >
-                    <div className="cmd-idle-icon mr-3 flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="stroke-primary"
-                      >
-                        <path d="M12 17v5" />
-                        <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
-                      </svg>
+                {/* Actions section */}
+                {!query && (
+                  <div className="p-2">
+                    <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
+                      Actions
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-foreground">Pinned note</span>
-                      <span className="text-xs text-muted-foreground">
-                        View our latest announcement
-                      </span>
+                    <div
+                      className={`flex cursor-pointer items-center rounded-md px-2 py-2 text-sm ${
+                        selectedSection === 'suggestions'
+                          ? 'bg-muted'
+                          : 'hover:bg-muted'
+                      }`}
+                      onClick={() => {
+                        const memoContent =
+                          document.querySelector('.memo-content');
+                        let content = 'No content found';
+                        if (memoContent) {
+                          content = memoContent.innerText
+                            .replace(/\n\s*\n\s*\n/g, '\n\n')
+                            .trim();
+                        }
+                        navigator.clipboard.writeText(content);
+                        // In a real implementation, show a toast notification here
+                        close();
+                      }}
+                      onMouseEnter={() => {
+                        setSelectedSection('suggestions');
+                      }}
+                      data-suggestion-id="0"
+                    >
+                      <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="stroke-primary"
+                        >
+                          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                          <rect
+                            x="8"
+                            y="2"
+                            width="8"
+                            height="4"
+                            rx="1"
+                            ry="1"
+                          ></rect>
+                        </svg>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-foreground">
+                          Copy memo content
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
-              {/* Actions section */}
-              {!query && (
-                <div className="p-2">
-                  <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                    Actions
+              {/* Footer with keyboard shortcuts */}
+              <div className="border-border text-muted-foreground flex justify-between border-t p-2 text-xs">
+                <div className="flex space-x-4">
+                  <div className="flex items-center">
+                    <svg
+                      className="mr-1"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                    <svg
+                      className="mr-1"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                    to navigate
                   </div>
-                  <div
-                    className={`flex items-center px-2 py-2 text-sm rounded-md cursor-pointer ${
-                      selectedSection === 'suggestions' ? 'bg-muted' : 'hover:bg-muted'
-                    }`}
-                    onClick={() => {
-                      const memoContent = document.querySelector('.memo-content');
-                      let content = 'No content found';
-                      if (memoContent) {
-                        content = memoContent.innerText
-                          .replace(/\n\s*\n\s*\n/g, '\n\n')
-                          .trim();
-                      }
-                      navigator.clipboard.writeText(content);
-                      // In a real implementation, show a toast notification here
-                      close();
-                    }}
-                    onMouseEnter={() => {
-                      setSelectedSection('suggestions');
-                    }}
-                    data-suggestion-id="0"
-                  >
-                    <div className="cmd-idle-icon mr-3 flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="stroke-primary"
-                      >
-                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                      </svg>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-foreground">Copy memo content</span>
-                    </div>
+                  <div className="flex items-center">
+                    <kbd className="bg-muted mr-1 rounded border px-1 py-0.5">
+                      ↵
+                    </kbd>
+                    to select
                   </div>
-                </div>
-              )}
-            </div>
-
-            {/* Footer with keyboard shortcuts */}
-            <div className="p-2 border-t border-border text-xs text-muted-foreground flex justify-between">
-              <div className="flex space-x-4">
-                <div className="flex items-center">
-                  <svg
-                    className="mr-1"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <polyline points="18 15 12 9 6 15"></polyline>
-                  </svg>
-                  <svg
-                    className="mr-1"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                  to navigate
                 </div>
                 <div className="flex items-center">
-                  <kbd className="px-1 py-0.5 bg-muted border rounded mr-1">↵</kbd>
-                  to select
+                  <kbd className="bg-muted mr-1 rounded border px-1 py-0.5">
+                    Esc
+                  </kbd>
+                  to close
                 </div>
               </div>
-              <div className="flex items-center">
-                <kbd className="px-1 py-0.5 bg-muted border rounded mr-1">Esc</kbd>
-                to close
-              </div>
             </div>
-          </div>
-        </div>,
-        document.body
-      )}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 };
