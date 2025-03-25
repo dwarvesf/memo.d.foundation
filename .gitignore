@@ -86,3 +86,5 @@ package.json
 wallet.json
 duckdb
 duckdb_*.zip
+
+.write/
