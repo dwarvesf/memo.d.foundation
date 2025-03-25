@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import { useThemeContext } from '@/contexts/theme';
 import Footer from './Footer';
+import DirectoryTree from './DirectoryTree';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -116,8 +117,9 @@ export default function RootLayout({
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
       <div
-        className={`bg-background text-foreground relative flex h-screen flex-col font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
+        className={`bg-background text-foreground relative flex h-screen font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
       >
+        <DirectoryTree />
         <div className="relative flex flex-1 flex-col overflow-y-auto">
           <Header
             toggleSidebar={() => setSidebarOpen(!sidebarOpen)}

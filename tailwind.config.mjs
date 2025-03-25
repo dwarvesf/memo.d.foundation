@@ -23,7 +23,7 @@ const config = {
           dark: 'var(--primary-background-color)',
 
           secondary: {
-            DEFAULT: 'var(--secondary-background-color)',
+            DEFAULT: 'var(--secondary-background)',
             light: 'var(--secondary-background-color-light)',
           },
           tertiary: {

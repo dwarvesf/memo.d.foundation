@@ -56,6 +56,7 @@
     --ring: var(--primary);
     --secondary: #303030;
     --secondary-foreground: #9b9b9b;
+    --secondary-background: var(--secondary-background-color-light);
     --error-color: #d81b60;
     --tag: var(--secondary-tag-color-light);
     --font-monospace: 'IBM Plex Mono';
@@ -96,6 +97,7 @@
     --ring: var(--primary);
     --secondary: var(--secondary-background-color);
     --tag: var(--secondary-tag-color);
+    --secondary-background: var(--secondary-background-color);
   }
 }
 
