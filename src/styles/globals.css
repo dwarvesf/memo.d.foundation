@@ -1,11 +1,11 @@
-@import "tailwindcss";
-@import "tailwindcss/preflight" layer(base);
-@import "tailwindcss/utilities" layer(utilities);
+@import 'tailwindcss';
+@import 'tailwindcss/preflight' layer(base);
+@import 'tailwindcss/utilities' layer(utilities);
 @config "../../tailwind.config.mjs";
 
 @layer base {
   :root,
-  [data-theme="light"] {
+  [data-theme='light'] {
     /* Main colors */
     --primary: #e13f5e;
     --primary-hover-color: #d95870;
@@ -22,7 +22,7 @@
     --primary-border-color-light: #ededed;
     --secondary-font-color-light: #636466;
     --secondary-font-color-light-var2: #636466;
-    --secondary-background-color-light: #F8F8F8;
+    --secondary-background-color-light: #f8f8f8;
     --tertiary-background-color-light: #ebebeb;
     --secondary-tag-color-light: #f4f3f2;
     --border-color-light: #dbdbdb;
@@ -52,9 +52,9 @@
     --input: #ededed;
     --ring: #e13f5e;
     --secondary: #303030;
-    --secondary-foreground: #9B9B9B;
+    --secondary-foreground: #9b9b9b;
     --error-color: #d81b60;
-    --font-monospace: "IBM Plex Mono";
+    --font-monospace: 'IBM Plex Mono';
 
     /* Spacing and Layout */
     --radius: 0.5rem;
@@ -75,7 +75,7 @@
   }
 
   .dark,
-  [data-theme="dark"] {
+  [data-theme='dark'] {
     /* Dark theme */
     --background: #1e1e1e;
     --foreground: #e8e8e8;
@@ -101,13 +101,13 @@
   }
 
   html {
-    @apply scroll-smooth overflow-x-hidden;
+    @apply overflow-x-hidden scroll-smooth;
     scroll-padding-top: 5rem;
   }
 
   body {
-    @apply bg-background text-foreground antialiased overflow-x-hidden;
-    font-family: "Public Sans", sans-serif;
+    @apply bg-background text-foreground overflow-x-hidden antialiased;
+    font-family: 'Public Sans', sans-serif;
     font-size: 1.0625rem;
     line-height: 1.58;
     text-rendering: optimizeLegibility;
@@ -122,27 +122,33 @@
     letter-spacing: -0.0125rem;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif tracking-tight scroll-mt-20;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply scroll-mt-20 font-serif tracking-tight;
     color: var(--foreground);
     line-height: 1.24;
     padding: 0 !important;
     font-weight: 600;
   }
 
-  img, video {
+  img,
+  video {
     @apply max-w-full rounded-md;
   }
-  
+
   /* Custom tag styles */
   .bg-tag-light {
     background-color: var(--secondary-tag-color-light);
   }
-  
+
   .bg-tag-dark {
     background-color: var(--secondary-tag-color);
   }
-  
+
   /* Fix main layout */
   main {
     width: 100%;
@@ -154,15 +160,15 @@
 @layer components {
   /* Table of Contents styling */
   .table-of-contents {
-    @apply text-sm my-4;
+    @apply my-4 text-sm;
   }
 
   .table-of-contents ul {
-    @apply pl-4 space-y-1;
+    @apply space-y-1 pl-4;
   }
 
   .table-of-contents a {
-    @apply text-muted-foreground hover:text-primary transition-colors no-underline block py-1 px-2 rounded;
+    @apply text-muted-foreground hover:text-primary block rounded px-2 py-1 no-underline transition-colors;
   }
 
   .table-of-contents a:hover {
@@ -170,12 +176,12 @@
   }
 
   .table-of-contents a.active {
-    @apply text-primary font-medium relative;
+    @apply text-primary relative font-medium;
   }
 
   .table-of-contents a.active::before {
     content: '';
-    @apply absolute left-[-5px] top-1/2 -translate-y-1/2 w-[3px] h-[70%] bg-primary rounded-sm;
+    @apply bg-primary absolute top-1/2 left-[-5px] h-[70%] w-[3px] -translate-y-1/2 rounded-sm;
   }
 
   /* Heading level classes for TOC */
@@ -216,25 +222,26 @@
 
   /* Tags styling */
   .memo-tag {
-    @apply inline-flex items-center rounded-md bg-muted px-2 py-1 text-sm font-medium text-muted-foreground hover:bg-muted/80;
+    @apply bg-muted text-muted-foreground hover:bg-muted/80 inline-flex items-center rounded-md px-2 py-1 text-sm font-medium;
   }
 
   /* Sidebar & Navigation */
   .sidebar-hover-indicator {
-    @apply absolute left-1.5 top-1/2 -translate-y-1/2 bg-background text-primary w-6 h-6 rounded-full flex items-center justify-center border border-primary shadow-[0_0_5px_rgba(225,63,94,0.3)] transition-all z-20;
+    @apply bg-background text-primary border-primary absolute top-1/2 left-1.5 z-20 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border shadow-[0_0_5px_rgba(225,63,94,0.3)] transition-all;
   }
 
   /* Mascots */
-  .neko, .neko2 {
-    @apply fixed z-10 pointer-events-none;
+  .neko,
+  .neko2 {
+    @apply pointer-events-none fixed z-10;
   }
 
   .neko {
-    @apply bottom-4 right-4 w-24 h-auto max-w-[15vw];
+    @apply right-4 bottom-4 h-auto w-24 max-w-[15vw];
   }
 
   .neko2 {
-    @apply bottom-24 right-16 w-20 h-auto z-[5] max-w-[10vw];
+    @apply right-16 bottom-24 z-[5] h-auto w-20 max-w-[10vw];
   }
 
   /* Hide mascots when command palette is open */
@@ -245,7 +252,7 @@
 
   /* Yggdrasil tree background */
   .yggdrasil-tree {
-    @apply absolute bottom-8 left-1/2 -translate-x-1/2 w-1/5 md:w-[20vw] max-w-xs object-contain opacity-[0.03] dark:opacity-10 -z-10 pointer-events-none;
+    @apply pointer-events-none absolute bottom-8 left-1/2 -z-10 w-1/5 max-w-xs -translate-x-1/2 object-contain opacity-[0.03] md:w-[20vw] dark:opacity-10;
   }
 
   /* Prose styling */
@@ -258,11 +265,11 @@
   }
 
   .prose :where(pre) {
-    @apply text-sm font-mono bg-muted border-none rounded-md overflow-x-auto w-full box-border p-4 mt-6 mb-6;
+    @apply bg-muted mt-6 mb-6 box-border w-full overflow-x-auto rounded-md border-none p-4 font-mono text-sm;
   }
 
   .prose :where(code):not(:where(pre) *) {
-    @apply text-sm px-1 py-0.5 bg-muted font-mono rounded;
+    @apply bg-muted rounded px-1 py-0.5 font-mono text-sm;
   }
 
   .prose :where(a) {
@@ -274,11 +281,12 @@
   }
 
   .prose table {
-    @apply w-full border-collapse mt-6 mb-6;
+    @apply mt-6 mb-6 w-full border-collapse;
   }
 
-  .prose th, .prose td {
-    @apply border p-3 align-top text-left;
+  .prose th,
+  .prose td {
+    @apply border p-3 text-left align-top;
   }
 
   .prose thead {
@@ -298,7 +306,7 @@
   .command-palette {
     @apply relative;
   }
-  
+
   /* Command palette open state */
   body.cmd-palette-open {
     @apply overflow-hidden;
@@ -323,21 +331,21 @@
 
   /* Grid template areas */
   .grid-areas-\[pagetitle_pagetitle_pagetitle_pagetitle\] {
-    grid-template-areas: "pagetitle pagetitle pagetitle pagetitle";
+    grid-template-areas: 'pagetitle pagetitle pagetitle pagetitle';
   }
-  
+
   .justify-right {
     justify-content: right;
   }
-  
+
   .justify-self-right {
     justify-self: right;
   }
-  
+
   .overflow-wrap-break-word {
     overflow-wrap: break-word;
   }
-  
+
   .hyphens-none {
     hyphens: none;
   }
@@ -354,8 +362,12 @@
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {

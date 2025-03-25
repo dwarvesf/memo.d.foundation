@@ -55,12 +55,10 @@ const extractCategory = (filePath: string): string => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getMatchingLines(content: string, pattern: string): string {
   if (!content || !pattern) return '';
-  
+
   const lines = content.split('\n');
   const regex = new RegExp(pattern.split(' ').join('|'), 'gi');
-  const matchingLines = lines
-    .filter((line) => regex.test(line))
-    .slice(0, 1);
+  const matchingLines = lines.filter(line => regex.test(line)).slice(0, 1);
 
   if (!matchingLines.length) return '';
 
@@ -68,7 +66,7 @@ function getMatchingLines(content: string, pattern: string): string {
   let str = markdownToPlainText(matchingLines[0]);
 
   // Highlight matching parts
-  str = str.replace(regex, "<span>$&</span>");
+  str = str.replace(regex, '<span>$&</span>');
 
   if (str.length <= 100) return `...${str}...`;
 
@@ -79,7 +77,9 @@ function getMatchingLines(content: string, pattern: string): string {
   // Ensure we don't cut off in the middle of a highlight
   while (lastSpaceIndex > 0) {
     const substring = trimmed.substring(0, lastSpaceIndex);
-    if (substring.split('<span>').length === substring.split('</span>').length) {
+    if (
+      substring.split('<span>').length === substring.split('</span>').length
+    ) {
       break;
     }
     lastSpaceIndex = trimmed.lastIndexOf(' ', lastSpaceIndex - 1);
@@ -90,7 +90,7 @@ function getMatchingLines(content: string, pattern: string): string {
 
 function markdownToPlainText(markdown: string): string {
   if (!markdown) return '';
-  
+
   // Remove image Markdown syntax
   let text = markdown.replace(/!\[.*?\]\(.*?\)/g, '');
   // Remove link Markdown syntax, keeping only the link text
@@ -100,16 +100,19 @@ function markdownToPlainText(markdown: string): string {
   return text;
 }
 
-function parseQueryForFilters(query: string): { filters: { authors: string[], tags: string[], title: string }, query: string } {
-  const filters = { authors: [], tags: [], title: "" };
-  
+function parseQueryForFilters(query: string): {
+  filters: { authors: string[]; tags: string[]; title: string };
+  query: string;
+} {
+  const filters = { authors: [], tags: [], title: '' };
+
   const authorRe = /author:([^\s]*)/g;
   const tagRe = /tag:([^\s]*)/g;
   const titleRe = /title:([^\s]*)/g;
   const hashtagRe = /#([^\s#]+)/g;
   const atMentionRe = /@([^\s@]+)/g;
-  
-  const stripFilters = query.split(" ").filter(token => {
+
+  const stripFilters = query.split(' ').filter(token => {
     const titleMatch = [...token.matchAll(titleRe)];
     if (titleMatch?.length) {
       filters.title = titleMatch[0][1];
@@ -145,12 +148,14 @@ function parseQueryForFilters(query: string): { filters: { authors: string[], ta
     return true;
   });
 
-  return { filters, query: stripFilters.join(" ").trim() };
+  return { filters, query: stripFilters.join(' ').trim() };
 }
 
-function groupResultsByCategory(results: Document[]): Record<string, Document[]> {
+function groupResultsByCategory(
+  results: Document[],
+): Record<string, Document[]> {
   const grouped: Record<string, Document[]> = {};
-  
+
   results.forEach(result => {
     const category = result.category || '';
     if (!grouped[category]) {
@@ -158,13 +163,17 @@ function groupResultsByCategory(results: Document[]): Record<string, Document[]>
     }
     grouped[category].push(result);
   });
-  
+
   return grouped;
 }
 
 // Provider Component
-export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [miniSearch, setMiniSearch] = useState<MiniSearch<Document> | null>(null);
+export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [miniSearch, setMiniSearch] = useState<MiniSearch<Document> | null>(
+    null,
+  );
   const [, setDocuments] = useState<Document[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -177,17 +186,26 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         // Fetch search index from API endpoint
         const response = await fetch('/api/search-index');
         if (!response.ok) throw new Error('Failed to load search index');
-        
+
         const data = await response.json();
-        
+
         // Create new MiniSearch instance
         const ms = new MiniSearch({
           fields: ['title', 'description', 'tags', 'authors'],
-          storeFields: ['file_path', 'title', 'description', 'tags', 'authors', 'date', 'category', 'spr_content'],
+          storeFields: [
+            'file_path',
+            'title',
+            'description',
+            'tags',
+            'authors',
+            'date',
+            'category',
+            'spr_content',
+          ],
           searchOptions: {
             boost: { title: 2, tags: 1.5, authors: 1.2 },
             fuzzy: 0.2,
-            prefix: true
+            prefix: true,
           },
           extractField: (document, fieldName) => {
             if (fieldName === 'tags' && Array.isArray(document.tags)) {
@@ -197,9 +215,9 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
               return document.authors.join(' ');
             }
             return document[fieldName] || '';
-          }
+          },
         });
-        
+
         // Load pre-built index if available
         if (data.index) {
           ms.loadJSON(data.index);
@@ -207,7 +225,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           // Otherwise, add documents to index
           ms.addAll(data.documents);
         }
-        
+
         setMiniSearch(ms);
         setDocuments(data.documents || []);
         setIsInitialized(true);
@@ -228,80 +246,91 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (!miniSearch) {
       return { grouped: {}, flat: [] };
     }
-    
+
     // Parse query and filters
     const { filters, query } = parseQueryForFilters(options.query);
-    
+
     // Check cache first
     const cacheKey = options.query;
     const cachedResult = sessionStorage.getItem(cacheKey);
     if (cachedResult) {
       return JSON.parse(cachedResult);
     }
-    
+
     // Perform search
     let results = miniSearch.search(query, {
-      filter: (document) => {
+      filter: document => {
         // Filter by title if specified
-        if (filters.title && !document.title.toLowerCase().includes(filters.title.toLowerCase())) {
+        if (
+          filters.title &&
+          !document.title.toLowerCase().includes(filters.title.toLowerCase())
+        ) {
           return false;
         }
-        
+
         // Filter by authors if specified
         if (filters.authors.length > 0) {
           const documentAuthors = document.authors || [];
-          if (!filters.authors.some(author => 
-            documentAuthors.some(docAuthor => 
-              docAuthor.toLowerCase().includes(author.toLowerCase())
+          if (
+            !filters.authors.some(author =>
+              documentAuthors.some(docAuthor =>
+                docAuthor.toLowerCase().includes(author.toLowerCase()),
+              ),
             )
-          )) {
+          ) {
             return false;
           }
         }
-        
+
         // Filter by tags if specified
         if (filters.tags.length > 0) {
           const documentTags = document.tags || [];
-          if (!filters.tags.some(tag => 
-            documentTags.some(docTag => 
-              docTag.toLowerCase().includes(tag.toLowerCase())
+          if (
+            !filters.tags.some(tag =>
+              documentTags.some(docTag =>
+                docTag.toLowerCase().includes(tag.toLowerCase()),
+              ),
             )
-          )) {
+          ) {
             return false;
           }
         }
-        
+
         return true;
-      }
+      },
     });
-    
+
     // Limit to 10 results
     results = results.slice(0, 10);
-    
+
     // Add matching lines
     // We need to fetch content for highlighting - this would come from an API
     // For now, we'll just return results without matching lines
-    const enrichedResults = await Promise.all(results.map(async (result) => {
-      const document = { ...result } as Document;
-      
-      // In a real implementation, you'd fetch the content for highlighting
-      // For now, we'll just set a placeholder
-      document.matchingLines = query ? `...matching content for "${query}"...` : '';
-      
-      return document;
-    }));
-    
+    const enrichedResults = await Promise.all(
+      results.map(async result => {
+        const document = { ...result } as Document;
+
+        // In a real implementation, you'd fetch the content for highlighting
+        // For now, we'll just set a placeholder
+        document.matchingLines = query
+          ? `...matching content for "${query}"...`
+          : '';
+
+        return document;
+      }),
+    );
+
     // Group results by category
     const grouped = groupResultsByCategory(enrichedResults);
-    
+
     const finalResult = {
       grouped,
-      flat: enrichedResults
+      flat: enrichedResults,
     };
-    
+
     // Cache the result
     sessionStorage.setItem(cacheKey, JSON.stringify(finalResult));
-    
+
     return finalResult;
   };
 

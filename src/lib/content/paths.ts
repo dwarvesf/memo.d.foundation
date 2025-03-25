@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Gets all markdown files recursively from a directory
@@ -7,13 +7,16 @@ import path from "path";
  * @param basePath The base path for the current directory
  * @returns Array of slug arrays for each markdown file
  */
-export function getAllMarkdownFiles(dir: string, basePath: string[] = []): string[][] {
+export function getAllMarkdownFiles(
+  dir: string,
+  basePath: string[] = [],
+): string[][] {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   const paths: string[][] = [];
 
   // Check for readme.md first, then _index.md in the current directory
-  const readmeFilePath = path.join(dir, "readme.md");
-  const indexFilePath = path.join(dir, "_index.md");
+  const readmeFilePath = path.join(dir, 'readme.md');
+  const indexFilePath = path.join(dir, '_index.md');
 
   // Prioritize readme.md over _index.md
   if (fs.existsSync(readmeFilePath) && basePath.length > 0) {
@@ -29,13 +32,13 @@ export function getAllMarkdownFiles(dir: string, basePath: string[] = []): strin
     if (entry.isDirectory()) {
       paths.push(...getAllMarkdownFiles(res, [...basePath, entry.name]));
     } else if (
-      entry.name.endsWith(".md") &&
-      entry.name !== "_index.md" &&
-      entry.name !== "readme.md"
+      entry.name.endsWith('.md') &&
+      entry.name !== '_index.md' &&
+      entry.name !== 'readme.md'
     ) {
       // Skip _index.md and readme.md as they're already handled above
       // Remove .md extension for the slug
-      const slugName = entry.name.replace(/\.md$/, "");
+      const slugName = entry.name.replace(/\.md$/, '');
       paths.push([...basePath, slugName]);
     }
   }

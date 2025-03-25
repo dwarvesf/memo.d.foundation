@@ -24,25 +24,25 @@ interface ImageNode {
  */
 function remarkResolveImagePaths(fileDir: string) {
   return (tree: Root) => {
-    visit(tree, 'image', (node) => {
+    visit(tree, 'image', node => {
       const imageNode = node as ImageNode;
       // Only process relative URLs (not starting with http://, https://, or /)
       if (!/^(https?:\/\/|\/)/i.test(imageNode.url)) {
         // Get the directory of the markdown file
         const mdFileDir = path.dirname(fileDir);
-        
+
         // Construct the path to the image relative to the content directory
         const absoluteImagePath = path.resolve(mdFileDir, imageNode.url);
-        
+
         // Make the path relative to the public directory for serving
         // This maps content/assets/image.webp to /content/assets/image.webp
         let publicPath = '/' + path.relative(process.cwd(), absoluteImagePath);
-        
+
         // Remove the 'public' prefix if it exists
         if (publicPath.startsWith('/public/')) {
           publicPath = publicPath.substring(7); // Remove '/public' (7 characters)
         }
-        
+
         // Update the URL
         imageNode.url = publicPath;
       }
@@ -66,18 +66,43 @@ export async function getMarkdownContent(filePath: string) {
   const schema = {
     tagNames: [
       // Default elements
-      'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'img', 'ul', 'ol', 'li', 'blockquote',
-      'hr', 'em', 'strong', 'code', 'pre', 'br', 'del', 'div', 'span',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'p',
+      'a',
+      'img',
+      'ul',
+      'ol',
+      'li',
+      'blockquote',
+      'hr',
+      'em',
+      'strong',
+      'code',
+      'pre',
+      'br',
+      'del',
+      'div',
+      'span',
       // Table elements
-      'table', 'thead', 'tbody', 'tr', 'th', 'td'
+      'table',
+      'thead',
+      'tbody',
+      'tr',
+      'th',
+      'td',
     ],
     attributes: {
       '*': ['className', 'id'],
-      'a': ['href', 'target', 'rel'],
-      'img': ['src', 'alt', 'title'],
-      'th': ['align', 'scope', 'colspan', 'rowspan'],
-      'td': ['align', 'colspan', 'rowspan']
-    }
+      a: ['href', 'target', 'rel'],
+      img: ['src', 'alt', 'title'],
+      th: ['align', 'scope', 'colspan', 'rowspan'],
+      td: ['align', 'colspan', 'rowspan'],
+    },
   };
 
   // Process the Markdown content
@@ -92,6 +117,6 @@ export async function getMarkdownContent(filePath: string) {
 
   return {
     frontmatter,
-    content: String(processedContent)
+    content: String(processedContent),
   };
 }

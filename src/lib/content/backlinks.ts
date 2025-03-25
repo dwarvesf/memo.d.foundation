@@ -66,7 +66,7 @@ export async function getBacklinks(slug: string[]): Promise<string[]> {
       await parquetRead({
         file: await asyncBufferFromFile(parquetFilePath),
         columns: ['file_path', 'md_content', 'title', 'description'],
-        onComplete: (data) => {
+        onComplete: data => {
           const filteredData = data.filter(row => {
             const content = row[1]?.toString() || ''; // md_content is at index 1
             const title = row[2]?.toString() || ''; // title is at index 2
@@ -80,8 +80,12 @@ export async function getBacklinks(slug: string[]): Promise<string[]> {
             // Check both original and slugified versions in content, title and description
             return (
               // Search in content
-              content.includes(`https://memo.d.foundation/${escapedFullPath}`) ||
-              content.includes(`https://memo.d.foundation/${slugifiedFullPath}`) ||
+              content.includes(
+                `https://memo.d.foundation/${escapedFullPath}`,
+              ) ||
+              content.includes(
+                `https://memo.d.foundation/${slugifiedFullPath}`,
+              ) ||
               content.includes(`${escapedFullPath}`) ||
               content.includes(`${slugifiedFullPath}`) ||
               content.includes(`/${escapedSlug}.md`) ||
@@ -96,9 +100,11 @@ export async function getBacklinks(slug: string[]): Promise<string[]> {
             // Slugify the path components
             const slugifiedPath = slugifyPathComponents(filePath);
             // Remove .md extension from the output
-            return slugifiedPath.endsWith('.md') ? slugifiedPath.slice(0, -3) : slugifiedPath;
+            return slugifiedPath.endsWith('.md')
+              ? slugifiedPath.slice(0, -3)
+              : slugifiedPath;
           });
-        }
+        },
       });
     }
   } catch (parquetError) {

@@ -18,7 +18,7 @@ interface RootLayoutProps {
       id: string;
       text: string;
       level: number;
-      children?: Array<{ id: string; text: string; level: number; }>;
+      children?: Array<{ id: string; text: string; level: number }>;
     }[];
   }[];
 }
@@ -49,9 +49,15 @@ export default function RootLayout({
     setMounted(true);
 
     // Initialize theme from localStorage
-    const savedTheme = localStorage?.getItem('theme') as 'light' | 'dark' | 'system' | null;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+    const savedTheme = localStorage?.getItem('theme') as
+      | 'light'
+      | 'dark'
+      | 'system'
+      | null;
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches;
+
     let initialTheme: 'light' | 'dark';
     if (savedTheme === 'light' || savedTheme === 'dark') {
       // If we have a direct light/dark preference, use it
@@ -60,10 +66,10 @@ export default function RootLayout({
       // For 'system' or null, use system preference
       initialTheme = prefersDark ? 'dark' : 'light';
     }
-    
+
     // Set the theme state
     setTheme(initialTheme);
-    
+
     // Apply the theme to the document
     document.documentElement.classList.toggle('dark', initialTheme === 'dark');
     document.documentElement.setAttribute('data-theme', initialTheme);
@@ -114,7 +120,9 @@ export default function RootLayout({
   };
 
   return (
-    <div className={`min-h-screen flex flex-col bg-background text-foreground transition-colors font-sans ${readingMode ? 'reading-mode' : ''}`}>
+    <div
+      className={`bg-background text-foreground flex min-h-screen flex-col font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
+    >
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -123,33 +131,46 @@ export default function RootLayout({
         {image && <meta property="og:image" content={image} />}
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
       {/* Main content area */}
-      <div className="flex flex-col ml-0 md:ml-[56px] lg:ml-[var(--nav-sidebar-width)] min-h-screen">
+      <div className="ml-0 flex min-h-screen flex-col md:ml-[56px] lg:ml-[var(--nav-sidebar-width)]">
         {/* Header */}
-        <Header 
+        <Header
           toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
           toggleTheme={toggleTheme}
           toggleReadingMode={toggleReadingMode}
           theme={theme}
           readingMode={readingMode}
         />
-        
+
         {/* Main content grid */}
-        <div className="flex flex-1 relative">
-          <div id="overlay" className={`fixed inset-0 bg-black/30 z-40 ${sidebarOpen ? 'block md:hidden' : 'hidden'}`}></div>
+        <div className="relative flex flex-1">
+          <div
+            id="overlay"
+            className={`fixed inset-0 z-40 bg-black/30 ${sidebarOpen ? 'block md:hidden' : 'hidden'}`}
+          ></div>
 
           {/* Main layout with sidebar */}
-          <div className="flex relative w-full max-w-[1400px] mx-auto">
+          <div className="relative mx-auto flex w-full max-w-[1400px]">
             {/* Main content */}
-            <main className="flex-1 p-6 pb-16 mx-auto max-w-[var(--container-max-width)] relative font-serif">
+            <main className="relative mx-auto max-w-[var(--container-max-width)] flex-1 p-6 pb-16 font-serif">
               {/* Yggdrasil tree background */}
               <Image
                 className="yggdrasil-tree"
@@ -160,25 +181,41 @@ export default function RootLayout({
               />
 
               {/* Neko mascots */}
-              <Image className="neko" src="/assets/img/neko.png" alt="Neko" width={150} height={150} />
-              <Image className="neko2" src="/assets/img/neko-2.png" alt="Neko2" width={150} height={150} />
+              <Image
+                className="neko"
+                src="/assets/img/neko.png"
+                alt="Neko"
+                width={150}
+                height={150}
+              />
+              <Image
+                className="neko2"
+                src="/assets/img/neko-2.png"
+                alt="Neko2"
+                width={150}
+                height={150}
+              />
 
               {/* Content */}
-              <div className="memo-content mb-10">
-                {children}
-              </div>
+              <div className="memo-content mb-10">{children}</div>
             </main>
 
             {/* Right sidebar for TOC and metadata */}
-            <aside className={`right-sidebar w-64 xl:w-72 shrink-0 p-4 pt-8 border-l border-border ${readingMode ? 'hidden' : 'hidden lg:block'}`}>
+            <aside
+              className={`right-sidebar border-border w-64 shrink-0 border-l p-4 pt-8 xl:w-72 ${readingMode ? 'hidden' : 'hidden lg:block'}`}
+            >
               <div className="sticky top-16 pt-4">
                 <div className="mb-6">
-                  <h3 className="text-sm font-medium text-muted-foreground uppercase text-[0.6875rem] tracking-wider mb-4">On this page</h3>
+                  <h3 className="text-muted-foreground mb-4 text-sm text-[0.6875rem] font-medium tracking-wider uppercase">
+                    On this page
+                  </h3>
                   <div className="table-of-contents">
-                    {tocItems.length > 0 && <TableOfContents items={tocItems} />}
+                    {tocItems.length > 0 && (
+                      <TableOfContents items={tocItems} />
+                    )}
                   </div>
                 </div>
-                
+
                 {/* Metadata section - will be populated by the content */}
                 <div className="metadata"></div>
               </div>

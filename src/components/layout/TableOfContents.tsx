@@ -23,12 +23,12 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   const renderTOCItems = (items: TOCItem[]) => {
     return (
       <ul>
-        {items.map((item) => (
+        {items.map(item => (
           <li key={item.id}>
-            <a 
+            <a
               href={`#${item.id}`}
-              className={`${getHeadingLevelClass(item.level)} ${activeId === item.id ? 'text-primary' : ''} block text-sm transition-colors rounded hover:bg-muted py-1`}
-              onClick={(e) => {
+              className={`${getHeadingLevelClass(item.level)} ${activeId === item.id ? 'text-primary' : ''} hover:bg-muted block rounded py-1 text-sm transition-colors`}
+              onClick={e => {
                 e.preventDefault();
                 const element = document.getElementById(item.id);
                 if (element) {
@@ -39,7 +39,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
             >
               {item.text}
             </a>
-            {item.children && item.children.length > 0 && renderTOCItems(item.children)}
+            {item.children &&
+              item.children.length > 0 &&
+              renderTOCItems(item.children)}
           </li>
         ))}
       </ul>
@@ -48,12 +50,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
   // Track scroll position to highlight current section
   useEffect(() => {
-    const headingElements = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
-      .filter(heading => heading.id);
-      
+    const headingElements = Array.from(
+      document.querySelectorAll('h1, h2, h3, h4, h5, h6'),
+    ).filter(heading => heading.id);
+
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200; // Offset for better UX
-      
+
       // Find the last heading that's above current scroll position
       for (let i = headingElements.length - 1; i >= 0; i--) {
         const heading = headingElements[i] as HTMLElement;
@@ -62,16 +65,16 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
           return;
         }
       }
-      
+
       // If no heading is found, set the first one as active
       if (headingElements.length > 0) {
         setActiveId((headingElements[0] as HTMLElement).id);
       }
     };
-    
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial check
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };

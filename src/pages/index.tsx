@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from 'next/font/google';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import path from 'path';
@@ -9,13 +9,13 @@ import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 interface FeaturedPost {
@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps = async () => {
     // Get the most recent posts (limit to 6)
     const recentPostsPromises = allPaths
       .slice(0, 10) // Get the first 10 files to process
-      .map(async (slugArray) => {
+      .map(async slugArray => {
         const filePath = path.join(contentDir, ...slugArray) + '.md';
 
         if (!fs.existsSync(filePath)) {
@@ -52,7 +52,9 @@ export const getStaticProps: GetStaticProps = async () => {
         return {
           title: frontmatter.title || slugArray[slugArray.length - 1],
           slug: '/' + slugArray.join('/'),
-          date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
+          date: frontmatter.date
+            ? new Date(frontmatter.date).toISOString()
+            : null,
           description: frontmatter.description,
           tags: frontmatter.tags,
         };
@@ -84,46 +86,50 @@ export const getStaticProps: GetStaticProps = async () => {
 
 export default function Home({ featuredPosts }: HomePageProps) {
   return (
-    <RootLayout title="Dwarves Memo - Home" description="Knowledge sharing platform for Dwarves Foundation">
+    <RootLayout
+      title="Dwarves Memo - Home"
+      description="Knowledge sharing platform for Dwarves Foundation"
+    >
       <div className={`${geistSans.variable} ${geistMono.variable}`}>
         <section className="py-12 md:py-12">
-          <div className="container max-w-5xl mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Dwarves Memo</h1>
-            <p className="text-xl text-muted-foreground mb-12">
+          <div className="container mx-auto max-w-5xl px-4">
+            <h1 className="mb-6 text-4xl font-bold md:text-5xl">
+              Dwarves Memo
+            </h1>
+            <p className="text-muted-foreground mb-12 text-xl">
               A knowledge sharing platform for the Dwarves Foundation community
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredPosts.map((post) => (
-                <Link
-                  key={post.slug}
-                  href={post.slug}
-                  className="block group"
-                >
-                  <div className="bg-card h-full rounded-lg border overflow-hidden transition-colors hover:border-primary p-6">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {featuredPosts.map(post => (
+                <Link key={post.slug} href={post.slug} className="group block">
+                  <div className="bg-card hover:border-primary h-full overflow-hidden rounded-lg border p-6 transition-colors">
                     <div className="mb-4">
                       {post.tags && post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-3">
+                        <div className="mb-3 flex flex-wrap gap-2">
                           {post.tags.slice(0, 3).map(tag => (
-                            <span key={tag} className="text-xs px-2 py-1 bg-muted rounded-full">
+                            <span
+                              key={tag}
+                              className="bg-muted rounded-full px-2 py-1 text-xs"
+                            >
                               #{tag}
                             </span>
                           ))}
                         </div>
                       )}
-                      <h3 className="text-lg font-medium group-hover:text-primary transition-colors line-clamp-2">
+                      <h3 className="group-hover:text-primary line-clamp-2 text-lg font-medium transition-colors">
                         {post.title}
                       </h3>
                     </div>
 
                     {post.description && (
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      <p className="text-muted-foreground mb-4 line-clamp-3 text-sm">
                         {post.description}
                       </p>
                     )}
 
                     {post.date && (
-                      <div className="text-xs text-muted-foreground mt-auto">
+                      <div className="text-muted-foreground mt-auto text-xs">
                         {new Date(post.date).toLocaleDateString()}
                       </div>
                     )}
@@ -134,41 +140,47 @@ export default function Home({ featuredPosts }: HomePageProps) {
           </div>
         </section>
 
-        <section className="py-12 bg-muted">
-          <div className="container max-w-5xl mx-auto px-4 text-center">
-            <h2 className="text-2xl font-bold mb-8">Explore by Category</h2>
+        <section className="bg-muted py-12">
+          <div className="container mx-auto max-w-5xl px-4 text-center">
+            <h2 className="mb-8 text-2xl font-bold">Explore by Category</h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               <Link
                 href="/consulting"
-                className="p-6 bg-card rounded-lg border hover:border-primary transition-colors"
+                className="bg-card hover:border-primary rounded-lg border p-6 transition-colors"
               >
-                <div className="text-xl font-medium mb-2">Consulting</div>
-                <p className="text-sm text-muted-foreground">Case studies and insights</p>
+                <div className="mb-2 text-xl font-medium">Consulting</div>
+                <p className="text-muted-foreground text-sm">
+                  Case studies and insights
+                </p>
               </Link>
 
               <Link
                 href="/earn"
-                className="p-6 bg-card rounded-lg border hover:border-primary transition-colors"
+                className="bg-card hover:border-primary rounded-lg border p-6 transition-colors"
               >
-                <div className="text-xl font-medium mb-2">Earn</div>
-                <p className="text-sm text-muted-foreground">Bounties and rewards</p>
+                <div className="mb-2 text-xl font-medium">Earn</div>
+                <p className="text-muted-foreground text-sm">
+                  Bounties and rewards
+                </p>
               </Link>
 
               <Link
                 href="/careers/hiring"
-                className="p-6 bg-card rounded-lg border hover:border-primary transition-colors"
+                className="bg-card hover:border-primary rounded-lg border p-6 transition-colors"
               >
-                <div className="text-xl font-medium mb-2">Hiring</div>
-                <p className="text-sm text-muted-foreground">Join our team</p>
+                <div className="mb-2 text-xl font-medium">Hiring</div>
+                <p className="text-muted-foreground text-sm">Join our team</p>
               </Link>
 
               <Link
                 href="/playground"
-                className="p-6 bg-card rounded-lg border hover:border-primary transition-colors"
+                className="bg-card hover:border-primary rounded-lg border p-6 transition-colors"
               >
-                <div className="text-xl font-medium mb-2">Playground</div>
-                <p className="text-sm text-muted-foreground">Experimental content</p>
+                <div className="mb-2 text-xl font-medium">Playground</div>
+                <p className="text-muted-foreground text-sm">
+                  Experimental content
+                </p>
               </Link>
             </div>
           </div>

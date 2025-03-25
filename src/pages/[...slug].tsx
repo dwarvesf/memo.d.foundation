@@ -32,12 +32,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const contentDir = path.join(process.cwd(), 'public/content');
 
   const paths = getAllMarkdownFiles(contentDir).map(slugArray => ({
-    params: { slug: slugArray }
+    params: { slug: slugArray },
   }));
 
   return {
     paths,
-    fallback: false // Must be 'false' for static export
+    fallback: false, // Must be 'false' for static export
   };
 };
 
@@ -53,8 +53,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     // If the direct path doesn't exist, check if there's an _index.md or readme.md file in the directory
     if (!fs.existsSync(filePath)) {
-      const indexFilePath = path.join(process.cwd(), 'public/content', ...slug, '_index.md');
-      const readmeFilePath = path.join(process.cwd(), 'public/content', ...slug, 'readme.md');
+      const indexFilePath = path.join(
+        process.cwd(),
+        'public/content',
+        ...slug,
+        '_index.md',
+      );
+      const readmeFilePath = path.join(
+        process.cwd(),
+        'public/content',
+        ...slug,
+        'readme.md',
+      );
 
       if (fs.existsSync(readmeFilePath)) {
         // Prioritize readme.md if it exists
@@ -67,7 +77,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     // Get markdown content and frontmatter
-    const { content, frontmatter} = await getMarkdownContent(filePath);
+    const { content, frontmatter } = await getMarkdownContent(filePath);
 
     // Get backlinks
     const backlinks = await getBacklinks(slug);
@@ -105,7 +115,7 @@ export default function ContentPage({
         const toc = document.createElement('ul');
         const tocLinks: HTMLAnchorElement[] = [];
 
-        headings.forEach((heading) => {
+        headings.forEach(heading => {
           // Create slug for heading
           const headingText = heading.textContent || '';
           const headingId = headingText
@@ -125,19 +135,23 @@ export default function ContentPage({
           tocLinks.push(link);
 
           // Add smooth scrolling behavior
-          link.addEventListener('click', (e) => {
+          link.addEventListener('click', e => {
             e.preventDefault();
             const targetHeading = document.getElementById(headingId);
 
             if (targetHeading) {
               // Get the header height to offset the scroll position
               const headerHeight = 64; // Height of the fixed header
-              const targetPosition = targetHeading.getBoundingClientRect().top + window.scrollY - headerHeight - 20; // Extra 20px padding
+              const targetPosition =
+                targetHeading.getBoundingClientRect().top +
+                window.scrollY -
+                headerHeight -
+                20; // Extra 20px padding
 
               // Scroll to the target position
               window.scrollTo({
                 top: targetPosition,
-                behavior: 'smooth'
+                behavior: 'smooth',
               });
 
               // Update URL without causing page reload
@@ -165,14 +179,14 @@ export default function ContentPage({
 
         // Add scroll spy functionality
         const observer = new IntersectionObserver(
-          (entries) => {
+          entries => {
             // Find first visible heading
             const visibleEntry = entries.find(entry => entry.isIntersecting);
 
             if (visibleEntry) {
               const id = visibleEntry.target.id;
               // Find the corresponding TOC link and highlight it
-              tocLinks.forEach((link) => {
+              tocLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('data-target') === id) {
                   link.classList.add('active');
@@ -182,15 +196,14 @@ export default function ContentPage({
           },
           {
             rootMargin: '-80px 0px -80% 0px', // Top offset adjusted
-            threshold: 0.1 // Require at least 10% visibility
-          }
+            threshold: 0.1, // Require at least 10% visibility
+          },
         );
 
         // Observe all headings
-        headings.forEach((heading) => {
+        headings.forEach(heading => {
           observer.observe(heading);
         });
-
       } else {
         // Hide the TOC if no headings found
         const label = document.querySelector('.nav-label');
@@ -209,30 +222,39 @@ export default function ContentPage({
         setTimeout(() => {
           // Get the header height to offset the scroll position
           const headerHeight = 64; // Height of the fixed header
-          const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+          const targetPosition =
+            target.getBoundingClientRect().top +
+            window.scrollY -
+            headerHeight -
+            20;
 
           // Scroll to the target position
           window.scrollTo({
             top: targetPosition,
-            behavior: 'smooth'
+            behavior: 'smooth',
           });
 
           // Highlight the correct TOC link
           const link = document.querySelector(`a[data-target="${id}"]`);
           if (link) {
-            document.querySelectorAll('.table-of-contents a').forEach(a => a.classList.remove('active'));
+            document
+              .querySelectorAll('.table-of-contents a')
+              .forEach(a => a.classList.remove('active'));
             link.classList.add('active');
           }
         }, 200); // Slightly longer timeout to ensure TOC is fully rendered
       }
     }
-
   }, [content]); // Re-run when content changes
 
   // Format metadata for display
   const metadata = {
-    created: frontmatter.date ? new Date(frontmatter.date).toLocaleDateString() : undefined,
-    updated: frontmatter.lastmod ? new Date(frontmatter.lastmod).toLocaleDateString() : undefined,
+    created: frontmatter.date
+      ? new Date(frontmatter.date).toLocaleDateString()
+      : undefined,
+    updated: frontmatter.lastmod
+      ? new Date(frontmatter.lastmod).toLocaleDateString()
+      : undefined,
     author: frontmatter.authors?.[0],
     coAuthors: frontmatter.authors?.slice(1),
     tags: frontmatter.tags,
@@ -248,11 +270,12 @@ export default function ContentPage({
   // Format backlinks for display
   const formattedBacklinks = backlinks.map(backlink => ({
     title: backlink.split('/').pop() || backlink,
-    url: `/${backlink}`
+    url: `/${backlink}`,
   }));
 
   // Don't show subscription for certain pages
-  const shouldShowSubscription = !frontmatter.hide_subscription &&
+  const shouldShowSubscription =
+    !frontmatter.hide_subscription &&
     !['home', 'tags', 'contributor'].some(path => slug.includes(path));
 
   return (
@@ -271,7 +294,10 @@ export default function ContentPage({
           hideTitle={frontmatter.hide_title}
         >
           {/* Render the HTML content safely */}
-          <div className="article-content" dangerouslySetInnerHTML={{ __html: content }} />
+          <div
+            className="article-content"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
         </ContentLayout>
 
         {/* Only show subscription section on content pages, not special pages */}
