@@ -74,7 +74,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       {/* Sidebar overlay - only shown on mobile when sidebar is open */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-20 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-20 bg-black/50 xl:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -162,7 +162,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
               )}
               onClick={toggleTheme}
             >
-              <div className="text-foreground: dark:text-primary-foreground rounded-full bg-white p-0.5">
+              <div className="text-foreground-light rounded-full bg-white p-0.5">
                 {isDark ? (
                   <SunIcon width={12} height={12} />
                 ) : (
