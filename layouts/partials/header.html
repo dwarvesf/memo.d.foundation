@@ -102,6 +102,10 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
 
+  <!-- Ethers.js for blockchain interactions -->
+  <script defer src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jdenticon@3.3.0/dist/jdenticon.min.js" async></script>
+
   <script defer data-domain="memo.d.foundation" src="https://plausible.io/js/script.js"></script>
   <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/persist@3.14.1/dist/cdn.min.js"></script>
   <script defer src="https://fastly.jsdelivr.net/npm/@alpinejs/focus@3.14.1/dist/cdn.min.js"></script>
@@ -165,6 +169,12 @@
 
   {{ $single := resources.Get "js/single.js" }}
   <script defer type="module" src="{{ $single.RelPermalink }}"></script>
+
+  {{ $eip6963 := resources.Get "js/eip6963.js" }}
+  <script defer type="module" src="{{ $eip6963.RelPermalink }}"></script>
+
+  {{ $mintEntry := resources.Get "js/mint-entry.js" }}
+  <script defer type="module" src="{{ $mintEntry.RelPermalink }}"></script>
 
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
@@ -374,6 +384,11 @@
        </div>
        <div class="arrow" data-popper-arrow></div>
      </div>
+     {{ if .Params.token_id }}
+     <button type="button" class="connect-wallet">
+      Connect
+     </button>
+     {{ end }}
  </div>
 
   </div>
