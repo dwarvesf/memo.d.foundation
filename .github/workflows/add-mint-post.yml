@@ -46,7 +46,7 @@ jobs:
           VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
           ENCRYPTED_WALLET_PRIVATE_KEY: ${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}
         run: |
-          DECRYPTED_WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/my-transit-key ciphertext="$ENCRYPTED_WALLET_PRIVATE_KEY" | base64 -d)
+          DECRYPTED_WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="$ENCRYPTED_WALLET_PRIVATE_KEY" | base64 -d)
           echo "WALLET_PRIVATE_KEY=$DECRYPTED_WALLET_PRIVATE_KEY" >> $GITHUB_ENV
 
       # - name: Get changed files
