@@ -5,8 +5,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "db/vault.parquet" # Only trigger on changes to this file
+      - cicd-mint-contract
+    # paths:
+    #   - "db/vault.parquet" # Only trigger on changes to this file
 
 concurrency:
   group: ${{ github.repository }}-workflow
@@ -22,6 +23,25 @@ jobs:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
           fetch-depth: 0
+
+      - name: Authenticate with Vault AppRole
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          VAULT_ROLE_ID: ${{ secrets.VAULT_ROLE_ID }}
+          VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
+        run: |
+          VAULT_TOKEN=$(vault write -field=token auth/approle/login \
+            role_id="$VAULT_ROLE_ID" \
+            secret_id="$VAULT_SECRET_ID")
+          echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
+
+      - name: Decrypt Secret from Vault
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          ENCRYPTED_WALLET_PRIVATE_KEY: ${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}
+        run: |
+          DECRYPTED_WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/my-transit-key ciphertext="$ENCRYPTED_WALLET_PRIVATE_KEY" | base64 -d)
+          echo "WALLET_PRIVATE_KEY=$DECRYPTED_WALLET_PRIVATE_KEY" >> $GITHUB_ENV
 
       - name: Get changed files
         id: changed-files
@@ -49,7 +69,7 @@ jobs:
       - name: Run script with files
         if: steps.changed-files.outputs.files != ''
         env:
-          WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+          WALLET_PRIVATE_KEY: ${{ env.WALLET_PRIVATE_KEY }}
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
           RPC_URL: ${{ vars.RPC_URL }}
         run: |
