@@ -213,7 +213,7 @@ async function fetchCollectorAddresses(tokenId) {
 
   try {
     // Use the new API endpoint to fetch minters
-    const apiUrl = `https://dwarves-memo-nft-api-dev.up.railway.app/minters/${tokenId}`;
+    const apiUrl = `https://memo-nft-api-prod.fly.dev/minters/${tokenId}`;
     
     const response = await fetch(apiUrl);
     if (!response.ok) {
@@ -245,7 +245,7 @@ async function fetchAndUpdateMintCount() {
     }
 
     // Fetch data from the API endpoint
-    const apiUrl = `https://dwarves-memo-nft-api-dev.up.railway.app/minters/${tokenId}`;
+    const apiUrl = `https://memo-nft-api-prod.fly.dev/minters/${tokenId}`;
     const response = await fetch(apiUrl);
     
     if (!response.ok) {
