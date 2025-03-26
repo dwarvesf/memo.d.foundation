@@ -1,8 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import { useThemeContext } from '@/contexts/theme';
+import Footer from './Footer';
+import DirectoryTree from './DirectoryTree';
+import { IMetadata, ITocItem } from '@/types';
+import RightSidebar from './RightSidebar';
+import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
 import TableOfContents from './TableOfContents';
 
 interface RootLayoutProps {
@@ -10,119 +16,46 @@ interface RootLayoutProps {
   title?: string;
   description?: string;
   image?: string;
-  tocItems?: {
-    id: string;
-    text: string;
-    level: number;
-    children?: {
-      id: string;
-      text: string;
-      level: number;
-      children?: Array<{ id: string; text: string; level: number }>;
-    }[];
-  }[];
+  tocItems?: ITocItem[];
+  metadata?: IMetadata;
 }
 
-export default function RootLayout({
+function RootLayout({
   children,
   title = 'Dwarves Memo',
   description = 'Knowledge sharing platform for Dwarves Foundation',
   image,
-  tocItems = [],
+  metadata,
+  tocItems,
 }: RootLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [readingMode, setReadingMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const { theme, toggleTheme } = useThemeContext();
+  const {
+    isOpenSidebar,
+    setIsOpenSidebar,
+    toggleIsOpenSidebar,
+    readingMode,
+    toggleReadingMode,
+  } = useLayoutContext();
 
-  // Define toggleReadingMode before it's used in useEffect
-  const toggleReadingMode = useCallback(() => {
-    const newReadingMode = !readingMode;
-    setReadingMode(newReadingMode);
-    if (mounted) {
-      localStorage.setItem('readingMode', newReadingMode.toString());
-    }
-  }, [readingMode, mounted]);
-
-  // Only use client-side features after component is mounted
   useEffect(() => {
-    setMounted(true);
-
-    // Initialize theme from localStorage
-    const savedTheme = localStorage?.getItem('theme') as
-      | 'light'
-      | 'dark'
-      | 'system'
-      | null;
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)',
-    ).matches;
-
-    let initialTheme: 'light' | 'dark';
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      // If we have a direct light/dark preference, use it
-      initialTheme = savedTheme;
-    } else {
-      // For 'system' or null, use system preference
-      initialTheme = prefersDark ? 'dark' : 'light';
-    }
-
-    // Set the theme state
-    setTheme(initialTheme);
-
-    // Apply the theme to the document
-    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
-    document.documentElement.setAttribute('data-theme', initialTheme);
-
-    // Initialize reading mode from localStorage
-    const savedReadingMode = localStorage?.getItem('readingMode') === 'true';
-    setReadingMode(savedReadingMode);
-
-    // No need to handle system theme changes since we're not using 'system' theme anymore
-    // We'll still keep the media query for initial setup, but we won't need the change handler
-
-    // Add keyboard shortcut for reading mode (Cmd/Ctrl+Shift+F)
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'f') {
-        e.preventDefault();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.key === 'f' &&
+        event.shiftKey &&
+        (event.ctrlKey || event.metaKey)
+      ) {
+        event.preventDefault();
         toggleReadingMode();
       }
     };
-
-    // Set CSS variable for header height
-    document.documentElement.style.setProperty('--header-height', '60px');
-
-    // Add keyboard event listener
     window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-    // eslint-disable-next-line
-  }, []);
-
-  // Update theme preferences when theme state changes
-  useEffect(() => {
-    if (!mounted) return;
-
-    // Save theme preference
-    localStorage.setItem('theme', theme);
-
-    // Apply theme
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme, mounted]);
-
-  const toggleTheme = () => {
-    // Simply toggle between light and dark
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-  };
+  }, [toggleReadingMode]);
 
   return (
-    <div
-      className={`bg-background text-foreground flex min-h-screen flex-col font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
-    >
+    <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -158,32 +91,28 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </Head>
-
       {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
-      {/* Main content area */}
-      <div className="ml-0 flex min-h-screen flex-col md:ml-[56px] lg:ml-[var(--nav-sidebar-width)]">
-        {/* Header */}
-        <Header
-          toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-          toggleTheme={toggleTheme}
-          toggleReadingMode={toggleReadingMode}
-          theme={theme}
-          readingMode={readingMode}
-        />
+      <Sidebar isOpen={isOpenSidebar} setIsOpen={setIsOpenSidebar} />
 
-        {/* Main content grid */}
-        <div className="relative flex flex-1">
-          <div
-            id="overlay"
-            className={`fixed inset-0 z-40 bg-black/30 ${sidebarOpen ? 'block md:hidden' : 'hidden'}`}
-          ></div>
+      <div
+        className={`bg-background text-foreground relative flex h-screen font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
+      >
+        <DirectoryTree />
+        <div className="relative flex flex-1 flex-col overflow-y-auto">
+          <Header
+            toggleSidebar={toggleIsOpenSidebar}
+            toggleTheme={toggleTheme}
+            toggleReadingMode={toggleReadingMode}
+            theme={theme}
+            readingMode={readingMode}
+          />
 
-          {/* Main layout with sidebar */}
-          <div className="relative mx-auto flex w-full max-w-[1400px]">
-            {/* Main content */}
-            <main className="relative mx-auto max-w-[var(--container-max-width)] flex-1 p-6 pb-16 font-serif">
+          {/* Main content grid */}
+          <div className="main-grid relative w-full flex-1 flex-col">
+            <RightSidebar metadata={metadata} />
+            <TableOfContents items={tocItems} />
+            <main className="main-content relative mx-auto max-w-[var(--container-max-width)] flex-1 p-[var(--main-padding-mobile)] pb-16 font-serif xl:p-[var(--main-padding)]">
               {/* Yggdrasil tree background */}
               <Image
                 className="yggdrasil-tree"
@@ -213,29 +142,13 @@ export default function RootLayout({
               <div className="memo-content mb-10">{children}</div>
             </main>
 
-            {/* Right sidebar for TOC and metadata */}
-            <aside
-              className={`right-sidebar border-border w-64 shrink-0 border-l p-4 pt-8 xl:w-72 ${readingMode ? 'hidden' : 'hidden lg:block'}`}
-            >
-              <div className="sticky top-16 pt-4">
-                <div className="mb-6">
-                  <h3 className="text-muted-foreground mb-4 text-sm text-[0.6875rem] font-medium tracking-wider uppercase">
-                    On this page
-                  </h3>
-                  <div className="table-of-contents">
-                    {tocItems.length > 0 && (
-                      <TableOfContents items={tocItems} />
-                    )}
-                  </div>
-                </div>
-
-                {/* Metadata section - will be populated by the content */}
-                <div className="metadata"></div>
-              </div>
-            </aside>
+            <div className="toc-space"></div>
           </div>
         </div>
+        <Footer />
       </div>
-    </div>
+    </>
   );
 }
+
+export default withLayoutContext(RootLayout);

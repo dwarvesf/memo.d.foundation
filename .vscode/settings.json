@@ -1,5 +1,5 @@
 {
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "terminal.integrated.profiles.osx": {
     "devboxCompatibleShell": {
       "path": "/bin/zsh",

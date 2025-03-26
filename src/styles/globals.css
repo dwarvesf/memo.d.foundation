@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 @import 'tailwindcss/preflight' layer(base);
 @import 'tailwindcss/utilities' layer(utilities);
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
 @config "../../tailwind.config.mjs";
 
 @layer base {
@@ -53,13 +56,14 @@
     --ring: var(--primary);
     --secondary: #303030;
     --secondary-foreground: #9b9b9b;
+    --secondary-background: var(--secondary-background-color-light);
     --error-color: #d81b60;
     --tag: var(--secondary-tag-color-light);
     --font-monospace: 'IBM Plex Mono';
 
     /* Spacing and Layout */
     --radius: 0.5rem;
-    --container-max-width: 730px;
+    --container-max-width: 695px;
     --header-height: 60px;
     --main-padding: 0px 10px 100px;
     --main-padding-mobile: 0 1.85rem 60px;
@@ -70,8 +74,8 @@
     --list-margin: 10px;
     --element-margin: 14px;
     --paragraph-margin: 16px;
-    --column-gap: 48px;
-    --nav-sidebar-width: 200px;
+    --column-gap: 28px;
+    --nav-sidebar-width: 232px;
     --nav-sidebar-offset: 0px;
   }
 
@@ -93,6 +97,7 @@
     --ring: var(--primary);
     --secondary: var(--secondary-background-color);
     --tag: var(--secondary-tag-color);
+    --secondary-background: var(--secondary-background-color);
   }
 }
 
@@ -148,6 +153,44 @@
   }
 }
 
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
 /* Custom components */
 @layer components {
   /* Table of Contents styling */
@@ -182,17 +225,17 @@
   }
 
   .heading-level-2 {
-    @apply text-muted-foreground ml-4;
+    @apply text-muted-foreground ml-0;
   }
 
   .heading-level-3 {
-    @apply text-muted-foreground ml-8 text-[13px];
+    @apply text-muted-foreground ml-4 text-[13px];
   }
 
   .heading-level-4,
   .heading-level-5,
   .heading-level-6 {
-    @apply text-muted-foreground ml-12 text-[13px];
+    @apply text-muted-foreground ml-8 text-[13px];
   }
 
   /* TOC indicator customization */
@@ -289,11 +332,6 @@
     @apply font-medium;
   }
 
-  /* Reading mode */
-  .reading-mode .right-sidebar {
-    @apply hidden lg:hidden;
-  }
-
   /* Command palette customization */
   .command-palette {
     @apply relative;
@@ -373,4 +411,25 @@
   }
 }
 
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive design adjustments */
+@media (min-width: 1475px) {
+  :root {
+    --column-gap: 48px;
+    --container-max-width: 730px;
+  }
+}
 /* We're using Tailwind's responsive classes instead of custom media queries */
+
+@import './layout.css';

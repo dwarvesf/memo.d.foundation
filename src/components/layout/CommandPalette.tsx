@@ -39,6 +39,7 @@ const CommandPalette: React.FC = () => {
   const [selectedRecent, setSelectedRecent] = useState<RecentPage | null>(
     mockRecentPages[0] || null,
   );
+  const [isMacOS, setIsMacOS] = useState(true);
   const [selectedWelcomeItem, setSelectedWelcomeItem] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -108,7 +109,9 @@ const CommandPalette: React.FC = () => {
       }
     } else if (selectedSection === 'suggestions') {
       // Copy memo content functionality
-      const memoContent = document.querySelector('.memo-content');
+      const memoContent = document.querySelector(
+        '.memo-content',
+      ) as HTMLElement;
       let content = 'No content found';
       if (memoContent) {
         content = memoContent.textContent || memoContent.innerHTML || ''
@@ -371,55 +374,39 @@ const CommandPalette: React.FC = () => {
     return () => clearTimeout(timer);
   }, [query]);
 
+  useEffect(() => {
+    setIsMacOS(window.navigator.userAgent.includes('Macintosh'));
+  }, []);
+
+  const modifier = isMacOS ? '⌘' : 'ctrl';
+
   return (
     <div className="command-palette relative z-50">
       {/* Search button */}
       <button
-        className="border-border dark:border-border hover:border-primary bg-muted hidden h-10 w-40 items-center justify-between rounded-md border px-3 text-sm transition-colors md:flex lg:w-52"
+        className="hidden w-50 cursor-pointer justify-between rounded-md border bg-transparent px-3 py-1.5 transition-all duration-100 ease-in-out hover:shadow-md lg:flex"
         onClick={toggleCommandPalette}
         aria-label="Open command palette"
       >
-        <div className="flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 16 16"
-            fill="none"
-            className="text-muted-foreground mr-2"
-            aria-hidden="true"
-          >
-            <circle
-              cx="6.88881"
-              cy="6.8889"
-              r="5.55556"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M11.3333 11.3333L14.6666 14.6667"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="text-muted-foreground">Search...</span>
+        <div className="flex items-center gap-0.5">
+          <span className="text-muted-foreground text-sm filter-[opacity(50%)]">
+            🔍 Search...
+          </span>
         </div>
-        <div className="text-muted-foreground flex items-center text-xs">
-          <kbd className="bg-background rounded border px-1.5 py-0.5">
-            ⌘/Ctrl
+        <div className="text-muted-foreground flex items-center gap-0.5 text-xs">
+          <kbd
+            className="bg-background rounded border px-1.5 py-0.5"
+            suppressHydrationWarning
+          >
+            {modifier}
           </kbd>
-          <span className="mx-0.5">+</span>
           <kbd className="bg-background rounded border px-1.5 py-0.5">K</kbd>
         </div>
       </button>
 
       {/* Mobile search button */}
       <button
-        className="text-foreground flex h-10 w-10 items-center justify-center border-none bg-transparent p-0 md:hidden"
+        className="text-foreground flex h-10 w-10 items-center justify-center border-none bg-transparent p-0 lg:hidden"
         onClick={toggleCommandPalette}
         aria-label="Open search"
       >
@@ -719,8 +706,9 @@ const CommandPalette: React.FC = () => {
                           : 'hover:bg-muted'
                       }`}
                       onClick={() => {
-                        const memoContent =
-                          document.querySelector('.memo-content');
+                        const memoContent = document.querySelector(
+                          '.memo-content',
+                        ) as HTMLElement;
                         let content = 'No content found';
                         if (memoContent) {
                           content = memoContent.textContent || memoContent.innerHTML || ''

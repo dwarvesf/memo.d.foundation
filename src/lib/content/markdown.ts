@@ -8,7 +8,15 @@ import rehypeSanitize from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import matter from 'gray-matter';
 import { visit } from 'unist-util-visit';
-import type { Root } from 'mdast';
+import type { Heading, Root } from 'mdast';
+import type {
+  Element,
+  Properties,
+  Root as HastRoot,
+  Text as HastText,
+} from 'hast';
+import slugify from 'slugify';
+import { ITocItem } from '@/types';
 
 // Define interfaces for the AST nodes
 interface ImageNode {
@@ -16,6 +24,114 @@ interface ImageNode {
   url: string;
   title: string | null;
   alt: string | null;
+}
+
+interface FileData {
+  toc?: ITocItem[];
+  headingTextMap?: Map<string, string>;
+  [key: string]: unknown;
+}
+
+/**
+ * Custom remark plugin to extract table of contents
+ */
+function remarkToc() {
+  return (tree: Root, file: { data: Record<string, unknown> }) => {
+    const headings: ITocItem[] = [];
+    const currentHeadings: ITocItem[][] = [headings];
+    const headingTextMap = new Map<string, string>();
+    const headingTextCount = new Map<string, number>();
+    const fileData = file.data as FileData;
+
+    // Extract headings
+    visit(tree, 'heading', (node: Heading) => {
+      // Skip h1 headings as they're typically the title
+      if (node.depth < 2 || node.depth > 5) return;
+
+      // Process text content of the heading
+      let textContent = '';
+      visit(node, 'text', textNode => {
+        textContent += textNode.value;
+      });
+      // Generate slug for the heading
+      const slug = slugify(textContent, { strict: true });
+      if (!slug) {
+        return;
+      }
+      const currentCount = headingTextCount.get(textContent) || 0;
+      const nextCount = currentCount + 1;
+
+      // Store the mapping for later use
+      headingTextMap.set(textContent, slug);
+      headingTextCount.set(textContent, nextCount);
+
+      // Create a TOC item
+      const item: ITocItem = {
+        id:
+          nextCount > 1
+            ? `user-content-${slug}-${nextCount}`
+            : `user-content-${slug}`,
+        value: textContent,
+        depth: node.depth,
+        children: [],
+      };
+
+      // Find the appropriate parent level based on heading depth
+      while (currentHeadings.length > node.depth - 1) {
+        currentHeadings.pop();
+      }
+
+      // Ensure we have enough levels
+      while (currentHeadings.length < node.depth - 1) {
+        const lastItem = currentHeadings[currentHeadings.length - 1]?.at(-1);
+        if (!lastItem) break;
+        currentHeadings.push(lastItem.children);
+      }
+
+      // Add the item to the current level
+      currentHeadings[currentHeadings.length - 1].push(item);
+
+      // Track this level for potential children
+      currentHeadings.push(item.children);
+    });
+
+    // Store the TOC in the file data
+    fileData.toc = headings;
+    fileData.headingTextMap = headingTextMap;
+  };
+}
+
+/**
+ * Custom rehype plugin to add IDs to headings
+ */
+function rehypeAddHeadingIds() {
+  return (tree: HastRoot, file: { data: Record<string, unknown> }) => {
+    const fileData = file.data as FileData;
+    const headingTextMap = fileData.headingTextMap;
+    const headingTextCount = new Map<string, number>();
+
+    if (!headingTextMap) return;
+
+    visit(tree, 'element', (node: Element) => {
+      if (/^h[2-5]$/.test(node.tagName)) {
+        // Extract text content from heading
+        let textContent = '';
+        visit(node, 'text', (textNode: HastText) => {
+          textContent += textNode.value;
+        });
+
+        // If we have an ID for this text, add it
+        const id = headingTextMap.get(textContent);
+        if (id) {
+          const currentCount = headingTextCount.get(textContent) || 0;
+          const nextCount = currentCount + 1;
+          headingTextCount.set(textContent, nextCount);
+          node.properties = node.properties || ({} as Properties);
+          node.properties.id = nextCount > 1 ? `${id}-${nextCount}` : id;
+        }
+      }
+    });
+  };
 }
 
 /**
@@ -35,12 +151,11 @@ function remarkResolveImagePaths(fileDir: string) {
         const absoluteImagePath = path.resolve(mdFileDir, imageNode.url);
 
         // Make the path relative to the public directory for serving
-        // This maps content/assets/image.webp to /content/assets/image.webp
         let publicPath = '/' + path.relative(process.cwd(), absoluteImagePath);
 
         // Remove the 'public' prefix if it exists
         if (publicPath.startsWith('/public/')) {
-          publicPath = publicPath.substring(7); // Remove '/public' (7 characters)
+          publicPath = publicPath.substring(7);
         }
 
         // Update the URL
@@ -53,7 +168,7 @@ function remarkResolveImagePaths(fileDir: string) {
 /**
  * Reads and parses markdown content from a file
  * @param filePath Path to the markdown file
- * @returns Object with frontmatter and processed HTML content
+ * @returns Object with frontmatter, processed HTML content, and table of contents
  */
 export async function getMarkdownContent(filePath: string) {
   // Read the markdown file
@@ -62,7 +177,7 @@ export async function getMarkdownContent(filePath: string) {
   // Parse frontmatter and content
   const { data: frontmatter, content } = matter(markdownContent);
 
-  // Define schema for rehype-sanitize to allow table elements
+  // Define schema for rehype-sanitize to allow table elements & id attributes
   const schema = {
     tagNames: [
       // Default elements
@@ -97,7 +212,7 @@ export async function getMarkdownContent(filePath: string) {
       'td',
     ],
     attributes: {
-      '*': ['className', 'id'],
+      '*': ['id', 'className'],
       a: ['href', 'target', 'rel'],
       img: ['src', 'alt', 'title'],
       th: ['align', 'scope', 'colspan', 'rowspan'],
@@ -105,18 +220,29 @@ export async function getMarkdownContent(filePath: string) {
     },
   };
 
+  // Used to collect the file data during processing
+  const fileData: Record<string, unknown> = {};
+
   // Process the Markdown content
-  const processedContent = await unified()
+  const processor = unified()
     .use(remarkParse)
-    .use(remarkGfm) // Add GitHub Flavored Markdown support (including tables)
+    .use(remarkGfm)
     .use(() => remarkResolveImagePaths(filePath))
-    .use(remarkRehype, { allowDangerousHtml: true }) // Allow HTML to pass through
-    .use(rehypeSanitize, schema) // Use custom schema that allows table elements
-    .use(rehypeStringify)
-    .process(content);
+    .use(remarkToc) // Extract table of contents and create heading ID mapping
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
+    .use(rehypeSanitize, schema as never) // Type cast needed due to rehype-sanitize typing limitations
+    .use(rehypeStringify);
+
+  // Process the content
+  const vFile = await processor.process({
+    value: content,
+    data: fileData,
+  });
 
   return {
     frontmatter,
-    content: String(processedContent),
+    content: String(vFile),
+    tocItems: (fileData as FileData).toc || [], // Return the table of contents
   };
 }

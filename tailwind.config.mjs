@@ -1,4 +1,5 @@
 import typography from '@tailwindcss/typography';
+import plugin from 'tailwindcss/plugin';
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -8,6 +9,15 @@ const config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      xs: '475px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1475px', // New custom breakpoint at 1475px
+      '3xl': '1600px',
+    },
     extend: {
       colors: {
         // Using CSS variables for all colors to match with Hugo
@@ -23,7 +33,7 @@ const config = {
           dark: 'var(--primary-background-color)',
 
           secondary: {
-            DEFAULT: 'var(--secondary-background-color)',
+            DEFAULT: 'var(--secondary-background)',
             light: 'var(--secondary-background-color-light)',
           },
           tertiary: {
@@ -83,7 +93,7 @@ const config = {
         serif: ['charter', 'Georgia', 'Cambria', 'serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
       },
-      typography: theme => ({
+      typography: () => ({
         DEFAULT: {
           css: {
             '--tw-prose-body': 'var(--foreground)',
@@ -312,7 +322,13 @@ const config = {
       },
     },
   },
-  plugins: [typography],
+  plugins: [
+    typography,
+    function ({ addVariant }) {
+      // Add a custom variant for reading mode
+      plugin(addVariant('reading', 'html[data-reading-mode="true"] &'));
+    },
+  ],
 };
 
 export default config;
