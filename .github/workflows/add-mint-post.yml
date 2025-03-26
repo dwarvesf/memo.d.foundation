@@ -5,13 +5,12 @@ on:
   push:
     branches:
       - main
-      - cicd-mint-contract
-    # paths:
-    #   - "db/vault.parquet" # Only trigger on changes to this file
+    paths:
+      - "db/vault.parquet" # Only trigger on changes to this file
 
-# concurrency:
-#   group: ${{ github.repository }}-workflow
-#   cancel-in-progress: false
+concurrency:
+  group: ${{ github.repository }}-workflow
+  cancel-in-progress: false
 
 env:
   VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
@@ -43,15 +42,6 @@ jobs:
             secret_id="$VAULT_SECRET_ID")
           echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
 
-      - name: Decrypt Secret from Vault
-        env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-          ENCRYPTED_WALLET_PRIVATE_KEY: ${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}
-        run: |
-          DECRYPTED_WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="$ENCRYPTED_WALLET_PRIVATE_KEY" | base64 -d)
-          echo "WALLET_PRIVATE_KEY=$DECRYPTED_WALLET_PRIVATE_KEY" >> $GITHUB_ENV
-          echo "::add-mask::$WALLET_PRIVATE_KEY"
-
       - name: Get changed files
         id: changed-files
         run: |
@@ -78,10 +68,10 @@ jobs:
       - name: Run script with files
         if: steps.changed-files.outputs.files != ''
         env:
-          WALLET_PRIVATE_KEY: ${{ env.WALLET_PRIVATE_KEY }}
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
           RPC_URL: ${{ vars.RPC_URL }}
         run: |
+          export WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}" | base64 -d)
           npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
 
       - name: Commit and push changes
