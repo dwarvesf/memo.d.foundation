@@ -9,9 +9,9 @@ on:
     # paths:
     #   - "db/vault.parquet" # Only trigger on changes to this file
 
-concurrency:
-  group: ${{ github.repository }}-workflow
-  cancel-in-progress: false
+# concurrency:
+#   group: ${{ github.repository }}-workflow
+#   cancel-in-progress: false
 
 env:
   VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
