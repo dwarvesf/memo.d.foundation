@@ -43,7 +43,7 @@ const CHAIN_CONFIG = {
 };
 
 // Set active network - change this to 'mainnet' when deploying to production
-const ACTIVE_NETWORK = "testnet";
+const ACTIVE_NETWORK = "mainnet";
 const ACTIVE_CHAIN = CHAIN_CONFIG[ACTIVE_NETWORK];
 
 // Only including the functions we need for the ABI
