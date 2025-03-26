@@ -55,6 +55,9 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
         return 0;
       },
     );
+    if (depth === 0 && !hasChildren) {
+      return null;
+    }
     return (
       <div
         key={path}
