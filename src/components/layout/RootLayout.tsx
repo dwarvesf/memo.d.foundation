@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Sidebar from './Sidebar';
@@ -6,74 +6,51 @@ import Header from './Header';
 import { useThemeContext } from '@/contexts/theme';
 import Footer from './Footer';
 import DirectoryTree from './DirectoryTree';
+import { IMetadata, ITocItem } from '@/types';
+import RightSidebar from './RightSidebar';
+import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
 
 interface RootLayoutProps {
   children: React.ReactNode;
   title?: string;
   description?: string;
   image?: string;
-  tocItems?: {
-    id: string;
-    text: string;
-    level: number;
-    children?: {
-      id: string;
-      text: string;
-      level: number;
-      children?: Array<{ id: string; text: string; level: number }>;
-    }[];
-  }[];
+  tocItems?: ITocItem[];
+  metadata?: IMetadata;
 }
 
-export default function RootLayout({
+function RootLayout({
   children,
   title = 'Dwarves Memo',
   description = 'Knowledge sharing platform for Dwarves Foundation',
   image,
+  metadata,
 }: RootLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [readingMode, setReadingMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const { theme, toggleTheme } = useThemeContext();
+  const {
+    isOpenSidebar,
+    setIsOpenSidebar,
+    toggleIsOpenSidebar,
+    readingMode,
+    toggleReadingMode,
+  } = useLayoutContext();
 
-  // Define toggleReadingMode before it's used in useEffect
-  const toggleReadingMode = useCallback(() => {
-    const newReadingMode = !readingMode;
-    setReadingMode(newReadingMode);
-    if (mounted) {
-      localStorage.setItem('readingMode', newReadingMode.toString());
-    }
-  }, [readingMode, mounted]);
-
-  // Only use client-side features after component is mounted
   useEffect(() => {
-    setMounted(true);
-    // Initialize reading mode from localStorage
-    const savedReadingMode = localStorage?.getItem('readingMode') === 'true';
-    setReadingMode(savedReadingMode);
-
-    // No need to handle system theme changes since we're not using 'system' theme anymore
-    // We'll still keep the media query for initial setup, but we won't need the change handler
-
-    // Add keyboard shortcut for reading mode (Cmd/Ctrl+Shift+F)
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'f') {
-        e.preventDefault();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.key === 'f' &&
+        event.shiftKey &&
+        (event.ctrlKey || event.metaKey)
+      ) {
+        event.preventDefault();
         toggleReadingMode();
       }
     };
-
-    // Set CSS variable for header height
-    document.documentElement.style.setProperty('--header-height', '60px');
-
-    // Add keyboard event listener
     window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-    // eslint-disable-next-line
-  }, []);
+  }, [toggleReadingMode]);
 
   return (
     <>
@@ -114,7 +91,7 @@ export default function RootLayout({
       </Head>
       {/* Sidebar */}
 
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+      <Sidebar isOpen={isOpenSidebar} setIsOpen={setIsOpenSidebar} />
 
       <div
         className={`bg-background text-foreground relative flex h-screen font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
@@ -122,7 +99,7 @@ export default function RootLayout({
         <DirectoryTree />
         <div className="relative flex flex-1 flex-col overflow-y-auto">
           <Header
-            toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+            toggleSidebar={toggleIsOpenSidebar}
             toggleTheme={toggleTheme}
             toggleReadingMode={toggleReadingMode}
             theme={theme}
@@ -131,6 +108,8 @@ export default function RootLayout({
 
           {/* Main content grid */}
           <div className="main-grid relative w-full flex-1 flex-col">
+            <RightSidebar metadata={metadata} />
+
             <main className="main-content relative mx-auto max-w-[var(--container-max-width)] flex-1 p-6 pb-16 font-serif">
               {/* Yggdrasil tree background */}
               <Image
@@ -161,14 +140,8 @@ export default function RootLayout({
               <div className="memo-content mb-10">{children}</div>
             </main>
 
-            <aside
-              className={`right-sidebar border-border w-64 shrink-0 border-l p-4 pt-8 xl:w-72 ${readingMode ? 'hidden' : 'hidden lg:block'}`}
-            >
-              <div className="sticky top-16 pt-4">
-                {/* Metadata section - will be populated by the content */}
-                <div className="metadata"></div>
-              </div>
-            </aside>
+            <div className="toc"></div>
+            <div className="toc-space"></div>
           </div>
         </div>
         <Footer />
@@ -176,3 +149,5 @@ export default function RootLayout({
     </>
   );
 }
+
+export default withLayoutContext(RootLayout);

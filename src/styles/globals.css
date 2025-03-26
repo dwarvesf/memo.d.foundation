@@ -63,7 +63,7 @@
 
     /* Spacing and Layout */
     --radius: 0.5rem;
-    --container-max-width: 730px;
+    --container-max-width: 695px;
     --header-height: 60px;
     --main-padding: 0px 10px 100px;
     --main-padding-mobile: 0 1.85rem 60px;
@@ -74,7 +74,7 @@
     --list-margin: 10px;
     --element-margin: 14px;
     --paragraph-margin: 16px;
-    --column-gap: 48px;
+    --column-gap: 28px;
     --nav-sidebar-width: 232px;
     --nav-sidebar-offset: 0px;
   }
@@ -332,11 +332,6 @@
     @apply font-medium;
   }
 
-  /* Reading mode */
-  .reading-mode .right-sidebar {
-    @apply hidden lg:hidden;
-  }
-
   /* Command palette customization */
   .command-palette {
     @apply relative;
@@ -416,25 +411,25 @@
   }
 }
 
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive design adjustments */
+@media (min-width: 1475px) {
+  :root {
+    --column-gap: 48px;
+    --container-max-width: 730px;
+  }
+}
 /* We're using Tailwind's responsive classes instead of custom media queries */
 
-.main-grid {
-  display: inline-grid;
-  grid-template-areas:
-    'tabmenu tabmenu tabmenu tabmenu'
-    'toc-space content right-sidebar toc'
-    'toc-space content right-sidebar toc';
-  grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
-  grid-template-columns:
-    0 minmax(600px, var(--container-max-width)) minmax(200px, 280px),
-    0;
-  column-gap: var(--column-gap);
-  justify-content: center;
-}
-
-.right-sidebar {
-  grid-area: right-sidebar;
-}
-.main-content {
-  grid-area: content;
-}
+@import './layout.css';

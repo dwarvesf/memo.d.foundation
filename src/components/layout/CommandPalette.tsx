@@ -39,6 +39,7 @@ const CommandPalette: React.FC = () => {
   const [selectedRecent, setSelectedRecent] = useState<RecentPage | null>(
     mockRecentPages[0] || null,
   );
+  const [isMacOS, setIsMacOS] = useState(true);
   const [selectedWelcomeItem, setSelectedWelcomeItem] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -373,11 +374,11 @@ const CommandPalette: React.FC = () => {
     return () => clearTimeout(timer);
   }, [query]);
 
-  const modifier =
-    typeof window !== 'undefined' &&
-    window.navigator.userAgent.includes('Macintosh')
-      ? '⌘'
-      : 'ctrl';
+  useEffect(() => {
+    setIsMacOS(window.navigator.userAgent.includes('Macintosh'));
+  }, []);
+
+  const modifier = isMacOS ? '⌘' : 'ctrl';
 
   return (
     <div className="command-palette relative z-50">

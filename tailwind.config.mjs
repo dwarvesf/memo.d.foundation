@@ -1,4 +1,5 @@
 import typography from '@tailwindcss/typography';
+import plugin from 'tailwindcss/plugin';
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -8,6 +9,15 @@ const config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      xs: '475px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1475px', // New custom breakpoint at 1475px
+      '3xl': '1600px',
+    },
     extend: {
       colors: {
         // Using CSS variables for all colors to match with Hugo
@@ -312,7 +322,13 @@ const config = {
       },
     },
   },
-  plugins: [typography],
+  plugins: [
+    typography,
+    function ({ addVariant }) {
+      // Add a custom variant for reading mode
+      plugin(addVariant('reading', 'html[data-reading-mode="true"] &'));
+    },
+  ],
 };
 
 export default config;
