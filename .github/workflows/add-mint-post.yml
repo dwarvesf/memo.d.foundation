@@ -27,7 +27,7 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Install Vault CLI
         run: |
@@ -72,7 +72,8 @@ jobs:
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
           RPC_URL: ${{ vars.RPC_URL }}
         run: |
-          export WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}" | base64 -d)
+          DECRYPTED_WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}" | base64 -d)
+          export WALLET_PRIVATE_KEY=$DECRYPTED_WALLET_PRIVATE_KEY
           npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
 
       - name: Commit and push changes
