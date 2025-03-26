@@ -24,20 +24,31 @@ jobs:
       #     submodules: recursive
       #     fetch-depth: 0
 
-      - name: Authenticate and Decrypt Secret from Vault
-        uses: hashicorp/vault-action@v2
-        with:
-          url: ${{ secrets.VAULT_ADDR }}
-          method: approle
-          roleId: ${{ secrets.VAULT_ROLE_ID }}
-          secretId: ${{ secrets.VAULT_SECRET_ID }}
-          secrets: |
-            transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext=${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }} | WALLET_PRIVATE_KEY ; base64
-        env:
-          VAULT_FORMAT: "json" # Ensures consistent output parsing
+      - name: Install Vault CLI
+        run: |
+          rm -rf vault_1.15.5_linux_amd64.zip vault
+          wget https://releases.hashicorp.com/vault/1.15.5/vault_1.15.5_linux_amd64.zip
+          unzip -o vault_1.15.5_linux_amd64.zip
+          sudo mv vault /usr/local/bin/
 
-      - name: echo decrypted secret with end of 10 characters
-        run: echo $WALLET_PRIVATE_KEY | tail -c 10
+      - name: Authenticate with Vault AppRole
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          VAULT_ROLE_ID: ${{ secrets.VAULT_ROLE_ID }}
+          VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
+        run: |
+          VAULT_TOKEN=$(vault write -field=token auth/approle/login \
+            role_id="$VAULT_ROLE_ID" \
+            secret_id="$VAULT_SECRET_ID")
+          echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
+
+      - name: Decrypt Secret from Vault
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          ENCRYPTED_WALLET_PRIVATE_KEY: ${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}
+        run: |
+          DECRYPTED_WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="$ENCRYPTED_WALLET_PRIVATE_KEY" | base64 -d)
+          echo "WALLET_PRIVATE_KEY=$DECRYPTED_WALLET_PRIVATE_KEY" >> $GITHUB_ENV
 
       # - name: Get changed files
       #   id: changed-files
