@@ -21,7 +21,7 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
-          fetch-depth: 1
+          fetch-depth: 5
 
       - name: Get changed files
         id: changed-files
