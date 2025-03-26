@@ -17,76 +17,66 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout contents repo
-        uses: actions/checkout@v4
+      # - name: Checkout contents repo
+      #   uses: actions/checkout@v4
+      #   with:
+      #     token: ${{ secrets.DWARVES_PAT }}
+      #     submodules: recursive
+      #     fetch-depth: 0
+
+      - name: Authenticate and Decrypt Secret from Vault
+        uses: hashicorp/vault-action@v2
         with:
-          token: ${{ secrets.DWARVES_PAT }}
-          submodules: recursive
-          fetch-depth: 0
-
-      - name: Install Vault CLI
-        run: |
-          wget https://releases.hashicorp.com/vault/1.15.5/vault_1.15.5_linux_amd64.zip
-          unzip -o vault_1.15.5_linux_amd64.zip
-          sudo mv vault /usr/local/bin/
-
-      - name: Authenticate with Vault AppRole
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext=${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }} | WALLET_PRIVATE_KEY ; base64
         env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-          VAULT_ROLE_ID: ${{ secrets.VAULT_ROLE_ID }}
-          VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
-        run: |
-          VAULT_TOKEN=$(vault write -field=token auth/approle/login \
-            role_id="$VAULT_ROLE_ID" \
-            secret_id="$VAULT_SECRET_ID")
-          echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
+          VAULT_FORMAT: "json" # Ensures consistent output parsing
 
-      - name: Decrypt Secret from Vault
-        env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-          ENCRYPTED_WALLET_PRIVATE_KEY: ${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}
-        run: |
-          DECRYPTED_WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="$ENCRYPTED_WALLET_PRIVATE_KEY" | base64 -d)
-          echo "WALLET_PRIVATE_KEY=$DECRYPTED_WALLET_PRIVATE_KEY" >> $GITHUB_ENV
+      - name: echo decrypted secret with end of 10 characters
+        run: echo $WALLET_PRIVATE_KEY | tail -c 10
 
-      - name: Get changed files
-        id: changed-files
-        run: |
-          # Install DuckDB
-          wget -q https://github.com/duckdb/duckdb/releases/download/v1.2.1/duckdb_cli-linux-amd64.zip
-          unzip -q duckdb_cli-linux-amd64.zip
-          chmod +x duckdb
+      # - name: Get changed files
+      #   id: changed-files
+      #   run: |
+      #     # Install DuckDB
+      #     wget -q https://github.com/duckdb/duckdb/releases/download/v1.2.1/duckdb_cli-linux-amd64.zip
+      #     unzip -q duckdb_cli-linux-amd64.zip
+      #     chmod +x duckdb
 
-          # Query for files that have perma_storage_id = 'true'
-          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT STRING_AGG(file_path, ',') FROM 'db/vault.parquet' WHERE should_mint = true AND minted_at IS NULL AND token_id IS NULL;" | tr -d '"')
+      #     # Query for files that have perma_storage_id = 'true'
+      #     CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT STRING_AGG(file_path, ',') FROM 'db/vault.parquet' WHERE should_mint = true AND minted_at IS NULL AND token_id IS NULL;" | tr -d '"')
 
-          # Output the results
-          echo "Found markdown files for permanent storage: $CHANGED_FILES"
-          echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+      #     # Output the results
+      #     echo "Found markdown files for permanent storage: $CHANGED_FILES"
+      #     echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "20"
 
-      - name: Install dependencies
-        run: npm install ethers@5.7.2 gray-matter crypto js-yaml tsx
+      # - name: Install dependencies
+      #   run: npm install ethers@5.7.2 gray-matter crypto js-yaml tsx
 
-      - name: Run script with files
-        if: steps.changed-files.outputs.files != ''
-        env:
-          WALLET_PRIVATE_KEY: ${{ env.WALLET_PRIVATE_KEY }}
-          CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
-          RPC_URL: ${{ vars.RPC_URL }}
-        run: |
-          npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
+      # - name: Run script with files
+      #   if: steps.changed-files.outputs.files != ''
+      #   env:
+      #     WALLET_PRIVATE_KEY: ${{ env.WALLET_PRIVATE_KEY }}
+      #     CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
+      #     RPC_URL: ${{ vars.RPC_URL }}
+      #   run: |
+      #     npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
 
-      - name: Commit and push changes
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git checkout main
-          git submodule foreach --recursive "git checkout main || git checkout master || true; git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
-          git add --all
-          git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
-          git push
+      # - name: Commit and push changes
+      #   run: |
+      #     git config --global user.email "actions@github.com"
+      #     git config --global user.name "GitHub Actions"
+      #     git checkout main
+      #     git submodule foreach --recursive "git checkout main || git checkout master || true; git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
+      #     git add --all
+      #     git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
+      #     git push
