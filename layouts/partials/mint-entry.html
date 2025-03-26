@@ -1,0 +1,66 @@
+<section data-token-id="{{ .Params.token_id }}" class="mint-entry-container" x-data="{ 
+    contentDigest: 'Calculating...',
+    calculateDigest() {
+      const content = {{ .Content | jsonify }};
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(content))
+        .then(hashBuffer => {
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+          this.contentDigest = hashHex.substring(0, 20);
+        })
+        .catch(error => {
+          console.error('Failed to calculate content digest:', error);
+          this.contentDigest = 'Error calculating digest';
+        });
+    }
+  }" x-init="calculateDigest()">
+  <div class="entry-minter">
+    <div class="mint-cta">
+      <div class="nft-preview">
+        {{ $whiteImage := resources.Get "img/LOGO.png" }}
+        {{ $imageParam := .Params.img }}
+        {{ $images := strings.FindRE `!\[[\w\s]*\]\(([\w\/\-\_\.]*)\)` .RawContent }}
+        {{ $firstImage := collections.Index $images 0 }}
+        {{ $firstImageUrl := or $imageParam (strings.ReplaceRE `!\[[\w\s]*\]\(([\w\/\-\_\.]*)\)` "$1" $firstImage) }}
+        {{ $baseURL := .Page.Site.BaseURL }}
+        {{ $postDir := "/" }}
+        {{ with .File }}
+        {{ $postDir = .Dir }}
+        {{ end }}
+        {{ $notFoundImg := resources.Get "img/404.png" }}
+
+        <img class="no-zoom nft-preview-image"
+          src="{{ if $firstImageUrl }}{{ $baseURL }}{{ strings.ToLower $postDir }}{{ $firstImageUrl }}{{ else }}{{ $whiteImage.RelPermalink }}{{ end }}" />
+        <span class="nft-preview-title">{{ .Params.Title }}</span>
+        <div class="nft-preview-author">
+          <svg width="16" height="16" data-jdenticon-value="{{ index .Params.authors 0 }}"></svg>
+          <div class="nft-preview-author-name-container">
+            <span class="nft-preview-author-name">{{ index .Params.authors 0 }}</span>
+            <span class="nft-preview-author-role">{{ .Params.author_role }}</span>
+          </div>
+        </div>
+      </div>
+      <span>Mint this entry as an NFT to add it to your collection.</span>
+      <button>Mint</button>
+    </div>
+    <div class="mint-progress">
+      <span class="mint-count-display">Loading...</span>
+    </div>
+  </div>
+  <div class="entry-info">
+    {{ $neko := resources.Get "img/neko-sticker.svg" }}
+    <img class="neko-sticker no-zoom" src="{{ $neko.RelPermalink }}" alt="Neko" />
+    <span>Verification</span>
+    <span>This entry has been permanently stored onchain and signed by its creator.</span>
+    <dl>
+      <dt>transaction</dt>
+      <dd class="mint-entry-nft-perma-storage-hash">
+        <a href="https://viewblock.io/arweave/tx/{{ .Params.perma_storage_id }}" target="_blank" rel="noopener noreferrer">{{ substr .Params.perma_storage_id 0 20 }}</a>
+      </dd>
+      <dt>nft address</dt>
+      <dd class="mint-entry-nft-address">Loading...</dd>
+      <dt>content digest</dt>
+      <dd class="mint-entry-content-digest" x-text="contentDigest"></dd>
+    </dl>
+  </div>
+</section>
