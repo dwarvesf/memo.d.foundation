@@ -12,6 +12,9 @@ concurrency:
   group: ${{ github.repository }}-workflow
   cancel-in-progress: false
 
+env:
+  VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,7 +24,21 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
-          fetch-depth: 0
+          fetch-depth: 5
+
+      - name: Install Vault CLI
+        run: |
+          rm -rf vault_1.15.5_linux_amd64.zip vault
+          wget https://releases.hashicorp.com/vault/1.15.5/vault_1.15.5_linux_amd64.zip
+          unzip -o vault_1.15.5_linux_amd64.zip
+          sudo mv vault /usr/local/bin/
+
+      - name: Authenticate with Vault AppRole
+        run: |
+          VAULT_TOKEN=$(vault write -field=token auth/approle/login \
+            role_id="${{ secrets.VAULT_ROLE_ID }}" \
+            secret_id="${{ secrets.VAULT_SECRET_ID }}")
+          echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
 
       - name: Get changed files
         id: changed-files
@@ -49,10 +66,10 @@ jobs:
       - name: Run script with files
         if: steps.changed-files.outputs.files != ''
         env:
-          WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
           RPC_URL: ${{ vars.RPC_URL }}
         run: |
+          export WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}" | base64 -d)
           npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
 
       - name: Commit and push changes
