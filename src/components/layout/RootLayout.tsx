@@ -9,6 +9,7 @@ import DirectoryTree from './DirectoryTree';
 import { IMetadata, ITocItem } from '@/types';
 import RightSidebar from './RightSidebar';
 import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
+import TableOfContents from './TableOfContents';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -25,6 +26,7 @@ function RootLayout({
   description = 'Knowledge sharing platform for Dwarves Foundation',
   image,
   metadata,
+  tocItems,
 }: RootLayoutProps) {
   const { theme, toggleTheme } = useThemeContext();
   const {
@@ -109,8 +111,8 @@ function RootLayout({
           {/* Main content grid */}
           <div className="main-grid relative w-full flex-1 flex-col">
             <RightSidebar metadata={metadata} />
-
-            <main className="main-content relative mx-auto max-w-[var(--container-max-width)] flex-1 p-6 pb-16 font-serif">
+            <TableOfContents items={tocItems} />
+            <main className="main-content relative mx-auto max-w-[var(--container-max-width)] flex-1 p-[var(--main-padding-mobile)] pb-16 font-serif xl:p-[var(--main-padding)]">
               {/* Yggdrasil tree background */}
               <Image
                 className="yggdrasil-tree"
@@ -140,7 +142,6 @@ function RootLayout({
               <div className="memo-content mb-10">{children}</div>
             </main>
 
-            <div className="toc"></div>
             <div className="toc-space"></div>
           </div>
         </div>

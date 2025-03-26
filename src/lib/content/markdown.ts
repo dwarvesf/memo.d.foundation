@@ -8,7 +8,7 @@ import rehypeSanitize from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import matter from 'gray-matter';
 import { visit } from 'unist-util-visit';
-import type { Heading, Root, Text } from 'mdast';
+import type { Heading, Root } from 'mdast';
 import type {
   Element,
   Properties,
@@ -40,28 +40,37 @@ function remarkToc() {
     const headings: ITocItem[] = [];
     const currentHeadings: ITocItem[][] = [headings];
     const headingTextMap = new Map<string, string>();
+    const headingTextCount = new Map<string, number>();
     const fileData = file.data as FileData;
 
     // Extract headings
     visit(tree, 'heading', (node: Heading) => {
       // Skip h1 headings as they're typically the title
-      if (node.depth < 2 || node.depth > 6) return;
+      if (node.depth < 2 || node.depth > 5) return;
 
       // Process text content of the heading
-      const textContent = node.children
-        .filter((child): child is Text => child.type === 'text')
-        .map(child => child.value)
-        .join('');
-
+      let textContent = '';
+      visit(node, 'text', textNode => {
+        textContent += textNode.value;
+      });
       // Generate slug for the heading
-      const slug = slugify(textContent, { lower: true, strict: true });
+      const slug = slugify(textContent, { strict: true });
+      if (!slug) {
+        return;
+      }
+      const currentCount = headingTextCount.get(textContent) || 0;
+      const nextCount = currentCount + 1;
 
       // Store the mapping for later use
       headingTextMap.set(textContent, slug);
+      headingTextCount.set(textContent, nextCount);
 
       // Create a TOC item
       const item: ITocItem = {
-        id: slug,
+        id:
+          nextCount > 1
+            ? `user-content-${slug}-${nextCount}`
+            : `user-content-${slug}`,
         value: textContent,
         depth: node.depth,
         children: [],
@@ -99,11 +108,12 @@ function rehypeAddHeadingIds() {
   return (tree: HastRoot, file: { data: Record<string, unknown> }) => {
     const fileData = file.data as FileData;
     const headingTextMap = fileData.headingTextMap;
+    const headingTextCount = new Map<string, number>();
 
     if (!headingTextMap) return;
 
     visit(tree, 'element', (node: Element) => {
-      if (/^h[2-6]$/.test(node.tagName)) {
+      if (/^h[2-5]$/.test(node.tagName)) {
         // Extract text content from heading
         let textContent = '';
         visit(node, 'text', (textNode: HastText) => {
@@ -113,8 +123,11 @@ function rehypeAddHeadingIds() {
         // If we have an ID for this text, add it
         const id = headingTextMap.get(textContent);
         if (id) {
+          const currentCount = headingTextCount.get(textContent) || 0;
+          const nextCount = currentCount + 1;
+          headingTextCount.set(textContent, nextCount);
           node.properties = node.properties || ({} as Properties);
-          node.properties.id = id;
+          node.properties.id = nextCount > 1 ? `${id}-${nextCount}` : id;
         }
       }
     });

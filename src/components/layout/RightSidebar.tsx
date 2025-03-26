@@ -107,12 +107,12 @@ const RightSidebar = (props: Props) => {
                   Location
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  <li className="text-muted-foreground flex items-center gap-1 text-xs">
+                  <li className="text-muted-foreground flex gap-1 text-xs">
                     <FolderIcon width={16} height={16} />
                     <span>Folder:</span>
                     <a
                       href={`/${metadata.folder}`}
-                      className="hover:text-primary hover:underline"
+                      className="hover:text-primary break-all hover:underline"
                     >
                       {metadata.folder}
                     </a>
