@@ -11,7 +11,8 @@ import { getBacklinks } from '../lib/content/backlinks';
 // Import components
 import { RootLayout, ContentLayout } from '../components';
 import SubscriptionSection from '../components/layout/SubscriptionSection';
-import { IMetadata, ITocItem } from '@/types';
+import { IMetadata, ITocItem, ITreeNode } from '@/types';
+import { buildDirectorTree } from '@/lib/content/directoryTree';
 
 interface ContentPageProps {
   content: string;
@@ -21,6 +22,7 @@ interface ContentPageProps {
   backlinks: string[];
   tocItems?: ITocItem[];
   metadata?: IMetadata;
+  directoryTree?: Record<string, ITreeNode>;
 }
 
 /**
@@ -49,6 +51,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
+    const contentDir = path.join(process.cwd(), 'public/content');
+
+    // Get directory tree for sidebar
+    const allPaths = getAllMarkdownFiles(contentDir);
+    const directoryTree = buildDirectorTree(allPaths);
 
     // Try multiple file path options to support Hugo's _index.md convention
     let filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
@@ -106,6 +113,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         backlinks,
         tocItems,
         metadata,
+        directoryTree,
       },
     };
   } catch (error) {
@@ -121,6 +129,7 @@ export default function ContentPage({
   backlinks,
   tocItems,
   metadata,
+  directoryTree,
 }: ContentPageProps) {
   // Format metadata for display
 
@@ -142,6 +151,7 @@ export default function ContentPage({
       image={frontmatter.image}
       tocItems={tocItems}
       metadata={metadata}
+      directoryTree={directoryTree}
     >
       <div className="content-wrapper">
         <ContentLayout

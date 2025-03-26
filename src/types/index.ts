@@ -17,3 +17,8 @@ export interface IMetadata {
   characterCount: number;
   blocksCount: number;
 }
+
+export interface ITreeNode {
+  label: string;
+  children: Record<string, ITreeNode>;
+}

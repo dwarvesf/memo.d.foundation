@@ -7,6 +7,8 @@ import fs from 'fs';
 import { RootLayout } from '../components';
 import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
+import { buildDirectorTree } from '@/lib/content/directoryTree';
+import { ITreeNode } from '@/types';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,6 +30,7 @@ interface FeaturedPost {
 
 interface HomePageProps {
   featuredPosts: FeaturedPost[];
+  directoryTree: Record<string, ITreeNode>;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -36,8 +39,10 @@ export const getStaticProps: GetStaticProps = async () => {
 
     // Get all markdown files
     const allPaths = getAllMarkdownFiles(contentDir);
+    const directoryTree = buildDirectorTree(allPaths);
 
     // Get the most recent posts (limit to 6)
+
     const recentPostsPromises = allPaths
       .slice(0, 10) // Get the first 10 files to process
       .map(async slugArray => {
@@ -72,6 +77,7 @@ export const getStaticProps: GetStaticProps = async () => {
     return {
       props: {
         featuredPosts: recentPosts,
+        directoryTree,
       },
     };
   } catch (error) {
@@ -84,11 +90,12 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-export default function Home({ featuredPosts }: HomePageProps) {
+export default function Home({ featuredPosts, directoryTree }: HomePageProps) {
   return (
     <RootLayout
       title="Dwarves Memo - Home"
       description="Knowledge sharing platform for Dwarves Foundation"
+      directoryTree={directoryTree}
     >
       <div className={`${geistSans.variable} ${geistMono.variable}`}>
         <section className="py-12 md:py-12">

@@ -6,7 +6,7 @@ import Header from './Header';
 import { useThemeContext } from '@/contexts/theme';
 import Footer from './Footer';
 import DirectoryTree from './DirectoryTree';
-import { IMetadata, ITocItem } from '@/types';
+import { IMetadata, ITocItem, ITreeNode } from '@/types';
 import RightSidebar from './RightSidebar';
 import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
 import TableOfContents from './TableOfContents';
@@ -18,6 +18,7 @@ interface RootLayoutProps {
   image?: string;
   tocItems?: ITocItem[];
   metadata?: IMetadata;
+  directoryTree?: Record<string, ITreeNode>;
 }
 
 function RootLayout({
@@ -27,6 +28,7 @@ function RootLayout({
   image,
   metadata,
   tocItems,
+  directoryTree,
 }: RootLayoutProps) {
   const { theme, toggleTheme } = useThemeContext();
   const {
@@ -64,17 +66,17 @@ function RootLayout({
         {image && <meta property="og:image" content={image} />}
         <link rel="icon" href="/favicon.ico" />
         {/* RSS feed link tags for auto-discovery */}
-        <link 
-          rel="alternate" 
-          type="application/rss+xml" 
-          title={`${title} - RSS Feed`} 
-          href="/feed.xml" 
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${title} - RSS Feed`}
+          href="/feed.xml"
         />
-        <link 
-          rel="alternate" 
-          type="application/atom+xml" 
-          title={`${title} - Atom Feed`} 
-          href="/atom.xml" 
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          title={`${title} - Atom Feed`}
+          href="/atom.xml"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -98,7 +100,7 @@ function RootLayout({
       <div
         className={`bg-background text-foreground relative flex h-screen font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
       >
-        <DirectoryTree />
+        <DirectoryTree tree={directoryTree} />
         <div className="relative flex flex-1 flex-col overflow-y-auto">
           <Header
             toggleSidebar={toggleIsOpenSidebar}
