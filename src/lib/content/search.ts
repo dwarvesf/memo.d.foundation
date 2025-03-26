@@ -111,7 +111,7 @@ function parseQueryForFilters(query: string): {
   filters: { authors: string[]; tags: string[]; title: string };
   query: string;
 } {
-  const filters = { authors: [], tags: [], title: '' };
+  const filters: { authors: string[]; tags: string[]; title: string } = { authors: [], tags: [], title: '' };
 
   const authorRe = /author:([^\s]*)/g;
   const tagRe = /tag:([^\s]*)/g;
@@ -258,13 +258,14 @@ export async function initializeSearchIndex(): Promise<void> {
               fuzzy: 0.2,
               prefix: true,
             },
-            extractField: (document, fieldName) => {
+            extractField: (document: Document, fieldName: string) => {
               if (fieldName === 'tags' && Array.isArray(document.tags)) {
                 return document.tags.join(' ');
               }
               if (fieldName === 'authors' && Array.isArray(document.authors)) {
                 return document.authors.join(' ');
               }
+              // @ts-expect-error any type
               return document[fieldName] || '';
             },
           });
@@ -313,7 +314,7 @@ export async function search(options: SearchOptions): Promise<SearchResult> {
         const documentAuthors = document.authors || [];
         if (
           !filters.authors.some(author =>
-            documentAuthors.some(docAuthor =>
+            documentAuthors.some((docAuthor: string) =>
               docAuthor.toLowerCase().includes(author.toLowerCase()),
             ),
           )
@@ -327,7 +328,7 @@ export async function search(options: SearchOptions): Promise<SearchResult> {
         const documentTags = document.tags || [];
         if (
           !filters.tags.some(tag =>
-            documentTags.some(docTag =>
+            documentTags.some((docTag: string) =>
               docTag.toLowerCase().includes(tag.toLowerCase()),
             ),
           )
@@ -345,7 +346,7 @@ export async function search(options: SearchOptions): Promise<SearchResult> {
 
   // Add matching lines and prepare result structure
   const enrichedResults = results.map(result => {
-    const document = { ...result } as Document;
+    const document = { ...result } as unknown as Document;
     document.matchingLines = getMatchingLines(document.md_content, query);
     return document;
   });

@@ -104,7 +104,7 @@ function parseQueryForFilters(query: string): {
   filters: { authors: string[]; tags: string[]; title: string };
   query: string;
 } {
-  const filters = { authors: [], tags: [], title: '' };
+  const filters: { authors: string[]; tags: string[]; title: string } = { authors: [], tags: [], title: '' };
 
   const authorRe = /author:([^\s]*)/g;
   const tagRe = /tag:([^\s]*)/g;
@@ -189,8 +189,8 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
 
         const data = await response.json();
 
-        // Create new MiniSearch instance
-        const ms = new MiniSearch({
+        // Define common MiniSearch options
+        const miniSearchOptions = {
           fields: ['title', 'description', 'tags', 'authors'],
           storeFields: [
             'file_path',
@@ -207,6 +207,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
             fuzzy: 0.2,
             prefix: true,
           },
+          // @ts-expect-error mixed types
           extractField: (document, fieldName) => {
             if (fieldName === 'tags' && Array.isArray(document.tags)) {
               return document.tags.join(' ');
@@ -216,11 +217,16 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
             }
             return document[fieldName] || '';
           },
-        });
+        };
+
+        // Create new MiniSearch instance
+        const ms = new MiniSearch(miniSearchOptions);
 
         // Load pre-built index if available
         if (data.index) {
-          ms.loadJSON(data.index);
+          // Use the static method instead of instance method
+          const loadedSearch = MiniSearch.loadJSON(data.index, miniSearchOptions);
+          setMiniSearch(loadedSearch);
         } else if (data.documents) {
           // Otherwise, add documents to index
           ms.addAll(data.documents);
@@ -273,7 +279,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
           const documentAuthors = document.authors || [];
           if (
             !filters.authors.some(author =>
-              documentAuthors.some(docAuthor =>
+              documentAuthors.some((docAuthor: string) =>
                 docAuthor.toLowerCase().includes(author.toLowerCase()),
               ),
             )
@@ -287,7 +293,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
           const documentTags = document.tags || [];
           if (
             !filters.tags.some(tag =>
-              documentTags.some(docTag =>
+              documentTags.some((docTag: string) =>
                 docTag.toLowerCase().includes(tag.toLowerCase()),
               ),
             )
@@ -308,7 +314,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
     // For now, we'll just return results without matching lines
     const enrichedResults = await Promise.all(
       results.map(async result => {
-        const document = { ...result } as Document;
+        const document = { ...result } as unknown as Document;
 
         // In a real implementation, you'd fetch the content for highlighting
         // For now, we'll just set a placeholder

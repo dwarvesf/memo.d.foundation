@@ -111,7 +111,7 @@ const CommandPalette: React.FC = () => {
       const memoContent = document.querySelector('.memo-content');
       let content = 'No content found';
       if (memoContent) {
-        content = memoContent.innerText
+        content = memoContent.textContent || memoContent.innerHTML || ''
           .replace(/\n\s*\n\s*\n/g, '\n\n') // Replace 3+ newlines with 2
           .trim();
       }
@@ -723,7 +723,7 @@ const CommandPalette: React.FC = () => {
                           document.querySelector('.memo-content');
                         let content = 'No content found';
                         if (memoContent) {
-                          content = memoContent.innerText
+                          content = memoContent.textContent || memoContent.innerHTML || ''
                             .replace(/\n\s*\n\s*\n/g, '\n\n')
                             .trim();
                         }

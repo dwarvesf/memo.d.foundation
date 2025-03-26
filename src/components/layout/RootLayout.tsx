@@ -130,6 +130,19 @@ export default function RootLayout({
         <meta property="og:description" content={description} />
         {image && <meta property="og:image" content={image} />}
         <link rel="icon" href="/favicon.ico" />
+        {/* RSS feed link tags for auto-discovery */}
+        <link 
+          rel="alternate" 
+          type="application/rss+xml" 
+          title={`${title} - RSS Feed`} 
+          href="/feed.xml" 
+        />
+        <link 
+          rel="alternate" 
+          type="application/atom+xml" 
+          title={`${title} - Atom Feed`} 
+          href="/atom.xml" 
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build && npm run generate-rss",
     "start": "next start",
     "lint": "next lint",
     "deploy": "gh-pages -d out",
     "format": "prettier --write ./src",
     "prepare": "husky",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "generate-rss": "node scripts/generate-rss.js"
   },
   "type": "module",
   "homepage": "https://memo.d.foundation/",
@@ -49,6 +50,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   },
   "pnpm": {

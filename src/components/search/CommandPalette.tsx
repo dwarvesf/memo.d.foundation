@@ -39,102 +39,6 @@ const CommandPalette: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  // Load recent pages from localStorage
-  useEffect(() => {
-    const storedRecents = localStorage.getItem('recentPages');
-    if (storedRecents) {
-      try {
-        const parsed = JSON.parse(storedRecents);
-        setRecentPages(parsed);
-      } catch (e) {
-        console.error('Error parsing recent pages', e);
-      }
-    }
-  }, []);
-
-  // Load pinned notes (would come from server in real implementation)
-  useEffect(() => {
-    // Placeholder - in a real app, these would be fetched from the server
-    setPinnedNotes([{ title: 'Getting Started with Dwarves Memo', url: '/' }]);
-  }, []);
-
-  // Handle key commands
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Command/Ctrl + K to open palette
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        if (isOpen) {
-          setIsOpen(false);
-        } else {
-          setIsOpen(true);
-          setTimeout(() => {
-            searchInputRef.current?.focus();
-          }, 10);
-        }
-      }
-
-      // If palette is open
-      if (isOpen) {
-        switch (e.key) {
-          case 'Escape':
-            e.preventDefault();
-            setIsOpen(false);
-            break;
-          case 'ArrowDown':
-            e.preventDefault();
-            handleArrowDown();
-            break;
-          case 'ArrowUp':
-            e.preventDefault();
-            handleArrowUp();
-            break;
-          case 'Enter':
-            e.preventDefault();
-            handleEnter();
-            break;
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, handleArrowDown, handleArrowUp, handleEnter]);
-
-  // Handle search
-  useEffect(() => {
-    const performSearch = async () => {
-      if (!query.trim()) {
-        setResults({ grouped: {}, flat: [] });
-        setSelectedItem(null);
-        return;
-      }
-
-      setIsSearching(true);
-
-      try {
-        const searchResults = await search({ query });
-        setResults(searchResults);
-
-        if (searchResults.flat.length > 0) {
-          setSelectedItem(searchResults.flat[0]);
-          setSelectedSection('search');
-        }
-      } catch (error) {
-        console.error('Error searching:', error);
-      } finally {
-        setIsSearching(false);
-      }
-    };
-
-    // Debounce search
-    const timer = setTimeout(() => {
-      performSearch();
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [query, search]);
-
   // Create the scrollSelectedIntoView function first so we can use it in callbacks
   const scrollSelectedIntoView = useCallback(
     (selector?: string) => {
@@ -292,29 +196,101 @@ const CommandPalette: React.FC = () => {
     pinnedNotes,
   ]);
 
-  const scrollSelectedIntoView = useCallback(
-    (selector?: string) => {
-      if (!searchContainerRef.current) return;
+  // Load recent pages from localStorage
+  useEffect(() => {
+    const storedRecents = localStorage.getItem('recentPages');
+    if (storedRecents) {
+      try {
+        const parsed = JSON.parse(storedRecents);
+        setRecentPages(parsed);
+      } catch (e) {
+        console.error('Error parsing recent pages', e);
+      }
+    }
+  }, []);
 
-      setTimeout(() => {
-        const selected = searchContainerRef.current?.querySelector(
-          selector ||
-            (selectedSection === 'search'
-              ? '.cmd-result-selected'
-              : selectedSection === 'recents'
-                ? `.cmd-idle-item[data-recent-id="${selectedIndex}"]`
-                : selectedSection === 'welcome'
-                  ? `.cmd-idle-item[data-welcome-id="${selectedIndex}"]`
-                  : '.cmd-idle-item[data-suggestion-id="0"]'),
-        );
+  // Load pinned notes (would come from server in real implementation)
+  useEffect(() => {
+    // Placeholder - in a real app, these would be fetched from the server
+    setPinnedNotes([{ title: 'Getting Started with Dwarves Memo', url: '/' }]);
+  }, []);
 
-        if (selected) {
-          selected.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+  // Handle key commands
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Command/Ctrl + K to open palette
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (isOpen) {
+          setIsOpen(false);
+        } else {
+          setIsOpen(true);
+          setTimeout(() => {
+            searchInputRef.current?.focus();
+          }, 10);
         }
-      }, 10);
-    },
-    [selectedSection, selectedIndex],
-  );
+      }
+
+      // If palette is open
+      if (isOpen) {
+        switch (e.key) {
+          case 'Escape':
+            e.preventDefault();
+            setIsOpen(false);
+            break;
+          case 'ArrowDown':
+            e.preventDefault();
+            handleArrowDown();
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            handleArrowUp();
+            break;
+          case 'Enter':
+            e.preventDefault();
+            handleEnter();
+            break;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, handleArrowDown, handleArrowUp, handleEnter]);
+
+  // Handle search
+  useEffect(() => {
+    const performSearch = async () => {
+      if (!query.trim()) {
+        setResults({ grouped: {}, flat: [] });
+        setSelectedItem(null);
+        return;
+      }
+
+      setIsSearching(true);
+
+      try {
+        const searchResults = await search({ query });
+        setResults(searchResults);
+
+        if (searchResults.flat.length > 0) {
+          setSelectedItem(searchResults.flat[0]);
+          setSelectedSection('search');
+        }
+      } catch (error) {
+        console.error('Error searching:', error);
+      } finally {
+        setIsSearching(false);
+      }
+    };
+
+    // Debounce search
+    const timer = setTimeout(() => {
+      performSearch();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query, search]);
 
   // Helper to format file path for URL
   const formatFilePath = (filePath: string): string => {

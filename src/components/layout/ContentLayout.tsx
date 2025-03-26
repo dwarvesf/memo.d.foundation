@@ -68,10 +68,10 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
               {metadata.tags.map(tag => (
                 <Link
                   key={tag}
-                  href={`/tags/${tag.toLowerCase()}`}
+                  href={`/tags/${tag?.toLowerCase()}`}
                   className="bg-tag text-foreground inline-flex h-fit items-center justify-center rounded-[50px] px-[0.5rem] py-[0.125rem] text-xs leading-[1.125rem] font-medium no-underline"
                 >
-                  {tag.replaceAll('-', ' ')}
+                  {tag?.replaceAll('-', ' ')}
                 </Link>
               ))}
             </div>
@@ -227,7 +227,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                       href={`/tags/${tag}`}
                       className="bg-muted text-muted-foreground hover:bg-muted/80 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
                     >
-                      {tag.replace(/-/g, ' ')}
+                      {tag?.replace(/-/g, ' ')}
                     </a>
                   ))}
                 </div>

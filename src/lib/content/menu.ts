@@ -51,6 +51,7 @@ function slugifyPathComponents(pathStr: string): string {
 interface FilePath {
   file_path: string;
   title: string;
+  date: string;
 }
 
 /**
@@ -102,8 +103,8 @@ function nestPaths(
             return 0;
           }
           // If neither have special characters or both do, sort by date (assuming newer dates should come first)
-          const dateA = a._meta?.date || '';
-          const dateB = b._meta?.date || '';
+          const dateA = a.date || '';
+          const dateB = b.date || '';
           return (
             new Date(dateB || 0).getTime() - new Date(dateA || 0).getTime()
           );
