@@ -46,10 +46,13 @@
   .table-container {
     @apply !mt-4 overflow-x-auto;
   }
-  .article-content .katex {
-    @apply block text-center whitespace-nowrap;
-  }
   .language-math {
     @apply block w-full !py-1 !text-[1.0625rem];
+  }
+  .language-math.math-inline {
+    @apply inline;
+  }
+  .katex-display {
+    @apply !my-0;
   }
 }

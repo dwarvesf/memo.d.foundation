@@ -49,14 +49,13 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
         const mathElements = mathContainerRef.current.querySelectorAll(
           '.language-math',
         ) as NodeListOf<HTMLElement>;
-
         mathElements?.forEach(element => {
           const mathContent = element.textContent || element.innerText;
           try {
             // Render inline math (e.g., $...$)
             katex.render(mathContent, element, {
               throwOnError: false, // Prevents errors from being thrown for invalid LaTeX
-              displayMode: element.classList.contains('block-math'), // Determine if block math
+              displayMode: element.classList.contains('math-display'), // Determine if block math
             });
           } catch (e) {
             console.error('KaTeX rendering error:', e);
@@ -65,7 +64,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
       }
     };
     renderMath();
-  }, []);
+  }, [metadata]);
 
   return (
     <div className="content-layout">

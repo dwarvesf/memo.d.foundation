@@ -34,17 +34,15 @@ interface FileData {
   [key: string]: unknown;
 }
 
-// Function to wrap multi-line LaTeX math blocks
-function wrapMultilineKatex(content: string): string {
-  return content.replace(/\$\$([\s\S]*?)\$\$/gm, (match, katexContent) => {
-    console.log(katexContent);
-    if (katexContent.includes('\n')) {
-      return `\n$$${katexContent}$$\n`;
-    } else {
-      return `$$${katexContent}$$`;
-    }
-  });
+function preprocessDollarSigns(markdown: string) {
+  return markdown.replace(/\$(\d[\d,.]*)/g, '[CURRENCY:$1]');
 }
+
+function postprocessDollarSigns(html: string) {
+  return html.replace(/\[CURRENCY:([\d,.]*)\]/g, '$$$1');
+}
+
+// Function to wrap multi-line LaTeX math blocks
 
 function rehypeTable() {
   return (tree: Root) => {
@@ -259,7 +257,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(() => remarkResolveImagePaths(filePath))
     .use(remarkToc) // Extract table of contents and create heading ID mapping
     .use(remarkMath, {
-      singleDollarTextMath: false,
+      // singleDollarTextMath: false,
     }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
     // .use(rehypeKatex) // Render math blocks
@@ -271,13 +269,13 @@ export async function getMarkdownContent(filePath: string) {
 
   // Process the content
   const vFile = await processor.process({
-    value: wrapMultilineKatex(content),
+    value: preprocessDollarSigns(content),
     data: fileData,
   });
 
   return {
     frontmatter,
-    content: String(vFile),
+    content: postprocessDollarSigns(String(vFile)),
     tocItems: (fileData as FileData).toc || [], // Return the table of contents
   };
 }
