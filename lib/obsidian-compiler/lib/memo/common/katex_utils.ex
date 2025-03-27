@@ -9,7 +9,7 @@ defmodule Memo.Common.KatexUtils do
   def wrap_multiline_katex(content) do
     Regex.replace(~r/\$\$([\s\S]*?)\$\$/m, content, fn _, katex_content ->
       if String.contains?(katex_content, "\n") do
-        "<span>\n$$#{katex_content}$$\n</span>"
+        "\n$$#{katex_content}$$\n"
       else
         "$$#{katex_content}$$"
       end

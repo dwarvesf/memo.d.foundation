@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
+import remarkMath from 'remark-math';
 import matter from 'gray-matter';
 import { visit } from 'unist-util-visit';
 import type { Heading, Root } from 'mdast';
@@ -17,6 +18,7 @@ import type {
 } from 'hast';
 import slugify from 'slugify';
 import { ITocItem } from '@/types';
+import rehypeHighlight from 'rehype-highlight';
 
 // Define interfaces for the AST nodes
 interface ImageNode {
@@ -32,6 +34,30 @@ interface FileData {
   [key: string]: unknown;
 }
 
+function preprocessDollarSigns(markdown: string) {
+  return markdown.replace(/\$(\d[\d,.]*)/g, '[CURRENCY:$1]');
+}
+
+function postprocessDollarSigns(html: string) {
+  return html.replace(/\[CURRENCY:([\d,.]*)\]/g, '$$$1');
+}
+
+// Function to wrap multi-line LaTeX math blocks
+
+function rehypeTable() {
+  return (tree: Root) => {
+    visit(tree, 'element', (node: Element, index, parent: Element) => {
+      if (node.tagName === 'table' && parent) {
+        parent.children[index] = {
+          type: 'element',
+          tagName: 'div',
+          properties: { className: ['table-container'] },
+          children: [node],
+        };
+      }
+    });
+  };
+}
 /**
  * Custom remark plugin to extract table of contents
  */
@@ -217,6 +243,7 @@ export async function getMarkdownContent(filePath: string) {
       img: ['src', 'alt', 'title'],
       th: ['align', 'scope', 'colspan', 'rowspan'],
       td: ['align', 'colspan', 'rowspan'],
+      code: [['className', /^language-./, 'math-inline', 'math-display']],
     },
   };
 
@@ -229,20 +256,26 @@ export async function getMarkdownContent(filePath: string) {
     .use(remarkGfm)
     .use(() => remarkResolveImagePaths(filePath))
     .use(remarkToc) // Extract table of contents and create heading ID mapping
+    .use(remarkMath, {
+      // singleDollarTextMath: false,
+    }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
+    // .use(rehypeKatex) // Render math blocks
     .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
     .use(rehypeSanitize, schema as never) // Type cast needed due to rehype-sanitize typing limitations
+    .use(rehypeTable) // Wrap tables in a container div
+    .use(rehypeHighlight)
     .use(rehypeStringify);
 
   // Process the content
   const vFile = await processor.process({
-    value: content,
+    value: preprocessDollarSigns(content),
     data: fileData,
   });
 
   return {
     frontmatter,
-    content: String(vFile),
+    content: postprocessDollarSigns(String(vFile)),
     tocItems: (fileData as FileData).toc || [], // Return the table of contents
   };
 }

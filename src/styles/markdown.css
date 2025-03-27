@@ -1,0 +1,58 @@
+@import './highlightjs.css';
+
+@layer components {
+  /* Prose styling */
+  .prose {
+    @apply max-w-none;
+  }
+
+  .prose :where(h1, h2, h3, h4, h5, h6) {
+    @apply font-bold;
+  }
+
+  .prose :where(pre) {
+    @apply bg-muted !mt-4 !mb-0 box-border w-full overflow-x-auto rounded-md border-none p-4 font-mono text-sm;
+  }
+
+  .prose :where(a) {
+    @apply text-primary hover:underline;
+  }
+
+  .prose img {
+    @apply rounded-md;
+  }
+
+  .prose table {
+    @apply w-full border-collapse border-spacing-0;
+  }
+
+  .prose th,
+  .prose td {
+    @apply border !px-3 py-2.5 text-left align-top;
+  }
+  .prose thead {
+    @apply bg-muted sticky top-0;
+  }
+
+  .prose th {
+    @apply font-medium;
+  }
+  .article-content > *:first-child {
+    @apply !mt-0;
+  }
+  .article-content ul li {
+    @apply !my-0;
+  }
+  .table-container {
+    @apply !mt-4 overflow-x-auto;
+  }
+  .language-math {
+    @apply block w-full !py-1 !text-[1.0625rem];
+  }
+  .language-math.math-inline {
+    @apply inline;
+  }
+  .katex-display {
+    @apply !my-0;
+  }
+}
