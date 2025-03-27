@@ -1,5 +1,9 @@
 // NFT Contract details
-const NFT_CONTRACT_ADDRESS = "0xb1e052156676750D193D800D7D91eA0C7cEeAdF0";
+// dev
+// const NFT_CONTRACT_ADDRESS = "0xb1e052156676750D193D800D7D91eA0C7cEeAdF0";
+
+// prod
+const NFT_CONTRACT_ADDRESS = "0x07f3ed54e0b2D07cC522c4FC12EbA80E6D3A8DeB";
 
 // Chain configuration - easy to switch between testnet and mainnet
 const CHAIN_CONFIG = {
