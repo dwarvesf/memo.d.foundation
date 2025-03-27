@@ -32,7 +32,7 @@ jobs:
           chmod +x duckdb
 
           # Query for files that have perma_storage_id = 'true'
-          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT STRING_AGG(file_path, ',') FROM 'db/vault.parquet' WHERE should_deploy_perma_storage = true AND perma_storage_id IS NULL;" | tr -d '"')
+          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT COALESCE(STRING_AGG(file_path, ','), '') FROM 'db/vault.parquet' WHERE should_deploy_perma_storage = true AND perma_storage_id IS NULL;" | tr -d '"')
 
           # Output the results
           echo "Found markdown files for permanent storage: $CHANGED_FILES"
