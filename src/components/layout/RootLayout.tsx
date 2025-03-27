@@ -10,6 +10,7 @@ import { IMetadata, ITocItem, ITreeNode } from '@/types';
 import RightSidebar from './RightSidebar';
 import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
 import TableOfContents from './TableOfContents';
+import ImageZoomProvider from '../image/ImageZoomProvider';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -149,6 +150,7 @@ function RootLayout({
         </div>
         <Footer />
       </div>
+      <ImageZoomProvider />
     </>
   );
 }
