@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { asyncBufferFromFile, parquetRead } from 'hyparquet';
+import { IBackLinkItem } from '@/types';
+import { getMarkdownMetadata } from './markdown';
 
 /**
  * Slugify a string (based on Memo.Common.Slugify.slugify)
@@ -50,8 +52,8 @@ function slugifyPathComponents(pathStr: string): string {
  * @param slug The slug array of the current page
  * @returns Array of backlink paths
  */
-export async function getBacklinks(slug: string[]): Promise<string[]> {
-  let backlinks: string[] = [];
+export async function getBacklinks(slug: string[]) {
+  let backlinks: IBackLinkItem[] = [];
   try {
     const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
     if (fs.existsSync(parquetFilePath)) {
@@ -100,9 +102,13 @@ export async function getBacklinks(slug: string[]): Promise<string[]> {
             // Slugify the path components
             const slugifiedPath = slugifyPathComponents(filePath);
             // Remove .md extension from the output
-            return slugifiedPath.endsWith('.md')
+            const path = slugifiedPath.endsWith('.md')
               ? slugifiedPath.slice(0, -3)
               : slugifiedPath;
+            return {
+              title: getMarkdownMetadata(filePath).title || slugifiedPath,
+              path,
+            };
           });
         },
       });
@@ -111,5 +117,6 @@ export async function getBacklinks(slug: string[]): Promise<string[]> {
     console.error('Error reading parquet file:', parquetError);
   }
 
+  console.log('Backlinks:', backlinks);
   return backlinks;
 }

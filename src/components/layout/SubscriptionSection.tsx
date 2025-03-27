@@ -1,52 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const SubscriptionSection: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const isValidEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const trimmedEmail = email.trim();
+
+    if (!isValidEmail(trimmedEmail)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(
+        'https://api.fortress.d.foundation/api/v1/dynamic-events',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'subscribe_memo',
+            data: {
+              email: trimmedEmail,
+            },
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      toast.success('Thank you for subscribing!');
+      setEmail('');
+    } catch (error) {
+      toast.error('An error occurred. Please try again later.');
+      console.error('Subscription error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <section className="border-border mt-16 border-t py-12">
-      <div className="mx-auto max-w-3xl px-4 text-center">
-        <div className="mb-8">
-          <h2 className="mb-3 text-3xl font-bold">
-            Get notified when we publish
-          </h2>
-          <p className="text-muted-foreground">
-            Subscribe to get the latest posts by email.
-          </p>
-        </div>
-
-        <div>
-          <form
-            action="https://foundation.us19.list-manage.com/subscribe/post?u=54e732ed7896e81d21abf28c0&amp;id=ca9d735d48"
-            method="post"
-            name="mc-embedded-subscribe-form"
-            target="_blank"
-            className="mx-auto flex max-w-lg flex-col gap-3 sm:flex-row"
-          >
-            <input
-              type="email"
-              name="EMAIL"
-              placeholder="Your email"
-              required
-              aria-label="Your email"
-              className="border-input bg-background flex-1 rounded-md border px-4 py-2"
-            />
-            <button
-              type="submit"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-6 py-2 transition-colors"
-            >
-              Subscribe
-            </button>
-
-            {/* Hidden field for bot protection */}
-            <div className="absolute -left-[5000px]" aria-hidden="true">
-              <input
-                type="text"
-                name="b_54e732ed7896e81d21abf28c0_ca9d735d48"
-                tabIndex={-1}
-              />
-            </div>
-          </form>
-        </div>
+    <section className="bg-background-secondary dark:bg-secondary-background my-8 flex flex-col items-center items-stretch justify-between rounded-lg p-6 xl:flex-row xl:items-center">
+      <div>
+        <h6 className="m-0 mb-1.5 text-sm leading-5 font-medium">
+          Subscribe to Dwarves Memo
+        </h6>
+        <p className="text-muted-foreground mt-0 text-sm leading-5">
+          Receive the latest updates directly to your inbox.
+        </p>
       </div>
+      <form onSubmit={handleSubmit} className="mt-5 flex xl:mt-0">
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          className="border-border dark:border-border dark:bg-background focus:border-primary min-w-[160px] flex-1 rounded-l-lg border px-4 py-3 text-sm transition-colors duration-200 ease-in-out outline-none placeholder:opacity-70"
+          placeholder="Email Address"
+          disabled={isSubmitting}
+          required
+        />
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`bg-primary hover:bg-primary/90 dark:hover:bg-primary/80 text-primary-foreground inline-flex w-[100px] cursor-pointer items-center justify-center rounded-r-lg border-none px-4 py-3 text-sm font-medium transition-all duration-200 ease-in-out disabled:cursor-not-allowed disabled:opacity-70 ${isSubmitting ? 'loading' : ''}`}
+        >
+          <span>Subscribe</span>
+          <span
+            className={`border-primary-foreground ml-2 h-2 w-2 flex-shrink-0 animate-spin rounded-full border-2 border-t-transparent ${isSubmitting ? 'inline-block' : 'hidden'}`}
+          ></span>
+        </button>
+      </form>
     </section>
   );
 };

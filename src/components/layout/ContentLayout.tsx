@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import katex from 'katex';
+import { IBackLinkItem } from '@/types';
 interface ContentLayoutProps {
   children: React.ReactNode;
   title?: string;
@@ -20,10 +21,7 @@ interface ContentLayoutProps {
     blocksCount?: number;
   };
   tableOfContents?: string;
-  backlinks?: Array<{
-    title: string;
-    url: string;
-  }>;
+  backlinks?: IBackLinkItem[];
   hideFrontmatter?: boolean;
   hideTitle?: boolean;
 }
@@ -118,14 +116,14 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
           <h6 className="mb-0 font-sans text-[10px] font-medium uppercase">
             Mentioned in
           </h6>
-          <ul className="mt-[5px] mb-[10px] list-none pl-0 font-serif">
+          <ul className="mt-[5px] mb-[10px] flex list-none flex-col gap-1.5 pl-0 font-serif">
             {backlinks.map((link, index) => (
               <li key={index} className="p-0 text-base">
                 <Link
-                  href={link.url}
-                  className="text-primary no-underline hover:underline"
+                  href={link.path}
+                  className="hover:text-primary no-underline hover:underline"
                 >
-                  {link.title}
+                  📄 {link.title}
                 </Link>
               </li>
             ))}

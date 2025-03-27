@@ -115,34 +115,17 @@ function RootLayout({
           <div className="main-grid relative w-full flex-1 flex-col">
             <RightSidebar metadata={metadata} />
             <TableOfContents items={tocItems} />
-            <main className="main-content relative mx-auto max-w-[var(--container-max-width)] min-w-0 flex-1 p-[var(--main-padding-mobile)] pb-16 font-serif xl:p-[var(--main-padding)]">
+            <main className="main-content mx-auto max-w-[var(--container-max-width)] min-w-0 flex-1 p-[var(--main-padding-mobile)] pb-16 font-serif xl:p-[var(--main-padding)]">
               {/* Yggdrasil tree background */}
               <Image
-                className="yggdrasil-tree"
+                className="yggdrasil-tree no-zoom pointer-events-none absolute bottom-8 left-1/2 w-[60vw] max-w-xs -translate-x-1/2 object-contain opacity-[0.03] md:w-[20vw] xl:w-[20vw] dark:opacity-100"
                 src="/assets/img/footer-bg.svg"
                 alt=""
                 width={1920}
                 height={1080}
               />
-
-              {/* Neko mascots */}
-              <Image
-                className="neko"
-                src="/assets/img/neko.png"
-                alt="Neko"
-                width={150}
-                height={150}
-              />
-              <Image
-                className="neko2"
-                src="/assets/img/neko-2.png"
-                alt="Neko2"
-                width={150}
-                height={150}
-              />
-
               {/* Content */}
-              <div className="memo-content mb-10">{children}</div>
+              <div className="memo-content mb-8">{children}</div>
             </main>
 
             <div className="toc-space"></div>

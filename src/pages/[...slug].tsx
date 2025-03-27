@@ -11,15 +11,16 @@ import { getBacklinks } from '../lib/content/backlinks';
 // Import components
 import { RootLayout, ContentLayout } from '../components';
 import SubscriptionSection from '../components/layout/SubscriptionSection';
-import { IMetadata, ITocItem, ITreeNode } from '@/types';
+import { IBackLinkItem, IMetadata, ITocItem, ITreeNode } from '@/types';
 import { buildDirectorTree } from '@/lib/content/directoryTree';
+import UtterancComments from '@/components/layout/UtterancComments';
 
 interface ContentPageProps {
   content: string;
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   frontmatter: Record<string, any>;
   slug: string[];
-  backlinks: string[];
+  backlinks: IBackLinkItem[];
   tocItems?: ITocItem[];
   metadata?: IMetadata;
   directoryTree?: Record<string, ITreeNode>;
@@ -133,12 +134,6 @@ export default function ContentPage({
 }: ContentPageProps) {
   // Format metadata for display
 
-  // Format backlinks for display
-  const formattedBacklinks = backlinks.map(backlink => ({
-    title: backlink.split('/').pop() || backlink,
-    url: `/${backlink}`,
-  }));
-
   // Don't show subscription for certain pages
   const shouldShowSubscription =
     !frontmatter.hide_subscription &&
@@ -157,7 +152,7 @@ export default function ContentPage({
         <ContentLayout
           title={frontmatter.title}
           description={frontmatter.description}
-          backlinks={formattedBacklinks}
+          backlinks={backlinks}
           hideFrontmatter={frontmatter.hide_frontmatter}
           hideTitle={frontmatter.hide_title}
         >
@@ -170,6 +165,7 @@ export default function ContentPage({
 
         {/* Only show subscription section on content pages, not special pages */}
         {shouldShowSubscription && <SubscriptionSection />}
+        <UtterancComments />
       </div>
     </RootLayout>
   );

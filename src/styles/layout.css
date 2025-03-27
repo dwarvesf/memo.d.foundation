@@ -10,7 +10,6 @@
     0;
   column-gap: var(--column-gap);
   justify-content: center;
-  min-height: 0;
   @variant reading {
     column-gap: 0;
     grid-template-columns: 0 minmax(600px, var(--container-max-width)) 0 0;

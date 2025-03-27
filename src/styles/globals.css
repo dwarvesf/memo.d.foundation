@@ -150,7 +150,6 @@
   /* Fix main layout */
   main {
     width: 100%;
-    position: relative;
   }
 }
 
@@ -286,11 +285,6 @@
     @apply opacity-0;
   }
 
-  /* Yggdrasil tree background */
-  .yggdrasil-tree {
-    @apply pointer-events-none absolute bottom-8 left-1/2 -z-10 w-1/5 max-w-xs -translate-x-1/2 object-contain opacity-[0.03] md:w-[20vw] dark:opacity-10;
-  }
-
   /* Command palette customization */
   .command-palette {
     @apply relative;
@@ -389,6 +383,25 @@
     --container-max-width: 730px;
   }
 }
+
+.utterances {
+  margin-left: -4px;
+  margin-right: -4px;
+  max-width: calc(100% + 8px);
+  width: calc(100% + 8px);
+
+  @media screen and (min-width: 768px) {
+    margin-left: -64px;
+    margin-right: -9px;
+    max-width: calc(100% + 69px);
+    width: calc(100% + 69px);
+  }
+
+  > iframe {
+    margin: 0;
+  }
+}
+
 /* We're using Tailwind's responsive classes instead of custom media queries */
 @import './markdown.css';
 @import './layout.css';
