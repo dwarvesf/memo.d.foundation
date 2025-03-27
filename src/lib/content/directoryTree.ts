@@ -12,22 +12,6 @@ export function buildDirectorTree(paths: string[][]) {
   };
   const contentDir = path.join(process.cwd(), 'public/content');
 
-  paths.forEach(path => {
-    let currentNode = root['/'].children;
-
-    let currentPath = '';
-    path.forEach(part => {
-      currentPath += '/' + part;
-      if (!currentNode[currentPath]) {
-        currentNode[currentPath] = {
-          label: slugToTitle(part),
-          children: {},
-        };
-      }
-      currentNode = currentNode[currentPath].children;
-    });
-  });
-
   const tags = new Set<string>();
   paths.forEach(slugArray => {
     const filePath = path.join(contentDir, ...slugArray) + '.md';
@@ -37,10 +21,14 @@ export function buildDirectorTree(paths: string[][]) {
     // Read the markdown file
     const markdownContent = fs.readFileSync(filePath, 'utf-8');
     // Parse frontmatter and content
+
+    // tags
     const { data: frontmatter } = matter(markdownContent);
     if (frontmatter.tags) {
       frontmatter.tags.forEach((tag: string) => tags.add(tag));
     }
+
+    // pinned
     if (frontmatter.pinned) {
       root['/pinned'].children[`/${slugArray.join('/')}`] = {
         label:
@@ -48,6 +36,23 @@ export function buildDirectorTree(paths: string[][]) {
         children: {},
       };
     }
+    // path
+    let currentNode = root['/'].children;
+
+    let currentPath = '';
+    slugArray.forEach((part, partIndex) => {
+      currentPath += '/' + part;
+      if (!currentNode[currentPath]) {
+        currentNode[currentPath] = {
+          label:
+            partIndex === slugArray.length - 1
+              ? frontmatter.title || slugToTitle(part)
+              : slugToTitle(part),
+          children: {},
+        };
+      }
+      currentNode = currentNode[currentPath].children;
+    });
   });
   tags.forEach(tag => {
     root['/tags'].children[`/tags/${tag}`] = {
