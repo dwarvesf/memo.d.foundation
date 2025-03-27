@@ -259,8 +259,13 @@ async function processFile(
 
 // Main execution
 async function main() {
-  const filePaths = process.argv[2].split(",").map((path) => `vault/${path}`);
+  const filePaths = process.argv[2].trim().split(",").filter(Boolean).map((path) => `vault/${path}`)
   const walletPath = "./wallet.json";
+
+  if (filePaths.length === 0) {
+    console.log("No files to process");
+    return;
+  }
 
   const results: OutputResult[] = [];
 
