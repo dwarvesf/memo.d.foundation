@@ -49,7 +49,7 @@ section.mint-entry-container[data-token-id=""] {
     > span {
       align-self: center;
       font-size: 0.875rem;
-      color: var(--secondary-font-color-light-var2);
+      color: #9B9B9B;
       font-weight: 400;
       text-align: center;
       line-height: 100%;
@@ -133,7 +133,88 @@ section.mint-entry-container[data-token-id=""] {
 
     .mint-count-display {
       font-size: 0.875rem;
-      color: var(--secondary-font-color-light-var2);
+      color: #9B9B9B;
+    }
+  }
+}
+
+// Dark theme styles
+html[data-theme="dark"] {
+  .entry-minter {
+    background-color: #1D1E21;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .mint-cta {
+      > span {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      > button {
+        background-color: #503039;
+        color: #FA4B6D;
+      }
+    }
+
+    .mint-progress {
+      .mint-avatars {
+        div:has(svg) {
+          border-color: rgba(255, 255, 255, 0.2);
+          background-color: #2A2B2E;
+        }
+
+        .mint-count-badge {
+          background-color: #FAE5E8;
+          border: 1px solid #FCCED7;
+        }
+      }
+
+      .mint-count-display {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+
+  .entry-info {
+    background-color: #1D1E21;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    span:nth-of-type(1) {
+      color: #dadada;
+    }
+
+    span:nth-of-type(2) {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    dl {
+      dt {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      dd {
+        color: #dadada;
+      }
+    }
+  }
+
+  .nft-preview {
+    background-color: #2A2B2E;
+    border-color: rgba(255, 255, 255, 0.1);
+
+    .nft-preview-title {
+      color: #dadada;
+    }
+
+    .nft-preview-author {
+      border-top-color: rgba(255, 255, 255, 0.1);
+
+      .nft-preview-author-name {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .nft-preview-author-role {
+        color: rgba(255, 255, 255, 0.5);
+      }
     }
   }
 }
@@ -149,6 +230,7 @@ section.mint-entry-container[data-token-id=""] {
   background-color: #f2f2f2;
   border-radius: 0.5rem;
   position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 
   img.neko-sticker {
     width: 32px;
