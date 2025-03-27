@@ -15,8 +15,8 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
-          fetch-depth: 5
-      
+          fetch-depth: 10
+
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.11.0
         with:
@@ -37,7 +37,7 @@ jobs:
           INFINITY_OPENAI_BASE_URL: ${{ secrets.INFINITY_OPENAI_BASE_URL }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           JINA_BASE_URL: ${{ secrets.JINA_BASE_URL }}
-      
+
       - name: Upload latest db for querying
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -61,4 +61,3 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: backup
           DEST_DIR: db/backup
-

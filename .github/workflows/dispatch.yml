@@ -16,7 +16,7 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
-          fetch-depth: 5
+          fetch-depth: 10
 
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.11.0
