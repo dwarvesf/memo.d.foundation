@@ -7,7 +7,6 @@ import remarkRehype from 'remark-rehype';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
 import matter from 'gray-matter';
 import { visit } from 'unist-util-visit';
 import type { Heading, Root } from 'mdast';
@@ -259,9 +258,11 @@ export async function getMarkdownContent(filePath: string) {
     .use(remarkGfm)
     .use(() => remarkResolveImagePaths(filePath))
     .use(remarkToc) // Extract table of contents and create heading ID mapping
-    .use(remarkMath) // Process math blocks
+    .use(remarkMath, {
+      singleDollarTextMath: false,
+    }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeKatex) // Render math blocks
+    // .use(rehypeKatex) // Render math blocks
     .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
     .use(rehypeSanitize, schema as never) // Type cast needed due to rehype-sanitize typing limitations
     .use(rehypeTable) // Wrap tables in a container div

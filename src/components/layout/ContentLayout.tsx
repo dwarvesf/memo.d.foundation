@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import katex from 'katex';
 interface ContentLayoutProps {
   children: React.ReactNode;
   title?: string;
@@ -38,6 +39,34 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
   const isTagPage = (metadata?.folder || '').includes('/tags/');
   const formattedTitle = isTagPage ? `#${title.replace(/-/g, ' ')}` : title;
 
+  const mathContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Function to render LaTeX math using KaTeX
+
+  useEffect(() => {
+    const renderMath = () => {
+      if (mathContainerRef.current) {
+        const mathElements = mathContainerRef.current.querySelectorAll(
+          '.language-math',
+        ) as NodeListOf<HTMLElement>;
+
+        mathElements?.forEach(element => {
+          const mathContent = element.textContent || element.innerText;
+          try {
+            // Render inline math (e.g., $...$)
+            katex.render(mathContent, element, {
+              throwOnError: false, // Prevents errors from being thrown for invalid LaTeX
+              displayMode: element.classList.contains('block-math'), // Determine if block math
+            });
+          } catch (e) {
+            console.error('KaTeX rendering error:', e);
+          }
+        });
+      }
+    };
+    renderMath();
+  }, []);
+
   return (
     <div className="content-layout">
       {/* Title section */}
@@ -74,6 +103,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
 
       {/* Main content with prose styling */}
       <div
+        ref={mathContainerRef}
         className={cn(
           'prose dark:prose-dark prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:leading-[1.24] max-w-none font-serif',
           'prose-a:text-foreground prose-a:underline prose-a:decoration-neutral-200 prose-a:hover:text-primary prose-a:hover:decoration-primary prose-a:font-[inherit]',
