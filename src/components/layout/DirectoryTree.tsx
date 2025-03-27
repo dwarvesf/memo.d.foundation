@@ -3,7 +3,7 @@ import { ITreeNode } from '@/types';
 import React from 'react';
 import { useRouter } from 'next/router';
 import { ChevronDownIcon } from 'lucide-react';
-import { useLocalStorage } from 'usehooks-ts';
+import { useSessionStorage } from 'usehooks-ts';
 import Link from 'next/link';
 interface DirectoryTreeProps {
   tree?: Record<string, ITreeNode>;
@@ -22,9 +22,11 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
   const { tree } = props;
   const router = useRouter();
   const currentPath = router.asPath;
-  const [openPaths, setOpenPaths] = useLocalStorage<Record<string, boolean>>(
+  const [openPaths, setOpenPaths] = useSessionStorage<Record<string, boolean>>(
     'directoryTreeOpenPaths',
-    {},
+    {
+      '/pinned': true,
+    },
     {
       initializeWithValue: false,
     },
