@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-
+import { cn } from '@/lib/utils';
 interface ContentLayoutProps {
   children: React.ReactNode;
   title?: string;
@@ -30,9 +30,6 @@ interface ContentLayoutProps {
 const ContentLayout: React.FC<ContentLayoutProps> = ({
   children,
   title = 'Untitled',
-  description,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  image,
   metadata,
   backlinks = [],
   hideFrontmatter = false,
@@ -45,7 +42,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
     <div className="content-layout">
       {/* Title section */}
       {!hideTitle && (
-        <div className="mb-7 flex flex-col items-start justify-between md:flex-row">
+        <div className="flex flex-col items-start justify-between md:flex-row">
           {/* Hidden metadata for search engines */}
           <div className="hidden">{title}</div>
           {metadata?.tags && (
@@ -53,13 +50,9 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
           )}
 
           <div className="flex-1">
-            <h1 className="mt-0 mb-2 pb-0 font-serif text-[35px] leading-[42px] font-semibold tracking-tight">
+            <h1 className="mt-0 mb-5 pb-0 font-serif text-[35px] leading-[42px] font-semibold tracking-tight">
               {formattedTitle}
             </h1>
-
-            {description && (
-              <p className="text-muted-foreground">{description}</p>
-            )}
           </div>
 
           {/* Tags in flexbox layout */}
@@ -80,7 +73,13 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
       )}
 
       {/* Main content with prose styling */}
-      <div className="prose dark:prose-invert prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:leading-[1.24] max-w-none font-serif">
+      <div
+        className={cn(
+          'prose dark:prose-dark prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:leading-[1.24] max-w-none font-serif',
+          'prose-a:text-foreground prose-a:underline prose-a:decoration-neutral-200 prose-a:hover:text-primary prose-a:hover:decoration-primary prose-a:font-[inherit]',
+          'prose-table:border',
+        )}
+      >
         {children}
       </div>
 

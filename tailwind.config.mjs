@@ -127,16 +127,16 @@ const config = {
               fontSize: '0.8125rem !important',
               color: '#5c5c5c !important',
               padding: '1px 3px !important',
-              background: '#f5f5f5 !important',
+              background: 'transparent !important',
             },
             'a:hover': {
               textDecoration: 'underline',
             },
             a: {
               textDecoration: 'none',
-              fontWeight: '500',
               color: 'var(--primary)',
               position: 'relative',
+              fontWeight: 'inherit',
               '&::before': {
                 content: '""',
                 position: 'absolute',
@@ -282,16 +282,10 @@ const config = {
             '--tw-prose-captions': 'var(--muted-foreground)',
             '--tw-prose-code': 'var(--foreground)',
             '--tw-prose-pre-code': 'var(--foreground)',
-            '--tw-prose-pre-bg': 'var(--muted)',
+            '--tw-prose-pre-bg': 'var(--secondary-background)',
             '--tw-prose-th-borders': 'var(--border)',
             '--tw-prose-td-borders': 'var(--border)',
-            code: {
-              color: '#b3b3b3 !important',
-              background: 'var(--muted) !important',
-            },
-            pre: {
-              background: 'var(--muted) !important',
-            },
+
             'pre > code': {
               backgroundColor: 'transparent !important',
             },

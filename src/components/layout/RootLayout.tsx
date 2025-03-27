@@ -114,7 +114,7 @@ function RootLayout({
           <div className="main-grid relative w-full flex-1 flex-col">
             <RightSidebar metadata={metadata} />
             <TableOfContents items={tocItems} />
-            <main className="main-content relative mx-auto max-w-[var(--container-max-width)] flex-1 p-[var(--main-padding-mobile)] pb-16 font-serif xl:p-[var(--main-padding)]">
+            <main className="main-content relative mx-auto max-w-[var(--container-max-width)] min-w-0 flex-1 p-[var(--main-padding-mobile)] pb-16 font-serif xl:p-[var(--main-padding)]">
               {/* Yggdrasil tree background */}
               <Image
                 className="yggdrasil-tree"

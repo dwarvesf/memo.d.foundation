@@ -291,48 +291,6 @@
     @apply pointer-events-none absolute bottom-8 left-1/2 -z-10 w-1/5 max-w-xs -translate-x-1/2 object-contain opacity-[0.03] md:w-[20vw] dark:opacity-10;
   }
 
-  /* Prose styling */
-  .prose {
-    @apply max-w-none;
-  }
-
-  .prose :where(h1, h2, h3, h4, h5, h6) {
-    @apply font-bold;
-  }
-
-  .prose :where(pre) {
-    @apply bg-muted mt-6 mb-6 box-border w-full overflow-x-auto rounded-md border-none p-4 font-mono text-sm;
-  }
-
-  .prose :where(code):not(:where(pre) *) {
-    @apply bg-muted rounded px-1 py-0.5 font-mono text-sm;
-  }
-
-  .prose :where(a) {
-    @apply text-primary hover:underline;
-  }
-
-  .prose img {
-    @apply rounded-md;
-  }
-
-  .prose table {
-    @apply mt-6 mb-6 w-full border-collapse;
-  }
-
-  .prose th,
-  .prose td {
-    @apply border p-3 text-left align-top;
-  }
-
-  .prose thead {
-    @apply bg-muted sticky top-0 z-10;
-  }
-
-  .prose th {
-    @apply font-medium;
-  }
-
   /* Command palette customization */
   .command-palette {
     @apply relative;
@@ -432,5 +390,5 @@
   }
 }
 /* We're using Tailwind's responsive classes instead of custom media queries */
-
+@import './markdown.css';
 @import './layout.css';
