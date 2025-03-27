@@ -1,4 +1,4 @@
-<section data-token-id="{{ .Params.token_id }}" class="mint-entry-container" x-data="{ 
+<section data-token-id="{{ .Params.token_id }}" data-perma-storage-id="{{ .Params.perma_storage_id }}" class="mint-entry-container" x-data="{ 
     contentDigest: 'Calculating...',
     calculateDigest() {
       const content = {{ .Content | jsonify }};

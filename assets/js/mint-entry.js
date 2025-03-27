@@ -188,9 +188,86 @@ function getTokenId() {
   return parseInt(tokenId, 10);
 }
 
+// Function to fetch and update NFT preview data
+async function updateNFTPreview() {
+  const container = document.querySelector(".mint-entry-container");
+  if (!container) return;
+
+  const permaStorageId = container.getAttribute("data-perma-storage-id");
+  if (!permaStorageId) {
+    console.error("No perma_storage_id found");
+    return;
+  }
+
+  const FALLBACK_IMAGE_ID = "29D_NrcYOiOLMPVROGt5v3URNxftYCDK7z1-kyNPRT0";
+
+  try {
+    // Fetch NFT metadata from Arweave
+    const response = await fetch(`https://arweave.net/${permaStorageId}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch NFT metadata: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Update NFT preview elements
+    const preview = container.querySelector(".nft-preview");
+    if (preview) {
+      // Update image with fallback handling
+      const previewImage = preview.querySelector(".nft-preview-image");
+      if (previewImage) {
+        let imageUrl;
+        if (data.image) {
+          const imageId = data.image.replace("ar://", "");
+          imageUrl = `https://arweave.net/${imageId}`;
+        } else {
+          imageUrl = `https://arweave.net/${FALLBACK_IMAGE_ID}`;
+        }
+
+        // Set the image source and add error handling
+        previewImage.onerror = () => {
+          console.log("Image failed to load, using fallback");
+          previewImage.src = `https://arweave.net/${FALLBACK_IMAGE_ID}`;
+        };
+        previewImage.src = imageUrl;
+      }
+
+      // Update title
+      const previewTitle = preview.querySelector(".nft-preview-title");
+      if (previewTitle && data.name) {
+        previewTitle.textContent = data.name;
+      }
+
+      // Update author
+      const previewAuthorName = preview.querySelector(".nft-preview-author-name");
+      if (previewAuthorName && data.authors && data.authors.length > 0) {
+        previewAuthorName.textContent = data.authors[0];
+        
+        // Also update the jdenticon with the new author
+        const authorSvg = preview.querySelector("[data-jdenticon-value]");
+        if (authorSvg) {
+          authorSvg.setAttribute("data-jdenticon-value", data.authors[0]);
+          if (window.jdenticon) {
+            window.jdenticon.update(authorSvg);
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error updating NFT preview:", error);
+    
+    // If there's an error, set the fallback image
+    const previewImage = document.querySelector(".nft-preview-image");
+    if (previewImage) {
+      previewImage.src = `https://arweave.net/${FALLBACK_IMAGE_ID}`;
+    }
+  }
+}
+
 window.addEventListener("load", () => {
   initializeMintingInterface();
   setupEventListeners();
+  updateNFTPreview();
 
   // Set NFT contract address in the verification section
   updateNFTContractAddress();
