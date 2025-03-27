@@ -111,7 +111,11 @@ function parseQueryForFilters(query: string): {
   filters: { authors: string[]; tags: string[]; title: string };
   query: string;
 } {
-  const filters: { authors: string[]; tags: string[]; title: string } = { authors: [], tags: [], title: '' };
+  const filters: { authors: string[]; tags: string[]; title: string } = {
+    authors: [],
+    tags: [],
+    title: '',
+  };
 
   const authorRe = /author:([^\s]*)/g;
   const tagRe = /tag:([^\s]*)/g;
