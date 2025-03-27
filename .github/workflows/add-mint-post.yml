@@ -24,7 +24,7 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
-          fetch-depth: 10
+          fetch-depth: 0
 
       - name: Install Vault CLI
         run: |
