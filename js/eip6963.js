@@ -648,6 +648,11 @@ async function handleMintButtonClick(event) {
   const mintButton = event.currentTarget;
   console.log("Mint button clicked", mintButton);
   
+  // If we already have a connected wallet, don't show the dropdown
+  if (mainWallet && localStorage.getItem("isDisconnected") === "false") {
+    return;
+  }
+  
   // Check if we have wallet providers
   const availableWallets = Array.from(rdnsMap.values()).filter(
     (w) => w.provider
@@ -660,7 +665,7 @@ async function handleMintButtonClick(event) {
     return;
   }
   
-  // If there are available wallets, show the dropdown
+  // If there are available wallets and we're not connected, show the dropdown
   if (availableWallets.length >= 1) {
     // Position the dropdown above the mint button
     showDropdown(mintButton, "top");
