@@ -33,7 +33,7 @@ function updateFrontmatter(filePath, newFrontmatter) {
       ...newFrontmatter,
     });
 
-    const updatedContent = `---\n${updatedFrontmatter}---\n\n${content}`;
+    const updatedContent = `---\n${updatedFrontmatter}---${content}`;
 
     // Write back to file
     fs.writeFileSync(filePath, updatedContent);
