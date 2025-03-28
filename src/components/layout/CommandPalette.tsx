@@ -572,7 +572,7 @@ const CommandPalette: React.FC = () => {
                   <div
                     className={cn(
                       'flex-1 basis-3/5 shadow-[inset_1px_1px_2px_rgba(147,149,159,.24),inset_2px_2px_8px_rgba(147,149,159,.1)]',
-                      'bg-background-secondary flex flex-col items-center overflow-y-auto border-l px-9 py-6',
+                      'bg-background-secondary hidden flex-col items-center overflow-y-auto border-l px-9 py-6 md:flex',
                     )}
                   >
                     <div className="h-9 w-9">
