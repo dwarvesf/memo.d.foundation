@@ -11,9 +11,19 @@ import { getBacklinks } from '../lib/content/backlinks';
 // Import components
 import { RootLayout, ContentLayout } from '../components';
 import SubscriptionSection from '../components/layout/SubscriptionSection';
-import { IBackLinkItem, IMetadata, ITocItem, ITreeNode } from '@/types';
+import {
+  IBackLinkItem,
+  IMetadata,
+  IMiniSearchIndex,
+  ITocItem,
+  ITreeNode,
+} from '@/types';
 import { buildDirectorTree } from '@/lib/content/directoryTree';
 import UtterancComments from '@/components/layout/UtterancComments';
+import {
+  getSerializableSearchIndex,
+  initializeSearchIndex,
+} from '@/lib/content/search';
 
 interface ContentPageProps {
   content: string;
@@ -24,6 +34,7 @@ interface ContentPageProps {
   tocItems?: ITocItem[];
   metadata?: IMetadata;
   directoryTree?: Record<string, ITreeNode>;
+  searchIndex?: IMiniSearchIndex;
 }
 
 /**
@@ -53,7 +64,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
     const contentDir = path.join(process.cwd(), 'public/content');
-
+    await initializeSearchIndex();
+    const searchIndex = getSerializableSearchIndex();
     // Get directory tree for sidebar
     const allPaths = getAllMarkdownFiles(contentDir);
     const directoryTree = buildDirectorTree(allPaths);
@@ -115,6 +127,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         tocItems,
         metadata,
         directoryTree,
+        searchIndex,
       },
     };
   } catch (error) {
@@ -131,6 +144,7 @@ export default function ContentPage({
   tocItems,
   metadata,
   directoryTree,
+  searchIndex,
 }: ContentPageProps) {
   // Format metadata for display
 
@@ -147,6 +161,7 @@ export default function ContentPage({
       tocItems={tocItems}
       metadata={metadata}
       directoryTree={directoryTree}
+      searchIndex={searchIndex}
     >
       <div className="content-wrapper">
         <ContentLayout

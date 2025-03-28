@@ -1,49 +1,55 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import { useRouter } from 'next/router';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
-
-interface SearchResult {
-  title: string;
-  description?: string;
-  url: string;
-  category?: string;
-  matchingText?: string;
-  file_path?: string;
-  spr_content?: string;
-}
-
-interface RecentPage {
-  title: string;
+import { useSearch } from '../search';
+import { cn, groupBy } from '@/lib/utils';
+import { SearchResult } from '../search/SearchProvider';
+import { toast } from 'sonner';
+import { useDebouncedCallback } from 'use-debounce';
+import useWhyDidYouUpdate from '@/hooks/useWhyDidYouUpdate';
+interface IRecentPageStorageItem {
   path: string;
+  title: string;
+  timestamp: number;
+}
+interface ISearchResultItem {
+  title: string;
+  description: string;
+  path: string;
+  category: string;
+  icon?: React.ReactNode;
+  action?: string;
+  index?: number;
 }
 
-// Mock recent pages for now - in a real implementation, you'd fetch these
-const mockRecentPages: RecentPage[] = [
-  { title: 'Getting Started', path: '/handbook/getting-started' },
-  { title: 'How We Work', path: '/handbook/how-we-work' },
-  { title: 'Engineering Ladder', path: '/handbook/engineering-ladder' },
-];
+const defaultSearchResult: SearchResult = {
+  flat: [],
+  grouped: {},
+};
 
 const CommandPalette: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [groupedResults, setGroupedResults] = useState<
-    Record<string, SearchResult[]>
-  >({});
+  const [result, setResult] = useState<SearchResult>(defaultSearchResult);
+  const [recentPages, setRecentPages] = useState<IRecentPageStorageItem[]>([]);
+
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedSection, setSelectedSection] = useState<
-    'recents' | 'welcome' | 'suggestions' | 'search'
-  >('recents');
-  const [selectedRecent, setSelectedRecent] = useState<RecentPage | null>(
-    mockRecentPages[0] || null,
-  );
   const [isMacOS, setIsMacOS] = useState(true);
-  const [selectedWelcomeItem, setSelectedWelcomeItem] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { search } = useSearch();
+
+  const defaultResult = useMemo(() => {
+    return getDefaultSearchResult(recentPages);
+  }, [recentPages]);
 
   // Open/close the command palette
   const toggleCommandPalette = useCallback(() => {
@@ -51,21 +57,11 @@ const CommandPalette: React.FC = () => {
 
     setIsOpen(newIsOpen);
     setQuery('');
-    setResults([]);
-    setGroupedResults({});
+    setResult(defaultSearchResult);
 
     if (newIsOpen) {
       // Opening command palette - just add the class to body
       document.body.classList.add('cmd-palette-open');
-
-      // Set initial selection
-      if (mockRecentPages.length > 0) {
-        setSelectedRecent(mockRecentPages[0]);
-        setSelectedSection('recents');
-      } else {
-        setSelectedSection('welcome');
-        setSelectedWelcomeItem(0);
-      }
     } else {
       // Closing command palette - simply remove the class
       document.body.classList.remove('cmd-palette-open');
@@ -85,140 +81,54 @@ const CommandPalette: React.FC = () => {
 
   // Navigate to the selected item
   const goto = useCallback(() => {
-    if (query.length > 0 && results.length > 0) {
-      // Handle search results
-      const selected = results[selectedIndex];
-      if (selected && selected.url) {
-        router.push(selected.url);
+    if (query) {
+      const selected = result.flat[selectedIndex];
+      if (selected && selected.file_path) {
+        router.push(selected.file_path);
         close();
       }
-    } else if (selectedSection === 'recents' && selectedRecent) {
-      // Navigate to recent page
-      router.push(selectedRecent.path);
-      close();
-    } else if (selectedSection === 'welcome') {
-      // Handle welcome section actions
-      if (selectedWelcomeItem === 0) {
-        // What's been hot lately
-        router.push('/');
+      return;
+    }
+    // If no query, navigate to the default result
+    const selected = defaultResult.flat[selectedIndex];
+    if (selected && selected.path) {
+      if (selected.action === 'copy') {
+        const memoContent = document.querySelector(
+          '.memo-content',
+        ) as HTMLElement;
+        let content = 'No content found';
+        if (memoContent) {
+          content =
+            memoContent.textContent ||
+            memoContent.innerHTML ||
+            ''.replace(/\n\s*\n\s*\n/g, '\n\n').trim();
+        }
+        navigator.clipboard.writeText(content);
+        toast.success('Copied memo content!');
         close();
       } else {
-        // Check pinned note - in real implementation, fetch this data
-        router.push('/');
+        router.push(selected.path);
         close();
       }
-    } else if (selectedSection === 'suggestions') {
-      // Copy memo content functionality
-      const memoContent = document.querySelector(
-        '.memo-content',
-      ) as HTMLElement;
-      let content = 'No content found';
-      if (memoContent) {
-        content = memoContent.textContent || memoContent.innerHTML || ''
-          .replace(/\n\s*\n\s*\n/g, '\n\n') // Replace 3+ newlines with 2
-          .trim();
-      }
-      navigator.clipboard.writeText(content);
-      // In a real implementation, show a toast notification here
-      close();
     }
-  }, [
-    query,
-    results,
-    selectedIndex,
-    selectedSection,
-    selectedRecent,
-    selectedWelcomeItem,
-    router,
-    close,
-  ]);
+  }, [query, result.flat, selectedIndex, router, close]);
 
-  // Navigate through results with arrow keys
+  // Navigate through result.flat with arrow keys
   const navigateNext = useCallback(() => {
-    if (query.length > 0 && results.length > 0) {
-      setSelectedIndex(prev => (prev + 1) % results.length);
-      setSelectedSection('search');
-    } else if (selectedSection === 'recents') {
-      const currentIndex = mockRecentPages.findIndex(p => p === selectedRecent);
-      const nextIndex = currentIndex + 1;
-
-      if (nextIndex >= mockRecentPages.length) {
-        // Move to welcome section
-        setSelectedSection('welcome');
-        setSelectedWelcomeItem(0);
-      } else {
-        // Next recent item
-        setSelectedRecent(mockRecentPages[nextIndex]);
-      }
-    } else if (selectedSection === 'welcome') {
-      const nextItem = selectedWelcomeItem + 1;
-      if (nextItem >= 2) {
-        // 2 welcome items
-        // Move to suggestions section
-        setSelectedSection('suggestions');
-      } else {
-        setSelectedWelcomeItem(nextItem);
-      }
-    } else if (selectedSection === 'suggestions') {
-      // Only one suggestion item, go back to recents
-      if (mockRecentPages.length > 0) {
-        setSelectedSection('recents');
-        setSelectedRecent(mockRecentPages[0]);
-      } else {
-        // No recents, go to welcome
-        setSelectedSection('welcome');
-        setSelectedWelcomeItem(0);
-      }
+    const data = query ? result : defaultResult;
+    if (data.flat.length) {
+      setSelectedIndex(prev => (prev + 1) % data.flat.length);
     }
-  }, [
-    query,
-    results.length,
-    selectedSection,
-    selectedRecent,
-    selectedWelcomeItem,
-  ]);
+  }, [query, defaultResult, result.flat.length]);
 
   const navigatePrev = useCallback(() => {
-    if (query.length > 0 && results.length > 0) {
-      setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
-      setSelectedSection('search');
-    } else if (selectedSection === 'recents') {
-      const currentIndex = mockRecentPages.findIndex(p => p === selectedRecent);
-      const prevIndex = currentIndex - 1;
-
-      if (prevIndex < 0) {
-        // Move to suggestions section
-        setSelectedSection('suggestions');
-      } else {
-        // Previous recent item
-        setSelectedRecent(mockRecentPages[prevIndex]);
-      }
-    } else if (selectedSection === 'welcome') {
-      const prevItem = selectedWelcomeItem - 1;
-      if (prevItem < 0) {
-        // Move to recents section if available
-        if (mockRecentPages.length > 0) {
-          setSelectedSection('recents');
-          setSelectedRecent(mockRecentPages[mockRecentPages.length - 1]);
-        } else {
-          // No recents, wrap to suggestions
-          setSelectedSection('suggestions');
-        }
-      } else {
-        setSelectedWelcomeItem(prevItem);
-      }
-    } else if (selectedSection === 'suggestions') {
-      // Move to welcome section
-      setSelectedSection('welcome');
-      setSelectedWelcomeItem(1); // Last welcome item
+    const data = query ? result : defaultResult;
+    if (data.flat.length) {
+      setSelectedIndex(
+        prev => (prev - 1 + data.flat.length) % data.flat.length,
+      );
     }
-  }, [
-    query,
-    results.length,
-    selectedSection,
-    selectedRecent,
-    selectedWelcomeItem,
-  ]);
+  }, [query, defaultResult, result.flat.length]);
 
   // Handle keyboard shortcuts and navigation
   useEffect(() => {
@@ -238,13 +148,13 @@ const CommandPalette: React.FC = () => {
         close();
       }
 
-      // Arrow down to navigate results
+      // Arrow down to navigate result.flat
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         navigateNext();
       }
 
-      // Arrow up to navigate results
+      // Arrow up to navigate result.flat
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         navigatePrev();
@@ -276,11 +186,8 @@ const CommandPalette: React.FC = () => {
     };
   }, [
     isOpen,
-    results,
+    result.flat,
     selectedIndex,
-    selectedSection,
-    selectedRecent,
-    selectedWelcomeItem,
     router,
     toggleCommandPalette,
     goto,
@@ -299,87 +206,91 @@ const CommandPalette: React.FC = () => {
   }, [isOpen]);
 
   // Mock search function - replace with actual search implementation
-  const performSearch = (searchQuery: string) => {
+  const performSearch = useDebouncedCallback(async (searchQuery: string) => {
     if (!searchQuery.trim()) {
-      setResults([]);
-      setGroupedResults({});
+      setResult(defaultSearchResult);
       return;
     }
 
-    // Mock data for demo
-    const mockResults: SearchResult[] = [
-      {
-        title: 'Getting Started',
-        description: 'Learn how to get started with Dwarves Memo',
-        url: '/handbook/getting-started',
-        category: 'Handbook',
-        matchingText:
-          'This handbook explains how to get started with Dwarves Memo',
-        file_path: 'handbook/getting-started.md',
-      },
-      {
-        title: 'Engineering Ladder',
-        description: 'The engineering career ladder at Dwarves',
-        url: '/handbook/engineering-ladder',
-        category: 'Handbook',
-        matchingText: 'Our engineering ladder defines career growth',
-        file_path: 'handbook/engineering-ladder.md',
-      },
-      {
-        title: 'How We Work',
-        description: 'Our working process and methodology',
-        url: '/handbook/how-we-work',
-        category: 'Handbook',
-        matchingText: 'Learn about our process and methodology',
-        file_path: 'handbook/how-we-work.md',
-      },
-      {
-        title: 'Technical Writer Position',
-        description: 'Open position for a technical writer',
-        url: '/careers/open-positions/technical-writer',
-        category: 'Careers',
-        matchingText: 'We are looking for a technical writer to join our team',
-        file_path: 'careers/open-positions/technical-writer.md',
-      },
-    ].filter(
-      item =>
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.matchingText?.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
-
-    // Group results by category
-    const grouped = mockResults.reduce<Record<string, SearchResult[]>>(
-      (acc, result) => {
-        const category = result.category || 'Other';
-        if (!acc[category]) acc[category] = [];
-        acc[category].push(result);
-        return acc;
-      },
-      {},
-    );
-
-    setResults(mockResults);
-    setGroupedResults(grouped);
+    const result = await search({ query: searchQuery });
+    setResult(result);
     setSelectedIndex(0);
-    setSelectedSection('search');
-  };
+  }, 300);
 
   // Debounced search
   useEffect(() => {
-    const timer = setTimeout(() => {
-      performSearch(query);
-    }, 300);
+    performSearch(query);
+  }, [query, performSearch]);
+  useWhyDidYouUpdate('CommandPalette', {
+    isOpen,
+    query,
+    result,
+    recentPages,
+    selectedIndex,
+    isMacOS,
+    performSearch,
+  });
+  // Load recent pages from localStorage
+  useEffect(() => {
+    const storedRecents = localStorage.getItem('recentPages');
+    // Record current page visit
+    const currentPath = router.asPath;
+    const currentTitle = document.title;
+    const isSkip = currentPath !== '/' && currentPath !== '/index.html';
+    const timestamp = new Date().getTime();
 
-    return () => clearTimeout(timer);
-  }, [query]);
+    // Get current page info and strip redundant title parts if present
+    let pageTitle = currentTitle;
+    if (pageTitle.includes(' | ')) {
+      pageTitle = pageTitle.split(' | ')[0].trim();
+    }
+
+    const currentPage: IRecentPageStorageItem = {
+      path: currentPath,
+      title: pageTitle,
+      timestamp: timestamp,
+    };
+
+    if (storedRecents) {
+      try {
+        const parsed = JSON.parse(storedRecents);
+        setRecentPages(parsed);
+
+        // Skip recording if this is the home page
+        if (isSkip) {
+          // Remove current page if it exists already (to avoid duplicates)
+          let newRecentPages = recentPages.filter(
+            page => page.path !== currentPath,
+          );
+
+          // Add current page to the beginning
+          newRecentPages.unshift(currentPage);
+
+          // Keep only the last 10 pages
+          if (recentPages.length > 10) {
+            newRecentPages = recentPages.slice(0, 10);
+          }
+
+          // Store back to localStorage
+          localStorage.setItem('recentPages', JSON.stringify(newRecentPages));
+          return;
+        }
+        return;
+      } catch (e) {
+        console.error('Error parsing recent pages', e);
+      }
+    } else {
+      // If no recent pages, create an array
+      const initialRecentPages: IRecentPageStorageItem[] = [currentPage];
+      localStorage.setItem('recentPages', JSON.stringify(initialRecentPages));
+    }
+  }, [router.asPath]);
 
   useEffect(() => {
     setIsMacOS(window.navigator.userAgent.includes('Macintosh'));
   }, []);
 
   const modifier = isMacOS ? '⌘' : 'ctrl';
-
   return (
     <div className="command-palette relative z-50">
       {/* Search button */}
@@ -442,10 +353,10 @@ const CommandPalette: React.FC = () => {
       {isOpen &&
         typeof document !== 'undefined' &&
         createPortal(
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+          <div className="fixed inset-0 z-[9999] flex items-start justify-center bg-black/50 p-4 backdrop-blur-sm">
             <div
               ref={searchContainerRef}
-              className="dark:bg-background border-border w-full max-w-2xl overflow-hidden rounded-lg border bg-white shadow-lg"
+              className="dark:bg-background mt-[10vh] w-full max-w-[800px] overflow-hidden rounded-lg bg-white shadow-lg"
               style={{ animation: 'fadeIn 0.15s ease-out' }}
             >
               {/* Search input */}
@@ -477,284 +388,136 @@ const CommandPalette: React.FC = () => {
                 </div>
               </div>
 
-              <div className="max-h-[60vh] overflow-y-auto">
-                {/* Search results */}
-                {query && Object.keys(groupedResults).length > 0 && (
-                  <div className="p-2">
-                    {Object.entries(groupedResults).map(
+              <div className="flex max-h-[70vh]">
+                <div className="flex flex-1 basis-2/5 flex-col overflow-y-auto">
+                  {/* Search result.flat */}
+                  {query && Object.keys(result.grouped).length > 0 && (
+                    <div>
+                      {Object.entries(result.grouped).map(
+                        ([category, categoryResults]) => (
+                          <div key={category} className="flex flex-col">
+                            <div className="bg-border px-3 py-1.5 text-xs font-medium capitalize">
+                              {category}
+                            </div>
+                            {categoryResults.map(result => {
+                              const resultIndex = result.index;
+                              const isSelected = resultIndex === selectedIndex;
+                              return (
+                                <button
+                                  key={result.file_path}
+                                  className={cn(
+                                    'border-border group flex w-full flex-col border-b px-4 py-2.5 text-left text-sm last:border-b-0',
+                                    {
+                                      'bg-primary text-primary-foreground':
+                                        isSelected,
+                                    },
+                                  )}
+                                  onClick={() => {
+                                    goto();
+                                    close();
+                                  }}
+                                  onMouseEnter={() => {
+                                    if (resultIndex !== undefined) {
+                                      setSelectedIndex(resultIndex);
+                                    }
+                                  }}
+                                >
+                                  <div className="font-medium">
+                                    {result.title}
+                                  </div>
+                                  {result.matchingLines && (
+                                    <div
+                                      className={cn(
+                                        'text-muted-foreground [&_span]:text-primary mt-1 line-clamp-2 text-xs [&_span]:underline',
+                                        {
+                                          'text-secondary-dark [&_span]:text-white':
+                                            isSelected,
+                                        },
+                                      )}
+                                      dangerouslySetInnerHTML={{
+                                        __html: result.matchingLines,
+                                      }}
+                                    ></div>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
+
+                  {/* No result.flat state */}
+                  {query && Object.keys(result.grouped).length === 0 && (
+                    <div className="text-muted-foreground flex flex-col items-center p-8 text-center">
+                      <Image
+                        src="/assets/img/404.png"
+                        alt="No result.flat"
+                        className="mb-2 w-32 opacity-40 dark:invert"
+                        width={128}
+                        height={128}
+                      />
+                      <p>No result found.</p>
+                    </div>
+                  )}
+
+                  {!query &&
+                    Object.entries(defaultResult.grouped).map(
                       ([category, categoryResults]) => (
-                        <div key={category}>
-                          <div className="text-muted-foreground bg-muted px-2 py-1.5 text-xs font-medium">
+                        <div className="my-4 px-3" key={category}>
+                          <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
                             {category}
                           </div>
-                          {categoryResults.map(result => {
-                            const resultIndex = results.findIndex(
-                              r => r.file_path === result.file_path,
-                            );
-                            const isSelected =
-                              resultIndex === selectedIndex &&
-                              selectedSection === 'search';
-                            return (
-                              <button
-                                key={result.file_path}
-                                className={`border-border flex w-full flex-col rounded-md border-b px-2 py-2 text-left text-sm last:border-b-0 ${
-                                  isSelected
-                                    ? 'bg-primary text-white'
-                                    : 'hover:bg-muted'
-                                }`}
-                                onClick={() => {
-                                  router.push(result.url);
-                                  close();
-                                }}
-                              >
-                                <div className="font-medium">
-                                  {result.title}
-                                </div>
-                                {result.matchingText && (
-                                  <div
-                                    className={`mt-1 truncate text-xs ${isSelected ? 'text-white' : 'text-muted-foreground'}`}
-                                  >
-                                    {result.matchingText}
+                          <div className="space-y-0.5">
+                            {categoryResults.map(result => {
+                              const isSelected = result.index === selectedIndex;
+                              return (
+                                <div
+                                  key={result.title}
+                                  className={cn(
+                                    `hover:bg-muted hover:bg-muted flex cursor-pointer items-center rounded-md px-2 py-2 text-sm`,
+                                    {
+                                      'bg-muted': isSelected,
+                                    },
+                                  )}
+                                  onClick={e => {
+                                    e.preventDefault();
+                                    goto();
+                                  }}
+                                  onMouseEnter={() => {
+                                    if (result.index !== undefined) {
+                                      setSelectedIndex(result.index);
+                                    }
+                                  }}
+                                  data-suggestion-id="0"
+                                >
+                                  <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
+                                    {result.icon}
                                   </div>
-                                )}
-                              </button>
-                            );
-                          })}
+                                  <div className="flex flex-col">
+                                    <span className="text-foreground">
+                                      {result.title}
+                                    </span>
+                                    <span className="text-muted-foreground text-xs">
+                                      {result.description}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
                       ),
                     )}
-                  </div>
-                )}
-
-                {/* No results state */}
-                {query && Object.keys(groupedResults).length === 0 && (
-                  <div className="text-muted-foreground flex flex-col items-center p-8 text-center">
-                    <Image
-                      src="/assets/img/404.png"
-                      alt="No results"
-                      className="mb-2 w-32 opacity-40 dark:invert"
-                      width={128}
-                      height={128}
-                    />
-                    <p>No results found.</p>
-                  </div>
-                )}
-
-                {/* Recent pages when no query */}
-                {!query && mockRecentPages.length > 0 && (
-                  <div className="p-2">
-                    <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
-                      Recents
-                    </div>
-                    {mockRecentPages.map((page, index) => (
-                      <div
-                        key={index}
-                        className={`flex cursor-pointer items-center rounded-md px-2 py-2 text-sm ${
-                          selectedSection === 'recents' &&
-                          selectedRecent === page
-                            ? 'bg-muted'
-                            : 'hover:bg-muted'
-                        }`}
-                        onClick={() => {
-                          router.push(page.path);
-                          close();
-                        }}
-                        onMouseEnter={() => {
-                          setSelectedSection('recents');
-                          setSelectedRecent(page);
-                        }}
-                        data-recent-id={index}
-                      >
-                        <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="stroke-primary"
-                          >
-                            <path d="M12 7v14" />
-                            <path d="M16 12h2" />
-                            <path d="M16 8h2" />
-                            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
-                            <path d="M6 12h2" />
-                            <path d="M6 8h2" />
-                          </svg>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-foreground">{page.title}</span>
-                          <span className="text-muted-foreground text-xs">
-                            {page.path
-                              .split('/')
-                              .filter(p => p)
-                              .join(' > ')}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Welcome section */}
-                {!query && (
-                  <div className="p-2">
-                    <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
-                      Welcome to Dwarves Memo
-                    </div>
-                    <div
-                      className={`flex cursor-pointer items-center rounded-md px-2 py-2 text-sm ${
-                        selectedSection === 'welcome' &&
-                        selectedWelcomeItem === 0
-                          ? 'bg-muted'
-                          : 'hover:bg-muted'
-                      }`}
-                      onClick={() => {
-                        router.push('/');
-                        close();
-                      }}
-                      onMouseEnter={() => {
-                        setSelectedSection('welcome');
-                        setSelectedWelcomeItem(0);
-                      }}
-                      data-welcome-id="0"
-                    >
-                      <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="stroke-primary"
-                        >
-                          <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-                        </svg>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-foreground">
-                          What&apos;s been hot lately
-                        </span>
-                        <span className="text-muted-foreground text-xs">
-                          See featured posts
-                        </span>
-                      </div>
-                    </div>
-
-                    <div
-                      className={`flex cursor-pointer items-center rounded-md px-2 py-2 text-sm ${
-                        selectedSection === 'welcome' &&
-                        selectedWelcomeItem === 1
-                          ? 'bg-muted'
-                          : 'hover:bg-muted'
-                      }`}
-                      onClick={() => {
-                        router.push('/');
-                        close();
-                      }}
-                      onMouseEnter={() => {
-                        setSelectedSection('welcome');
-                        setSelectedWelcomeItem(1);
-                      }}
-                      data-welcome-id="1"
-                    >
-                      <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="stroke-primary"
-                        >
-                          <path d="M12 17v5" />
-                          <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
-                        </svg>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-foreground">Pinned note</span>
-                        <span className="text-muted-foreground text-xs">
-                          View our latest announcement
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Actions section */}
-                {!query && (
-                  <div className="p-2">
-                    <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
-                      Actions
-                    </div>
-                    <div
-                      className={`flex cursor-pointer items-center rounded-md px-2 py-2 text-sm ${
-                        selectedSection === 'suggestions'
-                          ? 'bg-muted'
-                          : 'hover:bg-muted'
-                      }`}
-                      onClick={() => {
-                        const memoContent = document.querySelector(
-                          '.memo-content',
-                        ) as HTMLElement;
-                        let content = 'No content found';
-                        if (memoContent) {
-                          content = memoContent.textContent || memoContent.innerHTML || ''
-                            .replace(/\n\s*\n\s*\n/g, '\n\n')
-                            .trim();
-                        }
-                        navigator.clipboard.writeText(content);
-                        // In a real implementation, show a toast notification here
-                        close();
-                      }}
-                      onMouseEnter={() => {
-                        setSelectedSection('suggestions');
-                      }}
-                      data-suggestion-id="0"
-                    >
-                      <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="stroke-primary"
-                        >
-                          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                          <rect
-                            x="8"
-                            y="2"
-                            width="8"
-                            height="4"
-                            rx="1"
-                            ry="1"
-                          ></rect>
-                        </svg>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-foreground">
-                          Copy memo content
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                </div>
+                {query && !!result.flat.length && (
+                  <div
+                    className={cn(
+                      'flex-1 basis-3/5 shadow-[inset_1px_1px_2px_rgba(147,149,159,.24),inset_2px_2px_8px_rgba(147,149,159,.1)]',
+                      'bg-background-secondary flex flex-col items-center overflow-y-auto border-l px-9 py-6',
+                    )}
+                  ></div>
                 )}
               </div>
 
@@ -815,3 +578,127 @@ const CommandPalette: React.FC = () => {
 };
 
 export default CommandPalette;
+
+function HotIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="stroke-primary"
+    >
+      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+    </svg>
+  );
+}
+
+function BookOpenIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="stroke-primary"
+    >
+      <path d="M12 7v14" />
+      <path d="M16 12h2" />
+      <path d="M16 8h2" />
+      <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+      <path d="M6 12h2" />
+      <path d="M6 8h2" />
+    </svg>
+  );
+}
+
+function CopyIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="stroke-primary"
+    >
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+    </svg>
+  );
+}
+function PinIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="stroke-primary"
+    >
+      <path d="M12 17v5" />
+      <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+    </svg>
+  );
+}
+
+function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
+  const flat: ISearchResultItem[] = [
+    ...recentPages.map(page => ({
+      title: page.title,
+      description: page.path.split('/').filter(Boolean).join(' > '),
+      category: 'Recents',
+      path: page.path,
+      icon: <BookOpenIcon />,
+    })),
+    {
+      title: 'What’s been hot lately',
+      description: 'See featured posts',
+      category: 'Welcome to Dwarves Memo',
+      icon: <HotIcon />,
+      path: '/',
+    },
+    {
+      title: 'Pinned note',
+      description: 'View our latest announcement',
+      category: 'Welcome to Dwarves Memo',
+      icon: <PinIcon />,
+      path: '/',
+    },
+    {
+      title: 'Copy memo content',
+      description: 'Copy memo content to clipboard',
+      category: 'Actions',
+      icon: <CopyIcon />,
+      action: 'copy',
+      path: 'copy',
+    },
+  ].map((item, index) => ({
+    ...item,
+    index,
+  }));
+
+  return {
+    flat: flat,
+    grouped: groupBy(flat, 'category'),
+  };
+}

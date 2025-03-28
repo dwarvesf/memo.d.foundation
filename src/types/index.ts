@@ -1,3 +1,5 @@
+import { AsPlainObject } from 'minisearch';
+
 export interface ITocItem {
   id: string;
   value: string;
@@ -26,4 +28,8 @@ export interface ITreeNode {
 export interface IBackLinkItem {
   title: string;
   path: string;
+}
+export interface IMiniSearchIndex {
+  index: AsPlainObject;
+  documents: Partial<Document>[];
 }

@@ -17,6 +17,11 @@ interface Document {
   spr_content?: string;
 }
 
+interface IRecentPageStorageItem {
+  path: string;
+  title: string;
+  timestamp: number;
+}
 const CommandPalette: React.FC = () => {
   const { search } = useSearch();
   const [isOpen, setIsOpen] = useState(false);
@@ -203,6 +208,42 @@ const CommandPalette: React.FC = () => {
       try {
         const parsed = JSON.parse(storedRecents);
         setRecentPages(parsed);
+
+        // Record current page visit
+        const currentPath = window.location.pathname;
+        const currentTitle = document.title;
+
+        // Skip recording if this is the home page
+        if (currentPath !== '/' && currentPath !== '/index.html') {
+          const timestamp = new Date().getTime();
+
+          // Get current page info and strip redundant title parts if present
+          let pageTitle = currentTitle;
+          if (pageTitle.includes(' | ')) {
+            pageTitle = pageTitle.split(' | ')[0].trim();
+          }
+
+          const currentPage: IRecentPageStorageItem = {
+            path: currentPath,
+            title: pageTitle,
+            timestamp: timestamp,
+          };
+          // Remove current page if it exists already (to avoid duplicates)
+          let newRecentPages = recentPages.filter(
+            page => page.path !== currentPath,
+          );
+
+          // Add current page to the beginning
+          newRecentPages.unshift(currentPage);
+
+          // Keep only the last 10 pages
+          if (recentPages.length > 10) {
+            newRecentPages = recentPages.slice(0, 10);
+          }
+
+          // Store back to localStorage
+          localStorage.setItem('recentPages', JSON.stringify(newRecentPages));
+        }
       } catch (e) {
         console.error('Error parsing recent pages', e);
       }
@@ -271,6 +312,7 @@ const CommandPalette: React.FC = () => {
 
       try {
         const searchResults = await search({ query });
+        console.log(searchResults);
         setResults(searchResults);
 
         if (searchResults.flat.length > 0) {

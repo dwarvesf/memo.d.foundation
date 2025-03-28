@@ -8,7 +8,11 @@ import { RootLayout } from '../components';
 import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
 import { buildDirectorTree } from '@/lib/content/directoryTree';
-import { ITreeNode } from '@/types';
+import { IMiniSearchIndex, ITreeNode } from '@/types';
+import {
+  getSerializableSearchIndex,
+  initializeSearchIndex,
+} from '@/lib/content/search';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,12 +35,14 @@ interface FeaturedPost {
 interface HomePageProps {
   featuredPosts: FeaturedPost[];
   directoryTree: Record<string, ITreeNode>;
+  searchIndex?: IMiniSearchIndex;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const contentDir = path.join(process.cwd(), 'public/content');
-
+    initializeSearchIndex();
+    const searchIndex = getSerializableSearchIndex();
     // Get all markdown files
     const allPaths = getAllMarkdownFiles(contentDir);
     const directoryTree = buildDirectorTree(allPaths);
@@ -78,6 +84,7 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         featuredPosts: recentPosts,
         directoryTree,
+        searchIndex,
       },
     };
   } catch (error) {
@@ -90,12 +97,17 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-export default function Home({ featuredPosts, directoryTree }: HomePageProps) {
+export default function Home({
+  featuredPosts,
+  directoryTree,
+  searchIndex,
+}: HomePageProps) {
   return (
     <RootLayout
       title="Dwarves Memo - Home"
       description="Knowledge sharing platform for Dwarves Foundation"
       directoryTree={directoryTree}
+      searchIndex={searchIndex}
     >
       <div className={`${geistSans.variable} ${geistMono.variable}`}>
         <section className="py-12 md:py-12">
