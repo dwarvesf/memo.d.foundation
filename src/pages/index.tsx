@@ -41,7 +41,7 @@ interface HomePageProps {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const contentDir = path.join(process.cwd(), 'public/content');
-    initializeSearchIndex();
+    await initializeSearchIndex();
     const searchIndex = getSerializableSearchIndex();
     // Get all markdown files
     const allPaths = getAllMarkdownFiles(contentDir);

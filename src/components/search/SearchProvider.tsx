@@ -224,7 +224,6 @@ export const SearchProvider: React.FC<{
             return document[fieldName] || '';
           },
         };
-
         // Create new MiniSearch instance
         const ms = new MiniSearch(miniSearchOptions);
         // Load pre-built index if available

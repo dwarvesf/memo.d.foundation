@@ -84,7 +84,7 @@ const CommandPalette: React.FC = () => {
     if (query) {
       const selected = result.flat[selectedIndex];
       if (selected && selected.file_path) {
-        router.push(selected.file_path);
+        router.push(selected.file_path.toLowerCase().replace(/\.md$/, ''));
         close();
       }
       return;
@@ -291,6 +291,7 @@ const CommandPalette: React.FC = () => {
   }, []);
 
   const modifier = isMacOS ? '⌘' : 'ctrl';
+  const selectedItem = result.flat[selectedIndex];
   return (
     <div className="command-palette relative z-50">
       {/* Search button */}
@@ -517,7 +518,57 @@ const CommandPalette: React.FC = () => {
                       'flex-1 basis-3/5 shadow-[inset_1px_1px_2px_rgba(147,149,159,.24),inset_2px_2px_8px_rgba(147,149,159,.1)]',
                       'bg-background-secondary flex flex-col items-center overflow-y-auto border-l px-9 py-6',
                     )}
-                  ></div>
+                  >
+                    <div className="h-9 w-9">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <g fill="currentColor">
+                          <path
+                            fillRule="evenodd"
+                            d="M4.125 3C3.089 3 2.25 3.84 2.25 4.875V18a3 3 0 0 0 3 3h15a3 3 0 0 1-3-3V4.875C17.25 3.839 16.41 3 15.375 3zM12 9.75a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5zm-.75-2.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H12a.75.75 0 0 1-.75-.75M6 12.75a.75.75 0 0 0 0 1.5h7.5a.75.75 0 0 0 0-1.5zm-.75 3.75a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5H6a.75.75 0 0 1-.75-.75M6 6.75a.75.75 0 0 0-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 0 0 .75-.75v-3A.75.75 0 0 0 9 6.75z"
+                            clipRule="evenodd"
+                          />
+                          <path d="M18.75 6.75h1.875c.621 0 1.125.504 1.125 1.125V18a1.5 1.5 0 0 1-3 0z" />
+                        </g>
+                      </svg>
+                    </div>
+
+                    {selectedItem && (
+                      <>
+                        {/* Category/Path */}
+                        <span className="mt-3.5 text-center text-xs">
+                          {selectedItem.category}
+                        </span>
+
+                        {/* Title */}
+                        <h3 className="m-0 mt-2 text-center font-serif text-2xl leading-tight font-medium">
+                          {selectedItem.title}
+                        </h3>
+
+                        {/* Description */}
+                        <p className="mt-3.5 w-full font-serif text-sm font-medium">
+                          {selectedItem.description}
+                        </p>
+
+                        {/* Content preview */}
+                        {selectedItem.spr_content && (
+                          <div className="text-secondary-light dark:text-secondary-dark mt-8 self-start font-serif">
+                            <span className="text-xs font-medium uppercase underline">
+                              on this page
+                            </span>
+                            <div
+                              className="mt-5 text-xs whitespace-pre-wrap [&_hr]:my-2.5"
+                              dangerouslySetInnerHTML={{
+                                __html: selectedItem.spr_content,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
                 )}
               </div>
 
