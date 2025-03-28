@@ -6,11 +6,12 @@ import Header from './Header';
 import { useThemeContext } from '@/contexts/theme';
 import Footer from './Footer';
 import DirectoryTree from './DirectoryTree';
-import { IMetadata, ITocItem, ITreeNode } from '@/types';
+import { IMetadata, IMiniSearchIndex, ITocItem, ITreeNode } from '@/types';
 import RightSidebar from './RightSidebar';
 import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
 import TableOfContents from './TableOfContents';
 import ImageZoomProvider from '../image/ImageZoomProvider';
+import { SearchProvider } from '../search';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ interface RootLayoutProps {
   tocItems?: ITocItem[];
   metadata?: IMetadata;
   directoryTree?: Record<string, ITreeNode>;
+  searchIndex?: IMiniSearchIndex;
 }
 
 function RootLayout({
@@ -30,6 +32,7 @@ function RootLayout({
   metadata,
   tocItems,
   directoryTree,
+  searchIndex,
 }: RootLayoutProps) {
   const { theme, toggleTheme } = useThemeContext();
   const {
@@ -58,7 +61,7 @@ function RootLayout({
   }, [toggleReadingMode]);
 
   return (
-    <>
+    <SearchProvider searchIndex={searchIndex}>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -134,7 +137,7 @@ function RootLayout({
         <Footer />
       </div>
       <ImageZoomProvider />
-    </>
+    </SearchProvider>
   );
 }
 

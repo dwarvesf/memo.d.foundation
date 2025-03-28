@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { asyncBufferFromFile, parquetRead } from 'hyparquet';
 import MiniSearch from 'minisearch';
+import { IMiniSearchIndex } from '@/types';
 
 // Types
 interface Document {
@@ -381,10 +382,7 @@ export function getDocumentByPath(filePath: string): Document | null {
  * Export search index for client-side use
  * @returns Search index data
  */
-export function getSerializableSearchIndex(): {
-  index: unknown;
-  documents: Partial<Document>[];
-} | null {
+export function getSerializableSearchIndex(): IMiniSearchIndex | null {
   if (!miniSearch) {
     return null;
   }

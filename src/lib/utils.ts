@@ -14,3 +14,17 @@ export function slugToTitle(slug = '') {
 
   return words.join(' ');
 }
+
+export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
+  return array.reduce(
+    (result, currentValue) => {
+      const groupKey = currentValue[key] as unknown as string;
+      if (!result[groupKey]) {
+        result[groupKey] = [];
+      }
+      result[groupKey].push(currentValue);
+      return result;
+    },
+    {} as Record<string, T[]>,
+  );
+}
