@@ -6,6 +6,6 @@
   } @else if $breakpoint == md {
     @media (max-width: 1280px) { @content; }
   } @else if $breakpoint == lg {
-    @media (max-width: 1475px) { @content; }
+    @media (max-width: 1500px) { @content; }
   }
 }
