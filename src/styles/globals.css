@@ -402,6 +402,10 @@
   }
 }
 
+[data-sonner-toast] [data-icon] {
+  @apply text-primary;
+}
+
 /* We're using Tailwind's responsive classes instead of custom media queries */
 @import './markdown.css';
 @import './layout.css';
