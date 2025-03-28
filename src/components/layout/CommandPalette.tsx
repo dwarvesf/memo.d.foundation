@@ -13,13 +13,13 @@ import { cn, groupBy } from '@/lib/utils';
 import { SearchResult } from '../search/SearchProvider';
 import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
-import useWhyDidYouUpdate from '@/hooks/useWhyDidYouUpdate';
 interface IRecentPageStorageItem {
   path: string;
   title: string;
   timestamp: number;
 }
 interface ISearchResultItem {
+  id: string;
   title: string;
   description: string;
   path: string;
@@ -41,6 +41,7 @@ const CommandPalette: React.FC = () => {
   const [recentPages, setRecentPages] = useState<IRecentPageStorageItem[]>([]);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [isMacOS, setIsMacOS] = useState(true);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -82,7 +83,7 @@ const CommandPalette: React.FC = () => {
   // Navigate to the selected item
   const goto = useCallback(() => {
     if (query) {
-      const selected = result.flat[selectedIndex];
+      const selected = result.grouped[selectedCategory]?.[selectedIndex];
       if (selected && selected.file_path) {
         router.push(selected.file_path.toLowerCase().replace(/\.md$/, ''));
         close();
@@ -90,7 +91,7 @@ const CommandPalette: React.FC = () => {
       return;
     }
     // If no query, navigate to the default result
-    const selected = defaultResult.flat[selectedIndex];
+    const selected = defaultResult.grouped[selectedCategory]?.[selectedIndex];
     if (selected && selected.path) {
       if (selected.action === 'copy') {
         const memoContent = document.querySelector(
@@ -113,22 +114,79 @@ const CommandPalette: React.FC = () => {
     }
   }, [query, result.flat, selectedIndex, router, close]);
 
+  const scrollResultIntoView = useCallback((id?: string) => {
+    if (!id) {
+      return;
+    }
+    const selectedElement = document.getElementById(
+      `result-${id}`,
+    ) as HTMLElement;
+    if (selectedElement) {
+      selectedElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    }
+  }, []);
+
   // Navigate through result.flat with arrow keys
   const navigateNext = useCallback(() => {
-    const data = query ? result : defaultResult;
-    if (data.flat.length) {
-      setSelectedIndex(prev => (prev + 1) % data.flat.length);
+    const data = query ? result.grouped : defaultResult.grouped;
+    const categories = Object.keys(data);
+    const currentCategory = categories.includes(selectedCategory)
+      ? selectedCategory
+      : categories[0];
+    if (selectedIndex + 1 < data[currentCategory]?.length) {
+      setSelectedIndex(selectedIndex + 1);
+      scrollResultIntoView(data[currentCategory][selectedIndex + 1]?.id);
+      return;
     }
-  }, [query, defaultResult, result.flat.length]);
+
+    let currentCategoryIndex = categories.indexOf(currentCategory);
+    if (currentCategoryIndex === -1) {
+      currentCategoryIndex = 0;
+    }
+    const nextCategoryIndex = (currentCategoryIndex + 1) % categories.length;
+    const nextCategory = categories[nextCategoryIndex];
+    setSelectedCategory(nextCategory);
+    setSelectedIndex(0);
+    scrollResultIntoView(data[nextCategory][0]?.id);
+  }, [
+    query,
+    defaultResult,
+    result.flat.length,
+    selectedIndex,
+    selectedCategory,
+  ]);
 
   const navigatePrev = useCallback(() => {
-    const data = query ? result : defaultResult;
-    if (data.flat.length) {
-      setSelectedIndex(
-        prev => (prev - 1 + data.flat.length) % data.flat.length,
-      );
+    const data = query ? result.grouped : defaultResult.grouped;
+    const categories = Object.keys(data);
+    const currentCategory = categories.includes(selectedCategory)
+      ? selectedCategory
+      : categories[0];
+
+    if (selectedIndex - 1 >= 0) {
+      setSelectedIndex(selectedIndex - 1);
+      return;
     }
-  }, [query, defaultResult, result.flat.length]);
+    let currentCategoryIndex = categories.indexOf(currentCategory);
+    if (currentCategoryIndex === -1) {
+      currentCategoryIndex = 0;
+    }
+    const prevCategoryIndex =
+      (currentCategoryIndex - 1 + categories.length) % categories.length;
+    const prevCategory = categories[prevCategoryIndex];
+    setSelectedCategory(prevCategory);
+    setSelectedIndex(data[prevCategory].length - 1);
+  }, [
+    query,
+    defaultResult,
+    result.flat.length,
+    selectedIndex,
+    selectedCategory,
+  ]);
 
   // Handle keyboard shortcuts and navigation
   useEffect(() => {
@@ -215,21 +273,14 @@ const CommandPalette: React.FC = () => {
     const result = await search({ query: searchQuery });
     setResult(result);
     setSelectedIndex(0);
+    setSelectedCategory(result.flat[0]?.category || '');
   }, 300);
 
   // Debounced search
   useEffect(() => {
     performSearch(query);
   }, [query, performSearch]);
-  useWhyDidYouUpdate('CommandPalette', {
-    isOpen,
-    query,
-    result,
-    recentPages,
-    selectedIndex,
-    isMacOS,
-    performSearch,
-  });
+
   // Load recent pages from localStorage
   useEffect(() => {
     const storedRecents = localStorage.getItem('recentPages');
@@ -291,7 +342,7 @@ const CommandPalette: React.FC = () => {
   }, []);
 
   const modifier = isMacOS ? '⌘' : 'ctrl';
-  const selectedItem = result.flat[selectedIndex];
+  const selectedItem = result.grouped[selectedCategory]?.[selectedIndex];
   return (
     <div className="command-palette relative z-50">
       {/* Search button */}
@@ -400,11 +451,14 @@ const CommandPalette: React.FC = () => {
                             <div className="bg-border px-3 py-1.5 text-xs font-medium capitalize">
                               {category}
                             </div>
-                            {categoryResults.map(result => {
-                              const resultIndex = result.index;
-                              const isSelected = resultIndex === selectedIndex;
+                            {categoryResults.map((result, index) => {
+                              const isSelected =
+                                (selectedCategory === category ||
+                                  (index === 0 && !selectedCategory)) &&
+                                index === selectedIndex;
                               return (
                                 <button
+                                  id={`result-${result.id}`}
                                   key={result.file_path}
                                   className={cn(
                                     'border-border group flex w-full flex-col border-b px-4 py-2.5 text-left text-sm last:border-b-0',
@@ -418,9 +472,8 @@ const CommandPalette: React.FC = () => {
                                     close();
                                   }}
                                   onMouseEnter={() => {
-                                    if (resultIndex !== undefined) {
-                                      setSelectedIndex(resultIndex);
-                                    }
+                                    setSelectedIndex(index);
+                                    setSelectedCategory(category);
                                   }}
                                 >
                                   <div className="font-medium">
@@ -471,10 +524,14 @@ const CommandPalette: React.FC = () => {
                             {category}
                           </div>
                           <div className="space-y-0.5">
-                            {categoryResults.map(result => {
-                              const isSelected = result.index === selectedIndex;
+                            {categoryResults.map((result, index) => {
+                              const isSelected =
+                                (selectedCategory === category ||
+                                  (index === 0 && !selectedCategory)) &&
+                                index === selectedIndex;
                               return (
                                 <div
+                                  id={`result-${result.id}`}
                                   key={result.title}
                                   className={cn(
                                     `hover:bg-muted hover:bg-muted flex cursor-pointer items-center rounded-md px-2 py-2 text-sm`,
@@ -487,9 +544,8 @@ const CommandPalette: React.FC = () => {
                                     goto();
                                   }}
                                   onMouseEnter={() => {
-                                    if (result.index !== undefined) {
-                                      setSelectedIndex(result.index);
-                                    }
+                                    setSelectedIndex(index);
+                                    setSelectedCategory(category);
                                   }}
                                   data-suggestion-id="0"
                                 >
@@ -715,6 +771,7 @@ function PinIcon() {
 function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
   const flat: ISearchResultItem[] = [
     ...recentPages.map(page => ({
+      id: page.path,
       title: page.title,
       description: page.path.split('/').filter(Boolean).join(' > '),
       category: 'Recents',
@@ -722,6 +779,7 @@ function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
       icon: <BookOpenIcon />,
     })),
     {
+      id: 'hot',
       title: 'What’s been hot lately',
       description: 'See featured posts',
       category: 'Welcome to Dwarves Memo',
@@ -729,6 +787,7 @@ function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
       path: '/',
     },
     {
+      id: 'pinned',
       title: 'Pinned note',
       description: 'View our latest announcement',
       category: 'Welcome to Dwarves Memo',
@@ -736,6 +795,7 @@ function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
       path: '/',
     },
     {
+      id: 'copy',
       title: 'Copy memo content',
       description: 'Copy memo content to clipboard',
       category: 'Actions',
