@@ -169,6 +169,8 @@ const CommandPalette: React.FC = () => {
 
     if (selectedIndex - 1 >= 0) {
       setSelectedIndex(selectedIndex - 1);
+      scrollResultIntoView(data[currentCategory][selectedIndex - 1]?.id);
+
       return;
     }
     let currentCategoryIndex = categories.indexOf(currentCategory);
@@ -180,6 +182,7 @@ const CommandPalette: React.FC = () => {
     const prevCategory = categories[prevCategoryIndex];
     setSelectedCategory(prevCategory);
     setSelectedIndex(data[prevCategory].length - 1);
+    scrollResultIntoView(data[prevCategory][data[prevCategory].length - 1]?.id);
   }, [
     query,
     defaultResult,
