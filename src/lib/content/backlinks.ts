@@ -106,7 +106,10 @@ export async function getBacklinks(slug: string[]) {
               ? slugifiedPath.slice(0, -3)
               : slugifiedPath;
             return {
-              title: getMarkdownMetadata(filePath).title || slugifiedPath,
+              title:
+                getMarkdownMetadata(filePath).title ||
+                path.split('/').pop() ||
+                path,
               path,
             };
           });
@@ -117,6 +120,5 @@ export async function getBacklinks(slug: string[]) {
     console.error('Error reading parquet file:', parquetError);
   }
 
-  console.log('Backlinks:', backlinks);
   return backlinks;
 }
