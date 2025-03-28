@@ -14,12 +14,14 @@ export interface ThemeContextType {
   setTheme: (theme: ITheme) => void;
   toggleTheme: () => void;
   isDark: boolean;
+  isThemeLoaded: boolean;
 }
 const DefaultContextValues = {
   theme: 'light',
   setTheme: () => {},
   toggleTheme: () => {},
   isDark: false,
+  isThemeLoaded: false,
 } satisfies ThemeContextType;
 
 export const ThemeContext =
@@ -27,7 +29,7 @@ export const ThemeContext =
 export const ThemeProvider = (props: PropsWithChildren) => {
   const { children } = props;
   const [theme, setThemeInternal] = useState<ITheme>('light');
-
+  const [isThemeLoaded, setIsThemeLoaded] = useState(false);
   const setTheme = useCallback((updater: SetStateAction<ITheme>) => {
     setThemeInternal(prev => {
       const theme = typeof updater === 'function' ? updater(prev) : updater;
@@ -64,14 +66,20 @@ export const ThemeProvider = (props: PropsWithChildren) => {
 
     // Set the theme state
     setTheme(initialTheme);
-
+    setIsThemeLoaded(true);
     // No need to handle system theme changes since we're not using 'system' theme anymore
     // We'll still keep the media query for initial setup, but we won't need the change handler
   }, [setTheme]);
 
   return (
     <ThemeContext.Provider
-      value={{ theme, setTheme, toggleTheme, isDark: theme === 'dark' }}
+      value={{
+        theme,
+        setTheme,
+        toggleTheme,
+        isDark: theme === 'dark',
+        isThemeLoaded,
+      }}
     >
       {children}
     </ThemeContext.Provider>

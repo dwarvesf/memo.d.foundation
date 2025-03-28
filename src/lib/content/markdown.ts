@@ -19,6 +19,7 @@ import type {
 import slugify from 'slugify';
 import { ITocItem } from '@/types';
 import rehypeHighlight from 'rehype-highlight';
+import { getContentPath } from './utils';
 
 // Define interfaces for the AST nodes
 interface ImageNode {
@@ -278,4 +279,11 @@ export async function getMarkdownContent(filePath: string) {
     content: postprocessDollarSigns(String(vFile)),
     tocItems: (fileData as FileData).toc || [], // Return the table of contents
   };
+}
+
+export function getMarkdownMetadata(slugPath: string) {
+  const filePath = getContentPath(slugPath);
+  const markdownContent = fs.readFileSync(filePath, 'utf-8');
+  const { data: frontmatter } = matter(markdownContent);
+  return frontmatter;
 }

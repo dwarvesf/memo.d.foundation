@@ -22,3 +22,8 @@ export interface ITreeNode {
   label: string;
   children: Record<string, ITreeNode>;
 }
+
+export interface IBackLinkItem {
+  title: string;
+  path: string;
+}
