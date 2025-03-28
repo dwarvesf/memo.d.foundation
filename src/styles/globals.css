@@ -60,6 +60,7 @@
     --error-color: #d81b60;
     --tag: var(--secondary-tag-color-light);
     --font-monospace: 'IBM Plex Mono';
+    --toast-background-color: #ededed;
 
     /* Spacing and Layout */
     --radius: 0.5rem;
@@ -402,6 +403,9 @@
   }
 }
 
+[data-sonner-toast][data-styled='true'] {
+  @apply !w-[unset] max-w-[var(--width)] rounded-lg !p-3.5 text-sm;
+}
 [data-sonner-toast] [data-icon] {
   @apply text-primary;
 }
