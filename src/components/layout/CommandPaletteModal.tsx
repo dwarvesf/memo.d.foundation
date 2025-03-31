@@ -1,6 +1,5 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { SearchIcon } from 'lucide-react';
 import { SearchResult } from '../search/SearchProvider';
@@ -134,14 +133,7 @@ const CommandPaletteModal = (props: Props) => {
                 query &&
                 Object.keys(result.grouped).length === 0 && (
                   <div className="text-muted-foreground flex flex-col items-center p-8 text-center">
-                    <Image
-                      src="/assets/img/404.png"
-                      alt="No result.flat"
-                      className="mb-2 w-32 opacity-40 dark:invert"
-                      width={128}
-                      height={128}
-                    />
-                    <p>No result found.</p>
+                    <p>No result for &ldquo;{query}&rdquo;.</p>
                   </div>
                 )}
 
