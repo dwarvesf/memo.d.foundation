@@ -15,3 +15,14 @@
     margin:0
   }
 }
+
+html[data-reading-mode="false"] .utterances {
+
+
+  @media screen and (min-width: 1280px) and (max-width: 1350px) {
+    margin-left: -4px;
+    margin-right: -4px;
+    max-width: calc(100% + 8px);
+    width: calc(100% + 8px);
+  }
+}
