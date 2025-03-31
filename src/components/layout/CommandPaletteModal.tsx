@@ -22,6 +22,8 @@ interface Props {
   selectedIndex: number;
   setSelectedCategory: (category: string) => void;
   selectedCategory: string;
+  isSearching: boolean;
+  setIsSearching: (isSearching: boolean) => void;
 }
 const CommandPaletteModal = (props: Props) => {
   const {
@@ -37,6 +39,8 @@ const CommandPaletteModal = (props: Props) => {
     selectedIndex,
     setSelectedCategory,
     selectedCategory,
+    isSearching,
+    setIsSearching,
   } = props;
 
   const selectedItem = result.grouped[selectedCategory]?.[selectedIndex];
@@ -58,7 +62,10 @@ const CommandPaletteModal = (props: Props) => {
                 ref={searchInputRef}
                 type="text"
                 value={query}
-                onChange={e => setQuery(e.target.value)}
+                onChange={e => {
+                  setQuery(e.target.value);
+                  setIsSearching(true);
+                }}
                 placeholder="Search documentation..."
                 className="text-foreground flex-1 border-none bg-transparent outline-none"
               />
@@ -77,10 +84,7 @@ const CommandPaletteModal = (props: Props) => {
                           {category}
                         </div>
                         {categoryResults.map((result, index) => {
-                          const isSelected =
-                            (selectedCategory === category ||
-                              (index === 0 && !selectedCategory)) &&
-                            index === selectedIndex;
+                          const isSelected = selectedItem.id === result.id;
                           return (
                             <button
                               id={`result-${result.id}`}
@@ -126,18 +130,20 @@ const CommandPaletteModal = (props: Props) => {
               )}
 
               {/* No result.flat state */}
-              {query && Object.keys(result.grouped).length === 0 && (
-                <div className="text-muted-foreground flex flex-col items-center p-8 text-center">
-                  <Image
-                    src="/assets/img/404.png"
-                    alt="No result.flat"
-                    className="mb-2 w-32 opacity-40 dark:invert"
-                    width={128}
-                    height={128}
-                  />
-                  <p>No result found.</p>
-                </div>
-              )}
+              {!isSearching &&
+                query &&
+                Object.keys(result.grouped).length === 0 && (
+                  <div className="text-muted-foreground flex flex-col items-center p-8 text-center">
+                    <Image
+                      src="/assets/img/404.png"
+                      alt="No result.flat"
+                      className="mb-2 w-32 opacity-40 dark:invert"
+                      width={128}
+                      height={128}
+                    />
+                    <p>No result found.</p>
+                  </div>
+                )}
 
               {!query &&
                 Object.entries(defaultResult.grouped).map(

@@ -174,7 +174,6 @@ function groupResultsByCategory(
       index,
     });
   });
-  console.log('Grouped results:', results, grouped, Object.keys(grouped));
   return grouped;
 }
 

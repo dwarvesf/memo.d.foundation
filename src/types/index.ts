@@ -30,7 +30,7 @@ export interface IBackLinkItem {
   path: string;
 }
 export interface IMiniSearchIndex {
-  index: AsPlainObject;
+  index?: AsPlainObject;
   documents: Partial<Document>[];
 }
 

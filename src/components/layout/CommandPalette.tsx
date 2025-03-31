@@ -33,6 +33,7 @@ const CommandPalette: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const [isSearching, setIsSearching] = useState(false);
   const { search } = useSearch();
 
   const defaultResult = useMemo(() => {
@@ -257,6 +258,7 @@ const CommandPalette: React.FC = () => {
   const performSearch = useDebouncedCallback(async (searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResult(defaultSearchResult);
+      setIsSearching(false);
       return;
     }
 
@@ -264,6 +266,7 @@ const CommandPalette: React.FC = () => {
     setResult(result);
     setSelectedIndex(0);
     setSelectedCategory(result.flat[0]?.category || '');
+    setIsSearching(false);
   }, 300);
 
   // Debounced search
@@ -332,6 +335,7 @@ const CommandPalette: React.FC = () => {
   }, []);
 
   const modifier = isMacOS ? '⌘' : 'ctrl';
+
   return (
     <div className="command-palette relative z-50">
       {/* Search button */}
@@ -404,6 +408,8 @@ const CommandPalette: React.FC = () => {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         goto={goto}
+        isSearching={isSearching}
+        setIsSearching={setIsSearching}
       />
     </div>
   );
