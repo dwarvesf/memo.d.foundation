@@ -1,82 +1,68 @@
-import { Geist, Geist_Mono } from 'next/font/google';
 import { GetStaticProps } from 'next';
-import Link from 'next/link';
-import path from 'path';
-import fs from 'fs';
 
 import { RootLayout } from '../components';
-import { getAllMarkdownFiles } from '../lib/content/paths';
-import { getMarkdownContent } from '../lib/content/markdown';
-import { RootLayoutPageProps } from '@/types';
+import { IMemoItem, RootLayoutPageProps } from '@/types';
 
 import { getRootLayoutPageProps } from '@/lib/content/utils';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
-interface FeaturedPost {
-  title: string;
-  slug: string;
-  date: string;
-  description?: string;
-  tags?: string[];
-}
+import {
+  filterMemo,
+  getAllMarkdownContents,
+  sortMemos,
+} from '@/lib/content/memo';
+import MemoVList from '@/components/memo/MemoVList';
+import MemoVLinkList from '@/components/memo/MemoVLinkList';
 
 interface HomePageProps extends RootLayoutPageProps {
-  featuredPosts: FeaturedPost[];
+  ogifMemos: IMemoItem[];
+  newMemos: IMemoItem[];
+  teamMemos: IMemoItem[];
+  changelogMemos: IMemoItem[];
+  hiringMemos: IMemoItem[];
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const contentDir = path.join(process.cwd(), 'public/content');
-
-    const layoutProps = await getRootLayoutPageProps();
-    const allPaths = getAllMarkdownFiles(contentDir);
-
-    // Get the most recent posts (limit to 6)
-
-    const recentPostsPromises = allPaths
-      .slice(0, 10) // Get the first 10 files to process
-      .map(async slugArray => {
-        const filePath = path.join(contentDir, ...slugArray) + '.md';
-
-        if (!fs.existsSync(filePath)) {
-          return null;
-        }
-
-        const { frontmatter } = await getMarkdownContent(filePath);
-
-        return {
-          title: frontmatter.title || slugArray[slugArray.length - 1],
-          slug: '/' + slugArray.join('/'),
-          date: frontmatter.date
-            ? new Date(frontmatter.date).toISOString()
-            : null,
-          description: frontmatter.description,
-          tags: frontmatter.tags,
-        };
-      });
-
-    const recentPosts = (await Promise.all(recentPostsPromises))
-      .filter(post => post !== null)
-      .sort((a, b) => {
-        if (!a.date) return 1;
-        if (!b.date) return -1;
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      })
-      .slice(0, 6); // Get the 6 most recent posts
+    const allMemos = await getAllMarkdownContents();
+    const layoutProps = await getRootLayoutPageProps(allMemos);
+    const sortedMemos = sortMemos(allMemos);
+    const ogifMemos = filterMemo({
+      data: sortedMemos,
+      filters: {
+        tags: 'ogif',
+      },
+      limit: 5,
+    });
+    const newMemos = filterMemo({
+      data: sortedMemos,
+    });
+    const teamMemos = filterMemo({
+      data: sortedMemos,
+      filters: {
+        tags: 'team',
+      },
+    });
+    const changelogMemos = filterMemo({
+      data: sortedMemos,
+      filters: {
+        tags: 'weekly-digest',
+      },
+    });
+    const hiringMemos = filterMemo({
+      data: sortedMemos,
+      filters: {
+        tags: 'hiring',
+        hiring: true,
+      },
+    });
 
     return {
       props: {
         ...layoutProps,
-        featuredPosts: recentPosts,
+        ogifMemos,
+        newMemos,
+        teamMemos,
+        changelogMemos,
+        hiringMemos,
       },
     };
   } catch (error) {
@@ -90,9 +76,13 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default function Home({
-  featuredPosts,
   directoryTree,
   searchIndex,
+  ogifMemos,
+  newMemos,
+  teamMemos,
+  changelogMemos,
+  hiringMemos,
 }: HomePageProps) {
   return (
     <RootLayout
@@ -101,102 +91,95 @@ export default function Home({
       directoryTree={directoryTree}
       searchIndex={searchIndex}
     >
-      <div className={`${geistSans.variable} ${geistMono.variable}`}>
-        <section className="py-12 md:py-12">
-          <div className="container mx-auto max-w-5xl px-4">
-            <h1 className="mb-6 text-4xl font-bold md:text-5xl">
-              Dwarves Memo
-            </h1>
-            <p className="text-muted-foreground mb-12 text-xl">
-              A knowledge sharing platform for the Dwarves Foundation community
-            </p>
+      <div className="font-serif">
+        <img
+          src="/assets/home_cover.webp"
+          className="max-h-[500px] rounded-sm"
+        ></img>
+        <p className="mt-[var(--element-margin)]">
+          Welcome to the Dwarves Memo.
+        </p>
+        <p className="mt-[var(--element-margin)]">
+          This site is a part of our continuous learning engine, where we want
+          to build up the 1% improvement habit, learning in public.
+        </p>
+        <p className="mt-[var(--element-margin)]">
+          Written by Dwarves for product craftsmen.
+        </p>
+        <p className="mt-[var(--element-margin)]">
+          Learned by engineers. Experimented by engineers.
+        </p>
+        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
+          💡 OGIFs
+        </h2>
+        <MemoVLinkList data={ogifMemos} hideDate color="secondary" />
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {featuredPosts.map(post => (
-                <Link key={post.slug} href={post.slug} className="group block">
-                  <div className="bg-card hover:border-primary h-full overflow-hidden rounded-lg border p-6 transition-colors">
-                    <div className="mb-4">
-                      {post.tags && post.tags.length > 0 && (
-                        <div className="mb-3 flex flex-wrap gap-2">
-                          {post.tags.slice(0, 3).map(tag => (
-                            <span
-                              key={tag}
-                              className="bg-muted rounded-full px-2 py-1 text-xs"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      <h3 className="group-hover:text-primary line-clamp-2 text-lg font-medium transition-colors">
-                        {post.title}
-                      </h3>
-                    </div>
+        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
+          ✨ New memos
+        </h2>
+        <MemoVList data={newMemos} hideDate />
 
-                    {post.description && (
-                      <p className="text-muted-foreground mb-4 line-clamp-3 text-sm">
-                        {post.description}
-                      </p>
-                    )}
+        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
+          🧑‍💻 Life at Dwarves
+        </h2>
+        <MemoVList data={teamMemos} hideAuthors hideThumbnail />
 
-                    {post.date && (
-                      <div className="text-muted-foreground mt-auto text-xs">
-                        {new Date(post.date).toLocaleDateString()}
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
+          📝 Changelog
+        </h2>
+        <MemoVLinkList data={changelogMemos} />
 
-        <section className="bg-muted py-12">
-          <div className="container mx-auto max-w-5xl px-4 text-center">
-            <h2 className="mb-8 text-2xl font-bold">Explore by Category</h2>
+        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
+          🤝 Open positions
+        </h2>
+        <MemoVList data={hiringMemos} hideAuthors hideThumbnail hideDate />
 
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              <Link
-                href="/consulting"
-                className="bg-card hover:border-primary rounded-lg border p-6 transition-colors"
-              >
-                <div className="mb-2 text-xl font-medium">Consulting</div>
-                <p className="text-muted-foreground text-sm">
-                  Case studies and insights
-                </p>
-              </Link>
-
-              <Link
-                href="/earn"
-                className="bg-card hover:border-primary rounded-lg border p-6 transition-colors"
-              >
-                <div className="mb-2 text-xl font-medium">Earn</div>
-                <p className="text-muted-foreground text-sm">
-                  Bounties and rewards
-                </p>
-              </Link>
-
-              <Link
-                href="/careers/hiring"
-                className="bg-card hover:border-primary rounded-lg border p-6 transition-colors"
-              >
-                <div className="mb-2 text-xl font-medium">Hiring</div>
-                <p className="text-muted-foreground text-sm">Join our team</p>
-              </Link>
-
-              <Link
-                href="/playground"
-                className="bg-card hover:border-primary rounded-lg border p-6 transition-colors"
-              >
-                <div className="mb-2 text-xl font-medium">Playground</div>
-                <p className="text-muted-foreground text-sm">
-                  Experimental content
-                </p>
-              </Link>
-            </div>
-          </div>
-        </section>
+        <LoveWhatWeAreDoing />
       </div>
     </RootLayout>
+  );
+}
+
+function LoveWhatWeAreDoing() {
+  return (
+    <div className="font-sans">
+      <h2 className="mt-6 text-[10px] font-medium uppercase">
+        Love what we are doing?
+      </h2>
+      <ul className="mt-2.5 grid list-none grid-cols-2 gap-2.5 pl-0">
+        <li>
+          <a
+            href="https://discord.gg/dwarvesv"
+            className="text-primary text-sm"
+          >
+            🩷 Join our Discord Network →
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/dwarvesf/playground"
+            className="text-primary text-sm"
+          >
+            🔥 Contribute to our Memo →
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://careers.d.foundation/"
+            className="text-primary text-sm"
+          >
+            🤝 Join us, we are hiring →
+          </a>
+        </li>
+        <li>
+          <a
+            href="http://memo.d.foundation/earn/"
+            className="text-primary text-sm"
+          >
+            🙋 Give us a helping hand →
+          </a>
+        </li>
+      </ul>
+    </div>
   );
 }

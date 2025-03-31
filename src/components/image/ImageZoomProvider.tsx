@@ -24,11 +24,11 @@ const ImageZoomProvider = ({ children }: Props) => {
       const container = document.createElement('div');
       container.setAttribute('data-image-container', 'true');
       container.className =
-        'relative inline-block max-w-full mt-[var(--element-margin)]';
+        'relative inline-block max-w-full not-first:mt-[var(--element-margin)]';
 
       // Tables should have no margin
       if (img.closest('table')) {
-        container.classList.remove('mt-[var(--element-margin)]');
+        container.classList.remove('not-first:mt-[var(--element-margin)]');
         container.classList.add('m-0');
       }
 

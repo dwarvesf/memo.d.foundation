@@ -20,6 +20,9 @@ const config = {
     },
     extend: {
       colors: {
+        neutral: {
+          100: '#dededf',
+        },
         // Using CSS variables for all colors to match with Hugo
         primary: {
           DEFAULT: 'var(--primary)',
@@ -90,6 +93,7 @@ const config = {
       },
       fontFamily: {
         sans: ['"Public Sans"', 'sans-serif'],
+        'ibm-sans': ['"IBM Plex Sans"', 'sans-serif'],
         serif: ['charter', 'Georgia', 'Cambria', 'serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
       },

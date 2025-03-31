@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({
             id="sidebar-toggle"
             onClick={toggleSidebar}
             aria-label="Toggle sidebar"
-            className="flex h-10 w-10 items-center justify-center focus:outline-none xl:hidden"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center focus:outline-none xl:hidden"
           >
             <svg
               width="20"

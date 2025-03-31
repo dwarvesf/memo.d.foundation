@@ -1,22 +1,14 @@
-import { RootLayoutPageProps } from '@/types';
-import path from 'path';
+import { IMemoItem, RootLayoutPageProps } from '@/types';
 import { buildDirectorTree } from './directoryTree';
-import { getAllMarkdownFiles } from './paths';
 import { initializeSearchIndex, getSerializableSearchIndex } from './search';
 
-export function getContentPath(slug: string) {
-  const contentDir = path.join(process.cwd(), 'public/content');
-
-  return path.join(contentDir, slug);
-}
-
-export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
-  const contentDir = getContentPath('');
+export async function getRootLayoutPageProps(
+  allMemos: IMemoItem[],
+): Promise<RootLayoutPageProps> {
   await initializeSearchIndex();
   const searchIndex = getSerializableSearchIndex();
-  // Get all markdown files
-  const allPaths = getAllMarkdownFiles(contentDir);
-  const directoryTree = buildDirectorTree(allPaths);
+  const directoryTree = buildDirectorTree(allMemos);
+
   return {
     directoryTree,
     searchIndex,

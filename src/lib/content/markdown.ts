@@ -19,7 +19,7 @@ import type {
 import slugify from 'slugify';
 import { ITocItem } from '@/types';
 import rehypeHighlight from 'rehype-highlight';
-import { getContentPath } from './utils';
+import { getContentPath } from './paths';
 
 // Define interfaces for the AST nodes
 interface ImageNode {

@@ -19,6 +19,7 @@ import {
 } from '@/types';
 import UtterancComments from '@/components/layout/UtterancComments';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
+import { getAllMarkdownContents } from '@/lib/content/memo';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content: string;
@@ -56,7 +57,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
-    const layoutProps = await getRootLayoutPageProps();
+    const allMemos = await getAllMarkdownContents();
+    const layoutProps = await getRootLayoutPageProps(allMemos);
 
     // Try multiple file path options to support Hugo's _index.md convention
     let filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
