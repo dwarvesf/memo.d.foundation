@@ -283,6 +283,9 @@ export async function getMarkdownContent(filePath: string) {
 
 export function getMarkdownMetadata(slugPath: string) {
   const filePath = getContentPath(slugPath);
+  if (!fs.existsSync(filePath)) {
+    return {};
+  }
   const markdownContent = fs.readFileSync(filePath, 'utf-8');
   const { data: frontmatter } = matter(markdownContent);
   return frontmatter;

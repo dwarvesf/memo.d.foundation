@@ -26,7 +26,7 @@ const MemoVList = (props: Props) => {
             key={memo.filePath}
             className={cn(
               'v-list-item xs:flex-row flex w-full flex-col border-b',
-              !imgSrc && 'no-image',
+              !imgSrc && 'no-image first:*:pt-0',
             )}
           >
             {imgSrc && (
@@ -43,7 +43,7 @@ const MemoVList = (props: Props) => {
 
             <div
               className={cn('flex flex-1 flex-col gap-1 p-3', {
-                'pt-0 pr-0 pl-0': !imgSrc,
+                'pr-0 pl-0': !imgSrc,
               })}
             >
               <Link

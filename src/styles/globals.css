@@ -403,6 +403,15 @@
   }
 }
 
+@media screen and (min-width: 1280px) and (max-width: 1350px) {
+  html[data-reading-mode='false'] .utterances {
+    margin-left: -4px;
+    margin-right: -4px;
+    max-width: calc(100% + 8px);
+    width: calc(100% + 8px);
+  }
+}
+
 [data-sonner-toast][data-styled='true'] {
   @apply !w-[unset] max-w-[var(--width)] rounded-lg !p-3.5 text-sm;
 }
