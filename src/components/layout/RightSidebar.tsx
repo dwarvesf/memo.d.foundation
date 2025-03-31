@@ -130,28 +130,28 @@ const RightSidebar = (props: Props) => {
                   Stats
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  {metadata.wordCount && (
+                  {!!metadata.wordCount && (
                     <li className="text-muted-foreground flex items-center justify-between gap-1 text-xs">
                       <span>Words:</span>
                       <span>{metadata.wordCount.toLocaleString()}</span>
                     </li>
                   )}
 
-                  {metadata.characterCount && (
+                  {!!metadata.characterCount && (
                     <li className="text-muted-foreground flex items-center justify-between gap-1 text-xs">
                       <span>Characters:</span>
                       <span>{metadata.characterCount.toLocaleString()}</span>
                     </li>
                   )}
 
-                  {metadata.blocksCount && (
+                  {!!metadata.blocksCount && (
                     <li className="text-muted-foreground flex items-center justify-between gap-1 text-xs">
                       <span>Blocks:</span>
                       <span>{metadata.blocksCount.toLocaleString()}</span>
                     </li>
                   )}
 
-                  {metadata.readingTime && (
+                  {!!metadata.readingTime && (
                     <li className="text-muted-foreground flex items-center justify-between gap-1 text-xs">
                       <span>Reading time:</span>
                       <span>{metadata.readingTime}</span>

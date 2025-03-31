@@ -58,7 +58,7 @@ const MemoVList = (props: Props) => {
               </div>
 
               {!hideAuthors && memo.authors && memo.authors.length > 0 && (
-                <div className="text-secondary-foreground font-ibm-sans hover:text-primary font-sans text-sm font-normal underline">
+                <div className="text-secondary-foreground dark:text-secondary-light font-ibm-sans hover:text-primary font-sans text-sm font-normal underline">
                   {memo.authors.map((author, i) => (
                     <React.Fragment key={author}>
                       <Link href={`/contributor/${author}`}>{author}</Link>
@@ -68,7 +68,7 @@ const MemoVList = (props: Props) => {
                 </div>
               )}
               {!hideDate && memo.date && (
-                <div className="text-secondary-foreground font-ibm-sans text-sm font-normal">
+                <div className="text-secondary-foreground dark:text-secondary-light font-ibm-sans text-sm font-normal">
                   {formatDate(memo.date, 'MMMM dd, yyyy')}
                 </div>
               )}

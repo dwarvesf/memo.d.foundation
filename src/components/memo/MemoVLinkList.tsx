@@ -47,7 +47,7 @@ const MemoVLinkList = ({
             </Link>
 
             {!hideDate && memo.date && (
-              <span className="link-v-list-item-time text-secondary-foreground font-ibm-sans ml-1 text-sm font-normal">
+              <span className="link-v-list-item-time text-secondary-foreground dark:text-secondary-light font-ibm-sans ml-1 text-sm font-normal">
                 {' - '}
                 {formatDate(new Date(memo.date), 'MMMM dd, yyyy')}
               </span>
