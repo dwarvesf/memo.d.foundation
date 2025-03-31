@@ -388,7 +388,7 @@ export function getSerializableSearchIndex(): IMiniSearchIndex | null {
   }
 
   return {
-    // index: miniSearch.toJSON(), // Uncomment if you want to serialize the index
+    index: miniSearch.toJSON(),
     documents: searchIndex.map(doc => ({
       id: doc.id,
       file_path: doc.file_path,
