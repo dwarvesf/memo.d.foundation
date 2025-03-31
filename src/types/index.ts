@@ -1,3 +1,5 @@
+import { AsPlainObject } from 'minisearch';
+
 export interface ITocItem {
   id: string;
   value: string;
@@ -26,4 +28,24 @@ export interface ITreeNode {
 export interface IBackLinkItem {
   title: string;
   path: string;
+}
+export interface IMiniSearchIndex {
+  index?: AsPlainObject;
+  documents: Partial<Document>[];
+}
+
+export interface IRecentPageStorageItem {
+  path: string;
+  title: string;
+  timestamp: number;
+}
+export interface ISearchResultItem {
+  id: string;
+  title: string;
+  description: string;
+  path: string;
+  category: string;
+  icon?: React.ReactNode;
+  action?: string;
+  index?: number;
 }
