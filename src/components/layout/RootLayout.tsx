@@ -6,22 +6,20 @@ import Header from './Header';
 import { useThemeContext } from '@/contexts/theme';
 import Footer from './Footer';
 import DirectoryTree from './DirectoryTree';
-import { IMetadata, IMiniSearchIndex, ITocItem, ITreeNode } from '@/types';
+import { IMetadata, ITocItem, RootLayoutPageProps } from '@/types';
 import RightSidebar from './RightSidebar';
 import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
 import TableOfContents from './TableOfContents';
 import ImageZoomProvider from '../image/ImageZoomProvider';
 import { SearchProvider } from '../search';
 
-interface RootLayoutProps {
+interface RootLayoutProps extends RootLayoutPageProps {
   children: React.ReactNode;
   title?: string;
   description?: string;
   image?: string;
   tocItems?: ITocItem[];
   metadata?: IMetadata;
-  directoryTree?: Record<string, ITreeNode>;
-  searchIndex?: IMiniSearchIndex;
 }
 
 function RootLayout({

@@ -180,7 +180,7 @@ function groupResultsByCategory(
 // Provider Component
 export const SearchProvider: React.FC<{
   children: React.ReactNode;
-  searchIndex?: IMiniSearchIndex;
+  searchIndex?: IMiniSearchIndex | null;
 }> = ({ children, searchIndex }) => {
   const [miniSearch, setMiniSearch] = useState<MiniSearch<Document> | null>(
     null,

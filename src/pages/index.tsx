@@ -7,12 +7,9 @@ import fs from 'fs';
 import { RootLayout } from '../components';
 import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
-import { buildDirectorTree } from '@/lib/content/directoryTree';
-import { IMiniSearchIndex, ITreeNode } from '@/types';
-import {
-  getSerializableSearchIndex,
-  initializeSearchIndex,
-} from '@/lib/content/search';
+import { RootLayoutPageProps } from '@/types';
+
+import { getRootLayoutPageProps } from '@/lib/content/utils';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,20 +29,16 @@ interface FeaturedPost {
   tags?: string[];
 }
 
-interface HomePageProps {
+interface HomePageProps extends RootLayoutPageProps {
   featuredPosts: FeaturedPost[];
-  directoryTree: Record<string, ITreeNode>;
-  searchIndex?: IMiniSearchIndex;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const contentDir = path.join(process.cwd(), 'public/content');
-    await initializeSearchIndex();
-    const searchIndex = getSerializableSearchIndex();
-    // Get all markdown files
+
+    const layoutProps = await getRootLayoutPageProps();
     const allPaths = getAllMarkdownFiles(contentDir);
-    const directoryTree = buildDirectorTree(allPaths);
 
     // Get the most recent posts (limit to 6)
 
@@ -82,9 +75,8 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
       props: {
+        ...layoutProps,
         featuredPosts: recentPosts,
-        directoryTree,
-        searchIndex,
       },
     };
   } catch (error) {

@@ -49,3 +49,8 @@ export interface ISearchResultItem {
   action?: string;
   index?: number;
 }
+
+export interface RootLayoutPageProps {
+  directoryTree?: Record<string, ITreeNode>;
+  searchIndex: IMiniSearchIndex | null;
+}
