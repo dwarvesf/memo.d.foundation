@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  className="flex cursor-pointer items-center justify-center border-0 bg-transparent px-1.5 outline-none hover:opacity-95 active:opacity-100"
+                  className="hidden cursor-pointer items-center justify-center border-0 bg-transparent px-1.5 outline-none hover:opacity-95 active:opacity-100 xl:flex"
                   onClick={toggleReadingMode}
                   aria-label="Toggle reading mode"
                   data-reading-mode={readingMode ? 'true' : 'false'}
