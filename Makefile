@@ -15,15 +15,13 @@ fetch-force:
 	@./git-fetch.sh --force
 
 build:
+	@pnpm install
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../public/content")'
 	@pnpm run build
 
 run:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../public/content")'
 	@pnpm run dev
-
-watch-run:
-	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.watch_run("../../vault", "../../public/content")'
 
 duckdb-export:
 	@rm -f vault.duckdb

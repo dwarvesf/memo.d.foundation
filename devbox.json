@@ -1,26 +1,23 @@
 {
   "packages": {
-    "awscli":    "1.32.21",
-    "git":       "2.48.1",
-    "duckdb":    "1.2.0",
-    "elixir":    "1.18.1",
+    "awscli": "1.32.21",
+    "git": "2.48.1",
+    "duckdb": "1.2.0",
+    "elixir": "1.18.1",
     "elixir-ls": "0.21.3",
-    "nodejs":    "23.9.0",
-    "pnpm":      "10.6.2"
+    "nodejs": "23.9.0",
+    "pnpm": "10.7.0"
   },
   "shell": {
-    "init_hook": [
-      "make lib-setup",
-      "make fetch"
-    ],
+    "init_hook": ["make lib-setup", "make fetch"],
     "scripts": {
-      "build":         "make build",
-      "clear-build":   "make clear-build",
-      "watch-run":     "make watch-run",
-      "build-target":  "make build-target",
-      "run-target":    "make run-target",
+      "build": "make build",
+      "clear-build": "make clear-build",
+      "watch-run": "make watch-run",
+      "build-target": "make build-target",
+      "run-target": "make run-target",
       "duckdb-export": "make duckdb-export",
-      "fetch":         "make fetch"
+      "fetch": "make fetch"
     }
   }
 }
