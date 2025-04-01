@@ -65,7 +65,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
   }, [metadata]);
 
   return (
-    <div className="content-layout">
+    <div className="content-layout xl:m-h-[400px]">
       {/* Title section */}
       {!hideTitle && (
         <div className="flex flex-col items-start justify-between md:flex-row">
@@ -104,7 +104,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
         className={cn(
           'prose dark:prose-dark prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:leading-[1.24] max-w-none font-serif',
           'prose-a:text-foreground prose-a:underline prose-a:decoration-neutral-200 prose-a:hover:text-primary prose-a:hover:decoration-primary prose-a:font-[inherit]',
-          'prose-table:border',
+          'prose-table:border prose-img:mt-[var(--element-margin)]',
         )}
       >
         {children}
@@ -191,12 +191,12 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                   />
                 </svg>
                 <span className="text-muted-foreground">Author:</span>
-                <a
+                <Link
                   href={`/contributor/${metadata.author}`}
                   className="text-primary hover:underline"
                 >
                   {metadata.author}
-                </a>
+                </Link>
               </li>
             )}
 
@@ -217,14 +217,14 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                 <span className="text-muted-foreground">Co-author:</span>
                 <div className="flex flex-wrap gap-1">
                   {metadata.coAuthors.map((author, index) => (
-                    <a
+                    <Link
                       key={index}
                       href={`/contributor/${author}`}
                       className="text-primary hover:underline"
                     >
                       {author}
                       {index < metadata.coAuthors!.length - 1 ? ', ' : ''}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </li>
@@ -248,13 +248,13 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                 <span className="text-muted-foreground mt-0.5">Tags:</span>
                 <div className="flex flex-wrap gap-1">
                   {metadata.tags.slice(0, 3).map((tag, index) => (
-                    <a
+                    <Link
                       key={index}
                       href={`/tags/${tag}`}
                       className="bg-muted text-muted-foreground hover:bg-muted/80 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
                     >
                       {tag?.replace(/-/g, ' ')}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </li>
@@ -275,12 +275,12 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                   <path d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44" />
                 </svg>
                 <span className="text-muted-foreground">Folder:</span>
-                <a
+                <Link
                   href={`/${metadata.folder}`}
                   className="text-primary hover:underline"
                 >
                   {metadata.folder}
-                </a>
+                </Link>
               </li>
             )}
           </ul>

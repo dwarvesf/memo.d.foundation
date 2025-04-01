@@ -6,6 +6,7 @@ import CalendarIcon from '../icons/CalendarIcon';
 import CircleUserIcon from '../icons/CircleUserIcon';
 import TagIcon from '../icons/TagIcon';
 import FolderIcon from '../icons/FolderIcon';
+import Link from 'next/link';
 
 interface Props {
   metadata?: IMetadata;
@@ -17,9 +18,9 @@ const RightSidebar = (props: Props) => {
     <div
       className={cn(
         'right-sidebar leading-[140% hidden w-[200px] font-sans text-sm font-medium xl:flex 2xl:w-[240px]',
-        'transition-[transform,opacity] duration-100 ease-in-out',
-        'w-0 translate-x-0 transform opacity-100 xl:w-[200px]',
-        'reading:opacity-0 reading:translate-x-[50px]',
+        'transition-[transform,opacity,visibility] duration-100 ease-in-out',
+        'visible w-0 translate-x-0 transform opacity-100 xl:w-[200px]',
+        'reading:opacity-0 reading:translate-x-[50px] reading:invisible reading:w-0',
       )}
     >
       <div className="sticky top-[60px] right-0 flex flex-col gap-y-8 pt-4 pb-10 transition-[top] duration-200 ease-in-out">
@@ -50,12 +51,12 @@ const RightSidebar = (props: Props) => {
                   <li className="text-secondary-foreground dark:text-secondary-light flex items-center gap-1 text-xs leading-[140%]">
                     <CircleUserIcon width={16} height={16} />
                     <span>Author:</span>
-                    <a
+                    <Link
                       href={`/contributor/${metadata.author}`}
                       className="hover:text-primary hover:underline"
                     >
                       {metadata.author}
-                    </a>
+                    </Link>
                   </li>
                 )}
                 {metadata.coAuthors && metadata.coAuthors.length > 0 && (
@@ -66,14 +67,14 @@ const RightSidebar = (props: Props) => {
                     </span>
                     <div className="flex flex-wrap gap-1">
                       {metadata.coAuthors.map((author, index) => (
-                        <a
+                        <Link
                           key={author}
                           href={`/contributor/${author}`}
                           className="hover:text-primary hover:underline"
                         >
                           {author}
                           {index < metadata.coAuthors!.length - 1 ? ', ' : ''}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </li>
@@ -85,13 +86,13 @@ const RightSidebar = (props: Props) => {
                     <span>Tags:</span>
                     <div className="inline-flex flex-wrap gap-1">
                       {metadata.tags.slice(0, 3).map((tag, index) => (
-                        <a
+                        <Link
                           key={index}
                           href={`/tags/${tag}`}
                           className="bg-muted hover:bg-muted/80 hover:text-primary dark:bg-border dark:text-foreground dark:hover:text-primary inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-medium text-[#4b4f53]"
                         >
                           {tag.replace(/-/g, ' ')}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </li>
@@ -108,12 +109,12 @@ const RightSidebar = (props: Props) => {
                   <li className="text-secondary-foreground dark:text-secondary-light flex gap-1 text-xs leading-[140%]">
                     <FolderIcon width={16} height={16} />
                     <span>Folder:</span>
-                    <a
+                    <Link
                       href={`/${metadata.folder}`}
                       className="hover:text-primary break-all hover:underline"
                     >
                       {metadata.folder}
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
