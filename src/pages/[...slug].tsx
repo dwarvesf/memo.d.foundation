@@ -47,9 +47,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // that will be accessible in the exported static site
   const contentDir = path.join(process.cwd(), 'public/content');
 
-  const paths = getAllMarkdownFiles(contentDir).map(slugArray => ({
-    params: { slug: slugArray },
-  }));
+  const paths = getAllMarkdownFiles(contentDir)
+    .filter(slugArray => !slugArray[0]?.startsWith('contributor'))
+    .map(slugArray => ({
+      params: { slug: slugArray },
+    }));
 
   return {
     paths,

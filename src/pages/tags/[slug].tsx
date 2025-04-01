@@ -62,6 +62,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       data: allMemos,
       filters: { tags: tag },
       limit: null,
+      excludeContent: true,
     });
     return {
       props: {
