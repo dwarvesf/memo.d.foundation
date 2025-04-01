@@ -15,7 +15,7 @@ export function getFirstMemoImage(memo: IMemoItem): string {
         .toLowerCase()
         .replace(/\/[^/]+\.md$/, '')
         .replace(/ /g, '-')
-        .replace(/[^a-zA-Z0-9/_-]+/g, '-')
+        .replace(/[^a-zA-Z0-9\/_\.-]+/g, '-')
         .replace(/(-\/|-$|_index$)/g, '');
 
       return `/content/${basePath}/${extractedImage}`;
