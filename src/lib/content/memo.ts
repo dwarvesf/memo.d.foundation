@@ -7,7 +7,7 @@ import { IMemoItem } from '@/types';
 export function getAllMarkdownContents(basePath = '') {
   const contentDir = getContentPath(basePath);
   const allPaths = getAllMarkdownFiles(contentDir);
-
+  const baseSlugArray = basePath.split('/').filter(Boolean);
   return allPaths
     .map(slugArray => {
       const filePath = path.join(contentDir, ...slugArray) + '.md';
@@ -31,8 +31,8 @@ export function getAllMarkdownContents(basePath = '') {
         hiring: result.data.hiring || false,
         authors: result.data.authors || [],
         date: result.data.date?.toString(),
-        filePath: path.join(...slugArray) + '.md',
-        slugArray: slugArray,
+        filePath: path.join(basePath, ...slugArray) + '.md',
+        slugArray: [...baseSlugArray, ...slugArray],
       };
       return item;
     })
