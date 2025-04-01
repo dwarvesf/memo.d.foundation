@@ -61,6 +61,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const memos = filterMemo({
       data: allMemos,
       filters: { authors: contributor },
+      limit: null,
     });
     return {
       props: {

@@ -58,7 +58,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     if (!tag) {
       return { notFound: true };
     }
-    const memos = filterMemo({ data: allMemos, filters: { tags: tag } });
+    const memos = filterMemo({
+      data: allMemos,
+      filters: { tags: tag },
+      limit: null,
+    });
     return {
       props: {
         ...layoutProps,
