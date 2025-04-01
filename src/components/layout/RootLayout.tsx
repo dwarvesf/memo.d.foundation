@@ -62,11 +62,37 @@ function RootLayout({
     <SearchProvider searchIndex={searchIndex}>
       <Head>
         <title>{title}</title>
-        <meta name="description" content={description} />
+        <meta property="title" content={title} />
         <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+
+        {description && <meta name="description" content={description} />}
+        {description && (
+          <meta property="og:description" content={description} />
+        )}
+
         {image && <meta property="og:image" content={image} />}
+        {!!metadata?.tags?.length && (
+          <meta name="keywords" content={metadata?.tags.join(', ')} />
+        )}
+        <meta property="og:type" content="article" />
+
+        <meta property="og:site_name" content="Dwarves Memo"></meta>
+        <link rel="icon" type="image/x-icon" href="{{ $favicon.Permalink }}" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="icon" href="/favicon.ico" />
+
         {/* RSS feed link tags for auto-discovery */}
         <link
           rel="alternate"
