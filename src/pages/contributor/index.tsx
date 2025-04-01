@@ -44,9 +44,9 @@ const Contributor = (
 
   return (
     <RootLayout {...props} title="Contributors">
-      <div className="">
+      <div className="flex items-center justify-center">
         {sortedContributors && (
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex w-fit flex-col gap-4">
             <h1 className="text-2xl font-bold">Contributors</h1>
             <ul className="list-disc pl-5">
               {sortedContributors.map(contributor => (

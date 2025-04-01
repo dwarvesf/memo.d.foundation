@@ -32,9 +32,9 @@ const TagsPage = (props: RootLayoutPageProps) => {
   }, [directoryTree]);
   return (
     <RootLayout {...props} title="Tags">
-      <div className="">
+      <div className="flex items-center justify-center">
         {tags && (
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex w-fit flex-col gap-4">
             <ul className="list-disc pl-5">
               <li className="mb-5 -ml-5 list-none text-lg">
                 <h1 className="text-2xl font-bold">#Tags</h1>

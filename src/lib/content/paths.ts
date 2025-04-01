@@ -25,8 +25,10 @@ export function getAllMarkdownFiles(
   } else if (fs.existsSync(indexFilePath) && basePath.length > 0) {
     // If _index.md exists but readme.md doesn't, add the current directory as a path
     paths.push([...basePath]);
+  } else if (entries.length > 0 && basePath.length > 0) {
+    // If neither readme.md nor _index.md exists, add the current directory as a path
+    paths.push([...basePath]);
   }
-
   for (const entry of entries) {
     const res = path.resolve(dir, entry.name);
     if (entry.isDirectory()) {

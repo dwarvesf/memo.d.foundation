@@ -4,8 +4,8 @@ import { getAllMarkdownFiles, getContentPath } from './paths';
 import path from 'path';
 import { IMemoItem } from '@/types';
 
-export function getAllMarkdownContents() {
-  const contentDir = getContentPath('');
+export function getAllMarkdownContents(basePath = '') {
+  const contentDir = getContentPath(basePath);
   const allPaths = getAllMarkdownFiles(contentDir);
 
   return allPaths

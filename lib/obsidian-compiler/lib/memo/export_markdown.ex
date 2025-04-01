@@ -130,7 +130,7 @@ defmodule Memo.ExportMarkdown do
     generate_contributor_files(exportpath)
 
     # Create blank _index.md files in folders without them
-    generate_missing_index_files(exportpath)
+    # generate_missing_index_files(exportpath)
 
     # Merge all cache entries: files, assets, and db
     new_cache = file_cache |> Map.merge(assets_cache) |> Map.merge(db_cache)
