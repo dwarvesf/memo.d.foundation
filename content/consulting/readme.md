@@ -1,0 +1,116 @@
+---
+title: Consulting Team
+date: 2023-12-21
+description: We're a team combining tech skills, problem-solving, and clear communication. We help businesses overcome challenges by finding root causes, creating practical solutions, and working closely with clients to implement them effectively.
+authors:
+  - tieubao
+  - monotykamary
+  - nikki
+tags:
+  - consulting
+  - home
+hide_frontmatter: false
+hide_title: true
+---
+
+## Who we are
+
+We're a team of tech experts who solve business problems. We combine technical skills with good communication to help companies overcome challenges. We identify root causes, create solutions, and work with clients to implement them. Our skills cover strategy, operations, IT, finance, and marketing.
+
+## Latest from consulting team
+
+- [2nd Talks and Takeaways](/consulting/market-report/event-takeaways-2nd)
+- [1st Talks and Takeaways](/consulting/market-report/event-takeaways-1st)
+- [#9: Bybit Loses $1.5B in Hack, Claude 3.7 Sonnet Drops, and OpenArt Designs Characters](/consulting/market-report/2025-28th-feb)
+- [#8: R1 1776 Goes Open-Source, Cardex Gets Hacked, and Grok-3 Debuts](/consulting/market-report/2025-21th-feb)
+- [#7: 10x AI Cost Reduction, Lyft’s 2026 Robotaxi Milestone, and Solana ETF Buzz](/consulting/market-report/2025-14th-feb)
+- [#6 Trending Products, DeepSeek Wave, and Ethereum Predictions](/consulting/market-report/2025-7th-feb)
+- [#5 VC Trends, Blockchain Breakthroughs, and AI Innovations](/consulting/market-report/2025-17th-jan)
+- [#4 AI Supercomputers, Mini AI PCs, SEA VC](/consulting/market-report/2025-10th-jan)
+- [#3 AI at CES, Wall Street Boom, Blockchain Trends](/consulting/market-report/2025-3rd-jan)
+- [#2 AI Talent Wars, OpenAI’s New Models, Hyperliquid](/consulting/market-report/2024-27th-dec)
+
+## Our culture & approach
+
+We stay current with technology trends through continuous learning. This helps us take on interesting challenges and deliver quality work. We believe in understanding problems before coding solutions. We welcome partnerships with anyone sharing our goals and values.
+
+We work collaboratively, bringing specialists together to create innovative solutions. We encourage creative thinking and welcome new approaches. We communicate openly to build trust and alignment with team members and clients.
+
+## Our vision
+
+We aim to deliver outstanding client satisfaction by continuously improving our services. We handle the entire project lifecycle from understanding needs to delivering solutions.
+
+We want team members to be problem-solvers rather than just task-completers. Deep project engagement leads to fair rewards and recognition for everyone.
+
+![Consulting Team Workflow](assets/consulting-team-workflow.webp)
+
+## How we work
+
+Our work environment is practical and hands-on. We learn through real client projects rather than just theory. We track industry trends and turn insights into practical solutions.
+
+We collaborate with our Labs Team to provide specialized expertise across industries. This ensures we apply our latest research directly to client projects.
+
+We maintain structured communication:
+
+- Weekly notes on project health and opportunities
+- Monthly reports tracking wins and lessons
+- Regular planning sessions to set direction
+- Monthly demonstrations of our work
+- Team calibration meetings to review performance
+
+![Project Delivery Process](assets/project-delivery-process.webp)
+
+## Main functions
+
+We monitor markets to stay informed about industry trends and new technologies. We gather insights from hiring patterns, industry contacts, venture capital news, and publications.
+
+Our solution delivery process includes:
+
+1. Understanding client needs
+2. Studying what's possible
+3. Designing solutions
+4. Creating proposals
+5. Building the right team
+6. Developing and testing
+7. Deployment and operations
+
+## Rewards system
+
+We reward team members for creating market reports, participating in sales, managing projects, documenting knowledge, and bringing in new business. Rewards range from internal recognition points to tokens and revenue percentages.
+
+## Who should join us
+
+We welcome people who want more than just coding work. We look for:
+
+- Curious minds interested in market trends
+- People who can bring in new projects
+- Those who care about creating sensible solutions
+- Those who take pride in managing projects well
+
+![Consultant Profile](assets/consultant-profile.webp)
+
+To succeed with us, you need technical skill combined with business understanding. You should be able to analyze situations, break down problems, and present solutions clearly. Building client relationships is important - you'll connect business needs with technical solutions.
+
+Project management is key - you'll oversee projects from idea to delivery, often handling multiple projects at once. We value ongoing learning and knowledge sharing.
+
+## Joining our team
+
+Our team started with members appointed by our Board and referrals from Labs and Delivery teams. We look for people who show strong project involvement, leadership ability, and business understanding.
+
+If you're interested, join technical discussions on our Discord server. Once invited, you'll receive training through workshops on consulting, marketing, and sales. We assign mentors to support your growth. There's a one-month trial period working on actual projects.
+
+## Growth path
+
+![Growth Path](assets/growth-path.webp)
+
+Our growth track includes four levels:
+
+**Associate Consultant**: You'll support senior consultants on client projects. You'll gain exposure to various projects while learning our methods. This role requires technical expertise, ability to gather requirements, and good communication.
+
+**Consultant**: You'll lead projects or specific work areas, communicating directly with clients. You'll analyze problems, develop solutions, create proposals, and mentor junior team members. This requires specialization in specific technologies and client relationship skills.
+
+**Lead Consultant**: You'll oversee multiple projects and serve as a subject matter expert. You'll provide thought leadership, guide strategy, and represent the company at industry events. This requires strategic thinking and advanced problem-solving abilities.
+
+**Partner**: You'll set strategic direction, drive business growth, maintain key client relationships, and participate in company decisions. This requires leadership skills, business development expertise, and operational efficiency.
+
+![Project Management Framework](assets/project-management-framework.webp)
