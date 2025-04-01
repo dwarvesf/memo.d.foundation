@@ -257,33 +257,50 @@ defmodule Memo.ExportMarkdown do
       %{file => cache_entry}
     else
       # File has changed, process it
-      content = File.read!(file)
-      links = LinkUtils.extract_links(content)
-      resolved_links = LinkUtils.resolve_links(links, all_files, vaultpath)
-      converted_content = LinkUtils.convert_links(content, resolved_links, file)
-      converted_content = process_duckdb_queries(converted_content)
-      converted_content = Slugify.slugify_markdown_links(converted_content)
-      converted_content = KatexUtils.wrap_multiline_katex(converted_content)
 
+      # Calculate the export file path to check if it would become home.md or index.md at the root
       export_file = replace_path_prefix(file, vaultpath, exportpath)
       slugified_export_file = preserve_relative_prefix_and_slugify(export_file)
+      dirname = Path.dirname(slugified_export_file)
+      basename = Path.basename(slugified_export_file)
 
-      export_dir = Path.dirname(slugified_export_file)
-      File.mkdir_p!(export_dir)
+      # Skip only if it's home.md or index.md at the root level
+      if basename in ["home.md", "index.md"] && dirname == exportpath do
+        IO.puts("Skipping root file: #{inspect(file)} (would create #{basename} at root)")
+        # Return an empty cache entry to prevent repeatedly checking this file
+        %{file => %{
+          "size" => size,
+          "mtime" => mtime,
+          "hash" => file_hash,
+          "skipped" => true,
+          "reason" => "Ignored root file: #{basename}"
+        }}
+      else
+        content = File.read!(file)
+        links = LinkUtils.extract_links(content)
+        resolved_links = LinkUtils.resolve_links(links, all_files, vaultpath)
+        converted_content = LinkUtils.convert_links(content, resolved_links, file)
+        converted_content = process_duckdb_queries(converted_content)
+        converted_content = Slugify.slugify_markdown_links(converted_content)
+        converted_content = KatexUtils.wrap_multiline_katex(converted_content)
 
-      File.write!(slugified_export_file, converted_content)
-      IO.puts("Exported: #{inspect(file)} -> #{inspect(slugified_export_file)}")
+        export_dir = Path.dirname(slugified_export_file)
+        File.mkdir_p!(export_dir)
 
-      # Update cache with new file information
-      new_entry = %{
-        "size" => size,
-        "mtime" => mtime,
-        "hash" => file_hash,
-        "export_path" => slugified_export_file,
-        "links" => links
-      }
+        File.write!(slugified_export_file, converted_content)
+        IO.puts("Exported: #{inspect(file)} -> #{inspect(slugified_export_file)}")
 
-      %{file => new_entry}
+        # Update cache with new file information
+        new_entry = %{
+          "size" => size,
+          "mtime" => mtime,
+          "hash" => file_hash,
+          "export_path" => slugified_export_file,
+          "links" => links
+        }
+
+        %{file => new_entry}
+      end
     end
   end
 
