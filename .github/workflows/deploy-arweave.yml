@@ -1,0 +1,74 @@
+name: Deploy Markdown to Arweave
+
+on:
+  workflow_dispatch: # Keep manual trigger
+  push:
+    branches:
+      - main
+    paths:
+      - "db/vault.parquet" # Only trigger on changes to this file
+
+concurrency:
+  group: ${{ github.repository }}-workflow
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout contents repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DWARVES_PAT }}
+          submodules: recursive
+          fetch-depth: 10
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          # Install DuckDB
+          wget -q https://github.com/duckdb/duckdb/releases/download/v1.2.1/duckdb_cli-linux-amd64.zip
+          unzip -q duckdb_cli-linux-amd64.zip
+          chmod +x duckdb
+
+          # Query for files that have perma_storage_id = 'true'
+          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT COALESCE(STRING_AGG(file_path, ','), '') FROM 'db/vault.parquet' WHERE should_deploy_perma_storage = true AND perma_storage_id IS NULL;" | tr -d '"')
+
+          # Output the results
+          echo "Found markdown files for permanent storage: $CHANGED_FILES"
+          echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install arweave gray-matter crypto js-yaml tsx
+
+      - name: Create wallet file
+        run: |
+          echo '${{ secrets.ARWEAVE_WALLET_JSON }}' > wallet.json
+          chmod 600 wallet.json
+
+      - name: Process markdown files
+        id: deploy
+        if: steps.changed-files.outputs.files != ''
+        run: |
+          npx tsx scripts/deploy-arweave.ts '${{ steps.changed-files.outputs.files }}'
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git checkout main
+          git submodule foreach --recursive "git checkout main || git checkout master || true; git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
+          git add --all
+          git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
+          git push
+
+      - name: Display deployment results
+        if: steps.deploy.outputs.deployments != ''
+        run: |
+          echo "Deployed files to Arweave:"
+          echo '${{ steps.deploy.outputs.deployments }}' | jq -r '.[]| "File: \(.file)\nArweave ID: \(.id)\nURL: https://\(.id).arweave.net\n"'

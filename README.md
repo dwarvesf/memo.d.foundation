@@ -27,7 +27,7 @@ We welcome contributions from anyone who is interested in our topics. You can co
 
 1. Fork this repo and clone it to your local machine.
 2. Install [Devbox](^9^), a command-line tool that lets you easily create isolated shells and containers for development. Devbox will help you set up a consistent and reproducible environment for this repo, with all the necessary tools and dependencies installed.
-3. Run `devbox shell` in the root directory of the repo to enter an isolated shell. Alternatively, you can use [VSCode](https://code.visualstudio.com/) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension to open the repo as a devcontainer.
+3. Run `devbox shell` in the root directory of the repo to enter an isolated shell.
 
 To run the server, you can run our Makefile command:
 
