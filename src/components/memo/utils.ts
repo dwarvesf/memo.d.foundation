@@ -27,10 +27,12 @@ export function getFirstMemoImage(memo: IMemoItem): string {
 }
 
 export function formatMemoPath(filePath: string): string {
-  return filePath
+  const formattedPath = filePath
     .toLowerCase()
     .replace(/\.md$/, '')
     .replace(/ /g, '-')
     .replace(/[^a-zA-Z0-9/_-]+/g, '-')
     .replace(/(-\/|-$|_index$)/g, '');
+
+  return `/${formattedPath}`;
 }
