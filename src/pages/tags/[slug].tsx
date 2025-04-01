@@ -142,7 +142,7 @@ export default function TagDetailPage({
                       {memo.tags?.slice(0, 3).map(tag => (
                         <Link
                           key={tag}
-                          href={`/tags/${tag}`}
+                          href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
                           className="dark:bg-border hover:text-primary text-2xs rounded-[2.8px] bg-[#f9fafb] px-1.5 leading-[1.7] font-medium text-neutral-500 hover:underline"
                         >
                           {tag}
