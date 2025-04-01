@@ -223,7 +223,7 @@ async function main() {
       process.env.RPC_URL || 'https://ethereum-mainnet-rpc.allthatnode.com';
 
     // Connect to the Ethereum network
-    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
 
     // Create a wallet from the private key
     const wallet = new ethers.Wallet(privateKey, provider);
