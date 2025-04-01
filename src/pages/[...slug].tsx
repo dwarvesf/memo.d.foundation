@@ -49,7 +49,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = getAllMarkdownFiles(contentDir)
     .filter(
-      slugArray => !slugArray[0]?.toLowerCase()?.startsWith('contributor'),
+      slugArray =>
+        !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
+        !slugArray[0]?.toLowerCase()?.startsWith('tags'),
     )
     .map(slugArray => ({
       params: { slug: slugArray },
