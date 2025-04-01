@@ -47,10 +47,8 @@ const Contributor = (
       <div className="">
         {sortedContributors && (
           <div className="flex flex-col items-center gap-4">
+            <h1 className="text-2xl font-bold">Contributors</h1>
             <ul className="list-disc pl-5">
-              <li className="mb-5 -ml-5 list-none text-lg">
-                <h1 className="text-2xl font-bold">Contributors</h1>
-              </li>
               {sortedContributors.map(contributor => (
                 <li key={contributor} className="text-lg">
                   <Link

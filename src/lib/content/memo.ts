@@ -41,9 +41,7 @@ export function getAllMarkdownContents() {
 
 interface FilterMemoProps {
   data: IMemoItem[];
-  filters?: { tags?: string } & {
-    hiring?: boolean;
-  };
+  filters?: { tags?: string; hiring?: boolean; authors?: string };
   sortBy?: keyof IMemoItem;
   sortOrder?: 'asc' | 'desc';
   limit?: number | null;
@@ -82,8 +80,16 @@ export function filterMemo(props: FilterMemoProps) {
             !memo.tags?.some(tag => tag && tag.includes(value as string))
           );
         }
+        if (key === 'authors') {
+          return (
+            !memo.authors?.length ||
+            !memo.authors?.some(
+              author => author && author.includes(value as string),
+            )
+          );
+        }
 
-        return memo.hiring !== value;
+        return memo[key as keyof IMemoItem] !== value;
       });
     if (invalid) {
       continue;

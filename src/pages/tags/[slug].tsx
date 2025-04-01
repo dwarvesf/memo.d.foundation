@@ -39,7 +39,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = [...tags].map(tag => ({
     params: { slug: tag },
   }));
-  console.log('paths', [...tags]);
   return {
     paths,
     fallback: false, // Must be 'false' for static export
@@ -74,7 +73,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 };
 
-export default function ContentPage({
+export default function TagDetailPage({
   tag,
   directoryTree,
   searchIndex,

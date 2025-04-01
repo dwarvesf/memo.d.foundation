@@ -17,14 +17,12 @@ export const getStaticProps: GetStaticProps = async () => {
   } catch (error) {
     console.error('Error in getStaticProps:', error);
     return {
-      props: {
-        featuredPosts: [],
-      },
+      props: {},
     };
   }
 };
 
-const Tags = (props: RootLayoutPageProps) => {
+const TagsPage = (props: RootLayoutPageProps) => {
   const { directoryTree } = props;
   const tags = useMemo(() => {
     if (!directoryTree) return null;
@@ -32,7 +30,6 @@ const Tags = (props: RootLayoutPageProps) => {
 
     return Object.entries(tagsNode).sort(([a], [b]) => a.localeCompare(b));
   }, [directoryTree]);
-
   return (
     <RootLayout {...props} title="Tags">
       <div className="">
@@ -42,10 +39,10 @@ const Tags = (props: RootLayoutPageProps) => {
               <li className="mb-5 -ml-5 list-none text-lg">
                 <h1 className="text-2xl font-bold">#Tags</h1>
               </li>
-              {tags.map(([tag, node]) => (
-                <li key={tag} className="text-lg">
+              {tags.map(([path, node]) => (
+                <li key={path} className="text-lg">
                   <Link
-                    href={`/tags/${tag}`}
+                    href={path}
                     className="hover:text-primary hover:decoration-primary dark:hover:text-primary text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
                   >
                     {node.label}
@@ -61,4 +58,4 @@ const Tags = (props: RootLayoutPageProps) => {
   );
 };
 
-export default Tags;
+export default TagsPage;

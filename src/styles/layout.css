@@ -35,6 +35,9 @@
     grid-template-columns: 0 1fr 0;
     column-gap: 0;
   }
+  .main-content {
+    width: 100%;
+  }
 }
 
 .toc {
