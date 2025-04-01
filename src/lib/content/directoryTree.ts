@@ -8,10 +8,23 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
     '/tags': { label: 'Popular Tags', children: {} },
   };
 
-  const tags = new Set<string>();
   allMemos.forEach(memo => {
     // tags
-    memo.tags?.forEach((tag: string) => tags.add(tag));
+    memo.tags?.forEach((tag: string) => {
+      const currentTag = root['/tags'].children[`/tags/${tag}`];
+      if (!currentTag) {
+        root['/tags'].children[`/tags/${tag}`] = {
+          label: `#${tag}`,
+          children: {},
+          count: 1,
+        };
+      } else {
+        root['/tags'].children[`/tags/${tag}`] = {
+          ...currentTag,
+          count: (currentTag.count ?? 0) + 1,
+        };
+      }
+    });
 
     // pinned
     if (memo.pinned) {
@@ -38,12 +51,6 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
       }
       currentNode = currentNode[currentPath].children;
     });
-  });
-  tags.forEach(tag => {
-    root['/tags'].children[`/tags/${tag}`] = {
-      label: `#${tag}`,
-      children: {},
-    };
   });
 
   return root;
