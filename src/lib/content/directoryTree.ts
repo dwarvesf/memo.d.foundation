@@ -55,4 +55,4 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
 
   return root;
 }
-export function getAllTags() {}
+export function getAllTags() { }

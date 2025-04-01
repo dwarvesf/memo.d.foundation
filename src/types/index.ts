@@ -53,7 +53,7 @@ export interface ISearchResultItem {
 
 export interface RootLayoutPageProps {
   directoryTree?: Record<string, ITreeNode>;
-  searchIndex: IMiniSearchIndex | null;
+  searchIndex?: IMiniSearchIndex | null;
 }
 
 export interface IMemoItem {

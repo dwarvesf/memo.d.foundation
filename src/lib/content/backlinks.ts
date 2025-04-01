@@ -9,7 +9,7 @@ import { getMarkdownMetadata } from './markdown';
  * @param str The string to slugify
  * @returns Slugified string
  */
-function slugify(str: string): string {
+export function slugify(str: string): string {
   return str
     .toLowerCase()
     .replace(/[^a-z0-9\s_-]/g, '')
@@ -24,7 +24,7 @@ function slugify(str: string): string {
  * @param filename The filename to slugify
  * @returns Slugified filename with extension preserved
  */
-function slugifyFilename(filename: string): string {
+export function slugifyFilename(filename: string): string {
   const ext = path.extname(filename);
   const name = path.basename(filename, ext);
   return slugify(name) + ext;
@@ -35,7 +35,7 @@ function slugifyFilename(filename: string): string {
  * @param pathStr The path to slugify
  * @returns Path with components slugified
  */
-function slugifyPathComponents(pathStr: string): string {
+export function slugifyPathComponents(pathStr: string): string {
   return pathStr
     .split('/')
     .map(component => {

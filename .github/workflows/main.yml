@@ -1,4 +1,4 @@
-name: Deploy Hugo from Obsidian notes
+name: Deploy Next.js from Obsidian notes
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
         uses: jetpack-io/devbox-install-action@v0.11.0
         with:
           enable-cache: true
-          devbox-version: 0.13.3
+          devbox-version: 0.14.0
 
       - name: Run Build
         run: devbox run build
@@ -35,21 +35,21 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./out
 
   notify_job:
     runs-on: ubuntu-latest
-    name: Notify Discord 
+    name: Notify Discord
     needs: publish_job
     steps:
       - name: Sleep for 30 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: '30s'
+          time: "30s"
 
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'memo.d.foundation has been updated.'
+          args: "memo.d.foundation has been updated."

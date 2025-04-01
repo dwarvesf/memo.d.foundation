@@ -220,7 +220,11 @@ export async function initializeSearchIndex(): Promise<void> {
               const description = row[2]?.toString() || '';
               const mdContent = row[3]?.toString() || '';
               const sprContent = row[4]?.toString() || '';
-              const tags = Array.isArray(row[5]) ? (row[5] as string[]) : [];
+              const tags = Array.isArray(row[5])
+                ? (row[5] as string[]).filter(
+                    tag => tag !== null && tag !== undefined && tag !== '',
+                  )
+                : [];
               const authors = Array.isArray(row[6]) ? (row[6] as string[]) : [];
               const date = row[7]?.toString() || '';
               const draft = row[8] === true;
@@ -265,7 +269,11 @@ export async function initializeSearchIndex(): Promise<void> {
             },
             extractField: (document: Document, fieldName: string) => {
               if (fieldName === 'tags' && Array.isArray(document.tags)) {
-                return document.tags.join(' ');
+                return document.tags
+                  .filter(
+                    tag => tag !== null && tag !== undefined && tag !== '',
+                  )
+                  .join(' ');
               }
               if (fieldName === 'authors' && Array.isArray(document.authors)) {
                 return document.authors.join(' ');

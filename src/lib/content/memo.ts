@@ -25,12 +25,16 @@ export function getAllMarkdownContents(basePath = '') {
         title: result.data.title || slugArray[slugArray.length - 1],
         short_title: result.data.short_title || '',
         description: result.data.description || '',
-        tags: result.data.tags || [],
+        tags: Array.isArray(result.data.tags)
+          ? result.data.tags.filter(
+              tag => tag !== null && tag !== undefined && tag !== '',
+            )
+          : [],
         pinned: result.data.pinned || false,
         draft: result.data.draft || false,
         hiring: result.data.hiring || false,
         authors: result.data.authors || [],
-        date: result.data.date?.toString(),
+        date: result.data.date?.toString() || null,
         filePath: path.join(basePath, ...slugArray) + '.md',
         slugArray: [...baseSlugArray, ...slugArray],
       };
@@ -45,6 +49,7 @@ interface FilterMemoProps {
   sortBy?: keyof IMemoItem;
   sortOrder?: 'asc' | 'desc';
   limit?: number | null;
+  excludeContent?: boolean;
 }
 export function sortMemos(
   data: IMemoItem[],
@@ -65,7 +70,7 @@ export function sortMemos(
 }
 
 export function filterMemo(props: FilterMemoProps) {
-  const { data, filters, limit = 3 } = props;
+  const { data, filters, limit = 3, excludeContent = false } = props;
   const result: IMemoItem[] = [];
   for (const memo of data) {
     const invalid =
@@ -94,7 +99,10 @@ export function filterMemo(props: FilterMemoProps) {
     if (invalid) {
       continue;
     }
-    result.push(memo);
+    result.push({
+      ...memo,
+      content: excludeContent ? '' : memo.content,
+    });
     if (limit && result.length >= limit) {
       break;
     }

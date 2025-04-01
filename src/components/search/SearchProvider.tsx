@@ -223,9 +223,8 @@ export const SearchProvider: React.FC<{
             return document[fieldName] || '';
           },
         };
-        // Create new MiniSearch instance
-        const ms = new MiniSearch(miniSearchOptions);
-        // Load pre-built index if available
+
+        // First try to use provided search index from props (for SSR compatibility)
         if (searchIndex?.index) {
           // Use the static method instead of instance method
           const loadedSearch = MiniSearch.loadJS(
@@ -233,13 +232,39 @@ export const SearchProvider: React.FC<{
             miniSearchOptions,
           );
           setMiniSearch(loadedSearch);
-        } else if (searchIndex?.documents) {
-          // Otherwise, add documents to index
-          ms.addAll(searchIndex.documents);
-          setMiniSearch(ms);
+          setDocuments(searchIndex.documents || []);
+          setIsInitialized(true);
+          setIsLoading(false);
+          return;
         }
 
-        setDocuments(searchIndex?.documents || []);
+        // If not available from props, fetch it from the static JSON file
+        try {
+          const response = await fetch('/content/search-index.json');
+          if (!response.ok) {
+            throw new Error('Failed to fetch search index');
+          }
+
+          const data = await response.json();
+
+          if (data?.index) {
+            const loadedSearch = MiniSearch.loadJS(
+              data.index,
+              miniSearchOptions,
+            );
+            setMiniSearch(loadedSearch);
+            setDocuments(data.documents || []);
+          } else if (data?.documents) {
+            // Create new MiniSearch instance if only documents are available
+            const ms = new MiniSearch(miniSearchOptions);
+            ms.addAll(data.documents);
+            setMiniSearch(ms);
+            setDocuments(data.documents);
+          }
+        } catch (error) {
+          console.error('Error fetching search index:', error);
+        }
+
         setIsInitialized(true);
       } catch (error) {
         console.error('Error initializing search:', error);
@@ -248,10 +273,8 @@ export const SearchProvider: React.FC<{
       }
     };
 
-    if (!isInitialized && !isLoading && searchIndex) {
-      initializeSearch();
-    }
-  }, [isInitialized, isLoading, searchIndex]);
+    initializeSearch();
+  }, [searchIndex]);
 
   // Search function
   const search = useEventCallback(

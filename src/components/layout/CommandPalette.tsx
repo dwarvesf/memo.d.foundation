@@ -15,6 +15,7 @@ import { IRecentPageStorageItem, ISearchResultItem } from '@/types';
 import CommandPaletteModal from './CommandPaletteModal';
 import { BookOpenIcon, PinIcon, CopyIcon } from 'lucide-react';
 import HotIcon from '../icons/HotIcon';
+import { slugifyPathComponents } from '@/lib/utils/slugify';
 
 const defaultSearchResult: SearchResult = {
   flat: [],
@@ -73,7 +74,12 @@ const CommandPalette: React.FC = () => {
     if (query) {
       const selected = result.grouped[selectedCategory]?.[selectedIndex];
       if (selected && selected.file_path) {
-        router.push(selected.file_path.toLowerCase().replace(/\.md$/, ''));
+        // Use the slugifyPathComponents function from backlinks.ts
+        const slugifiedPath = selected.file_path.endsWith('.md')
+          ? slugifyPathComponents(selected.file_path).slice(0, -3) // Remove .md extension
+          : slugifyPathComponents(selected.file_path);
+
+        router.push('/' + slugifiedPath);
         close();
       }
       return;
@@ -96,11 +102,24 @@ const CommandPalette: React.FC = () => {
         toast.success('Copied memo content!');
         close();
       } else {
-        router.push(selected.path);
+        // Use router.push with a more reliable approach to prevent tab closing
+        // Make sure path starts with '/' to ensure relative navigation
+        const path = selected.path.startsWith('/')
+          ? selected.path
+          : '/' + selected.path;
+        router.push(path);
         close();
       }
     }
-  }, [query, result.flat, selectedIndex, router, close]);
+  }, [
+    query,
+    result.grouped,
+    selectedCategory,
+    selectedIndex,
+    defaultResult.grouped,
+    router,
+    close,
+  ]);
 
   const scrollResultIntoView = useCallback((id?: string) => {
     if (!id) {
@@ -142,10 +161,11 @@ const CommandPalette: React.FC = () => {
     scrollResultIntoView(data[nextCategory][0]?.id);
   }, [
     query,
-    defaultResult,
-    result.flat.length,
+    defaultResult.grouped,
+    result.grouped,
     selectedIndex,
     selectedCategory,
+    scrollResultIntoView,
   ]);
 
   const navigatePrev = useCallback(() => {
@@ -173,10 +193,11 @@ const CommandPalette: React.FC = () => {
     scrollResultIntoView(data[prevCategory][data[prevCategory].length - 1]?.id);
   }, [
     query,
-    defaultResult,
-    result.flat.length,
+    defaultResult.grouped,
+    result.grouped,
     selectedIndex,
     selectedCategory,
+    scrollResultIntoView,
   ]);
 
   // Handle keyboard shortcuts and navigation
@@ -235,7 +256,8 @@ const CommandPalette: React.FC = () => {
     };
   }, [
     isOpen,
-    result.flat,
+    result.grouped,
+    selectedCategory,
     selectedIndex,
     router,
     toggleCommandPalette,
@@ -431,7 +453,7 @@ function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
     })),
     {
       id: 'hot',
-      title: 'What’s been hot lately',
+      title: "What's been hot lately",
       description: 'See featured posts',
       category: 'Welcome to Dwarves Memo',
       icon: <HotIcon className="stroke-primary" />,

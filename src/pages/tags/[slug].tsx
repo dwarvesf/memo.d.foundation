@@ -30,7 +30,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     if (memo.tags?.length) {
       memo.tags.forEach(tag => {
         if (tag) {
-          tags.add(tag);
+          // Store tags in lowercase and normalize the path
+          tags.add(tag.toLowerCase().replace(/\s+/g, '-'));
         }
       });
     }
@@ -54,20 +55,35 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const allMemos = await getAllMarkdownContents();
     const layoutProps = await getRootLayoutPageProps(allMemos);
 
-    const tag = slug;
-    if (!tag) {
+    const normalizedSlug = slug.toLowerCase();
+    if (!normalizedSlug) {
       return { notFound: true };
     }
+
+    // Find the original case of the tag
+    const originalTag =
+      allMemos
+        .find(memo =>
+          memo.tags?.some(
+            tag => tag?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug,
+          ),
+        )
+        ?.tags?.find(
+          tag => tag?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug,
+        ) || slug;
+
     const memos = filterMemo({
       data: allMemos,
-      filters: { tags: tag },
+      filters: { tags: originalTag },
       limit: null,
+      excludeContent: true,
     });
+
     return {
       props: {
         ...layoutProps,
         slug,
-        tag,
+        tag: originalTag, // Use the original case for display
         data: memos,
       },
     };
@@ -126,7 +142,7 @@ export default function TagDetailPage({
                       {memo.tags?.slice(0, 3).map(tag => (
                         <Link
                           key={tag}
-                          href={`/tags/${tag}`}
+                          href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
                           className="dark:bg-border hover:text-primary text-2xs rounded-[2.8px] bg-[#f9fafb] px-1.5 leading-[1.7] font-medium text-neutral-500 hover:underline"
                         >
                           {tag}
