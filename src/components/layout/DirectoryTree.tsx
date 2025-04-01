@@ -64,7 +64,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       <div
         key={path}
         className={cn('relative flex flex-col', {
-          "before:bg-border pl-2.5 before:absolute before:top-0 before:left-[7px] before:h-full before:w-[1px] before:content-['']":
+          "before:bg-border pl-3 before:absolute before:top-0 before:left-[7px] before:h-full before:w-[1px] before:content-['']":
             depth > 0,
           'before:bg-primary': isActive,
         })}
@@ -79,7 +79,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
             }
           }}
           className={cn(
-            'flex cursor-pointer items-center gap-1 p-1 text-left text-xs font-medium',
+            'flex cursor-pointer items-center gap-1 p-1.25 text-left text-xs leading-normal font-medium',
             {
               'text-muted-foreground pl-2': !hasChildren,
               'text-primary': isActive,
@@ -92,7 +92,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
               className={cn(
                 'stroke-muted-foreground transition-all duration-300 ease-in-out',
                 {
-                  '-rotate-90': isOpen,
+                  '-rotate-90': !isOpen,
                 },
               )}
             />

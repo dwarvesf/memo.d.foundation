@@ -68,7 +68,7 @@ const SubscriptionSection: React.FC = () => {
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="border-border dark:border-border dark:bg-background focus:border-primary min-w-[160px] flex-1 rounded-l-lg border px-4 py-3 text-sm transition-colors duration-200 ease-in-out outline-none placeholder:opacity-70"
+          className="border-border dark:border-border dark:bg-background focus:border-primary min-w-[160px] flex-1 rounded-l-lg border bg-white px-4 py-3 text-[13px] leading-4 transition-colors duration-200 ease-in-out outline-none placeholder:opacity-70"
           placeholder="Email Address"
           disabled={isSubmitting}
           required
@@ -76,7 +76,7 @@ const SubscriptionSection: React.FC = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`bg-primary hover:bg-primary/90 dark:hover:bg-primary/80 text-primary-foreground inline-flex w-[100px] cursor-pointer items-center justify-center rounded-r-lg border-none px-4 py-3 text-sm font-medium transition-all duration-200 ease-in-out disabled:cursor-not-allowed disabled:opacity-70 ${isSubmitting ? 'loading' : ''}`}
+          className={`bg-primary hover:bg-primary/90 dark:hover:bg-primary/80 text-primary-foreground inline-flex w-[100px] cursor-pointer items-center justify-center rounded-r-lg border-none px-4 py-3 text-sm text-[13px] leading-4 font-medium transition-all duration-200 ease-in-out disabled:cursor-not-allowed disabled:opacity-70 ${isSubmitting ? 'loading' : ''}`}
         >
           <span>Subscribe</span>
           <span

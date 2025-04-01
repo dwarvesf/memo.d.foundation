@@ -19,7 +19,7 @@ import type {
 import slugify from 'slugify';
 import { ITocItem } from '@/types';
 import rehypeHighlight from 'rehype-highlight';
-import { getContentPath } from './utils';
+import { getContentPath } from './paths';
 
 // Define interfaces for the AST nodes
 interface ImageNode {
@@ -283,6 +283,9 @@ export async function getMarkdownContent(filePath: string) {
 
 export function getMarkdownMetadata(slugPath: string) {
   const filePath = getContentPath(slugPath);
+  if (!fs.existsSync(filePath)) {
+    return {};
+  }
   const markdownContent = fs.readFileSync(filePath, 'utf-8');
   const { data: frontmatter } = matter(markdownContent);
   return frontmatter;

@@ -14,18 +14,14 @@ import SubscriptionSection from '../components/layout/SubscriptionSection';
 import {
   IBackLinkItem,
   IMetadata,
-  IMiniSearchIndex,
   ITocItem,
-  ITreeNode,
+  RootLayoutPageProps,
 } from '@/types';
-import { buildDirectorTree } from '@/lib/content/directoryTree';
 import UtterancComments from '@/components/layout/UtterancComments';
-import {
-  getSerializableSearchIndex,
-  initializeSearchIndex,
-} from '@/lib/content/search';
+import { getRootLayoutPageProps } from '@/lib/content/utils';
+import { getAllMarkdownContents } from '@/lib/content/memo';
 
-interface ContentPageProps {
+interface ContentPageProps extends RootLayoutPageProps {
   content: string;
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   frontmatter: Record<string, any>;
@@ -33,8 +29,6 @@ interface ContentPageProps {
   backlinks: IBackLinkItem[];
   tocItems?: ITocItem[];
   metadata?: IMetadata;
-  directoryTree?: Record<string, ITreeNode>;
-  searchIndex?: IMiniSearchIndex;
 }
 
 /**
@@ -63,12 +57,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
-    const contentDir = path.join(process.cwd(), 'public/content');
-    await initializeSearchIndex();
-    const searchIndex = getSerializableSearchIndex();
-    // Get directory tree for sidebar
-    const allPaths = getAllMarkdownFiles(contentDir);
-    const directoryTree = buildDirectorTree(allPaths);
+    const allMemos = await getAllMarkdownContents();
+    const layoutProps = await getRootLayoutPageProps(allMemos);
 
     // Try multiple file path options to support Hugo's _index.md convention
     let filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
@@ -120,14 +110,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
     return {
       props: {
+        ...layoutProps,
         content,
         frontmatter: JSON.parse(JSON.stringify(frontmatter)), // Ensure serializable
         slug,
         backlinks,
         tocItems,
         metadata,
-        directoryTree,
-        searchIndex,
       },
     };
   } catch (error) {

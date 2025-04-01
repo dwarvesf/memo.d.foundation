@@ -13,6 +13,7 @@ const UtteranceComments = () => {
     const utterancTheme = isDark ? 'github-dark' : 'github-light';
 
     const script = document.createElement('script');
+
     script.src = 'https://utteranc.es/client.js';
     script.setAttribute('repo', 'dwarvesf/memo-comments');
     script.setAttribute('issue-term', 'pathname');
@@ -24,8 +25,11 @@ const UtteranceComments = () => {
       utterancesLoaded.current = true;
     };
 
-    commentsRef.current.appendChild(script);
-
+    setTimeout(() => {
+      if (commentsRef.current && !commentsRef.current.hasChildNodes()) {
+        commentsRef.current.appendChild(script);
+      }
+    }, 0);
     return () => {
       // Clean up script if component unmounts before script loads
       if (!utterancesLoaded.current && script.parentNode) {
@@ -37,7 +41,6 @@ const UtteranceComments = () => {
   // Update theme when app theme changes
   useEffect(() => {
     if (!utterancesLoaded.current) return;
-
     const utterancTheme = isDark ? 'github-dark' : 'github-light';
     const utterancIframe =
       document.querySelector<HTMLIFrameElement>('.utterances-frame');
@@ -54,7 +57,7 @@ const UtteranceComments = () => {
   }, [isDark]);
 
   return (
-    <div ref={commentsRef}>
+    <div ref={commentsRef} className="relative">
       {/* Utterances will append the comments iframe here */}
     </div>
   );

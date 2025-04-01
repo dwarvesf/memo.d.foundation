@@ -46,6 +46,10 @@
   .table-container {
     @apply !mt-4 overflow-x-auto;
   }
+  .table-container > table {
+    @apply !my-0;
+  }
+
   .language-math {
     @apply block w-full !py-1 !text-[1.0625rem];
   }
@@ -54,5 +58,8 @@
   }
   .katex-display {
     @apply !my-0;
+  }
+  .prose :where(h2 + *):not(:where([class~='not-prose'])) {
+    @apply !mt-[var(--element-margin)];
   }
 }

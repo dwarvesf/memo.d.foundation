@@ -15,11 +15,17 @@ const config = {
       md: '768px',
       lg: '1024px',
       xl: '1280px',
-      '2xl': '1475px', // New custom breakpoint at 1475px
+      '2xl': '1500px', // New custom breakpoint at 1500px
       '3xl': '1600px',
     },
     extend: {
       colors: {
+        neutral: {
+          100: '#dededf',
+        },
+        black: {
+          secondary: '#23252c',
+        },
         // Using CSS variables for all colors to match with Hugo
         primary: {
           DEFAULT: 'var(--primary)',
@@ -90,6 +96,7 @@ const config = {
       },
       fontFamily: {
         sans: ['"Public Sans"', 'sans-serif'],
+        'ibm-sans': ['"IBM Plex Sans"', 'sans-serif'],
         serif: ['charter', 'Georgia', 'Cambria', 'serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
       },
@@ -256,7 +263,7 @@ const config = {
             'tr, th, td': {
               borderCollapse: 'collapse',
               borderSpacing: '0',
-              border: '1px solid var(--border-color-light)',
+              border: '1px solid var(--border)',
             },
             'th, td': {
               padding: '10px 12px',
@@ -288,6 +295,9 @@ const config = {
 
             'pre > code': {
               backgroundColor: 'transparent !important',
+            },
+            'thead th': {
+              backgroundColor: 'var(--secondary-background-color)',
             },
           },
         },

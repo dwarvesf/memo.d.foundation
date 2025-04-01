@@ -23,15 +23,15 @@ const Header: React.FC<HeaderProps> = ({
   readingMode,
 }) => {
   return (
-    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 top-0 h-[var(--header-height)] w-full shrink-0 font-sans backdrop-blur">
-      <div className="mx-auto flex h-full items-center justify-between p-2">
+    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 top-0 w-full shrink-0 font-sans backdrop-blur">
+      <div className="mx-auto flex h-full items-center justify-between px-5 py-2.5">
         <div className="flex items-center gap-2.5">
           {/* Mobile sidebar toggle button */}
           <button
             id="sidebar-toggle"
             onClick={toggleSidebar}
             aria-label="Toggle sidebar"
-            className="flex h-10 w-10 items-center justify-center focus:outline-none xl:hidden"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center focus:outline-none xl:hidden"
           >
             <svg
               width="20"
@@ -62,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({
           </Link>
         </div>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-3.5">
           {/* Command palette */}
           <CommandPalette />
           {/* Reading mode toggle */}
@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  className="flex w-12 cursor-pointer items-center justify-center border-0 bg-transparent outline-none hover:opacity-95 active:opacity-100 xl:w-14"
+                  className="flex cursor-pointer items-center justify-center border-0 bg-transparent px-1.5 outline-none hover:opacity-95 active:opacity-100"
                   onClick={toggleReadingMode}
                   aria-label="Toggle reading mode"
                   data-reading-mode={readingMode ? 'true' : 'false'}
@@ -146,7 +146,7 @@ const Header: React.FC<HeaderProps> = ({
                 className="!bg-secondary !text-secondary-foreground rounded-lg p-2 text-center text-xs font-medium shadow-md"
                 arrowClassName="!bg-secondary !fill-secondary"
               >
-                <span>Reading Mode</span>
+                <span className="!text-foreground-dark">Reading Mode</span>
                 <div className="mt-1 flex items-center gap-0.5 text-[8px]">
                   <kbd className="bg-muted flex items-center justify-center rounded border px-1 py-0.5">
                     ⌘/Ctrl

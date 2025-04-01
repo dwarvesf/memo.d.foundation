@@ -1,7 +1,16 @@
-import path from 'path';
+import { IMemoItem, RootLayoutPageProps } from '@/types';
+import { buildDirectorTree } from './directoryTree';
+import { initializeSearchIndex, getSerializableSearchIndex } from './search';
 
-export function getContentPath(slug: string) {
-  const contentDir = path.join(process.cwd(), 'public/content');
+export async function getRootLayoutPageProps(
+  allMemos: IMemoItem[],
+): Promise<RootLayoutPageProps> {
+  await initializeSearchIndex();
+  const searchIndex = getSerializableSearchIndex();
+  const directoryTree = buildDirectorTree(allMemos);
 
-  return path.join(contentDir, slug);
+  return {
+    directoryTree,
+    searchIndex,
+  };
 }

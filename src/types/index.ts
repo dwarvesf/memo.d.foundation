@@ -49,3 +49,24 @@ export interface ISearchResultItem {
   action?: string;
   index?: number;
 }
+
+export interface RootLayoutPageProps {
+  directoryTree?: Record<string, ITreeNode>;
+  searchIndex: IMiniSearchIndex | null;
+}
+
+export interface IMemoItem {
+  content: string;
+  title: string;
+  short_title?: string;
+  date: string;
+  description?: string;
+  authors?: string[];
+  tags?: string[];
+  draft?: boolean;
+  pinned?: boolean;
+  hiring?: boolean;
+
+  filePath: string;
+  slugArray: string[];
+}

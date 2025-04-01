@@ -351,12 +351,14 @@ const CommandPalette: React.FC = () => {
         </div>
         <div className="text-muted-foreground flex items-center gap-0.5 text-xs">
           <kbd
-            className="bg-background rounded border px-1.5 py-0.5"
+            className="dark:bg-border rounded bg-[#f9fafb] px-1.5 py-0.5"
             suppressHydrationWarning
           >
             {modifier}
           </kbd>
-          <kbd className="bg-background rounded border px-1.5 py-0.5">K</kbd>
+          <kbd className="dark:bg-border rounded bg-[#f9fafb] px-1.5 py-0.5">
+            K
+          </kbd>
         </div>
       </button>
 
