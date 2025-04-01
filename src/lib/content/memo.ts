@@ -25,7 +25,11 @@ export function getAllMarkdownContents(basePath = '') {
         title: result.data.title || slugArray[slugArray.length - 1],
         short_title: result.data.short_title || '',
         description: result.data.description || '',
-        tags: result.data.tags || [],
+        tags: Array.isArray(result.data.tags)
+          ? result.data.tags.filter(
+              tag => tag !== null && tag !== undefined && tag !== '',
+            )
+          : [],
         pinned: result.data.pinned || false,
         draft: result.data.draft || false,
         hiring: result.data.hiring || false,

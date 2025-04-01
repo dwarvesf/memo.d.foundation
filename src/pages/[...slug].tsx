@@ -116,7 +116,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       updated: frontmatter.lastmod?.toString() || null,
       author: frontmatter.authors?.[0] || '',
       coAuthors: frontmatter.authors?.slice(1) || [],
-      tags: frontmatter.tags || [],
+      tags: Array.isArray(frontmatter.tags)
+        ? frontmatter.tags.filter(
+            tag => tag !== null && tag !== undefined && tag !== '',
+          )
+        : [],
       folder: slug.slice(0, -1).join('/'),
       // Calculate reading time based on word count (average reading speed: 200 words per minute)
       wordCount: content.split(/\s+/).length ?? 0,
