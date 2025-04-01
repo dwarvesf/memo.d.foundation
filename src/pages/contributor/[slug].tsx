@@ -30,7 +30,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     if (memo.authors?.length) {
       memo.authors.forEach(contributor => {
         if (contributor) {
-          contributors.add(contributor);
+          // Store contributor names in lowercase to avoid case sensitivity issues
+          contributors.add(contributor.toLowerCase());
         }
       });
     }
@@ -58,17 +59,31 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     if (!contributor) {
       return { notFound: true };
     }
+
+    // Find the original case of the contributor name
+    const originalContributor =
+      allMemos
+        .find(memo =>
+          memo.authors?.some(
+            author => author?.toLowerCase() === contributor.toLowerCase(),
+          ),
+        )
+        ?.authors?.find(
+          author => author?.toLowerCase() === contributor.toLowerCase(),
+        ) || contributor;
+
     const memos = filterMemo({
       data: allMemos,
-      filters: { authors: contributor },
+      filters: { authors: originalContributor },
       limit: null,
       excludeContent: true,
     });
+
     return {
       props: {
         ...layoutProps,
         slug,
-        contributor,
+        contributor: originalContributor, // Use the original case for display
         data: memos,
       },
     };

@@ -48,7 +48,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const contentDir = path.join(process.cwd(), 'public/content');
 
   const paths = getAllMarkdownFiles(contentDir)
-    .filter(slugArray => !slugArray[0]?.startsWith('contributor'))
+    .filter(
+      slugArray => !slugArray[0]?.toLowerCase()?.startsWith('contributor'),
+    )
     .map(slugArray => ({
       params: { slug: slugArray },
     }));
