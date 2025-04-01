@@ -41,6 +41,16 @@ or through devbox:
 devbox run watch-run
 ```
 
+### Search Index
+
+The app uses client-side search with MiniSearch. To improve build performance and reduce page size, we generate a separate search index file during the build process:
+
+```sh
+pnpm run generate-search-index
+```
+
+This script creates a static JSON file at `public/content/search-index.json` that's loaded dynamically by the client when needed, instead of being included in every page's props.
+
 ## Code of conduct
 
 We expect all contributors to adhere to our [code of conduct](^15^), which is based on the [Contributor Covenant](https://www.contributor-covenant.org/). By participating in this project, you agree to abide by its terms. Please report any unacceptable behavior to [team@d.foundation](mailto:team@d.foundation).

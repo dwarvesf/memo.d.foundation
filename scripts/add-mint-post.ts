@@ -1,16 +1,19 @@
-import { ethers } from "ethers";
-import fs from "fs";
-import matter from "gray-matter";
-import yaml from "js-yaml";
+import { ethers } from 'ethers';
+import fs from 'fs';
+import matter from 'gray-matter';
+import yaml from 'js-yaml';
 
 /**
  * Extracts frontmatter data from a markdown file
  * @param {string} filePath - Path to the markdown file
  * @returns {Object} - The frontmatter data and content
  */
-function extractFrontmatter(filePath) {
+function extractFrontmatter(filePath: string): {
+  data: Record<string, unknown>;
+  content: string;
+} {
   try {
-    const fileContent = fs.readFileSync(filePath, "utf8");
+    const fileContent = fs.readFileSync(filePath, 'utf8');
     return matter(fileContent);
   } catch (error) {
     console.error(`Error reading frontmatter from ${filePath}:`, error);
@@ -23,7 +26,10 @@ function extractFrontmatter(filePath) {
  * @param {string} filePath - Path to the markdown file
  * @param {Object} newFrontmatter - New frontmatter data to merge with existing
  */
-function updateFrontmatter(filePath, newFrontmatter) {
+function updateFrontmatter(
+  filePath: string,
+  newFrontmatter: Record<string, unknown>,
+): void {
   try {
     // Get existing content with frontmatter
     const { data: existingFrontmatter, content } = extractFrontmatter(filePath);
@@ -48,9 +54,9 @@ function updateFrontmatter(filePath, newFrontmatter) {
  * Gets the current date in YYYY-MM-DD format
  * @returns {string} - Current date string
  */
-function getCurrentDate() {
+function getCurrentDate(): string {
   const now = new Date();
-  return now.toISOString().split("T")[0]; // YYYY-MM-DD format
+  return now.toISOString().split('T')[0]; // YYYY-MM-DD format
 }
 
 /**
@@ -59,7 +65,10 @@ function getCurrentDate() {
  * @param {ethers.Contract} contract - The contract instance
  * @returns {Promise<Object>} - Transaction receipt
  */
-async function processFile(filePath, contract) {
+async function processFile(
+  filePath: string,
+  contract: ethers.Contract,
+): Promise<unknown> {
   console.log(`Processing file: ${filePath}`);
 
   // Extract frontmatter data
@@ -74,7 +83,7 @@ async function processFile(filePath, contract) {
   // Check if already minted
   if (frontmatter.minted_at && frontmatter.token_id) {
     console.log(
-      `File ${filePath} already has minted_at (${frontmatter.minted_at}) and token_id (${frontmatter.token_id}), skipping...`
+      `File ${filePath} already has minted_at (${frontmatter.minted_at}) and token_id (${frontmatter.token_id}), skipping...`,
     );
     return;
   }
@@ -87,7 +96,7 @@ async function processFile(filePath, contract) {
     // This is optional and can be used to avoid unnecessary transactions
     try {
       const existingTokenId = await contract.getTokenId(arweaveTxId);
-      if (existingTokenId && existingTokenId.toString() !== "0") {
+      if (existingTokenId && existingTokenId.toString() !== '0') {
         console.log(`Token ID already exists: ${existingTokenId.toString()}`);
 
         // Update frontmatter with minted_at and token_id
@@ -102,7 +111,8 @@ async function processFile(filePath, contract) {
     } catch (error) {
       // getTokenId might not exist or fail, proceed with creating new token
       console.log(
-        "Could not check existing token ID, proceeding with creation"
+        'Could not check existing token ID, proceeding with creation: ',
+        error,
       );
     }
 
@@ -111,7 +121,7 @@ async function processFile(filePath, contract) {
     const tx = await contract.createTokenType(arweaveTxId);
 
     console.log(`Transaction submitted: ${tx.hash}`);
-    console.log("Waiting for confirmation...");
+    console.log('Waiting for confirmation...');
 
     // Wait for the transaction to be mined
     const receipt = await tx.wait();
@@ -126,7 +136,7 @@ async function processFile(filePath, contract) {
     // First try to get tokenId from the event
     try {
       const tokenTypeCreatedEvent = receipt.events?.find(
-        (event) => event.event === "TokenTypeCreated"
+        (event: { event: string }) => event.event === 'TokenTypeCreated',
       );
 
       if (tokenTypeCreatedEvent && tokenTypeCreatedEvent.args) {
@@ -135,7 +145,8 @@ async function processFile(filePath, contract) {
       }
     } catch (error) {
       console.log(
-        "Could not extract token ID from event, will try other methods"
+        'Could not extract token ID from event, will try other methods: ',
+        error,
       );
     }
 
@@ -147,7 +158,7 @@ async function processFile(filePath, contract) {
         tokenId = tokenId.toString();
         console.log(`Token ID from getTokenId: ${tokenId}`);
       } catch (error) {
-        console.log("Could not get token ID from getTokenId function");
+        console.log('Could not get token ID from getTokenId function: ', error);
       }
     }
 
@@ -187,12 +198,12 @@ async function main() {
     // Get command line arguments (file paths)
     const filePaths = process.argv[2]
       .trim()
-      .split(",")
+      .split(',')
       .filter(Boolean)
-      .map((path) => `vault/${path}`);
+      .map(path => `vault/${path}`);
 
     if (filePaths.length === 0) {
-      console.log("No files to process");
+      console.log('No files to process');
       return;
     }
 
@@ -200,19 +211,19 @@ async function main() {
     const privateKey = process.env.WALLET_PRIVATE_KEY;
 
     if (!privateKey) {
-      throw new Error("Private key is not set in environment variables");
+      throw new Error('Private key is not set in environment variables');
     }
 
     // Contract address - replace with your actual contract address
     const contractAddress =
-      process.env.CONTRACT_ADDRESS || "0xYourContractAddressHere";
+      process.env.CONTRACT_ADDRESS || '0xYourContractAddressHere';
 
     // RPC URL - replace with your preferred provider
     const rpcUrl =
-      process.env.RPC_URL || "https://ethereum-mainnet-rpc.allthatnode.com";
+      process.env.RPC_URL || 'https://ethereum-mainnet-rpc.allthatnode.com';
 
     // Connect to the Ethereum network
-    const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
 
     // Create a wallet from the private key
     const wallet = new ethers.Wallet(privateKey, provider);
@@ -222,40 +233,40 @@ async function main() {
       {
         inputs: [
           {
-            internalType: "string",
-            name: "arweaveTxId",
-            type: "string",
+            internalType: 'string',
+            name: 'arweaveTxId',
+            type: 'string',
           },
         ],
-        name: "createTokenType",
+        name: 'createTokenType',
         outputs: [
           {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256',
           },
         ],
-        stateMutability: "nonpayable",
-        type: "function",
+        stateMutability: 'nonpayable',
+        type: 'function',
       },
       {
         inputs: [
           {
-            internalType: "string",
-            name: "arweaveTxId",
-            type: "string",
+            internalType: 'string',
+            name: 'arweaveTxId',
+            type: 'string',
           },
         ],
-        name: "getTokenId",
+        name: 'getTokenId',
         outputs: [
           {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256',
           },
         ],
-        stateMutability: "view",
-        type: "function",
+        stateMutability: 'view',
+        type: 'function',
       },
       // Event for TokenTypeCreated
       {
@@ -263,19 +274,19 @@ async function main() {
         inputs: [
           {
             indexed: true,
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'tokenId',
+            type: 'uint256',
           },
           {
             indexed: false,
-            internalType: "string",
-            name: "arweaveTxId",
-            type: "string",
+            internalType: 'string',
+            name: 'arweaveTxId',
+            type: 'string',
           },
         ],
-        name: "TokenTypeCreated",
-        type: "event",
+        name: 'TokenTypeCreated',
+        type: 'event',
       },
     ];
 
@@ -287,9 +298,9 @@ async function main() {
       await processFile(filePath, contract);
     }
 
-    console.log("All files processed successfully");
+    console.log('All files processed successfully');
   } catch (error) {
-    console.error("Error:", error);
+    console.error('Error:', error);
     process.exit(1);
   }
 }
@@ -297,10 +308,10 @@ async function main() {
 // Execute the function
 main()
   .then(() => {
-    console.log("Function executed successfully");
+    console.log('Function executed successfully');
     process.exit(0);
   })
-  .catch((error) => {
-    console.error("Error in main execution:", error);
+  .catch(error => {
+    console.error('Error in main execution:', error);
     process.exit(1);
   });

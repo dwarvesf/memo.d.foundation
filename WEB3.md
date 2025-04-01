@@ -19,9 +19,9 @@ The process of converting an article into a mintable NFT involves several automa
 2. To prepare for permanent storage, add the following field to the frontmatter, commit and push to the remote repo:
    ```yaml
    ---
-   title: "Your Article Title"
-   description: "Brief description of the article"
-   author: "Author Name"
+   title: 'Your Article Title'
+   description: 'Brief description of the article'
+   author: 'Author Name'
    should_deploy_perma_storage: true
    ---
    ```
@@ -73,12 +73,14 @@ Once the article is stored on Arweave and registered in the NFT contract, reader
 ### Permanent Decentralized Storage
 
 **Arweave Protocol**
+
 - Provides truly permanent data storage through a novel blockchain-like structure
 - Each article and its associated images are stored as separate transactions
 - Uses a one-time payment model for perpetual storage
 - Content accessible via `https://{TRANSACTION_ID}.arweave.net`
 
 **Implementation**
+
 - Articles and images are uploaded via the Arweave JavaScript SDK
 - Transaction IDs are stored in the article frontmatter
 - Content hashing ensures data integrity
@@ -86,12 +88,14 @@ Once the article is stored on Arweave and registered in the NFT contract, reader
 ### NFT Contract on Base
 
 **Base Blockchain**
+
 - Ethereum L2 scaling solution by Coinbase
 - EVM-compatible smart contracts for NFT minting
 - Low gas fees ideal for frequent minting operations
 - Mainnet for production, Sepolia testnet for development
 
 **NFT Contract Features**
+
 - ERC-1155 multi-token standard for efficient minting
 - On-chain storage of content reference (Arweave links)
 - Token IDs mapped to specific articles
@@ -100,12 +104,14 @@ Once the article is stored on Arweave and registered in the NFT contract, reader
 ### Frontend Integration
 
 **Wallet Connection**
+
 - EIP-6963 compliant wallet detection and connection
 - Support for MetaMask, Rainbow, Coinbase Wallet, and Rabby
 - Chain validation and network switching support
 - Real-time connection state management
 
 **Minting Interface**
+
 - One-click minting for authenticated users
 - Shows current minting status and collector counts
 - Token previews with author attribution
@@ -137,11 +143,13 @@ This repository uses GitHub Actions to automate the web3 integration process:
 2. `add-mint-post.yml`: Manages NFT contract integration
 
 Both workflows are triggered on:
+
 - Manual dispatch via GitHub interface
 - Pushes to the `main` branch that modify the content database
 
 For detailed technical implementation, refer to the code in:
+
 - `assets/js/eip6963.js` - Wallet connection logic
 - `assets/js/mint-entry.js` - NFT minting interface
 - `scripts/deploy-arweave.ts` - Arweave upload logic
-- `scripts/add-mint-post.ts` - NFT contract integration 
+- `scripts/add-mint-post.ts` - NFT contract integration

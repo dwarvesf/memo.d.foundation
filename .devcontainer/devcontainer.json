@@ -1,0 +1,48 @@
+{
+  "name": "Devbox Remote Container",
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": ".."
+  },
+  "runArgs": [
+    "--shm-size=1g"
+  ],
+  "customizations": {
+    "vscode": {
+      // Set *default* container specific settings.json values on container create.
+      "settings": {
+        "devbox.autoShellOnTerminal": false
+      },
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "jetpack-io.devbox",
+        "bierner.color-info",
+        "adrianwilczynski.alpine-js-intellisense",
+        "shd101wyy.markdown-preview-enhanced",
+        "JakeBecker.elixir-ls",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  },
+  // Use 'features' to configure features.
+  "features": {
+    // add desktop-lite to allow Obsidian GUI over VNC web & desktop
+    // https://github.com/devcontainers/features/tree/main/src/desktop-lite
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    1313,
+    6080,
+    5901
+  ],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "make setup",
+  // Use 'postStartCommand' to run commands after the container starts.
+  "postStartCommand": {
+    "safeDir": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+    "initSubmodules": "git submodule update --init --remote --recursive"
+  },
+  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "devbox"
+}

@@ -23,9 +23,8 @@ go.work
 # hugo dev-related files
 resources
 .hugo_build.lock
-public/*
-!public/CNAME
 content/
+!src/lib/content/
 
 # MacOS files
 .DS_Store
@@ -46,16 +45,16 @@ vault.duckdb*
 *.vtt
 
 # The directory Mix will write compiled artifacts to.
-/_build/
+**/_build/
 
 # If you run "mix test --cover", coverage assets end up here.
-/cover/
+**/cover/
 
 # The directory Mix downloads your dependencies sources to.
-/deps/
+**/deps/
 
 # Where third-party dependencies like ExDoc output generated docs.
-/doc/
+**/doc/
 
 # Ignore .fetch files in case you like to edit your project deps locally.
 /.fetch
@@ -73,16 +72,27 @@ memo-*.tar
 /tmp/
 
 # Build artifacts and logs from elixir-ls
-/.elixir_ls/
+**/.elixir_ls/
 
 # Devbox artifacts
 /.devbox/
 .aider*
 
-# mint-related
-node_modules/
+# node_modules
+node_modules
 package-lock.json
 package.json
+
+# next.js build
+.next
+out
+public/content
+
+# cache
+.memo_export_cache.json
+.submodule_update_cache
+
+# mint-related
 wallet.json
 duckdb
 duckdb_*.zip

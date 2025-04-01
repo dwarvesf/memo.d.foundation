@@ -1,17 +1,19 @@
-import Arweave from "arweave";
-import fs from "fs";
-import matter from "gray-matter";
-import crypto from "crypto";
-import yaml from "js-yaml";
-import { resolve } from "path";
+// Add proper ts-expect-error for Arweave import
+// @ts-expect-error No type definitions available for arweave
+import Arweave from 'arweave';
+import fs from 'fs';
+import matter from 'gray-matter';
+import crypto from 'crypto';
+import yaml from 'js-yaml';
+import { resolve } from 'path';
 
-const DEFAULT_IMAGE = "ar://29D_NrcYOiOLMPVROGt5v3URNxftYCDK7z1-kyNPRT0";
+const DEFAULT_IMAGE = 'ar://29D_NrcYOiOLMPVROGt5v3URNxftYCDK7z1-kyNPRT0';
 
 // Initialize Arweave
 const arweave = Arweave.init({
-  host: "arweave.net",
+  host: 'arweave.net',
   port: 443,
-  protocol: "https",
+  protocol: 'https',
 });
 
 // TypeScript interfaces
@@ -24,9 +26,16 @@ interface OutputResult extends DeploymentResult {
   file: string;
 }
 
+// Define a proper type for the response object
+interface ArweaveResponse {
+  status: number;
+  statusText?: string;
+  data?: unknown;
+}
+
 // Generate content digest
 function generateDigest(content: string): string {
-  return crypto.createHash("sha256").update(content).digest("hex");
+  return crypto.createHash('sha256').update(content).digest('hex');
 }
 
 // Extract the first image from markdown content
@@ -36,7 +45,7 @@ function extractFirstImage(content: string): string | null {
   // Match HTML image tags: <img src="image-url" />
   const htmlImageRegex = /<img.*?src=["'](.*?)["'].*?>/;
 
-  let match =
+  const match =
     content.match(markdownImageRegex) || content.match(htmlImageRegex);
 
   if (match && match[1]) {
@@ -50,24 +59,24 @@ function extractFirstImage(content: string): string | null {
 // Check if the path is a URL
 function isURL(path: string): boolean {
   return (
-    path.startsWith("http://") ||
-    path.startsWith("https://") ||
-    path.startsWith("ar://")
+    path.startsWith('http://') ||
+    path.startsWith('https://') ||
+    path.startsWith('ar://')
   );
 }
 
-// Resolve a relative path by prefixing it with "vault" and handling double slashes
-function resolvePath(filePath, path: string): string {
+// Add type for filePath parameter
+function resolvePath(filePath: string, path: string): string {
   if (isURL(path)) {
     return path;
   }
 
   // Remove leading slash if present
-  let cleanPath = path.startsWith("/") ? path.substring(1) : path;
-  cleanPath = resolve(filePath.split("/").slice(0, -1).join("/"), cleanPath);
+  let cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  cleanPath = resolve(filePath.split('/').slice(0, -1).join('/'), cleanPath);
 
   // Prefix with "vault" and normalize any double slashes
-  const resolvedPath = cleanPath.replace(/\/+/g, "/");
+  const resolvedPath = cleanPath.replace(/\/+/g, '/');
 
   return resolvedPath;
 }
@@ -75,17 +84,17 @@ function resolvePath(filePath, path: string): string {
 // Upload image to Arweave
 async function uploadImageToArweave(
   walletPath: string,
-  imagePath: string
+  imagePath: string,
 ): Promise<string | null> {
   try {
     // Skip if already an Arweave URL
-    if (imagePath.startsWith("ar://")) {
+    if (imagePath.startsWith('ar://')) {
       return imagePath;
     }
 
     // Load wallet from file
     const wallet = JSON.parse(
-      fs.readFileSync(walletPath, { encoding: "utf8" })
+      fs.readFileSync(walletPath, { encoding: 'utf8' }),
     );
 
     // Read the image file
@@ -98,28 +107,29 @@ async function uploadImageToArweave(
     }
 
     // Determine the content type based on file extension
-    const extension = imagePath.split(".").pop()?.toLowerCase();
-    let contentType = "image/jpeg"; // Default
+    const extension = imagePath.split('.').pop()?.toLowerCase();
+    let contentType = 'image/jpeg'; // Default
 
-    if (extension === "png") contentType = "image/png";
-    else if (extension === "gif") contentType = "image/gif";
-    else if (extension === "svg") contentType = "image/svg+xml";
-    else if (extension === "webp") contentType = "image/webp";
+    if (extension === 'png') contentType = 'image/png';
+    else if (extension === 'gif') contentType = 'image/gif';
+    else if (extension === 'svg') contentType = 'image/svg+xml';
+    else if (extension === 'webp') contentType = 'image/webp';
 
     // Create transaction for the image
     const transaction = await arweave.createTransaction(
       { data: imageData },
-      wallet
+      wallet,
     );
 
     // Add content type tag
-    transaction.addTag("Content-Type", contentType);
+    transaction.addTag('Content-Type', contentType);
 
     // Sign transaction
     await arweave.transactions.sign(transaction, wallet);
 
     // Submit transaction
-    const response = await arweave.transactions.post(transaction);
+    const response: ArweaveResponse =
+      await arweave.transactions.post(transaction);
 
     if (response.status === 200 || response.status === 202) {
       return `ar://${transaction.id}`;
@@ -128,7 +138,7 @@ async function uploadImageToArweave(
       return null;
     }
   } catch (error) {
-    console.error("Error uploading image to Arweave:", error);
+    console.error('Error uploading image to Arweave:', error);
     return null;
   }
 }
@@ -139,12 +149,12 @@ async function deployContent(
   content: string,
   title: string,
   description: string,
-  authors: string[]
+  authors: string[],
 ): Promise<DeploymentResult> {
   try {
     // Load wallet from file
     const wallet = JSON.parse(
-      fs.readFileSync(walletPath, { encoding: "utf8" })
+      fs.readFileSync(walletPath, { encoding: 'utf8' }),
     );
 
     // Generate digest
@@ -158,7 +168,7 @@ async function deployContent(
       const resolvedPath = resolvePath(filePath, imagePath);
       const uploadedImageUrl = await uploadImageToArweave(
         walletPath,
-        resolvedPath
+        resolvedPath,
       );
 
       if (uploadedImageUrl) {
@@ -170,7 +180,7 @@ async function deployContent(
     const payload = {
       content: content,
       timestamp: Date.now(),
-      type: "article",
+      type: 'article',
       name: title,
       description: description,
       image: imageUrl,
@@ -184,16 +194,17 @@ async function deployContent(
     const transaction = await arweave.createTransaction({ data }, wallet);
 
     // Add standard content type tag
-    transaction.addTag("Content-Type", "application/json");
+    transaction.addTag('Content-Type', 'application/json');
 
     // Add additional tags
-    transaction.addTag("digest", digest);
+    transaction.addTag('digest', digest);
 
     // Sign transaction
     await arweave.transactions.sign(transaction, wallet);
 
     // Submit transaction
-    const response = await arweave.transactions.post(transaction);
+    const response: ArweaveResponse =
+      await arweave.transactions.post(transaction);
 
     if (response.status === 200 || response.status === 202) {
       return {
@@ -210,10 +221,10 @@ async function deployContent(
 
 async function processFile(
   filePath: string,
-  walletPath: string
+  walletPath: string,
 ): Promise<OutputResult | null> {
   // Read the file
-  const fileContent = fs.readFileSync(filePath, "utf8");
+  const fileContent = fs.readFileSync(filePath, 'utf8');
 
   // Parse frontmatter
   const { data, content } = matter(fileContent);
@@ -224,13 +235,13 @@ async function processFile(
   }
 
   // Extract needed data
-  const title = data.title || "Untitled";
-  const description = data.description || "";
+  const title = data.title || 'Untitled';
+  const description = data.description || '';
   const authors = data.author
     ? [data.author]
     : data.authors
-    ? data.authors
-    : ["Anonymous"];
+      ? data.authors
+      : ['Anonymous'];
 
   const result = await deployContent(
     walletPath,
@@ -238,7 +249,7 @@ async function processFile(
     content,
     title,
     description,
-    authors
+    authors,
   );
 
   // Update the file with the Arweave ID
@@ -259,11 +270,15 @@ async function processFile(
 
 // Main execution
 async function main() {
-  const filePaths = process.argv[2].trim().split(",").filter(Boolean).map((path) => `vault/${path}`)
-  const walletPath = "./wallet.json";
+  const filePaths = process.argv[2]
+    .trim()
+    .split(',')
+    .filter(Boolean)
+    .map(path => `vault/${path}`);
+  const walletPath = './wallet.json';
 
   if (filePaths.length === 0) {
-    console.log("No files to process");
+    console.log('No files to process');
     return;
   }
 
@@ -275,15 +290,17 @@ async function main() {
       if (result) {
         results.push(result);
       }
-    } catch (error: any) {
-      console.error(`Error processing ${filePath}:`, error.message);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error(`Error processing ${filePath}:`, errorMessage);
     }
   }
 
-  console.log("::set-output name=deployments::" + JSON.stringify(results));
+  console.log('::set-output name=deployments::' + JSON.stringify(results));
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error(error);
   process.exit(1);
 });
