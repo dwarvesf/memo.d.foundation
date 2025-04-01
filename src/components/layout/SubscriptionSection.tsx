@@ -54,7 +54,7 @@ const SubscriptionSection: React.FC = () => {
   };
 
   return (
-    <section className="bg-background-secondary dark:bg-secondary-background my-8 flex flex-col items-center justify-between rounded-lg p-6 xl:flex-row xl:items-center">
+    <section className="bg-background-secondary dark:bg-secondary-background my-8 flex flex-col items-center justify-between gap-4 rounded-lg p-6 xl:flex-row xl:items-center">
       <div>
         <h6 className="m-0 mb-1.5 text-sm leading-5 font-medium">
           Subscribe to Dwarves Memo

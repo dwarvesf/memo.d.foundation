@@ -40,13 +40,13 @@ const TagsPage = (props: RootLayoutPageProps) => {
                 <h1 className="text-2xl font-bold">#Tags</h1>
               </li>
               {tags.map(([path, node]) => (
-                <li key={path} className="text-lg">
+                <li key={path} className="flex items-center gap-1 text-lg">
                   <Link
                     href={path}
-                    className="hover:text-primary hover:decoration-primary dark:hover:text-primary text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
+                    className="hover:text-primary hover:decoration-primary dark:hover:text-primary line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
                   >
-                    {node.label}
-                  </Link>{' '}
+                    {node.label}{' '}
+                  </Link>
                   ({node.count})
                 </li>
               ))}

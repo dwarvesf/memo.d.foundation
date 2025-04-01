@@ -53,7 +53,7 @@ const Contributor = (
                 <li key={contributor} className="text-lg">
                   <Link
                     href={`/contributor/${contributor}`}
-                    className="hover:text-primary hover:decoration-primary dark:hover:text-primary text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
+                    className="hover:text-primary hover:decoration-primary dark:hover:text-primary line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
                   >
                     {contributor}
                   </Link>

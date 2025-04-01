@@ -118,7 +118,7 @@ export default function TagDetailPage({
                   >
                     <Link
                       href={formatMemoPath(memo.filePath)}
-                      className="shink-0 hover:text-primary truncate transition-all duration-150 hover:underline"
+                      className="hover:text-primary line-clamp-3 shrink-0 transition-all duration-150 hover:underline"
                     >
                       {memo.title}
                     </Link>
