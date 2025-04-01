@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && npm run generate-rss",
+    "build": "node scripts/generate-search-index.js && next build && pnpm run generate-rss",
     "start": "next start",
     "lint": "next lint",
     "deploy": "gh-pages -d out",
     "format": "prettier --write ./src",
     "prepare": "husky",
     "lint-staged": "lint-staged",
-    "generate-rss": "node scripts/generate-rss.js"
+    "generate-rss": "node scripts/generate-rss.js",
+    "generate-search-index": "node scripts/generate-search-index.js"
   },
   "type": "module",
   "homepage": "https://memo.d.foundation/",

@@ -21,6 +21,7 @@ build:
 
 run:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../public/content")'
+	@pnpm run generate-search-index
 	@pnpm run dev
 
 duckdb-export:

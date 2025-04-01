@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   output: 'export',
@@ -7,9 +7,12 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   reactStrictMode: true,
-}
+  experimental: {
+    largePageDataBytes: 1024 * 1024,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
 
 // Merge MDX config with Next.js config
-export default nextConfig
+export default nextConfig;
