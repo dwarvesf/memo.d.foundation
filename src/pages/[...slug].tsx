@@ -13,6 +13,7 @@ import { RootLayout, ContentLayout } from '../components';
 import SubscriptionSection from '../components/layout/SubscriptionSection';
 import {
   IBackLinkItem,
+  IMemoItem,
   IMetadata,
   ITocItem,
   RootLayoutPageProps,
@@ -20,15 +21,20 @@ import {
 import UtterancComments from '@/components/layout/UtterancComments';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { getAllMarkdownContents } from '@/lib/content/memo';
+import Link from 'next/link';
+import { formatMemoPath } from '@/components/memo/utils';
+import { slugToTitle } from '@/lib/utils';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content: string;
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  frontmatter: Record<string, any>;
+  frontmatter?: Record<string, any>;
   slug: string[];
-  backlinks: IBackLinkItem[];
+  backlinks?: IBackLinkItem[];
   tocItems?: ITocItem[];
   metadata?: IMetadata;
+  isListPage?: boolean;
+  childMemos?: IMemoItem[];
 }
 
 /**
@@ -77,12 +83,23 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         ...slug,
         'readme.md',
       );
+      const directoryPath = path.join(process.cwd(), 'public/content', ...slug);
 
       if (fs.existsSync(readmeFilePath)) {
         // Prioritize readme.md if it exists
         filePath = readmeFilePath;
       } else if (fs.existsSync(indexFilePath)) {
         filePath = indexFilePath;
+      } else if (fs.existsSync(directoryPath)) {
+        const allMemos = await getAllMarkdownContents(slug.join('/'));
+        return {
+          props: {
+            ...layoutProps,
+            slug,
+            childMemos: allMemos,
+            isListPage: true,
+          },
+        };
       } else {
         return { notFound: true };
       }
@@ -117,6 +134,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         backlinks,
         tocItems,
         metadata,
+        isListPage: false,
       },
     };
   } catch (error) {
@@ -134,14 +152,45 @@ export default function ContentPage({
   metadata,
   directoryTree,
   searchIndex,
+  isListPage,
+  childMemos,
 }: ContentPageProps) {
   // Format metadata for display
 
   // Don't show subscription for certain pages
   const shouldShowSubscription =
-    !frontmatter.hide_subscription &&
+    !frontmatter?.hide_subscription &&
     !['home', 'tags', 'contributor'].some(path => slug.includes(path));
-
+  if (isListPage || !frontmatter) {
+    const title = slug.map(slugToTitle).join(' > ');
+    return (
+      <RootLayout
+        title={title}
+        searchIndex={searchIndex}
+        directoryTree={directoryTree}
+      >
+        <div className="flex items-center justify-center">
+          {childMemos && (
+            <div className="flex w-fit flex-col gap-4">
+              <h1 className="text-2xl font-bold">{title}</h1>
+              <ul className="list-disc pl-5">
+                {childMemos.map(memo => (
+                  <li key={memo.filePath} className="text-lg">
+                    <Link
+                      href={formatMemoPath(memo.filePath)}
+                      className="hover:text-primary hover:decoration-primary dark:hover:text-primary line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
+                    >
+                      {memo.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </RootLayout>
+    );
+  }
   return (
     <RootLayout
       title={frontmatter.title || 'Dwarves Memo'}

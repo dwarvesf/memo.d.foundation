@@ -6,13 +6,13 @@
     'toc-space content right-sidebar toc';
   grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
   grid-template-columns:
-    0 minmax(600px, var(--container-max-width)) minmax(200px, 280px),
+    0 minmax(600px var(--container-max-width)) minmax(200px, 280px),
     0;
   column-gap: var(--column-gap);
   justify-content: center;
   @variant reading {
     column-gap: 0;
-    grid-template-columns: 0 minmax(600px, var(--container-max-width)) 0 0;
+    grid-template-columns: 0 minmax(600px var(--container-max-width)) 0 0;
   }
 }
 
@@ -21,6 +21,7 @@
 }
 .main-content {
   grid-area: content;
+  width: var(--container-max-width);
 }
 
 @media (max-width: 1280px) {
@@ -33,6 +34,9 @@
     grid-template-rows: repeat(auto-fill, minmax(0px, 1fr));
     grid-template-columns: 0 1fr 0;
     column-gap: 0;
+  }
+  .main-content {
+    width: 100%;
   }
 }
 

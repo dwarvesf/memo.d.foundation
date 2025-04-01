@@ -4,10 +4,10 @@ import { getAllMarkdownFiles, getContentPath } from './paths';
 import path from 'path';
 import { IMemoItem } from '@/types';
 
-export function getAllMarkdownContents() {
-  const contentDir = getContentPath('');
+export function getAllMarkdownContents(basePath = '') {
+  const contentDir = getContentPath(basePath);
   const allPaths = getAllMarkdownFiles(contentDir);
-
+  const baseSlugArray = basePath.split('/').filter(Boolean);
   return allPaths
     .map(slugArray => {
       const filePath = path.join(contentDir, ...slugArray) + '.md';
@@ -31,8 +31,8 @@ export function getAllMarkdownContents() {
         hiring: result.data.hiring || false,
         authors: result.data.authors || [],
         date: result.data.date?.toString(),
-        filePath: path.join(...slugArray) + '.md',
-        slugArray: slugArray,
+        filePath: path.join(basePath, ...slugArray) + '.md',
+        slugArray: [...baseSlugArray, ...slugArray],
       };
       return item;
     })
@@ -41,9 +41,7 @@ export function getAllMarkdownContents() {
 
 interface FilterMemoProps {
   data: IMemoItem[];
-  filters?: { tags?: string } & {
-    hiring?: boolean;
-  };
+  filters?: { tags?: string; hiring?: boolean; authors?: string };
   sortBy?: keyof IMemoItem;
   sortOrder?: 'asc' | 'desc';
   limit?: number | null;
@@ -82,8 +80,16 @@ export function filterMemo(props: FilterMemoProps) {
             !memo.tags?.some(tag => tag && tag.includes(value as string))
           );
         }
+        if (key === 'authors') {
+          return (
+            !memo.authors?.length ||
+            !memo.authors?.some(
+              author => author && author.includes(value as string),
+            )
+          );
+        }
 
-        return memo.hiring !== value;
+        return memo[key as keyof IMemoItem] !== value;
       });
     if (invalid) {
       continue;

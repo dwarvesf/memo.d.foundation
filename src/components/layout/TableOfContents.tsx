@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { ITocItem } from '@/types';
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
 interface TableOfContentsProps {
@@ -24,7 +25,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
             key={item.id}
             className="flex h-full list-none flex-col items-end gap-3 pl-0 text-right"
           >
-            <a
+            <Link
               href={`#${item.id}`}
               style={{ width: `${getIndicatorWidth(item.depth)}px` }}
               className={cn('bg-border flex h-0.5 text-transparent', {
@@ -40,7 +41,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               }}
             >
               {item.value}
-            </a>
+            </Link>
             {item.children &&
               item.children.length > 0 &&
               renderTocIndicators(item.children)}
@@ -54,7 +55,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
       <ul className="flex h-full list-none flex-col items-end pl-0">
         {items.map(item => (
           <li key={item.id} className="w-full leading-6">
-            <a
+            <Link
               href={`#${item.id}`}
               className={cn(
                 'text-foreground flex rounded-lg p-1 text-[13px] leading-4 transition-all duration-150',
@@ -77,7 +78,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               }}
             >
               {item.value}
-            </a>
+            </Link>
             {item.children &&
               item.children.length > 0 &&
               renderTocModalItems(item.children)}
