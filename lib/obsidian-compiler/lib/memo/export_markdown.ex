@@ -559,6 +559,7 @@ defmodule Memo.ExportMarkdown do
     title: Contributors
     ---
     """
+
     index_path = Path.join(contributor_dir, "_index.md")
     File.write!(index_path, index_content)
     IO.puts("Generated contributor _index.md: #{index_path}")
@@ -584,32 +585,35 @@ defmodule Memo.ExportMarkdown do
     case DuckDBUtils.execute_query_temp(query) do
       {:ok, result} ->
         # Handle different result formats - could be a list of maps or a struct with rows
-        authors = cond do
-          is_list(result) && Enum.all?(result, &is_map/1) ->
-            # Format is list of maps with author_name key
-            result
-            |> Enum.map(fn map -> Map.get(map, "author_name") end)
-            |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
+        authors =
+          cond do
+            is_list(result) && Enum.all?(result, &is_map/1) ->
+              # Format is list of maps with author_name key
+              result
+              |> Enum.map(fn map -> Map.get(map, "author_name") end)
+              |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
 
-          is_map(result) && Map.has_key?(result, :rows) ->
-            # Format is struct with rows field
-            result.rows
-            |> Enum.map(fn [author_name] -> author_name end)
-            |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
+            is_map(result) && Map.has_key?(result, :rows) ->
+              # Format is struct with rows field
+              result.rows
+              |> Enum.map(fn [author_name] -> author_name end)
+              |> Enum.filter(fn name -> name != nil && String.trim(name) != "" end)
 
-          true ->
-            IO.puts("Unexpected DuckDB result format: #{inspect(result)}")
-            []
-        end
+            true ->
+              IO.puts("Unexpected DuckDB result format: #{inspect(result)}")
+              []
+          end
 
         # Create a file for each author
         Enum.each(authors, fn author_name ->
           slug = Slugify.slugify(author_name)
+
           file_content = """
           ---
           title: #{author_name}
           ---
           """
+
           file_path = Path.join(contributor_dir, "#{slug}.md")
           File.write!(file_path, file_content)
           IO.puts("Generated contributor file: #{file_path}")

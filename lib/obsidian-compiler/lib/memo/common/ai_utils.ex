@@ -137,14 +137,16 @@ defmodule Memo.Common.AIUtils do
         %{"embedding" => embedding, "total_tokens" => total_tokens}
       end)
     else
-      _ -> []
+      error ->
+        IO.puts("Error fetching Jina embeddings: #{inspect(error)}")
+        [%{"embedding" => List.duplicate(0, 1024), "total_tokens" => 0}]
     end
   end
 
   defp fetch_jina_embeddings(prompt) when is_binary(prompt) do
     case fetch_jina_embeddings([prompt]) do
       [embedding_map] -> embedding_map
-      _ -> %{"embedding" => [], "total_tokens" => 0}
+      _ -> %{"embedding" => List.duplicate(0, 1024), "total_tokens" => 0}
     end
   end
 end

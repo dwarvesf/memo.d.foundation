@@ -418,14 +418,46 @@ defmodule Memo.ExportDuckDB do
   defp default_transform_value(_value), do: "NULL"
 
   defp serialize_array(array) when is_list(array) do
-    "[#{Enum.join(array, ", ")}]"
+    if Enum.empty?(array) do
+      # If the array is empty, determine if it should be OpenAI (1536) or custom (1024) embeddings
+      column_type =
+        cond do
+          # Use the call stack to determine which type of array this is
+          Process.info(self(), :current_stacktrace)
+          |> elem(1)
+          |> Enum.any?(fn {_m, _f, _a, kw} ->
+            Keyword.get(kw, :line) != nil &&
+                Enum.at(kw, 1) == {:key, "embeddings_openai"}
+          end) ->
+            # For OpenAI embeddings, use 1536 zeros
+            "[#{Enum.join(List.duplicate("0", 1536), ", ")}]"
+
+          # For custom embeddings or any other array
+          true ->
+            # For JINA/SPR embeddings, use 1024 zeros
+            "[#{Enum.join(List.duplicate("0", 1024), ", ")}]"
+        end
+
+      column_type
+    else
+      "[#{Enum.join(array, ", ")}]"
+    end
   end
 
   defp serialize_array(array) when is_binary(array) do
     case Jason.decode(array) do
-      {:ok, decoded} when is_list(decoded) -> serialize_array(decoded)
-      _ -> "[]"
+      {:ok, decoded} when is_list(decoded) ->
+        serialize_array(decoded)
+
+      _ ->
+        # Default to custom embedding size for binary strings that fail to decode
+        "[#{Enum.join(List.duplicate("0", 1024), ", ")}]"
     end
+  end
+
+  defp serialize_array(nil) do
+    # Default to custom embedding size for nil values
+    "[#{Enum.join(List.duplicate("0", 1024), ", ")}]"
   end
 
   defp serialize_list(list) do
