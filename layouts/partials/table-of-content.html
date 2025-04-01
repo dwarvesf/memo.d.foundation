@@ -1,8 +1,0 @@
-<div class="toc">
-    <div class="toc-indicators">
-        {{replace (replaceRE `<a href="([^"]+)"><a[^>]+>(.*)</a>(.*?)</a>` `<a href="$1">$2 $3</a>` .Page.TableOfContents) "TableOfContents" "toc-indicators" | safeHTML }}
-    </div>
-    <div class="toc-modal"> {{replace (replaceRE `<a href="([^"]+)"><a[^>]+>(.*)</a>(.*?)</a>` `<a href="$1">$2 $3</a>` .Page.TableOfContents) "TableOfContents" "toc-modal" | safeHTML }}
-    </div>
-    
-</div>
