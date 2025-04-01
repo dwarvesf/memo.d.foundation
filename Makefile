@@ -15,7 +15,7 @@ fetch-force:
 	@./git-fetch.sh --force
 
 build:
-	@pnpm install --frozen-lockfile
+	@pnpm install --no-frozen-lockfile
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../public/content")'
 	@pnpm run build
 
