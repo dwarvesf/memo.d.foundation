@@ -26,6 +26,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     'directoryTreeOpenPaths',
     {
       '/pinned': true,
+      '/': true,
     },
     {
       initializeWithValue: false,
