@@ -1,6 +1,7 @@
 import { IMemoItem, ITreeNode } from '@/types';
 import { slugToTitle } from '../utils';
 
+export const ExcludePaths = ['site-index.md', 'contributing.md'];
 export function buildDirectorTree(allMemos: IMemoItem[]) {
   const root: Record<string, ITreeNode> = {
     '/pinned': { label: 'Pinned Notes', children: {} },
@@ -9,6 +10,10 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
   };
 
   allMemos.forEach(memo => {
+    // Skip excluded paths
+    if (ExcludePaths.includes(memo.filePath)) {
+      return;
+    }
     // tags
     memo.tags?.forEach((tag: string) => {
       const currentTag = root['/tags'].children[`/tags/${tag}`];
@@ -55,4 +60,4 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
 
   return root;
 }
-export function getAllTags() { }
+export function getAllTags() {}
