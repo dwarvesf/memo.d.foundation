@@ -108,8 +108,20 @@ export default function TagDetailPage({
       }
       grouped[firstLetter].push(memo);
     });
+    // sort groupbed memos by key
+
     return grouped;
   }, [data]);
+
+  const letters = useMemo(() => {
+    const keys = Object.keys(groupedMemos);
+    keys.sort((a, b) => {
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
+    });
+    return keys;
+  }, [groupedMemos]);
   return (
     <RootLayout
       title={tag}
@@ -121,39 +133,42 @@ export default function TagDetailPage({
           <h1 className="-track-[0.5px] mb-5 pt-0 text-[35px] leading-[42px] font-semibold">
             #{tag}
           </h1>
-          {Object.entries(groupedMemos).map(([letter, memos]) => (
-            <div key={letter} className="mt-[var(--element-margin)]">
-              <h2 className="text-[26px] leading-[140%] font-semibold -tracking-[0.0125rem]">
-                {letter}
-              </h2>
-              <ul className="mt-[var(--list-margin)] flex flex-col gap-[0.875rem]">
-                {memos.map(memo => (
-                  <li
-                    key={memo.filePath}
-                    className="flex flex-col flex-wrap items-baseline gap-x-2"
-                  >
-                    <Link
-                      href={formatMemoPath(memo.filePath)}
-                      className="hover:text-primary line-clamp-3 shrink-0 transition-all duration-150 hover:underline"
+          {letters.map(letter => {
+            const memos = groupedMemos[letter];
+            return (
+              <div key={letter} className="mt-[var(--element-margin)]">
+                <h2 className="text-[26px] leading-[140%] font-semibold -tracking-[0.0125rem]">
+                  {letter}
+                </h2>
+                <ul className="mt-[var(--list-margin)] flex flex-col gap-[0.875rem]">
+                  {memos.map(memo => (
+                    <li
+                      key={memo.filePath}
+                      className="flex flex-col flex-wrap items-baseline gap-x-2"
                     >
-                      {memo.title}
-                    </Link>
-                    <div className="space-x-1">
-                      {memo.tags?.slice(0, 3).map(tag => (
-                        <Link
-                          key={tag}
-                          href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
-                          className="dark:bg-border hover:text-primary text-2xs rounded-[2.8px] bg-[#f9fafb] px-1.5 leading-[1.7] font-medium text-neutral-500 hover:underline"
-                        >
-                          {tag}
-                        </Link>
-                      ))}
-                    </div>
-                  </li>
-                ))}
-              </ul>{' '}
-            </div>
-          ))}
+                      <Link
+                        href={formatMemoPath(memo.filePath)}
+                        className="hover:text-primary line-clamp-3 shrink-0 transition-all duration-150 hover:underline"
+                      >
+                        {memo.title}
+                      </Link>
+                      <div className="space-x-1">
+                        {memo.tags?.slice(0, 3).map(tag => (
+                          <Link
+                            key={tag}
+                            href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
+                            className="dark:bg-border hover:text-primary text-2xs rounded-[2.8px] bg-[#f9fafb] px-1.5 leading-[1.7] font-medium text-neutral-500 hover:underline"
+                          >
+                            {tag}
+                          </Link>
+                        ))}
+                      </div>
+                    </li>
+                  ))}
+                </ul>{' '}
+              </div>
+            );
+          })}
         </div>
       </div>
     </RootLayout>

@@ -127,7 +127,7 @@ defmodule Memo.ExportMarkdown do
     db_cache = export_db_directory("../../db", exportpath, cache)
 
     # Generate contributor files
-    generate_contributor_files(exportpath)
+    # generate_contributor_files(exportpath)
 
     # Create blank _index.md files in folders without them
     # generate_missing_index_files(exportpath)

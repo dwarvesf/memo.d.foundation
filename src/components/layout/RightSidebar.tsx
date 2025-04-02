@@ -88,10 +88,10 @@ const RightSidebar = (props: Props) => {
                       {metadata.tags.slice(0, 3).map((tag, index) => (
                         <Link
                           key={index}
-                          href={`/tags/${tag}`}
+                          href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
                           className="bg-muted hover:bg-muted/80 hover:text-primary dark:bg-border dark:text-foreground dark:hover:text-primary inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-medium text-[#4b4f53]"
                         >
-                          {tag.replace(/-/g, ' ')}
+                          {tag}
                         </Link>
                       ))}
                     </div>
