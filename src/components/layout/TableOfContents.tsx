@@ -147,7 +147,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
   if (!items?.length) return null;
   return (
-    <div className="toc relative z-10">
+    <div className="toc relative z-10 hidden md:block">
       <div className="toc-indicators peer fixed top-[var(--header-height)] right-0 mt-15 cursor-pointer pr-2 pb-4 pl-5">
         <div className=""> {renderTocIndicators(items || [])}</div>
       </div>
