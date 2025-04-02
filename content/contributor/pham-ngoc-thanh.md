@@ -1,3 +1,0 @@
----
-title: Pham Ngoc Thanh
----
