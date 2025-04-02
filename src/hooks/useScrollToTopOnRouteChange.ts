@@ -16,7 +16,6 @@ export function useScrollToTopOnRouteChange(
       if (elementRef.current) {
         elementRef.current.scrollTo({
           top: 0,
-          behavior: 'smooth',
         });
       }
     };
