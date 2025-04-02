@@ -1,7 +1,7 @@
 ---
 tags:
   - newsletter
-  - memo
+  - updates
   - community
 title: What's New in February 2025
 date: 2025-03-04
