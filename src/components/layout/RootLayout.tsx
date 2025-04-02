@@ -12,6 +12,7 @@ import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
 import TableOfContents from './TableOfContents';
 import ImageZoomProvider from '../image/ImageZoomProvider';
 import { SearchProvider } from '../search';
+import { useScrollToTopOnRouteChange } from '@/hooks/useScrollToTopOnRouteChange';
 
 interface RootLayoutProps extends RootLayoutPageProps {
   children: React.ReactNode;
@@ -40,6 +41,9 @@ function RootLayout({
     readingMode,
     toggleReadingMode,
   } = useLayoutContext();
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+  useScrollToTopOnRouteChange(scrollContainerRef);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -129,7 +133,10 @@ function RootLayout({
         className={`bg-background text-foreground relative flex h-screen font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
       >
         <DirectoryTree tree={directoryTree} />
-        <div className="relative flex flex-1 flex-col overflow-y-auto">
+        <div
+          ref={scrollContainerRef}
+          className="relative flex flex-1 flex-col overflow-y-auto"
+        >
           <Header
             toggleSidebar={toggleIsOpenSidebar}
             toggleTheme={toggleTheme}
