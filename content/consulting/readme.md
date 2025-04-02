@@ -19,6 +19,7 @@ We're a team of tech experts who solve business problems. We combine technical s
 
 ## Latest from consulting team
 
+- [Screenz.ai](/consulting/case-study/screenz-ai)
 - [2nd Talks and Takeaways](/consulting/market-report/event-takeaways-2nd)
 - [1st Talks and Takeaways](/consulting/market-report/event-takeaways-1st)
 - [#9: Bybit Loses $1.5B in Hack, Claude 3.7 Sonnet Drops, and OpenArt Designs Characters](/consulting/market-report/2025-28th-feb)
@@ -28,7 +29,6 @@ We're a team of tech experts who solve business problems. We combine technical s
 - [#5 VC Trends, Blockchain Breakthroughs, and AI Innovations](/consulting/market-report/2025-17th-jan)
 - [#4 AI Supercomputers, Mini AI PCs, SEA VC](/consulting/market-report/2025-10th-jan)
 - [#3 AI at CES, Wall Street Boom, Blockchain Trends](/consulting/market-report/2025-3rd-jan)
-- [#2 AI Talent Wars, OpenAI’s New Models, Hyperliquid](/consulting/market-report/2024-27th-dec)
 
 ## Our culture & approach
 
