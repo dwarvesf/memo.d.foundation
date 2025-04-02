@@ -18,15 +18,16 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
     }
     // tags
     memo.tags?.forEach((tag: string) => {
-      const currentTag = root['/tags'].children[`/tags/${tag}`];
+      const normalizedTag = tag.toLowerCase();
+      const currentTag = root['/tags'].children[`/tags/${normalizedTag}`];
       if (!currentTag) {
-        root['/tags'].children[`/tags/${tag}`] = {
-          label: `#${tag}`,
+        root['/tags'].children[`/tags/${normalizedTag}`] = {
+          label: `#${normalizedTag}`,
           children: {},
           count: 1,
         };
       } else {
-        root['/tags'].children[`/tags/${tag}`] = {
+        root['/tags'].children[`/tags/${normalizedTag}`] = {
           ...currentTag,
           count: (currentTag.count ?? 0) + 1,
         };
