@@ -61,6 +61,14 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     if (depth === 0 && !hasChildren) {
       return null;
     }
+
+    // Check if this is a readme entry
+    const isReadmeEntry = path.endsWith('/readme');
+    // Get parent path for readme entries
+    const linkPath = isReadmeEntry
+      ? path.substring(0, path.lastIndexOf('/'))
+      : path;
+
     return (
       <div
         key={path}
@@ -71,7 +79,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
         })}
       >
         <Link
-          href={path}
+          href={linkPath}
           onClick={e => {
             if (hasChildren) {
               e.preventDefault();
@@ -83,7 +91,8 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
             'flex cursor-pointer items-center gap-1 p-1.25 text-left text-xs leading-normal font-medium',
             {
               'text-muted-foreground pl-2': !hasChildren,
-              'text-primary': isActive,
+              'text-primary':
+                isActive || (isReadmeEntry && currentPath === linkPath),
             },
           )}
         >
