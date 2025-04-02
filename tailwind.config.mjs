@@ -222,18 +222,21 @@ const config = {
               marginTop: 'calc(var(--list-margin) / 2)',
             },
             blockquote: {
-              padding: '16px 12px',
-              margin: 'var(--element-margin) 0 0 0',
-              boxSizing: 'border-box',
-              borderRadius: '8px',
-              background: 'var(--primary-color-lighten)',
-              fontSize: '16px',
-              lineHeight: '1.5',
-              position: 'relative',
-              overflow: 'hidden',
+              margin: 0,
+              padding: 0,
+              borderLeft: 'none',
+              fontWeight: 'inherit',
+              color: 'inherit',
+              fontStyle: 'inherit',
             },
             'blockquote > *:first-child': {
               marginTop: '0 !important',
+            },
+            'blockquote > *::before': {
+              content: 'none',
+            },
+            'blockquote > *::after': {
+              content: 'none',
             },
             img: {
               maxWidth: '100%',
