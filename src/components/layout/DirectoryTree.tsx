@@ -43,21 +43,21 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     const isOpen = openPaths[path];
     const hasChildren = Object.keys(node.children).length > 0;
     const isActive = currentPath === path;
-    const sortedChildren = Object.entries(node.children).sort(
-      ([, a], [, b]) => {
-        // First sort by whether it has children (directories first)
-        const aHasChildren = Object.keys(a.children).length > 0;
-        const bHasChildren = Object.keys(b.children).length > 0;
-
-        if (aHasChildren && !bHasChildren) return -1;
-        if (!aHasChildren && bHasChildren) return 1;
-
-        // Then sort alphabetically
+    const itemChildren = Object.entries(node.children);
+    const withChildrenItems = itemChildren
+      .filter(([, childNode]) => {
+        return Object.keys(childNode.children).length > 0;
+      })
+      .sort(([, a], [, b]) => {
         if (a.label < b.label) return -1;
         if (a.label > b.label) return 1;
         return 0;
-      },
-    );
+      });
+
+    const withoutChildrenItems = itemChildren.filter(([, childNode]) => {
+      return Object.keys(childNode.children).length === 0;
+    });
+    const allItems = [...withChildrenItems, ...withoutChildrenItems];
     if (depth === 0 && !hasChildren) {
       return null;
     }
@@ -102,7 +102,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
         </Link>
         {hasChildren && isOpen && (
           <div className="m-0 w-full pl-1">
-            {sortedChildren.map(([childPath, childNode]) => {
+            {allItems.map(([childPath, childNode]) => {
               return renderMenuItems(childNode, childPath, depth + 1);
             })}
           </div>
