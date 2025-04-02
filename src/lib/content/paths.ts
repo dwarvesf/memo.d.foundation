@@ -22,6 +22,9 @@ export function getAllMarkdownFiles(
   if (fs.existsSync(readmeFilePath) && basePath.length > 0) {
     // If readme.md exists, add the current directory as a path
     paths.push([...basePath]);
+
+    // Also add readme.md as a separate entry
+    paths.push([...basePath, 'readme']);
   } else if (fs.existsSync(indexFilePath) && basePath.length > 0) {
     // If _index.md exists but readme.md doesn't, add the current directory as a path
     paths.push([...basePath]);
