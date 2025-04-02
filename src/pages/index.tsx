@@ -94,7 +94,7 @@ export default function Home({
       <div className="font-serif">
         <img
           src="/assets/home_cover.webp"
-          className="max-h-[500px] rounded-sm"
+          className="no-zoom max-h-[500px] rounded-sm"
         ></img>
         <p className="mt-[var(--element-margin)]">
           Welcome to the Dwarves Memo.
@@ -146,7 +146,7 @@ function LoveWhatWeAreDoing() {
       <h2 className="mt-6 text-[10px] font-medium uppercase">
         Love what we are doing?
       </h2>
-      <ul className="mt-2.5 grid list-none grid-cols-2 gap-2.5 pl-0">
+      <ul className="xs:grid-cols-2 mt-2.5 grid list-none gap-2.5 pl-0">
         <li>
           <a
             href="https://discord.gg/dwarvesv"

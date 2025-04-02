@@ -32,12 +32,12 @@ const MemoVLinkList = ({
           <div
             id={`memo-${index + 1}`}
             key={memo.filePath}
-            className="link-v-list-item flex items-center"
+            className="link-v-list-item"
           >
             <Link
               href={path}
               className={cn(
-                'link-v-list-item-title hover:text-primary hover:decoration-primary text-[17px] underline decoration-neutral-100',
+                'link-v-list-item-title hover:text-primary hover:decoration-primary inline text-[17px] underline decoration-neutral-100',
                 {
                   'text-primary decoration-primary': color === 'primary',
                 },
@@ -47,7 +47,7 @@ const MemoVLinkList = ({
             </Link>
 
             {!hideDate && memo.date && (
-              <span className="link-v-list-item-time text-secondary-foreground dark:text-secondary-light font-ibm-sans ml-1 text-sm font-normal">
+              <span className="link-v-list-item-time text-secondary-foreground dark:text-secondary-light font-ibm-sans ml-1 inline text-sm font-normal">
                 {' - '}
                 {formatDate(new Date(memo.date), 'MMMM dd, yyyy')}
               </span>
