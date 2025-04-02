@@ -9,7 +9,7 @@ import rehypeStringify from 'rehype-stringify';
 import remarkMath from 'remark-math';
 import matter from 'gray-matter';
 import { visit } from 'unist-util-visit';
-import type { Heading, Root } from 'mdast';
+import type { Heading, Root, Link } from 'mdast';
 import type {
   Element,
   Properties,
@@ -27,6 +27,13 @@ interface ImageNode {
   url: string;
   title: string | null;
   alt: string | null;
+}
+
+interface LinkNode {
+  type: 'link';
+  url: string;
+  title: string | null;
+  children: unknown[];
 }
 
 interface FileData {
@@ -193,6 +200,26 @@ function remarkResolveImagePaths(fileDir: string) {
 }
 
 /**
+ * Custom remark plugin to process links and remove .md extension from relative links
+ */
+function remarkProcessLinks() {
+  return (tree: Root) => {
+    visit(tree, 'link', (node: Link) => {
+      const linkNode = node as LinkNode;
+
+      // Only process relative links that end with .md
+      if (
+        !/^(https?:\/\/|\/)/i.test(linkNode.url) &&
+        linkNode.url.endsWith('.md')
+      ) {
+        // Remove the .md extension
+        linkNode.url = linkNode.url.slice(0, -3);
+      }
+    });
+  };
+}
+
+/**
  * Reads and parses markdown content from a file
  * @param filePath Path to the markdown file
  * @returns Object with frontmatter, processed HTML content, and table of contents
@@ -256,6 +283,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(remarkParse)
     .use(remarkGfm)
     .use(() => remarkResolveImagePaths(filePath))
+    .use(remarkProcessLinks) // Process links and remove .md extensions
     .use(remarkToc) // Extract table of contents and create heading ID mapping
     .use(remarkMath, {
       // singleDollarTextMath: false,
