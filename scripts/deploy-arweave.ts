@@ -1,5 +1,3 @@
-// Add proper ts-expect-error for Arweave import
-// @ts-expect-error No type definitions available for arweave
 import Arweave from 'arweave';
 import fs from 'fs';
 import matter from 'gray-matter';
