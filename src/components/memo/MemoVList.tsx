@@ -25,12 +25,12 @@ const MemoVList = (props: Props) => {
             id={`memo-${index + 1}`}
             key={memo.filePath}
             className={cn(
-              'v-list-item xs:flex-row flex w-full flex-col border-b',
+              'v-list-item xs:flex-row flex w-full flex-col not-last:border-b',
               !imgSrc && 'no-image first:*:pt-0',
             )}
           >
             {imgSrc && (
-              <div className="v-list-item-image xs:w-3/10 xs:pb-3 p-3 pb-0">
+              <div className="v-list-item-image xs:w-3/10 xs:pb-3 xs:pr-6 pt-3 pb-0">
                 <img
                   className="no-zoom h-[130px] w-full rounded-sm object-cover"
                   src={imgSrc}
@@ -41,11 +41,7 @@ const MemoVList = (props: Props) => {
               </div>
             )}
 
-            <div
-              className={cn('flex flex-1 flex-col gap-1 p-3', {
-                'pr-0 pl-0': !imgSrc,
-              })}
-            >
+            <div className={cn('flex flex-1 flex-col gap-1 py-3')}>
               <Link
                 href={path}
                 className="hover:text-primary hover:decoration-primary mt-0 text-[17px] font-semibold underline decoration-neutral-100"
