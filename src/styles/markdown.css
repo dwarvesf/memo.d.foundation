@@ -99,4 +99,7 @@
     transform: translate3d(30%, 10%, 0);
     opacity: 0.4;
   }
+  .article-content table a {
+    @apply !text-foreground hover:!text-primary;
+  }
 }
