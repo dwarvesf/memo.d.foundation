@@ -3,7 +3,7 @@ name: Backup
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '0 2 * * *'
+    - cron: "0 2 * * *"
 
 jobs:
   backup:
@@ -14,8 +14,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.DWARVES_PAT }}
-          submodules: recursive
+          submodules: true
           fetch-depth: 10
+
+      - name: Update submodules
+        run: |
+          git submodule update --init --recursive --depth 2
 
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.11.0
