@@ -9,7 +9,7 @@ import rehypeStringify from 'rehype-stringify';
 import remarkMath from 'remark-math';
 import matter from 'gray-matter';
 import { visit } from 'unist-util-visit';
-import type { Heading, Root, Link } from 'mdast';
+import type { Heading, Root, Link, Literal } from 'mdast';
 import type {
   Element,
   Properties,
@@ -275,11 +275,25 @@ export async function getMarkdownContent(filePath: string) {
 
   // Used to collect the file data during processing
   const fileData: Record<string, unknown> = {};
-
+  function remarkLineBreaks() {
+    return (tree: Root) => {
+      visit(tree, 'html', (node: Literal) => {
+        if (typeof node.value === 'string') {
+          if (
+            node.value.toLowerCase() === '<br>' ||
+            node.value.toLowerCase() === '<br/>'
+          ) {
+            node.type = 'break';
+          }
+        }
+      });
+    };
+  }
   // Process the Markdown content
   const processor = unified()
     .use(remarkParse)
     .use(remarkGfm)
+    .use(remarkLineBreaks)
     .use(() => remarkResolveImagePaths(filePath))
     .use(remarkProcessLinks) // Process links and remove .md extensions
     .use(remarkToc) // Extract table of contents and create heading ID mapping
