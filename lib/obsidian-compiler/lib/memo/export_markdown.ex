@@ -230,7 +230,23 @@ defmodule Memo.ExportMarkdown do
                 copy_directory(source_path, dest_path, ignored_patterns, vaultpath)
               end
             else
-              File.copy!(source_path, dest_path)
+              try do
+                # Ensure the destination directory exists
+                dest_dir = Path.dirname(dest_path)
+                File.mkdir_p!(dest_dir)
+
+                File.copy!(source_path, dest_path)
+              rescue
+                e in File.CopyError ->
+                  IO.puts(
+                    "Warning: Could not copy file #{source_path} to #{dest_path}: #{e.reason}"
+                  )
+
+                e in File.Error ->
+                  IO.puts(
+                    "Warning: File error when copying #{source_path} to #{dest_path}: #{e.reason}"
+                  )
+              end
             end
           end
         end)
@@ -268,13 +284,15 @@ defmodule Memo.ExportMarkdown do
       if basename in ["home.md", "index.md"] && dirname == exportpath do
         IO.puts("Skipping root file: #{inspect(file)} (would create #{basename} at root)")
         # Return an empty cache entry to prevent repeatedly checking this file
-        %{file => %{
-          "size" => size,
-          "mtime" => mtime,
-          "hash" => file_hash,
-          "skipped" => true,
-          "reason" => "Ignored root file: #{basename}"
-        }}
+        %{
+          file => %{
+            "size" => size,
+            "mtime" => mtime,
+            "hash" => file_hash,
+            "skipped" => true,
+            "reason" => "Ignored root file: #{basename}"
+          }
+        }
       else
         content = File.read!(file)
         links = LinkUtils.extract_links(content)
