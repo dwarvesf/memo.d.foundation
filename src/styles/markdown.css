@@ -63,4 +63,40 @@
   .prose :where(h2 + *):not(:where([class~='not-prose'])) {
     @apply !mt-[var(--element-margin)];
   }
+  .article-content blockquote {
+    @apply relative grid grid-cols-[32px_1fr] gap-x-2.5 overflow-hidden rounded-lg bg-[var(--primary-color-lighten)] p-4 px-3 text-base leading-6;
+    place-items: center flex-start;
+    isolation: isolate; /* Creates a new stacking context */
+  }
+  .article-content blockquote * {
+    grid-column: 2/2;
+    grid-row: auto;
+    padding-inline-start: 0;
+    list-style-position: inside;
+    margin: 0;
+    padding: 0;
+  }
+
+  .article-content blockquote::before {
+    content: var(--diamond-icon);
+    aspect-ratio: 1;
+    width: 32px;
+    height: 32px;
+    grid-row: 1/-1;
+    grid-column: 1/1;
+    place-self: flex-start;
+  }
+  .article-content blockquote::after {
+    content: var(--dwarves-icon);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    max-width: 50%;
+    object-fit: contain;
+    z-index: -1;
+    aspect-ratio: 4/3;
+    transform: translate3d(30%, 10%, 0);
+    opacity: 0.4;
+  }
 }

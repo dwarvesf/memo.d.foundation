@@ -226,7 +226,6 @@ const config = {
             },
             blockquote: {
               margin: 0,
-              padding: 0,
               borderLeft: 'none',
               fontWeight: 'inherit',
               color: 'inherit',
@@ -235,6 +234,7 @@ const config = {
             'blockquote > *:first-child': {
               marginTop: '0 !important',
             },
+
             'blockquote > *::before': {
               content: 'none',
             },
@@ -265,6 +265,10 @@ const config = {
               position: 'sticky',
               top: '0',
               zIndex: '1',
+            },
+            'thead th:empty': {
+              padding: '0 !important',
+              border: 'none !important',
             },
             'tr, th, td': {
               borderCollapse: 'collapse',

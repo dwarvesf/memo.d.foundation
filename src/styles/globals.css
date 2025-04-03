@@ -81,6 +81,9 @@
     --nav-sidebar-offset: 0px;
     --right-sidebar-width: 200px;
     --directory-width: 232px;
+
+    --dwarves-icon: url('/assets/img/dwarves-icon.svg');
+    --diamond-icon: url('/assets/img/diamond-icon.svg');
   }
 
   .dark,
