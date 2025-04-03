@@ -99,15 +99,25 @@ export async function getBacklinks(slug: string[]) {
             // Slugify the path components
             const slugifiedPath = slugifyPathComponents(filePath);
             // Remove .md extension from the output
-            const path = slugifiedPath.endsWith('.md')
+            let finalPath = slugifiedPath.endsWith('.md')
               ? slugifiedPath.slice(0, -3)
               : slugifiedPath;
+
+            // Remove trailing /readme
+            if (finalPath.endsWith('/readme')) {
+              finalPath = finalPath.slice(0, -'/readme'.length);
+            }
+
+            // Use title from parquet data if available, otherwise fallback
+            const titleFromParquet = row[2]?.toString(); // title is at index 2
+            const calculatedTitle =
+              getMarkdownMetadata(filePath).title ||
+              finalPath.split('/').pop() || // Use finalPath for fallback
+              finalPath;
+
             return {
-              title:
-                getMarkdownMetadata(filePath).title ||
-                path.split('/').pop() ||
-                path,
-              path,
+              title: titleFromParquet || calculatedTitle,
+              path: finalPath,
             };
           });
         },
