@@ -126,6 +126,7 @@ const config = {
             fontFamily: 'charter, Georgia, Cambria, serif',
             fontSize: '1.0625rem',
             letterSpacing: '-0.0125rem',
+            lineHeight: 'inherit',
             'code::before': {
               content: '""',
             },
@@ -169,6 +170,9 @@ const config = {
               lineHeight: '1.24',
               fontFamily: 'charter, Georgia, Cambria, serif',
               padding: '0 !important',
+            },
+            'h2, h3': {
+              lineHeight: '140%',
             },
             h1: {
               fontSize: '35px !important',

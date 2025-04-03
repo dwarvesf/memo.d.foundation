@@ -102,7 +102,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
       <div
         ref={mathContainerRef}
         className={cn(
-          'prose dark:prose-dark prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:leading-[1.24] max-w-none font-serif',
+          'prose dark:prose-dark prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight max-w-none font-serif',
           'prose-a:text-primary prose-a:underline prose-a:decoration-neutral-200 prose-a:hover:text-primary prose-a:hover:decoration-primary prose-a:font-[inherit]',
           'prose-table:border prose-img:mt-[var(--element-margin)]',
         )}
