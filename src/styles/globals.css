@@ -76,8 +76,11 @@
     --element-margin: 14px;
     --paragraph-margin: 16px;
     --column-gap: 28px;
-    --nav-sidebar-width: 232px;
+    --nav-sidebar-width-mobile: 232px;
+    --nav-sidebar-width: 62px;
     --nav-sidebar-offset: 0px;
+    --right-sidebar-width: 200px;
+    --directory-width: 232px;
   }
 
   .dark,
@@ -378,10 +381,11 @@
 }
 
 /* Responsive design adjustments */
-@media (min-width: 1475px) {
+@media (min-width: 1500px) {
   :root {
     --column-gap: 48px;
     --container-max-width: 730px;
+    --right-sidebar-width: 240px;
   }
 }
 
