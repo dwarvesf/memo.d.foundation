@@ -50,12 +50,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
       </ul>
     );
   };
-  const renderTocModalItems = (items: ITocItem[]) => {
+  const renderTocModalItems = (items: ITocItem[], depth = 0) => {
     return (
       <ul className="flex h-full list-none flex-col items-end pl-0">
         {items.map(item => (
           <li key={item.id} className="w-full leading-6">
             <Link
+              style={{ marginLeft: `${depth * 16}px` }}
               href={`#${item.id}`}
               className={cn(
                 'text-foreground flex rounded-lg p-1 text-[13px] leading-4 transition-all duration-150',
@@ -81,7 +82,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
             </Link>
             {item.children &&
               item.children.length > 0 &&
-              renderTocModalItems(item.children)}
+              renderTocModalItems(item.children, depth + 1)}
           </li>
         ))}
       </ul>
@@ -147,13 +148,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
   if (!items?.length) return null;
   return (
-    <div className="toc relative z-10">
+    <div className="toc relative z-10 hidden md:block">
       <div className="toc-indicators peer fixed top-[var(--header-height)] right-0 mt-15 cursor-pointer pr-2 pb-4 pl-5">
         <div className=""> {renderTocIndicators(items || [])}</div>
       </div>
       <div
         className={cn(
-          'toc-modal bg-background fixed top-[var(--header-height)] right-0 m-2 mt-17 w-[180px] rounded-xl',
+          'toc-modal bg-background fixed top-[var(--header-height)] right-0 m-2 mt-17 max-w-[320px] rounded-xl',
           'shadow-[0px_4px_6px_-2px_#10182808,0px_12px_16px_-4px_#10182814]',
           'invisible translate-x-[12px] opacity-0',
           'ease transition-all duration-300',

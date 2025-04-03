@@ -20,7 +20,7 @@ const RightSidebar = (props: Props) => {
         'right-sidebar leading-[140% hidden w-[200px] font-sans text-sm font-medium xl:flex 2xl:w-[240px]',
         'transition-[transform,opacity,visibility] duration-100 ease-in-out',
         'visible w-0 translate-x-0 transform opacity-100 xl:w-[200px]',
-        'reading:opacity-0 reading:translate-x-[50px] reading:invisible reading:w-0',
+        'reading:opacity-0 reading:xl:translate-x-[50px] reading:invisible reading:fixed reading:right-[calc((100vw-var(--max-container-width)-72px)/2)]',
       )}
     >
       <div className="sticky top-[60px] right-0 flex flex-col gap-y-8 pt-4 pb-10 transition-[top] duration-200 ease-in-out">

@@ -331,10 +331,10 @@ const CommandPalette: React.FC = () => {
 
           // Add current page to the beginning
           newRecentPages.unshift(currentPage);
-
+          const maxLength = 5;
           // Keep only the last 10 pages
-          if (recentPages.length > 10) {
-            newRecentPages = recentPages.slice(0, 10);
+          if (recentPages.length > maxLength) {
+            newRecentPages = recentPages.slice(0, maxLength);
           }
 
           // Store back to localStorage

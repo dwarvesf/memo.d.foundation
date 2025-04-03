@@ -40,7 +40,8 @@
   .article-content > *:first-child {
     @apply !mt-0;
   }
-  .article-content ul li {
+  .article-content ul li,
+  .article-content ol li {
     @apply !my-0;
   }
   .table-container {
