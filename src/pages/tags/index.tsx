@@ -32,22 +32,22 @@ const TagsPage = (props: RootLayoutPageProps) => {
   }, [directoryTree]);
   return (
     <RootLayout {...props} title="Tags">
-      <div className="flex items-center justify-center">
+      <div className="flex items-center">
         {tags && (
-          <div className="flex w-fit flex-col gap-4">
+          <div className="flex flex-col gap-4">
+            <h1 className="text-2xl font-bold">Tags</h1>
             <ul className="list-disc pl-5">
-              <li className="mb-5 -ml-5 list-none text-lg">
-                <h1 className="text-2xl font-bold">#Tags</h1>
-              </li>
               {tags.map(([path, node]) => (
-                <li key={path} className="flex items-center gap-1 text-lg">
-                  <Link
-                    href={path}
-                    className="hover:text-primary hover:decoration-primary dark:hover:text-primary line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
-                  >
-                    {node.label}{' '}
-                  </Link>
-                  ({node.count})
+                <li key={path} className="text-lg">
+                  <div className="flex items-center gap-1">
+                    <Link
+                      href={path}
+                      className="hover:text-primary hover:decoration-primary dark:hover:text-primary line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
+                    >
+                      {node.label}{' '}
+                    </Link>
+                    ({node.count})
+                  </div>
                 </li>
               ))}
             </ul>

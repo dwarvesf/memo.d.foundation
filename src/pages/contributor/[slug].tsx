@@ -105,8 +105,8 @@ export default function ContentPage({
       directoryTree={directoryTree}
       searchIndex={searchIndex}
     >
-      <div className="flex items-center justify-center">
-        <div className="flex w-fit flex-col">
+      <div className="flex items-center">
+        <div className="flex flex-col">
           <h1 className="-track-[0.5px] mb-5 pt-0 text-[35px] leading-[42px] font-semibold">
             {contributor}
           </h1>
