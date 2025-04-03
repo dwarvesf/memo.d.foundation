@@ -81,13 +81,13 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
       {/* Sidebar */}
       <div
-        className={`bg-background border-border fixed top-0 left-0 z-40 flex h-full w-[var(--nav-sidebar-width)] flex-col border-r pt-4 pb-12 font-sans transition-transform duration-300 ease-in-out xl:w-[72px] ${isOpen ? 'translate-x-0' : 'translate-x-[-100%] xl:translate-x-0'} `}
+        className={`bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 flex h-full flex-col border-r pt-4 pb-12 font-sans transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-[-100%] xl:translate-x-0'} `}
         onClick={e => e.target === e.currentTarget && handleClickOutside()}
       >
         {/* Logo and title */}
         <Link
           href="/"
-          className="mx-4 flex h-10 items-center gap-2 px-2 md:justify-start"
+          className="mx-4 flex h-10 items-center gap-2 px-2 xl:mx-0 xl:justify-center"
         >
           <LogoIcon className="h-6.25 w-6 min-w-6"></LogoIcon>
           <span className="inline-block font-sans text-xs leading-tight font-bold tracking-tight uppercase xl:hidden">
@@ -98,7 +98,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         </Link>
 
         {/* Navigation items */}
-        <nav className="flex flex-1 flex-col p-4">
+        <nav className="flex flex-1 flex-col p-4 xl:items-center xl:px-2">
           {navLinks.map((item, index) => (
             <TooltipProvider key={item.url} skipDelayDuration={0}>
               <Tooltip>
@@ -142,8 +142,8 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           ))}
         </nav>
 
-        <div className="mx-4 border-t pt-1">
-          <div className="flex items-center justify-between gap-3 p-2">
+        <div className="mx-4 border-t pt-1 xl:mx-2">
+          <div className="flex items-center justify-between gap-3 p-2 xl:justify-center">
             <button
               className="flex cursor-pointer items-center justify-center hover:opacity-80"
               onClick={toggleTheme}

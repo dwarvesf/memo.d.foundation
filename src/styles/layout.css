@@ -22,6 +22,14 @@
 .main-content {
   grid-area: content;
   width: var(--container-max-width);
+  @variant reading {
+    margin-right: calc(
+      (
+        var(--column-gap) + var(--right-sidebar-width) -
+          var(--directory-width) - var(--nav-sidebar-width)
+      )
+    );
+  }
 }
 
 @media (max-width: 1280px) {
@@ -37,6 +45,9 @@
   }
   .main-content {
     width: 100%;
+    @variant reading {
+      margin-right: auto;
+    }
   }
 }
 

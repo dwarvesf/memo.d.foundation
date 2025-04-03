@@ -88,11 +88,14 @@ const config = {
       },
       spacing: {
         sidebar: 'var(--nav-sidebar-width)',
+        'sidebar-mobile': 'var(--nav-sidebar-width-mobile)',
         'sidebar-offset': 'var(--nav-sidebar-offset)',
         'container-max': 'var(--container-max-width)',
         'element-margin': 'var(--element-margin)',
         'heading-margin': 'var(--heading-margin)',
         'header-height': 'var(--header-height)',
+        'right-sidebar-width': 'var(--right-sidebar-width)',
+        'directory-width': 'var(--directory-width)',
       },
       fontFamily: {
         sans: ['"Public Sans"', 'sans-serif'],
