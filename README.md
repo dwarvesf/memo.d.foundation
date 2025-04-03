@@ -32,13 +32,13 @@ We welcome contributions from anyone who is interested in our topics. You can co
 To run the server, you can run our Makefile command:
 
 ```sh
-make watch-run
+make run
 ```
 
 or through devbox:
 
 ```sh
-devbox run watch-run
+devbox run run
 ```
 
 ### Search Index

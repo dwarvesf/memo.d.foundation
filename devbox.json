@@ -13,7 +13,7 @@
     "scripts": {
       "build": "make build",
       "clear-build": "make clear-build",
-      "watch-run": "make watch-run",
+      "run": "make run",
       "build-target": "make build-target",
       "run-target": "make run-target",
       "duckdb-export": "make duckdb-export",
