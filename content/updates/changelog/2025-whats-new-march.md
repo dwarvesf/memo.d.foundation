@@ -116,6 +116,8 @@ For the full take, Minh shared two short write-ups from the road: [Talks and Tak
 
 ![](assets/2025-whats-new-march-event.png)
 
+## What’s moving to April
+
 - **Demo & recognition:** Deepen engagement in OGIF sharing, increase team participation, and boost visibility around peer recognition.
 - **Office culture:** Roll out the “meme of the month” and “meme lord” role, and continue building small culture moments to strengthen team bonds.
 - **ICY-BTC swap:** Collect usage data and feedback, and refine accordingly.
