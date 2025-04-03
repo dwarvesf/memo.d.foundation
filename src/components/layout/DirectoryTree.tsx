@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { ChevronDownIcon } from 'lucide-react';
 import { useSessionStorage } from 'usehooks-ts';
 import Link from 'next/link';
+
 interface DirectoryTreeProps {
   tree?: Record<string, ITreeNode>;
   pinnedNotes?: Array<{
@@ -39,10 +40,10 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       [path]: !prev[path],
     }));
   };
+
   const renderMenuItems = (node: ITreeNode, path = '', depth = 0) => {
     const isOpen = openPaths[path];
     const hasChildren = Object.keys(node.children).length > 0;
-    const isActive = currentPath === path;
     const itemChildren = Object.entries(node.children);
     const withChildrenItems = itemChildren
       .filter(([, childNode]) => {
@@ -69,13 +70,39 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       ? path.substring(0, path.lastIndexOf('/'))
       : path;
 
+    // Determine if this item should be marked as active
+    const isActive = (() => {
+      // Never activate expandable groups
+      if (hasChildren) {
+        return false;
+      }
+
+      // For readme entries, highlight the parent path
+      if (isReadmeEntry) {
+        return currentPath === linkPath;
+      }
+
+      // Check if current path is a readme/index of this path
+      const isCurrentPathReadme = currentPath.endsWith('/readme');
+      if (isCurrentPathReadme) {
+        const parentPath = currentPath.substring(
+          0,
+          currentPath.lastIndexOf('/'),
+        );
+        return path === parentPath;
+      }
+
+      // For all other cases, only highlight exact matches
+      return currentPath === path;
+    })();
+
     return (
       <div
         key={path}
         className={cn('relative flex flex-col', {
           "before:bg-border pl-3 before:absolute before:top-0 before:left-[7px] before:h-full before:w-[1px] before:content-['']":
             depth > 0,
-          'before:bg-primary': isActive,
+          'before:bg-primary': isActive && depth > 1,
         })}
       >
         <Link
@@ -91,8 +118,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
             'flex cursor-pointer items-center gap-1 p-1.25 text-left text-xs leading-normal font-medium',
             {
               'text-muted-foreground pl-2': !hasChildren,
-              'text-primary':
-                isActive || (isReadmeEntry && currentPath === linkPath),
+              'text-primary': isActive,
             },
           )}
         >
@@ -119,6 +145,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       </div>
     );
   };
+
   if (!tree) {
     return null;
   }
