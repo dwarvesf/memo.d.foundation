@@ -25,7 +25,7 @@ At Dwarves, technology is our passion. We create it, study it, test it, document
 
 **Adopt**
 
-[Dify](https://dify.ai/) is an open-source platform that's making waves by simplifying the development and orchestration of LLM (Large Language Model) applications. With its robust set of tools, developers can create intelligent workflows—from simple agents to sophisticated AI-driven apps—using a retrieval-augmented generation (RAG) engine. What's impressive is how it makes AI workflow orchestration intuitive and accessible, even if you're not a tech wizard. The drag-and-drop interfaces and clean UX/UI reduce the complexity of building LLM-based applications, enabling rapid prototyping and testing across multiple models.
+[Dify](https://dify.ai/) is an open-source platform that's making waves by simplifying the development and orchestration of LLM (Large Language Model) applications. With its robust set of tools, developers can create intelligent workflows, from simple agents to sophisticated AI-driven apps, using a retrieval-augmented generation (RAG) engine. What's impressive is how it makes AI workflow orchestration intuitive and accessible, even if you're not a tech wizard. The drag-and-drop interfaces and clean UX/UI reduce the complexity of building LLM-based applications, enabling rapid prototyping and testing across multiple models.
 
 We've been using Dify to quickly prototype product ideas by scaffolding agent workflows and testing their output with various models. It's been a game-changer, especially in building workflow automations like a tech summarizer, memo chatbot, or report composer. Its simplicity and flexibility allow us to experiment with different models and agent workflows without getting bogged down by infrastructure concerns.
 
@@ -59,7 +59,7 @@ While its monitoring tools and tracing capabilities are beneficial for scaling a
 
 **Assess**
 
-[Cursor](https://www.cursor.com/) is a fork of VS Code designed to enhance coding with AI while retaining a familiar text editing experience. What sets this IDE apart is its ability to register documents for reference, significantly boosting productivity by generating accurate and contextually aware code—especially when combined with Claude 3.5 Sonnet.
+[Cursor](https://www.cursor.com/) is a fork of VS Code designed to enhance coding with AI while retaining a familiar text editing experience. What sets this IDE apart is its ability to register documents for reference, significantly boosting productivity by generating accurate and contextually aware code, especially when combined with Claude 3.5 Sonnet.
 
 Our engineers have been testing it out, and the results are promising, particularly in creating templates and skeleton code. The impact is more noticeable at the unit level, making coding more enjoyable and reducing the mental load of syntax and specifics. Since it's an emerging technology, we've placed Cursor in the "Assess" category due to its potential to revolutionize coding practices, despite being relatively new and requiring further exploration.
 
@@ -222,7 +222,7 @@ Our thought on that:
 
 ### AI companies continue dominating YC batch
 
-According to [a Reddit post](https://www.reddit.com/r/ycombinator/comments/1fbb9m0/the_rise_of_ai_companies_in_yc/), in the current Y Combinator batch (S24 - Summer 2024), a staggering 72% of startups are focused on AI—a dramatic increase from just 1% in the winter of 2012 (W12). Compared to the crypto trend, AI's momentum is exponentially greater.
+According to [a Reddit post](https://www.reddit.com/r/ycombinator/comments/1fbb9m0/the_rise_of_ai_companies_in_yc/), in the current Y Combinator batch (S24 - Summer 2024), a staggering 72% of startups are focused on AI, a dramatic increase from just 1% in the winter of 2012 (W12). Compared to the crypto trend, AI's momentum is exponentially greater.
 
 ![](assets/forward-engineering-q3-2024-20240917163441436.webp)
 
@@ -230,7 +230,7 @@ Some key takeaways:
 
 - AI will be utilized as a filter for data. Whoever owns the best fine-tuned models will gain the advantage in the future.
 - "AI wrappers" will become essential middleware software. Every industry will finally have interfaces to interact with AI.
-- As AI becomes accessible to everyone, differentiation will come from other factors—user experience, attention, branding, and distribution channels.
+- As AI becomes accessible to everyone, differentiation will come from other factors, user experience, attention, branding, and distribution channels.
 - As AI's role in automation grows, the workforce will increasingly shift towards AI supervision, prompt engineering, and ethical oversight.
 - Data ownership will become a central competitive battleground, leading to more regulation, strategic acquisitions of datasets, and ethical debates around the use of data in AI training.
 

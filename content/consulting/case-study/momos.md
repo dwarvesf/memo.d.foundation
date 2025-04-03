@@ -2,7 +2,7 @@
 title: "Building a central hub for food and beverage businesses in Singapore"
 short_title: Momos
 date: 2021-07-01
-description: We helped Momos, a pre-seed startup in Singapore, build their first MVP—a centralized data hub that simplifies online operations for food and beverage businesses through third-party integrations and data analytics.
+description: We helped Momos, a pre-seed startup in Singapore, build their first MVP, a centralized data hub that simplifies online operations for food and beverage businesses through third-party integrations and data analytics.
 authors: 
   - duy
   - tieubao
@@ -42,17 +42,17 @@ Full-stack development / Integration development / DevOps
 
 ## What we did with Momos
 
-Momos is a pre-seed startup operating in Singapore, founded by an ex-Grab employee with a vision to simplify online operations for food and beverage businesses. They needed to quickly develop and launch their first MVP—a web platform that would serve as a centralized hub for F&B merchants to manage their online presence across multiple services.
+Momos is a pre-seed startup operating in Singapore, founded by an ex-Grab employee with a vision to simplify online operations for food and beverage businesses. They needed to quickly develop and launch their first MVP, a web platform that would serve as a centralized hub for F&B merchants to manage their online presence across multiple services.
 
 With a tight timeline to test their market fit and onboard early users, Momos needed additional development expertise. We provided a team of three developers who worked remotely with Momos starting in March 2021. Our goal was not only to accelerate their development timeline but also to establish a solid technical foundation that would support future growth and scalability.
 
-Together, we built a platform that integrates with third-party delivery services, manages online reputation, runs targeted social ads, and generates content-based reports—all from a single dashboard.
+Together, we built a platform that integrates with third-party delivery services, manages online reputation, runs targeted social ads, and generates content-based reports, all from a single dashboard.
 
 ![Momos F&B platform dashboard showing integrated services](assets/momos-main.webp)
 
 ## The challenge Momos was facing
 
-As more F&B businesses moved their operations online during the pandemic, many faced a common challenge: they needed to work with multiple service providers to establish their digital presence. This fragmentation created inefficiencies and complications for businesses that just wanted to focus on their core product—food.
+As more F&B businesses moved their operations online during the pandemic, many faced a common challenge: they needed to work with multiple service providers to establish their digital presence. This fragmentation created inefficiencies and complications for businesses that just wanted to focus on their core product, food.
 
 The typical restaurant or café had to manage:
 

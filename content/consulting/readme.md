@@ -19,16 +19,16 @@ We're a team of tech experts who solve business problems. We combine technical s
 
 ## Latest from consulting team
 
-- [Screenz.ai](/consulting/case-study/screenz-ai)
-- [2nd Talks and Takeaways](/consulting/market-report/event-takeaways-2nd)
 - [1st Talks and Takeaways](/consulting/market-report/event-takeaways-1st)
 - [#9: Bybit Loses $1.5B in Hack, Claude 3.7 Sonnet Drops, and OpenArt Designs Characters](/consulting/market-report/2025-28th-feb)
 - [#8: R1 1776 Goes Open-Source, Cardex Gets Hacked, and Grok-3 Debuts](/consulting/market-report/2025-21th-feb)
-- [#7: 10x AI Cost Reduction, Lyft’s 2026 Robotaxi Milestone, and Solana ETF Buzz](/consulting/market-report/2025-14th-feb)
-- [#6 Trending Products, DeepSeek Wave, and Ethereum Predictions](/consulting/market-report/2025-7th-feb)
-- [#5 VC Trends, Blockchain Breakthroughs, and AI Innovations](/consulting/market-report/2025-17th-jan)
-- [#4 AI Supercomputers, Mini AI PCs, SEA VC](/consulting/market-report/2025-10th-jan)
 - [#3 AI at CES, Wall Street Boom, Blockchain Trends](/consulting/market-report/2025-3rd-jan)
+- [Kafi](/consulting/case-study/kafi)
+- [FBSC](/playbook/business/fbsc)
+- [StartupVN](/consulting/case-study/startupvn)
+- [Hedge Foundation](/consulting/case-study/hedge-foundation)
+- [Momos](/consulting/case-study/momos)
+- [Aharooms](/consulting/case-study/aharooms)
 
 ## Our culture & approach
 

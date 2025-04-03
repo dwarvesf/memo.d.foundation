@@ -8,7 +8,7 @@ description: Looking for a well-rounded backend engineer with experience in ship
 authors:
   - nikki
   - monotykamary
-hide_frontmatter: true
+
 hiring: false
 ---
 

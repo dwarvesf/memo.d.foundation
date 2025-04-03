@@ -10,7 +10,7 @@ authors:
 hide_frontmatter: true
 ---
 
-This is the culture test for Dwarves, developed as we face the challenges of the late 2024 market. The goal is simple: to focus on what matters most—our cultural values. This test isn’t about jumping through hoops; it’s about understanding how we work, what we stand for, and how you can contribute. 
+This is the culture test for Dwarves, developed as we face the challenges of the late 2024 market. The goal is simple: to focus on what matters most, our cultural values. This test isn’t about jumping through hoops; it’s about understanding how we work, what we stand for, and how you can contribute.
 
 It includes personal stories, practical applications, and creative problem-solving tasks. Scoring 60+ points is great, but what really matters is being honest, thoughtful, and aligned with the Dwarves Foundation spirit.
 
@@ -35,6 +35,7 @@ e) Do you feel you’ve achieved mastery in any area of your life? If so, where?
 ### 2. Culture (20 pts)
 
 Choose **one** topic and share:
+
 - **Personal Story (50%)**: Share a personal experience related to the topic.
 - **Reflection (50%)**: Share your thoughts or insights about it.
 

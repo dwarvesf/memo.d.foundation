@@ -106,6 +106,6 @@ The StartupVN platform launched successfully and quickly became a valuable resou
 
 StartupVN has continued to evolve, with new features being added based on community feedback. The platform has become an important part of Vietnam's growing startup ecosystem, helping founders connect, learn, and build successful businesses.
 
-> "The platform has transformed how we support entrepreneurs in Vietnam. What used to require multiple disconnected tools and endless email chains now happens seamlessly in one place. This has allowed us to focus on building meaningful relationships within the community rather than managing logistics." — Tuan Anh, Founder of StartupVN
+> "The platform has transformed how we support entrepreneurs in Vietnam. What used to require multiple disconnected tools and endless email chains now happens seamlessly in one place. This has allowed us to focus on building meaningful relationships within the community rather than managing logistics." ,  Tuan Anh, Founder of StartupVN
 
 This project demonstrates how thoughtfully designed digital platforms can strengthen entrepreneurial communities and help drive economic growth. By creating a central hub for Vietnam's startup ecosystem, we've helped make entrepreneurial resources and connections more accessible to founders throughout the country.

@@ -19,6 +19,7 @@ authors:
 ![](assets/2024-whats-new-august-theme.png)
 
 ## Reporting tech signal: AI’s impact on programming and new opportunities
+
 August brought some exciting developments in AI-driven programming and app creation. Tools like **Cursor** and **Claude 3.5 Sonnet** are pushing programming toward AI-guided code, while **Generative Apps** are moving beyond UI, with AI tools now able to build mini apps from simple prompts.
 
 Other highlights include:
@@ -35,13 +36,14 @@ Other highlights include:
 ![](assets/2024-whats-new-august-tech-signal.png)
 
 ## Community engagement: memo notes, OGIF office hours, and tech discussions
+
 Since we introduced the monthly pool for learning activities, the biggest impact has been the rise in real learning and discussions happening in memo notes, OGIF office hours, and discord network. We’ve made it simple for everyone to contribute.
 
-Practical insights are brought to the table, and we work through them together—no fluff.
+Practical insights are brought to the table, and we work through them together, no fluff.
 
-Plus, there’s a new Fortress bot feature to check available ICY for grabbing, making it easier to see what’s up for grabs. 
+Plus, there’s a new Fortress bot feature to check available ICY for grabbing, making it easier to see what’s up for grabs.
 
-Big thanks to the contributions from both the team and community: @tom, @lapnn, @theoctopus, @minhlq, @taipham, @vincent, @phucld, @julis, @antran, @innno_, @minh_cloud, @bienvh, @huymaius, @huytq, @datnguyennnx, @nam, @hieuthu1, @tristran. 
+Big thanks to the contributions from both the team and community: @tom, @lapnn, @theoctopus, @minhlq, @taipham, @vincent, @phucld, @julis, @antran, @innno_, @minh_cloud, @bienvh, @huymaius, @huytq, @datnguyennnx, @nam, @hieuthu1, @tristran.
 
 Here’s what we covered in August:
 
@@ -60,11 +62,13 @@ Here’s what we covered in August:
 ![](assets/2024-whats-new-august-learning-activities.png)
 
 ## Link summaries with `sum` command
+
 We’ve upgraded the **`sum`** command on our Discord to make it easier to get the important stuff. Now, with a summary opening, key points, and nuggets of knowledge, it’s quicker to catch up on useful links. Special thanks to [@nam](https://github.com/namnhce) and [@tom](https://memo.d.foundation/contributor/tom) for leading this improvement.
 
 ![](assets/2024-whats-new-august-sum-command.png)
 
 ## Go enterprise solutions and what we’ve learned
+
 August brings a major update to our Go commentary. [@fuatto](https://memo.d.foundation/contributor/fuatto) has put together the Go Enterprise MOC, offering a clear look at how we’re applying Golang to tackle enterprise challenges and highlighting how we’re stretching its capabilities.
 
 We’re still delivering our Go commentary weekly through OGIF sessions and memo notes. [Take a look here](https://memo.d.foundation/tags/go-weekly/).
@@ -72,10 +76,11 @@ We’re still delivering our Go commentary weekly through OGIF sessions and memo
 ![](assets/2024-whats-new-august-go-enterprise.png)
 
 ## dfg token: earn by contributing
+
 The **dfg token** has evolved from a private stock-like idea to a way to reward team members for their contributions. It’s part of our plan to build a brand we can all be proud of.
 
 Originally tied to our Employee Ownership Program (EOP), the **dfg token** can now be earned through team activities. Contributions are tracked and rewarded with ICY coins. Soon, ICY will be required to earn the token.
 
-[Check out for the details.](https://memo.d.foundation/playbook/community/df-protocol-icy-dfg/) 
+[Check out for the details.](https://memo.d.foundation/playbook/community/df-protocol-icy-dfg/)
 
 ![](assets/2024-whats-new-august-dfg.png)

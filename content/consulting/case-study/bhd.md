@@ -2,7 +2,7 @@
 title: "Redesigning BHD Cinema's ticket booking app for a better experience"
 short_title: BHD Cinema
 date: 2020-05-20
-description: We helped BHD Cinema transform their outdated mobile app into an intuitive platform that allows customers to easily browse movies, book tickets online, and enjoy a seamless cinema experience—turning movie-goers into loyal BHD fans.
+description: We helped BHD Cinema transform their outdated mobile app into an intuitive platform that allows customers to easily browse movies, book tickets online, and enjoy a seamless cinema experience, turning movie-goers into loyal BHD fans.
 tags: 
   - case-study
 authors: 
@@ -63,7 +63,7 @@ We approached the redesign by focusing on the core needs of movie-goers while cr
 
 We built the app around several key principles:
 
-**Intuitive navigation**: We designed the home screen to immediately show what movies are playing, with a smooth carousel interface that makes browsing enjoyable. We moved promotional content below the movies to keep the focus on the main task—finding and booking movies.
+**Intuitive navigation**: We designed the home screen to immediately show what movies are playing, with a smooth carousel interface that makes browsing enjoyable. We moved promotional content below the movies to keep the focus on the main task, finding and booking movies.
 
 **Simplified information**: Movie details are structured for easy scanning, with all the essential information (runtime, genre, ratings) clearly visible. A persistent "Book now" button stays at the bottom of the screen, making it easy to move to the booking process at any point.
 
@@ -89,7 +89,7 @@ We created a consistent design system for the app:
 
 ![Home screen design showing movie listings in carousel format](assets/bhd-home.webp)
 
-**Movie details**: We structured movie information to help users quickly decide if a film matches their interests. Details include synopsis, runtime, genre, cast, and age rating—all the essential information for making a choice.
+**Movie details**: We structured movie information to help users quickly decide if a film matches their interests. Details include synopsis, runtime, genre, cast, and age rating, all the essential information for making a choice.
 
 ![Movie details screen showing film information and booking button](assets/bhd-details.webp)
 

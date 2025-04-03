@@ -43,7 +43,7 @@ UX/UI Design / User Research / Mobile App Redesign
 
 Kafi Securities asked us to rebuild their mobile trading app. After a strong financial year in early 2024, they wanted to invest in better technology to grow their business and stay competitive.
 
-We worked directly with Mr. Diep The Anh — Deputy Director of Kafi — and their leadership team to find the biggest problems and create smart solutions. Together, we built a new app that matched Kafi's goal of "Building financial dreams" and helping everyone access investment opportunities.
+We worked directly with Mr. Diep The Anh ,  Deputy Director of Kafi ,  and their leadership team to find the biggest problems and create smart solutions. Together, we built a new app that matched Kafi's goal of "Building financial dreams" and helping everyone access investment opportunities.
 
 Our main task was designing an app that works for two very different groups: beginners who are just starting to invest, and professionals who trade stocks daily. The app needed to teach new Vietnamese investors about finance while giving experienced traders the advanced tools they need.
 

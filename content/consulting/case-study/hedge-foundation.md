@@ -41,7 +41,7 @@ Full-stack Development / Financial Systems / Data Visualization
 
 ## What we did with Hedge Foundation
 
-[Hedge Foundation](http://hedge.foundation/) is a powerful dashboard we developed to help professional crypto traders manage multiple exchange accounts, track positions, monitor balances, calculate PnL (profit and loss), and execute bulk orders—all from a single interface.
+[Hedge Foundation](http://hedge.foundation/) is a powerful dashboard we developed to help professional crypto traders manage multiple exchange accounts, track positions, monitor balances, calculate PnL (profit and loss), and execute bulk orders, all from a single interface.
 
 As the cryptocurrency market evolved, traders needed more sophisticated tools to stay competitive. We partnered with an experienced quantitative trader to create a platform that automates many tedious tasks, synchronizes data across exchanges, and provides actionable insights through real-time market data visualization.
 
