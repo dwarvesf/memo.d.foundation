@@ -63,7 +63,10 @@ const SubscriptionSection: React.FC = () => {
           Receive the latest updates directly to your inbox.
         </p>
       </div>
-      <form onSubmit={handleSubmit} className="mt-5 flex font-serif xl:mt-0">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-5 flex w-full font-serif md:w-fit xl:mt-0"
+      >
         <input
           type="email"
           value={email}
