@@ -69,7 +69,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
-    const allMemos = await getAllMarkdownContents();
+    // Pass includeContent: false as we only need metadata for layout props
+    const allMemos = await getAllMarkdownContents('', {
+      includeContent: false,
+    });
     const layoutProps = await getRootLayoutPageProps(allMemos);
 
     // Try multiple file path options to support Hugo's _index.md convention
@@ -97,7 +100,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       } else if (fs.existsSync(indexFilePath)) {
         filePath = indexFilePath;
       } else if (fs.existsSync(directoryPath)) {
-        const allMemos = await getAllMarkdownContents(slug.join('/'));
+        // Pass includeContent: false as list page only needs title/path
+        const allMemos = await getAllMarkdownContents(slug.join('/'), {
+          includeContent: false,
+        });
         return {
           props: {
             ...layoutProps,

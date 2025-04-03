@@ -4,7 +4,15 @@ import { getAllMarkdownFiles, getContentPath } from './paths';
 import path from 'path';
 import { IMemoItem } from '@/types';
 
-export function getAllMarkdownContents(basePath = '') {
+interface GetAllMarkdownContentsOptions {
+  includeContent?: boolean;
+}
+
+export function getAllMarkdownContents(
+  basePath = '',
+  options: GetAllMarkdownContentsOptions = {},
+) {
+  const { includeContent = true } = options; // Default to true
   const contentDir = getContentPath(basePath);
   const allPaths = getAllMarkdownFiles(contentDir);
   const baseSlugArray = basePath.split('/').filter(Boolean);
@@ -21,7 +29,7 @@ export function getAllMarkdownContents(basePath = '') {
       // tags
       const result = matter(markdownContent);
       const item: IMemoItem = {
-        content: result.content,
+        content: includeContent ? result.content : '', // Conditionally include content
         title: result.data.title || slugArray[slugArray.length - 1],
         short_title: result.data.short_title || '',
         description: result.data.description || '',
