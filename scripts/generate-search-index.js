@@ -36,6 +36,8 @@ async function generateSearchIndex() {
         'file_path',
         'title',
         'description',
+        'md_content',
+        'spr_content',
         'tags',
         'authors',
         'date',
@@ -49,18 +51,26 @@ async function generateSearchIndex() {
             const filePath = row[0]?.toString() || '';
             const title = row[1]?.toString() || '';
             const description = row[2]?.toString() || '';
-            const tags = Array.isArray(row[3]) ? row[3] : [];
-            const authors = Array.isArray(row[4]) ? row[4] : [];
-            const date = row[5]?.toString() || '';
-            const draft = row[6] === true;
-            const hiring = row[7] === false;
-            const status = row[8]?.toString() || '';
+            // const mdContent = row[3]?.toString() || '';
+            const sprContent = row[4]?.toString() || '';
+            const tags = Array.isArray(row[5])
+              ? row[5].filter(
+                  tag => tag !== null && tag !== undefined && tag !== '',
+                )
+              : [];
+            const authors = Array.isArray(row[6]) ? row[6] : [];
+            const date = row[7]?.toString() || '';
+            const draft = row[8] === true;
+            const hiring = row[9] === false;
+            const status = row[10]?.toString() || '';
 
             return {
               id: String(idx),
               file_path: filePath,
               title,
               description,
+              // md_content: mdContent,
+              spr_content: sprContent?.replaceAll('\n', '<hr />'),
               tags,
               authors,
               date,
@@ -80,6 +90,7 @@ async function generateSearchIndex() {
         'file_path',
         'title',
         'description',
+        'spr_content',
         'tags',
         'authors',
         'date',
@@ -117,16 +128,16 @@ async function generateSearchIndex() {
       outputPath,
       JSON.stringify({
         index: miniSearch.toJSON(),
-        documents: searchIndex.map(doc => ({
-          id: doc.id,
-          file_path: doc.file_path,
-          title: doc.title,
-          description: doc.description,
-          tags: doc.tags,
-          authors: doc.authors,
-          date: doc.date,
-          category: doc.category,
-        })),
+        // documents: searchIndex.map(doc => ({
+        //   id: doc.id,
+        //   file_path: doc.file_path,
+        //   title: doc.title,
+        //   description: doc.description,
+        //   tags: doc.tags,
+        //   authors: doc.authors,
+        //   date: doc.date,
+        //   category: doc.category,
+        // })),
       }),
     );
 

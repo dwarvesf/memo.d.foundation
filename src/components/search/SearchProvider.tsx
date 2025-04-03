@@ -196,7 +196,7 @@ export const SearchProvider: React.FC<{
       try {
         // Define common MiniSearch options
         const miniSearchOptions = {
-          fields: ['title', 'description', 'tags', 'authors'],
+          fields: ['title', 'description', 'tags', 'authors', 'spr_content'],
           storeFields: [
             'file_path',
             'title',
