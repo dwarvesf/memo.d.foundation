@@ -82,19 +82,15 @@ export async function getBacklinks(slug: string[]) {
             // Check both original and slugified versions in content, title and description
             return (
               // Search in content
-              content.includes(
-                `https://memo.d.foundation/${escapedFullPath}`,
+              new RegExp(`https://memo.d.foundation/${escapedFullPath}/?`).test(
+                content,
               ) ||
-              content.includes(
-                `https://memo.d.foundation/${slugifiedFullPath}`,
-              ) ||
-              ['/', '#'].some(prefix =>
-                [escapedSlug, slugifiedSlug].some(
-                  slug =>
-                    content.includes(`${prefix}${slug}.md`) ||
-                    content.includes(`${prefix}${slug}`),
-                ),
-              )
+              new RegExp(
+                `https://memo.d.foundation/${slugifiedFullPath}/?`,
+              ).test(content) ||
+              new RegExp(
+                `[/#](?:${escapedSlug}|${slugifiedSlug})(?:\.md)?$`,
+              ).test(content)
             );
           });
 
