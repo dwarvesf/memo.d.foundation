@@ -88,12 +88,13 @@ export async function getBacklinks(slug: string[]) {
               content.includes(
                 `https://memo.d.foundation/${slugifiedFullPath}`,
               ) ||
-              content.includes(`${escapedFullPath}`) ||
-              content.includes(`${slugifiedFullPath}`) ||
-              content.includes(`/${escapedSlug}.md`) ||
-              content.includes(`/${slugifiedSlug}.md`) ||
-              content.includes(`#${escapedSlug}.md`) ||
-              content.includes(`#${slugifiedSlug}.md`)
+              ['/', '#'].some(prefix =>
+                [escapedSlug, slugifiedSlug].some(
+                  slug =>
+                    content.includes(`${prefix}${slug}.md`) ||
+                    content.includes(`${prefix}${slug}`),
+                ),
+              )
             );
           });
 
