@@ -21,6 +21,22 @@ should_update() {
     return 1  # No update needed
 }
 
+# Function to handle HTTPS fallback
+try_https_fallback() {
+    local repo_path=$1
+    cd "$repo_path"
+    local ssh_url=$(git remote get-url origin)
+    if [[ $ssh_url == git@* ]]; then
+        local https_url="https://github.com/${ssh_url#git@github.com:}"
+        echo "SSH failed, trying HTTPS: $https_url"
+        git remote set-url origin "$https_url"
+        if ! git pull origin --rebase --autostash; then
+            git remote set-url origin "$ssh_url"
+            return 1
+        fi
+    fi
+}
+
 # Main logic
 if should_update || [ "$1" == "--force" ]; then
     echo "Updating repository and submodules..."
@@ -28,86 +44,65 @@ if should_update || [ "$1" == "--force" ]; then
     # Pull and rebase
     yes | git pull origin --rebase --autostash
 
-    # Update submodules
-    echo "Updating submodules (max depth: $MAX_DEPTH)..."
-    export DEPTH=0
-    if ! yes | git submodule update --init --remote --progress --merge --filter=blob:none; then
+    # First level submodules
+    echo "Updating first level submodules..."
+    if ! git submodule update --init --depth 1; then
         echo "SSH failed for some submodules, trying HTTPS..."
-        git submodule foreach '
-            cd "$PWD"
-            ssh_url=$(git remote get-url origin)
-            if [[ $ssh_url == git@* ]]; then
-                https_url="https://github.com/${ssh_url#git@github.com:}"
-                echo "SSH failed, trying HTTPS: $https_url"
-                git remote set-url origin "$https_url"
-                if ! git pull origin --rebase; then
-                    git remote set-url origin "$ssh_url"
-                fi
-            fi
-        '
+        git submodule foreach 'try_https_fallback "$PWD"'
     fi
 
-    # Checkout and update submodules with depth tracking
-    echo "Checking out and updating submodules (max depth: $MAX_DEPTH)..."
-    export process_submodule='
-        try_https_fallback() {
-            local repo_path=$1
-            cd "$repo_path"
-            local ssh_url=$(git remote get-url origin)
-            if [[ $ssh_url == git@* ]]; then
-                local https_url="https://github.com/${ssh_url#git@github.com:}"
-                echo "SSH failed, trying HTTPS: $https_url"
-                git remote set-url origin "$https_url"
-                if ! git pull origin --rebase --autostash; then
-                    git remote set-url origin "$ssh_url"
-                    return 1
-                fi
-            fi
-        }
-
-        CURRENT_DEPTH=${DEPTH:-0}
-        MAX_DEPTH_VAL=${MAX_DEPTH:-2}
-        if [ "$CURRENT_DEPTH" -lt "$MAX_DEPTH_VAL" ]; then
-            # First checkout the correct branch
-            branch=$(git rev-parse --abbrev-ref HEAD)
-            if [ "$(git config --get branch.$branch.remote)" = "" ]; then
-                default_branch=$(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)
-                if ! git checkout $default_branch; then
-                    echo "Failed to checkout $default_branch for $name, trying main..."
-                    git checkout main || echo "Failed to checkout main for $name"
-                fi
-            fi
-            
-            # Get current branch and pull latest changes
-            current_branch=$(git rev-parse --abbrev-ref HEAD)
-            echo "Pulling updates for $name..."
-            if ! git pull --rebase --autostash origin $current_branch; then
-                # If rebase fails, abort it and force reset to remote
-                git rebase --abort || true
-                git fetch origin $current_branch
-                git reset --hard origin/$current_branch
-                
-                # If that fails, try HTTPS
-                if [ $? -ne 0 ]; then
-                    try_https_fallback "$PWD"
-                fi
-            fi
-            
-            # Process nested submodules at next level level
-            if [ -f .gitmodules ]; then
-                # Initialize and update submodules at this level
-                if ! yes | git submodule update --init --remote --progress --merge --filter=blob:none; then
-                    echo "SSH failed for submodules in $name, trying HTTPS..."
-                    git submodule foreach "try_https_fallback \"$PWD\""
-                fi
-                
-                # Process next level
-                export DEPTH=$((CURRENT_DEPTH + 1))
-                git submodule foreach "$process_submodule"
+    # Process level 2 submodules manually
+    echo "Updating second level submodules..."
+    git submodule foreach '
+        if [ -f .gitmodules ]; then
+            echo "Processing submodules in $name..."
+            if ! git submodule update --init --depth 1; then
+                echo "SSH failed for submodules in $name, trying HTTPS..."
+                git submodule foreach "try_https_fallback \"$PWD\""
             fi
         fi
     '
-    git submodule foreach "$process_submodule"
+
+    # Checkout submodules with error handling - first level
+    echo "Checking out first level submodules..."
+    git submodule foreach '
+        branch=$(git rev-parse --abbrev-ref HEAD)
+        if [ "$(git config --get branch.$branch.remote)" = "" ]; then
+            default_branch=$(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)
+            if ! git checkout $default_branch; then
+                echo "Failed to checkout $default_branch for $name, trying main..."
+                git checkout main || echo "Failed to checkout main for $name"
+            fi
+        fi
+        
+        # Pull latest changes
+        echo "Pulling updates for $name..."
+        git pull --rebase --autostash origin $(git rev-parse --abbrev-ref HEAD) || true
+    '
+
+    # Checkout submodules with error handling - second level
+    echo "Checking out second level submodules..."
+    git submodule foreach '
+        if [ -f .gitmodules ]; then
+            git submodule foreach "
+                branch=\$(git rev-parse --abbrev-ref HEAD)
+                if [ \"\$(git config --get branch.\$branch.remote)\" = \"\" ]; then
+                    default_branch=\$(git config -f \$toplevel/.gitmodules submodule.\$name.branch || echo master)
+                    if ! git checkout \$default_branch; then
+                        echo \"Failed to checkout \$default_branch for \$name, trying main...\"
+                        git checkout main || echo \"Failed to checkout main for \$name\"
+                    fi
+                fi
+                
+                # Pull latest changes
+                echo \"Pulling updates for \$name...\"
+                git pull --rebase --autostash origin \$(git rev-parse --abbrev-ref HEAD) || true
+            "
+        fi
+    '
+
+    # Ensure we don't proceed deeper
+    git config submodule.recurse false
 
     # Update cache file with current timestamp
     date +%s > "$CACHE_FILE"
