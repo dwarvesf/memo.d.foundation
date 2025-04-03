@@ -67,7 +67,7 @@
     --container-max-width: 695px;
     --header-height: 60px;
     --main-padding: 0px 10px 100px;
-    --main-padding-mobile: 0 1.85rem 60px;
+    --main-padding-mobile: 0 1rem 60px;
     --heading-margin: 22px;
     --subheading-margin: 18px;
     --subsubheading-margin: 6px;
@@ -222,21 +222,21 @@
 
   /* Heading level classes for TOC */
   .heading-level-1 {
-    @apply text-foreground ml-0;
+    @apply text-foreground;
   }
 
   .heading-level-2 {
-    @apply text-muted-foreground ml-0;
+    @apply text-muted-foreground;
   }
 
   .heading-level-3 {
-    @apply text-muted-foreground ml-4 text-[13px];
+    @apply text-muted-foreground text-[13px];
   }
 
   .heading-level-4,
   .heading-level-5,
   .heading-level-6 {
-    @apply text-muted-foreground ml-8 text-[13px];
+    @apply text-muted-foreground text-[13px];
   }
 
   /* TOC indicator customization */

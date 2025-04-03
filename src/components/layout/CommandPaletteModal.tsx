@@ -47,10 +47,10 @@ const CommandPaletteModal = (props: Props) => {
     isOpen &&
     typeof document !== 'undefined' &&
     createPortal(
-      <div className="fixed inset-0 z-[9999] flex items-start justify-center bg-black/50 p-4 backdrop-blur-sm">
+      <div className="fixed inset-0 z-[9999] flex items-start justify-center bg-black/50 p-4 backdrop-blur-sm md:pt-[min(8vh,6rem)]">
         <div
           ref={searchContainerRef}
-          className="dark:bg-background mt-[10vh] w-full max-w-[800px] overflow-hidden rounded-lg bg-white shadow-lg"
+          className="dark:bg-background w-full max-w-[800px] overflow-hidden rounded-lg bg-white shadow-lg"
           style={{ animation: 'fadeIn 0.15s ease-out' }}
         >
           {/* Search input */}
