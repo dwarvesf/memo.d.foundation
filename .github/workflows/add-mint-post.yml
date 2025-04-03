@@ -26,8 +26,9 @@ jobs:
           submodules: true
           fetch-depth: 0
 
-      - name: Update submodules
+      - name: Update submodules to depth 2
         run: |
+          git config --global url."https://${{ secrets.DWARVES_PAT }}@github.com/".insteadOf "git@github.com:"
           git submodule update --init --recursive --depth 2
 
       - name: Install Vault CLI
@@ -81,28 +82,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git checkout main
-
-          # Function to process submodules with depth limit
-          process_submodule() {
-            CURRENT_DEPTH=${DEPTH:-0}
-            MAX_DEPTH_VAL=2
-            if [ "$CURRENT_DEPTH" -lt "$MAX_DEPTH_VAL" ]; then
-              git checkout main || git checkout master || true
-              git add --all
-              git commit -m 'chore(ci): update submodule' || echo 'No changes committed'
-              git push || true
-              
-              if [ -f .gitmodules ]; then
-                export DEPTH=$((CURRENT_DEPTH + 1))
-                git submodule foreach "$(declare -f process_submodule); process_submodule"
-              fi
-            fi
-          }
-
-          # Process submodules with depth limit
-          export DEPTH=0
-          git submodule foreach "$(declare -f process_submodule); process_submodule"
-
+          git submodule foreach --recursive "git checkout main || git checkout master || true; git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
           git add --all
           git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
           git push

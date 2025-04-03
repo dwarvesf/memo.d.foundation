@@ -15,12 +15,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.DWARVES_PAT }}
-          submodules: true
+          submodules: recursive
           fetch-depth: 0
-
-      - name: Update submodules
-        run: |
-          git submodule update --init --recursive --depth 2
 
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.11.0
@@ -46,27 +42,7 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-
-          # Function to process submodules with depth limit
-          process_submodule() {
-            CURRENT_DEPTH=${DEPTH:-0}
-            MAX_DEPTH_VAL=2
-            if [ "$CURRENT_DEPTH" -lt "$MAX_DEPTH_VAL" ]; then
-              git add --all
-              git commit -m 'chore(ci): update submodule' || echo 'No changes committed'
-              git push || true
-              
-              if [ -f .gitmodules ]; then
-                export DEPTH=$((CURRENT_DEPTH + 1))
-                git submodule foreach "$(declare -f process_submodule); process_submodule"
-              fi
-            fi
-          }
-
-          # Process submodules with depth limit
-          export DEPTH=0
-          git submodule foreach "$(declare -f process_submodule); process_submodule"
-
+          git submodule foreach --recursive "git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
           git add --all
           git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
           git push
