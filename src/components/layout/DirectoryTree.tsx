@@ -102,7 +102,9 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
         className={cn('relative flex flex-col', {
           "before:bg-border pl-3 before:absolute before:top-0 before:left-[7px] before:h-full before:w-[1px] before:content-['']":
             depth > 0,
-          'before:bg-primary': isActive && depth > 1,
+          "after:bg-border pl-3 after:absolute after:top-1/2 after:left-[7px] after:h-full after:w-[1px] after:origin-center after:-translate-y-1/2 after:scale-y-0 after:transition-transform after:duration-300 after:ease-in-out after:content-['']":
+            depth > 0,
+          'after:bg-primary after:scale-y-100': isActive && depth > 0,
         })}
       >
         <Link
