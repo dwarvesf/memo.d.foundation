@@ -35,3 +35,16 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
     {} as Record<string, T[]>,
   );
 }
+
+export function uppercaseSpecialWords(str = '') {
+  return str
+    .toString()
+    .split(' ')
+    .map(word => {
+      if (wordDict[word.toLowerCase()]) {
+        return wordDict[word.toLowerCase()];
+      }
+      return word;
+    })
+    .join(' ');
+}
