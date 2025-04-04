@@ -4,7 +4,7 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
-import rehypeSanitize from 'rehype-sanitize';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import remarkMath from 'remark-math';
 import matter from 'gray-matter';
@@ -91,7 +91,7 @@ function remarkToc() {
       });
 
       // Generate slug for the heading
-      const slug = slugify(textContent, { strict: true });
+      const slug = slugify(textContent, { strict: true, lower: true });
       if (!slug) return;
 
       const currentCount = headingTextCount.get(textContent) || 0;
@@ -103,10 +103,7 @@ function remarkToc() {
 
       // Create a TOC item
       const item: ITocItem = {
-        id:
-          nextCount > 1
-            ? `user-content-${slug}-${nextCount}`
-            : `user-content-${slug}`,
+        id: nextCount > 1 ? `${slug}-${nextCount}` : `${slug}`,
         value: textContent,
         depth: node.depth,
         children: [],
@@ -309,6 +306,7 @@ export async function getMarkdownContent(filePath: string) {
         'muted',
       ],
     },
+    clobber: defaultSchema.clobber?.filter(i => i !== 'id'),
   };
 
   // Used to collect the file data during processing
@@ -345,6 +343,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(rehypeSanitize, schema as never) // Type cast needed due to rehype-sanitize typing limitations
     .use(rehypeTable) // Wrap tables in a container div
     .use(rehypeHighlight)
+
     .use(rehypeStringify);
 
   // Process the content
