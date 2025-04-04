@@ -41,7 +41,6 @@ const CommandPaletteModal = (props: Props) => {
     isSearching,
     setIsSearching,
   } = props;
-
   const selectedItem = result.grouped[selectedCategory]?.[selectedIndex];
   return (
     isOpen &&
@@ -147,15 +146,15 @@ const CommandPaletteModal = (props: Props) => {
                       <div className="space-y-0.5">
                         {categoryResults.map((result, index) => {
                           const isSelected =
-                            (selectedCategory === category ||
-                              (index === 0 && !selectedCategory)) &&
-                            index === selectedIndex;
+                            defaultResult.grouped[selectedCategory]?.[
+                              selectedIndex
+                            ]?.id === result.id;
                           return (
                             <div
                               id={`result-${result.id}`}
                               key={result.title}
                               className={cn(
-                                `hover:bg-muted hover:bg-muted flex cursor-pointer items-center rounded-md px-2 py-2 text-sm`,
+                                `hover:bg-muted flex cursor-pointer items-center rounded-md px-2 py-2 text-sm`,
                                 {
                                   'bg-muted': isSelected,
                                 },

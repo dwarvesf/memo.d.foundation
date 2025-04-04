@@ -9,7 +9,7 @@ import rehypeStringify from 'rehype-stringify';
 import remarkMath from 'remark-math';
 import matter from 'gray-matter';
 import { visit } from 'unist-util-visit';
-import type { Heading, Root, Link } from 'mdast';
+import type { Heading, Root, Link, Literal } from 'mdast';
 import type {
   Element,
   Properties,
@@ -72,7 +72,9 @@ function rehypeTable() {
 function remarkToc() {
   return (tree: Root, file: { data: Record<string, unknown> }) => {
     const headings: ITocItem[] = [];
-    const currentHeadings: ITocItem[][] = [headings];
+    const headingStack: { items: ITocItem[]; depth: number }[] = [
+      { items: headings, depth: 1 },
+    ];
     const headingTextMap = new Map<string, string>();
     const headingTextCount = new Map<string, number>();
     const fileData = file.data as FileData;
@@ -87,11 +89,11 @@ function remarkToc() {
       visit(node, 'text', textNode => {
         textContent += textNode.value;
       });
+
       // Generate slug for the heading
       const slug = slugify(textContent, { strict: true });
-      if (!slug) {
-        return;
-      }
+      if (!slug) return;
+
       const currentCount = headingTextCount.get(textContent) || 0;
       const nextCount = currentCount + 1;
 
@@ -110,23 +112,19 @@ function remarkToc() {
         children: [],
       };
 
-      // Find the appropriate parent level based on heading depth
-      while (currentHeadings.length > node.depth - 1) {
-        currentHeadings.pop();
+      // Pop from stack until we find the appropriate parent level
+      while (
+        headingStack.length > 1 &&
+        headingStack[headingStack.length - 1].depth >= node.depth
+      ) {
+        headingStack.pop();
       }
 
-      // Ensure we have enough levels
-      while (currentHeadings.length < node.depth - 1) {
-        const lastItem = currentHeadings[currentHeadings.length - 1]?.at(-1);
-        if (!lastItem) break;
-        currentHeadings.push(lastItem.children);
-      }
+      // Add the item to the appropriate parent array
+      headingStack[headingStack.length - 1].items.push(item);
 
-      // Add the item to the current level
-      currentHeadings[currentHeadings.length - 1].push(item);
-
-      // Track this level for potential children
-      currentHeadings.push(item.children);
+      // Push this item's children array to the stack for potential children
+      headingStack.push({ items: item.children, depth: node.depth });
     });
 
     // Store the TOC in the file data
@@ -277,11 +275,25 @@ export async function getMarkdownContent(filePath: string) {
 
   // Used to collect the file data during processing
   const fileData: Record<string, unknown> = {};
-
+  function remarkLineBreaks() {
+    return (tree: Root) => {
+      visit(tree, 'html', (node: Literal) => {
+        if (typeof node.value === 'string') {
+          if (
+            node.value.toLowerCase() === '<br>' ||
+            node.value.toLowerCase() === '<br/>'
+          ) {
+            node.type = 'break';
+          }
+        }
+      });
+    };
+  }
   // Process the Markdown content
   const processor = unified()
     .use(remarkParse)
     .use(remarkGfm)
+    .use(remarkLineBreaks)
     .use(() => remarkResolveImagePaths(filePath))
     .use(remarkProcessLinks) // Process links and remove .md extensions
     .use(remarkToc) // Extract table of contents and create heading ID mapping

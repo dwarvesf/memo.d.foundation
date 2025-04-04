@@ -88,11 +88,14 @@ const config = {
       },
       spacing: {
         sidebar: 'var(--nav-sidebar-width)',
+        'sidebar-mobile': 'var(--nav-sidebar-width-mobile)',
         'sidebar-offset': 'var(--nav-sidebar-offset)',
         'container-max': 'var(--container-max-width)',
         'element-margin': 'var(--element-margin)',
         'heading-margin': 'var(--heading-margin)',
         'header-height': 'var(--header-height)',
+        'right-sidebar-width': 'var(--right-sidebar-width)',
+        'directory-width': 'var(--directory-width)',
       },
       fontFamily: {
         sans: ['"Public Sans"', 'sans-serif'],
@@ -123,6 +126,7 @@ const config = {
             fontFamily: 'charter, Georgia, Cambria, serif',
             fontSize: '1.0625rem',
             letterSpacing: '-0.0125rem',
+            lineHeight: 'inherit',
             'code::before': {
               content: '""',
             },
@@ -166,6 +170,9 @@ const config = {
               lineHeight: '1.24',
               fontFamily: 'charter, Georgia, Cambria, serif',
               padding: '0 !important',
+            },
+            'h2, h3': {
+              lineHeight: '140%',
             },
             h1: {
               fontSize: '35px !important',
@@ -223,7 +230,6 @@ const config = {
             },
             blockquote: {
               margin: 0,
-              padding: 0,
               borderLeft: 'none',
               fontWeight: 'inherit',
               color: 'inherit',
@@ -232,6 +238,7 @@ const config = {
             'blockquote > *:first-child': {
               marginTop: '0 !important',
             },
+
             'blockquote > *::before': {
               content: 'none',
             },
@@ -262,6 +269,10 @@ const config = {
               position: 'sticky',
               top: '0',
               zIndex: '1',
+            },
+            'thead th:empty': {
+              padding: '0 !important',
+              border: 'none !important',
             },
             'tr, th, td': {
               borderCollapse: 'collapse',

@@ -362,7 +362,7 @@ const CommandPalette: React.FC = () => {
     <div className="command-palette relative z-50">
       {/* Search button */}
       <button
-        className="hidden w-50 cursor-pointer justify-between rounded-md border bg-transparent px-3 py-1.5 transition-all duration-100 ease-in-out hover:shadow-md lg:flex"
+        className="hidden w-50 cursor-pointer justify-between rounded-md border bg-transparent px-3 py-1.5 transition-all duration-100 ease-in-out hover:shadow-md md:flex"
         onClick={toggleCommandPalette}
         aria-label="Open command palette"
       >
@@ -386,7 +386,7 @@ const CommandPalette: React.FC = () => {
 
       {/* Mobile search button */}
       <button
-        className="text-foreground flex h-10 w-10 items-center justify-center border-none bg-transparent p-0 lg:hidden"
+        className="text-foreground flex h-10 w-10 items-center justify-center border-none bg-transparent p-0 md:hidden"
         onClick={toggleCommandPalette}
         aria-label="Open search"
       >

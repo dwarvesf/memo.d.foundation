@@ -67,7 +67,7 @@
     --container-max-width: 695px;
     --header-height: 60px;
     --main-padding: 0px 10px 100px;
-    --main-padding-mobile: 0 1rem 60px;
+    --main-padding-mobile: 1.25rem 1rem 60px;
     --heading-margin: 22px;
     --subheading-margin: 18px;
     --subsubheading-margin: 6px;
@@ -76,8 +76,14 @@
     --element-margin: 14px;
     --paragraph-margin: 16px;
     --column-gap: 28px;
-    --nav-sidebar-width: 232px;
+    --nav-sidebar-width-mobile: 232px;
+    --nav-sidebar-width: 62px;
     --nav-sidebar-offset: 0px;
+    --right-sidebar-width: 200px;
+    --directory-width: 232px;
+
+    --dwarves-icon: url('/assets/img/dwarves-icon.svg');
+    --diamond-icon: url('/assets/img/diamond-icon.svg');
   }
 
   .dark,
@@ -378,10 +384,11 @@
 }
 
 /* Responsive design adjustments */
-@media (min-width: 1475px) {
+@media (min-width: 1500px) {
   :root {
     --column-gap: 48px;
     --container-max-width: 730px;
+    --right-sidebar-width: 240px;
   }
 }
 
