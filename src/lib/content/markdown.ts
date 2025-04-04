@@ -218,6 +218,33 @@ function remarkProcessLinks() {
 }
 
 /**
+ * Custom rehype plugin to process video links
+ */
+function rehypeVideos() {
+  return (tree: HastRoot) => {
+    visit(tree, 'element', node => {
+      if (node.tagName === 'img') {
+        console.log(node);
+        const ext = node.properties?.src?.toString().split('.').pop() || '';
+        // if the image is a video
+        if (['mp4', 'webm'].includes(ext)) {
+          Object.assign(node, {
+            tagName: 'video',
+            properties: {
+              controls: true,
+              loop: true,
+              className: ['markdown-video'],
+              src: node.properties?.src,
+            },
+            children: [],
+          });
+        }
+      }
+    });
+  };
+}
+
+/**
  * Reads and parses markdown content from a file
  * @param filePath Path to the markdown file
  * @returns Object with frontmatter, processed HTML content, and table of contents
@@ -262,6 +289,7 @@ export async function getMarkdownContent(filePath: string) {
       'tr',
       'th',
       'td',
+      'video', // Add video tag
     ],
     attributes: {
       '*': ['id', 'className'],
@@ -270,6 +298,16 @@ export async function getMarkdownContent(filePath: string) {
       th: ['align', 'scope', 'colspan', 'rowspan'],
       td: ['align', 'colspan', 'rowspan'],
       code: [['className', /^language-./, 'math-inline', 'math-display']],
+      video: [
+        'src',
+        'controls',
+        'loop',
+        'className',
+        'width',
+        'height',
+        'autoplay',
+        'muted',
+      ],
     },
   };
 
@@ -301,6 +339,7 @@ export async function getMarkdownContent(filePath: string) {
       // singleDollarTextMath: false,
     }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeVideos)
     // .use(rehypeKatex) // Render math blocks
     .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
     .use(rehypeSanitize, schema as never) // Type cast needed due to rehype-sanitize typing limitations
