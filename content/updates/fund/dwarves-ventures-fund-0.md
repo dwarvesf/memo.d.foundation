@@ -1,15 +1,15 @@
 ---
+title: Dwarves Ventures Fund 0
+date: 2021-03-11
+description: It all started when us, a couple of product people realized with our expertise in technology, our passion for outstanding software, we have the ability to uplift like-minded founders by helping them build and launch their startups. The idea became clearer when our network of makers, industry experts and investors broadened steadily.
+authors: 
+  - tieubao
+  - nikki
 tags:
   - ventures
   - funding
   - startup
   - business
-title: Dwarves Ventures Fund 0
-date: 2021-03-11
-description: It all started when us, a couple of product people realized with our expertise in technology, our passion for outstanding software, we have the ability to uplift like-minded founders by helping them build and launch their startups. The idea became clearer when our network of makers, industry experts and investors broadened steadily.
-authors: 
-  - han
-  - nikki
 ---
 
 It all started when us, a couple of product people realized with our expertise in technology, our passion for outstanding software, we have the ability to uplift like-minded founders by helping them build and launch their startups. The idea became clearer when our network of makers, industry experts and investors broadened steadily.
@@ -21,6 +21,7 @@ Came 2020. It was a year like nothing anyone could have expected. For us, it was
 Throughout 2020, we managed to push boundaries and provide values with our unconventional, “founder-friendly” investment models. We kept on building great partnerships and supporting our portfolio companies in withstanding scrunity and growing. We also gave back to the community that raised us, by contributing to meaning non-profit projects.
 
 ### The year in number
+
 - 9 team members
 - 2 trusted partners
 - 33 investment opportunities
@@ -28,6 +29,7 @@ Throughout 2020, we managed to push boundaries and provide values with our uncon
 - 3 communities of aspiring founders and makers
 
 ### The year in industry
+
 - Healthtech
 - Foodtech
 - Proptech
@@ -37,6 +39,7 @@ Throughout 2020, we managed to push boundaries and provide values with our uncon
 - D2C
 
 ### Highlights
+
 **January**
 
 New year, new resoultion. For 2020, we set out to:
@@ -55,7 +58,7 @@ Our response: We aim to answer one simple question, “What is the fastest thing
 
 **March**
 
-We put our mark in the US startup scene. We welcome Para (http://joinpara.com), a startup in the healthtech sector, into our portlofio. The investment itself is meaningful. Para connects facilities with medial professionals, just in time to support health systems fighting the pandamic.
+We put our mark in the US startup scene. We welcome Para (<http://joinpara.com>), a startup in the healthtech sector, into our portlofio. The investment itself is meaningful. Para connects facilities with medial professionals, just in time to support health systems fighting the pandamic.
 
 Our innitiative with going remote helps lay the groundwork for our portfolio companies to follow suit and adapt the framework into their team.
 

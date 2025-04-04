@@ -22,7 +22,7 @@ We organize these meet-ups every three months to share knowledge and connect peo
 
 We are grateful to our operations team for ensuring the event went smoothly. We look forward to our next gathering and hope to see even more of you there.
 
-If you’d like to be a part of the Dwarves network, we’d love to have you at our [discord](discord.gg/dwarvesv). 
+If you’d like to be a part of the Dwarves network, we’d love to have you at our [discord](discord.gg/dfoundation).
 
 See you next time.
 

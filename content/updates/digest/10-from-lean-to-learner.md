@@ -22,7 +22,7 @@ There's a long road ahead as we work on making [memo](https://memo.d.foundation/
 
 We upgraded a monthly pool of 3000 ICY (~4500 USDC) to reward contributors who support our journey of lifelong growth in knowledge and network.
 
-Community members, you're welcome to read, contribute, and suggest additions. Simply drop a message in the relevant channels on our [Discord](http://discord.gg/dwarvesv), or ping @thanh or @Tom for help.
+Community members, you're welcome to read, contribute, and suggest additions. Simply drop a message in the relevant channels on our [Discord](http://discord.gg/dfoundation), or ping @thanh or @Tom for help.
 
 We'd love to see more contributions.
 

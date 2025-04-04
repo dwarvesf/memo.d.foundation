@@ -76,4 +76,4 @@ Those stories don't stop here.
 
 As the seasons change and the rain sets in Saigon, here’s to making small moments on Discord a little easier - and more fun.
 
-We’ll see you around on our [server](https://discord.gg/dwarvesv).
+We’ll see you around on our [server](https://discord.gg/dfoundation).

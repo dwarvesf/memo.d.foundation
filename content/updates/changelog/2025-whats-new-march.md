@@ -45,7 +45,7 @@ These tools are already making our day-to-day smoother, helping cut down small b
 
 March marked a deliberate shift in how we share and celebrate our work. The team introduced a structured format for OGIF demos, encouraging team members to present updates through lightning talks in a casual, open setting. These demos created space to surface behind-the-scenes work and helped connect the dots across teams.
 
-### Highlights from the month:
+### Highlights from the month
 
 - **ICY-BTC swap:** @hnh walked through the swap mechanism and updates to ICY valuation logic, following February’s launch.
 - **GitHub bot:** @thanh introduced a new automation agent that handles PR reminders and activity summaries to reduce friction in code review cycles.
@@ -77,13 +77,13 @@ To support the adoption, we published:
 - [A breakdown of the mint/burn mechanism](https://memo.d.foundation/playground/blockchain/cross-chain-transfers-implementing-a-token-swap-from-base-chain-to-bitcoin/)
 - [A guide to how ICY token pricing works](https://memo.d.foundation/handbook/community/how-to-swap-icy-to-btc-copy/)
 
-All resources are available on: https://memo.d.foundation/handbook/community/icy
+All resources are available on: <https://memo.d.foundation/handbook/community/icy>
 
 ![](assets/2025-whats-new-march-icy-tipping.png)
 
 ## Upgrading UI [memo.d.foundation](http://memo.d.foundation) with a smoother flow and better look
 
-Last month marked a key update for [memo.d.foundation](http://memo.d.foundation/), our digital knowledge hub. The team wrapped up a round of UI upgrades to make Memo feel smoother and more structured. These changes aim to make learning in public more accessible for both readers and writers: 
+Last month marked a key update for [memo.d.foundation](http://memo.d.foundation/), our digital knowledge hub. The team wrapped up a round of UI upgrades to make Memo feel smoother and more structured. These changes aim to make learning in public more accessible for both readers and writers:
 
 - Tweaked layout and spacing for easier reading across pages.
 - Reorganised the homepage to help surface relevant content more clearly.
@@ -110,7 +110,7 @@ Additionally, two months into our transition from remote-first to hybrid, the pr
 
 March brought a packed schedule for our BD rep @minh, who joined four standout events: XDC Network, Building Asia’s Web3 Ecosystem Roadshow, Berachain: Growing in Asia with a Fun Community, Babylon: A New Way to Use Bitcoin.
 
-There’s still a lot of noise in the space, but you can tell some builders are trying to shift things.  The bigger question from these sessions: Can Asia’s Web3 scene turn its energy into something that lasts? Feels like the pieces are there. 
+There’s still a lot of noise in the space, but you can tell some builders are trying to shift things.  The bigger question from these sessions: Can Asia’s Web3 scene turn its energy into something that lasts? Feels like the pieces are there.
 
 For the full take, Minh shared two short write-ups from the road: [Talks and Takeaways from the Scene – Part 1](https://memo.d.foundation/updates/biz/2025-web3-vietnam-recap-pt1)  and  [Part 2](https://memo.d.foundation/updates/biz/2025-web3-vietnam-recap-pt2). Give them a read if you’re curious about where Web3 might actually be heading.
 
@@ -125,4 +125,4 @@ For the full take, Minh shared two short write-ups from the road: [Talks and Tak
 - **Memo UI:** Explore further integrations to improve accessibility.
 - **Event participation:** Continue exploring AI & Web3 scenes, identifying events that support strategic relationships and learning.
 
-Got ideas to make these even better? Hit us up on [Dwarves Discord](discord.gg/dwarvesv).
+Got ideas to make these even better? Hit us up on [Dwarves Discord](discord.gg/dfoundation).

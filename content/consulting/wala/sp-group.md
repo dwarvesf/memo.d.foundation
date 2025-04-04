@@ -1,8 +1,8 @@
 ---
-title: "SP Group WALA: Insights on digital transformation and partnership in energy sector"
+title: "Digital transformation insights from the energy sector"
 short_title: SP Group
 date: 2024-06-05
-description: We’ve always wanted to visit SP Group, one of our partners, but the pandemic made it impossible until now. This year, the opportunity finally came when we decided to attend Echelon X in Singapore.
+description: Our visit to SP Group offered valuable perspectives on enterprise digital transformation challenges. We learned that successful transformation depends more on people and organizational culture than technology, while strong partnerships require treating external teams as part of your own.
 authors:
   - nikki
   - innno_
@@ -12,7 +12,9 @@ tags:
   - wala
 ---
 
-We’ve always wanted to visit [SP Group](http://spgroup.com.sg/), one of our partners, but the pandemic made it impossible until now. This year, the opportunity finally came when we decided to attend Echelon X in Singapore.
+> **Recap:** Our long-awaited visit to SP Group revealed that digital transformation in large enterprises faces more cultural than technical challenges. We discovered that successful partnerships require treating external engineers as part of one team, and that effective engineers need to understand industry-specific problems beyond just coding solutions.
+
+We've always wanted to visit [SP Group](http://spgroup.com.sg/), one of our partners, but the pandemic made it impossible until now. This year, the opportunity finally came when we decided to attend Echelon X in Singapore.
 
 Meeting the SPG team in person was insightful and rewarding. We learned more about the challenges of digital transformation for enterprises, remembered why SPG chose to work with us, and saw how we could promote a growth mindset for our engineers.
 
@@ -37,6 +39,6 @@ ___
 
 In our line of work, we hear and talk about domain knowledge all the time. WALA aims for exactly that: we, people in tech, take a break from sitting in front of our computers, to go out, connect with new people, and get to understand other businesses.
 
-Through stories collected from Techie WALAs, we hope our community members get the chance to learn from others’ successes and failures, gain insights into what works and doesn’t, and reflect on their own works and practices.
+Through stories collected from Techie WALAs, we hope our community members get the chance to learn from others' successes and failures, gain insights into what works and doesn't, and reflect on their own works and practices.
 
-Besides, breaking away from the stereotype of “tech people are introverts” is always fun.
+Besides, breaking away from the stereotype of "tech people are introverts" is always fun.

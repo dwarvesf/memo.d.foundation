@@ -1,15 +1,15 @@
 ---
-tags: 
-- newsletter
-- team
-- updates
 title: The future is blockchain and data
 date: 2022-06-26
 description: Hey, it’s Han and Nikki in your inbox again.
 authors: 
-- han
-- nikki
-- duy
+    - tieubao
+    - nikki
+    - duy
+tags: 
+    - newsletter
+    - team
+    - updates
 hide_frontmatter: true
 ---
 It’s Han and Nikki here,
@@ -27,7 +27,8 @@ In this month's edition, [Thanh Pham](https://www.linkedin.com/in/thanh-pham-466
 - Learning as the north-star metric
 - Apprenticeship Updates
 
-### Our view on the direction of data.
+### Our view on the direction of data
+
 2018, our bet was blockchain because we saw its endless possibilities, we weren’t wrong. Since then, we have successfully launched a team of 20 folks, focusing solely on building and shipping awesome blockchain products worldwide.
 
 2022, our bet goes to data. Here are the signals:
@@ -47,9 +48,10 @@ The knowledge, experience and insights we learn become talking/discussion points
 
 Since we’re big on sharing, we will also be hosting podcasts for our community, notably to share ideas about data. This is somewhat similar to Rado Talk, except no presentation, just lots of discussions, questions, and some good banter from time to time.
 
-We hope this casual format will allow us to invite community members to express their thoughts more casually, give us insights that we may have overlooked, and make the topic around data more involved. We’re open to everyone who looks to share and discuss tech, send a ping via [**our Discord**](http://discord.gg/dwarvesv) and we’ll talk asap.
+We hope this casual format will allow us to invite community members to express their thoughts more casually, give us insights that we may have overlooked, and make the topic around data more involved. We’re open to everyone who looks to share and discuss tech, send a ping via [**our Discord**](http://discord.gg/dfoundation) and we’ll talk asap.
 
 ### Blockchain as a career path
+
 The blockchain movement shapes up and integrates into every of our business decisions. It all starts with projects, training & team knowledge base.
 
 We got a chance to sit down with **[Ngoc Thanh](https://www.linkedin.com/in/pham-ngoc-thanh-99626249/), Sr. Blockchain Engineer**. With over 10 years in software development, and has led 5 blockchain projects, his sentiment on blockchain initiates multiple things we do to uplift the team's knowledge base.
@@ -63,6 +65,7 @@ Check out the full read [here](https://memo.d.foundation/careers/apprentice/df-a
 Thanh, along with other team leads and senior engineers at Dwarves are looking for talented people to join their squads. Email us at [spawn@d.foundation](mailtospawnd.foundation) if you’re interested in joining them.
 
 ### Learning as the north-star metric
+
 Dwarves equal constant learning and sharing. Last month, our theme was Blockchain Concepts and Frontend Guidance.
 
 The team was having a blast. **June's Brainery sees a 116% input increase compared to May's.** And here's the best thing: We got the first community contributors this time. Pretty dope.
@@ -89,6 +92,7 @@ With **Dwarves Sponsorship**, all contributors receive an appreciation reward fr
 We’re always looking to get better for our audience, if you have any feedback or any burning questions for us, hit reply and we’ll do our best.
 
 ### Apprenticeship: the drawbacks and the treasure
+
 We went from screening over 150 applications to accepting 7 software engineers for the program. After that, it’s all about training and guiding those 7 gems on one thing: [How to build software right](https://bit.ly/3QH3pm4).
 
 Over the span of 4 weeks, we facilitated 15 workshops, which were led by our senior engineers and also invited university professors. We ask for the apprentices’ feedback after every workshop. While the feedback looks generally good, there are drawbacks and we'd love to log them as lessons learned.
@@ -103,6 +107,7 @@ Onto the brighter side, our apprentices have been great listeners and doers, whi
 ![](assets/blockchain-and-data-20240312111132842.webp)
 
 ### Launching home-like Dwarves Hubs in Danang and Dalat
+
 If you’re tired of being confined within your home office, here’s the good news. **Dwarves Hub in Danang and Dalat is open for everyone**. Think of it as a place where Dwarves and friends can work, hang out, and get to know one another.
 
 As Dwarves work from anywhere, these little hubs we build across the country serve the only purpose of offering our team a comfy remote experience when they need it.

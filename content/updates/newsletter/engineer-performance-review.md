@@ -1,15 +1,15 @@
 ---
-tags: 
-- engineering
-- performance
-- newsletter
 title: Engineer Performance Review
 date: 2021-09-29
 description: Here's another update from Dwarves for you. Throughout September, we have completed our bi-annual performance review.
 authors: 
-- han
-- nikki
-- duy
+    - tieubao
+    - nikki
+    - duy
+tags: 
+    - engineering
+    - performance
+    - newsletter
 hide_frontmatter: true
 ---
 
@@ -18,9 +18,11 @@ Greetings,
 It's Han and Nikki from Team Dwarves. Time does fly when we get to do something we love. As we keep working on building up the team and producing codes for our clients, we didn't even notice it's already the end of September. Here's another update from Dwarves for you. Throughout September, we have completed our bi-annual performance review.
 
 ### How we approach engineer performance review
+
 We all have our fair share of performance reviews, be it reviewing others or being reviewed. Saying most of our experience with performance reviews is unpleasant isn't far from the truth.
 
 We don't want the team at Dwarves having to go through those, so we design our performance reviews around the engineers, instead of management.
+
 - The engineers reflect on their growth, their point of view on the team and the organization, then share with us through a self-review.
 - We also expect the engineers to have a sense of where they want to go next, in terms of their professional growth.
 - The performance review is conducted by someone who has intimate knowledge about the engineer; their direct team lead, project lead, or mentor. We believe only those who know what the engineer has been up to can give a relevant, specific, and fair review.

@@ -1,15 +1,15 @@
 ---
-tags: 
-- updates
-- newsletter
-- career
 title: Engineering Organizational Structure
 date: 2021-12-01
 description: It's Han and Nikki from Team Dwarves. We're almost at the end of this year. While we know everyone is busy wrapping up 2021, we hope you're taking care of yourself and staying safe.
 authors: 
-- han
-- duy
-- nikki
+    - tieubao
+    - duy
+    - nikki
+tags: 
+    - updates
+    - newsletter
+    - career
 hide_frontmatter: true
 ---
 
@@ -28,6 +28,7 @@ Remember last month when we mentioned [refining our engineering ladder](https://
 There's no one engineering organizational structure that fits all. What fits our fast-growing team today might not fit 6 months from now. We'll have to be agile and iterate. But for now, we're pretty well-set for some heavyweight talent acquisition initiatives.
 
 ### Some other highlights of November
+
 **Recruiting team members everywhere in Vietnam**
 
 In the last few months, we have been hard at work to build offices across the country. It's our first attempt to be able to reach more engineers. Though we're a 100% remote team, we still want to offer engineers a place to work if they feel like it.
@@ -50,7 +51,7 @@ FYI, as we want to drive focus on Web 3.0 without confusing people with our othe
 
 **Foster community, help others win, and get cool perks in the process**
 
-- Opening our Discord channel for the public. [**Join in the conversation**](https://discord.gg/dwarvesv) if you haven't, there are a lot of useful stuff going around.
+- Opening our Discord channel for the public. [**Join in the conversation**](https://discord.gg/dfoundation) if you haven't, there are a lot of useful stuff going around.
 - Sponsoring multiple tech events in Vietnam. Vietnam is the starting point, we're excited to connect with tech talents anywhere, not just Vietnam.
 - Public weekly training and knowledge sharing (on Discord too).
 - Coming soon: engage to earn for Dwarves network.

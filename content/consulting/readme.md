@@ -9,13 +9,12 @@ authors:
 tags:
   - consulting
   - home
-hide_frontmatter: false
 hide_title: true
 ---
 
-## Who we are
+## Our foundation
 
-We're a team of tech experts who solve business problems. We combine technical skills with good communication to help companies overcome challenges. We identify root causes, create solutions, and work with clients to implement them. Our skills cover strategy, operations, IT, finance, and marketing.
+The Consulting Team is a strategic spin-off built on the foundation of our Tech Research Team. While Tech Research explores emerging technologies and builds innovative solutions, we take those insights and apply them directly to real business challenges. This unique setup gives us a competitive edge - we're practitioners backed by cutting-edge research, bridging the gap between innovation and practical application.
 
 ## Latest from consulting team
 
@@ -48,7 +47,7 @@ We want team members to be problem-solvers rather than just task-completers. Dee
 
 Our work environment is practical and hands-on. We learn through real client projects rather than just theory. We track industry trends and turn insights into practical solutions.
 
-We collaborate with our Labs Team to provide specialized expertise across industries. This ensures we apply our latest research directly to client projects.
+What sets us apart is our direct pipeline from research to application. When facing client challenges, we tap into innovative technologies and cutting-edge knowledge, creating solutions that are both forward-thinking and pragmatic.
 
 We maintain structured communication:
 
@@ -62,15 +61,15 @@ We maintain structured communication:
 
 ## Main functions
 
-We monitor markets to stay informed about industry trends and new technologies. We gather insights from hiring patterns, industry contacts, venture capital news, and publications.
+We monitor markets to stay informed about industry trends and new technologies. We gather insights from hiring patterns, industry contacts, venture capital news, and publications. This intelligence provides a comprehensive view of what's possible in the current tech landscape.
 
 Our solution delivery process includes:
 
 1. Understanding client needs
-2. Studying what's possible
-3. Designing solutions
+2. Studying what's possible, leveraging our research expertise
+3. Designing solutions that merge innovation with practical applications
 4. Creating proposals
-5. Building the right team
+5. Building the right team with specialized skills as needed
 6. Developing and testing
 7. Deployment and operations
 
@@ -95,7 +94,7 @@ Project management is key - you'll oversee projects from idea to delivery, often
 
 ## Joining our team
 
-Our team started with members appointed by our Board and referrals from Labs and Delivery teams. We look for people who show strong project involvement, leadership ability, and business understanding.
+Our team started with members appointed by our Board and referrals from various internal teams. We look for people who show strong project involvement, leadership ability, and business understanding.
 
 If you're interested, join technical discussions on our Discord server. Once invited, you'll receive training through workshops on consulting, marketing, and sales. We assign mentors to support your growth. There's a one-month trial period working on actual projects.
 

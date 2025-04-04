@@ -1,8 +1,8 @@
 ---
-title: "DZS Media WALA: Lessons from film production for software engineering"
+title: "Film production lessons for software engineering"
 short_title: DZS Media
 date: 2024-10-16
-description: Our visit to DZS Media, a successful film production company in Ho Chi Minh City, revealed surprising parallels between film production and software engineering. We learned valuable lessons about meticulous planning, getting things right the first time, and the importance of expertise in both industries.
+description: Our visit to DZS Media revealed surprising parallels between film production and software development. Their meticulous planning, focus on getting things right the first time, and expertise-driven approach offers valuable insights for our engineering practices.
 authors:
   - innno_
   - monotykamary
@@ -11,7 +11,9 @@ tags:
   - wala
 ---
 
-The tech world has much to gain by learning from other industries. Techies always look for unconventional ways to seek insights and learnings. Recently, we had the opportunity to visit DZS Media, a film production company in Ho Chi Minh City, the powerhouse behind hits like “Siêu Lừa Gặp Siêu Lầy” and “Chị Chị Em Em 2”.
+> **Recap:** Our visit to DZS Media, a successful film production company, showed us how another creative industry approaches quality and production. Their meticulous planning, expertise-driven decisions, and commitment to getting things right the first time mirror effective software development principles and reinforce the value of cross-industry learning.
+
+The tech world has much to gain by learning from other industries. Techies always look for unconventional ways to seek insights and learnings. Recently, we had the opportunity to visit DZS Media, a film production company in Ho Chi Minh City, the powerhouse behind hits like "Siêu Lừa Gặp Siêu Lầy" and "Chị Chị Em Em 2".
 
 During our visit, we witnessed DZS Media's meticulous production process. They've built a facility for every purpose - soundproof recording studios, talent training rooms, reference libraries - leaving no detail overlooked. Their discipline and work ethic were stunning. Every step was engineered to get it right the first time, a requirement in the film industry.
 
@@ -35,6 +37,6 @@ ___
 
 In our line of work, we hear and talk about domain knowledge all the time. WALA aims for exactly that: we, people in tech, take a break from sitting in front of our computers, to go out, connect with new people, and get to understand other businesses.
 
-Through stories collected from Techie WALAs, we hope our community members get the chance to learn from others’ successes and failures, gain insights into what works and doesn’t, and reflect on their own works and practices.
+Through stories collected from Techie WALAs, we hope our community members get the chance to learn from others' successes and failures, gain insights into what works and doesn't, and reflect on their own works and practices.
 
-Besides, breaking away from the stereotype of “tech people are introverts” is always fun.
+Besides, breaking away from the stereotype of "tech people are introverts" is always fun.

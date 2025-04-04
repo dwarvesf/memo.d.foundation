@@ -119,7 +119,7 @@ The Dwarves actively take part in developer networks to bring makers and tech en
 * Social Media: **[LinkedIn](https://www.linkedin.com/company/dwarvesf/)**, **[Facebook](https://www.facebook.com/dwarvesf)**, **[Instagram](https://www.instagram.com/dwarves.foundation/)**, **[Twitter](https://twitter.com/dwarvesf)**, **[Memo](https://memo.d.foundation/)**
 * Streamline: **[Youtube](https://www.youtube.com/@dwarvesfoundation2350)**, **[Let's Hear IT](https://spoti.fi/3xi92yY)[Podcast](https://rss.com/podcasts/dwarvestechevent/)**
 
-A variety of things, from lessons learned in a well-written format to Radio Talk live every Monday on Youtube and hanging out with techies at [Dwarves Discord Network](https://discord.com/invite/dwarvesv) where we talk about technology and life as developers can help you stay tuned with us.
+A variety of things, from lessons learned in a well-written format to Radio Talk live every Monday on Youtube and hanging out with techies at [Dwarves Discord Network](https://discord.gg/dfoundation) where we talk about technology and life as developers can help you stay tuned with us.
 
 ![](assets/2022-in-review_2022-dwarves-renaissance-a-year-end-rewind_2efc2bdd5fc9eaa0c2e3cedd125136af_md5.webp)
 

@@ -20,6 +20,7 @@ hide_frontmatter: false
 ![](assets/2024-whats-new-december.png)
 
 ## Summit 2024: Building our rhythm in Penang
+
 December took us off the grid and into the heart of Penang, giving us a chance to step outside our screens and into shared adventures. The team naturally broke into their own rhythms: street food trails, heritage walks, challenge courses, or simply finding peace by the waves.
 
 Every moment shared, every snapshot dropped into **🌉・moments**. ICY was nice, but the connections made? Unbeatable. Penang reminded us of what works best: trusting the team to chart their path.
@@ -27,6 +28,7 @@ Every moment shared, every snapshot dropped into **🌉・moments**. ICY was nic
 Coming back home with stronger bonds, and the confidence that comes from seeing our team thrive both online and off. [Catch the full Penang story here.](https://memo.d.foundation/updates/changelog/2024-summit-building-bonds-our-way/)
 
 ## The final notes of 2024
+
 The year's wrapping up with its own rhythm. Teams are closing their projects with care, not rush. We're putting together Tet gifts - a small way to welcome the new year with meaning. The year-end reflections are coming together, capturing not just what we shipped, but what we learned along the way.
 
 Some things brewing as we wind down:
@@ -37,7 +39,8 @@ Some things brewing as we wind down:
 - Stories and learnings being documented at memo.d.foundation.
 
 ## Finding your reset and 2025 begins
-December's keeping us both productive and thoughtful. Projects are moving steadily ahead while next year's plans come together, and we're making space for those end-of-year moments that matter. Our Discord's buzzing with shipping updates and preparations for what lies ahead. 
+
+December's keeping us both productive and thoughtful. Projects are moving steadily ahead while next year's plans come together, and we're making space for those end-of-year moments that matter. Our Discord's buzzing with shipping updates and preparations for what lies ahead.
 
 Around the team, you'll find:
 
@@ -45,8 +48,8 @@ Around the team, you'll find:
 - Tech articles finding their spotlight amidst planning sessions.
 - Team sync-ups mixing with year-end wrap-ups.
 
-These closing days of the year are yours to navigate. Some are diving deep into 2025 roadmaps, others are finding that perfect mix of prep. The work's flowing, the ideas are brewing, and the energy's just right. 
+These closing days of the year are yours to navigate. Some are diving deep into 2025 roadmaps, others are finding that perfect mix of prep. The work's flowing, the ideas are brewing, and the energy's just right.
 
 The start of a new year is here, and before we dive back in, we wanted to take a moment to say thanks. Thanks for being part of what made 2024 work - we shipped things that mattered, learned stuff worth sharing, and built connections that went beyond code.
 
-See you on [Dwarves Discord](discord.gg/dwarvesv), OGIF, and the next meetup. 2025's looking good already.
+See you on [Dwarves Discord](discord.gg/dfoundation), OGIF, and the next meetup. 2025's looking good already.

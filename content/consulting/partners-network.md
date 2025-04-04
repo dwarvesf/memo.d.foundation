@@ -4,7 +4,7 @@ date: 2024-03-07
 description: Partnering with Dwarves is not just a collaboration, it's a strategic investment in trust, network and business growth. Being our partners mean sharing opportunities, resources, connections and scaling up together.
 authors:
   - nikki
-  - han
+  - tieubao
 tags:
   - consulting
   - partners
