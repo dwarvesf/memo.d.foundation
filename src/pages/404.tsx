@@ -29,12 +29,12 @@ const NotFound = (props: RootLayoutPageProps) => {
     <RootLayout {...props} title="404 - Page Not Found">
       <div className="font-charter flex h-[calc(100vh-60px-24px-10rem)] w-full flex-col items-center justify-center text-center">
         <h1 className="mt-0 flex items-end gap-[22px]">
-          <span className="border-none text-[140px] leading-[90%] font-normal tracking-[-3.04px] sm:text-[100px]">
+          <span className="xs:text-[140px] border-none text-[100px] leading-[90%] font-normal tracking-[-3.04px]">
             4
           </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="dark:first:[&>path]:fill-background h-[120px] w-[120px] border-none sm:h-[80px] sm:w-[80px]"
+            className="dark:first:[&>path]:fill-background xs:h-[120px] xs:w-[120px] h-[80px] w-[80px] border-none"
             viewBox="0 0 138 138"
             fill="none"
           >
@@ -132,21 +132,21 @@ const NotFound = (props: RootLayoutPageProps) => {
               fill="currentColor"
             />
           </svg>
-          <span className="border-none text-[140px] leading-[90%] font-normal tracking-[-3.04px] sm:text-[100px]">
+          <span className="xs:text-[140px] border-none text-[100px] leading-[90%] font-normal tracking-[-3.04px]">
             4
           </span>
         </h1>
 
-        <h2 className="mt-14 text-2xl leading-[90%] font-normal tracking-[-0.64px] sm:mt-[18px] sm:text-lg">
+        <h2 className="mt-[18px] text-lg leading-[90%] font-normal tracking-[-0.64px] sm:mt-14 sm:text-2xl">
           UH...OH!
         </h2>
 
-        <p className="mt-5 text-2xl leading-[140%] font-normal tracking-[-0.2px] italic sm:mt-4 sm:text-lg">
+        <p className="mt-4 text-lg leading-[140%] font-normal tracking-[-0.2px] italic sm:mt-5 sm:text-2xl">
           &quot;Can a computer think? Can a submarine swim? Maybe that&apos;s
           why you&rsquo;re lost here.&rdquo;
         </p>
 
-        <p className="mt-5 text-lg leading-6 font-normal sm:mt-3.5 sm:text-sm">
+        <p className="mt-3.5 text-sm leading-6 font-normal sm:mt-5 sm:text-lg">
           It looks like you&apos;ve drifted into uncharted waters. Return to{' '}
           <Link href="/" className="text-primary hover:underline">
             homepage
