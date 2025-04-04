@@ -71,45 +71,49 @@ const CommandPalette: React.FC = () => {
 
   // Navigate to the selected item
   const goto = useCallback(() => {
-    if (query) {
-      const selected = result.grouped[selectedCategory]?.[selectedIndex];
-      if (selected && selected.file_path) {
-        // Use the slugifyPathComponents function from backlinks.ts
-        const slugifiedPath = selected.file_path.endsWith('.md')
-          ? slugifyPathComponents(selected.file_path).slice(0, -3) // Remove .md extension
-          : slugifyPathComponents(selected.file_path);
+    try {
+      if (query) {
+        const selected = result.grouped[selectedCategory]?.[selectedIndex];
+        if (selected && selected.file_path) {
+          // Use the slugifyPathComponents function from backlinks.ts
+          const slugifiedPath = selected.file_path.endsWith('.md')
+            ? slugifyPathComponents(selected.file_path).slice(0, -3) // Remove .md extension
+            : slugifyPathComponents(selected.file_path);
 
-        router.push('/' + slugifiedPath);
-        close();
-      }
-      return;
-    }
-    // If no query, navigate to the default result
-    const selected = defaultResult.grouped[selectedCategory]?.[selectedIndex];
-    if (selected && selected.path) {
-      if (selected.action === 'copy') {
-        const memoContent = document.querySelector(
-          '.memo-content',
-        ) as HTMLElement;
-        let content = 'No content found';
-        if (memoContent) {
-          content =
-            memoContent.textContent ||
-            memoContent.innerHTML ||
-            ''.replace(/\n\s*\n\s*\n/g, '\n\n').trim();
+          router.push('/' + slugifiedPath);
+          close();
         }
-        navigator.clipboard.writeText(content);
-        toast.success('Copied memo content!');
-        close();
-      } else {
-        // Use router.push with a more reliable approach to prevent tab closing
-        // Make sure path starts with '/' to ensure relative navigation
-        const path = selected.path.startsWith('/')
-          ? selected.path
-          : '/' + selected.path;
-        router.push(path);
-        close();
+        return;
       }
+      // If no query, navigate to the default result
+      const selected = defaultResult.grouped[selectedCategory]?.[selectedIndex];
+      if (selected && selected.path) {
+        if (selected.action === 'copy') {
+          const memoContent = document.querySelector(
+            '.memo-content',
+          ) as HTMLElement;
+          let content = 'No content found';
+          if (memoContent) {
+            content =
+              memoContent.textContent ||
+              memoContent.innerHTML ||
+              ''.replace(/\n\s*\n\s*\n/g, '\n\n').trim();
+          }
+          navigator.clipboard.writeText(content);
+          toast.success('Copied memo content!');
+          close();
+        } else {
+          // Use router.push with a more reliable approach to prevent tab closing
+          // Make sure path starts with '/' to ensure relative navigation
+          const path = selected.path.startsWith('/')
+            ? selected.path
+            : '/' + selected.path;
+          router.push(path);
+          close();
+        }
+      }
+    } catch (error) {
+      console.error('Error navigating to selected item:', error);
     }
   }, [
     query,

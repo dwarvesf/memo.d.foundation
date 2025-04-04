@@ -4,7 +4,7 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
-import rehypeSanitize from 'rehype-sanitize';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import remarkMath from 'remark-math';
 import matter from 'gray-matter';
@@ -91,7 +91,7 @@ function remarkToc() {
       });
 
       // Generate slug for the heading
-      const slug = slugify(textContent, { strict: true });
+      const slug = slugify(textContent, { strict: true, lower: true });
       if (!slug) return;
 
       const currentCount = headingTextCount.get(textContent) || 0;
@@ -103,10 +103,7 @@ function remarkToc() {
 
       // Create a TOC item
       const item: ITocItem = {
-        id:
-          nextCount > 1
-            ? `user-content-${slug}-${nextCount}`
-            : `user-content-${slug}`,
+        id: nextCount > 1 ? `${slug}-${nextCount}` : `${slug}`,
         value: textContent,
         depth: node.depth,
         children: [],
@@ -218,6 +215,33 @@ function remarkProcessLinks() {
 }
 
 /**
+ * Custom rehype plugin to process video links
+ */
+function rehypeVideos() {
+  return (tree: HastRoot) => {
+    visit(tree, 'element', node => {
+      if (node.tagName === 'img') {
+        console.log(node);
+        const ext = node.properties?.src?.toString().split('.').pop() || '';
+        // if the image is a video
+        if (['mp4', 'webm'].includes(ext)) {
+          Object.assign(node, {
+            tagName: 'video',
+            properties: {
+              controls: true,
+              loop: true,
+              className: ['markdown-video'],
+              src: node.properties?.src,
+            },
+            children: [],
+          });
+        }
+      }
+    });
+  };
+}
+
+/**
  * Reads and parses markdown content from a file
  * @param filePath Path to the markdown file
  * @returns Object with frontmatter, processed HTML content, and table of contents
@@ -262,6 +286,7 @@ export async function getMarkdownContent(filePath: string) {
       'tr',
       'th',
       'td',
+      'video', // Add video tag
     ],
     attributes: {
       '*': ['id', 'className'],
@@ -270,7 +295,18 @@ export async function getMarkdownContent(filePath: string) {
       th: ['align', 'scope', 'colspan', 'rowspan'],
       td: ['align', 'colspan', 'rowspan'],
       code: [['className', /^language-./, 'math-inline', 'math-display']],
+      video: [
+        'src',
+        'controls',
+        'loop',
+        'className',
+        'width',
+        'height',
+        'autoplay',
+        'muted',
+      ],
     },
+    clobber: defaultSchema.clobber?.filter(i => i !== 'id'),
   };
 
   // Used to collect the file data during processing
@@ -301,11 +337,13 @@ export async function getMarkdownContent(filePath: string) {
       // singleDollarTextMath: false,
     }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeVideos)
     // .use(rehypeKatex) // Render math blocks
     .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
     .use(rehypeSanitize, schema as never) // Type cast needed due to rehype-sanitize typing limitations
     .use(rehypeTable) // Wrap tables in a container div
     .use(rehypeHighlight)
+
     .use(rehypeStringify);
 
   // Process the content
