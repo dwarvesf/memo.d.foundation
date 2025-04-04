@@ -13,6 +13,7 @@ import TableOfContents from './TableOfContents';
 import ImageZoomProvider from '../image/ImageZoomProvider';
 import { SearchProvider } from '../search';
 import { useScrollToTopOnRouteChange } from '@/hooks/useScrollToTopOnRouteChange';
+import { cn } from '@/lib/utils';
 
 interface RootLayoutProps extends RootLayoutPageProps {
   children: React.ReactNode;
@@ -149,17 +150,20 @@ function RootLayout({
           <div className="main-grid relative w-full flex-1 flex-col">
             <RightSidebar metadata={metadata} />
             <TableOfContents items={tocItems} />
-            <main className="main-content mx-auto max-w-[var(--container-max-width)] min-w-0 flex-1 p-[var(--main-padding-mobile)] pb-16 font-serif xl:p-[var(--main-padding)]">
+            <main className="main-content mx-auto max-w-[var(--container-max-width)] min-w-0 flex-1 p-[var(--main-padding-mobile)] font-serif xl:p-[var(--main-padding)]">
               {/* Yggdrasil tree background */}
               <Image
-                className="yggdrasil-tree no-zoom pointer-events-none absolute bottom-8 left-1/2 w-[60vw] max-w-xs -translate-x-1/2 object-contain opacity-[0.03] md:w-[20vw] xl:w-[20vw] dark:opacity-100"
+                className={cn(
+                  'yggdrasil-tree no-zoom pointer-events-none object-contain opacity-[0.03] md:w-[20vw] xl:w-[20vw] dark:opacity-100',
+                  'absolute bottom-8 left-1/2 w-[50vw] max-w-xs -translate-x-1/2 xl:translate-x-[80%]',
+                )}
                 src="/assets/img/footer-bg.svg"
                 alt=""
                 width={1920}
                 height={1080}
               />
               {/* Content */}
-              <div className="memo-content mb-8">{children}</div>
+              <div className="memo-content pb-8">{children}</div>
             </main>
 
             <div className="toc-space"></div>
