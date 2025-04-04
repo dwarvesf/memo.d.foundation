@@ -136,6 +136,10 @@
     letter-spacing: -0.0125rem;
   }
 
+  .memo-content a {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
   h1,
   h2,
   h3,

@@ -113,7 +113,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
       {/* Backlinks section */}
       {backlinks.length > 0 && (
         <div className="mentionin border-border mt-12 border-t pt-6">
-          <h6 className="mb-0 font-sans text-[10px] font-medium uppercase">
+          <h6 className="font-ibm-sans mb-2 text-[10px] font-medium uppercase">
             Mentioned in
           </h6>
           <ul className="mt-[5px] mb-[10px] flex list-none flex-col gap-1.5 pl-0 font-serif">

@@ -139,7 +139,7 @@ const CommandPaletteModal = (props: Props) => {
               {!query &&
                 Object.entries(defaultResult.grouped).map(
                   ([category, categoryResults]) => (
-                    <div className="my-4 px-3" key={category}>
+                    <div className="my-2 px-3" key={category}>
                       <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
                         {category}
                       </div>

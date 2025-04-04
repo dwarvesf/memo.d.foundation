@@ -69,7 +69,7 @@ const MemoVList = (props: Props) => {
                 </div>
               )}
               {!hideDate && memo.date && (
-                <div className="text-secondary-foreground dark:text-secondary-light font-ibm-sans text-sm font-normal">
+                <div className="text-secondary-foreground dark:text-secondary-light font-ibm-sans mt-1 text-sm font-normal">
                   {formatDate(memo.date, 'MMMM dd, yyyy')}
                 </div>
               )}

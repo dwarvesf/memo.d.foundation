@@ -143,7 +143,7 @@ export default function Home({
 function LoveWhatWeAreDoing() {
   return (
     <div className="font-sans">
-      <h2 className="mt-6 text-[10px] font-medium uppercase">
+      <h2 className="font-ibm-sans mt-6 text-[10px] font-medium uppercase">
         Love what we are doing?
       </h2>
       <ul className="xs:grid-cols-2 mt-2.5 grid list-none gap-2.5 pl-0">
