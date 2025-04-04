@@ -4,6 +4,9 @@ export const wordDict: Record<string, string> = {
   ogif: 'OGIF',
   llm: 'LLM',
   ai: 'AI',
+  nda: 'NDA',
+  aarrr: 'AARRR',
+  wala: 'WALA',
 };
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,4 +34,17 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
     },
     {} as Record<string, T[]>,
   );
+}
+
+export function uppercaseSpecialWords(str = '') {
+  return str
+    .toString()
+    .split(' ')
+    .map(word => {
+      if (wordDict[word.toLowerCase()]) {
+        return wordDict[word.toLowerCase()];
+      }
+      return word;
+    })
+    .join(' ');
 }

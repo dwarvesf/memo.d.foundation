@@ -1,5 +1,5 @@
 import { IMemoItem, ITreeNode } from '@/types';
-import { slugToTitle } from '../utils';
+import { slugToTitle, uppercaseSpecialWords } from '../utils';
 import { sortMemos } from './memo';
 
 export const ExcludePaths = ['site-index.md', 'contributing.md'];
@@ -52,7 +52,8 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
         currentNode[currentPath] = {
           label:
             partIndex === memo.slugArray.length - 1
-              ? memo.short_title || memo.title || slugToTitle(part)
+              ? uppercaseSpecialWords(memo.short_title || memo.title) ||
+                slugToTitle(part)
               : slugToTitle(part),
           children: {},
         };
