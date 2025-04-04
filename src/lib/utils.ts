@@ -4,6 +4,9 @@ export const wordDict: Record<string, string> = {
   ogif: 'OGIF',
   llm: 'LLM',
   ai: 'AI',
+  nda: 'NDA',
+  aarrr: 'AARRR',
+  wala: 'WALA',
 };
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

@@ -65,7 +65,7 @@ const SubscriptionSection: React.FC = () => {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="mt-5 flex w-full font-serif md:w-fit xl:mt-0"
+        className="mt-5 flex w-full font-[Arial,serif] md:w-fit xl:mt-0"
       >
         <input
           type="email"

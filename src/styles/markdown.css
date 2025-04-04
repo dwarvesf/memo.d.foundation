@@ -60,11 +60,14 @@
   .katex-display {
     @apply !my-0;
   }
-
+  .prose :where(h2 + *):not(:where([class~='not-prose'])) {
+    @apply !mt-[var(--element-margin)];
+  }
   .article-content blockquote {
     @apply relative grid grid-cols-[32px_1fr] gap-x-2.5 overflow-hidden rounded-lg bg-[var(--primary-color-lighten)] p-4 px-3 text-base leading-6;
     place-items: center flex-start;
     isolation: isolate; /* Creates a new stacking context */
+    margin-top: var(--element-margin) !important;
   }
   .article-content blockquote * {
     grid-column: 2/2;
@@ -97,7 +100,16 @@
     transform: translate3d(30%, 10%, 0);
     opacity: 0.4;
   }
-  .article-content table a {
+  .article-content h3,
+  .article-content h4,
+  .article-content h5 {
+    margin-top: var(--subheading-margin) !important;
+  }
+  .article-content table a,
+  .article-content h2 a,
+  .article-content h3 a,
+  .article-content h4 a,
+  .article-content h5 a {
     @apply !text-foreground hover:!text-primary;
   }
 }
