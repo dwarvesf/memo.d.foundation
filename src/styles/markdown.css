@@ -112,4 +112,7 @@
   .article-content h5 a {
     @apply !text-foreground hover:!text-primary;
   }
+  .article-content li > p:first-child {
+    @apply !mt-0;
+  }
 }
