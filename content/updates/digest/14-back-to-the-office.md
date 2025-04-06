@@ -1,14 +1,14 @@
 ---
-tags:
-  - weekly-digest
-  - team
-  - hybrid-working
 title: "Weekly Digest #14: Embracing hybrid work - the best of both worlds"
 short_title: "#14 Hybrid work harmony"
 date: 2024-09-25
 description: "Discover how Dwarves embraces hybrid working, blending flexibility with in-person connections. Learn how our office space fosters productivity, learning, and real collaboration, even if it’s just for a day or two a week."
 authors:
   - innno_
+tags:
+  - weekly-digest
+  - team
+  - hybrid-working
 ---
 
 Since the start, Dwarves has valued flexibility, allowing our team to work where inspiration strikes. But there's something special about being together, learning, sharing knowledge, and working side by side.

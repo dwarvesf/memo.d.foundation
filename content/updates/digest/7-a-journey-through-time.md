@@ -1,15 +1,15 @@
 ---
-tags:
-  - weekly-digest
-  - discord
-  - community
-  - team
 title: "Weekly Digest #7: A journey through time"
 short_title: "#7 A journey through time"
 date: 2024-05-30
 description: "The sun peeks over the horizon, Saturday vibes and good news – the perfect combo. We're about to spice up your weekend with a recap of all the awesome things we whipped up this week."
 authors:
   - innno_
+tags:
+  - weekly-digest
+  - discord
+  - community
+  - team
 ---
 
 The sun peeks over the horizon, Saturday vibes and good news – the perfect combo. We're about to spice up your weekend with a recap of all the awesome things we whipped up this week.

@@ -11,6 +11,28 @@ tags:
 
 > We're like-minded teammates who pursue ambitious goals with tech culture and codes of conduct.
 
+### Growth stories
+
+- [Dat Nguyen](/updates/life/dat-nguyen)
+- [Life cycle of a publication](/playground/01_literature/lifecycle-of-a-publication)
+- [Life at Dwarves](/careers/life)
+- [Software Design Group](/updates/life/software-design-group)
+- [/playground/01_literature/engineering/mobile/kotlin-coroutine-lifecycle](/playground/01_literature/engineering/mobile/kotlin-coroutine-lifecycle)
+- [Hieu Vu](/updates/life/hieu-vu)
+- [Nam Nguyen](/updates/life/nam-nguyen)
+- [An Tran](/updates/life/an-tran)
+- [Tom Nguyen](/updates/life/tom-nguyen)
+- [Anh Tran](/updates/life/anh-tran)
+
+<!-- ![Nam Nguyen presenting at a Dwarves event](assets/nam-nguyen.webp)
+[Nam Nguyen: Keep pushing oneself towards the goal]()
+
+![My Anh sharing her journey from data to backend development](assets/my-anh.webp)
+[My Anh: From Data to Backend, an apprentice sharing]()
+
+![Hieu Vu during his technical presentation about Golang](assets/hieu-vu.webp)
+[Hieu Vu: Python, Java or NodeJS? Golang!]() -->
+
 ## Build a place we love to work at
 
 We build this company like we build a product. There are roadmaps for growth; there are phases; there are iterations. There might also be bugs, places where the company crashes because of bad organizational design, or cultural oversights.
@@ -55,28 +77,17 @@ Weekly sharing on practices, new findings & demos.
 
 Practice sharing, real-case demos & key takeaways.
 
-### Lecturer training
-
-Occasional training from university lecturers to reinforce working style & engineering mindset.
-
 ### [Tech event](https://open.spotify.com/show/7iHr4TuMBhc2LZhLn0YFoI?si=be4abf7312fe44e1&nd=1)
 
 Monthly sit with Vietnam tech talents for global real-world experiences.
 
+### Lecturer training
+
+Occasional training from university lecturers to reinforce working style & engineering mindset.
+
 ### #TIL channels
 
 Jotted down channels for daily news & tips sharing.
-
-### Growth stories
-
-![Nam Nguyen presenting at a Dwarves event](assets/nam-nguyen.webp)
-[Nam Nguyen: Keep pushing oneself towards the goal]()
-
-![My Anh sharing her journey from data to backend development](assets/my-anh.webp)
-[My Anh: From Data to Backend, an apprentice sharing]()
-
-![Hieu Vu during his technical presentation about Golang](assets/hieu-vu.webp)
-[Hieu Vu: Python, Java or NodeJS? Golang!]()
 
 ## Get things done in style
 

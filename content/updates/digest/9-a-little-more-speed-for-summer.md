@@ -1,15 +1,15 @@
 ---
-tags:
-  - weekly-digest
-  - meetup
-  - community
-  - team
 title: "Weekly Digest #9: A little more speed for summer"
 short_title: "#9 A little more speed for summer"
 date: 2024-06-08
 description: How quickly the first half of the year speeds up before it slows down. It’s really the second half of 2024 already. Time flies when you're having a blast. Get ready to rewind and relive some of the awesome highlights from the last week, get pumped for the epic things we'll do together before this year is over.
 authors:
   - innno_
+tags:
+  - weekly-digest
+  - meetup
+  - community
+  - team
 ---
 
 How quickly the first half of the year speeds up before it slows down. It’s really the second half of 2024 already. Time flies when you're having a blast.

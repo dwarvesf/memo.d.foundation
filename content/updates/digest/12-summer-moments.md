@@ -1,15 +1,15 @@
 ---
-tags:
-  - memo
-  - team
-  - remote
-  - weekly-digest
 title: "Weekly Digest #12: Summer moments - Our team's remote work adventures"
 short_title: "#12 Summer moments"
 date: 2024-07-11
 description: 'There’s something special about bringing people together. Even as a remote team, we connect through shared interests and activities. "This summer, Where Are You Working From?" campaign sparked a wave of fun and connection across the team. Come along as we share the stories of our team members.'
 authors:
   - innno_
+tags:
+  - memo
+  - team
+  - remote
+  - weekly-digest
 ---
 
 You know, there’s something magical about bringing people together around what they love. It might seem simple, but a lot of thought goes into it. Even though our team works remotely, we have groups for activities like English, Poker, Board Games, Swimming, and Running. 

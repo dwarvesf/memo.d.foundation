@@ -1,14 +1,14 @@
 ---
-tags:
-  - weekly-digest
-  - team
-  - community
 title: "Weekly Digest #15: New year Gathering: Sharing Tết, starting strong"
 short_title: "#15 New year gathering"
 date: 2025-02-04
 description: "Tết break came to an end, and the Dwarves team reunited to share stories, reconnect, and kick off the Year of the Snake in style. We brought it all back to Discord, along with a little SOL & ICY drop to start the year right."
 authors:
   - innno_
+tags:
+  - weekly-digest
+  - team
+  - community
 ---
 
 We kicked off our gathering after Tết, bringing the community back together in true Dwarves style - dropping some SOL and ICY tokens into everyone's wallets, bringing the community back together in true Dwarves style. Not a bad way to start the year.

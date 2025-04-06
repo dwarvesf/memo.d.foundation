@@ -1,117 +1,83 @@
 ---
-tags: 
-  - updates
-  - newsletter
-  - wrap-up
-title: 2021 In Review
-date: 2021-02-05
-description: 2021 notable highlights and achievements 
+title: "It's a wrap: 2021 in Review"
+date: 2021-12-30
+description: Hey, it’s Han and Nikki in your inbox again. On behalf of the entire Dwarves team, happy 2022!
 authors: 
-  - tieubao
-  - nikki
-  - duy
+    - tieubao
+    - nikki
+    - duy
+tags: 
+    - updates
+    - newsletter
+    - team
 ---
 
-Started with 3 engineers working in different coffee shops because we didn't have an office back then, we are gearing up for the second coming in our journey with over 40 clients and partners worldwide, +1M lines of code later throughout more than 7 years.
+Hey, it’s Han and Nikki in your inbox again. On behalf of the entire Dwarves team, happy 2022!
 
-It’s like building software - we call it Dwarves 2.0 - our latest major movement.
+For us 2021 is eventful, and memorable. It was full of changes and challenges, but our can-do mindset made us gritty. While we didn’t have all the answers, we decided to just try and do. As we state in our [Agile Minifesto](https://dwarves.foundation/manifesto): fail fast, learn often, and it's okay to start over.
 
-## Wrapping up Dwarves 1.0
+The results were beyond our expectation. We got to collaborate with several great clients and partners, including [Setel](http://setel.com), [Momos](http://momos.io), [Mudah](http://mudah.my), [Attrace](http://attrace.com), [SP Group](http://spgroup.com.sg), [Vietcetera](http://vietcetera.com), [WeBuild](http://webuild.community) and many more. We automated most of our operations using Notion, Basecamp and our very own self-built Fortress. We formed a team specialized in blockchain & web3. And along the way, we did everything we can to level up our team.
 
-2021 is full of changes and challenges, but our can-do mindset makes us gritty. We don't have all the answers, so we try and do. As we state in our [**Agile Minifesto**](https://dwarves.foundation/manifesto): Fail fast, learn often, and it's okay to start over.
+We wouldn’t have made it without everyone reading this email right now. So to say, we’re incredibly grateful to you, the one trusting us enough to offer us those dream collaborations, evangelizing our services and participate in helping us scaling and up-leveling our team.
 
-The results are way beyond our expectations. We work with several great clients and partners, including: [**Setel**](http://setel.com/), **[Momos](http://momos.io/)**, [**Mudah**](http://mudah.my/), [**Attrace**](http://attrace.com/), [**SP Group**](http://spgroup.com.sg/), [**Vietcetera**](http://vietcetera.com/), [**WeBuild**](http://webuild.community/) and many more. We automate most of our operations using Notion, Basecamp, and our very own Fortress. We form a team specialized in blockchain & web3.
+## 2021 - a year of innovative reconstruction, dream collaborations and our journey to be better
 
-And along with everything, we do everything we can to level up our team.
+### In numbers
 
-![](assets/2021-in-review_2021-dwarves-in-review.webp)
+![](assets/2021-in-review-20240312110121546.webp)
 
-## A few things worth celebrating
+### In timeline
 
-### The team benefits go up
+![](assets/2021-in-review-20240312110136985.webp)
 
-The Dwarves are our greatest asset. Most of our effort goes into hiring the right ones, giving them absolute support to grow with us.
+### More room for like-minded people
 
-- The Dwarves recently enjoyed a significant raise in compensation.
-- With Dwarves Token, everyone contributing to our growth gets rewarded a portion of the company.
-- The engineer career ladder was refined with 1-1 mentoring.
-- We offer more internal training, and the team keeps inputting their valuable piece of Knowledge.
+As long as it's someone who is good at what they do and sees things the same way we do, then it's a yes - we’d love to have you here!
 
-By launching [Dwarves Discord](https://discord.gg/dfoundation), we’re able to connect and interchange our knowledge with the people who care about tech as much as we do.
+Our people is our greatest asset. That's why most of our effort goes into hiring the right people, giving them our absolute support to grow with us.
 
-![](assets/2021-in-review_2021-dwarves-discord.webp)
+- Reached 60 engineers on the team.
+- Recruited only mid & senior engineers everywhere in Vietnam.
+- More teammates took on leading & mentoring roles
+- Increased compensation and benefits for every Dwarves.
+- Issued Dwarves Token to reward positive contributions.
+- Refined engineering career ladder & mentorship, raising the bar.
+- Facilitated training and learning team-wise.
 
-### Making our marks in new tech
+### Advancing in tech
 
-New technologies shape the future. It's our all-time belief. Within this year, our bet is on the Web3, the Open Internet, and the next-gen automation software using AI and Big Data.
+Throughout 2021, our bet was on the Web3, the Open Internet, and the next-gen automation software using AI and Big Data.
 
-- A blockchain-specialized & web3 team was formed. [Cyber Nekos](http://pod.so/), [Legend of Fantasy War](http://legendfantasywar.com/), [Attrace](http://attrace.com/), [Tokenomy](http://tokenomy.com/) are our highlights.
-- **Multiple study groups** within the team focusing on: Blockchain & Web3, Metaverse, AI & ML, Data Science, Automation.
+- 6+ blockchain-based projects onboard.
+- Blockchain development team reached 20 Dwarves.
+- Active study groups organized by the Dwarves themselves.
 
-We attract the same DNA. Our clients are organizations that put tech at great importance to their businesses. It's always a proud feeling when our clients share their achievements with us, knowing we play a part in it.
+### New business directions and new partnerships
 
-![](assets/2021-in-review_2021-dwarves-in-review-project.webp)
+We’re at a stage where we have the chance to get involved in different kinds of projects. Our new business direction and project decisions brought us to:
 
-### Our vision and belief stays the same
+- Got bigger partnerships with certain restriction in number of deployed head counts.
+- Shifted gradually from outsourcing to software consulting.
+- Engineers involved in project decisions and hiring for projects.
+- Engineers got to work and deliver as a team.
 
-Even with everything we managed to pull through and achieve, we are still makers at heart. [Our vision and belief](https://github.com/dwarvesf/handbook/) are built to stay.
+Also, now you can visit Dwarves and have a good time at 4 different locations in Vietnam; HCMC, Danang, Hanoi, Dalat.
 
-[Engineering is still our culture](). Software craftsmanship is still our end goal. We are still putting in hard work every day. It’s the spirit to build a company where everyone enjoys their work and stays proud of everything they ship.
+## So what's in store for 2022?
 
-## We are growing fast
+As a profitable and fast-moving company, the possibilities ahead of us are limitless. Dwarves 2.0 for us is about finding a great mix of quality and quantity, and becoming greater at what we are already good at.
 
-### Bigger & borderless team
+- **Doubling down on blockchain & web3**. We are never to stay behind when it comes to tech.
+- **Partnering with even more fantastic teams** and ship more top-notch products. We want to help more and more businesses to be able to leverage technology.
+- **Leveling up**. We are going to be a team that knows how to build software right, and is able to teach others on that.
+- **Scaling up**. We are expanding the team and hope to reach those with the same DNAs. If you know someone who might be interested, send them to **[Dwarves Careers](https://memo.d.foundation/careers/hiring/).**
 
-Remote working shaped into our culture. Our engineers have the full support they need to perform at their best. People were granted options to upgrade their WFH station. Everything is going smoothly as a 100% remote team across 4 different time zones.
+That's just a small part in our backlog, we are going to try our hands at many different things.
 
-**The Dwarves seek for more teammates in 2022**
+![](assets/2021-in-review-20240312110210422.webp)
 
-Our team is currently at 60 mems and we road for a double number. The list is opening at [Dwarves Career](https://memo.d.foundation/careers/hiring/) - but we will find you the best fit if we’re having the same core value.
-And we’d love to onboard like-minded people to our Discord Network: [**discord.gg/dfoundation**](http://discord.gg/dfoundation).
+**Here's to many more great products, meaningful partnerships and friendships, experiments and experiences, challenges and opportunities.**
 
-### Forming the getaway chalets
+Onward and upward,
 
-Though the Dwarves can work anywhere they want, we still have offices in 3 different cities in Vietnam.
-
-- **HCM**: Our first official office, sitting in the heart of HCM
-- **Dalat**: The built-in-office cafe intended for work-cations. Whenever our engineers feel like getting away from bustling cities, they can spend their days here. Our clients and partners are welcomed too.
-- **Hanoi** (*coming very soon*): An office located in the tech district of the capital of Vietnam helps us be more available for more talents in the country.
-
-![](assets/2021-in-review_2021-danang-office.webp)
-
-## Expanding the Community
-
-- **[Dwarves Discord Network](http://discord.gg/dfoundation)** hit 200 users in <4 months of launching in public. We offer various channels for the community to take part in, and a weekly 101 Tech session every Monday - 5PM.
-- **[WeBuild](http://webuild.community/)**: WeBuild Day 2021 turned out with +100 attendees. It was a sum up of what’s been trending in tech, from Build in Public, Developers in Covid Support, and the so-called NFT hype.
-- **[Vietcetera](http://vietcetera.com/)**: Techie Story has now landed a new space on this fast-growing media platform, officially marking a new milestone for us to keep spreading the inspiring tech stories.
-- **[Techie Story](http://techiestory.net/)**
-- **[Golang Vietnam](http://golang.org.vn/)**
-- **[Startup.vn](https://startup.vn/)**
-
-## Dwarves 1.0 In Numbers
-
-![](assets/2021-in-review_2021-dwarves-in-numbers.webp)
-
-## Highlighted Dwarves of 2021
-
-We couldn’t go this far without the teammate’s hard work. To tribute all the effort our team has made to keep this woodland going further - we continue the annual tradition Dwarves of The Year.
-
-With the subtotal prize value up to $10.000 - we equip the nominees with what they need to level up the game in 2022.
-
-### Dwarves of 2021
-
-![](assets/2021-in-review_2021-dwarves-contribution.webp)
-
-![](assets/2021-in-review_2021-dwarves-growth.webp)
-
-![](assets/2021-in-review_2021-dwarves-knowledge.webp)
-
-![](assets/2021-in-review_2021-dwarves-influence.webp)
-
-![](assets/2021-in-review_2021-dwarves-teamwork.webp)
-
-![](assets/2021-in-review_2021-dwarves-honorable.webp)
-
-## New Iconic Items
-
-![merch](assets/2021-in-review_2021-whats-new-december_2021-december-all-hands-meeting_fd61221cb31785842fecd3ff2339aab6_md5.webp)
+Han & Nikki.

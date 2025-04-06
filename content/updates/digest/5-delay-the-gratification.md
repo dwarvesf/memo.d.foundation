@@ -1,15 +1,15 @@
 ---
-tags:
-  - weekly-digest
-  - discord
-  - community
-  - team
 title: "Weekly Digest #5: Endure the hardship, delay the gratification"
 short_title: "#5 Endure the hardship, delay the gratification"
 date: 2024-05-14
 description: "Happy Monday, I’m here again, bringing you a lot of updates. There are big and small things brewing at Dwarves network. As we keep on crafting a better community day by day with you."
 authors:
   - innno_
+tags:
+  - weekly-digest
+  - discord
+  - community
+  - team
 ---
 
 Greetings from Saigon, I’m here again, bringing you a lot of updates. There are big and small things brewing at Dwarves network. As we keep on crafting a better community day by day with you. 
