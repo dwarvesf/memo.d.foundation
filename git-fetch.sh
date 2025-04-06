@@ -36,6 +36,7 @@ try_https_fallback() {
         fi
     fi
 }
+export -f try_https_fallback # Export the function for subshells
 
 # Main logic
 if should_update || [ "$1" == "--force" ]; then
