@@ -149,7 +149,7 @@ function LoveWhatWeAreDoing() {
       <ul className="xs:grid-cols-2 mt-2.5 grid list-none gap-2.5 pl-0">
         <li>
           <a
-            href="https://discord.gg/dwarvesv"
+            href="https://discord.gg/dfoundation"
             className="text-primary text-sm"
           >
             🩷 Join our Discord Network →

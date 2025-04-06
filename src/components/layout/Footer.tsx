@@ -27,7 +27,7 @@ const Footer = () => {
           </svg>
         </a>
         <a
-          href="https://discord.gg/dwarvesv"
+          href="https://discord.gg/dfoundation"
           target="_blank"
           rel="noreferrer"
           className="aspect-square cursor-pointer"
