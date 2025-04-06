@@ -17,7 +17,7 @@ authors:
 
 Each month, we release a recap noting all the significant changes in our company and our team. October's highlights include:
 
-- **[note.d.foundation](#notedfoundation)** - The wiki of how we work, learn, and operate the team at Dwarves.
+- **[memo.d.foundation](#notedfoundation)** - The wiki of how we work, learn, and operate the team at Dwarves.
 - **[New functional teams](#new-functional-teams)** - A single core team expands into 5 functional teams for better delivery.
 - **[MMA-based career development](#mma-based-career-development)** - Mastery, Meaning, Autonomy allow us transparency in what we do and ways to provide growth paths for everyone based on their interests.
 - **[Frontend Course 2023](#frontend-course-2023)** - Our free FE Course is successfully finished with a fun demo day.
@@ -31,13 +31,13 @@ For a tech team like Dwarves, there are only a few things that matter. Coming to
 - R&D: fueled by innovations, more hands are joining R&D to learn the next best thing in tech and programming.
 - Diverse projects: we are now more open to whichever projects that can promise an exciting challenge, regardless of domain, scale, or duration.
 
-## note.d.foundation
+## memo.d.foundation
 
 We think of this site as our company wiki. It's where we note (hence the name) and share everything we learn as a team and as a community, knowledge-wise and operation-wise.
 
 ![informationflow](assets/2023-whats-new-october_information_flow.webp)
 
-With [note.d.foundation](noted.foundation), we hope the time and effort we spent in the tech industry will become valuable lessons and stories for everyone who also cares about technology and innovation as we do.
+With [memo.d.foundation](memod.foundation), we hope the time and effort we spent in the tech industry will become valuable lessons and stories for everyone who also cares about technology and innovation as we do.
 
 Community members are welcome to share their learning notes too. Simply drop a message in relevant channels in our [Discord](http://discord.gg/dfoundation)
 
@@ -89,7 +89,7 @@ When we came on board as a technical partner, we helped develop the tech foundat
 
 **Q: Do Dwarves offer internships?**
 
-> Currently we don't have any internship positions available. Dwarves facilitate apprenticeship and internship as a program, instead of individually. News about these programs will be updated on [note.d.foundation](noted.foundation).
+> Currently we don't have any internship positions available. Dwarves facilitate apprenticeship and internship as a program, instead of individually. News about these programs will be updated on [memo.d.foundation](memod.foundation).
 
 **Q: How can I contribute to Dwarves network?**
 

@@ -10,7 +10,6 @@ tags:
     - updates
     - engineering
     - newsletter
-hide_frontmatter: true
 ---
 
 Greetings,

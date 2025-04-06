@@ -10,7 +10,6 @@ tags:
     - updates
     - newsletter
     - team
-hide_frontmatter: true
 ---
 
 Hey, it’s Han and Nikki in your inbox again. On behalf of the entire Dwarves team, happy 2022!

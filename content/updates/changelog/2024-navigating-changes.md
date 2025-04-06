@@ -7,7 +7,6 @@ date: 2024-09-30
 description: The last tech cycle is ending, and we're already in the new normal. We are not in the best shape to compete with certain competitors, especially with a new market meta emerging. We are now in a future of new automation paradigms via AI and assets are moving on-chain.
 authors:
   - tieubao
-hide_frontmatter: true
 ---
 
 ### PURPOSE

@@ -1,5 +1,5 @@
 ---
-title: 'Open Source'
+title: ☀️ Open source
 date: 2024-10-11
 description: 'How we support, contribute to, and reward open source development in our community'
 authors:

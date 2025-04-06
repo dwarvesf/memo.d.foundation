@@ -1,5 +1,5 @@
 ---
-title: Consulting Team
+title: 💼 Consulting team
 date: 2023-12-21
 description: We're a team combining tech skills, problem-solving, and clear communication. We help businesses overcome challenges by finding root causes, creating practical solutions, and working closely with clients to implement them effectively.
 authors:
@@ -14,7 +14,7 @@ hide_title: true
 
 ## Our foundation
 
-The Consulting Team is a strategic spin-off built on the foundation of our Tech Research Team. While Tech Research explores emerging technologies and builds innovative solutions, we take those insights and apply them directly to real business challenges. This unique setup gives us a competitive edge - we're practitioners backed by cutting-edge research, bridging the gap between innovation and practical application.
+The Consulting team is a strategic spin-off built on the foundation of our Tech Research team. While Tech Research explores emerging technologies and builds innovative solutions, we take those insights and apply them directly to real business challenges. This unique setup gives us a competitive edge - we're practitioners backed by cutting-edge research, bridging the gap between innovation and practical application.
 
 ## Latest from consulting team
 

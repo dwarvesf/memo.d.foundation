@@ -10,7 +10,6 @@ tags:
     - hiring
     - newsletter
     - updates
-hide_frontmatter: true
 ---
 
 Hey,

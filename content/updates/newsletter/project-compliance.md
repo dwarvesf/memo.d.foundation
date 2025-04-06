@@ -10,7 +10,6 @@ tags:
     - project
     - updates
     - newsletter
-hide_frontmatter: true
 ---
 
 Hey,

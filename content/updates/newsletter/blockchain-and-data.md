@@ -10,7 +10,6 @@ tags:
     - newsletter
     - team
     - updates
-hide_frontmatter: true
 ---
 It’s Han and Nikki here,
 

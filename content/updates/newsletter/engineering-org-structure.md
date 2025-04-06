@@ -10,7 +10,6 @@ tags:
     - updates
     - newsletter
     - career
-hide_frontmatter: true
 ---
 
 Greetings,

@@ -7,7 +7,6 @@ authors:
     - nikki
     - duy
 tags: 
-hide_frontmatter: true
 ---
 
 Hello, It’s Han & Nikki.

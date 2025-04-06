@@ -32,7 +32,7 @@ Thank you to the solid Nhu Phuong for hosting us and sharing 43 Factory's storie
 
 And you can definitely look forward to our next WALA.
 
-![](assets/43-factory-wala.jpg)
+![Dwarves team at 43 Factory coffee shop](assets/43-factory-wala.jpg)
 
 ___
 

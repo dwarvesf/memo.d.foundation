@@ -31,7 +31,7 @@ Technologies move fast. We're not ones to get left behind. Every month we watch 
 
 This month highlights strong signals on AI gaining mainstream traction, the comeback of WebGPU, Actor Model in computing, Security and ComplianceAsCode, nNFT standards for asset provenance. And programming-language-wise: Rust, Lua Dart.
 
-For the full read, [come here](https://note.d.foundation/labs/market-report-dec-2023/).
+For the full read, [come here](https://memo.d.foundation/labs/market-report-dec-2023/).
 
 ## Launching Consulting Team
 
@@ -81,7 +81,7 @@ Email us at <spawn@d.foundation> or ping @nikki on Discord for JDs / to refer so
 ## FAQ
 
 **Q: Do Dwarves offer internships?**
-> Currently we don't have any internship positions available. Dwarves facilitate apprenticeship and internship as a program, instead of individually. News about these programs will be updated on [note.d.foundation](noted.foundation).
+> Currently we don't have any internship positions available. Dwarves facilitate apprenticeship and internship as a program, instead of individually. News about these programs will be updated on [memo.d.foundation](memod.foundation).
 
 **Q: How can I contribute to Dwarves network?**
 

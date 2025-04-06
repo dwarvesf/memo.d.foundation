@@ -10,7 +10,6 @@ tags:
     - engineering
     - performance
     - newsletter
-hide_frontmatter: true
 ---
 
 Greetings,

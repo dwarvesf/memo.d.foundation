@@ -7,7 +7,6 @@ date: 2024-09-30
 description: Here's the culture test created during the market challenges of late 2024. It is designed to highlight and reinforce the cultural values at Dwarves Foundation. It’s a chance to reflect, share, and show how you fit into our team.
 authors:
   - tieubao
-hide_frontmatter: true
 ---
 
 This is the culture test for Dwarves, developed as we face the challenges of the late 2024 market. The goal is simple: to focus on what matters most, our cultural values. This test isn’t about jumping through hoops; it’s about understanding how we work, what we stand for, and how you can contribute.

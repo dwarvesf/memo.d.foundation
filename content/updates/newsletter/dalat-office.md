@@ -10,7 +10,6 @@ tags:
     - remote
     - newsletter
     - updates
-hide_frontmatter: true
 ---
 
 Hey,

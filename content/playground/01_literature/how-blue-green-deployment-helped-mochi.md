@@ -227,4 +227,4 @@ Follow our journey
 
 * Fanpage: [facebook.com/dwarvesf](http://facebook.com/dwarvesf)
 * LinkedIn: [linkedin.com/company/dwarvesf](http://linkedin.com/company/dwarvesf)
-* Substack: [https://note.d.foundation/](https://note.d.foundation/)
+* Substack: [https://memo.d.foundation/](https://memo.d.foundation/)

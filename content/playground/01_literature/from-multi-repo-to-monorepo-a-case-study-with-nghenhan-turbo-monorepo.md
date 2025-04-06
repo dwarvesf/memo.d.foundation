@@ -77,4 +77,4 @@ The migration to a monorepo using Turbo required significant effort, but the res
 * Discord: [https://discord.gg/dfoundation](https://discord.gg/dfoundation)
 * Fanpage: [https://www.facebook.com/dwarvesf](https://www.facebook.com/dwarvesf)
 * LinkedIn: [https://www.linkedin.com/company/dwarvesf](https://www.linkedin.com/company/dwarvesf/)
-* Substack: [https://note.d.foundation/](https://note.d.foundation/)
+* Substack: [https://memo.d.foundation/](https://memo.d.foundation/)

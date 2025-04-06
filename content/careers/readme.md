@@ -1,12 +1,10 @@
 ---
-title: Join the Dwarves
+title: 👋 Join the Dwarves
 date: 2019-02-21
 description: This page welcomes you to join Dwarves Foundation, a team crafting innovative software with a focus on quality and community. Learn about open roles, perks, and how to apply to become part of our woodland crew.
 authors: 
   - tieubao
 tags: 
-  - handbook
-  - hiring
   - career
 ---
 
@@ -26,7 +24,7 @@ We've got spots open for engineers, designers, marketers, and learners ready to 
 
 ### Business
 
-- [Growth Lead](open-positions/growth.md)
+- [Growth Lead]()
 - [Sales Manager]()
 
 ### Apprenticeship program [N/A]
