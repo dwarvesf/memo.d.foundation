@@ -60,7 +60,7 @@ const extractCategory = (filePath: string): string => {
 function getMatchingLines(content: string, pattern: string): string {
   if (!content || !pattern) return '';
 
-  const lines = content.split('\n');
+  const lines = content.replace(/<hr\s*\/?>/gi, '\n').split('\n');
   const regex = new RegExp(pattern.split(' ').join('|'), 'gi');
   const matchingLines = lines.filter(line => regex.test(line)).slice(0, 1);
 

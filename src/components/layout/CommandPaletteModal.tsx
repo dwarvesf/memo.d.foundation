@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { SearchIcon } from 'lucide-react';
 import { SearchResult } from '../search/SearchProvider';
 import { ISearchResultItem } from '@/types';
+import RenderMarkdown from '../RenderMarkdown';
 
 interface Props {
   isOpen: boolean;
@@ -96,7 +97,6 @@ const CommandPaletteModal = (props: Props) => {
                               )}
                               onClick={() => {
                                 goto();
-                                close();
                               }}
                               onMouseEnter={() => {
                                 setSelectedIndex(index);
@@ -231,12 +231,10 @@ const CommandPaletteModal = (props: Props) => {
                         <span className="text-xs font-medium uppercase underline">
                           on this page
                         </span>
-                        <div
-                          className="mt-5 text-xs whitespace-pre-wrap [&_hr]:my-2.5"
-                          dangerouslySetInnerHTML={{
-                            __html: selectedItem.spr_content,
-                          }}
-                        />
+
+                        <div className="mt-5 text-sm [&_code]:italic">
+                          <RenderMarkdown content={selectedItem.spr_content} />
+                        </div>
                       </div>
                     )}
                   </>
