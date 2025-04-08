@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn, uppercaseSpecialWords } from '@/lib/utils';
 import { IMetadata } from '@/types';
 import React from 'react';
 import { formatDate } from 'date-fns';
@@ -88,7 +88,7 @@ const RightSidebar = (props: Props) => {
                         href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
                         className="bg-muted hover:bg-muted/80 hover:text-primary dark:bg-border dark:text-foreground dark:hover:text-primary inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-medium text-[#4b4f53]"
                       >
-                        {tag}
+                        {uppercaseSpecialWords(tag)}
                       </Link>
                     ))}
                   </li>

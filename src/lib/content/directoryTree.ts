@@ -22,7 +22,7 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
       const currentTag = root['/tags'].children[`/tags/${normalizedTag}`];
       if (!currentTag) {
         root['/tags'].children[`/tags/${normalizedTag}`] = {
-          label: `#${normalizedTag}`,
+          label: `#${uppercaseSpecialWords(normalizedTag)}`,
           children: {},
           count: 1,
         };
