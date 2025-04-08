@@ -22,8 +22,10 @@ import UtterancComments from '@/components/layout/UtterancComments';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { getAllMarkdownContents } from '@/lib/content/memo';
 import Link from 'next/link';
-import { formatMemoPath } from '@/components/memo/utils';
+import { formatMemoPath, getFirstMemoImage } from '@/components/memo/utils';
 import { slugToTitle } from '@/lib/utils';
+import MintEntry from '@/components/MintEntry/MintEntry';
+import { WalletProvider } from '@/contexts/WalletContext';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content: string;
@@ -74,7 +76,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       includeContent: false,
     });
     const layoutProps = await getRootLayoutPageProps(allMemos);
-
     // Try multiple file path options to support Hugo's _index.md convention
     let filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
 
@@ -118,7 +119,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     // Get markdown content and frontmatter
-    const { content, frontmatter, tocItems } =
+    const { content, frontmatter, tocItems, rawContent } =
       await getMarkdownContent(filePath);
 
     // Get backlinks
@@ -140,6 +141,20 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       // Additional character and block counts for metadata
       characterCount: content.length ?? 0,
       blocksCount: content.split(/\n\s*\n/).length ?? 0,
+
+      // Mint entry metadata
+      tokenId: frontmatter.token_id || '',
+      permaStorageId: frontmatter.perma_storage_id || '',
+      title: frontmatter.title || '',
+      authorRole: frontmatter.author_role || '',
+      image: frontmatter.img || '',
+      firstImage: getFirstMemoImage(
+        {
+          content: rawContent,
+          filePath: path.join(...slug) + '.md',
+        },
+        null,
+      ),
     };
     return {
       props: {
@@ -208,34 +223,37 @@ export default function ContentPage({
     );
   }
   return (
-    <RootLayout
-      title={frontmatter.title || 'Dwarves Memo'}
-      description={frontmatter.description}
-      image={frontmatter.image}
-      tocItems={tocItems}
-      metadata={metadata}
-      directoryTree={directoryTree}
-      searchIndex={searchIndex}
-    >
-      <div className="content-wrapper">
-        <ContentLayout
-          title={frontmatter.title}
-          description={frontmatter.description}
-          backlinks={backlinks}
-          hideFrontmatter={frontmatter.hide_frontmatter}
-          hideTitle={frontmatter.hide_title}
-        >
-          {/* Render the HTML content safely */}
-          <div
-            className="article-content"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        </ContentLayout>
+    <WalletProvider>
+      <RootLayout
+        title={frontmatter.title || 'Dwarves Memo'}
+        description={frontmatter.description}
+        image={frontmatter.image}
+        tocItems={tocItems}
+        metadata={metadata}
+        directoryTree={directoryTree}
+        searchIndex={searchIndex}
+      >
+        <div className="content-wrapper">
+          <ContentLayout
+            title={frontmatter.title}
+            description={frontmatter.description}
+            backlinks={backlinks}
+            hideFrontmatter={frontmatter.hide_frontmatter}
+            hideTitle={frontmatter.hide_title}
+          >
+            {/* Render the HTML content safely */}
+            <div
+              className="article-content"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          </ContentLayout>
 
-        {/* Only show subscription section on content pages, not special pages */}
-        {shouldShowSubscription && <SubscriptionSection />}
-        <UtterancComments />
-      </div>
-    </RootLayout>
+          {/* Only show subscription section on content pages, not special pages */}
+          {shouldShowSubscription && <SubscriptionSection />}
+          {!!metadata?.tokenId && <MintEntry metadata={metadata} />}
+          <UtterancComments />
+        </div>
+      </RootLayout>
+    </WalletProvider>
   );
 }

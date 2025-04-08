@@ -356,6 +356,7 @@ export async function getMarkdownContent(filePath: string) {
     frontmatter,
     content: postprocessDollarSigns(String(vFile)),
     tocItems: (fileData as FileData).toc || [], // Return the table of contents
+    rawContent: content,
   };
 }
 
