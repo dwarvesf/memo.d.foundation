@@ -19,7 +19,9 @@ Take a moment to reflect on our journey so far, and let's get excited about what
 ![](assets/2024-state-of-dwarves-semi-annual-review.webp)
 
 ## Community Growth
+
 ### Organized offline meet-up
+
 Our Year-End Party (YEP) was the first offline meet-up that set the tone for future gatherings,  where peeps can connect in person with like-minded people. Building on its success, we hosted our second Ho Chi Minh City meetup on May 31st.
 
 Over 50 enthusiastic members joined us for a night of tech talks, and all-around good vibes. It was an opportunity to connect with our community in person and share our passion for technology.
@@ -27,7 +29,8 @@ Over 50 enthusiastic members joined us for a night of tech talks, and all-around
 ![](assets/2024-state-of-dwarves-semi-annual-review-meet-up.webp)
 
 ### Dwarves community is growing with more contributions
-A big thanks to our active members who have taken part in learning and sharing knowledge with our peeps. 
+
+A big thanks to our active members who have taken part in learning and sharing knowledge with our peeps.
 
 Long Bui Van (@longddl) has published helpful notes on data pipelines and learning vector databases. You can explore at:
 
@@ -41,18 +44,21 @@ Additionally, several other members have made noteworthy contributions from @tom
 ![](assets/2024-state-of-dwarves-semi-annual-review-community.webp)
 
 ## Team Growth
+
 ### Building Dwarves’ wiki - memo.d.foundation
+
 [memo.d.foundation](http://memo.d.foundation/) is where we share how we work, learn, and operate as a team. This site is part of our continuous learning engine, aiming to build a 1% improvement habit by learning in public.
 
 There's a long road ahead to make it the ultimate knowledge source for the team, as a research-focused firm. We aim for the memo to be a centralized knowledge hub that uses a markdown format, displays a graph view, and connects through topic nodes.
 
 Through learning, sharing, applying, and elevating our core knowledge, we can grow as a team and ship software more efficiently.
 
-You will get a 5-15 ICY reward for each publication. Community members are welcome to share their learning notes too. 
+You will get a 5-15 ICY reward for each publication. Community members are welcome to share their learning notes too.
 
 ![](assets/2024-state-of-dwarves-semi-annual-review-dwarves-memo.webp)
 
 ### Upgrading ICY reward for Dwarves learning system
+
 We're excited about the future of ICY and our plans rolled out since its launch in September 2022:
 
 - Monthly reward system for learning contribution up to 3000 ICY.
@@ -67,17 +73,19 @@ We're excited about the future of ICY and our plans rolled out since its launch 
 ![](assets/2024-state-of-dwarves-semi-annual-review-icy.webp)
 
 ### Exclusive Dwarves NFTs for our team members
+
 Peeps NFT is an exclusive collection for Dwarves Foundation members, granting access to internal communications and earning opportunities.
 
 Each NFT signifies a unique role with special perks and privileges for our members.
 
-These unique non-transferable tokens can be viewed on OpenSea at https://opensea.io/collection/dwarves-4.
+These unique non-transferable tokens can be viewed on OpenSea at <https://opensea.io/collection/dwarves-4>.
 
 [@Tono](https://memo.d.foundation/contributor/Tono) Bot will automatically grant the [@peeps](https://memo.d.foundation/contributor/peeps) role to NFT holders with connected wallets.
 
 ![](assets/2024-state-of-dwarves-semi-annual-review-nft-role.webp)
 
 ### Improvement in internal tooling: Fortress, Tono, Mochi
+
 We’ve made several upgrades to enhance our Discord server with our self-built bots, improving task management and overall server experience.
 
 **Tono:** Server management bot that keeps the network running smoothly, tracks weekly activities, and generates top contributor and top reading lists both daily and weekly.
@@ -89,6 +97,7 @@ We’ve made several upgrades to enhance our Discord server with our self-built 
 ![](assets/2024-state-of-dwarves-semi-annual-review-tooling.webp)
 
 ### Research topics: the road to expand the knowledge base
+
 Solving problems using the latest technologies has always been our goal. This year's research focus is based on five key pillars:
 
 - **Tooling:** Devbox, Colima, alert/monitoring standards
@@ -102,7 +111,8 @@ We've made progress in building internal tools like Tono Bot and Memo using LLM/
 ![](assets/2024-state-of-dwarves-semi-annual-review-tech-topics.webp)
 
 ### Tech research advancements in tooling, architecture, & LLM
-We closely monitor tech trends every month to identify those with high potential that could become part of our growing tech stack. 
+
+We closely monitor tech trends every month to identify those with high potential that could become part of our growing tech stack.
 
 In the past six months, our radar has detected:
 
@@ -114,13 +124,15 @@ In the past six months, our radar has detected:
 ![](assets/2024-state-of-dwarves-semi-annual-review-gpt4o.webp)
 
 ### Resume OGIF - Dwarves' weekly Friday sharing
+
 OGIF is our weekly Friday tradition where members share 10-minute talks. After three months we have discussed diverse topics like software development, industry trends, finance, entrepreneurship, blockchain, AI, and more. It's a quick, engaging way to learn something new.
 
-In this era of public learning, we’re excited to see what the team will create. You can revisit our OGIF sharing [here](https://memo.d.foundation/updates/ogif/11-ogif-office-hours-0621/). 
+In this era of public learning, we’re excited to see what the team will create. You can revisit our OGIF sharing [here](https://memo.d.foundation/updates/ogif/11-ogif-office-hours-0621/).
 
 ![](assets/2024-state-of-dwarves-semi-annual-review-office-hour.webp)
 
 ### Reorganize Discord roles: MMA system
+
 We've revamped our Discord roles, now ladder-based and function-based, offering additional activities and benefits, especially with NFT and ICY staking.
 
 **MMA-based new roles system**
@@ -138,6 +150,7 @@ We've revamped our Discord roles, now ladder-based and function-based, offering 
 ![](assets/2024-state-of-dwarves-semi-annual-review-mma-role.webp)
 
 ### Monthly top performers: Honoring your work efforts
+
 Each month, we use delivery points to recognize our team's efforts. Team members who earn the most points shipped and effort spent receive ICY rewards.
 
 **Highlight Top Performers:**
@@ -149,6 +162,7 @@ Each month, we use delivery points to recognize our team's efforts. Team members
 - **May:** @trkhoi, @ngocthanh, @haihuynh, @bienvh, @chinhld
 
 ### SPGroup WALA x Echelon Asia Summit 2024
+
 In May, our team leaders [@tieubao](https://memo.d.foundation/contributor/tieubao), [@nikki](https://memo.d.foundation/contributor/nikki), and [@huytq](https://memo.d.foundation/contributor/huytq) attended the Echelon Asia Summit in Singapore. The event focused on the future of Southeast Asia’s tech and startup ecosystem, highlighting the trends and high-growth industries.
 
 We observed the evolving use of funds by investors and startups, advancements in AI, and upcoming projects in the APAC tech startup landscape.
@@ -156,16 +170,19 @@ We observed the evolving use of funds by investors and startups, advancements in
 ![](assets/2024-state-of-dwarves-semi-annual-review-echelon.webp)
 
 ### Launching Dwarves internship program
+
 We’ve launched another internship batch. This time, we welcome @datnguyennnx and @ngocquang to our team. We hope Dat and Quang will thrive and grow with us as they embark on this new chapter at Dwarves.
 
 ### Team promotion and new teammate
+
 We've made some changes to our team structure. @hnh has been promoted to Chief of Staff, and @minh_cloud is now our Junior PM and Executive Assistant. We're also delighted to welcome our new teammate, @minh, who brings business development experience to our team.
 
 ### Brand new merchandise
+
 The operations team is gearing up for another batch of t-shirts and stickers. The response to the new sticker set has been positive. We’re excited to see our community members sporting these items and showcasing their pride in being part of the Dwarves Foundation.
 
 ![](assets/2024-state-of-dwarves-semi-annual-review-merch.webp)
 
-Let's wrap this up with a cheer on top, celebrating the many wins we've enjoyed. Here's to continuing our journey with the same enthusiasm and dedication in 2024. 
+Let's wrap this up with a cheer on top, celebrating the many wins we've enjoyed. Here's to continuing our journey with the same enthusiasm and dedication in 2024.
 
 Thank you all for being a part of our inner circle, and helping us achieve MMA's goals.

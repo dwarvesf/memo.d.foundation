@@ -30,7 +30,7 @@ Our visit to DZS Media was an eye-opening experience, and we are grateful to hav
 
 Til next WALA.
 
-![Dwarves team visiting DZS Media](assets/dzs-media-wala.jpg)
+![Dwarves team visiting DZS Media](assets/dzs-media-wala.webp)
 ___
 
 **WALA: to walk around, learn around.**

@@ -2,14 +2,13 @@
 title: Dwarves Ventures Fund 1
 date: 2021-08-08
 description: In a span of over 2 years, we tested multiple models of investment with 8 portfolio companies.2021, we are finally confident and ready. Dwarves Ventures is officially on the map with our Fund 1.
-authors: 
+authors:
   - tieubao
   - nikki
 tags:
   - funding
   - ventures
   - startup
-  - business
 ---
 
 It all started back in 2019 when a handful of tech people came under the name of Dwarves Ventures, with the sole mission was to give force to makers and hustlers.

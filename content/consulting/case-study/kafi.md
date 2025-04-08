@@ -49,7 +49,7 @@ Our main task was designing an app that works for two very different groups: beg
 
 Instead of making small improvements to their old app, we built something completely new from scratch. This fresh start let us make the app faster, more secure, and easier to use.
 
-![Kafi Securities mobile trading app interface showing market data](assets/kafi-cover.png)
+![Kafi Securities mobile trading app interface showing market data](assets/kafi-cover.webp)
 
 ## The challenge Kafi faced
 
@@ -106,7 +106,7 @@ The app now identifies whether a user is a beginner, intermediate, or expert inv
 - **Intermediate users** access more detailed charts and analysis tools
 - **Advanced traders** get professional-grade features and customization options
 
-![Different app views for different experience levels showing persona-based interfaces](assets/kafi-designing-tools-for-different-user-groups.png)
+![Different app views for different experience levels showing persona-based interfaces](assets/kafi-designing-tools-for-different-user-groups.webp)
 
 #### Streamlined onboarding process
 
@@ -126,9 +126,9 @@ For new investors, we created contextual learning tools:
 - Interactive tutorials that guide users through their first trades
 - Simplified market explanations with visual aids
 
-![Help features for new investors showing contextual assistance](assets/kafi-helping-new-investors.png)
+![Help features for new investors showing contextual assistance](assets/kafi-helping-new-investors.webp)
 
-![Investment education tools showing simplified explanations](assets/kafi-helping-new-investors-2.png)
+![Investment education tools showing simplified explanations](assets/kafi-helping-new-investors-2.webp)
 
 #### Modern, minimalist design system
 
@@ -139,7 +139,7 @@ We developed a clean, distraction-free interface that puts important information
 - Implemented a contemporary color scheme with clear hierarchy
 - Created flexible components that work across different screens
 
-![Design concepts for the app interface showing visual style exploration](assets/kafi-moodboard.png)
+![Design concepts for the app interface showing visual style exploration](assets/kafi-moodboard.webp)
 
 ### How we collaborated
 

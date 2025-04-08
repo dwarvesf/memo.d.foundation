@@ -13,25 +13,18 @@ tags:
 
 ### Growth stories
 
-- [Dat Nguyen](/updates/life/dat-nguyen)
+Life at Dwarves is a series of stories about people, perspectives and lives at Dwarves.
+
+- [Life at Dwarves: Team Hangouts](/careers/life/group/2024-10-04-life-at-df-team-hangouts)
+- [Life at Dwarves: Record and reward (culture sharing)](/careers/life/group/2024-09-26-life-at-df-record-and-reward-culture-sharing)
+- [Dat Nguyen](/careers/life/2024-09-26-29-dat-nguyen)
+- [Life at Dwarves: H4 Supporting Hybrid Working + SOP checkin (weekly digest #14)](/careers/life/group/2024-09-23-life-at-df-hybrid-working)
 - [Life cycle of a publication](/playground/01_literature/lifecycle-of-a-publication)
-- [Life at Dwarves](/careers/life)
-- [Software Design Group](/updates/life/software-design-group)
-- [/playground/01_literature/engineering/mobile/kotlin-coroutine-lifecycle](/playground/01_literature/engineering/mobile/kotlin-coroutine-lifecycle)
-- [Hieu Vu](/updates/life/hieu-vu)
-- [Nam Nguyen](/updates/life/nam-nguyen)
-- [An Tran](/updates/life/an-tran)
-- [Tom Nguyen](/updates/life/tom-nguyen)
-- [Anh Tran](/updates/life/anh-tran)
-
-<!-- ![Nam Nguyen presenting at a Dwarves event](assets/nam-nguyen.webp)
-[Nam Nguyen: Keep pushing oneself towards the goal]()
-
-![My Anh sharing her journey from data to backend development](assets/my-anh.webp)
-[My Anh: From Data to Backend, an apprentice sharing]()
-
-![Hieu Vu during his technical presentation about Golang](assets/hieu-vu.webp)
-[Hieu Vu: Python, Java or NodeJS? Golang!]() -->
+- [Duyen Tran](/careers/life/2024-02-19-28-duyen-tran)
+- [Tri Tran](/careers/life/2024-01-22-27-tri-tran)
+- [Quoc Tuan](/careers/life/2024-01-15-26-quoc-tuan)
+- [Khoi Nguyen](/careers/life/2024-01-03-25-khoi-nguyen)
+- [Tai Pham](/careers/life/2023-12-13-24-tai-pham)
 
 ## Build a place we love to work at
 
