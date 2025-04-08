@@ -9,6 +9,11 @@ export const wordDict: Record<string, string> = {
   wala: 'WALA',
   ui: 'UI',
   ux: 'UX',
+  rag: 'RAG',
+  rfc: 'RFC',
+  seo: 'SEO',
+  mcp: 'MCP',
+  defi: 'DeFi',
 };
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -41,12 +46,10 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
 export function uppercaseSpecialWords(str = '') {
   return str
     .toString()
+    .toLowerCase()
     .split(' ')
     .map(word => {
-      if (wordDict[word.toLowerCase()]) {
-        return wordDict[word.toLowerCase()];
-      }
-      return word;
+      return wordDict[word.toLowerCase()] || word;
     })
     .join(' ');
 }
