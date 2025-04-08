@@ -96,4 +96,11 @@ public/content
 wallet.json
 duckdb
 duckdb_*.zip
+
+# writing guidelines
 .write/
+.tmp/
+docs/tone/
+
+# scripts output
+scripts/notion/notion-output/

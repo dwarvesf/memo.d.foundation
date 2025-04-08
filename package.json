@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@notionhq/client": "^2.3.0",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.16",
     "@types/hast": "^3.0.4",
@@ -68,11 +69,13 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "axios": "^1.8.4",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
     "eslint-config-prettier": "^10.1.1",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
+    "notion-to-md": "4.0.0-alpha.4",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
@@ -85,7 +88,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "{!(scripts)/**/*,*}.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
