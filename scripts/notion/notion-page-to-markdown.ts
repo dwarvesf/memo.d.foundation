@@ -88,7 +88,7 @@ async function findSubpages(blockId: string): Promise<SubpageInfo[]> {
             });
 
             for (const block of response.results) {
-                if (block.type === 'child_page') {
+                if ((block as any).type === 'child_page') {
                     subpages.push({
                         id: block.id,
                         title: (block as any).child_page.title || 'Untitled',
@@ -96,7 +96,7 @@ async function findSubpages(blockId: string): Promise<SubpageInfo[]> {
                         parent_id: blockId,
                         url: `https://notion.so/${block.id.replace(/-/g, '')}`
                     });
-                } else if (block.type === 'child_database') {
+                } else if ((block as any).type === 'child_database') {
                     subpages.push({
                         id: block.id,
                         title: (block as any).child_database.title || 'Untitled Database',
