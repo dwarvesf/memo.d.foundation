@@ -250,7 +250,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                   {metadata.tags.slice(0, 3).map((tag, index) => (
                     <Link
                       key={index}
-                      href={`/tags/${tag}`}
+                      href={`/tags/${tag.toLowerCase()}`}
                       className="bg-muted text-muted-foreground hover:bg-muted/80 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium"
                     >
                       {tag?.replace(/-/g, ' ')}

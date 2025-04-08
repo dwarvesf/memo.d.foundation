@@ -7,6 +7,8 @@ export const wordDict: Record<string, string> = {
   nda: 'NDA',
   aarrr: 'AARRR',
   wala: 'WALA',
+  ui: 'UI',
+  ux: 'UX',
 };
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

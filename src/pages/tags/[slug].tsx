@@ -10,6 +10,7 @@ import { filterMemo, getAllMarkdownContents } from '@/lib/content/memo';
 import { RootLayout } from '@/components';
 import Link from 'next/link';
 import { formatMemoPath } from '@/components/memo/utils';
+import { uppercaseSpecialWords } from '@/lib/utils';
 
 interface ContentPageProps extends RootLayoutPageProps {
   data: IMemoItem[];
@@ -131,7 +132,7 @@ export default function TagDetailPage({
       <div className="flex items-center">
         <div className="flex flex-col">
           <h1 className="-track-[0.5px] mb-5 pt-0 text-[35px] leading-[42px] font-semibold">
-            #{tag}
+            #{uppercaseSpecialWords(tag)}
           </h1>
           {letters.map(letter => {
             const memos = groupedMemos[letter];
@@ -159,7 +160,7 @@ export default function TagDetailPage({
                             href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
                             className="dark:bg-border hover:text-primary text-2xs rounded-[2.8px] bg-[#f9fafb] px-1.5 leading-[1.7] font-medium text-neutral-500 hover:underline"
                           >
-                            {tag}
+                            {uppercaseSpecialWords(tag)}
                           </Link>
                         ))}
                       </div>
