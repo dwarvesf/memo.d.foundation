@@ -88,7 +88,11 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
           try {
             await walletProvider.request({
               method: 'wallet_switchEthereumChain',
-              params: [{ chainId: ACTIVE_CHAIN.chainIdHex }],
+              params: [
+                {
+                  chainId: ACTIVE_CHAIN.chainIdHex,
+                },
+              ],
             });
           } catch (switchError: any) {
             // If the chain hasn't been added, try to add it
@@ -203,7 +207,21 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             setIsMinted(Number(balance) > 0);
             isInitializedRef.current = true;
           } catch (error) {
-            console.error('Error checking balance:', error);
+            if (ethers.isError(error, 'BAD_DATA')) {
+              if (error.value === '0x') {
+                // add network
+                const chain = {
+                  ...ACTIVE_CHAIN,
+                  chainId: ACTIVE_CHAIN.chainIdHex,
+                  chainIdHex: undefined,
+                };
+                await currentWallet.provider?.request({
+                  method: 'wallet_addEthereumChain',
+                  params: [chain],
+                });
+              }
+            }
+            console.error('Error checking balance:', { error });
             // Log the full error for debugging
             if (error instanceof Error) {
               console.error({
