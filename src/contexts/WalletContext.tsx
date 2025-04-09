@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ACTIVE_CHAIN } from '@/constants/nft';
+import { ethers } from 'ethers';
 import React, {
   createContext,
   useCallback,
@@ -10,24 +13,11 @@ import React, {
 export interface WalletInfo {
   name: string;
   icon: string;
-  provider: any;
-}
-
-interface ChainConfig {
-  chainId: number;
-  chainIdHex: string;
-  chainName: string;
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: string[];
-  blockExplorerUrls: string[];
+  provider: ethers.Eip1193Provider;
 }
 
 interface WalletContextType {
-  connect: (provider: any) => Promise<void>;
+  connect: (provider: ethers.Eip1193Provider) => Promise<void>;
   disconnect: () => void;
   switchChain: () => Promise<boolean>;
   isConnected: boolean;
@@ -46,7 +36,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [currentWallet, setCurrentWallet] = useState<WalletInfo | null>(null);
   const [availableWallets] = useState<Map<string, WalletInfo>>(new Map());
 
-  const checkChain = async (provider: any) => {
+  const checkChain = async (provider: ethers.Eip1193Provider) => {
     try {
       const chainId = await provider.request({ method: 'eth_chainId' });
       return parseInt(chainId, 16) === ACTIVE_CHAIN.chainId;
@@ -57,7 +47,6 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   };
 
   const switchChain = async () => {
-    console.log(currentWallet);
     if (!currentWallet?.provider) return false;
 
     try {
@@ -84,14 +73,20 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const connect = useCallback(async (provider: any) => {
+  const connect = useCallback(async (provider: ethers.Eip1193Provider) => {
     try {
-      const accounts = await provider.request({
+      await provider
+        .request({
+          method: 'wallet_requestPermissions',
+          params: [{ eth_accounts: {} }],
+        })
+        .catch(() => null);
+      const newAccounts = await provider.request({
         method: 'eth_requestAccounts',
       });
-      console.log(accounts);
-      if (accounts?.[0]) {
-        setAccount(accounts[0]);
+
+      if (newAccounts?.[0]) {
+        setAccount(newAccounts[0]);
         // Find and set the current wallet
         const walletInfo = Array.from(availableWallets.values()).find(
           wallet => wallet.provider === provider,
@@ -107,7 +102,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const getAccounts = useCallback(async (wallet: any) => {
+  const getAccounts = useCallback(async (wallet: ethers.Eip1193Provider) => {
     if (!wallet) return [];
     try {
       const accounts = await wallet.request({ method: 'eth_accounts' });
@@ -130,6 +125,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     }
     return null;
   }, []);
+
   const disconnect = () => {
     setAccount(null);
     setCurrentWallet(null);
@@ -137,12 +133,14 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('connectedRdns', '');
   };
 
-  const onSelectWallet = useCallback(async (wallet: WalletInfo) => {
-    await connect(wallet.provider);
-    setCurrentWallet(wallet);
-    localStorage.setItem('connectedRdns', wallet.name);
-    updateRdnsForProvider(wallet);
-  }, []);
+  const onSelectWallet = useCallback(
+    async (wallet: WalletInfo) => {
+      await connect(wallet.provider);
+      setCurrentWallet(wallet);
+      updateRdnsForProvider(wallet);
+    },
+    [connect, updateRdnsForProvider],
+  );
 
   useEffect(() => {
     const handleProviderAnnouncement = async (event: any) => {

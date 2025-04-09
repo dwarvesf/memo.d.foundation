@@ -37,8 +37,8 @@ export const CHAIN_CONFIG = {
 // Active chain configuration
 // Change this to 'mainnet' for production
 // or 'testnet' for testing
-const env: keyof typeof CHAIN_CONFIG = 'testnet';
-export const ACTIVE_CHAIN = CHAIN_CONFIG[env];
+const env: string = 'mainnet';
+export const ACTIVE_CHAIN = CHAIN_CONFIG[env as keyof typeof CHAIN_CONFIG];
 
 const DEV_NFT_CONTRACT_ADDRESS = '0xb1e052156676750D193D800D7D91eA0C7cEeAdF0';
 const PROD_NFT_CONTRACT_ADDRESS = '0x07f3ed54e0b2D07cC522c4FC12EbA80E6D3A8DeB';

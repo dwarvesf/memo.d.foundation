@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -22,7 +24,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { set } from 'date-fns';
 
 interface Props {
   metadata: IMetadata;
@@ -54,6 +55,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
     availableWallets,
     onSelectWallet,
   } = useWallet();
+  const isInitializedRef = React.useRef(false);
   const [mintCount, setMintCount] = useState<number>(0);
   const [collectors, setCollectors] = useState<string[]>([]);
   const [contentDigest, setContentDigest] = useState<string>('Calculating...');
@@ -77,55 +79,59 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       console.error('Error fetching mint info:', error);
     }
   }, [tokenId]);
-  const connectToContract = useCallback(async (walletProvider: any) => {
-    try {
-      // Create ethers provider from the wallet provider
-      let provider = new BrowserProvider(walletProvider);
+  const connectToContract = useCallback(
+    async (walletProvider: ethers.Eip1193Provider) => {
+      try {
+        // Create ethers provider from the wallet provider
+        let provider = new BrowserProvider(walletProvider);
 
-      // Check if we're on the correct chain
-      const network = await provider.getNetwork();
-      if (Number(network.chainId) !== ACTIVE_CHAIN.chainId) {
-        // Prompt to switch to the correct chain
-        try {
-          await walletProvider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: ACTIVE_CHAIN.chainIdHex }],
-          });
-        } catch (switchError: any) {
-          // If the chain hasn't been added, try to add it
-          if (switchError.code === -32603 || switchError.code === 4902) {
-            try {
-              await walletProvider.request({
-                method: 'wallet_addEthereumChain',
-                params: [ACTIVE_CHAIN],
-              });
-              connectToContract(walletProvider);
-            } catch (error) {
-              console.log(error);
+        // Check if we're on the correct chain
+        const network = await provider.getNetwork();
+        if (Number(network.chainId) !== ACTIVE_CHAIN.chainId) {
+          // Prompt to switch to the correct chain
+          try {
+            await walletProvider.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: ACTIVE_CHAIN.chainIdHex }],
+            });
+          } catch (switchError: any) {
+            // If the chain hasn't been added, try to add it
+            if (switchError.code === -32603 || switchError.code === 4902) {
+              try {
+                await walletProvider.request({
+                  method: 'wallet_addEthereumChain',
+                  params: [ACTIVE_CHAIN],
+                });
+
+                connectToContract(walletProvider);
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              throw switchError;
             }
-          } else {
-            throw switchError;
           }
+
+          // Refresh provider after chain switch
+          provider = new BrowserProvider(walletProvider);
         }
 
-        // Refresh provider after chain switch
-        provider = new BrowserProvider(walletProvider);
+        // Get the signer and create contract instance
+        const signer = await provider.getSigner();
+        const nftContract = new ethers.Contract(
+          NFT_CONTRACT_ADDRESS,
+          NFT_CONTRACT_ABI,
+          signer,
+        );
+
+        setContract(nftContract);
+        return nftContract;
+      } catch (error) {
+        console.error('Failed to connect to contract:', error);
       }
-
-      // Get the signer and create contract instance
-      const signer = await provider.getSigner();
-      const nftContract = new ethers.Contract(
-        NFT_CONTRACT_ADDRESS,
-        NFT_CONTRACT_ABI,
-        signer,
-      );
-
-      setContract(nftContract);
-      return nftContract;
-    } catch (error) {
-      console.error('Failed to connect to contract:', error);
-    }
-  }, []);
+    },
+    [],
+  );
 
   useEffect(() => {
     // Calculate content digest
@@ -199,6 +205,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
 
             console.log('User balance:', Number(balance));
             setIsMinted(Number(balance) > 0);
+            isInitializedRef.current = true;
           } catch (error) {
             console.error('Error checking balance:', error);
             // Log the full error for debugging
@@ -218,7 +225,9 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
         }
       }
     };
-
+    if (isInitializedRef.current) {
+      return;
+    }
     calculateDigest();
     fetchNFTMetadata();
     fetchMintInfo();
@@ -245,13 +254,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       console.error('Cannot mint: Token ID is not available');
       return;
     }
-    if (!contract) {
-      console.log('Wallet not connected - deferring to eip6963.js handler');
-      // eip6963.js will handle the wallet connection, we don't need to do anything here
-      // The button will have our handler called first, which prevents this from running
-      // until a wallet is connected
-      return;
-    }
+
     console.log('Wallet connected, proceeding with mint');
 
     if (!isConnected) {
@@ -282,7 +285,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       await fetchMintInfo();
       setIsMinted(true);
     } catch (error) {
-      console.error('Minting failed:', error);
+      console.error('Minting failed:', { error });
     } finally {
       setIsMinting(false);
     }
@@ -291,7 +294,6 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
   const handleWalletSelect = async (wallet: WalletInfo) => {
     setShowWallets(false);
     onSelectWallet(wallet);
-    await connect(wallet.provider);
   };
 
   const getMintButtonText = () => {
@@ -400,7 +402,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             {mintCount > 0 ? (
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-2">
-                  {collectors.slice(0, 3).map((collector, i) => (
+                  {collectors.slice(0, 3).map(collector => (
                     <Avatar
                       key={collector}
                       className="dark:bg-secondary h-6.5 w-6.5 border-2 bg-[#fff]"
