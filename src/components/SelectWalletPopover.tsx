@@ -4,20 +4,31 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { PopoverProps } from '@radix-ui/react-popover';
 import Image from 'next/image';
 import { WalletInfo } from '@/contexts/WalletContext';
+import { cn } from '@/lib/utils';
 
 interface Props extends PopoverProps {
   availableWallets: Map<string, WalletInfo>;
   onSelectWallet: (wallet: WalletInfo) => void;
+  contentClassName?: string;
 }
 
 const SelectWalletPopover = (props: Props) => {
-  const { availableWallets, onSelectWallet, children, ...rest } = props;
+  const {
+    availableWallets,
+    onSelectWallet,
+    children,
+    contentClassName,
+    ...rest
+  } = props;
   return (
     <Popover {...rest}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="w-64" align="center">
+      <PopoverContent
+        className={cn(contentClassName, 'max-w-md')}
+        align="center"
+      >
         <div className="space-y-2">
-          <p className="text-sm font-medium">Connect Wallet</p>
+          <p className="text-2xs font-sans font-medium uppercase">Wallets</p>
           <div className="flex flex-col gap-2">
             {Array.from(availableWallets.entries()).map(([rdns, wallet]) => (
               <Button

@@ -74,12 +74,6 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const connect = useCallback(async (provider: ethers.Eip1193Provider) => {
     try {
-      await provider
-        .request({
-          method: 'wallet_requestPermissions',
-          params: [{ eth_accounts: {} }],
-        })
-        .catch(() => null);
       const newAccounts = await provider.request({
         method: 'eth_requestAccounts',
       });
@@ -171,6 +165,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         if (accounts?.length) {
           const newWallet = availableWallets.get(connectedRdns || '');
           if (newWallet) {
+            await connect(newWallet.provider);
             setCurrentWallet(newWallet);
             updateRdnsForProvider(newWallet);
           }

@@ -26,6 +26,7 @@ const HeaderUser = () => {
         availableWallets={availableWallets}
         onOpenChange={setIsOpenWalletPopover}
         onSelectWallet={handleWalletSelect}
+        contentClassName="mr-5 w-64"
       >
         <Button disabled={!availableWallets?.size}>Connect</Button>
       </SelectWalletPopover>
@@ -35,18 +36,20 @@ const HeaderUser = () => {
     <>
       <Popover>
         <PopoverTrigger className="cursor-pointer">
-          <Avatar className="dark:bg-secondary flex h-9 w-9 items-center justify-center border bg-[#fff]">
-            <Jdenticon value={account || ''} size={34} />
-          </Avatar>
+          <div className="p-0.5">
+            <Avatar className="dark:bg-secondary flex h-8 w-8 items-center justify-center border bg-[#fff]">
+              <Jdenticon value={account || ''} size={30} />
+            </Avatar>
+          </div>
         </PopoverTrigger>
 
-        <PopoverContent className="mr-4 max-w-sm rounded-lg p-0 shadow-lg">
+        <PopoverContent className="mr-5 w-68 max-w-sm rounded-lg p-0">
           <div className="flex items-center space-x-3 border-b px-4 py-3">
             <Avatar className="dark:bg-secondary flex h-10 w-10 items-center justify-center border bg-[#fff]">
               <Jdenticon value={account || ''} size={38} />
             </Avatar>
             <div className="flex-1">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-between space-x-2">
                 <span className="font-sans text-sm leading-5 font-semibold">
                   {formatAddress(account || '')}
                 </span>
@@ -55,7 +58,6 @@ const HeaderUser = () => {
                   onClick={() => {
                     copyToClipboard(account || '');
                     toast.success('Copied to clipboard', {
-                      description: 'Wallet address copied to clipboard',
                       duration: 2000,
                     });
                   }}
@@ -71,20 +73,8 @@ const HeaderUser = () => {
               onClick={disconnect}
               className="hover:bg-background-secondary flex w-full cursor-pointer items-center gap-3 rounded-md p-2 font-sans text-sm leading-6 font-medium -tracking-[0.14px]"
             >
-              <LogOut size={24} className="text-gray-600" />
+              <LogOut size={20} className="text-gray-600" />
               <span>Disconnect</span>
-            </button>
-          </div>
-
-          <div className="flex justify-center space-x-6 border-t px-3 py-4 font-sans">
-            <span className="text-muted-foreground text-xs leading-[140%] -tracking-[0.2px]">
-              Subscribe
-            </span>
-            <button className="text-muted-foreground text-xs leading-[140%] -tracking-[0.2px]">
-              About
-            </button>
-            <button className="text-muted-foreground text-xs leading-[140%] -tracking-[0.2px]">
-              Join us
             </button>
           </div>
         </PopoverContent>

@@ -354,6 +354,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             onOpenChange={setShowWallets}
             availableWallets={availableWallets}
             onSelectWallet={handleWalletSelect}
+            contentClassName="w-[var(--radix-popover-trigger-width)]"
           >
             <Button
               className={cn(
