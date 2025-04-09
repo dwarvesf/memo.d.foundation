@@ -25,7 +25,6 @@ import Link from 'next/link';
 import { formatMemoPath, getFirstMemoImage } from '@/components/memo/utils';
 import { slugToTitle } from '@/lib/utils';
 import MintEntry from '@/components/MintEntry/MintEntry';
-import { WalletProvider } from '@/contexts/WalletContext';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content: string;
@@ -223,37 +222,35 @@ export default function ContentPage({
     );
   }
   return (
-    <WalletProvider>
-      <RootLayout
-        title={frontmatter.title || 'Dwarves Memo'}
-        description={frontmatter.description}
-        image={frontmatter.image}
-        tocItems={tocItems}
-        metadata={metadata}
-        directoryTree={directoryTree}
-        searchIndex={searchIndex}
-      >
-        <div className="content-wrapper">
-          <ContentLayout
-            title={frontmatter.title}
-            description={frontmatter.description}
-            backlinks={backlinks}
-            hideFrontmatter={frontmatter.hide_frontmatter}
-            hideTitle={frontmatter.hide_title}
-          >
-            {/* Render the HTML content safely */}
-            <div
-              className="article-content"
-              dangerouslySetInnerHTML={{ __html: content }}
-            />
-          </ContentLayout>
+    <RootLayout
+      title={frontmatter.title || 'Dwarves Memo'}
+      description={frontmatter.description}
+      image={frontmatter.image}
+      tocItems={tocItems}
+      metadata={metadata}
+      directoryTree={directoryTree}
+      searchIndex={searchIndex}
+    >
+      <div className="content-wrapper">
+        <ContentLayout
+          title={frontmatter.title}
+          description={frontmatter.description}
+          backlinks={backlinks}
+          hideFrontmatter={frontmatter.hide_frontmatter}
+          hideTitle={frontmatter.hide_title}
+        >
+          {/* Render the HTML content safely */}
+          <div
+            className="article-content"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </ContentLayout>
 
-          {/* Only show subscription section on content pages, not special pages */}
-          {shouldShowSubscription && <SubscriptionSection />}
-          {!!metadata?.tokenId && <MintEntry metadata={metadata} />}
-          <UtterancComments />
-        </div>
-      </RootLayout>
-    </WalletProvider>
+        {/* Only show subscription section on content pages, not special pages */}
+        {shouldShowSubscription && <SubscriptionSection />}
+        {!!metadata?.tokenId && <MintEntry metadata={metadata} />}
+        <UtterancComments />
+      </div>
+    </RootLayout>
   );
 }

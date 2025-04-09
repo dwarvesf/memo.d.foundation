@@ -35,7 +35,6 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [isWrongChain, setIsWrongChain] = useState(false);
   const [currentWallet, setCurrentWallet] = useState<WalletInfo | null>(null);
   const [availableWallets] = useState<Map<string, WalletInfo>>(new Map());
-
   const checkChain = async (provider: ethers.Eip1193Provider) => {
     try {
       const chainId = await provider.request({ method: 'eth_chainId' });
@@ -113,18 +112,21 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const updateRdnsForProvider = useCallback((wallet: WalletInfo) => {
-    if (!wallet) return null;
+  const updateRdnsForProvider = useCallback(
+    (wallet: WalletInfo) => {
+      if (!wallet) return null;
 
-    for (const [rdns, walletInfo] of availableWallets.entries()) {
-      if (walletInfo.provider === wallet.provider) {
-        const connectedRdns = rdns;
-        localStorage.setItem('connectedRdns', connectedRdns);
-        return rdns;
+      for (const [rdns, walletInfo] of availableWallets.entries()) {
+        if (walletInfo.provider === wallet.provider) {
+          const connectedRdns = rdns;
+          localStorage.setItem('connectedRdns', connectedRdns);
+          return rdns;
+        }
       }
-    }
-    return null;
-  }, []);
+      return null;
+    },
+    [availableWallets],
+  );
 
   const disconnect = () => {
     setAccount(null);

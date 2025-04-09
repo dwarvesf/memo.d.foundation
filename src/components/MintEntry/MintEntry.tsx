@@ -19,11 +19,7 @@ import {
   FALLBACK_IMAGE_ID,
   ACTIVE_CHAIN,
 } from '@/constants/nft';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import SelectWalletPopover from '../SelectWalletPopover';
 
 interface Props {
   metadata: IMetadata;
@@ -353,49 +349,23 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             Mint this entry as an NFT to add it to your collection.
           </p>
 
-          <Popover
+          <SelectWalletPopover
             open={showWallets && !isConnected}
             onOpenChange={setShowWallets}
+            availableWallets={availableWallets}
+            onSelectWallet={handleWalletSelect}
           >
-            <PopoverTrigger asChild>
-              <Button
-                className={cn(
-                  'mint-button font-sans',
-                  isMinted && 'cursor-not-allowed opacity-50',
-                )}
-                onClick={handleMint}
-                disabled={isMinting || isMinted}
-              >
-                {getMintButtonText()}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64" align="center">
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Connect Wallet</p>
-                <div className="flex flex-col gap-2">
-                  {Array.from(availableWallets.entries()).map(
-                    ([rdns, wallet]) => (
-                      <Button
-                        key={rdns}
-                        variant="outline"
-                        className="flex items-center justify-start gap-2"
-                        onClick={() => handleWalletSelect(wallet)}
-                      >
-                        <Image
-                          src={wallet.icon}
-                          alt={wallet.name}
-                          width={20}
-                          height={20}
-                          className="rounded"
-                        />
-                        <span>{wallet.name}</span>
-                      </Button>
-                    ),
-                  )}
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+            <Button
+              className={cn(
+                'mint-button font-sans',
+                isMinted && 'cursor-not-allowed opacity-50',
+              )}
+              onClick={handleMint}
+              disabled={isMinting || isMinted || !availableWallets?.size}
+            >
+              {getMintButtonText()}
+            </Button>
+          </SelectWalletPopover>
 
           {/* Mint Progress */}
           <div className="flex justify-center">
