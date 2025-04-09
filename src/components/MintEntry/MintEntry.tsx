@@ -360,7 +360,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             <PopoverTrigger asChild>
               <Button
                 className={cn(
-                  'mint-button',
+                  'mint-button font-sans',
                   isMinted && 'cursor-not-allowed opacity-50',
                 )}
                 onClick={handleMint}
@@ -410,7 +410,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
                       <Jdenticon value={collector} size={24} />
                     </Avatar>
                   ))}
-                  <span className="text-primary z-1 rounded-full border border-[#fcced7] bg-[#fce7eb] px-2 text-sm leading-[26px]">
+                  <span className="text-primary z-1 rounded-full border border-[#fcced7] bg-[#fce7eb] px-2 font-sans text-sm leading-[26px]">
                     {mintCount} collected
                   </span>
                 </div>
@@ -427,7 +427,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       {/* Verification Section */}
       <Card className="dark:bg-muted/90 bg-background-secondary rounded-lg p-6 shadow-xs">
         <div className="text-foreground flex flex-col gap-6">
-          <h3 className="text-sm font-medium">Verification</h3>
+          <h3 className="font-sans text-sm font-medium">Verification</h3>
           <p className="text-muted-foreground text-sm">
             This entry has been permanently stored onchain and signed by its
             creator.
@@ -435,7 +435,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
 
           <dl className="space-y-4">
             <div>
-              <dt className="text-muted-foreground text-2xs leading-[140%] uppercase">
+              <dt className="text-muted-foreground text-2xs font-sans leading-[140%] uppercase">
                 transaction
               </dt>
               <dd className="mt-1 font-mono text-[13px] leading-[100%]">
@@ -451,7 +451,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             </div>
 
             <div>
-              <dt className="text-muted-foreground text-2xs leading-[140%] uppercase">
+              <dt className="text-muted-foreground text-2xs font-sans leading-[140%] uppercase">
                 nft address
               </dt>
               <dd className="mint-entry-nft-address mt-1 font-mono text-[13px] leading-[100%]">
@@ -467,7 +467,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             </div>
 
             <div>
-              <dt className="text-muted-foreground text-2xs leading-[140%] uppercase">
+              <dt className="text-muted-foreground text-2xs font-sans leading-[140%] uppercase">
                 content digest
               </dt>
               <dd className="mt-1 font-mono text-[13px] leading-[100%]">
