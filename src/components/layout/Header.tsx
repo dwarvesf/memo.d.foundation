@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
+import HeaderUser from './HeaderUser';
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -70,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  className="hidden cursor-pointer items-center justify-center border-0 bg-transparent px-1.5 outline-none hover:opacity-95 active:opacity-100 xl:flex"
+                  className="hidden cursor-pointer items-center justify-center border-0 bg-transparent outline-none hover:opacity-95 active:opacity-100 xl:flex"
                   onClick={toggleReadingMode}
                   aria-label="Toggle reading mode"
                   data-reading-mode={readingMode ? 'true' : 'false'}
@@ -163,6 +164,8 @@ const Header: React.FC<HeaderProps> = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+
+          <HeaderUser />
         </div>
       </div>
     </header>

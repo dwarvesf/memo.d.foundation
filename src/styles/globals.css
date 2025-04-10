@@ -60,6 +60,8 @@
     --error-color: #d81b60;
     --tag: var(--secondary-tag-color-light);
     --font-monospace: 'IBM Plex Mono';
+    --font-serif: 'charter', 'Georgia', 'Cambria', 'serif';
+    --font-sans: 'Public Sans', sans-serif;
     --toast-background-color: #ededed;
 
     /* Spacing and Layout */

@@ -37,7 +37,7 @@ content/
 
 # environment files
 .env
-
+.env.local
 # database files
 vault.duckdb*
 

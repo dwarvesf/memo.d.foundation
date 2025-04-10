@@ -1,11 +1,13 @@
 import { IMemoItem } from '@/types';
 
-export function getFirstMemoImage(memo: IMemoItem): string {
+export function getFirstMemoImage(
+  memo: Pick<IMemoItem, 'filePath' | 'content'>,
+  fallback: string | null = '/assets/home_cover.webp',
+) {
   // Extract first image from content if available
   const imageMatch = memo.content?.match(/!\[.*?\]\((.*?)\)/);
   const extractedImage = imageMatch ? imageMatch[1] : null;
-
-  // Handle different image path scenarios
+  console.log(extractedImage);
   if (extractedImage) {
     if (extractedImage.startsWith('/') || extractedImage.startsWith('http')) {
       return extractedImage;
@@ -23,7 +25,7 @@ export function getFirstMemoImage(memo: IMemoItem): string {
   }
 
   // Fallback image
-  return '/assets/home_cover.webp';
+  return fallback;
 }
 
 export function formatMemoPath(filePath: string): string {

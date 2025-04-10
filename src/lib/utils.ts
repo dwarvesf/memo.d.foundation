@@ -53,3 +53,10 @@ export function uppercaseSpecialWords(str = '') {
     })
     .join(' ');
 }
+export function formatAddress(address: string) {
+  const formattedAddress = `${address.substring(
+    0,
+    6,
+  )}...${address.substring(address.length - 4)}`;
+  return formattedAddress;
+}
