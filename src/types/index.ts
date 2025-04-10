@@ -18,6 +18,15 @@ export interface IMetadata {
   readingTime: string;
   characterCount: number;
   blocksCount: number;
+
+  //mint entry
+  tokenId: string;
+  permaStorageId: string;
+  title: string;
+  authorRole?: string;
+  image?: string;
+
+  firstImage?: string;
 }
 
 export interface ITreeNode {
