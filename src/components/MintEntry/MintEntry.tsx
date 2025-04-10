@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
@@ -24,15 +24,11 @@ import {
 } from 'wagmi';
 import { Avatar, useModal } from 'connectkit';
 import { baseSepolia } from 'viem/chains';
+import { useArweaveData } from '@/hooks/nft/useArweaveData';
+import { useMintInfo } from '@/hooks/nft/useMintInfo';
 
 interface Props {
   metadata: IMetadata;
-}
-
-interface NFTMetadata {
-  name: string;
-  authors: string[];
-  image: string;
 }
 
 const MintEntry: React.FC<Props> = ({ metadata }) => {
@@ -44,9 +40,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
 
   const { openSIWE } = useModal();
 
-  const [collectors, setCollectors] = useState<string[]>([]);
   const [contentDigest, setContentDigest] = useState<string>('Calculating...');
-  const [nftMetadata, setNftMetadata] = useState<NFTMetadata | null>(null);
   const contractAddress =
     chainId === baseSepolia.id
       ? NFT_CONTRACT_ADDRESS_TESTNET
@@ -114,19 +108,9 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
     }
   };
 
-  const fetchMintInfo = useCallback(async () => {
-    if (!tokenId) return;
-    try {
-      const response = await fetch(
-        `https://memo-nft-api-prod.fly.dev/minters/${tokenId}`,
-      );
-      if (!response.ok) throw new Error('Failed to fetch mint info');
-      const data = await response.json();
-      setCollectors(data.data.map((item: { minter: string }) => item.minter));
-    } catch (error) {
-      console.error('Error fetching mint info:', error);
-    }
-  }, [tokenId]);
+  const { data: mintData } = useMintInfo(tokenId);
+
+  const { data: nftMetadata } = useArweaveData(permaStorageId);
 
   useEffect(() => {
     // Calculate content digest
@@ -153,22 +137,8 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       }
     };
 
-    // Fetch NFT metadata from Arweave
-    const fetchNFTMetadata = async () => {
-      try {
-        const response = await fetch(`https://arweave.net/${permaStorageId}`);
-        if (!response.ok) throw new Error('Failed to fetch NFT metadata');
-        const data = await response.json();
-        setNftMetadata(data);
-      } catch (error) {
-        console.error('Error fetching NFT metadata:', error);
-      }
-    };
-
     calculateDigest();
-    fetchNFTMetadata();
-    fetchMintInfo();
-  }, [tokenId, permaStorageId, title, author, isConnected, fetchMintInfo]);
+  }, [tokenId, permaStorageId, title, author]);
 
   const getMintButtonConfig = () => {
     if (isPending || isConfirming) {
@@ -220,9 +190,8 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
     if (nftMetadata?.image) {
       const imageId = nftMetadata.image.replace('ar://', '');
       return `https://arweave.net/${imageId}`;
-    } else {
-      return `https://arweave.net/${FALLBACK_IMAGE_ID}`;
     }
+    return `https://arweave.net/${FALLBACK_IMAGE_ID}`;
   }, [nftMetadata]);
 
   const displayMintCount = useMemo(() => {
@@ -286,9 +255,12 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             {displayMintCount > 0 ? (
               <div className="flex items-center gap-2">
                 <div className="flex items-center -space-x-2">
-                  {collectors.slice(0, 3).map(collector => (
-                    <div key={collector}>
-                      <Avatar size={24} address={collector as `0x${string}`} />
+                  {mintData?.mintInfo.slice(0, 3).map(info => (
+                    <div key={info.minter} className="group relative">
+                      <Avatar
+                        size={24}
+                        address={info.minter as `0x${string}`}
+                      />
                     </div>
                   ))}
                   <span className="text-primary z-1 rounded-full border border-[#fcced7] bg-[#fce7eb] px-2 font-sans text-sm leading-[26px]">
