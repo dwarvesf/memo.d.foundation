@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, ConnectKitButton } from 'connectkit';
+import { ConnectKitButton } from 'connectkit';
 import { useAccount, useDisconnect, useBalance } from 'wagmi';
 import { Copy, InfoIcon, LogOut } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
@@ -7,6 +7,8 @@ import { Button } from '../ui/button';
 import { toast } from 'sonner';
 import LogoIcon from '../icons/LogoIcon';
 import { formatEther } from 'viem';
+import { Avatar } from '../ui/avatar';
+import Jdenticon from 'react-jdenticon';
 
 const formatAddress = (address: string) => {
   return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
@@ -55,13 +57,17 @@ const HeaderUser = () => {
     <Popover>
       <PopoverTrigger className="cursor-pointer">
         <div className="p-0.5">
-          <Avatar address={address} size={32} />
+          <Avatar className="dark:bg-secondary flex h-8 w-8 items-center justify-center border bg-[#fff]">
+            <Jdenticon value={address || ''} size={30} />
+          </Avatar>
         </div>
       </PopoverTrigger>
 
       <PopoverContent className="mr-5 w-68 max-w-sm rounded-lg p-0">
         <div className="flex items-center gap-3 border-b px-4 py-3">
-          <Avatar address={address} size={40} />
+          <Avatar className="dark:bg-secondary flex h-10 w-10 items-center justify-center border bg-[#fff]">
+            <Jdenticon value={address || ''} size={38} />
+          </Avatar>
           <div className="flex-1">
             <div className="flex items-center justify-between space-x-2">
               <span className="font-sans text-sm leading-5 font-semibold">

@@ -38,6 +38,8 @@ export const Web3Provider = ({ children }: PropsWithChildren) => {
             '--ck-primary-button-hover-color': 'var(--muted-foreground)',
             '--ck-primary-button-font-weight': 400,
             '--ck-primary-button-border-radius': 'var(--radius)',
+            '--ck-family-accounts-brand': 'var(--primary)',
+
             '--ck-body-background': 'var(--background)',
             '--ck-body-color': 'var(--foreground)',
             '--ck-secondary-button-background': 'var(--secondary-background)',

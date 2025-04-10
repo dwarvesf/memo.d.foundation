@@ -22,10 +22,12 @@ import {
   useSwitchChain,
   useReadContract,
 } from 'wagmi';
-import { Avatar, useModal } from 'connectkit';
+import { useModal } from 'connectkit';
 import { baseSepolia } from 'viem/chains';
 import { useArweaveData } from '@/hooks/nft/useArweaveData';
 import { useMintInfo } from '@/hooks/nft/useMintInfo';
+import { Avatar } from '../ui/avatar';
+import Jdenticon from 'react-jdenticon';
 
 interface Props {
   metadata: IMetadata;
@@ -221,9 +223,9 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
               {nftMetadata?.name || title}
             </p>
             <div className="dark:border-border flex items-center gap-2 border-t px-3 py-2">
-              <div className="h-4 w-4">
-                <Avatar size={2} name={author} />
-              </div>
+              <Avatar className="h-4 w-4">
+                <Jdenticon value={author} size={16} />
+              </Avatar>
               <div className="flex flex-col">
                 <span className="text-muted-foreground text-2xs">{author}</span>
                 {authorRole && (
@@ -256,12 +258,12 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
               <div className="flex items-center gap-2">
                 <div className="flex items-center -space-x-2">
                   {mintData?.mintInfo.slice(0, 3).map(info => (
-                    <div key={info.minter} className="group relative">
-                      <Avatar
-                        size={24}
-                        address={info.minter as `0x${string}`}
-                      />
-                    </div>
+                    <Avatar
+                      key={info.minter}
+                      className="dark:bg-secondary flex h-6.5 w-6.5 items-center justify-center border-2 bg-[#fff]"
+                    >
+                      <Jdenticon value={info.minter} size={24} />
+                    </Avatar>
                   ))}
                   <span className="text-primary z-1 rounded-full border border-[#fcced7] bg-[#fce7eb] px-2 font-sans text-sm leading-[26px]">
                     {displayMintCount} collected
