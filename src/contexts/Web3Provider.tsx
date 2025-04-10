@@ -3,6 +3,7 @@ import { base, baseSepolia } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 import { PropsWithChildren } from 'react';
+import { WALLETCONNECT_PROJECT_ID } from '@/constants/nft';
 
 const config = createConfig(
   getDefaultConfig({
@@ -10,8 +11,7 @@ const config = createConfig(
     chains: [base, baseSepolia],
 
     // Required API Keys
-    walletConnectProjectId:
-      process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
+    walletConnectProjectId: WALLETCONNECT_PROJECT_ID,
 
     // Required App Info
     appName: 'Dwarves Memo',

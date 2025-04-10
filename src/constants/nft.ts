@@ -1,5 +1,8 @@
 import { base, baseSepolia } from 'viem/chains';
 const env = 'testnet';
+// get project ID from https://cloud.reown.com/sign-in
+export const WALLETCONNECT_PROJECT_ID = '677a0acc9f3db6c0af94b8695260f98f';
+
 export const NFT_CONTRACT_ADDRESS_TESTNET =
   '0xb1e052156676750D193D800D7D91eA0C7cEeAdF0';
 export const NFT_CONTRACT_ADDRESS =
