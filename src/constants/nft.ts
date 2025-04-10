@@ -1,50 +1,11 @@
-// Chain configuration
-export const CHAIN_CONFIG = {
-  testnet: {
-    chainId: 84532,
-    chainIdHex: '0x14A34',
-    chainName: 'Base Sepolia Testnet',
-    nativeCurrency: {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: [
-      'https://sepolia.base.org',
-      'https://base-sepolia-rpc.publicnode.com',
-      'https://sepolia.base.meowrpc.com',
-    ],
-    blockExplorerUrls: ['https://sepolia.basescan.org'],
-  },
-  mainnet: {
-    chainId: 8453,
-    chainIdHex: '0x2105',
-    chainName: 'Base Mainnet',
-    nativeCurrency: {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: [
-      'https://mainnet.base.org',
-      'https://base.meowrpc.com',
-      'https://base.publicnode.com',
-    ],
-    blockExplorerUrls: ['https://basescan.org'],
-  },
-} as const;
-
-// Active chain configuration
-// Change this to 'mainnet' for production
-// or 'testnet' for testing
-const env: string = 'mainnet';
-export const ACTIVE_CHAIN = CHAIN_CONFIG[env as keyof typeof CHAIN_CONFIG];
-
-const DEV_NFT_CONTRACT_ADDRESS = '0xb1e052156676750D193D800D7D91eA0C7cEeAdF0';
-const PROD_NFT_CONTRACT_ADDRESS = '0x07f3ed54e0b2D07cC522c4FC12EbA80E6D3A8DeB';
-
+import { base, baseSepolia } from 'viem/chains';
+const env = 'testnet';
+export const NFT_CONTRACT_ADDRESS_TESTNET =
+  '0xb1e052156676750D193D800D7D91eA0C7cEeAdF0';
 export const NFT_CONTRACT_ADDRESS =
-  env === 'testnet' ? DEV_NFT_CONTRACT_ADDRESS : PROD_NFT_CONTRACT_ADDRESS;
+  '0x07f3ed54e0b2D07cC522c4FC12EbA80E6D3A8DeB';
+export const ACTIVE_CHAIN = env === 'testnet' ? baseSepolia : base;
+
 export const MINT_AMOUNT = 1;
 export const FALLBACK_IMAGE_ID = '29D_NrcYOiOLMPVROGt5v3URNxftYCDK7z1-kyNPRT0';
 

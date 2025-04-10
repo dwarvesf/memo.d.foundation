@@ -1,25 +1,29 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Avatar } from '@/components/ui/avatar';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { IMetadata } from '@/types';
-import Jdenticon from 'react-jdenticon';
-import { ethers } from 'ethers';
-import { useWallet, WalletInfo } from '@/contexts/WalletContext';
-import { BrowserProvider } from 'ethers';
 import {
   NFT_CONTRACT_ADDRESS,
-  NFT_CONTRACT_ABI,
   MINT_AMOUNT,
   FALLBACK_IMAGE_ID,
+  NFT_CONTRACT_ABI,
   ACTIVE_CHAIN,
+  NFT_CONTRACT_ADDRESS_TESTNET,
 } from '@/constants/nft';
-import SelectWalletPopover from '../SelectWalletPopover';
+import {
+  useAccount,
+  useWriteContract,
+  useSimulateContract,
+  useWaitForTransactionReceipt,
+  useChainId,
+  useSwitchChain,
+  useReadContract,
+} from 'wagmi';
+import { Avatar, useModal } from 'connectkit';
+import { baseSepolia } from 'viem/chains';
 
 interface Props {
   metadata: IMetadata;
@@ -31,35 +35,84 @@ interface NFTMetadata {
   image: string;
 }
 
-const formattedAddress = `${NFT_CONTRACT_ADDRESS.substring(
-  0,
-  10,
-)}...${NFT_CONTRACT_ADDRESS.substring(NFT_CONTRACT_ADDRESS.length - 6)}`;
-const explorerUrl =
-  ACTIVE_CHAIN.blockExplorerUrls[0] + '/address/' + NFT_CONTRACT_ADDRESS;
-
 const MintEntry: React.FC<Props> = ({ metadata }) => {
   const { tokenId, permaStorageId, title, author, authorRole, image } =
     metadata || {};
-  const {
-    isConnected,
-    account,
-    currentWallet,
-    connect,
-    isWrongChain,
-    switchChain,
-    availableWallets,
-    onSelectWallet,
-  } = useWallet();
-  const isInitializedRef = React.useRef(false);
-  const [mintCount, setMintCount] = useState<number>(0);
+  const { isConnected, address } = useAccount();
+  const chainId = useChainId();
+  const { switchChain, chains } = useSwitchChain();
+
+  const { openSIWE } = useModal();
+
   const [collectors, setCollectors] = useState<string[]>([]);
   const [contentDigest, setContentDigest] = useState<string>('Calculating...');
   const [nftMetadata, setNftMetadata] = useState<NFTMetadata | null>(null);
-  const [isMinting, setIsMinting] = useState(false);
-  const [isMinted, setIsMinted] = useState(false);
-  const [contract, setContract] = useState<ethers.Contract | null>(null);
-  const [showWallets, setShowWallets] = useState(false);
+  const contractAddress =
+    chainId === baseSepolia.id
+      ? NFT_CONTRACT_ADDRESS_TESTNET
+      : NFT_CONTRACT_ADDRESS;
+
+  const formattedAddress = useMemo(
+    () =>
+      `${contractAddress.substring(
+        0,
+        10,
+      )}...${contractAddress.substring(contractAddress.length - 6)}`,
+    [contractAddress],
+  );
+
+  const explorerUrl = useMemo(() => {
+    const chain = chains.find(chain => chain.id === ACTIVE_CHAIN.id);
+    if (chain?.blockExplorers) {
+      return chain.blockExplorers.default.url + '/address/' + contractAddress;
+    }
+    return (
+      ACTIVE_CHAIN.blockExplorers?.default.url +
+      '/address/' +
+      NFT_CONTRACT_ADDRESS
+    );
+  }, [chains, contractAddress]);
+
+  const { data: simulateData } = useSimulateContract({
+    address: contractAddress,
+    abi: NFT_CONTRACT_ABI,
+    functionName: 'mintNFT',
+    args: tokenId ? [tokenId, MINT_AMOUNT] : undefined,
+  });
+
+  const { writeContract, data: hash, isPending } = useWriteContract();
+
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  const { data: mintCount } = useReadContract({
+    address: contractAddress,
+    abi: NFT_CONTRACT_ABI,
+    functionName: 'getMintCountByTokenId',
+    args: tokenId ? [BigInt(tokenId)] : undefined,
+  });
+
+  const { data: userBalance } = useReadContract({
+    address: contractAddress,
+    abi: NFT_CONTRACT_ABI,
+    functionName: 'balanceOf',
+    args: address && tokenId ? [address, BigInt(tokenId)] : undefined,
+  });
+
+  const isMinted = useMemo(() => {
+    return userBalance ? Number(userBalance) > 0 : false;
+  }, [userBalance]);
+
+  const handleMint = async () => {
+    if (!tokenId) {
+      console.error('Cannot mint: Token ID is not available');
+      return;
+    }
+    if (simulateData?.request) {
+      writeContract(simulateData.request);
+    }
+  };
 
   const fetchMintInfo = useCallback(async () => {
     if (!tokenId) return;
@@ -69,69 +122,11 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       );
       if (!response.ok) throw new Error('Failed to fetch mint info');
       const data = await response.json();
-      setMintCount(data.total);
-      setCollectors(data.data.map((item: any) => item.minter));
+      setCollectors(data.data.map((item: { minter: string }) => item.minter));
     } catch (error) {
       console.error('Error fetching mint info:', error);
     }
   }, [tokenId]);
-  const connectToContract = useCallback(
-    async (walletProvider: ethers.Eip1193Provider) => {
-      try {
-        // Create ethers provider from the wallet provider
-        let provider = new BrowserProvider(walletProvider);
-
-        // Check if we're on the correct chain
-        const network = await provider.getNetwork();
-        if (Number(network.chainId) !== ACTIVE_CHAIN.chainId) {
-          // Prompt to switch to the correct chain
-          try {
-            await walletProvider.request({
-              method: 'wallet_switchEthereumChain',
-              params: [
-                {
-                  chainId: ACTIVE_CHAIN.chainIdHex,
-                },
-              ],
-            });
-          } catch (switchError: any) {
-            // If the chain hasn't been added, try to add it
-            if (switchError.code === -32603 || switchError.code === 4902) {
-              try {
-                await walletProvider.request({
-                  method: 'wallet_addEthereumChain',
-                  params: [ACTIVE_CHAIN],
-                });
-
-                connectToContract(walletProvider);
-              } catch (error) {
-                console.log(error);
-              }
-            } else {
-              throw switchError;
-            }
-          }
-
-          // Refresh provider after chain switch
-          provider = new BrowserProvider(walletProvider);
-        }
-
-        // Get the signer and create contract instance
-        const signer = await provider.getSigner();
-        const nftContract = new ethers.Contract(
-          NFT_CONTRACT_ADDRESS,
-          NFT_CONTRACT_ABI,
-          signer,
-        );
-
-        setContract(nftContract);
-        return nftContract;
-      } catch (error) {
-        console.error('Failed to connect to contract:', error);
-      }
-    },
-    [],
-  );
 
   useEffect(() => {
     // Calculate content digest
@@ -170,153 +165,57 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       }
     };
 
-    const initializeContract = async () => {
-      if (currentWallet?.provider) {
-        try {
-          const nftContract = await connectToContract(currentWallet.provider);
-          if (!nftContract) {
-            console.error('NFT contract not initialized');
-            return;
-          }
-
-          if (!tokenId || !account) {
-            console.error('Token ID or account not available');
-            return;
-          }
-
-          // Convert tokenId to BigInt and ensure proper parameter order
-          const tokenIdBigInt = BigInt(tokenId);
-          console.log('Checking balance for:', {
-            id: tokenIdBigInt.toString(),
-            account,
-          });
-
-          try {
-            // First check if the contract has the getMintCountByTokenId method
-            const mintCount =
-              await nftContract.getMintCountByTokenId(tokenIdBigInt);
-            console.log('Total mint count:', Number(mintCount));
-
-            // Then check user's balance with correct parameter order
-            const balance = await nftContract.balanceOf(
-              account, // address
-              tokenIdBigInt, // uint256 id
-            );
-
-            console.log('User balance:', Number(balance));
-            setIsMinted(Number(balance) > 0);
-            isInitializedRef.current = true;
-          } catch (error) {
-            if (ethers.isError(error, 'BAD_DATA')) {
-              if (error.value === '0x') {
-                // add network
-                const chain = {
-                  ...ACTIVE_CHAIN,
-                  chainId: ACTIVE_CHAIN.chainIdHex,
-                  chainIdHex: undefined,
-                };
-                await currentWallet.provider?.request({
-                  method: 'wallet_addEthereumChain',
-                  params: [chain],
-                });
-              }
-            }
-            console.error('Error checking balance:', { error });
-            // Log the full error for debugging
-            if (error instanceof Error) {
-              console.error({
-                message: error.message,
-                name: error.name,
-                stack: error.stack,
-              });
-            }
-          }
-        } catch (error) {
-          console.error('Error in contract initialization:', error);
-          if (error instanceof Error) {
-            console.error('Error details:', error.message);
-          }
-        }
-      }
-    };
-    if (isInitializedRef.current) {
-      return;
-    }
     calculateDigest();
     fetchNFTMetadata();
     fetchMintInfo();
-    initializeContract();
-  }, [
-    tokenId,
-    permaStorageId,
-    title,
-    author,
-    currentWallet,
-    isConnected,
-    isWrongChain,
-    account,
-    fetchMintInfo,
-  ]);
+  }, [tokenId, permaStorageId, title, author, isConnected, fetchMintInfo]);
 
-  const handleMint = async () => {
+  const getMintButtonConfig = () => {
+    if (isPending || isConfirming) {
+      return {
+        text: 'Minting...',
+        disabled: true,
+        onClick: undefined,
+      };
+    }
+
+    if (isSuccess || isMinted) {
+      return {
+        text: 'Minted',
+        disabled: true,
+        onClick: undefined,
+      };
+    }
+
+    const chainIds = chains.map(chain => chain.id);
+    if (!chainIds.includes(chainId)) {
+      return {
+        text: 'Switch Network',
+        disabled: false,
+        onClick: () =>
+          switchChain({
+            chainId: ACTIVE_CHAIN.id,
+          }),
+      };
+    }
+
     if (!isConnected) {
-      setShowWallets(true);
-      return;
+      return {
+        text: 'Connect Wallet',
+        disabled: false,
+        onClick: () => openSIWE(),
+      };
     }
 
-    if (!tokenId) {
-      console.error('Cannot mint: Token ID is not available');
-      return;
-    }
-
-    console.log('Wallet connected, proceeding with mint');
-
-    if (!isConnected) {
-      // Trigger wallet connection if not connected
-      const provider = Array.from(availableWallets.values())[0]?.provider;
-      if (provider) {
-        await connect(provider);
-      }
-      return;
-    }
-
-    if (isWrongChain) {
-      await switchChain();
-      return;
-    }
-
-    if (!contract || !tokenId) {
-      console.error('Contract or tokenId not available');
-      return;
-    }
-
-    setIsMinting(true);
-    try {
-      const tx = await contract.mintNFT(tokenId, MINT_AMOUNT);
-      await tx.wait();
-
-      // Update collectors and mint count
-      await fetchMintInfo();
-      setIsMinted(true);
-    } catch (error) {
-      console.error('Minting failed:', { error });
-    } finally {
-      setIsMinting(false);
-    }
+    return {
+      text: 'Mint',
+      disabled: false,
+      onClick: handleMint,
+    };
   };
 
-  const handleWalletSelect = async (wallet: WalletInfo) => {
-    setShowWallets(false);
-    onSelectWallet(wallet);
-  };
+  const buttonConfig = getMintButtonConfig();
 
-  const getMintButtonText = () => {
-    if (isMinting) return 'Minting...';
-    if (isMinted) return 'Minted';
-    if (isWrongChain) return 'Switch Network';
-    if (!isConnected) return 'Connect Wallet to Mint';
-    return 'Mint';
-  };
   const mintedImage = useMemo(() => {
     if (nftMetadata?.image) {
       const imageId = nftMetadata.image.replace('ar://', '');
@@ -325,6 +224,10 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       return `https://arweave.net/${FALLBACK_IMAGE_ID}`;
     }
   }, [nftMetadata]);
+
+  const displayMintCount = useMemo(() => {
+    return mintCount ? Number(mintCount) : 0;
+  }, [mintCount]);
 
   return (
     <div className="mb-4 grid gap-6 md:grid-cols-2">
@@ -349,9 +252,9 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
               {nftMetadata?.name || title}
             </p>
             <div className="dark:border-border flex items-center gap-2 border-t px-3 py-2">
-              <Avatar className="h-4 w-4">
-                <Jdenticon value={author} size={16} />
-              </Avatar>
+              <div className="h-4 w-4">
+                <Avatar size={2} name={author} />
+              </div>
               <div className="flex flex-col">
                 <span className="text-muted-foreground text-2xs">{author}</span>
                 {authorRole && (
@@ -367,40 +270,29 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
             Mint this entry as an NFT to add it to your collection.
           </p>
 
-          <SelectWalletPopover
-            open={showWallets && !isConnected}
-            onOpenChange={setShowWallets}
-            availableWallets={availableWallets}
-            onSelectWallet={handleWalletSelect}
-            contentClassName="w-[var(--radix-popover-trigger-width)]"
+          <Button
+            className={cn(
+              'mint-button font-sans',
+              isSuccess && 'cursor-not-allowed opacity-50',
+            )}
+            onClick={buttonConfig.onClick}
+            disabled={buttonConfig.disabled}
           >
-            <Button
-              className={cn(
-                'mint-button font-sans',
-                isMinted && 'cursor-not-allowed opacity-50',
-              )}
-              onClick={handleMint}
-              disabled={isMinting || isMinted || !availableWallets?.size}
-            >
-              {getMintButtonText()}
-            </Button>
-          </SelectWalletPopover>
+            {buttonConfig.text}
+          </Button>
 
           {/* Mint Progress */}
           <div className="flex justify-center">
-            {mintCount > 0 ? (
+            {displayMintCount > 0 ? (
               <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
+                <div className="flex items-center -space-x-2">
                   {collectors.slice(0, 3).map(collector => (
-                    <Avatar
-                      key={collector}
-                      className="dark:bg-secondary h-6.5 w-6.5 border-2 bg-[#fff]"
-                    >
-                      <Jdenticon value={collector} size={24} />
-                    </Avatar>
+                    <div key={collector}>
+                      <Avatar size={24} address={collector as `0x${string}`} />
+                    </div>
                   ))}
                   <span className="text-primary z-1 rounded-full border border-[#fcced7] bg-[#fce7eb] px-2 font-sans text-sm leading-[26px]">
-                    {mintCount} collected
+                    {displayMintCount} collected
                   </span>
                 </div>
               </div>
