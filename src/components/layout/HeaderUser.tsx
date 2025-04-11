@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAccount, useDisconnect, useBalance } from 'wagmi';
 import { Copy, InfoIcon, LogOut } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
@@ -9,6 +9,7 @@ import { formatEther } from 'viem';
 import { Avatar } from '../ui/avatar';
 import Jdenticon from 'react-jdenticon';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useIsMounted } from 'usehooks-ts';
 
 const formatAddress = (address: string) => {
   return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
@@ -27,21 +28,64 @@ const formatBalance = (value: bigint): string => {
   const truncated = decimal.slice(0, 4).replace(/0+$/, '');
   return truncated ? `${whole}.${truncated}` : whole;
 };
-
+enum FirstConnectEnum {
+  notStarted,
+  connecting,
+  done,
+}
 const HeaderUser = () => {
-  const { address, isConnected, isConnecting } = useAccount();
+  const isMounted = useIsMounted();
+  const { address: curAddress, isConnecting, status } = useAccount();
+  const [localAddress, setLocalAddress] = useState<string>('');
+  const [firstConnectStatus, setFirstConnectStatus] =
+    useState<FirstConnectEnum>(FirstConnectEnum.notStarted);
   const { disconnect } = useDisconnect();
   const { data: balance } = useBalance({
-    address: address,
+    address: curAddress,
   });
   const { openConnectModal } = useConnectModal();
+
+  const address =
+    firstConnectStatus === FirstConnectEnum.done
+      ? curAddress
+      : curAddress || localAddress;
+
+  useEffect(() => {
+    const localAddress = localStorage.getItem('loggedInAddress');
+    if (localAddress?.startsWith('0x')) {
+      setLocalAddress(localAddress);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (['reconnecting', 'connecting'].includes(status)) {
+      setFirstConnectStatus(FirstConnectEnum.connecting);
+      return;
+    }
+    if (status === 'connected') {
+      setFirstConnectStatus(FirstConnectEnum.done);
+      return;
+    }
+    if (status === 'disconnected') {
+      setFirstConnectStatus(prev => {
+        if (prev === FirstConnectEnum.notStarted) {
+          return prev;
+        }
+        return FirstConnectEnum.done;
+      });
+      return;
+    }
+  }, [status]);
 
   const formattedBalance = React.useMemo(() => {
     if (!balance) return '0';
     return formatBalance(balance.value);
   }, [balance]);
 
-  if (!isConnected) {
+  if (!isMounted()) {
+    return <div className="h-9 w-9"></div>;
+  }
+  if (!address) {
     return (
       <Button disabled={isConnecting} onClick={openConnectModal}>
         Connect
@@ -49,6 +93,10 @@ const HeaderUser = () => {
     );
   }
 
+  const handleDisconnect = () => {
+    disconnect();
+    localStorage.removeItem('loggedInAddress');
+  };
   return (
     <Popover>
       <PopoverTrigger className="cursor-pointer">
@@ -98,7 +146,7 @@ const HeaderUser = () => {
             <InfoIcon className="text-primary" size={16} />
           </div>
           <button
-            onClick={() => disconnect()}
+            onClick={handleDisconnect}
             className="hover:bg-background-secondary flex w-full cursor-pointer items-center gap-3 rounded-md p-2 font-sans text-sm leading-6 font-medium -tracking-[0.14px]"
           >
             <LogOut size={20} className="text-gray-600" />

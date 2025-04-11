@@ -1,4 +1,4 @@
-import { WagmiProvider } from 'wagmi';
+import { useAccountEffect, WagmiProvider } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -8,6 +8,7 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { PropsWithChildren } from 'react';
 import { WALLETCONNECT_PROJECT_ID } from '@/constants/nft';
+import '@rainbow-me/rainbowkit/styles.css';
 
 const config = getDefaultConfig({
   // Your dApps chains
@@ -26,7 +27,18 @@ const config = getDefaultConfig({
 });
 
 const queryClient = new QueryClient();
-
+export const Web3ProviderInner = ({ children }: PropsWithChildren) => {
+  useAccountEffect({
+    onConnect(data) {
+      localStorage.setItem('loggedInAddress', data.address);
+    },
+    onDisconnect() {
+      localStorage.removeItem('loggedInAddress');
+      console.log('Disconnected');
+    },
+  });
+  return children;
+};
 export const Web3Provider = ({ children }: PropsWithChildren) => {
   return (
     <WagmiProvider config={config}>
@@ -38,7 +50,7 @@ export const Web3Provider = ({ children }: PropsWithChildren) => {
             fontStack: 'system',
           })}
         >
-          {children}
+          <Web3ProviderInner>{children}</Web3ProviderInner>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
