@@ -14,7 +14,7 @@ import MiniSearch from 'minisearch';
  * @param filePath File path
  * @returns Category string
  */
-function extractCategory(filePath) {
+function extractCategory(filePath: string) {
   const parts = filePath.split('/');
   parts.pop(); // Remove the file name
   return parts.join(' > ');
@@ -28,7 +28,7 @@ async function generateSearchIndex() {
       return;
     }
 
-    let searchIndex = [];
+    let searchIndex: readonly any[] = [];
 
     await parquetRead({
       file: await asyncBufferFromFile(parquetFilePath),
@@ -55,8 +55,8 @@ async function generateSearchIndex() {
             const sprContent = row[4]?.toString() || '';
             const tags = Array.isArray(row[5])
               ? row[5].filter(
-                  tag => tag !== null && tag !== undefined && tag !== '',
-                )
+                tag => tag !== null && tag !== undefined && tag !== '',
+              )
               : [];
             const authors = Array.isArray(row[6]) ? row[6] : [];
             const date = row[7]?.toString() || '';
