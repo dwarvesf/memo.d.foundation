@@ -118,7 +118,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     // Get markdown content and frontmatter
-    const { content, frontmatter, tocItems, rawContent } =
+    const { content, frontmatter, tocItems, rawContent, blockCount } =
       await getMarkdownContent(filePath);
 
     // Get backlinks
@@ -139,7 +139,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
       // Additional character and block counts for metadata
       characterCount: content.length ?? 0,
-      blocksCount: content.split(/\n\s*\n/).length ?? 0,
+      blocksCount: blockCount ?? 0,
 
       // Mint entry metadata
       tokenId: frontmatter.token_id || '',
