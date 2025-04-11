@@ -2,8 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import duckdb from 'duckdb';
 
-const DB_PATH = path.resolve(__dirname, '../../db/vault.db'); // Path to the DuckDB database file
-const OUTPUT_PATH = path.resolve(__dirname, '../../public/redirects.json'); // Output JSON file path
+const DB_PATH = path.resolve(__dirname, '../db/vault.db'); // Path to the DuckDB database file
+const OUTPUT_PATH = path.resolve(__dirname, '../public/redirects.json'); // Output JSON file path
 
 interface VaultRow {
   file_path: string;
