@@ -42,7 +42,9 @@ defmodule Memo.ExportDuckDB do
     {"perma_storage_id", "VARCHAR"},
     {"should_mint", "BOOLEAN"},
     {"minted_at", "DATE"},
-    {"token_id", "VARCHAR"}
+    {"token_id", "VARCHAR"},
+    {"short_links", "VARCHAR[]"},
+    {"previous_paths", "VARCHAR[]"}
   ]
 
   def run(vaultpath, format, commits_back, pattern \\ nil) do
@@ -395,6 +397,8 @@ defmodule Memo.ExportDuckDB do
       "tags" -> serialize_list(value)
       "authors" -> serialize_list(value)
       "aliases" -> serialize_list(value)
+      "short_links" -> serialize_list(value)
+      "previous_paths" -> serialize_list(value)
       "md_content" -> escape_multiline_text(value)
       "estimated_tokens" -> to_string(value)
       _ -> default_transform_value(value)
@@ -674,11 +678,16 @@ defmodule Memo.ExportDuckDB do
             val
             |> String.slice(1..-2//1)
             |> String.split(",")
-            |> Enum.map(&String.trim/1)
-            |> Enum.map(fn x ->
-              x |> String.trim("'") |> String.trim("\"")
+            |> Enum.map(&String.trim/1) # Trim whitespace first
+            |> Enum.map(fn path_str ->
+              # More robustly remove leading/trailing quotes (' or ")
+              path_str
+              |> String.trim("'")
+              |> String.trim("\"")
+              |> String.trim("'") # Repeat in case of mixed quotes like '"path"'
+              |> String.trim("\"")
             end)
-            |> Enum.reject(&(&1 in ["", nil]))
+            |> Enum.reject(&(&1 in ["", nil])) # Remove empty strings after cleaning
 
           # Handle comma-separated string format
           String.contains?(val, ",") ->
@@ -746,9 +755,44 @@ defmodule Memo.ExportDuckDB do
         end)
       end)
 
+    # Fetch NEW previous paths using GitUtils.
+    new_previous_paths = GitUtils.get_previous_paths(file_path)
+
+    # Fetch EXISTING previous paths from the database
+    escaped_file_path = escape_string(file_path)
+
+    existing_paths_query =
+      "SELECT previous_paths FROM vault WHERE file_path = '#{escaped_file_path}'"
+
+    existing_paths_list =
+      case DuckDBUtils.execute_query(existing_paths_query) do
+        {:ok, [%{"previous_paths" => db_paths} | _]} ->
+          # Normalize the paths fetched from DB
+          normalize_array_value(db_paths)
+
+        {:ok, []} ->
+          # No existing entry or no previous paths
+          []
+
+        {:error, error_message} ->
+          IO.puts(
+            "Failed to fetch existing previous_paths for #{file_path}: #{inspect(error_message)}"
+          )
+
+          # Default to empty list on error
+          []
+      end
+
+    # Merge existing and new paths, ensuring uniqueness
+    merged_paths = Enum.uniq(existing_paths_list ++ new_previous_paths)
+
+    # Add the MERGED previous_paths to the map before taking allowed keys
+    frontmatter_with_history = Map.put(normalized_frontmatter, "previous_paths", merged_paths)
+
     allowed_keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
 
-    normalized_frontmatter
+    # Use the map that now includes the merged previous_paths
+    frontmatter_with_history
     |> Map.take(allowed_keys)
     |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
   end
