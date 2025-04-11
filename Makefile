@@ -34,7 +34,7 @@ duckdb-export-all:
 	@echo "Running DuckDB export..."
 	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.export_duckdb("../../vault", "parquet", :all)'
 	@echo "Generating redirects map..."
-	@pnpm tsx scripts/generate-redirects-map.ts # Run the new script
+	@pnpm tsx scripts/generate-redirects-map.ts # Run the TS script directly using tsx
 
 duckdb-export-pattern:
 	@rm -f vault.duckdb

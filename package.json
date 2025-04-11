@@ -12,7 +12,8 @@
     "prepare": "husky",
     "lint-staged": "lint-staged",
     "generate-rss": "node scripts/generate-rss.js",
-    "generate-search-index": "node scripts/generate-search-index.js"
+    "generate-search-index": "node scripts/generate-search-index.js",
+    "build:redirects-map": "tsc scripts/generate-redirects-map.ts --outDir dist/scripts --module nodenext --target es2022 --esModuleInterop --resolveJsonModule"
   },
   "type": "module",
   "homepage": "https://memo.d.foundation/",
