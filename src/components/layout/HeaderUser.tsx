@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConnectKitButton } from 'connectkit';
 import { useAccount, useDisconnect, useBalance } from 'wagmi';
 import { Copy, InfoIcon, LogOut } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
@@ -9,6 +8,7 @@ import LogoIcon from '../icons/LogoIcon';
 import { formatEther } from 'viem';
 import { Avatar } from '../ui/avatar';
 import Jdenticon from 'react-jdenticon';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 const formatAddress = (address: string) => {
   return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
@@ -29,13 +29,13 @@ const formatBalance = (value: bigint): string => {
 };
 
 const HeaderUser = () => {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, isConnecting } = useAccount();
   const { disconnect } = useDisconnect();
   const { data: balance } = useBalance({
     address: address,
   });
+  const { openConnectModal } = useConnectModal();
 
-  // Format balance to max 4 decimal places
   const formattedBalance = React.useMemo(() => {
     if (!balance) return '0';
     return formatBalance(balance.value);
@@ -43,13 +43,9 @@ const HeaderUser = () => {
 
   if (!isConnected) {
     return (
-      <ConnectKitButton.Custom>
-        {({ show, isConnecting }) => (
-          <Button disabled={isConnecting} onClick={show}>
-            Connect
-          </Button>
-        )}
-      </ConnectKitButton.Custom>
+      <Button disabled={isConnecting} onClick={openConnectModal}>
+        Connect
+      </Button>
     );
   }
 
