@@ -48,6 +48,7 @@ const customBaseTheme: RecursivePartial<Theme> = {
   blurs: {
     modalOverlay: 'small',
   },
+
   colors: {
     accentColor: 'var(--primary)',
     accentColorForeground: 'var(--primary-foreground)',
@@ -102,6 +103,18 @@ export const Web3Provider = ({ children }: PropsWithChildren) => {
         <RainbowKitProvider
           theme={theme === 'dark' ? customDarkTheme : customLightTheme}
         >
+          <style jsx global>{`
+            [data-rk] .ju367v1g {
+              font-weight: 500;
+            }
+            [data-rk] .ju367v1h {
+              font-weight: 500;
+            }
+
+            [data-rk] .ju367v1i {
+              font-weight: 600;
+            }
+          `}</style>
           <Web3ProviderInner>{children}</Web3ProviderInner>
         </RainbowKitProvider>
       </QueryClientProvider>
