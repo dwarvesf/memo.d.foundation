@@ -2,10 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { asyncBufferFromFile, parquetRead } from 'hyparquet';
-import slugifyLib from 'slugify'; // Import with a different name
-
-// Use the default export if available, otherwise use the library itself
-const slugify = (slugifyLib as any).default || slugifyLib;
+// Import the project's own slugify function
+import { slugifyPathComponents } from '../src/lib/utils/slugify.js'; // Use .js extension for ES module imports
 
 // Get current directory in ES module scope
 // Get project root directory
@@ -25,7 +23,8 @@ type ParquetRowData = [
 
 /**
  * Formats a file path from the vault into a URL-friendly path.
- * Removes '.md' extension, slugifies each part, and ensures a leading slash.
+ * Removes '.md' extension, slugifies path components using the project's logic,
+ * and ensures a leading slash.
  * Example: 'Folder Name/File Name.md' -> '/folder-name/file-name'
  */
 function formatPathForUrl(filePath: string | null | undefined): string | null {
@@ -37,12 +36,8 @@ function formatPathForUrl(filePath: string | null | undefined): string | null {
     ? filePath.slice(0, -3)
     : filePath;
 
-  // Split path into parts, slugify each part, and rejoin
-  const slugifiedParts = pathWithoutExt
-    .split('/')
-    .map(part => slugify(part, { lower: true, strict: true })); // Apply slugify options
-
-  const slugifiedPath = slugifiedParts.join('/');
+  // Slugify using the project's function
+  const slugifiedPath = slugifyPathComponents(pathWithoutExt);
 
   // Ensure leading slash
   return slugifiedPath.startsWith('/') ? slugifiedPath : `/${slugifiedPath}`;
