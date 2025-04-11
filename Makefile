@@ -22,6 +22,7 @@ build:
 run:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.ExportMarkdown.run("../../vault", "../../public/content")'
 	@pnpm run generate-search-index
+	@pnpm run generate-redirects-map
 	@pnpm run dev
 
 duckdb-export:
@@ -34,7 +35,6 @@ duckdb-export-all:
 	@echo "Running DuckDB export..."
 	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.export_duckdb("../../vault", "parquet", :all)'
 	@echo "Generating redirects map..."
-	@pnpm tsx scripts/generate-redirects-map.ts # Run the TS script directly using tsx
 
 duckdb-export-pattern:
 	@rm -f vault.duckdb
