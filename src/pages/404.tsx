@@ -37,7 +37,7 @@ const NotFound = (props: RootLayoutPageProps) => {
 
       console.log(`Checking for redirect for path: ${requestedPath}`);
 
-      fetch('/redirects.json')
+      fetch('/content/redirects.json')
         .then(response => {
           if (!response.ok) {
             throw new Error('Redirects file not found or failed to load');

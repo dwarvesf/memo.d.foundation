@@ -12,7 +12,7 @@ const slugify = (slugifyLib as any).default || slugifyLib;
 const PROJECT_ROOT = process.cwd();
 
 const PARQUET_FILE_PATH = path.join(PROJECT_ROOT, 'db/vault.parquet'); // Path to the Parquet file relative to project root
-const OUTPUT_PATH = path.join(PROJECT_ROOT, 'public/redirects.json'); // Output JSON file path relative to project root
+const OUTPUT_PATH = path.join(PROJECT_ROOT, 'public/content/redirects.json'); // Output JSON file path relative to project root
 
 // Define the expected structure of a row after reading specific columns
 // Adjust indices based on the actual column order in your Parquet file if needed.

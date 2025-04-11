@@ -24,7 +24,7 @@ Both features must work without generating additional static HTML files for ever
 
 - **New Build Step:** Introduce a new step in the build process (e.g., via `Makefile`) that executes _after_ `export_duckdb.ex` has finished populating the DuckDB database.
 - **Query DuckDB:** This step will query the `vault` table in the generated `db/vault.db` file. It will select the `file_path`, `short_links`, and `previous_paths` for all entries where `short_links` or `previous_paths` are not empty.
-- **Generate `redirects.json`:** The query results will be processed to create a single JSON file: `public/redirects.json`.
+- **Generate `redirects.json`:** The query results will be processed to create a single JSON file: `public/content/redirects.json`.
   - **Structure:** This file will contain a single JSON object (a map/dictionary).
   - **Keys:** The keys of the map will be all the unique short links and all the unique previous paths found in the database.
   - **Values:** The value associated with each key will be the corresponding _current_ canonical `file_path` (formatted appropriately for URL routing, e.g., `/path/to/current/file`).
@@ -41,7 +41,7 @@ Both features must work without generating additional static HTML files for ever
 **4. Client-Side Routing (Runtime):**
 
 - **Frontend Logic:** Implement logic within the Next.js application, most likely in the custom 404 page (`src/pages/404.tsx`) or potentially using `useEffect` and `router.events` in `src/pages/_app.tsx`.
-- **Fetch Map:** When a 404 error occurs (or potentially on initial load/route change), the client-side code will fetch the `public/redirects.json` file.
+- **Fetch Map:** When a 404 error occurs (or potentially on initial load/route change), the client-side code will fetch the `public/content/redirects.json` file.
 - **Lookup:** It will check if the requested URL path (e.g., `router.asPath`) exists as a key in the fetched `redirects` map.
 - **Redirect:** If a match is found, it will use `router.replace(redirects[requestedPath])` to perform a client-side redirect to the correct current page URL. This avoids a full page reload and updates the URL in the browser bar.
 - **No Match:** If the requested path is not found in the `redirects.json` map, the standard 404 page content will be displayed.
