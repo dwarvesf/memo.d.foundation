@@ -47,7 +47,8 @@ if should_update || [ "$1" == "--force" ]; then
 
     # First level submodules
     echo "Updating first level submodules..."
-    if ! git submodule update --init --depth 1; then
+    # Removed --depth 1 to fetch full history
+    if ! git submodule update --init; then
         echo "SSH failed for some submodules, trying HTTPS..."
         git submodule foreach 'try_https_fallback "$PWD"'
     fi
@@ -57,7 +58,8 @@ if should_update || [ "$1" == "--force" ]; then
     git submodule foreach '
         if [ -f .gitmodules ]; then
             echo "Processing submodules in $name..."
-            if ! git submodule update --init --depth 1; then
+            # Removed --depth 1 to fetch full history
+            if ! git submodule update --init; then
                 echo "SSH failed for submodules in $name, trying HTTPS..."
                 git submodule foreach "try_https_fallback \"$PWD\""
             fi

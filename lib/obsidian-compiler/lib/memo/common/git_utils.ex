@@ -112,7 +112,16 @@ defmodule Memo.Common.GitUtils do
   Returns a list of paths relative to the git root, starting with the most recent previous path.
   """
   def get_previous_paths(file_path_from_root) do
-    git_dir = find_git_root()
+    main_git_root = find_git_root()
+
+    # Absolute path to the file within the main git root
+    absolute_file_path = Path.join(main_git_root, file_path_from_root)
+    # Absolute path to the directory containing the file
+    containing_dir_abs = Path.dirname(absolute_file_path)
+    # Filename itself
+    filename = Path.basename(file_path_from_root)
+    # Containing directory relative to the git root (for reconstructing paths later)
+    containing_dir_rel = Path.dirname(file_path_from_root)
 
     case System.cmd("git", [
            "log",
@@ -120,9 +129,9 @@ defmodule Memo.Common.GitUtils do
            "--name-status",   # Show status (R for rename)
            "--pretty=format:\"\"", # Suppress commit info, only show status lines
            "--",
-           file_path_from_root # Path relative to git root
+           filename # Use only the filename as the path argument
          ],
-         cd: git_dir,
+         cd: containing_dir_abs, # Execute in the file's containing directory
          stderr_to_stdout: true) do
       {output, 0} ->
         output
@@ -130,19 +139,39 @@ defmodule Memo.Common.GitUtils do
         |> Enum.reduce([], fn line, acc ->
              # Match lines starting with R<numbers>\t<old_path>\t<new_path>
              case Regex.run(~r/^R\d*\t([^\t]+)\t([^\t]+)/, line) do
-               [_, old_path, _new_path] ->
-                 # Prepend the old path (relative to git root)
-                 [old_path | acc]
-               _ ->
-                 # Ignore other lines (M, A, D, etc.)
-                 acc
+               [_, old_path_relative_to_cd, _new_path_relative_to_cd] ->
+                 # Reconstruct the full path relative to the main repo root
+                 # Handle case where the file was originally in the root directory
+                 full_old_path =
+                   if containing_dir_rel == "." do
+                     old_path_relative_to_cd
+                    else
+                      Path.join(containing_dir_rel, old_path_relative_to_cd)
+                    end
+
+                  # Strip the leading "vault/" prefix if it exists
+                  path_relative_to_vault =
+                    if String.starts_with?(full_old_path, "vault/") do
+                      String.trim_leading(full_old_path, "vault/")
+                    else
+                      # Should not happen if logic is correct, but handle defensively
+                       full_old_path
+                     end
+
+                   # Ensure the path starts with a leading slash for URL consistency
+                   final_path = "/" <> path_relative_to_vault
+
+                   [final_path | acc] # Add the final path with leading slash
+                 _ ->
+                   # Ignore other lines (M, A, D, etc.)
+                   acc
              end
            end)
         # The list is built with the most recent rename first
 
       {error_output, status} ->
         IO.puts(
-          "Warning: 'git log --follow' failed for #{file_path_from_root} (status: #{status}): #{error_output}"
+          "Warning: 'git log --follow' failed for '#{filename}' in directory '#{containing_dir_abs}' (status: #{status}): #{error_output}"
         )
         [] # Return empty list on error
     end
