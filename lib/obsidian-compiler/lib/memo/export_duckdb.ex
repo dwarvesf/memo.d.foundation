@@ -42,7 +42,9 @@ defmodule Memo.ExportDuckDB do
     {"perma_storage_id", "VARCHAR"},
     {"should_mint", "BOOLEAN"},
     {"minted_at", "DATE"},
-    {"token_id", "VARCHAR"}
+    {"token_id", "VARCHAR"},
+    {"short_links", "VARCHAR[]"},
+    {"previous_paths", "VARCHAR[]"}
   ]
 
   def run(vaultpath, format, commits_back, pattern \\ nil) do
@@ -395,6 +397,8 @@ defmodule Memo.ExportDuckDB do
       "tags" -> serialize_list(value)
       "authors" -> serialize_list(value)
       "aliases" -> serialize_list(value)
+      "short_links" -> serialize_list(value)
+      "previous_paths" -> serialize_list(value)
       "md_content" -> escape_multiline_text(value)
       "estimated_tokens" -> to_string(value)
       _ -> default_transform_value(value)

@@ -4,7 +4,8 @@ import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { RootLayoutPageProps } from '@/types';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/router'; // Import useRouter
+import React, { useEffect, useState } from 'react'; // Import useEffect, useState
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
@@ -25,6 +26,60 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const NotFound = (props: RootLayoutPageProps) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [redirectChecked, setRedirectChecked] = useState(false);
+
+  useEffect(() => {
+    // Only run on the client side
+    if (typeof window !== 'undefined') {
+      const requestedPath = router.asPath; // Get the path the user tried to access
+
+      console.log(`Checking for redirect for path: ${requestedPath}`);
+
+      fetch('/redirects.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Redirects file not found or failed to load');
+          }
+          return response.json();
+        })
+        .then((redirects: Record<string, string>) => {
+          const targetPath = redirects[requestedPath];
+          if (targetPath) {
+            console.log(`Redirect found: ${requestedPath} -> ${targetPath}`);
+            // Use replace to avoid adding the 404 page to history
+            router.replace(targetPath);
+            // Keep loading state until redirect happens
+          } else {
+            console.log(`No redirect found for ${requestedPath}. Showing 404.`);
+            // No redirect found, stop loading and show 404 content
+            setIsLoading(false);
+            setRedirectChecked(true);
+          }
+        })
+        .catch(error => {
+          console.error('Failed to load or parse redirects.json:', error);
+          // Failed to load redirects, stop loading and show 404 content
+          setIsLoading(false);
+          setRedirectChecked(true);
+        });
+    }
+  }, [router]); // Re-run if router object changes (though asPath is the key)
+
+  // Show loading indicator or null while checking/redirecting
+  if (isLoading || !redirectChecked) {
+    // Optional: Add a loading spinner or message here
+    return (
+      <RootLayout {...props} title="Loading...">
+        <div className="flex h-[calc(100vh-60px-24px-10rem)] w-full items-center justify-center">
+          Loading...
+        </div>
+      </RootLayout>
+    );
+  }
+
+  // If loading is finished and no redirect happened, show the 404 content
   return (
     <RootLayout {...props} title="404 - Page Not Found">
       <div className="font-charter flex h-[calc(100vh-60px-24px-10rem)] w-full flex-col items-center justify-center text-center">

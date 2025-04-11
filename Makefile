@@ -29,8 +29,12 @@ duckdb-export:
 	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.export_duckdb("../../vault", "parquet", "HEAD~2")'
 
 duckdb-export-all:
-	@rm -f vault.duckdb
+	@echo "Removing old database file..."
+	@rm -f lib/obsidian-compiler/vault.db lib/obsidian-compiler/vault.db.wal # Remove DB and WAL file if it exists
+	@echo "Running DuckDB export..."
 	@cd lib/obsidian-compiler && mix run -e 'Memo.Application.export_duckdb("../../vault", "parquet", :all)'
+	@echo "Generating redirects map..."
+	@pnpm tsx scripts/generate-redirects-map.ts # Run the new script
 
 duckdb-export-pattern:
 	@rm -f vault.duckdb

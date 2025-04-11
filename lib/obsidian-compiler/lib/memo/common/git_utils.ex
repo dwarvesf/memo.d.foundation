@@ -107,6 +107,58 @@ defmodule Memo.Common.GitUtils do
     end
   end
 
+  @doc """
+  Gets the previous paths of a file based on Git rename history.
+  Returns a list of paths relative to the git root, starting with the most recent previous path.
+  """
+  def get_previous_paths(file_path_from_root) do
+    git_dir = find_git_root()
+
+    case System.cmd("git", [
+           "log",
+           "--follow",        # Track renames
+           "--name-status",   # Show status (R for rename)
+           "--pretty=format:\"\"", # Suppress commit info, only show status lines
+           "--",
+           file_path_from_root # Path relative to git root
+         ],
+         cd: git_dir,
+         stderr_to_stdout: true) do
+      {output, 0} ->
+        output
+        |> String.split("\n", trim: true)
+        |> Enum.reduce([], fn line, acc ->
+             # Match lines starting with R<numbers>\t<old_path>\t<new_path>
+             case Regex.run(~r/^R\d*\t([^\t]+)\t([^\t]+)/, line) do
+               [_, old_path, _new_path] ->
+                 # Prepend the old path (relative to git root)
+                 [old_path | acc]
+               _ ->
+                 # Ignore other lines (M, A, D, etc.)
+                 acc
+             end
+           end)
+        # The list is built with the most recent rename first
+
+      {error_output, status} ->
+        IO.puts(
+          "Warning: 'git log --follow' failed for #{file_path_from_root} (status: #{status}): #{error_output}"
+        )
+        [] # Return empty list on error
+    end
+  end
+
+  # Helper to find the git root directory
+  defp find_git_root() do
+    case System.cmd("git", ["rev-parse", "--show-toplevel"]) do
+      {path, 0} -> String.trim(path)
+      _ ->
+        IO.puts("Warning: Could not determine git root directory. Defaulting to '.'")
+        "."
+    end
+  end
+
+
   defp valid_revision?(directory, revision) do
     case System.cmd("git", ["rev-parse", "--verify", revision],
            cd: directory,
