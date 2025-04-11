@@ -750,18 +750,17 @@ defmodule Memo.ExportDuckDB do
         end)
       end)
 
-    # Fetch previous paths using GitUtils
-    # Construct the path relative to the project root for GitUtils
-    path_from_project_root = Path.join("vault", file_path)
-    # Fetch previous paths using GitUtils, passing the path relative to the project root
-    previous_paths = GitUtils.get_previous_paths(path_from_project_root)
+    # Fetch previous paths using GitUtils.
+    # The `file_path` variable here is already relative to the vault root.
+    previous_paths = GitUtils.get_previous_paths(file_path)
 
     # Add previous_paths to the map before taking allowed keys
     frontmatter_with_history = Map.put(normalized_frontmatter, "previous_paths", previous_paths)
 
     allowed_keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
 
-    frontmatter_with_history # Use the map that now includes previous_paths
+    # Use the map that now includes previous_paths
+    frontmatter_with_history
     |> Map.take(allowed_keys)
     |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
   end

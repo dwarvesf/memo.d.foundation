@@ -107,86 +107,125 @@ defmodule Memo.Common.GitUtils do
     end
   end
 
-  @doc """
-  Gets the previous paths of a file based on Git rename history.
-  Returns a list of paths relative to the git root, starting with the most recent previous path.
-  """
-  def get_previous_paths(file_path_from_root) do
+  # No @doc needed for private function
+  def get_previous_paths(file_path_from_vault_root) do
+    # Find the main project's git root
     main_git_root = find_git_root()
-
-    # Absolute path to the file within the main git root
-    absolute_file_path = Path.join(main_git_root, file_path_from_root)
+    # Absolute path to the file (nested join)
+    absolute_file_path = Path.join(main_git_root, Path.join("vault", file_path_from_vault_root))
     # Absolute path to the directory containing the file
     containing_dir_abs = Path.dirname(absolute_file_path)
-    # Filename itself
-    filename = Path.basename(file_path_from_root)
-    # Containing directory relative to the git root (for reconstructing paths later)
-    containing_dir_rel = Path.dirname(file_path_from_root)
 
-    case System.cmd("git", [
-           "log",
-           "--follow",        # Track renames
-           "--name-status",   # Show status (R for rename)
-           "--pretty=format:\"\"", # Suppress commit info, only show status lines
-           "--",
-           filename # Use only the filename as the path argument
-         ],
-         cd: containing_dir_abs, # Execute in the file's containing directory
-         stderr_to_stdout: true) do
+    # Find the git root specific to the file's location (could be main root or submodule root)
+    specific_git_root = find_git_root(containing_dir_abs)
+
+    # Calculate the path prefix (submodule path relative to main root, or "" if not in submodule)
+    path_prefix =
+      if specific_git_root != main_git_root do
+        # Get the path of the submodule root relative to the main root
+        Path.relative_to(specific_git_root, main_git_root)
+        # Remove the leading "vault/" if present, as we only want the submodule name part
+        |> String.replace_leading("vault/", "")
+      else
+        # Not inside a submodule relative to the main vault
+        ""
+      end
+
+    # Calculate the file path relative to its specific git root (for the git log command)
+    file_path_relative_to_specific_root = Path.relative_to(absolute_file_path, specific_git_root)
+
+    case System.cmd(
+           "git",
+           [
+             "log",
+             # Track renames
+             "--follow",
+             # Show status (R for rename)
+             "--name-status",
+             # Suppress commit info
+             "--pretty=format:\"\"",
+             "--",
+             # Path relative to the repo we're running in
+             file_path_relative_to_specific_root
+           ],
+           # Execute in the correct git repository (main or submodule)
+           cd: specific_git_root,
+           stderr_to_stdout: true
+         ) do
       {output, 0} ->
         output
         |> String.split("\n", trim: true)
         |> Enum.reduce([], fn line, acc ->
-             # Match lines starting with R<numbers>\t<old_path>\t<new_path>
-             case Regex.run(~r/^R\d*\t([^\t]+)\t([^\t]+)/, line) do
-               [_, old_path_relative_to_cd, _new_path_relative_to_cd] ->
-                 # Reconstruct the full path relative to the main repo root
-                 # Handle case where the file was originally in the root directory
-                 full_old_path =
-                   if containing_dir_rel == "." do
-                     old_path_relative_to_cd
-                    else
-                      Path.join(containing_dir_rel, old_path_relative_to_cd)
-                    end
+          # Match lines starting with R<numbers>\t<old_path>\t<new_path>
+          case Regex.run(~r/^R\d*\t([^\t]+)\t([^\t]+)/, line) do
+            [_, old_path_relative_to_specific_root, _new_path_relative_to_specific_root] ->
+              # Reconstruct the full path relative to the main vault root
+              full_old_path_relative_to_main_vault =
+                if path_prefix == "" do
+                  # File was in the main vault repo
+                  old_path_relative_to_specific_root
+                else
+                  # File was in a submodule, prepend the submodule path
+                  Path.join(path_prefix, old_path_relative_to_specific_root)
+                end
 
-                  # Strip the leading "vault/" prefix if it exists
-                  path_relative_to_vault =
-                    if String.starts_with?(full_old_path, "vault/") do
-                      String.trim_leading(full_old_path, "vault/")
-                    else
-                      # Should not happen if logic is correct, but handle defensively
-                       full_old_path
-                     end
+              # Ensure the path is relative to the vault root (remove leading "vault/" if present)
+              path_relative_to_vault =
+                if String.starts_with?(full_old_path_relative_to_main_vault, "vault/") do
+                  String.trim_leading(full_old_path_relative_to_main_vault, "vault/")
+                else
+                  full_old_path_relative_to_main_vault
+                end
 
-                   # Ensure the path starts with a leading slash for URL consistency
-                   final_path = "/" <> path_relative_to_vault
+              # Ensure the final path starts with a leading slash for URL consistency
+              final_path = "/" <> path_relative_to_vault
 
-                   [final_path | acc] # Add the final path with leading slash
-                 _ ->
-                   # Ignore other lines (M, A, D, etc.)
-                   acc
-             end
-           end)
-        # The list is built with the most recent rename first
+              # Add the final path with leading slash
+              [final_path | acc]
+
+            _ ->
+              # Ignore other lines (M, A, D, etc.)
+              acc
+          end
+        end)
+
+      # The list is built with the most recent rename first
 
       {error_output, status} ->
         IO.puts(
-          "Warning: 'git log --follow' failed for '#{filename}' in directory '#{containing_dir_abs}' (status: #{status}): #{error_output}"
+          "Warning: 'git log --follow' failed for '#{file_path_relative_to_specific_root}' in directory '#{specific_git_root}' (status: #{status}): #{error_output}"
         )
-        [] # Return empty list on error
+
+        # Return empty list on error
+        []
     end
   end
 
-  # Helper to find the git root directory
-  defp find_git_root() do
-    case System.cmd("git", ["rev-parse", "--show-toplevel"]) do
-      {path, 0} -> String.trim(path)
+  # No @doc needed for private function
+  defp find_git_root(start_dir \\ nil) do
+    effective_start_dir =
+      cond do
+        is_binary(start_dir) and File.dir?(start_dir) -> start_dir
+        # Default to current directory if start_dir is nil or not a directory
+        true -> "."
+      end
+
+    case System.cmd("git", ["rev-parse", "--show-toplevel"], cd: effective_start_dir) do
+      {path, 0} ->
+        String.trim(path)
+
       _ ->
-        IO.puts("Warning: Could not determine git root directory. Defaulting to '.'")
-        "."
+        # Fallback if git command fails in start_dir, try from "."
+        case System.cmd("git", ["rev-parse", "--show-toplevel"], cd: ".") do
+          {path, 0} ->
+            String.trim(path)
+
+          _ ->
+            IO.puts("Warning: Could not determine git root directory. Defaulting to '.'")
+            "."
+        end
     end
   end
-
 
   defp valid_revision?(directory, revision) do
     case System.cmd("git", ["rev-parse", "--verify", revision],
