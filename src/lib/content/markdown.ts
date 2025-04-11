@@ -39,6 +39,7 @@ interface LinkNode {
 interface FileData {
   toc?: ITocItem[];
   headingTextMap?: Map<string, string>;
+  blockCount?: number;
   [key: string]: unknown;
 }
 
@@ -127,6 +128,25 @@ function remarkToc() {
     // Store the TOC in the file data
     fileData.toc = headings;
     fileData.headingTextMap = headingTextMap;
+  };
+}
+
+/**
+ * Custom remark plugin to count blocks
+ */
+const blockTypes = ['heading', 'code', 'list', 'table', 'blockquote'];
+function remarkBlockCount() {
+  return (tree: Root, file: { data: Record<string, unknown> }) => {
+    const fileData = file.data as FileData;
+    let totalBlocks = 0;
+
+    visit(tree, node => {
+      if (blockTypes.includes(node.type)) {
+        totalBlocks++;
+      }
+    });
+
+    fileData.blockCount = totalBlocks;
   };
 }
 
@@ -333,6 +353,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(() => remarkResolveImagePaths(filePath))
     .use(remarkProcessLinks) // Process links and remove .md extensions
     .use(remarkToc) // Extract table of contents and create heading ID mapping
+    .use(remarkBlockCount) // Count blocks
     .use(remarkMath, {
       // singleDollarTextMath: false,
     }) // Process math blocks
@@ -356,6 +377,7 @@ export async function getMarkdownContent(filePath: string) {
     frontmatter,
     content: postprocessDollarSigns(String(vFile)),
     tocItems: (fileData as FileData).toc || [], // Return the table of contents
+    blockCount: (fileData as FileData).blockCount || 0, // Return the block count
     rawContent: content,
   };
 }
