@@ -15,7 +15,7 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: true
-          fetch-depth: 10
+          fetch-depth: 15
 
       - name: Update submodules to depth 2
         run: |
