@@ -52,8 +52,8 @@ const customBaseTheme: RecursivePartial<Theme> = {
   colors: {
     accentColor: 'var(--primary)',
     accentColorForeground: 'var(--primary-foreground)',
-    actionButtonBorder: 'var(--border)',
-    actionButtonBorderMobile: 'var(--border)',
+    actionButtonBorder: 'transparent',
+    actionButtonBorderMobile: 'transparent',
     actionButtonSecondaryBackground: 'var(--muted)',
     closeButton: 'var(--muted-foreground)',
     closeButtonBackground: 'var(--muted)',
