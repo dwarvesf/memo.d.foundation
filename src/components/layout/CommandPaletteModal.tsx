@@ -1,10 +1,10 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
-import { SearchIcon } from 'lucide-react';
 import { SearchResult } from '../search/SearchProvider';
 import { ISearchResultItem } from '@/types';
 import RenderMarkdown from '../RenderMarkdown';
+import { CommandSearchInput } from './CommandSearchInput';
 
 interface Props {
   isOpen: boolean;
@@ -25,6 +25,7 @@ interface Props {
   isSearching: boolean;
   setIsSearching: (isSearching: boolean) => void;
 }
+
 const CommandPaletteModal = (props: Props) => {
   const {
     isOpen,
@@ -42,7 +43,9 @@ const CommandPaletteModal = (props: Props) => {
     isSearching,
     setIsSearching,
   } = props;
+
   const selectedItem = result.grouped[selectedCategory]?.[selectedIndex];
+
   return (
     isOpen &&
     typeof document !== 'undefined' &&
@@ -53,23 +56,14 @@ const CommandPaletteModal = (props: Props) => {
           className="dark:bg-background w-full max-w-[800px] overflow-hidden rounded-lg bg-white shadow-lg"
           style={{ animation: 'fadeIn 0.15s ease-out' }}
         >
-          {/* Search input */}
-          <div className="border-border border-b p-4">
-            <div className="flex items-center">
-              <SearchIcon className="text-muted-foreground mr-2 h-5 w-5" />
-              <input
-                ref={searchInputRef}
-                type="text"
-                value={query}
-                onChange={e => {
-                  setQuery(e.target.value);
-                  setIsSearching(true);
-                }}
-                placeholder="Search documentation..."
-                className="text-foreground flex-1 border-none bg-transparent outline-none"
-              />
-            </div>
-          </div>
+          <CommandSearchInput
+            value={query}
+            onChange={(value: string) => {
+              setQuery(value);
+              setIsSearching(true);
+            }}
+            inputRef={searchInputRef}
+          />
 
           <div className="flex max-h-[70vh]">
             <div className="flex flex-1 basis-2/5 flex-col overflow-y-auto">
