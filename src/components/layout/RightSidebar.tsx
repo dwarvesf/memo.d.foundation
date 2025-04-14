@@ -7,6 +7,14 @@ import CircleUserIcon from '../icons/CircleUserIcon';
 import TagIcon from '../icons/TagIcon';
 import FolderIcon from '../icons/FolderIcon';
 import Link from 'next/link';
+import {
+  NFT_CONTRACT_ADDRESS_TESTNET,
+  NFT_CONTRACT_ADDRESS,
+  NFT_CONTRACT_ABI,
+} from '@/constants/nft';
+import { baseSepolia } from 'viem/chains';
+import { useChainId, useReadContract } from 'wagmi';
+import PeopleExchangeIcon from '../icons/PeopleExchangeIcon';
 
 interface Props {
   metadata?: IMetadata;
@@ -14,6 +22,23 @@ interface Props {
 
 const RightSidebar = (props: Props) => {
   const { metadata } = props;
+  const { tokenId } = metadata || {};
+  const chainId = useChainId();
+
+  const contractAddress =
+    chainId === baseSepolia.id
+      ? NFT_CONTRACT_ADDRESS_TESTNET
+      : NFT_CONTRACT_ADDRESS;
+
+  const { data: mintCount } = useReadContract({
+    address: contractAddress,
+    abi: NFT_CONTRACT_ABI,
+    functionName: 'getMintCountByTokenId',
+    args: tokenId ? [BigInt(tokenId)] : undefined,
+  });
+
+  const displayMintCount = mintCount ? Number(mintCount) : 0;
+
   return (
     <div
       className={cn(
@@ -32,7 +57,7 @@ const RightSidebar = (props: Props) => {
               </h3>
               <ul className="space-y-2 text-sm">
                 {metadata.created && (
-                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
                     <CalendarIcon className="h-4 w-4" />
                     <span>Created:</span>
                     <span>{formatDate(metadata.created, 'MMM dd, yyyy')}</span>
@@ -40,7 +65,7 @@ const RightSidebar = (props: Props) => {
                 )}
 
                 {metadata.updated && metadata.updated !== metadata.created && (
-                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
                     <CalendarIcon className="h-4 w-4" />
                     <span>Updated:</span>
                     <span>{metadata.updated}</span>
@@ -48,7 +73,7 @@ const RightSidebar = (props: Props) => {
                 )}
 
                 {metadata.author && (
-                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
                     <CircleUserIcon width={16} height={16} />
                     <span>Author:</span>
                     <Link
@@ -60,7 +85,7 @@ const RightSidebar = (props: Props) => {
                   </li>
                 )}
                 {metadata.coAuthors && metadata.coAuthors.length > 0 && (
-                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap gap-1 text-xs leading-4 -tracking-[0.125px]">
                     <CircleUserIcon width={16} height={16} />
                     <span className="text-secondary-foreground dark:text-secondary-light shrink-0">
                       Co-author:
@@ -77,9 +102,16 @@ const RightSidebar = (props: Props) => {
                     ))}
                   </li>
                 )}
+                {!!tokenId && (
+                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
+                    <PeopleExchangeIcon className="h-4 w-4" />
+                    <span>Minted:</span>
+                    <span>{displayMintCount} collectors</span>
+                  </li>
+                )}
 
                 {metadata.tags && metadata.tags.length > 0 && (
-                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
                     <TagIcon width={16} height={16} />
                     <span>Tags:</span>{' '}
                     {metadata.tags.slice(0, 3).map((tag, index) => (
@@ -102,7 +134,7 @@ const RightSidebar = (props: Props) => {
                   Location
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  <li className="text-secondary-foreground dark:text-secondary-light vertical-center inline text-xs leading-[140%] -tracking-[0.125px]">
+                  <li className="text-secondary-foreground dark:text-secondary-light vertical-center inline text-xs leading-4 -tracking-[0.125px]">
                     <FolderIcon
                       width={16}
                       height={16}
@@ -130,28 +162,28 @@ const RightSidebar = (props: Props) => {
                 </h3>
                 <ul className="space-y-2 text-sm">
                   {!!metadata.wordCount && (
-                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
                       <span>Words:</span>
                       <span>{metadata.wordCount.toLocaleString()}</span>
                     </li>
                   )}
 
                   {!!metadata.characterCount && (
-                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
                       <span>Characters:</span>
                       <span>{metadata.characterCount.toLocaleString()}</span>
                     </li>
                   )}
 
                   {!!metadata.blocksCount && (
-                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
                       <span>Blocks:</span>
                       <span>{metadata.blocksCount.toLocaleString()}</span>
                     </li>
                   )}
 
                   {!!metadata.readingTime && (
-                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-[140%] -tracking-[0.125px]">
+                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
                       <span>Reading time:</span>
                       <span>{metadata.readingTime}</span>
                     </li>

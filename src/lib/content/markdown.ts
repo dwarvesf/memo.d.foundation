@@ -233,7 +233,6 @@ function rehypeVideos() {
   return (tree: HastRoot) => {
     visit(tree, 'element', node => {
       if (node.tagName === 'img') {
-        console.log(node);
         const ext = node.properties?.src?.toString().split('.').pop() || '';
         // if the image is a video
         if (['mp4', 'webm'].includes(ext)) {

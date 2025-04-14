@@ -22,12 +22,12 @@ import {
   useSwitchChain,
   useReadContract,
 } from 'wagmi';
-import { useModal } from 'connectkit';
 import { baseSepolia } from 'viem/chains';
 import { useArweaveData } from '@/hooks/nft/useArweaveData';
 import { useMintInfo } from '@/hooks/nft/useMintInfo';
 import { Avatar } from '../ui/avatar';
 import Jdenticon from 'react-jdenticon';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 interface Props {
   metadata: IMetadata;
@@ -40,7 +40,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
   const chainId = useChainId();
   const { switchChain, chains } = useSwitchChain();
 
-  const { openSIWE } = useModal();
+  const { openConnectModal } = useConnectModal();
 
   const [contentDigest, setContentDigest] = useState<string>('Calculating...');
   const contractAddress =
@@ -175,7 +175,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
       return {
         text: 'Connect Wallet',
         disabled: false,
-        onClick: () => openSIWE(),
+        onClick: openConnectModal,
       };
     }
 

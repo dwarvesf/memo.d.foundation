@@ -7,7 +7,6 @@ export function getFirstMemoImage(
   // Extract first image from content if available
   const imageMatch = memo.content?.match(/!\[.*?\]\((.*?)\)/);
   const extractedImage = imageMatch ? imageMatch[1] : null;
-  console.log(extractedImage);
   if (extractedImage) {
     if (extractedImage.startsWith('/') || extractedImage.startsWith('http')) {
       return extractedImage;
