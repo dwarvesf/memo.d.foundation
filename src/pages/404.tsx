@@ -59,7 +59,7 @@ const NotFound = (props: RootLayoutPageProps) => {
           }
         })
         .catch(error => {
-          console.error('Failed to load or parse redirects.json:', error);
+          console.log('Failed to load or parse redirects.json:', error);
           // Failed to load redirects, stop loading and show 404 content
           setIsLoading(false);
           setRedirectChecked(true);
