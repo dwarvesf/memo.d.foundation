@@ -134,19 +134,11 @@ function remarkToc() {
 /**
  * Custom remark plugin to count blocks
  */
-const blockTypes = ['heading', 'code', 'list', 'table', 'blockquote'];
 function remarkBlockCount() {
   return (tree: Root, file: { data: Record<string, unknown> }) => {
     const fileData = file.data as FileData;
-    let totalBlocks = 0;
 
-    visit(tree, node => {
-      if (blockTypes.includes(node.type)) {
-        totalBlocks++;
-      }
-    });
-
-    fileData.blockCount = totalBlocks;
+    fileData.blockCount = tree.children.length ?? 0;
   };
 }
 
@@ -241,7 +233,6 @@ function rehypeVideos() {
   return (tree: HastRoot) => {
     visit(tree, 'element', node => {
       if (node.tagName === 'img') {
-        console.log(node);
         const ext = node.properties?.src?.toString().split('.').pop() || '';
         // if the image is a video
         if (['mp4', 'webm'].includes(ext)) {
