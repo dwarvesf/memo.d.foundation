@@ -79,86 +79,6 @@
         }
       }
     },
-    "duckdb@1.2.0": {
-      "last_modified": "2025-02-26T05:29:08Z",
-      "resolved": "github:NixOS/nixpkgs/3a05eebede89661660945da1f151959900903b6a#duckdb",
-      "source": "devbox-search",
-      "version": "1.2.0",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/z4jz4bv6frcs8ghah0krrfscr1pr5yfq-duckdb-1.2.0",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/sx91yqvj7yydbiqlx9kn5hxwi5pwvh4m-duckdb-1.2.0-dev"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/agirgbrjqhdwby4134zf2anf6yp6ixwz-duckdb-1.2.0-lib"
-            }
-          ],
-          "store_path": "/nix/store/z4jz4bv6frcs8ghah0krrfscr1pr5yfq-duckdb-1.2.0"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/zphrhb9hzd9g2yw3h3m35iabbqs0dk7a-duckdb-1.2.0",
-              "default": true
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/92dg70anczlhi6q6w28c6hpfa632430y-duckdb-1.2.0-lib"
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/98zw72wcxlqzpphnhwx6y7zkd0wdbcw0-duckdb-1.2.0-dev"
-            }
-          ],
-          "store_path": "/nix/store/zphrhb9hzd9g2yw3h3m35iabbqs0dk7a-duckdb-1.2.0"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/17qfcjdy1cfr2skypvaj1jzcysazl9x5-duckdb-1.2.0",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/7djrgh2i0j8csv0jbm3f1xi01v7qmspw-duckdb-1.2.0-dev"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/xlw3pdhcaqg66v973j794sq18d01i19r-duckdb-1.2.0-lib"
-            }
-          ],
-          "store_path": "/nix/store/17qfcjdy1cfr2skypvaj1jzcysazl9x5-duckdb-1.2.0"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/dnzdw9bvcgckdg6n93pacb2gmgwz38nk-duckdb-1.2.0",
-              "default": true
-            },
-            {
-              "name": "dev",
-              "path": "/nix/store/10vqa25594g4x1y74i5q78prqvd2s2iz-duckdb-1.2.0-dev"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/8lnsjwip0mpyrr9k1k1ayn7696r3dfwm-duckdb-1.2.0-lib"
-            }
-          ],
-          "store_path": "/nix/store/dnzdw9bvcgckdg6n93pacb2gmgwz38nk-duckdb-1.2.0"
-        }
-      }
-    },
     "elixir-ls@0.21.3": {
       "last_modified": "2024-07-31T08:48:38Z",
       "resolved": "github:NixOS/nixpkgs/c3392ad349a5227f4a3464dce87bcc5046692fce#elixir-ls",
@@ -331,6 +251,10 @@
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
       "resolved": "github:NixOS/nixpkgs/9bc8a90931262245919a26f995c1f24c6c70d3fe?lastModified=1742237028&narHash=sha256-xlpHmgBxUnvHo8FNnju0sgnEyasb4gC607b%2BkeqjmX8%3D"
     },
+    "github:rupurt/duckdb-nix": {
+      "last_modified": "2025-03-12T18:28:13Z",
+      "resolved": "github:rupurt/duckdb-nix/d8a506a65c3156e28e08d8dab959d9fb7ea7d705?lastModified=1741804093&narHash=sha256-xMh09nhpFzxdIO9yYl1zgeWSVC7WVELVLTZMJ2VcKLQ%3D"
+    },
     "nodejs@23.9.0": {
       "last_modified": "2025-02-28T17:02:31Z",
       "plugin_version": "0.0.2",
@@ -396,51 +320,51 @@
         }
       }
     },
-    "pnpm@10.7.0": {
-      "last_modified": "2025-03-27T11:50:31Z",
-      "resolved": "github:NixOS/nixpkgs/6c5963357f3c1c840201eda129a99d455074db04#pnpm",
+    "pnpm@10.8.0": {
+      "last_modified": "2025-04-08T07:10:31Z",
+      "resolved": "github:NixOS/nixpkgs/b2b0718004cc9a5bca610326de0a82e6ea75920b#pnpm",
       "source": "devbox-search",
-      "version": "10.7.0",
+      "version": "10.8.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/x76wprx01q04cinshnm1133yg1ypsj3a-pnpm-10.7.0",
+              "path": "/nix/store/lk5zn7zj9aapazn25l8qag76kmnvdpn3-pnpm-10.8.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/x76wprx01q04cinshnm1133yg1ypsj3a-pnpm-10.7.0"
+          "store_path": "/nix/store/lk5zn7zj9aapazn25l8qag76kmnvdpn3-pnpm-10.8.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/bnarmhxsz8msrpsn96di6vb2ng3idaxj-pnpm-10.7.0",
+              "path": "/nix/store/qqgg823s3vd2hlhiwh92ci1zn0snnlb5-pnpm-10.8.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/bnarmhxsz8msrpsn96di6vb2ng3idaxj-pnpm-10.7.0"
+          "store_path": "/nix/store/qqgg823s3vd2hlhiwh92ci1zn0snnlb5-pnpm-10.8.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/0pz2nz0r1rwmyqg1kczs4wwxhnx6xn86-pnpm-10.7.0",
+              "path": "/nix/store/yacdhmmyqskcgcwnaxlz60cl4s29g1wb-pnpm-10.8.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/0pz2nz0r1rwmyqg1kczs4wwxhnx6xn86-pnpm-10.7.0"
+          "store_path": "/nix/store/yacdhmmyqskcgcwnaxlz60cl4s29g1wb-pnpm-10.8.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ywwl1rqzh8ivxz9skyyswqf56hsdp4gg-pnpm-10.7.0",
+              "path": "/nix/store/kclz9i3vq2fz8nnn947l773a95fj77z3-pnpm-10.8.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/ywwl1rqzh8ivxz9skyyswqf56hsdp4gg-pnpm-10.7.0"
+          "store_path": "/nix/store/kclz9i3vq2fz8nnn947l773a95fj77z3-pnpm-10.8.0"
         }
       }
     }
