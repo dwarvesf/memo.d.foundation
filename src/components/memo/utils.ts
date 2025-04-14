@@ -28,12 +28,22 @@ export function getFirstMemoImage(
 }
 
 export function formatMemoPath(filePath: string): string {
-  const formattedPath = filePath
+  let formattedPath = filePath
     .toLowerCase()
     .replace(/\.md$/, '')
     .replace(/ /g, '-')
     .replace(/[^a-zA-Z0-9/_-]+/g, '-')
     .replace(/(-\/|-$|_index$)/g, '');
 
-  return `/${formattedPath}`;
+  // Remove trailing slash if present
+  if (formattedPath.endsWith('/')) {
+    formattedPath = formattedPath.slice(0, -1);
+  }
+
+  // Ensure the path starts with a single slash
+  if (formattedPath.startsWith('/')) {
+    return formattedPath; // Already starts with slash, return as is
+  } else {
+    return `/${formattedPath}`; // Prepend slash
+  }
 }
