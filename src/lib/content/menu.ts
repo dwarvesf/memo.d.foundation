@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { asyncBufferFromFile, parquetRead } from 'hyparquet';
+import { DuckDBConnection, DuckDBInstance } from '@duckdb/node-api'; // Import DuckDB API
+
+// --- Slugify Functions (Keep as they are used for URL generation) ---
 
 /**
  * Slugify a string (based on Memo.Common.Slugify.slugify)
@@ -8,13 +10,14 @@ import { asyncBufferFromFile, parquetRead } from 'hyparquet';
  * @returns Slugified string
  */
 function slugify(str: string): string {
+  if (!str) return '';
   return str
     .toLowerCase()
-    .replace(/[^a-z0-9\s_-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim()
-    .replace(/^-+|-+$/g, '');
+    .replace(/[^a-z0-9\s_-]/g, '') // Remove invalid chars
+    .replace(/\s+/g, '-') // Collapse whitespace to single dashes
+    .replace(/-+/g, '-') // Collapse multiple dashes
+    .trim() // Trim leading/trailing spaces/dashes
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing dashes
 }
 
 /**
@@ -23,6 +26,7 @@ function slugify(str: string): string {
  * @returns Slugified filename with extension preserved
  */
 function slugifyFilename(filename: string): string {
+  if (!filename) return '';
   const ext = path.extname(filename);
   const name = path.basename(filename, ext);
   return slugify(name) + ext;
@@ -34,103 +38,112 @@ function slugifyFilename(filename: string): string {
  * @returns Path with components slugified
  */
 function slugifyPathComponents(pathStr: string): string {
+  if (!pathStr) return '';
   return pathStr
     .split('/')
     .map(component => {
+      // Keep special directory names
       if (['.', '..', ''].includes(component)) {
         return component;
       }
+      // Slugify other components, preserving extension
       return slugifyFilename(component);
     })
     .join('/');
 }
 
+// --- Interfaces ---
+
 /**
- * Interface for menu file paths
+ * Interface for menu file paths within a group
  */
-interface FilePath {
+interface MenuFilePath {
   file_path: string;
   title: string;
-  date: string;
+  date: string; // Keep date for sorting
 }
 
 /**
- * Interface for grouped path data
+ * Interface for grouped path data (menu hierarchy node)
  */
 interface GroupedPath {
-  grouped_path: string;
-  file_paths: FilePath[];
-  next_path: Record<string, GroupedPath>;
+  grouped_path: string; // The path of the directory itself
+  file_paths: MenuFilePath[]; // Files directly within this directory
+  next_path: Record<string, GroupedPath>; // Subdirectories
 }
+
+// --- Helper Functions for Menu Generation ---
 
 /**
  * Nest paths to create a hierarchical menu structure
- * @param data Array of grouped paths
+ * @param data Array of grouped paths with their files
  * @returns Nested object representing menu hierarchy
  */
 function nestPaths(
-  data: { grouped_path: string; file_paths: string[] }[],
+  data: { grouped_path: string; file_paths: MenuFilePath[] }[],
 ): Record<string, GroupedPath> {
   const result: Record<string, GroupedPath> = {};
 
   data.forEach(item => {
-    const paths = item.grouped_path.split('/').filter((p: string) => p);
+    const paths = item.grouped_path.split('/').filter((p: string) => p); // Get directory components
     let currentLevel = result;
 
-    paths.forEach((path: string, index: number) => {
-      if (!currentLevel[path]) {
-        currentLevel[path] = {
+    paths.forEach((pathPart: string, index: number) => {
+      if (!currentLevel[pathPart]) {
+        currentLevel[pathPart] = {
+          // Path up to this level
           grouped_path: '/' + paths.slice(0, index + 1).join('/'),
-          file_paths: [],
-          next_path: {},
+          file_paths: [], // Initialize files for this level
+          next_path: {}, // Initialize subdirectories
         };
       }
 
+      // If this is the last part of the path, assign the files
       if (index === paths.length - 1) {
-        currentLevel[path].file_paths = item.file_paths.map((paths: string) =>
-          JSON.parse(paths),
-        );
-        // Sort file_paths: special characters first, then by date
-        currentLevel[path].file_paths.sort((a: FilePath, b: FilePath) => {
-          const specialChars = /^[§¶&]/;
+        currentLevel[pathPart].file_paths = item.file_paths;
+        // Sort file_paths: special characters first, then by date descending
+        currentLevel[pathPart].file_paths.sort((a, b) => {
+          const specialChars = /^[§¶&]/; // Regex for special starting characters
           const aHasSpecial = specialChars.test(a.title);
           const bHasSpecial = specialChars.test(b.title);
 
-          if (aHasSpecial && !bHasSpecial) return -1;
-          if (!aHasSpecial && bHasSpecial) return 1;
-          if (aHasSpecial && bHasSpecial) {
-            // If both have special characters, maintain their original order
-            return 0;
+          if (aHasSpecial && !bHasSpecial) return -1; // a comes first
+          if (!aHasSpecial && bHasSpecial) return 1; // b comes first
+          // If both or neither have special chars, sort by date descending
+          try {
+            const dateA = a.date ? new Date(a.date).getTime() : 0;
+            const dateB = b.date ? new Date(b.date).getTime() : 0;
+            return dateB - dateA; // Newer first
+          } catch {
+            // Removed unused 'e' variable
+            return 0; // Keep order if dates are invalid
           }
-          // If neither have special characters or both do, sort by date (assuming newer dates should come first)
-          const dateA = a.date || '';
-          const dateB = b.date || '';
-          return (
-            new Date(dateB || 0).getTime() - new Date(dateA || 0).getTime()
-          );
         });
       }
-
-      currentLevel = currentLevel[path].next_path;
+      // Move to the next level in the hierarchy
+      currentLevel = currentLevel[pathPart].next_path;
     });
   });
 
+  // Recursively sort the keys (directory names) at each level
   return sortGroupedPaths(result);
 }
 
 /**
- * Sort the grouped paths alphabetically
+ * Sort the grouped paths alphabetically at each level
  * @param obj Object containing grouped paths
  * @returns Sorted object
  */
 function sortGroupedPaths(
   obj: Record<string, GroupedPath>,
 ): Record<string, GroupedPath> {
-  const sortedKeys = Object.keys(obj).sort();
+  // Sort keys alphabetically
+  const sortedKeys = Object.keys(obj).sort((a, b) => a.localeCompare(b));
   const sortedObj: Record<string, GroupedPath> = {};
 
   sortedKeys.forEach(key => {
     sortedObj[key] = obj[key];
+    // Recursively sort subdirectories if they exist
     if (Object.keys(sortedObj[key].next_path).length > 0) {
       sortedObj[key].next_path = sortGroupedPaths(sortedObj[key].next_path);
     }
@@ -139,211 +152,253 @@ function sortGroupedPaths(
   return sortedObj;
 }
 
-/**
- * Get menu data from the parquet database
- * @returns Promise resolving to menu structure
- */
-export async function getMenu(): Promise<Record<string, GroupedPath>> {
-  let menuData: Record<string, GroupedPath> = {};
+// --- DuckDB Connection Helper ---
 
-  try {
-    const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
-    if (fs.existsSync(parquetFilePath)) {
-      let parsedData: { grouped_path: string; file_paths: string[] }[] = [];
-
-      await parquetRead({
-        file: await asyncBufferFromFile(parquetFilePath),
-        columns: [
-          'file_path',
-          'short_title',
-          'title',
-          'date',
-          'draft',
-          'hiring',
-          'status',
-          'hide_on_sidebar',
-        ],
-        onComplete: data => {
-          // Create a map to collect file paths by grouped path
-          const groupedPathMap = new Map<string, { file_paths: string[] }>();
-
-          data.forEach(row => {
-            const filePath = row[0]?.toString() || '';
-            const shortTitle = row[1]?.toString() || '';
-            const title = row[2]?.toString() || '';
-            const date = row[3]?.toString() || '';
-            const draft = row[4] === true;
-            const hiring = row[5] === false;
-            const status = row[6]?.toString() || '';
-            const hideOnSidebar = row[7] === true;
-
-            // Skip entries with empty title or those that should be hidden
-            if (
-              !title ||
-              draft ||
-              hiring ||
-              hideOnSidebar ||
-              (status && status !== 'Open')
-            ) {
-              return;
-            }
-
-            // Skip archived files and _radar files
-            if (
-              filePath.includes('archived/') ||
-              filePath.includes('_radar/')
-            ) {
-              return;
-            }
-
-            // Extract grouped path (parent directory)
-            let groupedPath = '';
-            const lastSlashPos = filePath.lastIndexOf('/');
-            if (lastSlashPos > 0) {
-              groupedPath = filePath.substring(0, lastSlashPos);
-            }
-
-            if (groupedPath) {
-              // Create file path object - include date in an unused property for debugging
-              const filePathObj = {
-                file_path: filePath,
-                title: shortTitle || title,
-                _meta: { date }, // Use date here to avoid the unused var warning
-              };
-
-              // Add to grouped path map
-              if (!groupedPathMap.has(groupedPath)) {
-                groupedPathMap.set(groupedPath, { file_paths: [] });
-              }
-
-              groupedPathMap
-                .get(groupedPath)!
-                .file_paths.push(JSON.stringify(filePathObj));
-            }
-          });
-
-          // Convert map to array format expected by nestPaths
-          parsedData = Array.from(groupedPathMap.entries()).map(
-            ([grouped_path, data]) => ({
-              grouped_path,
-              file_paths: data.file_paths,
-            }),
-          );
-        },
-      });
-
-      // Sort by grouped_path in descending order
-      parsedData.sort((a, b) => b.grouped_path.localeCompare(a.grouped_path));
-
-      // Nest the paths to create menu structure
-      menuData = nestPaths(parsedData);
-    }
-  } catch (parquetError) {
-    console.error('Error reading parquet file for menu:', parquetError);
+// Modified to only return the connection as the instance is not used directly after connection
+async function connectDuckDB(): Promise<DuckDBConnection> {
+  const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
+  if (!fs.existsSync(parquetFilePath)) {
+    throw new Error(`Parquet file not found: ${parquetFilePath}`);
   }
+  // Instance is created internally but not returned if not needed
+  const instance = await DuckDBInstance.create(':memory:'); // Instance is created here
+  const connection = await instance.connect();
+  // Consider managing instance lifecycle if needed elsewhere, but for these functions, connection is sufficient
+  return connection;
+}
 
-  return menuData;
+// --- Data Fetching Functions ---
+
+// Define structure for rows read from DuckDB for getMenu
+interface MenuDbRow {
+  file_path: string | null;
+  short_title: string | null;
+  title: string | null;
+  date: string | null; // Assuming date is stored/read as string
+  draft: boolean | null;
+  hiring: boolean | null;
+  status: string | null;
+  hide_on_sidebar: boolean | null;
 }
 
 /**
- * Get pinned notes from the parquet database
+ * Get menu data from the parquet database using DuckDB
+ * @returns Promise resolving to menu structure
+ */
+export async function getMenu(): Promise<Record<string, GroupedPath>> {
+  let connection: DuckDBConnection | null = null; // Instance variable removed
+  console.log('Generating menu data...');
+
+  try {
+    connection = await connectDuckDB(); // Get only the connection
+    const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet'); // Needed for query
+    const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
+
+    const columnsToSelect = [
+      'file_path',
+      'short_title',
+      'title',
+      'date',
+      'draft',
+      'hiring',
+      'status',
+      'hide_on_sidebar',
+    ];
+    // Filter directly in SQL for efficiency
+    const query = `
+      SELECT ${columnsToSelect.join(', ')}
+      FROM read_parquet('${parquetPathForDb}')
+      WHERE
+        title IS NOT NULL AND title != '' AND
+        draft IS NOT TRUE AND
+        hiring IS NOT TRUE AND -- Assuming hiring=true means exclude
+        hide_on_sidebar IS NOT TRUE AND
+        (status IS NULL OR status = 'Open') AND
+        NOT file_path LIKE '%archived/%' AND
+        NOT file_path LIKE '%_radar/%';
+    `;
+
+    console.log('Executing DuckDB query for menu...');
+    const reader = await connection.runAndReadAll(query);
+    const results = reader.getRowObjects() as unknown as MenuDbRow[];
+    console.log(`Retrieved ${results.length} rows for menu from Parquet file.`);
+
+    // Create a map to collect file paths by grouped path (directory)
+    const groupedPathMap = new Map<string, MenuFilePath[]>();
+
+    results.forEach(row => {
+      const filePath = row.file_path || '';
+      const shortTitle = row.short_title || '';
+      const title = row.title || ''; // Already filtered non-empty titles in SQL
+      const date = row.date || ''; // Use empty string if null
+
+      // Extract grouped path (parent directory)
+      let groupedPath = '';
+      const lastSlashPos = filePath.lastIndexOf('/');
+      // Ensure it's not the root directory itself and has a parent
+      if (lastSlashPos > 0) {
+        groupedPath = filePath.substring(0, lastSlashPos);
+      } else if (lastSlashPos === 0) {
+        groupedPath = '/'; // Handle files directly under root if needed, though likely not for menu
+      } else {
+        groupedPath = '/'; // Files without a slash are considered root
+      }
+
+      if (groupedPath) {
+        const filePathObj: MenuFilePath = {
+          file_path: filePath,
+          title: shortTitle || title, // Prefer short_title if available
+          date: date, // Store date for sorting
+        };
+
+        // Add to grouped path map
+        if (!groupedPathMap.has(groupedPath)) {
+          groupedPathMap.set(groupedPath, []);
+        }
+        groupedPathMap.get(groupedPath)!.push(filePathObj);
+      }
+    });
+
+    // Convert map to array format expected by nestPaths
+    const parsedData = Array.from(groupedPathMap.entries()).map(
+      ([grouped_path, file_paths]) => ({
+        grouped_path,
+        file_paths,
+      }),
+    );
+
+    // Sort groups by path descending before nesting (optional, might affect final order)
+    // parsedData.sort((a, b) => b.grouped_path.localeCompare(a.grouped_path));
+
+    // Nest the paths to create menu structure
+    const menuData = nestPaths(parsedData);
+    console.log('Menu data processed and nested.');
+    return menuData;
+  } catch (error) {
+    console.error('Error generating menu:', error);
+    return {}; // Return empty object on error
+  } finally {
+    if (connection) {
+      connection.closeSync();
+      console.log('DuckDB connection for menu closed.');
+    }
+    // Instance cleanup handled by connection closing/GC
+  }
+}
+
+// Define structure for rows read from DuckDB for getPinnedNotes
+interface PinnedNoteDbRow {
+  file_path: string | null;
+  title: string | null;
+  date: string | null; // Assuming date is stored/read as string
+  pinned: boolean | null;
+}
+
+/**
+ * Get pinned notes from the parquet database using DuckDB
  * @param limit Number of pinned notes to return
  * @returns Promise resolving to array of pinned notes
  */
 export async function getPinnedNotes(
   limit: number = 3,
 ): Promise<{ title: string; url: string; date: string }[]> {
-  let pinnedNotes: { title: string; url: string; date: string }[] = [];
+  let connection: DuckDBConnection | null = null; // Instance variable removed
+  console.log(`Fetching up to ${limit} pinned notes...`);
 
   try {
+    connection = await connectDuckDB(); // Get only the connection
     const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
-    if (fs.existsSync(parquetFilePath)) {
-      await parquetRead({
-        file: await asyncBufferFromFile(parquetFilePath),
-        columns: ['file_path', 'title', 'date', 'pinned'],
-        onComplete: data => {
-          const filteredData = data.filter(row => {
-            const pinned = row[3] === true;
-            const title = row[1]?.toString() || '';
+    const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
 
-            return pinned && title;
-          });
+    // Use SQL for filtering, ordering, and limiting
+    const query = `
+      SELECT file_path, title, date
+      FROM read_parquet('${parquetPathForDb}')
+      WHERE
+        pinned = true AND
+        title IS NOT NULL AND title != ''
+      ORDER BY date DESC
+      LIMIT ?;
+    `;
 
-          pinnedNotes = filteredData.map(row => {
-            const filePath = row[0]?.toString() || '';
-            const title = row[1]?.toString() || '';
-            const date = row[2]?.toString() || '';
+    console.log('Executing DuckDB query for pinned notes...');
+    // Prepare the statement
+    const preparedStatement = await connection.prepare(query);
+    // Bind the limit value to the placeholder '?' (must be in an array)
+    preparedStatement.bind([limit]);
+    // Run the prepared statement to get the reader
+    const reader = await preparedStatement.runAndReadAll(); // No arguments here
+    const results = reader.getRowObjects() as unknown as PinnedNoteDbRow[];
+    console.log(`Retrieved ${results.length} pinned notes from Parquet file.`);
 
-            // Slugify the path
-            const slugifiedPath = slugifyPathComponents(filePath);
+    const pinnedNotes = results.map(row => {
+      const filePath = row.file_path || '';
+      const title = row.title || ''; // Already filtered non-empty in SQL
+      const date = row.date || '';
 
-            // Create URL (remove .md extension)
-            const url =
-              '/' +
-              (slugifiedPath.endsWith('.md')
-                ? slugifiedPath.slice(0, -3)
-                : slugifiedPath);
+      // Slugify the path for URL generation
+      const slugifiedPath = slugifyPathComponents(filePath);
 
-            return {
-              title,
-              url,
-              date,
-            };
-          });
+      // Create URL (remove .md extension if present)
+      const url =
+        '/' +
+        (slugifiedPath.endsWith('.md')
+          ? slugifiedPath.slice(0, -3)
+          : slugifiedPath);
 
-          // Sort by date (newer first) and limit
-          pinnedNotes.sort(
-            (a, b) =>
-              new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime(),
-          );
+      return { title, url, date };
+    });
 
-          if (limit > 0) {
-            pinnedNotes = pinnedNotes.slice(0, limit);
-          }
-        },
-      });
+    return pinnedNotes; // Already sorted and limited by SQL
+  } catch (error) {
+    console.error('Error fetching pinned notes:', error);
+    return []; // Return empty array on error
+  } finally {
+    if (connection) {
+      connection.closeSync();
+      console.log('DuckDB connection for pinned notes closed.');
     }
-  } catch (parquetError) {
-    console.error('Error reading parquet file for pinned notes:', parquetError);
   }
-
-  return pinnedNotes;
 }
 
 /**
- * Get all tags from the parquet database
- * @returns Promise resolving to array of tags
+ * Get all unique tags from the parquet database using DuckDB
+ * @returns Promise resolving to array of tags sorted alphabetically
  */
 export async function getTags(): Promise<string[]> {
-  let tags: string[] = [];
-  const tagSet = new Set<string>();
+  let connection: DuckDBConnection | null = null; // Instance variable removed
+  console.log('Fetching unique tags...');
 
   try {
+    connection = await connectDuckDB(); // Get only the connection
     const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
-    if (fs.existsSync(parquetFilePath)) {
-      await parquetRead({
-        file: await asyncBufferFromFile(parquetFilePath),
-        columns: ['tags'],
-        onComplete: data => {
-          data.forEach(row => {
-            const rowTags = row[0];
+    const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
 
-            if (Array.isArray(rowTags)) {
-              rowTags.forEach((tag: string) => {
-                if (tag && typeof tag === 'string') {
-                  tagSet.add(tag);
-                }
-              });
-            }
-          });
+    // Use UNNEST and DISTINCT directly in SQL for efficiency
+    const query = `
+      SELECT DISTINCT unnest(tags) AS tag
+      FROM read_parquet('${parquetPathForDb}')
+      WHERE tags IS NOT NULL
+      ORDER BY tag ASC;
+    `;
 
-          tags = Array.from(tagSet);
-        },
-      });
+    console.log('Executing DuckDB query for tags...');
+    const reader = await connection.runAndReadAll(query);
+    // getRows returns array of arrays, e.g., [[tag1], [tag2]]
+    const results = reader.getRows() as string[][];
+    console.log(`Retrieved ${results.length} unique tags from Parquet file.`);
+
+    // Extract the tag from each inner array
+    const tags = results.map(row => row[0]).filter(tag => tag); // Filter out any potential null/empty tags just in case
+
+    return tags; // Already unique and sorted by SQL
+  } catch (error) {
+    console.error('Error fetching tags:', error);
+    return []; // Return empty array on error
+  } finally {
+    if (connection) {
+      connection.closeSync();
+      console.log('DuckDB connection for tags closed.');
     }
-  } catch (parquetError) {
-    console.error('Error reading parquet file for tags:', parquetError);
   }
-
-  return tags;
 }

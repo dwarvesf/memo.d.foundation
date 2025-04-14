@@ -2,11 +2,11 @@
   "packages": {
     "awscli": "1.32.21",
     "git": "2.48.1",
-    "duckdb": "1.2.0",
+    "github:rupurt/duckdb-nix": "",
     "elixir": "1.18.1",
     "elixir-ls": "0.21.3",
     "nodejs": "23.9.0",
-    "pnpm": "10.7.0"
+    "pnpm": "10.8.0"
   },
   "shell": {
     "init_hook": ["make lib-setup", "make fetch"],
