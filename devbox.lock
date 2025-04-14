@@ -79,6 +79,86 @@
         }
       }
     },
+    "duckdb@1.2.1": {
+      "last_modified": "2025-04-12T23:59:46Z",
+      "resolved": "github:NixOS/nixpkgs/f6db44a8daa59c40ae41ba6e5823ec77fe0d2124#duckdb",
+      "source": "devbox-search",
+      "version": "1.2.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/01jf405xh1ak6lb28xd9zayh768jhhxl-duckdb-1.2.1",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/nlfm7yi8aj43isrng9qbqx47yrw3jl8z-duckdb-1.2.1-dev"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/f7xym1w6zrmw8ikrizzf2j6y2ibspsb1-duckdb-1.2.1-lib"
+            }
+          ],
+          "store_path": "/nix/store/01jf405xh1ak6lb28xd9zayh768jhhxl-duckdb-1.2.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/5rfpbs7r4vwqswff7h0mmza39jhlgsqh-duckdb-1.2.1",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/xgxdv1iz3fz5glrjhqyv6iqk4lygrrzl-duckdb-1.2.1-dev"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/fjk4d4ld23n6v0m7hxl4hgw08kzpc9jh-duckdb-1.2.1-lib"
+            }
+          ],
+          "store_path": "/nix/store/5rfpbs7r4vwqswff7h0mmza39jhlgsqh-duckdb-1.2.1"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/nrsvmmwpzj1bslnpgknb1gbl2m500s7l-duckdb-1.2.1",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/w5i5ibagmka6831wcq3n7lh7x732a1zx-duckdb-1.2.1-dev"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/iv1ziy3bjsnryypc9f87sn2k6arm31wr-duckdb-1.2.1-lib"
+            }
+          ],
+          "store_path": "/nix/store/nrsvmmwpzj1bslnpgknb1gbl2m500s7l-duckdb-1.2.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/l3r2g5ikn64sa74p4wbqb0iincfnwl0y-duckdb-1.2.1",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/2gl9xsyfd74kscq17lwwp6ad9bgkqffh-duckdb-1.2.1-dev"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/l0f8a08ylwyj2hrvqy4m768hfd0wf42v-duckdb-1.2.1-lib"
+            }
+          ],
+          "store_path": "/nix/store/l3r2g5ikn64sa74p4wbqb0iincfnwl0y-duckdb-1.2.1"
+        }
+      }
+    },
     "elixir-ls@0.21.3": {
       "last_modified": "2024-07-31T08:48:38Z",
       "resolved": "github:NixOS/nixpkgs/c3392ad349a5227f4a3464dce87bcc5046692fce#elixir-ls",
@@ -250,10 +330,6 @@
     },
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
       "resolved": "github:NixOS/nixpkgs/9bc8a90931262245919a26f995c1f24c6c70d3fe?lastModified=1742237028&narHash=sha256-xlpHmgBxUnvHo8FNnju0sgnEyasb4gC607b%2BkeqjmX8%3D"
-    },
-    "github:rupurt/duckdb-nix": {
-      "last_modified": "2025-03-12T18:28:13Z",
-      "resolved": "github:rupurt/duckdb-nix/d8a506a65c3156e28e08d8dab959d9fb7ea7d705?lastModified=1741804093&narHash=sha256-xMh09nhpFzxdIO9yYl1zgeWSVC7WVELVLTZMJ2VcKLQ%3D"
     },
     "nodejs@23.9.0": {
       "last_modified": "2025-02-28T17:02:31Z",
