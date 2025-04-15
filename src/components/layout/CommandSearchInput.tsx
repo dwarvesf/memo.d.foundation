@@ -1,5 +1,7 @@
 import React from 'react';
 import { SearchIcon } from 'lucide-react';
+import HighlightWithinTextarea from 'react-highlight-within-textarea';
+import 'draft-js/dist/Draft.css'; // Import draft.js styles
 
 interface CommandSearchInputProps {
   value: string;
@@ -7,54 +9,47 @@ interface CommandSearchInputProps {
   inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
-export interface ParsedSearch {
-  query: string;
-  author?: string;
-  tags: string[];
-  directory?: string;
-}
-export const parseInput = (input: string): ParsedSearch => {
-  const tags = input.match(/#[\w-]+/g) ?? [];
-  const author = input.match(/author:@([\w-]+)/)?.[1];
-  const directory = input.match(/dir:([\w-]+)/)?.[1];
-
-  // Remove special syntax from main query
-  const query = input
-    .replace(/#[\w-]+/g, '')
-    .replace(/author:@[\w-]+/g, '')
-    .replace(/dir:[\w-]+/g, '')
-    .trim();
-
-  return {
-    query,
-    author,
-    tags: tags.map(tag => tag.slice(1)), // Remove # prefix
-    directory,
-  };
-};
+// Regex patterns for different types of highlights
+const highlights = [
+  {
+    // Match author:@ followed by any non-space characters
+    highlight: /author:@[^\s]+/g,
+    className: 'bg-primary/10 text-primary rounded px-1',
+  },
+  {
+    // Match # followed by any non-space characters
+    highlight: /#[^\s]+/g,
+    className: 'bg-primary/10 text-primary rounded px-1',
+  },
+  {
+    // Match dir: followed by any non-space characters
+    highlight: /dir:[^\s]+/g,
+    className: 'bg-primary/10 text-primary rounded px-1',
+  },
+];
 
 export const CommandSearchInput: React.FC<CommandSearchInputProps> = ({
   value,
   onChange,
   inputRef,
 }) => {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    onChange(newValue);
+  const handleChange = (val: string) => {
+    onChange(val);
   };
 
   return (
     <div className="border-border border-b p-4">
       <div className="flex items-center">
         <SearchIcon className="text-muted-foreground mr-2 h-5 w-5" />
-        <input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={handleInputChange}
-          placeholder="Search (try author:@name #tag dir:folder)..."
-          className="text-foreground flex-1 border-none bg-transparent outline-none"
-        />
+        <div className="relative flex-1">
+          <HighlightWithinTextarea
+            ref={inputRef}
+            value={value}
+            onChange={handleChange}
+            highlight={highlights}
+            placeholder="Search (try author:@name #tag dir:folder)..."
+          />
+        </div>
       </div>
     </div>
   );

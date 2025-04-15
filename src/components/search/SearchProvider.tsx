@@ -104,21 +104,24 @@ function markdownToPlainText(markdown: string): string {
   return text;
 }
 
-function parseQueryForFilters(query: string): {
-  filters: { authors: string[]; tags: string[]; title: string };
-  query: string;
-} {
-  const filters: { authors: string[]; tags: string[]; title: string } = {
+function parseQueryForFilters(query: string) {
+  const filters: {
+    authors: string[];
+    tags: string[];
+    title: string;
+    dir: string[];
+  } = {
     authors: [],
     tags: [],
     title: '',
+    dir: [],
   };
 
-  const authorRe = /author:([^\s]*)/g;
-  const tagRe = /tag:([^\s]*)/g;
+  const authorRe = /author:@([^\s]*)/g;
+  const tagRe = /#([^\s#]+)/g;
   const titleRe = /title:([^\s]*)/g;
-  const hashtagRe = /#([^\s#]+)/g;
   const atMentionRe = /@([^\s@]+)/g;
+  const dirRe = /dir:([^\s]*)/g;
 
   const stripFilters = query.split(' ').filter(token => {
     const titleMatch = [...token.matchAll(titleRe)];
@@ -132,6 +135,11 @@ function parseQueryForFilters(query: string): {
       filters.authors = filters.authors.concat(authorMatch.map(m => m[1]));
       return false;
     }
+    const dirMatch = [...token.matchAll(dirRe)];
+    if (dirMatch?.length) {
+      filters.dir = filters.dir.concat(dirMatch.map(m => m[1]));
+      return false;
+    }
 
     // Handle @mention format for authors
     const atMentionMatch = [...token.matchAll(atMentionRe)];
@@ -143,13 +151,6 @@ function parseQueryForFilters(query: string): {
     const tagMatch = [...token.matchAll(tagRe)];
     if (tagMatch?.length) {
       filters.tags = filters.tags.concat(tagMatch.map(m => m[1]));
-      return false;
-    }
-
-    // Handle hashtags (#tag format)
-    const hashtagMatch = [...token.matchAll(hashtagRe)];
-    if (hashtagMatch?.length) {
-      filters.tags = filters.tags.concat(hashtagMatch.map(m => m[1]));
       return false;
     }
 
@@ -285,7 +286,6 @@ export const SearchProvider: React.FC<{
 
       // Parse query and filters
       const { filters, query } = parseQueryForFilters(options.query);
-
       // Check cache first
       const cacheKey = options.query;
       const cachedResult = sessionStorage.getItem(cacheKey);
@@ -293,7 +293,7 @@ export const SearchProvider: React.FC<{
         return JSON.parse(cachedResult);
       }
       // Perform search
-      let results = miniSearch.search(query, {
+      let results = miniSearch.search(query || MiniSearch.wildcard, {
         filter: document => {
           // Filter by title if specified
           if (
@@ -302,31 +302,40 @@ export const SearchProvider: React.FC<{
           ) {
             return false;
           }
-
           // Filter by authors if specified
           if (filters.authors.length > 0) {
-            const documentAuthors = document.authors || [];
-            if (
-              !filters.authors.some(author =>
-                documentAuthors.some((docAuthor: string) =>
-                  docAuthor.toLowerCase().includes(author.toLowerCase()),
-                ),
-              )
-            ) {
+            const documentAuthors: string[] =
+              document.authors?.toLowerCase().split(' ') || [];
+            const isMatch = filters.authors.every(author =>
+              documentAuthors.includes(author.toLowerCase()),
+            );
+            if (!isMatch) {
               return false;
             }
           }
 
-          // Filter by tags if specified
           if (filters.tags.length > 0) {
-            const documentTags = document.tags || [];
-            if (
-              !filters.tags.some(tag =>
-                documentTags.some((docTag: string) =>
-                  docTag.toLowerCase().includes(tag.toLowerCase()),
-                ),
-              )
-            ) {
+            const documentTags: string[] =
+              document.tags?.toLowerCase().split(' ') || [];
+            const isMatch = filters.tags.every(tag =>
+              documentTags.includes(tag.toLowerCase()),
+            );
+            if (!isMatch) {
+              return false;
+            }
+          }
+          // Filter by directory if specified
+          if (filters.dir.length > 0) {
+            const documentDir = (document.file_path as string)
+              .replace(' ', '-')
+              .toLowerCase()
+              .split('/')
+              .slice(0, -1)
+              .join('/');
+            const isMatch = filters.dir.every(dir =>
+              documentDir.includes(dir.toLowerCase()),
+            );
+            if (!isMatch) {
               return false;
             }
           }
