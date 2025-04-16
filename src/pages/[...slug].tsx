@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import fs from 'fs';
 import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -25,6 +25,7 @@ import Link from 'next/link';
 import { formatMemoPath, getFirstMemoImage } from '@/components/memo/utils';
 import { slugToTitle } from '@/lib/utils';
 import MintEntry from '@/components/MintEntry/MintEntry';
+import { useThemeContext } from '@/contexts/theme';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content: string;
@@ -185,6 +186,45 @@ export default function ContentPage({
   isListPage,
   childMemos,
 }: ContentPageProps) {
+  const { theme, isThemeLoaded } = useThemeContext();
+
+  useEffect(() => {
+    // Only run mermaid initialization on the client side for content pages
+    // and after the theme context has loaded
+    if (
+      typeof window !== 'undefined' &&
+      !isListPage &&
+      frontmatter &&
+      isThemeLoaded
+    ) {
+      import('mermaid').then(mermaid => {
+        try {
+          // Determine Mermaid theme based on the application theme
+          const mermaidTheme = theme === 'dark' ? 'dark' : 'neutral'; // Use 'neutral' or 'default' for light mode
+
+          mermaid.default.initialize({
+            startOnLoad: false, // We manually trigger rendering
+            theme: mermaidTheme,
+            // You can add more config options here if needed
+          });
+
+          // Find all elements that need Mermaid rendering
+          const elements = document.querySelectorAll<HTMLElement>(
+            'code.language-mermaid',
+          );
+          if (elements.length > 0) {
+            // Convert NodeList to Array of HTMLElement for type compatibility
+            const elementsArray = Array.from(elements);
+            mermaid.default.run({ nodes: elementsArray });
+          }
+        } catch (error) {
+          console.error('Failed to initialize or run Mermaid:', error);
+        }
+      });
+    }
+    // Rerun if content, page type, frontmatter, or theme changes
+  }, [content, isListPage, frontmatter, theme, isThemeLoaded]);
+
   // Format metadata for display
 
   // Don't show subscription for certain pages
