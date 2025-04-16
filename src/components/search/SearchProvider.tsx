@@ -2,6 +2,12 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import MiniSearch from 'minisearch';
 import { IMiniSearchIndex } from '@/types';
 import { useEventCallback } from 'usehooks-ts';
+import {
+  SEARCH_AUTHOR_REGEX,
+  SEARCH_DIR_REGEX,
+  SEARCH_TAG_REGEX,
+  SEARCH_TITLE_REGEX,
+} from '@/constants/regex';
 
 // Types
 interface Document {
@@ -117,38 +123,25 @@ function parseQueryForFilters(query: string) {
     dir: [],
   };
 
-  const authorRe = /author:@([^\s]*)/g;
-  const tagRe = /#([^\s#]+)/g;
-  const titleRe = /title:([^\s]*)/g;
-  const atMentionRe = /@([^\s@]+)/g;
-  const dirRe = /dir:([^\s]*)/g;
-
   const stripFilters = query.split(' ').filter(token => {
-    const titleMatch = [...token.matchAll(titleRe)];
+    const titleMatch = [...token.matchAll(SEARCH_TITLE_REGEX)];
     if (titleMatch?.length) {
       filters.title = titleMatch[0][1];
       return false;
     }
 
-    const authorMatch = [...token.matchAll(authorRe)];
+    const authorMatch = [...token.matchAll(SEARCH_AUTHOR_REGEX)];
     if (authorMatch?.length) {
       filters.authors = filters.authors.concat(authorMatch.map(m => m[1]));
       return false;
     }
-    const dirMatch = [...token.matchAll(dirRe)];
+    const dirMatch = [...token.matchAll(SEARCH_DIR_REGEX)];
     if (dirMatch?.length) {
       filters.dir = filters.dir.concat(dirMatch.map(m => m[1]));
       return false;
     }
 
-    // Handle @mention format for authors
-    const atMentionMatch = [...token.matchAll(atMentionRe)];
-    if (atMentionMatch?.length) {
-      filters.authors = filters.authors.concat(atMentionMatch.map(m => m[1]));
-      return false;
-    }
-
-    const tagMatch = [...token.matchAll(tagRe)];
+    const tagMatch = [...token.matchAll(SEARCH_TAG_REGEX)];
     if (tagMatch?.length) {
       filters.tags = filters.tags.concat(tagMatch.map(m => m[1]));
       return false;

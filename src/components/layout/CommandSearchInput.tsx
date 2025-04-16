@@ -2,6 +2,11 @@ import React from 'react';
 import { SearchIcon } from 'lucide-react';
 import HighlightWithinTextarea from 'react-highlight-within-textarea';
 import 'draft-js/dist/Draft.css'; // Import draft.js styles
+import {
+  SEARCH_AUTHOR_REGEX,
+  SEARCH_DIR_REGEX,
+  SEARCH_TAG_REGEX,
+} from '@/constants/regex';
 
 interface CommandSearchInputProps {
   value: string;
@@ -12,18 +17,18 @@ interface CommandSearchInputProps {
 // Regex patterns for different types of highlights
 const highlights = [
   {
-    // Match author:@ followed by any non-space characters
-    highlight: /author:@[^\s]+/g,
+    // Match @ followed by any non-space characters
+    highlight: SEARCH_AUTHOR_REGEX,
     className: 'bg-primary/10 text-primary rounded px-1',
   },
   {
     // Match # followed by any non-space characters
-    highlight: /#[^\s]+/g,
+    highlight: SEARCH_TAG_REGEX,
     className: 'bg-primary/10 text-primary rounded px-1',
   },
   {
-    // Match dir: followed by any non-space characters
-    highlight: /dir:[^\s]+/g,
+    // Match / followed by any non-space characters
+    highlight: SEARCH_DIR_REGEX,
     className: 'bg-primary/10 text-primary rounded px-1',
   },
 ];
@@ -47,7 +52,7 @@ export const CommandSearchInput: React.FC<CommandSearchInputProps> = ({
             value={value}
             onChange={handleChange}
             highlight={highlights}
-            placeholder="Search (try author:@name #tag dir:folder)..."
+            placeholder="Search (e.g., @tom, #ai, /playbook)..."
           />
         </div>
       </div>
