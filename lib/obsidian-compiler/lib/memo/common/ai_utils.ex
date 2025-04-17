@@ -23,6 +23,82 @@ defmodule Memo.Common.AIUtils do
     |> (&if(String.length(&1) > 100, do: compress_text_openai(&1), else: "")).()
   end
 
+  @doc """
+  Given an image filename and markdown context, returns {:ok, descriptive_name} using OpenAI if available,
+  or {:ok, slugified_name} as fallback.
+
+  Context may include: markdown_file, alt, header, snippet.
+  """
+  def describe_filename(filename, context \\ nil) do
+    require Logger
+    api_key = System.get_env("OPENAI_API_KEY")
+
+    if is_binary(api_key) and api_key != "" do
+      prompt =
+        case context do
+          %{
+            markdown_file: md,
+            alt: alt,
+            header: header,
+            snippet: snippet
+          } ->
+            """
+            Suggest a short, natural, descriptive English filename (no more than 5 words, no spaces, no special chars, no extension) for this image file, based on the context in which it appears in a markdown document.
+
+            Markdown file: #{md}
+            Section header: #{header}
+            Alt text: #{alt}
+            Surrounding text: #{snippet}
+            Current filename: #{filename}
+
+            Only return the new filename, no extension.
+            """
+
+          _ ->
+            """
+            Suggest a short, natural, descriptive English filename (no more than 5 words, no spaces, no special chars, no extension) for this image file, based on its current name and context clues. Only return the new filename, no extension.
+            Current filename: #{filename}
+            """
+        end
+
+      headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}]
+      payload =
+        Jason.encode!(%{
+          "model" => "gpt-4o-mini-2024-07-18",
+          "messages" => [
+            %{"role" => "system", "content" => "You are an assistant that generates short, natural, descriptive, filesystem-safe image filenames."},
+            %{"role" => "user", "content" => prompt}
+          ]
+        })
+
+      with {:ok, %HTTPoison.Response{body: body}} <-
+             HTTPoison.post(
+               "https://api.openai.com/v1/chat/completions",
+               payload,
+               headers,
+               [recv_timeout: 30_000]
+             ),
+           {:ok, decoded_body} <- Jason.decode(body),
+           %{"choices" => [%{"message" => %{"content" => content}}]} <- decoded_body do
+        Logger.info("OpenAI API response: #{inspect(content)}")
+        # Clean up: remove extension, spaces, punctuation, etc.
+        name =
+          content
+          |> String.trim()
+          |> String.replace(~r/[^a-zA-Z0-9_-]/, "_")
+          |> String.downcase()
+          |> String.slice(0, 40)
+        {:ok, name}
+      else
+        error ->
+          Logger.error("OpenAI API error: #{inspect(error)}")
+          {:ok, Memo.Common.Slugify.slugify_filename(filename)}
+      end
+    else
+      {:ok, Memo.Common.Slugify.slugify_filename(filename)}
+    end
+  end
+
   def embed_custom(text) do
     if String.length(text) > 100 do
       fetch_jina_embeddings(text)
