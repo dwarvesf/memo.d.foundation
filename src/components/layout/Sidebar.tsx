@@ -14,25 +14,17 @@ import { useThemeContext } from '@/contexts/theme';
 import { cn } from '@/lib/utils';
 import { MemoIcons } from '../icons';
 
-// Define navigation links
 const navLinks = [
   { title: 'Home', url: '/', Icon: MemoIcons.home },
-  { title: 'Careers', url: '/careers/hiring', Icon: MemoIcons.careers },
-
   {
     title: 'Consulting',
     url: '/consulting',
     Icon: MemoIcons.consulting,
   },
   { title: 'Earn', url: '/earn', Icon: MemoIcons.earn },
-  { title: 'Fund', url: '/fund', Icon: MemoIcons.fund },
-  { title: 'Handbook', url: '/handbook', Icon: MemoIcons.handbook },
-  { title: 'Open Source', url: '/opensource', Icon: MemoIcons.opensource },
-  { title: 'Playbook', url: '/playbook', Icon: MemoIcons.playbook },
-  { title: 'Playground', url: '/playground', Icon: MemoIcons.playground },
-  { title: 'RFC', url: '/rfc', Icon: MemoIcons.rfc },
-  { title: 'Updates', url: '/updates', Icon: MemoIcons.updates },
-  { title: 'Popular Tags', url: '/tags', Icon: MemoIcons.label },
+  { title: 'Hiring', url: '/careers/hiring', Icon: MemoIcons.careers },
+  { title: 'Digest', url: '/updates/digest', Icon: MemoIcons.updates },
+  { title: 'OGIFs', url: '/updates/ogif', Icon: MemoIcons.ogif },
 ];
 
 interface SidebarProps {
