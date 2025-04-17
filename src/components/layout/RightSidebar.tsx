@@ -4,7 +4,6 @@ import React from 'react';
 import { formatDate } from 'date-fns';
 import CalendarIcon from '../icons/CalendarIcon';
 import CircleUserIcon from '../icons/CircleUserIcon';
-import TagIcon from '../icons/TagIcon';
 import FolderIcon from '../icons/FolderIcon';
 import Link from 'next/link';
 import {
@@ -14,7 +13,8 @@ import {
 } from '@/constants/nft';
 import { baseSepolia } from 'viem/chains';
 import { useChainId, useReadContract } from 'wagmi';
-import PeopleExchangeIcon from '../icons/PeopleExchangeIcon';
+import PartnerExchangeIcon from '../icons/PartnerExchangeIcon';
+import TagsIcon from '../icons/TagsIcon';
 
 interface Props {
   metadata?: IMetadata;
@@ -104,7 +104,7 @@ const RightSidebar = (props: Props) => {
                 )}
                 {!!tokenId && (
                   <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
-                    <PeopleExchangeIcon className="h-4 w-4" />
+                    <PartnerExchangeIcon className="h-4 w-4" />
                     <span>Minted:</span>
                     <span>{displayMintCount} collectors</span>
                   </li>
@@ -112,7 +112,7 @@ const RightSidebar = (props: Props) => {
 
                 {metadata.tags && metadata.tags.length > 0 && (
                   <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
-                    <TagIcon width={16} height={16} />
+                    <TagsIcon width={16} height={16} />
                     <span>Tags:</span>{' '}
                     {metadata.tags.slice(0, 3).map((tag, index) => (
                       <Link
