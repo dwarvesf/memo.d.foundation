@@ -15,8 +15,22 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.DWARVES_PAT }}
-          submodules: recursive
+          submodules: true
           fetch-depth: 15
+
+      - name: Update submodules to depth 2
+        run: |
+          # Configure git to use HTTPS instead of SSH for GitHub repositories
+          git config --global url."https://${{ secrets.DWARVES_PAT }}@github.com/".insteadOf "git@github.com:"
+
+          # Handle top-level submodules first (depth 1)
+          git submodule update --init --depth 1
+
+          # Process level 2 submodules manually with error handling
+          git submodule foreach 'if [ -f .gitmodules ]; then git submodule update --init --depth 1 || echo "Failed to update some depth 2 submodules, continuing anyway..."; fi'
+
+          # Ensure we don't proceed deeper
+          git config --global submodule.recurse false
 
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.11.0
@@ -38,6 +52,19 @@ jobs:
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           JINA_BASE_URL: ${{ secrets.JINA_BASE_URL }}
 
+      - name: Update submodules
+        run: |
+          # Configure git to use HTTPS instead of SSH for GitHub repositories
+          git config --global url."https://${{ secrets.DWARVES_PAT }}@github.com/".insteadOf "git@github.com:"
+
+          # Handle top-level submodules first
+          git submodule update --init
+
+          # Process level 2 submodules manually with error handling
+          git submodule foreach 'if [ -f .gitmodules ]; then git submodule update --init || echo "Failed to update some depth 2 submodules, continuing anyway..."; fi'
+
+          # Ensure we don't proceed deeper
+          git config --global submodule.recurse false
 
       - name: Commit and push changes
         run: |
