@@ -12,19 +12,27 @@ import SunIcon from '../icons/SunIcon';
 import MoonIcon from '../icons/MoonIcon';
 import { useThemeContext } from '@/contexts/theme';
 import { cn } from '@/lib/utils';
+import { MemoIcons } from '../icons';
 
 // Define navigation links
 const navLinks = [
-  { title: 'Home', url: '/', icon: '/assets/img/home.svg' },
+  { title: 'Home', url: '/', Icon: MemoIcons.home },
+  { title: 'Careers', url: '/careers/hiring', Icon: MemoIcons.careers },
+
   {
     title: 'Consulting',
     url: '/consulting',
-    icon: '/assets/img/consulting.svg',
+    Icon: MemoIcons.consulting,
   },
-  { title: 'Earn', url: '/earn', icon: '/assets/img/earn.svg' },
-  { title: 'Hiring', url: '/careers/hiring', icon: '/assets/img/hiring.svg' },
-  { title: 'Digest', url: '/updates/digest', icon: '/assets/img/digest.svg' },
-  { title: 'OGIFs', url: '/updates/ogif', icon: '/assets/img/ogifs.svg' },
+  { title: 'Earn', url: '/earn', Icon: MemoIcons.earn },
+  { title: 'Fund', url: '/fund', Icon: MemoIcons.fund },
+  { title: 'Handbook', url: '/handbook', Icon: MemoIcons.handbook },
+  { title: 'Open Source', url: '/opensource', Icon: MemoIcons.opensource },
+  { title: 'Playbook', url: '/playbook', Icon: MemoIcons.playbook },
+  { title: 'Playground', url: '/playground', Icon: MemoIcons.playground },
+  { title: 'RFC', url: '/rfc', Icon: MemoIcons.rfc },
+  { title: 'Updates', url: '/updates', Icon: MemoIcons.updates },
+  { title: 'Popular Tags', url: '/tags', Icon: MemoIcons.label },
 ];
 
 interface SidebarProps {
@@ -114,20 +122,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                     id={`sidebar-item-${index}`}
                   >
                     <div className="p-2">
-                      <div
-                        className="h-6 w-6"
-                        style={{
-                          maskImage: `url('${item.icon}')`,
-                          WebkitMaskImage: `url('${item.icon}')`,
-                          backgroundColor: 'currentColor',
-                          maskRepeat: 'no-repeat',
-                          WebkitMaskRepeat: 'no-repeat',
-                          maskSize: 'contain',
-                          WebkitMaskSize: 'contain',
-                          maskPosition: 'center',
-                          WebkitMaskPosition: 'center',
-                        }}
-                      ></div>
+                      {item.Icon && <item.Icon className="h-6 w-6" />}
                     </div>
                     <span className="ml-3 inline-block xl:hidden">
                       {item.title}

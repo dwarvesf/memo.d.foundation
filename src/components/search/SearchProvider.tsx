@@ -18,7 +18,7 @@ interface Document {
   authors?: string[];
   tags?: string[];
   category?: string;
-  date?: string;
+  date?: { days: number };
   spr_content?: string;
   matchingLines?: string;
 }
@@ -336,9 +336,15 @@ export const SearchProvider: React.FC<{
           return true;
         },
       });
+      // sort by date.days, days max => latest
+      results.sort((a, b) => {
+        const aDate = a.date?.days || 0;
+        const bDate = b.date?.days || 0;
+        return bDate - aDate;
+      });
 
       // Limit to 10 results
-      results = results.slice(0, 10);
+      results = results.slice(0, 50);
 
       // Add matching lines
       // We need to fetch content for highlighting - this would come from an API

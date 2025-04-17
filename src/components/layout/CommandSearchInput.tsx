@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchIcon } from 'lucide-react';
+
 import HighlightWithinTextarea from 'react-highlight-within-textarea';
 import 'draft-js/dist/Draft.css'; // Import draft.js styles
 import {
@@ -7,6 +7,7 @@ import {
   SEARCH_DIR_REGEX,
   SEARCH_TAG_REGEX,
 } from '@/constants/regex';
+import SearchIcon from '../icons/SearchIcon';
 
 interface CommandSearchInputProps {
   value: string;

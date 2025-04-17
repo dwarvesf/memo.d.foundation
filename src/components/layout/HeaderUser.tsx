@@ -9,7 +9,6 @@ import { formatEther } from 'viem';
 import { Avatar } from '../ui/avatar';
 import Jdenticon from 'react-jdenticon';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { useIsMounted } from 'usehooks-ts';
 
 const formatAddress = (address: string) => {
   return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
@@ -34,7 +33,7 @@ enum FirstConnectEnum {
   done,
 }
 const HeaderUser = () => {
-  const isMounted = useIsMounted();
+  const [isMounted, setIsMounted] = useState(false);
   const { address: curAddress, isConnecting, status } = useAccount();
   const [localAddress, setLocalAddress] = useState<string>('');
   const [firstConnectStatus, setFirstConnectStatus] =
@@ -49,6 +48,10 @@ const HeaderUser = () => {
     firstConnectStatus === FirstConnectEnum.done
       ? curAddress
       : curAddress || localAddress;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const localAddress = localStorage.getItem('loggedInAddress');
@@ -82,7 +85,7 @@ const HeaderUser = () => {
     return formatBalance(balance.value);
   }, [balance]);
 
-  if (!isMounted()) {
+  if (!isMounted) {
     return <div className="h-9 w-9"></div>;
   }
   if (!address) {
