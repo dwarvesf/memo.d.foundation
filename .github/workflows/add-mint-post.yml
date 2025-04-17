@@ -23,18 +23,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.DWARVES_PAT }}
-          submodules: true
+          submodules: recursive
           fetch-depth: 15
-
-      - name: Selective submodule update (skip opensource)
-        run: |
-          # Only initialize the top-level submodule (vault)
-          git submodule update --init vault
-
-          # Find all submodules under vault except those in vault/opensource
-          git config -f .gitmodules --get-regexp path | awk '{print $2}' | grep '^vault/' | grep -v '^vault/opensource' | while read submodule; do
-            git submodule update --init "$submodule"
-          done
 
       - name: Install Vault CLI
         run: |
