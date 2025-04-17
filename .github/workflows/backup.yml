@@ -17,19 +17,15 @@ jobs:
           submodules: true
           fetch-depth: 15
 
-      - name: Update submodules to depth 2
+      - name: Selective submodule update (skip opensource)
         run: |
-          # Configure git to use HTTPS instead of SSH for GitHub repositories
-          git config --global url."https://${{ secrets.DWARVES_PAT }}@github.com/".insteadOf "git@github.com:"
+          # Only initialize the top-level submodule (vault)
+          git submodule update --init vault
 
-          # Handle top-level submodules first
-          git submodule update --init
-
-          # Process level 2 submodules manually with error handling
-          git submodule foreach 'if [ -f .gitmodules ]; then git submodule update --init || echo "Failed to update some depth 2 submodules, continuing anyway..."; fi'
-
-          # Ensure we don't proceed deeper
-          git config --global submodule.recurse false
+          # Find all submodules under vault except those in vault/opensource
+          git config -f .gitmodules --get-regexp path | awk '{print $2}' | grep '^vault/' | grep -v '^vault/opensource' | while read submodule; do
+            git submodule update --init "$submodule"
+          done
 
       - name: Install devbox
         uses: jetpack-io/devbox-install-action@v0.11.0
