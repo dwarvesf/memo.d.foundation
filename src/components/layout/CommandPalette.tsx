@@ -16,6 +16,7 @@ import CommandPaletteModal from './CommandPaletteModal';
 import { BookOpenIcon, PinIcon, CopyIcon } from 'lucide-react';
 import HotIcon from '../icons/HotIcon';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
+import SearchIcon from '../icons/SearchIcon';
 
 const defaultSearchResult: SearchResult = {
   flat: [],
@@ -371,9 +372,10 @@ const CommandPalette: React.FC = () => {
         aria-label="Open command palette"
       >
         <div className="flex items-center gap-0.5">
-          <span className="text-muted-foreground text-sm filter-[opacity(50%)]">
-            🔍 Search note
-          </span>
+          <div className="text-muted-foreground flex items-center gap-1 text-sm filter-[opacity(50%)]">
+            <SearchIcon />
+            <span className="">Search note</span>
+          </div>
         </div>
         <div className="text-muted-foreground flex items-center gap-0.5 text-xs">
           <kbd
@@ -394,32 +396,7 @@ const CommandPalette: React.FC = () => {
         onClick={toggleCommandPalette}
         aria-label="Open search"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 16 16"
-          fill="none"
-          className="text-foreground"
-          aria-hidden="true"
-        >
-          <circle
-            cx="6.88881"
-            cy="6.8889"
-            r="5.55556"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M11.3333 11.3333L14.6666 14.6667"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <SearchIcon />
       </button>
 
       {/* Command palette modal */}
