@@ -17,6 +17,7 @@ import { BookOpenIcon, PinIcon, CopyIcon } from 'lucide-react';
 import HotIcon from '../icons/HotIcon';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
 import SearchIcon from '../icons/SearchIcon';
+import { Editor } from 'draft-js';
 
 const defaultSearchResult: SearchResult = {
   flat: [],
@@ -32,7 +33,7 @@ const CommandPalette: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isMacOS, setIsMacOS] = useState(true);
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchInputRef = useRef<Editor>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isSearching, setIsSearching] = useState(false);

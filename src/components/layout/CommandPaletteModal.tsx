@@ -6,6 +6,7 @@ import { ISearchResultItem } from '@/types';
 import RenderMarkdown from '../RenderMarkdown';
 import { CommandSearchInput } from './CommandSearchInput';
 import { MemoIcons } from '../icons';
+import { Editor } from 'draft-js';
 
 interface Props {
   isOpen: boolean;
@@ -15,7 +16,7 @@ interface Props {
     grouped: Record<string, ISearchResultItem[]>;
   };
   goto: () => void;
-  searchInputRef: React.RefObject<HTMLInputElement | null>;
+  searchInputRef: React.RefObject<Editor | null>;
   searchContainerRef: React.RefObject<HTMLDivElement | null>;
   setQuery: (query: string) => void;
   query: string;
