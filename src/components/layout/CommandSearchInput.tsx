@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
 
 import HighlightWithinTextarea from 'react-highlight-within-textarea';
 import 'draft-js/dist/Draft.css'; // Import draft.js styles
@@ -8,11 +8,11 @@ import {
   SEARCH_TAG_REGEX,
 } from '@/constants/regex';
 import SearchIcon from '../icons/SearchIcon';
-
+import { getDefaultKeyBinding, Editor } from 'draft-js';
 interface CommandSearchInputProps {
   value: string;
   onChange: (value: string) => void;
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  inputRef: React.RefObject<Editor | null>;
 }
 
 // Regex patterns for different types of highlights
@@ -43,6 +43,16 @@ export const CommandSearchInput: React.FC<CommandSearchInputProps> = ({
     onChange(val);
   };
 
+  const keyBindingFn = (e: KeyboardEvent) => {
+    if (e.code === 'Enter') {
+      // Function to execute...
+      return false;
+    }
+
+    // Return Draft's default command for this key.
+    return getDefaultKeyBinding(e);
+  };
+
   return (
     <div className="border-border border-b p-4">
       <div className="flex items-center">
@@ -54,6 +64,7 @@ export const CommandSearchInput: React.FC<CommandSearchInputProps> = ({
             onChange={handleChange}
             highlight={highlights}
             placeholder="Search (e.g., @tom, #ai, /playbook)..."
+            keyBindingFn={keyBindingFn}
           />
         </div>
       </div>
