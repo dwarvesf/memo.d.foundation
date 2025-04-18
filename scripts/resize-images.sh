@@ -16,7 +16,7 @@
 # Constants
 TARGET_WIDTH=1876
 TARGET_HEIGHT=1251
-WEBP_QUALITY=85
+WEBP_QUALITY=90
 
 # Get the input path from command line arguments or use default
 INPUT_PATH="${1:-public/images}"
