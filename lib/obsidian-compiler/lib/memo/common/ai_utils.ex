@@ -64,7 +64,7 @@ defmodule Memo.Common.AIUtils do
       headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}]
       payload =
         Jason.encode!(%{
-          "model" => "gpt-4o-mini-2024-07-18",
+          "model" => "gpt-4.1-nano-2025-04-14",
           "messages" => [
             %{"role" => "system", "content" => "You are an assistant that generates short, natural, descriptive, filesystem-safe image filenames."},
             %{"role" => "user", "content" => prompt}
@@ -80,7 +80,6 @@ defmodule Memo.Common.AIUtils do
              ),
            {:ok, decoded_body} <- Jason.decode(body),
            %{"choices" => [%{"message" => %{"content" => content}}]} <- decoded_body do
-        Logger.info("OpenAI API response: #{inspect(content)}")
         # Clean up: remove extension, spaces, punctuation, etc.
         name =
           content

@@ -31,7 +31,6 @@ defmodule Mix.Tasks.Media.Process do
     opts = parse_args(args)
 
     api_key = System.get_env("OPENAI_API_KEY")
-    IO.puts("OPENAI_API_KEY: #{inspect(api_key)} (length: #{if api_key, do: String.length(api_key), else: 0})")
 
     unless opts[:vault] do
       Mix.raise("You must specify --vault path/to/vault")
