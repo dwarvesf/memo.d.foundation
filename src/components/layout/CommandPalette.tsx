@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { useRouter } from 'next/router';
 import { useSearch } from '../search';
-import { groupBy } from '@/lib/utils';
+import { groupBy, slugToTitle } from '@/lib/utils';
 import { SearchResult } from '../search/SearchProvider';
 import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
@@ -428,7 +428,12 @@ function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
     ...recentPages.map(page => ({
       id: page.path,
       title: page.title,
-      description: page.path.split('/').filter(Boolean).join(' > '),
+      description: page.path
+        .split('/')
+        .filter(Boolean)
+        .slice(0, -1)
+        .map(slug => slugToTitle(slug))
+        .join(' > '),
       category: 'Recents',
       path: page.path,
       icon: <BookOpenIcon className="stroke-primary" />,
