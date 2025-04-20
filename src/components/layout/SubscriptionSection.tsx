@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
+import React, { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 
 const SubscriptionSection: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const randomSticker = useMemo((): number => {
+    return Math.floor(Math.random() * 3) + 1;
+  }, []);
 
   const isValidEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,7 +59,16 @@ const SubscriptionSection: React.FC = () => {
   };
 
   return (
-    <section className="bg-background-secondary dark:bg-secondary-background my-8 flex flex-col items-start justify-between rounded-lg p-6 md:flex-row md:items-center md:justify-between">
+    <section className="bg-background-secondary dark:bg-secondary-background relative my-8 flex flex-col items-start justify-between rounded-lg p-6 md:flex-row md:items-center md:justify-between">
+      <img
+        alt={`sticker #${randomSticker}`}
+        src={`/assets/img/sticker-${randomSticker}.png`}
+        className={cn(
+          'no-zoom asepect-square absolute z-10 h-10 object-contain',
+          'right-0 bottom-0 translate-x-1/3 translate-y-1/3 -rotate-10',
+          'drop-shadow-[0px_0px_1px_rgba(0,0,0,1)]',
+        )}
+      />
       <div>
         <h6 className="m-0 mb-1.5 text-sm leading-5 font-medium">
           Subscribe to Dwarves Memo
