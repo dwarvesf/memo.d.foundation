@@ -20,7 +20,6 @@ defmodule Memo.Application do
 
   def combine_vtt(args), do: Memo.CombineVTT.run(args)
   def export_markdown(vaultpath, exportpath), do: Memo.ExportMarkdown.run(vaultpath, exportpath)
-  def export_media(vaultpath), do: Memo.ExportMedia.run(vaultpath)
 
   def update_git_settings(),
     do:
@@ -49,8 +48,14 @@ defmodule Memo.Application do
       iex> Memo.Application.export_duckdb("vault", "parquet", "HEAD~2")
       iex> Memo.Application.export_duckdb("vault", "parquet", :all)
   """
-  def export_duckdb(vaultpath, format, commits_back \\ "HEAD^", pattern \\ nil) do
-    Memo.ExportDuckDB.run(vaultpath, format, commits_back, pattern)
+  def export_duckdb(
+        vaultpath,
+        format,
+        commits_back \\ "HEAD^",
+        pattern \\ nil,
+        force_refresh_ai \\ false
+      ) do
+    Memo.ExportDuckDB.run(vaultpath, format, commits_back, pattern, force_refresh_ai)
   end
 
   @doc """

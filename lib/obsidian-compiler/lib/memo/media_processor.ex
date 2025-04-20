@@ -28,9 +28,10 @@ defmodule Memo.MediaProcessor do
       Enum.map_reduce(changed, cache, fn img, acc_cache ->
         case process_image(img, vault, quality, acc_cache) do
           {:ok, entry, new_name} ->
-            { {img, new_name}, Map.put(acc_cache, img, entry) }
+            {{img, new_name}, Map.put(acc_cache, img, entry)}
+
           {:skip, entry} ->
-            { nil, Map.put(acc_cache, img, entry) }
+            {nil, Map.put(acc_cache, img, entry)}
         end
       end)
 
@@ -43,10 +44,12 @@ defmodule Memo.MediaProcessor do
 
   defp load_cache(vault) do
     path = Path.join(vault, @cache_file)
+
     if File.exists?(path) do
       case File.read(path) do
         {:ok, content} ->
           Jason.decode!(content)
+
         _ ->
           %{}
       end
@@ -82,11 +85,15 @@ defmodule Memo.MediaProcessor do
   defp filter_changed(images, cache) do
     Enum.filter(images, fn img ->
       case Map.get(cache, img) do
-        nil -> true
+        nil ->
+          true
+
         %{"mtime" => mtime, "hash" => hash} ->
           stat = File.stat!(img, time: :posix)
           mtime != stat.mtime or hash != file_hash(img)
-        _ -> true
+
+        _ ->
+          true
       end
     end)
   end
@@ -95,6 +102,7 @@ defmodule Memo.MediaProcessor do
     case File.read(path) do
       {:ok, content} ->
         :crypto.hash(:md5, content) |> Base.encode16(case: :lower)
+
       {:error, _} ->
         # Fallback: hash of path and current time
         :crypto.hash(:md5, "#{path}-#{:os.system_time(:millisecond)}")
@@ -116,6 +124,7 @@ defmodule Memo.MediaProcessor do
       {:skip, old_entry}
     else
       ext = Path.extname(img) |> String.downcase()
+
       if ext == ".webp" do
         # Only rename and update references, do not re-encode
         # Remove all extensions for slugification
@@ -150,6 +159,7 @@ defmodule Memo.MediaProcessor do
         # Compress to WebP
         new_path = Path.rootname(img) <> ".webp"
         Logger.info("Converting to WebP: #{img} -> #{new_path}")
+
         Mogrify.open(img)
         |> Mogrify.format("webp")
         |> Mogrify.quality(quality)
@@ -191,10 +201,12 @@ defmodule Memo.MediaProcessor do
 
   # Find all markdown references to an image and extract context (file, alt text, section)
   defp find_markdown_context_for_image(img, vault) do
-    img_bases = [
-      Path.basename(img),
-      Path.basename(img, Path.extname(img))
-    ] |> Enum.uniq()
+    img_bases =
+      [
+        Path.basename(img),
+        Path.basename(img, Path.extname(img))
+      ]
+      |> Enum.uniq()
 
     md_files =
       vault
@@ -217,13 +229,13 @@ defmodule Memo.MediaProcessor do
           |> String.split(full)
           |> List.first()
           |> (fn before ->
-            Regex.scan(~r/^#+\s+(.+)$/m, before)
-            |> List.last()
-            |> case do
-              [_, h] -> h
-              _ -> nil
-            end
-          end).()
+                Regex.scan(~r/^#+\s+(.+)$/m, before)
+                |> List.last()
+                |> case do
+                  [_, h] -> h
+                  _ -> nil
+                end
+              end).()
 
         # Get a snippet of surrounding text
         snippet =
@@ -242,12 +254,14 @@ defmodule Memo.MediaProcessor do
         }
       end)
     end)
-    |> List.first() # Use the first reference found for now
+    # Use the first reference found for now
+    |> List.first()
   end
 
   defp unique_name(dir, name, n \\ 0) do
     candidate =
       if n == 0, do: name, else: Path.rootname(name) <> "-#{n}" <> Path.extname(name)
+
     path = Path.join(dir, candidate)
     if File.exists?(path), do: unique_name(dir, name, n + 1), else: candidate
   end
@@ -255,6 +269,7 @@ defmodule Memo.MediaProcessor do
   defp remove_all_extensions(filename) do
     base = Path.rootname(filename)
     ext = Path.extname(base)
+
     if ext != "" do
       remove_all_extensions(base)
     else
@@ -277,9 +292,11 @@ defmodule Memo.MediaProcessor do
 
     Enum.each(md_files, fn md ->
       content = File.read!(md)
+
       new_content =
         Regex.replace(~r/!\[([^\]]*)\]\(([^)]+)\)/, content, fn _, alt, path ->
           base = Path.basename(path)
+
           if Map.has_key?(rename_map, base) do
             Logger.info("Updating markdown reference in #{md}: #{base} -> #{rename_map[base]}")
             "![#{alt}](#{String.replace(path, base, rename_map[base])})"
@@ -287,6 +304,7 @@ defmodule Memo.MediaProcessor do
             "![#{alt}](#{path})"
           end
         end)
+
       if new_content != content do
         Logger.info("Updated markdown file: #{md}")
         File.write!(md, new_content)

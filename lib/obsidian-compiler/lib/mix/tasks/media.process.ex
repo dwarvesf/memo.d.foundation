@@ -21,6 +21,7 @@ defmodule Mix.Tasks.Media.Process do
       case DotenvParser.load_file(".env") do
         vars when is_list(vars) or is_map(vars) ->
           Enum.each(vars, fn {k, v} -> System.put_env(k, v) end)
+
         _ ->
           :ok
       end
@@ -29,8 +30,6 @@ defmodule Mix.Tasks.Media.Process do
     Mix.Task.run("app.start")
 
     opts = parse_args(args)
-
-    api_key = System.get_env("OPENAI_API_KEY")
 
     unless opts[:vault] do
       Mix.raise("You must specify --vault path/to/vault")

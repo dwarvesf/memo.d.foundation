@@ -62,11 +62,16 @@ defmodule Memo.Common.AIUtils do
         end
 
       headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}]
+
       payload =
         Jason.encode!(%{
           "model" => "gpt-4.1-nano-2025-04-14",
           "messages" => [
-            %{"role" => "system", "content" => "You are an assistant that generates short, natural, descriptive, filesystem-safe image filenames."},
+            %{
+              "role" => "system",
+              "content" =>
+                "You are an assistant that generates short, natural, descriptive, filesystem-safe image filenames."
+            },
             %{"role" => "user", "content" => prompt}
           ]
         })
@@ -76,7 +81,7 @@ defmodule Memo.Common.AIUtils do
                "https://api.openai.com/v1/chat/completions",
                payload,
                headers,
-               [recv_timeout: 30_000]
+               recv_timeout: 30_000
              ),
            {:ok, decoded_body} <- Jason.decode(body),
            %{"choices" => [%{"message" => %{"content" => content}}]} <- decoded_body do
@@ -87,6 +92,7 @@ defmodule Memo.Common.AIUtils do
           |> String.replace(~r/[^a-zA-Z0-9_-]/, "_")
           |> String.downcase()
           |> String.slice(0, 40)
+
         {:ok, name}
       else
         error ->
@@ -121,7 +127,7 @@ defmodule Memo.Common.AIUtils do
          headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}],
          payload =
            Jason.encode!(%{
-             "model" => "gpt-4o-mini-2024-07-18",
+             "model" => "gpt-4.1-nano-2025-04-14",
              "messages" => [
                %{"role" => "system", "content" => @config.spr_compression_prompt},
                %{"role" => "user", "content" => text}

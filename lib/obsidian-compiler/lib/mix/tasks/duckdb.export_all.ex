@@ -21,6 +21,7 @@ defmodule Mix.Tasks.Duckdb.ExportAll do
       case DotenvParser.load_file(".env") do
         vars when is_list(vars) or is_map(vars) ->
           Enum.each(vars, fn {k, v} -> System.put_env(k, v) end)
+
         _ ->
           :ok
       end
@@ -32,14 +33,15 @@ defmodule Mix.Tasks.Duckdb.ExportAll do
 
     vault = opts[:vault] || "../../vault"
     format = opts[:format] || "parquet"
+    force_refresh_ai = opts[:force_refresh_ai] || false
 
-    Memo.Application.export_duckdb(vault, format, :all)
+    Memo.Application.export_duckdb(vault, format, :all, nil, force_refresh_ai)
   end
 
   defp parse_args(args) do
     {opts, _, _} =
       OptionParser.parse(args,
-        switches: [vault: :string, format: :string],
+        switches: [vault: :string, format: :string, force_refresh_ai: :boolean],
         aliases: [v: :vault, f: :format]
       )
 

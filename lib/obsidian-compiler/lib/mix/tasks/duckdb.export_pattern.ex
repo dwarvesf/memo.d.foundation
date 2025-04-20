@@ -22,6 +22,7 @@ defmodule Mix.Tasks.Duckdb.ExportPattern do
       case DotenvParser.load_file(".env") do
         vars when is_list(vars) or is_map(vars) ->
           Enum.each(vars, fn {k, v} -> System.put_env(k, v) end)
+
         _ ->
           :ok
       end
@@ -32,20 +33,22 @@ defmodule Mix.Tasks.Duckdb.ExportPattern do
     opts = parse_args(args)
 
     pattern = opts[:pattern]
+
     unless pattern do
       Mix.raise("You must specify --pattern PATTERN")
     end
 
     vault = opts[:vault] || "../../vault"
     format = opts[:format] || "parquet"
+    force_refresh_ai = opts[:force_refresh_ai] || false
 
-    Memo.Application.export_duckdb(vault, format, :all, pattern)
+    Memo.Application.export_duckdb(vault, format, :all, pattern, force_refresh_ai)
   end
 
   defp parse_args(args) do
     {opts, _, _} =
       OptionParser.parse(args,
-        switches: [pattern: :string, vault: :string, format: :string],
+        switches: [pattern: :string, vault: :string, format: :string, force_refresh_ai: :boolean],
         aliases: [p: :pattern, v: :vault, f: :format]
       )
 

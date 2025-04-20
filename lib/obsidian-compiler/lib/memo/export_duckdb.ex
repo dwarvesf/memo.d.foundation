@@ -47,7 +47,7 @@ defmodule Memo.ExportDuckDB do
     {"previous_paths", "VARCHAR[]"}
   ]
 
-  def run(vaultpath, format, commits_back, pattern \\ nil) do
+  def run(vaultpath, format, commits_back, pattern \\ nil, force_refresh_ai \\ false) do
     load_env()
 
     vaultpath = vaultpath || "vault"
@@ -77,7 +77,7 @@ defmodule Memo.ExportDuckDB do
       {:ok, _} ->
         with :ok <- install_and_load_extensions(),
              :ok <- setup_database() do
-          process_files(filtered_files, vaultpath, all_files_to_process)
+          process_files(filtered_files, vaultpath, all_files_to_process, force_refresh_ai)
           export(export_format)
         else
           :error -> IO.puts("Failed to set up DuckDB")
@@ -234,7 +234,7 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
-  defp process_files(files, vaultpath, all_files_to_process) do
+  defp process_files(files, vaultpath, all_files_to_process, force_refresh_ai) do
     files
     |> Enum.each(fn file_path ->
       relative_path = Path.relative_to(file_path, vaultpath)
@@ -246,7 +246,7 @@ defmodule Memo.ExportDuckDB do
               nil
 
             {frontmatter, md_content} ->
-              process_and_store(relative_path, frontmatter, md_content)
+              process_and_store(relative_path, frontmatter, md_content, force_refresh_ai)
           end
 
         {:error, reason} ->
@@ -258,7 +258,7 @@ defmodule Memo.ExportDuckDB do
     remove_old_files(paths)
   end
 
-  defp process_and_store(file_path, frontmatter, md_content) do
+  defp process_and_store(file_path, frontmatter, md_content, force_refresh_ai) do
     escaped_file_path = escape_string(file_path)
 
     normalized_frontmatter =
@@ -293,25 +293,35 @@ defmodule Memo.ExportDuckDB do
         transformed_frontmatter =
           transform_frontmatter(md_content, normalized_frontmatter, file_path)
 
-        maybe_update_database(existing_data, transformed_frontmatter, md_content)
+        maybe_update_database(
+          existing_data,
+          transformed_frontmatter,
+          md_content,
+          force_refresh_ai
+        )
 
       {:error, error_message} ->
         IO.puts("Query failed: #{inspect(error_message)}")
     end
   end
 
-  defp maybe_update_database(existing_data, frontmatter, md_content) do
+  defp maybe_update_database(existing_data, frontmatter, md_content, force_refresh_ai) do
     case existing_data do
       [] ->
+        # If no existing data, always insert/update with new embeddings
         insert_or_update_new_document(frontmatter, md_content)
 
       _ ->
-        if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) or
+        if force_refresh_ai or
+             escape_multiline_text(existing_data["md_content"]) !=
+               escape_multiline_text(md_content) or
              is_nil(existing_data["spr_content"]) or
              is_nil(existing_data["embeddings_openai"]) or
              is_nil(existing_data["embeddings_spr_custom"]) do
+          # If force_refresh_ai is true, or if content changed, or if any AI field is nil, regenerate embeddings
           insert_or_update_new_document(frontmatter, md_content)
         else
+          # Otherwise, use existing embeddings
           use_existing_embeddings(existing_data, frontmatter)
         end
     end
@@ -678,16 +688,19 @@ defmodule Memo.ExportDuckDB do
             val
             |> String.slice(1..-2//1)
             |> String.split(",")
-            |> Enum.map(&String.trim/1) # Trim whitespace first
+            # Trim whitespace first
+            |> Enum.map(&String.trim/1)
             |> Enum.map(fn path_str ->
               # More robustly remove leading/trailing quotes (' or ")
               path_str
               |> String.trim("'")
               |> String.trim("\"")
-              |> String.trim("'") # Repeat in case of mixed quotes like '"path"'
+              # Repeat in case of mixed quotes like '"path"'
+              |> String.trim("'")
               |> String.trim("\"")
             end)
-            |> Enum.reject(&(&1 in ["", nil])) # Remove empty strings after cleaning
+            # Remove empty strings after cleaning
+            |> Enum.reject(&(&1 in ["", nil]))
 
           # Handle comma-separated string format
           String.contains?(val, ",") ->
