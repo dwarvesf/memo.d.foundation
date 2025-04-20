@@ -52,25 +52,25 @@ jobs:
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           JINA_BASE_URL: ${{ secrets.JINA_BASE_URL }}
 
-      - name: Update submodules
+      - name: Update submodules to latest remote
         run: |
           # Configure git to use HTTPS instead of SSH for GitHub repositories
           git config --global url."https://${{ secrets.DWARVES_PAT }}@github.com/".insteadOf "git@github.com:"
 
-          # Handle top-level submodules first
-          git submodule update --init
+          # Update all submodules recursively to the latest commit on their remote tracking branch
+          # Use --merge to avoid detached HEAD state
+          git submodule update --init --recursive --remote --merge || { echo "Warning: Failed to update some submodules to latest remote. Continuing with available updates."; }
 
-          # Process level 2 submodules manually with error handling
-          git submodule foreach 'if [ -f .gitmodules ]; then git submodule update --init || echo "Failed to update some depth 2 submodules, continuing anyway..."; fi'
-
-          # Ensure we don't proceed deeper
+          # Ensure we don't proceed deeper (this might be redundant with --recursive but good to be explicit)
           git config --global submodule.recurse false
 
       - name: Commit and push changes
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          git submodule foreach --recursive "git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
+          # Commit changes within each submodule, but do NOT push from here
+          git submodule foreach --recursive "git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'"
+          # Add, commit, and push changes in the main repository (including updated submodule pointers)
           git add --all
           git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
           git push
