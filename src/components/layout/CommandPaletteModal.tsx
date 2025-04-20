@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { cn } from '@/lib/utils';
+import { cn, uppercaseSpecialWords } from '@/lib/utils';
 import { SearchResult } from '../search/SearchProvider';
 import { ISearchResultItem } from '@/types';
 import RenderMarkdown from '../RenderMarkdown';
@@ -79,10 +79,10 @@ const CommandPaletteModal = (props: Props) => {
                     ([category, categoryResults]) => (
                       <div key={category} className="flex flex-col">
                         <div className="bg-border px-3 py-1.5 text-xs font-medium capitalize">
-                          {category}
+                          {uppercaseSpecialWords(category)}
                         </div>
                         {categoryResults.map((result, index) => {
-                          const isSelected = selectedItem.id === result.id;
+                          const isSelected = selectedItem?.id === result.id;
                           return (
                             <button
                               id={`result-${result.id}`}
@@ -202,7 +202,7 @@ const CommandPaletteModal = (props: Props) => {
                   <>
                     {/* Category/Path */}
                     <span className="mt-3.5 text-center text-xs capitalize">
-                      {selectedItem.category}
+                      {uppercaseSpecialWords(selectedItem.category)}
                     </span>
 
                     {/* Title */}
