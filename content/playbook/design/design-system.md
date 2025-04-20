@@ -1,11 +1,10 @@
 ---
+title: Design System
+date: 2023-10-18
+description:
+authors: []
 tags:
   - dwarves
   - work
-title: lean-canvas
-date: 2023-10-18
-description: 
-authors: []
 draft: true
 ---
-

@@ -18,7 +18,7 @@ We stand for the craftsmanship in software development. More than telling people
 
 This repo is our playbook which contains our practices in software development and also how we collaborate to make them succeed.
 
-![](/engineering/img/team-images.png)
+![](engineering/assets/team-images.webp)
 
 ## Product Design
 
@@ -29,9 +29,9 @@ This repo is our playbook which contains our practices in software development a
 - [Wireframe](/design/wireframe.md)
 - [Prototype](/design/prototype.md)
 - [UX Research]()
-- [Information Structure: IA Design](/design/ia.md)
-- [Low Fidelity Prototype: UI Design](/design/ui.md)
-- [High Fidelity Prototype: Interative Design](/design/ix.md)
+- [Information Structure: IA Design]()
+- [Low Fidelity Prototype: UI Design]()
+- [High Fidelity Prototype: Interative Design]()
 - [The Design System](/design/design-system.md)
 
 ## Developing
@@ -91,7 +91,7 @@ This repo is our playbook which contains our practices in software development a
 ## Business
 
 - [Overall Process]()
-- [Fixed Budget, Scope Controlled](/business/fbsc.md)
+- [Fixed Budget, Scope Controlled]()
 - [Collaboration Guildeline]()
 
 ## Contributing

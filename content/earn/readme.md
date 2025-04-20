@@ -23,11 +23,14 @@ No results or invalid data format.
 Our bounty files follow a specific naming pattern to help organize and categorize different types of opportunities:
 
 ### File naming format
+
 Files should be named using the pattern: `XXX-descriptive-name.md` where:
+
 - `XXX` is a 3-digit code indicating the bounty category
 - `descriptive-name` is a kebab-case description of the bounty
 
 ### Category codes
+
 - `0XX` - Continuous research topics with long-term value (e.g., `000-productivity.md`, `001-quality.md`)
 - `1XX` - Internal tooling bounties (e.g., `101-discord-bot.md`, `150-memo-search.md`)
 - `5XX` - Project-related bounties (e.g., `501-client-project-contribution.md`, `520-code-review.md`)

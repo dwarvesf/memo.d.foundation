@@ -73,6 +73,23 @@ Our solution delivery process includes:
 6. Developing and testing
 7. Deployment and operations
 
+## Our sales process
+
+The overall process is:
+
+- Someone contacts us.
+- We have them fill out our new project form.
+- We have a phone call or have them come into the office.
+- Qualify/disqualify: are we a good fit for the client?
+- Qualify/disqualify: is the client a good fit for us?
+- Understand the client's vision.
+- Agree to the outcomes we're trying to achieve.
+- Estimate iterations.
+- Sign the contract.
+- Pay us for the first iteration.
+- Schedule people for iterations.
+- We begin work.
+
 ## Rewards system
 
 We reward team members for creating market reports, participating in sales, managing projects, documenting knowledge, and bringing in new business. Rewards range from internal recognition points to tokens and revenue percentages.
