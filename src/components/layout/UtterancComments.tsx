@@ -1,43 +1,47 @@
 import { useThemeContext } from '@/contexts/theme';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 
 const UtteranceComments = () => {
   const { isDark, isThemeLoaded } = useThemeContext();
   const commentsRef = useRef<HTMLDivElement>(null);
   const utterancesLoaded = useRef(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    // Only load Utterances once
-    if (!isThemeLoaded || !commentsRef.current || utterancesLoaded.current)
-      return;
-    const utterancTheme = isDark ? 'github-dark' : 'github-light';
+    // Function to append the Utterances script
+    const appendUtterances = () => {
+      if (!isThemeLoaded || !commentsRef.current) return;
 
-    const script = document.createElement('script');
+      const utterancTheme = isDark ? 'github-dark' : 'github-light';
+      const script = document.createElement('script');
 
-    script.src = 'https://utteranc.es/client.js';
-    script.setAttribute('repo', 'dwarvesf/memo-comments');
-    script.setAttribute('issue-term', 'pathname');
-    script.setAttribute('theme', utterancTheme);
-    script.setAttribute('crossorigin', 'anonymous');
-    script.async = true;
+      script.src = 'https://utteranc.es/client.js';
+      script.setAttribute('repo', 'dwarvesf/memo-comments');
+      script.setAttribute('issue-term', 'pathname');
+      script.setAttribute('theme', utterancTheme);
+      script.setAttribute('crossorigin', 'anonymous');
+      script.async = true;
 
-    script.onload = () => {
-      utterancesLoaded.current = true;
-    };
+      script.onload = () => {
+        utterancesLoaded.current = true;
+      };
 
-    setTimeout(() => {
-      if (commentsRef.current && !commentsRef.current.hasChildNodes()) {
+      if (commentsRef.current) {
+        commentsRef.current.innerHTML = ''; // Clear previous comments
         commentsRef.current.appendChild(script);
       }
-    }, 0);
+    };
+
+    appendUtterances();
+
     return () => {
       // Clean up script if component unmounts before script loads
-      if (!utterancesLoaded.current && script.parentNode) {
-        script.parentNode.removeChild(script);
+      if (!utterancesLoaded.current && commentsRef.current) {
+        commentsRef.current.innerHTML = '';
       }
     };
-  }, [isThemeLoaded]);
-
+  }, [isThemeLoaded, pathname]); // Re-run when pathname or theme changes
   // Update theme when app theme changes
   useEffect(() => {
     if (!utterancesLoaded.current) return;
@@ -55,7 +59,6 @@ const UtteranceComments = () => {
       );
     }
   }, [isDark]);
-
   return (
     <div ref={commentsRef} className="utterance-container relative">
       {/* Utterances will append the comments iframe here */}

@@ -71,7 +71,7 @@ const SubscriptionSection: React.FC = () => {
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="border-border dark:border-border dark:bg-background focus:border-primary min-w-[160px] flex-1 rounded-l-lg border bg-white px-4 py-3 text-[13px] leading-4 transition-colors duration-200 ease-in-out outline-none placeholder:opacity-70"
+          className="border-border dark:text-foreground-light dark:border-border dark:bg-background focus:border-primary dark:placeholder:text-muted-foreground min-w-[160px] flex-1 rounded-l-lg border bg-white px-4 py-3 text-[13px] leading-4 transition-colors duration-200 ease-in-out outline-none placeholder:opacity-70"
           placeholder="Email Address"
           disabled={isSubmitting}
           required
