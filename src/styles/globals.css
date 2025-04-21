@@ -403,25 +403,31 @@
   margin-right: -4px;
   max-width: calc(100% + 8px);
   width: calc(100% + 8px);
-
-  @media screen and (min-width: 768px) {
-    margin-left: -64px;
-    margin-right: -9px;
-    max-width: calc(100% + 69px);
-    width: calc(100% + 69px);
-  }
-
   > iframe {
     margin: 0;
   }
 }
+@media (min-width: 544px) {
+  .utterances {
+    margin-left: -64px;
+    margin-right: -8px;
+    max-width: calc(100% + 68px);
+    width: calc(100% + 68px);
+  }
+}
 
-@media screen and (min-width: 1280px) and (max-width: 1350px) {
-  html[data-reading-mode='false'] .utterances {
-    margin-left: -4px;
-    margin-right: -4px;
-    max-width: calc(100% + 8px);
-    width: calc(100% + 8px);
+@media (min-width: 1280px) and (max-width: 1350px) {
+  html[data-reading-mode='false'] .utterance-container {
+    overflow-x: hidden;
+    padding-left: 16px;
+    margin-left: -16px;
+  }
+}
+@media (min-width: 544px) and (max-width: 767px) {
+  .utterance-container {
+    overflow-x: hidden;
+    padding-left: 16px;
+    margin-left: -16px;
   }
 }
 

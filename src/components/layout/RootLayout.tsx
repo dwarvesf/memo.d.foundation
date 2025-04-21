@@ -49,7 +49,7 @@ function RootLayout({
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
-        event.key === 'f' &&
+        (event.key === 'f' || event.key === 'F') &&
         event.shiftKey &&
         (event.ctrlKey || event.metaKey)
       ) {
