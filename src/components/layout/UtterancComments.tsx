@@ -57,7 +57,7 @@ const UtteranceComments = () => {
   }, [isDark]);
 
   return (
-    <div ref={commentsRef} className="relative">
+    <div ref={commentsRef} className="utterance-container relative">
       {/* Utterances will append the comments iframe here */}
     </div>
   );

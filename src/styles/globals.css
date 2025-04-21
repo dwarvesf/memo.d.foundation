@@ -399,29 +399,23 @@
 }
 
 .utterances {
-  margin-left: -4px;
-  margin-right: -4px;
-  max-width: calc(100% + 8px);
-  width: calc(100% + 8px);
-
-  @media screen and (min-width: 768px) {
-    margin-left: -64px;
-    margin-right: -9px;
-    max-width: calc(100% + 69px);
-    width: calc(100% + 69px);
-  }
-
+  margin-left: -64px;
+  margin-right: -9px;
+  max-width: calc(100% + 68px);
+  width: calc(100% + 68px);
   > iframe {
     margin: 0;
   }
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1350px) {
-  html[data-reading-mode='false'] .utterances {
-    margin-left: -4px;
-    margin-right: -4px;
-    max-width: calc(100% + 8px);
-    width: calc(100% + 8px);
+  html[data-reading-mode='false'] .utterance-container {
+    overflow-x: hidden;
+  }
+}
+@media screen and (max-width: 767px) {
+  html[data-reading-mode='false'] .utterance-container {
+    overflow-x: hidden;
   }
 }
 
