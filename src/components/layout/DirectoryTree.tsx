@@ -63,12 +63,13 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
         return false;
       }
 
-      // Check if current path is a readme/index of this path
+      // Check if current path is a readme or index of this path
       // This logic might need adjustment based on how README URLs are handled
       // in the new data structure. Assuming node.url for READMEs is the parent path.
-      const isCurrentPathReadme = currentPath.endsWith('/readme');
-      if (isCurrentPathReadme) {
-        // If the current path is a readme, check if the node's URL matches the parent path
+      const isCurrentPathSpecial =
+        currentPath.endsWith('/readme') || currentPath.endsWith('/_index');
+      if (isCurrentPathSpecial) {
+        // If the current path is a readme or index, check if the node's URL matches the parent path
         const parentPath = currentPath.substring(
           0,
           currentPath.lastIndexOf('/'),

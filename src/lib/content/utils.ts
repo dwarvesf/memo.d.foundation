@@ -63,7 +63,12 @@ function transformMenuDataToDirectoryTree(
 
       let url: string;
       // Check if it's a README file
-      if (file.file_path.toLowerCase().endsWith('/readme.md')) {
+      const lowerCasePath = file.file_path.toLowerCase();
+      // Check if it's a README or _index file
+      if (
+        lowerCasePath.endsWith('/readme.md') ||
+        lowerCasePath.endsWith('/_index.md')
+      ) {
         // Get parent directory path and slugify it
         const parentDirPath = path.dirname(file.file_path);
         url = '/' + slugifyPathComponents(parentDirPath);
