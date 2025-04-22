@@ -59,9 +59,12 @@ function RootLayout({
         toggleReadingMode();
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
+    const options = {
+      capture: true,
+    };
+    document.addEventListener('keydown', handleKeyDown, options);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown, options);
     };
   }, [toggleReadingMode]);
 
