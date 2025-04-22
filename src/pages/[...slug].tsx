@@ -58,14 +58,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const aliasesContent = fs.readFileSync(aliasesPath, 'utf8');
     aliases = JSON.parse(aliasesContent);
   } catch (error) {
-    console.error(`Error reading aliases.json: ${error}`);
+    console.error(`Error reading aliases.json in getStaticPaths: ${error}`);
+    aliases = {}; // Initialize as empty object if file not found
   }
 
   try {
     const redirectsContent = fs.readFileSync(redirectsPath, 'utf8');
     redirects = JSON.parse(redirectsContent);
   } catch (error) {
-    console.error(`Error reading redirects.json: ${error}`);
+    console.error(`Error reading redirects.json in getStaticPaths: ${error}`);
+    redirects = {}; // Initialize as empty object if file not found
   }
 
   const markdownPaths = getAllMarkdownFiles(contentDir)
@@ -141,15 +143,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     try {
       const aliasesContent = fs.readFileSync(aliasesPath, 'utf8');
       aliases = JSON.parse(aliasesContent);
-    } catch (error) {
-      console.error(`Error reading aliases.json in getStaticProps: ${error}`);
+    } catch {
+      aliases = {}; // Initialize as empty object if file not found
     }
 
     try {
       const redirectsContent = fs.readFileSync(redirectsPath, 'utf8');
       redirects = JSON.parse(redirectsContent);
-    } catch (error) {
-      console.error(`Error reading redirects.json in getStaticProps: ${error}`);
+    } catch {
+      redirects = {}; // Initialize as empty object if file not found
     }
 
     // Determine the actual content path by checking for redirect or alias
