@@ -6,7 +6,7 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 // Import utility functions from lib directory
 import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
-import { getBacklinks } from '../lib/content/backlinks';
+// import { getBacklinks } from '../lib/content/backlinks'; // Removed
 
 // Import components
 import { RootLayout, ContentLayout } from '../components';
@@ -237,8 +237,23 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { content, frontmatter, tocItems, rawContent, blockCount } =
       await getMarkdownContent(filePath);
 
-    // Get backlinks
-    const backlinks = await getBacklinks(slug); // Use the original requested slug for backlinks
+    // Get backlinks from the pre-calculated file
+    const backlinksPath = path.join(
+      process.cwd(),
+      'public/content/backlinks.json',
+    );
+    let allBacklinks: Record<string, { title: string; path: string }[]> = {};
+    try {
+      const backlinksContent = fs.readFileSync(backlinksPath, 'utf8');
+      allBacklinks = JSON.parse(backlinksContent);
+    } catch (error) {
+      console.error(`Error reading backlinks.json in getStaticProps: ${error}`);
+      allBacklinks = {}; // Initialize as empty object if file not found
+    }
+
+    // Use the original requested slug to find backlinks
+    const backlinks = allBacklinks[slug.join('/')] || [];
+
     const metadata = {
       created: frontmatter.date?.toString() || null,
       updated: frontmatter.lastmod?.toString() || null,

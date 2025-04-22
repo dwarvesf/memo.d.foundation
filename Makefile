@@ -21,6 +21,8 @@ build:
 
 run:
 	@cd lib/obsidian-compiler && mix export_markdown
+	@pnpm run generate-menu
+	@pnpm run generate-backlinks
 	@pnpm run generate-search-index
 	@pnpm run generate-redirects-map
 	@pnpm run dev
