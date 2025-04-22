@@ -48,8 +48,29 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // When using "output: export" we need to pre-render all paths
   // that will be accessible in the exported static site
   const contentDir = path.join(process.cwd(), 'public/content');
+  const aliasesPath = path.join(contentDir, 'aliases.json');
+  const redirectsPath = path.join(contentDir, 'redirects.json');
 
-  const paths = getAllMarkdownFiles(contentDir)
+  let aliases: Record<string, string> = {};
+  let redirects: Record<string, string> = {}; // To store redirects
+
+  try {
+    const aliasesContent = fs.readFileSync(aliasesPath, 'utf8');
+    aliases = JSON.parse(aliasesContent);
+  } catch (error) {
+    console.error(`Error reading aliases.json in getStaticPaths: ${error}`);
+    aliases = {}; // Initialize as empty object if file not found
+  }
+
+  try {
+    const redirectsContent = fs.readFileSync(redirectsPath, 'utf8');
+    redirects = JSON.parse(redirectsContent);
+  } catch (error) {
+    console.error(`Error reading redirects.json in getStaticPaths: ${error}`);
+    redirects = {}; // Initialize as empty object if file not found
+  }
+
+  const markdownPaths = getAllMarkdownFiles(contentDir)
     .filter(
       slugArray =>
         !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
@@ -58,6 +79,43 @@ export const getStaticPaths: GetStaticPaths = async () => {
     .map(slugArray => ({
       params: { slug: slugArray },
     }));
+
+  // Add alias paths to the generated paths
+  const aliasPaths = Object.keys(aliases).map(alias => ({
+    params: { slug: alias.split('/').filter(Boolean) }, // Split alias path into slug array
+  }));
+
+  // Add alias paths for all markdown files that are under an aliased root
+  const aliasSubPaths = markdownPaths
+    .map(pathObj => {
+      const slugArray = pathObj.params.slug; // Access the slug array from params
+      if (slugArray.length > 0) {
+        const firstSegment = `/${slugArray[0]}`;
+        // Find the alias key where the value matches the first segment
+        const aliasKey = Object.keys(aliases).find(
+          key => aliases[key] === firstSegment,
+        );
+        if (aliasKey) {
+          // If an alias is found, create a new path with the alias as the first segment
+          const aliasSegment = aliasKey.split('/').filter(Boolean)[0];
+          return { params: { slug: [aliasSegment, ...slugArray.slice(1)] } };
+        }
+      }
+      return null; // No alias found for this path
+    })
+    .filter(path => path !== null); // Filter out null values
+
+  // Add redirect paths to the generated paths
+  const redirectPaths = Object.keys(redirects).map(redirect => ({
+    params: { slug: redirect.split('/').filter(Boolean) }, // Split redirect path into slug array
+  }));
+
+  const paths = [
+    ...markdownPaths,
+    ...aliasPaths,
+    ...aliasSubPaths,
+    ...redirectPaths,
+  ]; // Include redirect paths
 
   return {
     paths,
@@ -71,26 +129,77 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
+    const requestedPathSegments = slug; // Use slug array directly
+    const requestedPath = `/${requestedPathSegments.join('/')}`;
+
+    // Read aliases.json and redirects.json
+    const contentDir = path.join(process.cwd(), 'public/content');
+    const aliasesPath = path.join(contentDir, 'aliases.json');
+    const redirectsPath = path.join(contentDir, 'redirects.json');
+
+    let aliases: Record<string, string> = {};
+    let redirects: Record<string, string> = {};
+
+    try {
+      const aliasesContent = fs.readFileSync(aliasesPath, 'utf8');
+      aliases = JSON.parse(aliasesContent);
+    } catch {
+      aliases = {}; // Initialize as empty object if file not found
+    }
+
+    try {
+      const redirectsContent = fs.readFileSync(redirectsPath, 'utf8');
+      redirects = JSON.parse(redirectsContent);
+    } catch {
+      redirects = {}; // Initialize as empty object if file not found
+    }
+
+    // Determine the actual content path by checking for redirect or alias
+    let contentPathSegments = [...requestedPathSegments]; // Start with requested segments
+
+    // Check for redirect
+    if (redirects[requestedPath]) {
+      const redirectTarget = redirects[requestedPath];
+      contentPathSegments = redirectTarget.split('/').filter(Boolean);
+    } else if (contentPathSegments.length > 0) {
+      // Check for alias in the first segment if not a redirect
+      const firstSegment = `/${contentPathSegments[0]}`;
+      if (aliases[firstSegment]) {
+        // If the first segment is an alias, replace it with the canonical segment
+        const canonicalFirstSegment = aliases[firstSegment]
+          .split('/')
+          .filter(Boolean)[0];
+        contentPathSegments[0] = canonicalFirstSegment;
+      }
+    }
+
+    const canonicalSlug = contentPathSegments; // Canonical slug is the modified segments array
+
     // Pass includeContent: false as we only need metadata for layout props
     const layoutProps = await getRootLayoutPageProps();
     // Try multiple file path options to support Hugo's _index.md convention
-    let filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
+    let filePath =
+      path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.md';
 
     // If the direct path doesn't exist, check if there's an _index.md or readme.md file in the directory
     if (!fs.existsSync(filePath)) {
       const indexFilePath = path.join(
         process.cwd(),
         'public/content',
-        ...slug,
+        ...canonicalSlug,
         '_index.md',
       );
       const readmeFilePath = path.join(
         process.cwd(),
         'public/content',
-        ...slug,
+        ...canonicalSlug,
         'readme.md',
       );
-      const directoryPath = path.join(process.cwd(), 'public/content', ...slug);
+      const directoryPath = path.join(
+        process.cwd(),
+        'public/content',
+        ...canonicalSlug,
+      );
 
       if (fs.existsSync(readmeFilePath)) {
         // Prioritize readme.md if it exists
@@ -99,13 +208,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         filePath = indexFilePath;
       } else if (fs.existsSync(directoryPath)) {
         // Pass includeContent: false as list page only needs title/path
-        const allMemos = await getAllMarkdownContents(slug.join('/'), {
+        // Use canonicalSlug for file system operations
+        const allMemos = await getAllMarkdownContents(canonicalSlug.join('/'), {
           includeContent: false,
         });
         return {
           props: {
             ...layoutProps,
-            slug,
+            slug, // Pass the original requested slug
             childMemos: allMemos,
             isListPage: true,
           },
@@ -120,7 +230,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       await getMarkdownContent(filePath);
 
     // Get backlinks
-    const backlinks = await getBacklinks(slug);
+    const backlinks = await getBacklinks(slug); // Use the original requested slug for backlinks
     const metadata = {
       created: frontmatter.date?.toString() || null,
       updated: frontmatter.lastmod?.toString() || null,
@@ -131,7 +241,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             tag => tag !== null && tag !== undefined && tag !== '',
           )
         : [],
-      folder: slug.slice(0, -1).join('/'),
+      folder: slug.slice(0, -1).join('/'), // Use the original requested slug for folder
       // Calculate reading time based on word count (average reading speed: 200 words per minute)
       wordCount: content.split(/\s+/).length ?? 0,
       readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
@@ -148,7 +258,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       firstImage: getFirstMemoImage(
         {
           content: rawContent,
-          filePath: path.join(...slug) + '.md',
+          filePath: path.join(...slug) + '.md', // Use the original requested slug for filePath
         },
         null,
       ),
@@ -158,7 +268,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         ...layoutProps,
         content,
         frontmatter: JSON.parse(JSON.stringify(frontmatter)), // Ensure serializable
-        slug,
+        slug, // Pass the original requested slug
         backlinks,
         tocItems,
         metadata,

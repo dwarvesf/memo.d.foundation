@@ -1,10 +1,9 @@
+import React from 'react';
 import { RootLayout } from '@/components';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { RootLayoutPageProps } from '@/types';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router'; // Import useRouter
-import React, { useEffect, useState } from 'react'; // Import useEffect, useState
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
@@ -24,60 +23,6 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const NotFound = (props: RootLayoutPageProps) => {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const [redirectChecked, setRedirectChecked] = useState(false);
-
-  useEffect(() => {
-    // Only run on the client side
-    if (typeof window !== 'undefined') {
-      const requestedPath = router.asPath; // Get the path the user tried to access
-
-      console.log(`Checking for redirect for path: ${requestedPath}`);
-
-      fetch('/content/redirects.json')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Redirects file not found or failed to load');
-          }
-          return response.json();
-        })
-        .then((redirects: Record<string, string>) => {
-          const targetPath = redirects[requestedPath];
-          if (targetPath) {
-            console.log(`Redirect found: ${requestedPath} -> ${targetPath}`);
-            // Use replace to avoid adding the 404 page to history
-            router.replace(targetPath);
-            // Keep loading state until redirect happens
-          } else {
-            console.log(`No redirect found for ${requestedPath}. Showing 404.`);
-            // No redirect found, stop loading and show 404 content
-            setIsLoading(false);
-            setRedirectChecked(true);
-          }
-        })
-        .catch(error => {
-          console.log('Failed to load or parse redirects.json:', error);
-          // Failed to load redirects, stop loading and show 404 content
-          setIsLoading(false);
-          setRedirectChecked(true);
-        });
-    }
-  }, [router]); // Re-run if router object changes (though asPath is the key)
-
-  // Show loading indicator or null while checking/redirecting
-  if (isLoading || !redirectChecked) {
-    // Optional: Add a loading spinner or message here
-    return (
-      <RootLayout {...props} title="Loading...">
-        <div className="flex h-[calc(100vh-60px-24px-10rem)] w-full items-center justify-center">
-          Loading...
-        </div>
-      </RootLayout>
-    );
-  }
-
-  // If loading is finished and no redirect happened, show the 404 content
   return (
     <RootLayout {...props} title="404 - Page Not Found">
       <div className="font-charter flex h-[calc(100vh-60px-24px-10rem)] w-full flex-col items-center justify-center text-center">
@@ -106,12 +51,6 @@ const NotFound = (props: RootLayoutPageProps) => {
             />
             <path
               d="M65.7143 84.6071V91.1786H52.5714V84.6071H65.7143Z"
-              fill="currentColor"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M46 0V6.57143H39.4286V13.1429H32.8571V19.7143H26.2857V32.8571H19.7143V46H13.1429V92H0V98.5714H13.1429V105.143H6.57143V111.714H19.7143V118.286H25.4643V124.857H32.0357V131.429H38.6071V138H111.714V131.429H124.857V124.857H131.429V111.714H138V32.8571H131.429V19.7143H124.857V13.1429H118.286V6.57143H111.714V0H98.5714V6.57143H92V26.2857H65.7143V6.57143H59.1429V0H46ZM59.1429 6.57143V32.8571H98.5714V6.57143H111.714V13.1429H118.286V19.7143H124.857V32.8571H131.429V111.714H124.857V124.857H111.714V131.429H38.6071V124.857H32.0357V118.286H26.2857V111.714H19.7143V46H26.2857V32.8571H32.8571V19.7143H39.4286V13.1429H46V6.57143H59.1429Z"
               fill="currentColor"
             />
             <rect

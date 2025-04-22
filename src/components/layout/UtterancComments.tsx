@@ -1,6 +1,6 @@
 import { useThemeContext } from '@/contexts/theme';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useLayoutEffect } from 'react';
 
 const UtteranceComments = () => {
   const { isDark, isThemeLoaded } = useThemeContext();
@@ -8,7 +8,7 @@ const UtteranceComments = () => {
   const utterancesLoaded = useRef(false);
   const pathname = usePathname();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Function to append the Utterances script
     const appendUtterances = () => {
       if (!isThemeLoaded || !commentsRef.current) return;
@@ -33,9 +33,10 @@ const UtteranceComments = () => {
       }
     };
 
-    appendUtterances();
+    const timer = setTimeout(appendUtterances, 0);
 
     return () => {
+      clearTimeout(timer);
       // Clean up script if component unmounts before script loads
       if (!utterancesLoaded.current && commentsRef.current) {
         commentsRef.current.innerHTML = '';

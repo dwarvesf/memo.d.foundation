@@ -2,6 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { DuckDBConnection, DuckDBInstance } from '@duckdb/node-api'; // Import DuckDB API
 
+// --- Shared DuckDB Connection ---
+let sharedDuckDBConnection: DuckDBConnection | null = null;
+
 // --- Slugify Functions (Keep as they are used for URL generation) ---
 
 /**
@@ -154,8 +157,12 @@ function sortGroupedPaths(
 
 // --- DuckDB Connection Helper ---
 
-// Modified to only return the connection as the instance is not used directly after connection
+// Modified to use a shared connection
 async function connectDuckDB(): Promise<DuckDBConnection> {
+  if (sharedDuckDBConnection) {
+    return sharedDuckDBConnection;
+  }
+
   const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
   if (!fs.existsSync(parquetFilePath)) {
     throw new Error(`Parquet file not found: ${parquetFilePath}`);
@@ -163,6 +170,8 @@ async function connectDuckDB(): Promise<DuckDBConnection> {
   // Instance is created internally but not returned if not needed
   const instance = await DuckDBInstance.create(':memory:'); // Instance is created here
   const connection = await instance.connect();
+  sharedDuckDBConnection = connection; // Store the connection
+
   // Consider managing instance lifecycle if needed elsewhere, but for these functions, connection is sufficient
   return connection;
 }
@@ -186,11 +195,10 @@ interface MenuDbRow {
  * @returns Promise resolving to menu structure
  */
 export async function getMenu(): Promise<Record<string, GroupedPath>> {
-  let connection: DuckDBConnection | null = null; // Instance variable removed
-  console.log('Generating menu data...');
+  let connection: DuckDBConnection | null = null;
 
   try {
-    connection = await connectDuckDB(); // Get only the connection
+    connection = await connectDuckDB(); // Get the shared connection
     const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet'); // Needed for query
     const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
 
@@ -218,10 +226,8 @@ export async function getMenu(): Promise<Record<string, GroupedPath>> {
         NOT file_path LIKE '%_radar/%';
     `;
 
-    console.log('Executing DuckDB query for menu...');
     const reader = await connection.runAndReadAll(query);
     const results = reader.getRowObjects() as unknown as MenuDbRow[];
-    console.log(`Retrieved ${results.length} rows for menu from Parquet file.`);
 
     // Create a map to collect file paths by grouped path (directory)
     const groupedPathMap = new Map<string, MenuFilePath[]>();
@@ -272,18 +278,12 @@ export async function getMenu(): Promise<Record<string, GroupedPath>> {
 
     // Nest the paths to create menu structure
     const menuData = nestPaths(parsedData);
-    console.log('Menu data processed and nested.');
     return menuData;
   } catch (error) {
     console.error('Error generating menu:', error);
     return {}; // Return empty object on error
-  } finally {
-    if (connection) {
-      connection.closeSync();
-      console.log('DuckDB connection for menu closed.');
-    }
-    // Instance cleanup handled by connection closing/GC
   }
+  // Removed finally block to keep connection open
 }
 
 // Define structure for rows read from DuckDB for getPinnedNotes
@@ -302,11 +302,10 @@ interface PinnedNoteDbRow {
 export async function getPinnedNotes(
   limit: number = 3,
 ): Promise<{ title: string; url: string; date: string }[]> {
-  let connection: DuckDBConnection | null = null; // Instance variable removed
-  console.log(`Fetching up to ${limit} pinned notes...`);
+  let connection: DuckDBConnection | null = null;
 
   try {
-    connection = await connectDuckDB(); // Get only the connection
+    connection = await connectDuckDB(); // Get the shared connection
     const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
     const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
 
@@ -318,18 +317,12 @@ export async function getPinnedNotes(
         pinned = true AND
         title IS NOT NULL AND title != ''
       ORDER BY date DESC
-      LIMIT ?;
+      LIMIT ${limit};
     `;
 
-    console.log('Executing DuckDB query for pinned notes...');
-    // Prepare the statement
-    const preparedStatement = await connection.prepare(query);
-    // Bind the limit value to the placeholder '?' (must be in an array)
-    preparedStatement.bind([limit]);
-    // Run the prepared statement to get the reader
-    const reader = await preparedStatement.runAndReadAll(); // No arguments here
+    // Execute the query directly without a prepared statement
+    const reader = await connection.runAndReadAll(query);
     const results = reader.getRowObjects() as unknown as PinnedNoteDbRow[];
-    console.log(`Retrieved ${results.length} pinned notes from Parquet file.`);
 
     const pinnedNotes = results.map(row => {
       const filePath = row.file_path || '';
@@ -353,12 +346,8 @@ export async function getPinnedNotes(
   } catch (error) {
     console.error('Error fetching pinned notes:', error);
     return []; // Return empty array on error
-  } finally {
-    if (connection) {
-      connection.closeSync();
-      console.log('DuckDB connection for pinned notes closed.');
-    }
   }
+  // Removed finally block to keep connection open
 }
 
 /**
@@ -366,11 +355,10 @@ export async function getPinnedNotes(
  * @returns Promise resolving to array of tags sorted alphabetically
  */
 export async function getTags(): Promise<string[]> {
-  let connection: DuckDBConnection | null = null; // Instance variable removed
-  console.log('Fetching unique tags...');
+  let connection: DuckDBConnection | null = null;
 
   try {
-    connection = await connectDuckDB(); // Get only the connection
+    connection = await connectDuckDB(); // Get the shared connection
     const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
     const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
 
@@ -382,11 +370,9 @@ export async function getTags(): Promise<string[]> {
       ORDER BY tag ASC;
     `;
 
-    console.log('Executing DuckDB query for tags...');
     const reader = await connection.runAndReadAll(query);
     // getRows returns array of arrays, e.g., [[tag1], [tag2]]
     const results = reader.getRows() as string[][];
-    console.log(`Retrieved ${results.length} unique tags from Parquet file.`);
 
     // Extract the tag from each inner array
     const tags = results.map(row => row[0]).filter(tag => tag); // Filter out any potential null/empty tags just in case
@@ -395,10 +381,6 @@ export async function getTags(): Promise<string[]> {
   } catch (error) {
     console.error('Error fetching tags:', error);
     return []; // Return empty array on error
-  } finally {
-    if (connection) {
-      connection.closeSync();
-      console.log('DuckDB connection for tags closed.');
-    }
   }
+  // Removed finally block to keep connection open
 }

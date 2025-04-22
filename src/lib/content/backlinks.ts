@@ -76,7 +76,6 @@ interface BacklinkDbRow {
 export async function getBacklinks(slug: string[]): Promise<IBackLinkItem[]> {
   let connection: DuckDBConnection | null = null;
   const targetFullPath = slug.join('/'); // e.g., "guide/getting-started"
-  console.log(`Fetching backlinks for: /${targetFullPath}`);
 
   try {
     connection = await connectDuckDB();
@@ -104,13 +103,11 @@ export async function getBacklinks(slug: string[]): Promise<IBackLinkItem[]> {
         description IS NOT NULL AND description != ''; -- Ensure basic content validity
     `;
 
-    console.log('Executing DuckDB query for backlinks...');
     const preparedStatement = await connection.prepare(query);
     // Bind the pattern and the file path to exclude self-references
     preparedStatement.bind([fullPathPattern, `${targetFullPath}.md`]); // Assuming target file ends with .md
     const reader = await preparedStatement.runAndReadAll();
     const results = reader.getRowObjects() as unknown as BacklinkDbRow[];
-    console.log(`Retrieved ${results.length} potential backlink rows from Parquet file.`);
 
     const backlinks = results.map(row => {
       const filePath = row.file_path || '';
@@ -133,7 +130,6 @@ export async function getBacklinks(slug: string[]): Promise<IBackLinkItem[]> {
         finalPath = '/' + finalPath;
       }
 
-
       // Fallback title logic (less critical now as we filter on title in SQL)
       const calculatedTitle =
         getMarkdownMetadata(filePath).title || // Check actual file metadata
@@ -147,18 +143,17 @@ export async function getBacklinks(slug: string[]): Promise<IBackLinkItem[]> {
     });
 
     // Deduplicate based on path
-    const uniqueBacklinks = Array.from(new Map(backlinks.map(item => [item.path, item])).values());
+    const uniqueBacklinks = Array.from(
+      new Map(backlinks.map(item => [item.path, item])).values(),
+    );
 
-    console.log(`Found ${uniqueBacklinks.length} unique backlinks.`);
     return uniqueBacklinks;
-
   } catch (error) {
     console.error('Error fetching backlinks:', error);
     return []; // Return empty array on error
   } finally {
     if (connection) {
       connection.closeSync();
-      console.log('DuckDB connection for backlinks closed.');
     }
   }
 }
