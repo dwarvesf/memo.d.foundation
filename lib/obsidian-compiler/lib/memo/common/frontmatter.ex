@@ -31,8 +31,18 @@ defmodule Memo.Common.Frontmatter do
   def contains_required_frontmatter_keys?(file) do
     with {:ok, content} <- File.read(file),
          {:ok, frontmatter} <- parse_frontmatter(content) do
-      has_required_fields?(frontmatter) and
-        has_valid_optional_fields?(frontmatter)
+      cond do
+        is_map(frontmatter) ->
+          has_required_fields?(frontmatter) and has_valid_optional_fields?(frontmatter)
+
+        is_list(frontmatter) ->
+          Enum.any?(frontmatter, fn item ->
+            is_map(item) and has_required_fields?(item) and has_valid_optional_fields?(item)
+          end)
+
+        true ->
+          false
+      end
     else
       _ -> false
     end
