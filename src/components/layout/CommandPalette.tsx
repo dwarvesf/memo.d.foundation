@@ -45,20 +45,20 @@ const CommandPalette: React.FC = () => {
 
   // Open/close the command palette
   const toggleCommandPalette = useCallback(() => {
-    const newIsOpen = !isOpen;
-
-    setIsOpen(newIsOpen);
+    setIsOpen(prev => {
+      const newIsOpen = !prev;
+      if (newIsOpen) {
+        // Opening command palette - just add the class to body
+        document.body.classList.add('cmd-palette-open');
+      } else {
+        // Closing command palette - simply remove the class
+        document.body.classList.remove('cmd-palette-open');
+      }
+      return newIsOpen;
+    });
     setQuery('');
     setResult(defaultSearchResult);
-
-    if (newIsOpen) {
-      // Opening command palette - just add the class to body
-      document.body.classList.add('cmd-palette-open');
-    } else {
-      // Closing command palette - simply remove the class
-      document.body.classList.remove('cmd-palette-open');
-    }
-  }, [isOpen]);
+  }, []);
 
   // Close the palette
   const close = useCallback(() => {
@@ -242,7 +242,9 @@ const CommandPalette: React.FC = () => {
         goto();
       }
     };
-
+    const options = {
+      capture: true,
+    };
     // Close when clicking outside
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -253,11 +255,10 @@ const CommandPalette: React.FC = () => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown, options);
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown, options);
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [

@@ -25,14 +25,20 @@ const ImageFullScreenModal = ({ isOpen, src, alt, onClose }: ModalProps) => {
 
   // Close modal on ESC key
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape') {
         onClose();
       }
     };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    const options = {
+      capture: true,
+    };
+    document.addEventListener('keydown', handleKeyDown, options);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown, options);
+    };
   }, [isOpen, onClose]);
 
   // Handle wheel events for zooming
