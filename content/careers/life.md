@@ -90,7 +90,7 @@ We proudly ship out challenging products with the support from top-notch technol
 
 - [Design Sprint]()
 - [AARRR Framework]()
-- [UX Research]()
+- [UX Research]()]
 - [The Design System]()
 
 ### [Production](https://github.com/dwarvesf/playbook#production)

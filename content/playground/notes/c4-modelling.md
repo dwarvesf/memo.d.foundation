@@ -13,7 +13,9 @@ authors:
 ![](assets/c4-modelling.pdf)
 
 ## Problem statement
-When conveying the software architecture to non-tech people/other developers, we will face the following restrictions: 
+
+When conveying the software architecture to non-tech people/other developers, we will face the following restrictions:
+
 - UML complexity or nondescriptive box and line drawing.
 - Lacking domain knowledge or context.
 - Confusing Technical terms and vocabulary.
@@ -23,7 +25,6 @@ When conveying the software architecture to non-tech people/other developers, we
 
 The C4 model leverages abstractions as common languages and visualization to describe the structure of the software system.
 
-
 ## Abstractions
 
 Abstractions are a means for developers and non-tech/business people to understand the context and the software architecture that is outside of their knowledge domain/level of expertise.
@@ -31,6 +32,7 @@ Abstractions are a means for developers and non-tech/business people to understa
 Abstractions must be devised and agreed upon by all involved parties. The process will consume a substantial amount of effort and time when going through multiple meetings and selecting the people responsible as the source of truth for the abstractions.
 
 To help define the abstractions, the C4 model uses the granularity in software architecture and divides the level of abstractions into:
+
 - **Context** of the Software system.
 - **Container**.
 - **Component**.
@@ -57,6 +59,7 @@ Example: A shopping e-commerce system requires a web/mobile application to displ
 Component is a set of functions and classes bounded behind an interface. Each component helps complete the operational flows of its parent container.
 
 Example: When sending a request to withdraw to the back-end API container of a banking system:
+
 - The OAuth component authenticates the user requesting the withdrawal.
 - Ledger component checks the available withdrawal amount.
 - The notification/email component sends the withdrawal status to registered contacts.
@@ -66,6 +69,7 @@ Example: When sending a request to withdraw to the back-end API container of a b
 Code is the specific implementation that built the component. Through code elements, the component describes in detail its conditions, outputs, exceptions, optional and fallback flows.
 
 Example: An Authentication component selects the appropriate method based on the user credentials:
+
 - If is a pair of email and password, validates the email pattern, verifies the password and the hashed password stored in the database.
 - If is a token, verifies the hash is from the same user, and checks if the token is expired.
 
@@ -77,7 +81,7 @@ To visualize the software architect abstractions, we can use UML elements, box a
 
 - The diagram elements must be clear, uniform, and meaningful and have a legend to explain the usage of each element.
 
-- Strive to lose the https://c4model.com/bingo/.
+- Strive to lose the <https://c4model.com/bingo/>.
 
 ## Case by case
 
@@ -85,4 +89,4 @@ The C4 model’s diagram, for the amount of effort and the value that it brings,
 
 ## Reference
 
-- https://c4model.com/
+- <https://c4model.com/>

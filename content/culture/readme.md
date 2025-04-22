@@ -24,7 +24,7 @@ This collection of articles represents our ongoing exploration of what makes Dwa
 - [#6 Come for the conversation, stay for the culture](/updates/digest/6-stay-for-the-culture)
 - [Manifesto](/careers/manifesto)
 - [Culture](/careers/culture)
-- [OGIF - Oh God It's Friday](/updates/ogif/readme)
+- [OGIF - Oh God It's Friday](/updates/ogif)
 - [OGIF - Oh God It's Friday](/playbook/operations/ogif)
 - [Growth Is Our Universal Language](/playground/01_literature/growth-is-our-universal-language)
 - [The Inner Circle](/playbook/operations/the-inner-circle)

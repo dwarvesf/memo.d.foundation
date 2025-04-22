@@ -1,33 +1,23 @@
 ---
-tags:
-  - dwarves
-  - labs
-  - home
 title: Labs Team
 date: 2023-11-30
 description: This is our Labs team homepage, where we list out the latest advances in our engineering team, our publications, events & workshops, as well as frequently asked questions on who and what team labs are.
 authors:
   - monotykamary
-
+tags:
+  - dwarves
+  - labs
+  - home
 ---
-<!-- col-2 #1 -->
-<!-- labs-latest -->
 
 ## Latest from Labs Team
 
-<!-- /labs-latest -->
-<!-- forward-engineering-publications -->
+
 
 ## Forward Engineering Publications
 - [Forward Engineering November 2023]()
 - [Forward Engineering October 2023]()
 - [Forward Engineering August 2023]()
-
-<!-- /forward-engineering-publications -->
-<!-- /col-2 #1-->
-
-<!-- col-2 #2 -->
-<!-- faq -->
 
 ## Frequently Asked Questions (FAQ)
 ### Who we are
@@ -58,9 +48,6 @@ We celebrate your technological contributions by awarding ICY tokens, with the a
 
 For Dwarves team members, engaging in future research projects is an excellent way to foster personal growth. Your R&D outputs play a crucial role in our performance evaluations. To understand how your research and development efforts contribute to your performance review, please visit [this note]().
 
-<!-- /faq -->
-<!-- events -->
-
 ## Events
 ### Upcoming
 
@@ -72,10 +59,6 @@ For Dwarves team members, engaging in future research projects is an excellent w
 • Consolidate NYC taxi data in parallel (through map-reduce) over HTTPS
 • Aggregate IBM AML transactions (Anti-Money Laundering)
 • Some examples of how it is used to consolidate and do basic analytics on note.d and log.console.so
-
-
-<!-- /events -->
-<!-- /col-2 #2 -->
 
 ---
 

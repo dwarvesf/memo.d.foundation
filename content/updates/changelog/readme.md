@@ -16,7 +16,7 @@ careers.d.foundation
 
 - [Build your knowledge base](/updates/changelog/2024-10-25-knowledge-base)
 - [The Stage of AI and LLM at Dwarves](/updates/changelog/2024-09-13-dwarve-updates-ai-llm)
-- [Dwarves Updates](/updates/changelog/readme)
+- [Dwarves Updates](/updates/changelog)
 - [The Stage of Growth at Dwarves](/updates/changelog/2023-09-12-growth-stages)
 - [The Next Leading Chairs](/updates/changelog/2022-08-26-the-next-leading-chairs)
 - [The future is blockchain and data](/updates/changelog/2022-06-26-blockchain-and-data)

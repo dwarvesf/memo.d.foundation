@@ -25,7 +25,7 @@ We've got spots open for engineers, designers, marketers, and learners ready to 
 
 ### Business
 
-- [Growth Lead]()
+- [Growth Lead](open-positions/growth-lead.md)
 - [Sales Manager]()
 
 ### Apprenticeship program [N/A]

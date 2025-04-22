@@ -24,4 +24,4 @@ Besides, breaking away from the stereotype of "tech people are introverts" is al
 - [43 Factory](/updates/wala/001-43-factory)
 - [DZS Media](/updates/wala/002-dzs-media)
 - [SP Group](/updates/wala/003-sp-group)
-- [WALA](/updates/wala/readme)
+- [WALA](/updates/wala)
