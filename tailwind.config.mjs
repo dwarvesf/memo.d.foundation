@@ -124,7 +124,7 @@ const config = {
             '--tw-prose-td-borders': 'var(--border)',
             maxWidth: 'none',
             fontFamily: 'charter, Georgia, Cambria, serif',
-            fontSize: '1.0625rem',
+            fontSize: 'inherit',
             letterSpacing: '-0.0125rem',
             lineHeight: 'inherit',
             'code::before': {
