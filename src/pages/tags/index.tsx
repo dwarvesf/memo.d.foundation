@@ -1,5 +1,4 @@
 import { RootLayout } from '@/components';
-import { getAllMarkdownContents } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { RootLayoutPageProps } from '@/types';
 import { GetStaticProps } from 'next';
@@ -8,8 +7,7 @@ import React, { useMemo } from 'react';
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const allMemos = await getAllMarkdownContents();
-    const layoutProps = await getRootLayoutPageProps(allMemos);
+    const layoutProps = await getRootLayoutPageProps();
 
     return {
       props: layoutProps,

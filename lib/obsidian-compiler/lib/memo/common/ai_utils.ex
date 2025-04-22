@@ -46,7 +46,7 @@ defmodule Memo.Common.AIUtils do
          headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}],
          payload =
            Jason.encode!(%{
-             "model" => "gpt-4o-mini-2024-07-18",
+             "model" => "gpt-4.1-nano-2025-04-14",
              "messages" => [
                %{"role" => "system", "content" => @config.spr_compression_prompt},
                %{"role" => "user", "content" => text}

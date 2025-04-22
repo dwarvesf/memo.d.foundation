@@ -54,7 +54,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string };
     const allMemos = await getAllMarkdownContents();
-    const layoutProps = await getRootLayoutPageProps(allMemos);
+    const layoutProps = await getRootLayoutPageProps();
 
     const normalizedSlug = slug.toLowerCase();
     if (!normalizedSlug) {

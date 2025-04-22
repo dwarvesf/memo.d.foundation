@@ -9,7 +9,7 @@ import React, { useMemo } from 'react';
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const allMemos = await getAllMarkdownContents();
-    const layoutProps = await getRootLayoutPageProps(allMemos);
+    const layoutProps = await getRootLayoutPageProps();
     const contributors = new Set<string>();
     sortMemos(allMemos).forEach(memo => {
       const { authors } = memo;

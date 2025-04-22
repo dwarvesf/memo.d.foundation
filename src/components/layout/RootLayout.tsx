@@ -22,6 +22,7 @@ interface RootLayoutProps extends RootLayoutPageProps {
   image?: string;
   tocItems?: ITocItem[];
   metadata?: IMetadata;
+  // pinnedNotes and tags are now included via RootLayoutPageProps
 }
 
 function RootLayout({
@@ -33,6 +34,7 @@ function RootLayout({
   tocItems,
   directoryTree,
   searchIndex,
+  // pinnedNotes and tags are no longer used directly by RootLayout
 }: RootLayoutProps) {
   const { theme, toggleTheme } = useThemeContext();
   const {

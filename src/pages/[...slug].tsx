@@ -72,10 +72,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
     // Pass includeContent: false as we only need metadata for layout props
-    const allMemos = await getAllMarkdownContents('', {
-      includeContent: false,
-    });
-    const layoutProps = await getRootLayoutPageProps(allMemos);
+    const layoutProps = await getRootLayoutPageProps();
     // Try multiple file path options to support Hugo's _index.md convention
     let filePath = path.join(process.cwd(), 'public/content', ...slug) + '.md';
 
