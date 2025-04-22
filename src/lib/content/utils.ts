@@ -106,7 +106,6 @@ function transformMenuDataToDirectoryTree(
 }
 
 export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
-  console.log('Fetching layout props using menu.ts functions...');
   const menuData = await getMenu();
   const pinnedNotes = await getPinnedNotes();
   const tags = await getTags();

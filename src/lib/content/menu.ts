@@ -187,7 +187,6 @@ interface MenuDbRow {
  */
 export async function getMenu(): Promise<Record<string, GroupedPath>> {
   let connection: DuckDBConnection | null = null; // Instance variable removed
-  console.log('Generating menu data...');
 
   try {
     connection = await connectDuckDB(); // Get only the connection
@@ -218,10 +217,8 @@ export async function getMenu(): Promise<Record<string, GroupedPath>> {
         NOT file_path LIKE '%_radar/%';
     `;
 
-    console.log('Executing DuckDB query for menu...');
     const reader = await connection.runAndReadAll(query);
     const results = reader.getRowObjects() as unknown as MenuDbRow[];
-    console.log(`Retrieved ${results.length} rows for menu from Parquet file.`);
 
     // Create a map to collect file paths by grouped path (directory)
     const groupedPathMap = new Map<string, MenuFilePath[]>();
@@ -272,7 +269,6 @@ export async function getMenu(): Promise<Record<string, GroupedPath>> {
 
     // Nest the paths to create menu structure
     const menuData = nestPaths(parsedData);
-    console.log('Menu data processed and nested.');
     return menuData;
   } catch (error) {
     console.error('Error generating menu:', error);
@@ -280,7 +276,6 @@ export async function getMenu(): Promise<Record<string, GroupedPath>> {
   } finally {
     if (connection) {
       connection.closeSync();
-      console.log('DuckDB connection for menu closed.');
     }
     // Instance cleanup handled by connection closing/GC
   }
@@ -303,7 +298,6 @@ export async function getPinnedNotes(
   limit: number = 3,
 ): Promise<{ title: string; url: string; date: string }[]> {
   let connection: DuckDBConnection | null = null; // Instance variable removed
-  console.log(`Fetching up to ${limit} pinned notes...`);
 
   try {
     connection = await connectDuckDB(); // Get only the connection
@@ -321,7 +315,6 @@ export async function getPinnedNotes(
       LIMIT ?;
     `;
 
-    console.log('Executing DuckDB query for pinned notes...');
     // Prepare the statement
     const preparedStatement = await connection.prepare(query);
     // Bind the limit value to the placeholder '?' (must be in an array)
@@ -329,7 +322,6 @@ export async function getPinnedNotes(
     // Run the prepared statement to get the reader
     const reader = await preparedStatement.runAndReadAll(); // No arguments here
     const results = reader.getRowObjects() as unknown as PinnedNoteDbRow[];
-    console.log(`Retrieved ${results.length} pinned notes from Parquet file.`);
 
     const pinnedNotes = results.map(row => {
       const filePath = row.file_path || '';
@@ -356,7 +348,6 @@ export async function getPinnedNotes(
   } finally {
     if (connection) {
       connection.closeSync();
-      console.log('DuckDB connection for pinned notes closed.');
     }
   }
 }
@@ -367,7 +358,6 @@ export async function getPinnedNotes(
  */
 export async function getTags(): Promise<string[]> {
   let connection: DuckDBConnection | null = null; // Instance variable removed
-  console.log('Fetching unique tags...');
 
   try {
     connection = await connectDuckDB(); // Get only the connection
@@ -382,11 +372,9 @@ export async function getTags(): Promise<string[]> {
       ORDER BY tag ASC;
     `;
 
-    console.log('Executing DuckDB query for tags...');
     const reader = await connection.runAndReadAll(query);
     // getRows returns array of arrays, e.g., [[tag1], [tag2]]
     const results = reader.getRows() as string[][];
-    console.log(`Retrieved ${results.length} unique tags from Parquet file.`);
 
     // Extract the tag from each inner array
     const tags = results.map(row => row[0]).filter(tag => tag); // Filter out any potential null/empty tags just in case
@@ -398,7 +386,6 @@ export async function getTags(): Promise<string[]> {
   } finally {
     if (connection) {
       connection.closeSync();
-      console.log('DuckDB connection for tags closed.');
     }
   }
 }

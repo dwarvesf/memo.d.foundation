@@ -23,8 +23,10 @@ export const getStaticProps: GetStaticProps = async () => {
 const TagsPage = (props: RootLayoutPageProps) => {
   const { directoryTree } = props;
   const tags = useMemo(() => {
-    if (!directoryTree) return null;
+    if (!directoryTree || !directoryTree['/tags']) return null;
     const tagsNode = directoryTree['/tags'].children;
+
+    if (!tagsNode) return null; // Add this check as well, just in case children is null/undefined
 
     return Object.entries(tagsNode).sort(([a], [b]) => a.localeCompare(b));
   }, [directoryTree]);
