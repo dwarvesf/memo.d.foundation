@@ -245,8 +245,12 @@ defmodule Memo.ExportDuckDB do
             {:error, :no_frontmatter} ->
               nil
 
-            {frontmatter, md_content} ->
+            {frontmatter, md_content} when is_map(frontmatter) ->
               process_and_store(relative_path, frontmatter, md_content)
+
+            {frontmatter, _md_content} ->
+              IO.puts("Error: Expected frontmatter to be a map for file: #{relative_path}, but got: #{inspect(frontmatter)}")
+              nil
           end
 
         {:error, reason} ->
@@ -258,14 +262,18 @@ defmodule Memo.ExportDuckDB do
     remove_old_files(paths)
   end
 
-  defp process_and_store(file_path, frontmatter, md_content) do
-    escaped_file_path = escape_string(file_path)
+defp process_and_store(file_path, frontmatter, md_content) do
+  unless is_map(frontmatter) do
+    IO.puts("Error: Expected frontmatter to be a map for file: #{file_path}, but got: #{inspect(frontmatter)}")
+    nil
+  end
+  escaped_file_path = escape_string(file_path)
 
-    normalized_frontmatter =
-      frontmatter
-      |> Map.update("tags", [], fn tags ->
-        case tags do
-          tags when is_binary(tags) ->
+  normalized_frontmatter =
+    frontmatter
+    |> Map.update("tags", [], fn tags ->
+      case tags do
+        tags when is_binary(tags) ->
             if String.contains?(tags, ",") do
               tags
               |> String.split(",")
