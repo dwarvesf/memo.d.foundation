@@ -18,20 +18,26 @@ This collection of articles represents our ongoing exploration of what makes Dwa
 
 ## Latest from culture dir
 
-- [Culture Test](/playbook/operations/culture-test)
+- [The culture test](/culture/culture-test)
 - [Life at Dwarves: Record and reward (culture sharing)](/careers/life/group/2024-09-26-life-at-df-record-and-reward-culture-sharing)
-- [Record and reward sharing at Dwarves](/playground/01_literature/record-reward-sharing-culture)
-- [#6 Come for the conversation, stay for the culture](/updates/digest/6-stay-for-the-culture)
+- [Record and reward sharing at Dwarves](/playground/notes/record-reward-sharing-culture)
+- [Notes on our culture](/culture)
 - [Manifesto](/careers/manifesto)
 - [Culture](/careers/culture)
 - [OGIF - Oh God It's Friday](/updates/ogif)
-- [OGIF - Oh God It's Friday](/playbook/operations/ogif)
-- [Growth Is Our Universal Language](/playground/01_literature/growth-is-our-universal-language)
-- [The Inner Circle](/playbook/operations/the-inner-circle)
+- [Growth Is Our Universal Language](/playground/notes/growth-is-our-universal-language)
+- [OGIF - Oh God It's Friday](/culture/ogif-intro)
+- [Red flags](/culture/red-flags)
+- [Focus on delivery](/culture/focus-on-delivery)
+- [Are you helping?](/culture/are-you-helping)
+- [The inner circle](/culture/the-inner-circle)
 - [Sharing knowledge](/handbook/community/sharing)
-- [The Dwarves Culture Handbook](/playbook/operations/the-dwarves-culture-handbook)
-- [What we value](/handbook/what-we-value)
-- [You are Dwarves Foundation](/handbook/dwarves-foundation-is-you)
+- [Making decision as a team member](/culture/making-decision)
+- [Beyond the title](/culture/beyond-the-title)
+- [Go the extra mile](/culture/go-the-extra-mile)
+- [The Dwarves runs by ideas](/culture/runs-by-ideas)
+- [A tips of hiring - Do & Don't](/culture/a-tips-of-hiring-dont)
+- [The Dwarves culture handbook](/culture/culture-handbook)
 
 ## What you'll find here
 

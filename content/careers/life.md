@@ -19,7 +19,7 @@ Life at Dwarves is a series of stories about people, perspectives and lives at D
 - [Life at Dwarves: Record and reward (culture sharing)](/careers/life/group/2024-09-26-life-at-df-record-and-reward-culture-sharing)
 - [Dat Nguyen](/careers/life/2024-09-26-29-dat-nguyen)
 - [Life at Dwarves: H4 Supporting Hybrid Working + SOP checkin (weekly digest #14)](/careers/life/group/2024-09-23-life-at-df-hybrid-working)
-- [Life cycle of a publication](/playground/01_literature/lifecycle-of-a-publication)
+- [Life cycle of a publication](/playground/notes/lifecycle-of-a-publication)
 - [Duyen Tran](/careers/life/2024-02-19-28-duyen-tran)
 - [Tri Tran](/careers/life/2024-01-22-27-tri-tran)
 - [Quoc Tuan](/careers/life/2024-01-15-26-quoc-tuan)

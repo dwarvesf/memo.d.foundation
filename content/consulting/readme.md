@@ -19,15 +19,15 @@ The Consulting team is a strategic spin-off built on the foundation of our Tech 
 ## Latest from consulting team
 
 - [Screenz.ai](/consulting/case-study/screenz-ai)
-- [2nd Talks and Takeaways](/playground/market-commentary/event-takeaways-2nd)
-- [1st Talks and Takeaways](/playground/market-commentary/event-takeaways-1st)
-- [#9: Bybit Loses $1.5B in Hack, Claude 3.7 Sonnet Drops, and OpenArt Designs Characters](/playground/market-commentary/2025-28th-feb)
-- [#8: R1 1776 Goes Open-Source, Cardex Gets Hacked, and Grok-3 Debuts](/playground/market-commentary/2025-21th-feb)
-- [#7: 10x AI Cost Reduction, Lyft’s 2026 Robotaxi Milestone, and Solana ETF Buzz](/playground/market-commentary/2025-14th-feb)
-- [#6 Trending Products, DeepSeek Wave, and Ethereum Predictions](/playground/market-commentary/2025-7th-feb)
-- [#5 VC Trends, Blockchain Breakthroughs, and AI Innovations](/playground/market-commentary/2025-17th-jan)
-- [#4 AI Supercomputers, Mini AI PCs, SEA VC](/playground/market-commentary/2025-10th-jan)
-- [#3 AI at CES, Wall Street Boom, Blockchain Trends](/playground/market-commentary/2025-3rd-jan)
+- [2nd Talks and Takeaways](/updates/forward/market-commentary/event-takeaways-2nd)
+- [1st Talks and Takeaways](/updates/forward/market-commentary/event-takeaways-1st)
+- [#9: Bybit Loses $1.5B in Hack, Claude 3.7 Sonnet Drops, and OpenArt Designs Characters](/updates/forward/market-commentary/2025-28th-feb)
+- [#8: R1 1776 Goes Open-Source, Cardex Gets Hacked, and Grok-3 Debuts](/updates/forward/market-commentary/2025-21th-feb)
+- [#7: 10x AI Cost Reduction, Lyft’s 2026 Robotaxi Milestone, and Solana ETF Buzz](/updates/forward/market-commentary/2025-14th-feb)
+- [#6 Trending Products, DeepSeek Wave, and Ethereum Predictions](/updates/forward/market-commentary/2025-7th-feb)
+- [#5 VC Trends, Blockchain Breakthroughs, and AI Innovations](/updates/forward/market-commentary/2025-17th-jan)
+- [#4 AI Supercomputers, Mini AI PCs, SEA VC](/updates/forward/market-commentary/2025-10th-jan)
+- [#3 AI at CES, Wall Street Boom, Blockchain Trends](/updates/forward/market-commentary/2025-3rd-jan)
 
 ## Our culture & approach
 
