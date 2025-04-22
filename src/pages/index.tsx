@@ -23,7 +23,7 @@ interface HomePageProps extends RootLayoutPageProps {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const allMemos = await getAllMarkdownContents();
-    const layoutProps = await getRootLayoutPageProps(allMemos);
+    const layoutProps = await getRootLayoutPageProps();
     const sortedMemos = sortMemos(allMemos);
     const ogifMemos = filterMemo({
       data: sortedMemos,

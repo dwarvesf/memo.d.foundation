@@ -37,7 +37,7 @@ function slugifyFilename(filename: string): string {
  * @param pathStr The path to slugify
  * @returns Path with components slugified
  */
-function slugifyPathComponents(pathStr: string): string {
+export function slugifyPathComponents(pathStr: string): string {
   if (!pathStr) return '';
   return pathStr
     .split('/')
@@ -57,7 +57,7 @@ function slugifyPathComponents(pathStr: string): string {
 /**
  * Interface for menu file paths within a group
  */
-interface MenuFilePath {
+export interface MenuFilePath {
   file_path: string;
   title: string;
   date: string; // Keep date for sorting
@@ -66,7 +66,7 @@ interface MenuFilePath {
 /**
  * Interface for grouped path data (menu hierarchy node)
  */
-interface GroupedPath {
+export interface GroupedPath {
   grouped_path: string; // The path of the directory itself
   file_paths: MenuFilePath[]; // Files directly within this directory
   next_path: Record<string, GroupedPath>; // Subdirectories
@@ -334,7 +334,7 @@ export async function getPinnedNotes(
     const pinnedNotes = results.map(row => {
       const filePath = row.file_path || '';
       const title = row.title || ''; // Already filtered non-empty in SQL
-      const date = row.date || '';
+      const date = String(row.date || ''); // Explicitly convert date to string
 
       // Slugify the path for URL generation
       const slugifiedPath = slugifyPathComponents(filePath);

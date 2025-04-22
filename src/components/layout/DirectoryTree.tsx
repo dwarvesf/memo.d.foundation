@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn, slugToTitle } from '@/lib/utils'; // Import slugToTitle
 import { ITreeNode } from '@/types';
 import React from 'react';
 import { useRouter } from 'next/router';
@@ -8,15 +8,7 @@ import Link from 'next/link';
 
 interface DirectoryTreeProps {
   tree?: Record<string, ITreeNode>;
-  pinnedNotes?: Array<{
-    title: string;
-    url: string;
-    date: string;
-  }>;
-  tags?: Array<{
-    tags?: string[];
-    date: string;
-  }>;
+  // pinnedNotes and tags are no longer used directly by DirectoryTree
 }
 
 const DirectoryTree = (props: DirectoryTreeProps) => {
@@ -63,42 +55,34 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       return null;
     }
 
-    // Check if this is a readme entry
-    const isReadmeEntry = path.endsWith('/readme');
-    // Get parent path for readme entries
-    const linkPath = isReadmeEntry
-      ? path.substring(0, path.lastIndexOf('/'))
-      : path;
-
     // Determine if this item should be marked as active
+    // Use node.url for comparison as it's the final link path
     const isActive = (() => {
       // Never activate expandable groups
       if (hasChildren) {
         return false;
       }
 
-      // For readme entries, highlight the parent path
-      if (isReadmeEntry) {
-        return currentPath === linkPath;
-      }
-
       // Check if current path is a readme/index of this path
+      // This logic might need adjustment based on how README URLs are handled
+      // in the new data structure. Assuming node.url for READMEs is the parent path.
       const isCurrentPathReadme = currentPath.endsWith('/readme');
       if (isCurrentPathReadme) {
+        // If the current path is a readme, check if the node's URL matches the parent path
         const parentPath = currentPath.substring(
           0,
           currentPath.lastIndexOf('/'),
         );
-        return path === parentPath;
+        return node.url === parentPath;
       }
 
-      // For all other cases, only highlight exact matches
-      return currentPath === path;
+      // For all other cases, only highlight exact matches with the node's URL
+      return currentPath === node.url;
     })();
 
     return (
       <div
-        key={path}
+        key={path} // path is the full path here, still useful as a unique key
         className={cn('relative flex flex-col', {
           "before:bg-border pl-3 before:absolute before:top-0 before:left-[7px] before:h-full before:w-[1px] before:content-['']":
             depth > 0,
@@ -108,7 +92,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
         })}
       >
         <Link
-          href={linkPath}
+          href={node.url || path} // Use node.url for the link, fallback to path if url is missing
           onClick={e => {
             if (hasChildren) {
               e.preventDefault();
@@ -135,7 +119,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
               )}
             />
           )}
-          <span>{node.label}</span>
+          <span>{slugToTitle(node.label)}</span> {/* Apply slugToTitle here */}
         </Link>
         {hasChildren && isOpen && (
           <div className="m-0 w-full pl-1">
