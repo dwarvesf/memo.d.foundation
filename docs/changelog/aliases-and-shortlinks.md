@@ -6,7 +6,7 @@ This document explains how to use global folder-level aliases and short links in
 
 Global folder-level aliases allow you to create alternative paths for accessing content within a specific folder. This is useful for providing shorter or more memorable links to frequently accessed directories.
 
-To create a global folder-level alias for a folder, you need to create or edit the `config.yaml` file within that folder in the `vault` directory. Add an `aliases` key with a list of alias paths (starting with a `/`) that should point to this folder.
+To create a global folder-level alias for a folder, you need to create or edit the `.config.yaml` or `.config.yml` file within that folder in the `vault` directory. Add an `aliases` key with a list of alias paths (starting with a `/`) that should point to this folder.
 
 **Example:**
 

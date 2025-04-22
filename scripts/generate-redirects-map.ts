@@ -39,7 +39,7 @@ interface YamlConfig {
 }
 
 /**
- * Recursively finds all config.yaml files within a directory.
+ * Recursively finds all .config.yaml files within a directory.
  */
 async function findConfigFiles(dir: string): Promise<string[]> {
   let configFiles: string[] = [];
@@ -52,7 +52,10 @@ async function findConfigFiles(dir: string): Promise<string[]> {
         if (entry.name !== '.git') {
           configFiles = configFiles.concat(await findConfigFiles(fullPath));
         }
-      } else if (entry.isFile() && entry.name === 'config.yaml') {
+      } else if (
+        entry.isFile() &&
+        (entry.name === '.config.yaml' || entry.name === '.config.yml')
+      ) {
         configFiles.push(fullPath);
       }
     }
@@ -180,9 +183,9 @@ async function generateRedirectsMap() {
     );
 
     // Process YAML config files for aliases
-    console.log(`Searching for config.yaml files in ${VAULT_PATH}...`);
+    console.log(`Searching for .config.yaml files in ${VAULT_PATH}...`);
     const configFiles = await findConfigFiles(VAULT_PATH);
-    console.log(`Found ${configFiles.length} config.yaml files.`);
+    console.log(`Found ${configFiles.length} .config.yaml files.`);
 
     const aliases: Record<string, string> = {};
 
@@ -211,7 +214,7 @@ async function generateRedirectsMap() {
                 aliases[formattedAlias] !== canonicalPath
               ) {
                 console.warn(
-                  `Conflict: Alias '${formattedAlias}' maps to both '${aliases[formattedAlias]}' and '${canonicalPath}' in YAML files. Overwriting with the latter.`,
+                  `Conflict: Alias '${formattedAlias}' maps to both '${aliases[formattedAlias]}' and '${canonicalPath}'. Overwriting with the latter.`,
                 );
               }
               aliases[formattedAlias] = canonicalPath;
@@ -229,8 +232,14 @@ async function generateRedirectsMap() {
             }
           }
         }
-      } catch (error) {
-        console.error(`Error processing config file ${configFile}:`, error);
+      } catch (error: any) {
+        if (error.name === 'YAMLException') {
+          console.warn(
+            `Skipping config file ${configFile} due to YAML error: ${error.reason}`,
+          );
+        } else {
+          console.error(`Error processing config file ${configFile}:`, error);
+        }
       }
     }
 

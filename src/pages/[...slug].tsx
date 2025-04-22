@@ -80,30 +80,40 @@ export const getStaticPaths: GetStaticPaths = async () => {
       params: { slug: slugArray },
     }));
 
-  // Add alias paths to the generated paths
+  // Add alias paths (for alias roots) to the generated paths
   const aliasPaths = Object.keys(aliases).map(alias => ({
     params: { slug: alias.split('/').filter(Boolean) }, // Split alias path into slug array
   }));
 
-  // Add alias paths for all markdown files that are under an aliased root
-  const aliasSubPaths = markdownPaths
-    .map(pathObj => {
-      const slugArray = pathObj.params.slug; // Access the slug array from params
-      if (slugArray.length > 0) {
-        const firstSegment = `/${slugArray[0]}`;
-        // Find the alias key where the value matches the first segment
-        const aliasKey = Object.keys(aliases).find(
-          key => aliases[key] === firstSegment,
-        );
-        if (aliasKey) {
-          // If an alias is found, create a new path with the alias as the first segment
-          const aliasSegment = aliasKey.split('/').filter(Boolean)[0];
-          return { params: { slug: [aliasSegment, ...slugArray.slice(1)] } };
-        }
+  // Add paths for content files under aliased directories
+  const nestedAliasPaths: { params: { slug: string[] } }[] = [];
+  for (const markdownPathObj of markdownPaths) {
+    const markdownSlug = markdownPathObj.params.slug;
+
+    for (const aliasKey in aliases) {
+      const aliasValue = aliases[aliasKey];
+      const aliasValueSegments = aliasValue.split('/').filter(Boolean);
+      const aliasKeySegments = aliasKey.split('/').filter(Boolean);
+
+      // Check if the markdown slug starts with the alias value segments
+      if (
+        markdownSlug.length >= aliasValueSegments.length &&
+        aliasValueSegments.every(
+          (segment, index) => markdownSlug[index] === segment,
+        )
+      ) {
+        // Extract the remaining segments from the markdown slug
+        const remainingSegments = markdownSlug.slice(aliasValueSegments.length);
+
+        // Construct the new alias slug
+        const newAliasSlug = [...aliasKeySegments, ...remainingSegments];
+
+        nestedAliasPaths.push({ params: { slug: newAliasSlug } });
+        // Break here since a markdown file should only belong to one aliased directory
+        break;
       }
-      return null; // No alias found for this path
-    })
-    .filter(path => path !== null); // Filter out null values
+    }
+  }
 
   // Add redirect paths to the generated paths
   const redirectPaths = Object.keys(redirects).map(redirect => ({
@@ -113,9 +123,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = [
     ...markdownPaths,
     ...aliasPaths,
-    ...aliasSubPaths,
-    ...redirectPaths,
-  ]; // Include redirect paths
+    ...nestedAliasPaths, // Include nested alias paths
+    ...redirectPaths, // Include redirect paths
+  ];
 
   return {
     paths,
@@ -157,28 +167,37 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     // Determine the actual content path by checking for redirect or alias
     let contentPathSegments = [...requestedPathSegments]; // Start with requested segments
     let canonicalSlug = contentPathSegments; // Initialize canonical slug
+    let canonicalPathFound = false;
 
     // Check for redirect
     if (redirects[requestedPath]) {
       const redirectTarget = redirects[requestedPath];
       contentPathSegments = redirectTarget.split('/').filter(Boolean);
       canonicalSlug = contentPathSegments; // Update canonical slug after redirect
-    } else if (aliases[requestedPath]) {
-      // Check for full path alias
-      const aliasTarget = aliases[requestedPath];
-      contentPathSegments = aliasTarget.split('/').filter(Boolean);
-      canonicalSlug = contentPathSegments; // Update canonical slug after alias
-    } else if (contentPathSegments.length > 0) {
-      // Check for alias in the first segment if not a redirect or full path alias
-      const firstSegment = `/${contentPathSegments[0]}`;
-      if (aliases[firstSegment]) {
-        // If the first segment is an alias, replace it with the canonical segment
-        const canonicalFirstSegment = aliases[firstSegment]
-          .split('/')
-          .filter(Boolean)[0];
-        contentPathSegments[0] = canonicalFirstSegment;
-        canonicalSlug = contentPathSegments; // Update canonical slug after first segment alias
+      canonicalPathFound = true;
+    } else {
+      // Check for alias, including nested aliases
+      for (const aliasKey in aliases) {
+        if (requestedPath.startsWith(aliasKey)) {
+          const aliasValue = aliases[aliasKey];
+          // Construct the canonical path by replacing the alias key with the alias value
+          const canonicalPath = requestedPath.replace(aliasKey, aliasValue);
+          contentPathSegments = canonicalPath.split('/').filter(Boolean);
+          canonicalSlug = contentPathSegments; // Update canonical slug after alias
+          canonicalPathFound = true;
+          break; // Found a matching alias, no need to check further
+        }
       }
+    }
+
+    // If canonical path was not found via redirect or alias, use the requested path segments
+    if (!canonicalPathFound) {
+      // This block handles cases where the requested path is already canonical
+      // or if the alias is only for the first segment (handled by the old logic,
+      // but the new logic above should cover this too).
+      // Keep the original requestedPathSegments as canonicalSlug if no alias/redirect matched.
+      canonicalSlug = requestedPathSegments;
+      contentPathSegments = requestedPathSegments; // Ensure contentPathSegments is also the requested segments
     }
 
     // Canonical slug is the modified segments array
