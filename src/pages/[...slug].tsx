@@ -156,13 +156,20 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     // Determine the actual content path by checking for redirect or alias
     let contentPathSegments = [...requestedPathSegments]; // Start with requested segments
+    let canonicalSlug = contentPathSegments; // Initialize canonical slug
 
     // Check for redirect
     if (redirects[requestedPath]) {
       const redirectTarget = redirects[requestedPath];
       contentPathSegments = redirectTarget.split('/').filter(Boolean);
+      canonicalSlug = contentPathSegments; // Update canonical slug after redirect
+    } else if (aliases[requestedPath]) {
+      // Check for full path alias
+      const aliasTarget = aliases[requestedPath];
+      contentPathSegments = aliasTarget.split('/').filter(Boolean);
+      canonicalSlug = contentPathSegments; // Update canonical slug after alias
     } else if (contentPathSegments.length > 0) {
-      // Check for alias in the first segment if not a redirect
+      // Check for alias in the first segment if not a redirect or full path alias
       const firstSegment = `/${contentPathSegments[0]}`;
       if (aliases[firstSegment]) {
         // If the first segment is an alias, replace it with the canonical segment
@@ -170,10 +177,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           .split('/')
           .filter(Boolean)[0];
         contentPathSegments[0] = canonicalFirstSegment;
+        canonicalSlug = contentPathSegments; // Update canonical slug after first segment alias
       }
     }
 
-    const canonicalSlug = contentPathSegments; // Canonical slug is the modified segments array
+    // Canonical slug is the modified segments array
 
     // Pass includeContent: false as we only need metadata for layout props
     const layoutProps = await getRootLayoutPageProps();

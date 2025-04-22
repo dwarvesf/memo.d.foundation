@@ -1,18 +1,17 @@
-import { RootLayoutPageProps, ITreeNode } from '@/types';
 import {
-  getMenu,
-  getPinnedNotes,
-  getTags,
+  RootLayoutPageProps,
+  ITreeNode,
   GroupedPath,
   MenuFilePath,
-  slugifyPathComponents, // Import slugifyPathComponents
-} from './menu';
+} from '@/types';
+import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathComponents from utils
 import path from 'path'; // Import path module
+import fs from 'fs/promises'; // Use promises version for async file reading
 
 /**
- * Transforms the nested menu data structure from getMenu into the ITreeNode structure
+ * Transforms the nested menu data structure into the ITreeNode structure
  * expected by the DirectoryTree component.
- * @param menuData The nested menu data from getMenu.
+ * @param menuData The nested menu data.
  * @param currentPath The current path during recursion (used internally).
  * @param pinnedNotes Array of pinned notes.
  * @returns A nested object representing the directory tree in ITreeNode format.
@@ -106,11 +105,44 @@ function transformMenuDataToDirectoryTree(
 }
 
 export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
-  const menuData = await getMenu();
-  const pinnedNotes = await getPinnedNotes();
-  const tags = await getTags();
+  let menuData: Record<string, GroupedPath> = {};
+  let pinnedNotes: Array<{ title: string; url: string; date: string }> = [];
+  let tags: string[] = [];
 
-  const directoryTree = transformMenuDataToDirectoryTree(menuData, pinnedNotes); // Pass pinnedNotes
+  try {
+    // Attempt to fetch menu data from the static JSON file
+    const menuDataPath = path.join(process.cwd(), 'public/content/menu.json');
+    const menuDataJson = await fs.readFile(menuDataPath, 'utf-8');
+    menuData = JSON.parse(menuDataJson);
+  } catch (error) {
+    console.error('Error fetching menu data:', error);
+    // Continue with empty menuData if file not found or error occurs
+  }
+
+  try {
+    // Attempt to fetch pinned notes from the static JSON file
+    const pinnedNotesPath = path.join(
+      process.cwd(),
+      'public/content/pinned-notes.json',
+    );
+    const pinnedNotesJson = await fs.readFile(pinnedNotesPath, 'utf-8');
+    pinnedNotes = JSON.parse(pinnedNotesJson);
+  } catch (error) {
+    console.error('Error fetching pinned notes:', error);
+    // Continue with empty pinnedNotes if file not found or error occurs
+  }
+
+  try {
+    // Attempt to fetch tags from the static JSON file
+    const tagsPath = path.join(process.cwd(), 'public/content/tags.json');
+    const tagsJson = await fs.readFile(tagsPath, 'utf-8');
+    tags = JSON.parse(tagsJson);
+  } catch (error) {
+    console.error('Error fetching tags:', error);
+    // Continue with empty tags if file not found or error occurs
+  }
+
+  const directoryTree = transformMenuDataToDirectoryTree(menuData, pinnedNotes);
 
   return {
     directoryTree,

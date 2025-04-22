@@ -87,3 +87,21 @@ export interface IMemoItem {
   filePath: string;
   slugArray: string[];
 }
+
+/**
+ * Interface for menu file paths within a group
+ */
+export interface MenuFilePath {
+  file_path: string;
+  title: string;
+  date: string; // Keep date for sorting
+}
+
+/**
+ * Interface for grouped path data (menu hierarchy node)
+ */
+export interface GroupedPath {
+  grouped_path: string; // The path of the directory itself
+  file_paths: MenuFilePath[]; // Files directly within this directory
+  next_path: Record<string, GroupedPath>; // Subdirectories
+}

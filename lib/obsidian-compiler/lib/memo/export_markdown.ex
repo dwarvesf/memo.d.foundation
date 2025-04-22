@@ -379,23 +379,28 @@ defmodule Memo.ExportMarkdown do
 
   defp filter_changed_files(files, cache) do
     Enum.split_with(files, fn file ->
-      # A file needs processing if:
-      # 1. It's not in the cache, or
-      # 2. Its stats have changed
-      case Map.get(cache, file) do
-        nil ->
-          true
+      # Always process .config.yaml and .config.yml files
+      if String.ends_with?(file, ".config.yaml") || String.ends_with?(file, ".config.yml") do
+        true
+      else
+        # A file needs processing if:
+        # 1. It's not in the cache, or
+        # 2. Its stats have changed
+        case Map.get(cache, file) do
+          nil ->
+            true
 
-        entry ->
-          case File.stat(file, time: :posix) do
-            {:ok, %{size: size, mtime: mtime}} ->
-              size != entry["size"] || mtime != entry["mtime"] ||
-                compute_file_hash(file) != entry["hash"]
+          entry ->
+            case File.stat(file, time: :posix) do
+              {:ok, %{size: size, mtime: mtime}} ->
+                size != entry["size"] || mtime != entry["mtime"] ||
+                  compute_file_hash(file) != entry["hash"]
 
-            _ ->
-              true
+              _ ->
+                true
+            end
           end
-      end
+        end
     end)
   end
 

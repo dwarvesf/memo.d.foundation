@@ -1,66 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import { DuckDBConnection, DuckDBInstance } from '@duckdb/node-api'; // Import DuckDB API
+import { slugifyPathComponents } from '../src/lib/utils/slugify.js'; // Import from shared utility
 
-// --- Shared DuckDB Connection ---
-let sharedDuckDBConnection: DuckDBConnection | null = null;
-
-// --- Slugify Functions (Keep as they are used for URL generation) ---
-
-/**
- * Slugify a string (based on Memo.Common.Slugify.slugify)
- * @param str The string to slugify
- * @returns Slugified string
- */
-function slugify(str: string): string {
-  if (!str) return '';
-  return str
-    .toLowerCase()
-    .replace(/[^a-z0-9\s_-]/g, '') // Remove invalid chars
-    .replace(/\s+/g, '-') // Collapse whitespace to single dashes
-    .replace(/-+/g, '-') // Collapse multiple dashes
-    .trim() // Trim leading/trailing spaces/dashes
-    .replace(/^-+|-+$/g, ''); // Remove leading/trailing dashes
-}
-
-/**
- * Slugify filename (based on Memo.Common.Slugify.slugify_filename)
- * @param filename The filename to slugify
- * @returns Slugified filename with extension preserved
- */
-function slugifyFilename(filename: string): string {
-  if (!filename) return '';
-  const ext = path.extname(filename);
-  const name = path.basename(filename, ext);
-  return slugify(name) + ext;
-}
-
-/**
- * Slugify path components (based on Memo.Common.Slugify.slugify_path_components)
- * @param pathStr The path to slugify
- * @returns Path with components slugified
- */
-export function slugifyPathComponents(pathStr: string): string {
-  if (!pathStr) return '';
-  return pathStr
-    .split('/')
-    .map(component => {
-      // Keep special directory names
-      if (['.', '..', ''].includes(component)) {
-        return component;
-      }
-      // Slugify other components, preserving extension
-      return slugifyFilename(component);
-    })
-    .join('/');
-}
-
-// --- Interfaces ---
-
+// TODO: Remove these interface definitions once module resolution from src/lib/content to src/types is fixed
 /**
  * Interface for menu file paths within a group
  */
-export interface MenuFilePath {
+interface MenuFilePath {
   file_path: string;
   title: string;
   date: string; // Keep date for sorting
@@ -69,7 +16,7 @@ export interface MenuFilePath {
 /**
  * Interface for grouped path data (menu hierarchy node)
  */
-export interface GroupedPath {
+interface GroupedPath {
   grouped_path: string; // The path of the directory itself
   file_paths: MenuFilePath[]; // Files directly within this directory
   next_path: Record<string, GroupedPath>; // Subdirectories
@@ -118,7 +65,6 @@ function nestPaths(
             const dateB = b.date ? new Date(b.date).getTime() : 0;
             return dateB - dateA; // Newer first
           } catch {
-            // Removed unused 'e' variable
             return 0; // Keep order if dates are invalid
           }
         });
@@ -159,24 +105,14 @@ function sortGroupedPaths(
 
 // Modified to use a shared connection
 async function connectDuckDB(): Promise<DuckDBConnection> {
-  if (sharedDuckDBConnection) {
-    return sharedDuckDBConnection;
-  }
-
   const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
   if (!fs.existsSync(parquetFilePath)) {
     throw new Error(`Parquet file not found: ${parquetFilePath}`);
   }
-  // Instance is created internally but not returned if not needed
-  const instance = await DuckDBInstance.create(':memory:'); // Instance is created here
+  const instance = await DuckDBInstance.create(':memory:');
   const connection = await instance.connect();
-  sharedDuckDBConnection = connection; // Store the connection
-
-  // Consider managing instance lifecycle if needed elsewhere, but for these functions, connection is sufficient
   return connection;
 }
-
-// --- Data Fetching Functions ---
 
 // Define structure for rows read from DuckDB for getMenu
 interface MenuDbRow {
@@ -190,16 +126,22 @@ interface MenuDbRow {
   hide_on_sidebar: boolean | null;
 }
 
-/**
- * Get menu data from the parquet database using DuckDB
- * @returns Promise resolving to menu structure
- */
-export async function getMenu(): Promise<Record<string, GroupedPath>> {
+async function generateMenuIndex(): Promise<void> {
+  const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
+  const outputPath = path.join(process.cwd(), 'public/content/menu.json');
   let connection: DuckDBConnection | null = null;
 
+  console.log(`Generating menu index from ${parquetFilePath}...`);
+
   try {
-    connection = await connectDuckDB(); // Get the shared connection
-    const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet'); // Needed for query
+    if (!fs.existsSync(parquetFilePath)) {
+      console.error('Error: Parquet file not found:', parquetFilePath);
+      process.exit(1);
+    }
+
+    connection = await connectDuckDB();
+    console.log('DuckDB connection established.');
+
     const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
 
     const columnsToSelect = [
@@ -226,8 +168,12 @@ export async function getMenu(): Promise<Record<string, GroupedPath>> {
         NOT file_path LIKE '%_radar/%';
     `;
 
+    console.log('Executing DuckDB query for menu data...');
     const reader = await connection.runAndReadAll(query);
     const results = reader.getRowObjects() as unknown as MenuDbRow[];
+    console.log(
+      `Retrieved ${results.length} rows from Parquet file via DuckDB.`,
+    );
 
     // Create a map to collect file paths by grouped path (directory)
     const groupedPathMap = new Map<string, MenuFilePath[]>();
@@ -278,12 +224,33 @@ export async function getMenu(): Promise<Record<string, GroupedPath>> {
 
     // Nest the paths to create menu structure
     const menuData = nestPaths(parsedData);
-    return menuData;
+
+    // Create the output directory if it doesn't exist
+    const outputDir = path.dirname(outputPath);
+    if (!fs.existsSync(outputDir)) {
+      console.log(`Creating output directory: ${outputDir}`);
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    console.log(`Writing menu index to ${outputPath}...`);
+    // Write the generated menu data to the JSON file
+    fs.writeFileSync(
+      outputPath,
+      JSON.stringify(menuData, null, 2), // Use 2 spaces for indentation
+    );
+
+    console.log(`Menu index successfully generated at: ${outputPath}`);
   } catch (error) {
-    console.error('Error generating menu:', error);
-    return {}; // Return empty object on error
+    console.error('Error generating menu index:', error);
+    process.exit(1); // Exit with error on failure
+  } finally {
+    // Ensure the database connection is closed
+    if (connection) {
+      connection.closeSync();
+      console.log('DuckDB connection closed.');
+    }
+    console.log('Menu index generation script finished.');
   }
-  // Removed finally block to keep connection open
 }
 
 // Define structure for rows read from DuckDB for getPinnedNotes
@@ -295,19 +262,28 @@ interface PinnedNoteDbRow {
 }
 
 /**
- * Get pinned notes from the parquet database using DuckDB
- * @param limit Number of pinned notes to return
- * @returns Promise resolving to array of pinned notes
+ * Get pinned notes from the parquet database using DuckDB and save to JSON
+ * @returns Promise resolving when complete
  */
-export async function getPinnedNotes(
-  limit: number = 3,
-): Promise<{ title: string; url: string; date: string }[]> {
+async function generatePinnedNotes(): Promise<void> {
+  const outputPath = path.join(
+    process.cwd(),
+    'public/content/pinned-notes.json',
+  );
+  const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
+  const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
   let connection: DuckDBConnection | null = null;
 
+  console.log(`Generating pinned notes from ${parquetFilePath}...`);
+
   try {
-    connection = await connectDuckDB(); // Get the shared connection
-    const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
-    const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
+    if (!fs.existsSync(parquetFilePath)) {
+      console.error('Error: Parquet file not found:', parquetFilePath);
+      process.exit(1);
+    }
+
+    connection = await connectDuckDB();
+    console.log('DuckDB connection established.');
 
     // Use SQL for filtering, ordering, and limiting
     const query = `
@@ -317,10 +293,9 @@ export async function getPinnedNotes(
         pinned = true AND
         title IS NOT NULL AND title != ''
       ORDER BY date DESC
-      LIMIT ${limit};
+      LIMIT 3; -- Assuming a limit of 3 as in the original function
     `;
 
-    // Execute the query directly without a prepared statement
     const reader = await connection.runAndReadAll(query);
     const results = reader.getRowObjects() as unknown as PinnedNoteDbRow[];
 
@@ -342,25 +317,53 @@ export async function getPinnedNotes(
       return { title, url, date };
     });
 
-    return pinnedNotes; // Already sorted and limited by SQL
+    // Create the output directory if it doesn't exist
+    const outputDir = path.dirname(outputPath);
+    if (!fs.existsSync(outputDir)) {
+      console.log(`Creating output directory: ${outputDir}`);
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    console.log(`Writing pinned notes to ${outputPath}...`);
+    fs.writeFileSync(
+      outputPath,
+      JSON.stringify(pinnedNotes, null, 2), // Use 2 spaces for indentation
+    );
+
+    console.log(`Pinned notes successfully generated at: ${outputPath}`);
   } catch (error) {
-    console.error('Error fetching pinned notes:', error);
-    return []; // Return empty array on error
+    console.error('Error generating pinned notes:', error);
+    process.exit(1); // Exit with error on failure
+  } finally {
+    // Ensure the database connection is closed
+    if (connection) {
+      connection.closeSync();
+      console.log('DuckDB connection closed.');
+    }
+    console.log('Pinned notes generation script finished.');
   }
-  // Removed finally block to keep connection open
 }
 
 /**
- * Get all unique tags from the parquet database using DuckDB
- * @returns Promise resolving to array of tags sorted alphabetically
+ * Get all unique tags from the parquet database using DuckDB and save to JSON
+ * @returns Promise resolving when complete
  */
-export async function getTags(): Promise<string[]> {
+async function generateTags(): Promise<void> {
+  const outputPath = path.join(process.cwd(), 'public/content/tags.json');
+  const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
+  const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
   let connection: DuckDBConnection | null = null;
 
+  console.log(`Generating tags from ${parquetFilePath}...`);
+
   try {
-    connection = await connectDuckDB(); // Get the shared connection
-    const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
-    const parquetPathForDb = parquetFilePath.replace(/\\/g, '/');
+    if (!fs.existsSync(parquetFilePath)) {
+      console.error('Error: Parquet file not found:', parquetFilePath);
+      process.exit(1);
+    }
+
+    connection = await connectDuckDB();
+    console.log('DuckDB connection established.');
 
     // Use UNNEST and DISTINCT directly in SQL for efficiency
     const query = `
@@ -377,10 +380,48 @@ export async function getTags(): Promise<string[]> {
     // Extract the tag from each inner array
     const tags = results.map(row => row[0]).filter(tag => tag); // Filter out any potential null/empty tags just in case
 
-    return tags; // Already unique and sorted by SQL
+    // Create the output directory if it doesn't exist
+    const outputDir = path.dirname(outputPath);
+    if (!fs.existsSync(outputDir)) {
+      console.log(`Creating output directory: ${outputDir}`);
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    console.log(`Writing tags to ${outputPath}...`);
+    fs.writeFileSync(
+      outputPath,
+      JSON.stringify(tags, null, 2), // Use 2 spaces for indentation
+    );
+
+    console.log(`Tags successfully generated at: ${outputPath}`);
   } catch (error) {
-    console.error('Error fetching tags:', error);
-    return []; // Return empty array on error
+    console.error('Error generating tags:', error);
+    process.exit(1); // Exit with error on failure
+  } finally {
+    // Ensure the database connection is closed
+    if (connection) {
+      connection.closeSync();
+      console.log('DuckDB connection closed.');
+    }
+    console.log('Tags generation script finished.');
   }
-  // Removed finally block to keep connection open
 }
+
+async function generateAllStaticData() {
+  try {
+    // Generate menu index
+    await generateMenuIndex();
+
+    // Generate pinned notes
+    await generatePinnedNotes();
+
+    // Generate tags
+    await generateTags();
+  } catch (error) {
+    console.error('Error generating static data:', error);
+    process.exit(1); // Exit with error on failure
+  }
+}
+
+// Run the main function
+generateAllStaticData();

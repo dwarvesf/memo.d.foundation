@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "pnpm run generate-search-index && pnpm run generate-redirects-map && next build && pnpm run generate-rss",
+    "build": "pnpm run generate-menu && pnpm run generate-search-index && pnpm run generate-redirects-map && next build && pnpm run generate-rss",
     "start": "next start",
     "lint": "next lint",
     "deploy": "gh-pages -d out",
@@ -13,7 +13,8 @@
     "lint-staged": "lint-staged",
     "generate-rss": "tsx scripts/generate-rss.ts",
     "generate-search-index": "tsx scripts/generate-search-index.ts",
-    "generate-redirects-map": "tsx scripts/generate-redirects-map.ts"
+    "generate-redirects-map": "tsx scripts/generate-redirects-map.ts",
+    "generate-menu": "tsx scripts/generate-menu.ts"
   },
   "type": "module",
   "homepage": "https://memo.d.foundation/",
