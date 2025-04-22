@@ -1,0 +1,668 @@
+{
+  "handbook/purpose": [
+    {
+      "title": "What we stand for",
+      "path": "/handbook/what-we-stand-for"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/mma": [
+    {
+      "title": "Making a career",
+      "path": "/handbook/making-a-career"
+    },
+    {
+      "title": "MMA",
+      "path": "/handbook/mma"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/who-does-what": [
+    {
+      "title": "💎 Getting started",
+      "path": "/handbook/getting-started"
+    },
+    {
+      "title": "You are Dwarves Foundation",
+      "path": "/handbook/dwarves-foundation-is-you"
+    },
+    {
+      "title": "Work routine",
+      "path": "/handbook/routine"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/how-we-work": [
+    {
+      "title": "💎 Getting started",
+      "path": "/handbook/getting-started"
+    },
+    {
+      "title": "Work routine",
+      "path": "/handbook/routine"
+    },
+    {
+      "title": "Who does what",
+      "path": "/handbook/who-does-what"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/tools-and-systems": [
+    {
+      "title": "💎 Getting started",
+      "path": "/handbook/getting-started"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/dwarves-foundation-is-you": [
+    {
+      "title": "💎 Getting started",
+      "path": "/handbook/getting-started"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/navigate-changes": [
+    {
+      "title": "Our purpose",
+      "path": "/handbook/purpose"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/stock-option-plan": [
+    {
+      "title": "How we spend money",
+      "path": "/handbook/how-we-spend-money"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/community/radar": [
+    {
+      "title": "Showcase",
+      "path": "/handbook/community/showcase"
+    },
+    {
+      "title": "Navigate changes",
+      "path": "/handbook/navigate-changes"
+    },
+    {
+      "title": "Dwarves as a community",
+      "path": "/handbook/as-a-community"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "Tech Radar",
+      "path": "/handbook/community"
+    }
+  ],
+  "handbook/community/discord": [
+    {
+      "title": "Earning with sidegig",
+      "path": "/handbook/community/earn"
+    },
+    {
+      "title": "Dwarves as a community",
+      "path": "/handbook/as-a-community"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "🧊 ICY Token",
+      "path": "/handbook/community/icy"
+    }
+  ],
+  "handbook/community/sharing": [
+    {
+      "title": "Earning with sidegig",
+      "path": "/handbook/community/earn"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "🧊 ICY Token",
+      "path": "/handbook/community/icy"
+    },
+    {
+      "title": "Tech Radar",
+      "path": "/handbook/community"
+    }
+  ],
+  "handbook/community/icy": [
+    {
+      "title": "Dwarves Network Discord",
+      "path": "/handbook/community/discord"
+    },
+    {
+      "title": "Dwarves as a community",
+      "path": "/handbook/as-a-community"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/community/earn": [
+    {
+      "title": "Dwarves Network Discord",
+      "path": "/handbook/community/discord"
+    },
+    {
+      "title": "Dwarves as a community",
+      "path": "/handbook/as-a-community"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/ventures": [
+    {
+      "title": "Work routine",
+      "path": "/handbook/routine"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/routine": [
+    {
+      "title": "How we work",
+      "path": "/handbook/how-we-work"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/knowledge-base": [
+    {
+      "title": "Navigate changes",
+      "path": "/handbook/navigate-changes"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/nda": [
+    {
+      "title": "Compliance",
+      "path": "/handbook/compliance"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/moonlighting": [
+    {
+      "title": "Compliance",
+      "path": "/handbook/compliance"
+    },
+    {
+      "title": "FAQs",
+      "path": "/handbook/faq"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "playground/topics/golang/go-for-enterprise/why-enterprise-chose-java": [
+    {
+      "title": "Go as an Enterprise Standard Language",
+      "path": "/playground/topics/golang/go-for-enterprise/enterprise-standard-language"
+    }
+  ],
+  "playground/topics/golang/go-for-enterprise/why-go": [
+    {
+      "title": "Go as an Enterprise Standard Language",
+      "path": "/playground/topics/golang/go-for-enterprise/enterprise-standard-language"
+    }
+  ],
+  "playground/topics/golang/go-for-enterprise/how-to-use-go-in-enterprise": [
+    {
+      "title": "Go as an Enterprise Standard Language",
+      "path": "/playground/topics/golang/go-for-enterprise/enterprise-standard-language"
+    }
+  ],
+  "playground/topics/golang/go-for-enterprise/who-using-golang-in-enterprise": [
+    {
+      "title": "Go as an Enterprise Standard Language",
+      "path": "/playground/topics/golang/go-for-enterprise/enterprise-standard-language"
+    }
+  ],
+  "playground/topics/golang/go-for-enterprise/when-to-use-golang-in-enterprise": [
+    {
+      "title": "Go as an Enterprise Standard Language",
+      "path": "/playground/topics/golang/go-for-enterprise/enterprise-standard-language"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-a-world-before-docker": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-docker-adoption-and-challenges": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-nix-and-our-devbox-adoption": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-local-development-env": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "careers/open-positions/growth-lead": [
+    {
+      "title": "Join the Dwarves",
+      "path": "/careers"
+    }
+  ],
+  "careers/apprentice/apprentice": [
+    {
+      "title": "Join the Dwarves",
+      "path": "/careers"
+    }
+  ],
+  "careers/manifesto": [
+    {
+      "title": "Join the Dwarves",
+      "path": "/careers"
+    }
+  ],
+  "careers/apprentice/2022/2022-meet-ngoc-thanh-pham": [
+    {
+      "title": "Join the Dwarves",
+      "path": "/careers"
+    }
+  ],
+  "careers/life": [
+    {
+      "title": "Join the Dwarves",
+      "path": "/careers"
+    }
+  ],
+  "handbook/guides/configure-company-email": [
+    {
+      "title": "FAQs",
+      "path": "/handbook/faq"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/making-a-career": [
+    {
+      "title": "FAQs",
+      "path": "/handbook/faq"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/community/memo": [
+    {
+      "title": "Dwarves as a community",
+      "path": "/handbook/as-a-community"
+    },
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/getting-started": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/faq": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/what-we-stand-for": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "Hybrid Working",
+      "path": "/handbook/hybrid-working"
+    }
+  ],
+  "handbook/what-we-value": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "Notes on our culture",
+      "path": "/culture"
+    }
+  ],
+  "handbook/compliance": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/where-we-work": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/hybrid-working": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/places-to-work": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "Where we work",
+      "path": "/handbook/where-we-work"
+    }
+  ],
+  "handbook/how-we-hire": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/how-we-spend-money": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/security-rules": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "Where we work",
+      "path": "/handbook/where-we-work"
+    }
+  ],
+  "handbook/as-a-community": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/community/icy-worth": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "🧊 ICY Token",
+      "path": "/handbook/community/icy"
+    }
+  ],
+  "handbook/community/icy-swap": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "🧊 ICY Token",
+      "path": "/handbook/community/icy"
+    }
+  ],
+  "handbook/community/showcase": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    },
+    {
+      "title": "Tech Radar",
+      "path": "/handbook/community"
+    },
+    {
+      "title": "Sharing knowledge",
+      "path": "/handbook/community/sharing"
+    }
+  ],
+  "handbook/benefits-and-perks": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/check-in-at-office": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/conduct-a-meeting": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/effective-meeting": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/one-on-one-meeting": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/email-communication-and-use": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/password-sharing": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/leave-request": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/asset-request": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/reimbursement": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/guides/continuing-education-allowance": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "handbook/misc/marketing-assets": [
+    {
+      "title": "Dwarves Handbook",
+      "path": "/handbook"
+    }
+  ],
+  "culture/the-inner-circle": [
+    {
+      "title": "Are you helping?",
+      "path": "/culture/are-you-helping"
+    }
+  ],
+  "playground/notes/misc/how-to-recap-a-publication": [
+    {
+      "title": "Life cycle of a publication",
+      "path": "/playground/notes/misc/lifecycle-of-a-publication"
+    }
+  ],
+  "playground/topics/llm/the-rise-of-ai-applications-with-llm": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/use-cases-for-llm-applications": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    },
+    {
+      "title": "The rise of AI applications with LLM",
+      "path": "/playground/topics/llm/the-rise-of-ai-applications-with-llm"
+    }
+  ],
+  "playground/topics/llm/model-selection": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/multimodal-in-rag": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/guardrails-in-llm": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/intent-classification-by-llm": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/prevent-prompt-injection": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/multi-agent-collaboration-for-task-completion": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/react-in-llm": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/evaluation-guideline-for-llm-application": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/observability-in-ai-platforms": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/metric-pillar": [
+    {
+      "title": "Observability in AI platforms",
+      "path": "/playground/topics/llm/observability-in-ai-platforms"
+    }
+  ],
+  "playground/topics/llm/logs-pillar": [
+    {
+      "title": "Observability in AI platforms",
+      "path": "/playground/topics/llm/observability-in-ai-platforms"
+    }
+  ],
+  "playground/topics/golang/weekly/nov-01": [
+    {
+      "title": "Go Commentary #19: Writing secure Go code",
+      "path": "/playground/topics/golang/weekly/nov-08"
+    }
+  ],
+  "playground/topics/devbox/research/pinning-nixpkgs": [
+    {
+      "title": "Nix - Build the same thing at any time",
+      "path": "/playground/topics/devbox/research/nix-build-the-same-thing-at-any-time"
+    }
+  ],
+  "playground/topics/devbox/research/fixed-output-derivation": [
+    {
+      "title": "Nix - Build the same thing at any time",
+      "path": "/playground/topics/devbox/research/nix-build-the-same-thing-at-any-time"
+    }
+  ],
+  "playground/topics/devbox/research/nix-is-faster-than-docker-build": [
+    {
+      "title": "Nix - Minimum changes, Minimum redundancies",
+      "path": "/playground/topics/devbox/research/nix-minimum-changes-minimum-redundancies"
+    }
+  ]
+}

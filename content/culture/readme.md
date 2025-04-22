@@ -20,24 +20,24 @@ This collection of articles represents our ongoing exploration of what makes Dwa
 
 - [The culture test](/culture/culture-test)
 - [Life at Dwarves: Record and reward (culture sharing)](/careers/life/group/2024-09-26-life-at-df-record-and-reward-culture-sharing)
-- [Record and reward sharing at Dwarves](/playground/notes/record-reward-sharing-culture)
+- [Record and reward sharing at Dwarves](/playground/notes/misc/record-reward-sharing-culture)
 - [Notes on our culture](/culture)
 - [Manifesto](/careers/manifesto)
 - [Culture](/careers/culture)
 - [OGIF - Oh God It's Friday](/updates/ogif)
-- [Growth Is Our Universal Language](/playground/notes/growth-is-our-universal-language)
 - [OGIF - Oh God It's Friday](/culture/ogif-intro)
 - [Red flags](/culture/red-flags)
+- [Growth Is Our Universal Language](/culture/growth-is-our-universal-language)
 - [Focus on delivery](/culture/focus-on-delivery)
 - [Are you helping?](/culture/are-you-helping)
 - [The inner circle](/culture/the-inner-circle)
 - [Sharing knowledge](/handbook/community/sharing)
 - [Making decision as a team member](/culture/making-decision)
 - [Beyond the title](/culture/beyond-the-title)
+- [Asking As A Junior](/culture/asking-as-a-junior)
 - [Go the extra mile](/culture/go-the-extra-mile)
 - [The Dwarves runs by ideas](/culture/runs-by-ideas)
 - [A tips of hiring - Do & Don't](/culture/a-tips-of-hiring-dont)
-- [The Dwarves culture handbook](/culture/culture-handbook)
 
 ## What you'll find here
 
