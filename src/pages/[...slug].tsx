@@ -208,7 +208,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         filePath = indexFilePath;
       } else if (fs.existsSync(directoryPath)) {
         // Pass includeContent: false as list page only needs title/path
-        const allMemos = await getAllMarkdownContents(slug.join('/'), {
+        // Use canonicalSlug for file system operations
+        const allMemos = await getAllMarkdownContents(canonicalSlug.join('/'), {
           includeContent: false,
         });
         return {
