@@ -84,7 +84,7 @@ function RootLayout({
         <meta property="og:type" content="article" />
 
         <meta property="og:site_name" content="Dwarves Memo"></meta>
-        <link rel="icon" type="image/x-icon" href="{{ $favicon.Permalink }}" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link
           rel="icon"
           type="image/png"

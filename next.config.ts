@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  removeConsole: true,
   reactStrictMode: true,
   experimental: {
     largePageDataBytes: 1024 * 1024,
