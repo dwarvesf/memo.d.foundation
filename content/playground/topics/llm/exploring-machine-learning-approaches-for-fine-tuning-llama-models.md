@@ -1,16 +1,16 @@
 ---
-tags: 
-  - machine learning
-  - LLM
-  - engineering
 title: Exploring Machine Learning Approaches For Fine Tuning Llama Models
 date: 2023-05-04
-description: null
+description: Learn how to fine-tune LLaMA large language models efficiently using PEFT LoRA for cost-effective, private AI customization with step-by-step guidance and open-source tools.
+tags:
+  - machine-learning
+  - llm
+  - engineering
 ---
 
 ![](assets/exploring-machine-learning-approaches-for-fine-tuning-llama-models_b6f4054793fd3b5ef748c5dcf072cc09_md5.webp)
 
-*At Dwarves, we've been increasingly exposed to more state-of-the-art news coming from AI than ever before, of course, related to Large Language Models (LLM). We've had a taste of what AI has to offer with Stable Diffusion and more commercial apps, and have been eager to learn and hone our skillsets in applying these new AI breakthroughs in our everyday lives and our apps.*
+_At Dwarves, we've been increasingly exposed to more state-of-the-art news coming from AI than ever before, of course, related to Large Language Models (LLM). We've had a taste of what AI has to offer with Stable Diffusion and more commercial apps, and have been eager to learn and hone our skillsets in applying these new AI breakthroughs in our everyday lives and our apps._
 
 ## Introduction
 
@@ -28,10 +28,10 @@ For research on LLMs, we've investigated vector databases and how to apply a bas
 
 Likewise, we've created a few Jupyter notebooks working on [Langchain](https://python.langchain.com/en/latest/index.html) and what strategies and utilities we use from it to generate more directed results. You can view some of what we've worked on and noted here:
 
-* [Workaround with OpenAI's token limit with Langchain - The Dwarves Brainery](https://brain.d.foundation/Engineering/AI/Workaround+with+OpenAI%27s+token+limit+with+Langchain)
-* [Working with langchain document loaders - The Dwarves Brainery](https://brain.d.foundation/Engineering/AI/Working+with+langchain+document+loaders)
-* [https://colab.research.google.com/drive/1FMbBYPLz01lLma4jK36-fABjQC2vhyRJ?usp=sharing](https://colab.research.google.com/drive/1FMbBYPLz01lLma4jK36-fABjQC2vhyRJ?usp=sharing)
-* [https://github.com/dudaka/automating-pdf-interaction-with-langchain-and-chatgpt](https://github.com/dudaka/automating-pdf-interaction-with-langchain-and-chatgpt)
+- [Workaround with OpenAI's token limit with Langchain - The Dwarves Brainery](https://brain.d.foundation/Engineering/AI/Workaround+with+OpenAI%27s+token+limit+with+Langchain)
+- [Working with langchain document loaders - The Dwarves Brainery](https://brain.d.foundation/Engineering/AI/Working+with+langchain+document+loaders)
+- [https://colab.research.google.com/drive/1FMbBYPLz01lLma4jK36-fABjQC2vhyRJ?usp=sharing](https://colab.research.google.com/drive/1FMbBYPLz01lLma4jK36-fABjQC2vhyRJ?usp=sharing)
+- [https://github.com/dudaka/automating-pdf-interaction-with-langchain-and-chatgpt](https://github.com/dudaka/automating-pdf-interaction-with-langchain-and-chatgpt)
 
 ## Problem
 
@@ -55,10 +55,10 @@ The trained weights from PEFT LoRA are significantly much smaller (within a few 
 
 For the moment, we just want to get our first foot out the door, since not many of us have experience in creating machine learning pipelines. The proof of concept here will be to:
 
-* Train with base model to output PEFT LoRA adapters
-* Use the PEFT LoRA adapters with the base model at runtime and ask it questions
-* Save the adapter files for later use
-* Merge the PEFT LoRA adapters to the frozen model and save those files for later use
+- Train with base model to output PEFT LoRA adapters
+- Use the PEFT LoRA adapters with the base model at runtime and ask it questions
+- Save the adapter files for later use
+- Merge the PEFT LoRA adapters to the frozen model and save those files for later use
 
 As such, the dataset we will use here will be sparse and probably won't do much to change the pattern behavior of the model. Things like feature engineering or labeling data appropriate for instruction or prompt tuning we can hold off for later.
 
@@ -68,9 +68,9 @@ We will do some basic instruct-tuning using [wxjiao/alpaca-7b](https://huggingfa
 
 ```json
 {
-    "instruction": "What is Dwarves Foundation's community all hands?",
-    "input": "",
-    "output": "An event hosted every end of the month on Friday, at a Discord stage where we talk about our company progress along with notable news and wins across the month. After every community all hands, we host a company dinner where everyone working at Dwarves are invited."
+  "instruction": "What is Dwarves Foundation's community all hands?",
+  "input": "",
+  "output": "An event hosted every end of the month on Friday, at a Discord stage where we talk about our company progress along with notable news and wins across the month. After every community all hands, we host a company dinner where everyone working at Dwarves are invited."
 }
 ```
 
@@ -236,13 +236,13 @@ model.push_to_hub("monotykamary/alpaca-7b-lora-merged-dwarves-poc", use_auth_tok
 
 All of our examples, findings, and work are available on our Google Colab. You can view it there to get a full picture of our training pipeline.
 
-* [https://colab.research.google.com/drive/1c1t_QG62r9gxQ5ygKGvMbEZYep94ViAD?usp=sharing](https://colab.research.google.com/drive/1c1t_QG62r9gxQ5ygKGvMbEZYep94ViAD?usp=sharing)
+- [https://colab.research.google.com/drive/1c1t_QG62r9gxQ5ygKGvMbEZYep94ViAD?usp=sharing](https://colab.research.google.com/drive/1c1t_QG62r9gxQ5ygKGvMbEZYep94ViAD?usp=sharing)
 
 You can also view our dataset and our output models on HuggingFace:
 
-* [monotykamary/dwarves-dataset · Datasets at Hugging Face](https://huggingface.co/datasets/monotykamary/dwarves-dataset)
-* [monotykamary/alpaca-7b-lora-dwarves-poc · Hugging Face](https://huggingface.co/monotykamary/alpaca-7b-lora-dwarves-poc)
-* [monotykamary/alpaca-7b-lora-merged-dwarves-poc · Hugging Face](https://huggingface.co/monotykamary/alpaca-7b-lora-merged-dwarves-poc)
+- [monotykamary/dwarves-dataset · Datasets at Hugging Face](https://huggingface.co/datasets/monotykamary/dwarves-dataset)
+- [monotykamary/alpaca-7b-lora-dwarves-poc · Hugging Face](https://huggingface.co/monotykamary/alpaca-7b-lora-dwarves-poc)
+- [monotykamary/alpaca-7b-lora-merged-dwarves-poc · Hugging Face](https://huggingface.co/monotykamary/alpaca-7b-lora-merged-dwarves-poc)
 
 ## Further work
 
@@ -256,6 +256,6 @@ In conclusion, after looking through a ton of resources, we were able to walk ou
 
 ## References
 
-* [https://renaissancerachel.com/prompting/](https://renaissancerachel.com/prompting/)
-* [https://xiaosean5408.medium.com/fine-tuning-llms-made-easy-with-lora-and-generative-ai-stable-diffusion-lora-39ff27480fda](https://xiaosean5408.medium.com/fine-tuning-llms-made-easy-with-lora-and-generative-ai-stable-diffusion-lora-39ff27480fda)
-* [https://arxiv.org/abs/2206.15312](https://arxiv.org/abs/2206.15312)
+- [https://renaissancerachel.com/prompting/](https://renaissancerachel.com/prompting/)
+- [https://xiaosean5408.medium.com/fine-tuning-llms-made-easy-with-lora-and-generative-ai-stable-diffusion-lora-39ff27480fda](https://xiaosean5408.medium.com/fine-tuning-llms-made-easy-with-lora-and-generative-ai-stable-diffusion-lora-39ff27480fda)
+- [https://arxiv.org/abs/2206.15312](https://arxiv.org/abs/2206.15312)

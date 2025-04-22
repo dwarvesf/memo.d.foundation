@@ -1,9 +1,9 @@
 ---
-tags: 
-  - swift
 title: Draw Watch Face Using Swiftui
 date: 2020-03-23
-description: null
+description: Learn how to create a custom watch face with circular bezel, ticks, numbers, and moving hands using SwiftUI Shapes, Paths, and real-time updates in this step-by-step guide.
+tags:
+  - swift
 ---
 
 SwiftUI are nice and fun to working with. You can read my previous article to get a bit knowledge about create circular control, it will make you easy to working with this article. This article also use Shape and Path, if you have worked with CoreGraphic before you will find it similar With CALayer, CAShapeLayer and UIBezierPath.
@@ -12,10 +12,10 @@ SwiftUI are nice and fun to working with. You can read my previous article to ge
 
 First of all, let split watch to small components for easy coding. A watch has these following parts:
 
-* *Circular Bezel*
-* *Ticks-Markers*
-* *Hour, Minus, Second hands.*
-* *Number markers. from 1 to 12*
+- _Circular Bezel_
+- _Ticks-Markers_
+- _Hour, Minus, Second hands._
+- _Number markers. from 1 to 12_
 
 As usual, open Xcode and create new project, don’t forget to choose SwiftUI, add new SwiftUI file and named it Watch.
 

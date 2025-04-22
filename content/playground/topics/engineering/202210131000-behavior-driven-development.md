@@ -1,15 +1,15 @@
 ---
-discord_channel: engineering
-authors:
- - 0xlight
-date: 2022-10-13
-tags:
- - agile
- - behavior-driven-development
- - testing
- - ubiquitous-language
-description: Behavior Driven Development (BDD) is a software development process that encourages collaboration among developers, QA, and non-technical stakeholders.
 title: Behavior Driven Development
+date: 2022-10-13
+description: Behavior Driven Development (BDD) is a software development process that encourages collaboration among developers, QA, and non-technical stakeholders.
+authors:
+  - 0xlight
+discord_channel: engineering
+tags:
+  - agile
+  - behavior-driven-development
+  - testing
+  - ubiquitous-language
 ---
 
 ### Behavior Driven Development (BDD) Three Practices
@@ -17,11 +17,11 @@ title: Behavior Driven Development
 - First, take a small upcoming change to the system – a User Story – and talk about concrete examples of the new functionality to explore, discover and agree on the details of what’s expected to be done.
 - Next, document those examples in a way that can be automated, and check for agreement.
 - Finally, implement the behaviour described by each documented example, starting with an automated test to guide the development of the code.
-The aim is to:
+  The aim is to:
 - make small changes rapidly
 - back up 1 level when need more info
 - automate and implement a new example to get feedback
-BDD Example:
+  BDD Example:
 
 ```
 - Feature: User Login
@@ -42,6 +42,6 @@ Then I should be able to login successfully
 >
 > - Mistakes are that people only implement BDD/TDD practices at **Testing phase** when they implemented automation test. However it should be as early as possible. Using "BDD" to only cover automation test is not **BDD**.
 > - BDD helps products and developers realize different scenarios of a same feature, then cover as much as they could at requirement and implementation phase.
-> - BDD borrows *ubiquitous language* concept from domain driven design so that everyone in the team can understand the term the same way.
+> - BDD borrows _ubiquitous language_ concept from domain driven design so that everyone in the team can understand the term the same way.
 
 Source: <https://cucumber.io/docs/bdd/>

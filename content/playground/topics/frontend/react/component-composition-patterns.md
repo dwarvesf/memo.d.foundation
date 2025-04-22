@@ -1,12 +1,12 @@
 ---
+title: Component composition patterns in React
+date: 2024-10-29
+description: Learn React composition patterns with coverage of HOCs, render props, compound components, and custom hook
 authors:
-  - 'thanh'
-date: '2024-10-29'
-description: 'Learn React composition patterns with coverage of HOCs, render props, compound components, and custom hook'
+  - thanh
+short_title: Component composition patterns
 tags:
-  - 'react'
-title: 'Component composition patterns in React'
-short_title: 'Component composition patterns'
+  - react
 ---
 
 Component composition patterns are foundational for creating scalable, flexible, and reusable React components. They allow us to build UIs by combining smaller, single-purpose components in various ways.
@@ -23,10 +23,10 @@ HOCs are functions that take a component and return a new component, adding addi
 function withLogging(WrappedComponent) {
   return function EnhancedComponent(props) {
     useEffect(() => {
-      console.log(`Component ${WrappedComponent.name} mounted`)
-    }, [])
-    return <WrappedComponent {...props} />
-  }
+      console.log(`Component ${WrappedComponent.name} mounted`);
+    }, []);
+    return <WrappedComponent {...props} />;
+  };
 }
 ```
 
@@ -49,15 +49,15 @@ With render props, a component uses a prop as a function to control its output, 
 
 ```js
 function DataFetcher({ render }) {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState(null);
   useEffect(() => {
-    fetchData().then(setData)
-  }, [])
-  return render(data)
+    fetchData().then(setData);
+  }, []);
+  return render(data);
 }
 
 // Usage:
-;<DataFetcher render={(data) => <DisplayData data={data} />} />
+<DataFetcher render={(data) => <DisplayData data={data} />} />;
 ```
 
 **When to use render props**:
@@ -78,23 +78,23 @@ Compound components are components that work together as a single unit but allow
 
 ```js
 function Dropdown({ children }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <DropdownContext.Provider value={{ isOpen, setIsOpen }}>
       <div className="dropdown">{children}</div>
     </DropdownContext.Provider>
-  )
+  );
 }
 
 Dropdown.Toggle = function Toggle() {
-  const { setIsOpen } = useContext(DropdownContext)
-  return <button onClick={() => setIsOpen((open) => !open)}>Toggle</button>
-}
+  const { setIsOpen } = useContext(DropdownContext);
+  return <button onClick={() => setIsOpen((open) => !open)}>Toggle</button>;
+};
 
 Dropdown.Menu = function Menu({ children }) {
-  const { isOpen } = useContext(DropdownContext)
-  return isOpen ? <div className="menu">{children}</div> : null
-}
+  const { isOpen } = useContext(DropdownContext);
+  return isOpen ? <div className="menu">{children}</div> : null;
+};
 ```
 
 **When to use compound components**:
@@ -158,13 +158,13 @@ Custom hooks provide a way to abstract and encapsulate complex logic, making com
 
 ```js
 function useFetch(url) {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState(null);
   useEffect(() => {
     fetch(url)
       .then((response) => response.json())
-      .then(setData)
-  }, [url])
-  return data
+      .then(setData);
+  }, [url]);
+  return data;
 }
 ```
 

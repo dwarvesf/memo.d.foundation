@@ -1,7 +1,7 @@
 ---
-title: 'Package first design'
-description: In Go, packages serve as the basic building blocks for creating modular, reusable, and maintainable software.
+title: Package first design
 date: 2024-10-25
+description: In Go, packages serve as the basic building blocks for creating modular, reusable, and maintainable software.
 authors:
   - tieubao
 tags:
@@ -40,12 +40,13 @@ func subtract(a, b int) int {
 Packages should follow the principle of separation of concerns. Each package should serve a single purpose or set of related tasks. This makes the codebase more understandable and easier to maintain.
 
 For instance, if you're building a web server, you might separate concerns into different packages like:
+
 - `http`: Handles HTTP requests and responses.
 - `router`: Manages routing of different endpoints.
 - `db`: Manages database interactions.
 
 3. **Directory structure**
-Go’s tooling is designed to work seamlessly with a package-oriented directory structure. Each directory contains its own package, which can be imported by other parts of your project.
+   Go’s tooling is designed to work seamlessly with a package-oriented directory structure. Each directory contains its own package, which can be imported by other parts of your project.
 
 Here's an example directory structure:
 
@@ -109,6 +110,7 @@ myproject/
        ├── stringutil/
        └── timeutil/
 ```
+
 2. **Design each package to be self-contained and purpose-driven**
 
 - Each package should have a **single responsibility**, encapsulating everything it needs for its function. This approach makes it easier to reuse entire packages across projects.
@@ -166,7 +168,7 @@ This documentation makes it easier for others to understand and adopt your packa
 
 Periodic refactoring keeps packages easy to understand, maintain, and reuse, avoiding monolithic packages that are hard to untangle or apply to new contexts.
 
-----
+---
 
 - **Code organization**: Dividing functionality into small, focused packages keeps the code clean and organized.
 - **Reusability**: Once written, a package can be reused in many projects or different parts of a large project.

@@ -1,14 +1,14 @@
 ---
-title: "Building a Local Search Engine for Our Memo Website"
-description: "Explore how we developed a fully local search engine for our memo website using DuckDB-wasm, Transformers.js, and Alpine.js. Learn about hybrid search techniques, real-time embeddings, and performance optimizations that deliver fast and accurate results without compromising on privacy or requiring server-side processing."
+title: Building a Local Search Engine for Our Memo Website
+date: 2024-07-17
+description: Explore how we developed a fully local search engine for our memo website using DuckDB-wasm, Transformers.js, and Alpine.js. Learn about hybrid search techniques, real-time embeddings, and performance optimizations that deliver fast and accurate results without compromising on privacy or requiring server-side processing.
+authors:
+  - monotykamary
 tags:
   - search-engine
   - duckdb
-  - transformers.js
+  - transformersjs
   - hybrid-search
-date: 2024-07-17
-authors:
-  - monotykamary
 ---
 
 ![command-palette](assets/creating-a-fully-local-search-engine-on-memo-search.webp)
@@ -27,6 +27,7 @@ Interestingly, our implementation came just before DuckDB introduced their [arra
 Our search engine combines the power of full-text search, semantic search, and a sleek user interface (thanks @vincent) to deliver fast and accurate results, all while running entirely on the client-side. In this post, we'll walk you through the key components and technologies that make this possible, showcasing how we've achieved a server-free, privacy-focused search solution.
 
 ## The Tech Stack
+
 Our local search engine leverages several cutting-edge technologies:
 
 1. DuckDB-wasm: A fully in-browser SQL database
@@ -36,7 +37,9 @@ Our local search engine leverages several cutting-edge technologies:
 5. Snarkdown: For Markdown parsing
 
 ## Key Features
+
 ### 1. Hybrid Search
+
 We've implemented a hybrid search approach that combines full-text search with semantic search. This allows us to capture both keyword matches and conceptual similarities.
 
 ```sql
@@ -52,6 +55,7 @@ WITH search_results AS (
 ```
 
 ### 2. Advanced Filtering
+
 Users can apply filters using special syntax, a feature created by our engineer, @vincent:
 
 - `author:name` or `@name` to filter by author
@@ -59,9 +63,11 @@ Users can apply filters using special syntax, a feature created by our engineer,
 - `title:keyword` to filter by title
 
 For example, a user could search for:
+
 ```
 machine learning tag:AI author:Jane
 ```
+
 ```
 #ai @monotykamary
 ```
@@ -69,34 +75,42 @@ machine learning tag:AI author:Jane
 This query would search for "machine learning" within documents tagged with "AI" and authored by Jane.
 
 ### 3. Real-time Embeddings
+
 We use Transformers.js to generate embeddings for search queries in real-time, right in the user's browser:
 
 ```javascript
 const getEmbeddings = async (query) => {
-  const res = window.pipe ? await window.pipe(query, { pooling: 'mean', normalize: true }) : [];
+  const res = window.pipe
+    ? await window.pipe(query, { pooling: "mean", normalize: true })
+    : [];
   return res;
-}
+};
 ```
 
 ### 4. Efficient Caching
+
 To ensure fast load times, we implement a caching mechanism for our database files:
 
 ```javascript
-caches.open('vault-cache').then(async (cache) => {
+caches.open("vault-cache").then(async (cache) => {
   // ... cache checking and updating logic ...
 });
 ```
 
 ### 5. Responsive UI
+
 Using Alpine.js, we've created a responsive command palette interface that provides instant feedback as users type:
 
 ```html
-<div x-data="{ searching: false, searchPlaceholder: 'Initializing Search...', ... }">
+<div
+  x-data="{ searching: false, searchPlaceholder: 'Initializing Search...', ... }"
+>
   <!-- ... UI components ... -->
 </div>
 ```
 
 ## Performance Optimizations
+
 1. **Indexing**: We use both full-text search (FTS) and HNSW (Hierarchical Navigable Small World) indexing for fast retrieval.
 
 2. **Debounced Search**: We debounce search inputs to reduce unnecessary database queries.
@@ -104,6 +118,7 @@ Using Alpine.js, we've created a responsive command palette interface that provi
 3. **Lazy Loading**: The heavy lifting (like embedding generation) is done only when needed and not on mobile devices.
 
 ## Challenges and Solutions
+
 One of the main challenges was balancing search accuracy with speed. We solved this by:
 
 1. Using a hybrid approach that combines full-text and semantic search.
@@ -142,6 +157,7 @@ To improve SEO and initial page load times, we're considering a server-side impl
 By focusing on these improvements, we aim to create an even more powerful and user-friendly search experience. We're excited about the potential these enhancements hold and look forward to implementing them in future updates.
 
 ## Conclusion
+
 By leveraging modern web technologies and clever optimizations, we've created a powerful, fully local search engine for our memo website. This approach provides our users with fast, accurate search results without compromising on privacy or requiring server-side processing.
 
 We're excited about the possibilities this opens up for future improvements and would love to hear your thoughts or questions in the comments below!

@@ -1,16 +1,17 @@
 ---
-tags: 
-- golang
-- engineering
-- profiling
-authors: 
-  - thangnt294
-title: 'Profiling in Go'
+title: Profiling in Go
 date: 2023-03-28
-description: Profiling in Go is a powerful tool that can help you identify and fix the subtle issues in your code quickly and efficiently. In this article, we'll explore the world of profiling in Go and show you how you can use it to catch all the issues in your code.
+description: "Profiling in Go is a powerful tool that can help you identify and fix the subtle issues in your code quickly and efficiently. In this article, we'll explore the world of profiling in Go and show you how you can use it to catch all the issues in your code."
+authors:
+  - thangnt294
+tags:
+  - golang
+  - engineering
+  - profiling
 ---
 
 ## Profiling in Go: Gotta catch 'em all
+
 ### Introduction
 
 Those of you who have watched the Pokemon series will undoubtedly recognize the famous catchphrase - "Gotta catch 'em all" - that refers to the main character's goal of catching all the Pokemon in the world. In the same way, profiling is a useful way to catch all the problems in your code and ensure that it's running smoothly. It's a powerful tool that can help you identify and fix the subtle issues in your code quickly and efficiently.

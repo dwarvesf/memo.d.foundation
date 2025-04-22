@@ -1,13 +1,13 @@
 ---
+title: Using Correct Html Element To Increase Website Accessibility
+date: 2019-08-23
+description: Using the correct HTML element can significantly improve the accessibility of your website.
+authors:
+  - thanh
 tags:
   - html
   - frontend
   - accessibility
-authors:
-  - thanh
-description: Using the correct HTML element can significantly improve the accessibility of your website.
-title: Using Correct Html Element To Increase Website Accessibility
-date: 2019-08-23
 ---
 
 ## Website Accessibility

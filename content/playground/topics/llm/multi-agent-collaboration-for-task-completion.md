@@ -1,19 +1,23 @@
 ---
+title: Multi-agent collaboration for task completion
+date: 2024-09-06
+description: In AI integrated systems, instead of put all workload on a single agent, we can apply divide and conquer strategy to distribute workload to multiple agents. This approach can enhance task completion by leveraging the unique skills and capabilities of each agent.This approach allows for more complex and nuanced problem-solving, as well as increased efficiency and scalability. By coordinating and communicating effectively, agents can work together to achieve common goals, divide labor, and overcome challenges that a single agent might face alone
 authors:
-  - 'hoangnnh'
-date: '2024-09-06'
-description: 'In AI integrated systems, instead of put all workload on a single agent, we can apply divide and conquer strategy to distribute workload to multiple agents. This approach can enhance task completion by leveraging the unique skills and capabilities of each agent.This approach allows for more complex and nuanced problem-solving, as well as increased efficiency and scalability. By coordinating and communicating effectively, agents can work together to achieve common goals, divide labor, and overcome challenges that a single agent might face alone'
+  - hoangnnh
 hashnode_meta:
-  coverImageOptions:
-    coverImageURL: 'https://memo.d.foundation/playground/ai/building-llm-system/assets/multi-agent-design.webp'
-  id: '670f4d4447e618546b110b23'
-  slug: 'multi-agent-collaboration-for-task-completion'
-sync: 'hashnode'
+  {
+    "coverImageOptions":
+      {
+        "coverImageURL": "https://memo.d.foundation/playground/ai/building-llm-system/assets/multi-agent-design.webp",
+      },
+    "id": "670f4d4447e618546b110b23",
+    "slug": "multi-agent-collaboration-for-task-completion",
+  }
+sync: hashnode
 tags:
-  - 'llm'
-  - 'ai-agents'
-  - 'ai-integration'
-title: 'Multi-agent collaboration for task completion'
+  - llm
+  - ai-agents
+  - ai-integration
 ---
 
 In AI integrated systems, instead of putting all the workload on a single agent, we can apply a divide and conquer strategy to distribute workload to multiple agents. This approach can enhance task completion by leveraging the unique skills and capabilities of each agent. This approach allows for more complex and nuanced problem-solving, as well as increased efficiency and scalability. By coordinating and communicating effectively, agents can work together to achieve common goals, divide labor, and overcome challenges that a single agent might face alone.
@@ -47,7 +51,7 @@ const systemPrompt = `You are a supervisor tasked with managing a conversation b
     ##Worker list:
     - Event: Only Responsible for handling the Event module including creating, updating, and managing events within projects
     - Project: Only Responsible for handling the Project module including listing projects/workspaces/hubs, creating, updating, and managing projects
-    Given the following user request, analyze it carefully to determine which worker is most appropriate to handle the specific action requested, respond with the worker to act next. Each worker will perform task and respond with their results and status. When finished, respond with FINISH.`
+    Given the following user request, analyze it carefully to determine which worker is most appropriate to handle the specific action requested, respond with the worker to act next. Each worker will perform task and respond with their results and status. When finished, respond with FINISH.`;
 ```
 
 - Event agent: Responsible for handling the event module including creating, and managing events within projects. We will defined its system prompt similar like this:
@@ -55,7 +59,7 @@ const systemPrompt = `You are a supervisor tasked with managing a conversation b
 ```ts
 const systemPrompt = `You are an intelligent assistant responsible for handling the Event module. Given a Event struct format, you will collect event information and map it to the Event struct fields when processing requests. Your responses should be concise and focused on the event details.
   {event_struct_format}
-`
+`;
 ```
 
 - Project agent: Responsible for handling the project module including listing projects/workspaces/hubs, creating, updating, and managing projects. We will defined its system prompt similar like this:
@@ -63,7 +67,7 @@ const systemPrompt = `You are an intelligent assistant responsible for handling 
 ```ts
 const systemPrompt = `You are an intelligent assistant responsible for handling the Project module. Given a project struct format, you will collect project information from user input and map it to the Project struct fields when processing requests. Your responses should be concise and focused on the project details.
   {project_struct_format}
-`
+`;
 ```
 
 - Tools: Each agent will have a set of tools that they can use to perform their tasks. For example, the event agent will have tools for creating events, updating events, and managing events. The project agent will have tools for listing projects, creating projects, invite member to project.

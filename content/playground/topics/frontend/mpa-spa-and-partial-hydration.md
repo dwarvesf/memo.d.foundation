@@ -1,13 +1,13 @@
 ---
-tags: 
- - frontend
- - engineering/frontend
-authors: 
- - huygn
-github_id: huygn
-description: MPA, SPA and Partial Hydration are three different approaches to building web applications.
 title: MPA, SPA and Partial Hydration
 date: 2022-03-24
+description: MPA, SPA and Partial Hydration are three different approaches to building web applications.
+authors:
+  - huygn
+github_id: huygn
+tags:
+  - frontend
+  - engineeringfrontend
 ---
 
 If you've been on Twitter lately, you might've seen the term "Partial Hydration" as well as MPA going along and hyped by web advocates, wondering what about them?

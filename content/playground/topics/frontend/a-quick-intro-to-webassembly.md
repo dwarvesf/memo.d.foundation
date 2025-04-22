@@ -1,9 +1,9 @@
 ---
-tags: 
-  - wasm
 title: A Quick Intro To Webassembly
 date: 2020-06-15
-description: null 
+description: Discover how WebAssembly, a fast, portable binary format designed for running C, C++, and Rust on the web, outperforms JavaScript by enabling near-native execution speeds in browsers and servers.
+tags:
+  - wasm
 ---
 
 If you haven’t heard of WebAssembly yet, then you will soon. It’s one of the industry’s best-kept secrets, but it’s everywhere. It’s supported by all the major browsers, and it’s coming to the server-side, too. It’s fast. It’s being used for gaming. It’s an open standard from the World Wide Web Consortium (W3C), the main international standards organization for the web.
@@ -70,7 +70,7 @@ This is *just like how Java works but the bytecode generation is done by the pr
 
 A baseline compiler’s job is to compile code as fast as possible and generate less-optimized bytecode (or machine code in other cases). **Since the interpreter has an unoptimized bytecode to work with, the application speed will be slow, however, the application bootstrap time will be very less.**
 
-> *SpiderMoney JavaScript has evolved into a piece of complex machinery to produce highly optimized machine code and currently used in the Firefox browser. You can follow this documentation for the source code.*
+> _SpiderMoney JavaScript has evolved into a piece of complex machinery to produce highly optimized machine code and currently used in the Firefox browser. You can follow this documentation for the source code._
 
 When it comes to a **highly dynamic and interactive web application,** the user experience is very poor with this model of JavaScript execution. This problem was faced by **Google’s Chrome browser while displaying Google Maps on the web**. To increase the JavaScript performance on the web, they had to come up with a better approach. Google Chrome from the early days uses the **V8 JavaScript engine.** In the beginning, to improve the JavaScript performance, they added two pieces in their JavaScript engine pipeline as shown below.
 
@@ -82,7 +82,7 @@ The above version of the JavaScript engine does not contain an interpreter. **T
 
 There are various criteria for optimizing JavaScript code. Before JavaScript code is passed to the interpreter or baseline compiler, it has to first get parsed into an Abstract Syntax Tree (AST) which is a tree-like structure of the code.
 
-*When we run a JavaScript application, we do not need all the code at the application startup time*. For example, if we have a function that is called on the user action, like a button click, that code can be parsed later.
+_When we run a JavaScript application, we do not need all the code at the application startup time_. For example, if we have a function that is called on the user action, like a button click, that code can be parsed later.
 
 Identifying things that need to be parsed immediately and generating machine code is the best strategy for faster application bootstrap. Sometimes, JavaScript code contains unnecessary complex logic that can be simplified. For example, a `for` to increment an integer can be inlined using `+` operations n number of times. This process is called Loop unrolling. Similar optimizations can be made using function inlining.
 
@@ -101,7 +101,9 @@ So far we have understood that a lot of throughs, efforts and money have been pu
 When everybody was working hard to develop faster JavaScript engines, a team at Mozilla went off the books. Back in 2013, they created a subset of JavaScripti which has the feature of statically typed language and manual memory management. They called it the asm.js.
 
 ```javascript
-function add (a, b) {return a + b}
+function add(a, b) {
+  return a + b;
+}
 ```
 
 The add function takes two values and returns the concatenated value (sum). When we want to generate a highly optimized machine code, we need the data type of the variable arguments a and b. However, we don’t have that in JavaScript.
@@ -112,9 +114,9 @@ This is where asm.js specifications come into the picture
 
 ```javascript
 function add(a, b) {
-a = a|0;
-b = b|0;
-return (a + b) |0;
+  a = a | 0;
+  b = b | 0;
+  return (a + b) | 0;
 }
 ```
 
@@ -133,37 +135,37 @@ Apart from a virtual type system, asm.js specification tells us to write our Jav
 But first, let's understand the asm.js module structure
 
 ```javascript
-function MyAsmModule (stdlib, foreign, heap) {
- "use asm";
+function MyAsmModule(stdlib, foreign, heap) {
+  "use asm";
 
- // module body...
- return {
-  export1: f1,
-  export2: f2,
-  // ...
- };
+  // module body...
+  return {
+    export1: f1,
+    export2: f2,
+    // ...
+  };
 }
 ```
 
 From the example above, `MyAsmModule` function is the `asm.js` module that we will *instantiate later*. Let’s understand the arguments to this function and return value.
 
-* The `stdlib` argument is an object that contains standard JavaScript libraries accepted in asm.js specifications (listed here).
-* The `foreign` object contains references to the external JavaScript functions that our module depends on, also called the foreign function interface (FFI).
-* The `heap` argument is the raw ArrayBuffer which will be used as a heap for memory storage optionally required by the module.
+- The `stdlib` argument is an object that contains standard JavaScript libraries accepted in asm.js specifications (listed here).
+- The `foreign` object contains references to the external JavaScript functions that our module depends on, also called the foreign function interface (FFI).
+- The `heap` argument is the raw ArrayBuffer which will be used as a heap for memory storage optionally required by the module.
 
 In the end, our asm.js module has to export some functions which will be consumed by a JavaScript program. Let’s use the add function as one of the exports of our asm.js module and instantiate with a *1kb heap memory.*
 
 ```javascript
 function Calc(stdlib, foreign, heap) {
- "use asm";
- function add(a, b) {
-  a = a|0;
-  b = b|0;
-  return (a + b) |0;
- }
-return {
- add: add
- };
+  "use asm";
+  function add(a, b) {
+    a = a | 0;
+    b = b | 0;
+    return (a + b) | 0;
+  }
+  return {
+    add: add,
+  };
 }
 
 var stdlib = null;
@@ -171,12 +173,11 @@ var foreign = null;
 var heap = new ArrayBuffer(1000); // 1kb
 
 // create module instance
-var calc = Calc(stdlib. foreign, heap );
+var calc = Calc(stdlib.foreign, heap);
 
 // call `add` function
-var result = calc.add( 1, 2 );
-console.log( result );
- 
+var result = calc.add(1, 2);
+console.log(result);
 ```
 
 In the above example, we are telling the JavaScript engine that *we want to run this JavaScript code as asm.js module with the help of* `"use asm";` annotation. We have also provided data types of the function parameters and return value. This works just fine, as you can see the result in the console.
@@ -195,9 +196,9 @@ If a **browser’s JavaScript engine** is capable of understanding asm.js code
 
 The first thing it will do is **compile JavaScript code to machine code with high precision since the** `asm.js` code contains type information beforehand. The machine code generated from the asm.js code is close to the Assembly machine code.
 
-Also, it will **keep heap of the asm.js module different from the main JavaScript thread since it does not need garbage collection and tracking**. Since an `asm.js` module manages its memory manually, the overall performance of the code will be better than code that needs dynamic memory allocations and management. Even after with such convincing reasons, *`asm.js` specifications were never standardized` and it needed a fresher perspective. This is **where WebAssembly comes in and solves the problems of asm.js.**
+Also, it will **keep heap of the asm.js module different from the main JavaScript thread since it does not need garbage collection and tracking**. Since an `asm.js` module manages its memory manually, the overall performance of the code will be better than code that needs dynamic memory allocations and management. Even after with such convincing reasons, \*`asm.js` specifications were never standardized` and it needed a fresher perspective. This is **where WebAssembly comes in and solves the problems of asm.js.**
 
-*The asm.js specifications are not standardized and it is obsoleted by WebAssembly.*
+_The asm.js specifications are not standardized and it is obsoleted by WebAssembly._
 
 ### The Inception of WebAssembly
 

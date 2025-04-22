@@ -1,10 +1,10 @@
 ---
-tags: 
-  - design
-  - technique
 title: The Principle Of Spacing In Ui Design Part 1
 date: 2018-01-18
-description: null
+description: Learn why spacing is key in design, affecting content, graphics, navigation, and overall aesthetics to create a balanced, clear, and engaging user interface.
+tags:
+  - design
+  - technique
 ---
 
 ## Why is spacing important?
@@ -13,10 +13,10 @@ Before I talk about spacing principle, you should know how spacing important is 
 
 In design have four main factors in such as:
 
-* Content
-* Graphic
-* Navigation
-* Identify
+- Content
+- Graphic
+- Navigation
+- Identify
 
 Spacing has not only an impact directly on this factors but also on aesthetics design. Even more, it gives the page a united harmonic look. It decides you want them to pay attention to what. If you know the principle of spacing, you can use it in all your products. And you have a power strength of designers.
 

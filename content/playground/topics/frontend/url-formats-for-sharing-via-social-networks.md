@@ -1,13 +1,13 @@
 ---
-tags:
-  - frontend
-  - social-networks
-description: Each social network has its own unique way of handling URLs, and understanding the correct formatting can make a significant difference in the visibility and engagement of your shared content.
 title: URL formats for sharing via social networks
+date: 2023-05-26
+description: Each social network has its own unique way of handling URLs, and understanding the correct formatting can make a significant difference in the visibility and engagement of your shared content.
 authors:
   - nguyend-nam
 github_id: nguyend-nam
-date: 2023-05-26
+tags:
+  - frontend
+  - social-networks
 ---
 
 ## Why?
@@ -17,7 +17,7 @@ With the rise of social platforms like Facebook, Twitter and LinkedIn, it's e
 ## Facebook
 
 ```javascript
-;`https://www.facebook.com/sharer.php?u=${url}`
+`https://www.facebook.com/sharer.php?u=${url}`;
 ```
 
 This format allows you to share a specific URL with your [Facebook](https://about.meta.com/technologies/facebook-app/) friends and followers. By replacing `url` with the actual URL, you can create a link that shows a dialog with the content you want to share.
@@ -29,7 +29,7 @@ This format allows you to share a specific URL with your [Facebook](https://abou
 Sharing via [Messenger](https://about.meta.com/technologies/messenger/) is another way to share a URL with your Facebook friends and contacts.
 
 ```javascript
-;`https://www.facebook.com/dialog/send?app_id=${appId}&display=popup&link=${url}&redirect_uri=${url}`
+`https://www.facebook.com/dialog/send?app_id=${appId}&display=popup&link=${url}&redirect_uri=${url}`;
 ```
 
 To use this format, you'll need to replace `${appId}` with your Facebook app ID and `${url}` with the URL you want to share.

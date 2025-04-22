@@ -1,15 +1,15 @@
 ---
+title: ViteJS native modules
+date: 2022-07-04
+description: ViteJS takes full advantage of the availability of native ES modules in the browser and the rise of JavaScript tools written in compile-to-native languages by introducing pre-bundles dependancies using esbuild.
+authors:
+  - namtrhg
+github_id: namtrhg
 tags:
   - frontend
   - native-modules
   - vitejs
   - esm
-description: ViteJS takes full advantage of the availability of native ES modules in the browser and the rise of JavaScript tools written in compile-to-native languages by introducing pre-bundles dependancies using esbuild.
-title: ViteJS native modules
-authors:
-  - namtrhg
-github_id: namtrhg
-date: 2022-07-04
 ---
 
 Before ES modules was supported in the browser, we have no native mechanism for authoring [javascript-modules]() in a modularized fashion. That is why the concept of **"bundling"** and tools like Webpack, Rollup, and Parcel exist to improve the development experience for frontend developers.

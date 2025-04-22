@@ -1,13 +1,13 @@
 ---
+title: Code splitting in React
+date: 2024-10-29
+description: Optimize JavaScript performance with code splitting techniques like route-based splitting, lazy loading, and dynamic imports
 authors:
-  - 'thanh'
-date: '2024-10-29'
-description: 'Optimize JavaScript performance with code splitting techniques like route-based splitting, lazy loading, and dynamic imports'
+  - thanh
+short_title: Code splitting
 tags:
-  - 'react'
-  - 'performance'
-title: 'Code splitting in React'
-short_title: 'Code splitting'
+  - react
+  - performance
 ---
 
 Code splitting is a technique used to optimize JavaScript bundles by breaking them into smaller chunks, loading only the necessary parts when they’re needed. This reduces the initial loading time for users, as they only download the essential code to render the initial view. Code splitting is particularly valuable in large applications where bundling everything together can lead to slow load times and performance issues.
@@ -24,14 +24,14 @@ Entry point splitting involves separating the main application entry points. In 
 // webpack.config.js
 module.exports = {
   entry: {
-    home: './src/home.js',
-    dashboard: './src/dashboard.js',
+    home: "./src/home.js",
+    dashboard: "./src/dashboard.js",
   },
   output: {
-    filename: '[name].bundle.js',
-    path: __dirname + '/dist',
+    filename: "[name].bundle.js",
+    path: __dirname + "/dist",
   },
-}
+};
 ```
 
 Here, Webpack creates `home.bundle.js` and `dashboard.bundle.js`, loading only the necessary code when the user navigates to either the home page or dashboard.
@@ -47,12 +47,12 @@ Route-based code splitting is common in SPAs. Instead of loading the entire app 
 **Example with React Router and React.lazy:**
 
 ```jsx
-import React, { lazy, Suspense } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-const Home = lazy(() => import('./Home'))
-const About = lazy(() => import('./About'))
-const Contact = lazy(() => import('./Contact'))
+const Home = lazy(() => import("./Home"));
+const About = lazy(() => import("./About"));
+const Contact = lazy(() => import("./Contact"));
 
 function App() {
   return (
@@ -65,7 +65,7 @@ function App() {
         </Switch>
       </Suspense>
     </Router>
-  )
+  );
 }
 ```
 
@@ -86,19 +86,23 @@ If you have a large component that doesn’t need to load right away (e.g., a mo
 **Example: Lazy Loading a Component**
 
 ```jsx
-import React, { lazy, Suspense, useState } from 'react'
+import React, { lazy, Suspense, useState } from "react";
 
-const UserProfile = lazy(() => import('./UserProfile'))
+const UserProfile = lazy(() => import("./UserProfile"));
 
 function App() {
-  const [showProfile, setShowProfile] = useState(false)
+  const [showProfile, setShowProfile] = useState(false);
 
   return (
     <div>
-      <button onClick={() => setShowProfile((prev) => !prev)}>Toggle User Profile</button>
-      <Suspense fallback={<div>Loading...</div>}>{showProfile && <UserProfile />}</Suspense>
+      <button onClick={() => setShowProfile((prev) => !prev)}>
+        Toggle User Profile
+      </button>
+      <Suspense fallback={<div>Loading...</div>}>
+        {showProfile && <UserProfile />}
+      </Suspense>
     </div>
-  )
+  );
 }
 ```
 
@@ -119,17 +123,17 @@ Sometimes a single library or utility can significantly increase your bundle siz
 
 ```jsx
 function DateFormatter({ date }) {
-  const [formattedDate, setFormattedDate] = useState('')
+  const [formattedDate, setFormattedDate] = useState("");
 
   useEffect(() => {
     async function loadDateLibrary() {
-      const { format } = await import('date-fns')
-      setFormattedDate(format(new Date(date), 'yyyy-MM-dd'))
+      const { format } = await import("date-fns");
+      setFormattedDate(format(new Date(date), "yyyy-MM-dd"));
     }
-    loadDateLibrary()
-  }, [date])
+    loadDateLibrary();
+  }, [date]);
 
-  return <div>{formattedDate}</div>
+  return <div>{formattedDate}</div>;
 }
 ```
 
@@ -150,20 +154,20 @@ For more complex loading scenarios, `react-loadable` offers additional features 
 **Example using react-loadable**
 
 ```jsx
-import Loadable from 'react-loadable'
+import Loadable from "react-loadable";
 
 const LoadableComponent = Loadable({
-  loader: () => import('./HeavyComponent'),
+  loader: () => import("./HeavyComponent"),
   loading: ({ isLoading, pastDelay, error }) => {
-    if (isLoading && pastDelay) return <div>Loading...</div>
-    if (error) return <div>Error loading component!</div>
-    return null
+    if (isLoading && pastDelay) return <div>Loading...</div>;
+    if (error) return <div>Error loading component!</div>;
+    return null;
   },
   delay: 300, // Shows loading only if loading takes longer than 300ms
-})
+});
 
 function App() {
-  return <LoadableComponent />
+  return <LoadableComponent />;
 }
 ```
 
@@ -187,7 +191,9 @@ Preloading and prefetching are useful when you want to load components in advanc
 - **Prefetch**: Load code when the user is likely to need it soon, based on user interaction patterns (e.g., hovering over a link).
 
 ```jsx
-const UserProfile = lazy(() => import(/* webpackPrefetch: true */ './UserProfile'))
+const UserProfile = lazy(
+  () => import(/* webpackPrefetch: true */ "./UserProfile"),
+);
 ```
 
 **Use case:**
@@ -204,19 +210,19 @@ Bundling tools, such as Webpack, that have the `SplitChunksPlugin` component can
 module.exports = {
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      chunks: "all",
       minSize: 30000,
       maxSize: 50000,
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
+          name: "vendors",
+          chunks: "all",
         },
       },
     },
   },
-}
+};
 ```
 
 Explanation:
@@ -235,7 +241,7 @@ For non-JavaScript assets like images and fonts, you can also improve performanc
 
 ```jsx
 function ImageComponent() {
-  return <img src="path/to/image.jpg" loading="lazy" alt="Lazy loaded image" />
+  return <img src="path/to/image.jpg" loading="lazy" alt="Lazy loaded image" />;
 }
 ```
 

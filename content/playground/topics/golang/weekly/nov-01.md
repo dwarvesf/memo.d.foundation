@@ -1,13 +1,13 @@
 ---
+title: "Go Commentary #18: Fuzz Testing Go HTTP Services"
+date: 2024-11-01
+description: Understanding how to use Fuzz Testing in Go
+authors:
+  - fuatto
+short_title: "#18 Fuzz Testing Go HTTP Services"
 tags:
   - golang
   - go-weekly
-authors:
-  - fuatto
-title: 'Go Commentary #18: Fuzz Testing Go HTTP Services'
-short_title: '#18 Fuzz Testing Go HTTP Services'
-description: Understanding how to use Fuzz Testing in Go
-date: 2024-11-01
 ---
 
 ## [Fuzz Testing Go HTTP Services](https://packagemain.tech/p/fuzzing-http-services-golang)
@@ -167,9 +167,6 @@ Conclusion:
 
 - Can detect hard-to-spot bugs with weird unexpected inputs
 
-
 ---
 
 https://packagemain.tech/p/fuzzing-http-services-golang
-
-

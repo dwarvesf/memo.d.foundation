@@ -1,14 +1,14 @@
 ---
+title: "Go Commentary #5: Features, Memory Optimization, Minecraft Server, Code Editor, and LLM Tool"
+date: 2024-08-02
+description: Explore Go version features, memory optimization techniques, a Go-powered Minecraft server, a pure Go source code editor, and a tool for running large language models.
+authors:
+  - fuatto
+short_title: "#5 Go 1.23 features, Memory, Minecraft, and More"
 tags:
   - golang
   - go-weekly
   - networking
-authors:
-  - fuatto
-title: 'Go Commentary #5: Features, Memory Optimization, Minecraft Server, Code Editor, and LLM Tool'
-short_title: '#5 Go 1.23 features, Memory, Minecraft, and More'
-description: 'Explore Go version features, memory optimization techniques, a Go-powered Minecraft server, a pure Go source code editor, and a tool for running large language models.'
-date: 2024-08-02
 ---
 
 ## [Go Features By Version](https://antonz.org/which-go/)

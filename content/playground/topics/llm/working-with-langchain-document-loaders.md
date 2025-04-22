@@ -1,22 +1,27 @@
 ---
+title: Working with langchain document loaders
+date: 2023-04-21
+description: This article explores Langchain document loaders, explaining their role in overcoming token limits, integrating with vector databases, and demonstrating how to build a question-answering system using CSV data and an AI agent.
 authors:
-- "monotykamary"
-date: "2023-04-21"
-description: "This article explores Langchain document loaders, explaining their role in overcoming token limits, integrating with vector databases, and demonstrating how to build a question-answering system using CSV data and an AI agent."
-github_id: "monotykamary"
+  - monotykamary
+github_id: monotykamary
 hashnode_meta:
-  coverImageOptions:
-    coverImageURL: "https://memo.d.foundation/playground/ai/assets/working-with-langchain-document-loaders_langchain-document-loader-flow.webp"
-  id: "670f4d4b4d1924a802ea8937"
-  slug: "working-with-langchain-document-loaders"
-sync: "hashnode"
+  {
+    "coverImageOptions":
+      {
+        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/working-with-langchain-document-loaders_langchain-document-loader-flow.webp",
+      },
+    "id": "670f4d4b4d1924a802ea8937",
+    "slug": "working-with-langchain-document-loaders",
+  }
+sync: hashnode
 tags:
-- "ai"
-- "langchain"
-- "llm"
-- "tuning-llm"
-title: "Working with langchain document loaders"
+  - ai
+  - langchain
+  - llm
+  - tuning-llm
 ---
+
 [Langchain](https://python.langchain.com/) is a framework that enables the development of applications that utilize language models. It provides support for various main modules, including Models, Prompts, Memory, Indexes, Chains, and Agents. LangChain believes that applications with the greatest power and differentiation will not only rely on calling out to a language model via an API but will also be aware of data and allow a language model to interact with its environment.
 
 ## What are document loaders in Langchain?
@@ -41,6 +46,7 @@ In order to get question and answering from prompts, we follow 4 steps with lang
 Below is an example using a CSV file through an agent. This CSV contains `red-alert` channel data from Dwarves' discord as the context for our questions that we will be asking later.
 
 0. First we load all of our `pip` packages
+
 ```sh
 pip install langchain openai huggingface_hub gitpython chromadb tiktoken google-api-python-client llama-cpp-python
 ```

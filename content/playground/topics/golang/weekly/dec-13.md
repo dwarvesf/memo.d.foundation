@@ -1,14 +1,13 @@
 ---
+title: "Go Commentary #24: Coming in Go 1.24: testing/synctest experiment for time and concurrency testing"
+date: 2024-12-13
+description: Go 1.24 testing/synctest experiment for time and concurrency testing
+authors:
+  - fuatto
+short_title: "#24 Go 1.24 testing/synctest experiment for time and concurrency testing"
 tags:
   - golang
   - go-weekly
-authors:
-  - fuatto
-title: 'Go Commentary #24: Coming in Go 1.24: testing/synctest experiment for time and concurrency testing'
-short_title: '#24 Go 1.24 testing/synctest experiment for time and concurrency testing'
-description: Go 1.24 testing/synctest experiment for time and concurrency testing
-
-date: 2024-12-13
 ---
 
 ## [Coming in Go 1.24: testing/synctest experiment for time and concurrency testing](https://danp.net/posts/synctest-experiment/)
@@ -40,8 +39,6 @@ func Test(t *testing.T) {
 ```
 
 - It's still flaky because it depends on the system clock.
-
-
 
 ### Solution
 

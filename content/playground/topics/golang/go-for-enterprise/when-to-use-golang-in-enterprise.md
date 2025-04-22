@@ -1,13 +1,13 @@
 ---
+title: When to use Go in the Enterprise
+date: 2024-08-30
+description: "This section explores the scenarios and considerations for adopting Go as a programming language in enterprise environments. It discusses the advantages of Go's simplicity, efficiency, and concurrency support, as well as its suitability for building scalable and maintainable enterprise applications."
+authors:
+  - fuatto
 tags:
   - enterprise
   - golang
   - language
-authors:
-  - fuatto
-title: 'When to use Go in the Enterprise'
-description: "This section explores the scenarios and considerations for adopting Go as a programming language in enterprise environments. It discusses the advantages of Go's simplicity, efficiency, and concurrency support, as well as its suitability for building scalable and maintainable enterprise applications."
-date: 2024-08-30
 ---
 
 ## When to use Go in the Enterprise?

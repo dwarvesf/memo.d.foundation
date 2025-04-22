@@ -1,14 +1,14 @@
 ---
-tags: 
-- ai
-- reinforcement-learning
-- llm
-title: 'RLHF with Open Assistant'
-authors: 
-- toanbku
-github_id: toanbku
+title: RLHF with Open Assistant
 date: 2023-08-10
-description: 'An overview of Open Assistant, an open-source chat-based AI assistant, and its implementation of Reinforcement Learning from Human Feedback (RLHF). This article covers the three-step process of RLHF, system requirements, and detailed setup instructions for training the model using Supervised Fine-Tuning, Reward Modeling, and Reinforcement Learning.'
+description: An overview of Open Assistant, an open-source chat-based AI assistant, and its implementation of Reinforcement Learning from Human Feedback (RLHF). This article covers the three-step process of RLHF, system requirements, and detailed setup instructions for training the model using Supervised Fine-Tuning, Reward Modeling, and Reinforcement Learning.
+authors:
+  - toanbku
+github_id: toanbku
+tags:
+  - ai
+  - reinforcement-learning
+  - llm
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9wNsV3TTo-I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -50,6 +50,7 @@ Our training for the model will use the typical Pytorch and Jupyter setup. There
 ### Setup environment
 
 There are a few nuances with using `cuda` with specialized NVidia GPUs in the cloud. For our case on Redmond, we have to use Python 3.10 and `cuda` versions 11.8 to avoid any errors specific to our hardware.
+
 ```bash
 mambaforge/bin/mamba install jupyterlab code-server jupyterhub jupyter-vscode-proxy jupyterlab-git python=3.10 pytorch pytorch-cuda=11.8 cuda=11.8 cuda-nvcc=11.8 ninja cxx-compiler==1.5.2 -c nvidia -c pytorch -y
 ```

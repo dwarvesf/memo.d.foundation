@@ -1,9 +1,9 @@
 ---
-tags: 
-  - SDLC
 title: Software Development Life Cycle 101
 date: 2020-05-19
-description: null
+description: Learn the Software Development Life Cycle (SDLC) basics, key project phases, and essential artifacts to build high-quality software on time and within budget for successful project delivery.
+tags:
+  - sdlc
 ---
 
 This workshop contains the basic knowledge on Software Development Life Cycle, provides people with a step-to-step guideline and the artifacts which will be created on the way. We don't dive in the details. Instead, we treat it as an overview look on how to build software successfully.
@@ -18,9 +18,9 @@ A software project has a lot of constraints. Cost, scope, quality, customer sati
 
 But the most important ones are
 
-* Quality
-* Budget
-* Time
+- Quality
+- Budget
+- Time
 
 ![](assets/software-development-life-cycle-101_8d20afb24ee3dfc8607352f6574e549a_md5.webp)
 
@@ -28,9 +28,9 @@ But the most important ones are
 
 With a lot of constraints, the project is easy to fail. We could have plenty of reasons why a software project fails: team politics, overdue payment,... but three of them could be prevented easily with proper methodology, framework
 
-* Unclear/misleading project requirements
-* Wrongly defined tech stacks
-* The wrong approach, develop practices
+- Unclear/misleading project requirements
+- Wrongly defined tech stacks
+- The wrong approach, develop practices
 
 ## Project success
 
@@ -46,11 +46,11 @@ But how?
 
 The secret sauce of a successful project lies in the answer to those questions:
 
-* How to perform the step?
-* Who is responsible for doing the step?
-* Which artifacts will it produce?
-* How long will it take?
-* Which step should we do next?
+- How to perform the step?
+- Who is responsible for doing the step?
+- Which artifacts will it produce?
+- How long will it take?
+- Which step should we do next?
 
 So which steps are we talking about?
 We're talking about the Software Development Life Cycle, which sounds familiar to all CS, CE folks.
@@ -59,13 +59,13 @@ SDLC provides a well-structured flow of phases that help an organization to quic
 
 In detail, the SDLC methodology focuses on the following phases of software development:
 
-* Requirement analysis
-* Planning
-* System Design
-* Implementation
-* Testing
-* Deployment
-* (Maintenance)
+- Requirement analysis
+- Planning
+- System Design
+- Implementation
+- Testing
+- Deployment
+- (Maintenance)
 
 Let's take a look back on what we have learned and how this methodology could guarantee project success.
 
@@ -78,11 +78,11 @@ Business-oriented is a key in this stage. There are plenty of technique being us
 
 The two most important artifacts of this stage that need to be well-documented is
 
-* **Lean Canvas:** a lean business model which defines problem - solution - market - cost - revenue of a digital product. Lean Canvas needs to be validated before moving to the next stage else we will develop software based on imaginary
+- **Lean Canvas:** a lean business model which defines problem - solution - market - cost - revenue of a digital product. Lean Canvas needs to be validated before moving to the next stage else we will develop software based on imaginary
 
 ![](assets/software-development-life-cycle-101_3a385622cfd9745a70201ab14b616a09_md5.webp)
 
-* **AARRR Funnel**: after the Lean Canvas is validated, define funnel for each revenue stream. This artifact will be the foundation of the System Design Stage.
+- **AARRR Funnel**: after the Lean Canvas is validated, define funnel for each revenue stream. This artifact will be the foundation of the System Design Stage.
 
 ![](assets/software-development-life-cycle-101_fdea8ce098bbc365ecd7ffaaec9010a4_md5.webp)
 
@@ -103,12 +103,12 @@ We have a validated business model, few funnels of revenue streams. We have thin
 
 Product Manager and Technical Architecture need to sit down with Clients to define some sweet things
 
-* **Project Charter** (Product Roadmap, Milestone Release, People in charge...)
+- **Project Charter** (Product Roadmap, Milestone Release, People in charge...)
 
 ![](assets/software-development-life-cycle-101_2c5adf742029b611a1459c48c5d1ccb8_md5.webp)
 
-* **Work Breakdown Structure** (Job need to be done)
-* **Tech Stacks**
+- **Work Breakdown Structure** (Job need to be done)
+- **Tech Stacks**
 
 Some minor things will be defined at this stage as well such as Communication channel, Tooling..., etc.
 
@@ -126,18 +126,18 @@ The list below is just as general as possible but those artifacts are the least 
 
 **Software Modeling** (Usecase Diagram, State Machine Diagram, Activity Diagram, High-level Architecture Diagram, ERD...)
 
-* User flows, User stories, Wireframe
-* Design System
-* User Interface, User Interaction Design
+- User flows, User stories, Wireframe
+- Design System
+- User Interface, User Interaction Design
 
 The roles
 
-* UX Designer
-* Technical Architecture (Software Engineer)
-* Visual Designer
+- UX Designer
+- Technical Architecture (Software Engineer)
+- Visual Designer
 
 ### Implementation
->
+
 > #“Let’s create what we want.”
 
 At this stage, the actual development starts. Every developer must stick to the agreed blueprint. Also, make sure you have proper guidelines in place about the code style and practices.
@@ -158,7 +158,7 @@ Provide stakeholders information about the **project quality** then sign off app
 ![](assets/software-development-life-cycle-101_fce9cd7be98a3a0133ae89129f323211_md5.webp)
 
 ### Deployment
->
+
 > Let’s start using what we got.
 
 Now, the goal is to deploy the software to the production environment so users can start using the product. However, many organizations choose to move the product through different deployment environments such as a testing or staging environment.
@@ -167,5 +167,5 @@ This allows any stakeholders to safely play with the product before releasing it
 
 Job needs to be done
 
-* Setup infrastructure (server, domain, database, ...)
-* Automation process (CI/CD)
+- Setup infrastructure (server, domain, database, ...)
+- Automation process (CI/CD)

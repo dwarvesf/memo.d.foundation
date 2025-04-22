@@ -1,11 +1,11 @@
 ---
-tags: 
+title: Aarrr Framework In A Nutshell
+date: 2020-06-30
+description: Learn how the revenue-driven AARRR framework guides product growth by focusing on Acquisition, Activation, Retention, Referral, and Revenue to optimize key metrics and boost business profits.
+tags:
   - design
   - framework
   - practice
-title: Aarrr Framework In A Nutshell
-date: 2020-06-30
-description: null
 ---
 
 We could find a bunch of AARRR frameworks definition across the internet (Thanks to Google). I don’t intend to create another one here.

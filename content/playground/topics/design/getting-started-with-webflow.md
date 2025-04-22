@@ -1,9 +1,9 @@
 ---
-tags: 
-  - nocode
 title: Getting Started With Webflow
 date: 2021-01-23
-description: null
+description: Learn how to design responsive, high-quality websites quickly with Webflow’s no-code platform, featuring visual design tools, CMS, hosting, and easy animations for faster web development.
+tags:
+  - nocode
 ---
 
 ![](assets/getting-started-with-webflow_5386df53f5360ba922dbe2c4b467dfdb_md5.webp)
@@ -32,11 +32,11 @@ For now, know that in the Designer, the CMS lets you structure content types you
 
 The final piece of the Webflow puzzle is the Hosting platform. Backed by Amazon Web Services (AWS) and Fastly, it’s blazing fast, super-reliable, and you’ll need it to enjoy some of the best features, including:
 
-* The CMS
-* The Editor
-* Form management
-* Responsive images (using a device to automatically resizing images)
-* Free SSL/HTTPS (for site security, which is a must for Google’s visitor permission)
+- The CMS
+- The Editor
+- Form management
+- Responsive images (using a device to automatically resizing images)
+- Free SSL/HTTPS (for site security, which is a must for Google’s visitor permission)
 
 Okay, now that we have the lay of the land, let’s talk about diving in.
 
@@ -70,7 +70,7 @@ Let’s start with the first image. From left to right:
 
 This point can be a red flag. In this case, we’re encouraged to create and name container components for regular-use ones.
 
-***Tips:*** Name a component right after you create one. The component arrangement is the foundation of your website, especially responsive. It is the same as in Figma or sketch, a carefully arranged component is easier to edit, modify, and check back when needed
+**_Tips:_** Name a component right after you create one. The component arrangement is the foundation of your website, especially responsive. It is the same as in Figma or sketch, a carefully arranged component is easier to edit, modify, and check back when needed
 
 ## Design a Website
 
@@ -89,7 +89,7 @@ NavBar is created with Brand, Nav Menu and Menu Button, located in one container
 1. Brand: can be replaced with your company’s logo
 2. Nav 3. Menu Button: I use a burger menu, but normally this could be a CTA.
 
-***Tips:***  Check out [“How to made a Navbar on Webflow”](https://www.youtube.com/watch?v=vj-B5MBAjIc&t=495s&ab_channel=DesignPilot) on Youtube for more information. It might hard sometimes for beginners.
+**_Tips:_** Check out [“How to made a Navbar on Webflow”](https://www.youtube.com/watch?v=vj-B5MBAjIc&t=495s&ab_channel=DesignPilot) on Youtube for more information. It might hard sometimes for beginners.
 
 ![](assets/getting-started-with-webflow_ad25c3727e62ea25c77238725e166cf3_md5.webp)
 
@@ -109,12 +109,12 @@ Example: Before doing design on Webflow, let’s define how these elements are g
 
 ![](assets/getting-started-with-webflow_2259389132637c4db847b8143770adf4_md5.webp)
 
-***Tips***
+**_Tips_**
 
-* Divide your design’s layout, group them by div block
-* Create a component for regular-use
-* Create a large area (main container) to support div blocks in the website
-* Responsiveness
+- Divide your design’s layout, group them by div block
+- Create a component for regular-use
+- Create a large area (main container) to support div blocks in the website
+- Responsiveness
 
 ![](assets/getting-started-with-webflow_f8fbcb003ce6c8b919bc0cc7235b3110_md5.webp)
 
@@ -130,13 +130,13 @@ In this case, the grid layout is used to create an equal space for Div Block fro
 
 This section is divided into 2 parts:
 
-1. Social link and one div block with height: 1px (*for line text*)
+1. Social link and one div block with height: 1px (_for line text_)
 2. Email and phone number
 
-***Tips***
+**_Tips_**
 
-* For clickable content, choose “Link Block” instead of “Text Block”.
-* Layouts are critical to better create responsiveness.
+- For clickable content, choose “Link Block” instead of “Text Block”.
+- Layouts are critical to better create responsiveness.
 
 ## Responsive
 
@@ -144,11 +144,11 @@ This section is divided into 2 parts:
 
 It always starts with a Base breakpoint screen. When you do the responsive for a bigger screen or mobile, it’s much effortless.
 
-***Tips***
+**_Tips_**
 
-* Images can be unexpectedly resized based on screen sizes. To prevent this, put images into a div block. The automatically responsiveness of div block can help maintain the images size.
-* Layout, padding and margin can be adjusted based on screen sizes. In case the components position are changed, the whole process will be reset.
-* The color, text style, font size, font-weight can be modified.
+- Images can be unexpectedly resized based on screen sizes. To prevent this, put images into a div block. The automatically responsiveness of div block can help maintain the images size.
+- Layout, padding and margin can be adjusted based on screen sizes. In case the components position are changed, the whole process will be reset.
+- The color, text style, font size, font-weight can be modified.
 
 ## Animation
 

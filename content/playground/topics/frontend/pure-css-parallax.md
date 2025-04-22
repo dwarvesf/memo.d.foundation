@@ -1,15 +1,15 @@
 ---
-tags: 
- - frontend
- - html
- - css
- - animation
-description: This article demonstrates how to use CSS transforms, perspective and some scaling trickery to create a pure CSS parallax scrolling website.
 title: Pure CSS Parallax
-authors: 
- - mashiro5951
-github_id: ngolapnguyen
 date: 2022-09-10
+description: This article demonstrates how to use CSS transforms, perspective and some scaling trickery to create a pure CSS parallax scrolling website.
+authors:
+  - mashiro5951
+github_id: ngolapnguyen
+tags:
+  - frontend
+  - html
+  - css
+  - animation
 ---
 
 This article demonstrates how to use CSS transforms, perspective and some scaling trickery to create a pure CSS parallax scrolling website.

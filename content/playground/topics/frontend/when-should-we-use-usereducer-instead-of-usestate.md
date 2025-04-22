@@ -1,15 +1,15 @@
 ---
+title: When should we use useReducer instead of useState?
+date: 2023-03-01
+description: "Imagine we have a component with multiple states. It is simple enough not to use state management libraries. `useState` is surely a choice for the sake of brevity and clarity. But are there any issues we have to deal with? In this article, I want to make some improvements on `useState` hook and how we can replace it with `useReducer` as an alternative solution."
+authors:
+  - hienld
+github_id: leduyhien152
 tags:
   - frontend
   - react
   - state-management
   - component
-authors:
-  - hienld
-description: "Imagine we have a component with multiple states. It is simple enough not to use state management libraries. `useState` is surely a choice for the sake of brevity and clarity. But are there any issues we have to deal with? In this article, I want to make some improvements on `useState` hook and how we can replace it with `useReducer` as an alternative solution."
-title: When should we use useReducer instead of useState?
-github_id: leduyhien152
-date: 2023-03-01
 ---
 
 Imagine we have a component with multiple states. It is simple enough not to use state management libraries. `useState` is surely a choice for the sake of brevity and clarity. But are there any issues we have to deal with? In this article, I want to make some improvements on `useState` hook and how we can replace it with `useReducer` as an alternative solution.
@@ -20,19 +20,19 @@ Let's take a look at the code below:
 
 ```jsx
 function EditCalendarEvent() {
-  const [startDate, setStartDate] = useState()
-  const [endDate, setEndDate] = useState()
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [location, setLocation] = useState()
-  const [attendees, setAttendees] = useState([])
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState();
+  const [attendees, setAttendees] = useState([]);
 
   return (
     <>
       <input value={title} onChange={(e) => setTitle(e.target.value)} />
       {/* ... */}
     </>
-  )
+  );
 }
 ```
 
@@ -48,17 +48,20 @@ To improve the code above, we can gather all states in one big object:
 ```jsx
 function EditCalendarEvent() {
   const [event, setEvent] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     attendees: [],
-  })
+  });
 
   return (
     <>
-      <input value={event.title} onChange={(e) => setEvent({ ...event, title: e.target.value })} />
+      <input
+        value={event.title}
+        onChange={(e) => setEvent({ ...event, title: e.target.value })}
+      />
       {/* ... */}
     </>
-  )
+  );
 }
 ```
 
@@ -73,24 +76,24 @@ One solution is using a curried function:
 ```jsx
 function EditCalendarEvent() {
   const [event, setEvent] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     attendees: [],
-  })
+  });
 
   const handleChange = (field) => (e) => {
     // Validate and transform event to ensure state is always valid
     // in a centralized way
     // ...
-    setEvent({ ...event, [field]: e.target.value })
-  }
+    setEvent({ ...event, [field]: e.target.value });
+  };
 
   return (
     <>
-      <input value={event.title} onChange={handleChange('title')} />
+      <input value={event.title} onChange={handleChange("title")} />
       {/* ... */}
     </>
-  )
+  );
 }
 ```
 
@@ -104,17 +107,20 @@ Many people know `useReducer`, but a small number of them actually want to use i
 function EditCalendarEvent() {
   const [event, updateEvent] = useReducer(
     (prev, next) => {
-      return { ...prev, ...next }
+      return { ...prev, ...next };
     },
-    { title: '', description: '', attendees: [] },
-  )
+    { title: "", description: "", attendees: [] },
+  );
 
   return (
     <>
-      <input value={event.title} onChange={(e) => updateEvent({ title: e.target.value })} />
+      <input
+        value={event.title}
+        onChange={(e) => updateEvent({ title: e.target.value })}
+      />
       {/* ... */}
     </>
-  )
+  );
 }
 ```
 
@@ -124,28 +130,31 @@ The `useReducer` hook helps you control transformations from state A to state B.
 function EditCalendarEvent() {
   const [event, updateEvent] = useReducer(
     (prev, next) => {
-      const newEvent = { ...prev, ...next }
+      const newEvent = { ...prev, ...next };
 
       // Ensure that the start date is never after the end date
       if (newEvent.startDate > newEvent.endDate) {
-        newEvent.endDate = newEvent.startDate
+        newEvent.endDate = newEvent.startDate;
       }
 
       // Ensure that the title is never more than 100 chars
       if (newEvent.title.length > 100) {
-        newEvent.title = newEvent.title.substring(0, 100)
+        newEvent.title = newEvent.title.substring(0, 100);
       }
-      return newEvent
+      return newEvent;
     },
-    { title: '', description: '', attendees: [] },
-  )
+    { title: "", description: "", attendees: [] },
+  );
 
   return (
     <>
-      <input value={event.title} onChange={(e) => updateEvent({ title: e.target.value })} />
+      <input
+        value={event.title}
+        onChange={(e) => updateEvent({ title: e.target.value })}
+      />
       {/* ... */}
     </>
-  )
+  );
 }
 ```
 
@@ -157,13 +166,13 @@ Here is an example of toggling state with `useReducer`:
 
 ```jsx
 function EditCalendarEvent() {
-  const [value, toggleValue] = useReducer((prev) => !prev, false)
+  const [value, toggleValue] = useReducer((prev) => !prev, false);
 
   return (
     <>
       <button onClick={toggleValue}>Toggle</button>
     </>
-  )
+  );
 }
 ```
 

@@ -1,12 +1,12 @@
 ---
-tags:
-  - security
-  - startup
-title: 'A Holistic Guide to Security'
+title: A Holistic Guide to Security
 date: 2024-09-06
 description: A high-level overview of how to implement a holistic approach to securing your application platform.
 authors:
   - thanh
+tags:
+  - security
+  - startup
 ---
 
 Security is no longer just a technical concern—it’s a core component of client trust. When our team launched a new collaboration tool, we quickly realized this. Early in the development process, we were focused on delivering features, but as we started engaging with enterprise clients, security-related questions became a priority:

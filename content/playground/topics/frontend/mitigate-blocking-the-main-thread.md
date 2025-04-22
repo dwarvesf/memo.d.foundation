@@ -1,13 +1,13 @@
 ---
-tags: 
- - javascript
- - frontend/performance
-authors: 
- - phatgha
-description: We all know that for web applications, perceived performance is highly importance for our users. For data intensive SPAs with CPU-intensive tasks, the single-threaded nature of Javascript starts to hinder the application's perceived performance when you cannot fit those CPU-intensive tasks into a 16.67 ms/frame window (translates to 60fps). That doesn't even account for code execution time of frameworks (React, Vue...etc), which then leaves you with approximately only a 10 ms/frame window or less to complete all your tasks on the main thread to make user interaction feel smooth and snappy.
 title: Mitigate blocking the main thread
-github_id: yyyyaaa
 date: 2022-08-31
+description: "We all know that for web applications, perceived performance is highly importance for our users. For data intensive SPAs with CPU-intensive tasks, the single-threaded nature of Javascript starts to hinder the application's perceived performance when you cannot fit those CPU-intensive tasks into a 16.67 ms/frame window (translates to 60fps). That doesn't even account for code execution time of frameworks (React, Vue...etc), which then leaves you with approximately only a 10 ms/frame window or less to complete all your tasks on the main thread to make user interaction feel smooth and snappy."
+authors:
+  - phatgha
+github_id: yyyyaaa
+tags:
+  - javascript
+  - frontendperformance
 ---
 
 We all know that for web applications, perceived performance is highly importance for our users. For data intensive SPAs with CPU-intensive tasks, the single-threaded nature of Javascript starts to hinder the application's perceived performance when you cannot fit those CPU-intensive tasks into a 16.67 ms/frame window (translates to 60fps). That doesn't even account for code execution time of frameworks (React, Vue...etc), which then leaves you with approximately only a 10 ms/frame window or less to complete all your tasks on the main thread to make user interaction feel smooth and snappy.
@@ -36,19 +36,19 @@ Generators was introduced in ES6, adding the capability of suspending and resumi
 
 ```javascript
 function* numberGen(maxValue = 100) {
-  let currentValue = 0
+  let currentValue = 0;
   while (currentValue < maxValue) {
-    currentValue++
-    yield currentValue
+    currentValue++;
+    yield currentValue;
   }
 }
 
 // Generate and get numbers
-const sequence = numberGen()
-console.log(sequence.next()) // Prints : { value: 1, done: false }
-console.log(sequence.next()) // Prints : { value: 2, done: false }
+const sequence = numberGen();
+console.log(sequence.next()); // Prints : { value: 1, done: false }
+console.log(sequence.next()); // Prints : { value: 2, done: false }
 // When it reaches the 99th call
-console.log(sequence.next()) // Prints : { value: 99, done: true }
+console.log(sequence.next()); // Prints : { value: 99, done: true }
 ```
 
 So, ES6 generator allows us to run code and yield values whenever we like but it's still a rough tool, for our problem we need to combine generator with browser's `requestIdleCallback()` to request main thread to do an amount of work when it's idle, then see if there is enough time left to do more work, if not yield control back to main thread then queue another run the next time main thread is idle. Luckily somebody smart already thought of that, you can checkout [js-coroutines](https/github.com/miketalbot/js-coroutines) for a complete implementation and evaluate if it solves your app's problem.

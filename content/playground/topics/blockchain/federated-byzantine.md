@@ -1,10 +1,10 @@
 ---
-tags: 
-  - distributed
-  - blockchain
 title: Federated Byzantine
 date: 2019-05-18
-description: null
+description: "Learn how Stellar's consensus protocol uses trusted validators and quorum slices to prevent Sybil attacks and ensure secure, reliable transactions through federated voting and network trust."
+tags:
+  - distributed
+  - blockchain
 ---
 
 Stellar is all about trust (validators). After all, when you have to trust somebody, you'd trust the reputated nodes, rather than a random stranger node on the internet.
@@ -40,8 +40,8 @@ Once a node can confirm that a ballot is committed, it can “externalize” the
 
 ## The Byzantine Generals Problem
 
-* [Understanding the Byzantines General Problems](https://medium.com/coinmonks/a-note-from-anthony-if-you-havent-already-please-read-the-article-gaining-clarity-on-key-787989107969)
-* [Origin paper](https://people.eecs.berkeley.edu/~luca/cs174/byzantine.pdf)
+- [Understanding the Byzantines General Problems](https://medium.com/coinmonks/a-note-from-anthony-if-you-havent-already-please-read-the-article-gaining-clarity-on-key-787989107969)
+- [Origin paper](https://people.eecs.berkeley.edu/~luca/cs174/byzantine.pdf)
 
 → How do you make sure that multiple entities, which are separated by distance, are in absolute full agreement before an action is taken?
 
@@ -55,8 +55,8 @@ Stellar consensus can be extremely inefficient in terms of number of messages se
 
 ## References
 
-* [https://www.stellar.org/developers/guides/](https://www.stellar.org/developers/guides/)
-* [https://www.stellar.org/papers/stellar-consensus-protocol.pdf](https://www.stellar.org/papers/stellar-consensus-protocol.pdf)
-* [https://www.reddit.com/r/Stellar/comments/7omagn/does_anyone_have_realworld_examples_of_how/](https://www.reddit.com/r/Stellar/comments/7omagn/does_anyone_have_realworld_examples_of_how/)
-* [https://www.stellar.org/stories/adventures-in-galactic-consensus-chapter-1/](https://www.stellar.org/stories/adventures-in-galactic-consensus-chapter-1/)
-* Okay, one more resource for you! I think it's somewhere between the comic and the white paper, but closer to the white paper. [https://medium.com/a-stellar-journey/on-worldwide-consensus-359e9eb3e949](https://medium.com/a-stellar-journey/on-worldwide-consensus-359e9eb3e949)
+- [https://www.stellar.org/developers/guides/](https://www.stellar.org/developers/guides/)
+- [https://www.stellar.org/papers/stellar-consensus-protocol.pdf](https://www.stellar.org/papers/stellar-consensus-protocol.pdf)
+- [https://www.reddit.com/r/Stellar/comments/7omagn/does_anyone_have_realworld_examples_of_how/](https://www.reddit.com/r/Stellar/comments/7omagn/does_anyone_have_realworld_examples_of_how/)
+- [https://www.stellar.org/stories/adventures-in-galactic-consensus-chapter-1/](https://www.stellar.org/stories/adventures-in-galactic-consensus-chapter-1/)
+- Okay, one more resource for you! I think it's somewhere between the comic and the white paper, but closer to the white paper. [https://medium.com/a-stellar-journey/on-worldwide-consensus-359e9eb3e949](https://medium.com/a-stellar-journey/on-worldwide-consensus-359e9eb3e949)

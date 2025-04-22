@@ -1,9 +1,9 @@
 ---
-tags: 
-  - react.js
 title: Hoc Renderprops And Hook In Reactjs
 date: 2019-04-12
-description: null
+description: Learn how to refactor React.js components using HOC, render props, and hooks to create reusable toggle logic that follows the DRY principle and simplifies state management.
+tags:
+  - reactjs
 ---
 
 ## Introduction
@@ -167,9 +167,9 @@ A higher-order component (HOC) is an advanced technique in React for reusing com
 Concretely, **a higher-order component is a function that takes a component and returns a new component.**
 Component return by HOC Component is freely to modified it’s params components by actions such as:
 
-* Wrap it inside different component
-* Pass props to it
-* …etc
+- Wrap it inside different component
+- Pass props to it
+- …etc
 
 Let’s create HOC component that modify our main component by pass it’s state and.
 
@@ -254,13 +254,13 @@ view rawApp.js hosted with ❤ by GitHub
 
 High-order Component can also wrap other Hoc-order Component as well. The first component inject into our App component:
 
-* state: isAsdToggle, isDasToggle
-* method: toggleAsd, toggleDas
+- state: isAsdToggle, isDasToggle
+- method: toggleAsd, toggleDas
 
 While the second inject into first high-order component
 
-* state: isAsdToggle
-* method: toggleAsd
+- state: isAsdToggle
+- method: toggleAsd
 
 ![](assets/hoc-renderprops-and-hook-in-reactjs_c02d8b16fe8c6c8b864064441c8ac84d_md5.webp)
 
@@ -296,7 +296,7 @@ const App = (props)  => {
   const {isAsdToggle, toggleAsd} = props
   const {isDasToggle, toggleDas} = props
 
-  return ( 
+  return (
       <>
         {isXzcToggle && (<span>Xzc</span>)}
         <button onClick={toggleXzc}>toggle Xzc</button>

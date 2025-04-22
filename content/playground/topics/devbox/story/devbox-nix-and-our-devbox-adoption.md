@@ -1,16 +1,16 @@
 ---
-tags: 
+title: The overview into Nix & how we use Devbox @ Dwarves
+date: 2024-04-24
+description: The overview into Nix & how we use Devbox @ Dwarves
+authors:
+  - hnh
+  - vhbien
+tags:
   - tooling
   - containerization
   - virtualization
   - docker
   - devbox
-title: "The overview into Nix & how we use Devbox @ Dwarves"
-date: 2024-04-24
-description: The overview into Nix & how we use Devbox @ Dwarves
-authors: 
-  - hnh
-  - vhbien
 ---
 
 This is the 3rd post of Devbox series includes
@@ -47,7 +47,7 @@ RUN some-expensive-operation
 # ...
 ```
 
-When you modify any line in a Dockerfile, the underlying layers are rebuilt from scratch, regardless of whether those lower layers have changed or not as in the following diagram. Once `RUN apt-get install -yq vim`  is modified to `RUN apt-get install -yq vim mc`, the big package is also rebuilt after that.
+When you modify any line in a Dockerfile, the underlying layers are rebuilt from scratch, regardless of whether those lower layers have changed or not as in the following diagram. Once `RUN apt-get install -yq vim` is modified to `RUN apt-get install -yq vim mc`, the big package is also rebuilt after that.
 
 ![Image1](assets/devbox-nix-and-our-devbox-adoption_1.webp)
 
@@ -59,14 +59,13 @@ In contrast to Docker, Nix build works differently. It uses symlinks to achieve 
 
 Imagine you have a big box full of toys. Inside the box, there are lots of different toys that are connected to each other in different ways. For example, one toy might be connected to another toy by a string. If you want to play with just one toy, you need to find it in the box and take it out. But if you want to play with all the toys at once, you need to open the box and take them all out.
 
-
 Nix works the same way. It creates a "map" of all the packages on your computer, and how they depend on each other. When you want to use a package, Nix finds it in the map and uses it. If you want to update a package, Nix changes the map to reflect the new version.
 
 The magic of Nix is that it makes sure that everything works together correctly. It's like having a special box that knows how all the toys are connected, so it can help you play with them without getting confused or losing any of them.
 
 ## Docker can access internet while building image
 
-As we discussed in the [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges), Docker builds can access the public internet, so we can't guarantee that the same image will be built every time, as everything on the internet can change in minutes. Additionally, there are no checks to ensure that the files being fetched are actually the ones you intended for your Docker image. Even if we can push the image to a registry and pull it for running identical containers on different computers. In some edge cases when we can’t access to the online repository so need to build another one,  we may not be able to build the required image again if some dependencies have changed on the internet.
+As we discussed in the [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges), Docker builds can access the public internet, so we can't guarantee that the same image will be built every time, as everything on the internet can change in minutes. Additionally, there are no checks to ensure that the files being fetched are actually the ones you intended for your Docker image. Even if we can push the image to a registry and pull it for running identical containers on different computers. In some edge cases when we can’t access to the online repository so need to build another one, we may not be able to build the required image again if some dependencies have changed on the internet.
 
 ## Nix ensures external sources are Immutable
 
@@ -106,7 +105,7 @@ Devbox offers an intuitive interface for creating development environments using
 
 Looking at [memo.d.foundation](https://github.com/dwarvesf/memo.d.foundation), we use Devbox as a tool to create reproducible development environments, making it easy for new team members to get started with minimal effort. By setting up a Devbox shell config with needed dependencies, new joiners can quickly get started without installing anything beyond Devbox. They can then focus on making the application run locally, avoiding the issue of "It works on my machine." Non-tech team members working on content for this repository can also easily run the project without any concerns.
 
-All above ideas are proved by below transparent configuration file. 
+All above ideas are proved by below transparent configuration file.
 
 ![Image7](assets/devbox-nix-and-our-devbox-adoption_7.webp)
 
@@ -136,12 +135,11 @@ processes:
     shutdown:
       command: "pg_ctl stop -m fast"
     availability:
-      restart: "always"%   
+      restart: "always"%
 
 ```
 
-If you familiar with docker-compose,  I think it is easy to understand process-compose as well. By standing all `process-compose.yaml` both from the root of project and in the  `.devbox/`, you can manage how many services are ready to serve by using `devbox services ls`. Then when you enter `devbox services up`, all services in this project will be instructed to run. The special point here is that you can custom the `process-compose.yaml` at the root of project to get the same result as docker-compose without using container.
-
+If you familiar with docker-compose, I think it is easy to understand process-compose as well. By standing all `process-compose.yaml` both from the root of project and in the `.devbox/`, you can manage how many services are ready to serve by using `devbox services ls`. Then when you enter `devbox services up`, all services in this project will be instructed to run. The special point here is that you can custom the `process-compose.yaml` at the root of project to get the same result as docker-compose without using container.
 
 You also can run different Devbox shells parallel, but can’t run different services from different shells using the same port because we have no separate network here. Take a look at the following example when I try running 2 Postgresql services in different shells with the same port.
 
@@ -156,7 +154,7 @@ processes:
   postgresql:
     command: "pg_ctl start -o \"-k $PGHOST -p 5433\""
     is_daemon: true
-    shutdown: 
+    shutdown:
       command: "pg_ctl stop -m fast"
     availability:
       restart: "always"

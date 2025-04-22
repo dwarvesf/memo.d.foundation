@@ -1,14 +1,14 @@
 ---
+title: Why Go?
+date: 2024-08-30
+description: An exploration of the reasons why Go is gaining traction as a preferred programming language for enterprise-level software development, including its simplicity, efficiency, and robust standard library.
+authors:
+  - thangnt294
+  - fuatto
 tags:
   - golang
   - programming
   - enterprise
-authors:
-  - thangnt294
-  - fuatto
-title: 'Why Go?'
-description: 'An exploration of the reasons why Go is gaining traction as a preferred programming language for enterprise-level software development, including its simplicity, efficiency, and robust standard library.'
-date: 2024-08-30
 ---
 
 ## Why Go

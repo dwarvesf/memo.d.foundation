@@ -4,12 +4,12 @@ date: 2025-04-01
 description: Provides a comprehensive guide to Web3 development using Foundry, a modern, Rust-based toolkit for Ethereum smart contract development.
 authors:
   - haongo1
+toc: false
 tags:
   - evm
   - web3
   - foundry
   - blockchain
-toc: false
 ---
 
 ## Overview of Foundry
@@ -117,9 +117,9 @@ contract GameItems is Initializable, ERC1155Upgradeable, OwnableUpgradeable, UUP
         _mint(msg.sender, SHIELD, 1000, "");
     }
 
-    function mint(address account, uint256 id, uint256 amount) 
-        public 
-        onlyOwner 
+    function mint(address account, uint256 id, uint256 amount)
+        public
+        onlyOwner
     {
         _mint(account, id, amount, "");
     }
@@ -153,10 +153,10 @@ contract GameItemsTest is Test {
     function setUp() public {
         owner = address(this);
         user1 = address(0x1);
-        
+
         // Deploy implementation
         implementation = new GameItems();
-        
+
         // Deploy proxy
         bytes memory initData = abi.encodeWithSelector(
             GameItems.initialize.selector
@@ -190,7 +190,7 @@ contract GameItemsTest is Test {
         uint256[] memory ids = new uint256[](2);
         ids[0] = gameItems.GOLD();
         ids[1] = gameItems.SILVER();
-        
+
         uint256[] memory amounts = new uint256[](2);
         amounts[0] = 100;
         amounts[1] = 200;
@@ -224,12 +224,12 @@ import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 contract GameItemsScript is Script {
     function run() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        
+
         vm.startBroadcast(deployerPrivateKey);
 
         // Deploy implementation
         GameItems implementation = new GameItems();
-        
+
         // Prepare initialization data
         bytes memory initData = abi.encodeWithSelector(
             GameItems.initialize.selector

@@ -1,13 +1,13 @@
 ---
-tags: 
-  - design-pattern
-  - behavior-patterns
-  - gang-of-four 
-title: "Command Pattern"
-description: "Command is a behavioral design pattern that encapsulates a request as an object. This allows you to parameterize methods with different requests, delay or queue a request’s execution, and support undoable operations. This pattern promotes the decoupling of the sender and receiver of a request, enhancing flexibility and maintainability."
+title: Command Pattern
+date: 2024-06-27
+description: Command is a behavioral design pattern that encapsulates a request as an object. This allows you to parameterize methods with different requests, delay or queue a request’s execution, and support undoable operations. This pattern promotes the decoupling of the sender and receiver of a request, enhancing flexibility and maintainability.
 authors:
   - hieuvd
-date: 2024-06-27
+tags:
+  - design-pattern
+  - behavior-patterns
+  - gang-of-four
 ---
 
 ![Command Pattern](assets/command-pattern_command-en-2x.webp)
@@ -21,6 +21,7 @@ Command is a behavioral design pattern that encapsulates a request as an object.
 ![Structure of the Command design pattern](assets/command-pattern_structure-2x.webp)
 
 ### Command Interface
+
 **Purpose**
 
 - Declares a method for executing a command.
@@ -31,6 +32,7 @@ Command is a behavioral design pattern that encapsulates a request as an object.
 - Defines an `execute()` method that `concrete commands` must implement.
 
 ### Concrete Command
+
 **Purpose**
 
 - Implements the Command interface.
@@ -43,6 +45,7 @@ Command is a behavioral design pattern that encapsulates a request as an object.
 - Holds a reference to the Receiver.
 
 ### Receiver
+
 **Purpose**
 
 - Knows how to perform the operations needed to carry out the request.
@@ -52,6 +55,7 @@ Command is a behavioral design pattern that encapsulates a request as an object.
 - Performs the actual work when its methods are called by the `Concrete Command`.
 
 ### Invoker
+
 **Purpose**
 
 - Asks the command to carry out the request.
@@ -66,12 +70,12 @@ Command is a behavioral design pattern that encapsulates a request as an object.
 
 ![Restaurent](assets/command-pattern_command-comic-1-2x.webp)
 
-> Imagine you own a small restaurant where you are both the chef and the person  taking orders directly from your customers. As the chef, you prepare each meal  yourself.
+> Imagine you own a small restaurant where you are both the chef and the person taking orders directly from your customers. As the chef, you prepare each meal yourself.
 >
 > As your restaurant gains popularity, you find it increasingly difficult to handle the growing number of orders. To manage this, you decide to hire a waiter. The waiter's responsibilities include taking orders from customers and writing them down on a piece of paper.
 >
 > The waiter then brings the written orders to the kitchen and sticks them on the wall. You, the chef, can pick up these order slips from the wall and prepare the meals accordingly. Once you finish cooking, you place the meal on a tray along with the corresponding order slip.
-The waiter retrieves the tray, double-checks the order, and serves the meal to the customer. 
+> The waiter retrieves the tray, double-checks the order, and serves the meal to the customer.
 
 In this scenario, the paper order serves as a `Command`. It remains in a queue until the chef is ready to prepare it. The order contains all the relevant information required to cook the meal, allowing the chef to start cooking immediately instead of clarifying the order details directly from the customer.
 
@@ -96,4 +100,5 @@ In this scenario, the paper order serves as a `Command`. It remains in a queue u
 - User Interfaces: Optimistic UI
 
 ## References
+
 - https://refactoring.guru/design-patterns/command

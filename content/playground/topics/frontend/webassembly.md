@@ -1,15 +1,15 @@
 ---
+title: Webassembly
+date: 2023-01-05
+description: WebAssembly (abbreviated *Wasm*) was launched in 2017 as a low-level assembly-like language with a compact binary format, so it’s fast to load, execute, and run with near-native performance.
+authors:
+  - cor3.co
+github_id: tienan92it
 tags:
   - frontend
   - webassembly
   - performance
   - sandbox
-description: WebAssembly (abbreviated *Wasm*) was launched in 2017 as a low-level assembly-like language with a compact binary format, so it’s fast to load, execute, and run with near-native performance.
-title: Webassembly
-authors:
-  - cor3.co
-github_id: tienan92it
-date: 2023-01-05
 ---
 
 ### What

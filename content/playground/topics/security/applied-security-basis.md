@@ -1,9 +1,9 @@
 ---
-tags: 
-  - security
 title: Applied Security Basis
 date: 2020-02-25
-description: null
+description: Learn the basics of software security with an easy guide to Blockchain, SSH, and SSL protocols, explaining how they protect data through encryption, authentication, and decentralization.
+tags:
+  - security
 ---
 
 Security plays a vital role in software, maybe in any field of work. But when the coverage of software expands, the importance of security gets taken for granted, as it's embed and supported in frameworks and other low-level layers of the tech stacks. Hence, developers tend to spend time on the top-level layers. They buy in the fact that frameworks and libraries solve security issues. Consequently, security stays in a black box.
@@ -38,12 +38,12 @@ This part covers the fundamental theory of how blockchain works and gets applied
 
 Blockchain uses blocks to store pieces of information. Each block is time-stamped and connected to the one generated before it generated time. There are three most popular feature that makes blockchain more secured:
 
-* Decentralization: Copy of the blockchain ledger are stored and updated on each node-computer in the network, meaning that there is no central authority to make decisions
-* Consensus: The ability of nodes agrees on the true state of the network to ensure that the rules of the system are being followed and all parties involved agree on the current network’s state.
-* Immutability: Immutable means that something is unchanging over time or unable to be changed.
+- Decentralization: Copy of the blockchain ledger are stored and updated on each node-computer in the network, meaning that there is no central authority to make decisions
+- Consensus: The ability of nodes agrees on the true state of the network to ensure that the rules of the system are being followed and all parties involved agree on the current network’s state.
+- Immutability: Immutable means that something is unchanging over time or unable to be changed.
 
 ## References
 
-* **[1] "SSH Reference - Unix Tutorial."** [https://www.unixtutorial.org/reference/ssh](https://www.unixtutorial.org/reference/ssh). Accessed 30 Jul. 2020.
-* **[2] "How Does SSL Work? | Entrust Datacard."** [https://www.entrustdatacard.com/pages/ssl](https://www.entrustdatacard.com/pages/ssl). Accessed 30 Jul. 2020.
-* **[3] "How does the blockchain work? • Infinity Economics Platform."** [https://web.infinity-economics.org/how-does-the-blockchain-work/](https://web.infinity-economics.org/how-does-the-blockchain-work/)****. Accessed 30 Jul. 2020.
+- **[1] "SSH Reference - Unix Tutorial."** [https://www.unixtutorial.org/reference/ssh](https://www.unixtutorial.org/reference/ssh). Accessed 30 Jul. 2020.
+- **[2] "How Does SSL Work? | Entrust Datacard."** [https://www.entrustdatacard.com/pages/ssl](https://www.entrustdatacard.com/pages/ssl). Accessed 30 Jul. 2020.
+- **[3] "How does the blockchain work? • Infinity Economics Platform."** [https://web.infinity-economics.org/how-does-the-blockchain-work/](https://web.infinity-economics.org/how-does-the-blockchain-work/)\*\*\*\*. Accessed 30 Jul. 2020.

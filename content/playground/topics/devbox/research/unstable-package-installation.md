@@ -1,14 +1,15 @@
 ---
-tags: 
-  - docker
-  - devbox
-  - nix
-title: "Unstable Package Installation in Docker"
+title: Unstable Package Installation in Docker
 date: 2024-08-01
 description: An explanation of the challenges with package versioning that lets Docker builds unstable
 authors:
   - bievh
+tags:
+  - docker
+  - devbox
+  - nix
 ---
+
 For example, let's suppose that we have the following `Dockerfile`.
 
 ```Dockerfile
@@ -34,6 +35,7 @@ In this way, the instability can be decreased but can not resolve the issue comp
 - Ubuntu mirrors aka copies of main Ubuntu repositories can be changed also. Once the packages that you need, are not available, the building will fail.
 
 We have some keywords related to better solutions that I only list here for reference.
+
 - Local cache
 - Private registry
 - Multistage builds

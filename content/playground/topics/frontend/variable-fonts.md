@@ -1,15 +1,15 @@
 ---
+title: Variable Fonts
+date: 2023-03-06
+description: Variable fonts are a font format that allows for a single font file to contain multiple variations of a typeface.
+authors:
+  - ngolapnguyen
+github_id: ngolapnguyen
 tags:
   - frontend
   - css
   - fonts
   - variable-fonts
-description: Variable fonts are a font format that allows for a single font file to contain multiple variations of a typeface.
-title: Variable Fonts
-authors:
-  - ngolapnguyen
-github_id: ngolapnguyen
-date: 2023-03-06
 ---
 
 ## What's variable font?
@@ -73,8 +73,10 @@ Variable fonts are loaded though the same `@font-face` mechanism as traditional 
 
 ```css
 @font-face {
-  font-family: 'Roboto Flex';
-  src: url('RobotoFlex-VF.woff2') format('woff2') tech('variations'), url('RobotoFlex-VF.woff2') format('woff2-variations');
+  font-family: "Roboto Flex";
+  src:
+    url("RobotoFlex-VF.woff2") format("woff2") tech("variations"),
+    url("RobotoFlex-VF.woff2") format("woff2-variations");
 }
 ```
 

@@ -1,15 +1,14 @@
 ---
-tags: 
- - frontend, 
- - graphql
- - reactjs
-authors: 
- - mashiro5951
-description: When working with complex GraphQL schemas, it's common to have shared fields across different types. A fragment colocation pattern allows us to define fragments alongside their corresponding components, resulting in a more cohesive and maintainable codebase.
 title: A Fragment Colocation Pattern with React & Apollo GraphQL
-github_id: ngolapnguyen
 date: 2023-06-04
-
+description: "When working with complex GraphQL schemas, it's common to have shared fields across different types. A fragment colocation pattern allows us to define fragments alongside their corresponding components, resulting in a more cohesive and maintainable codebase."
+authors:
+  - mashiro5951
+github_id: ngolapnguyen
+tags:
+  - frontend
+  - graphql
+  - reactjs
 ---
 
 When working with complex GraphQL schemas, it's common to have shared fields across different types. A fragment colocation pattern allows us to define fragments alongside their corresponding components, resulting in a more cohesive and maintainable codebase.
@@ -76,24 +75,24 @@ For backend, let's say we are using [NestJS](nestjs-a-progressive-node.js framew
 
 ```ts
 interface AnimalModel {
-  id: string
-  name: string
-  bread: string
+  id: string;
+  name: string;
+  bread: string;
 }
 
 interface CatModel extends AnimalModel {
-  age: number
+  age: number;
 }
 
 interface DogModel extends AnimalModel {
-  weight: number
+  weight: number;
 }
 ```
 
 We'll define fragments for the shared fields (`id`, `name`, and `breed`) within the `AnimalModel` type, and define two other fragments for cat & dog that extend from the animal fragment:
 
 ```jsx
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 const ANIMAL_FRAGMENT = gql`
   fragment AnimalFragment on AnimalModel {
@@ -101,7 +100,7 @@ const ANIMAL_FRAGMENT = gql`
     name
     breed
   }
-`
+`;
 
 const CAT_FRAGMENT = gql`
   fragment CatFragment on CatModel {
@@ -109,7 +108,7 @@ const CAT_FRAGMENT = gql`
     age
   }
   ${ANIMAL_FRAGMENT}
-`
+`;
 
 const DOG_FRAGMENT = gql`
   fragment DogFragment on DogModel {
@@ -117,7 +116,7 @@ const DOG_FRAGMENT = gql`
     weight
   }
   ${ANIMAL_FRAGMENT}
-`
+`;
 ```
 
 By this point, we are still missing something until we can build the `CatCard` and `DogCard` components - the Typescript types.
@@ -162,7 +161,7 @@ export type DogFragment {
 Now that we have everything we need, let's build the `CatCard` and `DogCard` components:
 
 ```ts
-import { CatFragment } from 'graphql/generated'
+import { CatFragment } from "graphql/generated";
 
 // const ANIMAL_FRAGMENT = gql`...`
 
@@ -171,16 +170,16 @@ import { CatFragment } from 'graphql/generated'
 // const DOG_FRAGMENT = gql`...`
 
 const CatCard = (props: { cat: CatFragment }) => {
-  const { cat } = props
+  const { cat } = props;
 
   // Component rendering logic
-}
+};
 
 const DogCard = (props: { cat: DogFragment }) => {
-  const { cat } = props
+  const { cat } = props;
 
   // Component rendering logic
-}
+};
 ```
 
 The properties `cat` and `dog` will have the types we have defined for the fragments they are actually using - an exact map from GraphQL models to Typescript types that we can be sure will always be accurate as long as the fragments we define match the schema from GraphQL backend.
@@ -189,7 +188,7 @@ Next, let's build the `CatList` and `DogList` component and see how we handle qu
 
 ```ts
 // ... import needed stuff
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 gql`
   query GetCatList {
@@ -198,7 +197,7 @@ gql`
     }
   }
   ${CAT_FRAGMENT}
-`
+`;
 
 gql`
   query GetDogList {
@@ -207,7 +206,7 @@ gql`
     }
   }
   ${DOG_FRAGMENT}
-`
+`;
 ```
 
 Then we run `@graphql-codegen/cli` again. Depending on how we set-up the CLI, output will vary so the below are what I normally work with:

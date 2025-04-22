@@ -1,11 +1,11 @@
 ---
-tags: 
+title: Be Careful With Your Code Splitting Setup
+date: 2017-07-17
+description: Learn how improper Webpack code-splitting can cause React virtual lists to reset scroll position unexpectedly and how grouping related chunks fixes navigation glitches in mobile-first PWAs.
+tags:
   - engineering
   - practice
   - technique
-title: Be Careful With Your Code Splitting Setup
-date: 2017-07-17
-description: null
 ---
 
 I thought I have been through hell this evening. Took me 6 hours debugging in the deep dark of hell. Oh right.

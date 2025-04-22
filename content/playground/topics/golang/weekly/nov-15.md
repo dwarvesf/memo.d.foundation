@@ -1,20 +1,20 @@
 ---
+title: "Go Commentary #20: Go Turns 15"
+date: 2024-11-15
+description: The 15th anniversary of the Go open source release
+authors:
+  - fuatto
+short_title: "#20 Go Turns 15"
 tags:
   - golang
   - go-weekly
-authors:
-  - fuatto
-title: 'Go Commentary #20: Go Turns 15'
-short_title: '#20 Go Turns 15'
-description: The 15th anniversary of the Go open source release
-date: 2024-11-15
 ---
 
 ## [Go Turns 15](https://go.dev/blog/15years)
 
 - So much has changed since [Go's 10 year anniversery](https://go.dev/blog/10years)
 
-  - Go’s user base x3 in the past five years, making it one of the fastest growing languages. 
+  - Go’s user base x3 in the past five years, making it one of the fastest growing languages.
   - From its beginnings just fifteen years ago, Go has become a top 10 language and the language of the modern cloud.
 
 - It's a year of for loop:
@@ -69,39 +69,35 @@ date: 2024-11-15
 
       - The patterns used by **net/http.ServeMux** now accept methods and wildcards.
 
-        For example, the router accepts a pattern like *GET /task/{id}/*, which matches only GET requests and captures the value of the {id} segment in a map that can be accessed through Request values.
+        For example, the router accepts a pattern like _GET /task/{id}/_, which matches only GET requests and captures the value of the {id} segment in a map that can be accessed through Request values.
 
-      - A new *Null[T]* type in **database/sql** provides a way to scan nullable columns.
+      - A new _Null[T]_ type in **database/sql** provides a way to scan nullable columns.
 
       - A Concat function was added in package **slices**, to concatenate multiple slices of any type.
 
   - [Go 1.23 in August](https://go.dev/blog/go1.23)
 
-    - Range expressions in a *“for-range”* loop may now be iterator functions, such as ```func(func(K) bool)```. This supports user-defined iterators over arbitrary sequences. There are several additions to the standard slices and maps packages that work with iterators, as well as a new iter package. As an example, if you wish to collect the keys of a map m into a slice and then sort its values, you can do that in Go 1.23 with slices.Sorted(maps.Keys(m)).
+    - Range expressions in a _“for-range”_ loop may now be iterator functions, such as `func(func(K) bool)`. This supports user-defined iterators over arbitrary sequences. There are several additions to the standard slices and maps packages that work with iterators, as well as a new iter package. As an example, if you wish to collect the keys of a map m into a slice and then sort its values, you can do that in Go 1.23 with slices.Sorted(maps.Keys(m)).
 
     - Preview support for generic type aliases.
 
     - Tool improvements
-      
-      - Starting with Go 1.23, it’s possible for the Go toolchain to collect usage and breakage statistics to help understand how the Go toolchain is used, and how well it is working. This is *Go telemetry*, an opt-in system. Please consider opting in to help us keep Go working well and better understand Go usage. 
 
-      - The go command has new conveniences. For example, running ```go env -changed``` makes it easier to see only those settings whose effective value differs from the default value, and ```go mod tidy -diff``` helps determine the necessary changes to the *go.mod* and *go.sum* files without modifying them. Read more on the Go command in the release notes.
-      
-      - The ```go vet``` subcommand now reports symbols that are too new for the intended Go version. 
+      - Starting with Go 1.23, it’s possible for the Go toolchain to collect usage and breakage statistics to help understand how the Go toolchain is used, and how well it is working. This is _Go telemetry_, an opt-in system. Please consider opting in to help us keep Go working well and better understand Go usage.
+
+      - The go command has new conveniences. For example, running `go env -changed` makes it easier to see only those settings whose effective value differs from the default value, and `go mod tidy -diff` helps determine the necessary changes to the _go.mod_ and _go.sum_ files without modifying them. Read more on the Go command in the release notes.
+      - The `go vet` subcommand now reports symbols that are too new for the intended Go version.
 
 - For next 15 years:
 
   - Evolving Go to better leverage the capabilities of current and future hardware
 
-  - Go 1.24 will have a totally new map implementation under the hood that’s more efficient on modern CPUs. 
-  
-  - Prototyping new garbage collection algorithms designed around the capabilities and constraints of modern hardware. 
+  - Go 1.24 will have a totally new map implementation under the hood that’s more efficient on modern CPUs.
+  - Prototyping new garbage collection algorithms designed around the capabilities and constraints of modern hardware.
 
   - Some improvements will be in the form of new APIs and tools so Go developers can better leverage modern hardware.
 
   - Working on making Go better for AI—and AI better for Go (LangChainGo & Genkit)
-  
-
 
 ---
 

@@ -1,9 +1,9 @@
 ---
-tags: 
-  - engineering
 title: Reusability In Software Development
 date: 2020-05-05
-description: null
+description: Learn how software reuse strategies, including component reuse, frameworks, and product lines, speed development, cut costs, and improve quality while facing challenges like maintenance and tool support.
+tags:
+  - engineering
 ---
 
 ## Introduction
@@ -26,9 +26,9 @@ Standards, such as web service standards, have made it easier to develop softwar
 
 Reuse-based software engineering is an approach to development that tries to maximize the reuse of existing software. The software units that are reused may be of radically different sizes. For example:
 
-* Component reuse: Component is a scalable concept, it can be big like a subsystem or small as a class, function, or object and have the ability to reuse flexibly.
-* Application reuse: An application can be reused by integrating without change into a system or re-configured for a specific customer.
-* System reuse: A system that contains a number of application can be a part of another bigger system.
+- Component reuse: Component is a scalable concept, it can be big like a subsystem or small as a class, function, or object and have the ability to reuse flexibly.
+- Application reuse: An application can be reused by integrating without change into a system or re-configured for a specific customer.
+- System reuse: A system that contains a number of application can be a part of another bigger system.
 
 Each function or component that includes generic functionality is potentially reusable. However, sometimes, it is very expensive to modify them for a new situation. So, rather than reuse code, the idea is also a good thing to reuse. This way is called concept reuse.
 
@@ -54,12 +54,12 @@ There is a lot of benefits when using Software reuse in development, but I think
 
 Summary, basically, we have six benefits of Software reuse:
 
-* Accelerated development
-* Effective use of specialists
-* Increased dependability
-* Lower development costs
-* Reduced process risk
-* Standards compliance
+- Accelerated development
+- Effective use of specialists
+- Increased dependability
+- Lower development costs
+- Reduced process risk
+- Standards compliance
 
 ### The problems
 
@@ -124,17 +124,17 @@ Finally, we can consider a few class of framework.
 
 I saw a few types of framework in [Sommerville software engineering 10th edition](https://dinus.ac.id/repository/docs/ajar/Sommerville-Software-Engineering-10ed.pdf), see the following:
 
-* System infrastructure frameworks: tools for doing everything in infrastructures layer such as communications, user interfaces, and compilers.
-* Middleware integration frameworks: line of frameworks that support construct an ideal environment for an application works. For example, there are Microsoft’s .NET and Enterprise Java Beans (EJB). What is the ideal environment? This is a location that allows each component of your system to communicate with each other and with OS and exchange data easily.
-* Enterprise application frameworks: specified frameworks for the specified domains, such as telecommunications or financial systems. It doesn't only support the development, but also contains this domain's deep knowledge. This kind of framework is the key of the product line that is considered in the next section.
+- System infrastructure frameworks: tools for doing everything in infrastructures layer such as communications, user interfaces, and compilers.
+- Middleware integration frameworks: line of frameworks that support construct an ideal environment for an application works. For example, there are Microsoft’s .NET and Enterprise Java Beans (EJB). What is the ideal environment? This is a location that allows each component of your system to communicate with each other and with OS and exchange data easily.
+- Enterprise application frameworks: specified frameworks for the specified domains, such as telecommunications or financial systems. It doesn't only support the development, but also contains this domain's deep knowledge. This kind of framework is the key of the product line that is considered in the next section.
 
 To me, I prefer another way to classify frameworks that looks more specific and practical.
 
-* Web Application Framework
-* Application Framework
-* Multimedia Framework
-* Game Framework
-* More and more, I don't think it's mandatory to naming as long as you feel comfortable and understand what is under the hood.
+- Web Application Framework
+- Application Framework
+- Multimedia Framework
+- Game Framework
+- More and more, I don't think it's mandatory to naming as long as you feel comfortable and understand what is under the hood.
 
 Summary, framework is used for the reuse purpose, so, an application is constructed base on frameworks that can be reused, too, and the product line is a representation of this application, will be considered later.
 
@@ -152,9 +152,9 @@ Generally, product line derives from an exist application that is called base ap
 
 [The organization of a base system for a product line](https://github.com/dwarvesf/radar/blob/master/software-reuse/Documents/software-reuse.md#3-4-7-8-%22software-engineering%22-httpsdinusacidrepositorydocsajarsommerville-software-engineering-10edpdf)
 
-* Core components that provide infrastructure support. These are often immutable when developing other instances of the product line.
-* Configurable components that may be modified and configured to specialize them in a new application. Sometimes it is possible to reconfigure these components without changing their code by using a built-in component configuration language.
-* Specialized, domain-specific components some or all of which may be replaced when a new instance of a product line is created.
+- Core components that provide infrastructure support. These are often immutable when developing other instances of the product line.
+- Configurable components that may be modified and configured to specialize them in a new application. Sometimes it is possible to reconfigure these components without changing their code by using a built-in component configuration language.
+- Specialized, domain-specific components some or all of which may be replaced when a new instance of a product line is created.
 
 On the other hand, we can distinguish the components of the product line into 4 layers that are as following:
 

@@ -1,10 +1,10 @@
 ---
-tags: 
-  - R&D
-  - data
 title: Managing Dataflow And Sql Database With Concurrency Control
 date: 2023-05-04
-description: null
+description: Learn how explicit locking in PostgreSQL helps manage concurrency control in high-workload databases by preventing data conflicts with table-level, row-level, and advisory locks.
+tags:
+  - rd
+  - data
 ---
 
 ![](assets/managing-dataflow-and-sql-database-with-concurrency-control_c11c827159778f301fbd67b9d155b80b_md5.avif)
@@ -12,15 +12,16 @@ description: null
 Some of us had built a game, while others were familiar with e-commerce platforms, D-apps, or even all of these types of applications, and more. Each type of software that we were working on needed different techniques, some of which were similar. So the same problem can happen in every software product. In this post, we will discuss an issue in high-workload databases together. It is **Concurrency Control**.
 
 ## Problem
+
 Let's consider that we have an e-bank application that includes an account table. Each account stores the balance, and we need to subtract when there is a withdrawal transaction and add when there is a deposit transaction.
 
 Assume that the system is developed including the following steps:
 
-* Select the sender's balance
-* Check the sender's balance
-* Select the recipient's balance
-* Subtract/add balances of both sender and recipient
-* Update balance
+- Select the sender's balance
+- Check the sender's balance
+- Select the recipient's balance
+- Subtract/add balances of both sender and recipient
+- Update balance
 
 With all of the loose steps above, we can imagine that there are a few gaps here. So problems can arise at any time. For example, imagine that we have two users: A with a balance of $300 and B, whose balance is not relevant here. And we also have two separate transactions: the first requests sending $200 from A to B, and the second is for $300.
 
@@ -28,21 +29,22 @@ We can see a very transparent issue here when both of these transactions come at
 
 This is just a simple example. We also have many related scenarios like this, but listing all of them is not the purpose of this post. We will use it as an issue that helps us open the door to one of the techniques used by databases to resolve the problem: **Explicit Locking**.
 
-*Note that I will approach the problem by using PostgreSQL, so every concept in this article should be biased toward this database. Different databases can be implemented in different ways with different concepts and names, but under the hood, they should be similar.*
+_Note that I will approach the problem by using PostgreSQL, so every concept in this article should be biased toward this database. Different databases can be implemented in different ways with different concepts and names, but under the hood, they should be similar._
 
 ## Firstly, what is the Explicit Locking in the Database?
+
 Database locking is one of the most common mechanisms that helps us achieve concurrency control in a database by preventing multiple transactions from accessing the same data simultaneously. The first thing that we need to explore is the types of locking in SQL databases.
 
 As I know, we have two popular types of database locking
 
-* **Shared Locks** allow multiple transactions to read a resource simultaneously, but prevent other transactions from modifying the locked resource until the lock is released. They are helpful when we need to read data frequently but modify it infrequently.
-* **Exclusive Locks** are used when a transaction needs to modify data. This type of lock prevents any other transaction from accessing the same data until the lock is released. This means that when a transaction holds an exclusive lock on a resource, it can modify the data without interference from other transactions.
+- **Shared Locks** allow multiple transactions to read a resource simultaneously, but prevent other transactions from modifying the locked resource until the lock is released. They are helpful when we need to read data frequently but modify it infrequently.
+- **Exclusive Locks** are used when a transaction needs to modify data. This type of lock prevents any other transaction from accessing the same data until the lock is released. This means that when a transaction holds an exclusive lock on a resource, it can modify the data without interference from other transactions.
 
 Besides these types of locks, some databases also support others such as following
 
-* Update locks can be used to protect a resource from being modified while it is being read.
-* Intent Locks signal the intention to acquire a shared or exclusive lock on a resource. This can be thought of as a lock of locks.
-* Schema Locks are used to prevent concurrent schema modifications.
+- Update locks can be used to protect a resource from being modified while it is being read.
+- Intent Locks signal the intention to acquire a shared or exclusive lock on a resource. This can be thought of as a lock of locks.
+- Schema Locks are used to prevent concurrent schema modifications.
 
 Besides the type, we also split database locking into a few levels depending on the scope of this lock as follows.
 
@@ -72,16 +74,16 @@ Besides the type, we also split database locking into a few levels depending on 
          +----------------------------------------------------+
 ```
 
-*Image 1: Locking scopes*
+_Image 1: Locking scopes_
 
- | **Locking Level** | **Description** | 
- | ---- | ---- | 
- | Database-level lock | The highest level of locking that can be applied to a database. This lock prevents any concurrent access to the entire database. | 
- | Table-level lock | A lock is applied to an entire table, preventing any concurrent access to the table. | 
- | Page-level lock | A lock is applied to a single page of data in a table, preventing any concurrent access to that page. | 
- | Row-level lock | The most granular level of locking is applied to a single row of data in a table. This allows for concurrent access to other rows in the same table. | 
+| **Locking Level**   | **Description**                                                                                                                                      |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Database-level lock | The highest level of locking that can be applied to a database. This lock prevents any concurrent access to the entire database.                     |
+| Table-level lock    | A lock is applied to an entire table, preventing any concurrent access to the table.                                                                 |
+| Page-level lock     | A lock is applied to a single page of data in a table, preventing any concurrent access to that page.                                                |
+| Row-level lock      | The most granular level of locking is applied to a single row of data in a table. This allows for concurrent access to other rows in the same table. |
 
-*Table 1: Locking levels*
+_Table 1: Locking levels_
 
 In this post, we just only focus on the Table and Row Level Locking.
 
@@ -93,44 +95,45 @@ For example in PostgreSQL, we have the following table that represents the Confl
 
 Sure, here's the updated table with `ACCESS SHARE` added to the second column before `ROW SHARE`:
 
- | **REQUESTED LOCK MODE** | **ACCESS SHARE** | **ROW SHARE** | **ROW EXCLUSIVE** | **SHARE UPDATE EXCLUSIVE** | **SHARE** | **SHARE ROW EXCLUSIVE** | **EXCLUSIVE** | **ACCESS EXCLUSIVE** | 
- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | 
- | ACCESS SHARE |  |  |  |  |  |  |  | X | 
- | ROW SHARE |  |  |  |  |  |  | X | X | 
- | ROW EXCLUSIVE |  |  |  |  | X | X | X | X | 
- | SHARE UPDATE EXCLUSIVE |  |  |  | X | X | X | X | X | 
- | SHARE |  |  | X | X |  | X | X | X | 
- | SHARE ROW EXCLUSIVE |  |  | X | X | X | X | X | X | 
- | EXCLUSIVE |  | X | X | X | X | X | X | X | 
- | ACCESS EXCLUSIVE | X | X | X | X | X | X | X | X | 
+| **REQUESTED LOCK MODE** | **ACCESS SHARE** | **ROW SHARE** | **ROW EXCLUSIVE** | **SHARE UPDATE EXCLUSIVE** | **SHARE** | **SHARE ROW EXCLUSIVE** | **EXCLUSIVE** | **ACCESS EXCLUSIVE** |
+| ----------------------- | ---------------- | ------------- | ----------------- | -------------------------- | --------- | ----------------------- | ------------- | -------------------- |
+| ACCESS SHARE            |                  |               |                   |                            |           |                         |               | X                    |
+| ROW SHARE               |                  |               |                   |                            |           |                         | X             | X                    |
+| ROW EXCLUSIVE           |                  |               |                   |                            | X         | X                       | X             | X                    |
+| SHARE UPDATE EXCLUSIVE  |                  |               |                   | X                          | X         | X                       | X             | X                    |
+| SHARE                   |                  |               | X                 | X                          |           | X                       | X             | X                    |
+| SHARE ROW EXCLUSIVE     |                  |               | X                 | X                          | X         | X                       | X             | X                    |
+| EXCLUSIVE               |                  | X             | X                 | X                          | X         | X                       | X             | X                    |
+| ACCESS EXCLUSIVE        | X                | X             | X                 | X                          | X         | X                       | X             | X                    |
 
-*Table 2: Conflicting Lock Modes at Table Level [1]*
+_Table 2: Conflicting Lock Modes at Table Level [1]_
 
 Another common concept is **Row level locks**. At this level, locks do not affect data querying; they only block writers and lockers to the same rows. Row-level locks can be released at the transaction end or during savepoint rollback, just like table-level locks.
 
 Similar to table-level locks, row-level locks also have different lock modes and each of them may conflict with others. The following table describes these modes:
 
- | **REQUESTED LOCK MODE** | **FOR KEY SHARE** | **FOR SHARE** | **FOR NO KEY UPDATE** | **FOR UPDATE** | 
- | ---- | ---- | ---- | ---- | ---- | 
- | FOR KEY SHARE |  |  |  | X | 
- | FOR SHARE |  |  | X | X | 
- | FOR NO KEY UPDATE |  | X | X | X | 
- | FOR UPDATE | x | X | X | X | 
+| **REQUESTED LOCK MODE** | **FOR KEY SHARE** | **FOR SHARE** | **FOR NO KEY UPDATE** | **FOR UPDATE** |
+| ----------------------- | ----------------- | ------------- | --------------------- | -------------- |
+| FOR KEY SHARE           |                   |               |                       | X              |
+| FOR SHARE               |                   |               | X                     | X              |
+| FOR NO KEY UPDATE       |                   | X             | X                     | X              |
+| FOR UPDATE              | x                 | X             | X                     | X              |
 
-*Table 3: Conflicting Row-Level Locks [2]*
+_Table 3: Conflicting Row-Level Locks [2]_
 
 In addition to the database-defined locks listed above, some databases provide a means for creating locks that have application-defined meanings, called advisory locks. These locks are not used automatically; sometimes, we need the ability to customize the lock mechanism, so we implement advisory locks on the application level and control them manually.
 
 For example, we can acquire an advisory lock in PostgreSQL in two ways:
 
-* Advisory lock at the session level. In this case, the lock is not released automatically after the transaction is done, so we need to release it manually.
-* Advisory lock at the transaction level, which looks more similar to regular locks. We do not need an explicit unlock operator to release it.
+- Advisory lock at the session level. In this case, the lock is not released automatically after the transaction is done, so we need to release it manually.
+- Advisory lock at the transaction level, which looks more similar to regular locks. We do not need an explicit unlock operator to release it.
 
 In the implementation, advisory locks try to acquire an `EXCLUSIVE` lock on a specific relation or table and prevent other transactions from accessing it.
 
 We're good to move on to the next part, where we'll discuss the actual problem.
 
 ## Why do we need these locks, and how can we choose the right type of lock?
+
 **Firstly, we continue with the problem that is raised at the beginning of this post.**
 
 In this scenario, both transactions updated the balances of the same accounts at the same time, leading to a data conflict. The final balances of Account X and Account Y are different depending on which transaction was committed first.
@@ -207,9 +210,11 @@ SELECT process_message(123);
 In general, advisory locks should be used sparingly and only when necessary. They can add complexity to the application code and can also be a source of contention and performance issues if not used correctly.
 
 ## Conclusion
+
 Explicit locking is the most accessible way to resolve concurrency control in high-workload databases. Depending on the context of your application or feature, you can choose the proper type/level of database locking to avoid data conflicts, considering the pros and cons. However, this is not the only option. You can also choose other methods, such as implementing a queue or a separate service that divides and rules every request to your database. I hope this post helps you choose the right way to implement your application in the future.
 
 ## REFERENCES
+
 [[1](https://publish.obsidian.md/#)] “Documentation: 15: 13.3. Explicit Locking.”, Table 13.2. Conflicting Lock Modes, PostgreSQL, [https://www.postgresql.org/docs/current/explicit-locking.html](https://www.postgresql.org/docs/current/explicit-locking.html). Accessed 23 April 2023.
 
 [[2](https://publish.obsidian.md/#)] “Documentation: 15: 13.3. Explicit Locking.”, Table 13.3. Conflicting Row-Level Locks, PostgreSQL, [https://www.postgresql.org/docs/current/explicit-locking.html](https://www.postgresql.org/docs/current/explicit-locking.html). Accessed 23 April 2023.

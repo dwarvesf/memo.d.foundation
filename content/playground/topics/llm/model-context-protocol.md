@@ -1,13 +1,13 @@
 ---
-authors:
-  - datnguyennnx
+title: Intro to Model Context Protocol
 date: 2024-11-29
 description: "Explore Anthropic's Model Context Protocol (MCP) - a groundbreaking approach to enhancing AI assistants. Learn how MCP integrates with local and remote resources, enabling smarter interactions with tools and databases."
+authors:
+  - datnguyennnx
 tags:
   - llm
   - protocol
   - mcp
-title: 'Intro to Model Context Protocol'
 ---
 
 By making a new protocol known as the Model Context Protocol (MCP) open-source, Anthropic made a major change in AI. By overcoming the limitations of traditional data integration techniques and addressing the recurrent problem of data isolation, this protocol aims to enhance the connections between data hubs and AI systems.
@@ -41,7 +41,11 @@ Examples of using the Claude Desktop as an MCP client ( MCP Host ) might look li
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/files"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/allowed/files"
+      ]
     },
     "git": {
       "command": "uvx",
@@ -56,7 +60,11 @@ Examples of using the Claude Desktop as an MCP client ( MCP Host ) might look li
     },
     "postgres": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/mydb"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost/mydb"
+      ]
     }
   }
 }

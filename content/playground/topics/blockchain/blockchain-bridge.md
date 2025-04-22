@@ -1,14 +1,14 @@
 ---
-tags: 
- - blockchain
- - blockchain-bridge
- - web3
-authors: 
-  - thanhpn
-title: 'Blockchain Bridge'
-github_id: thanhpn
-description: A comprehensive guide to understanding blockchain bridges, their types, and how they facilitate communication and asset transfers between different blockchain networks.
+title: Blockchain Bridge
 date: 2022-06-21
+description: A comprehensive guide to understanding blockchain bridges, their types, and how they facilitate communication and asset transfers between different blockchain networks.
+authors:
+  - thanhpn
+github_id: thanhpn
+tags:
+  - blockchain
+  - blockchain-bridge
+  - web3
 ---
 
 ![](assets/blockchain-bridge_blockruption-blockchain-300h.webp)

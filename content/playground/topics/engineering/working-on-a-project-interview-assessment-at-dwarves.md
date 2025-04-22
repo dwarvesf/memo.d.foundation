@@ -1,12 +1,13 @@
 ---
-tags: 
+title: Working On A Project Interview Assessment At Dwarves
+date: 2023-06-08
+description: Discover how a paid coding project at Dwarves using Discord API and Elixir provided a unique interview experience focused on real backend data engineering and engagement analytics.
+tags:
   - engineering
   - bounty
   - community
-title: Working On A Project Interview Assessment At Dwarves
-date: 2023-06-08
-description: null
 ---
+
 <!-- table_of_contents a2f93f20-d45e-4906-92a7-66296b684356 -->
 
 I had my fair share of interviews. Most of them are "traditional" QnA sessions, and unpaid take-home projects, and coding assessments. Dwarves's paid project is different and left a good impression on me.
@@ -27,19 +28,19 @@ In the first few days, I spent a bit of time to design the architecture and to g
 
 The simplest way to explain AOT and JIT's differences is to compare the data. Let us look at AOT's simplified table design:
 
-* `discord_user_id`
-* `channel_id`
-* `message_count`
-* `reaction_count`
+- `discord_user_id`
+- `channel_id`
+- `message_count`
+- `reaction_count`
 
 The logic is that whenever we "catch" a new message, we increase `message_count`. This approach's advantages are its simplicity and low memory requirement. The disadvantage is that we only have the current state (how many messages have been since the beginning of time), and are unable to know the history state (how many messages were sent yesterday).
 
 JIT's simplified table design looks like this:
 
-* `message_id`
-* `discord_user_id`
-* `channel_id`
-* `date_sent`
+- `message_id`
+- `discord_user_id`
+- `channel_id`
+- `date_sent`
 
 The logic is that whenever we "catch" a new message, we create a new record like that. The advantage of this approach is that we will be able to the query history state, and the disadvantage is that the data can potentially be huge, and we might need complex data processing and storage solutions.
 

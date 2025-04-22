@@ -1,9 +1,9 @@
 ---
-tags: 
-  - agile
 title: Estimation In Agile
 date: 2016-02-12
-description: null
+description: Learn how to estimate work using story points, time, and planning poker for accurate project planning, with tips on improving quality through adjusted estimates and workflow practices.
+tags:
+  - agile
 ---
 
 **Estimation** (or **estimating**) is the process of finding an **estimate**, or approximation, which is a value that is usable for some purpose even if input data may be incomplete, uncertain, or unstable.
@@ -20,15 +20,15 @@ Story points are a unit of measure for expressing an estimate of the overall eff
 
 When estimating using story points the team must include everything that can affect the effort such as :
 
-* The amount of work to do
-* The complexity of the work
-* Any risk or uncertainty in doing the work
+- The amount of work to do
+- The complexity of the work
+- Any risk or uncertainty in doing the work
 
 For a more detailed description on the subject: [What are story points?](https://www.mountaingoatsoftware.com/blog/what-are-story-points)
 
 The possible values that can be given as story points needs to be part of the Fibonacci sequence we will be using (0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89).
 
-*The reason for using the Fibonacci sequence is to reflect the inherent uncertainty in estimating larger items*
+_The reason for using the Fibonacci sequence is to reflect the inherent uncertainty in estimating larger items_
 
 ### Time
 
@@ -36,9 +36,9 @@ Estimation using time is also used for some specific [issue types](https://piem
 
 When estimating using time the team must consider how long something will take if:
 
-* it's all you work on
-* no one interrupts you
-* everything you need is available
+- it's all you work on
+- no one interrupts you
+- everything you need is available
 
 The format for the time estimate is "eg. 4d 12h".
 
@@ -64,10 +64,10 @@ The reason to use planning poker is to **avoid the influence of the other parti
 
 ### Disclaimer
 
-* The planning poker is not a vote.
-* The highest value will not be taken by default by the moderator if a consensus is not reached. The decision will be based on the discussions the team had.
-* If a team member is not sure about his estimate and wants a value in the middle (ie. 10 but he can choose only between 8 and 13) then he must round up (ie. 13 here).
-* **During discussion, numbers must not be mentioned at all in relation to feature size**
+- The planning poker is not a vote.
+- The highest value will not be taken by default by the moderator if a consensus is not reached. The decision will be based on the discussions the team had.
+- If a team member is not sure about his estimate and wants a value in the middle (ie. 10 but he can choose only between 8 and 13) then he must round up (ie. 13 here).
+- **During discussion, numbers must not be mentioned at all in relation to feature size**
 
 ## Experimentation: safety plan
 
@@ -79,9 +79,9 @@ To help reduce the number of historical issues and their associated causes such 
 
 In order to achieve that, we want some time to be allocated with each issue regarding:
 
-* the testing that the engineer does (a focus on a more holistic approach to testing)
-* reviewing the new code he wrote for that issue (and associated dependencies)
-* checking that the issue matches the specifications (strictly following the written requirements, and no divergence)
+- the testing that the engineer does (a focus on a more holistic approach to testing)
+- reviewing the new code he wrote for that issue (and associated dependencies)
+- checking that the issue matches the specifications (strictly following the written requirements, and no divergence)
 
 We do not want to complexify the way the estimation is done. The way we estimate new stories stays the same.
 

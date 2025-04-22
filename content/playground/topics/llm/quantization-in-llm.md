@@ -1,12 +1,12 @@
 ---
+title: Quantization for large language models
+date: 2024-11-21
+description: As large language models (LLMs) continue to evolve, their parameter counts grow exponentially, with some models reaching trillions of parameters. This exponential growth presents significant challenges for deployment on edge devices and in resource-constrained environments due to extensive memory and computational requirements. Quantization emerges as a crucial technique to reduce model footprint while preserving acceptable performance.
+authors:
+  - hoangnnh
 tags:
   - llm
   - ai
-authors:
-  - hoangnnh
-date: 2024-11-21
-title: "Quantization for large language models"
-description: "As large language models (LLMs) continue to evolve, their parameter counts grow exponentially, with some models reaching trillions of parameters. This exponential growth presents significant challenges for deployment on edge devices and in resource-constrained environments due to extensive memory and computational requirements. Quantization emerges as a crucial technique to reduce model footprint while preserving acceptable performance."
 ---
 
 As large language models (LLMs) continue to evolve, their parameter counts grow exponentially, with some models reaching trillions of parameters. This exponential growth presents significant challenges for deployment on edge devices and in resource-constrained environments due to extensive memory and computational requirements. Quantization emerges as a crucial technique to reduce model footprint while preserving acceptable performance.
@@ -36,7 +36,7 @@ Two primary approaches exist for LLM quantization:
 
 There are many quantization schema to reduce the size of the model. One technique is called Linear Qunatization - which is used to map the floating point values to the smaller range of values by shifting and scaling. There are 2 main modes in this technique:
 
-- **Symmetric**: The zero-point is zero ,  i.e. 0.0 of the floating point range is the same as 0 in the quantized range. Typically, this is more efficient to compute at runtime but may result in lower accuracy if the floating point range is unequally distributed around the floating point 0.0.
+- **Symmetric**: The zero-point is zero , i.e. 0.0 of the floating point range is the same as 0 in the quantized range. Typically, this is more efficient to compute at runtime but may result in lower accuracy if the floating point range is unequally distributed around the floating point 0.0.
 - **Asymmetric**: Zero-point that is non-zero in value. This can result in higher accuracy but may be less efficient to compute at runtime.
 
 In this part, we focus on the asymmetric mode.
@@ -68,11 +68,11 @@ The process maps values from higher to lower precision (e.g., `FP32` to `INT8`).
 
 <div align="center">
 
-| Original Value | Quantized Value |
-|---------------|-----------------|
+| Original Value                        | Quantized Value    |
+| ------------------------------------- | ------------------ |
 | $w = [-24.43, -17.4, 1.2345, 12.654]$ | $q = [-128, +127]$ |
-| $w_{max} = 12.654$ | $q_{max} = 127$ |
-| $w_{min} = -24.43$ | $q_{min} = -128$ |
+| $w_{max} = 12.654$                    | $q_{max} = 127$    |
+| $w_{min} = -24.43$                    | $q_{min} = -128$   |
 
 </div>
 
@@ -85,6 +85,7 @@ $$
 
 
 Example calculation:
+
 
 $$
 s = \frac{127-(-128)}{12.654-(-24.43)} = 6.8763
@@ -101,6 +102,7 @@ $$
 
 Example calculation:
 
+
 $$
 z = -128 - round(6.8763 * (-24.43)) = 40
 $$
@@ -116,6 +118,7 @@ $$
 
 Resulting values:
 
+
 $$
 q = [-128, -100, 41, 86]
 $$
@@ -130,6 +133,7 @@ $$
 
 
 To reproduce the 1st original value:
+
 
 $$
 w = \frac{-128 - 40}{6.8763} = -24.431743

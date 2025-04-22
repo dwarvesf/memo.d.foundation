@@ -1,15 +1,15 @@
 ---
-tags: 
- - fronten
- - react
- - hooks
- - state-management
-authors: 
- - toanbku
-description: State in React is tied to a position in the UI tree.
 title: Preserving and Resetting state in React
-github_id: toanbku
 date: 2023-02-27
+description: State in React is tied to a position in the UI tree.
+authors:
+  - toanbku
+github_id: toanbku
+tags:
+  - fronten
+  - react
+  - hooks
+  - state-management
 ---
 
 ## Why should you read this article?
@@ -17,10 +17,10 @@ date: 2023-02-27
 - Understand how state in React works
 
 ```jsx
-const [isPlayerA, setIsPlayerA] = useState(true)
+const [isPlayerA, setIsPlayerA] = useState(true);
 
 function Counter(name) {
-  const [score, setScore] = useState(0)
+  const [score, setScore] = useState(0);
   return (
     <>
       <div>
@@ -28,7 +28,7 @@ function Counter(name) {
       </div>
       <button onClick={() => setScore(score + 1)}>+1</button>
     </>
-  )
+  );
 }
 
 // ----------
@@ -36,15 +36,15 @@ function Counter(name) {
 // Do you think they are the same?
 // ----- Approach 1
 {
-  isPlayerA ? <Counter name="A" /> : <Counter name="B" />
+  isPlayerA ? <Counter name="A" /> : <Counter name="B" />;
 }
 
 // ----- Approach 2
 {
-  isPlayerA && <Counter name="A" />
+  isPlayerA && <Counter name="A" />;
 }
 {
-  !isPlayerA && <Counter name="B" />
+  !isPlayerA && <Counter name="B" />;
 }
 ```
 
@@ -64,9 +64,9 @@ JSX --_(React)_--> UI trees --_(React DOM)_--> DOM
 
 ```js
 function Counter() {
-  const [score, setScore] = useState(0)
+  const [score, setScore] = useState(0);
 
-  return <div>...</div>
+  return <div>...</div>;
 }
 
 return (
@@ -74,7 +74,7 @@ return (
     <Counter />
     <Counter />
   </div>
-)
+);
 ```
 
 - Q: Is the two `<Counter />` components the same?
@@ -139,7 +139,7 @@ Back to the example at the beginning of the article
 ```js
 // Approach 1
 {
-  isPlayerA ? <Counter name="A" /> : <Counter name="B" />
+  isPlayerA ? <Counter name="A" /> : <Counter name="B" />;
 }
 ```
 
@@ -152,10 +152,10 @@ Back to the example at the beginning of the article
 
 ```js
 {
-  isPlayerA && <Counter name="A" />
+  isPlayerA && <Counter name="A" />;
 }
 {
-  !isPlayerA && <Counter name="B" />
+  !isPlayerA && <Counter name="B" />;
 }
 ```
 
@@ -165,7 +165,7 @@ Back to the example at the beginning of the article
 
 ```js
 {
-  isPlayerA ? <Counter name="A" key="A" /> : <Counter name="B" key="B" />
+  isPlayerA ? <Counter name="A" key="A" /> : <Counter name="B" key="B" />;
 }
 ```
 

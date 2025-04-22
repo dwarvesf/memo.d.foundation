@@ -1,21 +1,26 @@
 ---
+title: Query Caching for Large Language Models
+date: 2023-06-09
+description: An exploration of query caching in Large Language Models (LLMs), focusing on how semantic vector databases can drastically improve efficiency and reduce computational costs by reusing cached answers for semantically similar queries.
 authors:
-- "thanh"
-date: "2023-06-09"
-description: "An exploration of query caching in Large Language Models (LLMs), focusing on how semantic vector databases can drastically improve efficiency and reduce computational costs by reusing cached answers for semantically similar queries."
-github_id: "zlatanpham"
+  - thanh
+github_id: zlatanpham
 hashnode_meta:
-  coverImageOptions:
-    coverImageURL: "https://memo.d.foundation/playground/ai/assets/llm-query-caching.webp"
-  id: "670f4d50aec5a6a939f5132c"
-  slug: "query-caching-for-large-language-models"
-sync: "hashnode"
+  {
+    "coverImageOptions":
+      {
+        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/llm-query-caching.webp",
+      },
+    "id": "670f4d50aec5a6a939f5132c",
+    "slug": "query-caching-for-large-language-models",
+  }
+sync: hashnode
 tags:
-- "ai"
-- "llm"
-- "vector-database"
-title: "Query Caching for Large Language Models"
+  - ai
+  - llm
+  - vector-database
 ---
+
 It's quite fascinating to see the increasingly pivotal role that Large Language Models (LLMs) are playing in various applications, covering the spectrum from natural language processing tasks to predictive typing, and more. An undeniable challenge, however, comes in the form of processing speed and computational cost associated with these models. But there's light at the end of the tunnel with a ground-breaking approach known as query caching, which holds potential for drastically transforming LLMs' efficiency and cost-effectiveness.
 
 The ingenuity of this approach rests on the use of semantic vector databases, capitalizing on the semantic correlations among queries. To put it in practical terms, when an LLM processes a query and gives an answer, the response is stored away or 'cached' for potential use in the future. Should a subsequent query share semantic similarities with an earlier one, the system can simply pull out the cached answer, eliminating the necessity for additional, laborious computations.

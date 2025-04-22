@@ -1,9 +1,9 @@
 ---
-tags: 
-  - design-thinking
 title: Six Things I Extracted From Design Thinking
 date: 2021-04-14
-description: null
+description: Discover how applying Design Thinking in everyday life enhances problem solving, decision making, and adaptability with practical tips on gathering information, organizing data, and embracing change.
+tags:
+  - design-thinking
 ---
 
 I’m Minh Truong, I've been working as a UI/UX Design for 2 years. I'm currently part of the [Dwarves Foundation](https://dwarves.foundation/) team. My intention has always been to become a better problem solver, with creativity and productivity being my main goals and focus.
@@ -94,10 +94,10 @@ Design Thinking definitely can be a way of living. It can be used anytime, anywh
 
 ## Take away
 
-* Information is everything around us. It’s not restricted to academic papers or thick books. It exists in news, videos, even conversations with other people.
-* Data doesn’t have to be scary, as long as we can make sense of it with the right method and the right tool.
-* Multiple perspectives allow us to see things at a more complete level. That’s where we discover hidden problems and opportunities.
-* There is no final solution to anything. Things change, our solutions should too.
+- Information is everything around us. It’s not restricted to academic papers or thick books. It exists in news, videos, even conversations with other people.
+- Data doesn’t have to be scary, as long as we can make sense of it with the right method and the right tool.
+- Multiple perspectives allow us to see things at a more complete level. That’s where we discover hidden problems and opportunities.
+- There is no final solution to anything. Things change, our solutions should too.
 
 How is your experience with Design Thinking? Join our [Discord](https://discord.gg/Ffarda5FD9) and let us know!
 

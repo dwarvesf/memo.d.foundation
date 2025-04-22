@@ -1,12 +1,12 @@
 ---
-authors:
- - mashiro#5951
-description: "Use meaningful HTML elements: `<form>`, `<input>`, `<label>`, and `<button>`."
-title: 'Sign-in Form Best Practices'
+title: Sign-in Form Best Practices
 date: 2022-10-17
+description: "Use meaningful HTML elements: `<form>`, `<input>`, `<label>`, and `<button>`."
+authors:
+  - mashiro#5951
 tags:
- - frontend
- - form
+  - frontend
+  - form
 ---
 
 ### Sign-in Form Best Practices

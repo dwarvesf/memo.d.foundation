@@ -1,16 +1,16 @@
 ---
-tags: 
- - frontend
- - react
- - nextjs
- - server-component
- - caching-data
-authors: 
- - chinhld12
-github_id: chinhld12
+title: React Server Components, NextJs Route and Data Fetching
 date: 2023-05-28
 description: React Server Components (RSCs) offer the flexibility to decide where to render components based on their purpose, diverging from the client-side rendering approach of Single-Page Applications.
-title: React Server Components, NextJs Route and Data Fetching
+authors:
+  - chinhld12
+github_id: chinhld12
+tags:
+  - frontend
+  - react
+  - nextjs
+  - server-component
+  - caching-data
 ---
 
 ## React Server Components, NextJs Route and Data Fetching
@@ -46,14 +46,14 @@ Here is an example of a simple RSC that fetches some data from a database and re
 
 ```jsx
 // app/Greeting.server.js
-import db from './db'
+import db from "./db";
 
 export default function Greeting({ name }) {
   // Fetch data from the database on the server
-  const message = db.getGreeting(name)
+  const message = db.getGreeting(name);
 
   // Return a plain object with the data
-  return { message }
+  return { message };
 }
 ```
 
@@ -61,8 +61,8 @@ And here is how you can use it in your client-side component:
 
 ```jsx
 // app/Homepage.client.js
-'use client' // Mark this file as client-only
-import Greeting from './Greeting.server' // Import the RSC
+"use client"; // Mark this file as client-only
+import Greeting from "./Greeting.server"; // Import the RSC
 
 export default function Homepage() {
   // Use the RSC as a regular component
@@ -71,7 +71,7 @@ export default function Homepage() {
       <h1>Welcome to Next.js!</h1>
       <Greeting name="Alice" /> // Render the RSC
     </div>
-  )
+  );
 }
 ```
 
@@ -108,13 +108,15 @@ Using RSC with Next.js can bring several benefits to your application, such as:
 - We suggest passing Server Components as `children` props to Client Components and importing and nesting `<ClientComponent>` in a parent component. We can use this way for both libraries and context that only work on the client or was not added `use client` in their files.
 
 ```jsx
-<ClientComponents>{children} // The children is Server Components</ClientComponents>
+<ClientComponents>
+  {children} // The children is Server Components
+</ClientComponents>
 ```
 
 - Both Server and Client Components can share JavaScript modules, but this can cause security issues if some code with sensitive data that should only run on the server gets exposed to the client. To avoid this, we can use packages like `server-only` that keep the server-only code separate from the client code. We can use this package by importing `server-only` in any modules like this:
 
 ```jsx
-import 'server-only'
+import "server-only";
 
 export async function getData() {
   // Do get the data
@@ -137,12 +139,12 @@ We can use the [Server Actions](https://nextjs.org/docs/app/building-your-applic
 ```jsx
 export default function Form() {
   async function handleSubmit() {
-    'use server'
+    "use server";
     // ...
   }
 
   async function submitPicture() {
-    'use server'
+    "use server";
     // ...
   }
 
@@ -152,7 +154,7 @@ export default function Form() {
       <input type="image" formAction={submitImage} />
       <button type="submit">Submit</button>
     </form>
-  )
+  );
 }
 ```
 

@@ -1,12 +1,12 @@
 ---
+title: Connecting Vim With Golang
+date: 2015-10-16
+description: A comprehensive guide on using Vim as an IDE for Go development. Learn about Vim basics, installation, configuration, essential plugins like vim-go, and customization techniques to enhance your Go coding workflow in Vim.
+authors:
+  - tieubao
 tags:
   - golang
   - vim
-title: 'Connecting Vim With Golang'
-date: 2015-10-16
-authors:
-  - tieubao
-description: A comprehensive guide on using Vim as an IDE for Go development. Learn about Vim basics, installation, configuration, essential plugins like vim-go, and customization techniques to enhance your Go coding workflow in Vim.
 ---
 
 ## An introduction to Vim and how to use Vim with Golang
@@ -137,19 +137,19 @@ Next, continue typing command to install Go binaries
 You can basically code Go with only Vim go, but to make things easier, and also enhance its efficiency, you can research and add up some plugins as below
 
 ```javascript
-ack.vim
-bclose.vim
-bufexplorer
-nerdtree
-nerdcommenter
-csapprox
-vim - fugitive
-gitv
-vim - gitgutter
-syntastic
-neocomplete.vim
-neosnippet.vim
-auto - pairs
+ack.vim;
+bclose.vim;
+bufexplorer;
+nerdtree;
+nerdcommenter;
+csapprox;
+vim - fugitive;
+gitv;
+vim - gitgutter;
+syntastic;
+neocomplete.vim;
+neosnippet.vim;
+auto - pairs;
 ```
 
 In these:

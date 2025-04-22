@@ -1,12 +1,12 @@
 ---
+title: § Building LLM system
+date: 2024-09-11
+description: This map of content (MoC) outlines the critical components required to design and build a large language model (LLM) system, focusing on architecture, model customization, safeguarding, performance evaluation, and more.
+authors:
+  - thanh
 tags:
   - moc
   - llm
-title: '§ Building LLM system'
-description: 'This map of content (MoC) outlines the critical components required to design and build a large language model (LLM) system, focusing on architecture, model customization, safeguarding, performance evaluation, and more.'
-date: 2024-09-11
-authors:
-  - thanh
 ---
 
 In recent years, the emergence of large language models (LLMs) has revolutionized AI applications, providing new opportunities for solving complex problems with natural language understanding and generation. This map of content explores the foundational aspects of building robust LLM-based systems, ranging from model selection and context enhancement to safeguarding mechanisms and performance evaluation.
@@ -75,14 +75,14 @@ LLM systems need to handle complex reasoning, task delegation, and actions based
 - [Prevent prompt injection](prevent-prompt-injection.md)
 - [Supervior-worker architecture (divide and conquer)](multi-agent-collaboration-for-task-completion.md)
 - [ReAct](react-in-llm.md)
-- [ReWOO (reasoning without observations)](rewoo-in-llm.md)
+- [ReWOO (reasoning without observations)]()
 
 ## Evaluating performance
 
 Using right metrics and method for specific use case in LLM.
 
 - [Evaluation metrics](evaluation-guideline-for-llm-application.md)
-- [AI-as-a-judge](llm-as-a-judge.md)
+- [AI-as-a-judge]()
 
 ## Observability and orchestration
 

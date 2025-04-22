@@ -1,9 +1,9 @@
 ---
-tags: 
-  - engineering
 title: What Is Kubernetes
 date: 2019-09-27
-description: null
+description: Kubernetes is an open-source platform for managing containerized applications with features like automated rollouts, self-healing, and load balancing, enabling scalable and portable cloud deployments.
+tags:
+  - engineering
 ---
 
 ## What is Kubernetes
@@ -30,33 +30,33 @@ Containers are similar to VMs, but they have relaxed isolation properties to sha
 
 Containers are becoming popular because they have many benefits. Some of the container benefits are listed below:
 
-* Agile application creation and deployment: increased ease and efficiency of container image creation compared to VM image use.
-* Continuous development, integration, and deployment: provides for reliable and frequent container image build and deployment with quick and easy rollbacks (due to image immutability).
-* Dev and Ops separation of concerns: create application container images at build/release time rather than deployment time, thereby decoupling applications from infrastructure.
-* Observability not only surfaces OS-level information and metrics, but also application health and other signals.
-* Environmental consistency across development, testing, and production: Runs the same on a laptop as it does in the cloud.
-* Cloud and OS distribution portability: Runs on Ubuntu, RHEL, CoreOS, on-prem, Google Kubernetes Engine, and anywhere else.
-* Application-centric management: Raises the level of abstraction from running an OS on virtual hardware to running an application on an OS using logical resources.
-* Loosely coupled, distributed, elastic, liberated micro-services: applications are broken into smaller, independent pieces and can be deployed and managed dynamically – not a monolithic stack running on one big single-purpose machine.
-* Resource isolation: predictable application performance.
-* Resource utilization: high efficiency and density.
+- Agile application creation and deployment: increased ease and efficiency of container image creation compared to VM image use.
+- Continuous development, integration, and deployment: provides for reliable and frequent container image build and deployment with quick and easy rollbacks (due to image immutability).
+- Dev and Ops separation of concerns: create application container images at build/release time rather than deployment time, thereby decoupling applications from infrastructure.
+- Observability not only surfaces OS-level information and metrics, but also application health and other signals.
+- Environmental consistency across development, testing, and production: Runs the same on a laptop as it does in the cloud.
+- Cloud and OS distribution portability: Runs on Ubuntu, RHEL, CoreOS, on-prem, Google Kubernetes Engine, and anywhere else.
+- Application-centric management: Raises the level of abstraction from running an OS on virtual hardware to running an application on an OS using logical resources.
+- Loosely coupled, distributed, elastic, liberated micro-services: applications are broken into smaller, independent pieces and can be deployed and managed dynamically – not a monolithic stack running on one big single-purpose machine.
+- Resource isolation: predictable application performance.
+- Resource utilization: high efficiency and density.
 
 ## Why we need K8s ?
 
-* Service discovery and load balancing
-* Storage orchestration
-* Automated rollouts and rollbacks
-* Automatic bin packing
-* Self-healing
-* Secret and configuration management
+- Service discovery and load balancing
+- Storage orchestration
+- Automated rollouts and rollbacks
+- Automatic bin packing
+- Self-healing
+- Secret and configuration management
 
 Take full docs at: [https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/)
 
 ## The basic Kubernetes objects
 
-* [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/)
-* [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
-* [Volume](https://kubernetes.io/docs/concepts/storage/volumes/)
-* [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+- [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/)
+- [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+- [Volume](https://kubernetes.io/docs/concepts/storage/volumes/)
+- [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
 
 Tutorial page that help you deploy first app: [https://kubernetes.io/docs/tutorials/kubernetes-basics/](https://kubernetes.io/docs/tutorials/kubernetes-basics/)

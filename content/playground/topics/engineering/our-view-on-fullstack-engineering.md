@@ -1,12 +1,12 @@
 ---
-tags: 
-  - engineering
-  - dwarves
 title: Our View On Fullstack Engineering
 date: 2023-08-30
-description: null
-authors: 
+description: Discover what full-stack engineering truly means, exploring how skilled developers blend frontend, backend, and infrastructure knowledge to create seamless, user-focused software solutions.
+authors:
   - Thanh Pham
+tags:
+  - engineering
+  - dwarves
 ---
 
 In tackling challenges in the world of software development, the term "full-stack engineer" often evokes a sense of wonder. I'm reminded of my school days when our chemistry teacher explained the fundamental principles behind chemical reactions. Just as every chemical reaction is governed by the behavior of atoms, there's an underlying principle in software development that defines full-stack engineering.

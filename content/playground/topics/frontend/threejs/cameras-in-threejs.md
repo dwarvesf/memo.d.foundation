@@ -1,13 +1,13 @@
 ---
+title: Cameras in ThreeJS
+date: 2022-09-15
+description: "**ThreeJS** is a JavaScript 3D library that allows developers to develop and describe data in 3 dimensions, and then convert them into 2 dimensions and display them on [HTML Canvas](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement). [**Camera**](https://threejs.org/docs/index.html?q=camera#api/en/cameras/Camera) is one of the core elements of a ThreeJS project, beside [Scene](https://threejs.org/docs/index.html?q=scene#api/en/scenes/Scene), [Renderer](https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer) and 3D objects (can be formed with [Geometries](https://threejs.org/docs/index.html?q=geometry#api/en/geometries/BoxGeometry) and [Materials](https://threejs.org/docs/index.html?q=material#api/en/materials/MeshBasicMaterial))."
+authors:
+  - namnd
+github_id: nguyend-nam
 tags:
   - frontend
   - threejs
-authors:
-  - namnd
-description: "**ThreeJS** is a JavaScript 3D library that allows developers to develop and describe data in 3 dimensions, and then convert them into 2 dimensions and display them on [HTML Canvas](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement). [**Camera**](https://threejs.org/docs/index.html?q=camera#api/en/cameras/Camera) is one of the core elements of a ThreeJS project, beside [Scene](https://threejs.org/docs/index.html?q=scene#api/en/scenes/Scene), [Renderer](https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer) and 3D objects (can be formed with [Geometries](https://threejs.org/docs/index.html?q=geometry#api/en/geometries/BoxGeometry) and [Materials](https://threejs.org/docs/index.html?q=material#api/en/materials/MeshBasicMaterial))."
-title: Cameras in ThreeJS
-github_id: nguyend-nam
-date: 2022-09-15
 ---
 
 **ThreeJS** is a JavaScript 3D library that allows developers to develop and describe data in 3 dimensions, and then convert them into 2 dimensions and display them on [HTML Canvas](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement). [**Camera**](https://threejs.org/docs/index.html?q=camera#api/en/cameras/Camera) is one of the core elements of a ThreeJS project, beside [Scene](https://threejs.org/docs/index.html?q=scene#api/en/scenes/Scene), [Renderer](https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer) and 3D objects (can be formed with [Geometries](https://threejs.org/docs/index.html?q=geometry#api/en/geometries/BoxGeometry) and [Materials](https://threejs.org/docs/index.html?q=material#api/en/materials/MeshBasicMaterial)).
@@ -36,8 +36,8 @@ Some crucial attributes:
 - **near** and **far**: Clipping planes at 2 points on the z axis. Note that objects with z position outside the `(near, far)` interval will **not** be displayed.
 
 ```javascript
-const camera = new THREE.PerspectiveCamera(45, 16 / 9, 1, 1000)
-scene.add(camera)
+const camera = new THREE.PerspectiveCamera(45, 16 / 9, 1, 1000);
+scene.add(camera);
 ```
 
 In the example above, a perspective camera is initialized with `fov` of 45 degree, `aspect-ratio` of 16 / 9, `near` and `far` of 1 and 1000 respectively.
@@ -56,8 +56,8 @@ Some crucial attributes:
 - **near** and **far**: Same as for perspective camera.
 
 ```javascript
-const camera = new THREE.OrthographicCamera(-2, 2, 1, -1, 1, 1000)
-scene.add(camera)
+const camera = new THREE.OrthographicCamera(-2, 2, 1, -1, 1, 1000);
+scene.add(camera);
 ```
 
 In the example above, an orthographic camera is initialized with `left`, `right`, `top` and `bottom` equal -2, 2, 1 and -1 respectively. The last 2 numbers represent `near` and `far`.

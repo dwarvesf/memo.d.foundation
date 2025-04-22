@@ -1,16 +1,16 @@
 ---
-tags:
-  - engineering/data
-  - vector-database
-  - database
-github_id: longbuivan
-date: 2024-03-15
-icy: 10
-discord_id: 1157659003527106600
 title: Quick Learning Vector Database
+date: 2024-03-15
 description: The motivation of this thoughts that trying to discover the LLMs and Generative AI...
 authors:
   - longddl
+github_id: longbuivan
+icy: 10
+discord_id: 1157659003527106600
+tags:
+  - engineeringdata
+  - vector-database
+  - database
 ---
 
 ## Motivation of Vector Database
@@ -31,6 +31,7 @@ authors:
 - Indexing the data in the database, Indexing Algorithms: Flat, HNSW, IVF ==> I think we have room for optimizing the caches and indexes.
 
 - Working flow of Vector Database with Gen AI:
+
   - An embedding model converts the data to a vector data structure. (We need to optimize the algorithm for the huge of parameters)
   - Convert the input(end-user) to a vector.
   - Querying data in the database.
@@ -41,12 +42,14 @@ authors:
 ![](assets/quick-learning-vector-database_ab8dc870fb19553f7616442fe4e9e6c5_md5.webp)
 
 - Benefits:
+
   - Flexibility: schemaless, non-structured
   - Scalability: bucketing data, dynamic programming
   - Speed/ performance: Search vector
   - Standardization: formatting all data into a single format
 
 - Use cases:
+
   - Feeding Realtime data for LLMs models
   - Resolving searching problems
   - Serving Video/Image recognition problems

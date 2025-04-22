@@ -1,13 +1,13 @@
 ---
+title: Frontend Report January 2025
+date: 2025-01-20
+description: "This January 2025 report explores key frontend advancements, including React 19's Actions, Next.js 15.1's Deno Deploy support, and innovative tools like Transformers.js for AI. Discover trending technologies, best practices, and expert commentary shaping the future of frontend development."
+authors:
+  - hthai2201
+short_title: January 2025
 tags:
   - frontend
   - market-report
-title: Frontend Report January 2025
-short_title: "January 2025"
-description: This January 2025 report explores key frontend advancements, including React 19's Actions, Next.js 15.1's Deno Deploy support, and innovative tools like Transformers.js for AI. Discover trending technologies, best practices, and expert commentary shaping the future of frontend development.
-date: 2025-01-20
-authors:
-  - hthai2201
 ---
 
 ## React
@@ -18,7 +18,7 @@ The moment we've all been waiting for! React 19 has officially landed. React 19 
 
 ### [React 19: Ref callbacks - More than just DOM access](https://tkdodo.eu/blog/ref-callbacks-react-19-and-the-compiler)
 
-Ref callbacks in React 19 can now return cleanup functions, similar to useEffect, allowing for tasks like measuring DOM nodes with ResizeObserver. 
+Ref callbacks in React 19 can now return cleanup functions, similar to useEffect, allowing for tasks like measuring DOM nodes with ResizeObserver.
 
 ### [View Transition API: Smooth animations coming to React](https://motion.dev/blog/reacts-experimental-view-transition-api)
 
@@ -93,7 +93,7 @@ Tailwind CSS v4 has great improvements like the switch to LightningCSS and nativ
 
 ### [Node’s new built-in support for TypeScript](https://2ality.com/2025/01/nodejs-strip-type.html)
 
-Big news for Node.js developers! Native TypeScript support is on the way through type stripping, meaning you'll soon be able to run TypeScript code directly in Node without needing to transpile it first. This article explains the implications, outlining what this change means for development workflows and how it will streamline the use of TypeScript within Node.js projects. 
+Big news for Node.js developers! Native TypeScript support is on the way through type stripping, meaning you'll soon be able to run TypeScript code directly in Node without needing to transpile it first. This article explains the implications, outlining what this change means for development workflows and how it will streamline the use of TypeScript within Node.js projects.
 
 ### [Boost React performance with Million](https://million.dev/)
 

@@ -1,12 +1,12 @@
 ---
-tags: 
+title: I18n Frontend Guideline
+date: 2023-04-03
+description: Learn how to implement multi-language support with locale detection, internationalized routing, RTL/LTR text handling, and i18next formatting in React.js and Next.js front-end applications.
+tags:
   - frontend
   - web
   - engineering
   - performance
-title: I18n Frontend Guideline
-date: 2023-04-03
-description: null
 ---
 
 ![](assets/i18n-frontend-guideline_0d5e0a2c5a795b96f65caa5b7a360578_md5.webp)
@@ -23,20 +23,20 @@ In this frontend guideline, we will discuss general principles and provide examp
 
 There are several ways to detect the user's locale (i.e., their language and geographic location) in a front-end application:
 
-* **Browser settings**: The user's browser settings may indicate their preferred language. This information can be accessed through the `navigator.language` or `navigator.userLanguage` property in JavaScript.
-* **IP geolocation**: The user's IP address can be used to determine their geographic location. This can be done by making a request to a geolocation service, such as MaxMind or IP-API, which returns the user's location based on their IP address.
-* **Server-side detection**: An HTTP header that relays these language preferences to the server with each request. This is the `Accept-Language` header, and it often looks something like this: `Accept-Language: en-CA,ar-EG;q=0.5`.
-* **Use of cookies or web storage**: The user's locale preference can be stored in a cookie or HTML5 web storage when the user first interacts with the application. The locale would then be read from this location for all subsequent requests.
+- **Browser settings**: The user's browser settings may indicate their preferred language. This information can be accessed through the `navigator.language` or `navigator.userLanguage` property in JavaScript.
+- **IP geolocation**: The user's IP address can be used to determine their geographic location. This can be done by making a request to a geolocation service, such as MaxMind or IP-API, which returns the user's location based on their IP address.
+- **Server-side detection**: An HTTP header that relays these language preferences to the server with each request. This is the `Accept-Language` header, and it often looks something like this: `Accept-Language: en-CA,ar-EG;q=0.5`.
+- **Use of cookies or web storage**: The user's locale preference can be stored in a cookie or HTML5 web storage when the user first interacts with the application. The locale would then be read from this location for all subsequent requests.
 
 There are a few libraries where that offer locale detection based on the settings listed above. For instance, In React.js, there is the `i18next-browser-languageDetector` library that detects language based on:
 
-* Cookie
-* LocalStorage
-* Navigator
-* Query(`?lng=LANGUAGE`)
-* HtmlTag
-* Path
-* Subdomain.
+- Cookie
+- LocalStorage
+- Navigator
+- Query(`?lng=LANGUAGE`)
+- HtmlTag
+- Path
+- Subdomain.
 
 Another example would be Next.js, where the locale will be automatically detected based on the `Accept-Language` header and the current domain. Locale detection is enabled by default.
 
@@ -44,8 +44,8 @@ Another example would be Next.js, where the locale will be automatically detecte
 
 Internationalized routing is a way to handle different URLs for the same page based on the user's detected locale. There are two types of URL routing:
 
-* **Sub-path routing** (e.g. example.com/en/home, example.com/fr/home)
-* **Domain routing** (e.g. example.en, example.fr)
+- **Sub-path routing** (e.g. example.com/en/home, example.com/fr/home)
+- **Domain routing** (e.g. example.en, example.fr)
 
 For example in React.js, the routing process can be implemented like this
 
@@ -57,28 +57,28 @@ With Next.js, there is built-in support for internationalized routing since `v10
 // next.config.js
 module.exports = {
   i18n: {
-    locales: ['en-US', 'fr', 'nl-NL', 'nl-BE'],
-    defaultLocale: 'en-US',
+    locales: ["en-US", "fr", "nl-NL", "nl-BE"],
+    defaultLocale: "en-US",
     domains: [
       {
         // Note: subdomains must be included in the domain value to be matched
         // e.g. www.example.com should be used if that is the expected hostname
-        domain: 'example.com',
-        defaultLocale: 'en-US',
+        domain: "example.com",
+        defaultLocale: "en-US",
       },
       {
-        domain: 'example.fr',
-        defaultLocale: 'fr',
+        domain: "example.fr",
+        defaultLocale: "fr",
       },
       {
-        domain: 'example.nl',
-        defaultLocale: 'nl-NL',
+        domain: "example.nl",
+        defaultLocale: "nl-NL",
         // specify other locales that should be redirected to this domain
-        locales: ['nl-BE'],
+        locales: ["nl-BE"],
       },
     ],
   },
-}
+};
 ```
 
 ## Supports LTR and RTL text
@@ -92,18 +92,14 @@ You can also set the `dir` attribute on global components such as `Header` and `
 Here's an example of setting the `dir` attribute dynamically in the `App` component:
 
 ```javascript
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import './App.css';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import "./App.css";
 
-function App()  {
-    const { t, i18n } = useTranslation();
-    document.body.dir = i18n.dir(); // return ltr or rtl of current language
-    return (
-      <div className="App">
-        {t('welcome')}
-      </div>
-    );
+function App() {
+  const { t, i18n } = useTranslation();
+  document.body.dir = i18n.dir(); // return ltr or rtl of current language
+  return <div className="App">{t("welcome")}</div>;
 }
 
 export default App;
@@ -137,11 +133,11 @@ export default Header;
 
 Starting from **i18next version 21.3.0**, you can take advantage of the built-in formatting functions based on the **[Intl API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)** for the following formats:
 
-* **Number**
-* **Currency**
-* **DateTime**
-* **RelativeTime**
-* **List**
+- **Number**
+- **Currency**
+- **DateTime**
+- **RelativeTime**
+- **List**
 
 With these built-in formatting functions, you can easily format and localize various types of data in your application to match the user's preferred language and regional settings, improving the overall user experience of your application.
 
@@ -203,12 +199,12 @@ If you have a difficult problem that you would like us to help you on, please fe
 **Come be with us**
 We’d love to have you in our next chapter, by all means.
 
-* Discover what we do: [dwarves.foundation](http://dwarves.foundation/)
-* Meet our team: [discord.gg/dfoundation](http://discord.gg/dfoundation)
-* Join the squad: [careers.d.foundation](http://careers.d.foundation/)
+- Discover what we do: [dwarves.foundation](http://dwarves.foundation/)
+- Meet our team: [discord.gg/dfoundation](http://discord.gg/dfoundation)
+- Join the squad: [careers.d.foundation](http://careers.d.foundation/)
 
 Follow our journey
 
-* Fanpage: [facebook.com/dwarvesf](http://facebook.com/dwarvesf)
-* LinkedIn: [linkedin.com/company/dwarvesf](http://linkedin.com/company/dwarvesf)
-* Substack: [https://memo.d.foundation/](https://memo.d.foundation/)
+- Fanpage: [facebook.com/dwarvesf](http://facebook.com/dwarvesf)
+- LinkedIn: [linkedin.com/company/dwarvesf](http://linkedin.com/company/dwarvesf)
+- Substack: [https://memo.d.foundation/](https://memo.d.foundation/)

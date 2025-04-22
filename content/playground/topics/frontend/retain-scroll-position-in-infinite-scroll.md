@@ -1,13 +1,13 @@
 ---
-tags: 
- - frontend
- - swr-infinite
- - web-design
-authors: 
- - nguyend-nam
-description: Infinite scroll has become a popular web design technique in recent years, as it offers several benefits over traditional pagination models. However, it can also present some painful challenges for accessibility and usability.
 title: Retain scroll position in infinite scroll
 date: 2023-04-24
+description: Infinite scroll has become a popular web design technique in recent years, as it offers several benefits over traditional pagination models. However, it can also present some painful challenges for accessibility and usability.
+authors:
+  - nguyend-nam
+tags:
+  - frontend
+  - swr-infinite
+  - web-design
 ---
 
 ## Infinite scroll - Benefits and Challenges

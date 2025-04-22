@@ -1,16 +1,14 @@
 ---
+title: Model selection
+date: 2024-10-15
+description: Learn how to choose the right AI model for your needs. Explore key factors like accuracy, privacy, and cost. Compare commercial vs open-source options and API vs self-hosting approaches.
 authors:
-  - 'thanh'
-date: '2024-10-15'
-description: 'Learn how to choose the right AI model for your needs. Explore key factors like accuracy, privacy, and cost. Compare commercial vs open-source options and API vs self-hosting approaches.'
-hashnode_meta:
-  id: '670f4d43a897de73067fab5c'
-  slug: 'model-selection'
-sync: 'hashnode'
+  - thanh
+hashnode_meta: { "id": "670f4d43a897de73067fab5c", "slug": "model-selection" }
+sync: hashnode
 tags:
-  - 'llm'
-  - 'ai'
-title: 'Model selection'
+  - llm
+  - ai
 ---
 
 Choosing the right model isn’t about finding a one-size-fits-all solution; it’s about understanding what works best for your specific needs. Each model comes with its own set of strengths and trade-offs, so the key is identifying what truly matters for your application. Start by setting clear priorities, and let those guide your selection process.

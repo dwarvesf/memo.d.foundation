@@ -1,9 +1,9 @@
 ---
-tags: 
-  - agile
 title: Definition Of Done
 date: 2016-02-14
-description: null
+description: Definition of Done (DoD) is a checklist ensuring product features meet quality and functionality standards before release, helping teams clearly confirm when work is complete.
+tags:
+  - agile
 ---
 
 Definition of done also known as **DoD** is a list of criteria which must be met before a product increment (story) is considered "done".
@@ -16,9 +16,9 @@ This list will also allow us to reply to this question "Are you done with this f
 
 ## Checklist
 
-***The following checklist is for the engineers and is meant to evolve overtime.***
+**_The following checklist is for the engineers and is meant to evolve overtime._**
 
-* Automated tests are created and pass
-* Code is peer-reviewed
-* Feature is tested against acceptance criteria
-* Feature is ready to be released
+- Automated tests are created and pass
+- Code is peer-reviewed
+- Feature is tested against acceptance criteria
+- Feature is ready to be released

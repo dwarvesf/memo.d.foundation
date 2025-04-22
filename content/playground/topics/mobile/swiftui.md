@@ -1,21 +1,21 @@
 ---
-tags: 
-  - swift
 title: Swiftui
 date: 2020-02-07
-description: null
+description: "Discover the basics of SwiftUI, Apple's declarative UI framework for building cross-platform apps with easy layouts, state management, and integration with UIKit using Xcode Canvas and Combine framework."
+tags:
+  - swift
 ---
 
 Introduces by Apple in WWDC 2019, Swift UI impressed the technophiles with its convenience, as Apple aimed to help developers conduct code easier and spend more time working on other modified functions. This blog outlines my opinion about SwiftUI, such as how to layout views, handle user input, making a custom view, making a cross Apple platform apps, underlying architecture, integrate with UIKit (the old Apple UI framework). It won't be expanded on an advanced level like fancy animation or proposing any best architecture we should follow. No. Just the basic ones.
 
 # Definition
 
-[SwiftUI](https://github.com/dwarvesf/techradar/tree/master/SwiftUI) is a UI framework that lets developers create apps in a declarative way, *and it also supports multiple Apple platforms (iOS, iPadOS, macOS, watchOS, tvOS), or I can say “farewell UIKit, AppKit, and WatchKit“*. There are minimal code changes when we need to create an app for multiple platforms, as a lot of the same components on SwiftUI can be reused.
+[SwiftUI](https://github.com/dwarvesf/techradar/tree/master/SwiftUI) is a UI framework that lets developers create apps in a declarative way, _and it also supports multiple Apple platforms (iOS, iPadOS, macOS, watchOS, tvOS), or I can say “farewell UIKit, AppKit, and WatchKit“_. There are minimal code changes when we need to create an app for multiple platforms, as a lot of the same components on SwiftUI can be reused.
 
 SwiftUI came with two companions, which I believe will be the game changers and help developers a lot.
 
-* Xcode Canvas
-* Combine framework
+- Xcode Canvas
+- Combine framework
 
 ## Xcode canvas
 
@@ -23,13 +23,13 @@ SwiftUI came with two companions, which I believe will be the game changers and 
 
 Xcode canvas brings us some nice features.
 
-* Building UI with drag and drop style, auto-sync with your code, and vice versa.
-* Live preview, this kinda likes the hot reload feature in the Flutter framework, but without simulator since it is a part of Xcode
+- Building UI with drag and drop style, auto-sync with your code, and vice versa.
+- Live preview, this kinda likes the hot reload feature in the Flutter framework, but without simulator since it is a part of Xcode
 
 So, what does this mean?
 
-* There would be no more war between building UI programmatically or Drag n Drop style.
-* There would be no more time wasted to debug an explicit screen or now is a component, I guess
+- There would be no more war between building UI programmatically or Drag n Drop style.
+- There would be no more time wasted to debug an explicit screen or now is a component, I guess
 
 ## Combine framework
 
@@ -39,8 +39,8 @@ The Combine framework is a tool to help us make an app in a functional reactive 
 
 If you have never heard about the FRP, you should definitely take a look at those articles.
 
-* [https://github.com/kickstarter/native-docs/blob/master/learning-rx.md]()
-* [https://github.com/kickstarter/native-docs/blob/master/learning-rx.md]()
+- [https://github.com/kickstarter/native-docs/blob/master/learning-rx.md]()
+- [https://github.com/kickstarter/native-docs/blob/master/learning-rx.md]()
 
 ## Learn once, Apply anywhere
 
@@ -52,9 +52,9 @@ It might sound confusing. The same thing happens when we first heard of Karl Mar
 
 There are 3 basic things, which I believe any developer should know when using SwiftUI.
 
-* Inside of DSL SwiftUI syntax, how could Apple achieve that?
-* The layout process
-* And the State management
+- Inside of DSL SwiftUI syntax, how could Apple achieve that?
+- The layout process
+- And the State management
 
 ### The SwiftUI DSL syntax
 
@@ -76,10 +76,10 @@ The first time I look at the above code, it’s kinda like magic to me. I wonder
 
 After researching I found out there are four new features in Swift 5.1 which help us achieve that.
 
-* Opaque return types (1)
-* Implicit return (2)
-* Function Builder (3)
-* View Modifier (4)
+- Opaque return types (1)
+- Implicit return (2)
+- Function Builder (3)
+- View Modifier (4)
 
 And if I explain all those things, this article would be very long, so you guys should check these new features in Swift's official documentation.
 
@@ -121,7 +121,7 @@ struct SwiftUIView: View {
         HStack(spacing: 10) {
             Image(name: "SwiftUI")
                 .scalable()
-                .frame(width: 80, height: 80) 
+                .frame(width: 80, height: 80)
             Image(name: "SwiftUI")
                 .scalable()
                 .frame(width: 80, height: 80)
@@ -144,11 +144,11 @@ In order to help us manage the state in the app, Apple gave us another power cal
 
 There are five property wrappers that SwiftUI gives us for default to manage the app’s state.
 
-* @State
-* @Binding
-* @ObservedObject
-* @EnvironmentObject
-* @Environment
+- @State
+- @Binding
+- @ObservedObject
+- @EnvironmentObject
+- @Environment
 
 **@State**
 
@@ -217,7 +217,7 @@ struct ProductsView: View {
 import Combine
 
 final class PodcastPlayer: ObservableObject {
-    
+
     @Published private(set) var isPlaying: Bool = false
 
     func play() {
@@ -318,15 +318,15 @@ SwiftUI does not currently have the same broad API coverage as UIKit. For exampl
 
 SwiftUI was only announced at WWDC2019, and is available in iOS 13 devices or later. This immediately means that:
 
-* Almost every app written to date uses UIKit.
-* Any app that needs to support iOS n-1 or n-2 (e.g. iOS 12 and iOS 11) cannot even begin to switch to SwiftUI for a year or more.
+- Almost every app written to date uses UIKit.
+- Any app that needs to support iOS n-1 or n-2 (e.g. iOS 12 and iOS 11) cannot even begin to switch to SwiftUI for a year or more.
 
 ### Limited Support
 
 UIKit has been around over ten years now, which means:
 
-* Almost every problem you might face has probably already been faced and solved by others
-* There are lots of libraries out there that provide extensions and customizations.
+- Almost every problem you might face has probably already been faced and solved by others
+- There are lots of libraries out there that provide extensions and customizations.
 
 ### Default Behavior
 

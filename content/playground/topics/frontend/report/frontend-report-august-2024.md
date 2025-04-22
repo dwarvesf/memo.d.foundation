@@ -1,13 +1,13 @@
 ---
+title: Frontend Report August 2024
+date: 2024-09-09
+description: A comprehensive August 2024 update on key advancements in React 19, Next.js 15, and web development tools. Highlights include new async transitions, server components, SSR performance comparisons, and emerging technologies in the web development landscape
+authors:
+  - mashiro5951
+short_title: August 2024
 tags:
   - frontend
   - market-report
-title: Frontend Report August 2024
-short_title: 'August 2024'
-description: A comprehensive August 2024 update on key advancements in React 19, Next.js 15, and web development tools. Highlights include new async transitions, server components, SSR performance comparisons, and emerging technologies in the web development landscape
-date: 2024-09-09
-authors:
-  - mashiro5951
 ---
 
 A comprehensive August 2024 update on key advancements in React 19, Next.js 15, and web development tools. Highlights include new async transitions, server components, SSR performance comparisons, and emerging technologies in the web development landscape.

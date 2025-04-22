@@ -1,20 +1,24 @@
 ---
+title: Tracing
+date: 2024-10-11
+description: Tracing is like following your LLM’s journey, step by step. We will explain how tracing makes it easy to identify and address problems by allowing you to track the entire process.
 authors:
-  - 'datnguyennnx'
-date: '2024-10-11'
-description: 'Tracing is like following your LLM’s journey, step by step. We will explain how tracing makes it easy to identify and address problems by allowing you to track the entire process.'
+  - datnguyennnx
 hashnode_meta:
-  coverImageOptions:
-    coverImageURL: 'https://memo.d.foundation/playground/ai/building-llm-system/assets/trace-pillar-tracing-roadmap.webp'
-  id: '670f4d46b25a9930f0551616'
-  slug: 'tracing'
-sync: 'hashnode'
+  {
+    "coverImageOptions":
+      {
+        "coverImageURL": "https://memo.d.foundation/playground/ai/building-llm-system/assets/trace-pillar-tracing-roadmap.webp",
+      },
+    "id": "670f4d46b25a9930f0551616",
+    "slug": "tracing",
+  }
+sync: hashnode
 tags:
-  - 'llm'
-  - 'observability'
-  - 'tracing'
-  - 'pillar'
-title: 'Tracing'
+  - llm
+  - observability
+  - tracing
+  - pillar
 ---
 
 ## What is tracing

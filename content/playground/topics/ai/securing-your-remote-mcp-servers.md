@@ -1,14 +1,14 @@
 ---
-title: 'Securing your remote MCP servers'
+title: Securing your remote MCP servers
 date: 2025-03-27
-description: 'This guide explores implementing robust authorization for Model Context Protocol (MCP) over Server-Sent Events (SSE) transport, providing a standardized framework for secure AI-to-tool communication while maintaining vendor independence.'
+description: This guide explores implementing robust authorization for Model Context Protocol (MCP) over Server-Sent Events (SSE) transport, providing a standardized framework for secure AI-to-tool communication while maintaining vendor independence.
 authors:
-- monotykamary
+  - monotykamary
 github_id: monotykamary
 tags:
-- ai
-- security
-- mcp
+  - ai
+  - security
+  - mcp
 ---
 
 ![](assets/securing-your-remote-mcp-servers-1.webp)
@@ -22,22 +22,24 @@ This guide explores how to implement robust authorization for MCP over **Server-
 Here is a practical implementation of authorization for the Model Context Protocol (MCP) following Anthropic's [specifications](https://spec.modelcontextprotocol.io/specification/draft/basic/authorization/). We use standard OAuth 2.1 with PKCE for authentication while leveraging SSE for transport. The approach uses Bearer token authorization in request headers to secure the connection.
 
 **Client-side implementation:**
+
 ```typescript
 // Configure Mastra with authorization for SSE transport
 const mcpConfig: MCPConfiguration = {
   servers: {
     defaultServer: {
-      type: 'sse',
-      url: 'https://mcp.d.foundation/sse',
+      type: "sse",
+      url: "https://mcp.d.foundation/sse",
       headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    }
-  }
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  },
 };
 ```
 
 **Server-side implementation:**
+
 ```javascript
 app.get("/sse", async (req, res) => {
   const authHeader = req.headers.authorization;
@@ -181,9 +183,9 @@ This approach creates a secure channel while maintaining compatibility with exis
 Let's examine a functional implementation of the authorization server using Node.js and Express:
 
 ```javascript
-const express = require('express');
-const { v4: uuidv4 } = require('uuid');
-const crypto = require('crypto');
+const express = require("express");
+const { v4: uuidv4 } = require("uuid");
+const crypto = require("crypto");
 const app = express();
 
 // In-memory storage systems (replace with database persistence in production)
@@ -192,13 +194,13 @@ const tokens = new Map();
 const sessions = new Map();
 
 // SSE connection endpoint implementation
-app.get('/sse', (req, res) => {
+app.get("/sse", (req, res) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
-      error: 'unauthorized',
-      error_description: 'Authentication required'
+      error: "unauthorized",
+      error_description: "Authentication required",
     });
   }
 
@@ -207,15 +209,15 @@ app.get('/sse', (req, res) => {
 
   if (!session || session.expires < Date.now()) {
     return res.status(401).json({
-      error: 'invalid_token',
-      error_description: 'Token is invalid or expired'
+      error: "invalid_token",
+      error_description: "Token is invalid or expired",
     });
   }
 
   // Configure SSE connection headers
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
 
   // Eliminate request timeout for persistent connection
   req.setTimeout(0);
@@ -225,20 +227,31 @@ app.get('/sse', (req, res) => {
   sessions.set(clientId, { res, userId: session.userId });
 
   // Send connection confirmation event
-  res.write(`data: ${JSON.stringify({ type: 'connection_established' })}\n\n`);
+  res.write(`data: ${JSON.stringify({ type: "connection_established" })}\n\n`);
 
   // Handle connection termination
-  req.on('close', () => {
+  req.on("close", () => {
     sessions.delete(clientId);
   });
 });
 
 // OAuth authorization endpoint implementation
-app.get('/authorize', (req, res) => {
-  const { client_id, redirect_uri, code_challenge, code_challenge_method, state } = req.query;
+app.get("/authorize", (req, res) => {
+  const {
+    client_id,
+    redirect_uri,
+    code_challenge,
+    code_challenge_method,
+    state,
+  } = req.query;
 
-  if (!client_id || !redirect_uri || !code_challenge || code_challenge_method !== 'S256') {
-    return res.status(400).json({ error: 'invalid_request' });
+  if (
+    !client_id ||
+    !redirect_uri ||
+    !code_challenge ||
+    code_challenge_method !== "S256"
+  ) {
+    return res.status(400).json({ error: "invalid_request" });
   }
 
   // Persist authorization request parameters
@@ -248,7 +261,7 @@ app.get('/authorize', (req, res) => {
     redirect_uri,
     code_challenge,
     state,
-    created: Date.now()
+    created: Date.now(),
   });
 
   // In production, render login UI here instead of auto-approval
@@ -262,20 +275,20 @@ app.get('/authorize', (req, res) => {
 
   // Redirect to client callback with authorization code
   const redirectUrl = new URL(redirect_uri);
-  redirectUrl.searchParams.append('code', code);
+  redirectUrl.searchParams.append("code", code);
   if (state) {
-    redirectUrl.searchParams.append('state', state);
+    redirectUrl.searchParams.append("state", state);
   }
 
   res.redirect(redirectUrl.toString());
 });
 
 // OAuth token endpoint implementation
-app.post('/token', express.urlencoded({ extended: true }), (req, res) => {
+app.post("/token", express.urlencoded({ extended: true }), (req, res) => {
   const { grant_type, code, client_id, redirect_uri, code_verifier } = req.body;
 
-  if (grant_type !== 'authorization_code') {
-    return res.status(400).json({ error: 'unsupported_grant_type' });
+  if (grant_type !== "authorization_code") {
+    return res.status(400).json({ error: "unsupported_grant_type" });
   }
 
   // Locate authorization request associated with the code
@@ -289,20 +302,20 @@ app.post('/token', express.urlencoded({ extended: true }), (req, res) => {
   }
 
   if (!authRequest) {
-    return res.status(400).json({ error: 'invalid_grant' });
+    return res.status(400).json({ error: "invalid_grant" });
   }
 
   // Validate PKCE code challenge match
   const codeChallenge = crypto
-    .createHash('sha256')
+    .createHash("sha256")
     .update(code_verifier)
-    .digest('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
+    .digest("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=/g, "");
 
   if (codeChallenge !== authRequest.code_challenge) {
-    return res.status(400).json({ error: 'invalid_grant' });
+    return res.status(400).json({ error: "invalid_grant" });
   }
 
   // Generate access and refresh tokens
@@ -313,38 +326,38 @@ app.post('/token', express.urlencoded({ extended: true }), (req, res) => {
   tokens.set(accessToken, {
     userId: client_id, // In production, use real user identifier
     clientId: client_id,
-    scope: 'mcp',
-    expires: Date.now() + 3600000 // 1 hour expiration
+    scope: "mcp",
+    expires: Date.now() + 3600000, // 1 hour expiration
   });
 
   // Return OAuth token response
   res.json({
     access_token: accessToken,
-    token_type: 'bearer',
+    token_type: "bearer",
     expires_in: 3600,
-    refresh_token: refreshToken
+    refresh_token: refreshToken,
   });
 });
 
 // OAuth discovery metadata endpoint
-app.get('/.well-known/oauth-authorization-server', (req, res) => {
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
+app.get("/.well-known/oauth-authorization-server", (req, res) => {
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
 
   res.json({
     issuer: baseUrl,
     authorization_endpoint: `${baseUrl}/authorize`,
     token_endpoint: `${baseUrl}/token`,
     registration_endpoint: `${baseUrl}/register`,
-    scopes_supported: ['mcp'],
-    response_types_supported: ['code'],
-    grant_types_supported: ['authorization_code', 'refresh_token'],
-    token_endpoint_auth_methods_supported: ['none'],
-    code_challenge_methods_supported: ['S256']
+    scopes_supported: ["mcp"],
+    response_types_supported: ["code"],
+    grant_types_supported: ["authorization_code", "refresh_token"],
+    token_endpoint_auth_methods_supported: ["none"],
+    code_challenge_methods_supported: ["S256"],
   });
 });
 
 app.listen(3000, () => {
-  console.log('MCP Server running on port 3000');
+  console.log("MCP Server running on port 3000");
 });
 ```
 
@@ -371,10 +384,10 @@ sequenceDiagram
 The client component of our authorization system must handle the OAuth flow, manage tokens securely, and maintain persistent connections. Here's how we can implement a robust MCP client using the Mastra framework:
 
 ```typescript
-import { Mastra, MCPConfiguration } from 'mastra';
-import * as crypto from 'crypto';
-import * as http from 'http';
-import open from 'open';
+import { Mastra, MCPConfiguration } from "mastra";
+import * as crypto from "crypto";
+import * as http from "http";
+import open from "open";
 
 class AuthenticatedMCPClient {
   private mastra: Mastra;
@@ -400,11 +413,11 @@ class AuthenticatedMCPClient {
       // Try direct connection first (in case we have a valid token cached)
       if (this.accessToken) {
         await this.setupMastraWithToken();
-        console.log('Connected using existing token');
+        console.log("Connected using existing token");
         return;
       }
     } catch (error) {
-      console.log('No valid token available, initiating authorization flow');
+      console.log("No valid token available, initiating authorization flow");
     }
 
     // Start authorization flow
@@ -414,20 +427,20 @@ class AuthenticatedMCPClient {
 
   private async setupMastraWithToken(): Promise<void> {
     if (!this.accessToken) {
-      throw new Error('No access token available');
+      throw new Error("No access token available");
     }
 
     // Configure MCP in Mastra with the SSE endpoint and authentication
     const mcpConfig: MCPConfiguration = {
       servers: {
         defaultServer: {
-          type: 'sse',
+          type: "sse",
           url: `${this.baseUrl}/sse`,
           headers: {
-            'Authorization': `Bearer ${this.accessToken}`
-          }
-        }
-      }
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        },
+      },
     };
 
     // Apply the configuration to Mastra
@@ -440,19 +453,21 @@ class AuthenticatedMCPClient {
 
   private async discoverOAuthEndpoints(): Promise<any> {
     try {
-      const response = await fetch(`${this.baseUrl}/.well-known/oauth-authorization-server`);
+      const response = await fetch(
+        `${this.baseUrl}/.well-known/oauth-authorization-server`,
+      );
 
       if (response.ok) {
         return await response.json();
       }
     } catch (error) {
-      console.warn('OAuth discovery failed, using default endpoints');
+      console.warn("OAuth discovery failed, using default endpoints");
     }
 
     // Fall back to default endpoint structure
     return {
       authorization_endpoint: `${this.baseUrl}/authorize`,
-      token_endpoint: `${this.baseUrl}/token`
+      token_endpoint: `${this.baseUrl}/token`,
     };
   }
 
@@ -462,56 +477,75 @@ class AuthenticatedMCPClient {
     // Generate PKCE security parameters
     const codeVerifier = this.generateCodeVerifier();
     const codeChallenge = this.generateCodeChallenge(codeVerifier);
-    const state = crypto.randomBytes(16).toString('hex');
+    const state = crypto.randomBytes(16).toString("hex");
 
     // Define the redirect URI for the OAuth flow
     const redirectUri = `http://localhost:${this.redirectPort}/callback`;
 
     // Construct the authorization request URL
     const authUrl = new URL(metadata.authorization_endpoint);
-    authUrl.searchParams.append('response_type', 'code');
-    authUrl.searchParams.append('client_id', this.clientId);
-    authUrl.searchParams.append('redirect_uri', redirectUri);
-    authUrl.searchParams.append('code_challenge', codeChallenge);
-    authUrl.searchParams.append('code_challenge_method', 'S256');
-    authUrl.searchParams.append('state', state);
+    authUrl.searchParams.append("response_type", "code");
+    authUrl.searchParams.append("client_id", this.clientId);
+    authUrl.searchParams.append("redirect_uri", redirectUri);
+    authUrl.searchParams.append("code_challenge", codeChallenge);
+    authUrl.searchParams.append("code_challenge_method", "S256");
+    authUrl.searchParams.append("state", state);
 
     // Obtain authorization code through browser interaction
-    const code = await this.getAuthorizationCode(authUrl.toString(), redirectUri, state);
+    const code = await this.getAuthorizationCode(
+      authUrl.toString(),
+      redirectUri,
+      state,
+    );
 
     // Exchange code for access and refresh tokens
-    await this.exchangeCodeForTokens(code, codeVerifier, redirectUri, metadata.token_endpoint);
+    await this.exchangeCodeForTokens(
+      code,
+      codeVerifier,
+      redirectUri,
+      metadata.token_endpoint,
+    );
   }
 
-  private async getAuthorizationCode(authUrl: string, redirectUri: string, state: string): Promise<string> {
+  private async getAuthorizationCode(
+    authUrl: string,
+    redirectUri: string,
+    state: string,
+  ): Promise<string> {
     return new Promise((resolve, reject) => {
       // Create temporary web server to handle the OAuth callback
       this.callbackServer = http.createServer((req, res) => {
         const url = new URL(req.url!, `http://localhost:${this.redirectPort}`);
 
-        if (url.pathname === '/callback') {
+        if (url.pathname === "/callback") {
           // Extract authorization parameters from callback
-          const receivedCode = url.searchParams.get('code');
-          const receivedState = url.searchParams.get('state');
+          const receivedCode = url.searchParams.get("code");
+          const receivedState = url.searchParams.get("state");
 
           // Validate state parameter to prevent CSRF attacks
           if (receivedState !== state) {
-            res.writeHead(400, { 'Content-Type': 'text/html' });
-            res.end('<html><body><h1>Authentication Error</h1><p>Invalid state parameter</p></body></html>');
-            reject(new Error('Invalid state parameter'));
+            res.writeHead(400, { "Content-Type": "text/html" });
+            res.end(
+              "<html><body><h1>Authentication Error</h1><p>Invalid state parameter</p></body></html>",
+            );
+            reject(new Error("Invalid state parameter"));
             return;
           }
 
           if (!receivedCode) {
-            res.writeHead(400, { 'Content-Type': 'text/html' });
-            res.end('<html><body><h1>Authentication Error</h1><p>No code received</p></body></html>');
-            reject(new Error('No code received'));
+            res.writeHead(400, { "Content-Type": "text/html" });
+            res.end(
+              "<html><body><h1>Authentication Error</h1><p>No code received</p></body></html>",
+            );
+            reject(new Error("No code received"));
             return;
           }
 
           // Send success response to the browser
-          res.writeHead(200, { 'Content-Type': 'text/html' });
-          res.end('<html><body><h1>Authentication Successful</h1><p>You can close this window now.</p></body></html>');
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.end(
+            "<html><body><h1>Authentication Successful</h1><p>You can close this window now.</p></body></html>",
+          );
 
           // Clean up the temporary server
           this.callbackServer!.close();
@@ -533,15 +567,15 @@ class AuthenticatedMCPClient {
     code: string,
     codeVerifier: string,
     redirectUri: string,
-    tokenEndpoint: string
+    tokenEndpoint: string,
   ): Promise<void> {
     const response = await fetch(tokenEndpoint, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        grant_type: 'authorization_code',
+        grant_type: "authorization_code",
         code,
         client_id: this.clientId,
         redirect_uri: redirectUri,
@@ -560,21 +594,21 @@ class AuthenticatedMCPClient {
     this.refreshToken = tokenData.refresh_token;
     this.tokenExpiry = Date.now() + tokenData.expires_in * 1000;
 
-    console.log('Successfully obtained access token');
+    console.log("Successfully obtained access token");
   }
 
   private generateCodeVerifier(): string {
-    return crypto.randomBytes(32).toString('base64url');
+    return crypto.randomBytes(32).toString("base64url");
   }
 
   private generateCodeChallenge(verifier: string): string {
     return crypto
-      .createHash('sha256')
+      .createHash("sha256")
       .update(verifier)
-      .digest('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=/g, '');
+      .digest("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=/g, "");
   }
 
   getMastra(): Mastra {

@@ -1,11 +1,11 @@
 ---
-tags:
-  - micro-frontend
 title: Micro Frontends Microservices For Frontend Development
 date: 2021-07-09
 description: Micro Frontends is an architectural style where independently deliverable frontend applications are composed into a greater whole.
-authors: 
- - thanh
+authors:
+  - thanh
+tags:
+  - micro-frontend
 ---
 
 ## What is Micro-frontend ?
@@ -55,7 +55,7 @@ authors:
 
 - Use `iframe` to connect other micro frontends
 
-````javascript
+`````javascript
 	<html>
 
 	  <head>
@@ -87,8 +87,8 @@ authors:
 	  </body>
 
 	</html>
-	````  
-  
+	````
+
 
 ### Cons
 
@@ -147,7 +147,7 @@ authors:
   </body>
 
 </html>
-````
+`````
 
 ## Run-time integration via [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
 

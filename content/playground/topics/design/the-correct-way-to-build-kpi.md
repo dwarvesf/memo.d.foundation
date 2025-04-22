@@ -1,15 +1,15 @@
 ---
-tags: 
-  - tips
-  - productivity
 title: The Correct Way To Build Kpi
 date: 2020-11-03
-description: null
+description: Discover how mindful meditation can transform your view on KPIs, promoting positive communication and reducing workplace stress for a healthier business environment.
+tags:
+  - tips
+  - productivity
 ---
 
 I have taken a week off from my office, packed up and headed to Dalat for a full-week meditation retreat. This method has been my sweet escape for the past 4 years, get-away from the chaotic pop-ups, notifications, messages, deadlines from work and normal life, to find the right balance for my energy and my mind as well. Yes, even meditation facilitators need their time to recover and enhance their vibes too.
 
-During the retreat, we have daily dharma talks on various topics. This time we focus on the topic of Energy and explore different meanings and perspectives on the concept of energy. While we were talking and identifying the positive and negative elements/perspectives/topics within our daily life & activities, one of our meditators asked: "***Is KPI a positive or negative element in our life? If it's a negative element, how should we perceive KPI from now on? How can we protect our positive minds from the negativity of the KPI?***"
+During the retreat, we have daily dharma talks on various topics. This time we focus on the topic of Energy and explore different meanings and perspectives on the concept of energy. While we were talking and identifying the positive and negative elements/perspectives/topics within our daily life & activities, one of our meditators asked: "**_Is KPI a positive or negative element in our life? If it's a negative element, how should we perceive KPI from now on? How can we protect our positive minds from the negativity of the KPI?_**"
 
 This is absolutely one of those brilliant questions that have been on my mind all the time. We always talk about being positive in daily life, release stress, take everything slow; but in reality, especially in a business world, having a meditative life style does not always match up with the nature of the work itself. The business world is always filled with tensions, conflicts and fears. It is not good nor bad. That is the nature of the business world. On top of that, KPI usually is created, discussed and settled between the top-level and middle managements, which then will get to pass-down to lower level management & employees as announcements. Not that many time a regular employee can get to suggest, negotiate and voice-up what he or she believes is the correct and reasonable KPI for his or her position. Usually, the act of accepting KPI, in many companies and big corporations, is a passive or one-way set of action.
 

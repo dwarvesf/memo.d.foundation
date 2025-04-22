@@ -1,21 +1,26 @@
 ---
+title: What is Generative UI?
+date: 2024-08-08
+description: An introduction to Generative UI (genUI), a user interface that generates interactive elements in response to user needs using AI, enhancing UX in chat applications. The article explores examples, benefits, and popular solutions like the Vercel AI SDK for implementing generative UI.
 authors:
-- "namnanh14mn"
-- "TheCodister"
-date: "2024-08-08"
-description: "An introduction to Generative UI (genUI), a user interface that generates interactive elements in response to user needs using AI, enhancing UX in chat applications. The article explores examples, benefits, and popular solutions like the Vercel AI SDK for implementing generative UI."
+  - namnanh14mn
+  - TheCodister
 hashnode_meta:
-  coverImageOptions:
-    coverImageURL: "https://memo.d.foundation/playground/ai/assets/generative-ui-example1.webp"
-  id: "670f4d4eb25a9930f0551618"
-  slug: "what-is-generative-ui"
-sync: "hashnode"
+  {
+    "coverImageOptions":
+      {
+        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/generative-ui-example1.webp",
+      },
+    "id": "670f4d4eb25a9930f0551618",
+    "slug": "what-is-generative-ui",
+  }
+sync: hashnode
 tags:
-- "AI"
-- "generative-ui"
-- "llm"
-title: "What is Generative UI?"
+  - ai
+  - generative-ui
+  - llm
 ---
+
 ## What is Generative UI?
 
 - A **generative UI** (genUI) is a user interface that responds to the user with AI-generated elements instead of just text messages.
@@ -54,43 +59,45 @@ const askGPT = async () => {
   const ui = createStreamableUI()(
     // invoke some task
     async () => {
-      workflow = createAgentExecutor()
+      workflow = createAgentExecutor();
       // handle stream events from LLM
-      for await (const streamEvent of (runnable as Runnable<RunInput, RunOutput>).streamEvents(inputs, {
-        version: 'v2',
+      for await (const streamEvent of (
+        runnable as Runnable<RunInput, RunOutput>
+      ).streamEvents(inputs, {
+        version: "v2",
       })) {
         // handle event stream from LLM
-        ui.update(<UI props={data} />)
+        ui.update(<UI props={data} />);
       }
     },
-  )()
+  )();
 
-  return ui
-}
+  return ui;
+};
 ```
 
 ```tsx
 const Chat = () => {
-  const [elements, setElements] = useState([])
+  const [elements, setElements] = useState([]);
 
   const handleSubmit = (message: string) => {
     const ui = askGPT({
       message: message,
-    })
-    setElements([...elements, ui])
-  }
+    });
+    setElements([...elements, ui]);
+  };
 
   return (
     <form
       onSubmit={() => {
-        handleSubmit(inputValue)
+        handleSubmit(inputValue);
       }}
     >
       {elements}
       <input />
     </form>
-  )
-}
+  );
+};
 ```
 
 ### Pros:
@@ -129,19 +136,19 @@ By observing the behavior of Vercel AI SDK, we came up with a general idea and 2
 
 ```tsx
 // Example final message
-;[
+[
   {
-    type: 'text',
-    data: '......',
+    type: "text",
+    data: "......",
   },
   {
-    type: 'movie-search-tool',
+    type: "movie-search-tool",
     data: {
-      title: '.....',
-      description: '....',
+      title: ".....",
+      description: "....",
     },
   },
-]
+];
 ```
 
 ### Approach 2

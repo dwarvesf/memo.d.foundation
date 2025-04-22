@@ -1,10 +1,10 @@
 ---
-tags: 
-  - engineering
-  - LLM
 title: Easy Prompt Engineering For Business Use And Mitigating Risks In Llms
 date: 2023-05-22
-description: null
+description: Learn essential prompt engineering techniques for ChatGPT to improve business app accuracy, handle complex tasks, and defend against risks like adversarial prompting and data leaks.
+tags:
+  - engineering
+  - llm
 ---
 
 ## Preface
@@ -55,7 +55,7 @@ You can further edit the context to better fit your intended format. Then in the
 
 ### Pre-context to fix mistakes and errors
 
-At Dwarves, we are testing transcribing some of our old videos as well as more real-time transcriptions for our meetings using OpenAI Whisper. There are occasional hiccups when using Whisper without any extra tuning, which can be cleaned by ChatGPT during a summary report. The following transcript is from our recent **[Tech Event #7: "State of Frontend 2023: React vs Vue vs Angular"](https://www.youtube.com/live/orJVTAGj_OE?feature=share&t=2618)****:**
+At Dwarves, we are testing transcribing some of our old videos as well as more real-time transcriptions for our meetings using OpenAI Whisper. There are occasional hiccups when using Whisper without any extra tuning, which can be cleaned by ChatGPT during a summary report. The following transcript is from our recent **[Tech Event #7: "State of Frontend 2023: React vs Vue vs Angular"](https://www.youtube.com/live/orJVTAGj_OE?feature=share&t=2618)\*\***:\*\*
 
 ![](assets/easy-prompt-engineering-for-business-use-and-mitigating-risks-in-llms_740406c5bc05b3862368401d46720e34_md5.webp)
 
@@ -79,6 +79,6 @@ At the end of the day, prompt engineering is an essential tool for improving the
 
 ## References
 
-* [https://learnprompting.org/](https://learnprompting.org/)
-* [https://www.promptingguide.ai/risks/adversarial](https://www.promptingguide.ai/risks/adversarial)
-* [https://ai.googleblog.com/2022/05/language-models-perform-reasoning-via.html](https://ai.googleblog.com/2022/05/language-models-perform-reasoning-via.html)
+- [https://learnprompting.org/](https://learnprompting.org/)
+- [https://www.promptingguide.ai/risks/adversarial](https://www.promptingguide.ai/risks/adversarial)
+- [https://ai.googleblog.com/2022/05/language-models-perform-reasoning-via.html](https://ai.googleblog.com/2022/05/language-models-perform-reasoning-via.html)

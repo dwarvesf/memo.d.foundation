@@ -1,13 +1,13 @@
 ---
-tags: 
-  - design-pattern
-  - gang-of-four 
-  - behavior-patterns
-title: "State Pattern"
-description: "The State Design Pattern is a behavioral design pattern that allows an object to change its behavior when its internal state changes. This pattern is particularly useful for scenarios where an object can exist in multiple states and its behavior varies based on these states."
+title: State Pattern
+date: 2024-06-27
+description: The State Design Pattern is a behavioral design pattern that allows an object to change its behavior when its internal state changes. This pattern is particularly useful for scenarios where an object can exist in multiple states and its behavior varies based on these states.
 authors:
   - hieuvd
-date: 2024-06-27
+tags:
+  - design-pattern
+  - gang-of-four
+  - behavior-patterns
 ---
 
 ![State Pattern](assets/state-pattern_state-en-2x.webp)
@@ -61,7 +61,6 @@ The State pattern addresses these issues by encapsulating state-specific behavio
 
 In the State Design Pattern, the state of an object is represented by a set of state-specific classes. The object, known as the context, delegates state-specific behavior to the current state object. As the state of the context changes, it transitions between different state objects, each of which implements a particular set of behaviors.
 
-
 ### Structure
 
 ![Structure](assets/state-pattern_structure-en-2x.webp)
@@ -70,14 +69,14 @@ In the State Design Pattern, the state of an object is represented by a set of s
 - **State**: Defines an interface for encapsulating the behavior associated with a particular state of the Context.
 - **ConcreteState**: Implements the behavior associated with a state of the Context.
 
-
 ### Advantages
+
 - **Simplifies State Transitions**: Encapsulates state-specific behavior and state transitions, making it easier to add new states without modifying existing ones.
 - **Enhances Readability**: Improves code readability and maintainability by organizing state-specific behavior into separate classes.
 - **Promotes Open/Closed Principle**: Facilitates adherence to the Open/Closed Principle, allowing the system to be extended with new states without altering existing code.
 
-
 ### Use Cases
+
 The State Design Pattern is particularly beneficial in scenarios such as:
 
 - **Finite State Machines**: Implementing state machines where an object can be in one of a limited number of states.

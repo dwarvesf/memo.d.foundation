@@ -1,16 +1,17 @@
 ---
+title: Bloom Filter
+date: 2024-06-28
+description: "A Bloom Filter is a probabilistic data structure used for testing whether an element is a member of a set or not. It's space-efficient compared to other data structures like hash tables, but it may give false positives (indicating that an element is in the set when it's not) and never gives false negatives (indicating that an element is not in the set when it actually is not)..."
+authors:
+  - hoangnnh
 tags:
   - data-structure
   - bloom-filter
   - big-o
-authors:
-  - hoangnnh
-date: 2024-06-28
-title: "Bloom Filter"
-description: "A Bloom Filter is a probabilistic data structure used for testing whether an element is a member of a set or not. It's space-efficient compared to other data structures like hash tables, but it may give false positives (indicating that an element is in the set when it's not) and never gives false negatives (indicating that an element is not in the set when it actually is not)..."
 ---
 
 ## What is Bloom Filter?
+
 A Bloom Filter is a probabilistic data structure used for testing whether an element is a member of a set or not. It's space-efficient compared to other data structures like hash tables, but it may give false positives (indicating that an element is in the set when it's not) and never gives false negatives (indicating that an element is not in the set when it actually is not).
 
 ![](assets/bloom-filter_bloom_filter.webp)
@@ -24,6 +25,7 @@ A Bloom Filter is a probabilistic data structure used for testing whether an ele
 `Checking Membership`: To check if an element is in the Bloom Filter, you again run it through each of the `k` hash functions. If all `k` bits are set to `1` in the bit array, the element is probably in the set. If any of the bits are `0`, then the element is definitely not in the set. However, due to potential hash collisions, `false positives are possible`.
 
 ## When to use?
+
 Imagine that you have a system which millions user, and then you have a user table which had millions of records. So everytime a new user is registered, you have to query millions records table to check username is existed or not which cost `Time complexity = O(n)` (`n` will be vary upto millions) in case not aggregate further. Instead of that, you can `Checking membership` in Bloom Filter which just have `Time complexity = O(k)` (k is constant number of hash function) and then response to user that username is alreay existed. The result has a small probability of false positive(username not existed but response existed) due to potential hash collion but it acceptable by notify user can register with other username.
 
 Besides above scenario, Bloom Filter can apply in other case like:
@@ -43,6 +45,7 @@ Besides above scenario, Bloom Filter can apply in other case like:
 Overall, Bloom Filters are suitable for applications where memory usage needs to be minimized, and a small probability of false positives is acceptable. However, they are not suitable for scenarios where false positives are unacceptable or where exact membership information is required.
 
 ## Pros and Cons?
+
 ### Pros:
 
 - `Space Efficiency`: Bloom Filters are very space-efficient compared to other data structures like hash tables or trees. They require only a fraction of the space that would be needed to store the actual set of elements.

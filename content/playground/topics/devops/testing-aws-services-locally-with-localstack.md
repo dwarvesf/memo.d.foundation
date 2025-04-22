@@ -18,6 +18,7 @@ tags:
 **Amazon Web Services** (AWS) provides a wide range of cloud computing services that can be used to build and deploy applications at scale. However, using AWS can be costly, especially for small-scale projects or for developers who are just starting out. That's where [LocalStack](https://localstack.cloud/) comes in. LocalStack is an open-source tool that enables **local development** and **testing** of cloud applications by emulating various AWS services on a developer's local side. It can be used to test and develop applications **without** incurring the cost and complexity of using live AWS environment.
 
 ## Terminologies
+
 **AWS** is a flexible, scalable, and cost-effective cloud computing platform that offers a wide range of services to help individuals, startups, and enterprises build and manage their applications and infrastructure.
 
 > Learn more about [AWS](https://aws.amazon.com/).
@@ -27,6 +28,7 @@ tags:
 > Download Python and follow [LocalStack's documentation](https://docs.localstack.cloud/getting-started/installation/) to complete installation, registration and add LocalStack's API key to the environment.
 
 ## Example
+
 AWS **S3** (Simple Storage Service) is designed to store and retrieve large amounts of data, including structured and unstructured data, in buckets, which are logical containers for objects (files) that can be accessed using the S3 API, SDKs, or the AWS Management Console.
 
 In this brainery post, let's take an example of LocalStack AWS S3 to demonstrate how we can test an AWS service locally without needing to connect to a live AWS environment.
@@ -35,7 +37,7 @@ In this brainery post, let's take an example of LocalStack AWS S3 to demonstrate
 pip3 install awscli-local
 ```
 
-Firstly, run the command above to be able to use the **`awslocal`** command. Detailed information can be found at  [LocalStack AWS CLI (awslocal)](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
+Firstly, run the command above to be able to use the **`awslocal`** command. Detailed information can be found at [LocalStack AWS CLI (awslocal)](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
 
 Then start docker and LocalStack, run the command below to **create a bucket** named `sample-bucket`:
 
@@ -137,6 +139,7 @@ awslocal s3api get-bucket-replication --bucket sample-bucket
 ```
 
 ## Other services
+
 Some of the emulation services for other AWS APIs that LocalStack supports:
 
 - [Elastic Compute Cloud (EC2)](https://docs.localstack.cloud/user-guide/aws/elastic-compute-cloud/)
@@ -152,6 +155,7 @@ Some of the emulation services for other AWS APIs that LocalStack supports:
 > See the [Service Feature Coverage](https://docs.localstack.cloud/user-guide/aws/feature-coverage/) on LocalStack's documentation for further information of the AWS APIs that LocalStack has covered.
 
 ## Benefits
+
 There are several advantages of using LocalStack over the original AWS solutions:
 
 1.  Cost-saving: LocalStack is free to use and doesn't incur any AWS usage costs.
@@ -163,6 +167,6 @@ There are several advantages of using LocalStack over the original AWS solutions
 4.  Improved accuracy: LocalStack's local environment allows developers to test their code more accurately, as they can simulate real-world scenarios without the risk of impacting live data or users.
 
 ## Reference
+
 - https://docs.localstack.cloud/user-guide/aws/s3/
 - https://aws.amazon.com/s3/?nc2=h_ql_prod_st_s3
-

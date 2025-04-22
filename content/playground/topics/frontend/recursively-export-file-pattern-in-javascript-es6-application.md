@@ -1,9 +1,9 @@
 ---
-tags: 
-  - js
 title: Recursively Export File Pattern In Javascript Es6 Application
 date: 2019-09-07
-description: null
+description: Learn how to simplify JavaScript ES6 imports by using recursive re-export patterns and automate index file creation with the @autogen-export package for cleaner component management.
+tags:
+  - js
 ---
 
 ![](assets/recursively-export-file-pattern-in-javascript-es6-application_08f14b555ce54599844167b5700622ca_md5.webp)
@@ -20,12 +20,12 @@ Instead of importing component like above. You would want to import your compone
 
 **The pros of this style are**
 
-* Your project structure now grouped into multiple namespaces. You can image It’s like C# namespace. Each namespace is a root folder in our project.
-* Don’t have to remember exactly path of your components.
+- Your project structure now grouped into multiple namespaces. You can image It’s like C# namespace. Each namespace is a root folder in our project.
+- Don’t have to remember exactly path of your components.
 
 **The cons are**
 
-* Can’t export members who name has been exported already. Eg: Component/A export A member so Component/B cannot export A member.
+- Can’t export members who name has been exported already. Eg: Component/A export A member so Component/B cannot export A member.
 
 ## Implementation
 
@@ -51,18 +51,18 @@ Let’s say from the app component in the directory I want to import component1,
 ```javascript
 import React from "react";
 import ReactDOM from "react-dom";
-import Component1 from '../src/components/component1'
-import Component2 from '../src/components/component2'
-import NestedComponent1 from '../src/components/nested-component/nested-component1'
-import NestedComponent2 from '../src/components/nested-component/nested-component2'
+import Component1 from "../src/components/component1";
+import Component2 from "../src/components/component2";
+import NestedComponent1 from "../src/components/nested-component/nested-component1";
+import NestedComponent2 from "../src/components/nested-component/nested-component2";
 import "./styles.css";
 function App() {
   return (
     <div className="App">
-    <Component1/>
-    <Component2/>
-    <NestedComponent1/>
-    <NestedComponent2/>
+      <Component1 />
+      <Component2 />
+      <NestedComponent1 />
+      <NestedComponent2 />
     </div>
   );
 }
@@ -73,17 +73,17 @@ ReactDOM.render(<App />, rootElement);
 I will refactor it by creating a file named index.js in a components folder that exports all content of Its child.
 
 ```javascript
-export {component1} from "./component1";
-export {component2} from "./component2";
+export { component1 } from "./component1";
+export { component2 } from "./component2";
 ```
 
 or
 
 ```javascript
-export {component1} from "./component1";
-export {component2} from "./component2";
-export {NestedComponent1} from './nested-component/nested-component1'
-export {NestedComponent2} from './nested-component/nested-component2'
+export { component1 } from "./component1";
+export { component2 } from "./component2";
+export { NestedComponent1 } from "./nested-component/nested-component1";
+export { NestedComponent2 } from "./nested-component/nested-component2";
 ```
 
 Please note that the export all identifier above is not re-export the export default state of the module. eg: In module A exported default a and exported named b. Only b will be re-exported.
@@ -91,7 +91,12 @@ Please note that the export all identifier above is not re-export the export def
 Then in your app component, you can
 
 ```javascript
-import { component1 as Component1, component2 as Component2, NestedComponent1, Nested} from "./components";
+import {
+  component1 as Component1,
+  component2 as Component2,
+  NestedComponent1,
+  Nested,
+} from "./components";
 ```
 
 ## @Autogen-export Package
@@ -101,14 +106,14 @@ Auto-generate-export file is a utility tool which generates index file exported 
 
 It’s work with Typescript, Javascript ES6. It has many configurable options that allow you to tweak all of Its aspects:
 
-* Extension type of a generated file.
-* Extension of a file that will be parsed.
-* Ignore specific folder.
+- Extension type of a generated file.
+- Extension of a file that will be parsed.
+- Ignore specific folder.
 
 It has been published as an NPM package.
 
-* [https://www.npmjs.com/package/@autogen-export/core](https://www.npmjs.com/package/@autogen-export/core)
-* [https://www.npmjs.com/package/@autogen-export/cli](https://www.npmjs.com/package/@autogen-export/cli)
+- [https://www.npmjs.com/package/@autogen-export/core](https://www.npmjs.com/package/@autogen-export/core)
+- [https://www.npmjs.com/package/@autogen-export/cli](https://www.npmjs.com/package/@autogen-export/cli)
 
 I also created examples on how to use those packages: [https://github.com/phmngocnghia/AutoGenerateReExportFile/tree/master/examples](https://github.com/phmngocnghia/AutoGenerateReExportFile/tree/master/examples)
 

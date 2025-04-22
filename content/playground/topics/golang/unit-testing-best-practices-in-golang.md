@@ -1,19 +1,20 @@
 ---
+title: Unit Testing Best Practices In Golang
+date: 2023-04-11
+description: An in-depth exploration of arrays and slices in Go, covering their differences, internal implementations, and key operations like append. Learn about fixed-length arrays, flexible slices, and how Go manages memory allocation for growing slices.
+authors:
+  - taynguyen294
 tags:
   - engineering
   - practice
   - backend
   - golang
-title: 'Unit Testing Best Practices In Golang'
-date: 2023-04-11
-description: An in-depth exploration of arrays and slices in Go, covering their differences, internal implementations, and key operations like append. Learn about fixed-length arrays, flexible slices, and how Go manages memory allocation for growing slices.
-authors:
-  - taynguyen294
 ---
 
 One common issue we often tackle in backend engineering is writing test cases. In this article, we will explore the techniques for crafting effective tests in Go, discussing best practices for writing unit tests and utilizing mocks to achieve better isolation. Although our primary focus lies in unit testing-related practices, it is important to note that Golang also supports integration testing. We will also tackle the subject of integration testing in a future article, where we will examine the details and best practices for integration testing in Golang.
 
 ## Introduction
+
 ### Importance of testing in software development
 
 Testing is crucial in software development to catch bugs and errors, ensure maintainability and modularity, and improve security, and overall software quality. With the rise of cybersecurity threats, testing is becoming increasingly important to ensure software systems are secure and reliable.

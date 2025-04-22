@@ -1,9 +1,9 @@
 ---
-tags: 
-  - dcos
 title: Dcos Series Part 5 Gitlab
 date: 2017-06-11
-description: null
+description: Learn how to install and secure Gitlab on DC/OS with HTTPS, configure domain and email settings, and manage private Git repositories for small teams using step-by-step instructions.
+tags:
+  - dcos
 ---
 
 Gitlab an open source developer tool (like Github) that allows you to host git repositories, review code, track issues, host Docker images and perform continuous integration, and it is very compatible for a small team wit CE version.
@@ -51,7 +51,7 @@ sudo mv cert.pem /srv/marathon-lb/domains/ssl/example-git-domain.com
 
 3. Config `marathon-lb` service:
 
-* Add new sharing volumes
+- Add new sharing volumes
 
 ```plain_text
   {
@@ -61,12 +61,12 @@ sudo mv cert.pem /srv/marathon-lb/domains/ssl/example-git-domain.com
   }
 ```
 
-* Add `"/etc/ssl/domains/example-git-domain.com/cert.pem"\`to `args`in `JSON Editor`
+- Add `"/etc/ssl/domains/example-git-domain.com/cert.pem"\`to `args`in `JSON Editor`
 
 ![](assets/dcos-series-part-5---gitlab_6d0a8c8c9d3f0ea69d31fd97da4de9b1_md5.webp)
 
-* `Review & Run` marathon-lb again to update new changes
+- `Review & Run` marathon-lb again to update new changes
 
-* After updating those settings, you now can go to `your-gitlab-domain.com` to enjoy your result.
+- After updating those settings, you now can go to `your-gitlab-domain.com` to enjoy your result.
 
 If you face anything weird while setting up your Gitlab, you can contact me via `quang@dwarvesf.com.`

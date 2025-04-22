@@ -1,12 +1,12 @@
 ---
+title: Rendering strategies in React
+date: 2024-10-29
+description: React rendering strategies with in-depth coverage of client-side rendering (CSR), server-side rendering (SSR), and static site generation (SSG).
 authors:
-  - 'thanh'
-date: '2024-10-29'
-description: 'React rendering strategies with in-depth coverage of client-side rendering (CSR), server-side rendering (SSR), and static site generation (SSG).'
+  - thanh
+short_title: Rendering strategies
 tags:
-  - 'react'
-title: 'Rendering strategies in React'
-short_title: 'Rendering strategies'
+  - react
 ---
 
 Client-side rendering (CSR), server-side rendering (SSR), and static-site generation (SSG) are three key rendering strategies in modern web development. Each approach has unique advantages and trade-offs, impacting application performance, SEO, and user experience.
@@ -38,18 +38,18 @@ CSR is the default rendering approach in React applications, where everything fr
 In CSR, data fetching happens on the client side, typically using hooks like `useEffect`.
 
 ```jsx
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
 function UserProfile({ userId }) {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetch(`/api/users/${userId}`)
       .then((response) => response.json())
-      .then((data) => setUser(data))
-  }, [userId])
+      .then((data) => setUser(data));
+  }, [userId]);
 
-  return user ? <div>{user.name}</div> : <div>Loading...</div>
+  return user ? <div>{user.name}</div> : <div>Loading...</div>;
 }
 ```
 
@@ -82,18 +82,18 @@ Next.js is a React framework that simplifies SSR. With Next.js, you can use `get
 ```jsx
 // pages/profile/[id].js
 
-import React from 'react'
+import React from "react";
 
 export async function getServerSideProps(context) {
-  const { id } = context.params
-  const res = await fetch(`https://api.example.com/users/${id}`)
-  const user = await res.json()
+  const { id } = context.params;
+  const res = await fetch(`https://api.example.com/users/${id}`);
+  const user = await res.json();
 
-  return { props: { user } }
+  return { props: { user } };
 }
 
 export default function UserProfile({ user }) {
-  return <div>{user.name}</div>
+  return <div>{user.name}</div>;
 }
 ```
 
@@ -126,28 +126,28 @@ In Next.js, `getStaticProps` generates static pages at build time. This is perfe
 ```jsx
 // pages/posts/[id].js
 
-import React from 'react'
+import React from "react";
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`https://api.example.com/posts/${params.id}`)
-  const post = await res.json()
+  const res = await fetch(`https://api.example.com/posts/${params.id}`);
+  const post = await res.json();
 
-  return { props: { post } }
+  return { props: { post } };
 }
 
 export async function getStaticPaths() {
-  const res = await fetch('https://api.example.com/posts')
-  const posts = await res.json()
+  const res = await fetch("https://api.example.com/posts");
+  const posts = await res.json();
 
   const paths = posts.map((post) => ({
     params: { id: post.id.toString() },
-  }))
+  }));
 
-  return { paths, fallback: false }
+  return { paths, fallback: false };
 }
 
 export default function Post({ post }) {
-  return <div>{post.title}</div>
+  return <div>{post.title}</div>;
 }
 ```
 
@@ -183,39 +183,39 @@ In this example, we use SSG with ISR for product pages and CSR for interactive f
 ```jsx
 // pages/product/[id].js
 
-import { useState } from 'react'
+import { useState } from "react";
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`https://api.example.com/products/${params.id}`)
-  const product = await res.json()
+  const res = await fetch(`https://api.example.com/products/${params.id}`);
+  const product = await res.json();
 
-  return { props: { product }, revalidate: 60 } // ISR: regenerates every 60 seconds
+  return { props: { product }, revalidate: 60 }; // ISR: regenerates every 60 seconds
 }
 
 export async function getStaticPaths() {
-  const res = await fetch('https://api.example.com/products')
-  const products = await res.json()
+  const res = await fetch("https://api.example.com/products");
+  const products = await res.json();
 
   const paths = products.map((product) => ({
     params: { id: product.id.toString() },
-  }))
+  }));
 
-  return { paths, fallback: 'blocking' }
+  return { paths, fallback: "blocking" };
 }
 
 export default function Product({ product }) {
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState([]);
 
   const addToCart = () => {
-    setCart((prevCart) => [...prevCart, product])
-  }
+    setCart((prevCart) => [...prevCart, product]);
+  };
 
   return (
     <div>
       <h1>{product.name}</h1>
       <button onClick={addToCart}>Add to Cart</button>
     </div>
-  )
+  );
 }
 ```
 

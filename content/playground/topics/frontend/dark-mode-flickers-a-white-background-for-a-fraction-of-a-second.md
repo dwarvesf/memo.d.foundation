@@ -1,14 +1,14 @@
 ---
-tags: 
- - frontend
- - tip
- - dark-mode
-authors: 
- - thanh
-description: The dark mode feature uses local storage to store a user's preference for future usage. The problem is that when the dark mode is enabled and the page is reloaded, there's a flicker of a white background all over the page before it turns dark. This happens for a fraction of a second and doesn't look natural.
 title: Dark mode flickers a white background for a fraction of a second
-github_id: zlatanpham
 date: 2022-08-11
+description: "The dark mode feature uses local storage to store a user's preference for future usage. The problem is that when the dark mode is enabled and the page is reloaded, there's a flicker of a white background all over the page before it turns dark. This happens for a fraction of a second and doesn't look natural."
+authors:
+  - thanh
+github_id: zlatanpham
+tags:
+  - frontend
+  - tip
+  - dark-mode
 ---
 
 The dark mode feature uses local storage to store a user's preference for future usage. The problem is that when the dark mode is enabled and the page is reloaded, there's a flicker of white background all over the page before it turns dark. This happens for a fraction of a second and doesn't look natural.
@@ -32,8 +32,8 @@ Following is the implementation we normally do when setting up this feature. Thi
 ```js
 // main.js
 //...
-if (window.localStorage.getItem('theme') === 'dark') {
-  document.documentElement.classList.add('dark')
+if (window.localStorage.getItem("theme") === "dark") {
+  document.documentElement.classList.add("dark");
 }
 ```
 
@@ -45,8 +45,8 @@ To fix this, put the scripts inside the `<head>` tag, even before the `<link>` o
 <html>
   <head>
     <script type="text/javascript">
-      if (window.localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark')
+      if (window.localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("dark");
       }
     </script>
     ...

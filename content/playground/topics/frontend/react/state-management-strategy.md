@@ -1,12 +1,12 @@
 ---
+title: State management strategy in React
+date: 2024-10-29
+description: Discover state management strategies, best practices, and when to use each approach for scalable, efficient React applications
 authors:
-  - 'thanh'
-date: '2024-10-29'
-description: 'Discover state management strategies, best practices, and when to use each approach for scalable, efficient React applications'
+  - thanh
+short_title: State management strategy
 tags:
-  - 'React'
-title: 'State management strategy in React'
-short_title: 'State management strategy'
+  - react
 ---
 
 State management is a core architectural topic in React, especially as applications grow in complexity. While local component state (using `useState` or `useReducer`) is suitable for small to medium apps, more sophisticated state management strategies become essential as your app scales.
@@ -20,40 +20,45 @@ React’s native `useState` and `useReducer` are sufficient for managing state a
 Use `useReducer` for managing local form state with multiple dependent fields.
 
 ```js
-const initialFormState = { name: '', email: '', password: '' }
+const initialFormState = { name: "", email: "", password: "" };
 
 function formReducer(state, action) {
   switch (action.type) {
-    case 'UPDATE_FIELD':
-      return { ...state, [action.field]: action.value }
-    case 'RESET':
-      return initialFormState
+    case "UPDATE_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "RESET":
+      return initialFormState;
     default:
-      return state
+      return state;
   }
 }
 
 function SignupForm() {
-  const [state, dispatch] = useReducer(formReducer, initialFormState)
+  const [state, dispatch] = useReducer(formReducer, initialFormState);
 
   const handleChange = (e) => {
     dispatch({
-      type: 'UPDATE_FIELD',
+      type: "UPDATE_FIELD",
       field: e.target.name,
       value: e.target.value,
-    })
-  }
+    });
+  };
 
   return (
     <form>
       <input name="name" value={state.name} onChange={handleChange} />
       <input name="email" value={state.email} onChange={handleChange} />
-      <input name="password" type="password" value={state.password} onChange={handleChange} />
-      <button type="button" onClick={() => dispatch({ type: 'RESET' })}>
+      <input
+        name="password"
+        type="password"
+        value={state.password}
+        onChange={handleChange}
+      />
+      <button type="button" onClick={() => dispatch({ type: "RESET" })}>
         Reset
       </button>
     </form>
-  )
+  );
 }
 ```
 
@@ -69,25 +74,33 @@ The React Context API is suitable for small to medium global state needs, such a
 **Example of centralized authentication state**
 
 ```jsx
-const AuthContext = React.createContext()
+const AuthContext = React.createContext();
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-  const login = (userData) => setUser(userData)
-  const logout = () => setUser(null)
+  const login = (userData) => setUser(userData);
+  const logout = () => setUser(null);
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 function useAuth() {
-  return useContext(AuthContext)
+  return useContext(AuthContext);
 }
 
 // Usage:
 function Navbar() {
-  const { user, logout } = useAuth()
-  return user ? <button onClick={logout}>Logout</button> : <button>Login</button>
+  const { user, logout } = useAuth();
+  return user ? (
+    <button onClick={logout}>Logout</button>
+  ) : (
+    <button>Login</button>
+  );
 }
 ```
 
@@ -105,26 +118,26 @@ Redux is well-suited for applications with highly structured, complex, or cross-
 Using Redux Toolkit, you can simplify Redux by automatically generating action creators and reducers.
 
 ```js
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState: [],
   reducers: {
     addItem: (state, action) => {
-      state.push(action.payload)
+      state.push(action.payload);
     },
     removeItem: (state, action) => {
-      return state.filter((item) => item.id !== action.payload)
+      return state.filter((item) => item.id !== action.payload);
     },
   },
-})
+});
 
-const store = configureStore({ reducer: { cart: cartSlice.reducer } })
+const store = configureStore({ reducer: { cart: cartSlice.reducer } });
 
 // Actions for dispatching:
-export const { addItem, removeItem } = cartSlice.actions
-export default store
+export const { addItem, removeItem } = cartSlice.actions;
+export default store;
 ```
 
 **Redux vs. Zustand**:
@@ -144,28 +157,32 @@ Tools like `React Query` and `SWR` are ideal for handling server data. They help
 **Example use case**: React Query simplifies handling server state by caching data and re-fetching when necessary. It also manages states like loading, error, and refetching automatically.
 
 ```jsx
-import { useQuery, QueryClient, QueryClientProvider } from 'react-query'
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function fetchUser(userId) {
-  return fetch(`/api/user/${userId}`).then((res) => res.json())
+  return fetch(`/api/user/${userId}`).then((res) => res.json());
 }
 
 function UserProfile({ userId }) {
-  const { data, error, isLoading } = useQuery(['user', userId], () => fetchUser(userId), {
-    staleTime: 5 * 60 * 1000, // Data remains fresh for 5 minutes
-  })
+  const { data, error, isLoading } = useQuery(
+    ["user", userId],
+    () => fetchUser(userId),
+    {
+      staleTime: 5 * 60 * 1000, // Data remains fresh for 5 minutes
+    },
+  );
 
-  if (isLoading) return <LoadingSpinner />
-  if (error) return <ErrorDisplay message={error.message} />
-  return <div>User: {data.name}</div>
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorDisplay message={error.message} />;
+  return <div>User: {data.name}</div>;
 }
 
 // Usage in App:
-;<QueryClientProvider client={queryClient}>
+<QueryClientProvider client={queryClient}>
   <UserProfile userId={1} />
-</QueryClientProvider>
+</QueryClientProvider>;
 ```
 
 **React Query vs. SWR**:
@@ -189,32 +206,38 @@ For scalable applications, a hybrid approach works well, where:
 **Example hybrid structure**:
 
 ```jsx
-const UserContext = React.createContext()
+const UserContext = React.createContext();
 
 function AppProvider({ children }) {
-  const [user, setUser] = useState(null)
-  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>
+  const [user, setUser] = useState(null);
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 }
 
 function useUserData(userId) {
-  return useQuery(['user', userId], () => fetchUser(userId), { staleTime: 5 * 60 * 1000 })
+  return useQuery(["user", userId], () => fetchUser(userId), {
+    staleTime: 5 * 60 * 1000,
+  });
 }
 
 function UserComponent() {
-  const { user, setUser } = useContext(UserContext)
-  const { data: userData } = useUserData(user.id)
+  const { user, setUser } = useContext(UserContext);
+  const { data: userData } = useUserData(user.id);
 
   useEffect(() => {
-    if (userData) setUser(userData)
-  }, [userData, setUser])
+    if (userData) setUser(userData);
+  }, [userData, setUser]);
 
-  return <div>Welcome, {user ? user.name : 'Guest'}!</div>
+  return <div>Welcome, {user ? user.name : "Guest"}!</div>;
 }
 
 // Usage:
-;<AppProvider>
+<AppProvider>
   <UserComponent />
-</AppProvider>
+</AppProvider>;
 ```
 
 **Benefits of the combined approach**:

@@ -1,11 +1,11 @@
 ---
-tags: 
+title: Data Analyst In Retail Trading
+date: 2022-08-29
+description: Discover how data analysts use tools like Power BI and SQL to transform retail trading data into actionable business insights on sales, finance, and marketing performance.
+tags:
   - engineering
   - practice
   - radar
-title: Data Analyst In Retail Trading
-date: 2022-08-29
-description: null
 ---
 
 > I am Bach Phuong and I work at Dwarves Foundation as a Data Analyst, helping partner companies realize insights and understand their business better.

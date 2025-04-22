@@ -1,13 +1,13 @@
 ---
+title: Frontend Report Second Half of November 2024
+date: 2024-11-30
+description: A second half of November 2024 frontend roundup featuring React Router v7, Tailwind CSS v4 Beta, and Vite 6.0. Explore tools like Next Cloudinary, Extism, and SmarkForm, plus JavaScript Symbols, and new CSS strategies.
+authors:
+  - hthai2201
+short_title: Nov 2024 (Second Half)
 tags:
   - frontend
   - market-report
-title: Frontend Report Second Half of November 2024
-short_title: "Nov 2024 (Second Half)"
-description: A second half of November 2024 frontend roundup featuring React Router v7, Tailwind CSS v4 Beta, and Vite 6.0. Explore tools like Next Cloudinary, Extism, and SmarkForm, plus JavaScript Symbols, and new CSS strategies.
-date: 2024-11-30
-authors:
-  - hthai2201
 ---
 
 A second half of November 2024 frontend roundup featuring React Router v7, Tailwind CSS v4 Beta, and Vite 6.0. Explore tools like Next Cloudinary, Extism, and SmarkForm, plus insights on SSR cost-effectiveness, JavaScript Symbols, and new CSS strategies.

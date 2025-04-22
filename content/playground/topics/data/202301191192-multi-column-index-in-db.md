@@ -1,20 +1,21 @@
 ---
-authors:
- - hmhoang13
-description: Multi-column index in DB
 title: Multi-column index in DB
 date: 2023-01-19
+description: Multi-column index in DB
+authors:
+  - hmhoang13
 tags:
- - database
- - multi-column-index
- - index
- - composite-index
+  - database
+  - multi-column-index
+  - index
+  - composite-index
 ---
 
 **Multi-column index in DB**
 
 Databases support creating composite indexes (index on multiple columns). If you specify the columns in the right order in the index definition, a single composite index can speed up several kinds of queries on the same table.
 Suppose that a table has the following specification:
+
 ```sql
 CREATE TABLE test (
     id         INT NOT NULL,
@@ -27,6 +28,7 @@ CREATE TABLE test (
 ```
 
 The index name is used for lookups in the following queries:
+
 ```sql
 SELECT * FROM tbl_name WHERE col1=val1;
 SELECT * FROM tbl_name WHERE col1=val1 AND col2=val2;
@@ -34,6 +36,7 @@ SELECT * FROM tbl_name WHERE col1=val1 AND col2=val2 AND col3=val3;
 ```
 
 The index name is not used for lookups in the following queries:
+
 ```sql
 SELECT * FROM tbl_name WHERE col2=val2;
 SELECT * FROM tbl_name WHERE col2=val2 AND col3=val3;

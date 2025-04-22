@@ -1,8 +1,8 @@
 ---
 title: The 10x Engineer
 date: 2016-03-01
-description: null
-tags: 
+description: Discover what makes a 10x engineer highly productive with skills in software development, communication, innovation, and problem-solving, and why tech companies seek these exceptional engineers.
+tags:
   - engineering
 ---
 
@@ -14,9 +14,9 @@ tags:
 
 More:
 
-* [The mythical 10x programmer](http://antirez.com/news/112)
-* [10X Engineer](https://gorillalogic.com/blog/10x-engineer-series-part-1-2/)
-* [Becoming a 10X engineer](https://hackernoon.com/becoming-a-10x-engineer-is-it-possible-a8cf593392c3)
+- [The mythical 10x programmer](http://antirez.com/news/112)
+- [10X Engineer](https://gorillalogic.com/blog/10x-engineer-series-part-1-2/)
+- [Becoming a 10X engineer](https://hackernoon.com/becoming-a-10x-engineer-is-it-possible-a8cf593392c3)
 
 ## The depict of a 10x Engineer
 
@@ -26,10 +26,10 @@ More:
 
 ### Mindset
 
-* Growth Mindset
-* Creative
-* Innovative
-* Contributive
+- Growth Mindset
+- Creative
+- Innovative
+- Contributive
 
 ### Skillset
 
@@ -37,22 +37,22 @@ Communication
 
 **Software Engineer**
 
-* Software Development Life Cycle
-* Software Development Process
-* Operating System
-* Computer Network
-* Database
-* System Design
-* DevOps
-* Data Structure and Algorithms
-* Programming
-* Tooling
-* 10x (spirit)
-* Tech: Linux; Docker; IDE; Modeling; Programming; Architect; Algo & DS;
-* Process: Scrum; Development Process, SDLC
-* Communication
-* Make thing better
-* Entrepreneurship
-* Hand-on
-* Create / build sth people want: Inventor; Doer
-* Contribution: Bring value to people
+- Software Development Life Cycle
+- Software Development Process
+- Operating System
+- Computer Network
+- Database
+- System Design
+- DevOps
+- Data Structure and Algorithms
+- Programming
+- Tooling
+- 10x (spirit)
+- Tech: Linux; Docker; IDE; Modeling; Programming; Architect; Algo & DS;
+- Process: Scrum; Development Process, SDLC
+- Communication
+- Make thing better
+- Entrepreneurship
+- Hand-on
+- Create / build sth people want: Inventor; Doer
+- Contribution: Bring value to people

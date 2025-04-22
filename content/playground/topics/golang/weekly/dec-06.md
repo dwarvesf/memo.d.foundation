@@ -1,20 +1,20 @@
 ---
+title: "Go Commentary #23: Draft Release Notes for Go 1.24 and weak pointers in Go"
+date: 2024-12-06
+description: Draft Release Notes for Go 1.24 and the incoming of weak pointers in Go
+authors:
+  - fuatto
+short_title: "#23 Draft Release Notes for Go 1.24 and weak pointers in Go"
 tags:
   - golang
   - go-weekly
-authors:
-  - fuatto
-title: 'Go Commentary #23: Draft Release Notes for Go 1.24 and weak pointers in Go'
-short_title: '#23 Draft Release Notes for Go 1.24 and weak pointers in Go'
-description: Draft Release Notes for Go 1.24 and the incoming of weak pointers in Go
-date: 2024-12-06
 ---
 
 ## [Draft Release Notes Go 1.24](https://tip.golang.org/doc/go1.24)
 
 ### Go 1.24 is not yet released. These are work-in-progress release notes. Go 1.24 is expected to be released in February 2025.
 
-- Fully supports *generic type aliases*: a type alias may be parameterized like a defined type
+- Fully supports _generic type aliases_: a type alias may be parameterized like a defined type
 
 ```go
 type (
@@ -23,14 +23,14 @@ type (
 )
 ```
 
-  => Specs:
+=> Specs:
 
 ```go
 type set[P comparable] = map[P]bool
 type A[P any] = P    // illegal: P is a type parameter
 ```
 
-  => the feature can be disabled by setting `GOEXPERIMENT=noaliastypeparams`; but the `aliastypeparams` setting will be removed for Go 1.25.
+=> the feature can be disabled by setting `GOEXPERIMENT=noaliastypeparams`; but the `aliastypeparams` setting will be removed for Go 1.25.
 
 - Some updates for tools `go tool` or `-tool` flag, new `tests` analyzer for `go vet`
 
@@ -55,7 +55,6 @@ type A[P any] = P    // illegal: P is a type parameter
   - Some updates for `net/http` including support for HTTP/2 protocol settings in `Transport` and `Server`
 
   - New implementation for `sync.Map` that will improve overall performance and resolve some long-standing issues
-
 
 ## [Weak Pointers in Go: Why They Matter Now](https://victoriametrics.com/blog/go-weak-pointer/)
 
@@ -115,7 +114,7 @@ func main() {
 
 ### Use case
 
-- Canonicalization maps, where you only want to keep one copy of a piece of data around 
+- Canonicalization maps, where you only want to keep one copy of a piece of data around
 - Initial purpose is in internal packages, e.g: `unique`
 
 ```go
@@ -145,7 +144,7 @@ func main() {
 
 ![](assets/weak-pointer-indirection-reference.webp)
 
-- This setup lets the garbage collector clean up weak pointers to a specific object all at once, efficiently: 
+- This setup lets the garbage collector clean up weak pointers to a specific object all at once, efficiently:
   - the collector only needs to set the pointer in the indirection object to nil (or 0x0). No need to go around updating each weak pointer individually.
 
 ![](assets/weak-pointer-gc-reclaim.webp)
@@ -154,4 +153,4 @@ func main() {
 
 https://tip.golang.org/doc/go1.24
 
-https://victoriametrics.com/blog/go-weak-pointer/  
+https://victoriametrics.com/blog/go-weak-pointer/

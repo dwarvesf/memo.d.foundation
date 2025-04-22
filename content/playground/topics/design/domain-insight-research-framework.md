@@ -1,9 +1,9 @@
 ---
-tags: 
-  - design
 title: Domain Insight Research Framework
 date: 2020-10-21
-description: null
+description: Learn how Domain Insight Research (DIR) helps UX researchers quickly understand industries, analyze markets, and design user-focused digital products using market research, competitor analysis, and technology trends.
+tags:
+  - design
 ---
 
 As a designer working in the Digital Product industry, I'm pretty sure we all hear about UX Research once at least. In this field, we learn about the business's strategy, users' behaviors, needs, pain points, etc. to build a product that meets the business's goal and solves users' existing problems. There are multiple ways to do UX research; our team also has one. However, there is a higher level, which helps UX Researchers process their works much faster, empathize with target users much easier, and save more effort and time; it is called Domain Insight Research.
@@ -12,22 +12,22 @@ As a designer working in the Digital Product industry, I'm pretty sure we all he
 
 This Domain Insight Research Framework is a method for new approaches to understanding and getting insight into a new industry. This conceptual framework was designed to collect various types of information, including:
 
-* Definition
-* How the domain works
-* The technology methods being applied in the market.
-* Market insight
-* General personas, their behaviors & pain points
-* Potential solutions (technology, strategies,...) & revenue streams
-* Design principles in some specific industries
+- Definition
+- How the domain works
+- The technology methods being applied in the market.
+- Market insight
+- General personas, their behaviors & pain points
+- Potential solutions (technology, strategies,...) & revenue streams
+- Design principles in some specific industries
 
 ## How we apply the DIR in our projects
 
 Domain insight knowledge helps UX Researchers and Designers have an overview of a new industry; we can quickly analyze the market and business' chances to be a new entrant of the industry. Before and during the kick-off meeting with clients, this information helps:
 
-* Have some insight to talk to clients and explore more for a broader perspective
-* Validate clients' ideas immediately
-* Propose some solutions for clients based on real information
-* Suggest suitable technology method to optimize workflow and cost
+- Have some insight to talk to clients and explore more for a broader perspective
+- Validate clients' ideas immediately
+- Propose some solutions for clients based on real information
+- Suggest suitable technology method to optimize workflow and cost
 
 ## Three Steps of Domain Insight Research
 
@@ -37,10 +37,10 @@ When it comes to a new domain, finding out the definition is the first step we n
 
 To learn a new domain, we have been doing in several ways:
 
-* Use search engines, keywords, read articles to understand the definition.
-* Explore related concepts for a broader perspective
-* Talking with various persons working on similar domains
-* While reading the articles, there will be many new jargon or terms used in a particular domain. Try to find out the definition of these terms and make a glossary for your own.
+- Use search engines, keywords, read articles to understand the definition.
+- Explore related concepts for a broader perspective
+- Talking with various persons working on similar domains
+- While reading the articles, there will be many new jargon or terms used in a particular domain. Try to find out the definition of these terms and make a glossary for your own.
 
 ### How the domain works
 
@@ -58,9 +58,9 @@ Technology is increasingly developed and applied to solve the problems and diffi
 
 Market research is a set of techniques which is used to gather information about an industry; also help us to:
 
-* Improve user experiences
-* Design better products
-* Craft a marketing message that attracts quality leads or improves conversion rates
+- Improve user experiences
+- Design better products
+- Craft a marketing message that attracts quality leads or improves conversion rates
 
 ### Our insight after applying DIR into our projects
 
@@ -85,18 +85,18 @@ Secondary research is simply the act of seeking out existing research and data. 
 
 **We are highly recommended secondary research because:**
 
-* It is often free and can be done relatively quickly.
-* Finding existing data that can be applied to your specific project immediately.
+- It is often free and can be done relatively quickly.
+- Finding existing data that can be applied to your specific project immediately.
 
 In some specific cases, we couldn't find the secondary data suitable for our researched domain; therefore, we needed to conduct our primary one.
 
 **2. Market share**
 Market share is the percentage of a market accounted for by a specific entity. It helps us to:
 
-* Know the position an individual company holds in the industry
-* Measure the consumers' preference for a product over other similar products.
-* Have a general idea of the size of a company to its market and its competitors
-* Make competitive decisions about strategic directions and when jockeying for position among its competitors.
+- Know the position an individual company holds in the industry
+- Measure the consumers' preference for a product over other similar products.
+- Have a general idea of the size of a company to its market and its competitors
+- Make competitive decisions about strategic directions and when jockeying for position among its competitors.
 
 We can collect information from many sources, newspapers, trade publications, industry associations, or even personal blogs. However, before using this information, we need to check out their accuracy and research more to ensure the data, report, or info is mentioned elsewhere. Be wary of numbers without a credible source.
 
@@ -105,41 +105,41 @@ Competitor analysis is a way to collect and compare data about existing products
 
 A typical competitor analysis that we have done often includes:
 
-* An overview of the product landscape (solution, products, companies, prices, market share, etc.)
-* Strengths and weaknesses of the competitors in the industry
-* List of product features
-* How they earn money
-* Evaluation of visual design language
+- An overview of the product landscape (solution, products, companies, prices, market share, etc.)
+- Strengths and weaknesses of the competitors in the industry
+- List of product features
+- How they earn money
+- Evaluation of visual design language
 
 **The purpose of the competitor analysis is**
 
-* Learn the process of building a product and marketing strategy
-* Understand the general landscape of the market
-* Compare existing products’ unique qualities to users' needs.
-* Identify possible user types.
-* Compare visual and language styles.
+- Learn the process of building a product and marketing strategy
+- Understand the general landscape of the market
+- Compare existing products’ unique qualities to users' needs.
+- Identify possible user types.
+- Compare visual and language styles.
 
 **4. Personas**
 Personas is a familiar term that we all know about its utility and importance in building a product. The purpose of working with personas is to offer solutions, products, and services based on the needs and goals of a specific set of users. In the DIR, we build personas and analyze them to:
 
-* **Get to know the users and how they feel —** their demographics, needs, and current pain-points.
-* **Get customer insights**: behaviors, incentives, decision-making points, and attitudes/emotions. Find out their perceptions of the value propositions, their expectations.
-* **Time-saving** — In most projects, clients often choose to build the first MVP for testing to save costs for product development. Therefore, we need to focus on which features are the most priority to solve users' crucial problems.
-* **Consistency** — Since every user has been classified, we can have a consistent understanding of the users. It helps analyze users' data and conclude it to make a better product.
+- **Get to know the users and how they feel —** their demographics, needs, and current pain-points.
+- **Get customer insights**: behaviors, incentives, decision-making points, and attitudes/emotions. Find out their perceptions of the value propositions, their expectations.
+- **Time-saving** — In most projects, clients often choose to build the first MVP for testing to save costs for product development. Therefore, we need to focus on which features are the most priority to solve users' crucial problems.
+- **Consistency** — Since every user has been classified, we can have a consistent understanding of the users. It helps analyze users' data and conclude it to make a better product.
 
 **5. Solutions & Features**
 With the information gathered above, we already have an overview of what people are doing out there. Next, we use it to validate clients' ideas and easily propose solutions for them, based on:
 
-* Their business value
-* Their resources
-* Our capabilities.
+- Their business value
+- Their resources
+- Our capabilities.
 
 We can create products that the market does not yet meet. Or we should continue to build a product that is similar to the ones already on the market, but with better problem-solving capabilities, which focus correctly on the user's needs. Or we can come up with solutions for the hidden problems that not even users realize. Our suggestions have become more trustworthy since they are all based on our research and knowledge of the market.
 
 **6. Revenue opportunity**
 We all aim to earn money by bringing the values and benefits for users. Therefore, after having a sufficient amount of information, we can decide the revenue stream by providing better solutions within our capabilities. What we consult our clients
 
-* Identify available growth opportunities and determine the most attractive one.
-* Find the right balance between short-term and long-term growth opportunities.
+- Identify available growth opportunities and determine the most attractive one.
+- Find the right balance between short-term and long-term growth opportunities.
 
 **7. Suitable technology**

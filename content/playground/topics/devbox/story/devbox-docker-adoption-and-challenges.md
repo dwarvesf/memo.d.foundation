@@ -1,17 +1,18 @@
 ---
-tags: 
+title: Our Docker adoption and its challenges
+date: 2024-04-19
+description: Our second Devbox session, where we discussed our Docker adoption and challenges.
+authors:
+  - hnh
+  - vhbien
+tags:
   - tooling
   - containerization
   - virtualization
   - docker
   - devbox
-title: "Our Docker adoption and its challenges"
-date: 2024-04-19
-description: Our second Devbox session, where we discussed our Docker adoption and challenges.
-authors: 
-  - hnh
-  - vhbien
 ---
+
 This is the 2nd post of Devbox series includes
 
 - [Devbox #1: The world before Docker](https://memo.d.foundation/playground/_memo/devbox-a-world-before-docker)

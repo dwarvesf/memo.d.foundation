@@ -1,9 +1,9 @@
 ---
-tags: 
-  - design
 title: Ux Model
 date: 2018-03-19
-description: null
+description: Good UX means creating useful, easy-to-use, and accessible products that attract users, build trust, and make information easy to find, ensuring a satisfying experience for all users.
+tags:
+  - design
 ---
 
 ## What is good UX?

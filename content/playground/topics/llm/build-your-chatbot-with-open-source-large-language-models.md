@@ -1,14 +1,14 @@
 ---
-tags: 
-- ai
-- llm
-- open-source
-authors: 
-- thanhpn
-title: 'Build your chatbot with open source Large Language Models'
-github_id: thanhpn
+title: Build your chatbot with open source Large Language Models
 date: 2023-04-27
 description: A guide on how to build a personal AI chatbot using open-source Large Language Models (LLMs) like Alpaca and GPT4All on your personal computer.
+authors:
+  - thanhpn
+github_id: thanhpn
+tags:
+  - ai
+  - llm
+  - open-source
 ---
 
 Currently, AI chatbot services like ChatGPT are being widely used, but these services are restricted in many countries and also prohibited by many schools due to the high quality of results they produce compared to the level of students’ knowledge. Additionally, these services also require high costs to generate results. Therefore, I think that if we can run a personal chatbot for use with acceptable results and without hardware costs, you can run it on your personal computer with a minimum requirement of 8GB of RAM. In this post, I will guide you on how to run a personal chatbot with an open model like Alpaca 7b or gpt4all model.

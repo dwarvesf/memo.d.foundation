@@ -1,14 +1,14 @@
 ---
-tags: 
+title: Render optimization in data-fetching libraries
+date: 2023-06-08
+description: Data-fetching libraries are software tools or frameworks that can help improve the performance and scalability of your application by handling network requests and data processing more efficiently.
+authors:
+  - cor3.co
+github_id: tienan92it
+tags:
   - engineering
   - frontend
   - data-fetching
-authors: 
- - cor3.co
-description: Data-fetching libraries are software tools or frameworks that can help improve the performance and scalability of your application by handling network requests and data processing more efficiently.
-title: Render optimization in data-fetching libraries
-github_id: tienan92it
-date: 2023-06-08
 ---
 
 Data-fetching libraries are software tools or frameworks that can help improve the performance and scalability of your application by handling network requests and data processing more efficiently. In React, one of the key challenges these libraries address is optimizing rendering to avoid unnecessary re-rendering of components when the underlying data remains unchanged. This helps to prevent situations where components re-render multiple times despite no changes in the data, resulting in improved efficiency and smoother user experiences.
@@ -69,7 +69,7 @@ This comes in very handy when using selectors for partial subscriptions:
 ```js
 // ✅ will only re-render if _something_ within todo with id:2 changes
 // thanks to structural sharing
-const { data } = useTodo(2)
+const { data } = useTodo(2);
 ```
 
 In some instances, especially when having very large datasets, structural sharing *can* be a bottleneck. Let's use it carefully.

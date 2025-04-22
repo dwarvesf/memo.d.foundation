@@ -1,14 +1,14 @@
 ---
-tags: 
- - frontend
- - web-performance
- - performance
-authors: 
- - thanhlmm
-description: Layout Thrashing happens, when you request layout information of an element or the document, while the layout is in an invalidated state.
 title: Prevent Layout Thrashing
-github_id: thanhlmm
 date: 2022-09-11
+description: Layout Thrashing happens, when you request layout information of an element or the document, while the layout is in an invalidated state.
+authors:
+  - thanhlmm
+github_id: thanhlmm
+tags:
+  - frontend
+  - web-performance
+  - performance
 ---
 
 ## What is Layout Thrashing
@@ -23,16 +23,16 @@ Layout Thrashing happens, when you request layout information of an element or t
 
 ```js
 // any DOM or CSSOM change flags the layout as invalid
-document.body.classList.add('foo')
+document.body.classList.add("foo");
 
 // reads layout == forces layout calculation
-const box = element.getBoundingClientRect()
+const box = element.getBoundingClientRect();
 
 // write/mutate
-document.body.appendChild(someBox)
+document.body.appendChild(someBox);
 
 //read/measure
-const color = getComputedStyle(someOtherBox).color
+const color = getComputedStyle(someOtherBox).color;
 ```
 
 Mixing Layout Read & Layout Mutation must wait for the browser to recalculate the layout and reflow to return your Layout value.
@@ -48,29 +48,29 @@ We can resolve the problem by isolating your reads from your writes. The steps w
 
 ```js
 // reads layout
-const box = element.getBoundingClientRect()
-const color = getComputedStyle(someOtherBox).color
+const box = element.getBoundingClientRect();
+const color = getComputedStyle(someOtherBox).color;
 
 // write
-document.body.classList.add('foo')
-document.body.appendChild(someBox)
+document.body.classList.add("foo");
+document.body.appendChild(someBox);
 ```
 
 Or use a library such as [fastdom](https://github.com/wilsonpage/fastdom) which abstracts those steps:
 
 ```js
-import fastdom from 'fastdom'
+import fastdom from "fastdom";
 
 function resizeAllParagraphsToMatchBoxWidth(paragraphs, box) {
   fastdom.measure(() => {
-    const width = box.offsetWidth
+    const width = box.offsetWidth;
 
     fastdom.mutate(() => {
       for (let i = 0; i < paragraphs.length; i++) {
-        paragraphs[i].style.width = width + 'px'
+        paragraphs[i].style.width = width + "px";
       }
-    })
-  })
+    });
+  });
 }
 ```
 

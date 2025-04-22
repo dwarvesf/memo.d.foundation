@@ -1,13 +1,13 @@
 ---
+title: "Go Commentary #16: Understand sync.Map"
+date: 2024-10-18
+description: Understanding sync.Map and using the right tools for atomic operations in Go.
+authors:
+  - fuatto
+short_title: "#16 Understand sync.Map"
 tags:
   - golang
   - go-weekly
-authors:
-  - fuatto
-title: 'Go Commentary #16: Understand sync.Map'
-short_title: '#16 Understand sync.Map'
-description: Understanding sync.Map and using the right tools for atomic operations in Go.
-date: 2024-10-18
 ---
 
 ## [Go sync.Map: The Right Tool for the Right Job](https://victoriametrics.com/blog/go-sync-map/index.html)
@@ -109,7 +109,6 @@ date: 2024-10-18
 
   - With **sync.Map.Range**, it’s designed to handle concurrent reads and writes during iteration without locking up the entire map. The trade-off, though, is that you might not get a perfectly consistent snapshot of the map while you’re iterating.
 
-
 - How it works:
 
   - two separate native maps: the readonly map and the dirty map.
@@ -132,8 +131,8 @@ date: 2024-10-18
     }
   ```
 
-  - readonly map is where the fast, lock-free lookups happen; built around an atomic.Pointer, which lets multiple goroutines access it without needing to lock anything. (ideal for scenarios where data is mostly being read and not frequently modified) 
-  => the readonly map might not always hold the most up-to-date data, therefore dirty map
+  - readonly map is where the fast, lock-free lookups happen; built around an atomic.Pointer, which lets multiple goroutines access it without needing to lock anything. (ideal for scenarios where data is mostly being read and not frequently modified)
+    => the readonly map might not always hold the most up-to-date data, therefore dirty map
 
   - dirty map stores any new entries that get added while the readonly map is still being used for lookups
 
@@ -154,7 +153,6 @@ date: 2024-10-18
     - **Expunged state**: This is a special state where the key is fully removed. The entry is marked with a special sentinel value that indicates it’s been completely deleted.
 
   ![state_chart_syncmap](assets/state_chart_syncmap.png)
-
 
 ---
 

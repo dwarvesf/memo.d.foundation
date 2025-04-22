@@ -1,9 +1,9 @@
 ---
-tags: 
-  - event-sourcing
 title: Sdk Event Sourcing
 date: 2020-05-21
-description: null
+description: Learn how Software Development Kits (SDKs) provide tools and APIs for app development, and discover how Event Sourcing manages data communication between systems efficiently.
+tags:
+  - event-sourcing
 ---
 
 ## Software Development Kit (SDK)
@@ -14,9 +14,9 @@ Let's take a cellphone for an example. Every cellphone has an operating system w
 
 ## Function of SDK
 
-* Interact with hardware
-* Interact with files
-* Manage cookies
+- Interact with hardware
+- Interact with files
+- Manage cookies
 
 ## Event Sourcing
 
@@ -24,8 +24,8 @@ Event Sourcing is a term for an architecture that is designed for interaction/ c
 
 Consider Event Sourcing as a mailbox to store the data for communication.
 
-* event: stands for data
-* sourcing: where the data comes from
+- event: stands for data
+- sourcing: where the data comes from
 
 ### Example: TIKI
 
@@ -33,20 +33,20 @@ Tiki is a marketplace for good tradings. Let's say TIKI has 3 types of parties
 
 **Marketplace**
 
-* Time of order
-* Time of invoice
+- Time of order
+- Time of invoice
 
 **Warehouse**
 
-* Stock status
-* Time of import/ export
+- Stock status
+- Time of import/ export
 
 **Support**
 
-* Delivery status
-* Goods returning
+- Delivery status
+- Goods returning
 
-The data between parties has a connection with each other, and it needs interaction to smooth the process of goods handling and delivery. Different types of data (events) from different parties (source) will need a system to filter and organize it with prioritized order to make sure the communication goes smoothly, that's what Event Sourcing is all about. __
+The data between parties has a connection with each other, and it needs interaction to smooth the process of goods handling and delivery. Different types of data (events) from different parties (source) will need a system to filter and organize it with prioritized order to make sure the communication goes smoothly, that's what Event Sourcing is all about. \_\_
 
 ## React Hook
 

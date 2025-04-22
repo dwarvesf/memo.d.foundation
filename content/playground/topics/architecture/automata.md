@@ -1,11 +1,11 @@
 ---
-tags:
-  - automata
-authors:
-  - tieubao
-description: Things about automata that devs should know
 title: Automata
 date: 2024-10-22
+description: Things about automata that devs should know
+authors:
+  - tieubao
+tags:
+  - automata
 ---
 
 ### What are Finite State Automata and why should a programmer know about them?
@@ -20,7 +20,7 @@ If you think about it, it's almost easier to think about this in terms of a pict
 
 ```
       _
-     ( ) 
+     ( )
 A --> B --> C
 ```
 
@@ -38,7 +38,7 @@ Being able to model systems in terms of states and transitions helps developers 
 
 ### What is the difference between finite state machine and finite automata?
 
-Both "Finite State Machine" FSM and "Finite Automata" (or Finite State Automata) FA means same, represents an abstract mathematical model of computation for the class of regular languages. 
+Both "Finite State Machine" FSM and "Finite Automata" (or Finite State Automata) FA means same, represents an abstract mathematical model of computation for the class of regular languages.
 
 The word "Finite" significance the presence of the finite amount of memory in the form of the finite number of states Q.
 
@@ -46,7 +46,7 @@ Generally in formal-theory (or theory of computation), we prefer to use the word
 
 By the way, automata or state-machines are a graphical representation to describe transition rules.
 
-You can also use "Transition Tables" or "Transition function" like `δ(q0, a) → q1`. Basically, all uses for the same purpose just to define "Mappings". 
+You can also use "Transition Tables" or "Transition function" like `δ(q0, a) → q1`. Basically, all uses for the same purpose just to define "Mappings".
 
 [Source](https://stackoverflow.com/questions/22354706/can-anyone-please-explain-difference-between-finite-state-machine-and-finite-aut)
 
@@ -55,20 +55,21 @@ You can also use "Transition Tables" or "Transition function" like `δ(q0, a) �
 `×` means Cartesian product (that is a set), and `→` is a mapping.
 `δ: Q×Σ → Q` says `δ` is a transition function that defined mapping from `Q×Σ` to `Q`. Where, Domain of `δ` is `Q×Σ` and Range is `Q`.
 
-Note: [Cartesian Product](http://en.wikipedia.org/wiki/Cartesian_product) itself a mathematical that all possible order pair (mapping) between two sets. 
+Note: [Cartesian Product](http://en.wikipedia.org/wiki/Cartesian_product) itself a mathematical that all possible order pair (mapping) between two sets.
 
 You can also say:
 
 `δ` is a transition function that defined mapping between (or say associates) Cartesian product of set of states `Q` and language symbols `Σ` into set of state `Q`. This is abbreviated by `δ:Q×Σ → Q`
 
-Here, `Q` is finite set of states and `Σ` is a finite set of language symbols. 
+Here, `Q` is finite set of states and `Σ` is a finite set of language symbols.
 
 Additionally in any automated you can represent transition function in tree ways.
+
 1. [Transition Table](http://en.wikipedia.org/wiki/State_transition_table#Common_forms)
 2. [Transition graph](http://en.wikipedia.org/wiki/State_diagram) or say state diagram.
 3. Transition function: a finite set of mapping rules. e.g. `{δ(q0, a) → q1, δ(q1, a) → q2}`
 
-In DFA. `δ:Q×Σ → Q` can also be written like `δ(Q,Σ) → Q` It's similar to function. In `δ` function two input arguments are state `Q` and a language symbol `Σ` and returned value is `Q`. 
+In DFA. `δ:Q×Σ → Q` can also be written like `δ(Q,Σ) → Q` It's similar to function. In `δ` function two input arguments are state `Q` and a language symbol `Σ` and returned value is `Q`.
 
 **What is meaning of `δ(Q,Σ) → Q`**
 
@@ -87,25 +88,29 @@ Some authors write `δ ⊆ Q×Σ → Q` in formal DFA definition that means `δ`
 ### DFA vs. NFA
 
 #### DFA (Deterministic Finite Automaton) Robot:
+
 - This robot **only looks at one tile at a time** and knows **exactly what to do** next, no matter what.
 - It has **one set of instructions** for each tile color. If it sees a red tile, it knows for sure what its next move is.
 - It's **very strict** and follows only one route to figure out if the path is correct.
-    For example:
-    - If it sees a red tile, it moves forward.
-    - If it sees a blue tile, it turns around. It **never gets confused** and always knows the next step.
+  For example:
+  - If it sees a red tile, it moves forward.
+  - If it sees a blue tile, it turns around. It **never gets confused** and always knows the next step.
 
 #### NFA (Non-deterministic Finite Automaton) Robot:
+
 - This robot is a little different. When it sees a tile, it can **imagine multiple possibilities** and think about all of them at once.
 - It might say, "Hmm, when I see a red tile, I could move forward, turn around, or even jump! Let me think about all these options at once."
 - The robot **explores multiple paths** at the same time, as if it can split into multiple versions of itself.
-    For example:
-    - When it sees a red tile, it might think, "I can either move forward or jump over it."
-    - It checks **all options** at the same time and decides if the path is correct by looking at all the possibilities.
+  For example:
+  - When it sees a red tile, it might think, "I can either move forward or jump over it."
+  - It checks **all options** at the same time and decides if the path is correct by looking at all the possibilities.
 
 #### Difference in Capabilities:
+
 - **DFA Robot**: It's faster because it always knows exactly what to do. But it might need a lot of instructions because it can't explore different options. It has to account for every possible situation.
 - **NFA Robot**: It’s more flexible because it can explore lots of possibilities at the same time. But in the real world, it might take a little longer to check all those options.
 
 #### Key Points:
+
 - **DFA**: One option at a time, very efficient but can be strict.
 - **NFA**: Many options at once, more flexible but can take more time to figure things out.

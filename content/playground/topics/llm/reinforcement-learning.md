@@ -1,15 +1,15 @@
 ---
-tags: 
-- ai  
-- llm
-- reinforcement-learning
-authors: 
-- thanhpn
-title: 'Introduction to Reinforcement Learning and Its Application with LLMs'
-github_id: thanhpn
+title: Introduction to Reinforcement Learning and Its Application with LLMs
 date: 2023-06-05
+description: An introduction to Reinforcement Learning (RL), a machine learning method where an agent learns to make decisions by interacting with an environment. This article covers the basics of RL, including how it works, common algorithms, and its application in training models with Large Language Models (LLMs).
+authors:
+  - thanhpn
+github_id: thanhpn
 icy: 10
-description: 'An introduction to Reinforcement Learning (RL), a machine learning method where an agent learns to make decisions by interacting with an environment. This article covers the basics of RL, including how it works, common algorithms, and its application in training models with Large Language Models (LLMs).'
+tags:
+  - ai
+  - llm
+  - reinforcement-learning
 ---
 
 ## Introduction

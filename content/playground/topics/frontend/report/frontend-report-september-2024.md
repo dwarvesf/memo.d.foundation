@@ -1,20 +1,20 @@
 ---
+title: Frontend Report September 2024
+date: 2024-10-05
+description: "This roundup highlights the latest in React and Next.js, including Server Functions, the React 19 compiler, and self-hosting with OpenNext. Find tips on lazy loading, CSS Grid, JavaScript's evolution, plus new tools and expert insights."
+authors:
+  - mashiro5951
+short_title: September 2024
 tags:
   - frontend
   - market-report
-title: Frontend Report September 2024
-short_title: 'September 2024'
-description: This roundup highlights the latest in React and Next.js, including Server Functions, the React 19 compiler, and self-hosting with OpenNext. Find tips on lazy loading, CSS Grid, JavaScript's evolution, plus new tools and expert insights.
-date: 2024-10-05
-authors:
-  - mashiro5951
 ---
 
 This roundup covers the latest in React, Next.js, and web development. React Server Actions are now Server Functions, and there's a deep dive into the React 19 compiler. In Next.js news, OpenNext is enabling self-hosting, and there's fresh guidance on Progressive Web Apps. Plus, explore tips on lazy loading, CSS Grid, and JavaScript's evolution.
 
 ## React
 
-### [Server Functions are Here! (They Used to be Server Actions)](https://19.react.dev/reference/rsc/server-functions 'https://19.react.dev/reference/rsc/server-functions')
+### [Server Functions are Here! (They Used to be Server Actions)](https://19.react.dev/reference/rsc/server-functions "https://19.react.dev/reference/rsc/server-functions")
 
 React's Server Actions got a name change! Now they're Server Functions, and they're not just for mutations anymore.
 

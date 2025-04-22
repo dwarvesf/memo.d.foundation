@@ -1,13 +1,13 @@
 ---
+title: Ui Design Best Practices Dwarves
+date: 2020-11-24
+description: Learn essential Figma best practices for designers to ensure smooth handovers to developers, including version control, layer management, naming conventions, and effective communication for high-quality UI projects.
 tags:
   - design
   - process
-title: Ui Design Best Practices Dwarves
-date: 2020-11-24
-description: null
 ---
 
-One of the factors that could make or break a project is the process of communication between designers and developers. Designers and developers have their own working “*languages*.”
+One of the factors that could make or break a project is the process of communication between designers and developers. Designers and developers have their own working “_languages_.”
 
 It’s important to find a protocol in which a mutual language can bridge the gap between designers and developers.  This protocol helps everyone in the team understand the ultimate objective of the project, minimize the guesswork, save time and effort, ensuring the high-quality standard outcomes we promised to deliver to clients.
 
@@ -15,14 +15,14 @@ This article covers practices designers are required to follow for smooth handov
 
 Each convention is written in a compact format so that designers can easily read and follow. New conventions are added over time each time a designer discovers a new problem in the course of working with devs.
 
-* Versions & File Organizations
-* Manage releases
-* Manage layers
-* Practical, context-conscious data
-* Naming conventions
-* Components
-* Colors
-* General Figma tips
+- Versions & File Organizations
+- Manage releases
+- Manage layers
+- Practical, context-conscious data
+- Naming conventions
+- Components
+- Colors
+- General Figma tips
 
 ## Versions & File Organizations
 
@@ -32,16 +32,16 @@ Each convention is written in a compact format so that designers can easily read
 
 On the management of Pages in Figma. This is a recommended structure:
 
-* Release [X]: contains all designs delivered to developers according to the product/feature roadmap.
-* Each release should provide all user flows required for said release.
-* Naming convention for the release is decided by devs, followed strictly by designers.
-* Final / Complete: contains the most complete design. The completed design is a full-featured version of the product that will be programmed in the future.
-* The Final Page should be kept clean, well-organized, and well-noted.
-* The screens should be arranged neatly into a flow.
-* Only drafts and designs approved by the clients are allowed in the final page.
-* In progress: contains screens that are still in progress and discussing with team members and clients until finalization.
-* Draft: Designers’ workspace for idealizing and creating design solutions.
-* Archive: Archived UI for reference later.
+- Release [X]: contains all designs delivered to developers according to the product/feature roadmap.
+- Each release should provide all user flows required for said release.
+- Naming convention for the release is decided by devs, followed strictly by designers.
+- Final / Complete: contains the most complete design. The completed design is a full-featured version of the product that will be programmed in the future.
+- The Final Page should be kept clean, well-organized, and well-noted.
+- The screens should be arranged neatly into a flow.
+- Only drafts and designs approved by the clients are allowed in the final page.
+- In progress: contains screens that are still in progress and discussing with team members and clients until finalization.
+- Draft: Designers’ workspace for idealizing and creating design solutions.
+- Archive: Archived UI for reference later.
 
 Devs and the client discuss the design with designers through Figma's comments, only designers can make changes in the Figma files.
 
@@ -49,8 +49,8 @@ Devs and the client discuss the design with designers through Figma's comments, 
 
 ![](assets/ui-design-best-practices-dwarves_a46ebf821728ad559bf23e5e6bd7d5a9_md5.webp)
 
-* Layers are often grouped and named by function or section. For example: hero image, slider, header, footer…
-* Asset (illustration, icon, vector ...) needs to be grouped so that devs can export to SVG files by themselves (without any help from designer).
+- Layers are often grouped and named by function or section. For example: hero image, slider, header, footer…
+- Asset (illustration, icon, vector ...) needs to be grouped so that devs can export to SVG files by themselves (without any help from designer).
 
 ### Practical, context-conscious data
 
@@ -64,14 +64,14 @@ Context: Minh pre-booked room 102 from 19:00 to 20:00
 
 [Because]
 
-* Room 102 is booked from 19:00 to 20:00, Room 102 cannot be booked again during 19:00 to 20:00
-* It takes 30 minutes before and 29 minutes after to clear the room, Room 102 cannot be booked from 18:30 to 20:29
+- Room 102 is booked from 19:00 to 20:00, Room 102 cannot be booked again during 19:00 to 20:00
+- It takes 30 minutes before and 29 minutes after to clear the room, Room 102 cannot be booked from 18:30 to 20:29
 
 [Therefore]
 
-* Room 102 is disabled for booking from 18:30 to 20:30
-* [Design Decision]
-* Booking time slots from 18:30 to 20:29 will no be shown as available
+- Room 102 is disabled for booking from 18:30 to 20:30
+- [Design Decision]
+- Booking time slots from 18:30 to 20:29 will no be shown as available
 
 ![](assets/ui-design-best-practices-dwarves_016986df82ac5332b050a9cf55425f3b_md5.webp)
 
@@ -87,9 +87,9 @@ Design System is a tool that makes the component management of the project clear
 
 **Designers at Dwarves name colors based on their function** (Primary, Secondary, Disabled,...) Meanwhile, developers name colors based on light/dark levels with numbers (100, 200, 300...)
 
-* The naming convention for colors at Dwarves: **Flat / BG / Neutral 1 (gray-400)** in which **Flat / BG / Neutral 1** is added by designers and **(gray-400)** is by added developers
-* Designers complete the color palette, inform developers to add a suffix to the name of the Color Styles
-* When designers make changes to the color palette, designers need to inform developers so they can update their code accordingly.
+- The naming convention for colors at Dwarves: **Flat / BG / Neutral 1 (gray-400)** in which **Flat / BG / Neutral 1** is added by designers and **(gray-400)** is by added developers
+- Designers complete the color palette, inform developers to add a suffix to the name of the Color Styles
+- When designers make changes to the color palette, designers need to inform developers so they can update their code accordingly.
 
 ![](assets/ui-design-best-practices-dwarves_a70427baf7d24194ab5037713ee0a063_md5.webp)
 

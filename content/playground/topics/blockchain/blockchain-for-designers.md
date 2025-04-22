@@ -1,10 +1,10 @@
 ---
-tags: 
-  - design
-  - blockchain
 title: Blockchain For Designers
 date: 2020-05-04
-description: null
+description: Learn how blockchain technology solves trust issues with decentralization, transparency, and immutability, and discover key design principles to create user-friendly blockchain products.
+tags:
+  - design
+  - blockchain
 ---
 
 ## Intro
@@ -85,9 +85,9 @@ Besides, we designers also have to develop ways for prototyping, not only indivi
 
 As we researched and worked on multiple projects, we have analyzed through countless blockchain applications to come up with a list of current issues users encounter. Some cause users to approach these applications with a lot of distance.
 
-* Blockchain jargons and technical language make it difficult to understand, lack of communication and costly regarding time complexity
-* Unreadable data
-* Transaction speed & Transparency
+- Blockchain jargons and technical language make it difficult to understand, lack of communication and costly regarding time complexity
+- Unreadable data
+- Transaction speed & Transparency
 
 It’s tough to convince people to believe in terms that they have never heard before. What is the private key? What is a hash? Why does it take too long for a transaction compared to other traditional trading exchange? Who controls this network? Where is my money? Confusions and doubts are inevitable when users are required to approach new technology. To build trust and clearly communicate the values of Blockchain to users, there are fundamental principles that we must follow.
 
@@ -98,20 +98,20 @@ In order to create trust in the new technology, users need to understand and see
 
 How to ease users into the blockchain domain?
 
-* Show timelines to demonstrate the change of entities throughout the process
-* Summarize information, make use of concise view even, to avoid clutter when representing information
-* Visualize as much asset and application flow as you can using a dashboard
+- Show timelines to demonstrate the change of entities throughout the process
+- Summarize information, make use of concise view even, to avoid clutter when representing information
+- Visualize as much asset and application flow as you can using a dashboard
 
 It’s important to avoid jargon, not everyone can understand these technical terms. We should present information clearly. Proper communication leads to solid trust.
 
 **Consistency forms familiarity and trust-worthiness**
 Establishing visual consistency across products and the customer experience is essential to the perception of trustworthiness. This includes the general layout of the applications (colors, icons, and typography) and the way we communicate with users (tone of voice). A consistent design gives a sense of familiarity which puts users at ease, help them pick up the new knowledge easier - an essential factor for new technologies like blockchain.
 
-* Grid-based layouts (with meaningful and proportional negative space)
-* Strong typographic hierarchy
-* Colors with universal meanings
-* A simple but concise language which aligns with users' natural communication patterns
-* Consistent experience through and through, regardless of platform and device
+- Grid-based layouts (with meaningful and proportional negative space)
+- Strong typographic hierarchy
+- Colors with universal meanings
+- A simple but concise language which aligns with users' natural communication patterns
+- Consistent experience through and through, regardless of platform and device
 
 ![](assets/blockchain-for-designers_83a093e62fa61b069e3ea4b2f22b407e_md5.webp)
 

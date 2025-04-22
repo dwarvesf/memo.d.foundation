@@ -1,20 +1,24 @@
 ---
+title: Logging
+date: 2024-10-11
+description: Logs are like the footprints of your LLM, tracking every move it makes. We will look at how logging can help you see beneath the top layer of a system, which can help you troubleshoot problems and better understand the system behavior.
 authors:
-  - 'datnguyennnx'
-date: '2024-10-11'
-description: 'Logs are like the footprints of your LLM, tracking every move it makes. We will look at how logging can help you see beneath the top layer of a system, which can help you troubleshoot problems and better understand the system behavior.'
+  - datnguyennnx
 hashnode_meta:
-  coverImageOptions:
-    coverImageURL: 'https://memo.d.foundation/playground/ai/building-llm-system/assets/logs-pillar-sample-rag-system.webp'
-  id: '670f4d47aec5a6a939f51323'
-  slug: 'logging'
-sync: 'hashnode'
+  {
+    "coverImageOptions":
+      {
+        "coverImageURL": "https://memo.d.foundation/playground/ai/building-llm-system/assets/logs-pillar-sample-rag-system.webp",
+      },
+    "id": "670f4d47aec5a6a939f51323",
+    "slug": "logging",
+  }
+sync: hashnode
 tags:
-  - 'llm'
-  - 'observability'
-  - 'log'
-  - 'pillar'
-title: 'Logging'
+  - llm
+  - observability
+  - log
+  - pillar
 ---
 
 When you’re working with generative AI application, one thing that often gets overlooked is logging. Logging helps you keep track of what’s happening under the hood and gives you the insights you need to improve your model. Whether it's detecting errors or maintaining your AI runs smoothly, logging is fundamental. In this article, we'll look at why logging is important and how to use it to improve your LLM application.

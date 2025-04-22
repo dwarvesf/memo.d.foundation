@@ -1,13 +1,13 @@
 ---
-tags: 
- - blockchain
- - liquidity
-authors: 
- - hienld
-title: 'Liquidity pool'
-github_id: leduyhien152
+title: Liquidity pool
 date: 2022-03-24
 description: A comprehensive guide to understanding liquidity pools in blockchain, covering their definition, functionality, the role of automated market makers (AMM), arbitrage, pool depth, slippage, how to provide liquidity, and the concept of impermanent loss. This article provides insights for both beginners and experienced users in decentralized finance (DeFi)
+authors:
+  - hienld
+github_id: leduyhien152
+tags:
+  - blockchain
+  - liquidity
 ---
 
 ## 1. What is a Liquidity Pool?
@@ -23,8 +23,8 @@ The process could be illustrated by the picture below:
 Liquidity pools form the backbone of DEX by applying the automated market maker (AMM) system. Here’s the main formula that mathematically determines what the market price of the token in the pool should be:
 
 
-$$ 
-x * y = k 
+$$
+x * y = k
 $$
 
 
@@ -35,26 +35,28 @@ Let's use the ETH-DAI pair as an example, with 10 ETH and 1,000 DAI in the liqui
 The k constant is 10,000 since there are 10 ETH and 1,000 DAI.
 
 
-$$ 
-10 \text{ ETH} * 1,000 \text{ DAI} = 10,000 
+$$
+10 \text{ ETH} * 1,000 \text{ DAI} = 10,000
 $$
 
 
 If the buyer withdraws 1 ETH, he has to deposit some DAI into the pool so that k remains constant.
 
 
-$$ 
-(10 - 1) \text{ ETH} * (1,000 - y) = 10,000 
+$$
+(10 - 1) \text{ ETH} * (1,000 - y) = 10,000
 $$
 
 
-$$ 
-1,000 - y =\frac{10000}{10 - 1} 
+
+$$
+1,000 - y =\frac{10000}{10 - 1}
 $$
 
 
+
 $$
- y = 111.11 
+ y = 111.11
 $$
 
 
@@ -101,44 +103,48 @@ Suppose the price of ETH in our LP is $100. What if the price of ETH on Coinbase
 Let’s use a pool that has 100 ETH and 10,000 DAI. The relation between x, y, k, and ETH price could be shown by:
 
 
-$$ 
-x * y = k 
+$$
+x * y = k
 $$
 
 
+
 $$
-x = \frac{k}{\text{ETH price}} 
+x = \frac{k}{\text{ETH price}}
 $$
 
 
 We could easily calculate x and y by k and ETH price:
 
 
-$$ 
-x = \sqrt{\frac{k}{\text{ETH price}}} 
+$$
+x = \sqrt{\frac{k}{\text{ETH price}}}
 $$
 
 
-$$ 
-y = \sqrt{k * \text{ETH price}} 
+
+$$
+y = \sqrt{k * \text{ETH price}}
 $$
 
 
 Assume someone supplies 1 ETH and 100 DAI into the pool. How much ETH and DAI he could get back if the ETH price pumps to $120?
 
 
-$$ 
-k = 100 * 10,000 = 1,000,000 
+$$
+k = 100 * 10,000 = 1,000,000
 $$
 
 
-$$ 
-x = \sqrt{\frac{1,000,000}{120}} = 91.29 
+
+$$
+x = \sqrt{\frac{1,000,000}{120}} = 91.29
 $$
 
 
-$$ 
-y = \sqrt{1,000,000 * 120} = 10,954.45 
+
+$$
+y = \sqrt{1,000,000 * 120} = 10,954.45
 $$
 
 

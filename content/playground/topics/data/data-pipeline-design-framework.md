@@ -1,15 +1,15 @@
 ---
-tags:
-  - engineering/data
-  - data-pipeline
-github_id: longbuivan
-date: 2024-03-15
-icy: 15
-discord_id: "1157659003527106630"
 title: Data Pipeline Design Framework
+date: 2024-03-15
 description: To improve and strongly go-live the data pipeline, besides apply best practices and pillar for Data Pipeline Native Solution, a design framework and pattern are robustly help us in...
 authors:
   - longddl
+github_id: longbuivan
+icy: 15
+discord_id: 1157659003527106600
+tags:
+  - engineeringdata
+  - data-pipeline
 ---
 
 ## Motivation of Designing Data Pipeline Framework
@@ -84,9 +84,10 @@ Now, detailing what we are taking
 
 Data pipeline only pulls the data corresponding to a specific time frame like daily/hourly/...
 **Notes**: we need to update sink/destination reasonably by Slowly Changing on table to capture current state of data.
+
 - **Pros**
-   - Fast data pulls, only necessary data
-   - Parallelize running of pipeline from single source
+  - Fast data pulls, only necessary data
+  - Parallelize running of pipeline from single source
 - **Cons**
   - More complicated when building Slowly Changing and build UPSERTs/MERGE INTOs statement to update latest data
   - Rely on source system to support replayable where pipeline will capture the time frame and delta
@@ -162,6 +163,7 @@ DROP TEMP TABLE TEMP_YYYY_MM_DD;
 ```
 
 - **Pros**
+
   - Easy to build, maintain, further reruns and backfills
   - Easy to tracking data lineage
 
@@ -199,9 +201,9 @@ An idea of multi-hop is keeping data separated at different levals/layer of clea
 2. [Medallion architect from Databrick](https://docs.databricks.com/lakehouse/medallion.html)
 
 - **Pros**
-   - Rerun only failed transformations and their dependencies
-   - Build new logic at any step of data processing
-   - Pinpoint data if an issue occurred in the code. Debug step by step.
+  - Rerun only failed transformations and their dependencies
+  - Build new logic at any step of data processing
+  - Pinpoint data if an issue occurred in the code. Debug step by step.
 - **Cons**
   - Storage costs since we are storing copies of dataset from various layers
   - Processing costs with large data and rerun data

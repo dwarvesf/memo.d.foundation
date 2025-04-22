@@ -1,30 +1,33 @@
 ---
-tags: 
-  - people
-  - process
 title: Qc Onboarding
 date: 2017-07-13
-description: null
+description: Learn how to access QA resources and use gitlab-issues-tools for managing tasks, cloning issues, and exporting defect reports with step-by-step commands and templates.
+tags:
+  - people
+  - process
 ---
 
 ## General workflow
+
 Click on attached URL below to get more details about our general workflow:
 
-[https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1#G1jtKnGw5mpmGt31dFIoDOcGxVQrqxexF7](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1#G1jtKnGw5mpmGt31dFIoDOcGxVQrqxexF7)
+[https://www.draw.io/?lightbox=1&highlight=0000ff&edit=\_blank&layers=1&nav=1#G1jtKnGw5mpmGt31dFIoDOcGxVQrqxexF7](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1#G1jtKnGw5mpmGt31dFIoDOcGxVQrqxexF7)
 
 ## Access to testing resources
+
 After you have a permission on Team's Google Drive.
 
-Open `~/Dwarves Foundation/Document/QA`  Documents to get resource files including:
+Open `~/Dwarves Foundation/Document/QA` Documents to get resource files including:
 
-* Test Planning Template
-* Test Cases Template
-* Defect Summary Report Template
+- Test Planning Template
+- Test Cases Template
+- Defect Summary Report Template
 
 ## Task Assigning Flows
 
 ## Tools
-Open `~/Dwarves Foundation/Document/QA Documents/Tools`  to get gitlab-issues-tools file
+
+Open `~/Dwarves Foundation/Document/QA Documents/Tools` to get gitlab-issues-tools file
 
 After that, Run this command in your terminal to get help:
 
@@ -74,4 +77,3 @@ To clone export defect list for a milestone, we can use this command
 ```plain_text
 ./gitlab-issues-tools -t [YOUR_GITLAB_TOKEN] -p 228 --thing issue -a export --milestone 0.5.0
 ```
-

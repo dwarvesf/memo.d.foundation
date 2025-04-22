@@ -1,20 +1,25 @@
 ---
-authors:
-- "hoangnnh"
-date: "2024-09-12"
+title: Evaluate Chatbot Agent by User Simulation
+date: 2024-09-12
 description: "When building a chatbot agent, it's important to evaluate its performance and user satisfaction. One effective method is user simulation, which involves creating virtual users to interact with the chatbot and assess its responses. This approach allows for a more realistic evaluation of the chatbot's capabilities and user experience."
+authors:
+  - hoangnnh
 hashnode_meta:
-  coverImageOptions:
-    coverImageURL: "https://memo.d.foundation/playground/ai/assets/simulated-user.webp"
-  id: "670f4d4d340553308e8ff9eb"
-  slug: "evaluate-chatbot-agent-by-user-simulation"
-sync: "hashnode"
+  {
+    "coverImageOptions":
+      {
+        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/simulated-user.webp",
+      },
+    "id": "670f4d4d340553308e8ff9eb",
+    "slug": "evaluate-chatbot-agent-by-user-simulation",
+  }
+sync: hashnode
 tags:
-- "llm"
-- "ai-agents"
-- "ai-evaluation"
-title: "Evaluate Chatbot Agent by User Simulation"
+  - llm
+  - ai-agents
+  - ai-evaluation
 ---
+
 When building a chatbot agent, it's important to evaluate its performance and user satisfaction. One effective method is user simulation, which involves creating virtual users to interact with the chatbot and assess its responses. This approach allows for a more realistic evaluation of the chatbot's capabilities and user experience.
 
 ## Introduction
@@ -39,13 +44,15 @@ The system will have two main components:
 ```ts
 async function chatBot(messages: Message[]): Promise<AIMessageChunk> {
   const systemMessage: Message = {
-    role: 'system',
-    content: 'You are a customer support agent for an airline.',
-  }
-  const allMessages = [systemMessage, ...messages]
+    role: "system",
+    content: "You are a customer support agent for an airline.",
+  };
+  const allMessages = [systemMessage, ...messages];
 
-  const response = await llm.invoke(allMessages.map((m) => [m.role, m.content]))
-  return response
+  const response = await llm.invoke(
+    allMessages.map((m) => [m.role, m.content]),
+  );
+  return response;
 }
 ```
 
@@ -60,17 +67,20 @@ async function createSimulatedUser(): Promise<Runnable> {
 
   {instructions}
 
-  When you are finished with the conversation, respond with a single word 'FINISHED'`
+  When you are finished with the conversation, respond with a single word 'FINISHED'`;
 
   const instructions = `Your name is Harrison. You are trying to get a refund for the trip you took to Alaska. \
   You want them to give you ALL the money back. \
-  This trip happened 5 years ago.`
+  This trip happened 5 years ago.`;
 
-  const prompt = ChatPromptTemplate.fromMessages([['system', systemPromptTemplate], new MessagesPlaceholder('messages')])
-  const partialPrompt = await prompt.partial({ instructions })
+  const prompt = ChatPromptTemplate.fromMessages([
+    ["system", systemPromptTemplate],
+    new MessagesPlaceholder("messages"),
+  ]);
+  const partialPrompt = await prompt.partial({ instructions });
 
-  const chain = await partialPrompt.pipe(llm)
-  return chain
+  const chain = await partialPrompt.pipe(llm);
+  return chain;
 }
 ```
 
@@ -80,7 +90,11 @@ async function createSimulatedUser(): Promise<Runnable> {
 
 ```ts
 function swapRoles(messages: any[]): any[] {
-  return messages.map((m) => (m instanceof AIMessage ? new HumanMessage({ content: m.content }) : new AIMessage({ content: m.content })))
+  return messages.map((m) =>
+    m instanceof AIMessage
+      ? new HumanMessage({ content: m.content })
+      : new AIMessage({ content: m.content }),
+  );
 }
 ```
 
@@ -89,44 +103,53 @@ function swapRoles(messages: any[]): any[] {
 ```ts
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
-    reasoning: z.string().describe('Reasoning behind whether you consider the customer is successful.'),
-    didSucceed: z.boolean().describe('Whether the customer successfully refunded the trip or not.'),
+    reasoning: z
+      .string()
+      .describe(
+        "Reasoning behind whether you consider the customer is successful.",
+      ),
+    didSucceed: z
+      .boolean()
+      .describe("Whether the customer successfully refunded the trip or not."),
   }),
-)
+);
 
 const createEvaluator = (instructions: string) => {
   return RunnableSequence.from([
     ChatPromptTemplate.fromMessages([
       [
-        'system',
+        "system",
         `You are evaluating the customer and customer support agent's conversation.
         The customer's task was to: ${instructions}.
         `,
       ],
-      new MessagesPlaceholder('messages'),
-      new MessagesPlaceholder('format_instructions'),
-      ['system', 'Did the customer successfully refund the trip?'],
+      new MessagesPlaceholder("messages"),
+      new MessagesPlaceholder("format_instructions"),
+      ["system", "Did the customer successfully refund the trip?"],
     ]),
     model,
     parser,
-  ])
-}
+  ]);
+};
 
-async function didSucceed(rootRun: Run, example: Example): Promise<EvaluationResult> {
-  const task = example.inputs['instructions']
-  const conversation = rootRun.outputs?.['messages']
-  const evaluator = createEvaluator(task)
+async function didSucceed(
+  rootRun: Run,
+  example: Example,
+): Promise<EvaluationResult> {
+  const task = example.inputs["instructions"];
+  const conversation = rootRun.outputs?.["messages"];
+  const evaluator = createEvaluator(task);
 
   const result = await evaluator.invoke({
     messages: conversation,
     format_instructions: parser.getFormatInstructions(),
-  })
+  });
 
   return {
-    key: 'did_succeed',
+    key: "did_succeed",
     score: result.didSucceed ? 1 : 0,
     comment: result.reasoning,
-  }
+  };
 }
 ```
 
@@ -136,10 +159,10 @@ async function didSucceed(rootRun: Run, example: Example): Promise<EvaluationRes
 
 ```ts
 await evaluate(simulation, {
-  data: 'testing-simulated-user',
+  data: "testing-simulated-user",
   evaluators: [didSucceed as any],
-  experimentPrefix: 'testing-simulated-user-1',
-})
+  experimentPrefix: "testing-simulated-user-1",
+});
 ```
 
 ### 5. Result

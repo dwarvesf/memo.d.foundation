@@ -1,14 +1,14 @@
 ---
+title: How Blue Green Deployment Helped Mochi
+date: 2023-04-03
+description: Learn how implementing blue-green deployment with Argo Rollouts on Kubernetes improved Mochi Bot’s updates by eliminating downtime and ensuring seamless releases for Web3 Discord applications.
 tags:
   - devops
   - performance
   - engineering
-title: How Blue Green Deployment Helped Mochi
-date: 2023-04-03
-description: null
 ---
 
-*Our team has always faced some bit of friction when deploying apps for our clients. We’ve known about blue-green deployments for a while and were recently given the chance to evaluate and demonstrate them for one of our Discord bot projects.*
+_Our team has always faced some bit of friction when deploying apps for our clients. We’ve known about blue-green deployments for a while and were recently given the chance to evaluate and demonstrate them for one of our Discord bot projects._
 
 ## Applying Blue-green deployment for Mochi Bot
 
@@ -219,12 +219,12 @@ Moving forward, our team plans to integrate [K6](https://radar.d.foundation/k6-c
 **Come be with us**
 We’d love to have you in our next chapter, by all means.
 
-* Discover what we do: [dwarves.foundation](http://dwarves.foundation/)
-* Meet our team: [discord.gg/dfoundation](http://discord.gg/dfoundation)
-* Join the squad: [careers.d.foundation](http://careers.d.foundation/)
+- Discover what we do: [dwarves.foundation](http://dwarves.foundation/)
+- Meet our team: [discord.gg/dfoundation](http://discord.gg/dfoundation)
+- Join the squad: [careers.d.foundation](http://careers.d.foundation/)
 
 Follow our journey
 
-* Fanpage: [facebook.com/dwarvesf](http://facebook.com/dwarvesf)
-* LinkedIn: [linkedin.com/company/dwarvesf](http://linkedin.com/company/dwarvesf)
-* Substack: [https://memo.d.foundation/](https://memo.d.foundation/)
+- Fanpage: [facebook.com/dwarvesf](http://facebook.com/dwarvesf)
+- LinkedIn: [linkedin.com/company/dwarvesf](http://linkedin.com/company/dwarvesf)
+- Substack: [https://memo.d.foundation/](https://memo.d.foundation/)

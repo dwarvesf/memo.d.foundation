@@ -1,14 +1,14 @@
 ---
-tags: 
+title: The Key Of Security Mechanisms In Tackling Cyber Threats
+date: 2022-12-26
+description: Learn essential cybersecurity tips from expert Hieu PC on building secure products, protecting data, and staying updated on security standards to prevent hacking and safeguard your code effectively.
+tags:
   - security
   - engineering
   - dwarves
-title: The Key Of Security Mechanisms In Tackling Cyber Threats
-date: 2022-12-26
-description: null
 ---
 
-*Hosted by Thanh Pham - Engineering Manager, Dwarves had a great time with the best minds in cybersecurity- Mr. Hieu PC to share his knowledge and experience. As someone who is always looking to improve skills, this event is extremely valuable. We learned a lot about the different elements of cybersecurity and how to better protect our code.*
+_Hosted by Thanh Pham - Engineering Manager, Dwarves had a great time with the best minds in cybersecurity- Mr. Hieu PC to share his knowledge and experience. As someone who is always looking to improve skills, this event is extremely valuable. We learned a lot about the different elements of cybersecurity and how to better protect our code._
 
 Hieu PC was a pro ex-hacker who made headlines and is now a Security Expert at Vietnam's National Cybersecurity Centre (NCSC). He leads the organization to build a robust ICT security infrastructure to protect Vietnam from external and internal attacks. One of the insiders who worked actively in preventing attacks by cyber terrorists on Vietnam's Internet Infrastructure and a founder of [chongluadao.vn](http://chongluadao.vn/) (the largest online community in Vietnam on hacking and ethical hacking).
 
@@ -56,4 +56,4 @@ Hope to see you again at future events that promise to be even more exciting.
 
 ---
 
-*Dwarves Foundation partners with communities and experts to bring real stories, professional points of view, and live-case practices in the tech talk series that accelerates your software career.*
+_Dwarves Foundation partners with communities and experts to bring real stories, professional points of view, and live-case practices in the tech talk series that accelerates your software career._

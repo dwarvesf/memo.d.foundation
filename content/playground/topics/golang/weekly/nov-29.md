@@ -1,13 +1,13 @@
 ---
+title: "Go Commentary #22: GoMLX: ML in Go without Python"
+date: 2024-11-29
+description: Running Machine Learning inference in Go without Python
+authors:
+  - fuatto
+short_title: "#22 GoMLX: ML in Go without Python"
 tags:
   - golang
   - go-weekly
-authors:
-  - fuatto
-title: 'Go Commentary #22: GoMLX: ML in Go without Python'
-short_title: '#22 GoMLX: ML in Go without Python'
-description: Running Machine Learning inference in Go without Python
-date: 2024-11-29
 ---
 
 ## [GoMLX: ML in Go without Python](https://eli.thegreenplace.net/2024/gomlx-ml-in-go-without-python)
@@ -36,6 +36,7 @@ date: 2024-11-29
 - a CNN (convolutional neural network) without any Python, training it on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html)
 
 as expected, Go code is longer and more explicit
+
 ```go
 // define the model graph
 func C10ConvModel(mlxctx *mlxcontext.Context, spec any, inputs []*graph.Node) []*graph.Node {

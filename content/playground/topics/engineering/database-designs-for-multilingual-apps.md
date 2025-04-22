@@ -1,10 +1,10 @@
 ---
-tags: 
-  - research
-  - engineering
 title: Database Designs For Multilingual Apps
 date: 2023-04-11
-description: null
+description: Learn how to design multilingual databases using column-based, JSON-based, and translation table approaches to efficiently manage multi-language support for apps with scalable and flexible solutions.
+tags:
+  - research
+  - engineering
 ---
 
 ![](assets/database-designs-for-multilingual-apps_c9a1b2c55d33bd432d3b0ace8d0a65e7_md5.webp)
@@ -19,9 +19,9 @@ In today's globalized world, many applications need to support multiple language
 
 In this article, we'll explore three common solutions for designing translation tables:
 
-* **The column-based approach** - incorporating languages in a different column as a text field of the same table
-* **The column JSON-based approach** - similar to the column based support, but using JSON data types as opposed to just a text field.
-* **The translation table approach** - a separate table to handle multiple languages and translation practices
+- **The column-based approach** - incorporating languages in a different column as a text field of the same table
+- **The column JSON-based approach** - similar to the column based support, but using JSON data types as opposed to just a text field.
+- **The translation table approach** - a separate table to handle multiple languages and translation practices
 
 ## Solution 1: Column-Based Approach
 
@@ -50,14 +50,14 @@ FROM
 
 **Pros**
 
-* Simple, fast, and easy to implement
-* Requires a small data size
+- Simple, fast, and easy to implement
+- Requires a small data size
 
 **Cons**
 
-* The number of columns grows as the number of supported languages increases, making it difficult to manage and not scalable
-* Adding a new language requires updating the schema
-* Query conditions for selecting a particular language can become complex
+- The number of columns grows as the number of supported languages increases, making it difficult to manage and not scalable
+- Adding a new language requires updating the schema
+- Query conditions for selecting a particular language can become complex
 
 The column-based approach may be useful for smaller projects with a limited number of languages to support. Still, it may not be the best approach for larger projects with more languages and complex data.
 
@@ -72,13 +72,13 @@ For example, if you have a table with columns for "title" and "description," you
 ### Retrieving Translation
 
 To retrieve data, you need to use specific functions to extract data from the `**translations**`
- column.
+column.
 
 ```sql
 // in this example we assume you use Postgres
 // mysql, sqlserver might have slighly syntax diffrent
 
-// return translation in translation column 
+// return translation in translation column
 // we wanted to return all translations
 SELECT
  id,
@@ -108,15 +108,15 @@ FROM
 
 **Pros**
 
-* Reduces the number of columns needed in the table, making it more scalable and easier to maintain.
-* Allows for easy addition of new languages without requiring a schema change. This can be a significant advantage when adding support for new languages, as it reduces the amount of work needed to modify the database schema.
-* By storing all the translations in a single JSON object, the amount of data stored can be significantly reduced, which can result in faster query times and reduced storage costs.
+- Reduces the number of columns needed in the table, making it more scalable and easier to maintain.
+- Allows for easy addition of new languages without requiring a schema change. This can be a significant advantage when adding support for new languages, as it reduces the amount of work needed to modify the database schema.
+- By storing all the translations in a single JSON object, the amount of data stored can be significantly reduced, which can result in faster query times and reduced storage costs.
 
 **Cons**
 
-* The JSON object can become difficult to manage and maintain as the number of languages and translated columns grow. This can lead to errors and inconsistencies in the translations.
-* Queries can become slow and inefficient when retrieving data from the JSON object, especially if there are many translations and a large amount of data to be processed. This can result in increased server load and slower application performance.
-* If multiple users are updating the same JSON object simultaneously, it can result in data inconsistencies and conflicts. This can be mitigated by using locking mechanisms, but it adds an additional layer of complexity to the design.
+- The JSON object can become difficult to manage and maintain as the number of languages and translated columns grow. This can lead to errors and inconsistencies in the translations.
+- Queries can become slow and inefficient when retrieving data from the JSON object, especially if there are many translations and a large amount of data to be processed. This can result in increased server load and slower application performance.
+- If multiple users are updating the same JSON object simultaneously, it can result in data inconsistencies and conflicts. This can be mitigated by using locking mechanisms, but it adds an additional layer of complexity to the design.
 
 The column JSON-based approach is particularly useful for applications that are expected to support multiple languages and require flexibility in managing the translations.
 
@@ -152,15 +152,15 @@ FROM
 
 **Pros**
 
-* Scalable and flexible, allowing for the addition of new languages without requiring a change to the database schema.
-* No duplicate content, as each translation is stored in a separate row in the translation table.
-* Queries can be optimized with indexes to improve performance.
+- Scalable and flexible, allowing for the addition of new languages without requiring a change to the database schema.
+- No duplicate content, as each translation is stored in a separate row in the translation table.
+- Queries can be optimized with indexes to improve performance.
 
 **Cons**
 
-* More complex to implement than the column-based or column JSON-based approach.
-* Joins can slow down query performance, especially for larger datasets.
-* Requires additional storage space for the translation table.
+- More complex to implement than the column-based or column JSON-based approach.
+- Joins can slow down query performance, especially for larger datasets.
+- Requires additional storage space for the translation table.
 
 The translation table approach is suitable for applications of any size that require support for multiple languages. It is especially useful for large applications where data duplication can become a problem with other approaches. However, it may not be the most efficient approach for small applications as it involves more complex queries and potentially slower performance due to the use of joins.
 

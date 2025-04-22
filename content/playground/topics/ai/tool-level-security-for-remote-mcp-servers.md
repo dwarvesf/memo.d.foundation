@@ -1,14 +1,14 @@
 ---
-title: 'Tool-Level Security for Remote MCP Servers'
+title: Tool-Level Security for Remote MCP Servers
 date: 2025-03-27
+description: A comprehensive guide to implementing granular access control for Model Context Protocol (MCP) servers, allowing organizations to securely expose tool capabilities based on user roles and permissions while maintaining data privacy.
 authors:
-- monotykamary
-tags:
-- ai
-- security
-- mcp
+  - monotykamary
 github_id: monotykamary
-description: 'A comprehensive guide to implementing granular access control for Model Context Protocol (MCP) servers, allowing organizations to securely expose tool capabilities based on user roles and permissions while maintaining data privacy.'
+tags:
+  - ai
+  - security
+  - mcp
 ---
 
 ![](assets/tool-level-security-for-remote-mcp-servers.webp)
@@ -24,20 +24,24 @@ This guide explores how to implement **Role-Based Access Control (RBAC)** for MC
 ```javascript
 // Tool registry with permission requirements
 const toolRegistry = {
-  "slack_post_message": {
+  slack_post_message: {
     tool: slackPostMessageTool,
     requiredPermissions: ["slack:write"],
-    dataAccessPolicy: { channelVisibility: "authorized_only" }
-  }
+    dataAccessPolicy: { channelVisibility: "authorized_only" },
+  },
 };
 
 // Filter tools during ListToolsRequest
 server.setRequestHandler(ListToolsRequestSchema, async (request) => {
-  const userPermissions = await getPermissionsForUser(request.transport.session.userId);
+  const userPermissions = await getPermissionsForUser(
+    request.transport.session.userId,
+  );
   return {
     tools: Object.values(toolRegistry)
-      .filter(t => t.requiredPermissions.every(p => userPermissions.includes(p)))
-      .map(t => t.tool)
+      .filter((t) =>
+        t.requiredPermissions.every((p) => userPermissions.includes(p)),
+      )
+      .map((t) => t.tool),
   };
 });
 
@@ -51,7 +55,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 
   const filteredData = await applyDataAccessPolicy(
-    toolEntry.dataAccessPolicy, request.params.arguments, userId
+    toolEntry.dataAccessPolicy,
+    request.params.arguments,
+    userId,
   );
   return await executeTool(request.params.name, filteredData);
 });
@@ -285,55 +291,63 @@ The **dataAccessPolicy** property defines more granular constraints on the data 
 ```javascript
 // Tool registry with security metadata (simplified example)
 const toolRegistry = {
-  "slack_list_channels": {
+  slack_list_channels: {
     tool: {
       name: "slack_list_channels",
       description: "List public channels in the workspace with pagination",
-      inputSchema: { /* schema definition */ }
+      inputSchema: {
+        /* schema definition */
+      },
     },
     requiredPermissions: ["slack:read"],
     dataAccessPolicy: {
-      channelVisibility: "authorized_only"
-    }
+      channelVisibility: "authorized_only",
+    },
   },
 
-  "slack_post_message": {
+  slack_post_message: {
     tool: {
       name: "slack_post_message",
       description: "Post a new message to a Slack channel",
-      inputSchema: { /* schema definition */ }
+      inputSchema: {
+        /* schema definition */
+      },
     },
     requiredPermissions: ["slack:write"],
     dataAccessPolicy: {
-      channelVisibility: "authorized_only"
-    }
+      channelVisibility: "authorized_only",
+    },
   },
 
-  "knowledge_search": {
+  knowledge_search: {
     tool: {
       name: "knowledge_search",
       description: "Search the organization's knowledge base",
-      inputSchema: { /* schema definition */ }
+      inputSchema: {
+        /* schema definition */
+      },
     },
     requiredPermissions: ["knowledge:read"],
     dataAccessPolicy: {
-      documentVisibility: "role_based"
-    }
+      documentVisibility: "role_based",
+    },
   },
 
-  "data_analytics": {
+  data_analytics: {
     tool: {
       name: "data_analytics",
       description: "Run analytics queries on organizational data",
-      inputSchema: { /* schema definition */ }
+      inputSchema: {
+        /* schema definition */
+      },
     },
     requiredPermissions: ["analytics:read"],
     dataAccessPolicy: {
       datasetVisibility: "role_based",
-      columnVisibility: "role_based"
-    }
-  }
-}
+      columnVisibility: "role_based",
+    },
+  },
+};
 ```
 
 ### Permission enforcement in server implementation
@@ -354,13 +368,13 @@ server.setRequestHandler(ListToolsRequestSchema, async (request) => {
 
   // Filter tools based on user permissions
   const authorizedTools = Object.values(toolRegistry)
-    .filter(toolEntry => {
+    .filter((toolEntry) => {
       // User must have ALL required permissions for this tool
-      return toolEntry.requiredPermissions.every(
-        permission => userPermissions.includes(permission)
+      return toolEntry.requiredPermissions.every((permission) =>
+        userPermissions.includes(permission),
       );
     })
-    .map(toolEntry => toolEntry.tool);
+    .map((toolEntry) => toolEntry.tool);
 
   return { tools: authorizedTools };
 });
@@ -384,8 +398,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const userPermissions = await getAllPermissionsForRoles(userRoles);
 
   // Verify permissions for the requested tool
-  const hasPermission = toolEntry.requiredPermissions.every(
-    permission => userPermissions.includes(permission)
+  const hasPermission = toolEntry.requiredPermissions.every((permission) =>
+    userPermissions.includes(permission),
   );
 
   if (!hasPermission) {
@@ -399,7 +413,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     toolEntry.dataAccessPolicy,
     request.params.arguments,
     userId,
-    userRoles
+    userRoles,
   );
 
   // Execute the tool with filtered arguments
@@ -410,11 +424,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     result,
     toolEntry.dataAccessPolicy,
     userId,
-    userRoles
+    userRoles,
   );
 
   return {
-    content: [{ type: "text", text: JSON.stringify(filteredResult) }]
+    content: [{ type: "text", text: JSON.stringify(filteredResult) }],
   };
 });
 ```
@@ -434,7 +448,10 @@ async function applyDataAccessPolicy(policy, args, userId, userRoles) {
   const filteredArgs = { ...args };
 
   // Check Slack channel access if relevant
-  if (policy.channelVisibility === "authorized_only" && filteredArgs.channel_id) {
+  if (
+    policy.channelVisibility === "authorized_only" &&
+    filteredArgs.channel_id
+  ) {
     const hasAccess = await checkChannelAccess(userId, filteredArgs.channel_id);
     if (!hasAccess) {
       throw new Error(`Access denied to channel: ${filteredArgs.channel_id}`);
@@ -458,7 +475,7 @@ async function filterDocumentsByAccess(documents, userId, userRoles) {
   const accessibleDocumentIds = await getAccessibleDocumentIds(userRoles);
 
   // Filter documents to include only those the user can access
-  return documents.filter(doc => accessibleDocumentIds.has(doc.id));
+  return documents.filter((doc) => accessibleDocumentIds.has(doc.id));
 }
 
 // Filter analytics results by column permissions
@@ -466,16 +483,19 @@ async function filterColumnsByAccess(results, userId, userRoles) {
   if (!results.columns || !results.rows) return results;
 
   // Determine which columns the user has permission to see
-  const accessibleColumns = await getAccessibleColumns(results.dataset, userRoles);
+  const accessibleColumns = await getAccessibleColumns(
+    results.dataset,
+    userRoles,
+  );
 
   // Create a filtered view of the results
   const columnIndexes = results.columns
-    .map((col, index) => accessibleColumns.has(col) ? index : -1)
-    .filter(idx => idx !== -1);
+    .map((col, index) => (accessibleColumns.has(col) ? index : -1))
+    .filter((idx) => idx !== -1);
 
   return {
     columns: results.columns.filter((_, idx) => columnIndexes.includes(idx)),
-    rows: results.rows.map(row => columnIndexes.map(idx => row[idx]))
+    rows: results.rows.map((row) => columnIndexes.map((idx) => row[idx])),
   };
 }
 ```
@@ -503,15 +523,16 @@ async function getRolesFromExternalToken(token) {
 
     if (decodedToken.scope) {
       // Parse space-separated scopes
-      const scopes = decodedToken.scope.split(' ');
-      return scopes.filter(s => s.startsWith('role:'))
-                  .map(s => s.substring(5));
+      const scopes = decodedToken.scope.split(" ");
+      return scopes
+        .filter((s) => s.startsWith("role:"))
+        .map((s) => s.substring(5));
     }
 
     // If no roles in token, fall back to database mapping
     return await getRolesFromDatabase(decodedToken.sub);
   } catch (error) {
-    console.error('Error extracting roles from token:', error);
+    console.error("Error extracting roles from token:", error);
     return [];
   }
 }
@@ -551,7 +572,7 @@ async function logSecurityEvent(userId, eventType, details, success = true) {
   await db.query(
     `INSERT INTO security_events (user_id, event_type, details, success, timestamp)
      VALUES ($1, $2, $3, $4, NOW())`,
-    [userId, eventType, JSON.stringify(details), success]
+    [userId, eventType, JSON.stringify(details), success],
   );
 }
 ```

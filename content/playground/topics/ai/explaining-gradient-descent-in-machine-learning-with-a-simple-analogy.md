@@ -1,20 +1,21 @@
 ---
-tags: 
-  - ai
-  - LLM
-  - machine-learning
 title: Explaining Gradient Descent in Machine Learning with a simple analogy
 date: 2024-06-25
-description: Gradient descent is a fundamental optimization algorithm in machine learning. It's a way for models to learn from data and improve their accuracy by gradually adjusting their internal settings. Think of it like carefully descending a hill to find the lowest point—each small step you take brings you closer to the best possible solution.
-authors: 
+description: "Gradient descent is a fundamental optimization algorithm in machine learning. It's a way for models to learn from data and improve their accuracy by gradually adjusting their internal settings. Think of it like carefully descending a hill to find the lowest point—each small step you take brings you closer to the best possible solution."
+authors:
   - innno_
+tags:
+  - ai
+  - llm
+  - machine-learning
 ---
 
-Gradient descent is a fundamental optimization algorithm in machine learning.  It's a bit like finding your way down a mountain in the fog: you take small steps in the direction that seems to be going downhill the fastest. 
+Gradient descent is a fundamental optimization algorithm in machine learning. It's a bit like finding your way down a mountain in the fog: you take small steps in the direction that seems to be going downhill the fastest.
 
 In machine learning, the "mountain" is a mathematical function, and the "downhill direction" helps us find the best values for our model's parameters.
 
 ### Imagine you're sliding down a hill to find the lowest point
+
 **The Hill**
 
 Imagine you’re standing on a hill. The hill has many ups and downs, and your goal is to find the lowest point in the hill, where there’s a treasure hidden.
@@ -30,6 +31,7 @@ Imagine you’re standing on a hill. The hill has many ups and downs, and your g
 4. **Repeat**: After taking a step, you look around again, see which way is down, and take another small step. You keep doing this until you reach the lowest point where you can’t go down any further.
 
 ### In Machine Learning
+
 **1. The Hill**: Represents the error or how wrong the computer’s guesses are when trying to learn something (like recognizing cats and dogs).
 
 **2. Lowest Point**: Represents the best possible way the computer can learn from the data, minimizing errors.
@@ -43,6 +45,7 @@ Imagine you’re standing on a hill. The hill has many ups and downs, and your g
 ![](assets/explaining-gradient-descent-with-a-simple-analogy.png)
 
 ### Gradient Descent in simple terms
+
 - **You:** The computer trying to learn.
 - **Hill:** The error in guesses.
 - **Lowest Point:** Best learning with the least errors.
@@ -52,4 +55,5 @@ Imagine you’re standing on a hill. The hill has many ups and downs, and your g
 Just like you keep stepping down the hill to find the treasure, the computer keeps adjusting its guesses to learn better and make the fewest mistakes.
 
 ### Reference
+
 https://medium.com/onfido-tech/machine-learning-101-be2e0a86c96a

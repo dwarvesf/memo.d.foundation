@@ -1,14 +1,14 @@
 ---
-tags: 
-  - blockchain
 title: Design System For Layer 2 Using Zk Rollup
 date: 2023-04-24
-description: null
+description: Learn how Layer 2 blockchain design using zkEVM and zero-knowledge proofs enables scalable, secure token transfers and smart contract execution with efficient transaction batching and Ethereum compatibility.
+tags:
+  - blockchain
 ---
 
 <!-- table_of_contents adbd9b7d-46a4-4a1f-ab90-ce4abf276231 -->
 
-*At Dwarves, we are currently working on creating a bridge token in one of our blockchain projects. With more recent concerns on privacy and security, we wanted to understand how we could move tokens across blockchains without needing to know any other information about the transaction. This has motivated our research on Zero-Knowledge proofs and their possible applications for bridges.*
+_At Dwarves, we are currently working on creating a bridge token in one of our blockchain projects. With more recent concerns on privacy and security, we wanted to understand how we could move tokens across blockchains without needing to know any other information about the transaction. This has motivated our research on Zero-Knowledge proofs and their possible applications for bridges._
 
 ## Introduction
 
@@ -34,21 +34,21 @@ State machines are best suited for repetitive deterministic computations, which 
 
 Since this isn’t a closed system, there are few requirements we need to meet in order to ensure its security, performance, and workability. The following are the essential requirements for a blockchain layer 2 system that we should have:
 
-* Compatible with applications, platforms, and technologies ... that already working with the Ethereum network (Block, EVM)
-* Scalability of computation speed, transaction validation, proof building. The time to create a batch is optimized according to the network throughput of layer 2 (If the number of transactions / second increases, it is necessary to reduce the block time)
-* Data availability: data is saved off-chain, the proof is saved on-chain, and transaction information can be saved via call-data
-* Optimizing on-chain storage cost and size through reducing proof size, saving data in call-data
-* The system is towards decentralized as many components as possible such as Sequencer, Prover
+- Compatible with applications, platforms, and technologies ... that already working with the Ethereum network (Block, EVM)
+- Scalability of computation speed, transaction validation, proof building. The time to create a batch is optimized according to the network throughput of layer 2 (If the number of transactions / second increases, it is necessary to reduce the block time)
+- Data availability: data is saved off-chain, the proof is saved on-chain, and transaction information can be saved via call-data
+- Optimizing on-chain storage cost and size through reducing proof size, saving data in call-data
+- The system is towards decentralized as many components as possible such as Sequencer, Prover
 
 ## Approach to solving the requirements
 
 In order to meet our system requirements, we are essentially creating a **zkProver**. The general approach to designing zkProver to realize a proof system based on State Machines is as follows:
 
-* Turn the necessary deterministic computation into **state machine computation**.
-* Describe state transitions according to **algebraic constraints**. These are like rules that every state transition must meet.
-* Use **interpolation** state values to build state machine description polynomials.
-* Define **polynomial identity** to which all state values must satisfy.
-* A specially designed **cryptographic proof** system (e.g. STARK, SNARK, or a combination of both) is used to generate verifiable proof that anyone can Verification.
+- Turn the necessary deterministic computation into **state machine computation**.
+- Describe state transitions according to **algebraic constraints**. These are like rules that every state transition must meet.
+- Use **interpolation** state values to build state machine description polynomials.
+- Define **polynomial identity** to which all state values must satisfy.
+- A specially designed **cryptographic proof** system (e.g. STARK, SNARK, or a combination of both) is used to generate verifiable proof that anyone can Verification.
 
 ## Design the system
 
@@ -64,15 +64,15 @@ The Aggregator is responsible for aggregating and compressing user transactions 
 
 The main components we need for the layer 2 system (that also include components of a regular blockchain) includes:
 
-* Blockchain Node
-* **Sequencer** - a type of rollup node that is responsible for collecting transactions and producing new blocks.
-* **ZkProver** - a prover and verifier of transactions using zkEVM and state machines
-* **RPC**- Remote Procedure Call holding set of protocols and interfaces that to access the blockchain
-* **Synchronizer** - helps nodes to stay up-to-date with the latest state on the blockchain
-* **ZK SNARK/STARK**- arguments of knowledge to prove transactions without revealing any information
-* **StateDB**- a database to store current states of all accounts and contracts on the Ethereum network
-* **Ethereum Bridge** - a mechanism to transfer assets between 2 blockchain networks
-* **ZKRollup smart contract**- a smart contract that takes hundreds of transactions off the main blockchain and bundles them into a single transaction, to then send a validity proof to the main blockchain
+- Blockchain Node
+- **Sequencer** - a type of rollup node that is responsible for collecting transactions and producing new blocks.
+- **ZkProver** - a prover and verifier of transactions using zkEVM and state machines
+- **RPC**- Remote Procedure Call holding set of protocols and interfaces that to access the blockchain
+- **Synchronizer** - helps nodes to stay up-to-date with the latest state on the blockchain
+- **ZK SNARK/STARK**- arguments of knowledge to prove transactions without revealing any information
+- **StateDB**- a database to store current states of all accounts and contracts on the Ethereum network
+- **Ethereum Bridge** - a mechanism to transfer assets between 2 blockchain networks
+- **ZKRollup smart contract**- a smart contract that takes hundreds of transactions off the main blockchain and bundles them into a single transaction, to then send a validity proof to the main blockchain
 
 ### ZkProver Component
 
@@ -80,29 +80,29 @@ The proof and verification of transactions in Polygon zkEVM are both handled by 
 
 ![](assets/design-system-for-layer-2-using-zk-rollup_6d0dcbf83e5dea68e8d346c66b1637bb_md5.webp)
 
-* Prover executes input data, calculates the result state, and generates proof. It calls the Stark component to generate proof of the Executor state machine committed polynomials.
-* Key components of zkProver for generating verifiable proof:
-* The executor is the main state machine executor
-* STARK recursive component
-* CIRCOM library
-* Prove ZK-SNARK
+- Prover executes input data, calculates the result state, and generates proof. It calls the Stark component to generate proof of the Executor state machine committed polynomials.
+- Key components of zkProver for generating verifiable proof:
+- The executor is the main state machine executor
+- STARK recursive component
+- CIRCOM library
+- Prove ZK-SNARK
 
 ### State machine Component
 
 ![](assets/design-system-for-layer-2-using-zk-rollup_6966283d889117a7e021bfd7d29d47a7_md5.webp)
 
-*[https://docs.hermez.io/zkEVM/zkProver/State-Machines/Overview/figures/fig-actions-sec-sm.png](https://docs.hermez.io/zkEVM/zkProver/State-Machines/Overview/figures/fig-actions-sec-sm.png)*
+_[https://docs.hermez.io/zkEVM/zkProver/State-Machines/Overview/figures/fig-actions-sec-sm.png](https://docs.hermez.io/zkEVM/zkProver/State-Machines/Overview/figures/fig-actions-sec-sm.png)_
 
 The system uses state machines with transactions with inputs transactions, the old and new state, sequencer’s chainID:
 
-* Main state machine executor
-* Secondary state machine
-* Binary SM
-* Memory SM
-* Storage SM
-* Poseidon SM
-* Keccak SM
-* Arithmetic SM
+- Main state machine executor
+- Secondary state machine
+- Binary SM
+- Memory SM
+- Storage SM
+- Poseidon SM
+- Keccak SM
+- Arithmetic SM
 
 ### Aggregator Component
 
@@ -120,9 +120,9 @@ StateDB plays an important role in ensuring the integrity and reliability of the
 
 Design to update L2 State over time so that the state is always the most properly synchronized over time. There are three stages of the L2 State, each of which corresponds to three different ways that L2 nodes can update their state. All three cases depending on the format of the batch data used to update the L2 State.
 
-* In the first case, the update is only notified by information (i.e. the Lot consisting of sorted transactions) coming directly from the Trusted Sequencer, before any data is available on L1. The resulting L2 state is called the Trusted state.
-* In the second case, the update is based on the information obtained by the L2 nodes from the L1  network. After the plots have been sequenced and data have been made available on L1. The L2 state is called  Virtual State at this time.
-* The information used to update L2 State in the final case includes verified zero-knowledge proofs of computational integrity. After the Zero-Knowledge proof has been successfully verified in L1, L2 nodes synchronize their local L2 State root with the root committed in L1 by the Trusted Aggregate trust. As a result, such L2 State is called  Unified State
+- In the first case, the update is only notified by information (i.e. the Lot consisting of sorted transactions) coming directly from the Trusted Sequencer, before any data is available on L1. The resulting L2 state is called the Trusted state.
+- In the second case, the update is based on the information obtained by the L2 nodes from the L1  network. After the plots have been sequenced and data have been made available on L1. The L2 state is called  Virtual State at this time.
+- The information used to update L2 State in the final case includes verified zero-knowledge proofs of computational integrity. After the Zero-Knowledge proof has been successfully verified in L1, L2 nodes synchronize their local L2 State root with the root committed in L1 by the Trusted Aggregate trust. As a result, such L2 State is called  Unified State
 
 ### Sequencer Component
 
@@ -140,32 +140,32 @@ The bridge is responsible for receiving and processing requests to transfer info
 
 ![](assets/design-system-for-layer-2-using-zk-rollup_cf2dd7dd7ccbdbdb75fb3d0f31ca5d68_md5.webp)
 
-* The bridge client creates a request to deposit or claim to Ethereum or zkEVM node (layer 2) to start transferring the token
-* The Aggregator will sync events with Ethereum and store bridge events to Bridge DB and update the Merkle tree root
-* The zkEVM node sync bridge event with Aggregator
+- The bridge client creates a request to deposit or claim to Ethereum or zkEVM node (layer 2) to start transferring the token
+- The Aggregator will sync events with Ethereum and store bridge events to Bridge DB and update the Merkle tree root
+- The zkEVM node sync bridge event with Aggregator
 
 ### Smart contract
 
 The smart contract is used to execute the proof of layer 2 in layer 1, transfer assets between layers, and store proof and root Merkle Tree. In this case, we can learn from zkEVM smart contract:
 
-* Smart contract [Bridge.sol](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/PolygonZkEVMBridge.sol):
+- Smart contract [Bridge.sol](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/PolygonZkEVMBridge.sol):
 
 The main functions:
 
-* **bridgeAsset**: transfer token from L1 to L2, add leaf to Merkle tree, emit event
-* **bridgeMessage**: transfer message in bytes format that executable
-* **claimAssert**: verify Merkle proof and withdraw tokens/ether
-* **claimMessage**: Verify Merkle proof and execute message
-* Smart contract [GlobalExitRoot.sol](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/PolygonZkEVMGlobalExitRoot.sol)
-* **updateExitRoot**: Update the exit root of one of the networks and the global exit root
-* **getLastGlobalExitRoot**: Return last global exit root
-* Smart contract [GlobalExitRootL2.sol](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/PolygonZkEVMGlobalExitRootL2.sol)
-* **updateExitRoot**: Update the exit root of one of the networks and the global exit root
-* Smart contract [zkEVM.sol](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/PolygonZkEVM.sol)
-* **sequenceBatches**: Allows a sequencer to send multiple batches
-* **verifyBatches**: Allows an aggregator to verify multiple batches
-* **trustedVerifyBatches**: Allows an aggregator to verify multiple batches
-* **sequenceForceBatches**: Allows anyone to sequence forced Batches if the trusted sequencer do not have done it in the timeout period
+- **bridgeAsset**: transfer token from L1 to L2, add leaf to Merkle tree, emit event
+- **bridgeMessage**: transfer message in bytes format that executable
+- **claimAssert**: verify Merkle proof and withdraw tokens/ether
+- **claimMessage**: Verify Merkle proof and execute message
+- Smart contract [GlobalExitRoot.sol](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/PolygonZkEVMGlobalExitRoot.sol)
+- **updateExitRoot**: Update the exit root of one of the networks and the global exit root
+- **getLastGlobalExitRoot**: Return last global exit root
+- Smart contract [GlobalExitRootL2.sol](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/PolygonZkEVMGlobalExitRootL2.sol)
+- **updateExitRoot**: Update the exit root of one of the networks and the global exit root
+- Smart contract [zkEVM.sol](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/PolygonZkEVM.sol)
+- **sequenceBatches**: Allows a sequencer to send multiple batches
+- **verifyBatches**: Allows an aggregator to verify multiple batches
+- **trustedVerifyBatches**: Allows an aggregator to verify multiple batches
+- **sequenceForceBatches**: Allows anyone to sequence forced Batches if the trusted sequencer do not have done it in the timeout period
 
 ### RPC
 

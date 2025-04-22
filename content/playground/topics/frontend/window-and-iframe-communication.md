@@ -1,14 +1,14 @@
 ---
+title: Window and iframe communication
+date: 2023-08-20
+description: When working with web development, communicating between a main window and an embedded iframe is often necessary for various tasks, such as content creation or widget implementation. This communication can occur between windows and iframes with the same origin or across different origins.
+authors:
+  - thanh
+github_id: zlatanpham
 tags:
   - frontend
   - iframe
-  - postMessage
-authors:
-  - thanh
-description: "When working with web development, communicating between a main window and an embedded iframe is often necessary for various tasks, such as content creation or widget implementation. This communication can occur between windows and iframes with the same origin or across different origins."
-title: Window and iframe communication
-github_id: zlatanpham
-date: 2023-08-20
+  - post-message
 ---
 
 When working with web development, communicating between a main window and an embedded iframe is often necessary for various tasks, such as content creation or widget implementation. This communication can occur between windows and iframes with the same origin or across different origins.
@@ -40,8 +40,8 @@ In the case of same origin communication:
 <script>
   iframe.onload = function () {
     // just do anything
-    iframe.contentDocument.body.prepend('Hello, world!')
-  }
+    iframe.contentDocument.body.prepend("Hello, world!");
+  };
 </script>
 ```
 
@@ -65,25 +65,25 @@ Here's an example of cross origin communication:
 ```html
 <iframe src="http://example.com" name="example"></iframe>
 <script>
-  let iframe = window.frames.example
+  let iframe = window.frames.example;
   // target origin is *
-  iframe.contentWindow.postMessage('message', '*')
+  iframe.contentWindow.postMessage("message", "*");
 </script>
 ```
 
 ```js
 // http://example.com internal script
-window.addEventListener('message', function (event) {
-  if (event.origin != 'http://source.com') {
+window.addEventListener("message", function (event) {
+  if (event.origin != "http://source.com") {
     // something from an unknown domain, let's ignore it
-    return
+    return;
   }
 
-  alert('received: ' + event.data)
+  alert("received: " + event.data);
 
   // can message back using event.source.postMessage(...)
   // or window.parent.postMessage(...)
-})
+});
 ```
 
 Use cases for cross origin communication include embedded widgets like chatboxes. ![](assets/window-and-iframe-communication_window-iframe-chatbox.webp)

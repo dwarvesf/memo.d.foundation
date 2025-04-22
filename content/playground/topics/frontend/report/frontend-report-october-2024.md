@@ -1,13 +1,13 @@
 ---
+title: Frontend Report October 2024
+date: 2024-11-05
+description: This month’s newsletter highlights React’s new compiler beta, key updates from Next.js Conf 2024, and industry shifts toward full-stack roles and modern CSS. AI-driven tools like GitHub Copilot and Project IDX are further advancing development workflows.
+authors:
+  - mashiro5951
+short_title: October 2024
 tags:
   - frontend
   - market-report
-title: Frontend Report October 2024
-short_title: October 2024
-description: This month’s newsletter highlights React’s new compiler beta, key updates from Next.js Conf 2024, and industry shifts toward full-stack roles and modern CSS. AI-driven tools like GitHub Copilot and Project IDX are further advancing development workflows.
-date: 2024-11-05
-authors:
-  - mashiro5951
 ---
 
 This month’s newsletter highlights key advancements in web development, including React’s new compiler beta and top updates from Next.js Conf 2024, featuring optimizations like Edge Functions and React Server Components. Industry trends show a shift toward full-stack roles, modern CSS standards, and rising demand for engineering talent. AI-driven tools like GitHub Copilot and Project IDX continue advancing development workflows.
@@ -43,7 +43,7 @@ Get the highlights from Next.js Conf 2024, featuring exciting updates on React S
 
 ## Others
 
-### [State of Frontend 2024  - The Rise of Full-stack development](https://tsh.io/state-of-frontend/)
+### [State of Frontend 2024 - The Rise of Full-stack development](https://tsh.io/state-of-frontend/)
 
 Full-stack developers now outnumber senior frontend roles, with performance as a top challenge prompting simpler applications. Nearly 69% of companies plan to integrate AI for developer support, and remote work remains popular.
 

@@ -1,18 +1,19 @@
 ---
+title: Design feedback mechanism for LLM applications
+date: 2024-07-08
+description: Improving AI models requires collecting accurate user feedback,which can be difficult. The article explores more into the importance of collecting human feedback and discusses the need for creating an organized database to effectively store and use this valuable input. We hope to continuously improve our large language models, ensuring they deliver greater performance and match user expectations more effectively.
+authors:
+  - datnguyennnx
 tags:
   - llm
   - feedback
   - mechanism
-title: "Design feedback mechanism for LLM applications"
-date: 2024-07-08
-description: "Improving AI models requires collecting accurate user feedback,which can be difficult. The article explores more into the importance of collecting human feedback and discusses the need for creating an organized database to effectively store and use this valuable input. We hope to continuously improve our large language models, ensuring they deliver greater performance and match user expectations more effectively."
-authors:
-  - datnguyennnx
 ---
 
 Getting consistent and accurate answers from LLMs is a major challenge. One effective strategy to address this challenge is incorporating a robust feedback mechanism within the app to collect user feedback. The memo will focus on how we collect logs of this feedback, showing how important it is to have a system for collecting input from users. It will also dive into how we design a database to safely store all this valuable feedback, making sure it's organized and useful for improving our models.
 
 ## Overview of Feedback mechanism
+
 While we will dig into the details of feedback collection and its impact on LLMs, it’s better to understand the whole picture first. Here’s a step-by-step look at how we use feedback to make our models better:
 
 1. **Collect Logs**: All interactions, implicit and explicit feedback, along with additional context like prompt history and model parameters, are logged.
@@ -23,7 +24,9 @@ While we will dig into the details of feedback collection and its impact on LLMs
 ![Feedback Diagram](assets/feedback-mechanism.webp)
 
 ## How User Feedback Improves AI: Implicit and Explicit Methods
+
 ### Implicit Feedback
+
 Implicit feedback comes from how users behave when they interact with an AI model, without them directly telling us what they think. There are a few main ways we notice this:
 
 1. **Stop Generate**: If users stop the AI from generating a response quickly, it usually means they don't like what it's saying or find it irrelevant. For example, if they read a few lines and feel it's not helpful, they might stop it.
@@ -33,6 +36,7 @@ Implicit feedback comes from how users behave when they interact with an AI mode
 ![Implicit feedback](assets/implicit_feedback.webp)
 
 ### Explicit Feedback
+
 Explicit feedback involves users directly communicating their satisfaction or dissatisfaction with the AI’s responses. The methods include:
 
 1. **Like/Dislike**: Users can give a thumbs up if they like the response or thumbs down if they don’t. This quick feedback helps us know how well the AI’s answers are working. For example, a thumbs up means they found it useful, while a thumbs down means it wasn’t helpful.
@@ -43,23 +47,27 @@ Explicit feedback involves users directly communicating their satisfaction or di
 ![Explicit feedback](assets/explicit_feedback.webp)
 
 ## Organizing User Feedback for LLM Application
+
 After collecting user feedback, we'll organize the data using the schema below. This structured approach makes it easier to analyze and understand the feedback. By categorizing it properly, we can see exactly where improvements are needed. This organized data helps create datasets for fine-tuning or pretraining our large language models.
 
 ![Database table for storing human feedback](assets/database_schema_feedback.webp)
 
 **chat_feedback table:**
-- `id`  A unique identifier for each feedback entry.
-- `thread_id`  Links the feedback to a specific conversation thread.
-- `chat_id`  Identifies the particular message within the thread that the feedback refers to.
-- `type_id`  Categorizes the type of feedback provided. We can define enum type_id for storing specify facts.
-- `notes`  Allows users to add specific comments or details about their feedback.
+
+- `id` A unique identifier for each feedback entry.
+- `thread_id` Links the feedback to a specific conversation thread.
+- `chat_id` Identifies the particular message within the thread that the feedback refers to.
+- `type_id` Categorizes the type of feedback provided. We can define enum type_id for storing specify facts.
+- `notes` Allows users to add specific comments or details about their feedback.
 
 **Relationships:**
-- `chat_feedback.thread_id` references `threads.id`  This links feedback to the appropriate conversation thread, ensuring we can trace feedback back to the entire conversation context. When we need to load history chat, we can count total thumbs-up and thumbs-down user reactions there are.
+
+- `chat_feedback.thread_id` references `threads.id` This links feedback to the appropriate conversation thread, ensuring we can trace feedback back to the entire conversation context. When we need to load history chat, we can count total thumbs-up and thumbs-down user reactions there are.
 - `chat_feedback.chat_id` references [`chats.id`](http://chats.id) This connects the feedback to the specific message. We can render history chat again, improving the user experience of specific chats.
 - `chat_feedback.type_id` references `feedback_type.id` This categorizes the feedback, making it easier to analyze patterns and specific issues.
 
 **feedback_type table:**
+
 - `id` A unique identifier for each type of feedback.
 - `name` A descriptive name for the feedback type.
 
@@ -71,18 +79,21 @@ We need to track user feedback by `chat_id` and `thread_id`, as well as `feedbac
 
 ![Feedback form UI](assets/ui_feedback_form.webp)
 
-Imagine you're chatting with a chatbot. If you receive a response that's too long, you can click the dislike button then select "Too long" from the feedback options and add a note explaining that the information could be more detailed. This feedback is saved in the system, linked to the specific `chat_id` and `thread_id`, and categorized under the "Too long" type. 
+Imagine you're chatting with a chatbot. If you receive a response that's too long, you can click the dislike button then select "Too long" from the feedback options and add a note explaining that the information could be more detailed. This feedback is saved in the system, linked to the specific `chat_id` and `thread_id`, and categorized under the "Too long" type.
 
 Let's say you're chatting with a bot to get some tips on baking a cake. You ask, "How can I make my cake fluffy?" Instead of giving you baking advice, the bot starts talking about the history of cakes, which isn't what you wanted. So, you hit the "stop" button because the response isn't relevant to your question. This action tells us the answer wasn't helpful or on-topic.
 
 ## What’s next
-Collecting feedback creates a valuable dataset for later training step, using method like Reinforcement Learning from Human Feedback (RLHF). To understanding step by step using human feedback for fine-tuning large language model, you can found articles about [RLHF method](https://dwarvesf.hashnode.dev/challenges-faced-when-researching-rlhf-with-openassistant) then we go next step training human feedback at [here](). 
+
+Collecting feedback creates a valuable dataset for later training step, using method like Reinforcement Learning from Human Feedback (RLHF). To understanding step by step using human feedback for fine-tuning large language model, you can found articles about [RLHF method](https://dwarvesf.hashnode.dev/challenges-faced-when-researching-rlhf-with-openassistant) then we go next step training human feedback at [here]().
 
 ## Conclusion
+
 By tracking interactions and analyzing feedback, we can keep improving the outputs to be more accurate and user-friendly. Understanding how to design a database to log the feedback will help us prepare good datasets for later training step.
 
 ## Reference
+
 - [Evaluating LLM Outputs (cohere.com)](https://cohere.com/blog/evaluating-llm-outputs)
 - [Human in the Loop feedback (orq.ai)](https://docs.orq.ai/docs/human-in-the-loop-feedback)
-- [Human in the Loop - Machine Learning - Definition & Examples | Encord](https://encord.com/blog/human-in-the-loop-ai/#:~:text=What%20is%20HITL%3F-,Human%2Din%2Dthe%2Dloop%20(HITL)%20is%20an,%2C%20accuracy%2C%20and%20training%20outcomes.)
+- [Human in the Loop - Machine Learning - Definition & Examples | Encord](https/encord.com/blog/human-in-the-loop-ai#:~:text=What%20is%20HITL%3F-,Human%2Din%2Dthe%2Dloop%20(HITL)%20is%20an,%2C%20accuracy%2C%20and%20training%20outcomes.>)
 - [How to test LLMs in production? (leewayhertz.com)](https://www.leewayhertz.com/how-to-test-llms-in-production/#A/B-testing)

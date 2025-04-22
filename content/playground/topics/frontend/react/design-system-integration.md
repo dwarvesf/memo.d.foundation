@@ -1,14 +1,14 @@
 ---
+title: Design system integration in react
+date: 2024-10-29
+description: Learn how to integrate design systems in React applications with comprehensive coverage of design tokens, atomic components, and accessibility standards.
 authors:
-  - 'thanh'
-date: '2024-10-29'
-description: 'Learn how to integrate design systems in React applications with comprehensive coverage of design tokens, atomic components, and accessibility standards.'
+  - thanh
+short_title: Design system integration
 tags:
-  - 'react'
-  - 'design-system'
-  - 'storybook'
-title: 'Design system integration in react'
-short_title: 'Design system integration'
+  - react
+  - design-system
+  - storybook
 ---
 
 Design system integration in React involves creating a set of reusable, consistent, and easily maintainable components that reflect your app’s design guidelines. Integrating a design system helps ensure visual and functional consistency across your application while allowing for scalability as new components and features are added. Design systems often include UI components, design tokens, typography, colors, icons, spacing guidelines, and accessibility standards.
@@ -57,7 +57,7 @@ You can then access and apply these tokens in your components, ensuring they fol
 **In a React component:**
 
 ```js
-import tokens from './tokens.json'
+import tokens from "./tokens.json";
 
 const Button = ({ children }) => (
   <button
@@ -71,7 +71,7 @@ const Button = ({ children }) => (
   >
     {children}
   </button>
-)
+);
 ```
 
 ### 2. Build atomic components
@@ -88,7 +88,7 @@ Atomic design breaks down UI elements into **atoms**, **molecules**, **organisms
 **Example: Button component (atom)**
 
 ```jsx
-const Button = ({ label, onClick, variant = 'primary' }) => {
+const Button = ({ label, onClick, variant = "primary" }) => {
   const styles = {
     primary: {
       backgroundColor: tokens.colors.primary,
@@ -98,25 +98,25 @@ const Button = ({ label, onClick, variant = 'primary' }) => {
       backgroundColor: tokens.colors.secondary,
       color: tokens.colors.background,
     },
-  }
+  };
 
   return (
     <button style={styles[variant]} onClick={onClick}>
       {label}
     </button>
-  )
-}
+  );
+};
 ```
 
 **Example: Form component (molecule)**
 
 ```jsx
-const FormField = ({ label, type = 'text', value, onChange }) => (
+const FormField = ({ label, type = "text", value, onChange }) => (
   <div>
     <label>{label}</label>
     <input type={type} value={value} onChange={onChange} />
   </div>
-)
+);
 ```
 
 ### 3. Create composable, flexible components
@@ -124,15 +124,15 @@ const FormField = ({ label, type = 'text', value, onChange }) => (
 Design systems benefit from **flexible components** that can adapt to different use cases without being overly rigid. Use **props** and **styled-system** libraries (e.g., styled-components or emotion) to make your components customizable.
 
 ```jsx
-import styled from 'styled-components'
-import tokens from './tokens.json'
+import styled from "styled-components";
+import tokens from "./tokens.json";
 
 const Button = styled.button`
   padding: ${tokens.spacing.medium};
   font-size: ${tokens.typography.fontSize.medium};
   color: ${({ variant }) => tokens.colors[variant]};
   background-color: ${({ bg }) => bg || tokens.colors.background};
-`
+`;
 ```
 
 This approach allows the Button component to be reusable, enabling different colors and backgrounds with minimal code.
@@ -155,16 +155,20 @@ Each component should have its own story, describing its appearance with various
 
 ```jsx
 // Example: Button.stories.js
-import React from 'react'
-import { Button } from './Button'
+import React from "react";
+import { Button } from "./Button";
 
 export default {
-  title: 'Design system/Button',
+  title: "Design system/Button",
   component: Button,
-}
+};
 
-export const Primary = () => <Button variant="primary" label="Primary Button" />
-export const Secondary = () => <Button variant="secondary" label="Secondary Button" />
+export const Primary = () => (
+  <Button variant="primary" label="Primary Button" />
+);
+export const Secondary = () => (
+  <Button variant="secondary" label="Secondary Button" />
+);
 ```
 
 **Benefits:**
@@ -183,27 +187,31 @@ Design systems must prioritize accessibility to create inclusive applications. F
 
 ```jsx
 // Example: Accessible button with ARIA
-const Button = ({ label, onClick, ariaLabel, variant = 'primary' }) => (
-  <button onClick={onClick} style={{ backgroundColor: tokens.colors[variant] }} aria-label={ariaLabel}>
+const Button = ({ label, onClick, ariaLabel, variant = "primary" }) => (
+  <button
+    onClick={onClick}
+    style={{ backgroundColor: tokens.colors[variant] }}
+    aria-label={ariaLabel}
+  >
     {label}
   </button>
-)
+);
 ```
 
 - **Keyboard navigation**: Ensure that all components can be navigated via keyboard. Focus management is crucial, especially for modal dialogs or dynamic components like carousels.
 
 ```jsx
 // Example: Focus management in a modal
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from "react";
 
 const Modal = ({ isOpen, onClose, children }) => {
-  const closeButtonRef = useRef()
+  const closeButtonRef = useRef();
 
   useEffect(() => {
     if (isOpen) {
-      closeButtonRef.current.focus()
+      closeButtonRef.current.focus();
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   return isOpen ? (
     <div role="dialog" aria-modal="true" tabIndex={-1}>
@@ -212,8 +220,8 @@ const Modal = ({ isOpen, onClose, children }) => {
       </button>
       {children}
     </div>
-  ) : null
-}
+  ) : null;
+};
 ```
 
 Tools:
@@ -230,29 +238,34 @@ To support **themes** (e.g., dark and light modes), use **context providers** to
 1. Create theme context:
 
 ```jsx
-import React, { createContext, useContext, useState } from 'react'
-import tokens from './tokens.json'
+import React, { createContext, useContext, useState } from "react";
+import tokens from "./tokens.json";
 
-const ThemeContext = createContext()
+const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState("light");
 
-  const toggleTheme = () => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
-  const themeStyles = theme === 'light' ? tokens.light : tokens.dark
+  const themeStyles = theme === "light" ? tokens.light : tokens.dark;
 
-  return <ThemeContext.Provider value={{ theme, themeStyles, toggleTheme }}>{children}</ThemeContext.Provider>
-}
+  return (
+    <ThemeContext.Provider value={{ theme, themeStyles, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
 
-export const useTheme = () => useContext(ThemeContext)
+export const useTheme = () => useContext(ThemeContext);
 ```
 
 2. Consume theme context in components:
 
 ```jsx
 const ThemedButton = ({ label }) => {
-  const { themeStyles } = useTheme()
+  const { themeStyles } = useTheme();
   return (
     <button
       style={{
@@ -262,21 +275,21 @@ const ThemedButton = ({ label }) => {
     >
       {label}
     </button>
-  )
-}
+  );
+};
 ```
 
 3. Switch themes in app:
 
 ```jsx
 function App() {
-  const { toggleTheme } = useTheme()
+  const { toggleTheme } = useTheme();
   return (
     <div>
       <ThemedButton label="Click me" />
       <button onClick={toggleTheme}>Toggle Theme</button>
     </div>
-  )
+  );
 }
 ```
 

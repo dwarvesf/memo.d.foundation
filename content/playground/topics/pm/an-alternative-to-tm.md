@@ -1,9 +1,9 @@
 ---
-tags: 
-  - pm
 title: An Alternative To Tm
 date: 2020-05-09
-description: null
+description: Discover why Atomic replaces "time and materials" with "fixed budget, scope-controlled" projects to deliver efficient, well-estimated custom software within set budgets and clear progress updates.
+tags:
+  - pm
 ---
 
 Vendors may use the phrase "time and materials" (T&M) to describe how they engage in projects and invoice their clients.

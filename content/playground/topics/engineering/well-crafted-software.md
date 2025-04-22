@@ -1,10 +1,10 @@
 ---
 title: Well Crafted Software
 date: 2020-01-19
-description: null
+description: Discover how software craftsmanship enhances coding skills, promotes clean design, and drives continuous improvement for developers committed to building well-crafted, maintainable software.
 authors:
   - tieubao
-tags: 
+tags:
   - engineering
 ---
 
@@ -14,7 +14,7 @@ This post ain't gonna be a speech of Uncle Bob's Software Craftsmanship Manifest
 
 Software craftsmanship, by all means, is an approach to software development. It features and highlights the coding skills of the developers themselves.
 
-Craftsmanship plays a vital part in engineering excellence, and it's not a low hanging fruit to grab within a day. It takes time to master, it reveals a lifestyle that developers choose to be responsible for their  career path. It's about improving the crafts and be the best version you can. A craftsman takes pride in his work and strives to turn the best into better.
+Craftsmanship plays a vital part in engineering excellence, and it's not a low hanging fruit to grab within a day. It takes time to master, it reveals a lifestyle that developers choose to be responsible for their career path. It's about improving the crafts and be the best version you can. A craftsman takes pride in his work and strives to turn the best into better.
 
 ![](assets/well-crafted-software_871104804c16cbc9ea337a0b8c851035_md5.webp)
 

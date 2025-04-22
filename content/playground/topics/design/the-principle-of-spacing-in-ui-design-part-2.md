@@ -1,11 +1,12 @@
 ---
-tags: 
-  - design
-  - technique
 title: The Principle Of Spacing In Ui Design Part 2
 date: 2018-11-01
-description: null
+description: Learn the best UI design spacing tips for vertical and horizontal elements, including line-height, paragraph spacing, input fields, and icon alignment to improve readability and user experience.
+tags:
+  - design
+  - technique
 ---
+
 ## Vertical spacing
 
 ### Spacing within each paragraph
@@ -60,8 +61,8 @@ I used 8px for spacing between components with icons. It is a great number that 
 
 ## In conclusion
 
-* You will improve the readability/legibility of the user by respect information hierarchy, allow track and comprehend information more easily.
-* You will have a strong spacing system with limited values and limited application rules
-* Developers will become faster as they know all the rules of your spacing system.
+- You will improve the readability/legibility of the user by respect information hierarchy, allow track and comprehend information more easily.
+- You will have a strong spacing system with limited values and limited application rules
+- Developers will become faster as they know all the rules of your spacing system.
 
 You can follow me on [https://dribbble.com/Anna23593](https://dribbble.com/Anna23593) and thank you for taking the time to read it.

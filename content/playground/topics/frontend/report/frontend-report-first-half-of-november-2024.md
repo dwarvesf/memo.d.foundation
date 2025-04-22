@@ -1,13 +1,13 @@
 ---
+title: Frontend Report First Half of November 2024
+date: 2024-11-15
+description: "A comprehensive update on key advancements in frontend development for the first half of November 2024, highlighting React 19's full-stack capabilities, XState for state management, Shopify's React Native migration, Next.js 15 enhancements, and the impact of container queries on responsive design."
+authors:
+  - hthai2201
+short_title: Nov 2024 (First Half)
 tags:
   - frontend
   - market-report
-title: Frontend Report First Half of November 2024
-short_title: "Nov 2024 (First Half)"
-description: A comprehensive update on key advancements in frontend development for the first half of November 2024, highlighting React 19's full-stack capabilities, XState for state management, Shopify's React Native migration, Next.js 15 enhancements, and the impact of container queries on responsive design.
-date: 2024-11-15
-authors:
-  - hthai2201
 ---
 
 This report provides a detailed look at the significant developments in frontend development during the first half of November 2024. It covers the latest updates, tools, and approaches shaping the frontend scene, including React 19's full-stack features, XState for managing state, Shopify's move to React Native, improvements in Next.js 15, and how container queries impact responsive design.
@@ -35,7 +35,7 @@ Shopify overhauled its decade-old mobile app using React Native, reducing 1.8M l
 
 ### [Exploring Next.js 15: What's new and why it's better than ever](https://aviral-blogs.hashnode.dev/exploring-nextjs-15-whats-new-and-why-its-better-than-ever)
 
-Next.js 15 enhances build speed, improves developer experience, and adds new features like full support for React Server Components and expanded App Router functionality. It also improves image optimization with dynamic resizing and global caching. 
+Next.js 15 enhances build speed, improves developer experience, and adds new features like full support for React Server Components and expanded App Router functionality. It also improves image optimization with dynamic resizing and global caching.
 
 ### [Advanced search param filtering](https://aurorascharff.no/posts/managing-advanced-search-param-filtering-next-app-router/)
 
@@ -62,7 +62,6 @@ Container queries enable responsive design by allowing elements to adjust based 
 - [HTML login form best practices](https://evilmartians.com/chronicles/html-best-practices-for-login-and-signup-forms)
 
 ## Trending
-
 
 ### [TanStack Start: A Full-Stack React framework for modern web apps](https://tanstack.com/start/latest)
 

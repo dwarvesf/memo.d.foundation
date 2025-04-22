@@ -1,14 +1,14 @@
 ---
+title: Validation with Zod
+date: 2023-01-17
+description: Zod is the TypeScript-first schema validation library with static type inference.
+authors:
+  - namtrhg
+github_id: namtrhg
 tags:
   - frontend
   - parsing
   - typescript
-authors:
-  - namtrhg
-github_id: namtrhg
-date: 2023-01-17
-title: Validation with Zod
-description: Zod is the TypeScript-first schema validation library with static type inference.
 ---
 
 **Zod** is the TypeScript-first schema validation library with static type inference. It's functional approach to data validation is [parse-dont-validate-in-typescript]() which parses the data in order to validate and catch errors.
@@ -27,25 +27,25 @@ description: Zod is the TypeScript-first schema validation library with static t
 ### Example using validate method
 
 ```ts
-const z = require('zod')
+const z = require("zod");
 
 // Define a schema for the input data
 const schema = z.object({
   name: z.string(),
   phone_number: z.number().min(0).max(12),
   email: z.string().email(),
-})
+});
 
 // Input data to be validated and coerced
 const input = {
-  name: 'Dwarves Foundation',
+  name: "Dwarves Foundation",
   phone_number: 123456,
-  email: 'team@dwarves.foundation',
-}
+  email: "team@dwarves.foundation",
+};
 
 // Validate and coerce the input data
-const data = schema.validate(input)
-console.log(data)
+const data = schema.validate(input);
+console.log(data);
 /*
 {
   name: 'Dwarves Foundation',

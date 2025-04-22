@@ -1,10 +1,10 @@
 ---
-tags: 
-  - design
-  - technique
 title: Card Sorting And A Glimpse At Experimental Sorting Session
 date: 2018-08-26
-description: null
+description: Learn how card sorting improves information architecture and user experience by organizing content based on real user feedback for clearer navigation in websites and digital products.
+tags:
+  - design
+  - technique
 ---
 
 > As part of our team’s weekly activities is a knowledge sharing session. So, in this article I’d like to share a UX technique we practiced recently — Card Sorting.
@@ -23,9 +23,9 @@ As [Nielsen Norman Group](https://www.nngroup.com/articles/ia-vs-navigation/) de
 
 Curate more refined product for users by understanding more into their mental model by
 
-* Real feedback on how users understand the information we present
-* Find out the most likely right keywords when they search for something
-* Discover the shortest path to browse among the content, an essential part in crafting a frictionless user flow
+- Real feedback on how users understand the information we present
+- Find out the most likely right keywords when they search for something
+- Discover the shortest path to browse among the content, an essential part in crafting a frictionless user flow
 
 Cheap and not time-consuming (simple tools: paper, boards and around one hour/session)
 
@@ -84,8 +84,8 @@ The necessary information hotel employees needs for their everyday work.
 
 ### Who’s involved in this workshop?
 
-* 6 designers of our team in three groups
-* 1 moderator to clarify the goal and help keeping the workshop on track
+- 6 designers of our team in three groups
+- 1 moderator to clarify the goal and help keeping the workshop on track
 
 ### Types and platform used
 
@@ -99,12 +99,12 @@ Our facilitator shared some brief description about the project (which role the 
 
 **🗒️ Lessons #1**
 
-* Each idea is on one card (we missed that requirement and ended up with varied format of content on each card)
-* Consider explaining the whole process of card sorting to participants to help them keep track with the workshop easier
-* Make sure the user know
-* What role they are playing
-* The tasks they could perform on the platform
-* Start by explaining, remind constantly while the workshop is running
+- Each idea is on one card (we missed that requirement and ended up with varied format of content on each card)
+- Consider explaining the whole process of card sorting to participants to help them keep track with the workshop easier
+- Make sure the user know
+- What role they are playing
+- The tasks they could perform on the platform
+- Start by explaining, remind constantly while the workshop is running
 
 ### 2. Generating ideas
 
@@ -112,8 +112,8 @@ Each group had 15 minutes to brainstorm and write down all the info based on the
 
 **🗒️ Lessons #2**
 
-* Each idea is on one card
-* Take notice of the time, since people usually are concentrate for around 15 minutes at most (set the time-out based on this or a break is preferred if the content is too large / there are too many categories)
+- Each idea is on one card
+- Take notice of the time, since people usually are concentrate for around 15 minutes at most (set the time-out based on this or a break is preferred if the content is too large / there are too many categories)
 
 ### 3. Grouping
 
@@ -130,30 +130,30 @@ In this case, recalling our users were the hotel’s staff, the room status was 
 
 **🗒️ Lessons #3**
 
-* No idea is wrong. Propose first, verify later.
-* Give more details to the cards: stay away from confusing wording, make short explanation to the labels. This would help shorten the time for the explanation.
-* Learned how a card sorting is operated
-* Discovered some new wordings for categories
-* Made a better preparation for the real workshop
+- No idea is wrong. Propose first, verify later.
+- Give more details to the cards: stay away from confusing wording, make short explanation to the labels. This would help shorten the time for the explanation.
+- Learned how a card sorting is operated
+- Discovered some new wordings for categories
+- Made a better preparation for the real workshop
 
 ## Beyond this session
 
 1. Document the findings into digital version for optimal results overview (diagrams for more holistic view)
 2. Test the result with simple interactive prototype
 
-*If you’d like to get deeper into this method, here are some sources that may help*
+_If you’d like to get deeper into this method, here are some sources that may help_
 
 ### 🗞️ Articles
 
-* Sam Yuan (2019) [8 things I wish I’d known about open card sorting — Shopify UX](https://ux.shopify.com/8-things-i-wish-id-known-about-open-card-sorting-bdcd976a72c2)
-* [Usability.gov](http://usability.gov/) [Card Sorting](https://www.usability.gov/how-to-and-tools/methods/card-sorting.html)
-* Donna Spencer (2007) [Eurostar Card Sorting Case Study — Rosenfeld Media](https://rosenfeldmedia.com/card-sorting/eurostar-card-sorting-case-stu/)
-* Pierre Croft (2014) [https://www.smashingmagazine.com/2014/10/improving-information-architecture-card-sorting-beginners-guide/](https://www.smashingmagazine.com/2014/10/improving-information-architecture-card-sorting-beginners-guide/)
-* [Advices to running Card Sorting from Optimal workshop](https://support.optimalworkshop.com/en/collections/1524584-optimalsort#advice-for-running-effective-card-sorts-using-optimalsort)
+- Sam Yuan (2019) [8 things I wish I’d known about open card sorting — Shopify UX](https://ux.shopify.com/8-things-i-wish-id-known-about-open-card-sorting-bdcd976a72c2)
+- [Usability.gov](http://usability.gov/) [Card Sorting](https://www.usability.gov/how-to-and-tools/methods/card-sorting.html)
+- Donna Spencer (2007) [Eurostar Card Sorting Case Study — Rosenfeld Media](https://rosenfeldmedia.com/card-sorting/eurostar-card-sorting-case-stu/)
+- Pierre Croft (2014) [https://www.smashingmagazine.com/2014/10/improving-information-architecture-card-sorting-beginners-guide/](https://www.smashingmagazine.com/2014/10/improving-information-architecture-card-sorting-beginners-guide/)
+- [Advices to running Card Sorting from Optimal workshop](https://support.optimalworkshop.com/en/collections/1524584-optimalsort#advice-for-running-effective-card-sorts-using-optimalsort)
 
 ### 📚 Book
 
-* [Card Sorting: Designing Usable Categories](https://rosenfeldmedia.com/books/card-sorting/) by Donna Spencer — published by Rosenfeld
+- [Card Sorting: Designing Usable Categories](https://rosenfeldmedia.com/books/card-sorting/) by Donna Spencer — published by Rosenfeld
 
 Hope you get something useful with this.
 Till the next time, guys.

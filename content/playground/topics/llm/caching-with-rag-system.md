@@ -1,14 +1,14 @@
 ---
-tags:
-  - llm
-  - rag
-  - caching
-title: 'Evaluating caching in RAG systems'
+title: Evaluating caching in RAG systems
 date: 2024-08-09
 description: "Caching is a vital technique that boosts performance by storing frequently accessed information. Let's see how it works with RAG. In this article, we will know how cache could be implement in RAG system."
 authors:
   - taynguyen
 sync: llm
+tags:
+  - llm
+  - rag
+  - caching
 ---
 
 ## Introduction
@@ -74,30 +74,30 @@ Example of transforming the user query into embeddings using openai api:
 
 ```typescript
 type EmbeddingData = {
-  object: string
-  index: number
-  embedding: number[]
-}
-let data: EmbeddingData[] = []
+  object: string;
+  index: number;
+  embedding: number[];
+};
+let data: EmbeddingData[] = [];
 
-const response = await fetch('https://api.openai.com/v1/embeddings', {
-  method: 'POST',
+const response = await fetch("https://api.openai.com/v1/embeddings", {
+  method: "POST",
   body: JSON.stringify({
     input: contents,
-    model: 'text-embedding-3-small',
+    model: "text-embedding-3-small",
     dimensions: 1024,
   }),
   headers: {
-    'Content-type': 'application/json',
-    Authorization: 'Bearer ' + openAICred,
+    "Content-type": "application/json",
+    Authorization: "Bearer " + openAICred,
   },
-})
+});
 
 type JSONResponse = {
-  data?: EmbeddingData[]
-}
-const resBody = (await response.json()) as JSONResponse
-const data = resBody?.data ?? []
+  data?: EmbeddingData[];
+};
+const resBody = (await response.json()) as JSONResponse;
+const data = resBody?.data ?? [];
 ```
 
 After that we stored the embeddings in the vector database. This is example code using drizzle-orm with postgresql (with pgvector extension):
@@ -105,15 +105,15 @@ After that we stored the embeddings in the vector database. This is example code
 ```typescript
 // Schema definition in schema.ts
 const semanticCache = createTable(
-  'semantic_cache',
+  "semantic_cache",
   {
-    id: uuid('id').notNull().primaryKey(),
-    typeId: integer('type_id'),
-    key: text('key').notNull(),
-    value: jsonb('value'),
-    vector: vector('vector', { dimensions: 1024 }),
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    expiredAt: timestamp('expired_at'),
+    id: uuid("id").notNull().primaryKey(),
+    typeId: integer("type_id"),
+    key: text("key").notNull(),
+    value: jsonb("value"),
+    vector: vector("vector", { dimensions: 1024 }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    expiredAt: timestamp("expired_at"),
   },
   (self) => ({
     vectorHnswIndex: sql`CREATE INDEX kv_cache_vector_hnsw_idx ON kv_cache USING hnsw (vector vector_cosine_ops) WITH (m = 16, ef_construction = 64)`,
@@ -126,9 +126,9 @@ const semanticCache = createTable(
     key: input.key,
     value: JSON.stringify(input.value),
     vector: rs?.embeddings,
-    expiredAt: dayjs().add(input.durationSecs, 'seconds').toDate(),
+    expiredAt: dayjs().add(input.durationSecs, "seconds").toDate(),
   }),
-)
+);
 ```
 
 How we search for the similar embeddings in the vector database:
@@ -137,10 +137,16 @@ How we search for the similar embeddings in the vector database:
 const rows = await db
   .select({
     contexts: schema.semanticCache.value,
-    similarity: sql<number>`1 - (${schema.semanticCache.vector} <=> ${sql.raw(`'[${msgEmbeddings.join(',')}]'::vector`)})`,
+    similarity: sql<number>`1 - (${schema.semanticCache.vector} <=> ${sql.raw(`'[${msgEmbeddings.join(",")}]'::vector`)})`,
   })
   .from(schema.semanticCache)
-  .where(and(eq(schema.semanticCache.typeId, CacheTypeEnum.UserQueryEmbedding), gt(schema.semanticCache.expiredAt, new Date()), sql<boolean>`(1 - (${schema.semanticCache.vector} <=> ${sql.raw(`'[${msgEmbeddings.join(',')}]'::vector`)})) > ${CACHE_EMBEDDING_SIMILARITY_THRESHOLD}`))
+  .where(
+    and(
+      eq(schema.semanticCache.typeId, CacheTypeEnum.UserQueryEmbedding),
+      gt(schema.semanticCache.expiredAt, new Date()),
+      sql<boolean>`(1 - (${schema.semanticCache.vector} <=> ${sql.raw(`'[${msgEmbeddings.join(",")}]'::vector`)})) > ${CACHE_EMBEDDING_SIMILARITY_THRESHOLD}`,
+    ),
+  );
 ```
 
 After that, we could return the cached response if the similarity score is above a certain threshold.

@@ -1,14 +1,14 @@
 ---
-tags: 
-- ai
-- llm
-- prompt-engineering
-authors: 
-- monotykamary
-title: 'Story map for LLMs'
-github_id: monotykamary
+title: Story map for LLMs
 date: 2023-08-09
-description: 'A comprehensive guide outlining the journey for engineers developing applications on top of Large Language Models (LLMs), covering key stages from understanding AI basics to fine-tuning models.'
+description: A comprehensive guide outlining the journey for engineers developing applications on top of Large Language Models (LLMs), covering key stages from understanding AI basics to fine-tuning models.
+authors:
+  - monotykamary
+github_id: monotykamary
+tags:
+  - ai
+  - llm
+  - prompt-engineering
 ---
 
 ## Story Map: Journey for Engineers Developing Applications on top of Large Language Models (LLMs)

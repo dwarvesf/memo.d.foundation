@@ -1,7 +1,7 @@
 ---
-title: "Error handling patterns"
-description: "Quick note on error handling patterns in programming languages"
+title: Error handling patterns
 date: 2024-10-14
+description: Quick note on error handling patterns in programming languages
 authors:
   - tieubao
 tags:
@@ -141,18 +141,18 @@ When using callbacks, **always check the error argument** first. Don’t forge
 
 ```javascript
 function divide(a, b, callback) {
-    if (b === 0) {
-        return callback(new Error("Division by zero"), null);
-    }
-    callback(null, a / b);
+  if (b === 0) {
+    return callback(new Error("Division by zero"), null);
+  }
+  callback(null, a / b);
 }
 
 divide(10, 0, (err, result) => {
-    if (err) {
-        console.error(err.message);
-    } else {
-        console.log(result);
-    }
+  if (err) {
+    console.error(err.message);
+  } else {
+    console.log(result);
+  }
 });
 ```
 
@@ -175,15 +175,15 @@ Use Promises to make your asynchronous code more readable. Pay attention to the�
 
 ```javascript
 function divide(a, b) {
-    return new Promise((resolve, reject) => {
-        if (b === 0) reject(new Error("Division by zero"));
-        else resolve(a / b);
-    });
+  return new Promise((resolve, reject) => {
+    if (b === 0) reject(new Error("Division by zero"));
+    else resolve(a / b);
+  });
 }
 
 divide(10, 0)
-    .then(result => console.log(result))
-    .catch(error => console.error(error.message));
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error.message));
 ```
 
 **Pros**:

@@ -1,12 +1,12 @@
 ---
-tags: 
+title: From Multi Repo To Monorepo A Case Study With Nghenhan Turbo Monorepo
+date: 2023-03-20
+description: Learn how migrating to a Turbo-powered monorepo cut build times by 60%, boosted developer productivity by 40%, and simplified dependency management in a real trading platform case study.
+tags:
   - engineering
   - technique
   - framework
   - web
-title: From Multi Repo To Monorepo A Case Study With Nghenhan Turbo Monorepo
-date: 2023-03-20
-description: null
 ---
 
 In this case study, we share our experience of transitioning from multi-repository structure to a monorepo using [Turbo](https://radar.d.foundation/Turborepo-0dd18b38468c4859a8beaae7bf6c511c) in our project. This migration led to numerous benefits, including a 60% reduction in build times, a 40% increase in developer productivity, and simplified dependency management. Our goal is to offer valuable insights and lessons learned throughout our journey to help others considering a similar transition.
@@ -29,11 +29,11 @@ As we move forward, we may face challenges related to scalability and flexibilit
 
 Turbo, a purpose-built tool for managing monorepos, offers numerous benefits that streamline the development process. Some of these advantages include:
 
-* **Simplified dependency management:** Managing dependencies is much easier with Turbo's automatic dependency management features, ensuring that all components use the correct versions of shared libraries and frameworks.
-* **Enhanced collaboration:** Turbo's unified codebase enables developers to collaborate and share code more efficiently, resulting in faster development cycles and overall improved productivity.
-* **Faster builds and testing:** With Turbo's parallel and incremental build capabilities, build times are significantly reduced. Remote caching further accelerates builds by reusing previously built files, ultimately leading to faster development cycles and increased reliability.
-* **Improved code reuse:** Consolidating all code into a single repository allows for better code reuse across different projects, reducing duplication and elevating code quality.
-* **Reduced complexity:** The monorepo structure simplifies the development process, making it easier for team members to navigate and comprehend the codebase.
+- **Simplified dependency management:** Managing dependencies is much easier with Turbo's automatic dependency management features, ensuring that all components use the correct versions of shared libraries and frameworks.
+- **Enhanced collaboration:** Turbo's unified codebase enables developers to collaborate and share code more efficiently, resulting in faster development cycles and overall improved productivity.
+- **Faster builds and testing:** With Turbo's parallel and incremental build capabilities, build times are significantly reduced. Remote caching further accelerates builds by reusing previously built files, ultimately leading to faster development cycles and increased reliability.
+- **Improved code reuse:** Consolidating all code into a single repository allows for better code reuse across different projects, reducing duplication and elevating code quality.
+- **Reduced complexity:** The monorepo structure simplifies the development process, making it easier for team members to navigate and comprehend the codebase.
 
 ## Migration Process
 
@@ -53,11 +53,11 @@ Our migration process entailed several well-planned steps to ensure a seamless t
 
 The migration to a monorepo with Turbo was a success, with several noteworthy benefits:
 
-* **Improved collaboration**: Our developers experienced a 40% increase in productivity due to better code sharing and a unified codebase.
-* **Faster builds**: Build times were reduced by 60% with Turbo's parallel and incremental build capabilities.
-* **Simplified dependency management**: Turbo's automatic dependency management features made managing dependencies across our codebase much easier.
-* **Improved code reuse**: Consolidating all code into one repository facilitated code reuse across projects, reducing duplication and improving code quality.
-* **Reduced complexity**: The monorepo structure simplified our development process, making it easier for team members to navigate and understand the codebase.
+- **Improved collaboration**: Our developers experienced a 40% increase in productivity due to better code sharing and a unified codebase.
+- **Faster builds**: Build times were reduced by 60% with Turbo's parallel and incremental build capabilities.
+- **Simplified dependency management**: Turbo's automatic dependency management features made managing dependencies across our codebase much easier.
+- **Improved code reuse**: Consolidating all code into one repository facilitated code reuse across projects, reducing duplication and improving code quality.
+- **Reduced complexity**: The monorepo structure simplified our development process, making it easier for team members to navigate and understand the codebase.
 
 Throughout the migration process, we learned several valuable lessons:
 
@@ -65,7 +65,7 @@ Throughout the migration process, we learned several valuable lessons:
 2. Clear communication and collaboration among team members ensure a smoother transition.
 3. Monitoring and addressing potential scalability and maintainability issues are essential for long-term success.
 
-> The transition to a monorepo with Turbo has been a game-changer for our team. We can now collaborate more effectively, build faster, and manage dependencies with ease, enabling us to focus on delivering high-quality software. — *An Tran, Lead Developer at NgheNhan*
+> The transition to a monorepo with Turbo has been a game-changer for our team. We can now collaborate more effectively, build faster, and manage dependencies with ease, enabling us to focus on delivering high-quality software. — _An Tran, Lead Developer at NgheNhan_
 
 ## Conclusion
 
@@ -73,8 +73,8 @@ The migration to a monorepo using Turbo required significant effort, but the res
 
 **Follow us on**
 
-* Website: [https://dwarves.foundation](https://dwarves.foundation/)
-* Discord: [https://discord.gg/dfoundation](https://discord.gg/dfoundation)
-* Fanpage: [https://www.facebook.com/dwarvesf](https://www.facebook.com/dwarvesf)
-* LinkedIn: [https://www.linkedin.com/company/dwarvesf](https://www.linkedin.com/company/dwarvesf/)
-* Substack: [https://memo.d.foundation/](https://memo.d.foundation/)
+- Website: [https://dwarves.foundation](https://dwarves.foundation/)
+- Discord: [https://discord.gg/dfoundation](https://discord.gg/dfoundation)
+- Fanpage: [https://www.facebook.com/dwarvesf](https://www.facebook.com/dwarvesf)
+- LinkedIn: [https://www.linkedin.com/company/dwarvesf](https://www.linkedin.com/company/dwarvesf/)
+- Substack: [https://memo.d.foundation/](https://memo.d.foundation/)

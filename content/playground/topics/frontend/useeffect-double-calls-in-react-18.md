@@ -1,13 +1,13 @@
 ---
+title: useEffect double calls in React 18
+date: 2022-06-11
+description: "In the React 18 version, the `useEffect` hook has been updated to called twice compare to only one in the older version in StrictMode."
+authors:
+  - namtrhg
 tags:
   - frontend
   - react
-  - useEffect
-authors:
-  - namtrhg
-description: In the React 18 version, the `useEffect` hook has been updated to called twice compare to only one in the older version in StrictMode.
-title: useEffect double calls in React 18
-date: 2022-06-11
+  - use-effect
 ---
 
 In the React 18 version, the `useEffect` hook has been updated to called twice compare to only one in the older version in StrictMode.
@@ -30,9 +30,9 @@ We can confirm the behavior by using the cleanup function of the useEffect hook.
 
 ```js
 useEffect(() => {
-  console.log('Hello Dwarves!')
-  return () => console.log('Cleanup..')
-}, [])
+  console.log("Hello Dwarves!");
+  return () => console.log("Cleanup..");
+}, []);
 ```
 
 The output to the console should look like this:
@@ -53,37 +53,37 @@ You can create a custom hook so that the useEffect get called only once, althoug
 
 ```ts
 export const useEffectOnce = (effect: () => void | (() => void)) => {
-  const destroyFunc = useRef<void | (() => void)>()
-  const effectCalled = useRef(false)
-  const renderAfterCalled = useRef(false)
-  const [val, setVal] = useState<number>(0)
+  const destroyFunc = useRef<void | (() => void)>();
+  const effectCalled = useRef(false);
+  const renderAfterCalled = useRef(false);
+  const [val, setVal] = useState<number>(0);
 
   if (effectCalled.current) {
-    renderAfterCalled.current = true
+    renderAfterCalled.current = true;
   }
 
   useEffect(() => {
     // only execute the effect first time around
     if (!effectCalled.current) {
-      destroyFunc.current = effect()
-      effectCalled.current = true
+      destroyFunc.current = effect();
+      effectCalled.current = true;
     }
 
     // this forces one render after the effect is run
-    setVal((val) => val + 1)
+    setVal((val) => val + 1);
 
     return () => {
       // if the comp didn't render since the useEffect was called,
       // we know it's the dummy React cycle
       if (!renderAfterCalled.current) {
-        return
+        return;
       }
       if (destroyFunc.current) {
-        destroyFunc.current()
+        destroyFunc.current();
       }
-    }
-  }, [])
-}
+    };
+  }, []);
+};
 ```
 
 #### Reference

@@ -1,14 +1,15 @@
 ---
-tags: 
-  - nix
-  - docker
-  - devbox
-title: "Nix is Faster Than Docker Build"
+title: Nix is Faster Than Docker Build
 date: 2024-08-01
 description: An exploration of how Nix outperforms Docker in building images, leveraging its deep understanding of package dependencies and content-addressable storage
 authors:
   - bievh
+tags:
+  - nix
+  - docker
+  - devbox
 ---
+
 As I mentioned in the [Build the same thing at any time](./nix-build-the-same-thing-at-any-time.md), Nix knows the exact content of packages and dependencies before builds. So it can take advantage of this characteristic to avoid duplicated building different layers with the same content but different instructions.
 
 It is even too great to take advantage of content-addressable storage. Nix can do more than that.
@@ -26,13 +27,15 @@ Finally, creating a Docker image in Nix is just building the program into a pack
 After all the above things, we have a Nix with the ability to build Docker image more efficiently, faster, and cheaper.
 
 ---
+
 #### References
-*Using the build cache.* (n.d.). Docker Docs. Retrieved August 2, 2024, from https://docs.docker.com/guides/docker-concepts/building-images/using-the-build-cache/
 
-Wang, E. (2022, September 13). *Construction and analysis of the build and runtime dependency graph of nixpkgs*. Tweag. Retrieved August 2, 2024, from https://www.tweag.io/blog/2022-09-13-nixpkgs-graph/
+_Using the build cache._ (n.d.). Docker Docs. Retrieved August 2, 2024, from https://docs.docker.com/guides/docker-concepts/building-images/using-the-build-cache/
 
-*Understanding the image layers*. (n.d.). Docker Docs. Retrieved August 2, 2024, from https://docs.docker.com/guides/docker-concepts/building-images/understanding-image-layers/
+Wang, E. (2022, September 13). _Construction and analysis of the build and runtime dependency graph of nixpkgs_. Tweag. Retrieved August 2, 2024, from https://www.tweag.io/blog/2022-09-13-nixpkgs-graph/
 
-*What is the difference between a symbolic link and a hard link?* (2008, October 9). Stack Overflow. Retrieved August 2, 2024, from https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link
+_Understanding the image layers_. (n.d.). Docker Docs. Retrieved August 2, 2024, from https://docs.docker.com/guides/docker-concepts/building-images/understanding-image-layers/
 
-Rugyt, A. (2024, March 15). *Nix is a better Docker image builder than Docker's image builder*. Xe Iaso. Retrieved August 2, 2024, from https://xeiaso.net/talks/2024/nix-docker-build/
+_What is the difference between a symbolic link and a hard link?_ (2008, October 9). Stack Overflow. Retrieved August 2, 2024, from https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link
+
+Rugyt, A. (2024, March 15). _Nix is a better Docker image builder than Docker's image builder_. Xe Iaso. Retrieved August 2, 2024, from https://xeiaso.net/talks/2024/nix-docker-build/

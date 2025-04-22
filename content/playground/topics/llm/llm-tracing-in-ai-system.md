@@ -1,20 +1,25 @@
 ---
+title: LLM tracing in AI system
+date: 2024-09-11
+description: Understanding LLM Tracing - Principles, Techniques, and Applications in building LLM-powered AI systems.
 authors:
-- "antran"
-date: "2024-09-11"
-description: "Understanding LLM Tracing - Principles, Techniques, and Applications in building LLM-powered AI systems."
+  - antran
 hashnode_meta:
-  coverImageOptions:
-    coverImageURL: "https://memo.d.foundation/playground/ai/assets/llm-tracing-build-steps.webp"
-  id: "670f4d51d5896edcae3c1258"
-  slug: "llm-tracing-in-ai-system"
-sync: "hashnode"
+  {
+    "coverImageOptions":
+      {
+        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/llm-tracing-build-steps.webp",
+      },
+    "id": "670f4d51d5896edcae3c1258",
+    "slug": "llm-tracing-in-ai-system",
+  }
+sync: hashnode
 tags:
-- "llm"
-- "ai"
-- "tooling"
-title: "LLM tracing in AI system"
+  - llm
+  - ai
+  - tooling
 ---
+
 ## When
 
 Building software with Large Language Models (LLMs) involves several steps, from planning to deployment. LLM tracing emerges as a final step in this process, providing ongoing insights and enabling continuous improvement of LLM-powered applications.

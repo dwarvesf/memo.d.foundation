@@ -1,14 +1,15 @@
 ---
+title: How I came up with our Security Standard
+date: 2024-04-19
+description: In this memo, I want to share with you my thought process behind our security guideline for Dwarves. This is a critical aspect for a software company that aims to establish trusted partnerships with clients. They rely on us because we take the security of their ideas and data seriously.
+authors:
+  - thanh
 tags:
   - security
   - standardization
   - work-adoption
-title: How I came up with our Security Standard
-date: 2024-04-19
-description: "In this memo, I want to share with you my thought process behind our security guideline for Dwarves. This is a critical aspect for a software company that aims to establish trusted partnerships with clients. They rely on us because we take the security of their ideas and data seriously."
-authors:
-  - thanh
 ---
+
 In this memo, I want to share with you my thought process behind our security guideline for Dwarves. This is a critical aspect for a software company that aims to establish trusted partnerships with clients. They rely on us because we take the security of their ideas and data seriously.
 
 ## Background

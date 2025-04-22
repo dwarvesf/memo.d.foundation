@@ -21,14 +21,17 @@ tags:
 ![](assets/blue-green-deployment-model.gif)
 
 ## How does blue-green deployment work?
+
 **Blue-green** deployment is a deployment strategy for software applications that involves maintaining two identical environments: one currently serving production traffic (the **blue** environment), and one that is newly deployed (the **green** environment"). The new version of the application is deployed to the **green** environment, which is tested and monitored. Once it is determined that the **green** environment is working correctly, traffic is routed to it and the **blue** environment is retired. This strategy allows for quick and easy switching between environments, minimizing downtime and reducing the risk of errors or bugs.
 
 ## Characteristic
+
 The following table summarizes the salient features of the **blue-green** strategy compared to other strategies:
 
 ![](assets/blue-green-deployment_bluegreen-compare.webp)
 
 ## Implementing blue-green deployment strategy in Kubernetes
+
 1. Preparing
 
 Before implementing blue-green deployment in Kubernetes, there are a few things you should do to prepare:
@@ -36,13 +39,13 @@ Before implementing blue-green deployment in Kubernetes, there are a few things 
 - Set up a Kubernetes cluster with nginx-ingress controller, cert-manager, argo-rollouts
 - Domain for active application and preview application
 - Define application resources:
-    ```
-    .
-    └── app/
-        ├── bluegreen-rollout.yaml
-        ├── ingress.yaml
-        └── service.yaml
-    ```
+  ```
+  .
+  └── app/
+      ├── bluegreen-rollout.yaml
+      ├── ingress.yaml
+      └── service.yaml
+  ```
 
 2. Implementation
 
@@ -79,15 +82,15 @@ spec:
       autoPromotionEnabled: false
       activeService: myapp
       previewService: myapp-preview
-
 ```
 
 `bluegreen-rollout.yaml` defined like a normal deployment file. The only difference is the `strategy` section:
+
 - `autoPromotionEnabled`: will make the rollout automatically promote the new ReplicaSet to the active service once the new ReplicaSet is healthy. This field is defaulted to true if it is not specified (default: `true`).
 - `activeService`: specifies the service to update with the new template hash at time of promotion. This field is required.
 - `previewService`: specifies the service to update with the new template hash before promotion. This field is optional.
 
-Next, you need to create `ingress.yaml` file and  `service.yaml` file to define the ingress and service resources for the application:
+Next, you need to create `ingress.yaml` file and `service.yaml` file to define the ingress and service resources for the application:
 
 ```yaml
 # ingress.yaml
@@ -191,12 +194,12 @@ We change the image of the application to `argoproj/rollouts-demo:blue` and appl
 
 ```yaml
 # bluegreen-rollout.yaml
-...
-      containers:
-        - name: myapp
-          image: argoproj/rollouts-demo:blue
-...
+---
+containers:
+  - name: myapp
+    image: argoproj/rollouts-demo:blue
 ```
+
 ```bash
 kubectl apply -f app/bluegreen-rollout.yaml
 ```
@@ -214,11 +217,12 @@ kubectl argo rollouts promote myapp
 Now, the application is deployed on active environment and you can view it on `myapp.bluegreen.xyz` domain.
 
 ## Conclusion
+
 Implementing blue-green deployment in Kubernetes requires preparation, including setting up a Kubernetes cluster, containerizing the application, defining application resources in manifests, setting up a CI/CD pipeline, and implementing monitoring and logging. However, once set up, blue-green deployment can help increase the reliability, availability, and quality of the deployed application. By minimizing downtime, reducing risks, and ensuring the smooth transition to new versions of the application, blue-green deployment can ultimately help organizations deliver more value to their customers.
 
 ## References
+
 - https://www.redhat.com/en/topics/devops/what-is-blue-green-deployment
 - https://cloud.google.com/architecture/application-deployment-and-testing-strategies
 - https://argoproj.github.io/argo-rollouts/
 - https://viblo.asia/p/kubernetes-practice-english-automating-bluegreen-deployment-with-argo-rollouts-GAWVpoGaL05
-

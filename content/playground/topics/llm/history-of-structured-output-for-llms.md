@@ -1,17 +1,17 @@
 ---
+title: History of Structured Outputs for LLMs
+date: 2024-06-11
+description: When Large Language Models (LLMs) becomes popular and an essential tool for growing businesses, it signals a transition toward more complex and efficient data processing. Instead of outputting raw text, the models may now generate structured data in formats such as JSON or XML. This allowed the information to be directly integrated into company databases, removing the need for human processing. Businesses can use structured outputs to streamline their data workflows, decrease processing time, and improve the accuracy and reliability of their analytics.
+authors:
+  - datnguyennnx
 tags:
   - llm
   - history
-title: "History of Structured Outputs for LLMs"
-date: 2024-06-11
-description: "When Large Language Models (LLMs) becomes popular and an essential tool for growing businesses, it signals a transition toward more complex and efficient data processing. Instead of outputting raw text, the models may now generate structured data in formats such as JSON or XML. This allowed the information to be directly integrated into company databases, removing the need for human processing. Businesses can use structured outputs to streamline their data workflows, decrease processing time, and improve the accuracy and reliability of their analytics."
-authors:
-  - datnguyennnx
 ---
 
 ## Overview
 
-When Large Language Models (LLMs) becomes popular and an essential tool for growing businesses, it signals a transition toward more complex and efficient data processing. Instead of outputting raw text, the models may now generate structured data in formats such as JSON or XML. This allowed the information to be directly integrated into company databases, removing the need for human processing. Businesses can use structured outputs to streamline their data workflows, decrease processing time, and improve the accuracy and reliability of their analytics. 
+When Large Language Models (LLMs) becomes popular and an essential tool for growing businesses, it signals a transition toward more complex and efficient data processing. Instead of outputting raw text, the models may now generate structured data in formats such as JSON or XML. This allowed the information to be directly integrated into company databases, removing the need for human processing. Businesses can use structured outputs to streamline their data workflows, decrease processing time, and improve the accuracy and reliability of their analytics.
 
 ## Why Structured Output is Needed
 
@@ -35,8 +35,8 @@ When Large Language Models (LLMs) becomes popular and an essential tool for grow
 **Late 2022/Early 2023:**
 
 - **LangChain:** emerged as a Python library specifically designed to streamline information extraction from various sources, including LLM outputs. It provided key functionalities that laid the groundwork for structured output:
-    - **Document Loaders:** These loaders allowed LangChain to handle data from different sources, including LLM outputs. This was crucial for treating LLM text as a data source for structured information extraction.
-    - **Parsers:** Parsers within LangChain enabled users to define how to extract the desired structured information from the unstructured LLM text. This offered a more systematic approach compared to manual parsing techniques prevalent before LangChain.
+  - **Document Loaders:** These loaders allowed LangChain to handle data from different sources, including LLM outputs. This was crucial for treating LLM text as a data source for structured information extraction.
+  - **Parsers:** Parsers within LangChain enabled users to define how to extract the desired structured information from the unstructured LLM text. This offered a more systematic approach compared to manual parsing techniques prevalent before LangChain.
 
 **During 2023:**
 
@@ -44,14 +44,14 @@ When Large Language Models (LLMs) becomes popular and an essential tool for grow
 - **OpenAI's JSON Mode:** This feature allowed users to provide a JSON schema within the prompt, essentially creating a template for LLM generation, leading to increased accuracy and consistency.
 - **Kor:** This library streamlined structured output extraction by allowing users to provide both a schema and example data for the LLM. This improved the understanding of desired format and content for better-structured outputs.
 
-**During 2024:** 
+**During 2024:**
 
 - **LlamaIndex**: introduced core "structured output" features. This signified a move towards integrating structured output capabilities directly within LLMs:
-    - **Function Calling APIs:** Users could specify desired output formats (e.g., JSON) directly within the LLM prompt, making guidance more intuitive.
-    - **Output Parsers:** Parsers could be used before and after LLM calls to ensure the output adhered to the specified structure, adding control.
+  - **Function Calling APIs:** Users could specify desired output formats (e.g., JSON) directly within the LLM prompt, making guidance more intuitive.
+  - **Output Parsers:** Parsers could be used before and after LLM calls to ensure the output adhered to the specified structure, adding control.
 - **LLM-structured-output:**
-    - Ensuring structured outputs adhere to specific formats. This repository provides tools and examples specifically focused on JSON schema validation.
-    - By implementing an "acceptor" system, the repository verifies if the LLM's generated text conforms to a predefined JSON schema. This functionality promotes data accuracy and reliability in structured output generation, a key aspect for integrating LLMs into various applications
+  - Ensuring structured outputs adhere to specific formats. This repository provides tools and examples specifically focused on JSON schema validation.
+  - By implementing an "acceptor" system, the repository verifies if the LLM's generated text conforms to a predefined JSON schema. This functionality promotes data accuracy and reliability in structured output generation, a key aspect for integrating LLMs into various applications
 
 ![Timeline of structured output library](assets/history-of-structured-output-for-llms_timelinecycle.webp)
 
@@ -66,7 +66,7 @@ Structured output strives for a balance between two seemingly opposed forces:
 
 **Challenges to Overcome**
 
-- **Accuracy:**  One of the main challenges facing LLMs is ensuring consistency and without errors creation inside complex formats. These models may exhibit difficulties when dealing with complex structures or subtle data, which could result in incorrect output. For instance, early structured outputs might have produced financial reports with factual errors due to the LLM's difficulty handling specific formats.
+- **Accuracy:** One of the main challenges facing LLMs is ensuring consistency and without errors creation inside complex formats. These models may exhibit difficulties when dealing with complex structures or subtle data, which could result in incorrect output. For instance, early structured outputs might have produced financial reports with factual errors due to the LLM's difficulty handling specific formats.
 - **Flexibility:** Balancing structure and creativity in LLM outputs is crucial. While structured data is necessary, it’s important that LLMs also creatively express information within a specified framework. Otherwise, they risk becoming rigid and robotic in their responses.
 - **Integration:** Structured output functionalities currently may require external libraries or custom coding, depending on the LLM platform. Seamless integration into various platforms and applications is essential for wider adoption. Historically, structured outputs were often limited to specific LLM platforms, necessitating additional coding for use in other environments.
 

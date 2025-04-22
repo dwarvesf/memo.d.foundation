@@ -1,14 +1,14 @@
 ---
+title: "Go Commentary #7: Releases, Websockets, and Struct Behavior"
+date: 2024-08-16
+description: Exploring Go 1.23 release notes, the new home for nhooyr/websocket, and common mistakes with Go structs and slices.
+authors:
+  - fuatto
+short_title: "#7 Go 1.23, Websockets, and Structs"
 tags:
   - golang
   - go-weekly
   - networking
-authors:
-  - fuatto
-title: 'Go Commentary #7: Releases, Websockets, and Struct Behavior'
-short_title: '#7 Go 1.23, Websockets, and Structs'
-description: 'Exploring Go 1.23 release notes, the new home for nhooyr/websocket, and common mistakes with Go structs and slices.'
-date: 2024-08-16
 ---
 
 ## [Go 1.23 Release Note](https://go.dev/doc/go1.23)

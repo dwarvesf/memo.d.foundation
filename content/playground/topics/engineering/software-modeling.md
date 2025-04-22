@@ -1,9 +1,9 @@
 ---
-tags: 
-  - modeling
 title: Software Modeling
 date: 2020-05-08
-description: null
+description: Learn how software modeling improves system maintainability and scalability by defining core objects, using diagrams like ERD, SMD, and USD to design clear, efficient applications.
+tags:
+  - modeling
 ---
 
 This is how I approach a new topic or knowledge, starts with why, understand the concept and figure out how to make it happen.
@@ -12,8 +12,8 @@ This is how I approach a new topic or knowledge, starts with why, understand the
 
 This can be summed up into 2 definitions:
 
-* Maintainability: Software Modeling helps to maintain a system, or a project. It ensures the based document for newbies to approach and get to know the system thoroughly.
-* Scalability: helps developers to add sub-system or new feature onto the current one, without creating conflicts.
+- Maintainability: Software Modeling helps to maintain a system, or a project. It ensures the based document for newbies to approach and get to know the system thoroughly.
+- Scalability: helps developers to add sub-system or new feature onto the current one, without creating conflicts.
 
 ## What is Software Modeling
 
@@ -58,19 +58,19 @@ A relationship between core objects is demonstrated in a form of an entity relat
 
 ERD helps to show
 
-* Main object: the core object in the scope system
-* The relationship between the objects
+- Main object: the core object in the scope system
+- The relationship between the objects
 
 Components of ERD
 
-* Object
-* Relation arrow
+- Object
+- Relation arrow
 
 An ERD should have these things to keep in mind
 
-* We don't need to re-draw the database in object field. The focus point of ERD is to show the core object and the connection between them.
-* Coloring. Using color will categorize the objects and visualize the system construction.
-* Arrange the objects based on the pipeline of the main action
+- We don't need to re-draw the database in object field. The focus point of ERD is to show the core object and the connection between them.
+- Coloring. Using color will categorize the objects and visualize the system construction.
+- Arrange the objects based on the pipeline of the main action
 
 ERD helps simplify the database, giving us the first impression on a system, what kind of object, how many table and the relationship between them.
 To create an action, we need to add state - the status of how core object will change during the process of an action.
@@ -79,21 +79,21 @@ To create an action, we need to add state - the status of how core object will c
 
 Purpose
 
-* Demonstrates the status that an object will walk through
-* Demonstrates the response of objects during the process
+- Demonstrates the status that an object will walk through
+- Demonstrates the response of objects during the process
 
 Components
 
-* State: The hardest part. The definition of the object's status.
-* Action: What makes an object to change the status
-* Actor: Who will execute that action
+- State: The hardest part. The definition of the object's status.
+- Action: What makes an object to change the status
+- Actor: Who will execute that action
 
 To create a completed main action, every object needs its own SMD. The core of a SMD is to define the correct state of an object, and whether or not if that state is related to the system. There are some state which the system doesn't cover. Based on the requirement and the business scope, we will decide which state is necessary.
 
 Important Notes
 
-* Display the actor and the action
-* A state must be an adjective
+- Display the actor and the action
+- A state must be an adjective
 
 **Giang Vu**: I notice you've mentioned the different state between the real world and in SMD system. Do you have any example for that?
 **Khiem Vo**: Sure. Let's look at a marketplace for grocery. The object will be the products. Grocery is perishable goods, which means "rotten" or "fermented" is also a state. But we don't need to list that into the SMD, because it's unrelated. We only do it if the states are "shipped", "packed" or "returned".
@@ -104,14 +104,14 @@ Important Notes
 
 Definition
 
-* A form of system requirement
-* To help design a system from end user's perspective, allowing developers/designers tp walk in the clients's shoes
+- A form of system requirement
+- To help design a system from end user's perspective, allowing developers/designers tp walk in the clients's shoes
 
 Components
 
-* Actor: End users, people who will use the system
-* Use case: The system function
-* Boundary system: Letting designers/ developers know their current stage of Software Modeling. Boundary system groups the actions into sub-system, makes it more specific than in the ERD
+- Actor: End users, people who will use the system
+- Use case: The system function
+- Boundary system: Letting designers/ developers know their current stage of Software Modeling. Boundary system groups the actions into sub-system, makes it more specific than in the ERD
 
 → In USD, we don't need to follow any order. The items should be listed out randomly and regroup it into sub-system to create UI or interface.
 
@@ -124,27 +124,27 @@ Components
 
 Definition
 
-* Visualizing: The main components of a system
-* Constructing: How the system can be executed
+- Visualizing: The main components of a system
+- Constructing: How the system can be executed
 
 Components
 
-* Component: Describe a module of a system
-* Provided interface: Represent an interface that the components provide
-* Require interface: Represent an interface that the components require
+- Component: Describe a module of a system
+- Provided interface: Represent an interface that the components provide
+- Require interface: Represent an interface that the components require
 
 Through a component diagram, a source code can contain
 
-* Front-end: How many interface/ main module
-* Backend: Module of each object to collect database
-* A place to log the arising situation during the process of calling API
+- Front-end: How many interface/ main module
+- Backend: Module of each object to collect database
+- A place to log the arising situation during the process of calling API
 
 ## Recap
 
 Software Modeling in Agile team
 
-* Helps teammate to possess the same base knowledge about a system
-* Helps document the information for team discussion, research and understanding
-* Every change can create a big impact on the system. In Agile, a product can be modified continuously, Software Modeling needs to be updated during the whole cycle to make sure the newbies can catch up
+- Helps teammate to possess the same base knowledge about a system
+- Helps document the information for team discussion, research and understanding
+- Every change can create a big impact on the system. In Agile, a product can be modified continuously, Software Modeling needs to be updated during the whole cycle to make sure the newbies can catch up
 
 When we have the insight and the view of the Product Owner, it's easier to create an effective and outstanding outcome. This also reveals the spirit we've been pursuing - Craftsmanship, by providing client with values from their own perspective.

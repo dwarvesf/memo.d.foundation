@@ -1,14 +1,14 @@
 ---
+title: "Go Commentary #9: TinyGo, SQLite Vector Search, and Authorization"
+date: 2024-08-30
+description: "Exploring TinyGo's latest release, a new vector search extension for SQLite, and an open-source authorization service inspired by Google Zanzibar."
+authors:
+  - fuatto
+short_title: "#9 TinyGo, SQLite vector search, and Permify"
 tags:
   - golang
   - go-weekly
   - networking
-authors:
-  - fuatto
-title: 'Go Commentary #9: TinyGo, SQLite Vector Search, and Authorization'
-short_title: '#9 TinyGo, SQLite vector search, and Permify'
-description: "Exploring TinyGo's latest release, a new vector search extension for SQLite, and an open-source authorization service inspired by Google Zanzibar."
-date: 2024-08-30
 ---
 
 ## [TinyGo 0.33.0: The Go Compiler for 'Small Places'](https://github.com/tinygo-org/tinygo/releases/tag/v0.33.0)

@@ -1,17 +1,18 @@
 ---
-tags: 
+title: The world before Docker
+date: 2024-04-09
+description: A brief history about the world before Docker and why we need devbox for local development
+authors:
+  - hnh
+  - vhbien
+tags:
   - tooling
   - containerization
   - virtualization
   - docker
   - devbox
-title: "The world before Docker"
-date: 2024-04-09
-description: A brief history about the world before Docker and why we need devbox for local development
-authors: 
-  - hnh
-  - vhbien
 ---
+
 This is the 1st post of Devbox series includes
 
 - [Devbox #1: The world before Docker](https://memo.d.foundation/playground/_memo/devbox-a-world-before-docker)
@@ -24,9 +25,9 @@ Sometimes, in my software development team, a strange issue is raised. Nobody ca
 
 ![](assets/devbox-a-world-before-docker_untitled.webp)
 
-Positively, It is fine because the software actually works somewhere. So you can scope the area of issue and try troubleshooting. But, it is also a red alert on our development process. 
+Positively, It is fine because the software actually works somewhere. So you can scope the area of issue and try troubleshooting. But, it is also a red alert on our development process.
 
-I believe it's not just my problem. Throughout the ongoing evolution of software development, others have likely encountered similar problem. This leads me to wonder, 'Have they implemented strategies to address these issues over time?' 
+I believe it's not just my problem. Throughout the ongoing evolution of software development, others have likely encountered similar problem. This leads me to wonder, 'Have they implemented strategies to address these issues over time?'
 
 Right, as software technology develops, we always have ways to improve the output. It encompasses more than just a solution, it represents a rich evolutionary history within the realm of software development.
 
@@ -50,21 +51,21 @@ While everyone is struggling with VM, the modern containerization movement of th
 
 Have a lot of things to discuss, but we can distill the variances between VMs and Containers into the following summary
 
-|  | Container | Virtual Machine | Conclusion |
-| --- | --- | --- | --- |
-| Isolation | Share host kernel, lightweight | Run full OS, heavier | VM is heavier |
-| Resource Overhead | Minimal, efficient use of resources | Higher, each VM requires its own OS | VM is heavier |
-| Startup Time | Almost instant | Slower due to booting entire OS | VM is heavier |
-| Security | Good isolation, but potential risks if host kernel is compromised | Strong isolation between VMs, larger attack surface | VM is heavier |
-| Deployment | Highly portable | Flexible but heavier | VM is heavier |
+|                   | Container                                                         | Virtual Machine                                     | Conclusion    |
+| ----------------- | ----------------------------------------------------------------- | --------------------------------------------------- | ------------- |
+| Isolation         | Share host kernel, lightweight                                    | Run full OS, heavier                                | VM is heavier |
+| Resource Overhead | Minimal, efficient use of resources                               | Higher, each VM requires its own OS                 | VM is heavier |
+| Startup Time      | Almost instant                                                    | Slower due to booting entire OS                     | VM is heavier |
+| Security          | Good isolation, but potential risks if host kernel is compromised | Strong isolation between VMs, larger attack surface | VM is heavier |
+| Deployment        | Highly portable                                                   | Flexible but heavier                                | VM is heavier |
 
 ## The opening act with Linux Containers
 
 As I mentioned above, Linux Containers (LXC) was perhaps the first implementation of a complete container manager. It provide a lightweight and efficient approach to deploying and isolating applications
 
-Unlike VM, which require the overhead of running multiple operating system instances, Linux containers share the host operating system's kernel while maintaining separate namespaces for processes, networking, and file systems. This results in faster startup times, lower resource consumption, and greater scalability compared to VMs. 
+Unlike VM, which require the overhead of running multiple operating system instances, Linux containers share the host operating system's kernel while maintaining separate namespaces for processes, networking, and file systems. This results in faster startup times, lower resource consumption, and greater scalability compared to VMs.
 
-However, one disadvantage of using Linux Containers directly is the potential lack of comprehensive tooling and ecosystem support, which can lead to integration challenges and a less streamlined development and deployment experience. 
+However, one disadvantage of using Linux Containers directly is the potential lack of comprehensive tooling and ecosystem support, which can lead to integration challenges and a less streamlined development and deployment experience.
 
 In that situation, Docker was born with more innovations.
 

@@ -1,9 +1,9 @@
 ---
-tags: 
-  - engineering
 title: Split And Reuse Code In React Application
 date: 2019-05-02
-description: null
+description: Learn how to split and reuse repetitive React code using render props pattern, higher-order components, and React hooks like useState for efficient modal state management.
+tags:
+  - engineering
 ---
 
 ![](assets/split-and-reuse-code-in-react-application_5f86abdbff47c3d17d6258e3b001ceb8_md5.webp)
@@ -12,8 +12,8 @@ description: null
 
 Sometimes you found that some piece of code that is very repetitive in your react application such as:
 
-* Modal: declare modal state and function to set modal state
-* Fetch: declare fetch states such as loading and error
+- Modal: declare modal state and function to set modal state
+- Fetch: declare fetch states such as loading and error
 
 In some Vue.js, you got the feature that allows you to encapsulate state and methods into the package that you can easily insert to your component logic called mixins. What have we got in React.js?
 
@@ -24,39 +24,43 @@ Let’s take a look in the first repetitive problem above where you have to decl
 Bellow is the code that implements an app that store state and method to show, open and close the modal
 
 ```javascript
-import React, { Component } from 'react';
-import Modal from './Modal'
-import './index.css'
+import React, { Component } from "react";
+import Modal from "./Modal";
+import "./index.css";
 
 class App extends Component {
-  constructor () {
-    super()
+  constructor() {
+    super();
     this.state = {
-      isOpenModal: false
-    }
+      isOpenModal: false,
+    };
   }
 
   render() {
-    const {
-      isOpenModal
-    } = this.state
+    const { isOpenModal } = this.state;
 
     return (
       <div>
         <main>
           <h1>React Modal</h1>
-          <button type="button" onClick={() => {
-            this.setState({
-              isOpenModal: true
-            })
-          }}>
+          <button
+            type="button"
+            onClick={() => {
+              this.setState({
+                isOpenModal: true,
+              });
+            }}
+          >
             open
           </button>
-          <Modal show={isOpenModal} handleClose={()=>{
-            this.setState({
-              isOpenModal: false
-            })
-          }} />
+          <Modal
+            show={isOpenModal}
+            handleClose={() => {
+              this.setState({
+                isOpenModal: false,
+              });
+            }}
+          />
         </main>
       </div>
     );
@@ -73,51 +77,44 @@ Imagine if we want to create another dialog on another page in the current page.
 It’s the pattern where we create a component, have it’s stored repetitive logic and state and expose it to children render function. Bellow is HOCComponent that store state and toggles logic of one component
 
 ```javascript
-import React from 'react'
+import React from "react";
 
 export default class HOCCOmponent extends React.Component {
-  constructor () {
-    super()
+  constructor() {
+    super();
     this.state = {
-      isOpen: false
-    }
+      isOpen: false,
+    };
   }
 
   openModal = () => {
     this.setState({
-      isOpen: true
-    })
-  }
+      isOpen: true,
+    });
+  };
 
   closeModal = () => {
     this.setState({
-      isOpen: false
-    })
-  }
+      isOpen: false,
+    });
+  };
 
-  render () {
-    const {
-      children
-    } = this.props
+  render() {
+    const { children } = this.props;
 
-    const {
-      isOpen
-    } = this.state
+    const { isOpen } = this.state;
 
-    const {
-      openModal,
-      closeModal
-    } = this
+    const { openModal, closeModal } = this;
 
     return (
       <>
         {children({
           openModal,
           closeModal,
-          isOpen
+          isOpen,
         })}
       </>
-    )
+    );
   }
 }
 ```
@@ -138,7 +135,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      isOpenModal: false
+      isOpenModal: false,
     };
   }
 
@@ -153,15 +150,10 @@ class App extends Component {
             {({ openModal, closeModal, isOpen }) => {
               return (
                 <>
-                  <button
-                    type="button"
-                    onClick={openModal}
-                  >
+                  <button type="button" onClick={openModal}>
                     open
                   </button>
-                  {isOpen && (
-                    <Modal show={isOpen} handleClose={closeModal} />
-                  )}
+                  {isOpen && <Modal show={isOpen} handleClose={closeModal} />}
                 </>
               );
             }}
@@ -186,35 +178,33 @@ If that component is used useState hook then It can return not just react compon
 Remember that (custom) hooks must be used inside **a function react components.**
 
 ```javascript
-import React, {
-  useState
-} from 'react'
+import React, { useState } from "react";
 
 const useModal = () => {
-  const [isOpen, setIsOpen] = useState()
+  const [isOpen, setIsOpen] = useState();
 
   const openModal = () => {
-    setIsOpen(true)
-  }
+    setIsOpen(true);
+  };
 
   const closeModal = () => {
-    setIsOpen(true)
-  }
+    setIsOpen(true);
+  };
 
   return {
     openModal,
     closeModal,
-    isOpen
-  }
-}
+    isOpen,
+  };
+};
 
-export default useModal
+export default useModal;
 ```
 
 The use connect above return methods that allowed to change interstate of useModal hooks which is isOpen and also the data itself. useState return an array that have two elements:
 
-* First element is datas
-* Second element will be function to set datas
+- First element is datas
+- Second element will be function to set datas
 
 UseState work just like the state in class component. When you set the data using setter function it may rerender the components that use the hook base on react state mechanic.
 

@@ -1,14 +1,14 @@
 ---
-tags: 
- - frontend
- - css
- - atomic-css
-authors: 
- - mashiro5951
 title: An Introduction to Atomic CSS
-description: This article provides an overview of Atomic CSS, including its definition, variations, purposes, and how it compares to other CSS approaches.
-github_id: ngolapnguyen
 date: 2022-10-13
+description: This article provides an overview of Atomic CSS, including its definition, variations, purposes, and how it compares to other CSS approaches.
+authors:
+  - mashiro5951
+github_id: ngolapnguyen
+tags:
+  - frontend
+  - css
+  - atomic-css
 ---
 
 ## Definition
@@ -127,14 +127,14 @@ export const CommonButton = () => {
     <button type="button" className="bg-primary">
       Button
     </button>
-  )
-}
+  );
+};
 ```
 
 Combining with suitable tools, we can make it even more flexibile:
 
 ```jsx
-import { css } from '@linaria/core'
+import { css } from "@linaria/core";
 
 const reusableButtonClassName = css`
   @apply p-2 rounded bg-white font-base border-secondary;
@@ -143,19 +143,25 @@ const reusableButtonClassName = css`
   @screen md {
     @apply font-xl;
   }
-`
+`;
 
 const reusableActiveButtonClassName = css`
   @apply border-primary;
-`
+`;
 
 export const CommonButton = ({ isActive }) => {
   return (
-    <button type="button" className={['reusableButtonClassName', isActive && 'reusableActiveButtonClassName']}>
+    <button
+      type="button"
+      className={[
+        "reusableButtonClassName",
+        isActive && "reusableActiveButtonClassName",
+      ]}
+    >
       Button
     </button>
-  )
-}
+  );
+};
 ```
 
 As you can see, we are utilizing the strength of both Atomic CSS and [css-in-js]().
@@ -165,7 +171,9 @@ As you can see, we are utilizing the strength of both Atomic CSS and [css-in-js]
 With atomic classes, it is possible to create abstractions that would be impossible with inline styles.
 
 ```html
-<p style="font-family: helvetica; color: rgb(20, 20, 20)">Inline styles suck.</p>
+<p style="font-family: helvetica; color: rgb(20, 20, 20)">
+  Inline styles suck.
+</p>
 <p class="helvetica rgb202020">Badly written CSS isn't very different.</p>
 <p class="sans-serif color-dark">Utility classes allow for abstraction.</p>
 ```

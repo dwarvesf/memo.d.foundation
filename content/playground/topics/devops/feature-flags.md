@@ -18,6 +18,7 @@ By using feature flags, you eliminate the need to maintain multiple branches for
 Feature flags are a valuable tool for software teams, but they can also be leveraged by other teams within the organization. For example, help sales and customer team support employees to provision entitlements; enable product managers to manage beta programs; or allow marketing teams to run A/B tests.
 
 ## Core benefits of feature flags
+
 - **Release management**: beta-test a new feature with a select group of users before releasing it to everyone.
 - **Operation management**: monitor systems, toggling features on and off to minimize the impact of incidents.
 - **Learn from experiment**: greatly support the use of A/B testing to test hypotheses and bring the best ideas to our customers.
@@ -26,6 +27,6 @@ Feature flags are a valuable tool for software teams, but they can also be lever
 Feature flags add value to an organization as a whole, not just to the development team.
 
 ## Reference
+
 - https://launchdarkly.com/blog/what-are-feature-flags/
 - https://martinfowler.com/articles/feature-toggles.html
-

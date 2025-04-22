@@ -1,13 +1,13 @@
 ---
+title: Hook architecture in react
+date: 2024-10-29
+description: React hooks architecture with in-depth coverage of custom hooks, state management, and side effects handling.
 authors:
-  - 'thanh'
-date: '2024-10-29'
-description: 'React hooks architecture with in-depth coverage of custom hooks, state management, and side effects handling.'
+  - thanh
+short_title: Hook architecture
 tags:
-  - 'react'
-  - 'hook'
-title: 'Hook architecture in react'
-short_title: 'Hook architecture'
+  - react
+  - hook
 ---
 
 Hooks architecture in React refers to the systematic approach of using hooks to manage state, side effects, and reusable logic across components. **Custom hooks** are one of the most powerful features, allowing you to encapsulate and reuse complex logic independently of component structure. Custom hooks improve code readability, keep components lean, and make stateful logic portable and composable.
@@ -26,23 +26,23 @@ By creating custom hooks, we can isolate specific pieces of logic or state, maki
 **Example: `useFetch` hook for data fetching**
 
 ```jsx
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
 function useFetch(url) {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetch(url)
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => setError(error))
-      .finally(() => setLoading(false))
-  }, [url])
+      .finally(() => setLoading(false));
+  }, [url]);
 
-  return { data, loading, error }
+  return { data, loading, error };
 }
 ```
 
@@ -50,12 +50,12 @@ Usage:
 
 ```js
 function UserProfile({ userId }) {
-  const { data, loading, error } = useFetch(`/api/users/${userId}`)
+  const { data, loading, error } = useFetch(`/api/users/${userId}`);
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error loading data.</p>
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading data.</p>;
 
-  return <div>{data.name}</div>
+  return <div>{data.name}</div>;
 }
 ```
 
@@ -71,12 +71,12 @@ Side effects (like fetching data, managing subscriptions, or setting timeouts) o
 **Example: `useDocumentTitle` hook for updating the document title**
 
 ```js
-import { useEffect } from 'react'
+import { useEffect } from "react";
 
 function useDocumentTitle(title) {
   useEffect(() => {
-    document.title = title
-  }, [title])
+    document.title = title;
+  }, [title]);
 }
 ```
 
@@ -84,8 +84,8 @@ Usage:
 
 ```js
 function HomePage() {
-  useDocumentTitle('Home - My App')
-  return <div>Welcome to the Home Page</div>
+  useDocumentTitle("Home - My App");
+  return <div>Welcome to the Home Page</div>;
 }
 ```
 
@@ -103,15 +103,15 @@ Custom hooks require careful handling of dependencies to avoid bugs, stale data,
 Suppose we need to calculate an expensive value in a hook, which depends on certain props or state. Using `useMemo` ensures the computation only runs when necessary.
 
 ```js
-import { useMemo } from 'react'
+import { useMemo } from "react";
 
 function useExpensiveCalculation(data) {
   const result = useMemo(() => {
     // Expensive calculation here
-    return data.reduce((sum, num) => sum + num, 0)
-  }, [data])
+    return data.reduce((sum, num) => sum + num, 0);
+  }, [data]);
 
-  return result
+  return result;
 }
 ```
 
@@ -119,8 +119,8 @@ Usage:
 
 ```js
 function Stats({ numbers }) {
-  const total = useExpensiveCalculation(numbers)
-  return <div>Total: {total}</div>
+  const total = useExpensiveCalculation(numbers);
+  return <div>Total: {total}</div>;
 }
 ```
 
@@ -141,39 +141,45 @@ For more complex scenarios, multiple custom hooks can be combined, keeping compo
 // useAuth.js import { useState } from "react";
 
 function useAuth() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-  const login = (userData) => setUser(userData)
-  const logout = () => setUser(null)
+  const login = (userData) => setUser(userData);
+  const logout = () => setUser(null);
 
-  return { user, login, logout }
+  return { user, login, logout };
 }
 
 // useUserData.js import useFetch from "./useFetch";
 
 function useUserData(userId) {
-  const { data, loading, error } = useFetch(`/api/users/${userId}`)
-  return { data, loading, error }
+  const { data, loading, error } = useFetch(`/api/users/${userId}`);
+  return { data, loading, error };
 }
 
 // Usage in a component
 
 function Dashboard({ userId }) {
-  const { user, login, logout } = useAuth()
-  const { data: userData, loading } = useUserData(userId)
+  const { user, login, logout } = useAuth();
+  const { data: userData, loading } = useUserData(userId);
 
   return (
     <div>
       {user ? (
         <div>
           <button onClick={logout}>Logout</button>
-          {loading ? <p>Loading user data...</p> : <p>Welcome, {userData.name}</p>}
+          {loading ? (
+            <p>Loading user data...</p>
+          ) : (
+            <p>Welcome, {userData.name}</p>
+          )}
         </div>
       ) : (
-        <button onClick={() => login({ id: userId, name: 'John Doe' })}>Login</button>
+        <button onClick={() => login({ id: userId, name: "John Doe" })}>
+          Login
+        </button>
       )}
     </div>
-  )
+  );
 }
 ```
 
@@ -191,9 +197,9 @@ function Dashboard({ userId }) {
 ```js
 // Better: return only what's needed
 function useToggle(initialState = false) {
-  const [state, setState] = useState(initialState)
-  const toggle = () => setState((prev) => !prev)
-  return [state, toggle]
+  const [state, setState] = useState(initialState);
+  const toggle = () => setState((prev) => !prev);
+  return [state, toggle];
 }
 ```
 
@@ -201,61 +207,62 @@ function useToggle(initialState = false) {
 
 ```js
 function useFetch(url) {
-  const [data, setData] = useState(null)
-  const [error, setError] = useState(null)
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(url)
       .then((response) => response.json())
       .then(setData)
-      .catch(setError)
-  }, [url])
+      .catch(setError);
+  }, [url]);
 
-  return { data, error }
+  return { data, error };
 }
 ```
 
 **Encapsulate complex state logic**: If you find yourself managing complex state logic (e.g., multiple variables, resetting state), consider using `useReducer` within the hook.
 
 ```jsx
-import { useReducer } from 'react'
+import { useReducer } from "react";
 
 function formReducer(state, action) {
   switch (action.type) {
-    case 'update':
-      return { ...state, [action.field]: action.value }
-    case 'reset':
-      return action.initialState
+    case "update":
+      return { ...state, [action.field]: action.value };
+    case "reset":
+      return action.initialState;
     default:
-      return state
+      return state;
   }
 }
 
 function useForm(initialState) {
-  const [state, dispatch] = useReducer(formReducer, initialState)
+  const [state, dispatch] = useReducer(formReducer, initialState);
 
-  const updateField = (field, value) => dispatch({ type: 'update', field, value })
-  const resetForm = () => dispatch({ type: 'reset', initialState })
+  const updateField = (field, value) =>
+    dispatch({ type: "update", field, value });
+  const resetForm = () => dispatch({ type: "reset", initialState });
 
-  return [state, updateField, resetForm]
+  return [state, updateField, resetForm];
 }
 ```
 
 **Testing custom hooks**: Test custom hooks in isolation to ensure they behave as expected under various scenarios. Tools like **React testing library's `renderHook`** make it easy to test hooks directly.
 
 ```js
-import { renderHook, act } from '@testing-library/react-hooks'
-import useToggle from './useToggle'
+import { renderHook, act } from "@testing-library/react-hooks";
+import useToggle from "./useToggle";
 
-test('should toggle state', () => {
-  const { result } = renderHook(() => useToggle())
+test("should toggle state", () => {
+  const { result } = renderHook(() => useToggle());
 
   act(() => {
-    result.current[1]() // Call toggle function
-  })
+    result.current[1](); // Call toggle function
+  });
 
-  expect(result.current[0]).toBe(true) // Assert the toggled state
-})
+  expect(result.current[0]).toBe(true); // Assert the toggled state
+});
 ```
 
 ### Combining techniques in a custom hook system
@@ -271,46 +278,54 @@ Imagine you need a custom hook system for managing user authentication, includin
 ```js
 // useAuth.js
 function useAuth() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-  const login = (userData) => setUser(userData)
-  const logout = () => setUser(null)
+  const login = (userData) => setUser(userData);
+  const logout = () => setUser(null);
 
-  return { user, login, logout }
+  return { user, login, logout };
 }
 
 // useUserData.js
-import useFetch from './useFetch'
+import useFetch from "./useFetch";
 
 function useUserData(userId) {
-  const { data, loading, error } = useFetch(`/api/users/${userId}`)
-  return { data, loading, error }
+  const { data, loading, error } = useFetch(`/api/users/${userId}`);
+  return { data, loading, error };
 }
 
 // usePermissions.js
 function usePermissions(userRoles = []) {
-  const hasPermission = (permission) => userRoles.includes(permission)
-  return { hasPermission }
+  const hasPermission = (permission) => userRoles.includes(permission);
+  return { hasPermission };
 }
 
 // Usage in a component
 function AdminDashboard({ userId }) {
-  const { user, login, logout } = useAuth()
-  const { data: userData, loading: dataLoading } = useUserData(userId)
-  const { hasPermission } = usePermissions(userData ? userData.roles : [])
+  const { user, login, logout } = useAuth();
+  const { data: userData, loading: dataLoading } = useUserData(userId);
+  const { hasPermission } = usePermissions(userData ? userData.roles : []);
 
   return (
     <div>
       {user ? (
         <div>
           <button onClick={logout}>Logout</button>
-          {dataLoading ? <p>Loading user data...</p> : hasPermission('admin') ? <p>Welcome, Admin {userData.name}</p> : <p>Access denied</p>}
+          {dataLoading ? (
+            <p>Loading user data...</p>
+          ) : hasPermission("admin") ? (
+            <p>Welcome, Admin {userData.name}</p>
+          ) : (
+            <p>Access denied</p>
+          )}
         </div>
       ) : (
-        <button onClick={() => login({ id: userId, name: 'Jane Doe' })}>Login</button>
+        <button onClick={() => login({ id: userId, name: "Jane Doe" })}>
+          Login
+        </button>
       )}
     </div>
-  )
+  );
 }
 ```
 

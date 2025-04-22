@@ -1,12 +1,12 @@
 ---
+title: Go extension interface pattern
+date: 2024-10-25
+description: Note about using Go extension interface pattern
+authors:
+  - tieubao
 tags:
   - golang
   - interface
-authors:
-  - tieubao
-description: Note about using Go extension interface pattern
-title: Go extension interface pattern
-date: 2024-10-25
 ---
 
 The extension interface pattern is when an interface embeds another one. The extension pattern helps to add new features to an existing object without changing its original code.
@@ -37,6 +37,7 @@ func (lw LoggingWriter) Write(p []byte) (n int, err error) {
 ```
 
 Usage:
+
 ```go
 func main() {
     var writer io.Writer = LoggingWriter{Writer: os.Stdout}
@@ -235,9 +236,10 @@ func main() {
     fmt.Println(prefixedUser.String())  // Output: User: John
 }
 ```
+
 This wraps the original `fmt.Stringer` and adds a prefix to the output.
 
-----
+---
 
 That's good as far as it goes, but I think the key part of extension interfaces is why they're useful and how they're used -- they can add optional functionality to an API which (according to the statically-checked type signature) only takes the "base" interface.
 

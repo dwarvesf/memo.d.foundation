@@ -1,9 +1,9 @@
 ---
-tags: 
-  - tutorial
 title: Build An Assistant On The Terminal
 date: 2020-03-27
-description: null
+description: Mimir is a fast CLI tool that uses AI and heuristic methods to provide precise programming answers and debugging help directly in your terminal without browsing the web.
+tags:
+  - tutorial
 ---
 
 ## Introduction
@@ -12,7 +12,7 @@ When coding, developers look for references constantly. "What does this snippet 
 
 Terminal assistant is a tool that brings the supports that developers searching for to your terminal. Instead of looking for answers on web browsers, you can ask this 'assistant' on your terminal and it will answer your confusion when you are coding.
 
-The name of this tool, 'Mimir' is based on a character in the game *God of war* ™ (2018). While Mimir hanging from the hip of Kratos and guiding him to the world of Norse Gods with his knowledge, this tool will hang from your terminal guide you to the world of programming.
+The name of this tool, 'Mimir' is based on a character in the game _God of war_ ™ (2018). While Mimir hanging from the hip of Kratos and guiding him to the world of Norse Gods with his knowledge, this tool will hang from your terminal guide you to the world of programming.
 
 ## Description
 
@@ -22,7 +22,7 @@ Additionally, this tool can be served as a rubber duck debugger on your terminal
 
 ## Related works
 
-There is a wonderful work on the idea of the CLI coding answer called *[howdoi](https://github.com/gleitz/howdoi)*, which received 8.4k stars on Github. This tool embraced the problem of searching for an answer with the help of using common online search engines (Google, Bing, and Duckduckgo). It searches the users' questions using these engines, then it gets the HTML content of the first web result and parses the answer from the HTML content based on HTML and returns the answer to the user.
+There is a wonderful work on the idea of the CLI coding answer called _[howdoi](https://github.com/gleitz/howdoi)_, which received 8.4k stars on Github. This tool embraced the problem of searching for an answer with the help of using common online search engines (Google, Bing, and Duckduckgo). It searches the users' questions using these engines, then it gets the HTML content of the first web result and parses the answer from the HTML content based on HTML and returns the answer to the user.
 
 This tool is awesome (it recently evolving into extensions on popular code editors), however, it still suffers from high false positive, as it depends on users' questions (maybe too rambling) and search engines. Our works aim to counter this with the use of Artificial Intelligence (AI) approaches, specifically, heuristic and language processing approaches.
 
@@ -36,9 +36,9 @@ The second constraint is precision. We expect the tool to provide the most suita
 
 ### Programming language and frameworks
 
-When involving AI, mostly the idea of using `Python` popped out immediately. `Python` is great at AI programming, especially in machine learning, as it has a variety of optimized libraries on calculations suitable for the task (e.g. *NumPy, TensorFlow,, sklearn, etc.*). However, this tool is not AI-heavy, as it only uses small heuristic and language processing approaches. This tool is network heavy, as it rapidly collects answers from the Internet. Thus, We choose `Go` as the programming language, which is great at handle network requests. Furthermore, it is more fun to implement AI algorithms from scratch instead of using pre-defined libraries.
+When involving AI, mostly the idea of using `Python` popped out immediately. `Python` is great at AI programming, especially in machine learning, as it has a variety of optimized libraries on calculations suitable for the task (e.g. _NumPy, TensorFlow,, sklearn, etc._). However, this tool is not AI-heavy, as it only uses small heuristic and language processing approaches. This tool is network heavy, as it rapidly collects answers from the Internet. Thus, We choose `Go` as the programming language, which is great at handle network requests. Furthermore, it is more fun to implement AI algorithms from scratch instead of using pre-defined libraries.
 
-For the CLI framework, We are using *[Cobra](https://github.com/spf13/cobra)*. This framework is great for creating CLI applications.
+For the CLI framework, We are using _[Cobra](https://github.com/spf13/cobra)_. This framework is great for creating CLI applications.
 
 ### Application flow
 
@@ -48,6 +48,6 @@ The tool takes the users' input and extracted its keywords using the TextRank al
 
 ### TextRank
 
-*TextRank* [2] is a keyword extractor algorithm based on *PageRank* [3]. Theoretically, *TextRank* maps the text corpus (mostly with stop words (preposition, conjunctions, etc..) removed) into a graph. Each node in the graph is given a score. Then, through multiple loops, the score of each node is recalculated as the sum of the weighted score of the neighbor nodes. The loops stop after a pre-defined number of loops or when the scores are saturated.
+_TextRank_ [2] is a keyword extractor algorithm based on _PageRank_ [3]. Theoretically, _TextRank_ maps the text corpus (mostly with stop words (preposition, conjunctions, etc..) removed) into a graph. Each node in the graph is given a score. Then, through multiple loops, the score of each node is recalculated as the sum of the weighted score of the neighbor nodes. The loops stop after a pre-defined number of loops or when the scores are saturated.
 
 For example, the sentence `The quick brown fox jumps over the lazy dog`, after removing stop words (resulting in `quick brown fox jumps over lazy dog`), can be mapped into the graph below, using a window-based mapping approach, as presented in the original paper. Additionally, the word embedding approach can be used to map the text into a different graph, but this approach is resource-heavy, so we are going to stick with the original window-based approach.

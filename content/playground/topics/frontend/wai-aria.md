@@ -1,14 +1,14 @@
 ---
+title: WAI-ARIA
+date: 2022-09-30
+description: WAI-ARIA is a technology that can help with the problems of modern websites and applications containing huge amounts of dynamic content and complex components with no semantics to describe what they mean.
+authors:
+  - nguyend-nam
+github_id: nguyend-nam
 tags:
   - frontend
   - wai-aria
   - accessibility
-description: WAI-ARIA is a technology that can help with the problems of modern websites and applications containing huge amounts of dynamic content and complex components with no semantics to describe what they mean.
-title: WAI-ARIA
-authors:
-  - nguyend-nam
-github_id: nguyend-nam
-date: 2022-09-30
 ---
 
 Since modern websites and applications contain huge amounts of dynamic content and complex components with no semantics to describe what they mean, users with disabilities, those dependent on **assistive technologies** such as **[Screen Reader](https://chrome.google.com/webstore/detail/screen-reader/kgejglhpjiefppelpmljglcjbhoiplfn/related?hl=en)**, text-to-speech or screen magnification tools might suffer to interact with those components.

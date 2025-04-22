@@ -1,15 +1,15 @@
 ---
+title: Adoption Of Pnpm
+date: 2023-07-31
+description: The Dwarves team switched from Yarn to pnpm for faster, more efficient package management, improving development speed and saving disk space across their projects and clients.
+authors:
+  - thanh
 tags:
   - frontend
   - engineering
   - productivity
-  - DX
+  - dx
   - radar
-title: Adoption Of Pnpm
-date: 2023-07-31
-description: null
-authors:
-  - thanh
 ---
 
 ![](assets/adoption-of-pnpm_4601b8f71eebe7c7fbc4a6fc7925a8b6_md5.webp)

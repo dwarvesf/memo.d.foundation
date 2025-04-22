@@ -1,9 +1,9 @@
 ---
-tags: 
-  - devops
 title: How We Setup Cicd
 date: 2021-02-16
-description: null
+description: Learn how Dwarves simplifies CI/CD with Gitlab, Github Actions, automated linting, testing, previewing, building Docker images, and deploying to Kubernetes for faster, reliable software delivery.
+tags:
+  - devops
 ---
 
 Before we dig through a detailed process, let's set some grounded knowledge about the CI/CD:
@@ -68,9 +68,9 @@ We want to do it for a long time. Imagine that all our code can adequately test,
 
 It is a nice thing to do, but we’re still far from easily integrating that into our CI, since:
 
-* The Automation Testing Framework sometimes does not reproducible.
-* It takes too long to run a full set of tests; we don't want to get to the phase that we spend 1 hour for a typo change.
-* We haven’t found a way to properly set it up in our workflow.
+- The Automation Testing Framework sometimes does not reproducible.
+- It takes too long to run a full set of tests; we don't want to get to the phase that we spend 1 hour for a typo change.
+- We haven’t found a way to properly set it up in our workflow.
 
 Experiments are and will be made to get us close to the goal. For now, we are settling with the daily scheduled E2E run, and the QC team will provide us with the results every day.
 
