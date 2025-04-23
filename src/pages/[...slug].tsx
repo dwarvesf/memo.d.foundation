@@ -414,7 +414,7 @@ export default function ContentPage({
     <RootLayout
       title={frontmatter.title || 'Dwarves Memo'}
       description={frontmatter.description}
-      image={frontmatter.image}
+      image={metadata?.firstImage}
       tocItems={tocItems}
       metadata={metadata}
       directoryTree={directoryTree}
