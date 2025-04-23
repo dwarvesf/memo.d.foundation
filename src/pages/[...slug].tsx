@@ -24,7 +24,7 @@ import { getAllMarkdownContents } from '@/lib/content/memo';
 import Link from 'next/link';
 import { formatMemoPath, getFirstMemoImage } from '@/components/memo/utils';
 import { slugToTitle } from '@/lib/utils';
-import MintEntry from '@/components/MintEntry/MintEntry';
+import MintEntry from '@/components/mint-entry/MintEntry';
 import { useThemeContext } from '@/contexts/theme';
 
 interface ContentPageProps extends RootLayoutPageProps {
