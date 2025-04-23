@@ -20,6 +20,16 @@ export const wordDict: Record<string, string> = {
   web3: 'Web3',
   pm: 'PM',
   qa: 'QA',
+  qc: 'QC',
+  mbti: 'MBTI',
+  dx: 'DX',
+  etl: 'ETL',
+  evm: 'EVM',
+  iot: 'IoT',
+  sql: 'SQL',
+  nosql: 'NoSQL',
+  api: 'API',
+  sdk: 'SDK',
 };
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
