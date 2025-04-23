@@ -5,16 +5,6 @@ description: An overview of adversarial prompting in prompt engineering, focusin
 authors:
   - thanh
 github_id: zlatanpham
-hashnode_meta:
-  {
-    "coverImageOptions":
-      {
-        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/adversarial-prompting_by-pass-gpt-safety-check.webp",
-      },
-    "id": "670f4d4faec5a6a939f51328",
-    "slug": "adversarial-prompting-in-prompt-engineering",
-  }
-sync: hashnode
 tags:
   - ai
   - llm

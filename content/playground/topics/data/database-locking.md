@@ -7,7 +7,7 @@ authors:
 github_id: vhbien000
 icy: 10
 tags:
-  - engineeringbackend
+  - backend
   - backend
   - sql
   - database

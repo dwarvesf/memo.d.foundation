@@ -6,7 +6,7 @@ authors:
   - Nguyen Tran Khanh
 github_id: knguyenuit
 tags:
-  - engineeringmobile
+  - mobile
   - flutter
   - stateless
   - stateful

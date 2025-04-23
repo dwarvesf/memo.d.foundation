@@ -6,7 +6,7 @@ authors:
   - Pham Duc Thanh
 github_id: zlatanpham
 tags:
-  - engineeringmanagement
+  - management
   - management
   - team-topologies
 ---

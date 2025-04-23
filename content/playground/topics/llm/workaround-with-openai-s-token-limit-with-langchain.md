@@ -5,16 +5,6 @@ description: "This article explores strategies to overcome OpenAI's token limit 
 authors:
   - monotykamary
 github_id: monotykamary
-hashnode_meta:
-  {
-    "coverImageOptions":
-      {
-        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/workaround-with-openais-token-limit-with-langchain_openai-token-limit-prompts.webp",
-      },
-    "id": "670f4d40d8a3cebb1d59a8a3",
-    "slug": "workaround-with-openais-token-limit-with-langchain",
-  }
-sync: hashnode
 tags:
   - ai
   - tuning-llm

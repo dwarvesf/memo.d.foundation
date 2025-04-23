@@ -6,7 +6,7 @@ authors:
   - Dung Ho
 github_id: dudaka
 tags:
-  - engineeringdata
+  - data
   - mapreduce
   - distributed
   - hadoop

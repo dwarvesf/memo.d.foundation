@@ -7,7 +7,7 @@ authors:
 github_id: binhle59
 icy: 10
 tags:
-  - engineeringqa
+  - qa
   - writing-test-cases
   - test-cases
   - breakdown

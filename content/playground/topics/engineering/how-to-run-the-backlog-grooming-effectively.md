@@ -7,7 +7,7 @@ authors:
 github_id: nhuthm
 icy: 10
 tags:
-  - engineeringmanagement
+  - management
   - management
   - process
   - backlog-grooming

@@ -4,16 +4,6 @@ date: 2024-10-11
 description: Metrics give you the rundown on how your LLM’s performing. We will show how to use these metrics to identify issues, increase efficiency, and make changes for improved outcomes.
 authors:
   - datnguyennnx
-hashnode_meta:
-  {
-    "coverImageOptions":
-      {
-        "coverImageURL": "https://memo.d.foundation/playground/ai/building-llm-system/assets/metric-pillar-monitoring-dashboard.webp",
-      },
-    "id": "670f4d42a897de73067fab5a",
-    "slug": "metrics",
-  }
-sync: hashnode
 tags:
   - llm
   - observability

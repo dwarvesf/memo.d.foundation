@@ -1,45 +1,61 @@
 ---
-title: null
-date: null
-description: Explore a comprehensive blockchain map covering foundational topics like blocks and PoS, plus advanced concepts such as zk-SNARKs, Layer 2 solutions, smart contracts, and blockchain oracles.
-recurringTemplate: true
-recurringTemplateName: blockchain-moc
+title: § Blockchain
+date: 2025-04-23
+description: Explore comprehensive guides on blockchain technology, including foundational concepts, layer 2 scaling, security, smart contracts, zero-knowledge proofs, interoperability, and advanced topics to deepen your understanding and development skills.
+author: thanh
 tags:
   - blockchain
+  - moc
 ---
 
-This is a [map-of-content]() related to the blockchain.
+### Foundational Topics
 
-## Foundational Topics
+- [¶ Blocks](./blocks.md)
+- [¶ Distributed systems](./distributed-systems.md)
+- [¶ PoS](./pos.md)
+- [¶ Smart Contract](./smart-contract.md)
+- [General](./general.md)
+- [Documents](./documents.md)
+- [Precautions](./precautions.md)
+- [Blockchain Security](./blockchain-security.md)
 
-- [Blocks]()
-- [Distributed systems]()
-- [PoS]()
-- [Smart Contract]()
-- [Topics]()
+### Blockchain Concepts & Components
 
-## General
+- [Token](./token.md)
+- [Multisign wallet](./multisign-wallet.md)
+- [Liquidity pool](./liquidity-pool.md)
+- [NFT Fractionalization](./nft-fractionalization.md)
+- [Dollar Cost Averaging (DCA)](./dollar-cost-averaging.md)
 
-- [solidity]()
-- [federated-byzantine]()
-- [fabric-hyperledger-architecture-explanation]()
-- [design-system-for-layer-2-using-zk-rollup]()
-- [blockchain-for-designers]()
-- [Blockchain Oracle]()
-- [Triple S of UX in Web3]()
-- [zk-SNARKs]()
-- [Solana Account]()
-- [StarkNet architecture]()
-- [Polygon zkEVM architecture]()
-- [Plonky2]()
-- [Multisign wallet]()
-- [NFT Fractionalization]()
-- [Metaplex NFT Compression]()
-- [Liquidity pool]()
-- [How Tokens Work on Solana]()
-- [Layer 2]()
-- [Blockchain Bridge]()
-- [Anchor framework]()
-- [Zero-knowledge Proofs]()
+### Layer 2 & Scaling Solutions
 
-_This page was last modified at 2024-03-15T05:48:36.016Z_.
+- [Layer 2: Scaling Solutions for Ethereum]()
+- [Design System For Layer 2 Using Zk Rollup](./design-system-for-layer-2-using-zk-rollup.md)
+- [Polygon zkEVM architecture](./polygon-zkevm-architecture.md)
+- [StarkNet architecture](./starknet-architecture.md)
+- [Plonky2](./plonky2.md)
+
+### Blockchain Bridges & Interoperability
+
+- [Blockchain Bridge](./blockchain-bridge.md)
+- [Cross-chain Transfers: Implementing a Token Swap from Base Chain to Bitcoin](./cross-chain-transfers-implementing-a-token-swap-from-base-chain-to-bitcoin.md)
+- [Ton: Blockchain of blockchains](./ton-blockchain-of-blockchains.md)
+- [Ton's base concepts](./ton-core-concept.md)
+- [Federated Byzantine](./federated-byzantine.md)
+
+### Oracles & External Data
+
+- [Blockchain oracle](./blockchain-oracle.md)
+- [External calls](./external-calls.md)
+
+### Zero-Knowledge Proofs & Privacy
+
+- [¶ Zero-knowledge Proofs](./zero-knowledge-proofs.md)
+- [zk-SNARKs](./zk-snarks.md)
+
+### Development Tools & Practices
+
+- [Using Foundry for EVM smart contract development](./using-foundry-for-evm-smart-contract-developement.md)
+- [Web3 Development with Foundry](./web3-development-with-foundry.md)
+- [Build custom AI Agent with ElizaOS](./build-custom-ai-agent-with-elizaos.md)
+- [Blockchain for Designers](./blockchain-for-designers.md)

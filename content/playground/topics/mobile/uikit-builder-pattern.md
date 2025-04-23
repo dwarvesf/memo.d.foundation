@@ -9,7 +9,7 @@ tags:
   - i-os
   - mac-os
   - swift
-  - engineeringmobile
+  - mobile
 ---
 
 SwiftUI introduces a way to write UI code declaratively. Can we use the same paradigm with UIKit? We will show you how.

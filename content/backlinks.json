@@ -581,12 +581,6 @@
       "path": "/playground/topics/llm/building-llm-system"
     }
   ],
-  "playground/topics/llm/multimodal-in-rag": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
   "playground/topics/llm/guardrails-in-llm": [
     {
       "title": "§ Building LLM system",
@@ -621,6 +615,16 @@
     {
       "title": "§ Building LLM system",
       "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/llm-as-a-judge": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    },
+    {
+      "title": "Evaluation guidelines for LLM applications",
+      "path": "/playground/topics/llm/evaluation-guideline-for-llm-application"
     }
   ],
   "playground/topics/llm/observability-in-ai-platforms": [
@@ -663,6 +667,12 @@
     {
       "title": "Nix - Minimum changes, Minimum redundancies",
       "path": "/playground/topics/devbox/research/nix-minimum-changes-minimum-redundancies"
+    }
+  ],
+  "playground/topics/blockchain/ton-blockchain-of-blockchains": [
+    {
+      "title": "Ton's base concepts",
+      "path": "/playground/topics/blockchain/ton-core-concept"
     }
   ]
 }

@@ -6,7 +6,7 @@ authors:
   - Nhut Huynh
 github_id: nhuthm
 tags:
-  - engineeringmanagement
+  - management
   - management
   - team-topologies
 ---

@@ -77,7 +77,7 @@ Part of the Lean Startup movement, this book introduces the process for Lean UX.
 
 - **[UserTesting.com](http://usertesting.com/)** - Fully integrated user testing platform with a participant panel.
 - **[UserZoom](https://www.userzoom.com/)** - All-in-one qualitative research and user testing platform.
-- **[Try](https://www.trymyui.com/)**\*\*****[My](https://www.trymyui.com/)**\*\*\*\***[UI](https://www.trymyui.com/)\*\* - Remote unmoderated usability testing panel and platform.
+- **[Try](https://www.trymyui.com/)**\*\*\***\*[My](https://www.trymyui.com/)**\*\*\*\*\*\*[UI](https://www.trymyui.com/)\*\* - Remote unmoderated usability testing panel and platform.
 - **[Verify App](https://verifyapp.com/)** - Quickly test where users would click in wireframes and mockups.
 - **[Loop11](https://www.loop11.com/)** - Platform for testing wireframes and prototypes, usability, and accessibility.
 

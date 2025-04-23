@@ -6,7 +6,8 @@ authors:
   - Bach Phuong
 github_id: Bachpx2911
 tags:
-  - engineeringdata
+  - engineering
+  - data
   - statistics
   - data-analysis
   - distribution

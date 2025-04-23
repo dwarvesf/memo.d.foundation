@@ -7,7 +7,7 @@ authors:
 github_id: zlatanpham
 tags:
   - frontend
-  - frontendperformance
+  - performance
   - performance
 ---
 

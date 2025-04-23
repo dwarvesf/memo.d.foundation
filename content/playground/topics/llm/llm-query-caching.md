@@ -5,16 +5,6 @@ description: An exploration of query caching in Large Language Models (LLMs), fo
 authors:
   - thanh
 github_id: zlatanpham
-hashnode_meta:
-  {
-    "coverImageOptions":
-      {
-        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/llm-query-caching.webp",
-      },
-    "id": "670f4d50aec5a6a939f5132c",
-    "slug": "query-caching-for-large-language-models",
-  }
-sync: hashnode
 tags:
   - ai
   - llm

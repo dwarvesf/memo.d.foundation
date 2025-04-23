@@ -7,7 +7,7 @@ authors:
 github_id: dudaka
 icy: 10
 tags:
-  - engineeringdata
+  - data
   - mapreduce
   - distributed
   - hadoop

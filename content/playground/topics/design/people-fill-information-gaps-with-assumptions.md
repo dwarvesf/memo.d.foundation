@@ -1,7 +1,7 @@
 ---
 title: null
 date: null
-description: Learn how the mind fills gaps in information with assumptions and stories, leading to quick but often inaccurate judgments due to the "what you see is all there is" bias.
+description: "Learn how the mind fills gaps in information with assumptions and stories, leading to quick but often inaccurate judgments due to the 'what you see is all there is' bias."
 tags:
   - ux
   - design

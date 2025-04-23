@@ -8,8 +8,6 @@ tags:
   - devbox
 ---
 
-# Devbox.json: Your Project's DNA
-
 Ever wished you could clone your perfect dev environment? With `devbox.json`, you can. This little file is the beating heart of your Devbox setup. Let's crack it open and see what makes it tick.
 
 ![Devbox.json Configuration](assets/config-ref.webp)

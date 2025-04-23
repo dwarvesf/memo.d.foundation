@@ -6,7 +6,7 @@ authors:
   - Hieu Phan
 github_id: hieuphq
 tags:
-  - engineeringbackend
+  - backend
   - golang
   - concurrency
   - race-condition

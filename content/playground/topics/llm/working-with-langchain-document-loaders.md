@@ -5,16 +5,6 @@ description: This article explores Langchain document loaders, explaining their 
 authors:
   - monotykamary
 github_id: monotykamary
-hashnode_meta:
-  {
-    "coverImageOptions":
-      {
-        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/working-with-langchain-document-loaders_langchain-document-loader-flow.webp",
-      },
-    "id": "670f4d4b4d1924a802ea8937",
-    "slug": "working-with-langchain-document-loaders",
-  }
-sync: hashnode
 tags:
   - ai
   - langchain

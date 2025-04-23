@@ -5,12 +5,6 @@ description: This article explores chunking strategies to handle context limitat
 authors:
   - thanh
 github_id: zlatanpham
-hashnode_meta:
-  {
-    "id": "670f4d4faec5a6a939f51326",
-    "slug": "chunking-strategies-to-overcome-context-limitation-in-llm",
-  }
-sync: hashnode
 tags:
   - ai
   - llm

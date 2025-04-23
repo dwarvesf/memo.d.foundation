@@ -7,7 +7,7 @@ authors:
 github_id: hieuphq
 icy: 10
 tags:
-  - engineeringbackend
+  - backend
   - elixir
   - pg
   - process

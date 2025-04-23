@@ -7,7 +7,7 @@ authors:
 github_id: Bachpx2911
 icy: 10
 tags:
-  - engineeringdata
+  - data
   - bi-tools
   - power-bi
   - tableau

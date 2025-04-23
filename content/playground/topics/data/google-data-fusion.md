@@ -7,7 +7,7 @@ authors:
 github_id: mickwan1234
 icy: 10
 tags:
-  - engineeringdata
+  - data
   - devops
   - google-cloud
   - google-data-studio

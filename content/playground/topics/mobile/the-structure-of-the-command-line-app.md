@@ -9,7 +9,7 @@ tags:
   - i-os
   - mac-os
   - swift
-  - engineeringmobile
+  - mobile
   - cli
 ---
 

@@ -1,29 +1,27 @@
 ---
-title: null
-date: null
-description: Explore key engineering concepts in AI, including large language models, reinforcement learning, chatbot building, and strategies to improve LLM performance and memory handling.
-recurringTemplate: true
-recurringTemplateName: engineering-ai-moc
+title: § AI
+date: 2025-04-23
+description: Explore clear explanations of gradient descent, AI-powered interview systems, secure remote servers, and challenges of AI in Hollywood and gaming to enhance your understanding of machine learning and AI applications.
+author: thanh
+tags:
+  - ai
+  - moc
 ---
 
-This is a [map-of-content]() related to the engineering concepts around AI.
+### AI fundamentals
 
-## AI
+- [Explaining gradient descent in machine learning with a simple analogy](./explaining-gradient-descent-in-machine-learning-with-a-simple-analogy.md)
 
-- [Adversarial Prompting]()
-- [Build your chatbot with open source Large Language Models]()
-- [Chunking strategies to overcome context limitation in LLM]()
-- [Dealing with Long-Term Memory in AI Chatbot]()
-- [Foundation model]()
-- [LLM query caching]()
-- [LLM's Accuracy - Self Refinement]()
-- [Q Learning]()
-- [RLHF with Open Assistant]()
-- [Reinforcement Learning]()
-- [Reward Model]()
-- [Select Vector Database for LLM]()
-- [Story map for LLMs]()
-- [Workaround with OpenAI's token limit with Langchain]()
-- [Working with langchain document loaders]()
+### Machine learning & deep learning
 
-_This page was last modified at 2024-03-15T05:48:35.937Z_.
+- [How we crafted the OGIF summarizer bot to streamline weekly knowledge sharing](./how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing.md)
+- [How we created an AI-powered interview system using OpenAI's ChatGPT](./how-we-created-an-ai-powered-interview-system-using-openais-chatgpt.md)
+
+### AI systems & engineering
+
+- [Securing your remote MCP servers](./securing-your-remote-mcp-servers.md)
+- [Tool-level security for remote MCP servers](./tool-level-security-for-remote-mcp-servers.md)
+
+### AI in society & industry
+
+- [Why Hollywood and gaming struggle with AI](./why-hollywood-and-gaming-struggle-with-ai.md)

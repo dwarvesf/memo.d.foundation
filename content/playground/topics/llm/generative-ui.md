@@ -5,16 +5,6 @@ description: An introduction to Generative UI (genUI), a user interface that gen
 authors:
   - namnanh14mn
   - TheCodister
-hashnode_meta:
-  {
-    "coverImageOptions":
-      {
-        "coverImageURL": "https://memo.d.foundation/playground/ai/assets/generative-ui-example1.webp",
-      },
-    "id": "670f4d4eb25a9930f0551618",
-    "slug": "what-is-generative-ui",
-  }
-sync: hashnode
 tags:
   - ai
   - generative-ui

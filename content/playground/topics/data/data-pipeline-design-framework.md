@@ -8,7 +8,7 @@ github_id: longbuivan
 icy: 15
 discord_id: 1157659003527106600
 tags:
-  - engineeringdata
+  - data
   - data-pipeline
 ---
 

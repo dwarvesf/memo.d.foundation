@@ -7,7 +7,7 @@ authors:
 github_id: binhle59
 icy: 10
 tags:
-  - engineeringqa
+  - qa
   - testing-type
   - qa-terms
 ---

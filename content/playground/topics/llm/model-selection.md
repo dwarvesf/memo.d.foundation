@@ -4,8 +4,6 @@ date: 2024-10-15
 description: Learn how to choose the right AI model for your needs. Explore key factors like accuracy, privacy, and cost. Compare commercial vs open-source options and API vs self-hosting approaches.
 authors:
   - thanh
-hashnode_meta: { "id": "670f4d43a897de73067fab5c", "slug": "model-selection" }
-sync: hashnode
 tags:
   - llm
   - ai

@@ -57,3 +57,4 @@ Hope to see you again at future events that promise to be even more exciting.
 ---
 
 _Dwarves Foundation partners with communities and experts to bring real stories, professional points of view, and live-case practices in the tech talk series that accelerates your software career._
+
