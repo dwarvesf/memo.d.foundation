@@ -14,6 +14,12 @@ export const wordDict: Record<string, string> = {
   seo: 'SEO',
   mcp: 'MCP',
   defi: 'DeFi',
+  dapp: 'DApp',
+  mma: 'MMA',
+  saas: 'SaaS',
+  web3: 'Web3',
+  pm: 'PM',
+  qa: 'QA',
 };
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
