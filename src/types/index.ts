@@ -27,6 +27,7 @@ export interface IMetadata {
   image?: string;
 
   firstImage?: string;
+  summary?: string;
 }
 
 export interface ITreeNode {

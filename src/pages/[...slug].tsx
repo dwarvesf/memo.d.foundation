@@ -253,8 +253,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     // Get markdown content and frontmatter
-    const { content, frontmatter, tocItems, rawContent, blockCount } =
-      await getMarkdownContent(filePath);
+    const {
+      content,
+      frontmatter,
+      tocItems,
+      rawContent,
+      blockCount,
+      summary: manualSummary,
+    } = await getMarkdownContent(filePath);
 
     // Get backlinks from the pre-calculated file
     const backlinksPath = path.join(
@@ -272,7 +278,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     // Use the original requested slug to find backlinks
     const backlinks = allBacklinks[slug.join('/')] || [];
-
+    const isAutoSummary = !!frontmatter.ai_summary;
+    let summary = manualSummary;
+    if (isAutoSummary && !summary) {
+      // If AI summary is enabled but no summary is provided, generate a default one
+      summary = '';
+    }
     const metadata = {
       created: frontmatter.date?.toString() || null,
       updated: frontmatter.lastmod?.toString() || null,
@@ -304,6 +315,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         },
         null,
       ),
+      summary,
     };
     return {
       props: {
@@ -427,6 +439,7 @@ export default function ContentPage({
           backlinks={backlinks}
           hideFrontmatter={frontmatter.hide_frontmatter}
           hideTitle={frontmatter.hide_title}
+          metadata={metadata}
         >
           {/* Render the HTML content safely */}
           <div

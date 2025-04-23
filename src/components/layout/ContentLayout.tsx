@@ -2,24 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import katex from 'katex';
-import { IBackLinkItem } from '@/types';
+import { IBackLinkItem, IMetadata } from '@/types';
+import SummaryBlock from '../memo/SummaryBlock';
 interface ContentLayoutProps {
   children: React.ReactNode;
   title?: string;
   description?: string;
   image?: string;
-  metadata?: {
-    created?: string;
-    updated?: string;
-    author?: string;
-    coAuthors?: string[];
-    tags?: string[];
-    folder?: string;
-    wordCount?: number;
-    readingTime?: string;
-    characterCount?: number;
-    blocksCount?: number;
-  };
+  metadata?: IMetadata;
   tableOfContents?: string;
   backlinks?: IBackLinkItem[];
   hideFrontmatter?: boolean;
@@ -80,25 +70,11 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
               {formattedTitle}
             </h1>
           </div>
-
-          {/* Tags in flexbox layout */}
-          {metadata?.tags && metadata.tags.length > 0 && !hideFrontmatter && (
-            <div className="mt-2 flex flex-wrap gap-1.5 md:mt-0 md:ml-4">
-              {metadata.tags.map(tag => (
-                <Link
-                  key={tag}
-                  href={`/tags/${tag?.toLowerCase()}`}
-                  className="bg-tag text-foreground inline-flex h-fit items-center justify-center rounded-[50px] px-[0.5rem] py-[0.125rem] text-xs leading-[1.125rem] font-medium no-underline"
-                >
-                  {tag?.replaceAll('-', ' ')}
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
       )}
 
       {/* Main content with prose styling */}
+      <SummaryBlock summary={metadata?.summary}></SummaryBlock>
       <div
         ref={mathContainerRef}
         className={cn(
