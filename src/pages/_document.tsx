@@ -27,31 +27,6 @@ export default function Document() {
         />
       </Head>
       <body className="min-h-screen antialiased">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                // Get saved theme or default to system preference
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const savedTheme = localStorage.getItem('theme');
-                
-                // Default to system preference if no saved preference
-                const theme = (savedTheme === 'light' || savedTheme === 'dark') 
-                  ? savedTheme 
-                  : (prefersDark ? 'dark' : 'light');
-                
-                // Apply theme
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
-                  document.documentElement.setAttribute('data-theme', 'dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                  document.documentElement.setAttribute('data-theme', 'light');
-                }
-              })();
-            `,
-          }}
-        />
         <Main />
         <NextScript />
       </body>

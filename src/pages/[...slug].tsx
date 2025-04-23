@@ -283,7 +283,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             tag => tag !== null && tag !== undefined && tag !== '',
           )
         : [],
-      folder: slug.slice(0, -1).join('/'), // Use the original requested slug for folder
+      folder: canonicalSlug.slice(0, -1).join('/'), // Use the canonical slug for folder
       // Calculate reading time based on word count (average reading speed: 200 words per minute)
       wordCount: content.split(/\s+/).length ?? 0,
       readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
@@ -300,7 +300,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       firstImage: getFirstMemoImage(
         {
           content: rawContent,
-          filePath: path.join(...slug) + '.md', // Use the original requested slug for filePath
+          filePath: path.join(...canonicalSlug) + '.md', // Use the canonical slug for filePath
         },
         null,
       ),

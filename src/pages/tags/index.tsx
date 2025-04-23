@@ -23,7 +23,7 @@ export const getStaticProps: GetStaticProps = async () => {
 const TagsPage = (props: RootLayoutPageProps) => {
   const { directoryTree } = props;
   const tags = useMemo(() => {
-    if (!directoryTree || !directoryTree['/tags']) return null;
+    if (!directoryTree) return null;
     const tagsNode = directoryTree['/tags'].children;
 
     if (!tagsNode) return null; // Add this check as well, just in case children is null/undefined

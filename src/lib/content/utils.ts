@@ -18,40 +18,55 @@ import fs from 'fs/promises'; // Use promises version for async file reading
  */
 function transformMenuDataToDirectoryTree(
   menuData: Record<string, GroupedPath>,
-  pinnedNotes: Array<{ title: string; url: string; date: string }>, // Add pinnedNotes parameter
+  pinnedNotes: Array<{ title: string; url: string; date: string }>,
+  tags: string[], // Add tags parameter
   currentPath = '',
 ): Record<string, ITreeNode> {
   const treeNode: Record<string, ITreeNode> = {};
 
-  // Add Pinned Notes section at the root
-  if (currentPath === '' && pinnedNotes.length > 0) {
-    const pinnedNotesNode: ITreeNode = {
-      label: 'Pinned', // Label for the pinned notes section
-      children: {},
-    };
-
-    pinnedNotes.forEach(note => {
-      // Use note.url as the key and url, note.title as label
-      pinnedNotesNode.children[note.url] = {
-        label: note.title,
+  // Initialize root nodes only at the top level (currentPath === '')
+  // Ensure specific order: /pinned, /, /tags
+  if (currentPath === '') {
+    // Add Pinned Notes section first if it exists
+    if (pinnedNotes.length > 0) {
+      const pinnedNotesNode: ITreeNode = {
+        label: 'Pinned', // Label for the pinned notes section
         children: {},
-        url: note.url,
       };
-    });
-    treeNode['/pinned'] = pinnedNotesNode; // Add to the root level with key '/pinned'
+
+      pinnedNotes.forEach(note => {
+        // Use note.url as the key and url, note.title as label
+        pinnedNotesNode.children[note.url] = {
+          label: note.title,
+          children: {},
+          url: note.url,
+        };
+      });
+      treeNode['/pinned'] = pinnedNotesNode; // Add Pinned node first
+    }
+
+    // Add Home and Tags nodes after Pinned
+    treeNode['/'] = { label: 'Home', children: {}, url: '/' };
+    treeNode['/tags'] = { label: 'Popular Tags', children: {}, url: '/tags' };
   }
+
+  // Determine the target node for adding children (root or nested)
+  const targetChildrenNode =
+    currentPath === '' ? treeNode['/'].children : treeNode; // Children go under '/' if at root
 
   // Process directories (keys in menuData)
   Object.entries(menuData).forEach(([dirName, group]) => {
-    // Handle the root path case explicitly
+    // Handle the root path case explicitly for constructing the path
     const fullDirPath =
-      currentPath === '' ? '/' + dirName : path.join(currentPath, dirName);
+      currentPath === '' ? '/' + dirName : path.join(currentPath, dirName); // Keep this for path construction
+
     const children: Record<string, ITreeNode> = {};
 
-    // Recursively process subdirectories
+    // Recursively process subdirectories, passing tags along
     const nestedChildren = transformMenuDataToDirectoryTree(
       group.next_path,
-      pinnedNotes, // Pass pinnedNotes in recursive call
+      pinnedNotes,
+      tags, // Pass tags in recursive call
       fullDirPath,
     );
     Object.assign(children, nestedChildren); // Add nested directories to children
@@ -99,12 +114,27 @@ function transformMenuDataToDirectoryTree(
     const dirUrl =
       slugifiedDirPath === '/' ? '/' : slugifiedDirPath.replace(/\/$/, '');
 
-    treeNode[fullDirPath] = {
+    // Add the current directory node to the target children node
+    targetChildrenNode[fullDirPath] = {
       label: dirName, // Use directory name as label for the directory node
       children: children,
       url: dirUrl, // Add the generated URL for directory
     };
   });
+
+  // Add Tags as children under '/tags' only at the root level
+  if (currentPath === '' && tags.length > 0) {
+    tags.forEach(tag => {
+      const slugifiedTag = slugifyPathComponents(tag.toLowerCase());
+      const tagUrl = `/tags/${slugifiedTag}`;
+      treeNode['/tags'].children[tagUrl] = {
+        label: `#${tag}`, // Display tag with # prefix
+        children: {},
+        url: tagUrl,
+        // Note: Count is not available from tags.json
+      };
+    });
+  }
 
   return treeNode;
 }
@@ -147,11 +177,15 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
     // Continue with empty tags if file not found or error occurs
   }
 
-  const directoryTree = transformMenuDataToDirectoryTree(menuData, pinnedNotes);
+  // Pass tags array to the transformation function
+  const directoryTree = transformMenuDataToDirectoryTree(
+    menuData,
+    pinnedNotes,
+    tags,
+  );
+  // console.log({ directoryTree, pinnedNotes, tags }); // Keep or remove logging as needed
 
   return {
     directoryTree,
-    pinnedNotes,
-    tags,
   };
 }

@@ -64,12 +64,6 @@ export interface ISearchResultItem {
 export interface RootLayoutPageProps {
   directoryTree?: Record<string, ITreeNode>;
   searchIndex?: IMiniSearchIndex | null;
-  pinnedNotes?: Array<{
-    title: string;
-    url: string;
-    date: string;
-  }>;
-  tags?: string[]; // Assuming getTags returns string[]
 }
 
 export interface IMemoItem {
