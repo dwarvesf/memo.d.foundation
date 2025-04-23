@@ -22,8 +22,8 @@ const navLinks = [
     Icon: MemoIcons.consulting,
   },
   { title: 'Earn', url: '/earn', Icon: MemoIcons.earn },
-  { title: 'Hiring', url: '/careers/hiring', Icon: MemoIcons.careers },
-  { title: 'Digest', url: '/updates/digest', Icon: MemoIcons.updates },
+  { title: 'Hiring', url: '/careers', Icon: MemoIcons.careers },
+  { title: 'Changelog', url: '/updates/changelog', Icon: MemoIcons.updates },
   { title: 'OGIFs', url: '/updates/ogif', Icon: MemoIcons.ogif },
 ];
 
