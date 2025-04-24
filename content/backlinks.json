@@ -529,12 +529,6 @@
       "path": "/culture/are-you-helping"
     }
   ],
-  "playground/notes/misc/how-to-recap-a-publication": [
-    {
-      "title": "Life cycle of a publication",
-      "path": "/playground/notes/misc/lifecycle-of-a-publication"
-    }
-  ],
   "playground/topics/llm/llm-as-a-judge": [
     {
       "title": "Evaluation guidelines for LLM applications",

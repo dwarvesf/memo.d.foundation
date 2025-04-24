@@ -38,6 +38,6 @@ tags:
 
 ## Reference
 
-- https://spl.solana.com/token
-- https://spl.solana.com/associated-token-account
-- https://twitter.com/pencilflip/status/1454141877972779013
+- <https://spl.solana.com/token>
+- <https://spl.solana.com/associated-token-account>
+- <https://twitter.com/pencilflip/status/1454141877972779013>
