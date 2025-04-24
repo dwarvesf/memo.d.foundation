@@ -1,9 +1,10 @@
 ---
+
 title: Frontend Report August 2024
 date: 2024-09-09
 description: A comprehensive August 2024 update on key advancements in React 19, Next.js 15, and web development tools. Highlights include new async transitions, server components, SSR performance comparisons, and emerging technologies in the web development landscape
 authors:
-  - mashiro5951
+  - ngolapnguyen
 short_title: August 2024
 tags:
   - frontend

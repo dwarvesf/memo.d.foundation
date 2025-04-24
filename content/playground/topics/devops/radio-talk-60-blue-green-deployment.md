@@ -1,9 +1,10 @@
 ---
+
 title: Radio Talk 60 Blue Green Deployment
 date: 2023-03-10
 description: Learn how blue-green deployment reduces downtime and risk by switching traffic between identical environments, improving software reliability and flexibility for seamless updates.
 authors:
-  - Thanh Pham
+  - zlatanpham
 tags:
   - radar
   - devops

@@ -1,9 +1,10 @@
 ---
+
 title: "Weekly Digest #3: We all start somewhere"
 date: 2024-04-22
 description: "Huge news is on the horizon. You absolutely will not guess what we’re about to share. Excitement building, we remember last week like it was yesterday, but what truly counts is that you're here with us."
 authors:
-  - innno_
+  - innnotruong
 short_title: "#3 We all start somewhere"
 tags:
   - weekly-digest

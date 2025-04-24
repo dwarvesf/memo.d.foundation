@@ -1,9 +1,10 @@
 ---
+
 title: State management strategy in React
 date: 2024-10-29
 description: Discover state management strategies, best practices, and when to use each approach for scalable, efficient React applications
 authors:
-  - thanh
+  - zlatanpham
 short_title: State management strategy
 tags:
   - react

@@ -1,4 +1,5 @@
 ---
+
 title: 'Building better Binance transfer tracking'
 date: 2024-11-18
 tags:
@@ -7,7 +8,7 @@ tags:
   - defi
 description: A deep dive into building a robust transfer tracking syste m for Binance accounts, transforming disconnected transaction logs into meaningful fund flow narratives through SQL and data analysis
 authors:
-  - bievh
+  - baenv
 ---
 
 Binance is one of the most popular Decentralized Exchanges worldwide, so the demand for building Binance-integrated applications is growing daily. My team is also onboarding. We have a deal that requires us to build a Binance trading application with the ability to trade on multiple accounts simultaneously. In this way, our clients can optimize their trading progress as much as possible.

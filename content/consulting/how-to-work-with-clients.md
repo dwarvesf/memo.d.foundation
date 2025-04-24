@@ -4,7 +4,7 @@ date: 2023-10-16
 description: What skills that an engineer should have in order to work with client effectively?
 authors:
   - tieubao
-  - nikki
+  - nikkingtr
 tags:
   - client
   - software

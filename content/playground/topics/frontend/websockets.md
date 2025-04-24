@@ -1,9 +1,10 @@
 ---
+
 title: WebSockets
 date: 2023-12-18
 description: WebSockets are a simple solution that is invented to solve the problems of HTTP polling for updating the data from the server, which has caused in high overhead, latency, and not-truthly realtime. WebSocket helps to maintain one single TCP connection for traffic in both directions for bidirectional soft-realtime communication.
 authors:
-  - namanh14mn
+  - tonible14012002
 github_id: tonible14012002
 tags:
   - websocket

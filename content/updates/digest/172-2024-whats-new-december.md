@@ -1,9 +1,10 @@
 ---
+
 title: "What's New in December 2024"
 date: 2025-01-03
 description: "December blended Penang team moments with steady progress, closing 2024 with energy and ready for what's next."
 authors:
-  - innno_
+  - innnotruong
 hide_frontmatter: false
 tags:
   - newsletter

@@ -1,9 +1,10 @@
 ---
+
 title: "Ton: Blockchain of blockchains"
 date: 2024-07-11
 description: "Talk about TON and its core technologies. Why do we call TON the 'Blockchain of blockchains'?"
 authors:
-  - bievh
+  - baenv
 tags:
   - web3
   - blockchain

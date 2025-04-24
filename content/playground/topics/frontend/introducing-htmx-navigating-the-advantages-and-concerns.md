@@ -1,9 +1,10 @@
 ---
+
 title: Introducing HTMX - Navigating the Advantages and Concerns
 date: 2023-12-18
 description: A comprehensive exploration of HTMX, a JavaScript library that extends HTML as a hypermedia, addressing the limitations of legacy HTML applications.
 authors:
-  - namanh
+  - tonible14012002
 github_id: tonible14012002
 icy: 10
 tags:

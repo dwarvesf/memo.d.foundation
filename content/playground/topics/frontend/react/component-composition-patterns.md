@@ -1,9 +1,10 @@
 ---
+
 title: Component composition patterns in React
 date: 2024-10-29
 description: Learn React composition patterns with coverage of HOCs, render props, compound components, and custom hook
 authors:
-  - thanh
+  - zlatanpham
 short_title: Component composition patterns
 tags:
   - react

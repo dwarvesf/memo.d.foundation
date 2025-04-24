@@ -1,11 +1,12 @@
 ---
+
 title: Market report April 2024
 short_title: April 2024
 date: 2024-05-15
 description: "In april’s market report, we explore the evolving landscape of Meta's Llama 3, LLM, the shift to edge computing, the new Bun 1.1, the trend of copy-pastes UI."
 authors:
   - monotykamary
-  - thanh
+  - zlatanpham
 tags:
   - labs
   - market-report

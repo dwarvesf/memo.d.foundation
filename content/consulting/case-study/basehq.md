@@ -4,8 +4,8 @@ short_title: BaseHQ
 date: 2021-08-06
 description: We worked with BaseHQ for two years to build and improve their software for executive assistants, helping them create new features and make their system faster and more reliable.
 authors: 
-  - duy
-  - nikki
+  - duynglam
+  - nikkingtr
 tags:
   - startup
   - case-study

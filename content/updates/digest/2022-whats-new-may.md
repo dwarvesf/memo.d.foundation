@@ -1,9 +1,10 @@
 ---
+
 title: "What's New in May 2022"
 date: 2022-05-31
 description: Each month, we release a recap noting all the significant changes with our company and our team. In May, we kicked off Apprenticeship training, and our new chalet is ready for community to visit.
 authors:
-  - duy
+  - duynglam
 tags:
   - newsletter
   - blockchain

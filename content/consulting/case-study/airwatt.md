@@ -5,7 +5,7 @@ date: 2020-11-15
 description: "We built AirWatt's system that uses artificial intelligence to track how businesses use electricity, helping them save money and prevent equipment problems."
 authors: 
   - tieubao
-  - duy
+  - duynglam
 tags: 
   - iot
   - case-study
@@ -35,7 +35,7 @@ Full-stack Development / AI Integration / IoT System Design
 - **AI engine**: Custom machine learning for device detection and usage prediction
 - **Mobile apps**: Native iOS (Swift) and Android (Kotlin) applications
 - **Database architecture**: MongoDB for real-time updates and DynamoDB for AI data
-- **Device connectivity**: WiFi connection using ESP2866 protocol 
+- **Device connectivity**: WiFi connection using ESP2866 protocol
 - **Infrastructure**: Docker, Kubernetes, AWS, GCP for reliable hosting
 
 ![AirWatt electricity monitoring system](assets/airwatt-main.webp)

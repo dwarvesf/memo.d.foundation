@@ -4,8 +4,8 @@ short_title: Reapit
 date: 2021-02-13
 description: We joined Reapit as their offshore development team, helping them transform their desktop software into a modern cloud platform. Our agile team delivered critical components on a tight timeline for their major platform launch.
 authors: 
-  - duy
-  - nikki
+  - duynglam
+  - nikkingtr
 tags: 
   - case-study
   - real-estate

@@ -1,9 +1,10 @@
 ---
+
 title: "Dwarves' 2nd community offline meet-up"
 date: 2024-06-11
 description: At the end of May, we had the pleasure of hosting our second community meet-up. Over 50 folks, including notable community members, joined us.
 authors:
-  - innno_
+  - innnotruong
 tags:
   - meet-up
   - community

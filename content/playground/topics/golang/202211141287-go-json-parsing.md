@@ -1,9 +1,10 @@
 ---
+
 title: "Go JSON parser: number <-> interface"
 date: 2022-11-14
 description: TLDR; be careful when using  map[string]interface{} to hold json number value, use custom decoder with newDecoder.UseNumber() to decode the json string.
 authors:
-  - hieuvd
+  - vdhieu
 discord_id: "hieuvd#4261"
 discord_channel: engineering
 tags:

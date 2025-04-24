@@ -1,10 +1,11 @@
 ---
+
 title: Market report September 2024
 short_title: September 2024
 date: 2024-10-08
 description: "In this month's market report, we've covered the hype and skepticism around OpenAI's reasoning models, the quiet rise of lightweight AI, the misuse of serverless, and the shakeup in web frameworks."
 authors:
-  - thanh
+  - zlatanpham
   - monotykamary
 tags:
   - labs

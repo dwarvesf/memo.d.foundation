@@ -1,9 +1,10 @@
 ---
+
 title: Radix Sort
 date: 2024-06-27
 description: Radix Sort is a non-comparative sorting algorithm that sorts integers by processing individual digits. Unlike comparison-based algorithms (like Quick Sort or Merge Sort), Radix Sort groups numbers by their individual digits.
 authors:
-  - hieuvd
+  - vdhieu
 tags:
   - algorithms
   - sorting

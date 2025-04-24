@@ -1,7 +1,8 @@
 ---
+
 authors:
-  - 'thanh'
-  - 'quang'
+  - zlatanpham
+  - lmquang
 date: '2024-11-21'
 description: 'A technical case study for implementing centralized monitoring for a trading platform using Grafana and Prometheus, focusing on real-time alerts, data integrity, and resource optimization to prevent financial losses.'
 tags:

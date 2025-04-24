@@ -1,10 +1,11 @@
 ---
+
 title: 2018 In Review
 date: 2018-12-31
 description: 2018 notable hightlights and achievements
 authors:
   - tieubao
-  - duy
+  - duynglam
 tags:
   - updates
   - newsletter

@@ -1,10 +1,11 @@
 ---
+
 title: The overview into Nix & how we use Devbox @ Dwarves
 date: 2024-04-24
 description: The overview into Nix & how we use Devbox @ Dwarves
 authors:
-  - hnh
-  - vhbien
+  - huynguyenh
+  - baenv
 tags:
   - tooling
   - containerization

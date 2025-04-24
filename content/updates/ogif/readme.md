@@ -1,4 +1,5 @@
 ---
+
 tags:
   - culture
   - performance
@@ -9,7 +10,7 @@ date: 2023-12-11
 description: OGIF (Oh God It's Friday) is our weekly casual office hours meeting, where team members unwind, share updates, and connect in a relaxed environment at the end of each work week.
 authors:
   - monotykamary
-  - innno_
+  - innnotruong
 ---
 
 OGIF, or 'Oh God It's Friday,' is our team's weekly technical deep-dive. It's a dedicated time for engineers to present complex problems, discuss potential solutions, and explore emerging technologies relevant to our work.

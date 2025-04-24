@@ -4,8 +4,8 @@ short_title: JoinPara
 date: 2021-04-29
 description: During the height of the pandemic, we helped Para build a platform that quickly connects nurses with hospitals facing staffing shortages. Our COVID-19 support program allowed them to accelerate development when they needed it most.
 authors: 
-  - duy
-  - nikki
+  - duynglam
+  - nikkingtr
 tags: 
   - healthcare
   - case-study

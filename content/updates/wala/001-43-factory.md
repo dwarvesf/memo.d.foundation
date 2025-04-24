@@ -4,7 +4,7 @@ short_title: 43 Factory
 date: 2024-10-16
 description: Our visit to 43 Factory coffee shop in Danang revealed surprising parallels between coffee craftsmanship and software engineering. We discovered valuable insights about talent management, quality delivery, and continuous learning that directly apply to our tech practices.
 authors:
-  - nikki
+  - nikkingtr
 tags:
   - wala
   - fnb

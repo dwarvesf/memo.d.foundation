@@ -1,4 +1,5 @@
 ---
+
 title: 'Reconstructing historical trading PnL: a data pipeline approach'
 date: 2024-11-18
 tags:
@@ -7,7 +8,7 @@ tags:
   - blockchain
 description: A detailed look at how we rebuilt historical trading PnL data through an efficient data pipeline approach, transforming a complex problem into a maintainable solution.
 authors:
-  - bievh
+  - baenv
 ---
 
 ## Executive summary

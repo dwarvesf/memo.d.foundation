@@ -1,10 +1,11 @@
 ---
+
 title: 'Talks and Takeaways from the Scene: Part 1'
 short_title: 1st Talks and Takeaways
 date: 2025-03-13T00:00:00.000Z
 description: Talks and Takeaways from the Scene Part 1
 authors:
-  - minh
+  - ooohminh
 tags:
   - consulting
   - market-report

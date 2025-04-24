@@ -4,8 +4,8 @@ short_title: Attrace
 date: 2021-06-18
 description: We helped Attrace, a Dutch company, create a transparent affiliate marketing platform using blockchain technology that connects online merchants with websites in a secure, fraud-resistant way.
 authors: 
-  - nikki
-  - duy
+  - nikkingtr
+  - duynglam
 tags: 
   - blockchain
   - case-study

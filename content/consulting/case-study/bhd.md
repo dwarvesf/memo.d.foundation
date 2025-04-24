@@ -6,7 +6,7 @@ description: We helped BHD Cinema transform their outdated mobile app into an in
 tags: 
   - case-study
 authors: 
-  - duy
+  - duynglam
 ---
 
 **Industry**\

@@ -4,8 +4,8 @@ date: 2022-06-26
 description: Hey, it’s Han and Nikki in your inbox again.
 authors: 
   - tieubao
-  - nikki
-  - duy
+  - nikkingtr
+  - duynglam
 tags: 
   - newsletter
   - team

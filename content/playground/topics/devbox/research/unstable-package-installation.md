@@ -1,9 +1,10 @@
 ---
+
 title: Unstable Package Installation in Docker
 date: 2024-08-01
 description: An explanation of the challenges with package versioning that lets Docker builds unstable
 authors:
-  - bievh
+  - baenv
 tags:
   - docker
   - devbox

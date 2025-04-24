@@ -1,9 +1,10 @@
 ---
+
 title: Error Messaging
 date: 2022-11-08
 description: What makes a bad error message
 authors:
-  - khacvy
+  - trankhacvy
 discord_id: "khacvy#8287"
 discord_channel: engineering
 tags:

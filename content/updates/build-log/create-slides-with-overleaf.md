@@ -1,4 +1,5 @@
 ---
+
 title: Create slides with Overleaf and ChatGPT
 date: 2025-03-20T00:00:00.000Z
 tags:
@@ -11,7 +12,7 @@ description: >-
   with Overleaf’s themes. It includes examples, tips, and a Dify automation for
   engineers.
 authors:
-  - bievh
+  - baenv
   - tieubao
 should_deploy_perma_storage: true
 perma_storage_id: 4GVkldu9UdEN5Yaguw79Z5-nBykrQ-YkeGizSV4_rz0

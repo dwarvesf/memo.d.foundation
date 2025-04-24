@@ -1,9 +1,10 @@
 ---
+
 title: Build polymorphic React components with Typescript
 date: 2022-09-26
 description: This article provides a step-by-step guide on how to build polymorphic React components with Typescript, covering the necessary concepts and techniques to create flexible and reusable components.
 authors:
-  - khacvy
+  - trankhacvy
 github_id: trankhacvy
 tags:
   - frontend

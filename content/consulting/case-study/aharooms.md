@@ -5,8 +5,8 @@ date: 2020-12-01
 description: We helped Aharooms create a suite of digital tools that enables small hotels in Vietnam to improve operations, increase bookings, and boost revenue, especially during the challenging COVID-19 period when adaptation was crucial.
 authors: 
   - tieubao
-  - duy
-  - nikki
+  - duynglam
+  - nikkingtr
 tags: 
   - hospitality
   - case-study

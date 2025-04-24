@@ -1,9 +1,10 @@
 ---
+
 title: Pinning nixpkgs in Nix
 date: 2024-08-01
 description: An explanation of pinning nixpkgs in Nix and its importance for reproducible builds
 authors:
-  - bievh
+  - baenv
 tags:
   - nix
   - docker

@@ -1,9 +1,10 @@
 ---
+
 title: Database design Circular
 date: 2024-10-30
 description: A comprehensive guide to understanding circular references in database design, including types, challenges, real-world applications, and solutions for managing them effectively. Covers self-references, circular dependencies, and strategies for maintaining data integrity while working with circular relationships.
 authors:
-  - hieuthu1
+  - hieuphq
 tags:
   - database
   - sql

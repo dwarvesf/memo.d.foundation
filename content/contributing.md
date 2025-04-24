@@ -1,11 +1,12 @@
 ---
+
 title: Home
 date: 2023-12-11
 description: How to contribute to our second brain.
 authors:
   - tieubao
   - monotykamary
-  - thanh
+  - zlatanpham
 tags:
   - contribution
 ---

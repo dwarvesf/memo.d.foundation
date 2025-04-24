@@ -1,9 +1,10 @@
 ---
+
 title: Chunking strategies to overcome context limitation in LLM
 date: 2023-07-08
 description: This article explores chunking strategies to handle context limitations in Large Language Models (LLMs) like GPT. It covers preprocessing data, selecting chunk sizes, and how to maintain coherence in various content types such as unstructured, Markdown, and LaTeX.
 authors:
-  - thanh
+  - zlatanpham
 github_id: zlatanpham
 tags:
   - ai

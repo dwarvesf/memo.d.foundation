@@ -1,9 +1,10 @@
 ---
+
 title: Unit Testing Best Practices In Golang
 date: 2023-04-11
 description: An in-depth exploration of arrays and slices in Go, covering their differences, internal implementations, and key operations like append. Learn about fixed-length arrays, flexible slices, and how Go manages memory allocation for growing slices.
 authors:
-  - taynguyen294
+  - taynguyen
 tags:
   - engineering
   - practice

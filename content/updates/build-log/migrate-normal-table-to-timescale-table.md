@@ -1,4 +1,5 @@
 ---
+
 title: 'Migrate regular tables into TimescaleDB hypertables to improve query performance'
 date: 2025-01-15
 tags:
@@ -8,7 +9,7 @@ tags:
   - timescaledb
 description: 'How do we migrate normal table to timescale table to optimized data storage'
 authors:
-  - minhth
+  - thminhVN
 ---
 
 Due to increasing trading volume, the `user_trades` and `incomes` tables have grown significantly, causing slower performance in our reporting queries. To address this, we propose migrating these tables to TimescaleDB, which will allow us to partition the data into time-based chunks. This partitioning strategy should optimize our report query performance.

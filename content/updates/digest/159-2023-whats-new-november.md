@@ -1,9 +1,10 @@
 ---
+
 title: "What's New in November 2023"
 date: 2023-12-06
 description: Each month, we release a recap noting all the significant changes in our company and our team. November is our month for meetups and outstanding craftsmanship.
 authors:
-  - nikki
+  - nikkingtr
 tags:
   - newsletter
   - meet-up

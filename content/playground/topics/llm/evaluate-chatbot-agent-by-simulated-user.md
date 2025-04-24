@@ -1,9 +1,10 @@
 ---
+
 title: Evaluate Chatbot Agent by User Simulation
 date: 2024-09-12
 description: "When building a chatbot agent, it's important to evaluate its performance and user satisfaction. One effective method is user simulation, which involves creating virtual users to interact with the chatbot and assess its responses. This approach allows for a more realistic evaluation of the chatbot's capabilities and user experience."
 authors:
-  - hoangnnh
+  - nnhuyhoang
 tags:
   - llm
   - ai-agents

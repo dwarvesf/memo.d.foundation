@@ -1,11 +1,12 @@
 ---
+
 title: "Building a community platform for Vietnamese Entrepreneurs"
 short_title: StartupVN
 date: 2023-03-15
 description: We helped create a digital hub where Vietnamese startup founders can connect, share knowledge, and access resources to grow their businesses.
-authors: 
-  - thanh
-  - hnh
+authors:
+  - zlatanpham
+  - huynguyenh
 tags:
   - startup
   - case-study

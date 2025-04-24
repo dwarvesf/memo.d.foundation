@@ -1,9 +1,10 @@
 ---
+
 title: Conduct a 1-on-1 session
 date: 2021-08-09
 description: null
 authors:
-  - thanh
+  - zlatanpham
 tags: 
   - radio-talk
 ---

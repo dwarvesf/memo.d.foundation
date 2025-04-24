@@ -1,9 +1,10 @@
 ---
+
 title: The fundamental of web performance
 date: 2022-10-02
 description: The key to improving your website speed is to understand where the bottlenecks are, and how much time each step takes.
 authors:
-  - thanh
+  - zlatanpham
 github_id: zlatanpham
 tags:
   - frontend

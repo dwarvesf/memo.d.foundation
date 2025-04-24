@@ -1,9 +1,10 @@
 ---
+
 title: Dynamic Liquidity Market Maker - a new form of concentrated liquidity AMM on Solana
 date: 2024-06-21
 description: a new form of concentrated liquidity AMM on solana
 authors:
-  - huymaius
+  - quanghuynguyen1902
 tags:
   - blockchain
   - solana

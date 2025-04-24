@@ -1,9 +1,10 @@
 ---
+
 title: Liquidity pool
 date: 2022-03-24
 description: A comprehensive guide to understanding liquidity pools in blockchain, covering their definition, functionality, the role of automated market makers (AMM), arbitrage, pool depth, slippage, how to provide liquidity, and the concept of impermanent loss. This article provides insights for both beginners and experienced users in decentralized finance (DeFi)
 authors:
-  - hienld
+  - leduyhien152
 github_id: leduyhien152
 tags:
   - blockchain

@@ -1,4 +1,5 @@
 ---
+
 title: 'Tracking Bitcoin-Altcoin Performance Indicators in BTC Hedging Strategy'
 date: 2025-01-02
 tags:
@@ -7,7 +8,7 @@ tags:
   - blockchain
 description: 'This article provides an overview of the importance of tracking Bitcoin-Altcoin performance indicators in a trading strategy known as Hedge, and explains how to visualize this data effectively. It also demonstrates how to render a chart for this strategy using Matplotlib and Seaborn'
 authors:
-  - bievh
+  - baenv
 ---
 
 In recent years, alongside the growth of blockchain technology, the cryptocurrency market has attracted significant attention from investors and traders. These market participants develop strategies based on their experience and knowledge, primarily demonstrated through their ability to analyze market indicators. One valuable indicator is the BTC-Altcoins outperform metric. This article examines the importance of tracking Bitcoin-Altcoin performance indicators in a trading strategy known as **Hedge**, and explains how to visualize this data effectively.

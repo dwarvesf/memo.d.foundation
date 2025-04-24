@@ -1,9 +1,10 @@
 ---
+
 title: "Product Design Commentary #2: Unpacking the sparkles icon and AI onboarding challenges"
 date: 2024-10-07
 description: "In this second edition, we explore the use of the Sparkle (✨) icon for AI-driven features and the common confusion it creates for users. It covers best practices for designing effective onboarding for AI tools, highlighting the importance of clear communication, contextual help, and easy-to-follow tutorials to ensure a smooth user experience. By focusing on these elements, designers can enhance user understanding and engagement with AI features."
 authors:
-  - nambui
+  - Maniub102
 tags:
   - UX-UI
   - product-design

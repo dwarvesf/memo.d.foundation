@@ -13,7 +13,7 @@ title: "AI digest #1 Aider reasoning, OpenAI Realtime API, Cline - pre Claude-de
 ---
 
 
-This week's AI updates are all about making life easier for developers working with agentic tools. **Cline**, formerly known as Claude Dev, just dropped its v2.0.0 update with faster response times and real-time interactions, perfect for streamlining workflows. **OpenAI’s Realtime API** is a game-changer for real-time function chaining and voice-based coding with Ada. And finally, **Aider’s Architect/Editor** split simplifies complex code reasoning, making pair programming smoother than ever. 
+This week's AI updates are all about making life easier for developers working with agentic tools. **Cline**, formerly known as Claude Dev, just dropped its v2.0.0 update with faster response times and real-time interactions, perfect for streamlining workflows. **OpenAI’s Realtime API** is a game-changer for real-time function chaining and voice-based coding with Ada. And finally, **Aider’s Architect/Editor** split simplifies complex code reasoning, making pair programming smoother than ever.
 
 ## [Cline - (prev. Claude Dev)](https://github.com/cline/cline)
 
@@ -33,7 +33,7 @@ We founded it [github repository](https://github.com/disler/poc-realtime-ai-assi
 
 ## [Aider - separating code reasoning and editing](https://aider.chat/2024/09/26/architect.html)
 
-**New approach from Aider:** 
+**New approach from Aider:**
 
 - **Architect Role**: Generates a solution to the coding problem, focusing purely on reasoning. ( Use a strong reasoning model like o1-preview as your Architect. )
 - **Editor Role**: Converts the Architect's solution into specific, well-formatted code edits. ( Use a cheaper, faster model like gpt-4o as your Editor. )

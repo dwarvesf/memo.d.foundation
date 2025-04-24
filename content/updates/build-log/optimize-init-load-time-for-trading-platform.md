@@ -1,6 +1,7 @@
 ---
+
 authors:
-  - 'thanh'
+  - zlatanpham
 date: '2025-03-12'
 description: 'Discover the technical strategies behind optimizing a Binance trading platform, reducing initial load times to under 1 second for enhanced trader productivity.'
 tags:

@@ -4,9 +4,9 @@ short_title: Mudah
 date: 2021-03-09
 description: We helped Mudah.my switch from an outdated system to a modern, faster one that can handle more users and grow with their business.
 authors: 
-  - duy
+  - duynglam
   - tieubao
-  - nikki
+  - nikkingtr
 tags: 
   - case-study
   - marketplace

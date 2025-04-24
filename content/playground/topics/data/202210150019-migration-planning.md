@@ -1,9 +1,10 @@
 ---
+
 title: Migration Planning
 date: 2022-10-14
 description: Migration planning is a crucial part of any software development project, especially when migrating to a new database or platform.
 authors:
-  - cor3.co
+  - tienan92it
 tags:
   - migrations
 ---

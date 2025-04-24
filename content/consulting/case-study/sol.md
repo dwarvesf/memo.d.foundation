@@ -4,7 +4,7 @@ short_title: Sol
 date: 2020-10-10
 description: "We designed Sol, a travel app that helps groups stay connected, organized, and on budget during trips. Our comprehensive approach included user research, visual design, and interactive prototyping."
 authors: 
-  - duy
+  - duynglam
 tags: 
   - case-study
   - travel

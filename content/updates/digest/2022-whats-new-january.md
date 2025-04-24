@@ -1,10 +1,11 @@
 ---
+
 title: "What's New in January 2022"
 date: 2022-01-28
 description: Each month, we release a recap noting all the significant changes with our company and our team. January 2022 will go over performance review and our growth on projects, new year highlights.
 authors:
-  - nikki
-  - duy
+  - nikkingtr
+  - duynglam
 tags:
   - newsletter
   - updates

@@ -1,10 +1,11 @@
 ---
+
 title: Our Docker adoption and its challenges
 date: 2024-04-19
 description: Our second Devbox session, where we discussed our Docker adoption and challenges.
 authors:
-  - hnh
-  - vhbien
+  - huynguyenh
+  - baenv
 tags:
   - tooling
   - containerization

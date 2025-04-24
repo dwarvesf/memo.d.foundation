@@ -205,14 +205,14 @@ How do we test our Go code focusing on security and robustness?
 
   - Extremely helpful in finding potential security flaws like buffer overflows, SQL injections, DoS attacks and XSS attacks
 
-  - Further read on [Fuzzing test HTTP services Golang](./nov-01.md)
+  - Further read on [Fuzzing test HTTP services Golang](nov-01.md)
 
 ---
 
-https://jarosz.dev/article/writing-secure-go-code/
+<https://jarosz.dev/article/writing-secure-go-code/>
 
-https://github.com/CyberRoute/bruter
+<https://github.com/CyberRoute/bruter>
 
-https://en.wikipedia.org/wiki/Open-source_intelligence
+<https://en.wikipedia.org/wiki/Open-source_intelligence>
 
-https://cwe.mitre.org/data/definitions/295.html
+<https://cwe.mitre.org/data/definitions/295.html>

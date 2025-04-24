@@ -5,7 +5,7 @@ description: We're a team combining tech skills, problem-solving, and clear comm
 authors:
   - tieubao
   - monotykamary
-  - nikki
+  - nikkingtr
 tags:
   - consulting
   - home

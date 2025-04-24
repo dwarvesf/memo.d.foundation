@@ -1,9 +1,10 @@
 ---
+
 title: "Ton's base concepts"
 date: 2024-07-17
 description: Base concepts to begin with TON development
 authors:
-  - bievh
+  - baenv
 tags:
   - web3
   - blockchain

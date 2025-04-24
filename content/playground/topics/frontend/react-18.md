@@ -1,9 +1,10 @@
 ---
+
 title: React 18
 date: 2022-06-06
 description: React 18 was released in March 2022. This release focuses on performance improvements and updating the rendering engine.
 authors:
-  - khacvy
+  - trankhacvy
 tags:
   - engineering
   - frontend

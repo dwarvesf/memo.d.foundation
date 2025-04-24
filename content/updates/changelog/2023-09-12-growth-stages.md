@@ -4,8 +4,8 @@ date: 2023-09-12
 description: In this update, we are excited to share the real journey of growth and transformation that our team has embarked upon, as we continue to strive to become a more skilled and knowledgable software team.
 authors: 
   - tieubao
-  - nikki
-  - duy
+  - nikkingtr
+  - duynglam
 tags: 
 ---
 

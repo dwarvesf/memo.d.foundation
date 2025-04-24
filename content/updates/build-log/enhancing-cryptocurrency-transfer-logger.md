@@ -1,4 +1,5 @@
 ---
+
 title: 'Transfer mapping: enhancing loggers for better transparency'
 date: 2024-11-18
 tags:
@@ -7,7 +8,7 @@ tags:
   - fintech
 description: A comprehensive guide on improving cryptocurrency transfer logging systems to provide better transparency and traceability for users and developers.
 authors:
-  - bievh
+  - baenv
 ---
 
 ## What is a logger, and why does it matter?

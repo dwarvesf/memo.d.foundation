@@ -1,4 +1,5 @@
 ---
+
 title: 'Building a data archive and recovery strategy for high-volume trading system'
 date: 2024-12-13
 tags:
@@ -7,7 +8,7 @@ tags:
   - finance
 description: 'A guide to implementing data archival and recovery strategies for high-volume transactional application.'
 authors:
-  - bievh
+  - baenv
 ---
 
 ## Data safeguarding strategies

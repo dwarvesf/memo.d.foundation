@@ -1,9 +1,10 @@
 ---
+
 title: "What's New in March 2025"
 date: 2025-04-02
 description: "Last month, the team kicked off structured OGIF demos, launched GitHub Agent and MCP DB to support internal automation, finalized the ICY-BTC swap, and rolled out UI and handbook updates on memo.d.foundation. We also set a more consistent office rhythm with meme culture picking up, while the BD team tuned into regional AI and Web3 events to stay close to what's happening next."
 authors:
-  - innno_
+  - innnotruong
 tags:
   - newsletter
   - updates

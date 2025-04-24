@@ -1,4 +1,5 @@
 ---
+
 title: 'Implementing data snapshot pattern to persist historical data'
 date: 2024-12-11
 tags:
@@ -7,7 +8,7 @@ tags:
   - blockchain
 description: 'A technical exploration of implementing the data snapshot pattern for efficient historical data persistence'
 authors:
-  - bievh
+  - baenv
 ---
 
 With the growth of financial models, transactional data has become larger and increasingly diverse. It includes a wide range of fields:

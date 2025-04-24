@@ -1,12 +1,13 @@
 ---
+
 title: "Building a payment platform from scratch"
 short_title: Open Fabric
 date: 2022-09-28
 description: We helped Open Fabric build a payment platform that makes it easier for stores to accept digital payments across Southeast Asia. Our team built the core technology and delivered a working product within a year.
-authors: 
-  - Tom
-  - nikki
-  - hnh
+authors:
+  - monotykamary
+  - nikkingtr
+  - huynguyenh
 tags: 
   - case-study
   - fintech

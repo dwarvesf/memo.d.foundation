@@ -1,11 +1,12 @@
 ---
+
 title: "State of Dwarves: 2024 Semi-annual Review"
 date: 2024-07-04
 description: "The past six months have been packed with many improvements to our Discord server from new standards and automation to engaging activities and rewards. Take a moment to reflect on our journey so far, and let's get excited about what we'll accomplish together before the year ends."
 authors:
-  - innno_
-  - nikki
-  - thanh.pham
+  - innnotruong
+  - nikkingtr
+  - zlatanpham
 tags:
   - newsletter
   - team

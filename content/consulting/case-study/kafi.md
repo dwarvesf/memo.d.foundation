@@ -1,11 +1,12 @@
 ---
+
 title: "Kafi: Making stock trading easier for everyone"
 short_title: Kafi
 date: 2024-10-16
 description: We helped Kafi Securities rebuild their stock trading app to work better for both beginners and experienced traders, making investing more accessible for everyone.
-authors: 
-  - anna.console
-  - changtrailucluong
+authors:
+  - bringastar
+  - Maniub102
 tags: 
   - fintech
   - case-study

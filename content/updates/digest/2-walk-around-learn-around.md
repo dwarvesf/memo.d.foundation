@@ -1,9 +1,10 @@
 ---
+
 title: "Weekly Digest #2: Walk around learn around"
 date: 2024-04-15
 description: There are so many amazingly fun and wonderfully weird things happening on Discord, both last week and of course, today. So let’s dive in with a freshly-brewed “cà phê sữa,” of course.
 authors:
-  - innno_
+  - innnotruong
 short_title: "#2 Walk around learn around"
 tags:
   - weekly-digest

@@ -1,10 +1,11 @@
 ---
+
 title: "Helping Droppii build a better dropshipping platform that users love"
 short_title: Droppii
 date: 2024-01-03
 description: We helped Droppii upgrade their e-commerce platform with a new user-friendly version that makes dropshipping easier for businesses. Working together, we built Droppii for Business v3.0 with a better dashboard, simplified content management, and improved business tools that led to positive user feedback and stronger market position.
 authors:
-  - huytq
+  - huytieu
   - tieubao
 tags:
   - ecommerce

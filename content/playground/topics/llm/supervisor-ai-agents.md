@@ -1,9 +1,10 @@
 ---
+
 title: Building Agent Supervisors to Generate Insights
 date: 2024-07-11
 description: In the rapidly evolving field of artificial intelligence, the concept of agent supervisors has emerged as a powerful approach to orchestrating multiple AI agents for complex tasks. This article explores how building agent supervisors can lead to generating valuable insights, with a focus on a practical implementation in a Discord bot.
 authors:
-  - 0xm
+  - minhluuquang
 tags:
   - ai
   - llm

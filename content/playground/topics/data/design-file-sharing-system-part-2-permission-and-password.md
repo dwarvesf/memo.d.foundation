@@ -1,9 +1,10 @@
 ---
+
 title: "Design file-sharing system - Part 2: Permission & Password"
 date: 2024-08-21
 description: "In this part, I will discuss how I handle the logic and design the data model for the following features: setting permissions, sharing files for public access, and setting a password for a file."
 authors:
-  - datpv
+  - datphamcode295
 tags:
   - directory-structure
   - file-management

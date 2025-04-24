@@ -4,9 +4,9 @@ short_title: Setel
 date: 2021-05-27
 description: We helped Setel expand their fuel payment app into a full-featured platform that makes refueling simple for Malaysian drivers. Our team built the conversion features that bring new users to the platform through deals, vouchers, and targeted marketing.
 authors: 
-  - nikki
+  - nikkingtr
   - tieubao
-  - duy
+  - duynglam
 tags: 
   - case-study
   - enterprise

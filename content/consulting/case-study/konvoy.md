@@ -1,10 +1,11 @@
 ---
+
 title: "Making keg management smarter for breweries"
 short_title: Konvoy
 date: 2023-09-14
 description: We helped Konvoy create technology that makes tracking and managing beer kegs simple and efficient. Their solution combines smart tracking with flexible rental options to help breweries save money and reduce lost kegs.
-authors: 
-  - huytq
+authors:
+  - huytieu
 tags:
   - case-study
   - enterprise

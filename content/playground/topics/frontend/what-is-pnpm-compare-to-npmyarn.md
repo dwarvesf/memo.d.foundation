@@ -1,9 +1,10 @@
 ---
+
 title: What is PNPM Compare To NPM/Yarn
 date: 2023-04-11
 description: "PNPM is a package manager for Node.js which stands for “Performant NPM”. It was introduced in 2016, the same year Yarn was released. PNPM is a fast, disk space efficient package manager that supports monorepos. It creates a non-flat `node_modules` by default, so code has no access to arbitrary packages."
 authors:
-  - toanhq
+  - toanbku
 tags:
   - engineering
   - web

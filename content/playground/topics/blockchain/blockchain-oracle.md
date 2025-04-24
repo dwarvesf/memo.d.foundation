@@ -1,9 +1,10 @@
 ---
+
 title: Blockchain oracle
 date: 2022-03-17
 description: Learn how blockchain oracles solve the oracle problem by connecting smart contracts with real-world data, enabling secure input, output, cross-chain communication, and off-chain computing.
 authors:
-  - khacvy
+  - trankhacvy
 short_title: ¶ Oracle
 github_id: trankhacvy
 tags:

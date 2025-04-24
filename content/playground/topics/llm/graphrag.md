@@ -1,9 +1,10 @@
 ---
+
 title: GraphRAG - Building a knowledge graph for RAG system
 date: 2024-11-01
 description: In baseline Retrieval Augmented Generation (RAG), sometimes the result might not be accurate as expected since the query itself have multiple layers of reasoning or the answer requires traversing disparate pieces of information through their shared attributes in order to provide new synthesized insights. In this post, we will explore a new approach called GraphRAG which combines the strengths of knowledge graphs and large language models to improve the accuracy of RAG systems
 authors:
-  - hoangnnh
+  - nnhuyhoang
 tags:
   - llm
   - rag

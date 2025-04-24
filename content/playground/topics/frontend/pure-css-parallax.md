@@ -1,9 +1,10 @@
 ---
+
 title: Pure CSS Parallax
 date: 2022-09-10
 description: This article demonstrates how to use CSS transforms, perspective and some scaling trickery to create a pure CSS parallax scrolling website.
 authors:
-  - mashiro5951
+  - ngolapnguyen
 github_id: ngolapnguyen
 tags:
   - frontend

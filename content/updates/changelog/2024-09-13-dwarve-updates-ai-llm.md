@@ -3,7 +3,7 @@ title: The Stage of AI and LLM at Dwarves
 date: 2024-09-13
 description: Here's another update from Dwarves for you. We are excited to share the real journey of growth and transformation since AI and LLM have been on our radar for quite a long time.
 authors: 
-  - nikki
+  - nikkingtr
 tags: 
   - team
   - updates

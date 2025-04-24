@@ -4,8 +4,8 @@ date: 2021-10-31
 description: It's Han and Nikki from Team Dwarves. We're here with the fifth edition of our Dwarves Updates. October has been a wild ride for us as a company. Most of our effort was spent on rethinking growth paths for our engineers.
 authors: 
   - tieubao
-  - nikki
-  - duy
+  - nikkingtr
+  - duynglam
 tags: 
   - updates
   - engineering

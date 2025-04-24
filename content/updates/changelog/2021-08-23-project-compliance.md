@@ -4,8 +4,8 @@ date: 2021-08-23
 description: This email is the third month we share about our journey to Software Craftsmanship.
 authors: 
   - tieubao
-  - nikki
-  - duy
+  - nikkingtr
+  - duynglam
 tags: 
   - project
   - updates

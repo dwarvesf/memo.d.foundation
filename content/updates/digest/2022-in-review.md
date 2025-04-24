@@ -1,11 +1,12 @@
 ---
+
 title: 2022 In Review
 date: 2023-01-19
 description: Successfully went through 2022, a year that we might say -  a new record team reached highest growth record, kickstarted community engagement, home, compliance training & individual development are speeding up, and a whole new place to call Dwarves.
 authors:
-  - innno_
-  - nikki
-  - Tom
+  - innnotruong
+  - nikkingtr
+  - monotykamary
 tags:
   - team
   - wrap-up

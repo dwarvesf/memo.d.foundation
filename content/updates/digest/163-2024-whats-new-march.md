@@ -1,9 +1,10 @@
 ---
+
 title: "What's New in March 2024"
 date: 2024-04-03
 description: "In this March, we're eyeing on what's brewing in the tech market, ICY updates in 2024, the first offline meetup and product demo."
 authors:
-  - innno_
+  - innnotruong
 tags:
   - newsletter
   - icy

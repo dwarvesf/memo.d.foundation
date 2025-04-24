@@ -4,8 +4,8 @@ date: 2021-09-29
 description: Here's another update from Dwarves for you. Throughout September, we have completed our bi-annual performance review.
 authors: 
   - tieubao
-  - nikki
-  - duy
+  - nikkingtr
+  - duynglam
 tags: 
   - engineering
   - performance

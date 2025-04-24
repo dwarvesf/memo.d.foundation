@@ -1,9 +1,10 @@
 ---
+
 title: "Efficient Union of Finite Automata in Golang: A Practical Approach"
 date: 2024-09-05
 description: An in-depth guide on implementing the union of finite automata in Golang, focusing on practical efficiency and performance considerations.
 authors:
-  - minhlq
+  - minhluuquang
 tags:
   - golang
   - finite-automata

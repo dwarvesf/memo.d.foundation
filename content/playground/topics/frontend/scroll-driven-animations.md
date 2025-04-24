@@ -1,9 +1,10 @@
 ---
+
 title: Scroll-driven animations
 date: 2023-06-01
 description: Scroll-driven animations are popular effects used in web design. They are animations that are connected to the scroll position of a scroll container.
 authors:
-  - khacvy
+  - trankhacvy
 github_id: trankhacvy
 tags:
   - frontend

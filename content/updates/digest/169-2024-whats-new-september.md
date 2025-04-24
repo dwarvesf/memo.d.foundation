@@ -1,9 +1,10 @@
 ---
+
 title: "What's New in September 2024"
 date: 2024-10-01
 description: "Each month, we roll out a recap of our team and community's strides forward. September's updates spotlight the AI Club launch, rewards for our sharing culture, hybrid work check-ins, reporting tech trends in forward engineering, and our Mid-Autumn celebration."
 authors:
-  - innno_
+  - innnotruong
 tags:
   - newsletter
   - memo

@@ -4,7 +4,7 @@ date: 2020-06-24
 description: People thrive when they believe in what they create, not from fake happiness programs. We value individual contributions, hire based on skills rather than background, promote knowledge sharing, and focus on meaningful work.
 authors:
   - tieubao
-  - duy
+  - duynglam
 tags:
   - people
   - management

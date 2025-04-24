@@ -1,9 +1,10 @@
 ---
+
 title: Why We Chose Our Tech Stack Accelerating Development With A Robust Frontend Solution
 date: 2023-03-20
 description: "We pride ourselves on being a team of seasoned technology experts, passionate about crafting innovative solutions for our clients. With years of experience in the technology industry, we understand the importance of selecting the right tools and technologies to deliver exceptional results. In today's fast-paced world, staying ahead of the competition requires building and deploying features quickly without sacrificing quality or stability."
 authors:
-  - thanh
+  - zlatanpham
 tags:
   - engineering
   - web
