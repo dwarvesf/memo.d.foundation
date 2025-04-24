@@ -20,7 +20,7 @@ LLMs, such as GPT and similar models, rely heavily on user prompts to generate r
 
 As we move away from traditional command-based interfaces, the challenge lies in providing AI with appropriate context to generate meaningful outputs. Designers must now focus on the context in which AI models operate, ensuring continuous improvement and iteration to optimize user experiences.
 
-![](3-product-design-commentary-mental-shirt.png)
+![](assets/3-product-design-commentary-mental-shirt.png)
 
 ### Context and AI models
 
@@ -31,26 +31,26 @@ Effective communication with AI relies on providing clear context, both from the
 UX designers can enhance AI interactions by crafting effective system prompts. These prompts help guide the AI, providing a consistent tone and behavior.
 
 - **Interface Prompting:** Designers can provide conversational starters and suggest follow-ups.
-    
-    ![](3-product-design-commentary-the-craft-of-prompting.png)
-    
+
+    ![](assets/3-product-design-commentary-the-craft-of-prompting.png)
+
 - **System Prompting:** Hidden prompts guide the AI in a specific direction, ensuring consistent tone and behavior across the tool.
-    
-    ![](3-product-design-commentary-training-data.png)
-    
+
+    ![](assets/3-product-design-commentary-training-data.png)
+
 - **Training Data:** The UX role is crucial in helping train models or assist in fine-tuning them to avoid bias and ensure ethical use.
 
 ### Understanding the context window
 
 The concept of a **context window** is essential in AI interactions, as it determines how much of the conversation the AI can remember. System prompts are embedded within this window to ensure that AI responses align with company values and user needs. Models like **Google’s Gemini** use context windows to retain relevant information over long conversations.
 
-![](3-product-design-commentary-understanding-context.png)
+![](assets/3-product-design-commentary-understanding-context.png)
 
 ### Approaching prompting
 
 Effective prompting requires structured frameworks, such as **RACE** (Role, Action, Context, Expectation), where designers guide AI through clearly defined parameters. **Few-shot prompting** helps the AI understand what is expected by providing relevant examples, while **Chain-of-thought reasoning** ensures that the AI processes complex tasks step-by-step. **ChatGPT** uses these techniques to allow users to interact with the AI more intuitively and receive more accurate responses.
 
-![](3-product-design-commentary-approach-prompting.png)
+![](assets/3-product-design-commentary-approach-prompting.png)
 
 ### Closing remarks: Prompting for the future
 

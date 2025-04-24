@@ -5,7 +5,7 @@ tags:
   - report
 title: "Product Design Commentary #1: New technologies changing UX/UI and product design"
 date: 2024-09-30
-description: New tools are changing how we design products. In the first edition, we look at voice controls, mixed reality, reusable design parts, and smart helpers. See how they're being used, what's popular, and why designers should care. Learn to make things that are easier and better to use. 
+description: New tools are changing how we design products. In the first edition, we look at voice controls, mixed reality, reusable design parts, and smart helpers. See how they're being used, what's popular, and why designers should care. Learn to make things that are easier and better to use.
 authors:
   - nambui
 ---
@@ -29,7 +29,7 @@ By 2026, nearly **50% of the U.S. population** is expected to be using voice-act
 - **Google Assistant**: [Google Assistant](https://assistant.google.com/)
 - **Amazon Alexa**: [Amazon Alexa Smart Home](https://www.amazon.com/alexa-smart-home/)
 
-![](product-design-commentary-20240927-1.png)
+![](assets/product-design-commentary-20240927-1.png)
 
 ## Augmented reality (AR) and virtual reality (VR)
 AR and VR are quickly becoming standards in multiple industries, enhancing both user experience and product interaction.
@@ -53,7 +53,7 @@ The number of AR users is expected to increase from **0.44 billion in 2019** to 
 
 - **Meta Horizon Worlds**: [Meta Horizon World](https://www.meta.com/horizon-worlds/)
 
-![](product-design-commentary-20240927-2.png)
+![](assets/product-design-commentary-20240927-2.png)
 
 ## Modular design systems
 **Modular Design Systems** allow teams to build reusable components that create consistency across products. Elements like buttons, navigation bars, fonts, and more are organized into a system, making it easy for teams to maintain a unified user experience across different platforms.
@@ -76,7 +76,7 @@ One significant advantage is **responsiveness across devices**. By using a singl
 
 Example: [Flowbite Component Example](https://flowbite.com/docs/components/tables/)
 
-![](product-design-commentary-20240927-3.png)
+![](assets/product-design-commentary-20240927-3.png)
 
 ## AI tools for UX, UI, and product designers
 AI is transforming the design industry by automating repetitive tasks, streamlining the research process, and optimizing UI/UX design.
@@ -95,7 +95,7 @@ AI also plays an important role in **automating UI design processes** such as 
 - **Galileo AI**: [Galileo AI](https://www.usegalileo.ai/)
 - **Creatie AI:** [Creatie AI](https://creatie.ai)
 
-![](product-design-commentary-20240927-4.png)
+![](assets/product-design-commentary-20240927-4.png)
 
 ## Conclusion
 The integration of VUI, AR/VR, Modular Design Systems, and AI is transforming modern design by enhancing user experience and streamlining workflows. To stay competitive, designers must leverage these tools effectively, focusing on user feedback, privacy, personalization, and cross-platform performance. Embracing these technologies will enable teams to create innovative, user-centered products that stand out in the market.

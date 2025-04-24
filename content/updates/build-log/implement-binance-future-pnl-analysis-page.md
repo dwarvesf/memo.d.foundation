@@ -135,10 +135,10 @@ Because timescale table will be spitted into multiple chunks so if we use normal
 
 ## User interface implementation
 
-![Overview](assets/analysis-page/overview.jpg) _Figure 1: Future PNL Analysis Overview Tab_
+![Overview](assets/overview.jpg) _Figure 1: Future PNL Analysis Overview Tab_
 
-![Detail](assets/analysis-page/detail.png) _Figure 2: Future PNL Detail Tab_
+![Detail](assets/detail.png) _Figure 2: Future PNL Detail Tab_
 
-![Symbol Analysis](assets/analysis-page/symbol-analysis.png) _Figure 3: Future PNL Analysis Symbol Tab_
+![Symbol Analysis](assets/symbol-analysis.png) _Figure 3: Future PNL Analysis Symbol Tab_
 
-![Symbol Analysis](assets/analysis-page/funding-and-transaction.png) _Figure 4: Future PNL Funding and Transaction Tab_
+![Symbol Analysis](assets/funding-and-transaction.png) _Figure 4: Future PNL Funding and Transaction Tab_

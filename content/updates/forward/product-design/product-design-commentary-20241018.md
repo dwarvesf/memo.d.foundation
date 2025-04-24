@@ -18,7 +18,7 @@ This article explores the scope of relationships between Generative AI and other
 ## System scope relationship
 The first layer in understanding how Generative AI fits into larger systems is to explore the **System Scope Relationships**. This relationship defines the scale at which AI integrates with other elements of a system and plays a crucial role in determining its interaction model. The five categories within system scope are
 
-![](4-product-design-weekly-system-scope-relationships.png)
+![](assets/4-product-design-weekly-system-scope-relationships.png)
 
 1. **Component**:
     - **Example**: AI used to provide additional context or cognitive insight behind individual elements in a system. For instance, a feature that suggests relevant actions for a user in a specific interface component.
@@ -36,7 +36,7 @@ Each level of this scope reveals the depth at which AI interacts within a digita
 ## Spatial relationships
 In terms of user interface (UI) design, **Spatial Relationships** describe the physical layout and placement of AI components relative to other features on a screen. This placement is crucial for ensuring a seamless interaction between AI elements and the rest of the user experience. The diagram highlights the following relationships
 
-![](4-product-design-weekly-system-spatial-relationships.png)
+![](assets/4-product-design-weekly-system-spatial-relationships.png)
 
 1. **Separate**:
     - **Description**: Generative AI is placed on a completely different page or space.
@@ -59,7 +59,7 @@ The spatial design directly impacts user navigation and interaction fluidity, an
 ## Functional relationships
 Lastly, **Functional Relationships** refer to how Generative AI interacts with other features and content at a functional level. The interaction model can vary based on the role AI plays within the system. The different types of functional relationships include
 
-![](4-product-design-weekly-system-functional-relationships.png)
+![](assets/4-product-design-weekly-system-functional-relationships.png)
 
 1. **Separate**:
     - **Description**: AI operates in a separate experience without direct interaction with other features.

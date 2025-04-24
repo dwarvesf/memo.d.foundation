@@ -14,7 +14,7 @@ Hyper-personalization represents the future of product development, **delivering
 
 By using AI, we can create more personal moments, experiences, and interactions. This level of deep personalization promises to change how we use technology, making our digital experiences better, more efficient, and more suited to our individual needs and preferences.
 
-![](7-product-design-weekly-hyper-personalization.png)
+![](assets/7-product-design-weekly-hyper-personalization.png)
 
 ## Hyper-personalization vs. traditional personalization
 
@@ -72,7 +72,7 @@ Hyper-Personalization works through four main steps:
 
 ## Practical applications of hyper-personalization
 
-![](7-product-design-weekly-personalization.png)
+![](assets/7-product-design-weekly-personalization.png)
 
 *Source: [LinkedIn](https://www.linkedin.com/pulse/leveling-up-personalization-maturity-curve-amir-yazdanpanah)*
 
