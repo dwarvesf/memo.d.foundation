@@ -92,9 +92,10 @@ function searchFiles(dir, authorMap) {
 
 const args = process.argv.slice(2);
 const targetPath = args[0];
+const noFilePathFlag = args.includes('--no-file-path');
 
 if (!targetPath) {
-  console.error('Usage: node list-authors.js <path>');
+  console.error('Usage: node list-authors.js <path> [--no-file-path]');
   process.exit(1);
 }
 
@@ -103,8 +104,10 @@ searchFiles(targetPath, authorMap);
 
 Object.entries(authorMap).forEach(([author, files]) => {
   console.log(author);
-  files.forEach(file => {
-    console.log(`- ${file}`);
-  });
+  if (!noFilePathFlag) {
+    files.forEach(file => {
+      console.log(`- ${file}`);
+    });
+  }
   console.log('');
 });
