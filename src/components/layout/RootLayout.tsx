@@ -14,6 +14,7 @@ import ImageZoomProvider from '../image/ImageZoomProvider';
 import { SearchProvider } from '../search';
 import { useScrollToTopOnRouteChange } from '@/hooks/useScrollToTopOnRouteChange';
 import { cn } from '@/lib/utils';
+import { CodeblockHeaderInjector } from '../codeblock/CodeblockHeader';
 
 interface RootLayoutProps extends RootLayoutPageProps {
   children: React.ReactNode;
@@ -177,6 +178,7 @@ function RootLayout({
         <Footer />
       </div>
       <ImageZoomProvider />
+      <CodeblockHeaderInjector metadata={metadata} />
     </SearchProvider>
   );
 }

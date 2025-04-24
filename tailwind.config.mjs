@@ -286,6 +286,9 @@ const config = {
               wordWrap: 'break-word',
               minWidth: '100px',
             },
+            pre: {
+              padding: '0.625rem 1rem',
+            },
           },
         },
         dark: {
@@ -310,6 +313,7 @@ const config = {
             'pre > code': {
               backgroundColor: 'transparent !important',
             },
+
             'thead th': {
               backgroundColor: 'var(--secondary-background-color)',
             },
