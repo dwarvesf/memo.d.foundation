@@ -130,6 +130,28 @@ function remarkToc() {
     fileData.headingTextMap = headingTextMap;
   };
 }
+function rehypeCodeblock() {
+  return (tree: HastRoot) => {
+    visit(tree, 'element', (node: Element) => {
+      if (
+        node.tagName === 'pre' &&
+        node.children.some(child => (child as Element).tagName === 'code')
+      ) {
+        node.properties = node.properties || {};
+        const curClassName = node.properties.className;
+        const customClassName = 'markdown-codeblock';
+        if (Array.isArray(curClassName)) {
+          node.properties.className = [...curClassName, customClassName];
+        } else {
+          node.properties.className = [
+            ...(typeof curClassName === 'string' ? [curClassName] : []),
+            customClassName,
+          ];
+        }
+      }
+    });
+  };
+}
 
 /**
  * Custom remark plugin to count blocks
@@ -450,6 +472,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
     .use(rehypeSanitize, schema as never) // Type cast needed due to rehype-sanitize typing limitations
     .use(rehypeTable) // Wrap tables in a container div
+    .use(rehypeCodeblock) // Add the custom class plugin here
     .use(rehypeHighlight)
 
     .use(rehypeStringify);

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import fs from 'fs';
 import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -380,6 +380,15 @@ export default function ContentPage({
   const shouldShowSubscription =
     !frontmatter?.hide_subscription &&
     !['home', 'tags', 'contributor'].some(path => slug.includes(path));
+  const contentEl = useMemo(() => {
+    return (
+      <div
+        className="article-content"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
+  }, [content]);
+
   if (isListPage || !frontmatter) {
     const title = slug.map(slugToTitle).join(' > ');
     return (
@@ -429,10 +438,7 @@ export default function ContentPage({
           hideTitle={frontmatter.hide_title}
         >
           {/* Render the HTML content safely */}
-          <div
-            className="article-content"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
+          {contentEl}
         </ContentLayout>
 
         {/* Only show subscription section on content pages, not special pages */}
