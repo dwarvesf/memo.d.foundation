@@ -29,7 +29,7 @@ const ALIASES_OUTPUT_PATH = path.join(
 // Define the structure of a row returned by DuckDB
 interface DuckDbRowData {
   file_path: string | null;
-  short_links: string[] | null;
+  aliases: string[] | null;
   previous_paths: string[] | null;
 }
 
@@ -106,7 +106,7 @@ async function generateRedirectsMap() {
     // Ensure path separators are forward slashes for DuckDB compatibility
     const parquetPathForDb = PARQUET_FILE_PATH.replace(/\\/g, '/');
     const query = `
-      SELECT file_path, short_links, previous_paths
+      SELECT file_path, aliases, previous_paths
       FROM read_parquet('${parquetPathForDb}');
     `;
 
@@ -125,8 +125,8 @@ async function generateRedirectsMap() {
       const filePath = row.file_path;
       // Extract the array from the .items property for list types
       const shortLinks =
-        row.short_links && Array.isArray((row.short_links as any).items)
-          ? (row.short_links as any).items
+        row.aliases && Array.isArray((row.aliases as any).items)
+          ? (row.aliases as any).items
           : null;
       const previousPaths =
         row.previous_paths && Array.isArray((row.previous_paths as any).items)

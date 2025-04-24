@@ -29,7 +29,7 @@ After adding the alias and running the export process, you can access any file w
 
 Short links allow you to create shorter or alternative URLs that generate static files for SEO purposes, referring to a different, usually longer, URL. This is useful for creating clean and easy-to-share links while improving search engine visibility.
 
-To create a short link for a specific Markdown file, you need to add a `short_links` key to the frontmatter of that Markdown file in the `vault` directory. The `short_links` key should have a list of short link paths (starting with a `/`) that should refer to this file.
+To create a short link for a specific Markdown file, you need to add a `aliases` key to the frontmatter of that Markdown file in the `vault` directory. The `aliases` key should have a list of short link paths (starting with a `/`) that should refer to this file.
 
 **Example:**
 
@@ -45,7 +45,7 @@ authors:
 tags:
   - 'agents'
   - 'ai'
-short_links:
+aliases:
   - /share/ai-travel
 ---
 
@@ -60,6 +60,6 @@ After adding the short link and running the export process, a static file will b
 **Important:**
 
 - Short link paths must start with a `/`.
-- The `short_links` key should be in the frontmatter of the target Markdown file.
-- You can define multiple short links for a single file by adding more entries under the `short_links` key.
+- The `aliases` key should be in the frontmatter of the target Markdown file.
+- You can define multiple short links for a single file by adding more entries under the `aliases` key.
 - You need to run the export process after modifying the Markdown file for the changes to take effect.

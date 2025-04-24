@@ -43,7 +43,6 @@ defmodule Memo.ExportDuckDB do
     {"should_mint", "BOOLEAN"},
     {"minted_at", "DATE"},
     {"token_id", "VARCHAR"},
-    {"short_links", "VARCHAR[]"},
     {"previous_paths", "VARCHAR[]"}
   ]
 
@@ -405,7 +404,6 @@ defp process_and_store(file_path, frontmatter, md_content) do
       "tags" -> serialize_list(value)
       "authors" -> serialize_list(value)
       "aliases" -> serialize_list(value)
-      "short_links" -> serialize_list(value)
       "previous_paths" -> serialize_list(value)
       "md_content" -> escape_multiline_text(value)
       "estimated_tokens" -> to_string(value)
