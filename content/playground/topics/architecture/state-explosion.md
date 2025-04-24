@@ -1,14 +1,10 @@
 ---
-title: null
+title: "State explosion"
 date: 2022-05-22
-description: Learn how statecharts solve the state explosion problem in state machines using parallel states, hierarchical states, and guard conditions for simpler and more efficient designs.
+description: "Learn how statecharts solve the state explosion problem in state machines using parallel states, hierarchical states, and guard conditions for simpler and more efficient designs."
 authors:
-  - Nguyen Xuan Anh
 github_id: monotykamary
 tags:
-  - engineering
-  - state
-  - diagram
 ---
 
 ## What is state explosion?

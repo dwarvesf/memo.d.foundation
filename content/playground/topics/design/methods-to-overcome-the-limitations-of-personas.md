@@ -1,11 +1,8 @@
 ---
-title: null
+title: "Methods to overcome the limitations of personas"
 date: null
-description: Explore the limits of traditional personas and discover alternatives like characters, thinking styles, and Jobs to be Done that provide deeper user insights and richer context for product design.
+description: "Explore the limits of traditional personas and discover alternatives like characters, thinking styles, and Jobs to be Done that provide deeper user insights and richer context for product design."
 tags:
-  - ux
-  - design
-  - personas
 ---
 
 Personas have a number of shortcomings:

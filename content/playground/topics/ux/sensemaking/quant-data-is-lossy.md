@@ -1,5 +1,5 @@
 ---
-title: null
+title: "Quant data is lossy"
 date: null
 description: "Reducing human activity to numbers often loses important context and rich qualitative data, showing that quantitative measures alone can't fully capture complex human behavior and experiences."
 ---

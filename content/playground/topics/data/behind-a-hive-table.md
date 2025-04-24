@@ -1,17 +1,11 @@
 ---
-title: null
+title: "Behind a hive table"
 date: 2022-11-11
-description: Learn how to create and understand Hive tables, including table structure, storage formats, SerDe functions, HDFS data location, and metadata management in the Hive metastore.
+description: "Learn how to create and understand Hive tables, including table structure, storage formats, SerDe functions, HDFS data location, and metadata management in the Hive metastore."
 authors:
-  - Dung Ho
 github_id: dudaka
 icy: 10
 tags:
-  - data
-  - mapreduce
-  - distributed
-  - hadoop
-  - apache-hive
 ---
 
 From the last article, [introduction-to-apache-hive](), we saw how to create a database and a table in Hive. In this article, we will look at the details behind a Hive table. More importantly, we'll see what are the essential elements that is needed behind the Hive table. We've already created this database `stocks_db` in our last article, so we won't do it again. Thus, we will execute `USE stocks_db;` to switch to the database `stocks_db`. Let's now create a table for the stocks data set.

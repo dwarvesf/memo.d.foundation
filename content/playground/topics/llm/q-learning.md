@@ -1,12 +1,12 @@
 ---
 tags:
-- ai
-- machine-learning
-- llm
-title: 'Q Learning'
+  - ai
+  - machine-learning
+  - llm
+title: "Q Learning"
 github_id: thanhpn
 authors:
-- thanhpn
+  - thanhpn
 date: 2023-06-22
 description: An introduction to Q-learning, a model-free reinforcement learning algorithm used to learn optimal policies in Markov Decision Processes.
 ---

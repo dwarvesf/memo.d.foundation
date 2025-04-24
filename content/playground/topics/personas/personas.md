@@ -1,10 +1,8 @@
 ---
-title: null
+title: "§ personas"
 date: null
-description: Learn how to create effective user personas based on qualitative research to improve UX by focusing on user tasks, goals, and motivations while avoiding assumptions and lack of context.
+description: "Learn how to create effective user personas based on qualitative research to improve UX by focusing on user tasks, goals, and motivations while avoiding assumptions and lack of context."
 tags:
-  - moc
-  - personas
 ---
 
 ## General information

@@ -1,14 +1,15 @@
 ---
+title: ≈ Founder Liquidity
+description: Founder liquidity is a secret that founders and investors don't want you to know
+date: 2024-10-11
+authors:
+  - tieubao
 tags:
   - startup
   - shares
   - founder
-authors:
-  - tieubao
-description: Founder liquidity is a secret that founders and investors don't want you to know
-title: Founder Liquidity
-date: 2024-10-11
 ---
+
 Ask most venture-backed founders why they get 10x more equity than employee #1, 100x more equity than employee #5, and 1000x more equity than employee #15, and you'll get the same answer: "I'M TAKING SO MUCH RISK, IT'S SO HARD TO START A COMPANY, I MADE A BIG MOVE!!!" And then you'll ask, "but why are you yelling?”
 
 The narrative of the founder's risk is a cornerstone of Silicon Valley's mythology. Founders are celebrated for leaving stable jobs and pouring their lives into an “uncertain” and “high-risk” venture. This mythos justifies the enormous equity stakes founders hold compared to early employees who take very similar risks by joining an unproven startup.
@@ -68,4 +69,4 @@ If you work at a venture-backed company the next time a round is announced ask i
 If employees realize they are taking more risk than the founders, maybe they'll ask for more compensation, maybe they'll congratulate the founders and move on with their day, maybe they'll start yelling: "I'M TAKING SO MUCH RISK, IT'S SO HARD TO BUILD A COMPANY, I DON'T EVEN HAVE ACCESS TO LIQUIDITY!!!". And maybe they're right.
 
 ---
-https://www.stefantheard.com/silicon-valleys-best-kept-secret-founder-liquidity
+<https://www.stefantheard.com/silicon-valleys-best-kept-secret-founder-liquidity>

@@ -1,11 +1,8 @@
 ---
-title: null
+title: "Personas may create space for assumptions"
 date: null
-description: Learn why personas can mislead design teams by including unnecessary demographic details and how focusing on real user research improves understanding and creates better user experiences.
+description: "Learn why personas can mislead design teams by including unnecessary demographic details and how focusing on real user research improves understanding and creates better user experiences."
 tags:
-  - ux
-  - design
-  - personas
 ---
 
 Personas have come under fire for including extraneous information that, beyond simply being unnecessary, can distract or contribute to misunderstandings about users and their contexts. For instance, Alan Klement suggests that by describing a set of attributes, personas distract teams from the actual problems their users are hoping to solve.

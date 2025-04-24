@@ -1,18 +1,11 @@
 ---
-title: null
+title: "Data vault modelling"
 date: 2022-12-15
-description: Learn how Data Vault architecture builds flexible, scalable data lakes using hubs, links, and satellites to manage business keys and historical data with pros and cons explained.
+description: "Learn how Data Vault architecture builds flexible, scalable data lakes using hubs, links, and satellites to manage business keys and historical data with pros and cons explained."
 authors:
-  - Bach Phuong
 github_id: Bachpx2911
 icy: 10
 tags:
-  - data
-  - data-warehouse
-  - data-vault
-  - data-modelling
-  - dimension-table
-  - fact-table
 ---
 
 ## Introduction

@@ -1,7 +1,7 @@
 ---
-title: null
+title: "Assert require revert"
 date: null
-description: Learn how to enforce smart contract invariants in Solidity using assert(), require(), and revert() to ensure error checking and secure contract behavior.
+description: "Learn how to enforce smart contract invariants in Solidity using assert(), require(), and revert() to ensure error checking and secure contract behavior."
 ---
 
 #### Enforce invariants with `assert()`

@@ -1841,7 +1841,7 @@
     "grouped_path": "/playground",
     "file_paths": [
       {
-        "file_path": "playground/_index.md",
+        "file_path": "playground/README.md",
         "title": "Labs Team",
         "date": {
           "days": 19691
@@ -1885,8 +1885,8 @@
                 }
               },
               {
-                "file_path": "playground/notes/misc/Founder Liquidity.md",
-                "title": "Founder Liquidity",
+                "file_path": "playground/notes/misc/founder-liquidity.md",
+                "title": "≈ Founder Liquidity",
                 "date": {
                   "days": 20007
                 }
@@ -2197,6 +2197,18 @@
             "grouped_path": "/playground/topics/ai",
             "file_paths": [
               {
+                "file_path": "playground/topics/ai/§ AI.md",
+                "title": "§ AI",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
+                "file_path": "playground/topics/ai/README.md",
+                "title": "§ AI",
+                "date": ""
+              },
+              {
                 "file_path": "playground/topics/ai/securing-your-remote-mcp-servers.md",
                 "title": "Securing your remote MCP servers",
                 "date": {
@@ -2245,10 +2257,24 @@
             "grouped_path": "/playground/topics/architecture",
             "file_paths": [
               {
+                "file_path": "playground/topics/architecture/README.md",
+                "title": "§ Architecture",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
                 "file_path": "playground/topics/architecture/automata.md",
                 "title": "Automata",
                 "date": {
                   "days": 20018
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/design-file-sharing-system-part-1-directory-structure.md",
+                "title": "Design file-sharing system - Part 1: Directory Structure",
+                "date": {
+                  "days": 19935
                 }
               },
               {
@@ -2294,6 +2320,13 @@
                 }
               },
               {
+                "file_path": "playground/topics/architecture/singleton-design-pattern.md",
+                "title": "A tour of Singleton design pattern with Golang",
+                "date": {
+                  "days": 19884
+                }
+              },
+              {
                 "file_path": "playground/topics/architecture/builder-design-pattern.md",
                 "title": "Introduce the Builder pattern and its use cases",
                 "date": {
@@ -2301,10 +2334,136 @@
                 }
               },
               {
-                "file_path": "playground/topics/architecture/singleton-design-pattern.md",
-                "title": "A tour of Singleton design pattern with Golang",
+                "file_path": "playground/topics/architecture/c4-modelling.md",
+                "title": "Breaking Down Complexity: The Role of Abstractions and UML in C4 Modelling",
                 "date": {
-                  "days": 19884
+                  "days": 19866
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/uml-state-machine-diagram.md",
+                "title": "Uml state machine diagram",
+                "date": {
+                  "days": 19585
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/redis-streaming-concurrency-with-master-and-consumers.md",
+                "title": "Redis streaming concurrency with master and consumers",
+                "date": {
+                  "days": 19493
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/redis-streaming.md",
+                "title": "Redis streaming",
+                "date": {
+                  "days": 19468
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/solid-principles.md",
+                "title": "Solid principles",
+                "date": {
+                  "days": 19467
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/case-study-write-heavy-scalable-and-reliable-inventory-platform.md",
+                "title": "Case study: Write-heavy scalable and reliable inventory platform",
+                "date": {
+                  "days": 19416
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/law-of-demeter.md",
+                "title": "Law of demeter",
+                "date": {
+                  "days": 19374
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/event-sourcing-overview.md",
+                "title": "Event sourcing overview",
+                "date": {
+                  "days": 19331
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/domain-model-in-domain-driven-design.md",
+                "title": "Domain model in domain driven design",
+                "date": {
+                  "days": 19175
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/finite-state-automata.md",
+                "title": "Finite state automata",
+                "date": {
+                  "days": 19171
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/finite-state-transducer.md",
+                "title": "Finite state transducer",
+                "date": {
+                  "days": 19171
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/mealy-machine.md",
+                "title": "Mealy machine",
+                "date": {
+                  "days": 19171
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/moore-machine.md",
+                "title": "Moore machine",
+                "date": {
+                  "days": 19171
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/overview-of-domain-driven-design.md",
+                "title": "Overview of domain driven design",
+                "date": {
+                  "days": 19164
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/service-based-architecture.md",
+                "title": "Service based architecture",
+                "date": {
+                  "days": 19164
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/reducers.md",
+                "title": "Reducers",
+                "date": {
+                  "days": 19134
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/state-explosion.md",
+                "title": "State explosion",
+                "date": {
+                  "days": 19134
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/c4-diagrams.md",
+                "title": "C4 diagrams",
+                "date": {
+                  "days": 19099
+                }
+              },
+              {
+                "file_path": "playground/topics/architecture/entities-in-domain-driven-design.md",
+                "title": "Entities in domain driven design",
+                "date": {
+                  "days": 19079
                 }
               },
               {
@@ -2320,6 +2479,11 @@
                 "date": {
                   "days": 18132
                 }
+              },
+              {
+                "file_path": "playground/topics/architecture/principles-of-good-software-design.md",
+                "title": "Principles of good software design",
+                "date": ""
               }
             ],
             "next_path": {}
@@ -2327,6 +2491,13 @@
           "blockchain": {
             "grouped_path": "/playground/topics/blockchain",
             "file_paths": [
+              {
+                "file_path": "playground/topics/blockchain/README.md",
+                "title": "§ Blockchain",
+                "date": {
+                  "days": 20201
+                }
+              },
               {
                 "file_path": "playground/topics/blockchain/blockchain-oracle.md",
                 "title": "¶ Oracle",
@@ -2370,6 +2541,13 @@
                 }
               },
               {
+                "file_path": "playground/topics/blockchain/ton-blockchain-of-blockchains.md",
+                "title": "Ton: Blockchain of blockchains",
+                "date": {
+                  "days": 19915
+                }
+              },
+              {
                 "file_path": "playground/topics/blockchain/dollar-cost-averaging.md",
                 "title": "Dollar Cost Averaging (DCA)",
                 "date": {
@@ -2409,6 +2587,13 @@
                 "title": "zk-SNARKs",
                 "date": {
                   "days": 19335
+                }
+              },
+              {
+                "file_path": "playground/topics/blockchain/layer-2.md",
+                "title": "Layer 2: Scaling Solutions for Ethereum",
+                "date": {
+                  "days": 19332
                 }
               },
               {
@@ -2494,6 +2679,87 @@
                 "date": {
                   "days": 18031
                 }
+              },
+              {
+                "file_path": "playground/topics/blockchain/assert-require-revert.md",
+                "title": "Assert require revert",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/blockchain/documents.md",
+                "title": "Documents",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/blockchain/external-calls.md",
+                "title": "External calls",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/blockchain/general.md",
+                "title": "General",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/blockchain/precautions.md",
+                "title": "Precautions",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/blockchain/token.md",
+                "title": "Token",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/blockchain/blockchain-security.md",
+                "title": "Blockchain security checklist",
+                "date": ""
+              }
+            ],
+            "next_path": {}
+          },
+          "communication": {
+            "grouped_path": "/playground/topics/communication",
+            "file_paths": [
+              {
+                "file_path": "playground/topics/communication/¶ Pyramid Principle.md",
+                "title": "¶ pyramid principle",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/communication/cognitive-diversity-enhances-team-problem-solving-capabilities.md",
+                "title": "Cognitive diversity enhances team problem solving capabilities",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/communication/expressing-uncertainty-doesn-t-undermine-authority.md",
+                "title": "Expressing uncertainty doesn t undermine authority",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/communication/inform-rather-than-persuade.md",
+                "title": "Inform rather than persuade",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/communication/put-mental-models-in-conversation-with-one-another.md",
+                "title": "Put mental models in conversation with one another",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/communication/salience-is-subjective.md",
+                "title": "Salience is subjective",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/communication/≈ The Opposable Mind.md",
+                "title": "≈ the opposable mind",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/communication/perspective-comprises-our-stance-our-tools-and-our-experience.md",
+                "title": "Perspective comprises our stance our tools and our experience",
+                "date": ""
               }
             ],
             "next_path": {}
@@ -2502,10 +2768,45 @@
             "grouped_path": "/playground/topics/data",
             "file_paths": [
               {
+                "file_path": "playground/topics/data/§ Data Engineering.md",
+                "title": "§ Data Engineering",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
+                "file_path": "playground/topics/data/evolutionary-database-design.md",
+                "title": "Evolutionary Database Design: Managing Change and Scaling with the System",
+                "date": {
+                  "days": 20154
+                }
+              },
+              {
                 "file_path": "playground/topics/data/database-design-circular.md",
                 "title": "Database design Circular",
                 "date": {
                   "days": 20026
+                }
+              },
+              {
+                "file_path": "playground/topics/data/a-lens-to-modern-data-engineering.md",
+                "title": "A Lens to Modern Data Engineering",
+                "date": {
+                  "days": 20025
+                }
+              },
+              {
+                "file_path": "playground/topics/data/design-file-sharing-system-part-2-permission-and-password.md",
+                "title": "Design file-sharing system - Part 2: Permission & Password",
+                "date": {
+                  "days": 19956
+                }
+              },
+              {
+                "file_path": "playground/topics/data/designing-a-model-with-dynamic-properties.md",
+                "title": "Designing a model with dynamic properties",
+                "date": {
+                  "days": 19956
                 }
               },
               {
@@ -2551,6 +2852,20 @@
                 }
               },
               {
+                "file_path": "playground/topics/data/google-data-fusion.md",
+                "title": "Google data fusion",
+                "date": {
+                  "days": 19744
+                }
+              },
+              {
+                "file_path": "playground/topics/data/google-dataproc.md",
+                "title": "Google dataproc",
+                "date": {
+                  "days": 19744
+                }
+              },
+              {
                 "file_path": "playground/topics/data/duckdb-demo-and-showcase.md",
                 "title": "DuckDB demo and showcase",
                 "date": {
@@ -2579,10 +2894,45 @@
                 }
               },
               {
+                "file_path": "playground/topics/data/redis-leaderboard.md",
+                "title": "Redis leaderboard",
+                "date": {
+                  "days": 19577
+                }
+              },
+              {
+                "file_path": "playground/topics/data/utilizing-cached-table-for-binance-kline-api-data-processing.md",
+                "title": "Utilizing cached table for binance kline api data processing",
+                "date": {
+                  "days": 19515
+                }
+              },
+              {
+                "file_path": "playground/topics/data/how-discord-stores-messages-part-1-from-mongodb-to-cassandra.md",
+                "title": "How discord stores messages part 1 from mongodb to cassandra",
+                "date": {
+                  "days": 19510
+                }
+              },
+              {
                 "file_path": "playground/topics/data/managing-dataflow-and-sql-database-with-concurrency-control.md",
                 "title": "Managing Dataflow And Sql Database With Concurrency Control",
                 "date": {
                   "days": 19481
+                }
+              },
+              {
+                "file_path": "playground/topics/data/database-locking.md",
+                "title": "Database locking",
+                "date": {
+                  "days": 19469
+                }
+              },
+              {
+                "file_path": "playground/topics/data/self-balanced-bsts-avl-trees.md",
+                "title": "Self balanced bsts avl trees",
+                "date": {
+                  "days": 19401
                 }
               },
               {
@@ -2593,10 +2943,101 @@
                 }
               },
               {
+                "file_path": "playground/topics/data/data-vault-modelling.md",
+                "title": "Data vault modelling",
+                "date": {
+                  "days": 19341
+                }
+              },
+              {
+                "file_path": "playground/topics/data/hive-window-and-analytic-functions.md",
+                "title": "Hive window and analytic functions",
+                "date": {
+                  "days": 19338
+                }
+              },
+              {
+                "file_path": "playground/topics/data/buckets-on-apache-hive.md",
+                "title": "Buckets on Apache Hive",
+                "date": {
+                  "days": 19336
+                }
+              },
+              {
+                "file_path": "playground/topics/data/partitions-on-apache-hive.md",
+                "title": "Partitions on Apache Hive",
+                "date": {
+                  "days": 19328
+                }
+              },
+              {
+                "file_path": "playground/topics/data/order-by-vs-sort-by-vs-distribute-by-vs-cluster-by.md",
+                "title": "Order by vs sort by vs distribute by vs cluster by",
+                "date": {
+                  "days": 19319
+                }
+              },
+              {
+                "file_path": "playground/topics/data/dbt-the-good-solution-to-accelerate-data-transformation.md",
+                "title": "Dbt the good solution to accelerate data transformation",
+                "date": {
+                  "days": 19317
+                }
+              },
+              {
+                "file_path": "playground/topics/data/overview-of-bi-tools.md",
+                "title": "Overview of bi tools",
+                "date": {
+                  "days": 19317
+                }
+              },
+              {
+                "file_path": "playground/topics/data/managed-table-vs-external-table.md",
+                "title": "Managed table vs external table",
+                "date": {
+                  "days": 19312
+                }
+              },
+              {
+                "file_path": "playground/topics/data/introduction-to-apache-pig.md",
+                "title": "Introduction to Apache Pig",
+                "date": {
+                  "days": 19310
+                }
+              },
+              {
                 "file_path": "playground/topics/data/202211141513-materialized-view-pattern.md",
                 "title": "Materialized View Pattern",
                 "date": {
                   "days": 19310
+                }
+              },
+              {
+                "file_path": "playground/topics/data/behind-a-hive-table.md",
+                "title": "Behind a hive table",
+                "date": {
+                  "days": 19307
+                }
+              },
+              {
+                "file_path": "playground/topics/data/introduction-to-apache-hive.md",
+                "title": "Introduction to Apache Hive",
+                "date": {
+                  "days": 19306
+                }
+              },
+              {
+                "file_path": "playground/topics/data/mapreduce-components.md",
+                "title": "Mapreduce components",
+                "date": {
+                  "days": 19289
+                }
+              },
+              {
+                "file_path": "playground/topics/data/statistics-in-data-analysis.md",
+                "title": "Statistics in data analysis",
+                "date": {
+                  "days": 19289
                 }
               },
               {
@@ -2621,6 +3062,48 @@
                 }
               },
               {
+                "file_path": "playground/topics/data/full-text-search-with-postgresql.md",
+                "title": "Full text search with postgresql",
+                "date": {
+                  "days": 19185
+                }
+              },
+              {
+                "file_path": "playground/topics/data/hadoop-distributed-file-system-hdfs.md",
+                "title": "Hadoop distributed file system hdfs",
+                "date": {
+                  "days": 19158
+                }
+              },
+              {
+                "file_path": "playground/topics/data/apache-hadoop-and-big-data.md",
+                "title": "Apache Hadoop and big data",
+                "date": {
+                  "days": 19155
+                }
+              },
+              {
+                "file_path": "playground/topics/data/acid-model.md",
+                "title": "Acid model",
+                "date": {
+                  "days": 19100
+                }
+              },
+              {
+                "file_path": "playground/topics/data/base-model.md",
+                "title": "Base model",
+                "date": {
+                  "days": 19100
+                }
+              },
+              {
+                "file_path": "playground/topics/data/cap-theorem.md",
+                "title": "Cap theorem",
+                "date": {
+                  "days": 19100
+                }
+              },
+              {
                 "file_path": "playground/topics/data/sql-practices-orm-vs-plain-sql.md",
                 "title": "Sql Practices Orm Vs Plain Sql",
                 "date": {
@@ -2634,8 +3117,39 @@
             "grouped_path": "/playground/topics/design",
             "file_paths": [
               {
+                "file_path": "playground/topics/design/§ design.md",
+                "title": "§ Design",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
+                "file_path": "playground/topics/design/¶ Persona.md",
+                "title": "¶ persona",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/¶ Jobs to be done.md",
+                "title": "¶ jobs to be done",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/designing-for-forgiveness.md",
+                "title": "Designing for Forgiveness: Creating Error-Tolerant Interfaces",
+                "date": {
+                  "days": 19958
+                }
+              },
+              {
                 "file_path": "playground/topics/design/writing-content-for-multimedia-guidelines.md",
                 "title": "Writing Content for Multimedia Guidelines",
+                "date": {
+                  "days": 19846
+                }
+              },
+              {
+                "file_path": "playground/topics/design/understanding-saving-investing-and-speculating-key-differences-and-strategies.md",
+                "title": "Understanding Saving, Investing, and Speculating: Key Differences and Strategies",
                 "date": {
                   "days": 19846
                 }
@@ -2807,6 +3321,81 @@
                 "date": {
                   "days": 17549
                 }
+              },
+              {
+                "file_path": "playground/topics/design/jtbd-job-interview-structure.md",
+                "title": "Jtbd job interview structure",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/methods-to-overcome-the-limitations-of-personas.md",
+                "title": "Methods to overcome the limitations of personas",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/omit-needless-demographic-information-when-creating-personas.md",
+                "title": "Omit needless demographic information when creating personas",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/people-fill-information-gaps-with-assumptions.md",
+                "title": "People fill information gaps with assumptions",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/personas-alone-can-t-help-teams-achieve-empathy.md",
+                "title": "Personas alone can t help teams achieve empathy",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/personas-communicate-research-or-they-communicate-assumptions.md",
+                "title": "Personas communicate research or they communicate assumptions",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/personas-document-shared-understanding-about-users.md",
+                "title": "Personas document shared understanding about users",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/personas-lack-rich-context.md",
+                "title": "Personas lack rich context",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/personas-make-abstract-research-concrete-for-design-teams.md",
+                "title": "Personas make abstract research concrete for design teams",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/personas-may-create-space-for-assumptions.md",
+                "title": "Personas may create space for assumptions",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/personas-start-with-qualitative-research.md",
+                "title": "Personas start with qualitative research",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/use-jtbd-stories-to-foreground-the-context-in-which-a-solution-is-required.md",
+                "title": "Use jtbd stories to foreground the context in which a solution is required",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/focus-product-development-on-customer-jobs-that-are-important-tangible-unsatisfied-and-lucrative.md",
+                "title": "Focus product development on customer jobs that are important tangible unsatisfied and lucrative",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/focus-personas-on-tasks-goals-and-motivations.md",
+                "title": "Focus personas on tasks goals and motivations",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/design/three-clicks-rule-is-a-myth.md",
+                "title": "Three clicks rule is a myth",
+                "date": ""
               }
             ],
             "next_path": {}
@@ -2827,8 +3416,22 @@
                 "grouped_path": "/playground/topics/devbox/guide",
                 "file_paths": [
                   {
+                    "file_path": "playground/topics/devbox/guide/containerless.md",
+                    "title": "Ditch the Containers: Go Containerless with Devbox",
+                    "date": {
+                      "days": 19936
+                    }
+                  },
+                  {
                     "file_path": "playground/topics/devbox/guide/devbox-json.md",
                     "title": "Devbox.json: Your Project's DNA",
+                    "date": {
+                      "days": 19936
+                    }
+                  },
+                  {
+                    "file_path": "playground/topics/devbox/guide/run-your-own-shell.md",
+                    "title": "Devbox Shell: Your Dev Environment, Your Rules",
                     "date": {
                       "days": 19936
                     }
@@ -2839,6 +3442,13 @@
               "introduction": {
                 "grouped_path": "/playground/topics/devbox/introduction",
                 "file_paths": [
+                  {
+                    "file_path": "playground/topics/devbox/introduction/the-reason-for-being.md",
+                    "title": "The reason for being",
+                    "date": {
+                      "days": 19936
+                    }
+                  },
                   {
                     "file_path": "playground/topics/devbox/introduction/¶ Nix Flakes.md",
                     "title": "Nix Flakes: Next-Level Package Management",
@@ -2875,8 +3485,8 @@
                     }
                   },
                   {
-                    "file_path": "playground/topics/devbox/introduction/the-reason-for-being.md",
-                    "title": "The reason for being",
+                    "file_path": "playground/topics/devbox/introduction/why-devbox-but-not-nix.md",
+                    "title": "Devbox vs Nix: Why We Chose Simplicity",
                     "date": {
                       "days": 19936
                     }
@@ -2887,20 +3497,6 @@
               "research": {
                 "grouped_path": "/playground/topics/devbox/research",
                 "file_paths": [
-                  {
-                    "file_path": "playground/topics/devbox/research/≈ Nix in building Docker images.md",
-                    "title": "Nix: Revolutionizing Docker Image Builds",
-                    "date": {
-                      "days": 19936
-                    }
-                  },
-                  {
-                    "file_path": "playground/topics/devbox/research/≈ Nix - Build the same thing at any time.md",
-                    "title": "Nix - Build the same thing at any time",
-                    "date": {
-                      "days": 19936
-                    }
-                  },
                   {
                     "file_path": "playground/topics/devbox/research/shadow-copies.md",
                     "title": "Shadow Copies in Docker Builds",
@@ -2923,15 +3519,29 @@
                     }
                   },
                   {
-                    "file_path": "playground/topics/devbox/research/≈ Nix - Minimum changes, Minimum redundancies.md",
-                    "title": "Nix - Minimum changes, Minimum redundancies",
+                    "file_path": "playground/topics/devbox/research/fixed-output-derivation.md",
+                    "title": "Fixed-output Derivation in Nix",
                     "date": {
                       "days": 19936
                     }
                   },
                   {
-                    "file_path": "playground/topics/devbox/research/fixed-output-derivation.md",
-                    "title": "Fixed-output Derivation in Nix",
+                    "file_path": "playground/topics/devbox/research/nix-is-faster-than-docker-build.md",
+                    "title": "Nix is Faster Than Docker Build",
+                    "date": {
+                      "days": 19936
+                    }
+                  },
+                  {
+                    "file_path": "playground/topics/devbox/research/≈ Nix - Build the same thing at any time.md",
+                    "title": "Nix - Build the same thing at any time",
+                    "date": {
+                      "days": 19936
+                    }
+                  },
+                  {
+                    "file_path": "playground/topics/devbox/research/≈ Nix - Minimum changes, Minimum redundancies.md",
+                    "title": "Nix - Minimum changes, Minimum redundancies",
                     "date": {
                       "days": 19936
                     }
@@ -2944,8 +3554,15 @@
                     }
                   },
                   {
-                    "file_path": "playground/topics/devbox/research/nix-is-faster-than-docker-build.md",
-                    "title": "Nix is Faster Than Docker Build",
+                    "file_path": "playground/topics/devbox/research/≈ Nix in building Docker images.md",
+                    "title": "Nix: Revolutionizing Docker Image Builds",
+                    "date": {
+                      "days": 19936
+                    }
+                  },
+                  {
+                    "file_path": "playground/topics/devbox/research/content-addressable-storage-in-docker.md",
+                    "title": "Devbox vs Nix: Why We Chose Simplicity",
                     "date": {
                       "days": 19936
                     }
@@ -3000,6 +3617,20 @@
             "grouped_path": "/playground/topics/devops",
             "file_paths": [
               {
+                "file_path": "playground/topics/devops/§ devops.md",
+                "title": "§ DevOps",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
+                "file_path": "playground/topics/devops/deploy-branch-with-vercel-cli.md",
+                "title": "Deploy branch with vercel cli",
+                "date": {
+                  "days": 19524
+                }
+              },
+              {
                 "file_path": "playground/topics/devops/how-blue-green-deployment-helped-mochi.md",
                 "title": "How Blue Green Deployment Helped Mochi",
                 "date": {
@@ -3007,10 +3638,45 @@
                 }
               },
               {
+                "file_path": "playground/topics/devops/testing-aws-services-locally-with-localstack.md",
+                "title": "Testing aws services locally with localstack",
+                "date": {
+                  "days": 19433
+                }
+              },
+              {
                 "file_path": "playground/topics/devops/radio-talk-60-blue-green-deployment.md",
                 "title": "Radio Talk 60 Blue Green Deployment",
                 "date": {
                   "days": 19426
+                }
+              },
+              {
+                "file_path": "playground/topics/devops/kubeseal-sops.md",
+                "title": "Kubeseal sops",
+                "date": {
+                  "days": 19263
+                }
+              },
+              {
+                "file_path": "playground/topics/devops/feature-flags.md",
+                "title": "Feature flags",
+                "date": {
+                  "days": 19260
+                }
+              },
+              {
+                "file_path": "playground/topics/devops/progressive-delivery.md",
+                "title": "Progressive delivery",
+                "date": {
+                  "days": 19260
+                }
+              },
+              {
+                "file_path": "playground/topics/devops/blue-green-deployment.md",
+                "title": "Blue green deployment",
+                "date": {
+                  "days": 19039
                 }
               },
               {
@@ -3048,10 +3714,38 @@
             "grouped_path": "/playground/topics/elixir",
             "file_paths": [
               {
+                "file_path": "playground/topics/elixir/§ elixir.md",
+                "title": "§ Elixir",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
                 "file_path": "playground/topics/elixir/erlang-fsm.md",
                 "title": "Erlang Finite State Machine",
                 "date": {
                   "days": 19916
+                }
+              },
+              {
+                "file_path": "playground/topics/elixir/libcluster-in-elixir.md",
+                "title": "Libcluster in elixir",
+                "date": {
+                  "days": 19298
+                }
+              },
+              {
+                "file_path": "playground/topics/elixir/pg-in-elixir.md",
+                "title": "Pg in elixir",
+                "date": {
+                  "days": 19297
+                }
+              },
+              {
+                "file_path": "playground/topics/elixir/acceptance-test-in-elixir.md",
+                "title": "Acceptance test in elixir",
+                "date": {
+                  "days": 19186
                 }
               }
             ],
@@ -3060,6 +3754,23 @@
           "engineering": {
             "grouped_path": "/playground/topics/engineering",
             "file_paths": [
+              {
+                "file_path": "playground/topics/engineering/§ engineering.md",
+                "title": "§ Engineering",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/§ Engineering Management MOC.md",
+                "title": "§ engineering management moc",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/engineering/§ Engineering Backend MOC.md",
+                "title": "§ engineering backend moc",
+                "date": ""
+              },
               {
                 "file_path": "playground/topics/engineering/radix-sort.md",
                 "title": "Radix Sort",
@@ -3089,10 +3800,31 @@
                 }
               },
               {
+                "file_path": "playground/topics/engineering/vim-repl-driven-development.md",
+                "title": "Vim repl driven development",
+                "date": {
+                  "days": 19517
+                }
+              },
+              {
                 "file_path": "playground/topics/engineering/working-on-a-project-interview-assessment-at-dwarves.md",
                 "title": "Working On A Project Interview Assessment At Dwarves",
                 "date": {
                   "days": 19516
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/update-highest-and-lowest-symbol-prices-in-real-time.md",
+                "title": "Update highest and lowest symbol prices in real time",
+                "date": {
+                  "days": 19515
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/redis-rate-limiter.md",
+                "title": "Redis rate limiter",
+                "date": {
+                  "days": 19509
                 }
               },
               {
@@ -3110,6 +3842,13 @@
                 }
               },
               {
+                "file_path": "playground/topics/engineering/graphql-in-microservices-unified-api-gateway.md",
+                "title": "Graphql in microservices unified api gateway",
+                "date": {
+                  "days": 19445
+                }
+              },
+              {
                 "file_path": "playground/topics/engineering/radio-talk-61-monorepo.md",
                 "title": "Radio Talk 61 Monorepo",
                 "date": {
@@ -3117,10 +3856,59 @@
                 }
               },
               {
+                "file_path": "playground/topics/engineering/burnup-and-burndown-chart.md",
+                "title": "Burnup and burndown chart",
+                "date": {
+                  "days": 19416
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/how-to-build-a-product-sense.md",
+                "title": "How to build a product sense",
+                "date": {
+                  "days": 19411
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/difference-between-project-program-portfolio-manager.md",
+                "title": "Difference between project program portfolio manager",
+                "date": {
+                  "days": 19374
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/analysis-document.md",
+                "title": "Analysis document",
+                "date": {
+                  "days": 19360
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/how-to-run-the-backlog-grooming-effectively.md",
+                "title": "How to run the backlog grooming effectively",
+                "date": {
+                  "days": 19314
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/quality-assurance-works-in-the-product-team.md",
+                "title": "Quality assurance works in the product team",
+                "date": {
+                  "days": 19304
+                }
+              },
+              {
                 "file_path": "playground/topics/engineering/202211081111-error-messaging.md",
                 "title": "Error Messaging",
                 "date": {
                   "days": 19304
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/how-one-product-team-works-when-having-incident.md",
+                "title": "How one product team works when having incident",
+                "date": {
+                  "days": 19280
                 }
               },
               {
@@ -3135,6 +3923,111 @@
                 "title": "Forward Proxy",
                 "date": {
                   "days": 19277
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/software-quality-assurance.md",
+                "title": "Software quality assurance",
+                "date": {
+                  "days": 19269
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/pomodoro-technique.md",
+                "title": "Pomodoro technique",
+                "date": {
+                  "days": 19260
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/stream-aligned-team.md",
+                "title": "Stream aligned team",
+                "date": {
+                  "days": 19254
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/story-point-estimation.md",
+                "title": "Story point estimation",
+                "date": {
+                  "days": 19250
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/cognitive-load.md",
+                "title": "Cognitive load",
+                "date": {
+                  "days": 19232
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/double-entry-accounting.md",
+                "title": "Double entry accounting",
+                "date": {
+                  "days": 19228
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/enabling-team.md",
+                "title": "Enabling team",
+                "date": {
+                  "days": 19219
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/team-first-thinking.md",
+                "title": "Team first thinking",
+                "date": {
+                  "days": 19219
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/team-toplogies.md",
+                "title": "Team toplogies",
+                "date": {
+                  "days": 19219
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/conway-s-law.md",
+                "title": "Conway s law",
+                "date": {
+                  "days": 19155
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/edsger-dijkstra-interview.md",
+                "title": "Edsger dijkstra interview",
+                "date": {
+                  "days": 19121
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/cold-start-problem.md",
+                "title": "Cold start problem",
+                "date": {
+                  "days": 19079
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/tackling-complexity.md",
+                "title": "Tackling complexity",
+                "date": {
+                  "days": 19075
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/why-invest-in-tools.md",
+                "title": "Why invest in tools",
+                "date": {
+                  "days": 19072
+                }
+              },
+              {
+                "file_path": "playground/topics/engineering/a-and-cname-records-in-dns.md",
+                "title": "A and cname records in dns",
+                "date": {
+                  "days": 18998
                 }
               },
               {
@@ -3304,6 +4197,13 @@
           "frontend": {
             "grouped_path": "/playground/topics/frontend",
             "file_paths": [
+              {
+                "file_path": "playground/topics/frontend/§ frontend.md",
+                "title": "§ Frontend",
+                "date": {
+                  "days": 20201
+                }
+              },
               {
                 "file_path": "playground/topics/frontend/introducing-htmx-navigating-the-advantages-and-concerns.md",
                 "title": "Introducing HTMX - Navigating the Advantages and Concerns",
@@ -3543,6 +4443,13 @@
                 }
               },
               {
+                "file_path": "playground/topics/frontend/debugging-in-javascript.md",
+                "title": "Debugging in javascript",
+                "date": {
+                  "days": 19281
+                }
+              },
+              {
                 "file_path": "playground/topics/frontend/the-best-of-css-tldr.md",
                 "title": "The Best of CSS TLDR",
                 "date": {
@@ -3557,15 +4464,15 @@
                 }
               },
               {
-                "file_path": "playground/topics/frontend/react-fiber.md",
-                "title": "React Fiber",
+                "file_path": "playground/topics/frontend/intro-to-indexeddb.md",
+                "title": "Intro to IndexedDB",
                 "date": {
                   "days": 19278
                 }
               },
               {
-                "file_path": "playground/topics/frontend/intro-to-indexeddb.md",
-                "title": "Intro to IndexedDB",
+                "file_path": "playground/topics/frontend/react-fiber.md",
+                "title": "React Fiber",
                 "date": {
                   "days": 19278
                 }
@@ -3624,6 +4531,13 @@
                 "title": "Mitigate blocking the main thread",
                 "date": {
                   "days": 19235
+                }
+              },
+              {
+                "file_path": "playground/topics/frontend/concurrency-in-javascript.md",
+                "title": "Concurrency in javascript",
+                "date": {
+                  "days": 19230
                 }
               },
               {
@@ -3729,6 +4643,13 @@
                 "title": "MPA, SPA and Partial Hydration",
                 "date": {
                   "days": 19075
+                }
+              },
+              {
+                "file_path": "playground/topics/frontend/deno.md",
+                "title": "Deno",
+                "date": {
+                  "days": 19068
                 }
               },
               {
@@ -3847,6 +4768,11 @@
                     "date": {
                       "days": 20025
                     }
+                  },
+                  {
+                    "file_path": "playground/topics/frontend/react/component-communication-and-decoupling.md",
+                    "title": "Component communication and decoupling",
+                    "date": ""
                   }
                 ],
                 "next_path": {}
@@ -3939,6 +4865,20 @@
             "grouped_path": "/playground/topics/git",
             "file_paths": [
               {
+                "file_path": "playground/topics/git/§ git.md",
+                "title": "§ Git",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
+                "file_path": "playground/topics/git/git.md",
+                "title": "Git",
+                "date": {
+                  "days": 18850
+                }
+              },
+              {
                 "file_path": "playground/topics/git/gitflow-pull-request.md",
                 "title": "Gitflow Pull Request",
                 "date": {
@@ -3959,10 +4899,10 @@
             "grouped_path": "/playground/topics/golang",
             "file_paths": [
               {
-                "file_path": "playground/topics/golang/go-import.md",
-                "title": "Go import design: using git repo path",
+                "file_path": "playground/topics/golang/§ Go.md",
+                "title": "§ Go",
                 "date": {
-                  "days": 20021
+                  "days": 20201
                 }
               },
               {
@@ -3975,6 +4915,13 @@
               {
                 "file_path": "playground/topics/golang/go-package.md",
                 "title": "Package first design",
+                "date": {
+                  "days": 20021
+                }
+              },
+              {
+                "file_path": "playground/topics/golang/go-import.md",
+                "title": "Go import design: using git repo path",
                 "date": {
                   "days": 20021
                 }
@@ -4001,10 +4948,45 @@
                 }
               },
               {
+                "file_path": "playground/topics/golang/template-method-design-pattern.md",
+                "title": "A Tour of Template method pattern with Golang",
+                "date": {
+                  "days": 19902
+                }
+              },
+              {
                 "file_path": "playground/topics/golang/golang-for-high-performance-video-streaming.md",
                 "title": "Leveraging Golang and WebRTC for High-Performance Video Streaming",
                 "date": {
                   "days": 19683
+                }
+              },
+              {
+                "file_path": "playground/topics/golang/level-up-your-testing-game-with-gomock.md",
+                "title": "Level up your testing game with gomock",
+                "date": {
+                  "days": 19577
+                }
+              },
+              {
+                "file_path": "playground/topics/golang/test-doubles.md",
+                "title": "Test doubles",
+                "date": {
+                  "days": 19577
+                }
+              },
+              {
+                "file_path": "playground/topics/golang/testing-made-simple-best-practices-for-golang-test.md",
+                "title": "Testing made simple best practices for golang test",
+                "date": {
+                  "days": 19577
+                }
+              },
+              {
+                "file_path": "playground/topics/golang/circuit-breaker-in-go.md",
+                "title": "Circuit breaker in go",
+                "date": {
+                  "days": 19540
                 }
               },
               {
@@ -4033,6 +5015,27 @@
                 "title": "Profiling in Go",
                 "date": {
                   "days": 19444
+                }
+              },
+              {
+                "file_path": "playground/topics/golang/202211141287-go-json-parsing.md",
+                "title": "Go JSON parser: number <-> interface",
+                "date": {
+                  "days": 19310
+                }
+              },
+              {
+                "file_path": "playground/topics/golang/unexpected-pitfalls-and-some-handy-patterns-with-concurrency-in-go.md",
+                "title": "Unexpected pitfalls and some handy patterns with concurrency in go",
+                "date": {
+                  "days": 19276
+                }
+              },
+              {
+                "file_path": "playground/topics/golang/atomic-package-in-golang.md",
+                "title": "Atomic package in golang",
+                "date": {
+                  "days": 19213
                 }
               },
               {
@@ -4320,16 +5323,18 @@
             "grouped_path": "/playground/topics/llm",
             "file_paths": [
               {
+                "file_path": "playground/topics/llm/§ LLM.md",
+                "title": "§ LLM",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
                 "file_path": "playground/topics/llm/§ Building LLM System.md",
                 "title": "§ Building LLM system",
                 "date": {
                   "days": 19977
                 }
-              },
-              {
-                "file_path": "playground/topics/llm/§ LLM.md",
-                "title": "§ LLM",
-                "date": ""
               },
               {
                 "file_path": "playground/topics/llm/model-context-protocol.md",
@@ -4343,6 +5348,13 @@
                 "title": "Quantization for large language models",
                 "date": {
                   "days": 20048
+                }
+              },
+              {
+                "file_path": "playground/topics/llm/text-to-mongodb.md",
+                "title": "Natural Language to Database Queries: Text-to-MongoDB",
+                "date": {
+                  "days": 20040
                 }
               },
               {
@@ -4362,6 +5374,13 @@
               {
                 "file_path": "playground/topics/llm/react-in-llm.md",
                 "title": "ReAct(Reason + Act) in LLM",
+                "date": {
+                  "days": 20014
+                }
+              },
+              {
+                "file_path": "playground/topics/llm/rewoo-in-llm.md",
+                "title": "ReWOO: Reasoning without observation - A deeper look",
                 "date": {
                   "days": 20014
                 }
@@ -4416,6 +5435,13 @@
                 }
               },
               {
+                "file_path": "playground/topics/llm/llm-as-a-judge.md",
+                "title": "LLM as a judge",
+                "date": {
+                  "days": 20000
+                }
+              },
+              {
                 "file_path": "playground/topics/llm/the-rise-of-ai-applications-with-llm.md",
                 "title": "The rise of AI applications with LLM",
                 "date": {
@@ -4446,6 +5472,13 @@
               {
                 "file_path": "playground/topics/llm/llm-tracing-in-ai-system.md",
                 "title": "LLM tracing in AI system",
+                "date": {
+                  "days": 19977
+                }
+              },
+              {
+                "file_path": "playground/topics/llm/journey-of-thought-prompting.md",
+                "title": "Journey of Thought Prompting: Harnessing AI to Craft Better Prompts",
                 "date": {
                   "days": 19977
                 }
@@ -4500,10 +5533,24 @@
                 }
               },
               {
+                "file_path": "playground/topics/llm/building-llm-powered-tools-with-dify.md",
+                "title": "Streamlining Internal Tool Development with Managed LLMOps: A Dify Case Study",
+                "date": {
+                  "days": 19916
+                }
+              },
+              {
                 "file_path": "playground/topics/llm/supervisor-ai-agents.md",
                 "title": "Building Agent Supervisors to Generate Insights",
                 "date": {
                   "days": 19915
+                }
+              },
+              {
+                "file_path": "playground/topics/llm/raptor-llm-retrieval.md",
+                "title": "RAPTOR: Tree-based Retrieval for Language Models",
+                "date": {
+                  "days": 19914
                 }
               },
               {
@@ -4522,7 +5569,7 @@
               },
               {
                 "file_path": "playground/topics/llm/multimodal-in-rag.md",
-                "title": "Multimodal in rag",
+                "title": "Multimodal: in rag",
                 "date": {
                   "days": 19902
                 }
@@ -4633,6 +5680,13 @@
                 }
               },
               {
+                "file_path": "playground/topics/llm/foundation-model.md",
+                "title": "Foundation Models: The Latest Advancement in AI",
+                "date": {
+                  "days": 19495
+                }
+              },
+              {
                 "file_path": "playground/topics/llm/select-vector-database-for-llm.md",
                 "title": "Select Vector Database for LLM",
                 "date": {
@@ -4673,6 +5727,81 @@
           "mobile": {
             "grouped_path": "/playground/topics/mobile",
             "file_paths": [
+              {
+                "file_path": "playground/topics/mobile/§ mobile.md",
+                "title": "§ Mobile",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/§ Engineering Mobile MOC.md",
+                "title": "§ engineering mobile MOC",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/mobile/data-race-and-race-condition.md",
+                "title": "Data race and race condition",
+                "date": {
+                  "days": 19337
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/scale-up-application-using-jetpack-navigation.md",
+                "title": "Scale up application using Jetpack navigation",
+                "date": {
+                  "days": 19310
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/kotlin-coroutine-lifecycle.md",
+                "title": "Kotlin coroutine lifecycle",
+                "date": {
+                  "days": 19275
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/the-structure-of-the-command-line-app.md",
+                "title": "The structure of the command line app",
+                "date": {
+                  "days": 19253
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/stateless-and-stateful-widgets-in-flutter.md",
+                "title": "Stateless and stateful widgets in Flutter",
+                "date": {
+                  "days": 19247
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/secret-management-on-ios.md",
+                "title": "Secret management on iOS",
+                "date": {
+                  "days": 19244
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/kotlin-coroutine.md",
+                "title": "Kotlin coroutine",
+                "date": {
+                  "days": 19241
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/swift-5-4-resultbuilder.md",
+                "title": "Swift 5 4 resultbuilder",
+                "date": {
+                  "days": 19235
+                }
+              },
+              {
+                "file_path": "playground/topics/mobile/uikit-builder-pattern.md",
+                "title": "UIKit builder pattern",
+                "date": {
+                  "days": 19209
+                }
+              },
               {
                 "file_path": "playground/topics/mobile/xpc-services-on-macos-app-using-swift.md",
                 "title": "Xpc Services On Macos App Using Swift",
@@ -4727,7 +5856,20 @@
           },
           "personas": {
             "grouped_path": "/playground/topics/personas",
-            "file_paths": [],
+            "file_paths": [
+              {
+                "file_path": "playground/topics/personas/§ Personas.md",
+                "title": "§ personas",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/personas/disc-personality-types-in-team-work.md",
+                "title": "Disc personality types in team work",
+                "date": {
+                  "days": 19245
+                }
+              }
+            ],
             "next_path": {
               "mbti": {
                 "grouped_path": "/playground/topics/personas/mbti",
@@ -4816,6 +5958,21 @@
                     "file_path": "playground/topics/personas/mbti/introversion-extraversion.md",
                     "title": "Introversion vs Extraverion",
                     "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/personas/mbti/build-productive-team.md",
+                    "title": "Build productive team",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/personas/mbti/theory-team-building-based-on-mbti.md",
+                    "title": "Theory team building based on mbti",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/personas/mbti/note.md",
+                    "title": "Note",
+                    "date": ""
                   }
                 ],
                 "next_path": {}
@@ -4825,6 +5982,13 @@
           "pm": {
             "grouped_path": "/playground/topics/pm",
             "file_paths": [
+              {
+                "file_path": "playground/topics/pm/§ pm.md",
+                "title": "§ PM",
+                "date": {
+                  "days": 20201
+                }
+              },
               {
                 "file_path": "playground/topics/pm/how-to-deal-with-technical-debt-in-scrum.md",
                 "title": "How to deal with technical debt in Scrum",
@@ -4874,6 +6038,11 @@
             "grouped_path": "/playground/topics/product",
             "file_paths": [
               {
+                "file_path": "playground/topics/product/§ product.md",
+                "title": "§ product",
+                "date": ""
+              },
+              {
                 "file_path": "playground/topics/product/subscription-pricing-models.md",
                 "title": "Subscription Pricing Models",
                 "date": {
@@ -4914,6 +6083,27 @@
             "grouped_path": "/playground/topics/qa",
             "file_paths": [
               {
+                "file_path": "playground/topics/qa/§ qa.md",
+                "title": "§ QA",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
+                "file_path": "playground/topics/qa/test-cases-breakdown-structure.md",
+                "title": "Test cases breakdown structure",
+                "date": {
+                  "days": 19338
+                }
+              },
+              {
+                "file_path": "playground/topics/qa/boundary-and-equivalence-partitioning-testing.md",
+                "title": "Boundary and equivalence partitioning testing",
+                "date": {
+                  "days": 19318
+                }
+              },
+              {
                 "file_path": "playground/topics/qa/qc-onboarding.md",
                 "title": "Qc Onboarding",
                 "date": {
@@ -4926,6 +6116,11 @@
           "rust": {
             "grouped_path": "/playground/topics/rust",
             "file_paths": [
+              {
+                "file_path": "playground/topics/rust/§ rust.md",
+                "title": "§ rust",
+                "date": ""
+              },
               {
                 "file_path": "playground/topics/rust/error-handling-in-rust.md",
                 "title": "Error handling on Rust",
@@ -4954,8 +6149,15 @@
             "grouped_path": "/playground/topics/security",
             "file_paths": [
               {
+                "file_path": "playground/topics/security/§ security.md",
+                "title": "§ Security",
+                "date": {
+                  "days": 20201
+                }
+              },
+              {
                 "file_path": "playground/topics/security/a-holistic-guide-to-security.md",
-                "title": "A Holistic Guide to Security",
+                "title": "A Holistic: Guide to Security",
                 "date": {
                   "days": 19972
                 }
@@ -4980,6 +6182,13 @@
           "solana": {
             "grouped_path": "/playground/topics/solana",
             "file_paths": [
+              {
+                "file_path": "playground/topics/solana/§ Solana.md",
+                "title": "§ Solana",
+                "date": {
+                  "days": 20201
+                }
+              },
               {
                 "file_path": "playground/topics/solana/dynamic-liquidity-market-a-new-form-of-concentrated-liquidity-amm-on-solana.md",
                 "title": "Dynamic Liquidity Market Maker - a new form of concentrated liquidity AMM on Solana",
@@ -5032,15 +6241,509 @@
             ],
             "next_path": {}
           },
+          "ux": {
+            "grouped_path": "/playground/topics/ux",
+            "file_paths": [
+              {
+                "file_path": "playground/topics/ux/§ UX Design.md",
+                "title": "§ ux design",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/¶ Skeuomorphism.md",
+                "title": "¶ skeuomorphism",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/§ UX Research.md",
+                "title": "§ ux research",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/mastering-ux-research-essential-techniques-for-successful-design.md",
+                "title": "Mastering ux research essential techniques for successful design",
+                "date": {
+                  "days": 19670
+                }
+              },
+              {
+                "file_path": "playground/topics/ux/triple-s-of-ux-in-web3.md",
+                "title": "Triple s of ux in web3",
+                "date": {
+                  "days": 19209
+                }
+              },
+              {
+                "file_path": "playground/topics/ux/abundant-data-makes-us-jump-to-quantitative-data-as-the-solution-to-every-problem.md",
+                "title": "Abundant data makes us jump to quantitative data as the solution to every problem",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/democratize-user-research-to-scale-user-research.md",
+                "title": "Democratize user research to scale user research",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/four-theories-of-truth.md",
+                "title": "Four theories of truth",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/good-research-starts-with-a-good-question.md",
+                "title": "Good research starts with a good question",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/how-many-users-should-you-interview.md",
+                "title": "How many users should you interview",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/landscape-of-ux-research-methods.md",
+                "title": "Landscape of ux research methods",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/lean-methodologies-promote-velocity-at-the-expense-of-understanding.md",
+                "title": "Lean methodologies promote velocity at the expense of understanding",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/prototypes-help-test-ideas-that-are-already-refined.md",
+                "title": "Prototypes help test ideas that are already refined",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/research-repositories-should-generate-new-knowledge.md",
+                "title": "Research repositories should generate new knowledge",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/skeuoumorphic-models-limit-possibilities-for-innovation.md",
+                "title": "Skeuoumorphic models limit possibilities for innovation",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/spend-more-time-in-the-problem-space.md",
+                "title": "Spend more time in the problem space",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/test-digital-experiences-longitudinally.md",
+                "title": "Test digital experiences longitudinally",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/user-research-teams-should-act-as-organizational-multipliers.md",
+                "title": "User research teams should act as organizational multipliers",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/users-perception-of-frequently-used-applications-declines-over-time.md",
+                "title": "Users perception of frequently used applications declines over time",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/ux-research-activities-by-product-lifecycle.md",
+                "title": "Ux research activities by product lifecycle",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/ux-researchers-should-care-about-strength-of-evidence.md",
+                "title": "Ux researchers should care about strength of evidence",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/ux/make-research-insights-easy-to-find-consume-and-use.md",
+                "title": "Make research insights easy to find consume and use",
+                "date": ""
+              }
+            ],
+            "next_path": {
+              "Mixed Methods": {
+                "grouped_path": "/playground/topics/ux/Mixed Methods",
+                "file_paths": [
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/¶ Inductive reasoning.md",
+                    "title": "¶ inductive reasoning",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/¶ Falsifiability.md",
+                    "title": "¶ falsifiability",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/¶ Abductive reasoning.md",
+                    "title": "¶ abductive reasoning",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/¶ Deductive reasoning.md",
+                    "title": "¶ deductive reasoning",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/qualitative-and-quantitative-research-methods-each-have-trade-offs.md",
+                    "title": "Qualitative and quantitative research methods each have trade offs",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/qualitative-and-quantitative-research-represent-different-philosophies-of-knowledge.md",
+                    "title": "Qualitative and quantitative research represent different philosophies of knowledge",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/qualitative-research-creates-mental-models-about-the-problem-space.md",
+                    "title": "Qualitative research creates mental models about the problem space",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/qualitative-research-excels-at-explanation.md",
+                    "title": "Qualitative research excels at explanation",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/qualitative-researchers-care-more-about-data-saturation-than-sample-size.md",
+                    "title": "Qualitative researchers care more about data saturation than sample size",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/quantitative-analysis-is-not-inherently-more-reliable-than-qualitative-data.md",
+                    "title": "Quantitative analysis is not inherently more reliable than qualitative data",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Mixed Methods/≈ Mixed Methods.md",
+                    "title": "≈ mixed methods",
+                    "date": ""
+                  }
+                ],
+                "next_path": {}
+              },
+              "Sensemaking": {
+                "grouped_path": "/playground/topics/ux/Sensemaking",
+                "file_paths": [
+                  {
+                    "file_path": "playground/topics/ux/Sensemaking/¶ Sensemaking.md",
+                    "title": "¶ sensemaking",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Sensemaking/measuring-behaviour-changes-behaviour.md",
+                    "title": "Measuring behaviour changes behaviour",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Sensemaking/quant-data-is-lossy.md",
+                    "title": "Quant data is lossy",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Sensemaking/≈ Sensemaking.md",
+                    "title": "≈ sensemaking",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/ux/Sensemaking/change-happens-gradually-then-suddenly.md",
+                    "title": "Change happens gradually then suddenly",
+                    "date": ""
+                  }
+                ],
+                "next_path": {}
+              }
+            }
+          },
+          "wealth": {
+            "grouped_path": "/playground/topics/wealth",
+            "file_paths": [
+              {
+                "file_path": "playground/topics/wealth/generation-wealth.md",
+                "title": "Generation wealth",
+                "date": ""
+              }
+            ],
+            "next_path": {}
+          },
           "writing": {
             "grouped_path": "/playground/topics/writing",
             "file_paths": [
+              {
+                "file_path": "playground/topics/writing/§ Writing.md",
+                "title": "§ writing",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/¶ Stock and Flow.md",
+                "title": "¶ stock and flow",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/the-six-lines-of-gold.md",
+                "title": "The six lines of gold",
+                "date": {
+                  "days": 19261
+                }
+              },
+              {
+                "file_path": "playground/topics/writing/question-tree.md",
+                "title": "Question tree",
+                "date": {
+                  "days": 19100
+                }
+              },
               {
                 "file_path": "playground/topics/writing/state-explain-link.md",
                 "title": "State, Explain, Link - An all-purpose writing technique",
                 "date": {
                   "days": 19072
                 }
+              },
+              {
+                "file_path": "playground/topics/writing/a-scene-comprises-large-scale-and-small-scale-structures.md",
+                "title": "A scene comprises large scale and small scale structures",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/core-needs-and-psychological-maneuvers-give-fictional-characters-depth.md",
+                "title": "Core needs and psychological maneuvers give fictional characters depth",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/dialogue-illustrates-the-nature-of-the-character.md",
+                "title": "Dialogue illustrates the nature of the character",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/elizabeth-george-s-character-prompt-sheet.md",
+                "title": "Elizabeth George s character prompt sheet",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/five-commandments-of-storytelling.md",
+                "title": "Five commandments of storytelling",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/give-abstract-concepts-a-human-face.md",
+                "title": "Give abstract concepts a human face",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/lester-dent-s-master-plot-for-pulp-fiction.md",
+                "title": "Lester Dent s master plot for pulp fiction",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/place-characters-within-a-landscape.md",
+                "title": "Place characters within a landscape",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/talking-heads-avoidance-device-elizabeth-george.md",
+                "title": "Talking heads avoidance device elizabeth george",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/writing/show-don-t-tell.md",
+                "title": "Show don t tell",
+                "date": ""
+              }
+            ],
+            "next_path": {
+              "The Elements of Story": {
+                "grouped_path": "/playground/topics/writing/The Elements of Story",
+                "file_paths": [
+                  {
+                    "file_path": "playground/topics/writing/The Elements of Story/ensure-the-trunk-of-a-narrative-is-more-substantial-than-the-branches.md",
+                    "title": "Ensure the trunk of a narrative is more substantial than the branches",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/writing/The Elements of Story/good-endings-make-a-story-memorable.md",
+                    "title": "Good endings make a story memorable",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/writing/The Elements of Story/good-story-leads-entice-and-inform.md",
+                    "title": "Good story leads entice and inform",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/writing/The Elements of Story/good-writing-makes-the-familar-new.md",
+                    "title": "Good writing makes the familar new",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/writing/The Elements of Story/narrative-sequencing-informs-meaning.md",
+                    "title": "Narrative sequencing informs meaning",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/writing/The Elements of Story/stories-need-action-and-commentary.md",
+                    "title": "Stories need action and commentary",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/writing/The Elements of Story/use-language-with-necessity.md",
+                    "title": "Use language with necessity",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/writing/The Elements of Story/≈ The Elements of Story.md",
+                    "title": "≈ the elements of story",
+                    "date": ""
+                  }
+                ],
+                "next_path": {}
+              }
+            }
+          },
+          "zettelkasten": {
+            "grouped_path": "/playground/topics/zettelkasten",
+            "file_paths": [
+              {
+                "file_path": "playground/topics/zettelkasten/¶ Luhmann's zettelkasten.md",
+                "title": "¶ luhmann's zettelkasten",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/§ Zettelkasten.md",
+                "title": "§ zettelkasten",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/build-randomness-into-knowledge-generation-systems.md",
+                "title": "Build randomness into knowledge generation systems",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/different-kinds-of-zettelkasten-notes.md",
+                "title": "Different kinds of zettelkasten notes",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/fleeting-notes-are-reminders.md",
+                "title": "Fleeting notes are reminders",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/learning-is-enhanced-by-surprise.md",
+                "title": "Learning is enhanced by surprise",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/purpose-of-zettelkasten.md",
+                "title": "Purpose of zettelkasten",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/write-literature-notes-to-inform-permanent-notes.md",
+                "title": "Write literature notes to inform permanent notes",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/writing-with-a-zettelkasten.md",
+                "title": "Writing with a zettelkasten",
+                "date": ""
+              },
+              {
+                "file_path": "playground/topics/zettelkasten/permanent-notes-are-permanently-useful-not-permanently-unchanging.md",
+                "title": "Permanent notes are permanently useful not permanently unchanging",
+                "date": ""
+              }
+            ],
+            "next_path": {
+              "How to Take Smart Notes": {
+                "grouped_path": "/playground/topics/zettelkasten/How to Take Smart Notes",
+                "file_paths": [
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/¶ Principle of atomicity.md",
+                    "title": "¶ principle of atomicity",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/decontextualize-ideas-to-make-them-new.md",
+                    "title": "Decontextualize ideas to make them new",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/design-environments-to-facilitate-behaviours.md",
+                    "title": "Design environments to facilitate behaviours",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/knowledge-is-a-compounding-investment.md",
+                    "title": "Knowledge is a compounding investment",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/knowledge-work-means-transforming-old-ideas-into-new-ones.md",
+                    "title": "Knowledge work means transforming old ideas into new ones",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/make-notes-in-your-own-words.md",
+                    "title": "Make notes in your own words",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/read-broadly-with-purpose.md",
+                    "title": "Read broadly with purpose",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/rigid-systems-are-fragile-systems.md",
+                    "title": "Rigid systems are fragile systems",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/store-information-where-you-would-want-to-encounter-it-again.md",
+                    "title": "Store information where you would want to encounter it again",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/take-notes-with-connection-in-mind.md",
+                    "title": "Take notes with connection in mind",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/write-from-the-bottom-up.md",
+                    "title": "Write from the bottom up",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/writing-by-hand-is-a-forcing-function.md",
+                    "title": "Writing by hand is a forcing function",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/writing-is-thinking.md",
+                    "title": "Writing is thinking",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/brainstorming-surfaces-available-ideas-not-new-ideas.md",
+                    "title": "Brainstorming surfaces available ideas not new ideas",
+                    "date": ""
+                  },
+                  {
+                    "file_path": "playground/topics/zettelkasten/How to Take Smart Notes/≈ How to Take Smart Notes.md",
+                    "title": "≈ how to take smart notes",
+                    "date": ""
+                  }
+                ],
+                "next_path": {}
+              }
+            }
+          },
+          "zkp": {
+            "grouped_path": "/playground/topics/zkp",
+            "file_paths": [
+              {
+                "file_path": "playground/topics/zkp/§ zk.md",
+                "title": "§ zk",
+                "date": ""
               }
             ],
             "next_path": {}
@@ -5438,6 +7141,46 @@
           }
         ],
         "next_path": {
+          "ai Use cases": {
+            "grouped_path": "/updates/forward/ai Use cases",
+            "file_paths": [
+              {
+                "file_path": "updates/forward/ai Use cases/salesforce.md",
+                "title": "Salesforce use cases",
+                "date": {
+                  "days": 20028
+                }
+              },
+              {
+                "file_path": "updates/forward/ai Use cases/yelp.md",
+                "title": "Yelp use cases",
+                "date": {
+                  "days": 20014
+                }
+              }
+            ],
+            "next_path": {}
+          },
+          "ai-digest": {
+            "grouped_path": "/updates/forward/ai-digest",
+            "file_paths": [
+              {
+                "file_path": "updates/forward/ai-digest/ai-digest-02.md",
+                "title": "AI digest #2 New command Aider, OpenHands, Qwen2.5 Coder 32B, Predicted Output",
+                "date": {
+                  "days": 20042
+                }
+              },
+              {
+                "file_path": "updates/forward/ai-digest/ai-digest-01.md",
+                "title": "AI digest #1 Aider reasoning, OpenAI Realtime API, Cline - pre Claude-dev ",
+                "date": {
+                  "days": 20021
+                }
+              }
+            ],
+            "next_path": {}
+          },
           "Market report": {
             "grouped_path": "/updates/forward/Market report",
             "file_paths": [

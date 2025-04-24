@@ -11,7 +11,7 @@ tags:
 ### Go Language Fundamentals
 
 - [Go In Software Engineering](./go-in-software-engineering.md)
-- [Go Import Design: Using Git Repo Path]()
+- [Go Import Design: Using Git Repo Path](./go-import.md)
 - [Go Generics Type Safety](./go-generics-type-safety.md)
 - [Slice And Array In Golang](./slice-and-array-in-golang.md)
 - [Atomic Package In Golang](./atomic-package-in-golang.md)
@@ -33,7 +33,7 @@ tags:
 
 ### Design Patterns & Best Practices
 
-- [Template Method Design Pattern]()
+- [Template Method Design Pattern](./template-method-design-pattern.md)
 - [Extension Interface Pattern](./extension-interface-pattern.md)
 
 ### Package & Module Management

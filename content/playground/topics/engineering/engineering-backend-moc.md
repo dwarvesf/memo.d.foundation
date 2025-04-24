@@ -1,7 +1,7 @@
 ---
-title: null
+title: "§ engineering backend moc"
 date: null
-description: Explore key backend engineering concepts including Golang atomic packages, database locking, GraphQL microservices, Redis tools, SQL optimization, concurrency patterns, and effective testing strategies.
+description: "Explore key backend engineering concepts including Golang atomic packages, database locking, GraphQL microservices, Redis tools, SQL optimization, concurrency patterns, and effective testing strategies."
 recurringTemplate: true
 recurringTemplateName: engineering-backend-moc
 ---

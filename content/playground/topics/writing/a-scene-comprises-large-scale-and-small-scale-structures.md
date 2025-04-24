@@ -1,9 +1,8 @@
 ---
-title: null
+title: "A scene comprises large scale and small scale structures"
 date: null
-description: Learn how to craft powerful scenes using large-scale structures like goals, conflicts, and disasters, plus small-scale motivation-reaction units to engage readers and build compelling fiction.
+description: "Learn how to craft powerful scenes using large-scale structures like goals, conflicts, and disasters, plus small-scale motivation-reaction units to engage readers and build compelling fiction."
 tags:
-  - writing
 ---
 
 A well-crafted scene comprises both a large-scale structure and a small-scale structure.

@@ -1,10 +1,8 @@
 ---
-title: null
+title: "Measuring behaviour changes behaviour"
 date: null
-description: Measuring behavior often changes it, as people and organizations adjust actions to improve scores, making metrics unreliable and potentially harming long-term goals and trust.
+description: "Measuring behavior often changes it, as people and organizations adjust actions to improve scores, making metrics unreliable and potentially harming long-term goals and trust."
 tags:
-  - ux
-  - researchquantitative
 ---
 
 Measuring behaviour will provoke change in that behaviour. Something akin to the observer effect takes place: we adjust our behaviour to be "seen" by the measures. This can happen at the individual level, whereby we may avoid activities that are not easily counted in favour of those that we are confident will show up on a scorecard. For example, when quantitative measures are used to determine rewards and punishments, people modify their behaviour to accommodate the numbers. For example, a surgeon may engage in “creaming,” or avoiding riskier cases, to avoid being penalized, or work to ensure a patient live just long enough so that he or she doesn’t hurt the hospital’s mortality rate.

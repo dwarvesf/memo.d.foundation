@@ -1,16 +1,10 @@
 ---
-title: null
+title: "Finite state transducer"
 date: 2022-06-28
-description: Learn what a finite-state transducer is, its mathematical model, and how it processes inputs to outputs with states, including examples in programming and applications in natural language processing.
+description: "Learn what a finite-state transducer is, its mathematical model, and how it processes inputs to outputs with states, including examples in programming and applications in natural language processing."
 authors:
-  - Nguyen Xuan Anh
 github_id: monotykamary
 tags:
-  - engineering
-  - state
-  - diagram
-  - machines
-  - transducers
 ---
 
 ## What is finite-state transducer?

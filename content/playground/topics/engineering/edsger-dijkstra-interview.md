@@ -1,15 +1,10 @@
 ---
-title: null
+title: "Edsger dijkstra interview"
 date: 2022-05-09
 description: "Discover Edsger W. Dijkstra's insights on programming, software elegance, testing limits, and the challenges of writing code, revealing why simplicity and hard work lead to successful software development."
 authors:
-  - Pham Duc Thanh
 github_id: zlatanpham
 tags:
-  - programming
-  - engineering
-  - principles
-  - wisdom
 ---
 
 Edsger W. Dijkstra was an influential computer scientist and is well known for his contributions to graph theory algorithms. But, in fact, he also had a deep programming perspective. Here are notes extracted from one of his interviews that give us so much insight.

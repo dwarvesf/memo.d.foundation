@@ -1,17 +1,11 @@
 ---
-title: null
+title: "Managed table vs external table"
 date: 2022-11-16
-description: Learn the key differences between Hive managed tables and external tables, including when to use each type and how dropping tables affects their underlying data in HDFS.
+description: "Learn the key differences between Hive managed tables and external tables, including when to use each type and how dropping tables affects their underlying data in HDFS."
 authors:
-  - Dung Ho
 github_id: dudaka
 icy: 10
 tags:
-  - data
-  - mapreduce
-  - distributed
-  - hadoop
-  - apache-hive
 ---
 
 In this article, we're going to take a look to two different types of Hive tables and the significance of each. There are two types of tables in Hive: Managed table and External table. Managed table has full control over its data, i.e. when we drop the table, the tables, data set or files will be also deleted from HDFS. External table, however, does not have full control over its data set, i.e. when we drop the table, the data set is not deleted from HDFS.

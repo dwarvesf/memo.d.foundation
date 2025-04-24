@@ -1,17 +1,11 @@
 ---
-title: null
+title: "Self balanced bsts avl trees"
 date: 2023-02-13
-description: Learn how trees, especially binary search trees (BST) and AVL trees, organize hierarchical data for fast search, insertion, and deletion with guaranteed balanced height and efficient operations.
+description: "Learn how trees, especially binary search trees (BST) and AVL trees, organize hierarchical data for fast search, insertion, and deletion with guaranteed balanced height and efficient operations."
 authors:
-  - Khoi Nguyen
 github_id: mirageruler
 icy: 10
 tags:
-  - engineering
-  - data-structures
-  - binary-search-tree
-  - avl-tree
-  - binary-tree
 ---
 
 ## What are trees?

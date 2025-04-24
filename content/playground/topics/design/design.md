@@ -27,7 +27,7 @@ tags:
 - [Design workflow](./design-workflow.md)
 - [Understanding an application design](./understanding-an-application-design.md)
 - [Design better mobile application](./design-better-mobile-application.md)
-- [Designing for forgiveness]()
+- [Designing for forgiveness](./designing-for-forgiveness.md)
 
 ### UX, personas & JTBD
 
@@ -63,7 +63,7 @@ tags:
 - [Good design understanding](./good-design-understanding.md)
 - [Six things I extracted from design thinking](./six-things-i-extracted-from-design-thinking.md)
 - [What I learned on design thinking and software development](./what-i-learned-on-design-thinking-and-software-development.md)
-- [Understanding saving, investing, and speculating: key differences and strategies]()
+- [Understanding saving, investing, and speculating: key differences and strategies](./understanding-saving-investing-and-speculating-key-differences-and-strategies.md)
 
 ### Case studies & blog posts
 

@@ -1,7 +1,7 @@
 ---
-title: null
+title: "Take notes with connection in mind"
 date: null
-description: Learn how to take smart notes by connecting new ideas with existing ones to deepen understanding and reveal insights, boosting your learning, writing, and thinking skills effectively.
+description: "Learn how to take smart notes by connecting new ideas with existing ones to deepen understanding and reveal insights, boosting your learning, writing, and thinking skills effectively."
 ---
 
 When taking notes, always write them with consideration for the notes that you already have. Notes are far more powerful when we connect them to a larger [ network of thought](), crafting idea [ constellations]() from discrete ideas that we have [ recontextualized]() into new conversations.

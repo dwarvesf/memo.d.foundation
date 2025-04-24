@@ -1,18 +1,11 @@
 ---
-title: null
+title: "Redis rate limiter"
 date: 2023-06-01
-description: Learn how to implement basic rate limiting in Redis using counters and lists to control user access by IP address, preventing too many requests in a set time period.
+description: "Learn how to implement basic rate limiting in Redis using counters and lists to control user access by IP address, preventing too many requests in a set time period."
 authors:
-  - Pham Minh Tuan
 github_id: Tuanpm31
 icy: 10
 tags:
-  - backend
-  - backend
-  - redis
-  - rate-limiting
-  - lua
-  - ip-address
 ---
 
 ## Introduction

@@ -1,20 +1,11 @@
 ---
-title: null
+title: "Hive window and analytic functions"
 date: 2022-12-12
-description: Learn how to use Hive window and analytical functions to calculate complex metrics like a 10-day moving average on stock data with easy-to-understand SQL examples and syntax.
+description: "Learn how to use Hive window and analytical functions to calculate complex metrics like a 10-day moving average on stock data with easy-to-understand SQL examples and syntax."
 authors:
-  - Dung Ho
 github_id: dudaka
 icy: 10
 tags:
-  - data
-  - mapreduce
-  - distributed
-  - hadoop
-  - apache-hive
-  - hdfs
-  - analytic-functions
-  - window-functions
 ---
 
 If you're a SQL or PL/SQL developer or developed an ETL process before, you know just plain SQL is not going to get the job done. To implement complex use cases, we need powerful window and analytical functions. The good news is Hive supports both window and analytical functions. Before we look at an example of window and analytical functions, let's understand what they are and why do we need them. Let's take our very old stocks data set and say we want to calculate average volume by stocks by year. We've done this before already on some previous articles about Apache Hive. And the following query show it looks like in Hive.

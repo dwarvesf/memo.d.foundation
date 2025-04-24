@@ -269,30 +269,6 @@
       "path": "/playground/topics/golang/go-for-enterprise/enterprise-standard-language"
     }
   ],
-  "playground/topics/devbox/story/devbox-a-world-before-docker": [
-    {
-      "title": "§ Devbox",
-      "path": "/playground/topics/devbox/devbox"
-    }
-  ],
-  "playground/topics/devbox/story/devbox-docker-adoption-and-challenges": [
-    {
-      "title": "§ Devbox",
-      "path": "/playground/topics/devbox/devbox"
-    }
-  ],
-  "playground/topics/devbox/story/devbox-nix-and-our-devbox-adoption": [
-    {
-      "title": "§ Devbox",
-      "path": "/playground/topics/devbox/devbox"
-    }
-  ],
-  "playground/topics/devbox/story/devbox-local-development-env": [
-    {
-      "title": "§ Devbox",
-      "path": "/playground/topics/devbox/devbox"
-    }
-  ],
   "careers/open-positions/growth-lead": [
     {
       "title": "Join the Dwarves",
@@ -559,75 +535,15 @@
       "path": "/playground/notes/misc/lifecycle-of-a-publication"
     }
   ],
-  "playground/topics/llm/the-rise-of-ai-applications-with-llm": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
-  "playground/topics/llm/use-cases-for-llm-applications": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    },
-    {
-      "title": "The rise of AI applications with LLM",
-      "path": "/playground/topics/llm/the-rise-of-ai-applications-with-llm"
-    }
-  ],
-  "playground/topics/llm/model-selection": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
-  "playground/topics/llm/guardrails-in-llm": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
-  "playground/topics/llm/intent-classification-by-llm": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
-  "playground/topics/llm/prevent-prompt-injection": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
-  "playground/topics/llm/multi-agent-collaboration-for-task-completion": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
-  "playground/topics/llm/react-in-llm": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
-  "playground/topics/llm/evaluation-guideline-for-llm-application": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    }
-  ],
   "playground/topics/llm/llm-as-a-judge": [
-    {
-      "title": "§ Building LLM system",
-      "path": "/playground/topics/llm/building-llm-system"
-    },
     {
       "title": "Evaluation guidelines for LLM applications",
       "path": "/playground/topics/llm/evaluation-guideline-for-llm-application"
-    }
-  ],
-  "playground/topics/llm/observability-in-ai-platforms": [
+    },
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
     {
       "title": "§ Building LLM system",
       "path": "/playground/topics/llm/building-llm-system"
@@ -637,18 +553,1292 @@
     {
       "title": "Observability in AI platforms",
       "path": "/playground/topics/llm/observability-in-ai-platforms"
+    },
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
     }
   ],
   "playground/topics/llm/logs-pillar": [
     {
       "title": "Observability in AI platforms",
       "path": "/playground/topics/llm/observability-in-ai-platforms"
+    },
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/use-cases-for-llm-applications": [
+    {
+      "title": "The rise of AI applications with LLM",
+      "path": "/playground/topics/llm/the-rise-of-ai-applications-with-llm"
+    },
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
     }
   ],
   "playground/topics/golang/weekly/nov-01": [
     {
       "title": "Go Commentary #19: Writing secure Go code",
       "path": "/playground/topics/golang/weekly/nov-08"
+    }
+  ],
+  "playground/topics/blockchain/ton-blockchain-of-blockchains": [
+    {
+      "title": "Ton's base concepts",
+      "path": "/playground/topics/blockchain/ton-core-concept"
+    },
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/precautions": [
+    {
+      "title": "Documents",
+      "path": "/playground/topics/blockchain/documents"
+    },
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/pm/project-management": [
+    {
+      "title": "§ PM",
+      "path": "/playground/topics/pm/pm"
+    }
+  ],
+  "playground/topics/pm/an-alternative-to-tm": [
+    {
+      "title": "§ PM",
+      "path": "/playground/topics/pm/pm"
+    }
+  ],
+  "playground/topics/pm/estimation-in-agile": [
+    {
+      "title": "§ PM",
+      "path": "/playground/topics/pm/pm"
+    }
+  ],
+  "playground/topics/pm/definition-of-done": [
+    {
+      "title": "§ PM",
+      "path": "/playground/topics/pm/pm"
+    }
+  ],
+  "playground/topics/pm/how-to-deal-with-technical-debt-in-scrum": [
+    {
+      "title": "§ PM",
+      "path": "/playground/topics/pm/pm"
+    }
+  ],
+  "playground/topics/pm/our-daily-standup-format": [
+    {
+      "title": "§ PM",
+      "path": "/playground/topics/pm/pm"
+    }
+  ],
+  "playground/topics/design/good-design-understanding": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/ui-design-fundamental": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/gestalt-principles-in-ui-design": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/three-levels-of-design": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/design-tips-tricks": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/the-principle-of-spacing-in-ui-design-part-1": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/the-principle-of-spacing-in-ui-design-part-2": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/three-clicks-rule-is-a-myth": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/design-system": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/how-a-design-system-work": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/ui-design-best-practices-dwarves": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/design-workflow": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/understanding-an-application-design": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/design-better-mobile-application": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/designing-for-forgiveness": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/ux-model": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/personas-start-with-qualitative-research": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/personas-alone-can-t-help-teams-achieve-empathy": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/personas-communicate-research-or-they-communicate-assumptions": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/personas-document-shared-understanding-about-users": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/personas-lack-rich-context": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/personas-make-abstract-research-concrete-for-design-teams": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/personas-may-create-space-for-assumptions": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/omit-needless-demographic-information-when-creating-personas": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/people-fill-information-gaps-with-assumptions": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/methods-to-overcome-the-limitations-of-personas": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/jtbd-job-interview-structure": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/use-jtbd-stories-to-foreground-the-context-in-which-a-solution-is-required": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/focus-product-development-on-customer-jobs-that-are-important-tangible-unsatisfied-and-lucrative": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/focus-personas-on-tasks-goals-and-motivations": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/domain-insight-research-framework": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/design-resourcestools": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/getting-started-with-webflow": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/writing-content-for-multimedia-guidelines": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/competency-mapping": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/card-sorting-and-a-glimpse-at-experimental-sorting-session": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/six-things-i-extracted-from-design-thinking": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/what-i-learned-on-design-thinking-and-software-development": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/understanding-saving-investing-and-speculating-key-differences-and-strategies": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/the-correct-way-to-build-kpi": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/devops/about-devops": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/how-we-setup-cicd": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/blue-green-deployment": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/how-blue-green-deployment-helped-mochi": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/deploy-branch-with-vercel-cli": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/progressive-delivery": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/radio-talk-60-blue-green-deployment": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/docker-microcontainers": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/kubernetes-helm-101": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/kubeseal-sops": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/feature-flags": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/devops/testing-aws-services-locally-with-localstack": [
+    {
+      "title": "§ DevOps",
+      "path": "/playground/topics/devops/devops"
+    }
+  ],
+  "playground/topics/llm/a-grand-unified-theory-of-the-ai-hype-cycle": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/foundation-model": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/model-context-protocol": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/model-selection": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/quantization-in-llm": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/adversarial-prompting": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/easy-prompt-engineering-for-business-use-and-mitigating-risks-in-llms": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/how-to-talk-to-chatgpt-effectively": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/journey-of-thought-prompting": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/exploring-machine-learning-approaches-for-fine-tuning-llama-models": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/rlhf-with-open-assistant": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/reinforcement-learning": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/reward-model": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/proximal-policy-optimization": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/q-learning": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/caching-with-rag-system": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/chunking-strategies-to-overcome-context-limitation-in-llm": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/dealing-with-long-term-memory-in-ai-chatbot": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/hybrid-search": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/raptor-llm-retrieval": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/re-ranking-in-rag": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/llm-query-caching": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/select-vector-database-for-llm": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/multimodal-in-rag": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/workaround-with-openai-s-token-limit-with-langchain": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/working-with-langchain-document-loaders": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/evaluation-guideline-for-llm-application": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/feedback-mechanism": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/observability-in-ai-platforms": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/trace-pillar": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/thumbs-up-and-thumbs-down-pattern": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/supervisor-ai-agents": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/multi-agent-collaboration-for-task-completion": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/react-in-llm": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    },
+    {
+      "title": "ReWOO: Reasoning without observation - A deeper look",
+      "path": "/playground/topics/llm/rewoo-in-llm"
+    }
+  ],
+  "playground/topics/llm/rewoo-in-llm": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/function-calling": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/guardrails-in-llm": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/prevent-prompt-injection": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/build-your-chatbot-with-open-source-large-language-models": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/building-llm-powered-tools-with-dify": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/generative-ui": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/llm-tracing-in-ai-system": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/the-rise-of-ai-applications-with-llm": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    },
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/llm/text-to-mongodb": [
+    {
+      "title": "§ LLM",
+      "path": "/playground/topics/llm/llm"
+    }
+  ],
+  "playground/topics/llm/intent-classification-by-llm": [
+    {
+      "title": "§ Building LLM system",
+      "path": "/playground/topics/llm/building-llm-system"
+    }
+  ],
+  "playground/topics/frontend/atomic-design-pattern": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/css-container-queries": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/css-in-js": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/dark-mode-flickers-a-white-background-for-a-fraction-of-a-second": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/hsl-color": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/html-inert": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/i18n-frontend-guideline": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/intro-to-indexeddb": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/variable-fonts": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/wai-aria": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/webassembly": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/websockets": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/accelerate-project-initiation-with-advanced-nextjs-boilerplate-react-toolkit": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/choosing-the-right-javascript-framework-a-deep-dive-into-react-vs-angular-vs-vue": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/deno": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/react-18": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/react-fiber": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/react-server-component": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/remix-versus-nextjs": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/tackling-server-state-complexity-in-frontend-development": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/typesafe-client-server": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/validation-with-zod": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/be-careful-with-your-code-splitting-setup": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/concurrency-in-javascript": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/mitigate-blocking-the-main-thread": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/prevent-layout-thrashing": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/pure-css-parallax": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/render-optimization-in-data-fetching-libraries": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/retain-scroll-position-in-infinite-scroll": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/scroll-driven-animations": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/vitejs-native-modules": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/why-dom-manipulation-is-slow": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/why-virtual-dom-is-fast": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/zaplib-post-mortem": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/different-ways-to-test-react-application": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/fundamental-end-to-end-frontend-testing-with-cypress": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/debugging-in-javascript": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/applying-mock-service-worker-msw-for-seamless-web-development": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/focus-trap": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/sign-in-form-best-practices": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/using-correct-html-element-to-increase-website-accessibility": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/adoption-of-pnpm": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/from-multi-repo-to-monorepo-a-case-study-with-nghenhan-turbo-monorepo": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/invoking-component-functions-in-react": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/hoc-renderprops-and-hook-in-reactjs": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/build-polymorphic-react-components-with-typescript": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/recursively-export-file-pattern-in-javascript-es6-application": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/singleton-design-pattern-in-javascript": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/window-and-iframe-communication": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/lessons-learned-from-being-a-part-of-corporate-micro-frontend-implementation": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/micro-frontends-microservices-for-frontend-development": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/why-micro-frontend": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/why-we-chose-our-tech-stack-accelerating-development-with-a-robust-frontend-solution": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/what-is-pnpm-compare-to-npmyarn": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/frontend/url-formats-for-sharing-via-social-networks": [
+    {
+      "title": "§ Frontend",
+      "path": "/playground/topics/frontend/frontend"
+    }
+  ],
+  "playground/topics/elixir/acceptance-test-in-elixir": [
+    {
+      "title": "§ Elixir",
+      "path": "/playground/topics/elixir/elixir"
+    }
+  ],
+  "playground/topics/elixir/erlang-fsm": [
+    {
+      "title": "§ Elixir",
+      "path": "/playground/topics/elixir/elixir"
+    }
+  ],
+  "playground/topics/elixir/libcluster-in-elixir": [
+    {
+      "title": "§ Elixir",
+      "path": "/playground/topics/elixir/elixir"
+    }
+  ],
+  "playground/topics/elixir/pg-in-elixir": [
+    {
+      "title": "§ Elixir",
+      "path": "/playground/topics/elixir/elixir"
+    }
+  ],
+  "playground/topics/security/applied-security-basis": [
+    {
+      "title": "§ Security",
+      "path": "/playground/topics/security/security"
+    }
+  ],
+  "playground/topics/security/the-key-of-security-mechanisms-in-tackling-cyber-threats": [
+    {
+      "title": "§ Security",
+      "path": "/playground/topics/security/security"
+    }
+  ],
+  "playground/topics/security/a-holistic-guide-to-security": [
+    {
+      "title": "§ Security",
+      "path": "/playground/topics/security/security"
+    }
+  ],
+  "playground/topics/golang/go-in-software-engineering": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/go-import": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/go-generics-type-safety": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/slice-and-array-in-golang": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/atomic-package-in-golang": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/error-handling-patterns": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/go-concurrency": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/approaches-to-manage-concurrent-workloads-like-worker-pools-and-pipelines": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/unexpected-pitfalls-and-some-handy-patterns-with-concurrency-in-go": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/circuit-breaker-in-go": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/unit-testing-best-practices-in-golang": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/level-up-your-testing-game-with-gomock": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/test-doubles": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/testing-made-simple-best-practices-for-golang-test": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/template-method-design-pattern": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/extension-interface-pattern": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/go-package": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/bunk-license-check": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/profiling-in-go": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/message-queues-and-streaming-platforms-eg-kafka-nats-rabbitmq": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/use-go-selenium-to-crawl-data": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/golang-for-high-performance-video-streaming": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/golang/connecting-vim-with-golang": [
+    {
+      "title": "§ Go",
+      "path": "/playground/topics/golang/go"
+    }
+  ],
+  "playground/topics/solana/solana-core-concept": [
+    {
+      "title": "§ Solana",
+      "path": "/playground/topics/solana/solana"
+    }
+  ],
+  "playground/topics/solana/solana-account": [
+    {
+      "title": "§ Solana",
+      "path": "/playground/topics/solana/solana"
+    }
+  ],
+  "playground/topics/solana/how-tokens-work-on-solana": [
+    {
+      "title": "§ Solana",
+      "path": "/playground/topics/solana/solana"
+    }
+  ],
+  "playground/topics/solana/introduce-to-solana-token-2022-new-standard-to-create-a-token-in-solana": [
+    {
+      "title": "§ Solana",
+      "path": "/playground/topics/solana/solana"
+    }
+  ],
+  "playground/topics/solana/metaplex-nft-compression": [
+    {
+      "title": "§ Solana",
+      "path": "/playground/topics/solana/solana"
+    }
+  ],
+  "playground/topics/solana/anchor-framework": [
+    {
+      "title": "§ Solana",
+      "path": "/playground/topics/solana/solana"
+    }
+  ],
+  "playground/topics/solana/dynamic-liquidity-market-a-new-form-of-concentrated-liquidity-amm-on-solana": [
+    {
+      "title": "§ Solana",
+      "path": "/playground/topics/solana/solana"
+    }
+  ],
+  "playground/topics/qa/boundary-and-equivalence-partitioning-testing": [
+    {
+      "title": "§ QA",
+      "path": "/playground/topics/qa/qa"
+    }
+  ],
+  "playground/topics/qa/qc-onboarding": [
+    {
+      "title": "§ QA",
+      "path": "/playground/topics/qa/qa"
+    }
+  ],
+  "playground/topics/qa/test-cases-breakdown-structure": [
+    {
+      "title": "§ QA",
+      "path": "/playground/topics/qa/qa"
     }
   ],
   "playground/topics/devbox/research/pinning-nixpkgs": [
@@ -663,16 +1853,784 @@
       "path": "/playground/topics/devbox/research/nix-build-the-same-thing-at-any-time"
     }
   ],
+  "playground/topics/devbox/research/content-addressable-storage-in-docker": [
+    {
+      "title": "Nix - Minimum changes, Minimum redundancies",
+      "path": "/playground/topics/devbox/research/nix-minimum-changes-minimum-redundancies"
+    }
+  ],
   "playground/topics/devbox/research/nix-is-faster-than-docker-build": [
     {
       "title": "Nix - Minimum changes, Minimum redundancies",
       "path": "/playground/topics/devbox/research/nix-minimum-changes-minimum-redundancies"
     }
   ],
-  "playground/topics/blockchain/ton-blockchain-of-blockchains": [
+  "playground/topics/devbox/introduction/the-reason-for-being": [
     {
-      "title": "Ton's base concepts",
-      "path": "/playground/topics/blockchain/ton-core-concept"
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/guide/run-your-own-shell": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/guide/devbox-json": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/guide/containerless": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-a-world-before-docker": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-docker-adoption-and-challenges": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-nix-and-our-devbox-adoption": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-local-development-env": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/story/devbox-production-success-story": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/devbox/introduction/why-devbox-but-not-nix": [
+    {
+      "title": "§ Devbox",
+      "path": "/playground/topics/devbox/devbox"
+    }
+  ],
+  "playground/topics/blockchain/general": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/documents": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/blockchain-security": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/token": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/multisign-wallet": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/liquidity-pool": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/nft-fractionalization": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/dollar-cost-averaging": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/layer-2": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/design-system-for-layer-2-using-zk-rollup": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/polygon-zkevm-architecture": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/starknet-architecture": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/plonky2": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/blockchain-bridge": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/cross-chain-transfers-implementing-a-token-swap-from-base-chain-to-bitcoin": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/ton-core-concept": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/federated-byzantine": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/blockchain-oracle": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/external-calls": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/zk-snarks": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/using-foundry-for-evm-smart-contract-developement": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/web3-development-with-foundry": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/build-custom-ai-agent-with-elizaos": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/blockchain/blockchain-for-designers": [
+    {
+      "title": "§ Blockchain",
+      "path": "/playground/topics/blockchain"
+    }
+  ],
+  "playground/topics/architecture/event-sourcing-overview": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/service-based-architecture": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/overview-on-broker-pattern-in-distributed-system": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/builder-design-pattern": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/command-pattern": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/observer-pattern": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/prototype-design-pattern": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/singleton-design-pattern": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/strategy-design-pattern": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/visitor-design-pattern": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/c4-diagrams": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/c4-modelling": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/uml-state-machine-diagram": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/state-pattern": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/finite-state-automata": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/finite-state-transducer": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/mealy-machine": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/moore-machine": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/state-explosion": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/automata": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/domain-model-in-domain-driven-design": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/entities-in-domain-driven-design": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/overview-of-domain-driven-design": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/law-of-demeter": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/solid-principles": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/principles-of-good-software-design": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/case-study-write-heavy-scalable-and-reliable-inventory-platform": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/design-file-sharing-system-part-1-directory-structure": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/redis-streaming": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/redis-streaming-concurrency-with-master-and-consumers": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/sdk-event-sourcing": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/architecture/reducers": [
+    {
+      "title": "§ Architecture",
+      "path": "/playground/topics/architecture"
+    }
+  ],
+  "playground/topics/mobile/data-race-and-race-condition": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/stateless-and-stateful-widgets-in-flutter": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/swiftui": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/uikit-builder-pattern": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/swift-5-4-resultbuilder": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/build-a-passcode-view-with-swift": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/create-circular-text-using-swiftui": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/draw-watch-face-using-swiftui": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/reproduce-apple-find-me-bottom-menu-view": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/kotlin-coroutine": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/kotlin-coroutine-lifecycle": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/secret-management-on-ios": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/scale-up-application-using-jetpack-navigation": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/mobile/xpc-services-on-macos-app-using-swift": [
+    {
+      "title": "§ Mobile",
+      "path": "/playground/topics/mobile/mobile"
+    }
+  ],
+  "playground/topics/ai/explaining-gradient-descent-in-machine-learning-with-a-simple-analogy": [
+    {
+      "title": "§ AI",
+      "path": "/playground/topics/ai/ai"
+    }
+  ],
+  "playground/topics/ai/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing": [
+    {
+      "title": "§ AI",
+      "path": "/playground/topics/ai/ai"
+    }
+  ],
+  "playground/topics/ai/how-we-created-an-ai-powered-interview-system-using-openais-chatgpt": [
+    {
+      "title": "§ AI",
+      "path": "/playground/topics/ai/ai"
+    }
+  ],
+  "playground/topics/ai/securing-your-remote-mcp-servers": [
+    {
+      "title": "§ AI",
+      "path": "/playground/topics/ai/ai"
+    }
+  ],
+  "playground/topics/ai/tool-level-security-for-remote-mcp-servers": [
+    {
+      "title": "§ AI",
+      "path": "/playground/topics/ai/ai"
+    }
+  ],
+  "playground/topics/ai/why-hollywood-and-gaming-struggle-with-ai": [
+    {
+      "title": "§ AI",
+      "path": "/playground/topics/ai/ai"
+    }
+  ],
+  "playground/topics/data/google-dataproc": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/google-data-fusion": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/data-pipeline-design-framework": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/statistics-in-data-analysis": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/partitions-on-apache-hive": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/overview-of-bi-tools": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/order-by-vs-sort-by-vs-distribute-by-vs-cluster-by": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/mapreduce": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/mapreduce-components": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/managed-table-vs-external-table": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/introduction-to-apache-pig": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/introduction-to-apache-hive": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/hive-window-and-analytic-functions": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/data-vault-modelling": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/dbt-the-good-solution-to-accelerate-data-transformation": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/buckets-on-apache-hive": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/behind-a-hive-table": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/bloom-filter": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/cap-theorem": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/creating-a-fully-local-search-engine-on-memo": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/data-analyst-in-retail-trading": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/database-design-circular": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/database-locking": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/duckdb-demo-and-showcase": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/evolutionary-database-design": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/full-text-search-with-postgresql": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/hadoop-distributed-file-system-hdfs": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/how-discord-stores-messages-part-1-from-mongodb-to-cassandra": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/how-i-came-up-with-our-security-standard": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/introduction-to-crdt": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/local-first-software": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/202301191192-multi-column-index-in-db": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/quick-learning-vector-database": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/redis-leaderboard": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/self-balanced-bsts-avl-trees": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/sql-and-how-it-relates-to-disk-reads-and-writes": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/sql-practices-orm-vs-plain-sql": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/sql-sargable-queries-and-their-impact-on-database-performance": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/data/utilizing-cached-table-for-binance-kline-api-data-processing": [
+    {
+      "title": "§ Data Engineering",
+      "path": "/playground/topics/data/data-engineering"
+    }
+  ],
+  "playground/topics/git/git": [
+    {
+      "title": "§ Git",
+      "path": "/playground/topics/git/git"
+    }
+  ],
+  "playground/topics/git/gitflow-pull-request": [
+    {
+      "title": "§ Git",
+      "path": "/playground/topics/git/git"
+    }
+  ],
+  "playground/topics/git/git-commit-message-convention": [
+    {
+      "title": "§ Git",
+      "path": "/playground/topics/git/git"
     }
   ]
 }

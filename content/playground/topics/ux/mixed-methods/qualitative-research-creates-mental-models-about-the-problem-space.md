@@ -1,10 +1,8 @@
 ---
-title: null
+title: "Qualitative research creates mental models about the problem space"
 date: null
-description: Qualitative research builds deep understanding of people’s motivations and contexts, helping create better products by revealing what truly matters through open-ended, narrative-driven insights.
+description: "Qualitative research builds deep understanding of people’s motivations and contexts, helping create better products by revealing what truly matters through open-ended, narrative-driven insights."
 tags:
-  - ux
-  - researchqualitative
 ---
 
 Qualitative research helps us build mental models about the contexts, problems, and motivations our products and designs must account for. It helps us understand what is important at a high level—what matters to people and how they understand their relationship to the world.

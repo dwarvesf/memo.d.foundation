@@ -1,17 +1,10 @@
 ---
-title: null
+title: "Disc personality types in team work"
 date: 2022-09-10
 description: "Learn about the DiSC personality model's four types—Dominance, Influence, Steadiness, and Conscientiousness—and how understanding these traits improves teamwork and communication."
 authors:
-  - Tieu Quang Huy
 github_id: huytieu
 tags:
-  - team
-  - personality
-  - communication
-  - collaboration
-  - disc
-  - teamwork
 ---
 
 ## What is DiSC?

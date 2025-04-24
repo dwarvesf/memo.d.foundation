@@ -1,5 +1,5 @@
 ---
-title: null
+title: "Generation wealth"
 date: null
 description: null
 ---

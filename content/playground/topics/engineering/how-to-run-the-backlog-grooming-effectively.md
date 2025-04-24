@@ -1,16 +1,11 @@
 ---
-title: null
+title: "How to run the backlog grooming effectively"
 date: 2022-11-18
-description: Learn how to run effective Backlog Grooming meetings in Agile teams to prioritize user stories, manage backlog tasks, and prepare for sprint planning while saving time and improving focus.
+description: "Learn how to run effective Backlog Grooming meetings in Agile teams to prioritize user stories, manage backlog tasks, and prepare for sprint planning while saving time and improving focus."
 authors:
-  - Nhut Huynh
 github_id: nhuthm
 icy: 10
 tags:
-  - management
-  - management
-  - process
-  - backlog-grooming
 ---
 
 _The following entry is from the reality experience that I'm doing in the team project that is running with Agile._

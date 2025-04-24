@@ -1,19 +1,11 @@
 ---
-title: null
+title: "Burnup and burndown chart"
 date: 2023-02-28
-description: Learn how Burnup and Burndown charts help project managers track product development progress by showing completed work, remaining tasks, and timeline status clearly to clients.
+description: "Learn how Burnup and Burndown charts help project managers track product development progress by showing completed work, remaining tasks, and timeline status clearly to clients."
 authors:
-  - Nhut Huynh
 github_id: nhuthm
 icy: 10
 tags:
-  - management
-  - management
-  - process
-  - documentation
-  - management-knowledge
-  - agile
-  - burndown
 ---
 
 From the team product, when the Project Manager want to report with their client for the question: "How is our project coming along?", to have a catch-up on the product's process.

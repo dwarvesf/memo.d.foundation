@@ -1,14 +1,10 @@
 ---
-title: null
+title: "Domain model in domain driven design"
 date: 2022-07-02
-description: Learn what a Domain Model is in Domain Driven Design, including key components like Domain Events, Commands, Aggregates, and Bounded Contexts to organize business knowledge effectively.
+description: "Learn what a Domain Model is in Domain Driven Design, including key components like Domain Events, Commands, Aggregates, and Bounded Contexts to organize business knowledge effectively."
 authors:
-  - M.Vu Cuong(Jim)
 github_id: R-Jim
 tags:
-  - engineering
-  - domain-driven-design
-  - ddd
 ---
 
 ## What is Domain Model

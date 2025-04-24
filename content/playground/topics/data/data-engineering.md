@@ -35,7 +35,7 @@ tags:
 - [Database Design Circular](./database-design-circular.md)
 - [Database Locking](./database-locking.md)
 - [DuckDB Demo and Showcase](./duckdb-demo-and-showcase.md)
-- [Evolutionary Database Design]()
+- [Evolutionary Database Design](./evolutionary-database-design.md)
 - [Full-Text Search with PostgreSQL](./full-text-search-with-postgresql.md)
 - [Google Data Fusion](./google-data-fusion.md)
 - [Google Dataproc](./google-dataproc.md)

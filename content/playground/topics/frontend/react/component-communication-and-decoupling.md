@@ -1,7 +1,7 @@
 ---
-title: null
+title: "Component communication and decoupling"
 date: null
-description: Learn key React component communication methods like props drilling, Context API, event emitters, global stores, and custom hooks to build decoupled, maintainable, and flexible applications.
+description: "Learn key React component communication methods like props drilling, Context API, event emitters, global stores, and custom hooks to build decoupled, maintainable, and flexible applications."
 ---
 
 ````markdown

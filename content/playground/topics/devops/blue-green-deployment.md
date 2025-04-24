@@ -1,19 +1,11 @@
 ---
-title: null
+title: "Blue green deployment"
 date: 2022-02-16
-description: Learn how to implement blue-green deployment in Kubernetes using Argo Rollouts to reduce downtime, improve reliability, and smoothly switch between production environments.
+description: "Learn how to implement blue-green deployment in Kubernetes using Argo Rollouts to reduce downtime, improve reliability, and smoothly switch between production environments."
 authors:
-  - Nguyen Huu Nguyen
 github_id: nguyennh4522
 icy: 10
 tags:
-  - engineering
-  - devops
-  - blue-green-deployement
-  - deployment-strategy
-  - production-traffic
-  - resiliency
-  - reliability
 ---
 
 **Blue-green** deployment is a software deployment strategy that involves creating two identical environments: one **blue** environment serving production traffic, and another **green** environment that doesn't serve any traffic. Once the **green** environment is fully tested and verified, traffic is switched from the **blue** environment to the **green** environment, making it the new production environment. This approach reduces downtime, improves reliability and resilience, and provides a backup in case of issues.

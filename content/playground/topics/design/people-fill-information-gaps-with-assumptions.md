@@ -1,11 +1,8 @@
 ---
-title: null
+title: "People fill information gaps with assumptions"
 date: null
 description: "Learn how the mind fills gaps in information with assumptions and stories, leading to quick but often inaccurate judgments due to the 'what you see is all there is' bias."
 tags:
-  - ux
-  - design
-  - personas
 ---
 
 Nature abhors a vacuum; the mind abhors a gap in information. When people receive information that is incomplete in some way, they will try to fill the gaps with their own assumptions. We too easily decide that we know things, even when gaps remain; we skim past the gaps in our knowledge and fill in the gaps with myths and stories that help overcome our uncertainty. We make up stories and pretend they are true.

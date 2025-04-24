@@ -13,8 +13,8 @@ In a recent collaborative discussion between key members of the Labs and Consult
 
 Our discussions have led to the identification of several intriguing topics, each with its own set of challenges. It's particularly noteworthy how some of these topics intersect and overlap.
 
-| Topic            | PIC        | Challenges                                                                                                                                                                                                                                                                                                                                                |
-| ---------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Topic            | PIC        | Challenges |
+| ---------------- | ---------- | -----------|
 | **WASM**         | An Tran    | - [Self-host AI model on the browser (e.g. OCR for security cams, private browser chatbot…)]() <br> - [Data processing and visual infographics (through DuckDB-WASM)]() <br> - [Implement a Rust game through WASM]() |
 | **Passwordless** | An Tran    | - [Biometrics on the web (through external device connection)]() <br> - [QR code based login]() <br> - [Magic Links]()                                                                                                                     |
 | **Rust**         | Hieu Phan  | - [Implementing a game server on Rust]()                                                                                                                                                                                                                                                                              |

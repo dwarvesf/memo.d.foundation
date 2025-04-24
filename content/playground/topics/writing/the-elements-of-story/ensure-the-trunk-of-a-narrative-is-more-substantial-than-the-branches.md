@@ -1,10 +1,8 @@
 ---
-title: null
+title: "Ensure the trunk of a narrative is more substantial than the branches"
 date: null
-description: Learn how to keep your writing focused by emphasizing the main idea over qualifiers and details, ensuring your core theme remains clear and compelling.
+description: "Learn how to keep your writing focused by emphasizing the main idea over qualifiers and details, ensuring your core theme remains clear and compelling."
 tags:
-  - writing
-  - narrative
 ---
 
 When writing, ensure that the core theme of an idea isn't overshadowed by subordinate notions, qualifiers, or caveats. If the "branches" outweigh the trunk, the theme will be lost. Present the qualifiers fairly, but ensure that they occupy less space by compressing them, in contrast to the extended detail granted to the core idea. Remember the priorities of the piece, but also that the trunk is never the whole tree.

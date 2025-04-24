@@ -1,19 +1,11 @@
 ---
-title: null
+title: "Google dataproc"
 date: 2024-01-22
-description: Learn how to set up and use Google Dataproc for fast, scalable Apache Spark and Hadoop data processing on Google Cloud, including cluster creation, job submission, and pricing details.
+description: "Learn how to set up and use Google Dataproc for fast, scalable Apache Spark and Hadoop data processing on Google Cloud, including cluster creation, job submission, and pricing details."
 authors:
-  - Nguyen Hieu Nghia
 github_id: mickwan1234
 icy: 10
 tags:
-  - data
-  - data
-  - data-engineering
-  - google-dataproc
-  - hadoop
-  - streaming
-  - etl
 ---
 
 ## Introduction

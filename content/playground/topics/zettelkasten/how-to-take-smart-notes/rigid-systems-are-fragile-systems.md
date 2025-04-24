@@ -1,7 +1,7 @@
 ---
-title: null
+title: "Rigid systems are fragile systems"
 date: null
-description: Learn why rigid systems fail in uncertain environments and how effective system design channels change and friction into productive outcomes to adapt and thrive.
+description: "Learn why rigid systems fail in uncertain environments and how effective system design channels change and friction into productive outcomes to adapt and thrive."
 ---
 
 Systems that are unnecessarily rigid are prone to failure. They are threatened by what is unexpected or what does not conform to the environment that was considered during the system's design. Rigid systems, therefore, are poor tools in situations of uncertainty or volatility.

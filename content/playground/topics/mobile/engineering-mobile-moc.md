@@ -1,7 +1,7 @@
 ---
-title: null
+title: "§ engineering mobile MOC"
 date: null
-description: Explore key mobile engineering concepts including stateless and stateful widgets in Flutter, command line app structure, and the UIKit Builder pattern for efficient app development.
+description: "Explore key mobile engineering concepts including stateless and stateful widgets in Flutter, command line app structure, and the UIKit Builder pattern for efficient app development."
 recurringTemplate: true
 recurringTemplateName: engineering-mobile-moc
 ---

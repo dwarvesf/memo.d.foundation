@@ -1,20 +1,11 @@
 ---
-title: null
+title: "Buckets on Apache Hive"
 date: 2022-12-10
-description: Learn how Apache Hive buckets solve issues with dynamic partitions by reducing tiny files, enabling efficient sampling, and improving query performance through bucketing and partitioning techniques.
+description: "Learn how Apache Hive buckets solve issues with dynamic partitions by reducing tiny files, enabling efficient sampling, and improving query performance through bucketing and partitioning techniques."
 authors:
-  - Dung Ho
 github_id: dudaka
 icy: 10
 tags:
-  - data
-  - mapreduce
-  - distributed
-  - hadoop
-  - apache-hive
-  - hdfs
-  - partitions
-  - buckets
 ---
 
 With the understanding about partitions, the benefits of partitions and how to work with partitions from the article [partitions-on-apache-hive](), we are going to see a couple of potential problems that we may see with partitions, especially, with dynamic partitions. And, of course, how to address them using buckets. In this article, we'll discuss about:

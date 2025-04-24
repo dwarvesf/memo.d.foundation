@@ -1,9 +1,8 @@
 ---
-title: null
+title: "Lester Dent s master plot for pulp fiction"
 date: null
-description: Learn Lester Dent’s simple master plot for crafting suspenseful 6000-word stories with clear hero struggles, twists, physical conflicts, and engaging pacing to keep readers hooked.
+description: "Learn Lester Dent’s simple master plot for crafting suspenseful 6000-word stories with clear hero struggles, twists, physical conflicts, and engaging pacing to keep readers hooked."
 tags:
-  - writing
 ---
 
 Prolific pulp writer Lester Dent (Doc Savage) outlines a simple master plot for crafting short (6000-word) stories.

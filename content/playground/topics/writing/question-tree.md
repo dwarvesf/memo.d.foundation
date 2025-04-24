@@ -1,14 +1,10 @@
 ---
-title: null
+title: "Question tree"
 date: 2022-04-18
-description: Learn how question trees help brainstorm research questions and explore business problems, guiding decision-making with clear, broad inquiries beyond simple yes or no answers.
+description: "Learn how question trees help brainstorm research questions and explore business problems, guiding decision-making with clear, broad inquiries beyond simple yes or no answers."
 authors:
-  - Nguyen Xuan Anh
 github_id: monotykamary
 tags:
-  - writing
-  - consulting
-  - research
 ---
 
 ## What is a question tree?

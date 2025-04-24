@@ -1,16 +1,10 @@
 ---
-title: null
+title: "The six lines of gold"
 date: 2022-09-26
 description: "Discover Tim Ferriss's Six Lines of Gold method to quickly learn key language structures and common phrases, helping you grasp syntax, semantics, and fluency basics in just one hour."
 authors:
-  - Nguyen Xuan Anh
 github_id: monotykamary
 tags:
-  - writing
-  - english
-  - language
-  - fluency
-  - phrasing
 ---
 
 ## Introduction

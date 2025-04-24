@@ -1,7 +1,7 @@
 ---
-title: null
+title: Precautions
 date: null
-description: Learn how to prepare smart contracts for failure with techniques like circuit breakers, rate limits, speed bumps, and upgradeability to enhance blockchain security and reduce risks.
+description: "Learn how to prepare smart contracts for failure with techniques like circuit breakers, rate limits, speed bumps, and upgradeability to enhance blockchain security and reduce risks."
 ---
 
 As we discussed in the General Philosophy section, it is not enough to protect yourself against the known attacks. Since the cost of failure on a blockchain can be very high, you must also adapt the way you write software, to account for that risk.

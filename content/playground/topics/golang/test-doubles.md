@@ -1,20 +1,12 @@
 ---
-title: null
+title: "Test doubles"
 date: 2023-08-08
-description: Learn how to use Test Doubles like Dummies, Stubs, Spies, Mocks, and Fakes in Go to isolate dependencies, improve unit testing, and enhance software reliability and maintainability.
+description: "Learn how to use Test Doubles like Dummies, Stubs, Spies, Mocks, and Fakes in Go to isolate dependencies, improve unit testing, and enhance software reliability and maintainability."
 authors:
-  - Pham Van Dat
 github_id: datphamcode295
 icy: 15
 blog: "https://dwarvesf.hashnode.dev/understanding-test-doubles-an-in-depth-look"
 tags:
-  - backend
-  - backend
-  - testing
-  - golang
-  - best-practices
-  - patterns
-  - test-cases
 ---
 
 In the world of software development, testing plays a vital role in ensuring the reliability and stability of our applications. When writing tests, we often come across situations where certain dependencies need to be simulated or replaced to isolate the behavior of the code under test. This is where Test Doubles come into play.

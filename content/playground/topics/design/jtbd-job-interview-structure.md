@@ -1,13 +1,8 @@
 ---
-title: null
+title: "Jtbd job interview structure"
 date: null
-description: Discover a step-by-step interview guide to uncover customer jobs-to-be-done, including how to explore tasks, needs, feelings, and circumstances for better product and service insights.
+description: "Discover a step-by-step interview guide to uncover customer jobs-to-be-done, including how to explore tasks, needs, feelings, and circumstances for better product and service insights."
 tags:
-  - ux
-  - research
-  - design
-  - personas
-  - jbtd
 ---
 
 This interview structure can be used to uncover customer jobs-to-be-done.

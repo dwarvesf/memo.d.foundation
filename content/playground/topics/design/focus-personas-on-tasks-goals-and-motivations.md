@@ -1,11 +1,8 @@
 ---
-title: null
+title: "Focus personas on tasks goals and motivations"
 date: null
-description: Discover how effective user personas emerge from qualitative research and sensemaking to capture real user experiences, guiding product design with authentic insights rather than assumptions.
+description: "Discover how effective user personas emerge from qualitative research and sensemaking to capture real user experiences, guiding product design with authentic insights rather than assumptions."
 tags:
-  - ux
-  - design
-  - personas
 ---
 
 Personas shouldn't be created so much as discovered. First and foremost, personas document research. Personas articulate patterns of thought and feeling. These are attributes that can't easily be quantified. Effective user personas should be an outcome of qualitative research. Personas should be the result of [ sensemaking](), not measurement.

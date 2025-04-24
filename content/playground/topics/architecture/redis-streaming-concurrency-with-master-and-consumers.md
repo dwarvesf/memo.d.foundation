@@ -1,20 +1,11 @@
 ---
-title: null
+title: "Redis streaming concurrency with master and consumers"
 date: 2023-05-16
-description: Learn how to implement a Redis streaming master-consumers pattern to delegate messages, handle concurrency, and avoid data conflicts using Redis commands like XREADGROUP and XCLAIM.
+description: "Learn how to implement a Redis streaming master-consumers pattern to delegate messages, handle concurrency, and avoid data conflicts using Redis commands like XREADGROUP and XCLAIM."
 authors:
-  - M.Vu Cuong(Jim)
 github_id: R-Jim
 icy: 10
 tags:
-  - engineering
-  - redis
-  - streaming
-  - event-sourcing
-  - append-only
-  - logging
-  - messaging
-  - concurrency
 ---
 
 ## The Problem Statement

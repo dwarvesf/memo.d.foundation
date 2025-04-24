@@ -1,11 +1,8 @@
 ---
-title: null
+title: "§ ux research"
 date: null
-description: Explore essential UX research methods, data quality, reasoning techniques, and effective ways to share insights to improve digital experiences and scale user research across organizations.
+description: "Explore essential UX research methods, data quality, reasoning techniques, and effective ways to share insights to improve digital experiences and scale user research across organizations."
 tags:
-  - moc
-  - ux
-  - research
 ---
 
 ## General

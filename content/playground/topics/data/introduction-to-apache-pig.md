@@ -1,17 +1,11 @@
 ---
-title: null
+title: "Introduction to Apache Pig"
 date: 2022-11-14
-description: Apache Pig simplifies Hadoop data processing by converting easy-to-write Pig Latin scripts into MapReduce jobs, enabling non-programmers to handle big data without coding in Java or Python.
+description: "Apache Pig simplifies Hadoop data processing by converting easy-to-write Pig Latin scripts into MapReduce jobs, enabling non-programmers to handle big data without coding in Java or Python."
 authors:
-  - Dung Ho
 github_id: dudaka
 icy: 10
 tags:
-  - data
-  - mapreduce
-  - distributed
-  - hadoop
-  - apache-pig
 ---
 
 In short, Apache Pig takes a set of instructions from the user and converts those instructions into MapReduce jobs and execute the MapReduce jobs in Hadoop cluster.

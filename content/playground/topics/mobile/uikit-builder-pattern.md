@@ -1,15 +1,10 @@
 ---
-title: null
+title: "UIKit builder pattern"
 date: 2022-08-05
-description: Learn how to build reusable, flexible UIKit user interfaces using the builder pattern with Swift extensions and @discardableResult for cleaner, declarative UI code.
+description: "Learn how to build reusable, flexible UIKit user interfaces using the builder pattern with Swift extensions and @discardableResult for cleaner, declarative UI code."
 authors:
-  - Phan Viet Trung
 github_id: viettrungphan
 tags:
-  - i-os
-  - mac-os
-  - swift
-  - mobile
 ---
 
 SwiftUI introduces a way to write UI code declaratively. Can we use the same paradigm with UIKit? We will show you how.

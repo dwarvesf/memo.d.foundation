@@ -1,9 +1,8 @@
 ---
-title: null
+title: "Stories need action and commentary"
 date: null
-description: Learn how balancing strong action with insightful commentary can create compelling stories using vivid verbs and clear interpretation to engage readers effectively.
+description: "Learn how balancing strong action with insightful commentary can create compelling stories using vivid verbs and clear interpretation to engage readers effectively."
 tags:
-  - writing
 ---
 
 A story needs both action and commentary, not just one or the other. Action propels the story forward, while commentary slows it down. The deft application of each is needed: movement and explanation; action with interpretation.

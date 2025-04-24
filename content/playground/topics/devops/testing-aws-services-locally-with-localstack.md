@@ -1,18 +1,11 @@
 ---
-title: null
+title: "Testing aws services locally with localstack"
 date: 2023-03-17
-description: LocalStack lets developers locally test and develop AWS services like S3, Lambda, and DynamoDB without AWS costs, speeding up cloud application development with a simple, cost-free environment.
+description: "LocalStack lets developers locally test and develop AWS services like S3, Lambda, and DynamoDB without AWS costs, speeding up cloud application development with a simple, cost-free environment."
 authors:
-  - Nguyen Dinh Nam
 github_id: nguyend-nam
 icy: 10
 tags:
-  - engineering
-  - devops
-  - devops
-  - aws
-  - aws-s3
-  - localstack
 ---
 
 **Amazon Web Services** (AWS) provides a wide range of cloud computing services that can be used to build and deploy applications at scale. However, using AWS can be costly, especially for small-scale projects or for developers who are just starting out. That's where [LocalStack](https://localstack.cloud/) comes in. LocalStack is an open-source tool that enables **local development** and **testing** of cloud applications by emulating various AWS services on a developer's local side. It can be used to test and develop applications **without** incurring the cost and complexity of using live AWS environment.

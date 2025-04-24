@@ -1,4 +1,9 @@
 {
-  "/culture-ftw": "/culture",
-  "/changelogz": "/updates/changelog"
+  "/culture": "/culture",
+  "/topics": "/playground/topics",
+  "/ai": "/playground/topics/ai",
+  "/blockchain": "/playground/topics/blockchain",
+  "/data": "/playground/topics/data",
+  "/build-log": "/updates/build-log",
+  "/changelog": "/updates/changelog"
 }

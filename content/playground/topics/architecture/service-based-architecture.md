@@ -1,16 +1,10 @@
 ---
-title: null
+title: "Service based architecture"
 date: 2022-06-21
-description: Service-based architecture offers a flexible, middle-ground approach between monoliths and microservices, ideal for managing complex business needs without the overhead of full microservice complexity.
+description: "Service-based architecture offers a flexible, middle-ground approach between monoliths and microservices, ideal for managing complex business needs without the overhead of full microservice complexity."
 authors:
-  - Nguyen Xuan Anh
 github_id: monotykamary
 tags:
-  - engineering
-  - architecture
-  - diagram
-  - service
-  - domain
 ---
 
 ## What is service-based architecture?

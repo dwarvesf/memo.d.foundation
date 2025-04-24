@@ -8,12 +8,6 @@ tags:
   - instructions
   - guideline
   - moc
-menu: playground
-toc: false
-notice:
-type:
-event_date:
-pinned:
 hide_title: false
 ---
 

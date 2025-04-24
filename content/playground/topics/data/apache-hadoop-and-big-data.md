@@ -1,14 +1,10 @@
 ---
-title: null
+title: "Apache Hadoop and big data"
 date: 2022-06-12
 description: "Learn what Big Data is by exploring the 3 V's—Volume, Velocity, and Variety—and discover how Hadoop provides scalable, cost-effective solutions for storing and processing massive data sets."
 authors:
-  - Dung Ho
 github_id: dudaka
 tags:
-  - data
-  - big-data
-  - hadoop
 ---
 
 ## What is Big Data?

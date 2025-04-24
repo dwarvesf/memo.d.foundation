@@ -4,9 +4,6 @@ date: 2025-03-07
 description: This guide shows how to implement a token swap from the Base Chain to Bitcoin.
 authors:
   - quang
-toc: false
-notice: null
-event_date: null
 tags:
   - icy
   - btc

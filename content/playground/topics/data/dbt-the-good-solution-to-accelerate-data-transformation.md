@@ -1,15 +1,11 @@
 ---
-title: null
+title: "Dbt the good solution to accelerate data transformation"
 date: 2022-11-21
-description: Discover how DBT (data build tool) simplifies data transformation in warehouses with modular SQL, automation, and software engineering practices for faster, reliable analytics and trusted data delivery.
+description: "Discover how DBT (data build tool) simplifies data transformation in warehouses with modular SQL, automation, and software engineering practices for faster, reliable analytics and trusted data delivery."
 authors:
-  - Bach Phuong
 github_id: Bachpx2911
 icy: 10
 tags:
-  - data
-  - dbt
-  - etl
 ---
 
 Transformation is one of the most important process in building data warehouse. It will allow you to clean, combine, remove duplicates, reorganize, and filter all your data. The transformation will enable your enterprise to develop useful and reliable insights via analytics and There are several tools on market for it such as Striim, Pentaho, Hevo Data..Yet, the one that clearly stands out, in particular, the data build tool. This article will introduce and review DBT in transforming data.

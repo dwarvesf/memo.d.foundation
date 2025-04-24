@@ -1,12 +1,8 @@
 ---
-title: null
+title: "Show don t tell"
 date: null
-description: 'Learn how "show, don''t tell" enhances writing and business communication by using vivid details and sharing information to engage audiences more effectively than simple statements.'
+description: 'Learn how "show, don''''t tell" enhances writing and business communication by using vivid details and sharing information to engage audiences more effectively than simple statements.'
 tags:
-  - sharing
-  - communication
-  - story-telling
-  - writing
 ---
 
 "Show, don't tell" is common advice for writers. It means that you present your audience with information, rather than simply telling them what the information means. For instance, in fiction you might say that a character frowned and snarled, rather than stating that they were angry.

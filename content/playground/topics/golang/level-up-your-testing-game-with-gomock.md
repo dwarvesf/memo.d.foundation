@@ -1,21 +1,12 @@
 ---
-title: null
+title: "Level up your testing game with gomock"
 date: 2023-08-08
-description: Learn how to use Gomock in Go to create mock objects, isolate dependencies, and write effective unit tests that improve code quality and detect bugs early.
+description: "Learn how to use Gomock in Go to create mock objects, isolate dependencies, and write effective unit tests that improve code quality and detect bugs early."
 authors:
-  - Pham Van Dat
 github_id: datphamcode295
 icy: 15
 blog: "https://dwarvesf.hashnode.dev/level-up-your-testing-game-harnessing-gomock-for-unbeatable-unit-testing-in-go"
 tags:
-  - backend
-  - backend
-  - testing
-  - golang
-  - best-practices
-  - gomock
-  - mocking
-  - test-cases
 ---
 
 In the Go programming language, a popular framework called Gomock provides a powerful solution for mocking dependencies during testing. Gomock simplifies the process of isolating units of code, enabling more focused and effective testing.

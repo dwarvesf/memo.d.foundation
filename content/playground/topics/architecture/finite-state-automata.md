@@ -1,15 +1,10 @@
 ---
-title: null
+title: "Finite state automata"
 date: 2022-06-28
-description: Learn what finite-state automata are, how they model systems using states and transitions, and see practical examples of state machines in programming with key concepts like states, events, and transitions.
+description: "Learn what finite-state automata are, how they model systems using states and transitions, and see practical examples of state machines in programming with key concepts like states, events, and transitions."
 authors:
-  - Nguyen Xuan Anh
 github_id: monotykamary
 tags:
-  - engineering
-  - state
-  - diagram
-  - machines
 ---
 
 ## What are finite-state automata?

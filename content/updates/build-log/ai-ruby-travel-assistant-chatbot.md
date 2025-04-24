@@ -7,7 +7,7 @@ authors:
 tags:
   - 'agents'
   - 'ai'
-short_links:
+aliases:
   - /share/ai-travel
 ---
 

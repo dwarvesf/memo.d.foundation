@@ -1,17 +1,11 @@
 ---
-title: null
+title: "Circuit breaker in go"
 date: 2023-07-02
-description: Learn how to implement the circuit breaker pattern in Go to handle remote resource failures, improve fault tolerance, and redirect requests using the sony/gobreaker library for reliable API calls.
+description: "Learn how to implement the circuit breaker pattern in Go to handle remote resource failures, improve fault tolerance, and redirect requests using the sony/gobreaker library for reliable API calls."
 authors:
-  - M.Vu Cuong(Jim)
 github_id: R-Jim
 icy: 10
 tags:
-  - engineering
-  - go
-  - backend
-  - load-balancing
-  - circuit-breaker
 ---
 
 ## The Problem Statement

@@ -1,20 +1,11 @@
 ---
-title: null
+title: "Uml state machine diagram"
 date: 2023-08-16
-description: Learn how UML State Machine Diagrams visualize object states, transitions, events, and actions to model dynamic system behavior in software development, embedded systems, and more.
+description: "Learn how UML State Machine Diagrams visualize object states, transitions, events, and actions to model dynamic system behavior in software development, embedded systems, and more."
 authors:
-  - Tran khac Vy
 github_id: trankhacvy
 icy: 10
 tags:
-  - engineering
-  - software-modeling
-  - behavior-model
-  - state-machine-diagram
-  - finite-state-machine
-  - state-machine
-  - state
-  - diagram
 ---
 
 ## UML state machine diagram

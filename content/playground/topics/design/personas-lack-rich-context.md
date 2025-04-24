@@ -1,11 +1,8 @@
 ---
-title: null
+title: "Personas lack rich context"
 date: null
-description: Learn why personas often lack deep context and how missing background can lead teams to make incorrect assumptions, causing misalignment in design and product development.
+description: "Learn why personas often lack deep context and how missing background can lead teams to make incorrect assumptions, causing misalignment in design and product development."
 tags:
-  - ux
-  - design
-  - personas
 ---
 
 [personas]() are popular design artifacts. But, they can be hollow. While they often provide some basic attributes, tasks, or descriptors, they often lack rich contextual information that explains why the persona's need arose in the first place.

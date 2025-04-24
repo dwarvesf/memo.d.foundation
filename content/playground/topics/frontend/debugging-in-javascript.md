@@ -1,16 +1,10 @@
 ---
-title: null
+title: "Debugging in javascript"
 date: 2022-10-16
-description: Learn how to use JavaScript console methods like console.log, console.assert, console.dir, console.time, and the debugger statement to effectively debug code in Chrome DevTools.
+description: "Learn how to use JavaScript console methods like console.log, console.assert, console.dir, console.time, and the debugger statement to effectively debug code in Chrome DevTools."
 authors:
-  - Tran Hoang Nam
 github_id: namtrhg
 tags:
-  - engineering
-  - debug
-  - console
-  - debugger
-  - javascript
 ---
 
 _This note focus on utilizing some of the **` console`** object methods and the **` debugger`** statement to better debug JavaScript application in the [Chrome DevTools](https://developer.chrome.com/docs/devtools/)._

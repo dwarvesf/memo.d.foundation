@@ -1,19 +1,11 @@
 ---
-title: null
+title: "Event sourcing overview"
 date: 2022-12-05
-description: Event sourcing records all changes as events, allowing e-commerce platforms to track detailed order history and generate flexible analytics for better business insights and future-proof data management.
+description: "Event sourcing records all changes as events, allowing e-commerce platforms to track detailed order history and generate flexible analytics for better business insights and future-proof data management."
 authors:
-  - M.Vu Cuong(Jim)
 github_id: R-Jim
 icy: 10
 tags:
-  - engineering
-  - event-sourcing
-  - ddd
-  - e-commerce
-  - event-store
-  - aggregation
-  - requirement
 ---
 
 ## What is Event sourcing

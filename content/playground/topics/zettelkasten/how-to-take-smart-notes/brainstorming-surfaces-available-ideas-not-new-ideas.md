@@ -1,7 +1,7 @@
 ---
-title: null
+title: "Brainstorming surfaces available ideas not new ideas"
 date: null
-description: Brainstorming often limits creativity by recycling existing ideas quickly, so building a personal idea repository can help generate more original and diverse solutions over time.
+description: "Brainstorming often limits creativity by recycling existing ideas quickly, so building a personal idea repository can help generate more original and diverse solutions over time."
 ---
 
 Brainstorming is a common suggestion whenever anyone is hunting for ideas. But brainstorming doesn't generate new thinking; it can only bring forward existing, readily available ideas. And it brings them up in their raw, unprocessed form. These aren't necessarily our best ideas. They're just the ones that are top of mind. They may not represent our own, original thought, or the idea best suited to the problem at hand; they're just what's most available to us.

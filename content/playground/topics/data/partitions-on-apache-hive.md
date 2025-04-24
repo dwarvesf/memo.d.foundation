@@ -1,19 +1,11 @@
 ---
-title: null
+title: "Partitions on Apache Hive"
 date: 2022-12-02
-description: Learn how Hive partitions and dynamic partitions optimize query performance by targeting specific data subsets, reducing scan times, and efficiently managing large datasets for faster Hive queries.
+description: "Learn how Hive partitions and dynamic partitions optimize query performance by targeting specific data subsets, reducing scan times, and efficiently managing large datasets for faster Hive queries."
 authors:
-  - Dung Ho
 github_id: dudaka
 icy: 10
 tags:
-  - data
-  - mapreduce
-  - distributed
-  - hadoop
-  - apache-hive
-  - hdfs
-  - partitions
 ---
 
 Have you ever been in a situation where you are trying to optimize a slow running query to make it run faster? In our case, we have been looking at that query for hours and realized that the query is scanning the entire table and we are thinking that this query will be super fast if it only targets specific set of records instead of the entire table. Thus, what we really want, hopefully you too, in such cases is partitions.
