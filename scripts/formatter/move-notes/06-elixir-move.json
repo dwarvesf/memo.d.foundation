@@ -1,0 +1,8 @@
+{
+  "topics/elixir": [
+    "notes/Engineering/Acceptance test in Elixir.md",
+    "notes/Engineering/Backend/libcluster in elixir.md",
+    "notes/Engineering/Backend/pg in elixir.md",
+    "notes/erlang-fsm.md"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "topics/architecture": [
+    "notes/Engineering/Domain Model in Domain Driven Design.md",
+    "notes/Engineering/Entities in Domain Driven Design.md",
+    "notes/Engineering/Event sourcing overview.md",
+    "notes/Engineering/Overview of Domain Driven Design.md",
+    "notes/Engineering/Redis streaming concurrency with master and consumers.md",
+    "notes/Engineering/Redis streaming.md",
+    "notes/Engineering/Reducers.md",
+    "notes/sdk-event-sourcing.md"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "/topics/ai": [
+    "/notes/explaining-gradient-descent-in-machine-learning-with-a-simple-analogy.md",
+    "/notes/assets/explaining-gradient-descent-with-a-simple-analogy.png",
+    "/notes/exploring-machine-learning-approaches-for-fine-tuning-llama-models.md",
+    "/notes/how-we-crafted-the-ogif-summarizer-bot-to-streamline-weekly-knowledge-sharing.md",
+    "/notes/how-we-created-an-ai-powered-interview-system-using-openais-chatgpt.md",
+    "/notes/hybrid-search.md"
+  ],
+  "/topics/data": [
+    "/notes/a-lens-to-modern-data-engineering.md",
+    "/notes/data-analyst-in-retail-trading.md",
+    "/notes/creating-a-fully-local-search-engine-on-memo.md",
+    "/notes/managing-dataflow-and-sql-database-with-concurrency-control.md"
+  ],
+  "/topics/frontend": [
+    "/notes/accelerate-project-initiation-with-advanced-nextjs-boilerplate-react-toolkit.md",
+    "/notes/adoption-of-pnpm.md",
+    "/notes/be-careful-with-your-code-splitting-setup.md",
+    "/notes/choosing-the-right-javascript-framework-a-deep-dive-into-react-vs-angular-vs-vue.md",
+    "/notes/different-ways-to-test-react-application.md",
+    "/notes/from-multi-repo-to-monorepo-a-case-study-with-nghenhan-turbo-monorepo.md",
+    "/notes/fundamental-end-to-end-frontend-testing-with-cypress.md",
+    "/notes/hoc-renderprops-and-hook-in-reactjs.md",
+    "/notes/i18n-frontend-guideline.md",
+    "/notes/lessons-learned-from-being-a-part-of-corporate-micro-frontend-implementation.md"
+  ],
+  "/topics/pm": [
+    "/notes/an-alternative-to-tm.md",
+    "/notes/definition-of-done.md",
+    "/notes/estimation-in-agile.md",
+    "/notes/our-daily-standup-format.md",
+    "/notes/project-management.md"
+  ],
+  "/topics/llm": [
+    "/notes/easy-prompt-engineering-for-business-use-and-mitigating-risks-in-llms.md",
+    "/notes/feedback-mechanism.md",
+    "/notes/history-of-structured-output-for-llms.md",
+    "/notes/how-to-talk-to-chatgpt-effectively.md"
+  ],
+  "/topics/security": ["/notes/applied-security-basis.md"],
+  "/topics/engineering": [
+    "/notes/architecture-decision-record.md",
+    "/notes/are-we-really-engineers.md",
+    "/notes/introduction-to-software-craftsmanship.md",
+    "/notes/our-view-on-fullstack-engineering.md",
+    "/notes/reusability-in-software-development.md",
+    "/notes/well-crafted-software.md",
+    "/notes/the-10x-engineer.md",
+    "/notes/skill-of-software-engineer.md"
+  ],
+  "/topics/product": ["/notes/aarrr-framework-in-a-nutshell.md"],
+  "/topics/softskills": ["/notes/asking-as-a-junior.md"]
+}

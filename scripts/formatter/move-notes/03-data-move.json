@@ -1,0 +1,30 @@
+{
+  "topics/data": [
+    "notes/202210150019-migration-planning.md",
+    "notes/202211141513-materialized-view-pattern.md",
+    "notes/202301191192-multi-column-index-in-db.md",
+    "notes/DuckDB demo and showcase.md",
+    "notes/Engineering/ACID model.md",
+    "notes/Engineering/BASE model.md",
+    "notes/Engineering/Backend/Database Locking.md",
+    "notes/Engineering/Backend/Introduction to CRDT.md",
+    "notes/Engineering/Backend/Redis Leaderboard.md",
+    "notes/Engineering/Backend/SQL Sargable Queries and Their Impact on Database Performance.md",
+    "notes/Engineering/Backend/SQL and how it relates to Disk Reads and Writes.md",
+    "notes/Engineering/Backend/Utilizing Cached Table for Binance Kline API Data Processing.md",
+    "notes/Engineering/Backend/bloom-filter.md",
+    "notes/Engineering/CAP theorem.md",
+    "notes/Engineering/Full-text search with Postgresql.md",
+    "notes/Engineering/Google Data Fusion.md",
+    "notes/Engineering/Google Dataproc.md",
+    "notes/Engineering/How Discord Stores Messages  Part 1 - From MongoDB To Cassandra.md",
+    "notes/Engineering/Self-balanced BSTs - AVL trees.md",
+    "notes/Security/how-I-came-up-with-our-security-standard.md",
+    "notes/database-design-circular.md",
+    "notes/design-file-sharing-system-part-2-permission-and-password.md",
+    "notes/designing-a-model-with-dynamic-properties.md",
+    "notes/evolutionary-database-design.md",
+    "notes/local-first-software.md",
+    "notes/sql-practices-orm-vs-plain-sql.md"
+  ]
+}

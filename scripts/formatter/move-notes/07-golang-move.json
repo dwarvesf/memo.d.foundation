@@ -1,0 +1,23 @@
+{
+  "topics/golang": [
+    "notes/202211141287-go-json-parsing.md",
+    "notes/Engineering/Backend/Atomic package in Golang.md",
+    "notes/Engineering/Backend/Level up Your Testing game with Gomock.md",
+    "notes/Engineering/Backend/Test Doubles.md",
+    "notes/Engineering/Backend/Testing Made Simple Best Practices for Golang Test.md",
+    "notes/Engineering/Backend/Unexpected pitfalls and some handy patterns with concurrency in Go.md",
+    "notes/Engineering/golang-for-high-performance-video-streaming.md",
+    "notes/bunk-license-check.md",
+    "notes/error-handling-patterns.md",
+    "notes/singleton-design-pattern.md",
+    "notes/template-method-design-pattern.md",
+    "notes/202211141287-go-json-parsing.md",
+    "notes/Engineering/Backend/Atomic package in Golang.md",
+    "notes/Engineering/Backend/Circuit breaker in Go.md",
+    "notes/Engineering/Backend/Level up Your Testing game with Gomock.md",
+    "notes/Engineering/Backend/Test Doubles.md",
+    "notes/Engineering/Backend/Testing Made Simple Best Practices for Golang Test.md",
+    "notes/Engineering/Backend/Unexpected pitfalls and some handy patterns with concurrency in Go.md",
+    "notes/Engineering/golang-for-high-performance-video-streaming.md"
+  ]
+}

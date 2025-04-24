@@ -1,0 +1,29 @@
+{
+  "topics/git": [
+    "notes/git-commit-message-convention.md",
+    "notes/gitflow-pull-request.md"
+  ],
+  "topics/pm": [
+    "/notes/202212131609-how-to-deal-with-technical-debt-in-scrum.md"
+  ],
+  "topics/architecture": [
+    "/notes/202302281019-case-study-write-heavy-scalable-and-reliable-inventory-platform.md",
+    "/notes/automata.md"
+  ],
+  "topics/frontend": ["/notes/a-quick-intro-to-webassembly.md"],
+  "topics/engineering": [
+    "/notes/build-an-assistant-on-the-terminal.md",
+    "/notes/daemons-and-services-programming-guide.md",
+    "/notes/dcos-series-part-1---quick-look-installation.md",
+    "/notes/dcos-series-part-2---deploy-simple-applications.md",
+    "/notes/dcos-series-part-3---service-discovery-and-load-balancing.md",
+    "/notes/dcos-series-part-4---deploy-simple-application-with-backend-database.md",
+    "/notes/dcos-series-part-5---gitlab.md",
+    "/notes/infinite-image-gallery-with-r3f---an-approach.md",
+    "/notes/istio.md",
+    "/notes/playaround-with-clojure.md",
+    "/notes/remote-moderated-usability-testing.md"
+  ],
+  "topics/design": ["/notes/getting-started-with-webflow.md"],
+  "topics/qa": ["/notes/qc-onboarding.md"]
+}

@@ -1,0 +1,10 @@
+{
+  "topics/devops": [
+    "notes/about-devops.md",
+    "notes/how-blue-green-deployment-helped-mochi.md",
+    "notes/how-we-setup-cicd.md",
+    "notes/radio-talk-60-blue-green-deployment.md",
+    "notes/docker-microcontainers.md",
+    "notes/docker-registry.md"
+  ]
+}

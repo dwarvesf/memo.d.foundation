@@ -1,0 +1,21 @@
+{
+  "topics/architecture": [
+    "notes/Engineering/C4 diagrams.md",
+    "notes/Engineering/SOLID principles.md",
+    "notes/Engineering/Service-based architecture.md",
+    "notes/builder-design-pattern.md",
+    "notes/c4-modelling.md",
+    "notes/command-pattern.md",
+    "notes/observer-pattern.md",
+    "notes/prototype-design-pattern.md",
+    "notes/state-pattern.md",
+    "notes/strategy-design-pattern.md",
+    "notes/visitor-design-pattern.md",
+    "notes/Engineering/Finite-state automata.md",
+    "notes/Engineering/Finite-state transducer.md",
+    "notes/Engineering/Mealy machine.md",
+    "notes/Engineering/Moore machine.md",
+    "notes/Engineering/State explosion.md",
+    "notes/Engineering/UML state machine diagram.md"
+  ]
+}

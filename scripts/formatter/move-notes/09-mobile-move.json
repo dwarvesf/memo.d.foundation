@@ -1,0 +1,11 @@
+{
+  "topics/mobile": [
+    "notes/build-a-passcode-view-with-swift.md",
+    "notes/create-circular-text-using-swiftui.md",
+    "notes/draw-watch-face-using-swiftui.md",
+    "notes/reproduce-apple-find-me-bottom-menu-view.md",
+    "notes/swiftui.md",
+    "notes/uidynamicanimator.md",
+    "notes/xpc-services-on-macos-app-using-swift.md"
+  ]
+}

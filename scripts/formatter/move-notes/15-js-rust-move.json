@@ -1,0 +1,10 @@
+{
+  "topics/frontend": [
+    "notes/recursively-export-file-pattern-in-javascript-es6-application.md"
+  ],
+  "topics/rust": [
+    "notes/error-handling-in-rust.md",
+    "notes/playaround-with-rust.md",
+    "notes/rust-trait.md"
+  ]
+}

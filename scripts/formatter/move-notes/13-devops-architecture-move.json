@@ -1,0 +1,8 @@
+{
+  "topics/devops": ["notes/kubernetes-helm-101.md"],
+  "topics/architecture": [
+    "notes/software-modeling.md",
+    "notes/Engineering/Law of Demeter.md"
+  ],
+  "topips/golang": ["notes/bunk-license-check.md"]
+}
