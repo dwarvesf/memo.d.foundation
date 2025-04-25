@@ -51,7 +51,7 @@ Makers and founders will have unlimited access to our perks and benefits, connec
 
 As a matter of fact, we are always actively [seeking new partners to join us](mailtoteamd.foundation), so we could provide even more value to founders on their path to revenue/profit solidity.
 
-***In fewer words,***
+**_In fewer words,_**
 Dwarves Ventures will not be the “here’s a massive check, go do your thing” kind of VCs. We will be the kind of VCs that invest and work together with founders, chasing profitable growth and scale.
 
 Dwarves Ventures Fund 1 will mean a lot of hustle and bustle, as we roll out our new approaches and practices. If you want to keep up with us, **[sign up for our newsletter](https://dwarves.ventures/next)**. (We never email unless we have something important and relevant to inform you.)

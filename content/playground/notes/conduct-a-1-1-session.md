@@ -1,11 +1,10 @@
 ---
-
 title: Conduct a 1-on-1 session
 date: 2021-08-09
 description: null
 authors:
   - zlatanpham
-tags: 
+tags:
   - radio-talk
 ---
 
@@ -29,14 +28,14 @@ We discuss and try to know more each other, not about working status reports, de
 
 In the first get-to-know, we do have a list of questions to learn about the Mentee:
 
-* The personality
-* What do they need from the company
-* Why did they choose Dwarves
-* What makes them grumpy
-* How do they prefer receiving feedback
-* Their career goal
-* Their desire working environment
-Etc.
+- The personality
+- What do they need from the company
+- Why did they choose Dwarves
+- What makes them grumpy
+- How do they prefer receiving feedback
+- Their career goal
+- Their desire working environment
+  Etc.
 
 In the following session, we mainly talk about technical development, communication skills and share the actual experience. In a nutshell, we hold this more like a discussion. The Mentor just leaves the Mentee the fishing rob. They have to solve problems by themselves.
 

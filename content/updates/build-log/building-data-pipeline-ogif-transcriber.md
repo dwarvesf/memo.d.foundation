@@ -1,15 +1,14 @@
 ---
-
 authors:
   - zlatanpham
   - lmquang
-date: '2024-11-21'
-description: 'A technical case study of creating an automated system that downloads videos, processes audio, and generates transcripts using AI services like Groq and OpenAI.'
+date: "2024-11-21"
+description: "A technical case study of creating an automated system that downloads videos, processes audio, and generates transcripts using AI services like Groq and OpenAI."
 tags:
   - ai
   - agents
   - data
-title: 'Building data pipeline for OGIF transcriber'
+title: "Building data pipeline for OGIF transcriber"
 ---
 
 At Dwarves, we faced the challenge of efficiently transcribing and summarizing our weekly OGIF event recordings for our Brainery knowledge hub. This required developing a scalable data pipeline capable of processing YouTube videos, extracting audio, and leveraging AI models for transcription.

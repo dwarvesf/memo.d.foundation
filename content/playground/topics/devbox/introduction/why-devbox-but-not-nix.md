@@ -1,5 +1,4 @@
 ---
-
 title: "Devbox vs Nix: Why We Chose Simplicity"
 date: 2024-08-01
 description: "Discover why Devbox is the smart choice for developers who want Nix's power without the learning curve"

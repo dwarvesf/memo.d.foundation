@@ -1,5 +1,4 @@
 ---
-
 title: "Weekly Digest #6: Come for the conversation, stay for the culture"
 date: 2024-05-23
 description: "Hi, it’s @innno again. Summer is almost here. But don't worry, this update is all about making your day more comfortable. Now, onto this week’s updates."

@@ -1,5 +1,4 @@
 ---
-
 title: CSS Container Queries
 date: 2022-09-02
 description: Container Queries is a CSS feature that allows us to style elements based on the size of a container.

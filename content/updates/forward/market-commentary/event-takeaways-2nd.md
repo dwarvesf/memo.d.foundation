@@ -1,6 +1,5 @@
 ---
-
-title: 'Talks and Takeaways from the Scene: Part 2'
+title: "Talks and Takeaways from the Scene: Part 2"
 short_title: 2nd Talks and Takeaways
 date: 2025-03-25T00:00:00.000Z
 description: Talks and Takeaways from the Scene Part 2
@@ -42,6 +41,6 @@ This could be huge cause most of Bitcoin holders don’t do anything with them, 
 
 ![](assets/event2-4.webp)
 
-Okay, so I hit up these events. It’s definitely got some potentials, but it’s got some real headaches too like where do you find enough brainy folks to make it all work, and how do you deal with the market going wild one day and crashing the next? Berachain’s got this chill vibe going, trying to build a fun, tight-knit crew, and that could totally patch up some of these problems. They’re not just obsessing over token prices like everyone else, they’re betting on people sticking around for the long haul, which might actually make something that doesn’t die out fast. Then there’s Babylon, going in with this idea that could flip the script, even if it’s got some sketchy risks. 
+Okay, so I hit up these events. It’s definitely got some potentials, but it’s got some real headaches too like where do you find enough brainy folks to make it all work, and how do you deal with the market going wild one day and crashing the next? Berachain’s got this chill vibe going, trying to build a fun, tight-knit crew, and that could totally patch up some of these problems. They’re not just obsessing over token prices like everyone else, they’re betting on people sticking around for the long haul, which might actually make something that doesn’t die out fast. Then there’s Babylon, going in with this idea that could flip the script, even if it’s got some sketchy risks.
 
 Asia’s got the people and the hype to pull off Web3, no doubt, but it needs some clever moves to really take off. Berachain’s whole “let’s make a community people love” thing could be the secret sauce showing it’s not just about getting huge, it’s about creating a spot where folks wanna hang. Honestly, I’m kinda over the quick cash grabs; we should be building vibes and cultures that stick around.

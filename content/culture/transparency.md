@@ -13,15 +13,15 @@ tags:
 
 But then what?
 
-* You step on the project.
-* You get swiped away in work.
-* You check up the daily to-do.
+- You step on the project.
+- You get swiped away in work.
+- You check up the daily to-do.
 
 And you have no idea what's happening in other places. Teammate. Departments. Or even the company. And this is why information transparency is a real thing.
 
 It's the process of being upfront about various company operations, on the ups & downs. We choose to be straightforward in every issue, as it's everyone's mission to keep the team moving forward.
 
-![](transparency_e154f274bd4946e9b9e6decb621dfe7d_md5.webp)
+![](assets/transparency_e154f274bd4946e9b9e6decb621dfe7d_md5.webp)
 
 ## Validate the possibility
 
@@ -41,14 +41,14 @@ Continually communicating with other teams about your plan, when and how it will
 
 ## Toward achievements
 
-Being transparent about your success doesn't make you seem cocky. In fact, it drives a contagious sense of "*create something works*". Put it in, your challenge, your stress and how you managed to conquer it.
+Being transparent about your success doesn't make you seem cocky. In fact, it drives a contagious sense of "_create something works_". Put it in, your challenge, your stress and how you managed to conquer it.
 
 In smaller layers, information transparency reveals
 
-* A higher level of trust in management
-* Open and honest communication between teammates
-* A rationale behind the decision from the board
-* A comfortability to voice opinions and ask questions, which could yield valuable input
+- A higher level of trust in management
+- Open and honest communication between teammates
+- A rationale behind the decision from the board
+- A comfortability to voice opinions and ask questions, which could yield valuable input
 
 When we believe our ideas matters, despite which level we are; it's easier to feel obligated, and inspired, and immerse ourselves in the bigger picture. It happens by performing closer as a whole company, and no one stays outside of the loop.
 

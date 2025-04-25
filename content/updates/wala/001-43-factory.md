@@ -34,7 +34,7 @@ And you can definitely look forward to our next WALA.
 
 ![Dwarves team at 43 Factory coffee shop](assets/43-factory-wala.webp)
 
-___
+---
 
 **WALA: to walk around, learn around.**
 

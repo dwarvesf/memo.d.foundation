@@ -1,5 +1,4 @@
 ---
-
 title: "#3 Digital transformation insights from the energy sector"
 short_title: SP Group
 date: 2024-06-05
@@ -34,7 +33,8 @@ All in all, visiting SPG for us reinforced our direction of how we should grow o
 We are greatly grateful for how welcoming and open the SPG team was to us. We look forward to continue contributing to the changes SPG is making every day.
 
 ![Dwarves team with SP Group in Singapore](assets/sp-group-wala.webp)
-___
+
+---
 
 **WALA: to walk around, learn around.**
 

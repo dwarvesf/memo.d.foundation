@@ -2,15 +2,16 @@
 title: The future is blockchain and data
 date: 2022-06-26
 description: Hey, it’s Han and Nikki in your inbox again.
-authors: 
+authors:
   - tieubao
   - nikkingtr
   - duynglam
-tags: 
+tags:
   - newsletter
   - team
   - updates
 ---
+
 It’s Han and Nikki here,
 
 Plus an extra fresh voice we’re bringing to Dwarves Updates, in hope we can offer you more engineering-related insights and thoughts.

@@ -3,11 +3,11 @@ title: "Building Voconic's cloud platform with Google for financial services"
 short_title: Voconic
 date: 2020-10-24
 description: We helped CJC create Voconic, a cloud platform that makes it easy for financial companies to deploy complex systems with just a few clicks, reducing manual effort and errors while working across different cloud providers.
-authors: 
+authors:
   - tieubao
   - nikkingtr
   - duynglam
-tags: 
+tags:
   - case-study
   - partnership
 ---
@@ -50,7 +50,7 @@ The platform we created allows CJC's clients to deploy and manage cloud solution
 
 > "We were looking for a team that we could entrust our new Voconic cloud platform to. We found Dwarves among others, well known for industry experience in Go development, cloud platforms, and Kubernetes."
 >
-> *- Paul Kossowski, Manager at CJC*
+> _- Paul Kossowski, Manager at CJC_
 
 ## The challenge CJC faced
 

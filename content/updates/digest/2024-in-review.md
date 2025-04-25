@@ -1,5 +1,4 @@
 ---
-
 title: 2024 In Review
 date: 2025-01-16
 description: "Closing another milestone with 2024, it has been a year of building and rebuilding ,  strengthening what works, fixing what doesn't, and uncovering new paths along the way. Every milestone reached this year carries the marks of teamwork and persistence."

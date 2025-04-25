@@ -9,14 +9,14 @@ Sönke Ahrens describes his method for writing an article with a zettelkasten. W
 
 **Ahrens' process:**
 
-1.  Make fleeting notes on what you read
-2.  Put them in one place (an inbox) and process them
-3.  Make literature notes, documenting briefly what you don't want to forget or might use later
-4.  Make permanent notes, outlining how the literature notes are relevant or might inform your own thinking and research, creating one note per idea
-5.  File your permanent notes and link them to other relevant notes
-6.  Develop your ideas based on what you see emerging in the zettelkasten
-7.  Turn your notes into a rough draft, translating them into a coherent manuscript
-8.  Edit your manuscript
+1. Make fleeting notes on what you read
+2. Put them in one place (an inbox) and process them
+3. Make literature notes, documenting briefly what you don't want to forget or might use later
+4. Make permanent notes, outlining how the literature notes are relevant or might inform your own thinking and research, creating one note per idea
+5. File your permanent notes and link them to other relevant notes
+6. Develop your ideas based on what you see emerging in the zettelkasten
+7. Turn your notes into a rough draft, translating them into a coherent manuscript
+8. Edit your manuscript
 
 The translation phase is critical; an essay that is assembled from modular notes, no matter how well-written, will probably sound like it has been pieced together from fragments. It will lack unity of form and content. It's not as simple as just pasting together a series of zettels or fragment notes and adding transitions. Flaherty points to the example of some of Emerson's essays, which were put together in just this fashion: the voice is flat and the arguments suffer for the lack of unity.
 

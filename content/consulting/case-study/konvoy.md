@@ -1,5 +1,4 @@
 ---
-
 title: "Making keg management smarter for breweries"
 short_title: Konvoy
 date: 2023-09-14

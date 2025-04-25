@@ -1,9 +1,7 @@
 ---
-
-title: 'Secure and transparent uptime monitoring with Upptime and GitHub secrets'
+title: "Secure and transparent uptime monitoring with Upptime and GitHub secrets"
 date: 2025-03-31
-description: 
-  Discover how Dwarves Foundation uses Upptime and GitHub Actions for transparent public uptime monitoring while securely keeping tabs on internal services.
+description: Discover how Dwarves Foundation uses Upptime and GitHub Actions for transparent public uptime monitoring while securely keeping tabs on internal services.
 authors:
   - lmquang
 tags:
@@ -12,7 +10,7 @@ tags:
   - security
 ---
 
-Ensuring services are up and running is crucial. But how do you monitor *everything*, including internal tools and sensitive APIs, without exposing them to the world? This is the story of how we adopted Upptime, leveraging the power of GitHub Actions and Secrets to achieve comprehensive and secure uptime monitoring.
+Ensuring services are up and running is crucial. But how do you monitor _everything_, including internal tools and sensitive APIs, without exposing them to the world? This is the story of how we adopted Upptime, leveraging the power of GitHub Actions and Secrets to achieve comprehensive and secure uptime monitoring.
 
 ## Monitor public and private services
 
@@ -20,10 +18,10 @@ We needed a reliable way to monitor the uptime and performance of all our servic
 
 **Why hide certain endpoints?**
 
-* **Security:** Many internal endpoints are not designed for public exposure. Hiding them reduces the potential attack surface.
-* **Privacy:** Some endpoints might reveal internal infrastructure details.
-* **Preventing noise:** Keeping internal endpoints out of public configuration prevents automated scanners and bots from hitting them unnecessarily.
-* **Complexity:** Some internal checks might require specific headers or authentication tokens that are best kept secret.
+- **Security:** Many internal endpoints are not designed for public exposure. Hiding them reduces the potential attack surface.
+- **Privacy:** Some endpoints might reveal internal infrastructure details.
+- **Preventing noise:** Keeping internal endpoints out of public configuration prevents automated scanners and bots from hitting them unnecessarily.
+- **Complexity:** Some internal checks might require specific headers or authentication tokens that are best kept secret.
 
 We needed a solution that could handle both scenarios: transparent monitoring for public services and secure, hidden monitoring for private ones.
 
@@ -70,11 +68,10 @@ status-website:
 
 i18n:
   footer: Powered by [Upptime](https://upptime.js.org)
-
 # See https://upptime.js.org/docs/configuration for more options
 ```
 
-**The Key:** Notice how `My Secret API` uses `url: ${{ secrets.SECRET_API_URL }}`. When the GitHub Actions workflow runs, it securely injects the actual URL from the repository's secrets settings. The sensitive URL *never* appears in the public configuration file.
+**The Key:** Notice how `My Secret API` uses `url: ${{ secrets.SECRET_API_URL }}`. When the GitHub Actions workflow runs, it securely injects the actual URL from the repository's secrets settings. The sensitive URL _never_ appears in the public configuration file.
 
 ## How GitHub Actions automation actually works
 
@@ -90,6 +87,6 @@ Upptime relies on a set of workflows defined in `.github/workflows/`:
 
 Upon visiting `status.d.foundation`, your browser retrieves the static website constructed using `site.yml` from the `gh-pages` branch. The JavaScript code on the page directly fetches public status data, including `summary.json` and recent history, from the `dwarvesf/upptime` repository via GitHub’s raw file access or API. Subsequently, the page dynamically displays the status of our publicly available services.
 
-Crucially, the status page *only* displays information about the services configured with public URLs in `.upptimerc.yml`. The sensitive endpoints, while monitored constantly by the `uptime.yml` workflow using secrets, are never exposed on the public status page or in the repository's version history.
+Crucially, the status page _only_ displays information about the services configured with public URLs in `.upptimerc.yml`. The sensitive endpoints, while monitored constantly by the `uptime.yml` workflow using secrets, are never exposed on the public status page or in the repository's version history.
 
 This setup gives us the best of both worlds: transparent, real-time status updates for our public-facing services, and secure, automated monitoring for our internal infrastructure, all managed through a simple, code-based system.

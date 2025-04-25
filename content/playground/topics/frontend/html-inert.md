@@ -1,5 +1,4 @@
 ---
-
 title: HTML inert
 date: 2022-06-12
 description: "`inert` is a boolean HTML property that makes the browser ignore the user input events for an element, including focus events and events from assistive technologies."

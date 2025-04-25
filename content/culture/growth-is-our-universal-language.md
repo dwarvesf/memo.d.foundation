@@ -1,16 +1,16 @@
 ---
-title: Growth Is Our Universal Language
+title: Growth is our universal language
 date: 2023-02-16
 description: null
-authors: 
+authors:
   - tieubao
-tags: 
+tags:
   - people
   - teamwork
   - culture
 ---
 
-At Dwarves, *the core team live and breathe growth*. We believe that growth is our universal language, and we're always striving to improve ourselves, both personally and professionally. It's not just a job for us; it's a way of life. We're hustlers with an extra hat, always pushing ourselves to be better and earn more.
+At Dwarves, _the core team live and breathe growth_. We believe that growth is our universal language, and we're always striving to improve ourselves, both personally and professionally. It's not just a job for us; it's a way of life. We're hustlers with an extra hat, always pushing ourselves to be better and earn more.
 
 Every time we hire, we're looking for like-minded individuals who share our growth mindset. We want to be with people who are willing to challenge themselves and reach new heights.
 

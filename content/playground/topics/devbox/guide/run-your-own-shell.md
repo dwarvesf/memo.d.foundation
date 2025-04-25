@@ -1,5 +1,4 @@
 ---
-
 title: "Devbox Shell: Your Dev Environment, Your Rules"
 date: 2024-08-01
 description: Master the art of running your own shell with Devbox - locally or globally. No more environment headaches.

@@ -1,12 +1,11 @@
 ---
-
-title: 'Implementing data snapshot pattern to persist historical data'
+title: "Implementing data snapshot pattern to persist historical data"
 date: 2024-12-11
 tags:
   - data
   - fintech
   - blockchain
-description: 'A technical exploration of implementing the data snapshot pattern for efficient historical data persistence'
+description: "A technical exploration of implementing the data snapshot pattern for efficient historical data persistence"
 authors:
   - baenv
 ---

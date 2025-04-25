@@ -3,9 +3,9 @@ title: "Helping launch beCorporate enterprise ride-hailing service"
 short_title: beGroup
 date: 2020-11-18
 description: We provided an augmented team for beGroup, Vietnam's popular ride-hailing platform, to help them launch their beCorporate enterprise service on a tight timeline while their in-house team focused on their core consumer app.
-authors: 
+authors:
   - duynglam
-tags: 
+tags:
   - ride-hailing
   - case-study
 ---

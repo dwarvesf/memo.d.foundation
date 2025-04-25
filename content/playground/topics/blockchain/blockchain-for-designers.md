@@ -135,7 +135,7 @@ Blockchain is known as a one-way action that keeps the network safe and transpar
 As we mentioned at the beginning of this article, there is a large awareness gap in the public about Blockchain. We are here to help bridge this gap. We can help simplify the complexity of the Blockchain until it becomes invisible. Begin with the easiest-to-understand onboarding journey, provide knowledge/tips at every step where they might experience confusion or doubts, make help available, and easy to access, encourage and guide users through their journeys to meet their goals. Plus, don’t hide any information. Blockchain brings transparency, a key benefit for users which not any 3rd parties can compete with.
 
 **Constantly receive feedback and improve product**
-Even if we build something and release it, it’s only the beginning of the road. So it’s essential to be with the users through the whole app-building building process — and its future development. End users should be allowed to leave feedback, and want to leave feedback as if the product was something of their own. They should feel that we're listening to them, and we're gonna change the product for the better.
+Even if we build something and release it, it’s only the beginning of the road. So it’s essential to be with the users through the whole app-building building process, and its future development. End users should be allowed to leave feedback, and want to leave feedback as if the product was something of their own. They should feel that we're listening to them, and we're gonna change the product for the better.
 
 ## Conclusion
 

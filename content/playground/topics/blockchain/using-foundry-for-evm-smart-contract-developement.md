@@ -1,5 +1,4 @@
 ---
-
 title: Using Foundry for EVM smart contract development
 date: 2024-07-19
 description: "Introduce Foundry's core functionalities & practices to develop, test and deploy EVM smart contracts"
@@ -25,7 +24,7 @@ To help everyone to adopt Foundry in your next projects and start forging the fu
 
 **Streamlined Development Workflow:**
 
-- Provides a unified environment for the entire development lifecycle—from writing and testing contracts to deploying and interacting with them—all within a single toolchain
+- Provides a unified environment for the entire development lifecycle, from writing and testing contracts to deploying and interacting with them, all within a single toolchain
 - Allows you to write scripts directly in Solidity, simplifying tasks like deployments, contract interactions, and automated testing. This eliminates the need for external scripting languages.
 - Foundry's CLI (using the forge and cast commands) offers a powerful and efficient way to interact with the toolchain, making it easy to integrate into existing workflows and automation scripts.
 
@@ -443,6 +442,6 @@ I found an interesting repository that use Foundry to reproduce a lot of DeFi ha
 
 ## References
 
-- https://book.getfoundry.sh/getting-started/first-steps
-- https://milotruck.github.io/blog/Foundry-Cheatsheet/
-- https://github.com/SunWeb3Sec/DeFiHackLabs
+- <https://book.getfoundry.sh/getting-started/first-steps>
+- <https://milotruck.github.io/blog/Foundry-Cheatsheet/>
+- <https://github.com/SunWeb3Sec/DeFiHackLabs>

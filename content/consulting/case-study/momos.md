@@ -3,11 +3,11 @@ title: "Building a central hub for food and beverage businesses in Singapore"
 short_title: Momos
 date: 2021-07-01
 description: We helped Momos, a pre-seed startup in Singapore, build their first MVP, a centralized data hub that simplifies online operations for food and beverage businesses through third-party integrations and data analytics.
-authors: 
+authors:
   - duynglam
   - tieubao
   - nikkingtr
-tags: 
+tags:
   - fnb
   - case-study
   - early-stage

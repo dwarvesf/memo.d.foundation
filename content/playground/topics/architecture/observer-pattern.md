@@ -1,5 +1,4 @@
 ---
-
 title: Introduce the Observer pattern and its use cases
 date: 2024-07-12
 description: Concept of the Observer Pattern with its pros and cons.

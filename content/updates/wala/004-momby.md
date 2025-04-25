@@ -2,12 +2,12 @@
 title: "#4 Transforming healthcare with technology"
 date: 2022-11-22
 description: null
-tags: 
+tags:
   - dwarves
   - healthcare
 ---
 
-*Hosted by Nikki - Dwarves' COO, and Thanh Pham - Engineering Manager, Dwarves had a great lineup and gleaned insights on the new wave of healthcare through the immense knowledge and practical experience through inspiring stories from Ms. Ruby Nguyen and Mr. Binh Le.*
+_Hosted by Nikki - Dwarves' COO, and Thanh Pham - Engineering Manager, Dwarves had a great lineup and gleaned insights on the new wave of healthcare through the immense knowledge and practical experience through inspiring stories from Ms. Ruby Nguyen and Mr. Binh Le._
 
 ### <span style='color:red'>**Start-up ideas come from your own needs.**</span>
 
@@ -50,6 +50,6 @@ See everyone in the next event with many more talents.
 
 📍 For those who missed the session, please visit: [https://youtu.be/D-gcq3kZA28](https://youtu.be/D-gcq3kZA28)
 
-___
+---
 
-*Momby is available for download on the App store and Google Play. Alive & Thrive and the FHI Solutions Innovation Incubator is supporting the app's roll-out in Myanmar, Philippines, Indonesia, Cambodia, and India over the next three years.*
+_Momby is available for download on the App store and Google Play. Alive & Thrive and the FHI Solutions Innovation Incubator is supporting the app's roll-out in Myanmar, Philippines, Indonesia, Cambodia, and India over the next three years._

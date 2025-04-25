@@ -3,12 +3,11 @@ title: ☀️ Open source
 date: 2024-10-11
 description: 'How we support, contribute to, and reward open source development in our community'
 authors:
-  - thanh
+  - zlatanpham
   - monotykamary
 tags:
   - open-source
   - community
-
 ---
 
 So much of the software we rely on every day is built on open source projects. We believe wholeheartedly that embracing open source makes our products the best they can be.

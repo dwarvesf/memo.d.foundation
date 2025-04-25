@@ -1,5 +1,4 @@
 ---
-
 title: "Re-ranking in RAG"
 date: 2024-07-26
 description: "Re-ranking is a crucial step in Retrieval-Augmented Generation (RAG) systems that addresses the challenge of retrieving heterogeneous and potentially irrelevant information. By evaluating and re-ordering retrieved documents, re-ranking ensures that only the most relevant and useful information is passed to the generation model. This process significantly improves the coherence, accuracy, and relevance of the generated text, ultimately enhancing the reliability and effectiveness of RAG systems."

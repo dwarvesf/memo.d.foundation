@@ -2,11 +2,11 @@
 title: Project Compliance
 date: 2021-08-23
 description: This email is the third month we share about our journey to Software Craftsmanship.
-authors: 
+authors:
   - tieubao
   - nikkingtr
   - duynglam
-tags: 
+tags:
   - project
   - updates
   - newsletter

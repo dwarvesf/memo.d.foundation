@@ -1,5 +1,4 @@
 ---
-
 title: How to talk to ChatGPT effectively
 date: 2024-06-21
 description: This post presents technique to improve the your output when prompting ChatGPT.

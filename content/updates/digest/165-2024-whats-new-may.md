@@ -1,5 +1,4 @@
 ---
-
 title: "What's New in May 2024"
 date: 2024-06-13
 description: May was our month for meetups, upgrading our monthly learning pool, launching NFT roles for our team members, onboarding new collaboration, recapping Echelon X 2024, and hosting an OGIF office hour.

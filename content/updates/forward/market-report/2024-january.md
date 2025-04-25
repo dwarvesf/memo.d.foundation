@@ -1,5 +1,4 @@
 ---
-
 title: Market report January 2024
 short_title: January 2024
 date: 2024-01-26

@@ -1,5 +1,4 @@
 ---
-
 title: Our Docker adoption and its challenges
 date: 2024-04-19
 description: Our second Devbox session, where we discussed our Docker adoption and challenges.
@@ -16,11 +15,11 @@ tags:
 
 This is the 2nd post of Devbox series includes
 
-- [Devbox #1: The world before Docker](https://memo.d.foundation/playground/_memo/devbox-a-world-before-docker)
-- [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges)
-- [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](https://memo.d.foundation/playground/_memo/devbox-nix-and-our-devbox-adoption)
+- [Devbox #1: The world before Docker](devbox-a-world-before-docker.md)
+- [Devbox #2: Our Docker adoption and its challenges](devbox-docker-adoption-and-challenges.md)
+- [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](devbox-nix-and-our-devbox-adoption.md)
 
-In the previous session that is [Devbox #1: The world before Docker](https://memo.d.foundation/playground/_memo/devbox-a-world-before-docker), we discussed the world from the beginning before container and Docker concepts emerged as groundbreaking advancements in software development. But nothing is perfect! Container and Docker also have their own concerns. So in this session, we will dive deep into Docker in practice with the real-life adoption of my team. Then, we can discover the challenges of containers and Docker and find the right way to go to get more performance.
+In the previous session that is [Devbox #1: The world before Docker](devbox-a-world-before-docker.md), we discussed the world from the beginning before container and Docker concepts emerged as groundbreaking advancements in software development. But nothing is perfect! Container and Docker also have their own concerns. So in this session, we will dive deep into Docker in practice with the real-life adoption of my team. Then, we can discover the challenges of containers and Docker and find the right way to go to get more performance.
 
 From the beginning, the desire to produce an isolated environment is raised to provide ability for multiple users accessing a computer concurrently with full resource utilization via a singular application. Over time, various other purposes have been explored and implemented. With the introduction of Docker, container technology became extensively utilized in software development. Two of the most popular uses are creating reproducible development environments and enabling continuous deployment.
 
@@ -52,7 +51,7 @@ It is not just for the backend side; on the frontend, containerization is also w
 
 However, nothing is perfect, Docker container has its own concerns.
 
-## Nothing is perfect!
+## Nothing is perfect
 
 Yeah, Docker is really fast. It only takes anywhere from a few milliseconds to a few seconds to start a Docker container from a Docker image. But how do you feel when every time you change the code, you have to rebuild the Docker image and restart the container again for debugging? That would be a real nightmare. To avoid it, you can only run the application locally with Docker container dependencies, or rack your brain to find a way to optimize the Dockerfile. Most of the time, it's fine, but the real problem occurs in edge cases.
 
@@ -72,4 +71,4 @@ For example, we often include something like `RUN apt-get install ...` in the Do
 
 So, with all the challenges mentioned above, do we have any way to avoid them in a peaceful manner? Certainly, there are various ways to address these problems, but none of them are perfect or bad.
 
-Most of them involve optimizing your approach to using Docker. However, I would like to introduce another approach that keeps us away from Docker during development but still allows us to leverage Docker for deployment. We'll explore that next time in the [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](https://memo.d.foundation/playground/_memo/devbox-nix-and-our-devbox-adoption).
+Most of them involve optimizing your approach to using Docker. However, I would like to introduce another approach that keeps us away from Docker during development but still allows us to leverage Docker for deployment. We'll explore that next time in the [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](devbox-nix-and-our-devbox-adoption.md).

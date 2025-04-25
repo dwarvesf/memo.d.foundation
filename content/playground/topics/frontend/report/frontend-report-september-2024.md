@@ -1,5 +1,4 @@
 ---
-
 title: Frontend Report September 2024
 date: 2024-10-05
 description: "This roundup highlights the latest in React and Next.js, including Server Functions, the React 19 compiler, and self-hosting with OpenNext. Find tips on lazy loading, CSS Grid, JavaScript's evolution, plus new tools and expert insights."

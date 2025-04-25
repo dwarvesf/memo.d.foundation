@@ -1,5 +1,4 @@
 ---
-
 title: Record and reward sharing at Dwarves
 date: 2024-09-05
 description: Discover how the Dwarves community fosters a culture of continuous learning and knowledge sharing. With a monthly reward pool of up to 2500 ICY, contributors are recognized for sharing valuable insights, especially in areas like AI/LLM, Golang, and more. Get involved and grow with us.

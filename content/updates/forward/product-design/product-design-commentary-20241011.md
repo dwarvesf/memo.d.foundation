@@ -1,14 +1,12 @@
 ---
-
-tags:
-  - UX-UI
-  - product-design
-  - report
 title: "Product Design Commentary #3: The art of prompting in AI-human interaction"
 date: 2024-10-14
 description: "In this third edition, we delve into the art of prompting in AI-human interaction. We explore the evolution of communication between humans and machines, focusing on the crucial role of UX designers in crafting effective prompts for large language models. The commentary covers the importance of context, system prompting techniques, and structured frameworks for prompting, highlighting how these elements shape the future of human-AI interactions and user experiences."
 authors:
   - Maniub102
+tags:
+  - product-design
+  - report
 ---
 
 The longstanding challenge of communication between humans and machines has been ongoing since the dawn of computing. With the emergence of large language models (LLMs), prompting has become a powerful tool in facilitating this communication. The role of UX designers is to help bridge this gap by designing effective systems and interactions that allow humans to better understand and utilize these advanced AI technologies.
@@ -33,11 +31,11 @@ UX designers can enhance AI interactions by crafting effective system prompts. T
 
 - **Interface Prompting:** Designers can provide conversational starters and suggest follow-ups.
 
-    ![](assets/3-product-design-commentary-the-craft-of-prompting.png)
+  ![](assets/3-product-design-commentary-the-craft-of-prompting.png)
 
 - **System Prompting:** Hidden prompts guide the AI in a specific direction, ensuring consistent tone and behavior across the tool.
 
-    ![](assets/3-product-design-commentary-training-data.png)
+  ![](assets/3-product-design-commentary-training-data.png)
 
 - **Training Data:** The UX role is crucial in helping train models or assist in fine-tuning them to avoid bias and ensure ethical use.
 

@@ -1,5 +1,4 @@
 ---
-
 title: Dwarves Of The Year 2022
 date: 2023-01-19
 description: "It's been a long journey, but we've finally made it to 2022 and what a year it's been for our team of Dwarves. Countless hours of hard work and it's all paid off with our big wins of the year. Honored for all and huge congratulations for our Dwarves of 2022."

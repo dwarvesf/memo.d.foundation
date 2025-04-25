@@ -1,5 +1,4 @@
 ---
-
 title: Market report December 2023
 short_title: December 2023
 date: 2023-12-29

@@ -2,11 +2,11 @@
 title: Engineering Organizational Structure
 date: 2021-12-01
 description: It's Han and Nikki from Team Dwarves. We're almost at the end of this year. While we know everyone is busy wrapping up 2021, we hope you're taking care of yourself and staying safe.
-authors: 
+authors:
   - tieubao
   - duynglam
   - nikkingtr
-tags: 
+tags:
   - updates
   - newsletter
   - career
@@ -18,7 +18,7 @@ It's Han and Nikki from Team Dwarves. We're almost at the end of this year. Whil
 
 Remember last month when we mentioned [refining our engineering ladder](https://memo.d.foundation/handbook/engineering-ladder/)? Executing this one initiative was our main focus for the whole November. With this new way of looking at growth, we hope to be able to expand the team on top of a scalable foundation. First by:
 
- Develop a high-level structure that enables easy scaling of teams or adding new available resources to projects.
+Develop a high-level structure that enables easy scaling of teams or adding new available resources to projects.
 
 - **Some senior engineers were promoted to leads or relevant positions.** Meaning besides the technical excellency, they will also have room to have more impact, influence, and leadership on people, while taking on responsibilities for their teams and the company.
 - **Managers, tech leads, and PMs collaborate with each other to facilitate communication and processes** across teams within the company, making sure everyone knows we're working towards a common purpose which is better engineering.

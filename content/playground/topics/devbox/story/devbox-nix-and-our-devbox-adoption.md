@@ -1,5 +1,4 @@
 ---
-
 title: The overview into Nix & how we use Devbox @ Dwarves
 date: 2024-04-24
 description: The overview into Nix & how we use Devbox @ Dwarves
@@ -16,11 +15,11 @@ tags:
 
 This is the 3rd post of Devbox series includes
 
-- [Devbox #1: The world before Docker](https://memo.d.foundation/playground/_memo/devbox-a-world-before-docker)
-- [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges)
-- [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](https://memo.d.foundation/playground/_memo/devbox-nix-and-our-devbox-adoption)
+- [Devbox #1: The world before Docker](devbox-a-world-before-docker.md)
+- [Devbox #2: Our Docker adoption and its challenges](devbox-docker-adoption-and-challenges.md)
+- [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](devbox-nix-and-our-devbox-adoption.md)
 
-In the previous session, that is [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges) , we talked about “How Docker is adopted in my development team and its challenges encountered along the way?” And I also talked about a solution to separate us from Docker and containers in setup a local software development environment. And now, It is coming!
+In the previous session, that is [Devbox #2: Our Docker adoption and its challenges](devbox-docker-adoption-and-challenges.md) , we talked about “How Docker is adopted in my development team and its challenges encountered along the way?” And I also talked about a solution to separate us from Docker and containers in setup a local software development environment. And now, It is coming!
 
 As known as a command-line tool, Devbox lets you easily create isolated shells for development. But it doesn't work alone. Because of powering by Nix under the hood, whether you're a newbie or an experienced Nix user, we we need to dissect Devbox beginning by taking about Nix and it power that is superior than Docker.
 
@@ -66,7 +65,7 @@ The magic of Nix is that it makes sure that everything works together correctly.
 
 ## Docker can access internet while building image
 
-As we discussed in the [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges), Docker builds can access the public internet, so we can't guarantee that the same image will be built every time, as everything on the internet can change in minutes. Additionally, there are no checks to ensure that the files being fetched are actually the ones you intended for your Docker image. Even if we can push the image to a registry and pull it for running identical containers on different computers. In some edge cases when we can’t access to the online repository so need to build another one, we may not be able to build the required image again if some dependencies have changed on the internet.
+As we discussed in the [Devbox #2: Our Docker adoption and its challenges](devbox-docker-adoption-and-challenges), Docker builds can access the public internet, so we can't guarantee that the same image will be built every time, as everything on the internet can change in minutes. Additionally, there are no checks to ensure that the files being fetched are actually the ones you intended for your Docker image. Even if we can push the image to a registry and pull it for running identical containers on different computers. In some edge cases when we can’t access to the online repository so need to build another one, we may not be able to build the required image again if some dependencies have changed on the internet.
 
 ## Nix ensures external sources are Immutable
 

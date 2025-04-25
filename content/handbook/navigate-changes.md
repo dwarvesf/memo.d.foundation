@@ -4,7 +4,7 @@ short_title:
 date: 2025-03-31
 description: How we deal with technology changes
 authors:
-  - thanh
+  - zlatanpham
 tags:
   - handbook
   - business

@@ -1,5 +1,4 @@
 ---
-
 title: "AI for Fast and Fair Talent Search"
 short_title: Screenz.ai
 date: 2025-03-31
@@ -7,12 +6,11 @@ description: "AI for Fast and Fair Talent Search"
 authors:
   - ooohminh
   - zlatanpham
-tags: 
+tags:
   - ai
   - hiring
   - case-study
 ---
-
 
 **Industry**
 
@@ -93,7 +91,7 @@ By making these strategic technology choices, we balanced the need for speed, th
 
 - **Data management**: TimescaleDB powers the platform’s data layer. It stores session data and analytics with high performance, supports time-series queries for real-time insights, and scales efficiently as user volumes grow.
 - **Frontend and analytics**: The HR interface runs on Next.js for a smooth experience with responsive design for desktop and mobile access and clean navigation for screening and reviewing candidates. Retool dashboards provide real-time analytics on candidate performance and customizable views for HR teams to track hiring metrics.
-- **Lean development process**: To hit the two-week deadline, we streamlined workflows. Prototyping built a clickable prototype to simulate HR and candidate flows. The backend stack leveraged Node.js (Next.js) for serverless efficiency. Testing conducted usability tests with HR groups to refine functionality. ****
+- **Lean development process**: To hit the two-week deadline, we streamlined workflows. Prototyping built a clickable prototype to simulate HR and candidate flows. The backend stack leveraged Node.js (Next.js) for serverless efficiency. Testing conducted usability tests with HR groups to refine functionality. \*\*\*\*
 
 ![](assets/screenzai-5.webp)
 

@@ -3,9 +3,9 @@ title: "Making dental work easier in Singapore"
 short_title: Dental Marketplace
 date: 2020-09-20
 description: We built an online platform that helps dentists in Singapore run their practices better. Created by a dental surgeon, Dental Marketplace connects dental professionals, makes finding events easier, and simplifies everyday tasks.
-authors: 
+authors:
   - duynglam
-tags: 
+tags:
   - startup
   - marketplace
   - case-study
@@ -123,4 +123,4 @@ Most importantly, Desmond achieved what he set out to do: create an online space
 
 > "It was hard to change how things work in Singapore's dental industry. But working with Dwarves Foundation made me believe Dental Marketplace could make a difference. The product was high-quality and had room to grow. They explained everything clearly and solved problems quickly."
 >
-> *Desmond Goh, Founder & CEO of Dental Marketplace*
+> _Desmond Goh, Founder & CEO of Dental Marketplace_

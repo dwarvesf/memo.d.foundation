@@ -1,5 +1,4 @@
 ---
-
 title: Dwarves Of The Year 2021
 date: 2022-01-05
 description: "A big congratulations to our Dwarves of 2021. Apart from the team's voting result for each title, the team leads also selected the Honorable Mention and Client Endorsed, as we want to honor all of the hard work."

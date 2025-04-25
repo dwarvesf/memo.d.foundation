@@ -1,5 +1,4 @@
 ---
-
 title: Home
 date: 2023-12-11
 description: How to contribute to our second brain.
@@ -66,7 +65,7 @@ We aren't actually too strict on grammar or semantics in your notes. Our only re
 - ```md
   ---
   tags: engineering, database, transaction
-  author: Nguyen Xuan Anh
+  authors: monotykamary
   github_id: monotykamary
   date: 2022-08-23
   ---

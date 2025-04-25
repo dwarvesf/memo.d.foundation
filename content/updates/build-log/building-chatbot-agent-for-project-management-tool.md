@@ -1,14 +1,13 @@
 ---
-
-title: 'Building chatbot agent to streamline project management'
-date: '2024-11-21'
-description: 'A technical case study detailing the implementation of an AI chatbot agent in a project management platform. Learn how the team leveraged LangChain, LangGraph, and GPT-4 to build a multi-agent system using the supervisor-worker pattern. '
+title: "Building chatbot agent to streamline project management"
+date: "2024-11-21"
+description: "A technical case study detailing the implementation of an AI chatbot agent in a project management platform. Learn how the team leveraged LangChain, LangGraph, and GPT-4 to build a multi-agent system using the supervisor-worker pattern. "
 authors:
   - zlatanpham
   - nnhuyhoang
 tags:
-  - 'agents'
-  - 'ai'
+  - "agents"
+  - "ai"
 ---
 
 Umbrella is a project management platform tailored for athletes, musicians, creatives, and businesses alike, bringing everything from team collaboration to secure document sharing under one roof. As our user base grew to a substantial number of active users managing a significant volume of projects and tasks, we identified an opportunity to leverage generative AI to enhance our platform's capabilities and streamline project management workflows.

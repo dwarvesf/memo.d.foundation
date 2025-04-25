@@ -3,9 +3,9 @@ title: Dwarves Tech Radar Volume 02
 short_title: Tech Radar Volume 02
 date: 2021-01-14
 description: Dwarves Tech Radar v2 contains the practices to simplify the workflow, new techniques/ approach methods to upgrade our current standards and expand the domain knowledge.
-authors: 
+authors:
   - duynglam
-tags: 
+tags:
   - radar
   - forward-engineering
 ---
@@ -28,7 +28,7 @@ We applied it on Voconic, our complex on-going project about Cloud platform, to 
 
 ### Webflow: Build visual canvas without coding techniques
 
- [https://webflow.com/](https://webflow.com/)
+[https://webflow.com/](https://webflow.com/)
 
 At some point, we figure the development phase might take more time and resources than we need. Therefore, a no-code platform is what can resolve the issue. Webflow removes the usual misunderstanding between designers and developers - enables them to convert stunning designs into production without any coding techniques.
 

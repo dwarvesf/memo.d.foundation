@@ -1,5 +1,4 @@
 ---
-
 title: Create slides with Overleaf and ChatGPT
 date: 2025-03-20T00:00:00.000Z
 tags:
@@ -16,17 +15,13 @@ authors:
   - tieubao
 should_deploy_perma_storage: true
 perma_storage_id: 4GVkldu9UdEN5Yaguw79Z5-nBykrQ-YkeGizSV4_rz0
-minted_at: '2025-03-27'
-token_id: '1'
+minted_at: "2025-03-27"
+token_id: "1"
 ---
-
-
-
-
 
 ## My workflow with Overleaf and ChatGPT
 
-A few weeks ago, I was asked to make a slide deck for a team meeting. Normally, I usually use [Google Slides](https://workspace.google.com/products/slides/) or [Markdown via Marp](https://marp.app/) to make a simple slide for presentation. But this meeting is more serious, so I needed to make a professional, high-standard slide deck. This requirement *made* me think of using [Overleaf](https://www.overleaf.com/), a tool that helps create slides in a professional format. It worked so well that I want to share my experience. This is my story, walking through the problems I faced, the solution I found, and some tips that might help you too.
+A few weeks ago, I was asked to make a slide deck for a team meeting. Normally, I usually use [Google Slides](https://workspace.google.com/products/slides/) or [Markdown via Marp](https://marp.app/) to make a simple slide for presentation. But this meeting is more serious, so I needed to make a professional, high-standard slide deck. This requirement _made_ me think of using [Overleaf](https://www.overleaf.com/), a tool that helps create slides in a professional format. It worked so well that I want to share my experience. This is my story, walking through the problems I faced, the solution I found, and some tips that might help you too.
 
 ### Consistent and polished slides
 

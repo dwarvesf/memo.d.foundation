@@ -3,11 +3,11 @@ title: "Building a complete tech system for small Vietnamese hotels"
 short_title: Aharooms
 date: 2020-12-01
 description: We helped Aharooms create a suite of digital tools that enables small hotels in Vietnam to improve operations, increase bookings, and boost revenue, especially during the challenging COVID-19 period when adaptation was crucial.
-authors: 
+authors:
   - tieubao
   - duynglam
   - nikkingtr
-tags: 
+tags:
   - hospitality
   - case-study
 ---

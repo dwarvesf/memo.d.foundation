@@ -29,8 +29,8 @@ For applications with long system prompts, a prompt cache can significantly redu
 
 Example of prompt cache implementation:
 
-- Gemini context caching: https://ai.google.dev/gemini-api/docs/caching
-- LLAMA: https://github.com/ggerganov/llama.cpp/blob/master/examples/main/README.md#prompt-caching
+- Gemini context caching: <https://ai.google.dev/gemini-api/docs/caching>
+- LLAMA: <https://github.com/ggerganov/llama.cpp/blob/master/examples/main/README.md#prompt-caching>
 
 This caching technique is typically implemented by inference APIs that we use. We could consider this when select the ai provider / inference API for our RAG system.
 
@@ -163,7 +163,7 @@ Caching is a vital technique that boosts performance by storing frequently acces
 
 ## Reference
 
-- https://huyenchip.com/2024/07/25/genai-platform.html#step_4_reduce_latency_with_cache
-- https://arxiv.org/pdf/2311.04934
-- https://github.com/UKPLab/sentence-transformers
-- https://huggingface.co/learn/cookbook/en/semantic_cache_chroma_vector_database
+- <https://huyenchip.com/2024/07/25/genai-platform.html#step_4_reduce_latency_with_cache>
+- <https://arxiv.org/pdf/2311.04934>
+- <https://github.com/UKPLab/sentence-transformers>
+- <https://huggingface.co/learn/cookbook/en/semantic_cache_chroma_vector_database>

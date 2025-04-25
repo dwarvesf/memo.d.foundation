@@ -1,5 +1,4 @@
 ---
-
 title: "Weekly Digest #15: New year Gathering: Sharing Tết, starting strong"
 date: 2025-02-04
 description: Tết break came to an end, and the Dwarves team reunited to share stories, reconnect, and kick off the Year of the Snake in style. We brought it all back to Discord, along with a little SOL & ICY drop to start the year right.

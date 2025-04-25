@@ -1,5 +1,4 @@
 ---
-
 title: Adversarial Prompting in Prompt Engineering
 date: 2023-07-10
 description: An overview of adversarial prompting in prompt engineering, focusing on understanding risks associated with Large Language Models (LLMs) and strategies for mitigating them.

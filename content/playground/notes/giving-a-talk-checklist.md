@@ -1,8 +1,7 @@
 ---
-
 title: Giving a talk checklist
 date: 2024-11-11
-description: 'The checklist presents how to prepare for a talk'
+description: "The checklist presents how to prepare for a talk"
 authors:
   - zlatanpham
 tags:

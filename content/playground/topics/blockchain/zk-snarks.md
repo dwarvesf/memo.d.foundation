@@ -1,5 +1,4 @@
 ---
-
 title: zk-SNARKs
 date: 2022-12-09
 description: ZK-SNARKs is a type of zero-knowledge proof that allows one party to prove to another that a given statement is true, without revealing any additional information. This article provides an overview of zk-SNARKs, how they work, and their applications in blockchain technology.

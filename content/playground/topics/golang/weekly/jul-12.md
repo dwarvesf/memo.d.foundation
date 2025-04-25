@@ -110,7 +110,7 @@ tags:
 
   - This article is very handy as considerably pioneering in real life implementation at [@Dolt](https://github.com/dolthub/dolt)
 
-  - Cheat sheet found in spec by the author:
+  - Cheat sheet found in spec by the authors:
 
   ```
   type argument      type constraint                // constraint satisfaction
@@ -138,7 +138,7 @@ tags:
 
 ---
 
-- https://www.dolthub.com/blog/2024-07-01-golang-generic-collections/#the-solution
-- https://go.dev/ref/spec
-- https://github.com/golang/go/discussions/67901
-- https://pkg.go.dev/rsc.io/gaby
+- <https://www.dolthub.com/blog/2024-07-01-golang-generic-collections/#the-solution>
+- <https://go.dev/ref/spec>
+- <https://github.com/golang/go/discussions/67901>
+- <https://pkg.go.dev/rsc.io/gaby>

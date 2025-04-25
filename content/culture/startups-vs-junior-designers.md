@@ -1,5 +1,5 @@
 ---
-tags: 
+tags:
   - tips
 title: Startups Vs Junior Designers
 date: 2020-07-24

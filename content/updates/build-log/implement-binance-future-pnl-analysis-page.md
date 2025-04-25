@@ -1,13 +1,12 @@
 ---
-
-title: 'Implement Binance Futures PNL analysis page by Phoenix LiveView'
+title: "Implement Binance Futures PNL analysis page by Phoenix LiveView"
 date: 2025-01-15
 tags:
   - blockchain
   - fintech
   - real-time
   - phoenix-live-view
-description: 'Implementing Binance Futures PNL Analysis page with Phoenix LiveView to optimize development efficiency. This approach reduces the need for separate frontend and backend resources while enabling faster real-time data updates through WebSocket connections and server-side rendering.'
+description: "Implementing Binance Futures PNL Analysis page with Phoenix LiveView to optimize development efficiency. This approach reduces the need for separate frontend and backend resources while enabling faster real-time data updates through WebSocket connections and server-side rendering."
 authors:
   - thminhVN
 ---

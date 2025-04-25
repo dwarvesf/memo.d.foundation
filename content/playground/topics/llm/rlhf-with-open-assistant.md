@@ -29,13 +29,13 @@ Consists in three steps:
 
 ![](assets/rlhf-with-open-assistant_oa-rlhf-flow.webp)
 
-## Recommended cloud provider:
+## Recommended cloud provider
 
 One of the cloud providers we used to implement our RLHF flow is Redmond. Redmond.ai is a cloud computing service provider that specializes in offering accelerated cloud computing solutions for artificial intelligence (AI) and machine learning (ML) applications.
 
-- https://redmond.ai/
+- <https://redmond.ai/>
 
-## System requirements:
+## System requirements
 
 For our example, we use the [Pythia](https://www.eleuther.ai/papers-blog/pythia-a-suite-for-analyzing-large-language-modelsacross-training-and-scaling) as our LLM model. Mostly, system requirements are dependent on the model being used. For instance, 7 billion parameters may require a GPU that contains at least 400GB for RLHF learning. The important part is the amount of GPUs we have access to running our model. If there are other training steps and nuances, this requirement grows linearly.
 
@@ -149,10 +149,10 @@ In conclusion, Open Assistant (OA) is a chat-based, open-source assistant design
 
 ## References
 
-- https://github.com/triton-inference-server/server
-- https://github.com/sylabs/singularity/
-- https://github.com/microsoft/DeepSpeed
-- https://www.eleuther.ai/papers-blog/pythia-a-suite-for-analyzing-large-language-modelsacross-training-and-scaling
-- https://projects.laion.ai/Open-Assistant/docs/guides/developers
-- https://open-assistant.io/
-- https://huggingface.co/EleutherAI
+- <https://github.com/triton-inference-server/server>
+- <https://github.com/sylabs/singularity/>
+- <https://github.com/microsoft/DeepSpeed>
+- <https://www.eleuther.ai/papers-blog/pythia-a-suite-for-analyzing-large-language-modelsacross-training-and-scaling>
+- <https://projects.laion.ai/Open-Assistant/docs/guides/developers>
+- <https://open-assistant.io/>
+- <https://huggingface.co/EleutherAI>

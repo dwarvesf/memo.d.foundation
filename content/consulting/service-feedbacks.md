@@ -15,6 +15,7 @@ tags:
 1. Engineer performances
 
    - a. Communication
+
      - How did the engineer interact with your team?
      - How was the communication between the engineer and your team?
      - Was our engineer proactive in communicating with you?
@@ -33,6 +34,7 @@ tags:
      - What should our engineer do to improve the synchronization with other members?
 
 2. Team management
+
    - What are your opinions for the team management?
    - Was our Team Lead able to help you co-manage the team efficiently and effectively?
    - Was there anytime that you cannot contact our team members in a timely manner? If yes, please specify.

@@ -1,5 +1,4 @@
 ---
-
 title: An Introduction to Atomic CSS
 date: 2022-10-13
 description: This article provides an overview of Atomic CSS, including its definition, variations, purposes, and how it compares to other CSS approaches.

@@ -3,9 +3,9 @@ title: "Helping Relay launch their workflow automation MVP for the US market"
 short_title: Relay
 date: 2021-04-29
 description: We helped Relay quickly develop and launch their workflow automation tool for early market testing. Our engineers built a complete solution including a Chrome extension, web app, and Slack integration that helped Relay acquire their first paying customers and prepare for their next funding round.
-authors: 
+authors:
   - duynglam
-tags: 
+tags:
   - case-study
   - browser-extension
   - early-stage
@@ -50,11 +50,11 @@ Initially, we planned to support Relay for just a few months. However, as the co
 
 We built the solution using:
 
-* Ruby on Rails for the backend
-* React and TailwindCSS for the frontend, with Storybook for component development
-* AWS Amplify for infrastructure
-* WebSockets for real-time updates
-* Amplitude for event tracking
+- Ruby on Rails for the backend
+- React and TailwindCSS for the frontend, with Storybook for component development
+- AWS Amplify for infrastructure
+- WebSockets for real-time updates
+- Amplitude for event tracking
 
 This tech stack allowed us to develop quickly while maintaining quality. The combination of React, TailwindCSS, and Storybook helped us build a clean interface efficiently.
 
@@ -64,10 +64,10 @@ For project management, we used Slack for team communication, Notion for documen
 
 After several months of development, we successfully delivered the first MVP with all key components:
 
-* A Google Chrome extension that integrated with users' workflows
-* A web application for managing automation settings
-* An analytics dashboard to track productivity metrics
-* A Relay bot that integrated directly into Slack workspaces
+- A Google Chrome extension that integrated with users' workflows
+- A web application for managing automation settings
+- An analytics dashboard to track productivity metrics
+- A Relay bot that integrated directly into Slack workspaces
 
 ![Relay's dashboard interface showing workflow automation features](assets/relay-dashboard-interface.webp)
 
@@ -81,8 +81,8 @@ As mentioned in their [May Product Updates](https://teamrelay.medium.com/relay-p
 
 Some of the technical aspects that made this project successful included:
 
-* Creating both a Slack app and Chrome extension that worked seamlessly together
-* Implementing custom semantic versioning for the Chrome extension to manage updates
-* Combining technologies like Flipper and Sidekiq for A/B testing and gradual feature rollouts
-* Designing an action tracking system to monitor user behavior
-* Organizing the codebase as a monorepo for better code sharing and development efficiency
+- Creating both a Slack app and Chrome extension that worked seamlessly together
+- Implementing custom semantic versioning for the Chrome extension to manage updates
+- Combining technologies like Flipper and Sidekiq for A/B testing and gradual feature rollouts
+- Designing an action tracking system to monitor user behavior
+- Organizing the codebase as a monorepo for better code sharing and development efficiency

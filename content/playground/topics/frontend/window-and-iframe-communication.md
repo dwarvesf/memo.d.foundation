@@ -1,5 +1,4 @@
 ---
-
 title: Window and iframe communication
 date: 2023-08-20
 description: When working with web development, communicating between a main window and an embedded iframe is often necessary for various tasks, such as content creation or widget implementation. This communication can occur between windows and iframes with the same origin or across different origins.

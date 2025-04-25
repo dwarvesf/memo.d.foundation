@@ -3,9 +3,9 @@ title: "Redesigning BHD Cinema's ticket booking app for a better experience"
 short_title: BHD Cinema
 date: 2020-05-20
 description: We helped BHD Cinema transform their outdated mobile app into an intuitive platform that allows customers to easily browse movies, book tickets online, and enjoy a seamless cinema experience, turning movie-goers into loyal BHD fans.
-tags: 
+tags:
   - case-study
-authors: 
+authors:
   - duynglam
 ---
 

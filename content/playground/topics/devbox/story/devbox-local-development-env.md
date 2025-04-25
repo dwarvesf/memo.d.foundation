@@ -1,5 +1,4 @@
 ---
-
 title: Using Devbox to setup local development environment
 date: 2024-06-13
 description: Expanded section that focuses on Devbox and its practices on setup a local development environment.
@@ -16,9 +15,9 @@ tags:
 
 Welcome back to our Devbox series! Previously, we've explored the journey from the early days of virtualization to the widespread adoption of Docker. Finally, we try using Nix and Devbox to enhance software development process. If you need to catch up, you can check out the earlier posts here:
 
-- [Devbox #1: The world before Docker](https://memo.d.foundation/playground/_memo/devbox-a-world-before-docker)
-- [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges)
-- [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](https://memo.d.foundation/playground/_memo/devbox-nix-and-our-devbox-adoption/)
+- [Devbox #1: The world before Docker](devbox-a-world-before-docker.md)
+- [Devbox #2: Our Docker adoption and its challenges](devbox-docker-adoption-and-challenges.md)
+- [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](devbox-nix-and-our-devbox-adoption.md)
 
 Beyond the theories, in this expanded part, we'll show how we use Devbox to create an isolated, reproducible, and portable local development environment.
 
@@ -42,7 +41,7 @@ To address this challenge, we adopted several strategies that other successful t
 
 We took a look at Nix with the expectation of creating a configurable, reproducible, and portable development environment that helps us quickly onboard anybody to any new project with a few simple commands. It also brings an easy way to manage all installed applications in an isolated or semi-isolated environment.
 
-But Nix needs a huge effort to be applied such as separated syntax and mechanisms. It is also too big to serve our purpose. So we need something more simple, and lightweight but can also take advantage of Nix. This is the reason why finally we chose Devbox for a few first experiments. You can read about Devbox [here](https://memo.d.foundation/playground/_memo/devbox-nix-and-our-devbox-adoption/).
+But Nix needs a huge effort to be applied such as separated syntax and mechanisms. It is also too big to serve our purpose. So we need something more simple, and lightweight but can also take advantage of Nix. This is the reason why finally we chose Devbox for a few first experiments. You can read about Devbox [here](devbox-nix-and-our-devbox-adoption.md).
 
 ## Devbox simple setup
 
@@ -104,9 +103,9 @@ To quickly onboarding newbie without any Devbox knowledge, we also trying to tur
 
 ```makefile
 shell:
-	@if ! command -v devbox >/dev/null 2>&1; then curl -fsSL <https://get.jetpack.io/devbox> | bash; fi
-	@devbox install
-	@devbox shell
+ @if ! command -v devbox >/dev/null 2>&1; then curl -fsSL <https://get.jetpack.io/devbox> | bash; fi
+ @devbox install
+ @devbox shell
 
 ```
 

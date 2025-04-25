@@ -1,5 +1,4 @@
 ---
-
 title: "Building CIMB's digital wealth platform for better customer experience"
 short_title: CIMB
 date: 2023-08-16
@@ -7,7 +6,7 @@ description: We helped CIMB Malaysia transform their wealth management services 
 authors:
   - huytieu
   - nikkingtr
-tags: 
+tags:
   - fintech
   - case-study
 ---

@@ -75,7 +75,7 @@ The [typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk) pro
 
 ## Understanding the security challenge
 
-When deploying MCP in production environments, we need comprehensive security controls to protect access to potentially sensitive tools and data. The unique properties of SSE transport—which establishes an asymmetric communication channel where the server streams data to clients while clients initiate communication through standard HTTP requests—require specialized security considerations.
+When deploying MCP in production environments, we need comprehensive security controls to protect access to potentially sensitive tools and data. The unique properties of SSE transport, which establishes an asymmetric communication channel where the server streams data to clients while clients initiate communication through standard HTTP requests, require specialized security considerations.
 
 Our approach creates a vendor-neutral security framework for MCP over SSE by defining precise authorization flows that integrate with existing security standards. We'll provide concrete implementation guidance for both server and client developers while ensuring a frictionless authentication experience for end users.
 

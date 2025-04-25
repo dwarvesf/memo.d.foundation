@@ -29,13 +29,13 @@ We are using the following steps to successfully implement this model.
 - **Time tracking**: we use Notion / Excel to record hours spent on each project and task. If a member is on the hourly billing, said member is required to log their time in an accurate and timely manner.
 
 ![](assets/time-log-for-design.png)
-*Example of a timesheet we are using for design work*
+_Example of a timesheet we are using for design work_
 
 - **Project management:** maintain detailed project plans, frequently update clients of progress, changes in scope and how that would effect the hours to be billed.
 - **Approval:** timesheets are sent at the end of the month for client’s approval. Only after timesheets are approved that we can send invoices.
 
 ![](assets/email-for-approval.png)
-*Only after timesheets are approved that we can send invoices.*
+_Only after timesheets are approved that we can send invoices._
 
 This hourly billing model is nothing new, but it require us to be consistent and articulate. Build it up like a habit, and we will be able to take greater responsibilities and better client relationships.
 

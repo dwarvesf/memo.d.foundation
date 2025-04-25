@@ -1,5 +1,4 @@
 ---
-
 title: "Building AI-powered search for online stores"
 short_title: Search.io
 date: 2021-10-14

@@ -23,7 +23,7 @@ What skills that an engineer should have in order to work with client effectivel
 
 2. Attention to details
 3. Communication skills: good English skills (both written and verbal)
--> require somewhere Intermediate - Upper Intermediate level
+   -> require somewhere Intermediate - Upper Intermediate level
 4. Problem solving and logical thinking
 5. Work planning
 6. Teamwork

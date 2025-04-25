@@ -1,5 +1,4 @@
 ---
-
 title: Market report September 2024
 short_title: September 2024
 date: 2024-10-08

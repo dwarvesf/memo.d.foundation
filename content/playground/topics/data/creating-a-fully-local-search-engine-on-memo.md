@@ -1,5 +1,5 @@
 ---
-title: Building a Local Search Engine for Our Memo Website
+title: Building a local search engine for our Memo website
 date: 2024-07-17
 description: Explore how we developed a fully local search engine for our memo website using DuckDB-wasm, Transformers.js, and Alpine.js. Learn about hybrid search techniques, real-time embeddings, and performance optimizations that deliver fast and accurate results without compromising on privacy or requiring server-side processing.
 authors:
@@ -58,14 +58,14 @@ WITH search_results AS (
 
 Users can apply filters using special syntax, a feature created by our engineer, @vincent:
 
-- `author:name` or `@name` to filter by author
+- `authors:name` or `@name` to filter by author
 - `tag:topic` or `#topic` to filter by tag
 - `title:keyword` to filter by title
 
 For example, a user could search for:
 
 ```
-machine learning tag:AI author:Jane
+machine learning tag:AI authors:Jane
 ```
 
 ```

@@ -1,5 +1,4 @@
 ---
-
 title: Design system integration in react
 date: 2024-10-29
 description: Learn how to integrate design systems in React applications with comprehensive coverage of design tokens, atomic components, and accessibility standards.

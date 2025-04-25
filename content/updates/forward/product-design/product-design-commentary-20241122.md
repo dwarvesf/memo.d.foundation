@@ -1,14 +1,12 @@
 ---
-
-tags:
-  - UX-UI
-  - product-design
-  - report
 title: "Product Design Commentary #7: Hyper-personalization - How AI improves user experience personalization"
 date: 2024-11-28
 description: Hyper-personalization represents the future of product development, delivering personalized experiences that adapt to each user's needs. In this model, everyone will have their own version of the internet, shaped by AI interfaces that understand their preferences, goals, and personal context.
 authors:
   - bringastar
+tags:
+  - product-design
+  - report
 ---
 
 Hyper-personalization represents the future of product development, **delivering personalized experiences that adapt to each user's needs**. In this model, everyone will have their own version of the internet, shaped by AI interfaces that understand their preferences, goals, and personal context. These smart systems automatically adjust the user interface, showing up when needed and disappearing after completing tasks (called [Ephemeral Web-Based Applications](https://www.nngroup.com/articles/ephemeral-web-based-applications/)). This approach creates unique experiences that fit specific use cases.
@@ -21,15 +19,15 @@ By using AI, we can create more personal moments, experiences, and interactions.
 
 The main difference between Hyper-Personalization and basic Personalization is that it **uses many different types of data** to create a complete picture of each user. Basic Personalization only makes suggestions based on groups of users using basic information. On the other hand, Hyper-Personalization focuses on each person with more detailed analysis, using up-to-the-minute data along with AI and data processing. This helps understand users better and predict what they might do next, allowing for a more personal experience across websites, emails, and mobile apps.
 
-| **Criteria** | **Hyper-personalization** | **Traditional personalization** |
-| --- | --- | --- |
-| **Level of customization** | Very detailed, uses real-time data, behavior, and specific context for each user. | Based on common traits or basic data like name, gender, or age. |
-| **Data sources** | Real-time data, behavior history, personal preferences, location, current context | Basic user info (age, gender, location), general purchase history. |
-| **Technology** | Smart technology that can learn and predict | Simple if-then rules. |
-| **Key features** | Automatically suggests products/services based on each person's specific behavior and situation. | Shows content or products based on general customer groups. |
-| **Interaction** | Real-time interaction that changes based on what the user is doing right now. | Fixed interaction that doesn't change in real-time. |
-| **Goal** | Make customers happier by better understanding their personal needs and situation. | Make products/services more relevant to target customers. |
-| **Examples** | - Amazon's product suggestions based on what you're searching for right now | - Netflix showing movies based on what you like to watch | - Marketing emails that start with your name | - Product suggestions based on customer groups |
+| **Criteria**               | **Hyper-personalization**                                                                        | **Traditional personalization**                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------- |
+| **Level of customization** | Very detailed, uses real-time data, behavior, and specific context for each user.                | Based on common traits or basic data like name, gender, or age.    |
+| **Data sources**           | Real-time data, behavior history, personal preferences, location, current context                | Basic user info (age, gender, location), general purchase history. |
+| **Technology**             | Smart technology that can learn and predict                                                      | Simple if-then rules.                                              |
+| **Key features**           | Automatically suggests products/services based on each person's specific behavior and situation. | Shows content or products based on general customer groups.        |
+| **Interaction**            | Real-time interaction that changes based on what the user is doing right now.                    | Fixed interaction that doesn't change in real-time.                |
+| **Goal**                   | Make customers happier by better understanding their personal needs and situation.               | Make products/services more relevant to target customers.          |
+| **Examples**               | - Amazon's product suggestions based on what you're searching for right now                      | - Netflix showing movies based on what you like to watch           | - Marketing emails that start with your name | - Product suggestions based on customer groups |
 
 ## How hyper-personalization makes things personal
 
@@ -38,17 +36,17 @@ Hyper-Personalization works through four main steps:
 #### Step 1: Data acquisition and preparation
 
 - **Collecting information:**
-    - **Basic personal info:** Age, gender, location, income
-    - **How people use the product:** Purchase history, habits, time spent on site, items in cart, visits
-    - **Personal preferences:** Likes, interests, feedback
-    - **Current activity:** Recent searches, recent purchases, comments, likes, shares
-    - **Current situation:** Location, time, user status, mood (for example, rapid scrolling or leaving pages quickly may indicate frustration or dissatisfaction)
+  - **Basic personal info:** Age, gender, location, income
+  - **How people use the product:** Purchase history, habits, time spent on site, items in cart, visits
+  - **Personal preferences:** Likes, interests, feedback
+  - **Current activity:** Recent searches, recent purchases, comments, likes, shares
+  - **Current situation:** Location, time, user status, mood (for example, rapid scrolling or leaving pages quickly may indicate frustration or dissatisfaction)
 - **Cleaning up information:**
-    - Filling in missing information with reasonable values
-    - Finding and fixing incorrect information
-    - Making sure all information is organized in the same way
+  - Filling in missing information with reasonable values
+  - Finding and fixing incorrect information
+  - Making sure all information is organized in the same way
 - **Creating helpful insights:** Taking existing information and turning it into useful insights for AI
-    - For example: Working out how valuable a customer is or how often they shop
+  - For example: Working out how valuable a customer is or how often they shop
 
 #### Step 2: Choose the right AI method
 
@@ -60,11 +58,11 @@ Hyper-Personalization works through four main steps:
 #### Step 3: Train and test the system
 
 - **Split the model training:**
-    - Training Data (70-80%): Used to teach the system.
-    - Testing Data (10-15%): Check how well the system works.
-    - Validation Data (10-15%): Fine-tune the system to avoid mistakes.
+  - Training Data (70-80%): Used to teach the system.
+  - Testing Data (10-15%): Check how well the system works.
+  - Validation Data (10-15%): Fine-tune the system to avoid mistakes.
 - **Check performance:**
-    - Look at how many people click, buy, or find the suggestions helpful.
+  - Look at how many people click, buy, or find the suggestions helpful.
 
 #### Step 4: Keep improving
 
@@ -75,16 +73,16 @@ Hyper-Personalization works through four main steps:
 
 ![](assets/7-product-design-weekly-personalization.png)
 
-*Source: [LinkedIn](https://www.linkedin.com/pulse/leveling-up-personalization-maturity-curve-amir-yazdanpanah)*
+_Source: [LinkedIn](https://www.linkedin.com/pulse/leveling-up-personalization-maturity-curve-amir-yazdanpanah)_
 
 Hyper-personalization has 3 main real-world uses:
 
 1. **Adaptive content:** It can tailor content to fit each person. This works well for product marketing and especially in education. For example, [Sesame Workshop](https://techcrunch.com/2017/06/07/sesame-workshop-and-ibm-team-up-to-test-a-new-a-i-powered-teaching-method/) tested an AI-powered vocabulary learning app with kindergarten students. The app uses Sesame Street characters in games and videos to help kids learn new words. The AI adjusts lessons based on each student's ability and lets parents and teachers track progress. Students learned better, even with difficult words. This personalized learning approach helps make education more effective, where students of all levels can learn and grow together.
 2. **Personalized recommendations:** Streaming apps like [Spotify](https://sea.mashable.com/tech/34358/spotify-wants-to-make-you-an-ai-playlist-for-every-occasion) and Netflix use AI to suggest songs and movies based on what you watch. Amazon's product suggestions are another good example. Amazon looks at what customers buy, view, and rate to understand what each person likes. This kind of suggestion can work for many services that need to match individual needs. Here are some examples:
-    - Suggesting travel plans and hotels for vacations
-    - Recommending fashion styles based on personal taste
-    - A personal magazine that picks articles you'll enjoy
-    - Custom diet and exercise plans that fit your health needs
+   - Suggesting travel plans and hotels for vacations
+   - Recommending fashion styles based on personal taste
+   - A personal magazine that picks articles you'll enjoy
+   - Custom diet and exercise plans that fit your health needs
 3. **Adaptive user interfaces:** Many apps have too many features that can overwhelm users. [Contextual AI](https://business.adobe.com/blog/perspectives/contextual-ai-the-next-frontier-of-artificial-intelligence) helps by learning how you use the app and showing only the features you need, making it simpler to use. For example, [Siemens](https://www.youtube.com/watch?v=D9_U2EI0Sdw)' NX CAD, a 3D design software used in architecture and engineering, uses AI to learn from users and predict what commands they might need next. This makes the software easier to use for both new and experienced users.
 
 ## Challenges around hyper-personalization

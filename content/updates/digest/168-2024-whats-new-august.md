@@ -1,5 +1,4 @@
 ---
-
 title: "What's New in August 2024"
 date: 2024-09-06
 description: Each month, we release a recap highlighting key updates and progress within our team and community. August updates highlight AI tools, enhanced community discussions, the sum command upgrade, Go enterprise MOC insights, and earning dfg tokens through contributions.

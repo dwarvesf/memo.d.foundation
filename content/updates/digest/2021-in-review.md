@@ -1,5 +1,4 @@
 ---
-
 title: 2021 In Review
 date: 2021-02-05
 description: 2021 notable highlights and achievements

@@ -1,5 +1,4 @@
 ---
-
 title: Changelog
 date: 2023-12-11
 description: "Sign up for our newsletter to stay up-to-date on our latest news, tips, and updates. We'll deliver valuable content straight to your inbox, keeping you informed and engaged with stuff happening at Dwarves."

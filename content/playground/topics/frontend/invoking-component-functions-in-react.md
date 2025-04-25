@@ -1,5 +1,4 @@
 ---
-
 title: Invoking component functions in React
 date: 2023-01-09
 description: What happens if you invoked the component function directly in React?

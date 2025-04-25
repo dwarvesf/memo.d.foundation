@@ -71,7 +71,7 @@ While our previous guide covered securing the MCP connection itself through OAut
 
 Production MCP servers require **granular permission management** that allows different users or applications to access specific subsets of available tools based on their responsibilities and authorization level. These servers must also implement **data privacy protection** since tools often expose sensitive data that should only be accessible to properly authorized users. Proper **regulatory compliance** becomes essential as many organizations operate under strict data protection regulations like GDPR, HIPAA, or CCPA that mandate precise controls over data access. Finally, the principle of least privilege embodied in **operational security** dictates that users should only have access to the minimum set of tools needed to perform their tasks.
 
-MCP servers often serve as gateways to powerful capabilities—from querying databases and accessing internal knowledge bases to modifying production systems or sending authenticated messages. Without proper access controls, an authenticated but malicious user could potentially access sensitive information or perform unauthorized actions that extend far beyond their intended privileges.
+MCP servers often serve as gateways to powerful capabilities, from querying databases and accessing internal knowledge bases to modifying production systems or sending authenticated messages. Without proper access controls, an authenticated but malicious user could potentially access sensitive information or perform unauthorized actions that extend far beyond their intended privileges.
 
 ## Security architecture for tool-level access control
 
@@ -611,6 +611,6 @@ For example, a user might have permission to search the knowledge base, but cert
 
 Implementing Role-Based Access Control for MCP servers creates a secure foundation for AI-to-tool communication in production environments. By controlling not just which users can connect to your MCP server but also which tools they can access and what data they can see, you establish precise security boundaries that protect sensitive resources while enabling powerful capabilities for authorized users.
 
-The multi-layered approach described in this guide—combining authentication, permission-based tool filtering, and data access policies—provides comprehensive protection aligned with security best practices. By integrating with existing identity systems and implementing proper audit trails, you can maintain security while leveraging your organization's established infrastructure.
+The multi-layered approach described in this guide, combining authentication, permission-based tool filtering, and data access policies, provides comprehensive protection aligned with security best practices. By integrating with existing identity systems and implementing proper audit trails, you can maintain security while leveraging your organization's established infrastructure.
 
 As MCP adoption continues to grow, robust security controls become increasingly essential to realizing its full potential in enterprise environments. By implementing these patterns early, you establish a foundation that can evolve with your organization's needs while maintaining appropriate security boundaries.

@@ -102,6 +102,6 @@ Salesforce emphasizes the need for **extensive and rigorous benchmarking** when 
 
 ## Reference
 
-- https://www.salesforce.com/blog/llm-benchmark-crm/
-- https://www.salesforceairesearch.com/crm-benchmark
-- https://www.salesforceben.com/ai-wars-how-salesforces-agnostic-llm-approach-works/
+- <https://www.salesforce.com/blog/llm-benchmark-crm/>
+- <https://www.salesforceairesearch.com/crm-benchmark>
+- <https://www.salesforceben.com/ai-wars-how-salesforces-agnostic-llm-approach-works/>

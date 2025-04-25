@@ -1,5 +1,4 @@
 ---
-
 title: Solana core concepts
 date: 2024-06-18
 description: build a strong understanding of the core concepts that make Solana different from other blockchains.

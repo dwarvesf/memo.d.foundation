@@ -1,5 +1,4 @@
 ---
-
 title: "What's New in January 2024"
 date: 2024-02-07
 description: "In this first month of 2024, we kept tap of what's brewing in the tech market, while reviewing what we went through in 2023."

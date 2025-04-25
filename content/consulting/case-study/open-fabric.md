@@ -1,5 +1,4 @@
 ---
-
 title: "Building a payment platform from scratch"
 short_title: Open Fabric
 date: 2022-09-28
@@ -8,7 +7,7 @@ authors:
   - monotykamary
   - nikkingtr
   - huynguyenh
-tags: 
+tags:
   - case-study
   - fintech
   - payment

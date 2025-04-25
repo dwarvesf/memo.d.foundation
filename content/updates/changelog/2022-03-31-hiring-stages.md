@@ -5,8 +5,8 @@ description: In today’s edition, job interviews need a makeover, the 4 stages 
 authors:
   - tieubao
   - nikkingtr
-  - duynglam 
-tags: 
+  - duynglam
+tags:
   - hiring
   - newsletter
   - updates

@@ -19,7 +19,7 @@ We figure a small team is easier to share perspectives, update on what's happeni
 
 Fewer committee lets us run things in a startup model. Draft a plan. Execute the todos. Fail fast. Learn. Do it again and do it better. Other than productivity, we aim for collaborative.
 
-![](the-dwarves-runs-by-ideas_bd8f655b05178f380d8e75076cfe3002_md5.webp)
+![](assets/the-dwarves-runs-by-ideas_bd8f655b05178f380d8e75076cfe3002_md5.webp)
 
 ## We run by the right ideas
 

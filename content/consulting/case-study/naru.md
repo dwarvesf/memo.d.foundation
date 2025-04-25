@@ -3,10 +3,10 @@ title: "Naru: A task manager that works right in your browser"
 short_title: Naru
 date: 2021-04-18
 description: We built Naru, a browser extension that helps people stay organized and productive while browsing the web. Working with a US-based designer, we created a task management tool that follows you across tabs and remembers your tasks no matter where you go online.
-authors: 
- - duynglam
- - nikkingtr
-tags: 
+authors:
+  - duynglam
+  - nikkingtr
+tags:
   - case-study
   - browser-extension
   - early-stage

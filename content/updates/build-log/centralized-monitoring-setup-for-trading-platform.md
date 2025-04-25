@@ -1,14 +1,13 @@
 ---
-
 authors:
   - zlatanpham
   - lmquang
-date: '2024-11-21'
-description: 'A technical case study for implementing centralized monitoring for a trading platform using Grafana and Prometheus, focusing on real-time alerts, data integrity, and resource optimization to prevent financial losses.'
+date: "2024-11-21"
+description: "A technical case study for implementing centralized monitoring for a trading platform using Grafana and Prometheus, focusing on real-time alerts, data integrity, and resource optimization to prevent financial losses."
 tags:
   - monitoring
   - fintech
-title: 'Setup centralized monitoring system for Hedge Foundation trading platform'
+title: "Setup centralized monitoring system for Hedge Foundation trading platform"
 ---
 
 Hedge Foundtion, a private trading platform serving select traders, required a robust centralized monitoring system to ensure platform reliability and prevent financial losses. Given the high-stakes nature of trading operations, the system needed to provide real-time alerts, maintain data integrity, and optimize resource allocation to protect traders from potential monetary losses.

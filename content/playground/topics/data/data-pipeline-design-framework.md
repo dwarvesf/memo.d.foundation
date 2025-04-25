@@ -1,5 +1,4 @@
 ---
-
 title: Data Pipeline Design Framework
 date: 2024-03-15
 description: To improve and strongly go-live the data pipeline, besides apply best practices and pillar for Data Pipeline Native Solution, a design framework and pattern are robustly help us in...

@@ -10,9 +10,9 @@ tags:
   - management
 ---
 
-We get to read many articles these days that states '*People are the Core of the Business*', or '*Why People are the Key to Success*', or something like that. Something that polishes the importance of human to the company. Something that emphasizes how HR should do their best to nurture the talents.
+We get to read many articles these days that states '_People are the Core of the Business_', or '_Why People are the Key to Success_', or something like that. Something that polishes the importance of human to the company. Something that emphasizes how HR should do their best to nurture the talents.
 
-But here's the funny thing. Most of those talks drive the audience back to tips. How to make people happy. How to keep them engaged. How to motivate. That's the point. Too many '*how-tos*'.
+But here's the funny thing. Most of those talks drive the audience back to tips. How to make people happy. How to keep them engaged. How to motivate. That's the point. Too many '_how-tos_'.
 
 And that usually the part when I say "Ok, we're done here."
 
@@ -38,4 +38,4 @@ Hardly I heard a Dwarf refuse to explain or transfer what they know to others. S
 
 ## It's not the Rule. It's the People who follow
 
-Despite how many office traps there are, nothing keeps people around unless ***they want it themselves***. Once there is a bunch of reasons to tie people around, they'll leave when there is a better reason from a better place. So in short, create a space where people feel active to work in and raise their idea, where they know their work means something, where judgments are fair and run by the right ideas. Focus on what people want to do, and things will run their courses.
+Despite how many office traps there are, nothing keeps people around unless **_they want it themselves_**. Once there is a bunch of reasons to tie people around, they'll leave when there is a better reason from a better place. So in short, create a space where people feel active to work in and raise their idea, where they know their work means something, where judgments are fair and run by the right ideas. Focus on what people want to do, and things will run their courses.

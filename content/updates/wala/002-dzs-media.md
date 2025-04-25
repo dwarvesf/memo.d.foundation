@@ -1,5 +1,4 @@
 ---
-
 title: "#2 Film production lessons for software engineering"
 short_title: DZS Media
 date: 2024-10-16
@@ -23,7 +22,7 @@ We were stunned to discover DZS Media's process mirrors our own software enginee
 - Be an expert in your craft, then expand to bigger things.
 - The film production process is mostly waterfall, so it's crucial to ensure that each step is done correctly to avoid high costs for redos.
 - DZS Media's margin is high, but the success rate is not that high. Therefore, it is essential to have an expert eye to know which movies might have a higher chance of success. Same way, we choose which software development projects to be part of.
-• The content of a film must be good to be successful, regardless of the marketing, advertising, or famous actors.
+  • The content of a film must be good to be successful, regardless of the marketing, advertising, or famous actors.
 
 Despite their success, DZS Media stayed humble. We were awed by their ability to wrangle celebrities and foster an environment where creativity and hard work thrive. We left with profound respect for the film industry - and the Herculean efforts behind blockbusters like Chị Chị Em Em and Siêu Lừa Gặp Siêu Lầy.
 
@@ -32,7 +31,8 @@ Our visit to DZS Media was an eye-opening experience, and we are grateful to hav
 Til next WALA.
 
 ![Dwarves team visiting DZS Media](assets/dzs-media-wala.webp)
-___
+
+---
 
 **WALA: to walk around, learn around.**
 

@@ -21,7 +21,7 @@ i.e, finding the right people for the job. More than their availability, their s
 
 ### It won't be perfect
 
-Admit it, nothing can be. Once you've decided to ask for help, understand that it's hard to fully reach the expectation you've envisioned earlier. Of course, it would be groundbreaking if they made it (and believe me, this is rare), but be prepared that things may not turn out good *enough*. And guess what, that's fine. It's better to be done than to be perfect.
+Admit it, nothing can be. Once you've decided to ask for help, understand that it's hard to fully reach the expectation you've envisioned earlier. Of course, it would be groundbreaking if they made it (and believe me, this is rare), but be prepared that things may not turn out good _enough_. And guess what, that's fine. It's better to be done than to be perfect.
 
 Being a leader sometimes feels like carrying the heaviest burden. Somewhere along the way, most important decisions and actions get delayed because we are too busy considering the risk.
 

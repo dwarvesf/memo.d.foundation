@@ -1,12 +1,11 @@
 ---
-
 title: "Swift: Building a micro frontend design system for e-commerce"
 short_title: Swift
 date: 2023-04-03
 description: We helped Swift, an e-commerce partner, implement a micro frontend architecture with a shared design system that improved development efficiency and created a consistent user experience across multiple applications.
 authors:
   - ngolapnguyen
-tags: 
+tags:
   - ecommerce
   - case-study
 ---
@@ -49,7 +48,7 @@ Micro frontend is an architectural approach that breaks down a large website int
 
 For Swift, this approach solved several critical challenges they were facing with their growing e-commerce platform. We focused particularly on building a shared design system that would create consistency across all their applications while making development more efficient.
 
-*Note: "Swift" isn't the company's real name - we've changed it to respect their privacy. But everything shared here comes from real interviews and experiences.*
+_Note: "Swift" isn't the company's real name - we've changed it to respect their privacy. But everything shared here comes from real interviews and experiences._
 
 ## The challenge Swift faced
 

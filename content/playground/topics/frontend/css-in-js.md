@@ -1,5 +1,4 @@
 ---
-
 title: CSS in JS
 date: 2022-08-11
 description: CSS-in-JS is a styling technique where Javascript is used to style the component.

@@ -2,9 +2,9 @@
 title: You need 3 upvotes to pass probation
 date: 2022-08-26
 description: null
-authors: 
+authors:
   - tieubao
-tags: 
+tags:
   - probation
 ---
 
@@ -16,10 +16,10 @@ Dwarves are backed by the talent pool. We’re selective for those that are in t
 
 We’re divided into 4 kinds of association:
 
-* Project member: The people you are directly working with.
-* In the chapter: The career track you belong in. i.g: Backend, Frontend, Design,… etc
-* Mentor: The upper layer that provides advice, suggestion & feedback
-* Social: Your friends at work.
+- Project member: The people you are directly working with.
+- In the chapter: The career track you belong in. i.g: Backend, Frontend, Design,… etc
+- Mentor: The upper layer that provides advice, suggestion & feedback
+- Social: Your friends at work.
 
 When the time comes, we will require you to submit the 3 upvotes/ reviews from these mentioned kinds. By having this, you’re stepping into the door of becoming a Dwarves. It requires you to get along with your peers, knowing you are both running toward the mutual target, and working on the engine of innovation.
 

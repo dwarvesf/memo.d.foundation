@@ -1,9 +1,9 @@
 ---
-title: 'Project reports system: a case study'
+title: "Project reports system: a case study"
 description: "An in-depth look at Dwarves' monthly Project Reports system - a lean, efficient system that transforms communication data into actionable intelligence for Operations teams. This case study explores how we orchestrate multiple data streams into comprehensive project insights while maintaining enterprise-grade security and cost efficiency."
-date: '2024-11-14'
+date: "2024-11-14"
 authors:
-  - 'monotykamary'
+  - "monotykamary"
 tags:
   - data
   - agents

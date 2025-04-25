@@ -249,8 +249,8 @@ This guide provides a simple, step-by-step approach to evaluating and optimizing
 
 ## Reference
 
-- https://www.iguazio.com/glossary/llm-as-a-judge/
-- https://blog.context.ai/the-ultimate-guide-to-llm-product-evaluation/
+- <https://www.iguazio.com/glossary/llm-as-a-judge/>
+- <https://blog.context.ai/the-ultimate-guide-to-llm-product-evaluation/>
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: ≈ Founder liquidity
-description: Founder liquidity is a secret that founders and investors don't want you to know
+description: "Founder liquidity is a secret that founders and investors don't want you to know"
 date: 2024-10-11
 authors:
   - tieubao
@@ -36,7 +36,7 @@ The founder in this scenario was offered $400,000 of liquidity at Series A and $
 
 Another more well-known and extreme example was in the case of Adam Neumann the founder of WeWork - Neumann was able to cash out over 2B in secondary meanwhile not a single WeWork employee was able to capitalize on their equity stakes. They were told internally how much their shares were worth at each raise, and the hype surrounding each raise continued as WeWork sky-rocketed in valuation. Neumann was smart to de-risk his position by selling as much secondary as possible during the ascent but only attempted to structure a tender offer for non-founding employees in 2019 **_nine years_** after WeWork was created. That tender offer with SoftBank fell through and employees were left with absolutely nothing. ([source](https://www.forbes.com/sites/samanthasharf/2020/04/13/wework-employees-feel-abandoned-and-angry-as-softbank-ditches-its-3-billion-buyout-offer?ref=stefantheard.com))
 
-The part about these stories that feels unfair is not that the founders are getting liquidity - it's that they are the _only ones_ getting liquidity. There are other stories like [Hopin](https://techfundingnews.com/unravelling-virtual-dreams-the-rise-and-fall-of-hopin/?ref=stefantheard.com) where the founder takes tens or hundreds of millions in secondary just to later sell the company for less than the [liquidation preference](https://www.holloway.com/g/venture-capital/sections/liquidation-preference?ref=stefantheard.com) stack and leave the employees with a grand total of zero dollars for their equity.
+The part about these stories that feels unfair is not that the founders are getting liquidity - it's that they are the *only ones* getting liquidity. There are other stories like [Hopin](https://techfundingnews.com/unravelling-virtual-dreams-the-rise-and-fall-of-hopin/?ref=stefantheard.com) where the founder takes tens or hundreds of millions in secondary just to later sell the company for less than the [liquidation preference](https://www.holloway.com/g/venture-capital/sections/liquidation-preference?ref=stefantheard.com) stack and leave the employees with a grand total of zero dollars for their equity.
 
 ### Right-Sizing Perception
 
@@ -64,9 +64,10 @@ My intention now, as a founder, is to balance the risk for early employees by be
 
 These changes are great, but nowhere near enough. In my view, every internal announcement of a new round at venture-backed companies should be accompanied by education and transparency around liquidity. Without transparency, none of the misperceptions have a chance of going away. The net result is that employees have a fundamentally misguided idea of the risk landscape as it shifts beneath their feet.
 
-If you work at a venture-backed company the next time a round is announced ask if the founders took any liquidity. Do it anonymously if you have to. This question should become so common that founders and investors become transparent by default. If they say no, great - no change to risk profiles. If they say yes - great, employees are operating with the same information as the founders and investors. This levels the playing field and allows employees to assess if they are still in a lower risk bucket than the founders, or if they are now taking significantly more risk than the founders.  
-  
+If you work at a venture-backed company the next time a round is announced ask if the founders took any liquidity. Do it anonymously if you have to. This question should become so common that founders and investors become transparent by default. If they say no, great - no change to risk profiles. If they say yes - great, employees are operating with the same information as the founders and investors. This levels the playing field and allows employees to assess if they are still in a lower risk bucket than the founders, or if they are now taking significantly more risk than the founders.
+
 If employees realize they are taking more risk than the founders, maybe they'll ask for more compensation, maybe they'll congratulate the founders and move on with their day, maybe they'll start yelling: "I'M TAKING SO MUCH RISK, IT'S SO HARD TO BUILD A COMPANY, I DON'T EVEN HAVE ACCESS TO LIQUIDITY!!!". And maybe they're right.
 
 ---
+
 <https://www.stefantheard.com/silicon-valleys-best-kept-secret-founder-liquidity>

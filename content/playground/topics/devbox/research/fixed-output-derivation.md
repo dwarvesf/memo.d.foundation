@@ -1,5 +1,4 @@
 ---
-
 title: Fixed-output Derivation in Nix
 date: 2024-08-01
 description: An explanation of fixed-output derivations in Nix and their role in ensuring reproducible builds

@@ -1,5 +1,4 @@
 ---
-
 title: Subscription Pricing Models
 date: 2024-07-19
 description: Overview of Subscription Pricing Models

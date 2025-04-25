@@ -2,7 +2,7 @@
 title: WALA
 short_title: WALA
 date: 2023-12-21
-description: 
+description:
 authors:
   - tieubao
   - nikkingtr

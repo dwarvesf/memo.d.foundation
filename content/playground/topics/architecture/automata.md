@@ -42,7 +42,7 @@ Both "Finite State Machine" FSM and "Finite Automata" (or Finite State Automata)
 
 The word "Finite" significance the presence of the finite amount of memory in the form of the finite number of states Q.
 
-Generally in formal-theory (or theory of computation), we prefer to use the word "Automata" – to emphasise that our machine is 'automatic' machine (self-moving: like our computer) — "automatic" in the sense that once you have been defined transition rules, you do not need to apply any explicit intelligent to process strings (you just need to refer transition rules at each step). Remember our ultimate aim behind defining transition machines is to automate the computational task.
+Generally in formal-theory (or theory of computation), we prefer to use the word "Automata" – to emphasise that our machine is 'automatic' machine (self-moving: like our computer), "automatic" in the sense that once you have been defined transition rules, you do not need to apply any explicit intelligent to process strings (you just need to refer transition rules at each step). Remember our ultimate aim behind defining transition machines is to automate the computational task.
 
 By the way, automata or state-machines are a graphical representation to describe transition rules.
 
@@ -87,7 +87,7 @@ Some authors write `δ ⊆ Q×Σ → Q` in formal DFA definition that means `δ`
 
 ### DFA vs. NFA
 
-#### DFA (Deterministic Finite Automaton) Robot:
+#### DFA (Deterministic Finite Automaton) Robot
 
 - This robot **only looks at one tile at a time** and knows **exactly what to do** next, no matter what.
 - It has **one set of instructions** for each tile color. If it sees a red tile, it knows for sure what its next move is.
@@ -96,7 +96,7 @@ Some authors write `δ ⊆ Q×Σ → Q` in formal DFA definition that means `δ`
   - If it sees a red tile, it moves forward.
   - If it sees a blue tile, it turns around. It **never gets confused** and always knows the next step.
 
-#### NFA (Non-deterministic Finite Automaton) Robot:
+#### NFA (Non-deterministic Finite Automaton) Robot
 
 - This robot is a little different. When it sees a tile, it can **imagine multiple possibilities** and think about all of them at once.
 - It might say, "Hmm, when I see a red tile, I could move forward, turn around, or even jump! Let me think about all these options at once."
@@ -105,12 +105,12 @@ Some authors write `δ ⊆ Q×Σ → Q` in formal DFA definition that means `δ`
   - When it sees a red tile, it might think, "I can either move forward or jump over it."
   - It checks **all options** at the same time and decides if the path is correct by looking at all the possibilities.
 
-#### Difference in Capabilities:
+#### Difference in Capabilities
 
 - **DFA Robot**: It's faster because it always knows exactly what to do. But it might need a lot of instructions because it can't explore different options. It has to account for every possible situation.
 - **NFA Robot**: It’s more flexible because it can explore lots of possibilities at the same time. But in the real world, it might take a little longer to check all those options.
 
-#### Key Points:
+#### Key Points
 
 - **DFA**: One option at a time, very efficient but can be strict.
 - **NFA**: Many options at once, more flexible but can take more time to figure things out.

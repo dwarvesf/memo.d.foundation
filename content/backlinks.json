@@ -827,12 +827,6 @@
       "path": "/playground/topics/design/design"
     }
   ],
-  "playground/topics/design/writing-content-for-multimedia-guidelines": [
-    {
-      "title": "§ Design",
-      "path": "/playground/topics/design/design"
-    }
-  ],
   "playground/topics/design/competency-mapping": [
     {
       "title": "§ Design",
@@ -1805,24 +1799,6 @@
     {
       "title": "§ Solana",
       "path": "/playground/topics/solana/solana"
-    }
-  ],
-  "playground/topics/qa/boundary-and-equivalence-partitioning-testing": [
-    {
-      "title": "§ QA",
-      "path": "/playground/topics/qa/qa"
-    }
-  ],
-  "playground/topics/qa/qc-onboarding": [
-    {
-      "title": "§ QA",
-      "path": "/playground/topics/qa/qa"
-    }
-  ],
-  "playground/topics/qa/test-cases-breakdown-structure": [
-    {
-      "title": "§ QA",
-      "path": "/playground/topics/qa/qa"
     }
   ],
   "playground/topics/devbox/research/pinning-nixpkgs": [

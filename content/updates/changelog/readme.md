@@ -1,8 +1,8 @@
 ---
 title: Dwarves Updates
 date: 2024-03-12
-description: 
-authors: 
+description:
+authors:
 tags: []
 ---
 

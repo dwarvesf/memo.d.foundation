@@ -14,7 +14,7 @@ During our study about innovation, we find the topic of adjacent possible. Innov
 
 Innovation deepens our knowledge and understanding of the world, it extends our reach and access to resources. More importantly, **innovation expands the realm of what we can do** with all our knowledge and resources: deliver new goods and products, bring forward new types of organisations and services, and in more general terms develop new ideas and concepts.
 
-Now, expanding any realm always requires leaving its current boundaries in order to explore ‘*the possibilities out there*‘. But rather than chasing the most extreme or distant possibilities, successful exploration focuses on the immediate vicinity of the current boundaries: Expansion can then occur by naturally ingesting nearby possibilities, by a short stretch of the realm’s new boundaries. Therefore, the **adjacent possible** is the target of successful exploration and expansion.
+Now, expanding any realm always requires leaving its current boundaries in order to explore ‘_the possibilities out there_‘. But rather than chasing the most extreme or distant possibilities, successful exploration focuses on the immediate vicinity of the current boundaries: Expansion can then occur by naturally ingesting nearby possibilities, by a short stretch of the realm’s new boundaries. Therefore, the **adjacent possible** is the target of successful exploration and expansion.
 
 The concept of the adjacent possible originates from Stuart Kauffman and his work on biological evolution. Kauffman was particularly interested in the origins of order and the mechanisms that drive self-organization. His findings are broadly **applicable to any complex adaptive system**, be it natural like the biosphere, or human-made like cities, the economy, or technology. Kaufman investigates how *the actual* expands into the *adjacent possible*. *The actual* describes the system under investigation in its current state, with all its components and interconnections. *The adjacent possible* contains all the elements outside but near that system; those represent the opportunities for the current system to expand by building new connections and turning those elements into system components.
 
@@ -32,31 +32,31 @@ To shape our future, we *“only”* need to find out how we can best combine 
 
 To illustrate the different paths we can take to make progress, I’ll borrow the concept of the adjacent possible that Stuart Kauffman originally developed to describe biological evolution, and transfer it to human non-biological development: some call that our cultural evolution, and that’s what I mean with progress.
 
-Let’s start with all the available ingredients I mentioned in the introduction. This collection of building blocks is what Kauffman refers to as ‘***the actual***‘, and at the scale of humanity, that contains an impressive lot: anything that makes up our economies, our societies, our cultures, our technologies, plus the natural resources we have access to.
+Let’s start with all the available ingredients I mentioned in the introduction. This collection of building blocks is what Kauffman refers to as ‘**_the actual_**‘, and at the scale of humanity, that contains an impressive lot: anything that makes up our economies, our societies, our cultures, our technologies, plus the natural resources we have access to.
 
-Outside of this ‘what we have’ is the realm of ‘***the possible***‘, i.e., anything we could create by combining some building blocks (those available in *the actual*) in new ways. This is the realm of ‘what we could have’, but anchored in the reality of *the actual*. Now think about what happens when one of those ‘possible things’ becomes real, for example, say, the integrated circuit. It immediately becomes a part of *the actual*, and *the actual* grows just a little, now that there’s one new ingredient. At the same instance, *the possible* grows superlinearly due to the myriad of new combinations the ‘old’ ingredients could form with that one new building block. That’s how the integrated circuit gave rise to today’s information technology. That’s how progress breeds yet more progress: new ingredients tremendously expand our possibilities.
+Outside of this ‘what we have’ is the realm of ‘**_the possible_**‘, i.e., anything we could create by combining some building blocks (those available in *the actual*) in new ways. This is the realm of ‘what we could have’, but anchored in the reality of *the actual*. Now think about what happens when one of those ‘possible things’ becomes real, for example, say, the integrated circuit. It immediately becomes a part of *the actual*, and *the actual* grows just a little, now that there’s one new ingredient. At the same instance, *the possible* grows superlinearly due to the myriad of new combinations the ‘old’ ingredients could form with that one new building block. That’s how the integrated circuit gave rise to today’s information technology. That’s how progress breeds yet more progress: new ingredients tremendously expand our possibilities.
 
-However, the realm of *the possible* is far from homogeneous; not all possibilities are equally achievable. Near *the actual*, you’ll find ‘***the adjacent possible***‘, which is the zone of (comparatively) easily achievable possibilities. These are the possibilities ‘within reach’, or ‘just one step away’. *The adjacent possible* is the domain of innovation.
+However, the realm of *the possible* is far from homogeneous; not all possibilities are equally achievable. Near *the actual*, you’ll find ‘**_the adjacent possible_**‘, which is the zone of (comparatively) easily achievable possibilities. These are the possibilities ‘within reach’, or ‘just one step away’. *The adjacent possible* is the domain of innovation.
 
 ![](the-adjacent-possible_ec265ab423ab94bc12c32ecaeec5378c_md5.webp)
 
-*The adjacent possible is the zone stay in between the actual (the current state of the art) & the possible.*
+_The adjacent possible is the zone stay in between the actual (the current state of the art) & the possible._
 
 ### Sketching five paths to progress
 
 But innovation is not our only path to making progress. I’d argue that there in fact five such paths:
 
-* sharing,
-* science,
-* invention,
-* discovery,
-* and innovation.
+- sharing,
+- science,
+- invention,
+- discovery,
+- and innovation.
 
 The following chart locates those five paths within the scheme of
 
-* *the actual*,
-* *the possible*,
-* and *the adjacent possible*.
+- _the actual_,
+- _the possible_,
+- and *the adjacent possible*.
 
 **Sharing** – The simplest path to progress is the use of best practice examples and the wider **distribution of ready-made recipes**. That’s progress for the individual who didn’t know that specific recipe before. Such sharing of useful knowledge does not immediately generate progress for humanity. That’s why this path remains located in *the actual*. Still, sharing plays a vital as it improves the conditions for further progress to occur. Sharing facilitates social learning: more people knowing more are more likely to generate more –and more useful– ideas.
 

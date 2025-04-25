@@ -1,13 +1,12 @@
 ---
-
-title: 'Migrate regular tables into TimescaleDB hypertables to improve query performance'
+title: "Migrate regular tables into TimescaleDB hypertables to improve query performance"
 date: 2025-01-15
 tags:
   - data
   - blockchain
   - fintech
   - timescaledb
-description: 'How do we migrate normal table to timescale table to optimized data storage'
+description: "How do we migrate normal table to timescale table to optimized data storage"
 authors:
   - thminhVN
 ---

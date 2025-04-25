@@ -1,18 +1,17 @@
 ---
 authors:
-- datnguyennnx
+  - datnguyennnx
 date: 2024-11-15
 description: "Stay updated on the latest in AI tools for developers with this week’s digest, new command Aider, OpenHands, Qwen2.5 Coder 32B"
 tags:
-- llm
-- tooling 
-- aider
-- qwen2.5
-- openhand
-- predicted output
+  - llm
+  - tooling
+  - aider
+  - qwen2.5
+  - openhand
+  - predicted output
 title: "AI digest #2 New command Aider, OpenHands, Qwen2.5 Coder 32B, Predicted Output"
 ---
-
 
 ## Aider v0.63.0 release
 
@@ -27,7 +26,7 @@ Here's an example of how to use the `/web` command. The developer provides the d
 
 ## OpenHands
 
-OpenHands just took a huge step forward with *All Hands Online (Beta)*, a new hosted version of its AI software development tool. This means no more wrestling with setup—just go to app.all-hands.dev, and you’re good to go in seconds! OpenHands has already proven itself by solving over half of real GitHub issues on the SWE-Bench Verified benchmark, and now it’s easier than ever to get started.
+OpenHands just took a huge step forward with _All Hands Online (Beta)_, a new hosted version of its AI software development tool. This means no more wrestling with setup—just go to app.all-hands.dev, and you’re good to go in seconds! OpenHands has already proven itself by solving over half of real GitHub issues on the SWE-Bench Verified benchmark, and now it’s easier than ever to get started.
 
 ![](assets/digest-02-new-ui-openhand.webp)
 
@@ -87,12 +86,12 @@ const completion = await openai.chat.completions.create({
   model: "gpt-4o",
   messages: [
     { role: "user", content: updatePrompt },
-    { role: "user", content: code }
+    { role: "user", content: code },
   ],
   prediction: {
     type: "content",
-    content: code
-  }
+    content: code,
+  },
 });
 
 // Inspect the response
@@ -121,7 +120,7 @@ Using predictions helps accelerate similar tasks, particularly when refactoring 
 
 ## Reference
 
-- https://aider.chat/HISTORY.html
-- https://qwenlm.github.io/blog/qwen2.5-coder-family/
-- https://www.all-hands.dev/blog/announcing-all-hands-online-beta
-- https://platform.openai.com/docs/guides/predicted-outputs
+- <https://aider.chat/HISTORY.html>
+- <https://qwenlm.github.io/blog/qwen2.5-coder-family/>
+- <https://www.all-hands.dev/blog/announcing-all-hands-online-beta>
+- <https://platform.openai.com/docs/guides/predicted-outputs>

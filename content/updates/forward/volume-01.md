@@ -3,9 +3,9 @@ title: Dwarves Tech Radar Volume 01
 short_title: Tech Radar Volume 01
 date: 2020-08-26
 description: For this edition, the theme is to get the whole team used to the concept of a central knowledge base, every study to expand our view to the tech scene counts. The design team also has a place to contribute and discuss their practices.
-authors: 
+authors:
   - duynglam
-tags: 
+tags:
   - radar
   - forward-engineering
 ---
@@ -76,9 +76,9 @@ Go's native concurrency model allows it to rise in popularity for creating truly
 
 ### Applied Security Aspects in
 
-* SSH
-* SSL
-* Blockchain
+- SSH
+- SSL
+- Blockchain
 
 From the dawn of the network until now, security has always been essential. But as time goes by, security is embedded into frameworks and low-level level layers of the tech stacks. Hence, many developers spend their time messing around with the top-level level layers, confident that the security issues are covered by frameworks & libraries. Security somehow is placed in a black box, and we are gradually getting ignorant about how it works. This explains the underlying security principles of Blockchain and SSL (Secure Sockets Layers), providing the foundation of how to put the security into action.
 

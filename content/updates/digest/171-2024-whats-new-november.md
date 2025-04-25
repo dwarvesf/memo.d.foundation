@@ -1,5 +1,4 @@
 ---
-
 title: "What's New in November 2024"
 date: 2024-12-04
 description: In November, we sharpened our focus with advancements in platform engineering, introduced streamlined service packages, elevated ICY rewards for impactful contributions, and embraced key insights from market shifts, all building momentum as we gear up for our Penang retreat.

@@ -1,8 +1,7 @@
 ---
-
 title: Set up recording workflow for OGIF
 date: 2024-06-15
-description: This memo is essentially a playbook and recipe on how to record the Discord events. 
+description: This memo is essentially a playbook and recipe on how to record the Discord events.
 authors:
   - minhcloud
 tags:

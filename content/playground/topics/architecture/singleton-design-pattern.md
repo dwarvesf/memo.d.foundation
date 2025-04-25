@@ -1,5 +1,4 @@
 ---
-
 title: A tour of Singleton design pattern with Golang
 date: 2024-06-10
 description: Singleton real-world problem, concept, solution, use cases, implementations, pros & cons, references

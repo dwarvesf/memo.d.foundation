@@ -20,7 +20,7 @@ We also have the GitHub version at **[dwarvesf/radar/vol-03](https://github.com/
 
 ### [k6]()
 
-*[https://k6.io/](https://k6.io/)*
+_[https://k6.io/](https://k6.io/)_
 
 ![](assets/dwarves-tech-radar-volume-03_4d92977a7295c51f3e0fdd3d3966aedd_md5.webp)
 
@@ -32,7 +32,7 @@ Since functional testing is still our main work, Quynh Le - our QC Team Lead, de
 
 ### [Testlink]()
 
-*[https://testlink.org/](https://testlink.org/)*
+_[https://testlink.org/](https://testlink.org/)_
 
 After k6, Testlink is the next thing on queue - An open-sourced test management tool that oversees and controls everything in test, test cases, test report, requirement, or test execution. We hosted a radio talk on this, mainly to demo the team on how we set up and apply Testlink into our current testing workflow.
 
@@ -42,7 +42,7 @@ Currently, we're trialing Testlink with BaseHQ and Aharooms. We get to know the 
 
 ### [Preact]()
 
-*[https://preactjs.com/](https://preactjs.com/)*
+_[https://preactjs.com/](https://preactjs.com/)_
 
 A JS library developed on React structure, with the same API, component and virtual DOM integration. Thanks to the light bundle size (3kb), the Preact-based website is faster in rendering and boosting user experience. The next level for React alternative and the smallest library in size so far.
 

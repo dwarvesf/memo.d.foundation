@@ -1,5 +1,4 @@
 ---
-
 title: Reward Model
 date: 2023-06-23
 description: A Reward Model is a critical component in Reinforcement Learning for Large Language Models (LLMs), designed to evaluate and score the quality of generated responses. It plays a key role in aligning LLMs with human values and improving their output through iterative refinement.
@@ -12,7 +11,7 @@ tags:
   - reinforcement-learning
 ---
 
-In [Reinforcement Learning](), we are familiar with the function that computes rewards for an agent's actions in an environment. And these rewards are becoming increasingly complex for different machine learning programs, especially for programs where rewards are hard to define. For large language models, this reward is represented as a scoring system evaluating the model's answer quality, which helps the model generate better responses. The combination of reward models and reinforcement learning has enabled the widespread use of large language models by aligning models with acceptable human values. Reward modeling and RLHF are the most common terms in AI since the release of GPT-3.5.
+In [Reinforcement Learning](reinforcement-learning.md), we are familiar with the function that computes rewards for an agent's actions in an environment. And these rewards are becoming increasingly complex for different machine learning programs, especially for programs where rewards are hard to define. For large language models, this reward is represented as a scoring system evaluating the model's answer quality, which helps the model generate better responses. The combination of reward models and reinforcement learning has enabled the widespread use of large language models by aligning models with acceptable human values. Reward modeling and RLHF are the most common terms in AI since the release of GPT-3.5.
 
 ## Common reward models
 
@@ -80,7 +79,7 @@ However, determining a suitable reward model is not always easy. Sometimes, defi
 
 ## References
 
-- https://huggingface.co/docs/trl/main/en/reward_trainer
-- https://explodinggradients.com/reward-modeling-for-large-language-models-with-code
-- https://huggingface.co/docs/trl/main/en/detoxifying_a_lm
-- https://openai.com/blog/chatgpt
+- <https://huggingface.co/docs/trl/main/en/reward_trainer>
+- <https://explodinggradients.com/reward-modeling-for-large-language-models-with-code>
+- <https://huggingface.co/docs/trl/main/en/detoxifying_a_lm>
+- <https://openai.com/blog/chatgpt>

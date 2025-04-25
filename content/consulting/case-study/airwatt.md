@@ -3,10 +3,10 @@ title: "Creating a smart system to monitor electricity Use"
 short_title: AirWatt
 date: 2020-11-15
 description: "We built AirWatt's system that uses artificial intelligence to track how businesses use electricity, helping them save money and prevent equipment problems."
-authors: 
+authors:
   - tieubao
   - duynglam
-tags: 
+tags:
   - iot
   - case-study
 ---
