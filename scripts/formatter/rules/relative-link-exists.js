@@ -25,9 +25,10 @@ function check(file, content) {
       // If decoding fails, keep original linkPath
     }
 
-    // Ignore links with protocols like http://, https://, mailto:, ftp:, etc.
+    // Ignore links with protocols like http://, https://, mailto:, ftp:, etc. and anchor links starting with #
     if (
       !/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(linkPath) && // no protocol scheme
+      !linkPath.startsWith('#') && // not an anchor link
       !path.isAbsolute(linkPath)
     ) {
       // Resolve the absolute path of the linked file
