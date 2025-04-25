@@ -58,10 +58,23 @@ function yamlValue(val) {
   return JSON.stringify(val);
 }
 
+const FRONTMATTER_ORDER = [
+  'title',
+  'short_title',
+  'description',
+  'date',
+  'authors',
+  '...',
+  'tags',
+];
+
 function buildFrontmatter(data) {
-  // Only these are required
-  const requiredFields = ['title', 'date', 'description'];
+  // FRONTMATTER_ORDER is only for sorting order, not required fields
+  const order = FRONTMATTER_ORDER;
   const fm = {};
+
+  // For required fields, use original logic: title, description, date are required, short_title is optional
+  const requiredFields = ['title', 'description', 'date'];
 
   // Ensure required fields exist, null if missing
   for (const key of requiredFields) {
@@ -108,36 +121,52 @@ function buildFrontmatter(data) {
   }
   if (tags && tags.length === 0) tags = undefined;
 
-  // Collect all original keys in order, except whitelist and tags
+  // Collect all original keys
   const originalKeys = Object.keys(data);
-  const extraKeys = originalKeys.filter(
-    k => !requiredFields.includes(k) && k !== 'authors' && k !== 'tags',
-  );
+
+  // Remove keys that are in FRONTMATTER_ORDER except '...'
+  const keysToExclude = FRONTMATTER_ORDER.filter(k => k !== '...');
+  const extraKeys = originalKeys.filter(k => !keysToExclude.includes(k));
+
+  // Sort extraKeys alphabetically for consistent order
+  extraKeys.sort();
 
   // Build YAML frontmatter string
   let yaml = '---\n';
-  // 1. Whitelist fields
-  for (const key of requiredFields) {
-    yaml += `${key}: ${yamlValue(fm[key])}\n`;
+
+  // 1. Add keys from FRONTMATTER_ORDER except '...'
+  for (const key of FRONTMATTER_ORDER) {
+    if (key === '...') {
+      // Insert extra keys here in sorted order
+      for (const extraKey of extraKeys) {
+        yaml += `${extraKey}: ${yamlValue(data[extraKey])}\n`;
+      }
+    } else if (key === 'authors') {
+      // Add authors if present
+      if (authors) {
+        yaml += 'authors:\n';
+        authors.forEach(a => {
+          yaml += `  - ${a}\n`;
+        });
+      }
+    } else if (key === 'tags') {
+      // Add tags if present
+      if (tags) {
+        yaml += 'tags:\n';
+        tags.forEach(t => {
+          yaml += `  - ${t}\n`;
+        });
+      }
+    } else {
+      // Add required or optional fields if present
+      if (key in fm) {
+        yaml += `${key}: ${yamlValue(fm[key])}\n`;
+      } else if (key in data && key !== 'authors' && key !== 'tags') {
+        yaml += `${key}: ${yamlValue(data[key])}\n`;
+      }
+    }
   }
-  // 2. Authors (if present, keep after whitelist)
-  if (authors) {
-    yaml += 'authors:\n';
-    authors.forEach(a => {
-      yaml += `  - ${a}\n`;
-    });
-  }
-  // 3. Extra fields (in original order, except tags)
-  for (const key of extraKeys) {
-    yaml += `${key}: ${yamlValue(data[key])}\n`;
-  }
-  // 4. Tags always at the bottom
-  if (tags) {
-    yaml += 'tags:\n';
-    tags.forEach(t => {
-      yaml += `  - ${t}\n`;
-    });
-  }
+
   yaml += '---\n';
   return yaml;
 }
