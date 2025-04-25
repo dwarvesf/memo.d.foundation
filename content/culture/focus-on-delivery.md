@@ -31,6 +31,6 @@ Stop overthinking or overreacting to the process.
 
 Ship the right thing to your users.
 
-P.s. If anyone blocks you from delivery, they block your way to success.
+People that block you from delivery, they block your way to success.
 
 ![](assets/focus-on-software-delivery_b34c705f1ff97b2dceb3556cfeecf6a0_md5.webp)
