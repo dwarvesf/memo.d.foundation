@@ -293,7 +293,7 @@ async function generatePinnedNotes(): Promise<void> {
         pinned = true AND
         title IS NOT NULL AND title != ''
       ORDER BY date DESC
-      LIMIT 3; -- Assuming a limit of 3 as in the original function
+      LIMIT 10; -- Assuming a limit of 3 as in the original function
     `;
 
     const reader = await connection.runAndReadAll(query);
