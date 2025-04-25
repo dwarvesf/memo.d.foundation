@@ -2,16 +2,15 @@
  * Usage: node move-notes.js migration-file.json
  * (If using ESM, run: node --experimental-modules move-notes.js migration-file.json)
  */
-import fs from "fs";
-import path from "path";
-import { execSync } from "child_process";
-import { fileURLToPath } from "url";
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 if (process.argv.length < 3) {
-  console.error("Usage: node move-notes.js <migration-file.json>");
+  console.error('Usage: node move-notes.js <migration-file.json>');
   process.exit(1);
 }
 
@@ -25,18 +24,21 @@ if (!fs.existsSync(migrationPath)) {
 
 let migration;
 try {
-  migration = JSON.parse(fs.readFileSync(migrationPath, "utf8"));
+  migration = JSON.parse(fs.readFileSync(migrationPath, 'utf8'));
 } catch (err) {
-  console.error("Failed to parse migration file:", err);
+  console.error('Failed to parse migration file:', err);
   process.exit(1);
 }
 
-const VAULT_ROOT = path.resolve(__dirname, "../.."); // Adjust as needed
+const VAULT_ROOT = process.cwd(); // Use the path where the script is run
 
 function findAssetImages(mdContent, assetFolderName) {
   // Markdown image: ![alt](assets/filename.ext) or ![alt](./assets/filename.ext)
   // Also support images with relative path: ![alt](../assets/filename.ext)
-  const regex = new RegExp(`!\\[[^\\]]*\\]\\((\\.?\\/?${assetFolderName}\\/[^)]+)\\)`, "g");
+  const regex = new RegExp(
+    `!\\[[^\\]]*\\]\\((\\.?\\/?${assetFolderName}\\/[^)]+)\\)`,
+    'g',
+  );
   const images = [];
   let match;
   while ((match = regex.exec(mdContent)) !== null) {
@@ -48,7 +50,7 @@ function findAssetImages(mdContent, assetFolderName) {
 for (const [destDir, files] of Object.entries(migration)) {
   for (const srcRel of files) {
     // Remove leading slash if present
-    const src = srcRel.startsWith("/") ? srcRel.slice(1) : srcRel;
+    const src = srcRel.startsWith('/') ? srcRel.slice(1) : srcRel;
     const srcAbs = path.join(VAULT_ROOT, src);
     const destAbs = path.join(VAULT_ROOT, destDir, path.basename(src));
     const destRel = path.relative(VAULT_ROOT, destAbs);
@@ -60,9 +62,9 @@ for (const [destDir, files] of Object.entries(migration)) {
     }
 
     // Run git mv for the markdown file
+    console.log(`Moving: ${src} -> ${destRel}`);
     try {
-      console.log(`Moving: ${src} -> ${destRel}`);
-      execSync(`git mv "${srcAbs}" "${destAbs}"`, { stdio: "inherit" });
+      fs.renameSync(srcAbs, destAbs);
     } catch (err) {
       console.error(`Failed to move ${src} to ${destRel}:`, err.message);
       continue; // Skip asset move if note move failed
@@ -72,7 +74,7 @@ for (const [destDir, files] of Object.entries(migration)) {
     // Find asset folder for the source and destination
     const srcMdDir = path.dirname(srcAbs);
     const destMdDir = path.dirname(destAbs);
-    const assetFolderName = "assets";
+    const assetFolderName = 'assets';
     const srcAssetDir = path.join(srcMdDir, assetFolderName);
     const parentAssetDir = path.join(path.dirname(srcMdDir), assetFolderName);
     const destAssetDir = path.join(destMdDir, assetFolderName);
@@ -80,9 +82,12 @@ for (const [destDir, files] of Object.entries(migration)) {
     // Read the moved markdown file content (now at destAbs)
     let mdContent;
     try {
-      mdContent = fs.readFileSync(destAbs, "utf8");
+      mdContent = fs.readFileSync(destAbs, 'utf8');
     } catch (err) {
-      console.error(`Failed to read moved markdown file: ${destAbs}`, err.message);
+      console.error(
+        `Failed to read moved markdown file: ${destAbs}`,
+        err.message,
+      );
       continue;
     }
 
@@ -121,16 +126,21 @@ for (const [destDir, files] of Object.entries(migration)) {
       const destImgRel = path.relative(VAULT_ROOT, destImgAbs);
 
       if (!foundIn) {
-        console.error(`Image not found in current or parent assets: ${imgName} (skipped)`);
+        console.error(
+          `Image not found in current or parent assets: ${imgName} (skipped)`,
+        );
         continue;
       }
 
       // Move the image using git mv
       try {
-        execSync(`git mv "${srcImgAbs}" "${destImgAbs}"`, { stdio: "inherit" });
+        fs.renameSync(srcImgAbs, destImgAbs);
         console.log(`Moved image: ${imgName} from ${foundIn} -> ${destImgRel}`);
       } catch (err) {
-        console.error(`Failed to move image ${imgName} to ${destImgRel}:`, err.message);
+        console.error(
+          `Failed to move image ${imgName} to ${destImgRel}:`,
+          err.message,
+        );
       }
     }
   }

@@ -1,0 +1,16 @@
+{
+  "/vault/playground/topics/react": [
+    "/vault/playground/topics/frontend/a-fragment-colocation-pattern-with-react-apollo-graphql.md",
+    "/vault/playground/topics/frontend/build-polymorphic-react-components-with-typescript.md",
+    "/vault/playground/topics/frontend/different-ways-to-test-react-application.md",
+    "/vault/playground/topics/frontend/hoc-renderprops-and-hook-in-reactjs.md",
+    "/vault/playground/topics/frontend/invoking-component-functions-in-react.md",
+    "/vault/playground/topics/frontend/preserving-and-resetting-state-in-react.md",
+    "/vault/playground/topics/frontend/react-fiber.md",
+    "/vault/playground/topics/frontend/react-server-component.md",
+    "/vault/playground/topics/frontend/tackling-server-state-complexity-in-frontend-development.md",
+    "/vault/playground/topics/frontend/useeffect-double-calls-in-react-18.md",
+    "/vault/playground/topics/frontend/when-should-we-use-usereducer-instead-of-usestate.md",
+    "/vault/playground/topics/frontend/why-virtual-dom-is-fast.md"
+  ]
+}
