@@ -275,6 +275,34 @@ function rehypeVideos() {
 }
 
 /**
+ * Custom rehype plugin to add a class to internal links for Next.js router handling
+ */
+function rehypeNextjsLinks() {
+  return (tree: HastRoot) => {
+    visit(tree, 'element', (node: Element) => {
+      if (
+        node.tagName === 'a' &&
+        node.properties &&
+        typeof node.properties.href === 'string'
+      ) {
+        const href = node.properties.href;
+
+        // Check if the link is internal (doesn't start with a protocol or anchor)
+        if (href && !/^(https?:\/\/|mailto:|tel:|#)/i.test(href)) {
+          // Add the 'js-nextjs-link' class
+          const existingClasses = Array.isArray(node.properties.className)
+            ? node.properties.className
+            : typeof node.properties.className === 'string'
+              ? [node.properties.className]
+              : [];
+          node.properties.className = [...existingClasses, 'js-nextjs-link'];
+        }
+      }
+    });
+  };
+}
+
+/**
  * Reads and parses markdown content from a file
  * @param filePath Path to the markdown file
  * @returns Object with frontmatter, processed HTML content, and table of contents
@@ -340,7 +368,7 @@ export async function getMarkdownContent(filePath: string) {
     attributes: {
       // Allow common attributes on all elements
       '*': ['id', 'className', 'style'],
-      a: ['href', 'target', 'rel'],
+      a: ['href', 'target', 'rel', 'className'], // Ensure className is allowed on a tags
       img: ['src', 'alt', 'title'],
       th: ['align', 'scope', 'colspan', 'rowspan'],
       td: ['align', 'colspan', 'rowspan'],
@@ -468,9 +496,10 @@ export async function getMarkdownContent(filePath: string) {
     }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeVideos)
+    .use(rehypeSanitize, schema as never) // Move sanitize BEFORE adding nextjs links
     // .use(rehypeKatex) // Render math blocks
     .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
-    .use(rehypeSanitize, schema as never) // Type cast needed due to rehype-sanitize typing limitations
+    .use(rehypeNextjsLinks) // Add this new plugin here AFTER sanitize
     .use(rehypeTable) // Wrap tables in a container div
     .use(rehypeCodeblock) // Add the custom class plugin here
     .use(rehypeHighlight)

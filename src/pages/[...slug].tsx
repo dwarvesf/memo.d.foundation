@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import fs from 'fs';
 import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
+import { useRouter } from 'next/router'; // Import useRouter
 
 // Import utility functions from lib directory
 import { getAllMarkdownFiles } from '../lib/content/paths';
@@ -335,7 +336,53 @@ export default function ContentPage({
   isListPage,
   childMemos,
 }: ContentPageProps) {
+  const router = useRouter(); // Get the router instance
+  const contentRef = useRef<HTMLDivElement>(null); // Create a ref for the content div
   const { theme, isThemeLoaded } = useThemeContext();
+
+  useEffect(() => {
+    // Function to handle clicks on internal links
+    const handleInternalLinks = (event: MouseEvent) => {
+      // Use closest to find the anchor tag, handling clicks on child elements
+      const targetLink = (event.target as HTMLElement).closest(
+        'a.js-nextjs-link',
+      );
+
+      if (targetLink && targetLink.getAttribute('href')) {
+        const href = targetLink.getAttribute('href')!;
+
+        try {
+          // Resolve the relative URL against the current location to get the full path
+          const resolvedUrl = new URL(href, window.location.href);
+          const targetPath = resolvedUrl.pathname;
+
+          event.preventDefault(); // Prevent default browser navigation
+          router.push(targetPath); // Use Next.js router for navigation with resolved path
+        } catch (error) {
+          console.error('Error resolving URL or pushing to router:', error);
+          // Allow default navigation if an error occurs
+        }
+      }
+    };
+
+    // Add event listener to the content div if found, using the capturing phase
+    const contentElement = contentRef.current;
+    if (contentElement) {
+      contentElement.addEventListener('click', handleInternalLinks, {
+        capture: true,
+      }); // Added { capture: true }
+    }
+
+    // Clean up the event listener
+    return () => {
+      if (contentElement) {
+        // Need to remove with the same options
+        contentElement.removeEventListener('click', handleInternalLinks, {
+          capture: true,
+        }); // Added { capture: true }
+      }
+    };
+  }, [content, router]); // Re-run effect if content or router changes
 
   useEffect(() => {
     // Only run mermaid initialization on the client side for content pages
@@ -385,6 +432,7 @@ export default function ContentPage({
       <div
         className="article-content"
         dangerouslySetInnerHTML={{ __html: content }}
+        ref={contentRef} // Assign the ref here
       />
     );
   }, [content]);
