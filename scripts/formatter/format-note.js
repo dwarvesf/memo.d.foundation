@@ -1,9 +1,11 @@
-// format-frontmatters.js
-// Usage: node format-frontmatters.js <path-to-directory>
+// format-note.js
+// Usage: node format-note.js <path-to-directory>
+// This script formats frontmatter of markdown files and then formats the entire markdown file using Prettier.
 
 import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
+import prettier from 'prettier';
 
 // Helper: Convert string to hyphen-case (kebab-case)
 function toHyphenCase(str) {
@@ -188,7 +190,7 @@ async function findMarkdownFiles(dir) {
 const main = async () => {
   const targetPath = process.argv[2];
   if (!targetPath) {
-    console.error('Usage: node format-frontmatters.js <path-to-directory>');
+    console.error('Usage: node format-note.js <path-to-directory>');
     process.exit(1);
   }
 
@@ -206,12 +208,15 @@ const main = async () => {
 
       // Replace old frontmatter with new
       const body = parsed.content.trimStart();
-      const newContent = `${newFrontmatter}\n${body}\n`;
+      let newContent = `${newFrontmatter}\n${body}\n`;
+
+      // Format entire markdown content with Prettier
+      newContent = await prettier.format(newContent, { parser: 'markdown' });
 
       await fs.writeFile(file, newContent, 'utf8');
-      console.log(`\u2705  ${file}`);
+      console.log(`✅  ${file}`);
     } catch (err) {
-      console.error(`\u274C  ${file}: ${err.message}`);
+      console.error(`❌  ${file}: ${err.message}`);
     }
   }
 };
