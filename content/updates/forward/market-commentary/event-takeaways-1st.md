@@ -15,7 +15,7 @@ tags:
 
 Hey everyone. I went to 2 cool events in Vietnam recently and I’ve got some fun thoughts to share. Tired of boring tech talk? I’ll tell you what I saw and what got me excited or curious. No big words, just my real take. Let me know what you think.
 
-# First Stop: XDC Network to the World, Building Asia's Web3 Ecosystem Roadshow
+## First Stop: XDC Network to the World, Building Asia's Web3 Ecosystem Roadshow
 
 I showed up at this Web3 event hoping for something big. It was pretty quiet though. A few years back Web3 felt wild and free, startups had crazy fun ideas. This time it was more people in suits playing it safe. I thought Web3 was about breaking rules so I wondered: is it changing? Maybe it’s just this event. My friend Terrance said some builders don’t come to these things, they’re out there making stuff on their own. That’s cool to think about. The talks got lively when investors got excited about trading apps the Vietnam government likes.
 
@@ -29,7 +29,7 @@ Here’s why Vietnam’s government wants to help these exchanges grow:
 - Tax Cash: They can grab some tax money from all those crypto trades. With billions flowing, taxing profits means more bucks for stuff like roads and schools.
 - Big League Status: It puts Vietnam on the global crypto map, pulling in big investors and making the country look legit.
 
-# Next Up: What’s Up HCM, Startup Demo Night
+## Next Up: What’s Up HCM, Startup Demo Night
 
 A few days later I hit a startup night in Ho Chi Minh City. Wow what a difference. AI startups showed off some amazing stuff. VCs couldn’t take their eyes off one AI that fixes order mistakes, it’s a big deal for businesses. I think it’s super smart even if it might mean fewer jobs. It’s a win for companies and I can see why they’re excited.
 

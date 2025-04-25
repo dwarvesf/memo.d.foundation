@@ -5,8 +5,6 @@ date: 2022-12-31
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 145 - 2022, A Year Gone By
-
 As 2022 comes to a close, take a moment to look back, reflect, and celebrate all the moments this year that challenged, inspired, and enabled us to grow. So many memorable milestones that we've enjoyed, @peeps
 
 DOTY 2022 and WIN of the Year have officially closed. The results will be announced soon.

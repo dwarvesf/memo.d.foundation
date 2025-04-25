@@ -20,9 +20,9 @@ Market shifts opened new territories, while our core in sharing knowledge and AI
 
 Starting with a handful of tech enthusiasts, our community now spans across different domain. For a tech team like Dwarves, there are only a few things that matter. Let's reflect and reinforce what matters to us.
 
-# Team growth
+## Team growth
 
-## memo.d.foundation: Capturing a year of collective knowledge with 335 entries
+### memo.d.foundation: Capturing a year of collective knowledge with 335 entries
 
 [memo.d.foundation](https://memo.d.foundation/) started as a company wiki and grew into a central hub for documenting what we learn as a team and community. From tech know-how to operational know-how, it's all here. **With 335 entries published this year**, it shows how knowledge sharing has become part of our DNA.
 
@@ -35,7 +35,7 @@ Highlights:
 
 ![](assets/2024-in-review-memo.png)
 
-## OGIF: When learning and sharing became part of our DNA
+### OGIF: When learning and sharing became part of our DNA
 
 Every Friday at 5PM, we gather on Discord to share what we've learned. **37 sessions** this year, each adding something useful to how we think and work.
 
@@ -43,7 +43,7 @@ The idea stays simple: take 10 minutes to teach everyone learn something new. Fr
 
 OGIF showed us who digs deep into problems, who explains clearly, who brings different angles. These talks helped form our labs' team naturally.
 
-## ICY in 2024: A reward system knowledge powers team growth
+### ICY in 2024: A reward system knowledge powers team growth
 
 Launched in September 2022, ICY was used to reward for all members for engaging in discussions, research on Dwarves' tech, and more.
 
@@ -62,7 +62,7 @@ ICY enhancements included moving contracts to Base chain, GitHub account linking
 
 ![](assets/2024-in-review-icy.png)
 
-## Team copilots: AI tools that made workflows faster
+### Team copilots: AI tools that made workflows faster
 
 We didn't just build tools; we shared them. The team copilots index became a collection of practical solutions, built by us, for us, and ready for the team to use.
 
@@ -78,7 +78,7 @@ The focus was never on complexity but on simplicity and utility. Every tool was 
 
 ![](assets/2024-in-review-team-copilot.png)
 
-## Internal tools upgrade: How Fortress, Tono, and Mochi automated operations
+### Internal tools upgrade: How Fortress, Tono, and Mochi automated operations
 
 Our Discord bots got some nice upgrades this year, thanks to @hnh, @tom, and @bienvh putting in the work. Each improvement made day-to-day stuffs easier, from tracking contributions to sharing knowledge.
 
@@ -92,7 +92,7 @@ These updates came from understanding team needs and making them happen. Simple 
 
 ![](assets/2024-in-review-tono.png)
 
-## Weekly Commentary: Turning trends, insights into actionable items
+### Weekly Commentary: Turning trends, insights into actionable items
 
 As a research-focused team, collecting and sharing knowledge became part of our speed. We saw it in our velocity - shipping got smoother when everyone knew more.
 
@@ -109,7 +109,7 @@ Weekly OGIF sessions and memo notes kept the insights flowing. Each series aims 
 
 ![](assets/2024-in-review-commentary.png)
 
-## AI Club: Adapting to change with smarter workflows and practical AI tools
+### AI Club: Adapting to change with smarter workflows and practical AI tools
 
 The **🧙・ai-club** opened its doors this year. It became a hub for exploring AI and Large Language Models (LLMs) while delivering tools that made an impact on daily workflows.
 
@@ -119,7 +119,7 @@ The **🧙・ai-club** opened its doors this year. It became a hub for exploring
 
 The AI-Club showed us what happens when team effort meets focused exploration: smarter tools, better workflows, and new skills to take forward.
 
-## Research topics 2024: Exploring 40 topics on the most promising technologies
+### Research topics 2024: Exploring 40 topics on the most promising technologies
 
 Good tech solves real problems, and that's what drives us. **40 topics stood out,** each selected for its impact and relevance.These topics were pitched, prioritized, and led by the team with input from senior members:
 
@@ -135,7 +135,7 @@ We're happy to have everyone on board and joining hands.
 
 ![](assets/2024-in-review-research-topics.png)
 
-## Connecting our tools: How small improvements made daily work flow
+### Connecting our tools: How small improvements made daily work flow
 
 Making our daily tools talk to each other properly. Notion and Slack integrations wrapped up, Telegram and JIRA next in line. Each connection means less manual work, easier knowledge flow.
 
@@ -145,7 +145,7 @@ We keep improving based on what teams actually need. Check the bounties channel 
 
 ![](assets/2024-in-review-bounties.png)
 
-## Welcoming new members to the team
+### Welcoming new members to the team
 
 This year, we proudly welcomed @minhkek as a permanent addition to our BD team. Minh's ability to bridge our work with business and deliver results made the transition seamless. Many of this year's projects owe their success to his efforts.
 
@@ -153,24 +153,24 @@ We also had @datnguyennnx and @ngocquang join us as interns this summer, showcas
 
 Looking ahead, we've resumed hiring and are excited to welcome more like-minded folks to the team. [Check out hiring](https://memo.d.foundation/careers/hiring//).
 
-# Business growth
+## Business growth
 
 2024 brought shifts worth noting. Markets changed direction, services adapted, and Vietnam's tech scene showed signs of life.
 
-## Market shifts
+### Market shifts
 
-### New partnerships and team growth
+#### New partnerships and team growth
 
 - **Research Lab**: Led by [@thanh](https://memo.d.foundation/contributor/thanh) and [@Tom](https://memo.d.foundation/contributor/tom), we broke new ground in AI with professional collaborations alongside **Ascenda**, **FornaxAI**, and **Plot**.
 - **Web3 and Quant Teams**: Thriving teams delivered impactful results with **Y[Redacted]** and **Hedge**, while laying the foundation for upcoming projects already in the pipeline.
 
-### Navigating a changing landscape in 2024
+#### Navigating a changing landscape in 2024
 
 Tech kept moving in 2024, and the changes caught our attention. New partnerships in AI, blockchain, and fintech brought fresh challenges, pushing us from development work to technical consulting. Engineers stepped up, taking on key roles in project decisions.
 
 May took us to Singapore's Echelon Asia Summit, where [@tieubao](https://memo.d.foundation/contributor/tieubao), [@nikki](https://memo.d.foundation/contributor/nikki), and [@huytq](https://memo.d.foundation/contributor/huytq)  explored Southeast Asia's tech future, uncovering trends in funding, AI, and emerging APAC projects.
 
-### Expanding skills and expertise to meet the demands
+#### Expanding skills and expertise to meet the demands
 
 Generative AI shifted how we talked about projects. Clients looked beyond specialists, wanting people who could mix backend with blockchain, blend full-stack with data skills. Work concentrated on four areas: **Blockchain, Data, Platform Engineering, AI/LLM.**
 
@@ -178,15 +178,15 @@ Our engineering team embraced these shifts naturally, adding new strengths while
 
 ![](assets/2024-in-review-echelon-summit.png)
 
-## Dwarves' services in 2025
+### Dwarves' services in 2025
 
-### Introducing hourly billing: Flexibility for clients, clarity for teams
+#### Introducing hourly billing: Flexibility for clients, clarity for teams
 
 The year brought changes to how we deliver value. We moved to hourly billing - giving clients more flexibility and teams more clarity. Simple idea: fair hours for good work. To understand how this new model benefits both our team and our clients, read the full article [here.](https://memo.d.foundation/playbook/business/pricing-model-bill-by-hours/)
 
 ![](assets/2024-in-review-hourly-billing.png)
 
-### Refining service packages for what clients actually need
+#### Refining service packages for what clients actually need
 
 We're re-centering our focus to meet the moment. AI, blockchain, data - this is where we're investing our time and talent, as we keep pace with client needs and market demands.
 
@@ -196,21 +196,21 @@ We're re-centering our focus to meet the moment. AI, blockchain, data - this is 
 
 Simplifying where it counts, we've delivered faster solutions and brought clarity to every project.
 
-## Vietnam tech ecosystem
+### Vietnam tech ecosystem
 
-### Building a network of trusted partners in Vietnam's tech ecosystem
+#### Building a network of trusted partners in Vietnam's tech ecosystem
 
 Vietnam's tech market is vibrant and growing, attracting startups and investors. Following the forecast, Vietnam's digital economy is projected to reach $43 billion by 2025, fueled by breakthroughs in AI, fintech, and crypto - areas we're eager to shape alongside nearly 100 active investors.
 
 Leading firms like 500 Startups Vietnam, VSV Capital, and VinaCapital Ventures are driving this progress, supporting innovative startups and the broader ecosystem. By connecting key players in the ecosystem, this report aims to establish a network of trusted partners who can collaborate and drive mutual growth.
 
-# Community growth
+## Community growth
 
 Being part of the tech community means stepping up, sharing what you've learned, and helping others grow. At Dwarves network, contributing back is woven into everything we do.
 
 Haven't properly highlighted this yet, but 2024 brought some real bright spots in how we learn together. 37 OGIF sessions, 335 memo entries and a monthly pool of 2500 ICY for learning might just sound like numbers, but each one proved why sharing knowledge makes a difference.
 
-## A community driven by learning and sharing culture
+### A community driven by learning and sharing culture
 
 Through **memo** and **OGIF**, it doesn't just sit on a shelf, they're put to work by anyone who needs them. The monthly rewards made sharing worth everyone's time. Discord saw more tech discussion, memo tackled harder problems, and OGIF sessions dug deeper into tech that mattered. Anyone can earn ICY by participating in community activities.
 
@@ -225,7 +225,7 @@ Big thanks to the contributions from both the team and community that have made 
 
 ![](assets/2024-in-review-learning-culture-2.png)
 
-## Dwarves offline meet-up: Over 50 members came together for networking and OGIF talks
+### Dwarves offline meet-up: Over 50 members came together for networking and OGIF talks
 
 May 31st marked our second Ho Chi Minh City meetup, and it was a night to remember. Over 50 of us gathered to talk tech, connect, and share ideas, good vibes all around.
 
@@ -235,7 +235,7 @@ A huge thank you to our community members: @jack, @tannhatcmcs, and @congiomat�
 
 ![](assets/2024-in-review-offline-meetup.png)
 
-## Dwarves Open Source: Fueling innovation together
+### Dwarves Open Source: Fueling innovation together
 
 We deepened our commitment to open-source, empowering our team and community to build and share tools that address real problems. From practical libraries to AI-driven projects, each contribution brought us closer to collective progress.
 
@@ -251,7 +251,7 @@ Explore what’s live: [Dwarves Open Source on GitHub](https://github.com/dwarve
 
 ![](assets/2024-in-review-open-source.png)
 
-## Engaging with the community: Showing up and sharing back
+### Engaging with the community: Showing up and sharing back
 
 The tech community is active right now, and we’re right in the mix. We’re diving headfirst into events, meetups, and summits to connect with the tech community. That gives us a clearer sense of where we need to grow.
 
@@ -261,9 +261,9 @@ What we’re doing:
 - Bringing knowledge back home - capturing insights from every event through memos, podcasts, and OGIF sessions.
 - Adding to the conversation - taking what we’ve learned and built, and sharing it back with the community.
 
-# Workplace growth
+## Workplace growth
 
-## Return to the office: creating spaces where good work happens
+### Return to the office: creating spaces where good work happens
 
 We focused on making Hado office a productive and flexible space for focused work. Equipped with **Apple Studio Displays, Herman Miller chairs**, high-speed internet, and serene workspaces, it’s designed to help you get into the zone. Meeting rooms and 24/7 access offered flexibility when collaboration or quiet focus was needed.
 
@@ -273,7 +273,7 @@ We added perks like parking, lunch, and dinner subsidies to make the experience 
 
 ![](assets/2024-in-review-hado.png)
 
-## Exclusive Dwarves NFTs: Unique tokens to recognize our team members contributions
+### Exclusive Dwarves NFTs: Unique tokens to recognize our team members contributions
 
 To celebrate our crew, we introduced **Peeps NFT**, an exclusive collection honoring the work and spirit of the Dwarves team. These non-transferable tokens aren’t just collectibles, they grant access to internal communications and earning opportunities, making every role feel even more special.
 
@@ -284,7 +284,7 @@ A token of appreciation for every team member who helps Dwarves thrive.
 
 ![](assets/2024-in-review-NFT.png)
 
-## Summit 2024: Penang adventures that strengthened our team
+### Summit 2024: Penang adventures that strengthened our team
 
 December took us off the grid and into the heart of Penang, giving us a chance to step outside our screens and into shared adventures. The team naturally broke into their own rhythms: street food trails, heritage walks, challenge courses, or simply finding peace by the waves.
 
@@ -294,7 +294,7 @@ Coming back home with stronger bonds, and the confidence that comes from seeing 
 
 ![alt text](assets/2024-in-review-penang.png)
 
-# Onward 2025
+## Onward 2025
 
 Like crafting software, building Dwarves Foundation has been a journey of experimentation. Some things worked, some didn’t, but every year we’ve added something meaningful to the core.
 

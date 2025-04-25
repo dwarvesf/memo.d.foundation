@@ -5,8 +5,6 @@ date: 2023-01-10
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 146 - Congrats DOTY and Win of The Year 2022
-
 Howdy y’all. It's been a long road to get back to a normal routine after the Dwarves’ Year End Party last Friday. We'd like to thank all our @peeps and @newbie who joined us for the night. We had a blast and hope you did too.
 
 DOTY 2022 & WIN OF THE YEAR

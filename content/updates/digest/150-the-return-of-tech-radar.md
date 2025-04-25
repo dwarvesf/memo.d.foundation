@@ -5,8 +5,6 @@ date: 2023-02-20
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 150 - The return of Tech Radar
-
 Hey there @peeps. Did everyone have a retreat weekend? Another highlight of Monday Changelog will reflect on everything we've accomplished just over the week!
 
 Tech Radar

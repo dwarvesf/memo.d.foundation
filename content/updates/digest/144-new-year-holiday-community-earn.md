@@ -5,8 +5,6 @@ date: 2022-12-27
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 144 - New Year Holiday, Community Earn
-
 NEW YEAR HOLIDAY
 Please be aware of our upcoming New Year with details as below:
 ☆ Close date: Saturday 31st December 2022 to Monday, 1st January 2023

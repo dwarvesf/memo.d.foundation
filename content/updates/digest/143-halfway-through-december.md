@@ -5,8 +5,6 @@ date: 2022-12-17
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 143 - Halfway Through December
-
 Hello Folks, Changelog is back after Phu Quoc company trip. @peeps
 
 Dwarves Wrap-Up Survey

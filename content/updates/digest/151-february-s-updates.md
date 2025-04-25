@@ -5,8 +5,6 @@ date: 2023-02-27
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 151 - February’s Updates
-
 How time flies. It's already the end of the month, check out our latest February Changelog for key updates. Let's keep the momentum going, @peeps.
 
 1/ Some mini wins

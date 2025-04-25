@@ -23,6 +23,6 @@ We’re proud to honor these mates for sharing what they grasp. As you learn and
 - March 14 Radio Talk: @lapnn - Monorepo with Turborepo
   Sponsorship for highlight contributions will be sent by the end of each month. And it’s 2 weeks left to see your monthly input. Can’t wait to see more of the likes.
 
-# minigame channel in Discord
+## minigame channel in Discord
 
 We’ve decided mini events should be a thing to have fun in Discord. After Feb 22 (which Thuong has finsihed sent out those stickers to our winners), 8/3 event is a good one to nominate your woman and send them some good care. The event is still open til March 22, join us now at #minigame 🎮

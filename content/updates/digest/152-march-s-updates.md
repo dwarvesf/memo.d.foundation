@@ -5,8 +5,6 @@ date: 2023-03-13
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 152 - March’s Updates:, Public Tech Events and LightningCon 2023 FREE tickets
-
 1/ Exciting client update!
 
 Our partner is fundraising. If everything goes according to plan, they will have more budget to invest in tech. This means we can expect to expand the team and bringing fresh talents.

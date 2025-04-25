@@ -1,8 +1,8 @@
 ---
 title: "#18 - Releases of the Week"
-description: Discover the latest updates from Dwarves including new
+description: Discover the latest updates from Dwarves including new features, team updates, and a new site for coding vibes.
 date: 2020-04-04
-last_edited: "2025-04-07T00:00:00.000Z"
+last_edited: 2025-04-07
 ---
 
 ## Team Jacket Deposit? Done

@@ -5,8 +5,6 @@ date: 2023-01-17
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 147 - Happy Tết Con Mèo
-
 Here's to a brighter and better 2023, @peeps. We're in the heat of Tết Con Mèo, by the way, folks are getting a bit busy ahead before celebrating a New Year's Eve. So let's touch on what we've been up to date.
 
 LUNAR NEW YEAR SCHEDULE
