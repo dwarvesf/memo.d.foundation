@@ -25,6 +25,8 @@ const FRONTMATTER_TITLE_REGEX = /^title:\s*["']?(.+?)["']?\s*$/m;
 const HEADING_REGEX = /^(#{1,6})\s*(.+)$/gm;
 const HIGHLIGHT_REGEX = /\*\*(.+?)\*\*/g;
 const BULLET_DEFINITION_REGEX = /^-\s*([^:\n]+):\s*(.+)$/gm;
+// New regex for markdown links [text](url)
+const MARKDOWN_LINK_REGEX = /\[([^\]]+)\]\([^)]+\)/g;
 
 // Helper to recursively find markdown files in a directory
 async function findMarkdownFiles(dir) {
@@ -52,7 +54,6 @@ async function isMarkdownFile(filePath) {
   }
 }
 
-// Extract items to rename from file content
 function extractItems(content) {
   const items = new Set();
 
@@ -82,20 +83,81 @@ function extractItems(content) {
     items.add(match[1].trim());
   }
 
+  // Extract markdown link texts [text](url)
+  while ((match = MARKDOWN_LINK_REGEX.exec(content)) !== null) {
+    items.add(match[1].trim());
+  }
+
   return Array.from(items);
 }
 
-// Placeholder function to call LLM to convert array of strings to sentence case
-// For now, we simulate by converting first letter uppercase, rest lowercase
-async function convertToSentenceCaseWithLLM(items) {
-  // TODO: Replace this with actual LLM API call
-  return items.map(item => {
-    if (!item) return item;
-    return item.charAt(0).toUpperCase() + item.slice(1).toLowerCase();
+if (typeof fetch === 'undefined') {
+  // For Node.js versions < 18, fetch is not available globally
+  // Use dynamic import of node-fetch only if needed
+  import('node-fetch').then(({ default: fetch }) => {
+    global.fetch = fetch;
   });
 }
 
-// Replace original items with converted items in content
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+const MODEL = 'gpt-4.1-mini';
+
+if (!OPENAI_API_KEY) {
+  console.error(
+    'Error: OPENAI_API_KEY environment variable is not set. Set it in your shell or in a .env file.',
+  );
+  process.exit(1);
+}
+
+// Function to call OpenAI API to convert array of strings to sentence case
+async function convertToSentenceCaseWithLLM(items) {
+  const PROMPT = `
+You are an expert at formatting titles. Given a list of titles (each is a short phrase, not a sentence), convert each to SENTENCE CASE.
+- Only capitalize the first word and proper nouns (like Google, JavaScript, Golang, etc).
+- Do not add punctuation.
+- Return the result as a JSON array of strings, in the same order as input.
+- Do not include any extra text, explanation, or formatting.
+
+Input: ${JSON.stringify(items)}
+Output:
+`;
+
+  const response = await fetch(OPENAI_API_URL, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      messages: [{ role: 'system', content: PROMPT }],
+      max_tokens: 3000,
+      temperature: 0.2,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `OpenAI API error: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  const content = data.choices?.[0]?.message?.content?.trim();
+  if (!content) throw new Error('No output from OpenAI.');
+
+  // Try to parse the JSON array from the response
+  let arr;
+  try {
+    arr = JSON.parse(content);
+    if (!Array.isArray(arr)) throw new Error('Not an array');
+  } catch {
+    throw new Error('Failed to parse OpenAI output as JSON array: ' + content);
+  }
+  return arr;
+}
+
 function replaceItemsInContent(content, originalItems, convertedItems) {
   let newContent = content;
   for (let i = 0; i < originalItems.length; i++) {
@@ -111,6 +173,7 @@ function replaceItemsInContent(content, originalItems, convertedItems) {
     // For headings: replace in heading lines
     // For highlights: replace inside ** **
     // For bullet definitions: replace only the definition part before colon
+    // For markdown links: replace only the text inside square brackets
 
     // We'll do a global replace for all occurrences of the original string,
     // but only when it appears in the contexts we extracted.
@@ -118,7 +181,15 @@ function replaceItemsInContent(content, originalItems, convertedItems) {
     // To be safe, replace all exact matches of original string in the content
     // but only whole word matches to avoid partial replacements.
 
-    // Use a regex with word boundaries
+    // Special handling for markdown links
+    // Replace [original] with [converted] but keep the URL intact
+    const markdownLinkRegex = new RegExp(
+      `\\[${escapedOriginal}\\](\\([^\\)]+\\))`,
+      'g',
+    );
+    newContent = newContent.replace(markdownLinkRegex, `[${converted}]$1`);
+
+    // Use a regex with word boundaries for other replacements
     const regex = new RegExp(`\\b${escapedOriginal}\\b`, 'g');
 
     newContent = newContent.replace(regex, converted);
@@ -142,17 +213,17 @@ async function processFile(filePath) {
     );
     if (newContent !== content) {
       await fs.writeFile(filePath, newContent, 'utf-8');
-      console.log(`Updated file: ${filePath}`);
+      console.log(`✅ Updated file: ${filePath}`);
     } else {
-      console.log(`No changes needed for ${filePath}`);
+      console.log(`👍 No changes needed for ${filePath}`);
     }
   } catch (error) {
-    console.error(`Error processing file ${filePath}:`, error);
+    console.error(`❌ Error processing file ${filePath}:`, error);
   }
 }
 
 async function main() {
-  console.log('Starting sentence case formatting...');
+  console.log('➡️ Starting sentence case formatting...');
 
   // Accept a path argument from command line or default to VAULT_DIR
   const inputPath = process.argv[2]
@@ -171,7 +242,7 @@ async function main() {
   for (const file of files) {
     await processFile(file);
   }
-  console.log('Sentence case formatting completed.');
+  console.log('🔥 Sentence case formatting completed.');
 }
 
 main().catch(err => {
