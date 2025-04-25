@@ -8,7 +8,6 @@ import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
 
-
 const fetch = globalThis.fetch || (await import('node-fetch')).default;
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -16,12 +15,16 @@ const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 const MODEL = 'gpt-4.1-mini';
 
 if (!OPENAI_API_KEY) {
-  console.error('Error: OPEN_AI_KEY environment variable is not set. Set it in your shell or in a .env file.');
+  console.error(
+    'Error: OPEN_AI_KEY environment variable is not set. Set it in your shell or in a .env file.',
+  );
   process.exit(1);
 }
 
 if (process.argv.length < 3) {
-  console.error('Usage: OPEN_AI_KEY=xxx node generate-description.mjs /path/to/dir');
+  console.error(
+    'Usage: OPEN_AI_KEY=xxx node generate-description.mjs /path/to/dir',
+  );
   process.exit(1);
 }
 
@@ -34,9 +37,10 @@ Your input will be the full text of an article.
 
 Your output should be an SEO description meeting the following criteria:
 
-1.  **Conciseness:** The description should be a short paragraph with one or two sentences, each no longer than 30 words. Use one sentence if you can.
+1.  **Conciseness:** The description should be a short paragraph with one sentence, each no longer than 25 words. Use one sentence if you can.
 2.  **Keyword Inclusion:** Identify and incorporate the most relevant keywords from the article that are likely to be used by users searching for this topic.
 3.  **Simple English:** Use clear, easy-to-understand language accessible to a broad audience. Avoid jargon or overly complex sentences.
+4.  **Same voice:** Maintain the same voice and tone as the article. If the article is formal, keep it formal; if it's casual, keep it casual.
 4.  **Compelling:** Write the description in a way that accurately reflects the article's content while also enticing users to click and read more.
 5.  **No extra information:** Do not include any extra information, characters, symbols. Just output the plain text of the description.
 
@@ -61,14 +65,14 @@ async function generateDescription(articleContent) {
   const response = await fetch(OPENAI_API_URL, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${OPENAI_API_KEY}`,
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       model: MODEL,
       messages: [
         { role: 'system', content: PROMPT },
-        { role: 'user', content: articleContent }
+        { role: 'user', content: articleContent },
       ],
       max_tokens: 300,
       temperature: 0.7,
@@ -76,7 +80,9 @@ async function generateDescription(articleContent) {
   });
 
   if (!response.ok) {
-    throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `OpenAI API error: ${response.status} ${response.statusText}`,
+    );
   }
 
   const data = await response.json();
@@ -93,12 +99,19 @@ async function processFile(filePath) {
     const parsed = matter(raw);
 
     let desc = parsed.data?.description;
-    if (desc === undefined || desc === null || (typeof desc === 'string' && desc.trim() === '')) {
+    if (
+      desc === undefined ||
+      desc === null ||
+      (typeof desc === 'string' && desc.trim() === '')
+    ) {
       // Generate description
       const contentForAI = parsed.content;
       const generatedDesc = await generateDescription(contentForAI);
       // Ensure description is a single line
-      parsed.data.description = generatedDesc.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
+      parsed.data.description = generatedDesc
+        .replace(/[\r\n]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
       let newRaw = matter.stringify(parsed.content, parsed.data);
 
       // Force inline description in YAML frontmatter
@@ -113,7 +126,7 @@ async function processFile(filePath) {
             .replace(/\s+/g, ' ')
             .trim();
           return `description: ${desc}${nextFieldOrEnd}`;
-        }
+        },
       );
 
       await fs.writeFile(filePath, newRaw, 'utf8');
@@ -141,7 +154,9 @@ async function main() {
       const result = await processFile(file);
       if (result.updated) updatedCount++;
     }
-    console.log(`\nProcess completed. ${updatedCount} file(s) updated out of ${files.length}.`);
+    console.log(
+      `\nProcess completed. ${updatedCount} file(s) updated out of ${files.length}.`,
+    );
   } catch (err) {
     console.error('Fatal error:', err);
     process.exit(1);
