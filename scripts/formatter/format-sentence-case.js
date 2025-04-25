@@ -23,10 +23,16 @@ const VAULT_DIR = path.resolve(process.cwd(), 'vault');
 // Regex patterns
 const FRONTMATTER_TITLE_REGEX = /^title:\s*["']?(.+?)["']?\s*$/m;
 const HEADING_REGEX = /^(#{1,6})\s*(.+)$/gm;
+<<<<<<< HEAD
 const HIGHLIGHT_REGEX = /\*\*(.+?)\*\*/g;
 const BULLET_DEFINITION_REGEX = /^-\s*([^:\n]+):\s*(.+)$/gm;
 // New regex for markdown links [text](url)
 const MARKDOWN_LINK_REGEX = /\[([^\]]+)\]\([^)]+\)/g;
+=======
+const BULLET_DEFINITION_REGEX = /^\s*(?:[-*]|\d+\.)\s+\*\*(.+?)\*\*:/gm;
+// New regex for markdown links [text](url)
+const MARKDOWN_LINK_REGEX = /^-\s+\[([^\]]+)\]\([^)]+\)/gm;
+>>>>>>> 836e7050d5 (chore: add script to format sentence case)
 
 // Helper to recursively find markdown files in a directory
 async function findMarkdownFiles(dir) {
@@ -55,10 +61,15 @@ async function isMarkdownFile(filePath) {
 }
 
 function extractItems(content) {
+  // Remove code blocks to avoid matching inside them
+  const contentWithoutCodeBlocks = content.replace(/```[\s\S]*?```/g, '');
+
   const items = new Set();
 
   // Extract frontmatter title
-  const frontmatterMatch = content.match(/^---\n([\s\S]+?)\n---/);
+  const frontmatterMatch = contentWithoutCodeBlocks.match(
+    /^---\n([\s\S]+?)\n---/,
+  );
   if (frontmatterMatch) {
     const frontmatter = frontmatterMatch[1];
     const titleMatch = frontmatter.match(FRONTMATTER_TITLE_REGEX);
@@ -69,17 +80,21 @@ function extractItems(content) {
 
   // Extract headings
   let match;
-  while ((match = HEADING_REGEX.exec(content)) !== null) {
+  while ((match = HEADING_REGEX.exec(contentWithoutCodeBlocks)) !== null) {
     items.add(match[2].trim());
   }
 
-  // Extract highlights **word**
-  while ((match = HIGHLIGHT_REGEX.exec(content)) !== null) {
+  // Extract bullet point definitions "- hello world: message"
+  while (
+    (match = BULLET_DEFINITION_REGEX.exec(contentWithoutCodeBlocks)) !== null
+  ) {
     items.add(match[1].trim());
   }
 
-  // Extract bullet point definitions "- hello world: message"
-  while ((match = BULLET_DEFINITION_REGEX.exec(content)) !== null) {
+  // Extract markdown link texts [text](url)
+  while (
+    (match = MARKDOWN_LINK_REGEX.exec(contentWithoutCodeBlocks)) !== null
+  ) {
     items.add(match[1].trim());
   }
 
@@ -113,11 +128,12 @@ if (!OPENAI_API_KEY) {
 // Function to call OpenAI API to convert array of strings to sentence case
 async function convertToSentenceCaseWithLLM(items) {
   const PROMPT = `
-You are an expert at formatting titles. Given a list of titles (each is a short phrase, not a sentence), convert each to SENTENCE CASE.
-- Only capitalize the first word and proper nouns (like Google, JavaScript, Golang, etc).
-- Do not add punctuation.
+You are an expert at formatting titles. Given a list of titles (each is a short phrase, not a sentence):
+- Convert each to SENTENCE CASE
+- Keep the proper nouns, acronyms and short forms as standard (like Google, JavaScript, Golang, HOC etc).
+- DO NOT remove any words, characters (e.g do not remove colon in "TL;DR: Speedrunning MCP auth with SSE transport") or add any extra text, explanation, or formatting
+- DO NOT add punctuation.
 - Return the result as a JSON array of strings, in the same order as input.
-- Do not include any extra text, explanation, or formatting.
 
 Input: ${JSON.stringify(items)}
 Output:
