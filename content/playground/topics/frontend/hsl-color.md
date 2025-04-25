@@ -3,7 +3,7 @@ title: HSL Color
 date: 2022-09-02
 description: HSL is the answer to resolving all of the painful points of Hexadecimal color codes.
 authors:
-  - trankhacvy
+  - khacvy
 github_id: trankhacvy
 tags:
   - frontend

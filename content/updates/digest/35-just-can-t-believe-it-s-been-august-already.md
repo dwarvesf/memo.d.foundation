@@ -1,8 +1,8 @@
 ---
 title: "#35 - Just can’t believe it’s been August already"
 date: 2020-08-01
-description: null
-last_edited: 2025-04-07
+description: Stay updated on Covid impacts, company innovation, new tech topics like SwiftUI and security, Readify app progress, and welcome our first Canada internship batch.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Yep, Covid has back in the area. Needless to say, wfh is recommended. Again.

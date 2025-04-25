@@ -1,8 +1,8 @@
 ---
 title: "#126 - Latest in June"
 date: 2022-06-24
-description: null
-last_edited: 2025-04-07
+description: Learn about the upcoming annual performance review process, brain contributor updates, apprenticeship workshops, and the new Engage to Earn bot for team rewards and growth.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Performance Review Announcement

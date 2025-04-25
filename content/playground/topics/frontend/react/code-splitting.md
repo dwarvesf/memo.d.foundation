@@ -3,7 +3,7 @@ title: Code splitting in React
 date: 2024-10-29
 description: Optimize JavaScript performance with code splitting techniques like route-based splitting, lazy loading, and dynamic imports
 authors:
-  - zlatanpham
+  - thanh
 short_title: Code splitting
 tags:
   - react

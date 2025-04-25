@@ -1,8 +1,8 @@
 ---
 title: "#48 - Sep-Oct Cycle Updates"
 date: 2020-10-31
-description: null
-last_edited: 2025-04-07
+description: Discover the latest Sep-Oct 2020 updates on community work, product completion, tech practice, and upcoming training courses from our team retreat at Bia Craft.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Sep-Oct Cycle Updates

@@ -3,7 +3,7 @@ title: "Ditch the Containers: Go Containerless with Devbox"
 date: 2024-08-01
 description: "Build a lean, mean Golang backend without the container bloat. Here's how."
 authors:
-  - baenv
+  - bievh
 tags:
   - devbox
 ---

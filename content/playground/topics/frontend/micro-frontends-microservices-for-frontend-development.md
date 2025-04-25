@@ -3,7 +3,7 @@ title: Micro Frontends Microservices For Frontend Development
 date: 2021-07-09
 description: Micro Frontends is an architectural style where independently deliverable frontend applications are composed into a greater whole.
 authors:
-  - zlatanpham
+  - thanh
 tags:
   - micro-frontend
 ---

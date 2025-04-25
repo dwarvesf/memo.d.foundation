@@ -3,7 +3,7 @@ title: "Devbox in Production: Our Success Story"
 date: 2024-08-09
 description: How we transformed our development and deployment process with Devbox.
 authors:
-  - baenv
+  - bievh
 tags:
   - devbox
   - nix

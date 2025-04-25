@@ -1,8 +1,8 @@
 ---
 title: "#61 - Lunar New Year Gift"
 date: 2021-01-30
-description: null
-last_edited: 2025-04-07
+description: Get ready for Lunar New Year gifts, visit the new HaDo office, say farewell to Nghia Pham, and follow the Facebook vs Apple legal battle over data privacy.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ✔️

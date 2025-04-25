@@ -1,8 +1,8 @@
 ---
 title: "#73 - Changelog for March and April"
 date: 2021-05-01
-description: null
-last_edited: 2025-04-07
+description: Discover the latest team updates, CSS tips, and insights on combining Golang and Elixir for better web development in our Mar/Apr changelog.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Mar/Apr Changelog

@@ -3,7 +3,7 @@ title: Rendering strategies in React
 date: 2024-10-29
 description: React rendering strategies with in-depth coverage of client-side rendering (CSR), server-side rendering (SSR), and static site generation (SSG).
 authors:
-  - zlatanpham
+  - thanh
 short_title: Rendering strategies
 tags:
   - react

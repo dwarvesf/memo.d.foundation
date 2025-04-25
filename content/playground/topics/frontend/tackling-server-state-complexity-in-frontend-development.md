@@ -3,7 +3,7 @@ title: Tackling Server State complexity in Frontend Development
 date: 2023-03-11
 description: Frontend development has become increasingly complex over the years, and with it, the need for efficient state management.
 authors:
-  - zlatanpham
+  - thanh
 github_id: zlatanpham
 tags:
   - frontend

@@ -3,7 +3,7 @@ title: How to deal with technical debt in Scrum
 date: 2022-12-13
 description: How to deal with Technical debt in Scrum
 authors:
-  - huytieu
+  - 0xLight
 discord_id: "0xLight#0002"
 tags:
   - scrum

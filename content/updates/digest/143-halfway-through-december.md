@@ -1,8 +1,8 @@
 ---
 title: "#143 - Halfway Through December"
 date: 2022-12-17
-description: null
-last_edited: 2025-04-07
+description: Join our December updates featuring a company trip, coding security event, $ICY launch, team highlights, and plans for an exciting year-end party.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 # 143 - Halfway Through December
@@ -25,7 +25,7 @@ Engage to Earn
 • $ICY Official Launch: https://bit.ly/3uTW7l1. Let’s learn, share, adopt and get some $ICY y’all.
 
 Members Highlights
-• Congrats to @hieuvd#4261 and @hienld#3856 for joining the Neutronpay team. Last week, Neutronpay team also had a warm dinner with @trkhoi#2166 and @khanglna#0521.
+• Congrats to @hieuvd#4261 and @hienld#3856 for joining the new team. Last week, the team also had a warm dinner with @trkhoi#2166 and @khanglna#0521.
 • Thanks to @Chàng Trai Lực Lưỡng#7598, we got a nice template for Dwarves Social Media. It looks cool tho.
 
 Are you ready for the Year-end party? The ops team is working on everything behind the scenes. You definitely can look forward to ending this year with a blast.

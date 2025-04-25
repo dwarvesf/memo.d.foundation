@@ -1,8 +1,8 @@
 ---
 title: "#05 - Last Engineering Meeting of The Year!"
 date: 2019-12-28
-description: null
-last_edited: 2025-04-07
+description: "Discover the latest engineering meeting highlights, team updates, jacket design sneak peek, and plans for The Dwarves' 5th anniversary retreat and awards."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ## Last Engineering Meeting of The Year

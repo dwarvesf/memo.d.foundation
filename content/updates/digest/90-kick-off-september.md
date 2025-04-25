@@ -1,8 +1,8 @@
 ---
 title: "#90 - Kick-off September"
 date: 2021-09-04
-description: null
-last_edited: 2025-04-07
+description: "Catch up on team progress, performance reviews, and plans for growth with updates on Brainery contributors and August achievements in this week's team newsletter."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Hi folks, just wanna welcome y'all back from the Holiday, though the lockdown makes it no difference from typical days. Those discord channels are still pumped with active messages. 🥲

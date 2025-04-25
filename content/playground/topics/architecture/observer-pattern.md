@@ -3,7 +3,7 @@ title: Introduce the Observer pattern and its use cases
 date: 2024-07-12
 description: Concept of the Observer Pattern with its pros and cons.
 authors:
-  - leduyhien152
+  - hienld
 tags:
   - design-pattern
   - gang-of-four

@@ -1,8 +1,8 @@
 ---
 title: 000 RFC template
 date: 2025-04-03
-description:
-authors:
+description: 
+authors: 
   - tieubao
 tags:
   - earn
@@ -11,7 +11,7 @@ tags:
 
 # RFC: [Title]
 
-- **authors:** [Your Name]
+- **Author:** [Your Name]
 - **Date:** [YYYY-MM-DD]
 - **Status:** Draft | In Review | Approved | Rejected | Implemented
 

@@ -3,7 +3,7 @@ title: Our View On Fullstack Engineering
 date: 2023-08-30
 description: Discover what full-stack engineering truly means, exploring how skilled developers blend frontend, backend, and infrastructure knowledge to create seamless, user-focused software solutions.
 authors:
-  - zlatanpham
+  - Thanh Pham
 tags:
   - engineering
   - dwarves

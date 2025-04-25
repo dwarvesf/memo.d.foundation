@@ -1,8 +1,8 @@
 ---
 title: "#145 - 2022, A Year Gone By"
 date: 2022-12-31
-description: null
-last_edited: 2025-04-07
+description: "Reflect on 2022's milestones, team updates, and upcoming events as we celebrate growth, welcome new members, and prepare for the New Year holiday and all-hands meeting."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 # 145 - 2022, A Year Gone By
@@ -20,11 +20,3 @@ LEARN IN PUBLIC
 Wrap up this year, with many untold stories in our learning journeys. Give a big thank you to @monotykamary#6285 for loading and managing all the brainery notes and contributions throughout the year.
 
 Visit December's latest notes: <https://brain.d.foundation/Latest+Notes>
-
-TEAM UPDATE
-
-- @hienld#3856, @hieuvd#4261 have joined Neutronpay team. A perfect lineup that makes the game strong. Welcome onboard and keep up the good work, mate.
-- @taipn#6071 has offboarded Droppii team, we cannot thank you for you being hard work. You did great a job, buddy.
-  Thank everyone for such a rewarding year. All the best from Dwarves. ＼ (＾ ∀ ＾) メ (＾ ∀ ＾) ノ
-
-![](assets/notion-image-1744007336349-8znqu.webp)

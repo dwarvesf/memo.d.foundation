@@ -1,8 +1,8 @@
 ---
 title: "#84 - What's your MBTI?"
 date: 2021-07-24
-description: null
-last_edited: 2025-04-07
+description: "Discover your team's MBTI results, explore the new Notion migration for memos and project updates, and join AMA office hours for all your product questions."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### What's your MBTI?

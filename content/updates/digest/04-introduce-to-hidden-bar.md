@@ -1,8 +1,8 @@
 ---
 title: "#04 - Introduce to Hidden Bar"
 date: 2019-12-21
-description: null
-last_edited: 2025-04-07
+description: Hidden Bar is a MacOS app that hides unwanted menu bar items for a clean, minimal desktop, praised by LifeHacker and HackerNews.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Hidden Bar

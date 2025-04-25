@@ -1,8 +1,8 @@
 ---
 title: "#111 - On the move of Hiring "
 date: 2022-02-18
-description: null
-last_edited: 2025-04-07
+description: Get updates on salary adjustments, new apprenticeship and tech events, team growth, and a backend engineering talk for the NFT marketplace at Dwarves.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Performance Review was wrapped. We're working on the next exciting part, salary adjustment. Those confirmation emails will reach your inbox soon. Apart from this, a side note on your progress will also be attached. It's nice to see both team and individual improvement.

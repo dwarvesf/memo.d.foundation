@@ -1,8 +1,8 @@
 ---
 title: "#85 - July's Updates"
 date: 2021-07-31
-description: null
-last_edited: 2025-04-07
+description: July updates include the start of annual performance reviews, upgraded paid-leave process, new case studies uploaded, and real-time leave requests via Notion portal.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### July's Updates

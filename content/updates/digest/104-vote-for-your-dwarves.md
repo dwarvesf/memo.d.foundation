@@ -1,8 +1,8 @@
 ---
 title: "#104 - Vote for your Dwarves"
 date: 2021-12-18
-description: null
-last_edited: 2025-04-07
+description: "Get the latest updates on Dwarves' New Year holiday schedule, voting for Dwarves of The Year 2021, office returns, and Da Lat design plans."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 It’s 2 weeks early, but we’ve sent out the New Year Holiday Announcement for our clients. The Dwarves will officially take days off from 1/1/2022 till 3/1/2022. We’ll resume work on Tuesday, 4/1/2022.

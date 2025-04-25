@@ -1,8 +1,8 @@
 ---
 title: "#114 - Growing the Brainery"
 date: 2022-03-21
-description: null
-last_edited: 2025-04-07
+description: Discover March Brainery updates, DF Apprenticeship 2022 registration, Women’s Day voting, and new merchandise ideas to support learning and community engagement.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Succeeding the previous notes, let’s have a look at two new inputs for March Brainery

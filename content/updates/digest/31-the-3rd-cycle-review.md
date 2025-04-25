@@ -1,8 +1,8 @@
 ---
 title: "#31 - The 3rd Cycle Review 📍"
 date: 2020-07-04
-description: null
-last_edited: 2025-04-07
+description: Celebrate the end of the 3rd cycle with highlights on the Cryptosy app update, team achievements, and a fun dinner gathering with food and drinks.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 We’ve just had a small party to recap the 3rd cycle of 2020. Hope you enjoyed the treat. For those who didn’t make it, we hope to see you next time 👋

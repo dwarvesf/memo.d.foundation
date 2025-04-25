@@ -519,6 +519,12 @@
       "path": "/culture/are-you-helping"
     }
   ],
+  "playground/notes/misc/how-to-recap-a-publication": [
+    {
+      "title": "Life cycle of a publication",
+      "path": "/playground/notes/misc/lifecycle-of-a-publication"
+    }
+  ],
   "playground/topics/llm/llm-as-a-judge": [
     {
       "title": "Evaluation guidelines for LLM applications",
@@ -822,6 +828,12 @@
     }
   ],
   "playground/topics/design/getting-started-with-webflow": [
+    {
+      "title": "§ Design",
+      "path": "/playground/topics/design/design"
+    }
+  ],
+  "playground/topics/design/writing-content-for-multimedia-guidelines": [
     {
       "title": "§ Design",
       "path": "/playground/topics/design/design"
@@ -1799,6 +1811,24 @@
     {
       "title": "§ Solana",
       "path": "/playground/topics/solana/solana"
+    }
+  ],
+  "playground/topics/qa/boundary-and-equivalence-partitioning-testing": [
+    {
+      "title": "§ QA",
+      "path": "/playground/topics/qa/qa"
+    }
+  ],
+  "playground/topics/qa/qc-onboarding": [
+    {
+      "title": "§ QA",
+      "path": "/playground/topics/qa/qa"
+    }
+  ],
+  "playground/topics/qa/test-cases-breakdown-structure": [
+    {
+      "title": "§ QA",
+      "path": "/playground/topics/qa/qa"
     }
   ],
   "playground/topics/devbox/research/pinning-nixpkgs": [

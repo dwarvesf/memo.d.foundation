@@ -1,8 +1,8 @@
 ---
 title: January All-hands Meeting
 date: 2022-01-24
-description: null
-last_edited: 2025-04-07
+description: Discover the latest team updates on performance reviews, blockchain projects, profit-sharing, flight ticket policies, and upcoming team events for 2022.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Performance Review

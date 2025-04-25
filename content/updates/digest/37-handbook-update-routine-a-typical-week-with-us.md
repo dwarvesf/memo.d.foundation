@@ -1,8 +1,8 @@
 ---
 title: "#37 - Handbook update: Routine/ A typical week with us"
 date: 2020-08-15
-description: null
-last_edited: 2025-04-07
+description: Learn about our team’s typical weekly routine and explore our Covid Support program offering affordable tech services to help SMEs and startups thrive remotely.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Handbook update: Routine

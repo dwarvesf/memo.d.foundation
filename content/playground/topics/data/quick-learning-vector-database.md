@@ -3,7 +3,7 @@ title: Quick Learning Vector Database
 date: 2024-03-15
 description: The motivation of this thoughts that trying to discover the LLMs and Generative AI...
 authors:
-  - longbuivan
+  - longddl
 github_id: longbuivan
 icy: 10
 discord_id: 1157659003527106600

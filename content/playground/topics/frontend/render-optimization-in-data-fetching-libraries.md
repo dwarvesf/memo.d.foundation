@@ -3,7 +3,7 @@ title: Render optimization in data-fetching libraries
 date: 2023-06-08
 description: Data-fetching libraries are software tools or frameworks that can help improve the performance and scalability of your application by handling network requests and data processing more efficiently.
 authors:
-  - tienan92it
+  - cor3.co
 github_id: tienan92it
 tags:
   - engineering

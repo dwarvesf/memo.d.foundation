@@ -1,8 +1,8 @@
 ---
 title: "#153 - April’s Updates"
 date: 2023-05-10
-description: null
-last_edited: 2025-04-07
+description: Discover how AI tools and LLMs boost developer productivity with demos, Golang tips, project highlights, and upcoming tech events in this Dwarves community update.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 [Community Changelog #153] - LLM & Demos, Golang 102, Delivery Leaderboard, Tech Event #8

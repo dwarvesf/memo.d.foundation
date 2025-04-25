@@ -1,8 +1,8 @@
 ---
 title: "#137 - This Week’s Highlight"
 date: 2022-09-15
-description: null
-last_edited: 2025-04-07
+description: Discover how Hidden Bar became a top Mac menu bar app and explore updates from apprentices and contributors growing the Dwarves Brainery community.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Featuring Hidden Bar in your Mac

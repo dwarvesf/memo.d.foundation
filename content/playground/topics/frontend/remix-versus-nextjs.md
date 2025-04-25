@@ -3,7 +3,7 @@ title: Remix Versus Nextjs
 date: 2022-05-27
 description: A brief comparison between Remix and Next.js frameworks
 authors:
-  - trankhacvy
+  - khacvy
 tags:
   - engineering
   - frontend

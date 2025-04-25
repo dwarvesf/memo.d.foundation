@@ -1,8 +1,8 @@
 ---
 title: "#128 - Kick-off July"
 date: 2022-07-08
-description: null
-last_edited: 2025-04-07
+description: Join the Dwarves team exploring ViteJS, Web3, and DeFi, catch Tom’s Google I/O talk on Kubernetes, and learn about performance reviews and referral bonuses.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### More Dwarves join the brain team

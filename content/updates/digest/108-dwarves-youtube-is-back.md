@@ -1,8 +1,8 @@
 ---
 title: "#108 - Dwarves Youtube is back"
 date: 2022-01-21
-description: null
-last_edited: 2025-04-07
+description: Get updates on our Lunar New Year gift set delivery, new team members, recruitment, and explore our revamped Dwarves YouTube channel for knowledge training.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Lunar New Year Gift set will reach you soon in the next few days. Pls help to notice your phone calls. We hope you enjoy the combo ♡ If so, let’s drop the pic in #company-hall.

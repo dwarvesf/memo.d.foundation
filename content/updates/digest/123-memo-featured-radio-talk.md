@@ -1,8 +1,8 @@
 ---
 title: "#123 - Memo featured Radio Talk"
 date: 2022-06-06
-description: null
-last_edited: 2025-04-07
+description: Stay updated with upcoming DevOps, blockchain, and software testing workshops, plus weekly tech talks on React 18 and Remix vs Next.js at Dwarves.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Apprenticeship Updates

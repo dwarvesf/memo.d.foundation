@@ -1,8 +1,8 @@
 ---
 title: "#107 - Lunar New Year Holiday Schedule"
 date: 2022-01-08
-description: null
-last_edited: 2025-04-07
+description: "Review our 2021 achievements, learn about our Lunar New Year holiday schedule, and catch the Software Modeling study group's design system presentation for a streaming startup."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Last All-hands meeting has closed our 2021. Check out this 2021: Dwarves in Review.

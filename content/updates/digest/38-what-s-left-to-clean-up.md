@@ -1,8 +1,8 @@
 ---
 title: "#38 - What’s left to clean up"
 date: 2020-08-22
-description: null
-last_edited: 2025-04-07
+description: Prepare for the upcoming cycle review by wrapping up your work and submit your Mid-Autumn Festival gift delivery address by August 31 for doorstep delivery.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Cycle Wrap-up

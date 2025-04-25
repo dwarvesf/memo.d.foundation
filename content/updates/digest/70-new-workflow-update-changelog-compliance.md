@@ -1,8 +1,8 @@
 ---
 title: "#70 - New workflow update : Changelog & Compliance"
 date: 2021-04-10
-description: null
-last_edited: 2025-04-07
+description: Learn about our new apprenticeship program, project workflow improvements, quality control updates, and the latest tech news including Kotlin Multiplatform and data breach insights.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Apprenticeship Update

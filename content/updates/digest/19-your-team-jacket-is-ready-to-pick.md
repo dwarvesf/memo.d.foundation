@@ -1,8 +1,8 @@
 ---
 title: "#19 - Your Team Jacket is ready to pick"
 date: 2020-04-11
-description: null
-last_edited: 2025-04-07
+description: Get the latest updates on your team jacket pickup, newbie orientation slides, chill music playlists, and an insightful interview with Backend Engineer Huy N. at Dwarves Foundation.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ## Your Team Jacket is ready to pick

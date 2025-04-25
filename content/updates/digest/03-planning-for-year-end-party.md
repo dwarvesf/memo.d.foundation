@@ -1,8 +1,8 @@
 ---
 title: "#03 - Planning for Year-End Party"
 date: 2019-12-14
-description: null
-last_edited: 2025-04-07
+description: Stay updated on Dwarves Foundation’s year-end party, apprenticeship program, insurance policies, tech workshops, and ongoing training classes to boost team skills and benefits.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Company Updates

@@ -1,8 +1,8 @@
 ---
 title: "#71 - Holiday Day-off and the rollout of Obvs"
 date: 2021-04-17
-description: null
-last_edited: 2025-04-07
+description: Stay updated with team progress, apprenticeship growth, Testlink QC tools, upcoming holidays, the new Obvs newsletter, Microsoft-Nuance AI healthcare acquisition, and GitHub Actions benefits.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Biz Update

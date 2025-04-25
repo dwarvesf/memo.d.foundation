@@ -1,8 +1,8 @@
 ---
 title: "#133 - Halfway through August"
 date: 2022-08-14
-description: null
-last_edited: 2025-04-07
+description: Discover our new Marketing executive, upcoming T-shirt batch with size chart, and Mid-Autumn Festival mooncake gift delivery updates for seamless shopping and celebration.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 New Dwarves in town

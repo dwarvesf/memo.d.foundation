@@ -1,8 +1,8 @@
 ---
 title: "#87 - You got vaccinate yet?"
 date: 2021-08-14
-description: null
-last_edited: 2025-04-07
+description: "Discover how the V-model approach improves automation testing workflows and team collaboration in Turing Alley's Arrow Project with new members and latest updates."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### V-model approach for project

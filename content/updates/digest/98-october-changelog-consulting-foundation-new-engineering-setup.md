@@ -1,8 +1,8 @@
 ---
 title: "#98 - October Changelog: Consulting, Foundation & New Engineering Setup"
 date: 2021-10-31
-description: null
-last_edited: 2025-04-07
+description: Discover how our tech consulting, team scaling, and community efforts are driving growth with new projects, enhanced management, and expanded engineering teams.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Greetings from Ops, I know it's a bit late, but I promise to keep this short and to the point - like our latest All-hands 🌿

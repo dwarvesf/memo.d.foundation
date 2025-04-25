@@ -3,7 +3,7 @@ title: Use cases for LLM applications
 date: 2024-10-04
 description: Explore the diverse applications of large language models (LLMs) and AI in both enterprise and consumer sectors. Learn about key use cases across data analysis, content creation, healthcare, education, and more.
 authors:
-  - zlatanpham
+  - thanh
 tags:
   - llm
   - ai

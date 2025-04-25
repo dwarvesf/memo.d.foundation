@@ -3,7 +3,7 @@ title: Developing rapidly with Generative AI
 date: 2024-05-02
 description: Generative AI overview and the different stages of building an LLM-powered feature
 authors:
-  - tienan92it
+  - antran
 tags:
   - llm
   - ai

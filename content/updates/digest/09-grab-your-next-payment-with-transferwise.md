@@ -1,8 +1,8 @@
 ---
 title: "#09 - Grab your next payment with TransferWise"
 date: 2020-02-01
-description: null
-last_edited: 2025-04-07
+description: Learn how to register a TransferWise account for secure monthly payments and get updates on remote work, English courses, and Tech Radar progress in the team.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ## Grab your next payment with TransferWise

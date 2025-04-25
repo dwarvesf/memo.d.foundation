@@ -1,8 +1,8 @@
 ---
 title: "#22 - We created some cool stuffs"
 date: 2020-05-02
-description: null
-last_edited: 2025-04-07
+description: Discover new remote work tips, daily English learning, unique team traditions, and monthly movie picks in our latest update for a fun and productive holiday season.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 As I remember, this time last year, we worked through the Holiday, which took place on a Tuesday. Back then, the BOD decided to let us take our real days off from May 2nd to May 5th. Brilliant idea, but we barely had any buddy to join us since we were the only firm who went for that choice. Maybe this year will be better, tho. How's your holiday so far?

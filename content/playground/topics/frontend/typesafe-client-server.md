@@ -3,7 +3,7 @@ title: Typesafe Client Server
 date: 2023-12-06
 description: A code generation layer that bridges the gap between frontend and backend more effectively.
 authors:
-  - tienan92it
+  - antran
 github_id: tienan92it
 icy: 10
 tags:

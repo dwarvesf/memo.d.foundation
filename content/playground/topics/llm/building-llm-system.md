@@ -3,7 +3,7 @@ title: § Building LLM system
 date: 2024-09-11
 description: This map of content (MoC) outlines the critical components required to design and build a large language model (LLM) system, focusing on architecture, model customization, safeguarding, performance evaluation, and more.
 authors:
-  - zlatanpham
+  - thanh
 tags:
   - moc
   - llm

@@ -1,8 +1,8 @@
 ---
 title: "#07 - The Dwarves Turns 5 🎂"
 date: 2020-01-11
-description: null
-last_edited: 2025-04-07
+description: Celebrate the 5th anniversary of Dwarves Foundation with team retreats, new benefits, Engineering discussions, a Hall of Fame website, and exciting new hires.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ## The Dwarves Turns 5 🎂

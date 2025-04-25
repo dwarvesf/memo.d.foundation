@@ -4,11 +4,11 @@ date: 2024-07-10
 description: Introducing the OGIF Memo Summarizer, a chatbot we developed using Dify in collaboration with @innno_. This tool transcribes YouTube videos and extracts key points from our Oh God It’s Friday (OGIF) sessions. By providing both short and detailed summaries in English and Vietnamese, it significantly enhances our ability to review and reference the diverse knowledge shared every Friday.
 authors:
   - monotykamary
-  - innnotruong
+  - innno_
 tags:
   - ai
   - ogif
-  - guide
+  - guidelines
 ---
 
 ### What’s OGIF?

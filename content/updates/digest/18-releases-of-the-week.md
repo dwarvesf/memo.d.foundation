@@ -1,8 +1,8 @@
 ---
 title: "#18 - Releases of the Week"
 date: 2020-04-04
-description: null
-last_edited: 2025-04-07
+description: Discover the latest updates from Dwarves including new
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ## Team Jacket Deposit? Done

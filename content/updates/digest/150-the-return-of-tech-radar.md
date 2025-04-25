@@ -1,8 +1,8 @@
 ---
 title: "#150 - The Return of Tech Radar"
 date: 2023-02-20
-description: null
-last_edited: 2025-04-07
+description: Discover the latest Tech Radar updates on Elixir, AI, testing, and automation shaping Dwarves’ tech stack, plus team news and upcoming meetings.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 # 150 - The return of Tech Radar

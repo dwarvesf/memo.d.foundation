@@ -1,8 +1,8 @@
 ---
 title: "#81 - Jun Update: Cleaning up the Roadmap"
 date: 2021-06-26
-description: null
-last_edited: 2025-04-07
+description: "Stay updated on team roadmap changes, Covid impacts in Saigon, Notion adoption for projects, Brave search beta features, and GitHub's new collaboration tools."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Team Updates

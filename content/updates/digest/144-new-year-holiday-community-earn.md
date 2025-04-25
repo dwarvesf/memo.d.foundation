@@ -1,8 +1,8 @@
 ---
 title: "#144 - New Year Holiday, Community Earn"
 date: 2022-12-27
-description: null
-last_edited: 2025-04-07
+description: Celebrate the New Year with community quests to earn ICY, join tech events, and enjoy gatherings at Dwarves’ Dalat Office open year-round.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 # 144 - New Year Holiday, Community Earn

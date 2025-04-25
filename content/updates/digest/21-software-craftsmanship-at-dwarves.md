@@ -1,8 +1,8 @@
 ---
 title: "#21 - Software Craftsmanship at Dwarves"
 date: 2020-04-25
-description: null
-last_edited: 2025-04-07
+description: Discover how Software Craftsmanship at DF blends skill, mindset, and Agile practices to create well-crafted software and boost team knowledge sharing.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Last Wednesday was the last day of social distancing. Diners & cafes are back in the city. It's getting crowded in no time, better take care of yourself until the pandemic is actually over.

@@ -1,8 +1,8 @@
 ---
 title: "#49 - Information Workflow - Gathering output for project report"
 date: 2020-11-07
-description: null
-last_edited: 2025-04-07
+description: Learn how to streamline release workflows by converting development updates into clear sprint-based reports for internal teams and external clients.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Information Workflow

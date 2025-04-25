@@ -3,7 +3,7 @@ title: Solana Account
 date: 2022-11-17
 description: This article provides an overview of Solana accounts, including their structure, types, and how they work.
 authors:
-  - trankhacvy
+  - khacvy
 github_id: trankhacvy
 tags:
   - blockchain

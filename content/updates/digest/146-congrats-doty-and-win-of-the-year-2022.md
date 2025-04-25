@@ -1,8 +1,8 @@
 ---
 title: "#146 - Congrats DOTY and Win of the Year 2022"
 date: 2023-01-10
-description: null
-last_edited: 2025-04-07
+description: Celebrate DOTY and Win of the Year 2022 with highlights from the Dwarves Year End Party, Tet holiday gifts, bonuses, and team updates.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 # 146 - Congrats DOTY and Win of The Year 2022

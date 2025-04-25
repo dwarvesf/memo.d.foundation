@@ -1,8 +1,8 @@
 ---
 title: "#12 - Hitting the first milestone of Tech Radar"
 date: 2020-02-22
-description: null
-last_edited: 2025-04-07
+description: Discover how our team overcame challenges with improved collaboration, automated processes, and upcoming Tech Radar highlights, plus updates on smoother TransferWise payments.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Team Status Update 📢

@@ -1,8 +1,8 @@
 ---
 title: "#106 - How was your holiday?"
 date: 2021-12-31
-description: null
-last_edited: 2025-04-07
+description: Join our January 7 All-hands meeting to celebrate 2021 achievements, announce DOTY winners, and welcome new members to our growing tech community.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Hope you got a good weekend. In fact, most holidays happen to be on the weekend this year - 2022 is kinda promising I suppose 👀

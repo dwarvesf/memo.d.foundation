@@ -3,7 +3,7 @@ title: Implement a Token Swap from the Base chain to Bitcoin for cross-chain tra
 date: 2025-03-07
 description: This guide shows how to implement a token swap from the Base Chain to Bitcoin.
 authors:
-  - lmquang
+  - quang
 tags:
   - icy
   - btc

@@ -3,7 +3,7 @@ title: Hook architecture in react
 date: 2024-10-29
 description: React hooks architecture with in-depth coverage of custom hooks, state management, and side effects handling.
 authors:
-  - zlatanpham
+  - thanh
 short_title: Hook architecture
 tags:
   - react

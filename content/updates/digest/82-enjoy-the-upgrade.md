@@ -1,8 +1,8 @@
 ---
 title: "#82 - Enjoy the upgrade"
 date: 2021-07-10
-description: null
-last_edited: 2025-04-07
+description: Stay updated with our July-August goals, new SQL and application design lessons, Micro Frontend research, and office item shipments in our latest team update.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 We wrapped up May & June last week. July and August is coming, we have just noted a few updates and main goals for the cycle ahead. Check out the post at Basecamp.

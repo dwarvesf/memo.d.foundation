@@ -1,8 +1,8 @@
 ---
 title: "#36 - Find Your Topic on Memo"
 date: 2020-08-08
-description: null
-last_edited: 2025-04-07
+description: Discover how TechRadar research is published on Dwarves Memo, get updates on the Dwarves team week overview, and learn Deckset slide guidelines with VSCode.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Tech Radar topics get published externally

@@ -1,8 +1,8 @@
 ---
 title: "#39 - July/August Cycle review"
 date: 2020-08-29
-description: null
-last_edited: 2025-04-07
+description: Discover the latest July-August tech insights from Dwarves, covering WebAssembly, Progressive Web Apps, SwiftUI, UX testing, Blockchain design, and more innovations.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Short reminder: Please fill out your address for Mid-Autumn gift set, though I can clearly see everyone has taken this office as their pick-up point. #côngtylànhà 👀

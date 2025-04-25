@@ -1,8 +1,8 @@
 ---
 title: "#100 - Dwarves Changelog the 100th"
 date: 2021-11-20
-description: null
-last_edited: 2025-04-07
+description: Discover the latest team updates on office redesign, tech sessions covering k8s and real-time web apps, and plans for the November all-hands meeting.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Reached the #100 changelog already. Time flies.

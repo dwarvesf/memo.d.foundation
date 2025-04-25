@@ -1,8 +1,8 @@
 ---
 title: "#15 - Have You Heard of Humans in Tech?"
 date: 2020-03-14
-description: null
-last_edited: 2025-04-07
+description: Discover how Humans in Tech connects developers with the latest tech news, community stories, and events to boost your involvement in the tech industry.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ## Have You Heard of Humans in Tech?

@@ -1,8 +1,8 @@
 ---
 title: "#76 - Resource Allocation, and monthly all-hands meeting"
 date: 2021-05-22
-description: null
-last_edited: 2025-04-07
+description: Discover the latest updates on apprenticeship DevOps training, monthly all-hands meetings, programming fundamentals insights, and the new Sublime Text 4 release for developers.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Apprenticeship Training Status

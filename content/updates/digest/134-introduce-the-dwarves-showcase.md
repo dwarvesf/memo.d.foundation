@@ -1,8 +1,8 @@
 ---
 title: "#134 - Introduce the Dwarves Showcase"
 date: 2022-08-21
-description: null
-last_edited: 2025-04-07
+description: Discover the latest Dwarves news on new merchandise kits, Friday Showcase demos, and fresh learning topics like Metaverse and Event sourcing to boost your skills.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 New Merchandise Kit

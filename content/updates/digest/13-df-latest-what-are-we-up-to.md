@@ -1,8 +1,8 @@
 ---
 title: "#13 - DF Latest: What Are We Up To?"
 date: 2020-02-29
-description: null
-last_edited: 2025-04-07
+description: Discover how Dwarves Foundation boosts product design, engineering craftsmanship, apprenticeship programs, and MacOS utility Blurred to enhance creativity and focus.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ## DF Latest: What Are We Up To?

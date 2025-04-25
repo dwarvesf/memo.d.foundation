@@ -3,8 +3,8 @@ title: The world before Docker
 date: 2024-04-09
 description: A brief history about the world before Docker and why we need devbox for local development
 authors:
-  - huynguyenh
-  - baenv
+  - hnh
+  - vhbien
 tags:
   - tooling
   - containerization
@@ -15,9 +15,9 @@ tags:
 
 This is the 1st post of Devbox series includes
 
-- [Devbox #1: The world before Docker](devbox-a-world-before-docker.md)
-- [Devbox #2: Our Docker adoption and its challenges](devbox-docker-adoption-and-challenges.md)
-- [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](devbox-nix-and-our-devbox-adoption.md)
+- [Devbox #1: The world before Docker](https://memo.d.foundation/playground/_memo/devbox-a-world-before-docker)
+- [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges)
+- [Devbox #3: The overview into Nix & how we use Devbox @ Dwarves](https://memo.d.foundation/playground/_memo/devbox-nix-and-our-devbox-adoption)
 
 ## The It-works-on-my-machine time
 
@@ -43,7 +43,7 @@ Not only just for development testing, VM has been widely adopted for creating r
 
 However, challenges arise when it comes to sharing the environment among team members. These bottlenecks include ensuring consistent setups, managing resource constraints, handling dependencies, and coordinating collaboration due to the complexity and resource requirements of VMs. Additionally, VM configurations may depend on the underlying hypervisor and guest operating system.
 
-## Containerization, a breath of fresh air
+## Containerization, a breath of fresh air!
 
 ![](assets/devbox-a-world-before-docker_untitled-2.webp)
 
@@ -81,4 +81,4 @@ Consequently, Docker emerges as the quintessential choice for modern containeriz
 
 ## Final thoughts
 
-In summary, the transition from traditional Virtual Machines (VMs) to containerization, epitomized by Docker, represents a pivotal advancement in software development. Docker's lightweight, portable containers have revolutionized software development and deployment. However, this transformation is not merely about adopting a new technology; it's a journey marked by adaptation and discovery. In the [Devbox #2: Our Docker adoption and its challenges](devbox-docker-adoption-and-challenges.md), we will uncover the story: how Docker is adopted in my development team and its challenges encountered along the way.
+In summary, the transition from traditional Virtual Machines (VMs) to containerization, epitomized by Docker, represents a pivotal advancement in software development. Docker's lightweight, portable containers have revolutionized software development and deployment. However, this transformation is not merely about adopting a new technology; it's a journey marked by adaptation and discovery. In the [Devbox #2: Our Docker adoption and its challenges](https://memo.d.foundation/playground/_memo/devbox-docker-adoption-and-challenges), we will uncover the story: how Docker is adopted in my development team and its challenges encountered along the way.

@@ -3,7 +3,7 @@ title: "Devbox.json: Your Project's DNA"
 date: 2024-08-01
 description: Master your Devbox environment with this no-nonsense guide to devbox.json
 authors:
-  - baenv
+  - bievh
 tags:
   - devbox
 ---

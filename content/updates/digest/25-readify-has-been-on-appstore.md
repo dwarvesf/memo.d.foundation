@@ -1,8 +1,8 @@
 ---
 title: "#25 - Readify has been on AppStore"
 date: 2020-05-23
-description: null
-last_edited: 2025-04-07
+description: "Explore Dwarves Foundation's 5-year journey, software development basics, remote work tips with Basecamp, and Readify's new App Store bookmark features."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Celebrate the 1st Milestone of Dwarves Foundation

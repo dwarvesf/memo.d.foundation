@@ -6,7 +6,7 @@ title: Labs x Consulting Workflow
 date: 2023-11-21
 description: This workflow consolidates how new tech is introduced through the Labs team and how it gets processed to Consulting team to apply for projects and bring awareness of our tech expertise.
 authors:
-  - zlatanpham
+  - thanh
 ---
 
 This workflow consolidates how new tech is introduced through the Labs team and how it gets processed to Consulting team to apply for projects and bring awareness of our tech expertise.

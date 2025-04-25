@@ -1,8 +1,8 @@
 ---
 title: "#51 - Any feedback for Readify?"
 date: 2020-11-21
-description: null
-last_edited: 2025-04-07
+description: Readify updates, Mermaid diagram redesign, YearEnd party plans, GitHub restoring youtube-dl, Apple lowering App Store fees, and TailwindCSS v2.0 release highlights.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Readify: on progress, what’s your input?

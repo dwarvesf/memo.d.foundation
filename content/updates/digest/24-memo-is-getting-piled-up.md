@@ -1,8 +1,8 @@
 ---
 title: "#24 - Memo is getting piled up"
 date: 2020-05-16
-description: null
-last_edited: 2025-04-07
+description: Learn how Software Modeling improves maintainability and scalability, and explore practical design system tips including naming conventions and auto layout in Figma.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Introduction to Memo

@@ -1,8 +1,8 @@
 ---
 title: "#54 - WeBuild Day @ Block71 Saigon"
 date: 2020-12-12
-description: null
-last_edited: 2025-04-07
+description: Discover the latest updates on Puffer’s development, tech stack integration on d.foundation, WeBuild Day highlights, and key tech industry news including Samsung and Airbnb insights.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Puffer

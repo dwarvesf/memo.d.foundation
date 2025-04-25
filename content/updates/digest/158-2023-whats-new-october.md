@@ -21,7 +21,6 @@ Each month, we release a recap noting all the significant changes in our company
 - **[New functional teams](#new-functional-teams)** - A single core team expands into 5 functional teams for better delivery.
 - **[MMA-based career development](#mma-based-career-development)** - Mastery, Meaning, Autonomy allow us transparency in what we do and ways to provide growth paths for everyone based on their interests.
 - **[Frontend Course 2023](#frontend-course-2023)** - Our free FE Course is successfully finished with a fun demo day.
-- **[Wrapping up Droppii](#wrapping-up-droppii)** - We completed our mission of helping Droppii build up their tech foundation and products.
 
 ## State of Dwarves
 

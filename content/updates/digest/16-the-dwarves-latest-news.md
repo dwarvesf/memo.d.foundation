@@ -1,8 +1,8 @@
 ---
 title: "#16 - The Dwarves Latest News"
 date: 2020-03-21
-description: null
-last_edited: 2025-04-07
+description: "Stay updated on The Dwarves' latest news including remote work, new hires, Canada sales partnerships, SwiftUI webinar, team jacket plans, and culture book insights."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ## The Dwarves Latest News

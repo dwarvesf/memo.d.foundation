@@ -1,8 +1,8 @@
 ---
 title: "#97 - Latest of Oct"
 date: 2021-10-23
-description: null
-last_edited: 2025-04-07
+description: Get updates on the upcoming October All-hands Meeting and our search for a Hanoi office to grow the team by November.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 Nothing much except for we'll be having October All-hands Meeting in the next few days. Update on date & time coming shortly ✌️

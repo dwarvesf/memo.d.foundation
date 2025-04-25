@@ -1,11 +1,11 @@
 ---
 title: "#152 - March’s Updates"
 date: 2023-03-13
-description: null
-last_edited: 2025-04-07
+description: Discover the latest updates on public tech events with industry partners, and free tickets for LightningCon 2023 in Danang.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
-# 152 - March’s Updates: Konvoy Fundraising, Public Tech Events, Neutronpay Get-Together, and LightningCon 2023 FREE tickets
+# 152 - March’s Updates:, Public Tech Events and LightningCon 2023 FREE tickets
 
 1/ Exciting client update!
 
@@ -19,6 +19,6 @@ Last night's event was a blast, with 6 partners, 6 speakers, and over 140 attend
 
 3/ LightningCon 2023
 
-Neutronpay and Bitcoin VN teamed up for the first Lightning Network Conference in Asia. <https://lightningcon.org/>. If you're in Danang and want to come, ping us. We can get you free tickets.
+Bitcoin VN teamed up for the first Lightning Network Conference in Asia. <https://lightningcon.org/>. If you're in Danang and want to come, ping us. We can get you free tickets.
 
 That's all for last week, happy coding.

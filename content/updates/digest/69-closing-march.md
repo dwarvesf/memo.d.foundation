@@ -1,8 +1,8 @@
 ---
 title: "#69 - Closing March"
 date: 2021-04-03
-description: null
-last_edited: 2025-04-07
+description: Discover how our growing BE team, quality improvements, new newsletters, and community efforts are driving better service, marketing, and tech insights at Dwarves.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Team Expansion

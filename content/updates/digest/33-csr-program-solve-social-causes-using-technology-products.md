@@ -1,8 +1,8 @@
 ---
 title: "#33 - CSR Program: Solve Social Causes using Technology Products"
 date: 2020-07-18
-description: null
-last_edited: 2025-04-07
+description: Discover how our CSR program supports social causes by offering free website development, including a new app connecting cancer patients with helpful events.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Kick-off CSR Program: Social Impact / NPO Support

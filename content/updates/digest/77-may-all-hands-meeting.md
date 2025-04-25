@@ -1,8 +1,8 @@
 ---
 title: "#77 - May All-hands Meeting"
 date: 2021-05-29
-description: null
-last_edited: 2025-04-07
+description: Discover key insights from our May All-hands meeting, on-leave scheduling tips, UIView design principles, and API improvement strategies for better software performance.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### May All-hands Meeting

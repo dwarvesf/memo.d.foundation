@@ -1,8 +1,8 @@
 ---
 title: "#67 - Official Launch of Apprenticeship"
 date: 2021-03-20
-description: null
-last_edited: 2025-04-07
+description: "Discover the latest updates on Dwarves' apprenticeship launch, venture funds, healthcare checkups, project delivery improvements, and key tech news on Rust, Go, Docker, and Tinder background checks."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Apprenticeship Launching

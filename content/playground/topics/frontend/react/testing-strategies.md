@@ -3,7 +3,7 @@ title: Testing strategies in React
 date: 2024-10-29
 description: React testing with unit, integration, and end-to-end approaches
 authors:
-  - zlatanpham
+  - thanh
 short_title: Testing strategies
 tags:
   - react

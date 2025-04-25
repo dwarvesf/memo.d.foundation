@@ -1,8 +1,8 @@
 ---
 title: "#147 - Happy Tết Con Mèo"
 date: 2023-01-17
-description: null
-last_edited: 2025-04-07
+description: Celebrate Tết Con Mèo 2023 with Dwarves Foundation updates on Lunar New Year schedules, team news, new email domains, and job openings in React Native development.
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 # 147 - Happy Tết Con Mèo

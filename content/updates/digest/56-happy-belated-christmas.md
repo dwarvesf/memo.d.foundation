@@ -1,8 +1,8 @@
 ---
 title: "#56 - Happy belated Christmas ❄️"
 date: 2020-12-26
-description: null
-last_edited: 2025-04-07
+description: "Discover highlights from our Noel gift exchange, the launch of our team website, and Zoom's plan to shift toward an enterprise app suite with email and calendar features."
+last_edited: "2025-04-07T00:00:00.000Z"
 ---
 
 ### Noel Gift Exchange
