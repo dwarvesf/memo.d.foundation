@@ -23,16 +23,9 @@ const VAULT_DIR = path.resolve(process.cwd(), 'vault');
 // Regex patterns
 const FRONTMATTER_TITLE_REGEX = /^title:\s*["']?(.+?)["']?\s*$/m;
 const HEADING_REGEX = /^(#{1,6})\s*(.+)$/gm;
-<<<<<<< HEAD
-const HIGHLIGHT_REGEX = /\*\*(.+?)\*\*/g;
-const BULLET_DEFINITION_REGEX = /^-\s*([^:\n]+):\s*(.+)$/gm;
-// New regex for markdown links [text](url)
-const MARKDOWN_LINK_REGEX = /\[([^\]]+)\]\([^)]+\)/g;
-=======
 const BULLET_DEFINITION_REGEX = /^\s*(?:[-*]|\d+\.)\s+\*\*(.+?)\*\*:/gm;
 // New regex for markdown links [text](url)
 const MARKDOWN_LINK_REGEX = /^-\s+\[([^\]]+)\]\([^)]+\)/gm;
->>>>>>> 836e7050d5 (chore: add script to format sentence case)
 
 // Helper to recursively find markdown files in a directory
 async function findMarkdownFiles(dir) {
