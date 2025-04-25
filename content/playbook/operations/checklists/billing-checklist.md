@@ -1,14 +1,14 @@
 ---
+title: Billing
+description: This checklist illustrates the process of billing approval.
+date: 2020-01-01
+authors:
+  - tieubao
+  - huynguyenh
 tags:
   - people
   - operations
   - checklist
-title: Billing
-date: 2020-01-01
-description: This checklist illustrates the process of billing approval.
-authors:
-  - tieubao
-  - huynguyenh
 ---
 
 ## Invoice Process

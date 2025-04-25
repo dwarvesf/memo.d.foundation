@@ -1,7 +1,7 @@
 ---
 title: "#06 - You're Invited to Dwarves Foundation 5th Anniversary"
-date: 2020-01-04
 description: Celebrate Dwarves Foundation’s 5th anniversary with team updates, office cleaning plans, and a blog on Readme Driven Development to improve work processes.
+date: 2020-01-04
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

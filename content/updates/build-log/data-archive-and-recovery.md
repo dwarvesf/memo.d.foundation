@@ -1,13 +1,13 @@
 ---
-title: "Building a data archive and recovery strategy for high-volume trading system"
+title: Building a data archive and recovery strategy for high-volume trading system
+description: A guide to implementing data archival and recovery strategies for high-volume transactional application.
 date: 2024-12-13
+authors:
+  - baenv
 tags:
   - data
   - blockchain
   - finance
-description: "A guide to implementing data archival and recovery strategies for high-volume transactional application."
-authors:
-  - baenv
 ---
 
 ## Data safeguarding strategies

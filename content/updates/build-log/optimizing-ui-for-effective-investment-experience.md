@@ -1,7 +1,7 @@
 ---
-title: "Hedge Foundation - Optimizing UI for effective investment experience"
-date: 2025-02-25
+title: Hedge Foundation - Optimizing UI for effective investment experience
 description: Designing the UI for a blockchain-based hedge fund platform like Hedge Foundation is not just about creating a visually appealing interface. The real challenge lies in ensuring that complex financial data is presented in an intuitive, understandable way that helps users make quick investment decisions. Optimizing the UI plays a crucial role in allowing investors to access accurate data without feeling overwhelmed by excessive information.
+date: 2025-02-25
 authors:
   - bringastar
 tags:

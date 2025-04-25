@@ -1,7 +1,7 @@
 ---
 title: "#125 - In Dwarves this week"
-date: 2022-06-17
 description: "Join Dwarves' Brainery for up-to-date craft submissions, weekly minigames with prizes, health check updates, and support from our new Ambassadors boosting social media."
+date: 2022-06-17
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

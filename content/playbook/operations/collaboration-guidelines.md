@@ -1,7 +1,7 @@
 ---
 title: Collaboration guidelines
-date: 2020-01-01
 description: Guidelines for project collaboration between Dwarves and our Clients.
+date: 2020-01-01
 authors:
   - huynguyenh
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "#102 - November All-hands Sum up"
-date: 2021-12-04
 description: Our team focuses on blockchain deals, expanding with new experts, upgrading hiring processes, and hosting tech meetups while boosting collaboration through training and Discord.
+date: 2021-12-04
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

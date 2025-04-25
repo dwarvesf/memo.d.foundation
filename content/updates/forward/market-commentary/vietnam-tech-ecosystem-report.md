@@ -1,11 +1,11 @@
 ---
-tags:
-  - market-report
 title: Vietnam Tech Ecosystem 2024 Report
+description: "The 2024 Vietnam Tech Market Report highlights Vietnam's resilient tech scene, ranking third in Southeast Asia despite a 17% drop in investments. With a booming digital economy expected to reach $43 billion by 2025, the report covers key trends, major players, and new legal updates driving innovation."
 date: 2024-07-11
-description: The 2024 Vietnam Tech Market Report highlights Vietnam's resilient tech scene, ranking third in Southeast Asia despite a 17% drop in investments. With a booming digital economy expected to reach $43 billion by 2025, the report covers key trends, major players, and new legal updates driving innovation.
 authors:
   - ooohminh
+tags:
+  - market-report
 ---
 
 ## Current State of the Vietnam Tech Market

@@ -1,7 +1,7 @@
 ---
 title: How to withdraw ICY to fiat
-date: 2024-03-13
 description: This guide show how to swap and withdraw ICY to fiat
+date: 2024-03-13
 authors:
   - minh_cloud
 tags:

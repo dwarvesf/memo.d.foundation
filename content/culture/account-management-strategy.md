@@ -1,7 +1,7 @@
 ---
 title: Account management strategies
-date: 2020-03-25
 description: Effective client relationship management through flexible planning, thoughtful communication, service quality, and balancing toughness with empathy to build lasting partnerships.
+date: 2020-03-25
 authors:
   - tieubao
   - duynglam

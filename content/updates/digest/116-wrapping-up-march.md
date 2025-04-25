@@ -1,7 +1,7 @@
 ---
 title: "#116 - Wrapping up March"
-date: 2022-04-02
 description: Discover our March update on project deployment, Dwarves Brainery learning, Apprenticeship Program growth, and highlights from the BK Career Fair and team events.
+date: 2022-04-02
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

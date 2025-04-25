@@ -1,8 +1,8 @@
 ---
-title: "Building a modern crypto investment platform for Tokenomy"
+title: Building a modern crypto investment platform for Tokenomy
 short_title: Tokenomy
-date: 2021-08-09
 description: We helped Tokenomy create a robust web platform and Android app that allows users to easily invest in cryptocurrency. Our work enabled them to launch on schedule, reach more customers, and establish themselves in the competitive crypto market.
+date: 2021-08-09
 authors:
   - tieubao
   - nikkingtr

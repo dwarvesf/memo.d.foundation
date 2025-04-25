@@ -1,10 +1,10 @@
 ---
 title: "Weekly Digest #8: Then came the last days of May"
-date: 2024-05-31
+short_title: "#8 Then came the last days of May"
 description: "Here's to hoping for a brighter and better month on this last day of May. We’re in the heat of a community offline meet-up today, gathering to discuss the month’s progress. Everyone's a bit busy arranging their travel to Saigon, a wild place we all call home. So, let’s dive into what we’ve been up to."
+date: 2024-05-31
 authors:
   - innnotruong
-short_title: "#8 Then came the last days of May"
 tags:
   - weekly-digest
   - meetup

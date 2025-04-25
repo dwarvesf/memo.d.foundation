@@ -1,12 +1,12 @@
 ---
-title: "Building MVP for AI-driven interview platform"
-description: "Discover how our two-week MVP harnesses AI-driven, real-time voice processing to streamline interviews, reduce bias, and accelerate hiring success"
-date: "2025-03-04"
+title: Building MVP for AI-driven interview platform
+description: Discover how our two-week MVP harnesses AI-driven, real-time voice processing to streamline interviews, reduce bias, and accelerate hiring success
+date: 2025-03-04
+authors:
+  - zlatanpham
 tags:
   - ai
   - llm
-authors:
-  - zlatanpham
 ---
 
 Our engineering team collaborated with a confidential HRTech client to create an **MVP** for AI-based, real-time voice interviews. Built in just **two weeks** to validate the concept, the solution leverages advanced **AI** and **AI voice processing** to conduct sales-specific interviews. Despite the short development timeline, the initial results have been very promising.

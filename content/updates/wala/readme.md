@@ -1,14 +1,14 @@
 ---
 title: WALA
 short_title: WALA
+description: null
 date: 2023-12-21
-description:
 authors:
   - tieubao
   - nikkingtr
+hide_title: true
 tags:
   - wala
-hide_title: true
 ---
 
 **WALA: to walk around, learn around.**

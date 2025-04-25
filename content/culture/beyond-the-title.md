@@ -1,7 +1,7 @@
 ---
 title: Beyond the title
+description: "We want to make impacts or influence people in some ways. That doesn't happen if we wait for the right moment because there isn't. Taking the shot means opening the door to mistakes and failures, and that's a good thing. We learn from them."
 date: 2021-02-19
-description: We want to make impacts or influence people in some ways. That doesn't happen if we wait for the right moment because there isn't. Taking the shot means opening the door to mistakes and failures, and that's a good thing. We learn from them.
 authors:
   - tieubao
 tags:

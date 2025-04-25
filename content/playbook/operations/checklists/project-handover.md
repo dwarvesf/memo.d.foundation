@@ -1,16 +1,16 @@
 ---
-tags:
-  - project
-  - operations
-  - checklist
 title: Project Handover
-date: 2022-01-01
 description: The checklist shows the process of project handover
+date: 2022-01-01
 authors:
   - tieubao
   - huytieu
   - nikkingtr
   - zlatanpham
+tags:
+  - project
+  - operations
+  - checklist
 ---
 
 **Source code**

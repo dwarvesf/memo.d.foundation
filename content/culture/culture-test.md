@@ -1,7 +1,7 @@
 ---
 title: The culture test
+description: "Here's the culture test created during the market challenges of late 2024. It is designed to highlight and reinforce the cultural values at Dwarves Foundation. It’s a chance to reflect, share, and show how you fit into our team."
 date: 2024-09-30
-description: Here's the culture test created during the market challenges of late 2024. It is designed to highlight and reinforce the cultural values at Dwarves Foundation. It’s a chance to reflect, share, and show how you fit into our team.
 authors:
   - tieubao
 tags:

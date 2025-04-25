@@ -1,7 +1,7 @@
 ---
 title: How we contribute to homebrew
-date: 2016-03-13
 description: null
+date: 2016-03-13
 tags:
   - oss
 ---

@@ -1,7 +1,7 @@
 ---
 title: "#40 - Collect your totem 🛠"
-date: 2020-09-05
 description: Discover the latest updates from Dwarves including totem giveaways, TechRadar achievements, new project tracking with Hill charts, and welcoming frontend engineer Hieu Ngo.
+date: 2020-09-05
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

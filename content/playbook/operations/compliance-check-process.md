@@ -1,7 +1,7 @@
 ---
 title: Compliance check process
-date: 2020-01-01
 description: A comprehensive compliance program encompassing monthly audits, transparent progress tracking, and consequences for non-compliance, aiming to foster accountability and transparency within the team.
+date: 2020-01-01
 authors:
   - huynguyenh
 tags:

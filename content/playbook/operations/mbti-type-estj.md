@@ -1,12 +1,12 @@
 ---
 title: MBTI Type ESTJ
-date: 2021-07-24
 description: All about the ESTJ personality type
+date: 2021-07-24
 authors:
   - namtran
 tags:
   - mbti
-  - ESTJ
+  - estj
   - people
   - operations
 ---

@@ -1,7 +1,7 @@
 ---
 title: "#113 - Dwarves Sponsor"
-date: 2022-03-12
 description: Join Dwarves Brainery to share knowledge on topics like C compilers, blockchain, and monorepos while earning sponsorship and enjoying fun Discord events.
+date: 2022-03-12
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

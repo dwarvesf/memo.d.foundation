@@ -1,7 +1,7 @@
 ---
 title: Collaboration Guideline
-date: 2023-10-16
 description: guidelines for project collaboraton DF and Client
+date: 2023-10-16
 authors:
   - tieubao
 tags:

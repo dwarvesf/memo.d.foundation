@@ -1,8 +1,8 @@
 ---
 title: Understanding your NDA & other agreements
 short_title: NDA & Agreements
-date: 2024-08-20
 description: A guide to the Non-Disclosure, Non-Solicitation, and IP agreements you signed when joining Dwarves.
+date: 2024-08-20
 authors:
   - tieubao
 tags:

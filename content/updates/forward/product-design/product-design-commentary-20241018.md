@@ -1,7 +1,7 @@
 ---
 title: "Product Design Commentary #4: Generative AI UX design patterns"
+description: This fourth edition looks at how Generative AI fits into digital systems. We examine the connections between AI and other parts of a system, focusing on scope, space, and function. Learn how these connections affect the way we design AI features and make them easy to use. Get practical tips on adding AI to your products in ways that make sense for users.
 date: 2024-10-22
-description: "This fourth edition looks at how Generative AI fits into digital systems. We examine the connections between AI and other parts of a system, focusing on scope, space, and function. Learn how these connections affect the way we design AI features and make them easy to use. Get practical tips on adding AI to your products in ways that make sense for users."
 authors:
   - Maniub102
 tags:

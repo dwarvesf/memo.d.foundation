@@ -1,7 +1,7 @@
 ---
 title: Hiring for Operations team
-date: 2020-01-25
 description: Operations is a very sensitive area of the company, so be very picky. A great ops person can dramatically improve the way your company works and make your life a lot easier.
+date: 2020-01-25
 authors:
   - tieubao
   - duynglam

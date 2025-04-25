@@ -1,15 +1,15 @@
 ---
-authors:
-  - "datnguyennnx"
-date: "2024-10-25"
-description: "Stay updated on the latest in AI tools for developers with this week’s digest, featuring Cline's v2.0.0 update, OpenAI’s Realtime API, and Aider’s Architect/Editor split for enhanced coding workflows."
-tags:
-  - "llm"
-  - "tooling"
-  - "aider"
-  - "cline"
-  - "realtime api"
 title: "AI digest #1 Aider reasoning, OpenAI Realtime API, Cline - pre Claude-dev "
+description: "Stay updated on the latest in AI tools for developers with this week’s digest, featuring Cline's v2.0.0 update, OpenAI’s Realtime API, and Aider’s Architect/Editor split for enhanced coding workflows."
+date: 2024-10-25
+authors:
+  - datnguyennnx
+tags:
+  - llm
+  - tooling
+  - aider
+  - cline
+  - realtime-api
 ---
 
 This week's AI updates are all about making life easier for developers working with agentic tools. **Cline**, formerly known as Claude Dev, just dropped its v2.0.0 update with faster response times and real-time interactions, perfect for streamlining workflows. **OpenAI’s Realtime API** is a game-changer for real-time function chaining and voice-based coding with Ada. And finally, **Aider’s Architect/Editor** split simplifies complex code reasoning, making pair programming smoother than ever.

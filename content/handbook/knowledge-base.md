@@ -1,8 +1,8 @@
 ---
 title: Our second brain
 short_title: Knowledge base
+description: "This page explains our knowledge base, which is basically our team's shared brain where we keep important stuff. Using it helps us work smarter together and makes sure we don't lose good ideas or lessons learned."
 date: 2024-03-21
-description: This page explains our knowledge base, which is basically our team's shared brain where we keep important stuff. Using it helps us work smarter together and makes sure we don't lose good ideas or lessons learned.
 authors:
   - tieubao
 tags:

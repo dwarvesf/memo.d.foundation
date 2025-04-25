@@ -1,7 +1,7 @@
 ---
 title: "#22 - We created some cool stuffs"
-date: 2020-05-02
 description: Discover new remote work tips, daily English learning, unique team traditions, and monthly movie picks in our latest update for a fun and productive holiday season.
+date: 2020-05-02
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

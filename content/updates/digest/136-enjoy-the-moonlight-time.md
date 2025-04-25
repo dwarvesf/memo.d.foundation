@@ -1,7 +1,7 @@
 ---
 title: "#136 - Enjoy the moonlight time"
-date: 2022-09-09
 description: Celebrate Mid-Autumn Festival with Mooncake gifts, enjoy team updates on performance reviews, new members, and earn $ICY tokens in the Dwarves Network community.
+date: 2022-09-09
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

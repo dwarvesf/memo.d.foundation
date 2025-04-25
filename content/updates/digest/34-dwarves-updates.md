@@ -1,7 +1,7 @@
 ---
 title: "#34 - Dwarves Updates"
-date: 2020-07-25
 description: Discover our company culture code, Canada internship updates, and insights on startups hiring junior designers from a design lead’s perspective in this concise blog post.
+date: 2020-07-25
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

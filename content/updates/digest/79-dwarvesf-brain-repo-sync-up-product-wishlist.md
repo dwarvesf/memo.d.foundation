@@ -1,7 +1,7 @@
 ---
 title: "#79 - Dwarvesf/brain repo sync up & product wishlist"
-date: 2021-06-12
 description: Discover how dwarvesf/brain enhances team knowledge sharing with Zettelkasten notes, communication training, Apple WWDC updates, Elixir tips, and Discord Nitro offers.
+date: 2021-06-12
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

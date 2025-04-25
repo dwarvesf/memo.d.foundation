@@ -1,7 +1,7 @@
 ---
 title: "#57 - And it’s a Wrap"
-date: 2021-01-01
 description: Reflect on 2020’s challenges, celebrate the Dwarves’ 6th birthday, join new consultant training, and learn about Microsoft’s SolarWinds source code breach news.
+date: 2021-01-01
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

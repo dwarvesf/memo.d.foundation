@@ -1,14 +1,14 @@
 ---
+title: Consulting Contract
+description: The checklist presents the process of contract evaluation.
+date: 2020-01-01
+authors:
+  - tieubao
+  - huynguyenh
 tags:
   - people
   - checklist
   - operations
-title: Consulting Contract
-date: 2020-01-01
-description: The checklist presents the process of contract evaluation.
-authors:
-  - tieubao
-  - huynguyenh
 ---
 
 ### Content

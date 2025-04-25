@@ -1,7 +1,7 @@
 ---
 title: "#80 - In the remote movement"
-date: 2021-06-19
 description: Discover how our team uses metrics dashboards, automation testing, and remote tools like Gather Town to boost productivity while exploring the latest Windows 11 rumors and Apple M1 insights.
+date: 2021-06-19
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

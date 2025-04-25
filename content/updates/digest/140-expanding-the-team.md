@@ -1,7 +1,7 @@
 ---
 title: "#140 - Expanding the team"
-date: 2022-10-07
 description: Discover highlights from Apprentices Sharing, a successful Open Fabric case study, and current job openings in digital marketing, operations, recruitment, and community roles.
+date: 2022-10-07
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

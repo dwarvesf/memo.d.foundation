@@ -1,7 +1,7 @@
 ---
 title: Lean Canvas
-date: 2023-10-16
 description: Lean Canvas is an adaptation of Business Model Canvas by Alexander Osterwalder which Ash Maurya created in the Lean Startup spirit (Fast, Concise and Effective startup). Lean Canvas promises an actionable and entrepreneur-focused business plan. It focuses on problems, solutions, key metrics, and competitive advantages.
+date: 2023-10-16
 authors:
   - tieubao
 tags:

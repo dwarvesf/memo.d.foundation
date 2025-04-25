@@ -1,7 +1,7 @@
 ---
 title: September Changelog
-date: 2021-10-01
 description: Discover how our team improves project compliance, launches new consulting projects like Open Fabric, enhances hiring processes, and develops React Toolkit and automation bots.
+date: 2021-10-01
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

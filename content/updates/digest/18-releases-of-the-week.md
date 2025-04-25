@@ -1,7 +1,7 @@
 ---
 title: "#18 - Releases of the Week"
-date: 2020-04-04
 description: Discover the latest updates from Dwarves including new
+date: 2020-04-04
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

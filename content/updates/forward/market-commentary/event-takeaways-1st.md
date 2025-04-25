@@ -1,16 +1,16 @@
 ---
 title: "Talks and Takeaways from the Scene: Part 1"
 short_title: 1st Talks and Takeaways
-date: 2025-03-13T00:00:00.000Z
 description: Talks and Takeaways from the Scene Part 1
+date: 2025-03-13
 authors:
   - ooohminh
+perma_storage_id: tLyLgDgNhoku4Xn23VQZYz44RXQ4E1a_EPLIWPRsNOY
+should_deploy_perma_storage: true
 tags:
   - consulting
   - market-report
   - tech-report
-should_deploy_perma_storage: true
-perma_storage_id: tLyLgDgNhoku4Xn23VQZYz44RXQ4E1a_EPLIWPRsNOY
 ---
 
 Hey everyone. I went to 2 cool events in Vietnam recently and I’ve got some fun thoughts to share. Tired of boring tech talk? I’ll tell you what I saw and what got me excited or curious. No big words, just my real take. Let me know what you think.

@@ -1,7 +1,7 @@
 ---
 title: "#64 - Finished the first Cycle of 2021"
-date: 2021-02-27
 description: Discover key updates from the Jan/Feb changelog, including Discord’s switch from Go to Rust for better performance and new tools for personal branding.
+date: 2021-02-27
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

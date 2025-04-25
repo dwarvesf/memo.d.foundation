@@ -1,7 +1,7 @@
 ---
 title: Effective planning and reporting
-date: 2024-04-15
 description: How we do effective planning and reporting at Dwarves
+date: 2024-04-15
 authors:
   - nikkingtr
 tags:

@@ -1,8 +1,8 @@
 ---
-title: "Making crypto transfers faster and easier"
+title: Making crypto transfers faster and easier
 short_title: iCrosschain
-date: 2022-06-23
 description: We built iCrosschain, a platform that helps crypto users move their digital assets between different blockchain networks quickly and easily. Our solution cut transfer times down to just 15 seconds – the fastest in the industry.
+date: 2022-06-23
 authors:
   - duynglam
   - nikkingtr

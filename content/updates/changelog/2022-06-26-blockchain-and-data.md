@@ -1,7 +1,7 @@
 ---
 title: The future is blockchain and data
-date: 2022-06-26
 description: Hey, it’s Han and Nikki in your inbox again.
+date: 2022-06-26
 authors:
   - tieubao
   - nikkingtr

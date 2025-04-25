@@ -1,16 +1,16 @@
 ---
-title: "🧠 Brainery - Dwarves second brain"
+title: 🧠 Brainery - Dwarves second brain
 description: Latest report on how we build our second brain
 date: 2025-04-23
-authors: 
+authors:
   - tieubao
   - zlatanpham
   - monotykamary
+pinned: true
 tags:
   - brainery
   - moc
   - build-log
-pinned: true
 ---
 
 ## Data aggregation

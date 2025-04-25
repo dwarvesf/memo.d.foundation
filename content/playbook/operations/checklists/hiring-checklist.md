@@ -1,15 +1,15 @@
 ---
+title: Hiring
+description: The checklist presents how the hiring is proceeded.
+date: 2020-01-01
+authors:
+  - tieubao
+  - huynguyenh
 tags:
   - people
   - hiring
   - operations
   - checklist
-title: Hiring
-date: 2020-01-01
-description: The checklist presents how the hiring is proceeded.
-authors:
-  - tieubao
-  - huynguyenh
 ---
 
 ### Resume Collecting

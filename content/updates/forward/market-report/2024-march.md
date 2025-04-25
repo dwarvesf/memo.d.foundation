@@ -1,16 +1,16 @@
 ---
 title: Market report March 2024
 short_title: March 2024
-date: 2024-04-01
 description: In this month’s market report, we explore the evolving landscape of artificial intelligence, API techniques, toolings, programming languages, and the intersection of design and engineering. Our insights shed light on the dynamic shifts and emerging trends across these domains, highlighting the advancements that are shaping the future of technology and software development.
+date: 2024-04-01
 authors:
   - monotykamary
   - zlatanpham
 tags:
   - labs
   - market-report
-  - AI
-  - LLM
+  - ai
+  - llm
 ---
 
 In this month's market report, we explore the evolving landscape of artificial intelligence, API techniques, toolings, programming languages, and the intersection of design and engineering. Our insights shed light on the dynamic shifts and emerging trends across these domains, highlighting the advancements that are shaping the future of technology and software development.

@@ -1,13 +1,13 @@
 ---
 title: "Visualizing crypto market performance: BTC-Alt dynamic indicators in Golang"
+description: Implementing a Golang-based visualization for crypto market performance indicators, focusing on Bitcoin vs Altcoin dynamics and trading strategy effectiveness through interactive charts and data analysis
 date: 2024-11-18
+authors:
+  - baenv
 tags:
   - data
   - blockchain
   - fintech
-description: "Implementing a Golang-based visualization for crypto market performance indicators, focusing on Bitcoin vs Altcoin dynamics and trading strategy effectiveness through interactive charts and data analysis"
-authors:
-  - baenv
 ---
 
 Crypto trading is not just gambling. It has strategies. Once traders can take advantage of it effectively, they can earn. One of the most popular strategies in cryptocurrency is **Hedge**, which is often mentioned with the name **Hedge Bitcoin**.

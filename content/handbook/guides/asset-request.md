@@ -1,10 +1,12 @@
 ---
 title: Borrowing & requesting company assets
 short_title: Request an asset
-date: 2019-02-21
 description: How to borrow company assets like books or devices, or request new ones. Simple steps for getting the gear you need.
-authors:
-tags: ["handbook", "assets", "guide"]
+date: 2019-02-21
+tags:
+  - handbook
+  - assets
+  - guide
 ---
 
 Need a piece of gear to get your job done? We've got company assets like books and devices available, and we're happy for you to use them! Here's how the process works for borrowing, returning, and requesting new items.

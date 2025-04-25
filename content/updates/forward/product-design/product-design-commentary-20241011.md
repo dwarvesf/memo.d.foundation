@@ -1,7 +1,7 @@
 ---
 title: "Product Design Commentary #3: The art of prompting in AI-human interaction"
+description: In this third edition, we delve into the art of prompting in AI-human interaction. We explore the evolution of communication between humans and machines, focusing on the crucial role of UX designers in crafting effective prompts for large language models. The commentary covers the importance of context, system prompting techniques, and structured frameworks for prompting, highlighting how these elements shape the future of human-AI interactions and user experiences.
 date: 2024-10-14
-description: "In this third edition, we delve into the art of prompting in AI-human interaction. We explore the evolution of communication between humans and machines, focusing on the crucial role of UX designers in crafting effective prompts for large language models. The commentary covers the importance of context, system prompting techniques, and structured frameworks for prompting, highlighting how these elements shape the future of human-AI interactions and user experiences."
 authors:
   - Maniub102
 tags:

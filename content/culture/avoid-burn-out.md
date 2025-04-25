@@ -1,7 +1,7 @@
 ---
 title: Avoid burn out
-date: 2020-03-17
 description: Burnout happens like burning the candle at both ends. But you get to select what time to pull the plug and replace with a new one.
+date: 2020-03-17
 authors:
   - tieubao
 tags:

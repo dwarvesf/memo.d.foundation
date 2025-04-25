@@ -1,12 +1,12 @@
 ---
 title: MBTI Type INTJ
-date: 2021-07-26
 description: All about the INTJ personality type
+date: 2021-07-26
 authors:
   - namtran
 tags:
   - mbti
-  - INTJ
+  - intj
   - people
   - operations
 ---

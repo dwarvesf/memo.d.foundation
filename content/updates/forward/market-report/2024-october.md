@@ -1,16 +1,16 @@
 ---
 title: Market report October 2024
 short_title: October 2024
-date: 2024-11-04
 description: "Explore the October 2024 market report: chatbots as productivity essentials with future potential, AI's role despite investment bubble concerns, and Python's rise in modern tech and AI. Learn why coding tools require strong practices, why companies seek versatile engineers, and how Big Tech's job market favors senior talent, posing challenges for juniors."
+date: 2024-11-04
 authors:
   - zlatanpham
   - monotykamary
 tags:
   - labs
   - market-report
-  - AI
-  - LLM
+  - ai
+  - llm
 ---
 
 ## Key takeaways

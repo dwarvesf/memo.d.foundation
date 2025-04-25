@@ -1,7 +1,7 @@
 ---
 title: "#127 - Closing June"
-date: 2022-07-01
 description: Join Dwarves Discord to vote on favorite articles for rewards, submit your June self-review, and explore new Brainery topics in blockchain and engineering.
+date: 2022-07-01
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

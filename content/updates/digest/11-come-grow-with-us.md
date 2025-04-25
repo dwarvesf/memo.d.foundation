@@ -1,10 +1,10 @@
 ---
 title: "Weekly Digest #11: Come grow with us"
-date: 2024-06-23
+short_title: "#11 Come grow with us"
 description: "Things are always cooking on our Discord. So grab a virtual seat at our table, pour yourself a cup of something tasty, and read the digest. If you're reading this, why not pop into the woodland and say hello? We'd love to meet you."
+date: 2024-06-23
 authors:
   - innnotruong
-short_title: "#11 Come grow with us"
 tags:
   - weekly-digest
   - memo

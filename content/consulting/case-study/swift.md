@@ -1,8 +1,8 @@
 ---
 title: "Swift: Building a micro frontend design system for e-commerce"
 short_title: Swift
-date: 2023-04-03
 description: We helped Swift, an e-commerce partner, implement a micro frontend architecture with a shared design system that improved development efficiency and created a consistent user experience across multiple applications.
+date: 2023-04-03
 authors:
   - ngolapnguyen
 tags:

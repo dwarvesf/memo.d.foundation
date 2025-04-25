@@ -1,7 +1,7 @@
 ---
 title: "#131 - Wrapping up our July"
-date: 2022-07-29
 description: Join our July All-hands meeting to catch up on performance reviews, Brainery growth, new team members, and share your latest tips and findings.
+date: 2022-07-29
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

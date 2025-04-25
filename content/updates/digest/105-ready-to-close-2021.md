@@ -1,7 +1,7 @@
 ---
 title: "#105 - Ready to Close 2021?"
-date: 2021-12-25
 description: "Join our December All-hands meeting to review this year's changes, vote for DOTY, and catch the Team Showcase highlights on YouTube."
+date: 2021-12-25
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

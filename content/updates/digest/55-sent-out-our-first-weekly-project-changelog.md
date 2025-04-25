@@ -1,7 +1,7 @@
 ---
 title: "#55 - Sent out our first weekly Project Changelog"
-date: 2020-12-19
 description: Stay updated with our weekly project changelog featuring new developments on Quod.ai, WeUp, WeGo, team updates, and insights on the Facebook vs Apple privacy debate.
+date: 2020-12-19
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

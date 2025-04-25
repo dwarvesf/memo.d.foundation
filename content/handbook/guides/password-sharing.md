@@ -1,7 +1,7 @@
 ---
 title: Password Sharing
+description: "How to access to team's password folder"
 date: 2020-01-01
-description: How to access to team's password folder
 authors:
   - huynguyenh
 tags:

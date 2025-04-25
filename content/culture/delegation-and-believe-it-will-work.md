@@ -1,7 +1,7 @@
 ---
 title: Delegation and believe it will work
+description: "We can't always make things (or everything) on our own. If that somehow truly happens, then Inc, Corp, Enterprise or Group won't stand a chance with Freelancers. So why delegating?"
 date: 2020-06-10
-description: We can't always make things (or everything) on our own. If that somehow truly happens, then Inc, Corp, Enterprise or Group won't stand a chance with Freelancers. So why delegating?
 authors:
   - tieubao
 tags:

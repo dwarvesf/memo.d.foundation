@@ -1,7 +1,7 @@
 ---
 title: Effective meetings
+description: "To make working together flexible and productive, we follow a few simple rules for meetings and group work. Here's how we keep meetings effective."
 date: 2019-02-21
-description: To make working together flexible and productive, we follow a few simple rules for meetings and group work. Here's how we keep meetings effective.
 authors:
   - tieubao
 tags:

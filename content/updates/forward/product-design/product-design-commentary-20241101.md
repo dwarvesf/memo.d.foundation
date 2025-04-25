@@ -1,12 +1,12 @@
 ---
+title: "Product Design Commentary #5: Figma to SwiftUI (functional code) with Claude AI"
+description: This article provides a guide on using Claude AI to build user interfaces in SwiftUI, transforming Figma designs into complete, production-ready code. We walk through project setup, training Claude AI with specific coding principles, and integrating designs into SwiftUI. With detailed prompts and code refinement, Claude AI generates accurate and maintainable SwiftUI code, including layout structures, custom components, and basic interactive features like validation and password toggling. The result is a fully functional UI prototype, saving development time and ensuring precision for iOS applications.
+date: 2024-11-07
+authors:
+  - Maniub102
 tags:
   - product-design
   - report
-title: "Product Design Commentary #5: Figma to SwiftUI (functional code) with Claude AI"
-date: 2024-11-07
-description: This article provides a guide on using Claude AI to build user interfaces in SwiftUI, transforming Figma designs into complete, production-ready code. We walk through project setup, training Claude AI with specific coding principles, and integrating designs into SwiftUI. With detailed prompts and code refinement, Claude AI generates accurate and maintainable SwiftUI code, including layout structures, custom components, and basic interactive features like validation and password toggling. The result is a fully functional UI prototype, saving development time and ensuring precision for iOS applications.
-authors:
-  - Maniub102
 ---
 
 This article provides a guide on using Claude AI to build user interfaces in SwiftUI, transforming Figma designs into complete, production-ready code. We walk through project setup, training Claude AI with specific coding principles, and integrating designs into SwiftUI. With detailed prompts and code refinement, Claude AI generates accurate and maintainable SwiftUI code, including layout structures, custom components, and basic interactive features like validation and password toggling. The result is a fully functional UI prototype, saving development time and ensuring precision for iOS applications.

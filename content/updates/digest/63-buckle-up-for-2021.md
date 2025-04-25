@@ -1,7 +1,7 @@
 ---
 title: "#63 - Buckle up for 2021"
-date: 2021-02-20
 description: Stay healthy with our March healthcare checkup dates, discover the new Etam coffee maker at HaDo office, and explore 2021 tech trends and interview insights.
+date: 2021-02-20
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "#99 - New PM, new Blockchain Prj & New remote-work policy"
-date: 2021-11-13
 description: Meet our new Project Manager and Backend Lead as we launch a blockchain trading platform and resume weekly engineering meetings for better team collaboration.
+date: 2021-11-13
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

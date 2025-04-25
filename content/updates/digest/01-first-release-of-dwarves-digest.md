@@ -1,7 +1,7 @@
 ---
 title: "#01 - First release of Dwarves Digest"
-date: 2019-11-30
 description: A collection of company updates, including Canada branch registration, employee stock ownership plan.
+date: 2019-11-30
 tags:
   - digest
   - company-updates

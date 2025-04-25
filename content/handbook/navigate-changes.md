@@ -1,8 +1,8 @@
 ---
 title: Navigate changes
-short_title:
-date: 2025-03-31
+short_title: null
 description: How we deal with technology changes
+date: 2025-03-31
 authors:
   - zlatanpham
 tags:

@@ -1,14 +1,14 @@
 ---
+title: Candidate
+description: The checklist will show how to evaluate a candidate.
+date: 2020-01-01
+authors:
+  - tieubao
+  - huynguyenh
 tags:
   - hiring
   - operations
   - checklist
-title: Candidate
-date: 2020-01-01
-description: The checklist will show how to evaluate a candidate.
-authors:
-  - tieubao
-  - huynguyenh
 ---
 
 ### Background & Skills

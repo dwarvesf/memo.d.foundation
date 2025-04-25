@@ -1,7 +1,7 @@
 ---
 title: Benefits & perks
+description: "Since most Dwarves Foundation employees work in Saigon, this section is written with that as the default. Some benefits don't make sense in other countries. We will try our best to provide comparable benefits and perks as it makes sense, though..."
 date: 2019-02-21
-description: Since most Dwarves Foundation employees work in Saigon, this section is written with that as the default. Some benefits don't make sense in other countries. We will try our best to provide comparable benefits and perks as it makes sense, though...
 authors:
   - tieubao
   - duynglam

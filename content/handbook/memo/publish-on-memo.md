@@ -1,7 +1,7 @@
 ---
 title: How to publish content on Dwarves Memo
-date: 2024-03-04
 description: This is a guide on how to setup your environment and settings to push content to our Dwarves Memo.
+date: 2024-03-04
 authors:
   - minh_cloud
 tags:
@@ -32,7 +32,7 @@ title: [The title]
 date: yyyy-mm-dd
 description: [your description]
 authors: [your name]
-tags: 
+tags:
   - [tag1]
   - [tag2]
   - [tag3]

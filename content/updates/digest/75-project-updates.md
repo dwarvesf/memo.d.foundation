@@ -1,7 +1,7 @@
 ---
 title: "#75 - Project Updates"
-date: 2021-05-15
 description: Stay updated on community projects, Covid work-from-home tips, VssID social insurance app, Google Docs canvas rendering, and Notion’s new public API rollout.
+date: 2021-05-15
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

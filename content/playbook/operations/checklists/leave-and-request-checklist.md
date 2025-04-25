@@ -1,13 +1,13 @@
 ---
+title: Leave Request
+description: The checklist of leave and request for the team.
+date: 2024-08-20
+authors:
+  - innnotruong
 tags:
   - people
   - operations
   - checklist
-title: Leave Request
-date: 2024-08-20
-description: The checklist of leave and request for the team.
-authors:
-  - innnotruong
 ---
 
 ### Objectives

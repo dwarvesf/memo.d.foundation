@@ -1,7 +1,7 @@
 ---
 title: Ventures arm
-date: 2020-07-02
 description: How we invest in and build the future through our ventures initiatives
+date: 2020-07-02
 authors:
   - tieubao
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "#83 - New work with Notion & Reward on Brain repo"
-date: 2021-07-17
 description: Discover Dwarves Updates, new startup directories, team rewards, and insights on remote work and decision-making in our latest monthly newsletter and blog posts.
+date: 2021-07-17
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

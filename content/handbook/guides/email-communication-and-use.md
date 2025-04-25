@@ -1,8 +1,8 @@
 ---
 title: Email Communication and Use
 short_title: Email use
-date: 2020-01-01
 description: We use email as our formal tool for both internal and external communication. Every email is utilized for a specific field, which comes along with different instructions.
+date: 2020-01-01
 authors:
   - huynguyenh
 tags:

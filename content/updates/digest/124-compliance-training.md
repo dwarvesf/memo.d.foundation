@@ -1,7 +1,7 @@
 ---
 title: "#124 - Compliance Training "
-date: 2022-06-10
 description: Join our Software Modeling training on June 14 to learn from university lecturers and explore blockchain topics like React 18 Useeffect and Solana tokens.
+date: 2022-06-10
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

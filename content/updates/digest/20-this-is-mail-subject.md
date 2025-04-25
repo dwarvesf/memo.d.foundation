@@ -1,7 +1,7 @@
 ---
 title: "#20 - This is Mail Subject"
-date: 2020-04-18
 description: "Discover the latest sudo.fm updates, team learning accounts, a fun dog photo site, jacket pickups, and a growing team library in this week's quarantine roundup."
+date: 2020-04-18
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

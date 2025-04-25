@@ -1,8 +1,8 @@
 ---
 title: Submit a leave request
 short_title: Leave request
-date: 2024-08-20
 description: A consistent on leave process prevents a company from being accidentally disrupted when an employee request to be absent.
+date: 2024-08-20
 authors:
   - duynglam
   - innnotruong

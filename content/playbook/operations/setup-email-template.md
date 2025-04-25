@@ -1,7 +1,7 @@
 ---
 title: Setup email template in Gmail
-date: 2020-01-01
 description: How to setup template for email in Gmail
+date: 2020-01-01
 authors:
   - huynguyenh
 tags:

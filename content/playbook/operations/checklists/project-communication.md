@@ -1,15 +1,15 @@
 ---
-tags:
-  - project
-  - operations
-  - checklist
 title: Project Communication
-date: 2022-01-01
 description: The checklist shows the rule of communication in a project
+date: 2022-01-01
 authors:
   - huytieu
   - nikkingtr
   - zlatanpham
+tags:
+  - project
+  - operations
+  - checklist
 ---
 
 **Transparency**

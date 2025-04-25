@@ -1,7 +1,7 @@
 ---
 title: The four preferences
-date: 2021-07-16
 description: The four preferences in MBTI personalities
+date: 2021-07-16
 authors:
   - namtran
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "#142 - The return of Tech Radar"
-date: 2022-11-21
 description: Tech Radar returns with its 4th edition to help Dwarves decide on new technologies, plus updates on Brainery, events, team wins, and upcoming World Cup fun.
+date: 2022-11-21
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

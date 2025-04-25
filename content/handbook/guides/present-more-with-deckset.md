@@ -1,7 +1,7 @@
 ---
 title: Present more with Deckset
-date: 2024-04-05
 description: null
+date: 2024-04-05
 authors:
   - bringastar
 tags:
@@ -60,15 +60,15 @@ Deckset also provides a variety of tools to add content to your slides, includin
 
 **Code block:**
 
-``` javascript
+```javascript
 $.ajax({
   url: "/api/getWeather",
   data: {
-    zipcode: 97201
+    zipcode: 97201,
   },
-  success: function( data ) {
-    $( "#weather-temp" ).html( "" + data + " degrees" );
-  }
+  success: function (data) {
+    $("#weather-temp").html("" + data + " degrees");
+  },
 });
 ```
 

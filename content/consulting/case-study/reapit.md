@@ -1,8 +1,8 @@
 ---
-title: "Building cloud solutions for UK real estate"
+title: Building cloud solutions for UK real estate
 short_title: Reapit
-date: 2021-02-13
 description: We joined Reapit as their offshore development team, helping them transform their desktop software into a modern cloud platform. Our agile team delivered critical components on a tight timeline for their major platform launch.
+date: 2021-02-13
 authors:
   - duynglam
   - nikkingtr

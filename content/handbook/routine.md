@@ -1,14 +1,13 @@
 ---
 title: Work routine
-date: 2020-08-12
 description: How we structure our time to maximize creativity, productivity, and balance
+date: 2020-08-12
 authors:
   - tieubao
+hide_title: true
 tags:
   - handbook
   - workflow
-
-hide_title: true
 ---
 
 As mentioned in [how we work](how-we-work.md), we keep our teams small and embrace agile principles at scale. This approach helps us stay nimble while delivering consistent quality.

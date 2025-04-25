@@ -1,8 +1,8 @@
 ---
 title: "Building Voconic's cloud platform with Google for financial services"
 short_title: Voconic
-date: 2020-10-24
 description: We helped CJC create Voconic, a cloud platform that makes it easy for financial companies to deploy complex systems with just a few clicks, reducing manual effort and errors while working across different cloud providers.
+date: 2020-10-24
 authors:
   - tieubao
   - nikkingtr

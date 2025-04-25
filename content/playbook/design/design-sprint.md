@@ -1,12 +1,12 @@
 ---
 title: Design Sprint
-date: 2023-10-16
 description: Design sprint mostly applied to the Exploration phase. Friday is usually Education event or Lab projects at Dwarves Design, learning and continuous professional and personal development are in the core of our DNA. No one wants to settle, everyone wants to take the next step forward.
+date: 2023-10-16
 authors:
   - nikkingtr
   - tieubao
 tags:
-  - UX
+  - ux
   - design
   - learning
 ---

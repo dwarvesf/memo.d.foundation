@@ -1,7 +1,7 @@
 ---
 title: "#121 - Blood & Urine checkup for SG folks"
-date: 2022-05-17
 description: Blood and urine tests for SG members are scheduled on May 18, with apprenticeship training starting May 23 and new interns joining the team soon.
+date: 2022-05-17
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

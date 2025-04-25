@@ -1,7 +1,7 @@
 ---
 title: "#122 - Last day of May"
-date: 2022-05-31
 description: "Stay updated on Dwarves' health check-ups, May knowledge contributors, and upcoming all-hands meeting with team events and safety tips in Saigon."
+date: 2022-05-31
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

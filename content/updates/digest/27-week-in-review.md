@@ -1,7 +1,7 @@
 ---
 title: "#27 - Week in Review"
-date: 2020-06-06
 description: Discover how Dwarves team expands with new QA and Design members, embraces transparency and feedback culture, and shares tech stories while advancing projects like sudo.fm.
+date: 2020-06-06
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

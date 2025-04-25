@@ -1,8 +1,8 @@
 ---
-title: "AI for Fast and Fair Talent Search"
+title: AI for Fast and Fair Talent Search
 short_title: Screenz.ai
+description: AI for Fast and Fair Talent Search
 date: 2025-03-31
-description: "AI for Fast and Fair Talent Search"
 authors:
   - ooohminh
   - zlatanpham

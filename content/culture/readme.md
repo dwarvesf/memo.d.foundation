@@ -1,7 +1,7 @@
 ---
 title: 📜 Culture Notes
+description: "A collection of thoughts, principles, and experiences that define our culture beyond what's written in the handbook. These articles explore different aspects of how we work, make decisions, and build a community of exceptional engineers."
 date: 2024-04-29
-description: A collection of thoughts, principles, and experiences that define our culture beyond what's written in the handbook. These articles explore different aspects of how we work, make decisions, and build a community of exceptional engineers.
 authors:
   - tieubao
 tags:

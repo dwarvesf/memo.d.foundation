@@ -1,7 +1,7 @@
 ---
 title: Digest
-date: 2023-12-11
 description: A collection of both our internal and external events, including the things we do with the Labs team, Consulting team, Operations, team, and the community.
+date: 2023-12-11
 authors:
   - monotykamary
   - innnotruong

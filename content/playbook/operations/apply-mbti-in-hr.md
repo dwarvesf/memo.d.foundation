@@ -1,7 +1,7 @@
 ---
 title: Apply MBTI in hiring
-date: 2021-07-17
 description: A guide to using MBTI personality types to better understand job candidates and team members, with specific traits to look for in engineering, design, sales, and people operations roles.
+date: 2021-07-17
 authors:
   - namtran
 tags:

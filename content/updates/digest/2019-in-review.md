@@ -1,7 +1,7 @@
 ---
 title: 2019 In Review
-date: 2020-01-25
 description: 2019 notable highlights and achievements
+date: 2020-01-25
 authors:
   - tieubao
 tags:

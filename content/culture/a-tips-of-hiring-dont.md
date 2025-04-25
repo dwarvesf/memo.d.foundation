@@ -1,7 +1,7 @@
 ---
-title: A tips of hiring - Do & Don't
-date: 2020-07-28
+title: "A tips of hiring - Do & Don't"
 description: Strategic guidance on purposeful hiring - hire for actual needs rather than scaling, understand the role deeply before posting a job, and recognize when additional help is truly needed to maintain quality.
+date: 2020-07-28
 authors:
   - tieubao
   - duynglam

@@ -1,15 +1,15 @@
 ---
-tags:
-  - people
-  - operations
-  - checklist
 title: Offboarding
-date: 2024-08-19
 description: The process when an employee offboard from the team.
+date: 2024-08-19
 authors:
   - tieubao
   - huynguyenh
   - innnotruong
+tags:
+  - people
+  - operations
+  - checklist
 ---
 
 ## Objectives

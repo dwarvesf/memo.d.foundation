@@ -1,7 +1,7 @@
 ---
 title: "#118 - Apprenticeship Sharing & Updates on April Brainery Inputs & Bao Minh Insurance"
-date: 2022-04-18
 description: Apply now for Apprenticeship 2022 before the deadline and explore new learning resources, insurance updates, and team news at d.foundation.
+date: 2022-04-18
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

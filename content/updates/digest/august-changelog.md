@@ -1,7 +1,7 @@
 ---
 title: August Changelog
-date: 2021-09-03
 description: Discover how our team advances blockchain skills, improves project workflows with Basecamp Kanban, and grows expertise through audits, automation, and professional development.
+date: 2021-09-03
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

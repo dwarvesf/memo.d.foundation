@@ -1,7 +1,7 @@
 ---
 title: "#130 - Rolled out our first monthly Tech Event"
-date: 2022-07-22
 description: Join our first tech event recap with Google’s @thanhlv, explore new articles on Atomic Design and HDFS, and book your Performance Review slot now.
+date: 2022-07-22
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

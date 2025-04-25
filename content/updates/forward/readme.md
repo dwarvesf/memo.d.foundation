@@ -1,7 +1,7 @@
 ---
-title: "Forward Engineering"
-date: 2020-08-25
+title: Forward Engineering
 description: We launch The Dwarves Tech Radar as a living asset to evaluate the adoption decision and keep the technology direction stays on track. Tech Radar is how we do R&D, how we work on self-growth and motivate continuous curiosity.
+date: 2020-08-25
 authors:
   - tieubao
   - duynglam

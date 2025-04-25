@@ -1,7 +1,7 @@
 ---
 title: Delegate work, not responsibility
-date: 2019-11-27
 description: Delegating work does not absolve you of responsibility. In the case of a failure, the blame is all yours. Investors will go after the CEO, even if an intern made the mistake that hurt the company.
+date: 2019-11-27
 authors:
   - tieubao
 tags:

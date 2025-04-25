@@ -1,10 +1,10 @@
 ---
 title: "Weekly Digest #4: Finding your authentic tribe"
-date: 2024-05-06
+short_title: "#4 Finding your authentic tribe"
 description: "Welcome back to the #4 weekly digest after a long holiday. Those Discord channels are still buzzing with active messages. Without further ado, let’s see what I’ve got to share."
+date: 2024-05-06
 authors:
   - innnotruong
-short_title: "#4 Finding your authentic tribe"
 tags:
   - weekly-digest
   - discord

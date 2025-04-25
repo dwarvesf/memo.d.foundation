@@ -1,7 +1,7 @@
 ---
 title: Recap a publication
+description: "Recap a publication is the work of summarizing its key points, analyzing why it matters, and providing insights or opinions on its content. At Dwarves, we follow a set of must-dos and set expectations for Recap a publication, to ensure we have a clear and insightful summary that can contribute to readers' understanding of the topic."
 date: 2024-03-27
-description: Recap a publication is the work of summarizing its key points, analyzing why it matters, and providing insights or opinions on its content. At Dwarves, we follow a set of must-dos and set expectations for Recap a publication, to ensure we have a clear and insightful summary that can contribute to readers' understanding of the topic.
 authors:
   - nikkingtr
 tags:

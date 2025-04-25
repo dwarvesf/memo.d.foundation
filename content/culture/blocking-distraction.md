@@ -1,7 +1,7 @@
 ---
 title: Blocking distraction
-date: 2016-01-11
 description: Practical tips to find focus in our constantly connected world, including spending time alone, removing background noise, embracing quiet moments, and creating productive morning routines.
+date: 2016-01-11
 authors:
   - tieubao
 tags:

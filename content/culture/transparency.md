@@ -1,7 +1,7 @@
 ---
 title: Transparency
-date: 2020-05-27
 description: The essence of transparency within a company
+date: 2020-05-27
 tags:
   - transparency
   - culture

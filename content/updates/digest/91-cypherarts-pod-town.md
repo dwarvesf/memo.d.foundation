@@ -1,7 +1,7 @@
 ---
 title: "#91 - CypherArts & Pod Town"
-date: 2021-09-11
 description: Open Fabric is building an open commerce network for seamless online payments, while actively hiring fullstack, frontend, mobile, and QA talents to grow their blockchain-based projects.
+date: 2021-09-11
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

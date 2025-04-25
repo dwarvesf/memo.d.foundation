@@ -1,15 +1,15 @@
 ---
-title: "Building AI-powered search for online stores"
+title: Building AI-powered search for online stores
 short_title: Search.io
-date: 2021-10-14
 description: We helped Search.io improve their dashboard, enhance their open-source tools, and create better interfaces for their plugins, helping online stores boost sales with smarter search.
+date: 2021-10-14
 authors:
   - zlatanpham
   - huynguyenh
 tags:
   - startup
   - case-study
-  - US
+  - us
 ---
 
 **Industry**\

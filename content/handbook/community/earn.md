@@ -1,8 +1,8 @@
 ---
 title: Earning with sidegig
 short_title: Earn
-date: 2023-06-21
 description: Bounties reward community members with $ICY for contributing work that helps developers expand their skills beyond their usual focus.
+date: 2023-06-21
 authors:
   - nikkingtr
   - innnotruong

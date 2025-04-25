@@ -1,15 +1,15 @@
 ---
 title: Consulting team
+description: "We're a team combining tech skills, problem-solving, and clear communication. We help businesses overcome challenges by finding root causes, creating practical solutions, and working closely with clients to implement them effectively."
 date: 2023-12-21
-description: We're a team combining tech skills, problem-solving, and clear communication. We help businesses overcome challenges by finding root causes, creating practical solutions, and working closely with clients to implement them effectively.
 authors:
   - tieubao
   - monotykamary
   - nikkingtr
+hide_title: true
 tags:
   - consulting
   - home
-hide_title: true
 ---
 
 ## Our foundation

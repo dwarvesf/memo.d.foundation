@@ -1,7 +1,7 @@
 ---
 title: How to conduct a meeting
+description: "Meetings are important, but they need structure to be productive. This guide covers the essentials for running meetings smoothly, respecting everyone's time, and getting things done."
 date: 2018-07-10
-description: Meetings are important, but they need structure to be productive. This guide covers the essentials for running meetings smoothly, respecting everyone's time, and getting things done.
 authors:
   - tieubao
 tags:

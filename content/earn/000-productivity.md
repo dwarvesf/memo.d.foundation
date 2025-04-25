@@ -1,7 +1,7 @@
 ---
 title: Productivity
+description: null
 date: 2025-04-03
-description:
 authors:
   - tieubao
 tags:
@@ -9,19 +9,19 @@ tags:
   - productivity
 ---
 
-At [Company/Community Name], we’re obsessed with working smarter, not harder. This month, we’re tapping into the power of AI to speed up our processes, and we need YOUR ideas to make it happen! Whether it’s automating writing, deploying AI agents, or streamlining workflows, share your proposal and earn *15 icy* for every approved idea.
+At [Company/Community Name], we’re obsessed with working smarter, not harder. This month, we’re tapping into the power of AI to speed up our processes, and we need YOUR ideas to make it happen! Whether it’s automating writing, deploying AI agents, or streamlining workflows, share your proposal and earn _15 icy_ for every approved idea.
 
 Here’s How It Works:
 
 - **What We’re Looking For**: Creative ways to use AI to accelerate tasks, like writing, research, or operations. We want proposals, guidelines, or practices that save time and boost efficiency. (See an example below!)
 - **How to Submit**: Send your idea to [submission link/form/channel] with a brief explanation. No idea’s too small!
-- **Reward**: Earn *15 icy* per approved submission added to our AI-powered playbook. Standout ideas could score up to 25 icy!
+- **Reward**: Earn _15 icy_ per approved submission added to our AI-powered playbook. Standout ideas could score up to 25 icy!
 - **Review Process**: Our team reviews weekly and will let you know if your idea’s a go.
 - **What’s Next**: Winning ideas get implemented, and you’ll be credited community-wide!
 
 Why Join In?
 
-- Earn *icy* tokens to [use in community perks, trade, etc., add token value context].
+- Earn _icy_ tokens to [use in community perks, trade, etc., add token value context].
 - Help us harness AI to work faster and smarter.
 - Open to everyone, bring your A(I)-game!
 

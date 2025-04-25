@@ -1,7 +1,7 @@
 ---
 title: Write content for multimedia guidelines
-date: 2024-05-03
 description: "To help all our Dwarves team members, create original, helpful, and consistent writing across various platforms, we've put together this content guideline as a reference whenever we're writing for Dwarves."
+date: 2024-05-03
 authors:
   - innno_
   - nikkingtr

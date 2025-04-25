@@ -1,7 +1,7 @@
 ---
 title: "#45 - Sentry Adoption, Website Upgrade & Projects Output"
-date: 2020-10-17
 description: Learn how our team adopted a new monitoring stack using Grafana, Loki, and Sentry to improve application status tracking and updated websites with Tailwind CSS.
+date: 2020-10-17
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

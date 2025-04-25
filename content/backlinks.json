@@ -229,6 +229,12 @@
       "path": "/handbook"
     }
   ],
+  "readme": [
+    {
+      "title": "Dwarves Playbook",
+      "path": "/playbook"
+    }
+  ],
   "playground/topics/golang/go-for-enterprise/why-enterprise-chose-java": [
     {
       "title": "Go as an Enterprise Standard Language",
@@ -260,6 +266,12 @@
     }
   ],
   "careers/open-positions/growth-lead": [
+    {
+      "title": "Join the Dwarves",
+      "path": "/careers"
+    }
+  ],
+  "careers/open-positions/sales-manager": [
     {
       "title": "Join the Dwarves",
       "path": "/careers"

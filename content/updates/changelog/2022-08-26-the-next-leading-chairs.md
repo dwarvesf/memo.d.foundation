@@ -1,7 +1,7 @@
 ---
 title: The Next Leading Chairs
-date: 2022-08-26
 description: We like the idea of labeling teams by what they deliver. Hence, the next chapter of Dwarves will be based on five angles.
+date: 2022-08-26
 authors:
   - tieubao
   - duynglam

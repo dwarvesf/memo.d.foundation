@@ -1,7 +1,7 @@
 ---
 title: Hiring approach
-date: 2018-06-26
 description: Hire people who tell us what to do, not the other way around.
+date: 2018-06-26
 authors:
   - tieubao
   - duynglam

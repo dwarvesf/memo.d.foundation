@@ -1,7 +1,7 @@
 ---
 title: "#115 - Launching Apprenticeship"
-date: 2022-03-26
 description: Join the Dwarves Apprenticeship Program and Career Fair with coding challenges, mock interviews, and learn about serverless architecture from expert presentations.
+date: 2022-03-26
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

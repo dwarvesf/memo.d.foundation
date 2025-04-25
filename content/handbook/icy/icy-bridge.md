@@ -1,11 +1,11 @@
 ---
 title: Bridge $DFG from Ethereum to Base
+description: This guide will show you how to move $DFG from Ethereum to Base using a bridge.
 date: 2024-04-19
-description: This guide will show you how to move $DFG from Ethereum to Base using a bridge. 
-authors: 
+authors:
   - minh
   - jack
-tags: 
+tags:
   - dfg
   - icy
   - tutorial
@@ -46,4 +46,4 @@ Here is how it goes:
 ![](assets/how-to-transfer-dfg-from-eth-to-base-for-staking_approve_bride.webp)
 
 4. Then just sit back and wait for your DFG to roll into your Base wallet.
-![](assets/how-to-transfer-dfg-from-eth-to-base-for-staking_approve_bride_3.webp)
+   ![](assets/how-to-transfer-dfg-from-eth-to-base-for-staking_approve_bride_3.webp)

@@ -1,7 +1,7 @@
 ---
 title: How to earn reward from staking DFG
-date: 2024-04-19
 description: This guide will show you how to use $DFG staking to earn $USDC, cool merch, and more.
+date: 2024-04-19
 authors:
   - ooohminh
   - jack

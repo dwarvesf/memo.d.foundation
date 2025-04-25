@@ -1,7 +1,7 @@
 ---
 title: The OKR
-date: 2016-04-06
 description: How we use OKR to define goals
+date: 2016-04-06
 authors:
   - tieubao
 tags:

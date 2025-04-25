@@ -1,7 +1,7 @@
 ---
 title: Compliance
-date: 2024-01-02
 description: Our commitment to ethical standards and compliance
+date: 2024-01-02
 authors:
   - tieubao
 tags:

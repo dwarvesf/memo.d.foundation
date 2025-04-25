@@ -1,7 +1,7 @@
 ---
 title: "#98 - October Changelog: Consulting, Foundation & New Engineering Setup"
-date: 2021-10-31
 description: Discover how our tech consulting, team scaling, and community efforts are driving growth with new projects, enhanced management, and expanded engineering teams.
+date: 2021-10-31
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

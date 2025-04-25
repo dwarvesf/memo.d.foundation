@@ -1,13 +1,13 @@
 ---
 title: Focus on delivery
-date: 2023-02-04
 description: Focus on shipping when you are struggling with what to do next to be better as a software engineer. When you ship something new, users will try out your build and give you feedback.
+date: 2023-02-04
 authors:
   - tieubao
+pinned: true
 tags:
   - productivity
   - quality
-pinned: true
 ---
 
 Focus on shipping when you are struggling with what to do next to be better as a software engineer. When you ship something new, users will try out your build and give you feedback. It may contain bugs. It may ship with the wrong flow implemented. It may ship with known issues. You may feel bad but and frustrated but those emotions will save you ton of time. The point is: Users will let you know.

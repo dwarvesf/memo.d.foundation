@@ -1,7 +1,7 @@
 ---
 title: "#112 - Going crypto-native"
-date: 2022-02-28
 description: Join our crypto-native firm to receive monthly salaries in BUSD/USDT and stay updated on team news, projects, and hiring plans in our February All Hands Meeting.
+date: 2022-02-28
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

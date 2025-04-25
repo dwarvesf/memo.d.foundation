@@ -1,8 +1,8 @@
 ---
-title: "Making dental work easier in Singapore"
+title: Making dental work easier in Singapore
 short_title: Dental Marketplace
-date: 2020-09-20
 description: We built an online platform that helps dentists in Singapore run their practices better. Created by a dental surgeon, Dental Marketplace connects dental professionals, makes finding events easier, and simplifies everyday tasks.
+date: 2020-09-20
 authors:
   - duynglam
 tags:

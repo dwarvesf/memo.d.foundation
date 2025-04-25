@@ -1,9 +1,9 @@
 ---
+title: Asking As A Junior
+description: null
+date: 2020-09-21
 tags:
   - tips
-title: Asking As A Junior
-date: 2020-09-21
-description: null
 ---
 
 Switching from schooling to the working world is not easy. New people, new culture, new workflow. The urge to learn quickly, prove one's self, and build up self-worth.

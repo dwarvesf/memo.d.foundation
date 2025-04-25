@@ -1,8 +1,8 @@
 ---
-title: "Building a powerful crypto trading dashboard for professionals"
+title: Building a powerful crypto trading dashboard for professionals
 short_title: Hedge Foundation
-date: 2022-06-17
 description: We built Hedge Foundation, a powerful crypto trading dashboard that helps professional traders manage multiple accounts, track positions, and automate order execution in real-time across exchanges.
+date: 2022-06-17
 authors:
   - nikkingtr
 tags:

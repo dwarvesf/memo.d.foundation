@@ -1,7 +1,7 @@
 ---
 title: Moonlighting
+description: "We support your growth through side projects while ensuring they don't conflict with your work at Dwarves Foundation. This policy helps you balance outside work with your primary responsibilities."
 date: 2019-02-21
-description: We support your growth through side projects while ensuring they don't conflict with your work at Dwarves Foundation. This policy helps you balance outside work with your primary responsibilities.
 authors:
   - tieubao
 tags:

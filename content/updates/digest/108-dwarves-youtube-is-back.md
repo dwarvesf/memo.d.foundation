@@ -1,7 +1,7 @@
 ---
 title: "#108 - Dwarves Youtube is back"
-date: 2022-01-21
 description: Get updates on our Lunar New Year gift set delivery, new team members, recruitment, and explore our revamped Dwarves YouTube channel for knowledge training.
+date: 2022-01-21
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

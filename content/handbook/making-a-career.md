@@ -1,7 +1,7 @@
 ---
 title: Making a career
+description: "Forget the typical tech industry churn. Here's how you can actually build a lasting career and master your craft at Dwarves Foundation."
 date: 2024-07-26
-description: Forget the typical tech industry churn. Here's how you can actually build a lasting career and master your craft at Dwarves Foundation.
 authors:
   - tieubao
 tags:

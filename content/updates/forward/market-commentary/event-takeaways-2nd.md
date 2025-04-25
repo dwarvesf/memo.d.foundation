@@ -1,8 +1,8 @@
 ---
 title: "Talks and Takeaways from the Scene: Part 2"
 short_title: 2nd Talks and Takeaways
-date: 2025-03-25T00:00:00.000Z
 description: Talks and Takeaways from the Scene Part 2
+date: 2025-03-25
 authors:
   - ooohminh
 tags:

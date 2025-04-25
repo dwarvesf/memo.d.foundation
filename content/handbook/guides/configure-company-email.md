@@ -1,7 +1,7 @@
 ---
 title: Configure your company email
-date: 2022-11-29
 description: A step-by-step guide to setting up your @d.foundation email alias to send and receive mail directly within your personal Gmail account.
+date: 2022-11-29
 authors:
   - tieubao
 tags:

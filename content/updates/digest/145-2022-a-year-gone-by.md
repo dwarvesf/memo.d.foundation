@@ -1,7 +1,7 @@
 ---
 title: "#145 - 2022, A Year Gone By"
-date: 2022-12-31
 description: "Reflect on 2022's milestones, team updates, and upcoming events as we celebrate growth, welcome new members, and prepare for the New Year holiday and all-hands meeting."
+date: 2022-12-31
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

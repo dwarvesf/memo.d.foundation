@@ -1,9 +1,7 @@
 ---
 title: Dwarves Updates
+description: null
 date: 2024-03-12
-description:
-authors:
-tags: []
 ---
 
 We run our company like we build software.

@@ -1,12 +1,11 @@
 ---
 title: UX
+description: null
 date: 2023-10-16
-description:
 tags:
   - playbook
   - design
   - ux
-authors: []
 ---
 
 ## UX Research Framework

@@ -1,7 +1,7 @@
 ---
 title: "#92 - More Dwarves in the Brain team"
-date: 2021-09-18
 description: Join our expanding team exploring SaaS, Blockchain, Web3, and DeFi topics, plus discover NFT artist stories and register for the Virtual WeBuild Day event.
+date: 2021-09-18
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

@@ -1,9 +1,9 @@
 ---
+title: Startups Vs Junior Designers
+description: null
+date: 2020-07-24
 tags:
   - tips
-title: Startups Vs Junior Designers
-date: 2020-07-24
-description: null
 ---
 
 Now, before you throw bricks at me for hindering the opportunities for new aspiring designers to "explore the world"; I'm a designer myself, and I stand by my community. I write this not just for startup founders. I write this also for designers to make better judgments before deciding to join a startup environment.

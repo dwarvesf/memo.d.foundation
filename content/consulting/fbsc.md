@@ -1,7 +1,7 @@
 ---
 title: FBSC
-date: 2023-10-16
 description: Our approach to project budgeting and why we avoid fixed bids, focusing instead on collaboration, adaptability, and creating value through staged development.
+date: 2023-10-16
 authors:
   - nikkingtr
   - huytieu

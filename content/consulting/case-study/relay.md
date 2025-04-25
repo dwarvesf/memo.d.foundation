@@ -1,15 +1,15 @@
 ---
-title: "Helping Relay launch their workflow automation MVP for the US market"
+title: Helping Relay launch their workflow automation MVP for the US market
 short_title: Relay
-date: 2021-04-29
 description: We helped Relay quickly develop and launch their workflow automation tool for early market testing. Our engineers built a complete solution including a Chrome extension, web app, and Slack integration that helped Relay acquire their first paying customers and prepare for their next funding round.
+date: 2021-04-29
 authors:
   - duynglam
 tags:
   - case-study
   - browser-extension
   - early-stage
-  - US
+  - us
 ---
 
 **Industry**\

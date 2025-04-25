@@ -1,7 +1,7 @@
 ---
 title: "#129 - In Dwarves this week "
-date: 2022-07-14
 description: "Celebrate team milestones, join Dwarves Network's tech event with Google’s Thanh Le, explore July Brainery tech insights, and apply now for frontend, recruiter, and community roles."
+date: 2022-07-14
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "#23 - Cycle Updates, Transcripts & Project Highlight, what a week!"
-date: 2020-05-09
 description: Discover how Software Craftsmanship at DF enhances engineering skills, promotes well-crafted software, and improves mobile app design for better user experience.
+date: 2020-05-09
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

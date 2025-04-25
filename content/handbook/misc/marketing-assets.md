@@ -1,7 +1,7 @@
 ---
 title: Marketing assets
-date: 2019-02-21
 description: Dwarves marketing assets
+date: 2019-02-21
 authors:
   - tieubao
 tags:

@@ -1,8 +1,8 @@
 ---
 title: "#3 Digital transformation insights from the energy sector"
 short_title: SP Group
-date: 2024-06-05
 description: Our visit to SP Group offered valuable perspectives on enterprise digital transformation challenges. We learned that successful transformation depends more on people and organizational culture than technology, while strong partnerships require treating external teams as part of your own.
+date: 2024-06-05
 authors:
   - nikkingtr
   - innnotruong

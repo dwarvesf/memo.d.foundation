@@ -1,14 +1,14 @@
 ---
+title: Welcome to Dwarves Updates
+description: The email template is to announce every updates to the comminity and subscriber.
+date: 2020-01-01
+authors:
+  - nikkingtr
+  - huynguyenh
 tags:
   - template
   - email
   - operations
-title: Welcome to Dwarves Updates
-date: 2020-01-01
-description: The email template is to announce every updates to the comminity and subscriber.
-authors:
-  - nikkingtr
-  - huynguyenh
 ---
 
 Hey there!

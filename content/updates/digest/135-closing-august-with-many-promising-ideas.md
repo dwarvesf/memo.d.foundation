@@ -1,7 +1,7 @@
 ---
 title: "#135 - Closing August with many promising ideas"
-date: 2022-08-26
 description: Join the August All-hands meeting to hear about team growth, new referral rewards, probation updates, remote offices, and welcome new members before the holiday break.
+date: 2022-08-26
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

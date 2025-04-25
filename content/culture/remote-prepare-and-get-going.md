@@ -1,7 +1,7 @@
 ---
 title: Remote prepare and get going
-date: 2016-01-15
 description: null
+date: 2016-01-15
 authors:
   - tieubao
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "#53 - Dwarves Latest in Dec: WeBuild Day, Website update & English Class"
-date: 2020-12-05
 description: Get the latest updates on Covid-19, Artzy.vn improvements, WeBuild Day, The Library Project partnership, Salesforce-Slack deal, and new English classes for our community.
+date: 2020-12-05
 last_edited: "2025-04-07T00:00:00.000Z"
 ---
 

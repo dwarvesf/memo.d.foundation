@@ -1,8 +1,8 @@
 ---
 title: "Building Setel's fuel payment super-app for Malaysian drivers"
 short_title: Setel
-date: 2021-05-27
 description: We helped Setel expand their fuel payment app into a full-featured platform that makes refueling simple for Malaysian drivers. Our team built the conversion features that bring new users to the platform through deals, vouchers, and targeted marketing.
+date: 2021-05-27
 authors:
   - nikkingtr
   - tieubao
