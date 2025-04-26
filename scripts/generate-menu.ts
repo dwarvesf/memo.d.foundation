@@ -197,8 +197,16 @@ async function generateMenuIndex(): Promise<void> {
       }
 
       if (groupedPath) {
+        // Clean the file path for the menu URL
+        let cleanedFilePath = filePath;
+        if (cleanedFilePath.endsWith('/readme')) {
+          cleanedFilePath = cleanedFilePath.slice(0, -'/readme'.length);
+        } else if (cleanedFilePath.endsWith('/_index')) {
+          cleanedFilePath = cleanedFilePath.slice(0, -'/_index'.length);
+        }
+
         const filePathObj: MenuFilePath = {
-          file_path: filePath,
+          file_path: cleanedFilePath, // Use cleaned path
           title: shortTitle || title, // Prefer short_title if available
           date: date, // Store date for sorting
         };
@@ -305,14 +313,22 @@ async function generatePinnedNotes(): Promise<void> {
       const date = String(row.date || ''); // Explicitly convert date to string
 
       // Slugify the path for URL generation
-      const slugifiedPath = slugifyPathComponents(filePath);
+      let slugifiedPath = slugifyPathComponents(filePath);
 
-      // Create URL (remove .md extension if present)
-      const url =
-        '/' +
-        (slugifiedPath.endsWith('.md')
-          ? slugifiedPath.slice(0, -3)
-          : slugifiedPath);
+      // 1. Remove .md extension if present
+      if (slugifiedPath.endsWith('.md')) {
+        slugifiedPath = slugifiedPath.slice(0, -3);
+      }
+
+      // 2. Remove trailing /readme or /_index
+      if (slugifiedPath.endsWith('/readme')) {
+        slugifiedPath = slugifiedPath.slice(0, -'/readme'.length);
+      } else if (slugifiedPath.endsWith('/_index')) {
+        slugifiedPath = slugifiedPath.slice(0, -'/_index'.length);
+      }
+
+      // 3. Prepend slash for final URL
+      const url = '/' + slugifiedPath;
 
       return { title, url, date };
     });
