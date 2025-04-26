@@ -23,7 +23,7 @@ const VAULT_DIR = path.resolve(process.cwd(), 'vault');
 // Regex patterns
 const FRONTMATTER_TITLE_REGEX = /^title:\s*["']?(.+?)["']?\s*$/m;
 const HEADING_REGEX = /^(#{1,6})\s*(.+)$/gm;
-const BULLET_DEFINITION_REGEX = /^\s*(?:[-*]|\d+\.)\s+\*\*(.+?)\*\*:/gm;
+const BULLET_DEFINITION_REGEX = /^\s*(?:[-*]|\d+\.)\s+\*\*(.+?)(?::)?\*\*:?/gm;
 // New regex for markdown links [text](url)
 const MARKDOWN_LINK_REGEX = /^-\s+\[([^\]]+)\]\([^)]+\)/gm;
 
@@ -96,7 +96,18 @@ function extractItems(content) {
     items.add(match[1].trim());
   }
 
-  return Array.from(items);
+  // Filter items based on word count and uppercase word count
+  return Array.from(items).filter(item => {
+    const words = item.trim().split(/\s+/);
+    if (words.length === 1) {
+      return false; // skip single-word items
+    }
+    // For more than two words, check if at least two words start with uppercase letter
+    const uppercaseCount = words.reduce((count, word) => {
+      return /^[A-Z]/.test(word) ? count + 1 : count;
+    }, 0);
+    return uppercaseCount >= 2;
+  });
 }
 
 if (typeof fetch === 'undefined') {
