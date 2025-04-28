@@ -4,62 +4,16 @@ on:
   push:
     branches:
       - main
-      - build-test
 
 jobs:
-  publish_job:
-    runs-on: ubuntu-latest
-    name: Publish Obsidian notes to Github pages
-    steps:
-      - name: Checkout contents repo
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.DWARVES_PAT }}
-          submodules: true
-          fetch-depth: 15
-
-      - name: Update submodules to depth 2
-        run: |
-          # Configure git to use HTTPS instead of SSH for GitHub repositories
-          git config --global url."https://${{ secrets.DWARVES_PAT }}@github.com/".insteadOf "git@github.com:"
-
-          # Handle top-level submodules first (depth 1)
-          git submodule update --init --depth 1
-
-          # Process level 2 submodules manually with error handling
-          git submodule foreach 'if [ -f .gitmodules ]; then git submodule update --init --depth 1 || echo "Failed to update some depth 2 submodules, continuing anyway..."; fi'
-
-          # Ensure we don't proceed deeper
-          git config --global submodule.recurse false
-
-      - name: Install devbox
-        uses: jetpack-io/devbox-install-action@v0.11.0
-        with:
-          enable-cache: true
-          devbox-version: 0.14.1
-
-      - name: Run Build
-        run: devbox run build
-        env:
-          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-          ALGOLIA_APPLICATION_ID: ${{ secrets.ALGOLIA_APPLICATION_ID }}
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/main' }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-
   notify_job:
     runs-on: ubuntu-latest
     name: Notify Discord
-    needs: publish_job
     steps:
-      - name: Sleep for 30 seconds
+      - name: Sleep for 15 minutes
         uses: jakejarvis/wait-action@master
         with:
-          time: "30s"
+          time: "15m"
 
       - name: Discord notification
         env:
