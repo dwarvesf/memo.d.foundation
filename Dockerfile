@@ -7,7 +7,7 @@ USER ${DEVBOX_USER}:${DEVBOX_USER}
 
 # Clone the repository
 WORKDIR /
-RUN git clone --filter=blob:none https://github.com/dwarvesfoundation/memo.d.foundation.git /code
+RUN git clone --filter=blob:none https://github.com/dwarvesf/memo.d.foundation.git /code
 WORKDIR /code
 
 # Installing your devbox project
