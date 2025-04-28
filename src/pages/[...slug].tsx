@@ -58,7 +58,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const aliasesContent = await fs.readFile(aliasesPath, 'utf8'); // Await asynchronous readFile
     aliases = JSON.parse(aliasesContent);
-  } catch {
+  } catch (error) {
     console.error(`Error reading aliases.json in getStaticPaths: ${error}`);
     aliases = {}; // Initialize as empty object if file not found
   }
@@ -66,7 +66,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const redirectsContent = await fs.readFile(redirectsPath, 'utf8'); // Await asynchronous readFile
     redirects = JSON.parse(redirectsContent);
-  } catch {
+  } catch (error) {
     console.error(`Error reading redirects.json in getStaticPaths: ${error}`);
     redirects = {}; // Initialize as empty object if file not found
   }
@@ -304,7 +304,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     try {
       const backlinksContent = await fs.readFile(backlinksPath, 'utf8'); // Await asynchronous readFile
       allBacklinks = JSON.parse(backlinksContent);
-    } catch {
+    } catch (error) {
       console.error(`Error reading backlinks.json in getStaticProps: ${error}`);
       allBacklinks = {}; // Initialize as empty object if file not found
     }
@@ -362,7 +362,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         isListPage: false,
       },
     };
-  } catch {
+  } catch (error) {
     console.error('Error in getStaticProps:', error);
     return { notFound: true };
   }
@@ -402,7 +402,7 @@ export default function ContentPage({
 
           event.preventDefault(); // Prevent default browser navigation
           router.push(targetPath); // Use Next.js router for navigation with resolved path
-        } catch {
+        } catch (error) {
           console.error('Error resolving URL or pushing to router:', error);
           // Allow default navigation if an error occurs
         }
@@ -457,7 +457,7 @@ export default function ContentPage({
             const elementsArray = Array.from(elements);
             mermaid.default.run({ nodes: elementsArray });
           }
-        } catch {
+        } catch (error) {
           console.error('Failed to initialize or run Mermaid:', error);
         }
       });
