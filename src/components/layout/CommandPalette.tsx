@@ -18,6 +18,7 @@ import HotIcon from '../icons/HotIcon';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
 import SearchIcon from '../icons/SearchIcon';
 import { Editor } from 'draft-js';
+import { useLayoutContext } from '@/contexts/layout';
 
 const defaultSearchResult: SearchResult = {
   flat: [],
@@ -25,6 +26,7 @@ const defaultSearchResult: SearchResult = {
 };
 
 const CommandPalette: React.FC = () => {
+  const { isMacOS } = useLayoutContext();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [result, setResult] = useState<SearchResult>(defaultSearchResult);
@@ -32,7 +34,6 @@ const CommandPalette: React.FC = () => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [isMacOS, setIsMacOS] = useState(true);
   const searchInputRef = useRef<Editor>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -358,10 +359,6 @@ const CommandPalette: React.FC = () => {
       localStorage.setItem('recentPages', JSON.stringify(initialRecentPages));
     }
   }, [router.asPath]);
-
-  useEffect(() => {
-    setIsMacOS(window.navigator.userAgent.includes('Macintosh'));
-  }, []);
 
   const modifier = isMacOS ? '⌘' : 'ctrl';
 

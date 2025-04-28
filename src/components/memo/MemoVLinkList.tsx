@@ -37,7 +37,7 @@ const MemoVLinkList = ({
             <Link
               href={path}
               className={cn(
-                'link-v-list-item-title hover:text-primary hover:decoration-primary inline text-[17px] underline decoration-neutral-100',
+                'link-v-list-item-title hover:text-primary hover:decoration-primary decoration-link-decoration inline text-[17px] underline',
                 {
                   'text-primary decoration-primary': color === 'primary',
                 },

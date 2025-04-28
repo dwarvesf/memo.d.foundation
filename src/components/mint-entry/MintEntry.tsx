@@ -298,7 +298,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
                   href={`https://viewblock.io/arweave/tx/${permaStorageId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-primary hover:decoration-primary underline decoration-neutral-100"
+                  className="hover:text-primary hover:decoration-primary decoration-link-decoration underline"
                 >
                   {permaStorageId.substring(0, 20)}
                 </Link>
@@ -314,7 +314,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
                   href={explorerUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-primary hover:decoration-primary underline decoration-neutral-100"
+                  className="hover:text-primary hover:decoration-primary decoration-link-decoration underline"
                 >
                   {formattedAddress}
                 </Link>

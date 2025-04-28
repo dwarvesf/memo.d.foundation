@@ -466,7 +466,7 @@ export default function ContentPage({
                   <li key={memo.filePath} className="text-lg">
                     <Link
                       href={formatMemoPath(memo.filePath)}
-                      className="hover:text-primary hover:decoration-primary dark:hover:text-primary line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
+                      className="hover:text-primary hover:decoration-primary dark:hover:text-primary decoration-link-decoration line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline transition-colors duration-200 ease-in-out dark:text-neutral-300"
                     >
                       {memo.title}
                     </Link>
