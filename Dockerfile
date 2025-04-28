@@ -1,9 +1,7 @@
+# Builder image
 FROM jetpackio/devbox:latest AS builder
 
-# Install git
 USER root:root
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
-USER ${DEVBOX_USER}:${DEVBOX_USER}
 
 # Clone the repository
 WORKDIR /
@@ -11,15 +9,14 @@ RUN git clone --filter=blob:none https://github.com/dwarvesf/memo.d.foundation.g
 WORKDIR /code
 
 # Installing your devbox project
-RUN git submodule init --recursive --depth 15
-RUN devbox run duckdb-export
+RUN git config --global --add safe.directory /code
+RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
+RUN git submodule update --init --recursive --depth 1
+
 RUN devbox run build
-RUN devbox run -- nix-store --gc && nix-store --optimise
 
+# Export runner
 FROM nginx:alpine
-
 COPY --from=builder /code/out/ /usr/share/nginx/html
-
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]
