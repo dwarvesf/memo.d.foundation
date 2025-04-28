@@ -1,11 +1,21 @@
-# Use a lightweight Alpine Linux based Nginx image
+# Build Stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+
+RUN pnpm run build
+
+# Serve Stage
 FROM nginx:alpine
 
-# Copy the exported Next.js application
-COPY out/ /usr/share/nginx/html
+COPY --from=builder /app/out/ /usr/share/nginx/html
 
-# Expose port 80
 EXPOSE 80
 
-# Command to run Nginx
 CMD ["nginx", "-g", "daemon off;"]
