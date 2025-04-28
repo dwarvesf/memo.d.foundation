@@ -150,7 +150,7 @@
     @apply scroll-mt-20 font-serif tracking-tight;
     color: var(--foreground);
     line-height: 1.24;
-    padding: 0 !important;
+    padding: 0;
     font-weight: 600;
   }
 

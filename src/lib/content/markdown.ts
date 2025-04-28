@@ -8,8 +8,8 @@ import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import remarkMath from 'remark-math';
 import matter from 'gray-matter';
-import { visit } from 'unist-util-visit';
-import type { Heading, Root, Link, Literal } from 'mdast';
+import { SKIP, visit } from 'unist-util-visit';
+import type { Heading, Root, Link, Literal, Code } from 'mdast';
 import type {
   Element,
   Properties,
@@ -40,6 +40,7 @@ interface FileData {
   toc?: ITocItem[];
   headingTextMap?: Map<string, string>;
   blockCount?: number;
+  summaries?: string[];
   [key: string]: unknown;
 }
 
@@ -161,6 +162,27 @@ function remarkBlockCount() {
     const fileData = file.data as FileData;
 
     fileData.blockCount = tree.children.length ?? 0;
+  };
+}
+
+/**
+ * Custom remark plugin to extract and remove summary code blocks
+ */
+function remarkExtractSummaries() {
+  return (tree: Root, file: { data: Record<string, unknown> }) => {
+    const fileData = file.data as FileData;
+    fileData.summaries = fileData.summaries || [];
+
+    visit(tree, 'code', (node: Code, index, parent) => {
+      if (node.lang === 'summary' && parent && typeof index === 'number') {
+        fileData.summaries = fileData.summaries || [];
+        // Extract the content of the summary block
+        fileData.summaries.push(...node.value.split('\n').filter(Boolean));
+        // Remove the summary block from the tree
+        parent.children.splice(index, 1);
+        return [SKIP, index];
+      }
+    });
   };
 }
 
@@ -489,6 +511,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(remarkLineBreaks)
     .use(() => remarkResolveImagePaths(filePath))
     .use(remarkProcessLinks) // Process links and remove .md extensions
+    .use(remarkExtractSummaries) // Extract and remove summary code blocks
     .use(remarkToc) // Extract table of contents and create heading ID mapping
     .use(remarkBlockCount) // Count blocks
     .use(remarkMath, {
@@ -505,16 +528,33 @@ export async function getMarkdownContent(filePath: string) {
     .use(rehypeHighlight)
 
     .use(rehypeStringify);
-
   // Process the content
   const vFile = await processor.process({
     value: preprocessDollarSigns(content),
     data: fileData,
   });
 
+  // Process summaries using a simple inline processor
+  const summaryProcessor = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkLineBreaks)
+    .use(() => remarkResolveImagePaths(filePath))
+    .use(remarkProcessLinks) // Process links and remove .md extensions
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeSanitize, schema as never)
+    .use(rehypeStringify);
+
+  const rawSummaries = (fileData as FileData).summaries || [];
+  const processedSummary =
+    rawSummaries.length > 0
+      ? await summaryProcessor.process(rawSummaries.join('\n'))
+      : '';
+
   return {
     frontmatter,
     content: postprocessDollarSigns(String(vFile)),
+    summary: processedSummary.toString(),
     tocItems: (fileData as FileData).toc || [], // Return the table of contents
     blockCount: (fileData as FileData).blockCount || 0, // Return the block count
     rawContent: content,
