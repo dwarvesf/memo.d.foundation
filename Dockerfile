@@ -1,6 +1,14 @@
 # Builder image
 FROM jetpackio/devbox:latest AS builder
 
+ARG OPENAI_API_KEY
+ARG JINA_API_KEY
+ARG JINA_BASE_URL
+
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
+ENV JINA_API_KEY=$JINA_API_KEY
+ENV JINA_BASE_URL=$JINA_BASE_URL
+
 # Copy the repository
 WORKDIR /code
 USER root:root
