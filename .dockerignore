@@ -1,0 +1,17 @@
+.git/
+.next/
+.devbox/
+.chat/
+
+**/_build/
+**/.elixir_ls/
+**/deps/
+erl_crash.dump
+
+.submodule_update_cache
+.env
+
+node_modules/
+out/
+
+scripts/notion/notion-output/

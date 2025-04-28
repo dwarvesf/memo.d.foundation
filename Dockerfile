@@ -1,14 +1,22 @@
 # Builder image
 FROM jetpackio/devbox:latest AS builder
 
-USER root:root
-
-# Clone the repository
-WORKDIR /
-RUN git clone --filter=blob:none https://github.com/dwarvesf/memo.d.foundation.git /code
+# Copy the repository
 WORKDIR /code
+USER root:root
+RUN mkdir -p /code && chown ${DEVBOX_USER}:${DEVBOX_USER} /code
+USER ${DEVBOX_USER}:${DEVBOX_USER}
 
-# Installing your devbox project
+COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} ./ ./
+
+# Map git to current directory
+RUN git init
+RUN git remote add origin https://github.com/dwarvesf/memo.d.foundation.git
+RUN git fetch --depth 1 --no-tags origin main
+RUN git clean -fdx
+RUN git checkout main
+
+# Installing devbox project
 RUN git config --global --add safe.directory /code
 RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
 RUN git submodule update --init --recursive --depth 1
