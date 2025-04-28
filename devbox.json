@@ -9,7 +9,11 @@
     "duckdb": "1.2.1"
   },
   "shell": {
-    "init_hook": ["make lib-setup", "make fetch"],
+    "init_hook": [
+      "make lib-setup",
+      "make fetch",
+      "git update-index --assume-unchanged .cursor/mcp.json"
+    ],
     "scripts": {
       "build": "make build",
       "clear-build": "make clear-build",
