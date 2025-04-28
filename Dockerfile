@@ -5,11 +5,12 @@ WORKDIR /code
 USER root:root
 RUN mkdir -p /code && chown ${DEVBOX_USER}:${DEVBOX_USER} /code
 USER ${DEVBOX_USER}:${DEVBOX_USER}
-COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} devbox.json devbox.json
-COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} devbox.lock devbox.lock
 COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} ./ ./
 
-RUN devbox run -- make build && nix-store --gc && nix-store --optimise
+RUN git submodule init --recursive --depth 15
+RUN devbox run duckdb-export
+RUN devbox run build
+RUN devbox run -- nix-store --gc && nix-store --optimise
 
 FROM nginx:alpine
 
