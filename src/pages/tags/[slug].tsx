@@ -103,7 +103,8 @@ export default function TagDetailPage({
   const groupedMemos = useMemo(() => {
     const grouped: Record<string, IMemoItem[]> = {};
     data.forEach(memo => {
-      const firstLetter = memo.title[0]?.toUpperCase();
+      const firstLetter = getFirstLetter(memo.title)?.toUpperCase() || 'Others';
+
       if (!grouped[firstLetter]) {
         grouped[firstLetter] = [];
       }
@@ -174,4 +175,9 @@ export default function TagDetailPage({
       </div>
     </RootLayout>
   );
+}
+
+function getFirstLetter(input: string): string | null {
+  const match = input.match(/[a-zA-Z]/);
+  return match ? match[0] : null;
 }
