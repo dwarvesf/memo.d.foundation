@@ -2,7 +2,6 @@ interface SummaryBlockProps {
   summary?: string;
 }
 function SummaryBlock({ summary }: SummaryBlockProps) {
-  console.log(summary);
   if (!summary) {
     return null; // Don't render anything if summary is not provided
   }
@@ -18,7 +17,7 @@ function SummaryBlock({ summary }: SummaryBlockProps) {
         dangerouslySetInnerHTML={{
           __html: summary,
         }}
-      ></div>
+      />
     </div>
   );
 }
