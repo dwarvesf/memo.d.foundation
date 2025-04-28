@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs/promises'; // Use asynchronous promises API
 import matter from 'gray-matter';
 import { getAllMarkdownFiles, getContentPath } from './paths';
 import path from 'path';
@@ -8,47 +8,58 @@ interface GetAllMarkdownContentsOptions {
   includeContent?: boolean;
 }
 
-export function getAllMarkdownContents(
+export async function getAllMarkdownContents( // Make the function asynchronous
   basePath = '',
   options: GetAllMarkdownContentsOptions = {},
-) {
+): Promise<IMemoItem[]> {
+  // Update return type to Promise
   const { includeContent = true } = options; // Default to true
   const contentDir = getContentPath(basePath);
-  const allPaths = getAllMarkdownFiles(contentDir);
+  const allPaths = await getAllMarkdownFiles(contentDir); // Await the asynchronous function
   const baseSlugArray = basePath.split('/').filter(Boolean);
-  return allPaths
-    .map(slugArray => {
-      const filePath = path.join(contentDir, ...slugArray) + '.md';
-      if (!fs.existsSync(filePath)) {
-        return null;
-      }
-      // Read the markdown file
-      const markdownContent = fs.readFileSync(filePath, 'utf-8');
-      // Parse frontmatter and content
 
-      // tags
-      const result = matter(markdownContent);
-      const item: IMemoItem = {
-        content: includeContent ? result.content : '', // Conditionally include content
-        title: result.data.title || slugArray[slugArray.length - 1],
-        short_title: result.data.short_title || '',
-        description: result.data.description || '',
-        tags: Array.isArray(result.data.tags)
-          ? result.data.tags.filter(
-              tag => tag !== null && tag !== undefined && tag !== '',
-            )
-          : [],
-        pinned: result.data.pinned || false,
-        draft: result.data.draft || false,
-        hiring: result.data.hiring || false,
-        authors: result.data.authors || [],
-        date: result.data.date?.toString() || null,
-        filePath: path.join(basePath, ...slugArray) + '.md',
-        slugArray: [...baseSlugArray, ...slugArray],
-      };
-      return item;
-    })
-    .filter(Boolean) as IMemoItem[];
+  const memos: (IMemoItem | null)[] = [];
+  for (const slugArray of allPaths) {
+    const filePath = path.join(contentDir, ...slugArray) + '.md';
+    let fileExists = false;
+    try {
+      await fs.stat(filePath); // Use asynchronous stat to check existence
+      fileExists = true;
+    } catch {
+      // File does not exist
+    }
+
+    if (!fileExists) {
+      memos.push(null);
+      continue;
+    }
+
+    // Read the markdown file
+    const markdownContent = await fs.readFile(filePath, 'utf-8'); // Use asynchronous readFile
+    // Parse frontmatter and content
+    const result = matter(markdownContent);
+    const item: IMemoItem = {
+      content: includeContent ? result.content : '', // Conditionally include content
+      title: result.data.title || slugArray[slugArray.length - 1],
+      short_title: result.data.short_title || '',
+      description: result.data.description || '',
+      tags: Array.isArray(result.data.tags)
+        ? result.data.tags.filter(
+            tag => tag !== null && tag !== undefined && tag !== '',
+          )
+        : [],
+      pinned: result.data.pinned || false,
+      draft: result.data.draft || false,
+      hiring: result.data.hiring || false,
+      authors: result.data.authors || [],
+      date: result.data.date?.toString() || null,
+      filePath: path.join(basePath, ...slugArray) + '.md',
+      slugArray: [...baseSlugArray, ...slugArray],
+    };
+    memos.push(item);
+  }
+
+  return memos.filter(Boolean) as IMemoItem[];
 }
 
 interface FilterMemoProps {

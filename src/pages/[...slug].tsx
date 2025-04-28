@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import fs from 'fs';
+import fs from 'fs/promises'; // Use asynchronous promises API
 import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router'; // Import useRouter
@@ -56,22 +56,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let redirects: Record<string, string> = {}; // To store redirects
 
   try {
-    const aliasesContent = fs.readFileSync(aliasesPath, 'utf8');
+    const aliasesContent = await fs.readFile(aliasesPath, 'utf8'); // Await asynchronous readFile
     aliases = JSON.parse(aliasesContent);
-  } catch (error) {
+  } catch {
     console.error(`Error reading aliases.json in getStaticPaths: ${error}`);
     aliases = {}; // Initialize as empty object if file not found
   }
 
   try {
-    const redirectsContent = fs.readFileSync(redirectsPath, 'utf8');
+    const redirectsContent = await fs.readFile(redirectsPath, 'utf8'); // Await asynchronous readFile
     redirects = JSON.parse(redirectsContent);
-  } catch (error) {
+  } catch {
     console.error(`Error reading redirects.json in getStaticPaths: ${error}`);
     redirects = {}; // Initialize as empty object if file not found
   }
 
-  const markdownPaths = getAllMarkdownFiles(contentDir)
+  const markdownPaths = (await getAllMarkdownFiles(contentDir)) // Await the asynchronous function
     .filter(
       slugArray =>
         !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
@@ -152,14 +152,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     let redirects: Record<string, string> = {};
 
     try {
-      const aliasesContent = fs.readFileSync(aliasesPath, 'utf8');
+      const aliasesContent = await fs.readFile(aliasesPath, 'utf8'); // Await asynchronous readFile
       aliases = JSON.parse(aliasesContent);
     } catch {
       aliases = {}; // Initialize as empty object if file not found
     }
 
     try {
-      const redirectsContent = fs.readFileSync(redirectsPath, 'utf8');
+      const redirectsContent = await fs.readFile(redirectsPath, 'utf8'); // Await asynchronous readFile
       redirects = JSON.parse(redirectsContent);
     } catch {
       redirects = {}; // Initialize as empty object if file not found
@@ -210,7 +210,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.md';
 
     // If the direct path doesn't exist, check if there's an _index.md or readme.md file in the directory
-    if (!fs.existsSync(filePath)) {
+    let directPathExists = false;
+    try {
+      await fs.stat(filePath); // Use asynchronous stat to check existence
+      directPathExists = true;
+    } catch {
+      // File does not exist
+    }
+
+    if (!directPathExists) {
       const indexFilePath = path.join(
         process.cwd(),
         'public/content',
@@ -229,12 +237,36 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         ...canonicalSlug,
       );
 
-      if (fs.existsSync(readmeFilePath)) {
+      let readmeExists = false;
+      try {
+        await fs.stat(readmeFilePath); // Use asynchronous stat
+        readmeExists = true;
+      } catch {
+        // File does not exist
+      }
+
+      let indexExists = false;
+      try {
+        await fs.stat(indexFilePath); // Use asynchronous stat
+        indexExists = true;
+      } catch {
+        // File does not exist
+      }
+
+      let directoryExists = false;
+      try {
+        await fs.stat(directoryPath); // Use asynchronous stat
+        directoryExists = true;
+      } catch {
+        // Directory does not exist
+      }
+
+      if (readmeExists) {
         // Prioritize readme.md if it exists
         filePath = readmeFilePath;
-      } else if (fs.existsSync(indexFilePath)) {
+      } else if (indexExists) {
         filePath = indexFilePath;
-      } else if (fs.existsSync(directoryPath)) {
+      } else if (directoryExists) {
         // Pass includeContent: false as list page only needs title/path
         // Use canonicalSlug for file system operations
         const allMemos = await getAllMarkdownContents(canonicalSlug.join('/'), {
@@ -261,7 +293,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       rawContent,
       blockCount,
       summary: manualSummary,
-    } = await getMarkdownContent(filePath);
+    } = await getMarkdownContent(filePath); // Await the asynchronous function
 
     // Get backlinks from the pre-calculated file
     const backlinksPath = path.join(
@@ -270,9 +302,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     );
     let allBacklinks: Record<string, { title: string; path: string }[]> = {};
     try {
-      const backlinksContent = fs.readFileSync(backlinksPath, 'utf8');
+      const backlinksContent = await fs.readFile(backlinksPath, 'utf8'); // Await asynchronous readFile
       allBacklinks = JSON.parse(backlinksContent);
-    } catch (error) {
+    } catch {
       console.error(`Error reading backlinks.json in getStaticProps: ${error}`);
       allBacklinks = {}; // Initialize as empty object if file not found
     }
@@ -330,7 +362,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         isListPage: false,
       },
     };
-  } catch (error) {
+  } catch {
     console.error('Error in getStaticProps:', error);
     return { notFound: true };
   }
@@ -370,7 +402,7 @@ export default function ContentPage({
 
           event.preventDefault(); // Prevent default browser navigation
           router.push(targetPath); // Use Next.js router for navigation with resolved path
-        } catch (error) {
+        } catch {
           console.error('Error resolving URL or pushing to router:', error);
           // Allow default navigation if an error occurs
         }
@@ -425,7 +457,7 @@ export default function ContentPage({
             const elementsArray = Array.from(elements);
             mermaid.default.run({ nodes: elementsArray });
           }
-        } catch (error) {
+        } catch {
           console.error('Failed to initialize or run Mermaid:', error);
         }
       });

@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs/promises'; // Use asynchronous promises API
 import path from 'path';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -331,7 +331,7 @@ function rehypeNextjsLinks() {
  */
 export async function getMarkdownContent(filePath: string) {
   // Read the markdown file
-  const markdownContent = fs.readFileSync(filePath, 'utf-8');
+  const markdownContent = await fs.readFile(filePath, 'utf-8'); // Use asynchronous readFile
 
   // Parse frontmatter and content
   const { data: frontmatter, content } = matter(markdownContent);
@@ -561,12 +561,21 @@ export async function getMarkdownContent(filePath: string) {
   };
 }
 
-export function getMarkdownMetadata(slugPath: string) {
+export async function getMarkdownMetadata(slugPath: string) {
+  // Make the function asynchronous
   const filePath = getContentPath(slugPath);
-  if (!fs.existsSync(filePath)) {
+  let fileExists = false;
+  try {
+    await fs.stat(filePath); // Use asynchronous stat to check existence
+    fileExists = true;
+  } catch {
+    // File does not exist
+  }
+
+  if (!fileExists) {
     return {};
   }
-  const markdownContent = fs.readFileSync(filePath, 'utf-8');
+  const markdownContent = await fs.readFile(filePath, 'utf-8'); // Use asynchronous readFile
   const { data: frontmatter } = matter(markdownContent);
   return frontmatter;
 }

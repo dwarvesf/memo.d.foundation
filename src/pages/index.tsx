@@ -22,8 +22,8 @@ interface HomePageProps extends RootLayoutPageProps {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const allMemos = await getAllMarkdownContents();
-    const layoutProps = await getRootLayoutPageProps();
+    const allMemos = await getAllMarkdownContents(); // Await the asynchronous function
+    const layoutProps = await getRootLayoutPageProps(); // Await the asynchronous function
     const sortedMemos = sortMemos(allMemos);
     const ogifMemos = filterMemo({
       data: sortedMemos,
