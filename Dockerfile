@@ -13,7 +13,7 @@ RUN devbox run -- make build && nix-store --gc && nix-store --optimise
 
 FROM nginx:alpine
 
-COPY --from=builder /app/out/ /usr/share/nginx/html
+COPY --from=builder /code/out/ /usr/share/nginx/html
 
 EXPOSE 80
 
