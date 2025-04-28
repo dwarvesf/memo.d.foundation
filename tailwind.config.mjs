@@ -23,6 +23,9 @@ const config = {
         neutral: {
           100: '#dededf',
         },
+        link: {
+          decoration: 'var(--color-link-decoration)',
+        },
         black: {
           secondary: '#23252c',
         },
@@ -208,7 +211,7 @@ const config = {
               margin: 'var(--element-margin) 0px !important',
               width: '100%',
               maxWidth: 'inherit',
-              backgroundColor: 'var(--primary-border-color-light)',
+              backgroundColor: 'var(--border)',
             },
             ul: {
               listStyleType: 'disc',

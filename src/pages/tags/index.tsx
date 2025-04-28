@@ -42,7 +42,7 @@ const TagsPage = (props: RootLayoutPageProps) => {
                   <div className="flex items-center gap-1">
                     <Link
                       href={path}
-                      className="hover:text-primary hover:decoration-primary dark:hover:text-primary line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline decoration-neutral-100 transition-colors duration-200 ease-in-out dark:text-neutral-300"
+                      className="hover:text-primary hover:decoration-primary dark:hover:text-primary decoration-link-decoration line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline transition-colors duration-200 ease-in-out dark:text-neutral-300"
                     >
                       {node.label}{' '}
                     </Link>

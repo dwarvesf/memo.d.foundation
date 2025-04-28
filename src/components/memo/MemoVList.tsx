@@ -44,7 +44,7 @@ const MemoVList = (props: Props) => {
             <div className={cn('flex flex-1 flex-col gap-1 py-3')}>
               <Link
                 href={path}
-                className="hover:text-primary hover:decoration-primary mt-0 text-[17px] font-semibold underline decoration-neutral-100"
+                className="hover:text-primary hover:decoration-primary decoration-link-decoration mt-0 text-[17px] font-semibold underline"
               >
                 {memo.short_title || memo.title}
               </Link>

@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip';
 import HeaderUser from './HeaderUser';
+import { useLayoutContext } from '@/contexts/layout';
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -23,6 +24,8 @@ const Header: React.FC<HeaderProps> = ({
   toggleReadingMode,
   readingMode,
 }) => {
+  const { isMacOS } = useLayoutContext();
+  const modifier = isMacOS ? '⌘' : 'Ctrl';
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 top-0 w-full shrink-0 font-sans backdrop-blur">
       <div className="mx-auto flex h-full items-center justify-between border-b p-2 xl:border-none xl:px-5">
@@ -150,7 +153,7 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="!text-foreground-dark">Reading Mode</span>
                 <div className="mt-1 flex items-center gap-0.5 text-[8px]">
                   <kbd className="bg-muted flex items-center justify-center rounded border px-1 py-0.5">
-                    ⌘/Ctrl
+                    {modifier}
                   </kbd>
                   <span>+</span>
                   <kbd className="bg-muted flex items-center justify-center rounded border px-1 py-0.5">

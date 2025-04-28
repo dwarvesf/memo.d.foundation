@@ -79,7 +79,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
         ref={mathContainerRef}
         className={cn(
           'prose dark:prose-dark prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight max-w-none font-serif',
-          'prose-a:text-primary prose-a:underline prose-a:decoration-neutral-200 prose-a:hover:text-primary prose-a:hover:decoration-primary prose-a:font-[inherit]',
+          'prose-a:text-primary prose-a:underline prose-a:decoration-link-decoration prose-a:hover:text-primary prose-a:hover:decoration-primary prose-a:font-[inherit]',
           'prose-table:border prose-img:mt-[var(--element-margin)]',
         )}
       >
@@ -97,7 +97,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
               <li key={index} className="p-0 text-base">
                 <Link
                   href={link.path}
-                  className="hover:text-primary hover:decoration-primary underline decoration-neutral-100 hover:underline"
+                  className="hover:text-primary hover:decoration-primary decoration-link-decoration underline hover:underline"
                 >
                   📄 {link.title}
                 </Link>

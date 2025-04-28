@@ -63,6 +63,7 @@
     --font-serif: 'charter', 'Georgia', 'Cambria', 'serif';
     --font-sans: 'Public Sans', sans-serif;
     --toast-background-color: #ededed;
+    --color-link-decoration: #dededf;
 
     /* Spacing and Layout */
     --radius: 0.5rem;
@@ -108,6 +109,7 @@
     --tag: var(--secondary-tag-color);
     --secondary-background: var(--secondary-background-color);
     --secondary-foreground: var(--secondary-font-color);
+    --color-link-decoration: var(--color-neutral-700);
   }
 }
 

@@ -18,6 +18,7 @@ export interface LayoutContextType {
   isOpenSidebar: boolean;
   setIsOpenSidebar: (isOpenSidebar: boolean) => void;
   toggleIsOpenSidebar: () => void;
+  isMacOS: boolean;
 }
 const DefaultContextValues = {
   readingMode: false,
@@ -26,6 +27,7 @@ const DefaultContextValues = {
   isOpenSidebar: false,
   setIsOpenSidebar: () => {},
   toggleIsOpenSidebar: () => {},
+  isMacOS: true,
 } satisfies LayoutContextType;
 
 export const LayoutContext =
@@ -35,6 +37,7 @@ export const LayoutProvider = (props: PropsWithChildren) => {
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const [readingMode, setReadingModeInternal] = useState(false);
   const isMounted = useIsMounted();
+  const [isMacOS, setIsMacOS] = useState(true);
 
   const toggleIsOpenSidebar = useCallback(() => {
     setIsOpenSidebar(prev => !prev);
@@ -63,6 +66,10 @@ export const LayoutProvider = (props: PropsWithChildren) => {
     setReadingMode(savedReadingMode);
   }, [setReadingMode]);
 
+  useEffect(() => {
+    setIsMacOS(window.navigator.userAgent.includes('Macintosh'));
+  }, []);
+
   return (
     <LayoutContext.Provider
       value={{
@@ -72,6 +79,7 @@ export const LayoutProvider = (props: PropsWithChildren) => {
         isOpenSidebar,
         setIsOpenSidebar,
         toggleIsOpenSidebar,
+        isMacOS,
       }}
     >
       {children}
