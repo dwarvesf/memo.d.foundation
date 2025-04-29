@@ -43,7 +43,9 @@ defmodule Memo.ExportDuckDB do
     {"should_mint", "BOOLEAN"},
     {"minted_at", "DATE"},
     {"token_id", "VARCHAR"},
-    {"previous_paths", "VARCHAR[]"}
+    {"previous_paths", "VARCHAR[]"},
+    {"ai_summary", "BOOLEAN"},
+    {"ai_generated_summary", "VARCHAR[]"}
   ]
 
   def run(vaultpath, format, commits_back, pattern \\ nil) do
@@ -248,7 +250,10 @@ defmodule Memo.ExportDuckDB do
               process_and_store(relative_path, frontmatter, md_content)
 
             {frontmatter, _md_content} ->
-              IO.puts("Error: Expected frontmatter to be a map for file: #{relative_path}, but got: #{inspect(frontmatter)}")
+              IO.puts(
+                "Error: Expected frontmatter to be a map for file: #{relative_path}, but got: #{inspect(frontmatter)}"
+              )
+
               nil
           end
 
@@ -261,18 +266,22 @@ defmodule Memo.ExportDuckDB do
     remove_old_files(paths)
   end
 
-defp process_and_store(file_path, frontmatter, md_content) do
-  unless is_map(frontmatter) do
-    IO.puts("Error: Expected frontmatter to be a map for file: #{file_path}, but got: #{inspect(frontmatter)}")
-    nil
-  end
-  escaped_file_path = escape_string(file_path)
+  defp process_and_store(file_path, frontmatter, md_content) do
+    unless is_map(frontmatter) do
+      IO.puts(
+        "Error: Expected frontmatter to be a map for file: #{file_path}, but got: #{inspect(frontmatter)}"
+      )
 
-  normalized_frontmatter =
-    frontmatter
-    |> Map.update("tags", [], fn tags ->
-      case tags do
-        tags when is_binary(tags) ->
+      nil
+    end
+
+    escaped_file_path = escape_string(file_path)
+
+    normalized_frontmatter =
+      frontmatter
+      |> Map.update("tags", [], fn tags ->
+        case tags do
+          tags when is_binary(tags) ->
             if String.contains?(tags, ",") do
               tags
               |> String.split(",")
@@ -684,16 +693,19 @@ defp process_and_store(file_path, frontmatter, md_content) do
             val
             |> String.slice(1..-2//1)
             |> String.split(",")
-            |> Enum.map(&String.trim/1) # Trim whitespace first
+            # Trim whitespace first
+            |> Enum.map(&String.trim/1)
             |> Enum.map(fn path_str ->
               # More robustly remove leading/trailing quotes (' or ")
               path_str
               |> String.trim("'")
               |> String.trim("\"")
-              |> String.trim("'") # Repeat in case of mixed quotes like '"path"'
+              # Repeat in case of mixed quotes like '"path"'
+              |> String.trim("'")
               |> String.trim("\"")
             end)
-            |> Enum.reject(&(&1 in ["", nil])) # Remove empty strings after cleaning
+            # Remove empty strings after cleaning
+            |> Enum.reject(&(&1 in ["", nil]))
 
           # Handle comma-separated string format
           String.contains?(val, ",") ->

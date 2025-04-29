@@ -545,7 +545,17 @@ export async function getMarkdownContent(filePath: string) {
     .use(rehypeSanitize, schema as never)
     .use(rehypeStringify);
 
-  const rawSummaries = (fileData as FileData).summaries || [];
+  let rawSummaries = (fileData as FileData).summaries || [];
+  if (
+    !rawSummaries.length &&
+    frontmatter.ai_summary &&
+    frontmatter.ai_generated_summary?.length > 0
+  ) {
+    rawSummaries = frontmatter.ai_generated_summary.map(
+      (line: string) => `- ${line}`,
+    );
+  }
+  console.log(rawSummaries);
   const processedSummary =
     rawSummaries.length > 0
       ? await summaryProcessor.process(rawSummaries.join('\n'))

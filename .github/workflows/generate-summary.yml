@@ -1,0 +1,63 @@
+name: AI Generate Summary
+
+on:
+  workflow_dispatch: # Keep manual trigger
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.repository }}-workflow
+  cancel-in-progress: false
+
+env:
+  VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+
+jobs:
+  generate-summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout contents repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DWARVES_PAT }}
+          submodules: true
+          fetch-depth: 15
+
+      - name: Update submodules to depth 2
+        run: |
+          # Configure git to use HTTPS instead of SSH for GitHub repositories
+          git config --global url."https://${{ secrets.DWARVES_PAT }}@github.com/".insteadOf "git@github.com:"
+
+          # Handle top-level submodules first (depth 1)
+          git submodule update --init --depth 1
+
+          # Process level 2 submodules manually with error handling
+          git submodule foreach 'if [ -f .gitmodules ]; then git submodule update --init --depth 1 || echo "Failed to update some depth 2 submodules, continuing anyway..."; fi'
+
+          # Ensure we don't proceed deeper
+          git config --global submodule.recurse false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install gray-matter openai js-yaml tsx
+
+      - name: Run AI generate summary script
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          npx tsx scripts/generate-summary.ts
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git checkout main
+          git add --all
+          git commit -m "chore(ci): update AI-generated summary" || echo "No changes committed"
+          git push
