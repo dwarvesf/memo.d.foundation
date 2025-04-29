@@ -44,7 +44,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install gray-matter openai js-yaml tsx
+        run: npm install gray-matter openai js-yaml tsx --legacy-peer-deps
 
       - name: Run AI generate summary script
         env:
