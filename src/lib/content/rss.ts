@@ -29,11 +29,11 @@ export async function generateRSSFeeds(
 ) {
   // Get all markdown files
   const contentDir = path.join(process.cwd(), 'public/content');
-  const allSlugs = getAllMarkdownFiles(contentDir);
-  
+  const allSlugs = await getAllMarkdownFiles(contentDir);
+
   // Fetch and process content for all files
   const items = await Promise.all(
-    allSlugs.map(async (slug) => {
+    allSlugs.map(async slug => {
       try {
         // Try multiple file path options to support Hugo's _index.md convention
         let filePath = path.join(contentDir, ...slug) + '.md';
@@ -55,7 +55,7 @@ export async function generateRSSFeeds(
 
         // Get content and frontmatter
         const { frontmatter, content } = await getMarkdownContent(filePath);
-        
+
         // Skip if the post is marked as draft
         if (frontmatter.draft === true) {
           return null;
@@ -63,22 +63,23 @@ export async function generateRSSFeeds(
 
         // Create URL
         const url = `${siteUrl}/${slug.join('/')}`;
-        
+
         // Extract date
-        const pubDate = frontmatter.date 
+        const pubDate = frontmatter.date
           ? new Date(frontmatter.date).toISOString()
           : new Date().toISOString();
-        
+
         const modDate = frontmatter.lastmod
           ? new Date(frontmatter.lastmod).toISOString()
           : pubDate;
-        
+
         // Create description/excerpt
-        const excerpt = content
-          .replace(/<[^>]*>/g, '') // Remove HTML tags
-          .substring(0, 280) // Limit to 280 chars
-          .trim() + '...';
-        
+        const excerpt =
+          content
+            .replace(/<[^>]*>/g, '') // Remove HTML tags
+            .substring(0, 280) // Limit to 280 chars
+            .trim() + '...';
+
         return {
           title: frontmatter.title || slug[slug.length - 1],
           url,
@@ -89,48 +90,49 @@ export async function generateRSSFeeds(
           author: frontmatter.authors?.[0] || 'Dwarves Foundation',
         };
       } catch (error) {
-        console.error(`Error processing file for RSS: ${slug.join('/')}`, error);
+        console.error(
+          `Error processing file for RSS: ${slug.join('/')}`,
+          error,
+        );
         return null;
       }
-    })
+    }),
   );
 
   // Filter out null items and apply type assertion
   const validItems = items.filter((item): item is RSSItem => item !== null);
-  
+
   // Generate RSS XML
   const rssXml = generateRSSXml(title, description, siteUrl, validItems);
   const atomXml = generateAtomXml(title, description, siteUrl, validItems);
-  
+
   // Write to files
   const rssOutputPaths = [
     path.join(outputDir, 'feed.xml'),
     path.join(outputDir, 'rss.xml'),
-    path.join(outputDir, 'index.xml')
+    path.join(outputDir, 'index.xml'),
   ];
-  
-  const atomOutputPaths = [
-    path.join(outputDir, 'atom.xml')
-  ];
-  
+
+  const atomOutputPaths = [path.join(outputDir, 'atom.xml')];
+
   // Create directories if they don't exist
   const rssDir = path.join(outputDir, 'feed');
   const rssIndexPath = path.join(rssDir, 'index.xml');
-  
+
   if (!fs.existsSync(rssDir)) {
     fs.mkdirSync(rssDir, { recursive: true });
   }
-  
+
   // Write RSS XML files
   rssOutputPaths.forEach(filePath => {
     fs.writeFileSync(filePath, rssXml);
     console.log(`Generated RSS feed: ${filePath}`);
   });
-  
+
   // Also write to /feed/index.xml
   fs.writeFileSync(rssIndexPath, rssXml);
   console.log(`Generated RSS feed: ${rssIndexPath}`);
-  
+
   // Write Atom XML files
   atomOutputPaths.forEach(filePath => {
     fs.writeFileSync(filePath, atomXml);
@@ -142,14 +144,14 @@ export async function generateRSSFeeds(
  * Generates RSS 2.0 XML format
  */
 function generateRSSXml(
-  title: string, 
-  description: string, 
-  siteUrl: string, 
-  items: RSSItem[]
+  title: string,
+  description: string,
+  siteUrl: string,
+  items: RSSItem[],
 ): string {
   // Current date for lastBuildDate
   const lastBuildDate = new Date().toUTCString();
-  
+
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/">
   <channel>
@@ -187,14 +189,14 @@ function generateRSSXml(
  * Generates Atom 1.0 XML format
  */
 function generateAtomXml(
-  title: string, 
-  description: string, 
-  siteUrl: string, 
-  items: RSSItem[]
+  title: string,
+  description: string,
+  siteUrl: string,
+  items: RSSItem[],
 ): string {
   // Current date for updated
   const updated = new Date().toISOString();
-  
+
   let xml = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>${escapeXml(title)}</title>
@@ -232,9 +234,9 @@ function generateAtomXml(
  */
 function escapeXml(unsafe: string): string {
   return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 }
