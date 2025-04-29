@@ -19,9 +19,9 @@
  *   This will rename all .md files under ./vault/playground/notes and its subfolders to lowercase hyphen-case.
  */
 
-import fs from "fs/promises";
-import path from "path";
-import { exec } from "child_process";
+import fs from 'fs/promises';
+import path from 'path';
+import { exec } from 'child_process';
 
 async function findMarkdownFiles(dir) {
   let results = [];
@@ -53,16 +53,13 @@ function toHyphenCase(filename) {
   );
 }
 
-function gitMv(oldPath, newPath) {
-  return new Promise((resolve) => {
-    exec(`git mv "${oldPath}" "${newPath}"`, (error, stdout, stderr) => {
-      if (error) {
-        resolve({ success: false, error: stderr || error.message });
-      } else {
-        resolve({ success: true });
-      }
-    });
-  });
+async function renameFile(oldPath, newPath) {
+  try {
+    await fs.rename(oldPath, newPath);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
 }
 
 async function main() {
@@ -99,7 +96,7 @@ async function main() {
     }
     const newPath = path.join(dir, newName);
     try {
-      const { success, error } = await gitMv(file, newPath);
+      const { success, error } = await renameFile(file, newPath);
       if (success) {
         console.log(`:white_check_mark: ${file} → ${newPath}`);
         renameMap.set(file, newPath);
@@ -116,7 +113,7 @@ async function main() {
     // Build a map of old relative paths to new relative paths (relative to each .md file's directory)
     const allMdFiles = await findMarkdownFiles(absBasePath);
     for (const mdFile of allMdFiles) {
-      let content = await fs.readFile(mdFile, "utf8");
+      let content = await fs.readFile(mdFile, 'utf8');
       let updated = false;
       for (const [oldAbs, newAbs] of renameMap.entries()) {
         // Compute relative paths from the current mdFile's directory
@@ -127,14 +124,17 @@ async function main() {
         // Escape special regex characters in oldRel for safe replacement
         const oldRelEscaped = oldRel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         // Replace markdown links: [text](oldRel)
-        const linkRegex = new RegExp(`(\\[[^\\]]*\\]\\()${oldRelEscaped}(\\))`, "g");
+        const linkRegex = new RegExp(
+          `(\\[[^\\]]*\\]\\()${oldRelEscaped}(\\))`,
+          'g',
+        );
         if (linkRegex.test(content)) {
           content = content.replace(linkRegex, `$1${newRel}$2`);
           updated = true;
         }
       }
       if (updated) {
-        await fs.writeFile(mdFile, content, "utf8");
+        await fs.writeFile(mdFile, content, 'utf8');
         console.log(`:white_check_mark: Updated links in ${mdFile}`);
       }
     }
