@@ -58,6 +58,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git checkout main
+          git submodule foreach --recursive "git checkout main || git checkout master || true; git add --all; git commit -m 'chore(ci): update AI-generated summary' || echo 'No changes committed'; git push"
           git add --all
           git commit -m "chore(ci): update AI-generated summary" || echo "No changes committed"
           git push
