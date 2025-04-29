@@ -34,18 +34,17 @@ const client = new OpenAI({
 /**
  * Extracts frontmatter data from a markdown file
  * @param {string} filePath - Path to the markdown file
- * @returns {Object} - The frontmatter data and content
+ * @returns {Object} - The frontmatter data and content, or null if parsing fails
  */
 function extractFrontmatter(filePath: string): {
   data: Record<string, unknown>;
   content: string;
-} {
+} | null {
   try {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     return matter(fileContent);
   } catch (error) {
-    console.error(`Error reading frontmatter from ${filePath}:`, error);
-    throw error;
+    return null;
   }
 }
 
@@ -60,7 +59,12 @@ function updateFrontmatter(
 ): void {
   try {
     // Get existing content with frontmatter
-    const { data: existingFrontmatter, content } = extractFrontmatter(filePath);
+    const { data: existingFrontmatter, content } = extractFrontmatter(
+      filePath,
+    ) || {
+      data: {},
+      content: '',
+    };
 
     let updatedContent = matter.stringify(content, {
       ...existingFrontmatter,
@@ -76,6 +80,7 @@ function updateFrontmatter(
     throw error;
   }
 }
+
 /**
  * Summarizes content using OpenAI API
  * @param {string} content - The content to summarize
@@ -84,7 +89,7 @@ function updateFrontmatter(
 async function summarizeContent(content: string): Promise<string[]> {
   try {
     const response = await client.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-4.1-mini',
       messages: [
         {
           role: 'system',
@@ -108,15 +113,39 @@ async function summarizeContent(content: string): Promise<string[]> {
 }
 
 /**
+ * Get all markdown files in a directory recursively
+ * @param {string} dir - Directory to scan
+ * @returns {string[]} - Array of file paths
+ */
+function getAllMarkdownFiles(dir: string): string[] {
+  let results: string[] = [];
+  const list = fs.readdirSync(dir);
+
+  list.forEach(file => {
+    const filePath = `${dir}/${file}`;
+    const stat = fs.statSync(filePath);
+
+    if (stat && stat.isDirectory()) {
+      // Recursively scan subdirectories
+      results = results.concat(getAllMarkdownFiles(filePath));
+    } else if (filePath.endsWith('.md')) {
+      // Add markdown files to results
+      results.push(filePath);
+    }
+  });
+
+  return results;
+}
+
+/**
  * Main function to summarize articles and update frontmatter
  */
 async function main() {
   try {
-    const filePaths = process.argv[2]
-      .trim()
-      .split(',')
-      .filter(Boolean)
-      .map(path => `vault/${path}`);
+    // Get all markdown files in the vault directory
+    const filePaths = getAllMarkdownFiles('vault');
+    let processCount = 0;
+    let errorCount = 0;
 
     if (filePaths.length === 0) {
       console.log('No files to process');
@@ -124,9 +153,17 @@ async function main() {
     }
 
     for (const filePath of filePaths) {
-      console.log(`Processing file: ${filePath}`);
+      const result = extractFrontmatter(filePath);
 
-      const { content, data: frontmatter } = extractFrontmatter(filePath);
+      // Skip files with invalid frontmatter
+      if (!result) {
+        console.log(`Skipping ${filePath}: Invalid frontmatter format`);
+        errorCount++;
+        continue;
+      }
+
+      const { content, data: frontmatter } = result;
+
       if (
         !content ||
         !frontmatter.ai_summary ||
@@ -134,13 +171,19 @@ async function main() {
       ) {
         continue;
       }
+
+      console.log(`Processing file: ${filePath}`);
+
       const ai_generated_summary = await summarizeContent(content);
 
       updateFrontmatter(filePath, { ai_generated_summary });
+      processCount++;
       console.log(`Summary added to frontmatter for ${filePath}`);
     }
 
-    console.log('All files processed successfully');
+    console.log(
+      `Processed ${processCount} files. Skipped ${errorCount} files with invalid frontmatter.`,
+    );
   } catch (error) {
     console.error('Error:', error);
     process.exit(1);
