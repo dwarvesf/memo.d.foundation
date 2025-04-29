@@ -1,0 +1,96 @@
+name: AI Generate Summary
+
+on:
+  workflow_dispatch: # Keep manual trigger
+  push:
+    branches:
+      - main
+    paths:
+      - 'db/vault.parquet' # Only trigger on changes to this file
+
+concurrency:
+  group: ${{ github.repository }}-workflow
+  cancel-in-progress: false
+
+env:
+  VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+
+jobs:
+  generate-summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout contents repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DWARVES_PAT }}
+          submodules: true
+          fetch-depth: 15
+
+      - name: Update submodules to depth 2
+        run: |
+          # Configure git to use HTTPS instead of SSH for GitHub repositories
+          git config --global url."https://${{ secrets.DWARVES_PAT }}@github.com/".insteadOf "git@github.com:"
+
+          # Handle top-level submodules first (depth 1)
+          git submodule update --init --depth 1
+
+          # Process level 2 submodules manually with error handling
+          git submodule foreach 'if [ -f .gitmodules ]; then git submodule update --init --depth 1 || echo "Failed to update some depth 2 submodules, continuing anyway..."; fi'
+
+          # Ensure we don't proceed deeper
+          git config --global submodule.recurse false
+
+      - name: Install Vault CLI
+        run: |
+          rm -rf vault_1.15.5_linux_amd64.zip vault
+          wget https://releases.hashicorp.com/vault/1.15.5/vault_1.15.5_linux_amd64.zip
+          unzip -o vault_1.15.5_linux_amd64.zip
+          sudo mv vault /usr/local/bin/
+
+      - name: Authenticate with Vault AppRole
+        run: |
+          VAULT_TOKEN=$(vault write -field=token auth/approle/login \
+            role_id="${{ secrets.VAULT_ROLE_ID }}" \
+            secret_id="${{ secrets.VAULT_SECRET_ID }}")
+          echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          # Install DuckDB
+          wget -q https://github.com/duckdb/duckdb/releases/download/v1.2.1/duckdb_cli-linux-amd64.zip
+          unzip -q duckdb_cli-linux-amd64.zip
+          chmod +x duckdb
+
+          # Query for files that have perma_storage_id = 'true'
+          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT COALESCE(STRING_AGG(file_path, ','), '') FROM 'db/vault.parquet' WHERE ai_summary = true AND ai_generated_summary IS NULL;" | tr -d '"')
+
+          # Output the results
+          echo "Found markdown files for permanent storage: $CHANGED_FILES"
+          echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install gray-matter openai js-yaml tsx
+
+      - name: Run AI generate summary script
+        if: steps.changed-files.outputs.files != ''
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "OpenAI API key length: ${#OPENAI_API_KEY}"
+          npx tsx scripts/generate-summary.ts '${{ steps.changed-files.outputs.files }}'
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git checkout main
+          git add --all
+          git commit -m "chore(ci): update AI-generated summary" || echo "No changes committed"
+          git push
