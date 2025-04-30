@@ -18,7 +18,6 @@ defmodule Memo.Application do
     Supervisor.start_link(children, opts)
   end
 
-  def combine_vtt(args), do: Memo.CombineVTT.run(args)
   def export_markdown(vaultpath, exportpath), do: Memo.ExportMarkdown.run(vaultpath, exportpath)
   def export_media(vaultpath), do: Memo.ExportMedia.run(vaultpath)
 
@@ -30,8 +29,6 @@ defmodule Memo.Application do
         "^refs/heads/gh-pages",
         "Excluding gh-pages from git fetch"
       )
-
-  def watch_run(vaultpath, exportpath), do: Memo.WatchRun.run(vaultpath, exportpath)
 
   @doc """
   Exports DuckDB data.
