@@ -37,7 +37,6 @@ duckdb-export-all:
 	@rm -f lib/obsidian-compiler/vault.db lib/obsidian-compiler/vault.db.wal # Remove DB and WAL file if it exists
 	@echo "Running DuckDB export..."
 	@cd lib/obsidian-compiler && mix duckdb.export_all
-	@echo "Generating redirects map..."
 
 duckdb-export-pattern:
 	@rm -f vault.duckdb

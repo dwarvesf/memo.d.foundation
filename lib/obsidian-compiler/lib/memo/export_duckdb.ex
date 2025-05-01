@@ -6,6 +6,7 @@ defmodule Memo.ExportDuckDB do
   use Flow
   alias Memo.Common.{FileUtils, Frontmatter, GitUtils, DuckDBUtils, AIUtils}
 
+  @min_content_length 100
   @allowed_frontmatter [
     {"file_path", "TEXT UNIQUE"},
     {"md_content", "TEXT"},
@@ -352,9 +353,11 @@ defmodule Memo.ExportDuckDB do
 
                 existing_data = Map.get(existing_data_map, relative_path, %{})
 
+                too_short = String.length(md_content) < @min_content_length
+
                 embeddings_updated = needs_embeddings_update(existing_data, md_content)
                 {new_spr_content, new_embeddings_openai, new_embeddings_spr_custom, updated_frontmatter} =
-                  if embeddings_updated do
+                  if not too_short and embeddings_updated do
                     regenerated = regenerate_embeddings(relative_path, md_content, normalized_frontmatter)
                     {
                       Map.get(regenerated, "spr_content"),
@@ -477,7 +480,7 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp batch_upsert_into_duckdb(processed_data) do
-    batch_size = 100
+    batch_size = 15
     keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
 
     processed_data
@@ -570,7 +573,7 @@ defmodule Memo.ExportDuckDB do
 
             # For batch_existing, do nothing (embeddings are preserved)
             if Enum.count(batch_existing) > 0 do
-              IO.puts("Skipping upsert for #{length(batch_existing)} existing records without embeddings update (preserving existing data)")
+              IO.puts("Skipping upsert for #{length(batch_existing)} existing records without embeddings update")
             end
 
           {:error, error} ->
@@ -620,7 +623,6 @@ defmodule Memo.ExportDuckDB do
 
 
   defp needs_embeddings_update(existing_data, md_content) do
-    trimmed = String.trim(md_content)
       # Use fuzzy matching for md_content and spr_content similarity threshold 80%
       # Use String.jaro_distance for similarity check
 
@@ -646,7 +648,7 @@ defmodule Memo.ExportDuckDB do
           val -> val
         end
 
-      spr_content_exists = String.length(trimmed) > 100 and (not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != "")
+      spr_content_exists = not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != ""
 
       md_content_existing = Map.get(existing_data, "md_content", "") |> String.trim()
       md_content_new = String.trim(md_content)
@@ -654,16 +656,7 @@ defmodule Memo.ExportDuckDB do
       similarity = String.jaro_distance(md_content_existing, md_content_new)
 
       # Threshold for similarity
-      similarity_threshold = 0.8
-
-      _embeddings_ok = # Prefix with underscore
-        String.length(trimmed) > 100 and
-        (
-          not is_nil(embeddings_openai) and
-          not is_nil(embeddings_spr_custom) and
-          not all_zeros?(embeddings_openai) and
-          not all_zeros?(embeddings_spr_custom)
-        )
+      similarity_threshold = 0.7
 
       content_changed = similarity < similarity_threshold
       embeddings_exist = not is_nil(embeddings_openai) and not is_nil(embeddings_spr_custom)
@@ -709,12 +702,7 @@ defmodule Memo.ExportDuckDB do
 
     custom_embedding = AIUtils.embed_custom(spr_content)
 
-    openai_embedding =
-      if estimated_tokens <= 7500 do
-        AIUtils.embed_openai(md_content)
-      else
-        %{"embedding" => List.duplicate(0, 1536)}
-      end
+    openai_embedding = AIUtils.embed_openai(md_content)
 
     frontmatter
     |> Map.put("spr_content", spr_content)

@@ -75,37 +75,50 @@ defmodule Memo.Common.AIUtils do
          headers = [{"Authorization", "Bearer #{api_key}"}, {"Content-Type", "application/json"}],
          payload = %{"input" => text, "model" => "text-embedding-3-small"},
          {:ok, json_payload} <- Jason.encode(payload),
-         {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
+         {:ok, %HTTPoison.Response{status_code: status_code, body: body}} <-
            HTTPoison.post(
              "https://api.openai.com/v1/embeddings",
              json_payload,
              headers,
              @config.http_options
-           ),
-         {:ok, data} <- Jason.decode(body),
-         %{"data" => [%{"embedding" => embedding}], "usage" => %{"total_tokens" => total_tokens}} <-
-           data do
-      %{"embedding" => embedding, "total_tokens" => total_tokens}
+           ) do
+      case status_code do
+        200 ->
+          with {:ok, data} <- Jason.decode(body),
+               %{"data" => [%{"embedding" => embedding}], "usage" => %{"total_tokens" => total_tokens}} <-
+                 data do
+            %{"embedding" => embedding, "total_tokens" => total_tokens}
+          else
+            {:error, %Jason.DecodeError{}} ->
+              %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+
+            error ->
+              IO.puts("Unexpected data structure from OpenAI API: #{inspect(error)}")
+              %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+          end
+
+        _ ->
+          # Handle non-200 status codes
+
+          # Check if the body contains the context length error message
+          if String.contains?(body, "maximum context length") do
+            %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+          else
+            # For other errors, return zero embeddings as a fallback
+            %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
+          end
+      end
     else
       false ->
-        IO.puts("Error: OPENAI_API_KEY is not set or is empty")
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
 
-      {:error, %Jason.DecodeError{}} ->
-        IO.puts("Error: Invalid JSON response from OpenAI API")
+      {:error, %Jason.EncodeError{}} ->
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
 
-      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        IO.puts("Error: OpenAI API request failed with status code #{status_code}")
-        IO.puts("Response body: #{body}")
+      {:error, %HTTPoison.Error{reason: _reason}} ->
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
 
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        IO.puts("Error: HTTP request failed - #{inspect(reason)}")
-        %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
-
-      error ->
-        IO.puts("Unexpected error: #{inspect(error)}")
+      _error ->
         %{"embedding" => List.duplicate(0, 1536), "total_tokens" => 0}
     end
   end
