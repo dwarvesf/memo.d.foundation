@@ -839,18 +839,6 @@ defmodule Memo.ExportDuckDB do
   end
 
 
-  defp all_zeros?(nil), do: false
-  defp all_zeros?(embeddings) when is_list(embeddings), do: Enum.all?(embeddings, &(&1 == 0))
-
-  defp all_zeros?(embeddings) when is_binary(embeddings) do
-    case Jason.decode(embeddings) do
-      {:ok, decoded} when is_list(decoded) -> all_zeros?(decoded)
-      _ -> false
-    end
-  end
-
-  defp all_zeros?(_), do: false
-
   defp normalize_array_value(value) do
     case value do
       nil ->
