@@ -125,11 +125,11 @@ defmodule Memo.Common.DuckDBUtils do
         "-json",
         "-c",
         query
-      ])
+      ], stderr_to_stdout: true)
 
     cond do
       exit_code != 0 ->
-        {:error, result}
+        {:error, %{exit_code: exit_code, output: result}}
 
       result == "" ->
         {:ok, []}

@@ -70,9 +70,7 @@ defmodule Memo.ExportDuckDB do
       all_files
       |> Enum.filter(&(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
 
-    filtered_files =
-      get_files_to_process(vaultpath, commits_back, all_files_to_process, pattern)
-      |> Enum.take(5) # Limit to 5 files for easier testing
+    filtered_files = get_files_to_process(vaultpath, commits_back, all_files_to_process, pattern)
 
     case DuckDBUtils.execute_query("SELECT 1") do
       {:ok, _} ->
@@ -126,29 +124,19 @@ defmodule Memo.ExportDuckDB do
 
       # 3. Load data directly from the Parquet file using explicit column mapping
       # This avoids column count mismatch errors by selecting only matching columns
+      # Dynamically generate column list from @allowed_frontmatter
+      columns = @allowed_frontmatter |> Enum.map(&elem(&1, 0)) |> Enum.join(", ")
+
       load_query = """
-      INSERT INTO vault (
-        file_path, md_content, tags, title, date, description, authors, estimated_tokens,
-        embeddings_openai, total_tokens, hide_frontmatter, hide_title, pinned, featured,
-        icy, discord_id, status, hiring, PICs, bounty, function, social, github, website,
-        avatar, aliases, spr_content, embeddings_spr_custom, draft, short_title,
-        hide_on_sidebar, should_deploy_perma_storage, perma_storage_id, should_mint,
-        minted_at, token_id, previous_paths
-      )
-      SELECT
-        file_path, md_content, tags, title, date, description, authors, estimated_tokens,
-        embeddings_openai, total_tokens, hide_frontmatter, hide_title, pinned, featured,
-        icy, discord_id, status, hiring, PICs, bounty, function, social, github, website,
-        avatar, aliases, spr_content, embeddings_spr_custom, draft, short_title,
-        hide_on_sidebar, should_deploy_perma_storage, perma_storage_id, should_mint,
-        minted_at, token_id, previous_paths
+      INSERT INTO vault (#{columns})
+      SELECT #{columns}
       FROM read_parquet('../../db/vault.parquet')
       """
-      IO.puts("Loading data from '../../db/vault.parquet' with explicit column mapping...")
+      IO.puts("Loading data from '../../db/vault.parquet' with programmatic column mapping...")
       case DuckDBUtils.execute_query(load_query) do
         {:ok, _} ->
-          IO.puts("Data loaded successfully from Parquet file with explicit column mapping.")
-          # 4. Verify row count after explicit load
+          IO.puts("Data loaded successfully from Parquet file with programmatic column mapping.")
+          # 4. Verify row count after programmatic load
           count_query = "SELECT COUNT(*) as count FROM vault"
           case DuckDBUtils.execute_query(count_query) do
              {:ok, [%{"count" => count}]} when count > 0 ->
