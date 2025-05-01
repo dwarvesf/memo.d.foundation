@@ -302,7 +302,6 @@ defmodule Memo.ExportDuckDB do
                 |> String.trim_leading("/")
               MapSet.member?(file_paths_set, norm_path)
             end)
-          Enum.each(filtered_results, fn row -> IO.inspect(row["file_path"]) end)
           Enum.reduce(filtered_results, %{}, fn row, acc ->
             norm_path =
               row["file_path"]
@@ -494,68 +493,82 @@ defmodule Memo.ExportDuckDB do
       DO UPDATE SET #{update_clause}
       """
 
-      IO.puts("Batch upsert query:\n#{upsert_query}")
       case DuckDBUtils.execute_query(upsert_query) do
         {:ok, _} ->
           IO.puts("Batch upsert successful for #{length(batch)} records")
         {:error, error} ->
           IO.puts("Batch upsert failed: #{inspect(error)}")
-          IO.inspect(%{query: upsert_query, error: error, batch: batch})
       end
     end)
   end
 
 
   defp needs_embeddings_update(existing_data, md_content) do
-    # Use fuzzy matching for md_content and spr_content similarity threshold 80%
-    # Use String.jaro_distance for similarity check
+    trimmed = String.trim(md_content)
+      # Use fuzzy matching for md_content and spr_content similarity threshold 80%
+      # Use String.jaro_distance for similarity check
 
-    embeddings_openai =
-      case existing_data["embeddings_openai"] do
-        nil -> nil
-        val when is_binary(val) ->
-          case Jason.decode(val) do
-            {:ok, decoded} -> decoded
-            _ -> nil
-          end
-        val -> val
-      end
+      embeddings_openai =
+        case existing_data["embeddings_openai"] do
+          nil -> nil
+          val when is_binary(val) ->
+            case Jason.decode(val) do
+              {:ok, decoded} -> decoded
+              _ -> nil
+            end
+          val -> val
+        end
 
-    embeddings_spr_custom =
-      case existing_data["embeddings_spr_custom"] do
-        nil -> nil
-        val when is_binary(val) ->
-          case Jason.decode(val) do
-            {:ok, decoded} -> decoded
-            _ -> nil
-          end
-        val -> val
-      end
+      embeddings_spr_custom =
+        case existing_data["embeddings_spr_custom"] do
+          nil -> nil
+          val when is_binary(val) ->
+            case Jason.decode(val) do
+              {:ok, decoded} -> decoded
+              _ -> nil
+            end
+          val -> val
+        end
 
-    spr_content_exists = not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != ""
+      spr_content_exists = not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != ""
 
-    md_content_existing = Map.get(existing_data, "md_content", "") |> String.trim()
-    md_content_new = String.trim(md_content)
+      md_content_existing = Map.get(existing_data, "md_content", "") |> String.trim()
+      md_content_new = String.trim(md_content)
 
-    similarity = String.jaro_distance(md_content_existing, md_content_new)
+      similarity = String.jaro_distance(md_content_existing, md_content_new)
 
-    # Threshold for similarity
-    similarity_threshold = 0.8
+      # Threshold for similarity
+      similarity_threshold = 0.8
 
-    embeddings_ok =
-      not is_nil(embeddings_openai) and
-      not is_nil(embeddings_spr_custom) and
-      not all_zeros?(embeddings_openai) and
-      not all_zeros?(embeddings_spr_custom)
+      embeddings_ok = true
+      spr_content_ok = true
 
-    spr_content_ok = spr_content_exists
+      # embeddings_ok =
+      #   String.length(trimmed) > 100 and
+      #   (
+      #     not is_nil(embeddings_openai) and
+      #     not is_nil(embeddings_spr_custom) and
+      #     not all_zeros?(embeddings_openai) and
+      #     not all_zeros?(embeddings_spr_custom)
+      #   )
 
-    result =
-      similarity < similarity_threshold or
-      not spr_content_ok or
-      not embeddings_ok
+      # spr_content_ok = spr_content_exists
 
-    result
+      # IO.puts("similarity: #{similarity}")
+      # IO.puts("embeddings_ok: #{embeddings_ok}")
+      # IO.puts("String.length(trimmed): #{String.length(trimmed)}")
+      # IO.puts("not is_nil(embeddings_openai): #{not is_nil(embeddings_openai)}")
+      # IO.puts("not is_nil(embeddings_spr_custom): #{not is_nil(embeddings_spr_custom)}")
+      # IO.puts("not all_zeros?(embeddings_openai): #{not all_zeros?(embeddings_openai)}")
+      # IO.puts("not all_zeros?(embeddings_spr_custom): #{not all_zeros?(embeddings_spr_custom)}")
+      # IO.puts("spr_content_ok #{spr_content_ok}")
+
+      result =
+        similarity < similarity_threshold or
+        not spr_content_ok or
+        not embeddings_ok
+
+      result
   end
 
 
