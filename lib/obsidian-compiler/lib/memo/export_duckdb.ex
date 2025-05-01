@@ -646,7 +646,7 @@ defmodule Memo.ExportDuckDB do
           val -> val
         end
 
-      spr_content_exists = not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != ""
+      spr_content_exists = String.length(trimmed) > 100 and (not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != "")
 
       md_content_existing = Map.get(existing_data, "md_content", "") |> String.trim()
       md_content_new = String.trim(md_content)
@@ -665,22 +665,11 @@ defmodule Memo.ExportDuckDB do
           not all_zeros?(embeddings_spr_custom)
         )
 
-      _spr_content_ok = spr_content_exists # Prefix with underscore
-
-      # IO.puts("similarity: #{similarity}")
-      # IO.puts("embeddings_ok: #{_embeddings_ok}") # Use _embeddings_ok in comments too
-      # IO.puts("String.length(trimmed): #{String.length(trimmed)}")
-      # IO.puts("not is_nil(embeddings_openai): #{not is_nil(embeddings_openai)}")
-      # IO.puts("not is_nil(embeddings_spr_custom): #{not is_nil(embeddings_spr_custom)}")
-      # IO.puts("not all_zeros?(embeddings_openai): #{not all_zeros?(embeddings_openai)}")
-      # IO.puts("not all_zeros?(embeddings_spr_custom): #{not all_zeros?(embeddings_spr_custom)}")
-      # IO.puts("spr_content_ok #{_spr_content_ok}") # Use _spr_content_ok in comments too
-
       content_changed = similarity < similarity_threshold
       embeddings_exist = not is_nil(embeddings_openai) and not is_nil(embeddings_spr_custom)
 
       # Re-embed if content changed or if embeddings don't exist (for new files or if lost)
-      needs_update = content_changed or not embeddings_exist
+      needs_update = content_changed or not embeddings_exist or not spr_content_exists
 
       needs_update
   end
