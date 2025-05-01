@@ -18,28 +18,21 @@ export async function getAllMarkdownContents( // Make the function asynchronous
   const allPaths = await getAllMarkdownFiles(contentDir); // Await the asynchronous function
   const baseSlugArray = basePath.split('/').filter(Boolean);
 
-  const memos: (IMemoItem | null)[] = [];
-  for (const slugArray of allPaths) {
+  // Create an array of promises for each file operation
+  const memoPromises = allPaths.map(async slugArray => {
     const filePath = path.join(contentDir, ...slugArray) + '.md';
-    let fileExists = false;
     try {
-      await fs.stat(filePath); // Use asynchronous stat to check existence
-      fileExists = true;
+      await fs.stat(filePath);
     } catch {
-      // File does not exist
-    }
-
-    if (!fileExists) {
-      memos.push(null);
-      continue;
+      return null; // Return null if file doesn't exist
     }
 
     // Read the markdown file
-    const markdownContent = await fs.readFile(filePath, 'utf-8'); // Use asynchronous readFile
+    const markdownContent = await fs.readFile(filePath, 'utf-8');
     // Parse frontmatter and content
     const result = matter(markdownContent);
     const item: IMemoItem = {
-      content: includeContent ? result.content : '', // Conditionally include content
+      content: includeContent ? result.content : '',
       title: result.data.title || slugArray[slugArray.length - 1],
       short_title: result.data.short_title || '',
       description: result.data.description || '',
@@ -56,8 +49,11 @@ export async function getAllMarkdownContents( // Make the function asynchronous
       filePath: path.join(basePath, ...slugArray) + '.md',
       slugArray: [...baseSlugArray, ...slugArray],
     };
-    memos.push(item);
-  }
+    return item;
+  });
+
+  // Await all promises concurrently
+  const memos = await Promise.all(memoPromises);
 
   return memos.filter(Boolean) as IMemoItem[];
 }
