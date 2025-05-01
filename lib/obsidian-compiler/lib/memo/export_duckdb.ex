@@ -102,29 +102,79 @@ defmodule Memo.ExportDuckDB do
     DuckDBUtils.execute_query("LOAD parquet") |> handle_result()
   end
 
+  # Ensures the vault table is dropped, created, and loaded from Parquet.
   defp setup_database() do
-    check_query = "SELECT table_name FROM information_schema.tables WHERE table_name = 'vault'"
+    IO.puts("Ensuring clean 'vault' table state...")
 
-    case DuckDBUtils.execute_query(check_query) do
-      {:ok, []} ->
-        case DuckDBUtils.execute_query("IMPORT DATABASE '../../db'") do
-          {:ok, _} ->
-            IO.puts("Successfully imported database from 'db' directory.")
-            merge_columns()
+    # 1. Attempt to drop the table (ignore errors if it doesn't exist)
+    drop_query = "DROP TABLE IF EXISTS vault"
+    case DuckDBUtils.execute_query(drop_query) do
+      {:ok, _} -> IO.puts("Existing 'vault' table dropped (or did not exist).")
+      {:error, drop_error} ->
+        IO.puts("Warning: Failed to drop 'vault' table: #{drop_error}. Proceeding...")
+        # Don't stop here, still try to create and load
+    end
 
-          {:error, error} ->
-            IO.puts("Failed to import database: #{error}")
-            create_vault_table()
-        end
+    # 2. Create the table using the schema definition
+    IO.puts("Creating 'vault' table...")
+    create_result = create_vault_table() # Use the existing helper function
 
-      {:ok, _} ->
-        merge_columns()
+    if create_result == :ok do
+      # 2.5 Merge columns to sync schema with allowed frontmatter
+      IO.puts("Merging columns to sync schema...")
+      merge_columns()
 
-      {:error, error} ->
-        IO.puts("Error checking for vault table: #{error}")
-        create_vault_table()
+      # 3. Load data directly from the Parquet file using explicit column mapping
+      # This avoids column count mismatch errors by selecting only matching columns
+      load_query = """
+      INSERT INTO vault (
+        file_path, md_content, tags, title, date, description, authors, estimated_tokens,
+        embeddings_openai, total_tokens, hide_frontmatter, hide_title, pinned, featured,
+        icy, discord_id, status, hiring, PICs, bounty, function, social, github, website,
+        avatar, aliases, spr_content, embeddings_spr_custom, draft, short_title,
+        hide_on_sidebar, should_deploy_perma_storage, perma_storage_id, should_mint,
+        minted_at, token_id, previous_paths
+      )
+      SELECT
+        file_path, md_content, tags, title, date, description, authors, estimated_tokens,
+        embeddings_openai, total_tokens, hide_frontmatter, hide_title, pinned, featured,
+        icy, discord_id, status, hiring, PICs, bounty, function, social, github, website,
+        avatar, aliases, spr_content, embeddings_spr_custom, draft, short_title,
+        hide_on_sidebar, should_deploy_perma_storage, perma_storage_id, should_mint,
+        minted_at, token_id, previous_paths
+      FROM read_parquet('../../db/vault.parquet')
+      """
+      IO.puts("Loading data from '../../db/vault.parquet' with explicit column mapping...")
+      case DuckDBUtils.execute_query(load_query) do
+        {:ok, _} ->
+          IO.puts("Data loaded successfully from Parquet file with explicit column mapping.")
+          # 4. Verify row count after explicit load
+          count_query = "SELECT COUNT(*) as count FROM vault"
+          case DuckDBUtils.execute_query(count_query) do
+             {:ok, [%{"count" => count}]} when count > 0 ->
+               IO.puts("Verification successful: Found #{count} rows after explicit insert.")
+               :ok # Signal success for the `with` statement in run/4
+             {:ok, [%{"count" => count}]} ->
+               IO.puts("Error: Insert succeeded but table has #{count} rows. Data load failed.")
+               :error
+             {:ok, other_result} ->
+               IO.puts("Error: Unexpected count query result after insert: #{inspect(other_result)}.")
+               :error
+             {:error, count_error} ->
+               IO.puts("Error: Failed to count rows after insert: #{count_error}.")
+               :error
+          end
+        {:error, load_error} ->
+          IO.puts("Error: Failed to load data using explicit insert: #{load_error}.")
+          :error
+      end
+    else
+      # create_vault_table already logged the error
+      IO.puts("setup_database failed because table creation failed.")
+      :error
     end
   end
+
 
   defp create_vault_table() do
     columns =
@@ -235,119 +285,280 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
-  defp process_files(files, vaultpath, all_files_to_process) do
-    files
-    |> Enum.each(fn file_path ->
-      relative_path = Path.relative_to(file_path, vaultpath)
-
-      case File.read(file_path) do
-        {:ok, content} ->
-          case Frontmatter.extract_frontmatter(content) do
-            {:error, :no_frontmatter} ->
-              nil
-
-            {frontmatter, md_content} when is_map(frontmatter) ->
-              process_and_store(relative_path, frontmatter, md_content)
-
-            {frontmatter, _md_content} ->
-              IO.puts(
-                "Error: Expected frontmatter to be a map for file: #{relative_path}, but got: #{inspect(frontmatter)}"
-              )
-
-              nil
-          end
-
-        {:error, reason} ->
-          IO.puts("Failed to read file: #{relative_path}, Reason: #{reason}")
+  defp pre_fetch_existing_data(file_paths) do
+    if Enum.empty?(file_paths) do
+      %{}
+    else
+      case DuckDBUtils.execute_query("SELECT file_path, spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault") do
+        {:ok, results} ->
+          # Convert file_paths list to MapSet for efficient lookup
+          file_paths_set = MapSet.new(file_paths)
+          filtered_results =
+            Enum.filter(results, fn row ->
+              # Normalize DB file_path to match relative paths (trim vault prefix)
+              norm_path =
+                row["file_path"]
+                |> String.trim_leading("vault/")
+                |> String.trim_leading("/")
+              MapSet.member?(file_paths_set, norm_path)
+            end)
+          Enum.each(filtered_results, fn row -> IO.inspect(row["file_path"]) end)
+          Enum.reduce(filtered_results, %{}, fn row, acc ->
+            norm_path =
+              row["file_path"]
+              |> String.trim_leading("vault/")
+              |> String.trim_leading("/")
+            Map.put(acc, norm_path, row)
+          end)
+        {:error, error} ->
+          IO.puts("Failed to pre-fetch existing data: #{error}")
+          %{}
       end
-    end)
+    end
+  end
+
+  defp process_files(files, vaultpath, all_files_to_process) do
+    vault_abs = Path.expand(vaultpath)
+    relative_paths =
+      files
+      |> Enum.map(&Path.expand/1)
+      |> Enum.map(&Path.relative_to(&1, vault_abs))
+
+    existing_data_map = pre_fetch_existing_data(relative_paths)
+
+    # Step 1: Parallel file reading, parsing, and embedding generation (NO DB access)
+    processed_data =
+      files
+      |> Flow.from_enumerable()
+      |> Flow.partition()
+      |> Flow.map(fn file_path ->
+        file_abs = Path.expand(file_path)
+        relative_path = Path.relative_to(file_abs, vault_abs)
+        case File.read(file_path) do
+          {:ok, content} ->
+            case Frontmatter.extract_frontmatter(content) do
+              {:error, :no_frontmatter} ->
+                nil
+              {frontmatter, md_content} when is_map(frontmatter) ->
+                # Only normalize and embed, do not call transform_frontmatter or any DB code
+                normalized_frontmatter =
+                  frontmatter
+                  |> Map.update("tags", [], fn tags ->
+                    case tags do
+                      tags when is_binary(tags) ->
+                        if String.contains?(tags, ",") do
+                          tags
+                          |> String.split(",")
+                          |> Enum.map(&String.trim/1)
+                          |> Enum.reject(&(&1 in ["", nil]))
+                        else
+                          [tags]
+                        end
+
+                      list when is_list(list) ->
+                        list
+
+                      _ ->
+                        []
+                    end
+                  end)
+
+                existing_data = Map.get(existing_data_map, relative_path, %{})
+
+                if needs_embeddings_update(existing_data, md_content) do
+                  updated_frontmatter = regenerate_embeddings(relative_path, md_content, normalized_frontmatter)
+                  %{
+                    file_path: relative_path,
+                    md_content: md_content,
+                    frontmatter: updated_frontmatter
+                  }
+                else
+                  %{
+                    file_path: relative_path,
+                    md_content: md_content,
+                    frontmatter: Map.merge(normalized_frontmatter, %{
+                      "spr_content" => existing_data["spr_content"],
+                      "embeddings_openai" => existing_data["embeddings_openai"],
+                      "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
+                    })
+                  }
+                end
+              {frontmatter, _md_content} ->
+                IO.puts(
+                  "Error: Expected frontmatter to be a map for file: #{relative_path}, but got: #{inspect(frontmatter)}"
+                )
+                nil
+            end
+          {:error, reason} ->
+            IO.puts("Failed to read file: #{relative_path}, Reason: #{reason}")
+            nil
+        end
+      end)
+      |> Enum.to_list()
+      |> Enum.filter(& &1)
+
+    # Step 2: After parallel processing, open a single DB connection for all DB work
+    # Fetch all previous_paths for all files in a single query
+    file_paths = Enum.map(processed_data, & &1.file_path)
+    previous_paths_map = fetch_all_previous_paths(file_paths)
+
+    # Step 3: Merge previous_paths and prepare final records
+    final_data =
+      Enum.map(processed_data, fn %{file_path: file_path, md_content: md_content, frontmatter: frontmatter} ->
+        merged_frontmatter =
+          transform_frontmatter_no_db(md_content, frontmatter, file_path, previous_paths_map)
+        merged_frontmatter
+      end)
+
+    # Step 4: Batch upsert all records
+    batch_upsert_into_duckdb(final_data)
 
     paths = Enum.map(all_files_to_process, &Path.relative_to(&1, vaultpath))
     remove_old_files(paths)
   end
-
-  defp process_and_store(file_path, frontmatter, md_content) do
-    unless is_map(frontmatter) do
-      IO.puts(
-        "Error: Expected frontmatter to be a map for file: #{file_path}, but got: #{inspect(frontmatter)}"
-      )
-
-      nil
+  defp fetch_all_previous_paths(file_paths) do
+    if Enum.empty?(file_paths) do
+      %{}
+    else
+      escaped_paths = Enum.map(file_paths, &"'#{escape_string(&1)}'")
+      query = """
+      SELECT file_path, previous_paths FROM vault
+      WHERE file_path IN (#{Enum.join(escaped_paths, ", ")})
+      """
+      case DuckDBUtils.execute_query(query) do
+        {:ok, results} ->
+          Enum.reduce(results, %{}, fn row, acc ->
+            Map.put(acc, row["file_path"], normalize_array_value(row["previous_paths"]))
+          end)
+        {:error, _} -> %{}
+      end
     end
+  end
 
-    escaped_file_path = escape_string(file_path)
+  defp transform_frontmatter_no_db(md_content, frontmatter, file_path, previous_paths_map) do
+    estimated_tokens = div(String.length(md_content), 4)
+
+    array_columns =
+      @allowed_frontmatter
+      |> Enum.filter(fn {_key, type} -> is_array_type?(type) end)
+      |> Enum.map(&elem(&1, 0))
 
     normalized_frontmatter =
       frontmatter
-      |> Map.update("tags", [], fn tags ->
-        case tags do
-          tags when is_binary(tags) ->
-            if String.contains?(tags, ",") do
-              tags
-              |> String.split(",")
-              |> Enum.map(&String.trim/1)
-              |> Enum.reject(&(&1 in ["", nil]))
-            else
-              [tags]
-            end
-
-          list when is_list(list) ->
-            list
-
-          _ ->
-            []
-        end
+      |> Map.put("estimated_tokens", estimated_tokens)
+      |> then(fn map ->
+        Enum.reduce(array_columns, map, fn key, acc ->
+          Map.update(acc, key, [], &normalize_array_value/1)
+        end)
       end)
 
-    query =
-      "SELECT spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault WHERE file_path = '#{escaped_file_path}'"
+    new_previous_paths = GitUtils.get_previous_paths(file_path)
+    existing_paths_list = Map.get(previous_paths_map, file_path, [])
 
-    case DuckDBUtils.execute_query(query) do
-      {:ok, result} ->
-        existing_data = List.first(result) || []
+    merged_paths = Enum.uniq(existing_paths_list ++ new_previous_paths)
+    frontmatter_with_history = Map.put(normalized_frontmatter, "previous_paths", merged_paths)
 
-        transformed_frontmatter =
-          transform_frontmatter(md_content, normalized_frontmatter, file_path)
+    allowed_keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
 
-        maybe_update_database(existing_data, transformed_frontmatter, md_content)
-
-      {:error, error_message} ->
-        IO.puts("Query failed: #{inspect(error_message)}")
-    end
+    frontmatter_with_history
+    |> Map.take(allowed_keys)
+    |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
   end
 
-  defp maybe_update_database(existing_data, frontmatter, md_content) do
-    case existing_data do
-      [] ->
-        insert_or_update_new_document(frontmatter, md_content)
+  defp batch_upsert_into_duckdb(processed_data) do
+    batch_size = 100
+    keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
 
-      _ ->
-        if escape_multiline_text(existing_data["md_content"]) != escape_multiline_text(md_content) or
-             is_nil(existing_data["spr_content"]) or
-             is_nil(existing_data["embeddings_openai"]) or
-             is_nil(existing_data["embeddings_spr_custom"]) do
-          insert_or_update_new_document(frontmatter, md_content)
-        else
-          use_existing_embeddings(existing_data, frontmatter)
-        end
-    end
+    processed_data
+    |> Enum.chunk_every(batch_size)
+    |> Enum.each(fn batch ->
+      values_str =
+        batch
+        |> Enum.map(fn data ->
+          frontmatter = ensure_all_columns(data)
+          prepared_values = prepare_data(keys, frontmatter)
+          "(" <> Enum.join(prepared_values, ", ") <> ")"
+        end)
+        |> Enum.join(", ")
+
+      update_clause =
+        keys
+        |> Enum.filter(&(&1 != "file_path"))
+        |> Enum.map(&("#{&1} = EXCLUDED.#{&1}"))
+        |> Enum.join(", ")
+
+      upsert_query = """
+      INSERT INTO vault (#{Enum.join(keys, ", ")})
+      VALUES #{values_str}
+      ON CONFLICT (file_path)
+      DO UPDATE SET #{update_clause}
+      """
+
+      IO.puts("Batch upsert query:\n#{upsert_query}")
+      case DuckDBUtils.execute_query(upsert_query) do
+        {:ok, _} ->
+          IO.puts("Batch upsert successful for #{length(batch)} records")
+        {:error, error} ->
+          IO.puts("Batch upsert failed: #{inspect(error)}")
+          IO.inspect(%{query: upsert_query, error: error, batch: batch})
+      end
+    end)
   end
 
-  defp insert_or_update_new_document(frontmatter, md_content) do
-    updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
-    add_to_database(updated_frontmatter)
+
+  defp needs_embeddings_update(existing_data, md_content) do
+    # Use fuzzy matching for md_content and spr_content similarity threshold 80%
+    # Use String.jaro_distance for similarity check
+
+    embeddings_openai =
+      case existing_data["embeddings_openai"] do
+        nil -> nil
+        val when is_binary(val) ->
+          case Jason.decode(val) do
+            {:ok, decoded} -> decoded
+            _ -> nil
+          end
+        val -> val
+      end
+
+    embeddings_spr_custom =
+      case existing_data["embeddings_spr_custom"] do
+        nil -> nil
+        val when is_binary(val) ->
+          case Jason.decode(val) do
+            {:ok, decoded} -> decoded
+            _ -> nil
+          end
+        val -> val
+      end
+
+    spr_content_exists = not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != ""
+
+    md_content_existing = Map.get(existing_data, "md_content", "") |> String.trim()
+    md_content_new = String.trim(md_content)
+
+    similarity = String.jaro_distance(md_content_existing, md_content_new)
+
+    # Threshold for similarity
+    similarity_threshold = 0.8
+
+    embeddings_ok =
+      not is_nil(embeddings_openai) and
+      not is_nil(embeddings_spr_custom) and
+      not all_zeros?(embeddings_openai) and
+      not all_zeros?(embeddings_spr_custom)
+
+    spr_content_ok = spr_content_exists
+
+    result =
+      similarity < similarity_threshold or
+      not spr_content_ok or
+      not embeddings_ok
+
+    result
   end
 
-  defp use_existing_embeddings(existing_data, frontmatter) do
-    updated_frontmatter =
-      Map.merge(frontmatter, %{
-        "spr_content" => existing_data["spr_content"],
-        "embeddings_openai" => existing_data["embeddings_openai"],
-        "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
-      })
 
-    add_to_database(updated_frontmatter)
-  end
 
   defp get_files_to_process(directory, commits_back, all_files, pattern) do
     files =
@@ -375,7 +586,8 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
-  defp regenerate_embeddings(md_content, frontmatter) do
+  defp regenerate_embeddings(file_path, md_content, frontmatter) do
+    IO.puts("Embedding file: #{file_path}")
     spr_content = AIUtils.spr_compress(md_content)
     estimated_tokens = div(String.length(md_content), 4)
 
@@ -394,8 +606,6 @@ defmodule Memo.ExportDuckDB do
     |> Map.put("embeddings_openai", openai_embedding["embedding"])
     |> Map.put("estimated_tokens", estimated_tokens)
     |> (fn fm ->
-          IO.inspect(custom_embedding)
-          IO.inspect(openai_embedding)
           fm
         end).()
   end
@@ -527,97 +737,6 @@ defmodule Memo.ExportDuckDB do
     Enum.map(keys, fn key -> transform_value(Map.get(frontmatter, key), key) end)
   end
 
-  defp add_to_database(frontmatter) do
-    keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
-    frontmatter = ensure_all_columns(frontmatter)
-    file_path_value = Map.get(frontmatter, "file_path") |> escape_string()
-
-    with {:ok, [existing_data]} <-
-           DuckDBUtils.execute_query("SELECT * FROM vault WHERE file_path = '#{file_path_value}'") do
-      # Check if data has changed and if embeddings need regeneration
-      case check_data_changes(existing_data, frontmatter) do
-        {:no_change} ->
-          IO.puts("No changes detected for file: #{file_path_value}")
-
-        {:changed, :regenerate_embeddings} ->
-          IO.puts("Embeddings are all zeros. Regenerating embeddings for: #{file_path_value}")
-          md_content = Map.get(frontmatter, "md_content")
-          updated_frontmatter = regenerate_embeddings(md_content, frontmatter)
-          prepared_values = prepare_data(keys, updated_frontmatter)
-          perform_upsert(keys, prepared_values)
-
-        {:changed, :normal_update} ->
-          prepared_values = prepare_data(keys, frontmatter)
-          perform_upsert(keys, prepared_values)
-      end
-    else
-      {:ok, []} ->
-        prepared_values = prepare_data(keys, frontmatter)
-        perform_upsert(keys, prepared_values)
-
-      {:error, error_message} ->
-        IO.puts("Failed to fetch existing entry for file: #{file_path_value}")
-        IO.puts("Error: #{inspect(error_message)}")
-    end
-  end
-
-  defp check_data_changes(existing_data, frontmatter) do
-    # First check if any field has changed
-    any_field_changed =
-      Enum.any?(@allowed_frontmatter, fn {key, _type} ->
-        existing_value = Map.get(existing_data, key)
-        new_value = Map.get(frontmatter, key)
-
-        # Normalize both values for comparison
-        normalized_existing = normalize_for_comparison(existing_value, key)
-        normalized_new = normalize_for_comparison(new_value, key)
-
-        if normalized_existing != normalized_new do
-          IO.puts("Change detected in #{key}:")
-          IO.puts("  Existing (normalized): #{inspect(normalized_existing)}")
-          IO.puts("  New (normalized): #{inspect(normalized_new)}")
-          true
-        else
-          false
-        end
-      end)
-
-    # If no fields have changed, check if the embeddings are all zeros
-    if not any_field_changed do
-      # Check if the existing embeddings are all zeros
-      openai_embeddings_all_zeros = all_zeros?(existing_data["embeddings_openai"])
-
-      if openai_embeddings_all_zeros do
-        IO.puts("No field changes detected, but embeddings are all zeros. Marking as changed.")
-        {:changed, :regenerate_embeddings}
-      else
-        {:no_change}
-      end
-    else
-      {:changed, :normal_update}
-    end
-  end
-
-  defp perform_upsert(keys, prepared_values) do
-    # Find the index of the "file_path" key
-    file_path_index = Enum.find_index(keys, &(&1 == "file_path"))
-    file_path_value = Enum.at(prepared_values, file_path_index)
-
-    delete_query = "DELETE FROM vault WHERE file_path = #{file_path_value}"
-
-    insert_query = """
-    INSERT INTO vault (#{Enum.join(keys, ", ")}) VALUES (#{Enum.join(prepared_values, ", ")})
-    """
-
-    with {:ok, _} <- DuckDBUtils.execute_query(delete_query),
-         {:ok, _} <- DuckDBUtils.execute_query(insert_query) do
-      IO.puts("Upsert succeeded for file: #{file_path_value}")
-    else
-      {:error, error_message} ->
-        IO.puts("Upsert failed for file: #{file_path_value}")
-        IO.puts("Error: #{inspect(error_message)}")
-    end
-  end
 
   defp all_zeros?(nil), do: false
   defp all_zeros?(embeddings) when is_list(embeddings), do: Enum.all?(embeddings, &(&1 == 0))
@@ -630,51 +749,6 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp all_zeros?(_), do: false
-
-  defp normalize_for_comparison(value, key) do
-    type = Enum.find(@allowed_frontmatter, fn {k, _} -> k == key end) |> elem(1)
-
-    cond do
-      is_array_type?(type) -> normalize_array_value(value)
-      String.contains?(type, "BOOLEAN") -> normalize_boolean(value)
-      String.contains?(type, ["DOUBLE", "FLOAT", "INT", "BIGINT"]) -> normalize_number(value)
-      String.contains?(type, ["TEXT", "VARCHAR"]) -> normalize_text(value)
-      # Default case for other types
-      true -> value
-    end
-  end
-
-  defp normalize_boolean(value) do
-    case value do
-      val when is_boolean(val) -> val
-      "true" -> true
-      "TRUE" -> true
-      "True" -> true
-      "false" -> false
-      "FALSE" -> false
-      "False" -> false
-      _ -> false
-    end
-  end
-
-  defp normalize_number(value) do
-    case value do
-      val when is_number(val) ->
-        val
-
-      val when is_binary(val) ->
-        cond do
-          String.match?(val, ~r/^\d+$/) -> String.to_integer(val)
-          String.match?(val, ~r/^\d+\.\d+$/) -> String.to_float(val)
-          # Return the original string if it's not a valid number
-          true -> val
-        end
-
-      # Return the original value if it's not a number or string
-      _ ->
-        value
-    end
-  end
 
   defp normalize_array_value(value) do
     case value do
@@ -729,19 +803,6 @@ defmodule Memo.ExportDuckDB do
 
   defp is_array_type?(type), do: String.contains?(type, "[]") or String.contains?(type, "ARRAY")
 
-  defp normalize_text(value) do
-    value
-    # Ensure the value is treated as a string
-    |> to_string()
-    |> String.trim()
-    |> String.replace(~r/\r\n/, "\n")
-    |> String.replace(~r/\\n/, "\n")
-    |> String.replace(~r/\n{3,}/, "\n\n")
-    |> String.replace(~r/ +/, " ")
-    |> String.replace(~r/\\\|/, "|")
-    |> String.replace(~r/\\([\\`*_{}[\]()#+\-.!])/, "\\1")
-  end
-
   defp remove_old_files(paths) do
     if paths != [] do
       escaped_paths = Enum.map(paths, &"'#{escape_string(&1)}'")
@@ -754,64 +815,4 @@ defmodule Memo.ExportDuckDB do
   defp handle_result({:ok, _result}), do: :ok
   defp handle_result({:error, _error}), do: :error
 
-  defp transform_frontmatter(md_content, frontmatter, file_path) when is_map(frontmatter) do
-    estimated_tokens = div(String.length(md_content), 4)
-
-    # Get all array columns from @allowed_frontmatter
-    array_columns =
-      @allowed_frontmatter
-      |> Enum.filter(fn {_key, type} -> is_array_type?(type) end)
-      |> Enum.map(&elem(&1, 0))
-
-    # Pre-normalize certain fields before taking, with safe access
-    normalized_frontmatter =
-      frontmatter
-      |> Map.put("estimated_tokens", estimated_tokens)
-      |> then(fn map ->
-        Enum.reduce(array_columns, map, fn key, acc ->
-          Map.update(acc, key, [], &normalize_array_value/1)
-        end)
-      end)
-
-    # Fetch NEW previous paths using GitUtils.
-    new_previous_paths = GitUtils.get_previous_paths(file_path)
-
-    # Fetch EXISTING previous paths from the database
-    escaped_file_path = escape_string(file_path)
-
-    existing_paths_query =
-      "SELECT previous_paths FROM vault WHERE file_path = '#{escaped_file_path}'"
-
-    existing_paths_list =
-      case DuckDBUtils.execute_query(existing_paths_query) do
-        {:ok, [%{"previous_paths" => db_paths} | _]} ->
-          # Normalize the paths fetched from DB
-          normalize_array_value(db_paths)
-
-        {:ok, []} ->
-          # No existing entry or no previous paths
-          []
-
-        {:error, error_message} ->
-          IO.puts(
-            "Failed to fetch existing previous_paths for #{file_path}: #{inspect(error_message)}"
-          )
-
-          # Default to empty list on error
-          []
-      end
-
-    # Merge existing and new paths, ensuring uniqueness
-    merged_paths = Enum.uniq(existing_paths_list ++ new_previous_paths)
-
-    # Add the MERGED previous_paths to the map before taking allowed keys
-    frontmatter_with_history = Map.put(normalized_frontmatter, "previous_paths", merged_paths)
-
-    allowed_keys = @allowed_frontmatter |> Enum.map(&elem(&1, 0))
-
-    # Use the map that now includes the merged previous_paths
-    frontmatter_with_history
-    |> Map.take(allowed_keys)
-    |> Map.merge(%{"file_path" => file_path, "md_content" => md_content})
-  end
 end
