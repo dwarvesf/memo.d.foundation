@@ -2,15 +2,15 @@
 
 **Status:** Proposed
 
-**Context:**
+## **Context:**
 
 The current contributor page implementation at `src/pages/contributor/[slug].tsx` is functional but rigid. It primarily lists a contributor's memos fetched from our DuckDB `vault`. The vision is far grander: a rich, dynamic profile page bundling information from disparate sources like GitHub, Discord, and crypto wallets, serving as a lasting commemoration of contributions. Our editors, while not Next.js gurus, are comfortable with Markdown. This necessitates a shift towards a more flexible content format that allows for easier authoring and integration of external data, all while adhering to our static export (`output: 'export'`) constraint.
 
-**Decision:**
+## **Decision:**
 
 We will transition the contributor profile pages to use **MDX** as the primary content format. This will be orchestrated via a single dynamic route file, `src/pages/contributor/[...slug].tsx`, which will handle the build-time data fetching from external sources using standard libraries (like Octokit for GitHub). Internal data from the DuckDB `vault` will be queried directly within the MDX files using embedded query blocks. The fetched external data will be passed as props to a dedicated MDX template component, allowing for flexible presentation and easy content updates by non-Next.js experts.
 
-**Detailed Plan and Implementation:**
+## **Detailed Plan and Implementation:**
 
 This isn't just slapping some Markdown together; this is building a data-driven content engine for our most valuable asset: our contributors! The core idea is to leverage Next.js's static generation capabilities to pull all necessary data _before_ the site is deployed, burning it into static HTML pages. No client-side shenanigans for core data display, keeping things fast and reliable.
 
@@ -157,9 +157,9 @@ This isn't just slapping some Markdown together; this is building a data-driven 
     *This is the data aggregation point for *external* data. We're pulling from external APIs using standard libraries like Octokit. It's like building a contributor data fusion reactor!* Error handling is crucial here; external APIs can be flaky. Internal data (memos) will be handled differently, directly within the MDX.
 
 5.  **MDX Template Structure (`vault/contributors/ContributorProfileTemplate.mdx`):**
-    This file is the canvas. It uses Markdown for static text and JSX components to render the dynamic data passed from `getStaticProps`. Crucially, it will also embed **DuckDB queries** using the ````dsql-list` syntax, allowing memo data to be fetched directly within the content file itself.
+    This file is the canvas. It uses Markdown for static text and JSX components to render the dynamic data passed from `getStaticProps`. Crucially, it will also embed **DuckDB queries** using the `dsql-list` syntax, allowing memo data to be fetched directly within the content file itself.
 
-    `````mdx
+    ````mdx
     import { ContributorHeader } from '@/components/ContributorHeader';
     import { GitHubActivity } from '@/components/GitHubActivity';
     import { MemoList } from '@/components/MemoList';
@@ -182,30 +182,29 @@ This isn't just slapping some Markdown together; this is building a data-driven 
     {/* DuckDB query embedded directly in MDX to list memos by this author */}
     {/* The build process needs to be configured to execute these blocks */}
 
-    ```dsql-list
+    \```dsql-list
     SELECT markdown_link(COALESCE(short_title, title), file_path)
     FROM vault
     WHERE ARRAY_CONTAINS(authors, '${props.contributorName}') -- Assuming authors is an array and contributorName is the exact name
     ORDER BY date DESC;
-    ```
-    `````
+    \```
 
     ### GitHub Activity
 
     {props.githubData ? (
-    <GitHubActivity data={props.githubData} />
-    ) : (
-      <p>Could not load GitHub activity for {props.contributorName}.</p>
+
+    <GitHubActivity data={props.githubData} />) : (
+    <p>Could not load GitHub activity for {props.contributorName}.</p>
     )}
 
     {/_ Add sections for Discord, Crypto, etc. using similar conditional rendering _/}
 
     {/_ More static MDX content or components _/}
+    ````
 
-    `````
-    *This is where the magic happens visually. Markdown for prose, components for data, and embedded DuckDB queries for internal data! Simple, powerful.* The components (`ContributorHeader`, `GitHubActivity`, `MemoList`) will need to be created or adapted to accept and display the specific data structures passed to them. Note that `MemoList` might not be needed if the DuckDB query block renders the list directly, or it might be used to format the results of the query block. This needs to be aligned with how the ````dsql-list` processing works. Data passed from `getStaticProps` in the `.tsx` file will be available to components in the MDX file, typically via a `props` object or context.
+    _This is where the magic happens visually. Markdown for prose, components for data, and embedded DuckDB queries for internal data! Simple, powerful._
 
-    `````
+    The components (`ContributorHeader`, `GitHubActivity`, `MemoList`) will need to be created or adapted to accept and display the specific data structures passed to them. Note that `MemoList` might not be needed if the DuckDB query block renders the list directly, or it might be used to format the results of the query block. This needs to be aligned with how the `dsql-list` processing works. Data passed from `getStaticProps` in the `.tsx` file will be available to components in the MDX file, typically via a `props` object or context.
 
 6.  **Page Component (`src/pages/contributor/[...slug].tsx` default export):**
     The default export in the `.tsx` file will be a standard React component that receives the props from `getStaticProps` and renders the MDX template component, passing the data along.
@@ -247,7 +246,7 @@ This isn't just slapping some Markdown together; this is building a data-driven 
 
 **Integration with Current Setup:**
 
-This new system is designed to be **incrementally integrated**. It lives in its own directory (`src/pages/contributor/`) and handles a specific route pattern. Your existing `src/pages/[...slug].tsx` file and the markdown processing pipeline in `src/lib/content/markdown.ts` will continue to function exactly as they do now for all other `.md` files. The addition to `next.config.ts` is additive, enabling `.mdx` processing without altering `.md` handling. It's like adding a new specialized tool to the toolbox without changing how the existing tools work. The key change is adapting the build process to recognize and execute the ````dsql-list` blocks within `.mdx` files and ensuring the MDX processing pipeline handles this correctly.
+This new system is designed to be **incrementally integrated**. It lives in its own directory (`src/pages/contributor/`) and handles a specific route pattern. Your existing `src/pages/[...slug].tsx` file and the markdown processing pipeline in `src/lib/content/markdown.ts` will continue to function exactly as they do now for all other `.md` files. The addition to `next.config.ts` is additive, enabling `.mdx` processing without altering `.md` handling. It's like adding a new specialized tool to the toolbox without changing how the existing tools work. The key change is adapting the build process to recognize and execute the `dsql-list` blocks within `.mdx` files and ensuring the MDX processing pipeline handles this correctly.
 
 **Alternatives Considered:**
 
