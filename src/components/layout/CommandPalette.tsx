@@ -327,23 +327,21 @@ const CommandPalette: React.FC = () => {
 
     if (storedRecents) {
       try {
-        const parsed = JSON.parse(storedRecents);
-        setRecentPages(parsed);
+        const parsed = JSON.parse(storedRecents) as IRecentPageStorageItem[];
 
         // Skip recording if this is the home page
         if (isSkip) {
           // Remove current page if it exists already (to avoid duplicates)
-          let newRecentPages = recentPages.filter(
-            page => page.path !== currentPath,
-          );
+          let newRecentPages = parsed.filter(page => page.path !== currentPath);
 
           // Add current page to the beginning
           newRecentPages.unshift(currentPage);
           const maxLength = 5;
           // Keep only the last 10 pages
           if (recentPages.length > maxLength) {
-            newRecentPages = recentPages.slice(0, maxLength);
+            newRecentPages = parsed.slice(0, maxLength);
           }
+          setRecentPages(newRecentPages);
 
           // Store back to localStorage
           localStorage.setItem('recentPages', JSON.stringify(newRecentPages));
@@ -356,6 +354,7 @@ const CommandPalette: React.FC = () => {
     } else {
       // If no recent pages, create an array
       const initialRecentPages: IRecentPageStorageItem[] = [currentPage];
+      setRecentPages(initialRecentPages);
       localStorage.setItem('recentPages', JSON.stringify(initialRecentPages));
     }
   }, [router.asPath]);
