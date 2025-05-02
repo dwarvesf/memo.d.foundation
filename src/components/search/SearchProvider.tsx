@@ -338,6 +338,12 @@ export const SearchProvider: React.FC<{
       });
       // sort by date.days, days max => latest
       results.sort((a, b) => {
+        const scoreA = Math.round(a.score);
+        const scoreB = Math.round(b.score);
+
+        if (scoreB !== scoreA) {
+          return scoreB - scoreA;
+        }
         const aDate = a.date?.days || 0;
         const bDate = b.date?.days || 0;
         return bDate - aDate;
