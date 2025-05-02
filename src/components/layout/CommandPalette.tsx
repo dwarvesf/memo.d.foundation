@@ -338,7 +338,7 @@ const CommandPalette: React.FC = () => {
           newRecentPages.unshift(currentPage);
           const maxLength = 5;
           // Keep only the last 10 pages
-          if (recentPages.length > maxLength) {
+          if (newRecentPages.length > maxLength) {
             newRecentPages = parsed.slice(0, maxLength);
           }
           setRecentPages(newRecentPages);
