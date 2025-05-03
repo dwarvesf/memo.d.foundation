@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import {
   createContext,
   PropsWithChildren,
@@ -81,6 +82,20 @@ export const ThemeProvider = (props: PropsWithChildren) => {
         isThemeLoaded,
       }}
     >
+      <Script id="theme-init" strategy="beforeInteractive">
+        {`
+              (function () {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (!theme) {
+                    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  }
+                  document.documentElement.classList.add(theme);
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {}
+              })();
+            `}
+      </Script>
       {children}
     </ThemeContext.Provider>
   );
