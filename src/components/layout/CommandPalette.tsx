@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
 import { IRecentPageStorageItem, ISearchResultItem } from '@/types';
 import CommandPaletteModal from './CommandPaletteModal';
-import { BookOpenIcon, PinIcon, CopyIcon } from 'lucide-react';
+import { BookOpenIcon, PinIcon, CopyIcon, Share2Icon } from 'lucide-react';
 import HotIcon from '../icons/HotIcon';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
 import SearchIcon from '../icons/SearchIcon';
@@ -104,6 +104,10 @@ const CommandPalette: React.FC = () => {
           }
           navigator.clipboard.writeText(content);
           toast.success('Copied memo content!');
+          close();
+        } else if (selected.action === 'share') {
+          navigator.clipboard.writeText(window.location.href);
+          toast.success('Copied memo link!');
           close();
         } else {
           // Use router.push with a more reliable approach to prevent tab closing
@@ -459,6 +463,15 @@ function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
       icon: <CopyIcon className="stroke-primary" />,
       action: 'copy',
       path: 'copy',
+    },
+    {
+      id: 'share',
+      title: 'Share memo link',
+      description: 'Copy memo link to clipboard',
+      category: 'Actions',
+      icon: <Share2Icon className="stroke-primary" />,
+      action: 'share',
+      path: 'share',
     },
   ].map((item, index) => ({
     ...item,
