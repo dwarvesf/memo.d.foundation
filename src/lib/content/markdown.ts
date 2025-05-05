@@ -258,9 +258,10 @@ function remarkProcessLinks() {
     visit(tree, 'link', (node: Link) => {
       const linkNode = node as LinkNode;
 
-      // Only process relative links that end with .md
+      // Process relative links that end with .md OR links starting with / that end with .md
       if (
-        !/^(https?:\/\/|\/)/i.test(linkNode.url) &&
+        (!/^(https?:\/\/|\/)/i.test(linkNode.url) ||
+          linkNode.url.startsWith('/')) &&
         linkNode.url.endsWith('.md')
       ) {
         // Remove the .md extension
