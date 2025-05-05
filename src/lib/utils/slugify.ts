@@ -4,13 +4,17 @@
  * @returns Slugified string
  */
 export function slugify(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/[^a-z0-9\s_-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim()
-    .replace(/^-+|-+$/g, '');
+  return (
+    str
+      // Add replacements for common problematic Obsidian characters and ¶
+      .replace(/[\"#$%^&*:|\[\]{}()\*\\\/<>¶]/gu, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s_-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim()
+      .replace(/^-+|-+$/g, '')
+  );
 }
 
 /**
