@@ -88,7 +88,7 @@ const CommandPaletteModal = (props: Props) => {
                               id={`result-${result.id}`}
                               key={result.file_path}
                               className={cn(
-                                'border-border group flex w-full flex-col border-b px-4 py-2.5 text-left text-sm last:border-b-0',
+                                'border-border group flex w-full flex-col border-b px-3 py-2.5 text-left text-sm last:border-b-0',
                                 {
                                   'bg-primary text-primary-foreground':
                                     isSelected,
@@ -102,7 +102,9 @@ const CommandPaletteModal = (props: Props) => {
                                 setSelectedCategory(category);
                               }}
                             >
-                              <div className="font-medium">{result.title}</div>
+                              <div className="line-clamp-1 font-medium">
+                                {result.title}
+                              </div>
                               {result.matchingLines && (
                                 <div
                                   className={cn(
