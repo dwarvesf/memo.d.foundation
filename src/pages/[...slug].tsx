@@ -39,6 +39,8 @@ import {
 } from 'next-mdx-remote-client/serialize';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { DuckDBValue } from '@duckdb/node-api';
+import recmaMdxEscapeMissingComponents from 'recma-mdx-escape-missing-components';
+import remarkGfm from 'remark-gfm';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content: string;
@@ -289,7 +291,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         );
         contributorMemos = []; // Handle error
       }
-
       // --- Fetch External Data (GitHub Example using Octokit) ---
       let githubData = null;
       try {
@@ -343,6 +344,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         // Handle error, maybe use a default message
         mdxContent = `<p>Could not load profile content for ${contributorSlug}.</p>`;
       }
+      console.log('contributorMemos', contributorMemos);
+
       const mdxSource = mdxContent
         ? await serialize({
             source: mdxContent,
@@ -354,6 +357,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                 cryptoData,
                 contributorMemos,
               },
+              mdxOptions: {
+                recmaPlugins: [recmaMdxEscapeMissingComponents],
+                remarkPlugins: [remarkGfm],
+              },
             },
           })
         : null;
@@ -361,7 +368,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         props: {
           ...layoutProps,
           slug, // Pass the original requested slug
-
+          contributorName: originalContributorName,
           githubData,
           mdxSource,
           isContributorPage: true, // Flag to indicate this is a contributor page

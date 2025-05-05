@@ -137,6 +137,9 @@ importers:
       react-markdown:
         specifier: ^10.1.0
         version: 10.1.0(@types/react@19.0.12)(react@19.1.0)
+      recma-mdx-escape-missing-components:
+        specifier: ^1.1.2
+        version: 1.1.2(unified@11.0.5)
       rehype-highlight:
         specifier: ^7.0.2
         version: 7.0.2
@@ -4509,6 +4512,11 @@ packages:
 
   recma-jsx@1.0.0:
     resolution: {integrity: sha512-5vwkv65qWwYxg+Atz95acp8DMu1JDSqdGkA2Of1j6rCreyFUE/gp15fC8MnGEuG1W68UKjM6x6+YTWIh7hZM/Q==}
+
+  recma-mdx-escape-missing-components@1.1.2:
+    resolution: {integrity: sha512-XqSprkB+OQgqK07NrNm8PiA8arI8Y7sdHzVQvcxT3/8QHXqUWGOp2Oukn5xfNt86AMKN1UkTiY7ThfvblhEQMQ==}
+    peerDependencies:
+      unified: ^11
 
   recma-parse@1.0.0:
     resolution: {integrity: sha512-OYLsIGBB5Y5wjnSnQW6t3Xg7q3fQ7FWbw/vcXtORTnyaSFscOtABg+7Pnz6YZ6c27fG1/aN8CjfwoUEUIdwqWQ==}
@@ -10642,6 +10650,12 @@ snapshots:
       unified: 11.0.5
     transitivePeerDependencies:
       - acorn
+
+  recma-mdx-escape-missing-components@1.1.2(unified@11.0.5):
+    dependencies:
+      '@types/estree': 1.0.7
+      estree-util-visit: 2.0.0
+      unified: 11.0.5
 
   recma-parse@1.0.0:
     dependencies:
