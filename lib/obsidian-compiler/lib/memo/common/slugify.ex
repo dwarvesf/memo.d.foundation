@@ -5,6 +5,8 @@ defmodule Memo.Common.Slugify do
 
   def slugify(string) do
     string
+    # Add replacements for common problematic Obsidian characters and ¶
+    |> String.replace(~r/[\"#$%^&*:|\[\]{}()\*\\\/<>¶]/u, "")
     |> String.downcase()
     |> String.replace(~r/[^a-z0-9\s_-]/, "")
     |> String.replace(~r/\s+/, "-")
