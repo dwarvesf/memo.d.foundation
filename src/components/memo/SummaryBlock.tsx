@@ -8,8 +8,8 @@ function SummaryBlock({ summary }: SummaryBlockProps) {
   return (
     <div className="bg-background-secondary mb-element-margin rounded-lg p-4">
       <div className="mb-4 border-b-1">
-        <h3 className="text-foreground border-foreground w-fit border-b-3 !pr-2 text-center text-[21px] leading-[140%]">
-          Summary
+        <h3 className="text-foreground border-foreground w-fit border-b-3 !pr-2 text-center text-[21px] leading-[140%] uppercase">
+          tl;dr
         </h3>
       </div>
       <div
