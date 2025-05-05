@@ -1,0 +1,7 @@
+{
+  "/vault/research/topics/prompt": [
+    "vault/research/topics/llm/adversarial-prompting.md",
+    "vault/research/topics/llm/journey-of-thought-prompting.md",
+    "vault/research/topics/llm/llm-s-accuracy-self-refinement.md"
+  ]
+}
