@@ -1,9 +1,18 @@
 import type { NextConfig } from 'next';
+import createMDX from '@next/mdx';
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/, // Fixed the escaping of the backslash
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+});
 
 const nextConfig: NextConfig = {
   output: 'export',
   trailingSlash: true,
-  pageExtensions: ['js', 'jsx', 'md', 'ts', 'tsx'],
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'], // Added 'mdx' to the extensions
   images: {
     unoptimized: true,
   },
@@ -13,7 +22,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-module.exports = nextConfig;
-
 // Merge MDX config with Next.js config
-export default nextConfig;
+export default withMDX(nextConfig);
