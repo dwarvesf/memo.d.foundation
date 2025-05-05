@@ -556,7 +556,6 @@ export async function getMarkdownContent(filePath: string) {
       (line: string) => `- ${line}`,
     );
   }
-  console.log(rawSummaries);
   const processedSummary =
     rawSummaries.length > 0
       ? await summaryProcessor.process(rawSummaries.join('\n'))

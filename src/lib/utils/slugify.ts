@@ -7,7 +7,7 @@ export function slugify(str: string): string {
   return (
     str
       // Add replacements for common problematic Obsidian characters and ¶
-      .replace(/[\"#$%^&*:|\[\]{}()\*\\\/<>¶]/gu, '')
+      .replace(/[\]\\/¶"#$^&*:|<>{}()*]/gu, '')
       .toLowerCase()
       .replace(/[^a-z0-9\s_-]/g, '')
       .replace(/\s+/g, '-')
