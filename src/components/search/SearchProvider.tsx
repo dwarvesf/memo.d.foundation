@@ -52,6 +52,11 @@ const SearchContext = createContext<SearchContextType>({
   isLoading: false,
 });
 
+// Constants for search cache
+const SEARCH_CACHE_PREFIX = 'search_result_';
+const MAX_SEARCH_CACHE_ITEMS = 5;
+const SEARCH_CACHE_KEYS = 'search_cache_keys';
+
 // Helper functions
 // Function used by other code later
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -280,7 +285,7 @@ export const SearchProvider: React.FC<{
       // Parse query and filters
       const { filters, query } = parseQueryForFilters(options.query);
       // Check cache first
-      const cacheKey = options.query;
+      const cacheKey = `${SEARCH_CACHE_PREFIX}${options.query}`;
       const cachedResult = sessionStorage.getItem(cacheKey);
       if (cachedResult) {
         return JSON.parse(cachedResult);
@@ -379,6 +384,19 @@ export const SearchProvider: React.FC<{
 
       // Cache the result
       sessionStorage.setItem(cacheKey, JSON.stringify(finalResult));
+      // Manage cache keys
+      const cacheKeys = JSON.parse(
+        sessionStorage.getItem(SEARCH_CACHE_KEYS) || '[]',
+      ) as string[];
+      cacheKeys.push(cacheKey);
+      if (cacheKeys.length > MAX_SEARCH_CACHE_ITEMS) {
+        const keysToRemove = cacheKeys.splice(
+          0,
+          cacheKeys.length - MAX_SEARCH_CACHE_ITEMS,
+        );
+        keysToRemove.forEach(key => sessionStorage.removeItem(key));
+      }
+      sessionStorage.setItem(SEARCH_CACHE_KEYS, JSON.stringify(cacheKeys));
 
       return finalResult;
     },
