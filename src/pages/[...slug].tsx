@@ -1,17 +1,29 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import fs from 'fs/promises'; // Use asynchronous promises API
-import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { useRouter } from 'next/router'; // Import useRouter
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import path from 'path';
+import fs from 'fs/promises';
+import slugify from 'slugify';
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest'; // For GitHub API
 
-// Import utility functions from lib directory
+// Import utility functions
 import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
-// import { getBacklinks } from '../lib/content/backlinks'; // Removed
+import { getAllMarkdownContents } from '@/lib/content/memo';
+import { getRootLayoutPageProps } from '@/lib/content/utils';
+import { queryDuckDB } from '@/lib/db/utils'; // Utility for DuckDB queries
+import { slugToTitle } from '@/lib/utils';
+import { getFirstMemoImage } from '@/components/memo/utils';
 
 // Import components
 import { RootLayout, ContentLayout } from '../components';
 import SubscriptionSection from '../components/layout/SubscriptionSection';
+import UtterancComments from '@/components/layout/UtterancComments';
+import MintEntry from '@/components/mint-entry/MintEntry';
+
+// Import contexts and types
+import { useThemeContext } from '@/contexts/theme';
 import {
   IBackLinkItem,
   IMemoItem,
@@ -19,15 +31,14 @@ import {
   ITocItem,
   RootLayoutPageProps,
 } from '@/types';
-import UtterancComments from '@/components/layout/UtterancComments';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
-import { getAllMarkdownContents } from '@/lib/content/memo';
-import Link from 'next/link';
-import { getFirstMemoImage } from '@/components/memo/utils';
 import { formatContentPath } from '@/lib/utils/path-utils';
-import { slugToTitle } from '@/lib/utils';
-import MintEntry from '@/components/mint-entry/MintEntry';
-import { useThemeContext } from '@/contexts/theme';
+
+import {
+  serialize,
+  type SerializeResult,
+} from 'next-mdx-remote-client/serialize';
+import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
+import { DuckDBValue } from '@duckdb/node-api';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content: string;
@@ -39,40 +50,47 @@ interface ContentPageProps extends RootLayoutPageProps {
   metadata?: IMetadata;
   isListPage?: boolean;
   childMemos?: IMemoItem[];
+
+  // New props for contributor pages
+  isContributorPage?: boolean; // Flag to indicate contributor page
+  contributorName?: string; // Make optional
+  contributorMemos?: IMemoItem[]; // Make optional
+  githubData?: RestEndpointMethodTypes['users']['getByUsername']['response']['data'];
+  discordData?: null; // Make optional
+  cryptoData?: null; // Make optional
+  // mdxContent?: string; // Processed MDX content (HTML) - Make optional
+  mdxSource?: SerializeResult; // Serialized MDX source
 }
 
 /**
- * Gets all possible paths for static generation
- * @returns Object with paths and fallback setting
+ * Gets static paths for all content pages including contributor profiles
  */
 export const getStaticPaths: GetStaticPaths = async () => {
-  // This function is called at build time to generate all possible paths
-  // When using "output: export" we need to pre-render all paths
-  // that will be accessible in the exported static site
+  // Existing logic to get paths from public/content (excluding contributor/tags)
   const contentDir = path.join(process.cwd(), 'public/content');
   const aliasesPath = path.join(contentDir, 'aliases.json');
   const redirectsPath = path.join(contentDir, 'redirects.json');
 
   let aliases: Record<string, string> = {};
-  let redirects: Record<string, string> = {}; // To store redirects
+  let redirects: Record<string, string> = {};
 
   try {
-    const aliasesContent = await fs.readFile(aliasesPath, 'utf8'); // Await asynchronous readFile
+    const aliasesContent = await fs.readFile(aliasesPath, 'utf8');
     aliases = JSON.parse(aliasesContent);
   } catch (error) {
     console.error(`Error reading aliases.json in getStaticPaths: ${error}`);
-    aliases = {}; // Initialize as empty object if file not found
+    aliases = {};
   }
 
   try {
-    const redirectsContent = await fs.readFile(redirectsPath, 'utf8'); // Await asynchronous readFile
+    const redirectsContent = await fs.readFile(redirectsPath, 'utf8');
     redirects = JSON.parse(redirectsContent);
   } catch (error) {
     console.error(`Error reading redirects.json in getStaticPaths: ${error}`);
-    redirects = {}; // Initialize as empty object if file not found
+    redirects = {};
   }
 
-  const markdownPaths = (await getAllMarkdownFiles(contentDir)) // Await the asynchronous function
+  const markdownPaths = (await getAllMarkdownFiles(contentDir))
     .filter(
       slugArray =>
         !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
@@ -82,56 +100,89 @@ export const getStaticPaths: GetStaticPaths = async () => {
       params: { slug: slugArray },
     }));
 
-  // Add alias paths (for alias roots) to the generated paths
   const aliasPaths = Object.keys(aliases).map(alias => ({
-    params: { slug: alias.split('/').filter(Boolean) }, // Split alias path into slug array
+    params: { slug: alias.split('/').filter(Boolean) },
   }));
 
-  // Add paths for content files under aliased directories
   const nestedAliasPaths: { params: { slug: string[] } }[] = [];
   for (const markdownPathObj of markdownPaths) {
     const markdownSlug = markdownPathObj.params.slug;
-
     for (const aliasKey in aliases) {
       const aliasValue = aliases[aliasKey];
       const aliasValueSegments = aliasValue.split('/').filter(Boolean);
       const aliasKeySegments = aliasKey.split('/').filter(Boolean);
-
-      // Check if the markdown slug starts with the alias value segments
       if (
         markdownSlug.length >= aliasValueSegments.length &&
         aliasValueSegments.every(
           (segment, index) => markdownSlug[index] === segment,
         )
       ) {
-        // Extract the remaining segments from the markdown slug
         const remainingSegments = markdownSlug.slice(aliasValueSegments.length);
-
-        // Construct the new alias slug
         const newAliasSlug = [...aliasKeySegments, ...remainingSegments];
-
         nestedAliasPaths.push({ params: { slug: newAliasSlug } });
-        // Break here since a markdown file should only belong to one aliased directory
         break;
       }
     }
   }
 
-  // Add redirect paths to the generated paths
   const redirectPaths = Object.keys(redirects).map(redirect => ({
-    params: { slug: redirect.split('/').filter(Boolean) }, // Split redirect path into slug array
+    params: { slug: redirect.split('/').filter(Boolean) },
   }));
 
-  const paths = [
+  // --- New logic to get paths for contributor profiles ---
+  const authorsResult = await queryDuckDB(`
+    SELECT DISTINCT UNNEST(authors) AS author
+    FROM vault
+    WHERE authors IS NOT NULL;
+  `);
+  const contributorPaths = authorsResult.map(row => ({
+    params: {
+      slug: [
+        'contributor',
+        slugify(row.author as string, { lower: true, strict: true }),
+      ],
+    }, // Prefix with 'contributor'
+  }));
+
+  // Additionally, check for any manually created MDX files in vault/contributor/
+  const contributorVaultDir = path.join(
+    process.cwd(),
+    'public/content/contributor',
+  );
+  let manualMdxPaths: { params: { slug: string[] } }[] = [];
+  try {
+    const files = await fs.readdir(contributorVaultDir, {
+      withFileTypes: true,
+    });
+    const mdxFiles = files.filter(
+      dirent => dirent.isFile() && dirent.name.endsWith('.mdx'),
+    );
+    manualMdxPaths = mdxFiles.map(file => ({
+      params: { slug: ['contributor', file.name.replace(/\\.mdx$/, '')] }, // Prefix with 'contributor'
+    }));
+  } catch (error) {
+    console.error('Error reading vault/contributor directory:', error);
+    // Continue without manual paths if directory doesn't exist or error occurs
+  }
+
+  // Combine all paths
+  const allPaths = [
     ...markdownPaths,
     ...aliasPaths,
-    ...nestedAliasPaths, // Include nested alias paths
-    ...redirectPaths, // Include redirect paths
+    ...nestedAliasPaths,
+    ...redirectPaths,
+    ...contributorPaths, // Include contributor paths from DuckDB
+    ...manualMdxPaths, // Include manual contributor MDX paths
   ];
 
+  // Deduplicate paths based on slug
+  const uniquePaths = Array.from(
+    new Map(allPaths.map(item => [item.params.slug.join('/'), item])).values(),
+  );
+
   return {
-    paths,
-    fallback: false, // Must be 'false' for static export
+    paths: uniquePaths,
+    fallback: false, // Essential for static export
   };
 };
 
@@ -141,10 +192,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
-    const requestedPathSegments = slug; // Use slug array directly
+    const requestedPathSegments = slug;
     const requestedPath = `/${requestedPathSegments.join('/')}`;
 
-    // Read aliases.json and redirects.json
+    // Read aliases.json and redirects.json (existing logic)
     const contentDir = path.join(process.cwd(), 'public/content');
     const aliasesPath = path.join(contentDir, 'aliases.json');
     const redirectsPath = path.join(contentDir, 'redirects.json');
@@ -153,204 +204,318 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     let redirects: Record<string, string> = {};
 
     try {
-      const aliasesContent = await fs.readFile(aliasesPath, 'utf8'); // Await asynchronous readFile
+      const aliasesContent = await fs.readFile(aliasesPath, 'utf8');
       aliases = JSON.parse(aliasesContent);
     } catch {
-      aliases = {}; // Initialize as empty object if file not found
+      aliases = {};
     }
 
     try {
-      const redirectsContent = await fs.readFile(redirectsPath, 'utf8'); // Await asynchronous readFile
+      const redirectsContent = await fs.readFile(redirectsPath, 'utf8');
       redirects = JSON.parse(redirectsContent);
     } catch {
-      redirects = {}; // Initialize as empty object if file not found
+      redirects = {};
     }
 
-    // Determine the actual content path by checking for redirect or alias
-    let contentPathSegments = [...requestedPathSegments]; // Start with requested segments
-    let canonicalSlug = contentPathSegments; // Initialize canonical slug
+    // Determine the actual content path by checking for redirect or alias (existing logic)
+    let contentPathSegments = [...requestedPathSegments];
+    let canonicalSlug = contentPathSegments;
     let canonicalPathFound = false;
 
-    // Check for redirect
     if (redirects[requestedPath]) {
       const redirectTarget = redirects[requestedPath];
       contentPathSegments = redirectTarget.split('/').filter(Boolean);
-      canonicalSlug = contentPathSegments; // Update canonical slug after redirect
+      canonicalSlug = contentPathSegments;
       canonicalPathFound = true;
     } else {
-      // Check for alias, including nested aliases
       for (const aliasKey in aliases) {
         if (requestedPath.startsWith(aliasKey)) {
           const aliasValue = aliases[aliasKey];
-          // Construct the canonical path by replacing the alias key with the alias value
           const canonicalPath = requestedPath.replace(aliasKey, aliasValue);
           contentPathSegments = canonicalPath.split('/').filter(Boolean);
-          canonicalSlug = contentPathSegments; // Update canonical slug after alias
+          canonicalSlug = contentPathSegments;
           canonicalPathFound = true;
-          break; // Found a matching alias, no need to check further
+          break;
         }
       }
     }
 
-    // If canonical path was not found via redirect or alias, use the requested path segments
     if (!canonicalPathFound) {
-      // This block handles cases where the requested path is already canonical
-      // or if the alias is only for the first segment (handled by the old logic,
-      // but the new logic above should cover this too).
-      // Keep the original requestedPathSegments as canonicalSlug if no alias/redirect matched.
       canonicalSlug = requestedPathSegments;
-      contentPathSegments = requestedPathSegments; // Ensure contentPathSegments is also the requested segments
+      contentPathSegments = requestedPathSegments;
     }
 
-    // Canonical slug is the modified segments array
-
-    // Pass includeContent: false as we only need metadata for layout props
+    // Pass includeContent: false as we only need metadata for layout props (existing logic)
     const layoutProps = await getRootLayoutPageProps();
-    // Try multiple file path options to support Hugo's _index.md convention
-    let filePath =
-      path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.md';
 
-    // If the direct path doesn't exist, check if there's an _index.md or readme.md file in the directory
-    let directPathExists = false;
-    try {
-      await fs.stat(filePath); // Use asynchronous stat to check existence
-      directPathExists = true;
-    } catch {
-      // File does not exist
-    }
+    // --- New logic to handle contributor profiles ---
+    const isContributorPage =
+      canonicalSlug[0]?.toLowerCase() === 'contributor' &&
+      canonicalSlug.length > 1;
 
-    if (!directPathExists) {
-      const indexFilePath = path.join(
-        process.cwd(),
-        'public/content',
-        ...canonicalSlug,
-        '_index.md',
-      );
-      const readmeFilePath = path.join(
-        process.cwd(),
-        'public/content',
-        ...canonicalSlug,
-        'readme.md',
-      );
-      const directoryPath = path.join(
-        process.cwd(),
-        'public/content',
-        ...canonicalSlug,
-      );
+    if (isContributorPage) {
+      const contributorSlug = canonicalSlug[1]; // The contributor name is the second segment
 
-      let readmeExists = false;
-      try {
-        await fs.stat(readmeFilePath); // Use asynchronous stat
-        readmeExists = true;
-      } catch {
-        // File does not exist
-      }
-
-      let indexExists = false;
-      try {
-        await fs.stat(indexFilePath); // Use asynchronous stat
-        indexExists = true;
-      } catch {
-        // File does not exist
-      }
-
-      let directoryExists = false;
-      try {
-        await fs.stat(directoryPath); // Use asynchronous stat
-        directoryExists = true;
-      } catch {
-        // Directory does not exist
-      }
-
-      if (readmeExists) {
-        // Prioritize readme.md if it exists
-        filePath = readmeFilePath;
-      } else if (indexExists) {
-        filePath = indexFilePath;
-      } else if (directoryExists) {
-        // Pass includeContent: false as list page only needs title/path
-        // Use canonicalSlug for file system operations
-        const allMemos = await getAllMarkdownContents(canonicalSlug.join('/'), {
-          includeContent: false,
-        });
-        return {
-          props: {
-            ...layoutProps,
-            slug, // Pass the original requested slug
-            childMemos: allMemos,
-            isListPage: true,
-          },
-        };
-      } else {
-        return { notFound: true };
-      }
-    }
-
-    const { content, frontmatter, tocItems, rawContent, blockCount, summary } =
-      await getMarkdownContent(filePath);
-
-    // Get backlinks from the pre-calculated file
-    const backlinksPath = path.join(
-      process.cwd(),
-      'public/content/backlinks.json',
-    );
-    let allBacklinks: Record<string, { title: string; path: string }[]> = {};
-    try {
-      const backlinksContent = await fs.readFile(backlinksPath, 'utf8'); // Await asynchronous readFile
-      allBacklinks = JSON.parse(backlinksContent);
-    } catch (error) {
-      console.error(`Error reading backlinks.json in getStaticProps: ${error}`);
-      allBacklinks = {}; // Initialize as empty object if file not found
-    }
-
-    // Use the original requested slug to find backlinks
-    const backlinks = allBacklinks[slug.join('/')] || [];
-
-    const metadata = {
-      created: frontmatter.date?.toString() || null,
-      updated: frontmatter.lastmod?.toString() || null,
-      author: frontmatter.authors?.[0] || '',
-      coAuthors: frontmatter.authors?.slice(1) || [],
-      tags: Array.isArray(frontmatter.tags)
-        ? frontmatter.tags.filter(
-            tag => tag !== null && tag !== undefined && tag !== '',
+      // --- Fetch Contributor Name Casing (from Memos or infer from slug) ---
+      const allMemos = await getAllMarkdownContents(); // Fetch all memos to find original name casing
+      const originalContributorName =
+        allMemos
+          .find(memo =>
+            memo.authors?.some(
+              author =>
+                slugify(author, { lower: true, strict: true }) ===
+                contributorSlug,
+            ),
           )
-        : [],
-      folder: canonicalSlug.slice(0, -1).join('/'), // Use the canonical slug for folder
-      // Calculate reading time based on word count (average reading speed: 200 words per minute)
-      wordCount: content.split(/\s+/).length ?? 0,
-      readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
-      // Additional character and block counts for metadata
-      characterCount: content.length ?? 0,
-      blocksCount: blockCount ?? 0,
+          ?.authors?.find(
+            author =>
+              slugify(author, { lower: true, strict: true }) ===
+              contributorSlug,
+          ) || contributorSlug; // Fallback to slug if not found
 
-      // Mint entry metadata
-      tokenId: frontmatter.token_id || '',
-      permaStorageId: frontmatter.perma_storage_id || '',
-      title: frontmatter.title || '',
-      authorRole: frontmatter.author_role || '',
-      image: frontmatter.img || '',
-      firstImage: getFirstMemoImage(
-        {
-          content: rawContent,
-          filePath: path.join(...canonicalSlug) + '.md', // Use the canonical slug for filePath
+      // --- Fetch Internal Data (Memos from DuckDB) ---
+      let contributorMemos: Record<string, DuckDBValue>[] | null = null;
+      try {
+        contributorMemos = await queryDuckDB(`
+           SELECT short_title, title, file_path
+           FROM vault
+           WHERE ARRAY_CONTAINS(authors, '${originalContributorName}')
+           ORDER BY date DESC;
+         `);
+      } catch (error) {
+        console.error(
+          `Failed to fetch memos for ${originalContributorName}:`,
+          error,
+        );
+        contributorMemos = []; // Handle error
+      }
+
+      // --- Fetch External Data (GitHub Example using Octokit) ---
+      let githubData = null;
+      try {
+        // Assuming the contributor slug can be used as a GitHub username
+        const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN }); // Use Octokit
+        // Fetch user profile details (username, avatar, bio)
+        const { data: githubUser } = await octokit.rest.users.getByUsername({
+          username: contributorSlug,
+        });
+        githubData = githubUser; // Pass the user data
+      } catch (error) {
+        console.error(
+          `Failed to fetch GitHub data for ${contributorSlug}:`,
+          error,
+        );
+        // Handle errors, maybe set githubData to null or an error state
+      }
+
+      // --- Fetch Other External Data (Discord, Crypto, etc.) ---
+      const discordData = null; // Placeholder
+      const cryptoData = null; // Placeholder
+
+      // --- Read Processed MDX Content ---
+      // Assuming the build process puts processed MDX in public/content/contributor/
+      let processedMdxPath = path.join(
+        process.cwd(),
+        'public/content/contributor',
+        `${contributorSlug}.mdx`,
+      ); // Assuming processed to HTML
+      let mdxContent = '';
+
+      try {
+        const mdxFileExists = await fs
+          .stat(processedMdxPath)
+          .then(() => true)
+          .catch(() => false);
+
+        if (!mdxFileExists) {
+          processedMdxPath = path.join(
+            process.cwd(),
+            'public/content/contributor',
+            '[...slug].mdx',
+          ); // Fallback to .mdx if HTML not found
+        }
+        mdxContent = await fs.readFile(processedMdxPath, 'utf-8');
+      } catch (error) {
+        console.error(
+          `Failed to read processed MDX for ${contributorSlug}:`,
+          error,
+        );
+        // Handle error, maybe use a default message
+        mdxContent = `<p>Could not load profile content for ${contributorSlug}.</p>`;
+      }
+      const mdxSource = mdxContent
+        ? await serialize({
+            source: mdxContent,
+            options: {
+              scope: {
+                contributorName: originalContributorName,
+                githubData,
+                discordData,
+                cryptoData,
+                contributorMemos,
+              },
+            },
+          })
+        : null;
+      return {
+        props: {
+          ...layoutProps,
+          slug, // Pass the original requested slug
+
+          githubData,
+          mdxSource,
+          isContributorPage: true, // Flag to indicate this is a contributor page
         },
-        null,
-      ),
-      summary,
-    };
-    return {
-      props: {
-        ...layoutProps,
+      };
+    } else {
+      // --- Existing logic for standard markdown pages ---
+      let filePath =
+        path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.md';
+
+      let directPathExists = false;
+      try {
+        await fs.stat(filePath);
+        directPathExists = true;
+      } catch {
+        // File does not exist
+      }
+
+      if (!directPathExists) {
+        const indexFilePath = path.join(
+          process.cwd(),
+          'public/content',
+          ...canonicalSlug,
+          '_index.md',
+        );
+        const readmeFilePath = path.join(
+          process.cwd(),
+          'public/content',
+          ...canonicalSlug,
+          'readme.md',
+        );
+        const directoryPath = path.join(
+          process.cwd(),
+          'public/content',
+          ...canonicalSlug,
+        );
+
+        let readmeExists = false;
+        try {
+          await fs.stat(readmeFilePath);
+          readmeExists = true;
+        } catch {
+          // File does not exist
+        }
+
+        let indexExists = false;
+        try {
+          await fs.stat(indexFilePath);
+          indexExists = true;
+        } catch {
+          // File does not exist
+        }
+
+        let directoryExists = false;
+        try {
+          await fs.stat(directoryPath);
+          directoryExists = true;
+        } catch {
+          // Directory does not exist
+        }
+
+        if (readmeExists) {
+          filePath = readmeFilePath;
+        } else if (indexExists) {
+          filePath = indexFilePath;
+        } else if (directoryExists) {
+          const allMemos = await getAllMarkdownContents(
+            canonicalSlug.join('/'),
+            {
+              includeContent: false,
+            },
+          );
+          return {
+            props: {
+              ...layoutProps,
+              slug,
+              childMemos: allMemos,
+              isListPage: true,
+            },
+          };
+        } else {
+          return { notFound: true };
+        }
+      }
+
+      const {
         content,
-        frontmatter: JSON.parse(JSON.stringify(frontmatter)), // Ensure serializable
-        slug, // Pass the original requested slug
-        backlinks,
+        frontmatter,
         tocItems,
-        metadata,
-        isListPage: false,
-      },
-    };
+        rawContent,
+        blockCount,
+        summary,
+      } = await getMarkdownContent(filePath);
+
+      const backlinksPath = path.join(
+        process.cwd(),
+        'public/content/backlinks.json',
+      );
+      let allBacklinks: Record<string, { title: string; path: string }[]> = {};
+      try {
+        const backlinksContent = await fs.readFile(backlinksPath, 'utf8');
+        allBacklinks = JSON.parse(backlinksContent);
+      } catch (error) {
+        console.error(
+          `Error reading backlinks.json in getStaticProps: ${error}`,
+        );
+        allBacklinks = {};
+      }
+
+      const backlinks = allBacklinks[slug.join('/')] || [];
+
+      const metadata = {
+        created: frontmatter.date?.toString() || null,
+        updated: frontmatter.lastmod?.toString() || null,
+        author: frontmatter.authors?.[0] || '',
+        coAuthors: frontmatter.authors?.slice(1) || [],
+        tags: Array.isArray(frontmatter.tags)
+          ? frontmatter.tags.filter(
+              tag => tag !== null && tag !== undefined && tag !== '',
+            )
+          : [],
+        folder: canonicalSlug.slice(0, -1).join('/'),
+        wordCount: content.split(/\s+/).length ?? 0,
+        readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
+        characterCount: content.length ?? 0,
+        blocksCount: blockCount ?? 0,
+        tokenId: frontmatter.token_id || '',
+        permaStorageId: frontmatter.perma_storage_id || '',
+        title: frontmatter.title || '',
+        authorRole: frontmatter.author_role || '',
+        image: frontmatter.img || '',
+        firstImage: getFirstMemoImage(
+          {
+            content: rawContent,
+            filePath: path.join(...canonicalSlug) + '.md',
+          },
+          null,
+        ),
+        summary,
+      };
+      return {
+        props: {
+          ...layoutProps,
+          content,
+          frontmatter: JSON.parse(JSON.stringify(frontmatter)),
+          slug,
+          backlinks,
+          tocItems,
+          metadata,
+          isListPage: false,
+          isContributorPage: false, // Flag to indicate this is NOT a contributor page
+        },
+      };
+    }
   } catch (error) {
     console.error('Error in getStaticProps:', error);
     return { notFound: true };
@@ -368,81 +533,69 @@ export default function ContentPage({
   searchIndex,
   isListPage,
   childMemos,
+  // New props for contributor pages
+  isContributorPage,
+  contributorName,
+  githubData,
+  mdxSource,
 }: ContentPageProps) {
-  const router = useRouter(); // Get the router instance
-  const contentRef = useRef<HTMLDivElement>(null); // Create a ref for the content div
+  const router = useRouter();
+  const contentRef = useRef<HTMLDivElement>(null);
   const { theme, isThemeLoaded } = useThemeContext();
 
+  // Existing useEffect for internal links
   useEffect(() => {
-    // Function to handle clicks on internal links
     const handleInternalLinks = (event: MouseEvent) => {
-      // Use closest to find the anchor tag, handling clicks on child elements
       const targetLink = (event.target as HTMLElement).closest(
         'a.js-nextjs-link',
       );
-
       if (targetLink && targetLink.getAttribute('href')) {
         const href = targetLink.getAttribute('href')!;
-
         try {
-          // Resolve the relative URL against the current location to get the full path
           const resolvedUrl = new URL(href, window.location.href);
           const targetPath = resolvedUrl.pathname;
-
-          event.preventDefault(); // Prevent default browser navigation
-          router.push(targetPath); // Use Next.js router for navigation with resolved path
+          event.preventDefault();
+          router.push(targetPath);
         } catch (error) {
           console.error('Error resolving URL or pushing to router:', error);
-          // Allow default navigation if an error occurs
         }
       }
     };
-
-    // Add event listener to the content div if found, using the capturing phase
     const contentElement = contentRef.current;
     if (contentElement) {
       contentElement.addEventListener('click', handleInternalLinks, {
         capture: true,
-      }); // Added { capture: true }
+      });
     }
-
-    // Clean up the event listener
     return () => {
       if (contentElement) {
-        // Need to remove with the same options
         contentElement.removeEventListener('click', handleInternalLinks, {
           capture: true,
-        }); // Added { capture: true }
+        });
       }
     };
-  }, [content, router]); // Re-run effect if content or router changes
+  }, [content, router]);
 
+  // Existing useEffect for Mermaid (needs adaptation for MDX)
   useEffect(() => {
-    // Only run mermaid initialization on the client side for content pages
-    // and after the theme context has loaded
     if (
       typeof window !== 'undefined' &&
       !isListPage &&
-      frontmatter &&
+      (frontmatter || isContributorPage) && // Run for both markdown and contributor pages
       isThemeLoaded
     ) {
       import('mermaid').then(mermaid => {
         try {
-          // Determine Mermaid theme based on the application theme
-          const mermaidTheme = theme === 'dark' ? 'dark' : 'neutral'; // Use 'neutral' or 'default' for light mode
-
+          const mermaidTheme = theme === 'dark' ? 'dark' : 'neutral';
           mermaid.default.initialize({
-            startOnLoad: false, // We manually trigger rendering
+            startOnLoad: false,
             theme: mermaidTheme,
-            // You can add more config options here if needed
           });
-
-          // Find all elements that need Mermaid rendering
-          const elements = document.querySelectorAll<HTMLElement>(
+          // Select elements within the rendered markdown/mdx content
+          const elements = contentRef.current?.querySelectorAll<HTMLElement>(
             'code.language-mermaid',
           );
-          if (elements.length > 0) {
-            // Convert NodeList to Array of HTMLElement for type compatibility
+          if (elements && elements.length > 0) {
             const elementsArray = Array.from(elements);
             mermaid.default.run({ nodes: elementsArray });
           }
@@ -451,26 +604,27 @@ export default function ContentPage({
         }
       });
     }
-    // Rerun if content, page type, frontmatter, or theme changes
-  }, [content, isListPage, frontmatter, theme, isThemeLoaded]);
+  }, [
+    content,
+    isListPage,
+    frontmatter,
+    theme,
+    isThemeLoaded,
+    isContributorPage,
+  ]); // Add isContributorPage to dependencies
 
-  // Format metadata for display
-
-  // Don't show subscription for certain pages
-  const shouldShowSubscription =
-    !frontmatter?.hide_subscription &&
-    !['home', 'tags', 'contributor'].some(path => slug.includes(path));
   const contentEl = useMemo(() => {
     return (
       <div
         className="article-content"
         dangerouslySetInnerHTML={{ __html: content }}
-        ref={contentRef} // Assign the ref here
+        ref={contentRef}
       />
     );
   }, [content]);
 
-  if (isListPage || !frontmatter) {
+  // Conditional rendering based on page type
+  if (isListPage) {
     const title = slug.map(slugToTitle).join(' > ');
     return (
       <RootLayout
@@ -499,35 +653,70 @@ export default function ContentPage({
         </div>
       </RootLayout>
     );
-  }
-  return (
-    <RootLayout
-      title={frontmatter.title || 'Dwarves Memo'}
-      description={frontmatter.description}
-      image={metadata?.firstImage}
-      tocItems={tocItems}
-      metadata={metadata}
-      directoryTree={directoryTree}
-      searchIndex={searchIndex}
-    >
-      <div className="content-wrapper">
-        <ContentLayout
-          title={frontmatter.title}
-          description={frontmatter.description}
-          backlinks={backlinks}
-          hideFrontmatter={frontmatter.hide_frontmatter}
-          hideTitle={frontmatter.hide_title}
-          metadata={metadata}
-        >
-          {/* Render the HTML content safely */}
-          {contentEl}
-        </ContentLayout>
+  } else if (isContributorPage && mdxSource !== undefined) {
+    return (
+      <RootLayout
+        title={`${contributorName}'s Profile`}
+        description={githubData?.bio || ''} // Use GitHub bio as description
+        image={githubData?.avatar_url} // Use GitHub avatar as image
+        // tocItems={...} // TOC might be generated from MDX processing
+        // metadata={...} // Metadata might be generated from MDX processing
+        directoryTree={directoryTree}
+        searchIndex={searchIndex}
+      >
+        <div className="content-wrapper">
+          {/* Render the processed MDX content (HTML) */}
+          <RemoteMdxRenderer mdxSource={mdxSource} />
+          {/* Subscription, MintEntry, Comments sections can be included if desired */}
+          {/* {shouldShowSubscription && <SubscriptionSection />} */}
+          {/* {!!metadata?.tokenId && <MintEntry metadata={metadata} />} */}
+          {/* <UtterancComments /> */}
+        </div>
+      </RootLayout>
+    );
+  } else if (content !== undefined && frontmatter !== undefined) {
+    // --- Render Standard Markdown Page (Existing Logic) ---
+    const shouldShowSubscription =
+      !frontmatter?.hide_subscription &&
+      !['home', 'tags', 'contributor'].some(path => slug.includes(path));
 
-        {/* Only show subscription section on content pages, not special pages */}
-        {shouldShowSubscription && <SubscriptionSection />}
-        {!!metadata?.tokenId && <MintEntry metadata={metadata} />}
-        <UtterancComments />
-      </div>
-    </RootLayout>
-  );
+    return (
+      <RootLayout
+        title={frontmatter.title || 'Dwarves Memo'}
+        description={frontmatter.description}
+        image={metadata?.firstImage}
+        tocItems={tocItems}
+        metadata={metadata}
+        directoryTree={directoryTree}
+        searchIndex={searchIndex}
+      >
+        <div className="content-wrapper">
+          <ContentLayout
+            title={frontmatter.title}
+            description={frontmatter.description}
+            backlinks={backlinks}
+            hideFrontmatter={frontmatter.hide_frontmatter}
+            hideTitle={frontmatter.hide_title}
+            metadata={metadata}
+          >
+            {contentEl}
+          </ContentLayout>
+          {shouldShowSubscription && <SubscriptionSection />}
+          {!!metadata?.tokenId && <MintEntry metadata={metadata} />}
+          <UtterancComments />
+        </div>
+      </RootLayout>
+    );
+  } else {
+    // Handle case where content or frontmatter is undefined (shouldn't happen with fallback: false)
+    return (
+      <RootLayout
+        title="Not Found"
+        directoryTree={directoryTree}
+        searchIndex={searchIndex}
+      >
+        <div>Page not found.</div>
+      </RootLayout>
+    );
+  }
 }
