@@ -1,6 +1,10 @@
 # Builder image
 FROM jetpackio/devbox:latest AS builder
 
+# Set locale environment variables for UTF-8 support
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
 ARG OPENAI_API_KEY
 ARG JINA_API_KEY
 ARG JINA_BASE_URL
@@ -41,6 +45,10 @@ RUN devbox run build
 
 # Export runner
 FROM nginx:alpine
+# Set locale environment variables for UTF-8 support
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
 COPY --from=builder /code/out/ /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
