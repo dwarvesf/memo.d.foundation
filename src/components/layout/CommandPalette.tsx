@@ -78,10 +78,18 @@ const CommandPalette: React.FC = () => {
       if (query) {
         const selected = result.grouped[selectedCategory]?.[selectedIndex];
         if (selected && selected.file_path) {
+          const originalFilePath = selected.file_path;
+          // Remove /readme, /_index suffixes with optional .md and case-insensitive
+          const suffixRegex = /\/(readme|_index)(\.md)?$/i;
+          const cleanedPath = originalFilePath.replace(suffixRegex, '');
+
           // Use the slugifyPathComponents function from backlinks.ts
-          const slugifiedPath = selected.file_path.endsWith('.md')
-            ? slugifyPathComponents(selected.file_path).slice(0, -3) // Remove .md extension
-            : slugifyPathComponents(selected.file_path);
+          let slugifiedPath = slugifyPathComponents(cleanedPath);
+
+          // If the original file path ended with .md, remove the extension from the slugified path
+          if (originalFilePath.endsWith('.md')) {
+            slugifiedPath = slugifiedPath.slice(0, -3); // Remove .md extension
+          }
 
           router.push('/' + slugifiedPath);
           close();
@@ -297,9 +305,29 @@ const CommandPalette: React.FC = () => {
     }
 
     const result = await search({ query: searchQuery });
-    setResult(result);
+
+    // Add index to results
+    const flatWithIndex = result.flat.map((item, index) => ({
+      ...item,
+      index,
+    }));
+
+    // Remove /readme, /_index suffixes with optional .md and case-insensitive
+    const suffixRegex = /\/(readme|_index)(\.md)?$/i;
+    const resultsWithCleanedPaths = flatWithIndex.map(item => {
+      const cleanedPath = item.file_path.replace(suffixRegex, '');
+      return {
+        ...item,
+        file_path: cleanedPath,
+      };
+    });
+
+    // Re-group the results with cleaned paths
+    const grouped = groupBy(resultsWithCleanedPaths, 'category');
+
+    setResult({ flat: resultsWithCleanedPaths, grouped: grouped });
     setSelectedIndex(0);
-    setSelectedCategory(result.flat[0]?.category || '');
+    setSelectedCategory(resultsWithCleanedPaths[0]?.category || '');
     setIsSearching(false);
   }, 300);
 
