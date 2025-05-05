@@ -5,6 +5,14 @@ ARG OPENAI_API_KEY
 ARG JINA_API_KEY
 ARG JINA_BASE_URL
 
+ARG RAILWAY_GIT_BRANCH=main
+ENV RAILWAY_GIT_BRANCH=$RAILWAY_GIT_BRANCH
+
+ARG RAILWAY_GIT_REPO_OWNER=dwarvesf
+ENV RAILWAY_GIT_REPO_OWNER=$RAILWAY_GIT_REPO_OWNER
+ARG RAILWAY_GIT_REPO_NAME=memo.d.foundation
+ENV RAILWAY_GIT_REPO_NAME=$RAILWAY_GIT_REPO_NAME
+
 ENV OPENAI_API_KEY=$OPENAI_API_KEY
 ENV JINA_API_KEY=$JINA_API_KEY
 ENV JINA_BASE_URL=$JINA_BASE_URL
@@ -19,10 +27,10 @@ COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} ./ ./
 
 # Map git to current directory
 RUN git init
-RUN git remote add origin https://github.com/dwarvesf/memo.d.foundation.git
-RUN git fetch --depth 1 --no-tags origin main
+RUN git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git
+RUN git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH}
 RUN git clean -fdx
-RUN git checkout main
+RUN git checkout ${RAILWAY_GIT_BRANCH}
 
 # Installing devbox project
 RUN git config --global --add safe.directory /code
