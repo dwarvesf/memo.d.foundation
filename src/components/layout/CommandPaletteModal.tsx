@@ -295,5 +295,5 @@ function getCategoryIcon(
 ): React.FunctionComponent<React.SVGProps<SVGSVGElement>> {
   const icon = category.split(' > ')[0];
 
-  return MemoIcons[icon as keyof typeof MemoIcons] || (() => <></>);
+  return MemoIcons[icon as keyof typeof MemoIcons] || MemoIcons.playbook;
 }
