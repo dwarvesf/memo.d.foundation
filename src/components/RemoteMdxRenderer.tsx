@@ -11,6 +11,7 @@ interface Props {
 }
 
 const components: MDXComponents = {
+  Link,
   MemoVList,
   MemoLink: props => {
     const { filePath, className, ...rest } = props;

@@ -489,20 +489,26 @@ defmodule Memo.ExportMarkdown do
   end
 
   defp preserve_relative_prefix_and_slugify(path) do
-    # Extract and preserve any relative path prefix
-    {relative_prefix, path_without_prefix} =
-      if String.match?(path, ~r|^(\.\./)+|) do
-        [prefix | _] = Regex.run(~r|^(\.\./)+|, path)
-        {prefix, String.replace_prefix(path, prefix, "")}
-      else
-        {"", path}
-      end
+    # If the path is an MDX file, return it as is with no slugification
+    if String.ends_with?(path, ".mdx") do
+      path
+    else
+      # For non-MDX files, apply the normal slugification logic
+      # Extract and preserve any relative path prefix
+      {relative_prefix, path_without_prefix} =
+        if String.match?(path, ~r|^(\.\./)+|) do
+          [prefix | _] = Regex.run(~r|^(\.\./)+|, path)
+          {prefix, String.replace_prefix(path, prefix, "")}
+        else
+          {"", path}
+        end
 
-    # Slugify the path without the relative prefix
-    slugified_path = Slugify.slugify_path(path_without_prefix)
+      # Slugify the path without the relative prefix
+      slugified_path = Slugify.slugify_path(path_without_prefix)
 
-    # Re-add the relative prefix
-    relative_prefix <> slugified_path
+      # Re-add the relative prefix
+      relative_prefix <> slugified_path
+    end
   end
 
   defp replace_path_prefix(path, old_prefix, new_prefix) do

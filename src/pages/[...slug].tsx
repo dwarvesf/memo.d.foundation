@@ -4,15 +4,12 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import path from 'path';
 import fs from 'fs/promises';
-import slugify from 'slugify';
-import { Octokit, RestEndpointMethodTypes } from '@octokit/rest'; // For GitHub API
 
 // Import utility functions
 import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
 import { getAllMarkdownContents } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
-import { queryDuckDB } from '@/lib/db/utils'; // Utility for DuckDB queries
 import { slugToTitle } from '@/lib/utils';
 import { getFirstMemoImage } from '@/components/memo/utils';
 
@@ -33,15 +30,6 @@ import {
 } from '@/types';
 import { formatContentPath } from '@/lib/utils/path-utils';
 
-import {
-  serialize,
-  type SerializeResult,
-} from 'next-mdx-remote-client/serialize';
-import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
-import { Json } from '@duckdb/node-api';
-import recmaMdxEscapeMissingComponents from 'recma-mdx-escape-missing-components';
-import remarkGfm from 'remark-gfm';
-
 interface ContentPageProps extends RootLayoutPageProps {
   content: string;
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -52,16 +40,6 @@ interface ContentPageProps extends RootLayoutPageProps {
   metadata?: IMetadata;
   isListPage?: boolean;
   childMemos?: IMemoItem[];
-
-  // New props for contributor pages
-  isContributorPage?: boolean; // Flag to indicate contributor page
-  contributorName?: string; // Make optional
-  contributorMemos?: IMemoItem[]; // Make optional
-  githubData?: RestEndpointMethodTypes['users']['getByUsername']['response']['data'];
-  discordData?: null; // Make optional
-  cryptoData?: null; // Make optional
-  // mdxContent?: string; // Processed MDX content (HTML) - Make optional
-  mdxSource?: SerializeResult; // Serialized MDX source
 }
 
 /**
@@ -131,50 +109,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
     params: { slug: redirect.split('/').filter(Boolean) },
   }));
 
-  // --- New logic to get paths for contributor profiles ---
-  const authorsResult = await queryDuckDB(`
-    SELECT DISTINCT UNNEST(authors) AS author
-    FROM vault
-    WHERE authors IS NOT NULL;
-  `);
-  const contributorPaths = authorsResult.map(row => ({
-    params: {
-      slug: [
-        'contributor',
-        slugify(row.author as string, { lower: true, strict: true }),
-      ],
-    }, // Prefix with 'contributor'
-  }));
-
-  // Additionally, check for any manually created MDX files in vault/contributor/
-  const contributorVaultDir = path.join(
-    process.cwd(),
-    'public/content/contributor',
-  );
-  let manualMdxPaths: { params: { slug: string[] } }[] = [];
-  try {
-    const files = await fs.readdir(contributorVaultDir, {
-      withFileTypes: true,
-    });
-    const mdxFiles = files.filter(
-      dirent => dirent.isFile() && dirent.name.endsWith('.mdx'),
-    );
-    manualMdxPaths = mdxFiles.map(file => ({
-      params: { slug: ['contributor', file.name.replace(/\\.mdx$/, '')] }, // Prefix with 'contributor'
-    }));
-  } catch (error) {
-    console.error('Error reading vault/contributor directory:', error);
-    // Continue without manual paths if directory doesn't exist or error occurs
-  }
-
   // Combine all paths
   const allPaths = [
     ...markdownPaths,
     ...aliasPaths,
     ...nestedAliasPaths,
     ...redirectPaths,
-    ...contributorPaths, // Include contributor paths from DuckDB
-    ...manualMdxPaths, // Include manual contributor MDX paths
   ];
 
   // Deduplicate paths based on slug
@@ -250,290 +190,142 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     // Pass includeContent: false as we only need metadata for layout props (existing logic)
     const layoutProps = await getRootLayoutPageProps();
 
-    // --- New logic to handle contributor profiles ---
-    const isContributorPage =
-      canonicalSlug[0]?.toLowerCase() === 'contributor' &&
-      canonicalSlug.length > 1;
+    // --- Existing logic for standard markdown pages ---
+    let filePath =
+      path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.md';
 
-    if (isContributorPage) {
-      const contributorSlug = canonicalSlug[1]; // The contributor name is the second segment
+    let directPathExists = false;
+    try {
+      await fs.stat(filePath);
+      directPathExists = true;
+    } catch {
+      // File does not exist
+    }
 
-      // --- Fetch Contributor Name Casing (from Memos or infer from slug) ---
-      const allMemos = await getAllMarkdownContents(); // Fetch all memos to find original name casing
-      const originalContributorName =
-        allMemos
-          .find(memo =>
-            memo.authors?.some(
-              author =>
-                slugify(author, { lower: true, strict: true }) ===
-                contributorSlug,
-            ),
-          )
-          ?.authors?.find(
-            author =>
-              slugify(author, { lower: true, strict: true }) ===
-              contributorSlug,
-          ) || contributorSlug; // Fallback to slug if not found
-
-      // --- Fetch Internal Data (Memos from DuckDB) ---
-      let contributorMemos: Record<string, Json>[];
-      try {
-        contributorMemos = await queryDuckDB(`
-           SELECT short_title, title, file_path, authors, description, date, tags, md_content
-           FROM vault
-           WHERE ARRAY_CONTAINS(authors, '${originalContributorName}')
-           ORDER BY date DESC;
-         `);
-        contributorMemos = contributorMemos.map(memo => ({
-          ...memo,
-          filePath: memo.file_path,
-          md_content: null, // md_content only used for image extraction
-          image: getFirstMemoImage(
-            {
-              filePath: memo.file_path as string,
-              content: memo.md_content as string,
-            },
-            null,
-          ),
-        }));
-      } catch (error) {
-        console.error(
-          `Failed to fetch memos for ${originalContributorName}:`,
-          error,
-        );
-        contributorMemos = []; // Handle error
-      }
-      // --- Fetch External Data (GitHub Example using Octokit) ---
-      let githubData = null;
-      try {
-        // Assuming the contributor slug can be used as a GitHub username
-        const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN }); // Use Octokit
-        // Fetch user profile details (username, avatar, bio)
-        const { data: githubUser } = await octokit.rest.users.getByUsername({
-          username: contributorSlug,
-        });
-        githubData = githubUser; // Pass the user data
-      } catch (error) {
-        console.error(
-          `Failed to fetch GitHub data for ${contributorSlug}:`,
-          error,
-        );
-        // Handle errors, maybe set githubData to null or an error state
-      }
-
-      // --- Fetch Other External Data (Discord, Crypto, etc.) ---
-      const discordData = null; // Placeholder
-      const cryptoData = null; // Placeholder
-
-      // --- Read Processed MDX Content ---
-      // Assuming the build process puts processed MDX in public/content/contributor/
-      let processedMdxPath = path.join(
+    if (!directPathExists) {
+      const indexFilePath = path.join(
         process.cwd(),
-        'public/content/contributor',
-        `${contributorSlug}.mdx`,
-      ); // Assuming processed to HTML
-      let mdxContent = '';
+        'public/content',
+        ...canonicalSlug,
+        '_index.md',
+      );
+      const readmeFilePath = path.join(
+        process.cwd(),
+        'public/content',
+        ...canonicalSlug,
+        'readme.md',
+      );
+      const directoryPath = path.join(
+        process.cwd(),
+        'public/content',
+        ...canonicalSlug,
+      );
 
+      let readmeExists = false;
       try {
-        const mdxFileExists = await fs
-          .stat(processedMdxPath)
-          .then(() => true)
-          .catch(() => false);
-
-        if (!mdxFileExists) {
-          processedMdxPath = path.join(
-            process.cwd(),
-            'public/content/contributor',
-            '_template.mdx',
-          ); // Fallback to .mdx if HTML not found
-        }
-        mdxContent = await fs.readFile(processedMdxPath, 'utf-8');
-      } catch (error) {
-        console.error(
-          `Failed to read processed MDX for ${contributorSlug}:`,
-          error,
-        );
-        // Handle error, maybe use a default message
-        mdxContent = `<p>Could not load profile content for ${contributorSlug}.</p>`;
-      }
-      const mdxSource = mdxContent
-        ? await serialize({
-            source: mdxContent,
-            options: {
-              scope: {
-                contributorName: originalContributorName,
-                githubData,
-                discordData,
-                cryptoData,
-                contributorMemos,
-              },
-              parseFrontmatter: true,
-              mdxOptions: {
-                recmaPlugins: [recmaMdxEscapeMissingComponents],
-                remarkPlugins: [remarkGfm],
-              },
-            },
-          })
-        : null;
-      return {
-        props: {
-          ...layoutProps,
-          slug, // Pass the original requested slug
-          contributorName: originalContributorName,
-          githubData,
-          mdxSource,
-          isContributorPage: true, // Flag to indicate this is a contributor page
-        },
-      };
-    } else {
-      // --- Existing logic for standard markdown pages ---
-      let filePath =
-        path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.md';
-
-      let directPathExists = false;
-      try {
-        await fs.stat(filePath);
-        directPathExists = true;
+        await fs.stat(readmeFilePath);
+        readmeExists = true;
       } catch {
         // File does not exist
       }
 
-      if (!directPathExists) {
-        const indexFilePath = path.join(
-          process.cwd(),
-          'public/content',
-          ...canonicalSlug,
-          '_index.md',
-        );
-        const readmeFilePath = path.join(
-          process.cwd(),
-          'public/content',
-          ...canonicalSlug,
-          'readme.md',
-        );
-        const directoryPath = path.join(
-          process.cwd(),
-          'public/content',
-          ...canonicalSlug,
-        );
-
-        let readmeExists = false;
-        try {
-          await fs.stat(readmeFilePath);
-          readmeExists = true;
-        } catch {
-          // File does not exist
-        }
-
-        let indexExists = false;
-        try {
-          await fs.stat(indexFilePath);
-          indexExists = true;
-        } catch {
-          // File does not exist
-        }
-
-        let directoryExists = false;
-        try {
-          await fs.stat(directoryPath);
-          directoryExists = true;
-        } catch {
-          // Directory does not exist
-        }
-
-        if (readmeExists) {
-          filePath = readmeFilePath;
-        } else if (indexExists) {
-          filePath = indexFilePath;
-        } else if (directoryExists) {
-          const allMemos = await getAllMarkdownContents(
-            canonicalSlug.join('/'),
-            {
-              includeContent: false,
-            },
-          );
-          return {
-            props: {
-              ...layoutProps,
-              slug,
-              childMemos: allMemos,
-              isListPage: true,
-            },
-          };
-        } else {
-          return { notFound: true };
-        }
-      }
-
-      const {
-        content,
-        frontmatter,
-        tocItems,
-        rawContent,
-        blockCount,
-        summary,
-      } = await getMarkdownContent(filePath);
-
-      const backlinksPath = path.join(
-        process.cwd(),
-        'public/content/backlinks.json',
-      );
-      let allBacklinks: Record<string, { title: string; path: string }[]> = {};
+      let indexExists = false;
       try {
-        const backlinksContent = await fs.readFile(backlinksPath, 'utf8');
-        allBacklinks = JSON.parse(backlinksContent);
-      } catch (error) {
-        console.error(
-          `Error reading backlinks.json in getStaticProps: ${error}`,
-        );
-        allBacklinks = {};
+        await fs.stat(indexFilePath);
+        indexExists = true;
+      } catch {
+        // File does not exist
       }
 
-      const backlinks = allBacklinks[slug.join('/')] || [];
+      let directoryExists = false;
+      try {
+        await fs.stat(directoryPath);
+        directoryExists = true;
+      } catch {
+        // Directory does not exist
+      }
 
-      const metadata = {
-        created: frontmatter.date?.toString() || null,
-        updated: frontmatter.lastmod?.toString() || null,
-        author: frontmatter.authors?.[0] || '',
-        coAuthors: frontmatter.authors?.slice(1) || [],
-        tags: Array.isArray(frontmatter.tags)
-          ? frontmatter.tags.filter(
-              tag => tag !== null && tag !== undefined && tag !== '',
-            )
-          : [],
-        folder: canonicalSlug.slice(0, -1).join('/'),
-        wordCount: content.split(/\s+/).length ?? 0,
-        readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
-        characterCount: content.length ?? 0,
-        blocksCount: blockCount ?? 0,
-        tokenId: frontmatter.token_id || '',
-        permaStorageId: frontmatter.perma_storage_id || '',
-        title: frontmatter.title || '',
-        authorRole: frontmatter.author_role || '',
-        image: frontmatter.img || '',
-        firstImage: getFirstMemoImage(
-          {
-            content: rawContent,
-            filePath: path.join(...canonicalSlug) + '.md',
+      if (readmeExists) {
+        filePath = readmeFilePath;
+      } else if (indexExists) {
+        filePath = indexFilePath;
+      } else if (directoryExists) {
+        const allMemos = await getAllMarkdownContents(canonicalSlug.join('/'), {
+          includeContent: false,
+        });
+        return {
+          props: {
+            ...layoutProps,
+            slug,
+            childMemos: allMemos,
+            isListPage: true,
           },
-          null,
-        ),
-        summary,
-      };
-      return {
-        props: {
-          ...layoutProps,
-          content,
-          frontmatter: JSON.parse(JSON.stringify(frontmatter)),
-          slug,
-          backlinks,
-          tocItems,
-          metadata,
-          isListPage: false,
-          isContributorPage: false, // Flag to indicate this is NOT a contributor page
-        },
-      };
+        };
+      } else {
+        return { notFound: true };
+      }
     }
+
+    const { content, frontmatter, tocItems, rawContent, blockCount, summary } =
+      await getMarkdownContent(filePath);
+
+    const backlinksPath = path.join(
+      process.cwd(),
+      'public/content/backlinks.json',
+    );
+    let allBacklinks: Record<string, { title: string; path: string }[]> = {};
+    try {
+      const backlinksContent = await fs.readFile(backlinksPath, 'utf8');
+      allBacklinks = JSON.parse(backlinksContent);
+    } catch (error) {
+      console.error(`Error reading backlinks.json in getStaticProps: ${error}`);
+      allBacklinks = {};
+    }
+
+    const backlinks = allBacklinks[slug.join('/')] || [];
+
+    const metadata = {
+      created: frontmatter.date?.toString() || null,
+      updated: frontmatter.lastmod?.toString() || null,
+      author: frontmatter.authors?.[0] || '',
+      coAuthors: frontmatter.authors?.slice(1) || [],
+      tags: Array.isArray(frontmatter.tags)
+        ? frontmatter.tags.filter(
+            tag => tag !== null && tag !== undefined && tag !== '',
+          )
+        : [],
+      folder: canonicalSlug.slice(0, -1).join('/'),
+      wordCount: content.split(/\s+/).length ?? 0,
+      readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
+      characterCount: content.length ?? 0,
+      blocksCount: blockCount ?? 0,
+      tokenId: frontmatter.token_id || '',
+      permaStorageId: frontmatter.perma_storage_id || '',
+      title: frontmatter.title || '',
+      authorRole: frontmatter.author_role || '',
+      image: frontmatter.img || '',
+      firstImage: getFirstMemoImage(
+        {
+          content: rawContent,
+          filePath: path.join(...canonicalSlug) + '.md',
+        },
+        null,
+      ),
+      summary,
+    };
+    return {
+      props: {
+        ...layoutProps,
+        content,
+        frontmatter: JSON.parse(JSON.stringify(frontmatter)),
+        slug,
+        backlinks,
+        tocItems,
+        metadata,
+        isListPage: false,
+        isContributorPage: false, // Flag to indicate this is NOT a contributor page
+      },
+    };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
     return { notFound: true };
@@ -551,11 +343,6 @@ export default function ContentPage({
   searchIndex,
   isListPage,
   childMemos,
-  // New props for contributor pages
-  isContributorPage,
-  contributorName,
-  githubData,
-  mdxSource,
 }: ContentPageProps) {
   const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null);
@@ -599,7 +386,7 @@ export default function ContentPage({
     if (
       typeof window !== 'undefined' &&
       !isListPage &&
-      (frontmatter || isContributorPage) && // Run for both markdown and contributor pages
+      frontmatter && // Run for both markdown and contributor pages
       isThemeLoaded
     ) {
       import('mermaid').then(mermaid => {
@@ -622,14 +409,7 @@ export default function ContentPage({
         }
       });
     }
-  }, [
-    content,
-    isListPage,
-    frontmatter,
-    theme,
-    isThemeLoaded,
-    isContributorPage,
-  ]); // Add isContributorPage to dependencies
+  }, [content, isListPage, frontmatter, theme, isThemeLoaded]); // Add isContributorPage to dependencies
 
   const contentEl = useMemo(() => {
     return (
@@ -668,21 +448,6 @@ export default function ContentPage({
               </ul>
             </div>
           )}
-        </div>
-      </RootLayout>
-    );
-  } else if (isContributorPage && mdxSource !== undefined) {
-    const frontmatter = mdxSource.frontmatter as Record<string, string>;
-    return (
-      <RootLayout
-        title={frontmatter?.title || `${contributorName}'s Profile`}
-        description={frontmatter?.description || githubData?.bio || ''} // Use GitHub bio as description
-        image={frontmatter?.image || githubData?.avatar_url} // Use GitHub avatar as image
-        directoryTree={directoryTree}
-        searchIndex={searchIndex}
-      >
-        <div className="content-wrapper">
-          <RemoteMdxRenderer mdxSource={mdxSource} />
         </div>
       </RootLayout>
     );

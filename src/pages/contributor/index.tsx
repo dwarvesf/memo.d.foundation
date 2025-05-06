@@ -1,15 +1,29 @@
-import { RootLayout } from '@/components';
+import React from 'react';
+import { GetStaticProps } from 'next';
+import path from 'path';
+
+// Import utility functions
 import { getAllMarkdownContents, sortMemos } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
+
 import { RootLayoutPageProps } from '@/types';
-import { GetStaticProps } from 'next';
-import Link from 'next/link';
-import React, { useMemo } from 'react';
+
+import { type SerializeResult } from 'next-mdx-remote-client/serialize';
+import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
+import { RootLayout } from '@/components';
+import { getMdxSource } from '@/lib/mdx';
+
+interface ContentPageProps extends RootLayoutPageProps {
+  frontmatter?: Record<string, any>;
+
+  mdxSource?: SerializeResult; // Serialized MDX source
+}
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const allMemos = await getAllMarkdownContents();
     const layoutProps = await getRootLayoutPageProps();
+
     const contributors = new Set<string>();
     sortMemos(allMemos).forEach(memo => {
       const { authors } = memo;
@@ -20,51 +34,58 @@ export const getStaticProps: GetStaticProps = async () => {
         });
       }
     });
+
+    // --- Read Processed MDX Content ---
+    const mdxPath = path.join(
+      process.cwd(),
+      'public/content/contributor',
+      `index.mdx`,
+    );
+
+    const mdxSource = await getMdxSource({
+      mdxPath,
+      scope: {
+        contributors: Array.from(contributors),
+      },
+    });
+
+    if (!mdxSource || 'error' in mdxSource) {
+      return { notFound: true }; // Handle serialization error
+    }
     return {
-      props: { ...layoutProps, contributors: Array.from(contributors) },
+      props: {
+        ...layoutProps,
+        mdxSource,
+        frontmatter: mdxSource.frontmatter,
+      },
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
-    return {
-      props: {},
-    };
+    return { notFound: true };
   }
 };
 
-const Contributor = (
-  props: RootLayoutPageProps & {
-    contributors: string[];
-  },
-) => {
-  const { contributors } = props;
-  const sortedContributors = useMemo(() => {
-    if (!contributors) return null;
-    return contributors;
-  }, [contributors]);
-
+export default function ContentPage({
+  frontmatter,
+  directoryTree,
+  searchIndex,
+  mdxSource,
+}: ContentPageProps) {
+  if (!mdxSource || 'error' in mdxSource) {
+    // We already handle this in getStaticProps
+    return null;
+  }
   return (
-    <RootLayout {...props} title="Contributors">
-      <div className="flex items-center">
-        {sortedContributors && (
-          <div className="flex flex-col gap-4">
-            <h1 className="text-2xl font-bold">Contributors</h1>
-            <ul className="list-disc pl-5">
-              {sortedContributors.map(contributor => (
-                <li key={contributor} className="text-lg">
-                  <Link
-                    href={`/contributor/${contributor}`}
-                    className="hover:text-primary hover:decoration-primary dark:hover:text-primary decoration-link-decoration line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline transition-colors duration-200 ease-in-out dark:text-neutral-300"
-                  >
-                    {contributor}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+    <RootLayout
+      title={frontmatter?.title}
+      description={frontmatter?.description} // Use GitHub bio as description
+      image={frontmatter?.image} // Use GitHub avatar as image
+      directoryTree={directoryTree}
+      searchIndex={searchIndex}
+    >
+      <div className="content-wrapper">
+        <RemoteMdxRenderer mdxSource={mdxSource} />
       </div>
     </RootLayout>
   );
-};
-
-export default Contributor;
+}
