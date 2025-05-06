@@ -154,15 +154,15 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
       </div>
       <div
         className={cn(
-          'toc-modal bg-background fixed top-[var(--header-height)] right-0 m-2 mt-17 max-w-[320px] rounded-xl',
-          'shadow-[0px_4px_6px_-2px_#10182808,0px_12px_16px_-4px_#10182814]',
+          'toc-modal bg-background fixed top-[var(--header-height)] right-0 m-2 mt-17 rounded-xl',
+          'border shadow-[0px_4px_6px_-2px_#10182808,0px_12px_16px_-4px_#10182814]',
           'invisible translate-x-[12px] opacity-0',
           'ease transition-all duration-300',
           'peer-hover:visible peer-hover:translate-x-0 peer-hover:opacity-100',
           'hover:visible hover:translate-x-0 hover:opacity-100',
         )}
       >
-        <div className="max-h-[min(680px,calc(100vh-var(--header-height)-68px-32px-2rem))] overflow-y-auto p-4">
+        <div className="max-h-[min(680px,calc(100vh-var(--header-height)-68px-32px-2rem))] max-w-[240px] overflow-y-auto p-4">
           {renderTocModalItems(items || [])}
         </div>
       </div>

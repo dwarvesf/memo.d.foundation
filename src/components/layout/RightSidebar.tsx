@@ -42,13 +42,13 @@ const RightSidebar = (props: Props) => {
   return (
     <div
       className={cn(
-        'right-sidebar leading-[140% xl:w-right-sidebar-width hidden w-[200px] font-sans text-sm font-medium xl:flex',
+        'right-sidebar leading-[140% xl:w-right-sidebar-width sticky top-[20px] hidden w-[200px] font-sans text-sm font-medium xl:flex',
         'transition-[transform,opacity,visibility] duration-100 ease-in-out',
         'visible w-0 translate-x-0 transform opacity-100',
         'reading:opacity-0 reading:xl:translate-x-[10px] reading:invisible reading:fixed reading:right-[calc((100vw-var(--container-max-width)-var(--nav-sidebar-width))/2-var(--right-sidebar-width)-var(--column-gap))]',
       )}
     >
-      <div className="sticky top-[60px] right-0 flex w-full flex-col gap-y-8 pt-4 pb-10 transition-[top] duration-200 ease-in-out">
+      <div className="right-0 flex w-full flex-col gap-y-8 pt-4 pb-10 transition-[top] duration-200 ease-in-out">
         {metadata && (
           <div className="metadata space-y-6">
             <div className="">
