@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "db/vault.parquet" # Only trigger on changes to this file
+      - 'db/vault.parquet' # Only trigger on changes to this file
 
 concurrency:
   group: ${{ github.repository }}-workflow
@@ -55,7 +55,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install arweave gray-matter crypto js-yaml tsx
@@ -69,7 +69,7 @@ jobs:
         id: deploy
         if: steps.changed-files.outputs.files != ''
         run: |
-          npx tsx scripts/deploy-arweave.ts '${{ steps.changed-files.outputs.files }}'
+          npx tsx scripts/deploy-arweave.ts '${{ steps.changed-files.outputs.files }}' '${{ secrets.AUTHOR_ADDRESS_MAP }}'
 
       - name: Commit and push changes
         run: |

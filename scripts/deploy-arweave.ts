@@ -148,6 +148,7 @@ async function deployContent(
   title: string,
   description: string,
   authors: string[],
+  authorAddresses: string[],
 ): Promise<DeploymentResult> {
   try {
     // Load wallet from file
@@ -183,6 +184,7 @@ async function deployContent(
       description: description,
       image: imageUrl,
       authors: authors,
+      author_addresses: authorAddresses,
     };
 
     // Convert to JSON
@@ -220,6 +222,7 @@ async function deployContent(
 async function processFile(
   filePath: string,
   walletPath: string,
+  authorAddressMap: Record<string, string>,
 ): Promise<OutputResult | null> {
   // Read the file
   const fileContent = fs.readFileSync(filePath, 'utf8');
@@ -241,6 +244,11 @@ async function processFile(
       ? data.authors
       : ['Anonymous'];
 
+  // Map authors to addresses
+  const authorAddresses = authors.map(
+    (author: string) => authorAddressMap[author] || '',
+  );
+
   const result = await deployContent(
     walletPath,
     filePath,
@@ -248,6 +256,7 @@ async function processFile(
     title,
     description,
     authors,
+    authorAddresses,
   );
 
   // Update the file with the Arweave ID
@@ -275,6 +284,17 @@ async function main() {
     .map(path => `vault/${path}`);
   const walletPath = './wallet.json';
 
+  // Parse author address map from CLI
+  let authorAddressMap: Record<string, string> = {};
+  if (process.argv[3]) {
+    try {
+      authorAddressMap = JSON.parse(process.argv[3]);
+    } catch (e) {
+      console.error('Failed to parse author address map JSON:', e);
+      process.exit(1);
+    }
+  }
+
   if (filePaths.length === 0) {
     console.log('No files to process');
     return;
@@ -284,7 +304,7 @@ async function main() {
 
   for (const filePath of filePaths) {
     try {
-      const result = await processFile(filePath, walletPath);
+      const result = await processFile(filePath, walletPath, authorAddressMap);
       if (result) {
         results.push(result);
       }
