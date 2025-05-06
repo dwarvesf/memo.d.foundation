@@ -9,7 +9,7 @@ import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { filterMemo, getAllMarkdownContents } from '@/lib/content/memo';
 import { RootLayout } from '@/components';
 import Link from 'next/link';
-import { formatMemoPath } from '@/components/memo/utils';
+import { formatContentPath } from '@/lib/utils/path-utils';
 import { uppercaseSpecialWords } from '@/lib/utils';
 
 interface ContentPageProps extends RootLayoutPageProps {
@@ -149,7 +149,7 @@ export default function TagDetailPage({
                       className="flex flex-col flex-wrap items-baseline gap-x-2"
                     >
                       <Link
-                        href={formatMemoPath(memo.filePath)}
+                        href={formatContentPath(memo.filePath)}
                         className="hover:text-primary line-clamp-3 shrink-0 transition-all duration-150 hover:underline"
                       >
                         {memo.title}

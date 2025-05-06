@@ -23,7 +23,8 @@ import UtterancComments from '@/components/layout/UtterancComments';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { getAllMarkdownContents } from '@/lib/content/memo';
 import Link from 'next/link';
-import { formatMemoPath, getFirstMemoImage } from '@/components/memo/utils';
+import { getFirstMemoImage } from '@/components/memo/utils';
+import { formatContentPath } from '@/lib/utils/path-utils';
 import { slugToTitle } from '@/lib/utils';
 import MintEntry from '@/components/mint-entry/MintEntry';
 import { useThemeContext } from '@/contexts/theme';
@@ -485,7 +486,7 @@ export default function ContentPage({
                 {childMemos.map(memo => (
                   <li key={memo.filePath} className="text-lg">
                     <Link
-                      href={formatMemoPath(memo.filePath)}
+                      href={formatContentPath(memo.filePath)}
                       className="hover:text-primary hover:decoration-primary dark:hover:text-primary decoration-link-decoration line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline transition-colors duration-200 ease-in-out dark:text-neutral-300"
                     >
                       {memo.title}
