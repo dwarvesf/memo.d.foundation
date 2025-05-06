@@ -2,7 +2,7 @@ import { IMemoItem } from '@/types';
 import React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { formatMemoPath } from './utils';
+import { formatContentPath } from '@/lib/utils/path-utils';
 import { formatDate } from 'date-fns';
 
 interface Props {
@@ -27,7 +27,7 @@ const MemoVLinkList = ({
       data-placement="vertical"
     >
       {data.map((memo, index) => {
-        const path = formatMemoPath(memo.filePath);
+        const path = formatContentPath(memo.filePath);
         return (
           <div
             id={`memo-${index + 1}`}

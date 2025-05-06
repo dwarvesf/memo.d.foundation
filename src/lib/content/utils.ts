@@ -5,6 +5,7 @@ import {
   MenuFilePath,
 } from '@/types';
 import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathComponents from utils
+import { formatContentPath } from '../utils/path-utils'; // Import formatContentPath from path-utils
 import path from 'path'; // Import path module
 import fs from 'fs/promises'; // Use promises version for async file reading
 
@@ -76,30 +77,7 @@ function transformMenuDataToDirectoryTree(
       // Explicitly type 'file'
       const fullFilePath = '/' + file.file_path; // File paths are already full paths relative to root
 
-      let url: string;
-      // Check if it's a README file
-      const lowerCasePath = file.file_path.toLowerCase();
-      // Check if it's a README or _index file
-      if (
-        lowerCasePath.endsWith('/readme.md') ||
-        lowerCasePath.endsWith('/_index.md')
-      ) {
-        // Get parent directory path and slugify it
-        const parentDirPath = path.dirname(file.file_path);
-        url = '/' + slugifyPathComponents(parentDirPath);
-        // Ensure root directory README links to '/'
-        if (url === '/.') {
-          url = '/';
-        }
-      } else {
-        // Generate slugified URL for other files, removing .md suffix
-        const slugifiedPath = slugifyPathComponents(file.file_path);
-        url =
-          '/' +
-          (slugifiedPath.endsWith('.md')
-            ? slugifiedPath.slice(0, -3)
-            : slugifiedPath);
-      }
+      const url = formatContentPath(file.file_path);
 
       children[fullFilePath] = {
         label: file.title, // Use file title as label

@@ -2,7 +2,8 @@ import { IMemoItem } from '@/types';
 import React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { formatMemoPath, getFirstMemoImage } from './utils';
+import { getFirstMemoImage } from './utils';
+import { formatContentPath } from '@/lib/utils/path-utils';
 import { formatDate } from 'date-fns';
 
 interface Props {
@@ -19,7 +20,7 @@ const MemoVList = (props: Props) => {
     <div className={cn('v-list', className)} data-placement="vertical">
       {data.map((memo, index) => {
         const imgSrc = hideThumbnail ? null : getFirstMemoImage(memo);
-        const path = formatMemoPath(memo.filePath);
+        const path = formatContentPath(memo.filePath);
         return (
           <div
             id={`memo-${index + 1}`}
