@@ -2,9 +2,9 @@ import { MDXClient, MDXComponents } from 'next-mdx-remote-client';
 import React from 'react';
 import { type SerializeResult } from 'next-mdx-remote-client/serialize';
 import Link from 'next/link';
-import { formatMemoPath } from './memo/utils';
 import { cn } from '@/lib/utils';
 import MemoVList from './memo/MemoVList';
+import { formatContentPath } from '@/lib/utils/path-utils';
 
 interface Props {
   mdxSource: SerializeResult;
@@ -17,7 +17,7 @@ const components: MDXComponents = {
     const { filePath, className, ...rest } = props;
     return (
       <Link
-        href={formatMemoPath(filePath || '')}
+        href={formatContentPath(filePath || '')}
         className={cn(
           'line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline transition-colors duration-200 ease-in-out dark:text-neutral-300',
           className,
