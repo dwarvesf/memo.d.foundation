@@ -67,7 +67,7 @@ jobs:
 
       - name: Map author addresses
         run: |
-          node scripts/formatter/add-author-address/script.js scripts/formatter/add-author-address/github_to_evm_map.json
+          node scripts/formatter/add-author-address/script.js '${{ secrets.AUTHOR_ADDRESS_MAP }}'
 
       - name: Process markdown files
         id: deploy

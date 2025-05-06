@@ -2,13 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-// Function to read the JSON file with GitHub usernames to addresses mapping
-function readAddressMap(filePath) {
+// Function to parse the JSON string with GitHub usernames to addresses mapping
+function parseAddressMap(jsonString) {
   try {
-    const data = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(data);
+    return JSON.parse(jsonString);
   } catch (error) {
-    console.error(`Error reading address map file: ${error.message}`);
+    console.error(`Error parsing address map JSON: ${error.message}`);
     process.exit(1);
   }
 }
@@ -71,9 +70,9 @@ function processMarkdownFile(filePath, addressMap) {
 }
 
 // Main function
-function updateAuthorAddresses(addressMapPath) {
-  console.log(`Reading address mapping from ${addressMapPath}`);
-  const addressMap = readAddressMap(addressMapPath);
+function updateAuthorAddresses(jsonString) {
+  console.log('Parsing address mapping from input JSON');
+  const addressMap = parseAddressMap(jsonString);
 
   console.log('Finding markdown files...');
   const markdownFiles = findMarkdownFiles('vault');
@@ -89,9 +88,11 @@ function updateAuthorAddresses(addressMapPath) {
 
 // Check command line arguments
 if (process.argv.length < 3) {
-  console.error('Usage: node script.js <address_map_file.json>');
+  console.error(
+    'Usage: node script.js \'{"username1":"address1","username2":"address2",...}\'',
+  );
   process.exit(1);
 }
 
-// Run the script with the provided JSON file
+// Run the script with the provided JSON string
 updateAuthorAddresses(process.argv[2]);
