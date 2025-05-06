@@ -18,10 +18,12 @@ fetch-force:
 build:
 	@pnpm install --no-frozen-lockfile
 	@cd lib/obsidian-compiler && mix export_markdown
+	@cd lib/obsidian-compiler && mix duckdb.export
 	@pnpm run build
 
 run:
 	@cd lib/obsidian-compiler && mix export_markdown
+	@cd lib/obsidian-compiler && mix duckdb.export
 	@pnpm run generate-menu
 	@pnpm run generate-backlinks
 	@pnpm run generate-search-index
