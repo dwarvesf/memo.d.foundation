@@ -344,7 +344,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           processedMdxPath = path.join(
             process.cwd(),
             'public/content/contributor',
-            '[...slug].mdx',
+            '_template.mdx',
           ); // Fallback to .mdx if HTML not found
         }
         mdxContent = await fs.readFile(processedMdxPath, 'utf-8');

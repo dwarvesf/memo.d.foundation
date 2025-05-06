@@ -27,17 +27,23 @@ defmodule Memo.Common.Frontmatter do
 
   @doc """
   Checks if a file contains required frontmatter keys with correct types.
+  Files with skip_frontmatter_check: true will bypass validation requirements.
   """
   def contains_required_frontmatter_keys?(file) do
     with {:ok, content} <- File.read(file),
          {:ok, frontmatter} <- parse_frontmatter(content) do
       cond do
+        is_map(frontmatter) and Map.get(frontmatter, "skip_frontmatter_check") == true ->
+          true
+
         is_map(frontmatter) ->
           has_required_fields?(frontmatter) and has_valid_optional_fields?(frontmatter)
 
         is_list(frontmatter) ->
           Enum.any?(frontmatter, fn item ->
-            is_map(item) and has_required_fields?(item) and has_valid_optional_fields?(item)
+            is_map(item) and
+            (Map.get(item, "skip_frontmatter_check") == true or
+             (has_required_fields?(item) and has_valid_optional_fields?(item)))
           end)
 
         true ->
