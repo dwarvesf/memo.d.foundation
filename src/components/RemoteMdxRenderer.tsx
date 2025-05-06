@@ -11,7 +11,6 @@ interface Props {
 }
 
 const components: MDXComponents = {
-  ContributorHeader: props => <span>{props.name}</span>,
   MemoVList,
   MemoLink: props => {
     const { filePath, className, ...rest } = props;
