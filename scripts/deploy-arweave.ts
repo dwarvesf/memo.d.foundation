@@ -148,7 +148,6 @@ async function deployContent(
   title: string,
   description: string,
   authors: string[],
-  authorAddresses: string[],
 ): Promise<DeploymentResult> {
   try {
     // Load wallet from file
@@ -184,7 +183,6 @@ async function deployContent(
       description: description,
       image: imageUrl,
       authors: authors,
-      author_addresses: authorAddresses,
     };
 
     // Convert to JSON
@@ -243,8 +241,6 @@ async function processFile(
       ? data.authors
       : ['Anonymous'];
 
-  const authorAddresses = data.author_addresses || [];
-
   const result = await deployContent(
     walletPath,
     filePath,
@@ -252,7 +248,6 @@ async function processFile(
     title,
     description,
     authors,
-    authorAddresses,
   );
 
   // Update the file with the Arweave ID

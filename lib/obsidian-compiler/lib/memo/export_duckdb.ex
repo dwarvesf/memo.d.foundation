@@ -46,8 +46,7 @@ defmodule Memo.ExportDuckDB do
     {"token_id", "VARCHAR"},
     {"previous_paths", "VARCHAR[]"},
     {"ai_summary", "BOOLEAN"},
-    {"ai_generated_summary", "VARCHAR[]"},
-    {"author_addresses", "VARCHAR[]"}
+    {"ai_generated_summary", "VARCHAR[]"}
   ]
 
   def run(vaultpath, format, commits_back, pattern \\ nil) do
