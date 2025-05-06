@@ -46,7 +46,7 @@ defmodule Memo.ExportDuckDB do
     {"token_id", "VARCHAR"},
     {"previous_paths", "VARCHAR[]"},
     {"ai_summary", "BOOLEAN"},
-    {"ai_generated_summary", "VARCHAR[]"}
+    {"ai_generated_summary", "VARCHAR[]"},
     {"author_addresses", "VARCHAR[]"}
   ]
 
@@ -108,8 +108,11 @@ defmodule Memo.ExportDuckDB do
 
     # 1. Attempt to drop the table (ignore errors if it doesn't exist)
     drop_query = "DROP TABLE IF EXISTS vault"
+
     case DuckDBUtils.execute_query(drop_query) do
-      {:ok, _} -> IO.puts("Existing 'vault' table dropped (or did not exist).")
+      {:ok, _} ->
+        IO.puts("Existing 'vault' table dropped (or did not exist).")
+
       {:error, drop_error} ->
         IO.puts("Warning: Failed to drop 'vault' table: #{drop_error}. Proceeding...")
         # Don't stop here, still try to create and load
@@ -117,7 +120,8 @@ defmodule Memo.ExportDuckDB do
 
     # 2. Create the table using the schema definition
     IO.puts("Creating 'vault' table...")
-    create_result = create_vault_table() # Use the existing helper function
+    # Use the existing helper function
+    create_result = create_vault_table()
 
     if create_result == :ok do
       # 2.5 Merge columns to sync schema with allowed frontmatter
@@ -134,26 +138,37 @@ defmodule Memo.ExportDuckDB do
       SELECT #{columns}
       FROM read_parquet('../../db/vault.parquet')
       """
+
       IO.puts("Loading data from '../../db/vault.parquet' with programmatic column mapping...")
+
       case DuckDBUtils.execute_query(load_query) do
         {:ok, _} ->
           IO.puts("Data loaded successfully from Parquet file with programmatic column mapping.")
           # 4. Verify row count after programmatic load
           count_query = "SELECT COUNT(*) as count FROM vault"
+
           case DuckDBUtils.execute_query(count_query) do
-             {:ok, [%{"count" => count}]} when count > 0 ->
-               IO.puts("Verification successful: Found #{count} rows after explicit insert.")
-               :ok # Signal success for the `with` statement in run/4
-             {:ok, [%{"count" => count}]} ->
-               IO.puts("Error: Insert succeeded but table has #{count} rows. Data load failed.")
-               :error
-             {:ok, other_result} ->
-               IO.puts("Error: Unexpected count query result after insert: #{inspect(other_result)}.")
-               :error
-             {:error, count_error} ->
-               IO.puts("Error: Failed to count rows after insert: #{count_error}.")
-               :error
+            {:ok, [%{"count" => count}]} when count > 0 ->
+              IO.puts("Verification successful: Found #{count} rows after explicit insert.")
+              # Signal success for the `with` statement in run/4
+              :ok
+
+            {:ok, [%{"count" => count}]} ->
+              IO.puts("Error: Insert succeeded but table has #{count} rows. Data load failed.")
+              :error
+
+            {:ok, other_result} ->
+              IO.puts(
+                "Error: Unexpected count query result after insert: #{inspect(other_result)}."
+              )
+
+              :error
+
+            {:error, count_error} ->
+              IO.puts("Error: Failed to count rows after insert: #{count_error}.")
+              :error
           end
+
         {:error, load_error} ->
           IO.puts("Error: Failed to load data using explicit insert: #{load_error}.")
           :error
@@ -164,7 +179,6 @@ defmodule Memo.ExportDuckDB do
       :error
     end
   end
-
 
   defp create_vault_table() do
     columns =
@@ -279,10 +293,13 @@ defmodule Memo.ExportDuckDB do
     if Enum.empty?(file_paths) do
       %{}
     else
-      case DuckDBUtils.execute_query("SELECT file_path, spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault") do
+      case DuckDBUtils.execute_query(
+             "SELECT file_path, spr_content, md_content, embeddings_openai, embeddings_spr_custom FROM vault"
+           ) do
         {:ok, results} ->
           # Convert file_paths list to MapSet for efficient lookup
           file_paths_set = MapSet.new(file_paths)
+
           filtered_results =
             Enum.filter(results, fn row ->
               # Normalize DB file_path to match relative paths (trim vault prefix)
@@ -290,15 +307,19 @@ defmodule Memo.ExportDuckDB do
                 row["file_path"]
                 |> String.trim_leading("vault/")
                 |> String.trim_leading("/")
+
               MapSet.member?(file_paths_set, norm_path)
             end)
+
           Enum.reduce(filtered_results, %{}, fn row, acc ->
             norm_path =
               row["file_path"]
               |> String.trim_leading("vault/")
               |> String.trim_leading("/")
+
             Map.put(acc, norm_path, row)
           end)
+
         {:error, error} ->
           IO.puts("Failed to pre-fetch existing data: #{error}")
           %{}
@@ -308,6 +329,7 @@ defmodule Memo.ExportDuckDB do
 
   defp process_files(files, vaultpath, all_files_to_process) do
     vault_abs = Path.expand(vaultpath)
+
     relative_paths =
       files
       |> Enum.map(&Path.expand/1)
@@ -323,11 +345,13 @@ defmodule Memo.ExportDuckDB do
       |> Flow.map(fn file_path ->
         file_abs = Path.expand(file_path)
         relative_path = Path.relative_to(file_abs, vault_abs)
+
         case File.read(file_path) do
           {:ok, content} ->
             case Frontmatter.extract_frontmatter(content) do
               {:error, :no_frontmatter} ->
                 nil
+
               {frontmatter, md_content} when is_map(frontmatter) ->
                 # Only normalize and embed, do not call transform_frontmatter or any DB code
                 normalized_frontmatter =
@@ -357,9 +381,13 @@ defmodule Memo.ExportDuckDB do
                 too_short = String.length(md_content) < @min_content_length
 
                 embeddings_updated = needs_embeddings_update(existing_data, md_content)
-                {new_spr_content, new_embeddings_openai, new_embeddings_spr_custom, updated_frontmatter} =
+
+                {new_spr_content, new_embeddings_openai, new_embeddings_spr_custom,
+                 updated_frontmatter} =
                   if not too_short and embeddings_updated do
-                    regenerated = regenerate_embeddings(relative_path, md_content, normalized_frontmatter)
+                    regenerated =
+                      regenerate_embeddings(relative_path, md_content, normalized_frontmatter)
+
                     {
                       Map.get(regenerated, "spr_content"),
                       Map.get(regenerated, "embeddings_openai"),
@@ -369,10 +397,11 @@ defmodule Memo.ExportDuckDB do
                   else
                     # When embeddings are NOT updated, use existing data for embeddings and spr_content
                     existing_embeddings_and_spr = %{
-                       "spr_content" => existing_data["spr_content"],
-                       "embeddings_openai" => existing_data["embeddings_openai"],
-                       "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
+                      "spr_content" => existing_data["spr_content"],
+                      "embeddings_openai" => existing_data["embeddings_openai"],
+                      "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
                     }
+
                     {
                       existing_data["spr_content"],
                       existing_data["embeddings_openai"],
@@ -381,21 +410,26 @@ defmodule Memo.ExportDuckDB do
                       Map.merge(normalized_frontmatter, existing_embeddings_and_spr)
                     }
                   end
+
                 %{
                   file_path: relative_path,
                   md_content: md_content,
-                  frontmatter: updated_frontmatter, # This now contains either new or old embeddings/spr_content
+                  # This now contains either new or old embeddings/spr_content
+                  frontmatter: updated_frontmatter,
                   embeddings_updated: embeddings_updated,
                   new_spr_content: new_spr_content,
                   new_embeddings_openai: new_embeddings_openai,
                   new_embeddings_spr_custom: new_embeddings_spr_custom
                 }
+
               {frontmatter, _md_content} ->
                 IO.puts(
                   "Error: Expected frontmatter to be a map for file: #{relative_path}, but got: #{inspect(frontmatter)}"
                 )
+
                 nil
             end
+
           {:error, reason} ->
             IO.puts("Failed to read file: #{relative_path}, Reason: #{reason}")
             nil
@@ -411,9 +445,18 @@ defmodule Memo.ExportDuckDB do
 
     # Step 3: Merge previous_paths and prepare final records, keeping the original structure and flags
     final_data =
-      Enum.map(processed_data, fn %{file_path: file_path, md_content: md_content, frontmatter: frontmatter, embeddings_updated: embeddings_updated, new_spr_content: new_spr_content, new_embeddings_openai: new_embeddings_openai, new_embeddings_spr_custom: new_embeddings_spr_custom} ->
+      Enum.map(processed_data, fn %{
+                                    file_path: file_path,
+                                    md_content: md_content,
+                                    frontmatter: frontmatter,
+                                    embeddings_updated: embeddings_updated,
+                                    new_spr_content: new_spr_content,
+                                    new_embeddings_openai: new_embeddings_openai,
+                                    new_embeddings_spr_custom: new_embeddings_spr_custom
+                                  } ->
         merged_frontmatter =
           transform_frontmatter_no_db(md_content, frontmatter, file_path, previous_paths_map)
+
         %{
           file_path: file_path,
           md_content: md_content,
@@ -431,21 +474,26 @@ defmodule Memo.ExportDuckDB do
     paths = Enum.map(all_files_to_process, &Path.relative_to(&1, vaultpath))
     remove_old_files(paths)
   end
+
   defp fetch_all_previous_paths(file_paths) do
     if Enum.empty?(file_paths) do
       %{}
     else
       escaped_paths = Enum.map(file_paths, &"'#{escape_string(&1)}'")
+
       query = """
       SELECT file_path, previous_paths FROM vault
       WHERE file_path IN (#{Enum.join(escaped_paths, ", ")})
       """
+
       case DuckDBUtils.execute_query(query) do
         {:ok, results} ->
           Enum.reduce(results, %{}, fn row, acc ->
             Map.put(acc, row["file_path"], normalize_array_value(row["previous_paths"]))
           end)
-        {:error, _} -> %{}
+
+        {:error, _} ->
+          %{}
       end
     end
   end
@@ -510,7 +558,7 @@ defmodule Memo.ExportDuckDB do
         update_clause_with_embeddings =
           keys_with_embeddings
           |> Enum.filter(&(&1 != "file_path"))
-          |> Enum.map(&("#{&1} = EXCLUDED.#{&1}"))
+          |> Enum.map(&"#{&1} = EXCLUDED.#{&1}")
           |> Enum.join(", ")
 
         upsert_query_with_embeddings = """
@@ -522,7 +570,10 @@ defmodule Memo.ExportDuckDB do
 
         case DuckDBUtils.execute_query(upsert_query_with_embeddings) do
           {:ok, _} ->
-            IO.puts("Batch upsert successful for #{length(batch_with_embeddings)} records with embeddings update")
+            IO.puts(
+              "Batch upsert successful for #{length(batch_with_embeddings)} records with embeddings update"
+            )
+
           {:error, error} ->
             IO.puts("Batch upsert failed for records with embeddings update: #{inspect(error)}")
         end
@@ -536,6 +587,7 @@ defmodule Memo.ExportDuckDB do
         existing_files_query = """
         SELECT file_path FROM vault WHERE file_path IN (#{Enum.join(Enum.map(file_paths_without_embeddings, &"'#{escape_string(&1)}'"), ", ")})
         """
+
         case DuckDBUtils.execute_query(existing_files_query) do
           {:ok, existing_results} ->
             existing_file_paths = Enum.map(existing_results, & &1["file_path"])
@@ -549,7 +601,8 @@ defmodule Memo.ExportDuckDB do
 
             # For batch_new, use a simple INSERT
             if Enum.count(batch_new) > 0 do
-              keys_for_insert_new = keys # Use all keys for new inserts
+              # Use all keys for new inserts
+              keys_for_insert_new = keys
 
               values_str_new =
                 batch_new
@@ -564,24 +617,36 @@ defmodule Memo.ExportDuckDB do
               INSERT INTO vault (#{Enum.join(keys_for_insert_new, ", ")})
               VALUES #{values_str_new}
               """
+
               case DuckDBUtils.execute_query(insert_query_new) do
                 {:ok, _} ->
-                  IO.puts("Batch insert successful for #{length(batch_new)} new records without embeddings update")
+                  IO.puts(
+                    "Batch insert successful for #{length(batch_new)} new records without embeddings update"
+                  )
+
                 {:error, error} ->
-                  IO.puts("Batch insert failed for new records without embeddings update: #{inspect(error)}")
+                  IO.puts(
+                    "Batch insert failed for new records without embeddings update: #{inspect(error)}"
+                  )
               end
             end
 
             # For batch_existing, do nothing (embeddings are preserved)
             if Enum.count(batch_existing) > 0 do
-              IO.puts("Skipping upsert for #{length(batch_existing)} existing records without embeddings update")
+              IO.puts(
+                "Skipping upsert for #{length(batch_existing)} existing records without embeddings update"
+              )
             end
 
           {:error, error} ->
-            IO.puts("Failed to check for existing files in batch without embeddings update: #{inspect(error)}")
+            IO.puts(
+              "Failed to check for existing files in batch without embeddings update: #{inspect(error)}"
+            )
+
             # Fallback: if we can't check for existing, use the original upsert logic as a safeguard
-             # Define keys for the fallback insert
-            keys_for_fallback_insert = keys # Use all keys for fallback insert
+            # Define keys for the fallback insert
+            # Use all keys for fallback insert
+            keys_for_fallback_insert = keys
 
             values_str_fallback =
               batch_without_embeddings
@@ -595,12 +660,15 @@ defmodule Memo.ExportDuckDB do
 
             # Exclude embeddings fields ONLY from the update clause for fallback
             update_keys_fallback =
-        keys
-        |> Enum.filter(&(&1 != "file_path" and &1 != "embeddings_openai" and &1 != "embeddings_spr_custom"))
+              keys
+              |> Enum.filter(
+                &(&1 != "file_path" and &1 != "embeddings_openai" and
+                    &1 != "embeddings_spr_custom")
+              )
 
             update_clause_fallback =
               update_keys_fallback
-              |> Enum.map(&("#{&1} = EXCLUDED.#{&1}"))
+              |> Enum.map(&"#{&1} = EXCLUDED.#{&1}")
               |> Enum.join(", ")
 
             # Construct the fallback upsert query
@@ -613,62 +681,73 @@ defmodule Memo.ExportDuckDB do
 
             case DuckDBUtils.execute_query(upsert_query_fallback) do
               {:ok, _} ->
-                IO.puts("Batch upsert successful (fallback) for #{length(batch_without_embeddings)} records without embeddings update")
+                IO.puts(
+                  "Batch upsert successful (fallback) for #{length(batch_without_embeddings)} records without embeddings update"
+                )
+
               {:error, error} ->
-                IO.puts("Batch upsert failed (fallback) for records without embeddings update: #{inspect(error)}")
+                IO.puts(
+                  "Batch upsert failed (fallback) for records without embeddings update: #{inspect(error)}"
+                )
             end
         end
       end
     end)
   end
 
-
   defp needs_embeddings_update(existing_data, md_content) do
-      # Use fuzzy matching for md_content and spr_content similarity threshold 80%
-      # Use String.jaro_distance for similarity check
+    # Use fuzzy matching for md_content and spr_content similarity threshold 80%
+    # Use String.jaro_distance for similarity check
 
-      embeddings_openai =
-        case existing_data["embeddings_openai"] do
-          nil -> nil
-          val when is_binary(val) ->
-            case Jason.decode(val) do
-              {:ok, decoded} -> decoded
-              _ -> nil
-            end
-          val -> val
-        end
+    embeddings_openai =
+      case existing_data["embeddings_openai"] do
+        nil ->
+          nil
 
-      embeddings_spr_custom =
-        case existing_data["embeddings_spr_custom"] do
-          nil -> nil
-          val when is_binary(val) ->
-            case Jason.decode(val) do
-              {:ok, decoded} -> decoded
-              _ -> nil
-            end
-          val -> val
-        end
+        val when is_binary(val) ->
+          case Jason.decode(val) do
+            {:ok, decoded} -> decoded
+            _ -> nil
+          end
 
-      spr_content_exists = not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != ""
+        val ->
+          val
+      end
 
-      md_content_existing = Map.get(existing_data, "md_content", "") |> String.trim()
-      md_content_new = String.trim(md_content)
+    embeddings_spr_custom =
+      case existing_data["embeddings_spr_custom"] do
+        nil ->
+          nil
 
-      similarity = String.jaro_distance(md_content_existing, md_content_new)
+        val when is_binary(val) ->
+          case Jason.decode(val) do
+            {:ok, decoded} -> decoded
+            _ -> nil
+          end
 
-      # Threshold for similarity
-      similarity_threshold = 0.7
+        val ->
+          val
+      end
 
-      content_changed = similarity < similarity_threshold
-      embeddings_exist = not is_nil(embeddings_openai) and not is_nil(embeddings_spr_custom)
+    spr_content_exists =
+      not is_nil(existing_data["spr_content"]) and existing_data["spr_content"] != ""
 
-      # Re-embed if content changed or if embeddings don't exist (for new files or if lost)
-      needs_update = content_changed or not embeddings_exist or not spr_content_exists
+    md_content_existing = Map.get(existing_data, "md_content", "") |> String.trim()
+    md_content_new = String.trim(md_content)
 
-      needs_update
+    similarity = String.jaro_distance(md_content_existing, md_content_new)
+
+    # Threshold for similarity
+    similarity_threshold = 0.7
+
+    content_changed = similarity < similarity_threshold
+    embeddings_exist = not is_nil(embeddings_openai) and not is_nil(embeddings_spr_custom)
+
+    # Re-embed if content changed or if embeddings don't exist (for new files or if lost)
+    needs_update = content_changed or not embeddings_exist or not spr_content_exists
+
+    needs_update
   end
-
-
 
   defp get_files_to_process(directory, commits_back, all_files, pattern) do
     files =
@@ -730,7 +809,8 @@ defmodule Memo.ExportDuckDB do
       "aliases" -> serialize_list(value)
       "previous_paths" -> serialize_list(value)
       "md_content" -> escape_multiline_text(value)
-      "spr_content" -> escape_multiline_text(value) # Add this line
+      # Add this line
+      "spr_content" -> escape_multiline_text(value)
       "estimated_tokens" -> to_string(value)
       _ -> default_transform_value(value)
     end
@@ -839,7 +919,6 @@ defmodule Memo.ExportDuckDB do
     Enum.map(keys_to_include, fn key -> transform_value(Map.get(frontmatter, key), key) end)
   end
 
-
   defp normalize_array_value(value) do
     case value do
       nil ->
@@ -904,5 +983,4 @@ defmodule Memo.ExportDuckDB do
 
   defp handle_result({:ok, _result}), do: :ok
   defp handle_result({:error, _error}), do: :error
-
 end
