@@ -279,7 +279,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       let contributorMemos: Record<string, Json>[];
       try {
         contributorMemos = await queryDuckDB(`
-           SELECT short_title, title, file_path, authors, description, date, tags
+           SELECT short_title, title, file_path, authors, description, date, tags, md_content
            FROM vault
            WHERE ARRAY_CONTAINS(authors, '${originalContributorName}')
            ORDER BY date DESC;
@@ -287,6 +287,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         contributorMemos = contributorMemos.map(memo => ({
           ...memo,
           filePath: memo.file_path,
+          md_content: null, // md_content only used for image extraction
+          image: getFirstMemoImage(
+            {
+              filePath: memo.file_path as string,
+              content: memo.md_content as string,
+            },
+            null,
+          ),
         }));
       } catch (error) {
         console.error(

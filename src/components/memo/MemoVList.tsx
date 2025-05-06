@@ -19,7 +19,9 @@ const MemoVList = (props: Props) => {
   return (
     <div className={cn('v-list', className)} data-placement="vertical">
       {data.map((memo, index) => {
-        const imgSrc = hideThumbnail ? null : getFirstMemoImage(memo);
+        const imgSrc = hideThumbnail
+          ? null
+          : memo.image || getFirstMemoImage(memo);
         const path = formatContentPath(memo.filePath || '');
         return (
           <div
