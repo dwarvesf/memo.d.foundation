@@ -348,7 +348,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         // Handle error, maybe use a default message
         mdxContent = `<p>Could not load profile content for ${contributorSlug}.</p>`;
       }
-
       const mdxSource = mdxContent
         ? await serialize({
             source: mdxContent,
@@ -360,6 +359,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                 cryptoData,
                 contributorMemos,
               },
+              parseFrontmatter: true,
               mdxOptions: {
                 recmaPlugins: [recmaMdxEscapeMissingComponents],
                 remarkPlugins: [remarkGfm],
@@ -664,23 +664,17 @@ export default function ContentPage({
       </RootLayout>
     );
   } else if (isContributorPage && mdxSource !== undefined) {
+    const frontmatter = mdxSource.frontmatter as Record<string, string>;
     return (
       <RootLayout
-        title={`${contributorName}'s Profile`}
-        description={githubData?.bio || ''} // Use GitHub bio as description
-        image={githubData?.avatar_url} // Use GitHub avatar as image
-        // tocItems={...} // TOC might be generated from MDX processing
-        // metadata={...} // Metadata might be generated from MDX processing
+        title={frontmatter?.title || `${contributorName}'s Profile`}
+        description={frontmatter?.description || githubData?.bio || ''} // Use GitHub bio as description
+        image={frontmatter?.image || githubData?.avatar_url} // Use GitHub avatar as image
         directoryTree={directoryTree}
         searchIndex={searchIndex}
       >
         <div className="content-wrapper">
-          {/* Render the processed MDX content (HTML) */}
           <RemoteMdxRenderer mdxSource={mdxSource} />
-          {/* Subscription, MintEntry, Comments sections can be included if desired */}
-          {/* {shouldShowSubscription && <SubscriptionSection />} */}
-          {/* {!!metadata?.tokenId && <MintEntry metadata={metadata} />} */}
-          {/* <UtterancComments /> */}
         </div>
       </RootLayout>
     );
