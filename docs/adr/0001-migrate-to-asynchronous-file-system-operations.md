@@ -1,8 +1,15 @@
 ---
 title: Migrate to Asynchronous File System Operations
-date: 2025-05-01
-authors: [monotykamary]
-tags: [adr, file system, async, performance]
+date: 2025-05-01T00:00:00.000Z
+authors:
+  - monotykamary
+tags:
+  - adr
+  - file system
+  - async
+  - performance
+author_addresses:
+  - '0xfdfb16ffaf364a4ae15db843ae18a76fd848e79e'
 ---
 
 ## Context
