@@ -20,6 +20,7 @@ interface Document {
   category?: string;
   date?: { days: number };
   spr_content?: string;
+  md_content?: string;
   matchingLines?: string;
 }
 export interface DocumentWithIndex extends Document {
@@ -72,35 +73,69 @@ function getMatchingLines(content: string, pattern: string): string {
   if (!content || !pattern) return '';
 
   const lines = content.replace(/<hr\s*\/?>/gi, '\n').split('\n');
-  const regex = new RegExp(pattern.split(' ').join('|'), 'gi');
-  const matchingLines = lines.filter(line => regex.test(line)).slice(0, 1);
+  const searchTerms = pattern.split(' ').filter(Boolean);
 
+  if (searchTerms.length === 0) return '';
+
+  // Create a regex that matches any of the search terms
+  const regex = new RegExp(searchTerms.join('|'), 'gi');
+
+  // Find lines that match the pattern
+  const matchingLines = lines.filter(line => regex.test(line)).slice(0, 1);
   if (!matchingLines.length) return '';
 
   // Convert Markdown to plain text
-  let str = markdownToPlainText(matchingLines[0]);
+  const plainText = markdownToPlainText(matchingLines[0]);
 
-  // Highlight matching parts
-  str = str.replace(regex, '<span>$&</span>');
+  // Find the first match position to center our excerpt around it
+  regex.lastIndex = 0; // Reset regex state
+  const match = regex.exec(plainText);
+  if (!match) return '';
 
-  if (str.length <= 100) return `...${str}...`;
+  const matchPosition = match.index;
+  const matchLength = match[0].length;
 
-  // Trim to around 100 characters
-  const trimmed = str.slice(0, 100);
-  let lastSpaceIndex = trimmed.lastIndexOf(' ');
+  // Calculate start and end positions for a ~100 char excerpt centered on the match
+  const excerptLength = 100;
+  const halfExcerpt = Math.floor(excerptLength / 2);
 
-  // Ensure we don't cut off in the middle of a highlight
-  while (lastSpaceIndex > 0) {
-    const substring = trimmed.substring(0, lastSpaceIndex);
-    if (
-      substring.split('<span>').length === substring.split('</span>').length
-    ) {
-      break;
+  let startPos = Math.max(0, matchPosition - halfExcerpt);
+  let endPos = Math.min(
+    plainText.length,
+    matchPosition + matchLength + halfExcerpt,
+  );
+
+  // Adjust to avoid cutting words
+  if (startPos > 0) {
+    const prevSpace = plainText.lastIndexOf(' ', startPos);
+    if (prevSpace !== -1 && startPos - prevSpace < 10) {
+      startPos = prevSpace + 1;
     }
-    lastSpaceIndex = trimmed.lastIndexOf(' ', lastSpaceIndex - 1);
   }
 
-  return `...${trimmed.slice(0, lastSpaceIndex)}...`;
+  if (endPos < plainText.length) {
+    const nextSpace = plainText.indexOf(' ', endPos);
+    if (nextSpace !== -1 && nextSpace - endPos < 10) {
+      endPos = nextSpace;
+    }
+  }
+
+  // Get the excerpt
+  let excerpt = plainText.substring(startPos, endPos);
+
+  // Add ellipsis if we're not at the beginning/end
+  if (startPos > 0) excerpt = '...' + excerpt;
+  if (endPos < plainText.length) excerpt = excerpt + '...';
+
+  // Highlight all matching terms in the excerpt
+  searchTerms.forEach(term => {
+    if (term.length < 2) return; // Skip very short terms
+
+    const termRegex = new RegExp(term, 'gi');
+    excerpt = excerpt.replace(termRegex, match => `<span>${match}</span>`);
+  });
+
+  return excerpt;
 }
 
 function markdownToPlainText(markdown: string): string {
@@ -205,6 +240,7 @@ export const SearchProvider: React.FC<{
             'date',
             'category',
             'spr_content',
+            'md_content',
           ],
           searchOptions: {
             boost: { title: 2, tags: 1.5, authors: 1.2 },
@@ -367,7 +403,7 @@ export const SearchProvider: React.FC<{
           // In a real implementation, you'd fetch the content for highlighting
           // For now, we'll just set a placeholder
           document.matchingLines = query
-            ? getMatchingLines(document.spr_content || '', query)
+            ? getMatchingLines(document.md_content || '', query)
             : '';
 
           return document;

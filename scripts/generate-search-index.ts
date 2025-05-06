@@ -6,7 +6,11 @@
 
 import fs from 'fs';
 import path from 'path';
-import { DuckDBConnection, DuckDBInstance, DuckDBValue } from '@duckdb/node-api'; // Import DuckDB API
+import {
+  DuckDBConnection,
+  DuckDBInstance,
+  DuckDBValue,
+} from '@duckdb/node-api'; // Import DuckDB API
 import MiniSearch from 'minisearch';
 
 /**
@@ -44,6 +48,7 @@ interface SearchDocument {
   title: string;
   description: string;
   spr_content: string;
+  md_content: string;
   tags: string[];
   authors: string[];
   date: string;
@@ -52,7 +57,10 @@ interface SearchDocument {
 
 async function generateSearchIndex() {
   const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
-  const outputPath = path.join(process.cwd(), 'public/content/search-index.json');
+  const outputPath = path.join(
+    process.cwd(),
+    'public/content/search-index.json',
+  );
   let instance: DuckDBInstance | null = null;
   let connection: DuckDBConnection | null = null;
 
@@ -73,7 +81,7 @@ async function generateSearchIndex() {
       'file_path',
       'title',
       'description',
-      // 'md_content', // Not currently used in indexing logic below
+      'md_content', // Not currently used in indexing logic below
       'spr_content',
       'tags',
       'authors',
@@ -88,7 +96,9 @@ async function generateSearchIndex() {
     const reader = await connection.runAndReadAll(query);
     // Type assertion needed because getRowObjects returns Record<string, DuckDBValue>
     const results = reader.getRowObjects() as unknown as DuckDbQueryResultRow[];
-    console.log(`Retrieved ${results.length} rows from Parquet file via DuckDB.`);
+    console.log(
+      `Retrieved ${results.length} rows from Parquet file via DuckDB.`,
+    );
 
     const searchDocuments: SearchDocument[] = results
       .map((row, idx) => {
@@ -97,21 +107,28 @@ async function generateSearchIndex() {
         const title = row.title || '';
         const description = row.description || '';
         const sprContent = row.spr_content || '';
+        const mdContent = row.md_content || '';
 
         // Extract items from DuckDBValue for list types, ensuring they are arrays
-        const tagsList = row.tags && (row.tags as any).items && Array.isArray((row.tags as any).items)
-          ? (row.tags as any).items
-          : [];
-        const authorsList = row.authors && (row.authors as any).items && Array.isArray((row.authors as any).items)
-          ? (row.authors as any).items
-          : [];
+        const tagsList =
+          row.tags &&
+          (row.tags as any).items &&
+          Array.isArray((row.tags as any).items)
+            ? (row.tags as any).items
+            : [];
+        const authorsList =
+          row.authors &&
+          (row.authors as any).items &&
+          Array.isArray((row.authors as any).items)
+            ? (row.authors as any).items
+            : [];
 
         // Filter tags and ensure authors are strings (or handle appropriately if they can be other types)
         const tags: string[] = tagsList.filter(
           (tag: any): tag is string => typeof tag === 'string' && tag !== '', // Add explicit any type
         );
         const authors: string[] = authorsList.filter(
-          (author: any): author is string => typeof author === 'string' // Add explicit any type
+          (author: any): author is string => typeof author === 'string', // Add explicit any type
         );
 
         const date = row.date || ''; // Assuming date is string
@@ -137,6 +154,7 @@ async function generateSearchIndex() {
           title,
           description,
           spr_content: sprContent?.replace(/\n/g, '<hr />'), // Use replace with global regex instead of replaceAll
+          md_content: mdContent,
           tags,
           authors,
           date,
@@ -145,10 +163,14 @@ async function generateSearchIndex() {
       })
       .filter((doc): doc is SearchDocument => doc !== null); // Filter out null entries (excluded docs)
 
-    console.log(`Filtered down to ${searchDocuments.length} documents for indexing.`);
+    console.log(
+      `Filtered down to ${searchDocuments.length} documents for indexing.`,
+    );
 
     if (searchDocuments.length === 0) {
-      console.warn("Warning: No documents to index after filtering. Check exclusion logic and data source.");
+      console.warn(
+        'Warning: No documents to index after filtering. Check exclusion logic and data source.',
+      );
       // Write an empty index file
       fs.writeFileSync(outputPath, JSON.stringify({ index: {} }));
       console.log(`Empty search index generated at: ${outputPath}`);
@@ -159,7 +181,8 @@ async function generateSearchIndex() {
     console.log('Initializing MiniSearch...');
     const miniSearch = new MiniSearch<SearchDocument>({
       fields: ['title', 'description', 'tags', 'authors', 'category'], // Fields to index
-      storeFields: [ // Fields to store and return in search results
+      storeFields: [
+        // Fields to store and return in search results
         'file_path',
         'title',
         'description',
@@ -168,6 +191,7 @@ async function generateSearchIndex() {
         'authors',
         'date',
         'category',
+        'md_content',
       ],
       searchOptions: {
         boost: { title: 2, tags: 1.5, authors: 1.2, category: 1.1 },
@@ -180,7 +204,7 @@ async function generateSearchIndex() {
         if (Array.isArray(value)) {
           return value.join(' '); // Join array elements for indexing
         }
-        return value as string || ''; // Return string value or empty string
+        return (value as string) || ''; // Return string value or empty string
       },
     });
 
@@ -206,7 +230,6 @@ async function generateSearchIndex() {
     );
 
     console.log(`Search index successfully generated at: ${outputPath}`);
-
   } catch (error) {
     console.error('Error generating search index:', error);
     process.exit(1); // Exit with error on failure
