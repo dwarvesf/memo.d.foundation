@@ -215,7 +215,6 @@ export default function ContentPage({
     // We already handle this in getStaticProps
     return null;
   }
-  console.log('MDX Source:', mdxSource);
   return (
     <RootLayout
       title={frontmatter?.title || `${contributorName}'s Profile`}
