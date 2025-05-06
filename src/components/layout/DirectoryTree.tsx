@@ -120,7 +120,9 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
               )}
             />
           )}
-          <span>{slugToTitle(node.label)}</span> {/* Apply slugToTitle here */}
+          <span>
+            {node.ignoreLabelTransform ? node.label : slugToTitle(node.label)}
+          </span>
         </Link>
         {hasChildren && isOpen && (
           <div className="m-0 w-full pl-1">

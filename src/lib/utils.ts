@@ -59,14 +59,14 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
   );
 }
 
-export function uppercaseSpecialWords(str = '') {
+export function uppercaseSpecialWords(str = '', separator = ' ') {
   return str
     .toString()
-    .split(' ')
+    .split(separator)
     .map(word => {
       return wordDict[word.toLowerCase()] || word;
     })
-    .join(' ');
+    .join(separator);
 }
 export function formatAddress(address: string) {
   const formattedAddress = `${address.substring(

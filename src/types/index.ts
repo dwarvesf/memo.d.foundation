@@ -35,6 +35,7 @@ export interface ITreeNode {
   children: Record<string, ITreeNode>;
   count?: number;
   url?: string; // Add url property
+  ignoreLabelTransform?: boolean;
 }
 
 export interface IBackLinkItem {
