@@ -3,7 +3,7 @@ name: Update submodules
 on:
   push:
     branches:
-      - dev
+      - main
 
 concurrency:
   group: ${{ github.repository }}-workflow
