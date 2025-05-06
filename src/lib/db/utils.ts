@@ -32,11 +32,10 @@ export async function queryDuckDB(sql: string) {
     const result = await connection.runAndReadAll(sql);
 
     // Convert result to JSON compatible format for easier handling
-    const jsonData = await result.getRowObjects();
+    const jsonData = await result.getRowObjectsJson();
 
     // Close only the connection, keeping the instance for future queries
     await connection.closeSync();
-
     return jsonData;
   } catch (error) {
     console.error('Error executing DuckDB query:', error);

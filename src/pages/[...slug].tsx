@@ -38,7 +38,7 @@ import {
   type SerializeResult,
 } from 'next-mdx-remote-client/serialize';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
-import { DuckDBValue } from '@duckdb/node-api';
+import { Json } from '@duckdb/node-api';
 import recmaMdxEscapeMissingComponents from 'recma-mdx-escape-missing-components';
 import remarkGfm from 'remark-gfm';
 
@@ -276,14 +276,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           ) || contributorSlug; // Fallback to slug if not found
 
       // --- Fetch Internal Data (Memos from DuckDB) ---
-      let contributorMemos: Record<string, DuckDBValue>[] | null = null;
+      let contributorMemos: Record<string, Json>[];
       try {
         contributorMemos = await queryDuckDB(`
-           SELECT short_title, title, file_path
+           SELECT short_title, title, file_path, authors, description, date, tags
            FROM vault
            WHERE ARRAY_CONTAINS(authors, '${originalContributorName}')
            ORDER BY date DESC;
          `);
+        contributorMemos = contributorMemos.map(memo => ({
+          ...memo,
+          filePath: memo.file_path,
+        }));
       } catch (error) {
         console.error(
           `Failed to fetch memos for ${originalContributorName}:`,
@@ -344,7 +348,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         // Handle error, maybe use a default message
         mdxContent = `<p>Could not load profile content for ${contributorSlug}.</p>`;
       }
-      console.log('contributorMemos', contributorMemos);
 
       const mdxSource = mdxContent
         ? await serialize({

@@ -20,11 +20,11 @@ const MemoVList = (props: Props) => {
     <div className={cn('v-list', className)} data-placement="vertical">
       {data.map((memo, index) => {
         const imgSrc = hideThumbnail ? null : getFirstMemoImage(memo);
-        const path = formatContentPath(memo.filePath);
+        const path = formatContentPath(memo.filePath || '');
         return (
           <div
             id={`memo-${index + 1}`}
-            key={memo.filePath}
+            key={path}
             className={cn(
               'v-list-item xs:flex-row flex w-full flex-col not-last:border-b',
               !imgSrc && 'no-image first:*:pt-0',

@@ -116,3 +116,9 @@
     @apply !mt-0;
   }
 }
+
+@layer utilities {
+  .article-content .v-list-item img {
+    @apply mt-0;
+  }
+}
