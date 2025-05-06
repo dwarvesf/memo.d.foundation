@@ -46,7 +46,7 @@ defmodule Memo.ExportDuckDB do
     {"token_id", "VARCHAR"},
     {"previous_paths", "VARCHAR[]"},
     {"ai_summary", "BOOLEAN"},
-    {"ai_generated_summary", "VARCHAR[]"}
+    {"ai_generated_summary", "VARCHAR[]"},
     {"author_addresses", "VARCHAR[]"}
   ]
 
