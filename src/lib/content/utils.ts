@@ -8,6 +8,7 @@ import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathC
 import { formatContentPath } from '../utils/path-utils'; // Import formatContentPath from path-utils
 import path from 'path'; // Import path module
 import fs from 'fs/promises'; // Use promises version for async file reading
+import { uppercaseSpecialWords } from '../utils';
 
 /**
  * Transforms the nested menu data structure into the ITreeNode structure
@@ -48,7 +49,11 @@ function transformMenuDataToDirectoryTree(
 
     // Add Home and Tags nodes after Pinned
     treeNode['/'] = { label: 'Home', children: {}, url: '/' };
-    treeNode['/tags'] = { label: 'Popular Tags', children: {}, url: '/tags' };
+    treeNode['/tags'] = {
+      label: 'Popular Tags',
+      children: {},
+      url: '/tags',
+    };
   }
 
   // Determine the target node for adding children (root or nested)
@@ -106,9 +111,10 @@ function transformMenuDataToDirectoryTree(
       const slugifiedTag = slugifyPathComponents(tag.toLowerCase());
       const tagUrl = `/tags/${slugifiedTag}`;
       treeNode['/tags'].children[tagUrl] = {
-        label: `#${tag}`, // Display tag with # prefix
+        label: `#${uppercaseSpecialWords(slugifiedTag, '-')}`, // Display tag with # prefix
         children: {},
         url: tagUrl,
+        ignoreLabelTransform: true,
         // Note: Count is not available from tags.json
       };
     });
