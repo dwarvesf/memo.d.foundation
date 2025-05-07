@@ -29,13 +29,6 @@ interface ImageNode {
   alt: string | null;
 }
 
-interface LinkNode {
-  type: 'link';
-  url: string;
-  title: string | null;
-  children: unknown[];
-}
-
 interface FileData {
   toc?: ITocItem[];
   headingTextMap?: Map<string, string>;
@@ -251,22 +244,55 @@ function remarkResolveImagePaths(fileDir: string) {
 }
 
 /**
- * Custom remark plugin to process links and remove .md extension from relative links
+ * Custom remark plugin to process links and resolve relative paths
+ * @param markdownFilePath Path to the markdown file being processed
  */
-function remarkProcessLinks() {
+function remarkProcessLinks(markdownFilePath: string) {
   return (tree: Root) => {
     visit(tree, 'link', (node: Link) => {
-      const linkNode = node as LinkNode;
+      const linkNode = node as Link; // Use mdast Link type
+      const targetUrl = linkNode.url;
 
-      // Process relative links that end with .md OR links starting with / that end with .md
-      if (
-        (!/^(https?:\/\/|\/)/i.test(linkNode.url) ||
-          linkNode.url.startsWith('/')) &&
-        linkNode.url.endsWith('.md')
-      ) {
-        // Remove the .md extension
-        linkNode.url = linkNode.url.slice(0, -3);
+      // Skip external links, mailto, tel, and anchor links
+      if (/^(https?:\/\/|mailto:|tel:|#)/i.test(targetUrl)) {
+        return;
       }
+
+      let finalUrl: string;
+
+      if (targetUrl.startsWith('/')) {
+        // Link is already absolute from the site root (or should be treated as such)
+        if (targetUrl.endsWith('.md')) {
+          finalUrl = targetUrl.slice(0, -3);
+        } else {
+          finalUrl = targetUrl;
+        }
+      } else {
+        // Relative link
+        const currentFileDir = path.dirname(markdownFilePath);
+        const absoluteTargetPath = path.resolve(currentFileDir, targetUrl);
+
+        const contentDir = path.join(process.cwd(), 'public', 'content');
+        let relativeToContentDir = path.relative(
+          contentDir,
+          absoluteTargetPath,
+        );
+
+        relativeToContentDir = relativeToContentDir.split(path.sep).join('/');
+        finalUrl = '/' + relativeToContentDir;
+
+        if (finalUrl.endsWith('.md')) {
+          finalUrl = finalUrl.slice(0, -3);
+        }
+        // Handle cases where the link might now be to an index page like /folder/ (previously /folder/_index or /folder/readme)
+        // This might need adjustment based on how your `_index.md` or `readme.md` files are treated for URLs.
+        // For example, if `/folder/_index` should become `/folder/`
+        if (finalUrl.endsWith('/_index') || finalUrl.endsWith('/readme')) {
+          finalUrl = finalUrl.substring(0, finalUrl.lastIndexOf('/'));
+          if (finalUrl === '') finalUrl = '/'; // Handle root index/readme
+        }
+      }
+      linkNode.url = finalUrl;
     });
   };
 }
@@ -511,7 +537,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(remarkGfm)
     .use(remarkLineBreaks)
     .use(() => remarkResolveImagePaths(filePath))
-    .use(remarkProcessLinks) // Process links and remove .md extensions
+    .use(() => remarkProcessLinks(filePath)) // Process links and resolve paths
     .use(remarkExtractSummaries) // Extract and remove summary code blocks
     .use(remarkToc) // Extract table of contents and create heading ID mapping
     .use(remarkBlockCount) // Count blocks
@@ -540,8 +566,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkLineBreaks)
-    .use(() => remarkResolveImagePaths(filePath))
-    .use(remarkProcessLinks) // Process links and remove .md extensions
+    .use(() => remarkResolveImagePaths(filePath)) // Keep image resolution in case summaries have images
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeSanitize, schema as never)
     .use(rehypeStringify);
