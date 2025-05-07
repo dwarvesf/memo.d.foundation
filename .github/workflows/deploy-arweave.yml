@@ -65,15 +65,11 @@ jobs:
           echo '${{ secrets.ARWEAVE_WALLET_JSON }}' > wallet.json
           chmod 600 wallet.json
 
-      - name: Map author addresses
-        run: |
-          node scripts/formatter/add-author-address/script.js '${{ secrets.AUTHOR_ADDRESS_MAP }}'
-
       - name: Process markdown files
         id: deploy
         if: steps.changed-files.outputs.files != ''
         run: |
-          npx tsx scripts/deploy-arweave.ts '${{ steps.changed-files.outputs.files }}'
+          npx tsx scripts/deploy-arweave.ts '${{ steps.changed-files.outputs.files }}' '${{ secrets.AUTHOR_ADDRESS_MAP }}'
 
       - name: Commit and push changes
         run: |
