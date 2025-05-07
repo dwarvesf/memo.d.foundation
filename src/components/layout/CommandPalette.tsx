@@ -342,7 +342,7 @@ const CommandPalette: React.FC = () => {
     // Record current page visit
     const currentPath = router.asPath;
     const currentTitle = document.title;
-    const isSkip = currentPath !== '/' && currentPath !== '/index.html';
+    const isSkip = currentPath === '/' || currentPath == '/index.html';
     const timestamp = new Date().getTime();
 
     // Get current page info and strip redundant title parts if present
@@ -359,10 +359,18 @@ const CommandPalette: React.FC = () => {
 
     if (storedRecents) {
       try {
-        const parsed = JSON.parse(storedRecents) as IRecentPageStorageItem[];
+        let parsed: IRecentPageStorageItem[] = [];
+        try {
+          parsed = JSON.parse(storedRecents);
+          if (!Array.isArray(parsed)) {
+            parsed = [];
+          }
+        } catch (error) {
+          console.error('Error parsing recent pages from localStorage', error);
+        }
 
         // Skip recording if this is the home page
-        if (isSkip) {
+        if (!isSkip) {
           // Remove current page if it exists already (to avoid duplicates)
           let newRecentPages = parsed.filter(page => page.path !== currentPath);
 
@@ -371,7 +379,7 @@ const CommandPalette: React.FC = () => {
           const maxLength = 5;
           // Keep only the last 10 pages
           if (newRecentPages.length > maxLength) {
-            newRecentPages = parsed.slice(0, maxLength);
+            newRecentPages = newRecentPages.slice(0, maxLength);
           }
           setRecentPages(newRecentPages);
 
