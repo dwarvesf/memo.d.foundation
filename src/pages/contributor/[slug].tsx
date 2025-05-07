@@ -21,6 +21,7 @@ import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { Json } from '@duckdb/node-api';
 import { RootLayout } from '@/components';
 import { getMdxSource } from '@/lib/mdx';
+import ContributorHead from '@/components/memo/ContributorHead';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
@@ -163,17 +164,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const discordData = null; // Placeholder
     const cryptoData = null; // Placeholder
 
+    // const mdxSource = await getMdxSource({
+    //   mdxPath: path.join(
+    //     process.cwd(),
+    //     'public/content/contributor',
+    //     `${contributorSlug}.mdx`,
+    //   ),
+    //   fallbackPath: path.join(
+    //     process.cwd(),
+    //     'public/content/contributor',
+    //     '[slug].mdx',
+    //   ),
+    //   scope: {
+    //     contributorName: originalContributorName,
+    //     githubData,
+    //     discordData,
+    //     cryptoData,
+    //     contributorMemos,
+    //   },
+    // });
+
     const mdxSource = await getMdxSource({
-      mdxPath: path.join(
-        process.cwd(),
-        'public/content/contributor',
-        `${contributorSlug}.mdx`,
-      ),
-      fallbackPath: path.join(
-        process.cwd(),
-        'public/content/contributor',
-        '[slug].mdx',
-      ),
+      mdxPath: path.join(process.cwd(), '/src/constants/[slug].mdx'),
       scope: {
         contributorName: originalContributorName,
         githubData,
@@ -194,6 +206,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         contributorName: originalContributorName,
         githubData,
         mdxSource,
+        contributorMemos,
+        discordData,
         frontmatter: mdxSource.frontmatter,
       },
     };
@@ -210,6 +224,7 @@ export default function ContentPage({
   contributorName,
   githubData,
   mdxSource,
+  contributorMemos,
 }: ContentPageProps) {
   if (!mdxSource || 'error' in mdxSource) {
     // We already handle this in getStaticProps
@@ -224,6 +239,10 @@ export default function ContentPage({
       searchIndex={searchIndex}
     >
       <div className="content-wrapper">
+        <ContributorHead
+          githubData={githubData}
+          contributorMemos={contributorMemos}
+        />
         <RemoteMdxRenderer mdxSource={mdxSource} />
       </div>
     </RootLayout>

@@ -4,6 +4,7 @@ import { type SerializeResult } from 'next-mdx-remote-client/serialize';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import MemoVList from './memo/MemoVList';
+import ContributorHead from './memo/ContributorHead';
 import { formatContentPath } from '@/lib/utils/path-utils';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 
 const components: MDXComponents = {
   Link,
+  ContributorHead,
   MemoVList,
   MemoLink: props => {
     const { filePath, className, ...rest } = props;
