@@ -20,6 +20,7 @@ build:
 	@cd lib/obsidian-compiler && mix export_markdown
 	@cd lib/obsidian-compiler && mix duckdb.export
 	@pnpm run build
+	@cp -r db/ out/
 
 run:
 	@cd lib/obsidian-compiler && mix export_markdown
