@@ -50,11 +50,19 @@ jobs:
           devbox run fetch
           devbox run duckdb-export
         env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           INFINITY_API_KEY: ${{ secrets.INFINITY_API_KEY }}
           INFINITY_OPENAI_BASE_URL: ${{ secrets.INFINITY_OPENAI_BASE_URL }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           JINA_BASE_URL: ${{ secrets.JINA_BASE_URL }}
+
+      - name: Run AI generate summary script
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          devbox run -- pnpm run generate-summary
 
       - name: Update submodules
         run: |
@@ -75,7 +83,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git checkout main
-          git submodule foreach --recursive "git checkout main || git checkout master || echo 'Failed to checkout main/master, attempting push on current state' ; git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
+          git submodule foreach --recursive "git checkout main || git checkout master || echo 'Failed to checkout main/master, attempting push on current state' ; git add --all; git commit -m 'chore(ci): update AI-generated summary' || echo 'No changes committed'; git push"
           git add --all
-          git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
+          git commit -m "chore(ci): update AI-generated summary" || echo "No changes committed"
           git push

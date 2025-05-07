@@ -1,6 +1,10 @@
 import { OpenAI } from 'openai';
 import fs from 'fs';
 import matter from 'gray-matter';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const PROMPT = `
 
 Your task is to summarize user content into a maximum of 5 short keypoints.
@@ -126,8 +130,17 @@ function getAllMarkdownFiles(dir: string): string[] {
     const stat = fs.statSync(filePath);
 
     if (stat && stat.isDirectory()) {
-      // Recursively scan subdirectories
-      results = results.concat(getAllMarkdownFiles(filePath));
+      // Skip directories nested within vault/opensource, but not vault/opensource itself
+      if (
+        filePath.startsWith('vault/opensource/') &&
+        filePath !== 'vault/opensource/'
+      ) {
+        console.log(`Skipping directory: ${filePath}`);
+        // Do nothing, effectively skipping this directory and its contents
+      } else {
+        // Recursively scan other directories (including vault/opensource itself)
+        results = results.concat(getAllMarkdownFiles(filePath));
+      }
     } else if (filePath.endsWith('.md')) {
       // Add markdown files to results
       results.push(filePath);
