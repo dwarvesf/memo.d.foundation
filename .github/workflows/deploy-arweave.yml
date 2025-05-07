@@ -76,7 +76,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git checkout main
-          git submodule foreach --recursive "git checkout main || git checkout master || true; git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
+          git submodule foreach --recursive "git checkout main || git checkout master || echo 'Failed to checkout main/master, attempting push on current state' ; git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
           git add --all
           git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
           git push
