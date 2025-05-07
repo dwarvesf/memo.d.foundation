@@ -18,6 +18,8 @@ import { RootLayout, ContentLayout } from '../components';
 import SubscriptionSection from '../components/layout/SubscriptionSection';
 import UtterancComments from '@/components/layout/UtterancComments';
 import MintEntry from '@/components/mint-entry/MintEntry';
+import RemoteMdxRenderer from '@/components/RemoteMdxRenderer'; // Add this import
+import { SerializeResult } from 'next-mdx-remote-client/serialize'; // Add this import
 
 // Import contexts and types
 import { useThemeContext } from '@/contexts/theme';
@@ -29,16 +31,18 @@ import {
   RootLayoutPageProps,
 } from '@/types';
 import { formatContentPath } from '@/lib/utils/path-utils';
+import { getMdxSource } from '@/lib/mdx';
 
 interface ContentPageProps extends RootLayoutPageProps {
-  content: string;
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  content?: string;
+  mdxSource?: SerializeResult; // Add this for MDX support
   frontmatter?: Record<string, any>;
   slug: string[];
   backlinks?: IBackLinkItem[];
   tocItems?: ITocItem[];
   metadata?: IMetadata;
   isListPage?: boolean;
+  isMdxPage?: boolean; // Flag to indicate MDX content
   childMemos?: IMemoItem[];
 }
 
@@ -159,7 +163,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       redirects = {};
     }
 
-    // Determine the actual content path by checking for redirect or alias (existing logic)
+    // Determine the actual content path by checking for redirect or alias
     let contentPathSegments = [...requestedPathSegments];
     let canonicalSlug = contentPathSegments;
     let canonicalPathFound = false;
@@ -187,10 +191,86 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       contentPathSegments = requestedPathSegments;
     }
 
-    // Pass includeContent: false as we only need metadata for layout props (existing logic)
+    // Pass includeContent: false as we only need metadata for layout props
     const layoutProps = await getRootLayoutPageProps();
 
-    // --- Existing logic for standard markdown pages ---
+    // --- Check for MDX files first ---
+    const mdxFilePath =
+      path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.mdx';
+
+    let mdxExists = false;
+    try {
+      await fs.stat(mdxFilePath);
+      mdxExists = true;
+    } catch {
+      // MDX file does not exist
+    }
+
+    // MDX index/readme alternatives
+    const mdxIndexFilePath = path.join(
+      process.cwd(),
+      'public/content',
+      ...canonicalSlug,
+      '_index.mdx',
+    );
+    const mdxReadmeFilePath = path.join(
+      process.cwd(),
+      'public/content',
+      ...canonicalSlug,
+      'readme.mdx',
+    );
+
+    let mdxIndexExists = false;
+    try {
+      await fs.stat(mdxIndexFilePath);
+      mdxIndexExists = true;
+    } catch {
+      // MDX index file does not exist
+    }
+
+    let mdxReadmeExists = false;
+    try {
+      await fs.stat(mdxReadmeFilePath);
+      mdxReadmeExists = true;
+    } catch {
+      // MDX readme file does not exist
+    }
+
+    // If MDX file exists, use that instead of markdown
+    if (mdxExists || mdxIndexExists || mdxReadmeExists) {
+      const actualMdxPath = mdxExists
+        ? mdxFilePath
+        : mdxReadmeExists
+          ? mdxReadmeFilePath
+          : mdxIndexFilePath;
+
+      // Process MDX similar to contributor/index.tsx
+      const mdxSource = await getMdxSource({
+        mdxPath: actualMdxPath,
+        // You can add scope variables here if needed
+      });
+
+      if (!mdxSource || 'error' in mdxSource) {
+        return { notFound: true }; // Handle serialization error
+      }
+
+      // Extract metadata similar to markdown files for consistency
+      const frontmatter: Record<string, any> = mdxSource.frontmatter || {};
+
+      return {
+        props: {
+          ...layoutProps,
+          mdxSource,
+          frontmatter,
+          slug,
+          backlinks: [], // Backlinks aren't implemented for MDX yet
+          isListPage: false,
+          isMdxPage: true,
+        },
+      };
+    }
+
+    // --- Continue with existing markdown file logic if no MDX ---
     let filePath =
       path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.md';
 
@@ -323,7 +403,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         tocItems,
         metadata,
         isListPage: false,
-        isContributorPage: false, // Flag to indicate this is NOT a contributor page
+        isMdxPage: false,
       },
     };
   } catch (error) {
@@ -334,6 +414,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export default function ContentPage({
   content,
+  mdxSource,
   frontmatter,
   slug,
   backlinks,
@@ -342,6 +423,7 @@ export default function ContentPage({
   directoryTree,
   searchIndex,
   isListPage,
+  isMdxPage,
   childMemos,
 }: ContentPageProps) {
   const router = useRouter();
@@ -387,7 +469,8 @@ export default function ContentPage({
       typeof window !== 'undefined' &&
       !isListPage &&
       frontmatter && // Run for both markdown and contributor pages
-      isThemeLoaded
+      isThemeLoaded &&
+      !isMdxPage // Only run for markdown, not MDX
     ) {
       import('mermaid').then(mermaid => {
         try {
@@ -409,13 +492,13 @@ export default function ContentPage({
         }
       });
     }
-  }, [content, isListPage, frontmatter, theme, isThemeLoaded]); // Add isContributorPage to dependencies
+  }, [content, isListPage, frontmatter, theme, isThemeLoaded, isMdxPage]);
 
   const contentEl = useMemo(() => {
     return (
       <div
         className="article-content"
-        dangerouslySetInnerHTML={{ __html: content }}
+        dangerouslySetInnerHTML={{ __html: content || '' }}
         ref={contentRef}
       />
     );
@@ -448,6 +531,21 @@ export default function ContentPage({
               </ul>
             </div>
           )}
+        </div>
+      </RootLayout>
+    );
+  } else if (isMdxPage && mdxSource) {
+    // MDX Page Rendering
+    return (
+      <RootLayout
+        title={frontmatter?.title}
+        description={frontmatter?.description} // Use GitHub bio as description
+        image={frontmatter?.image} // Use GitHub avatar as image
+        directoryTree={directoryTree}
+        searchIndex={searchIndex}
+      >
+        <div className="content-wrapper">
+          <RemoteMdxRenderer mdxSource={mdxSource} />
         </div>
       </RootLayout>
     );
