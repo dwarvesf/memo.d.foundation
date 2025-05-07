@@ -1,6 +1,11 @@
 # Builder image
 FROM jetpackio/devbox:latest AS builder
 
+LABEL stage="builder" \
+      maintainer="anhnx@d.foundation" \
+      org.opencontainers.image.title="Memo.d.foundation Builder" \
+      org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation"
+
 # Set locale environment variables for UTF-8 support
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
@@ -23,32 +28,43 @@ ENV JINA_BASE_URL=$JINA_BASE_URL
 
 # Copy the repository
 WORKDIR /code
+# Ensure DEVBOX_USER is set in the base image or defined here.
+# If not, USER root:root might be safer for these initial steps,
+# then switch to a less privileged user if one is created by devbox.
 USER root:root
 RUN mkdir -p /code && chown ${DEVBOX_USER}:${DEVBOX_USER} /code
 USER ${DEVBOX_USER}:${DEVBOX_USER}
 
 COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} ./ ./
 
-# Map git to current directory
-RUN git init
-RUN git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git
-RUN git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH}
-RUN git clean -fdx
-RUN git checkout ${RAILWAY_GIT_BRANCH}
-
-# Installing devbox project
-RUN git config --global --add safe.directory /code
-RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
-RUN git submodule update --init --recursive --depth 1
-
-RUN devbox run build
+# Map git to current directory, install devbox project, and build
+RUN git init && \
+    git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
+    git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
+    git clean -fdx && \
+    git checkout ${RAILWAY_GIT_BRANCH} && \
+    git config --global --add safe.directory /code && \
+    git config --global url."https://github.com/".insteadOf "git@github.com:" && \
+    git submodule update --init --recursive --depth 1 && \
+    devbox run build
 
 # Export runner
 FROM nginx:alpine
+
+LABEL maintainer="anhnx@d.foundation" \
+      org.opencontainers.image.title="memo.d.foundation Frontend" \
+      org.opencontainers.image.version="1.0.0" \
+      org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation"
+      # Add org.opencontainers.image.revision=$(git rev-parse HEAD) in your CI/CD build arguments for this label
+
 # Set locale environment variables for UTF-8 support
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
 COPY --from=builder /code/out/ /usr/share/nginx/html
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/ || exit 1
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
