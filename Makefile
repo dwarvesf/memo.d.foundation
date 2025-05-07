@@ -5,7 +5,7 @@ setup:
 
 lib-setup:
 	@cd lib/obsidian-compiler && mix local.hex --force && mix local.rebar --force && mix deps.get
-	@pnpm install
+	@pnpm install --no-frozen-lockfile
 
 fetch:
 	@cd lib/obsidian-compiler && mix fetch
