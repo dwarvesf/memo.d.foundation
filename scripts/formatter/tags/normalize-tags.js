@@ -104,19 +104,37 @@ async function scanDirectory(dir, tagMap = {}) {
   }
 }
 
+function sortTags(keyedTags) {
+  const keyedSorted = Object.keys(keyedTags).sort((a, b) =>
+    a.toLowerCase().localeCompare(b.toLowerCase()),
+  );
+  const sortedTags = {};
+  for (const key of keyedSorted) {
+    const files = Array.from(keyedTags[key] ?? []);
+    sortedTags[key] = files.sort((a, b) =>
+      a.toLowerCase().localeCompare(b.toLowerCase()),
+    );
+  }
+  return sortedTags;
+}
+
 async function processAndGenerateOutput(tagMap, outputPath) {
   try {
     // Process tags with OpenAI
     console.log('Analyzing tags...');
     const { normalized = {}, deprecated = [] } = await processTags(tagMap);
 
+    console.log('Sorting tags...');
+    const sortedNormalized = sortTags(normalized);
+    const sortedDeprecated = sortTags({ deprecated }).deprecated;
+
     // Generate priority categories
     console.log('Generating priority categories...');
-    const priority = await generatePriorityCategories(normalized);
+    const priority = await generatePriorityCategories(sortedNormalized);
 
     const output = {
-      normalized,
-      deprecated,
+      normalized: sortedNormalized,
+      deprecated: sortedDeprecated,
       priority,
     };
 
