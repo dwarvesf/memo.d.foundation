@@ -356,7 +356,27 @@ function rehypeNextjsLinks() {
  * @param filePath Path to the markdown file
  * @returns Object with frontmatter, processed HTML content, and table of contents
  */
+import aliasesJson from '../../../public/content/aliases.json';
+
 export async function getMarkdownContent(filePath: string) {
+  // Filter out files that are shadowed by an alias key
+  // (e.g. if /brainery is an alias, /brainery.md should not be rendered)
+  const contentDir = path.join(process.cwd(), 'public', 'content');
+  const relPath = path.relative(contentDir, filePath);
+  const relPathNoExt = relPath.replace(/\.mdx?$/, '').replace(/\\/g, '/');
+  const aliasKeys = Object.keys(aliasesJson);
+
+  // If this file matches an alias key (e.g. brainery.md for /brainery), skip rendering
+  if (
+    aliasKeys.some(
+      alias => alias.replace(/^\//, '') === relPathNoExt.replace(/^\//, ''),
+    )
+  ) {
+    throw new Error(
+      `File ${filePath} is shadowed by alias key in aliases.json and should not be rendered.`,
+    );
+  }
+
   // Read the markdown file
   const markdownContent = await fs.readFile(filePath, 'utf-8'); // Use asynchronous readFile
 

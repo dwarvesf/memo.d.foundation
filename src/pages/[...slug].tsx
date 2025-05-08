@@ -74,6 +74,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     redirects = {};
   }
 
+  // 1. Gather all markdown file paths (excluding contributor/tags)
   const markdownPaths = (await getAllMarkdownFiles(contentDir))
     .filter(
       slugArray =>
@@ -84,31 +85,33 @@ export const getStaticPaths: GetStaticPaths = async () => {
       params: { slug: slugArray },
     }));
 
+  // 2. Gather all alias paths (top-level)
   const aliasPaths = Object.keys(aliases).map(alias => ({
     params: { slug: alias.split('/').filter(Boolean) },
   }));
 
+  // 3. Gather nested alias paths by enumerating all children under each alias target
   const nestedAliasPaths: { params: { slug: string[] } }[] = [];
-  for (const markdownPathObj of markdownPaths) {
-    const markdownSlug = markdownPathObj.params.slug;
-    for (const aliasKey in aliases) {
-      const aliasValue = aliases[aliasKey];
-      const aliasValueSegments = aliasValue.split('/').filter(Boolean);
-      const aliasKeySegments = aliasKey.split('/').filter(Boolean);
-      if (
-        markdownSlug.length >= aliasValueSegments.length &&
-        aliasValueSegments.every(
-          (segment, index) => markdownSlug[index] === segment,
-        )
-      ) {
-        const remainingSegments = markdownSlug.slice(aliasValueSegments.length);
-        const newAliasSlug = [...aliasKeySegments, ...remainingSegments];
-        nestedAliasPaths.push({ params: { slug: newAliasSlug } });
-        break;
-      }
+  for (const aliasKey in aliases) {
+    const aliasValue = aliases[aliasKey];
+    const aliasKeySegments = aliasKey.split('/').filter(Boolean);
+    const targetDir = path.join(contentDir, ...aliasValue.split('/').filter(Boolean));
+    let childSlugs: string[][] = [];
+    try {
+      childSlugs = await getAllMarkdownFiles(targetDir);
+    } catch {
+      // If the alias target doesn't exist, skip
+      continue;
+    }
+    for (const childSlug of childSlugs) {
+      // Don't add the root alias itself (handled by aliasPaths)
+      if (childSlug.length === 0) continue;
+      const newAliasSlug = [...aliasKeySegments, ...childSlug];
+      nestedAliasPaths.push({ params: { slug: newAliasSlug } });
     }
   }
 
+  // 4. Gather redirect paths
   const redirectPaths = Object.keys(redirects).map(redirect => ({
     params: { slug: redirect.split('/').filter(Boolean) },
   }));
@@ -141,7 +144,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const requestedPathSegments = slug;
     const requestedPath = `/${requestedPathSegments.join('/')}`;
 
-    // Read aliases.json and redirects.json (existing logic)
+    // --- ALIAS OVERWRITES FILE IF ALIAS KEY EXISTS ---
     const contentDir = path.join(process.cwd(), 'public/content');
     const aliasesPath = path.join(contentDir, 'aliases.json');
     const redirectsPath = path.join(contentDir, 'redirects.json');
@@ -163,57 +166,74 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       redirects = {};
     }
 
-    // Determine the actual content path by checking for redirect or alias
+    const requestedPathAliasKey = Object.keys(aliases).find(
+      aliasKey => requestedPath === aliasKey
+    );
+
     let contentPathSegments = [...requestedPathSegments];
     let canonicalSlug = contentPathSegments;
     let canonicalPathFound = false;
 
-    if (redirects[requestedPath]) {
+    if (requestedPathAliasKey) {
+      // If the current path is an alias key, always use the alias target (overwrite any file)
+      const aliasValue = aliases[requestedPathAliasKey];
+      contentPathSegments = aliasValue.split('/').filter(Boolean);
+      canonicalSlug = contentPathSegments;
+      canonicalPathFound = true;
+    } else if (redirects[requestedPath]) {
       const redirectTarget = redirects[requestedPath];
       contentPathSegments = redirectTarget.split('/').filter(Boolean);
       canonicalSlug = contentPathSegments;
       canonicalPathFound = true;
     } else {
+      // Fallback to nested alias logic for subpaths
+      let matchedAlias = null;
+      let matchedAliasKey = '';
       for (const aliasKey in aliases) {
-        if (requestedPath.startsWith(aliasKey)) {
-          const aliasValue = aliases[aliasKey];
-          const canonicalPath = requestedPath.replace(aliasKey, aliasValue);
-          contentPathSegments = canonicalPath.split('/').filter(Boolean);
-          canonicalSlug = contentPathSegments;
-          canonicalPathFound = true;
+        if (
+          aliasKey !== '/' &&
+          requestedPath.startsWith(aliasKey + '/')
+        ) {
+          matchedAlias = aliases[aliasKey];
+          matchedAliasKey = aliasKey;
           break;
         }
       }
-    }
-
-    if (!canonicalPathFound) {
-      canonicalSlug = requestedPathSegments;
-      contentPathSegments = requestedPathSegments;
+      if (matchedAlias) {
+        const canonicalPath = requestedPath.replace(matchedAliasKey, matchedAlias);
+        contentPathSegments = canonicalPath.split('/').filter(Boolean);
+        canonicalSlug = contentPathSegments;
+        canonicalPathFound = true;
+      } else {
+        canonicalSlug = requestedPathSegments;
+        contentPathSegments = requestedPathSegments;
+      }
     }
 
     // Pass includeContent: false as we only need metadata for layout props
     const layoutProps = await getRootLayoutPageProps();
 
     // --- Check for MDX files first ---
-    const mdxFilePath =
+    // (Variable names must not conflict with those above)
+    const mdxFilePath2 =
       path.join(process.cwd(), 'public/content', ...canonicalSlug) + '.mdx';
 
     let mdxExists = false;
     try {
-      await fs.stat(mdxFilePath);
+      await fs.stat(mdxFilePath2);
       mdxExists = true;
     } catch {
       // MDX file does not exist
     }
 
     // MDX index/readme alternatives
-    const mdxIndexFilePath = path.join(
+    const mdxIndexFilePath2 = path.join(
       process.cwd(),
       'public/content',
       ...canonicalSlug,
       '_index.mdx',
     );
-    const mdxReadmeFilePath = path.join(
+    const mdxReadmeFilePath2 = path.join(
       process.cwd(),
       'public/content',
       ...canonicalSlug,
@@ -222,7 +242,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     let mdxIndexExists = false;
     try {
-      await fs.stat(mdxIndexFilePath);
+      await fs.stat(mdxIndexFilePath2);
       mdxIndexExists = true;
     } catch {
       // MDX index file does not exist
@@ -230,7 +250,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     let mdxReadmeExists = false;
     try {
-      await fs.stat(mdxReadmeFilePath);
+      await fs.stat(mdxReadmeFilePath2);
       mdxReadmeExists = true;
     } catch {
       // MDX readme file does not exist
@@ -239,10 +259,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     // If MDX file exists, use that instead of markdown
     if (mdxExists || mdxIndexExists || mdxReadmeExists) {
       const actualMdxPath = mdxExists
-        ? mdxFilePath
+        ? mdxFilePath2
         : mdxReadmeExists
-          ? mdxReadmeFilePath
-          : mdxIndexFilePath;
+          ? mdxReadmeFilePath2
+          : mdxIndexFilePath2;
 
       // Process MDX similar to contributor/index.tsx
       const mdxSource = await getMdxSource({
