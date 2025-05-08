@@ -49,12 +49,11 @@ defmodule Memo.ExportDuckDB do
     {"ai_generated_summary", "VARCHAR[]"}
   ]
 
-  def run(vaultpath, format, commits_back, pattern \\ nil) do
+  def run(vaultpath, format, pattern \\ nil) do
     load_env()
 
     vaultpath = vaultpath || "vault"
     export_format = format || "parquet"
-    commits_back = parse_commits_back(commits_back)
     pattern = pattern || "**/*.md"
 
     ignored_patterns = FileUtils.read_export_ignore_file(Path.join(vaultpath, ".export-ignore"))
@@ -79,7 +78,6 @@ defmodule Memo.ExportDuckDB do
           filtered_files =
             get_files_to_process(
               vaultpath,
-              commits_back,
               all_files_to_process,
               pattern,
               last_processed_timestamp
@@ -157,10 +155,6 @@ defmodule Memo.ExportDuckDB do
       {:error, reason} -> IO.puts("Error updating last_processed_at: #{reason}")
     end
   end
-
-  defp parse_commits_back(:all), do: :all
-  defp parse_commits_back("HEAD~" <> n), do: "HEAD~#{n}"
-  defp parse_commits_back(_), do: "HEAD^"
 
   defp load_env do
     if File.exists?(".env"), do: DotenvParser.load_file(".env")
@@ -978,83 +972,52 @@ defmodule Memo.ExportDuckDB do
     needs_update
   end
 
-  defp get_files_to_process(directory, commits_back, all_files, pattern, last_processed_timestamp) do
-    # Step 1: Git-based filtering (if commits_back is not :all)
-    files_from_git =
-      case commits_back do
-        :all ->
-          # Start with all export-ignore respected files
-          all_files
-
-        _ ->
-          git_relative_paths = GitUtils.get_modified_files(directory, commits_back)
-
-          submodule_relative_paths =
-            GitUtils.list_submodules(directory)
-            |> Enum.flat_map(&GitUtils.get_submodule_modified_files(directory, &1, commits_back))
-
-          all_git_relative_paths = git_relative_paths ++ submodule_relative_paths
-
-          all_git_full_paths_set =
-            all_git_relative_paths
-            |> Enum.map(&Path.join(directory, &1))
-            |> MapSet.new()
-
-          Enum.filter(all_files, &MapSet.member?(all_git_full_paths_set, &1))
-      end
-
-    # Step 2: Pattern-based filtering
+  defp get_files_to_process(directory, all_files, pattern, last_processed_timestamp) do
+    # Step 1: Pattern-based filtering
     pattern_matched_files =
       if pattern do
-        # Ensure pattern is joined with directory to match full paths from files_from_git
+        # Ensure pattern is joined with directory to match full paths from all_files
         full_pattern_path = Path.join(directory, pattern)
 
         matching_wildcard_paths_set =
           Path.wildcard(full_pattern_path)
           |> MapSet.new()
 
-        Enum.filter(files_from_git, &MapSet.member?(matching_wildcard_paths_set, &1))
+        Enum.filter(all_files, &MapSet.member?(matching_wildcard_paths_set, &1))
       else
-        # No pattern, use all files from git/all_files stage
-        files_from_git
+        # No pattern, use all files
+        all_files
       end
 
-    # Step 3: Timestamp-based filtering - ONLY apply if commits_back is NOT :all
-    if commits_back == :all do
-      IO.puts("commits_back is :all, skipping timestamp filtering.")
-      # Return files after git/pattern filter
+    # Step 2: Timestamp-based filtering
+    if is_nil(last_processed_timestamp) do
+      IO.puts("No last_processed_timestamp, processing all pattern-matched files.")
+
       pattern_matched_files
     else
-      # Apply timestamp filtering as before
-      if is_nil(last_processed_timestamp) do
-        IO.puts("No last_processed_timestamp, processing all pattern-matched files.")
+      IO.puts("Filtering by mtime against: #{inspect(last_processed_timestamp)}")
 
-        pattern_matched_files
-      else
-        IO.puts("Filtering by mtime against: #{inspect(last_processed_timestamp)}")
+      Enum.filter(pattern_matched_files, fn file_path ->
+        case File.stat(file_path) do
+          {:ok, %{mtime: mtime_tuple}} ->
+            # mtime_tuple is {{Y,M,D},{H,Mi,S}}
+            case DateTime.from_naive(NaiveDateTime.from_erl!(mtime_tuple), "Etc/UTC") do
+              {:ok, file_mtime_utc} ->
+                DateTime.compare(file_mtime_utc, last_processed_timestamp) == :gt
 
-        Enum.filter(pattern_matched_files, fn file_path ->
-          case File.stat(file_path) do
-            {:ok, %{mtime: mtime_tuple}} ->
-              # mtime_tuple is {{Y,M,D},{H,Mi,S}}
-              case DateTime.from_naive(NaiveDateTime.from_erl!(mtime_tuple), "Etc/UTC") do
-                {:ok, file_mtime_utc} ->
-                  DateTime.compare(file_mtime_utc, last_processed_timestamp) == :gt
+              {:error, reason} ->
+                IO.puts(
+                  "Warning: Could not convert mtime for #{file_path}: #{inspect(reason)}. Excluding file."
+                )
 
-                {:error, reason} ->
-                  IO.puts(
-                    "Warning: Could not convert mtime for #{file_path}: #{inspect(reason)}. Excluding file."
-                  )
+                false
+            end
 
-                  false
-              end
-
-            {:error, reason} ->
-              IO.puts("Warning: Could not stat file #{file_path}: #{reason}. Excluding file.")
-              false
-          end
-        end)
-      end
+          {:error, reason} ->
+            IO.puts("Warning: Could not stat file #{file_path}: #{reason}. Excluding file.")
+            false
+        end
+      end)
     end
   end
 
