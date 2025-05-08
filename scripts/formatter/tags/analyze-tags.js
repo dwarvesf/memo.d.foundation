@@ -124,16 +124,16 @@ export async function processTags(tags) {
     Analyze the following list of tags and identify potential groupings based on:
     1. Exact spelling/formatting variants (hyphenation, case, singular/plural)
     2. Minor wording variations (word order, filler words)
-    
+
     The tags to process are: ${JSON.stringify(tags, null, 2)}
-    
+
     For each potential group, note:
     - The most common variant
     - Any misspellings or unclear forms
     - Standalone tags that don't fit into groups
-    
+
     Please provide initial groupings without making modifications to the original tags.
-    
+
     Return your response as a valid JSON object with a "groupings" property containing
     the initial tag groupings.
   `;
@@ -144,14 +144,14 @@ export async function processTags(tags) {
   // Step 2: Apply Normalization Rules
   const step2Prompt = `
     Based on the initial tag analysis, apply these normalization rules:
-    
+
     1. For each group of related tags:
        a) Use the most common variant as the key
        b) For groups with misspellings, use the most correct variant
        c) All keys and values must exist exactly in the input list
        d) Do NOT modify casing or format
        e) DO NOT create new variants
-    
+
     2. Only group tags that are exact matches in these ways:
        a) Spelling/formatting variants:
           - Different hyphenation ("workflow" vs "work-flow")
@@ -161,18 +161,18 @@ export async function processTags(tags) {
           - Word order ("remote-work" vs "work-remote")
           - Filler words ("guide" vs "quick-guide")
           - Similar concept ("api" vs "api-usage")
-    
+
     3. DO NOT group tags if:
        - They are related but conceptually distinct
        - They just share a common theme
        - You're uncertain about their equivalence
-    
+
     The tags to process are: ${JSON.stringify(tags, null, 2)}
 
     The initial groupings input are: ${JSON.stringify(step1Result.groupings, null, 2)}
-    
+
     Please refine these groupings according to the rules above.
-    
+
     Return your response as a valid JSON object with a "groupings" property containing
     the refined tag groupings.
   `;
@@ -183,31 +183,31 @@ export async function processTags(tags) {
   // Step 3: Identify Deprecated Tags
   const step3Prompt = `
     Identify tags that should be marked as deprecated based on these criteria:
-    
+
     1. Low usage:
        - Tags that appear in only 1 file
        - Rarely used variations of common tags
        - One-off or experimental tags
-    
+
     2. Outdated terminology:
        - Legacy technology terms
        - Obsolete methodologies
        - Superseded frameworks or tools
        - Historical project names
-    
+
     3. Unclear or problematic:
        - Single letters or numbers
        - Organization-specific shortcuts
        - Ambiguous acronyms
        - Version numbers or temporary markers
        - Duplicate meanings
-      
+
     The tags to process are: ${JSON.stringify(tags, null, 2)}
-    
+
     The normalized groupings from step 2 are: ${JSON.stringify(step2Result.groupings, null, 2)}
-    
+
     Note: Every tag from the input list must appear exactly once, either in the normalized groups or in the deprecated list.
-    
+
     Return your response as a valid JSON object with a "deprecated" property containing
     an array of tags that should be deprecated.
   `;
@@ -219,21 +219,21 @@ export async function processTags(tags) {
   const step4Prompt = `
     Reference this list of special technical terms:
     ${JSON.stringify(wordDict, null, 2)}
-    
+
     When normalizing tags:
     - DO NOT automatically convert to dictionary casing
     - Only use forms that exist in the input list
     - The dictionary is for reference only
     - DO NOT create new variants based on the dictionary
-    
+
     The tags to process are: ${JSON.stringify(tags, null, 2)}
-    
+
     The current normalized groupings are: ${JSON.stringify(step2Result.groupings, null, 2)}
-    
+
     The current deprecated tags are: ${JSON.stringify(step3Result.deprecated, null, 2)}
-    
+
     Review and adjust your normalized and deprecated lists to ensure technical terms are handled correctly.
-    
+
     Return your response as a valid JSON object with:
     - A "groupings" property containing the revised normalized groupings
     - A "deprecated" property containing the revised deprecated tags list
@@ -245,28 +245,28 @@ export async function processTags(tags) {
   // Step 5: Format Final Output
   const step5Prompt = `
     Create a JSON object with two properties:
-    
+
     1. "normalized": An object where:
        - Each key is a normalized tag from the input list
        - Each value is an array of related tags (including the key itself)
        - All tags maintain their original casing and formatting
        - Keyed tags are the most common variant from the input list and must be in lowercase
        - If keyed tag is a misspelling, use the most correct variant as the key or correct the keyed tag
-    
+
     2. "deprecated": An array of tags that should be deprecated
-    
+
     The tags to process are: ${JSON.stringify(tags, null, 2)}
-    
+
     The previous analysis normalized groupings are: ${JSON.stringify(step4Result.groupings, null, 2)}
-    
+
     The previous analysis deprecated tags are: ${JSON.stringify(step4Result.deprecated, null, 2)}
-    
+
     Please ensure:
     - Every input tag appears exactly once in either normalized (as key or in array) or deprecated
     - No tag appears in both normalized and deprecated
     - No tag is missing from the output
     - All tags use the exact spelling and format as in the input list
-    
+
     Return your response as a valid JSON object with "normalized" and "deprecated" properties.
   `;
   
@@ -276,16 +276,16 @@ export async function processTags(tags) {
   // Step 6: Verify Final Output
   const step6Prompt = `
     Based on the previous analysis steps, verify the final output:
-    
+
     1. Review the normalized tag groupings:
        - Ensure groups only contain true variations (spelling, casing, hyphenation)
        - Confirm each group represents a single concept
        - Verify the most appropriate variant is used as the key
-    
+
     2. Review the deprecated tags:
        - Confirm they meet at least one deprecation criterion
        - Ensure no valuable tags are incorrectly deprecated
-    
+
     3. Verify the final output:
        - Every input tag appears exactly once
        - All spellings and formats match the input
@@ -294,7 +294,7 @@ export async function processTags(tags) {
     The tags to process are: ${JSON.stringify(tags, null, 2)}
 
     The previous analysis step output is: ${JSON.stringify(step5Result, null, 2)}
-    
+
     Please correct any issues found and provide the verified final JSON output.
   `;
   
@@ -318,38 +318,38 @@ export async function generatePriorityCategories(normalizedTags) {
   ];
 
   const priorityPrompt = `
-Given these normalized tags, group them into the following priority categories:
+    Given these normalized tags, group them into the following priority categories:
 
-AI: Tags related to artificial intelligence, machine learning, neural networks, and AI algorithms
-Agent: Tags about autonomous agents, intelligent systems, and agent-based architectures
-Data: Tags about data processing, datasets, databases, and data structures
-LLM: Tags specifically about language models, transformers, and text generation systems
+    AI: Tags related to artificial intelligence, machine learning, neural networks, and AI algorithms
+    Agent: Tags about autonomous agents, intelligent systems, and agent-based architectures
+    Data: Tags about data processing, datasets, databases, and data structures
+    LLM: Tags specifically about language models, transformers, and text generation systems
 
-Tags to categorize: ${JSON.stringify(tags, null, 2)}
+    Tags to categorize: ${JSON.stringify(tags, null, 2)}
 
-RULES:
+    RULES:
 
-Only include tags that actually exist in the input list
-Each tag should appear in exactly one category (no duplicates across categories)
-Omit tags that don't clearly fit into any of the defined categories
-When a tag could belong to multiple categories, place it in the more specific category (e.g., "llm-fine-tuning" belongs in "llm" not "ai")
+    Only include tags that actually exist in the input list
+    Each tag should appear in exactly one category (no duplicates across categories)
+    Omit tags that don't clearly fit into any of the defined categories
+    When a tag could belong to multiple categories, place it in the more specific category (e.g., "llm-fine-tuning" belongs in "llm" not "ai")
 
-CATEGORY ASSIGNMENT GUIDE:
+    CATEGORY ASSIGNMENT GUIDE:
 
-AI: General AI concepts, machine learning methods, neural networks, optimization algorithms, etc.
-Agent: Autonomous systems, agency, multi-agent systems, reinforcement learning agents, embodied AI, etc.
-Data: Datasets, databases, data processing, data structures, feature engineering, data visualization, etc.
-LLM: Language models, transformers, text generation, embeddings, tokenization, prompt engineering, etc.
+    AI: General AI concepts, machine learning methods, neural networks, optimization algorithms, etc.
+    Agent: Autonomous systems, agency, multi-agent systems, reinforcement learning agents, embodied AI, etc.
+    Data: Datasets, databases, data processing, data structures, feature engineering, data visualization, etc.
+    LLM: Language models, transformers, text generation, embeddings, tokenization, prompt engineering, etc.
 
-Return a JSON object with category keys (ai, agent, data, llm) where each key contains an array of related tags.
-Example input: ["machine-learning", "llm", "dataset", "autonomous-agent", "neural-network", "transformer", "reinforcement-learning"]
-Example output:
-{
-  "ai": ["machine-learning", "neural-network", "reinforcement-learning"],
-  "agent": ["autonomous-agent"],
-  "data": ["dataset"],
-  "llm": ["llm", "transformer"]
-}
+    Return a JSON object with category keys (ai, agent, data, llm) where each key contains an array of related tags.
+    Example input: ["machine-learning", "llm", "dataset", "autonomous-agent", "neural-network", "transformer", "reinforcement-learning"]
+    Example output:
+    {
+      "ai": ["machine-learning", "neural-network", "reinforcement-learning"],
+      "agent": ["autonomous-agent"],
+      "data": ["dataset"],
+      "llm": ["llm", "transformer"]
+    }
 `;
 
   try {
