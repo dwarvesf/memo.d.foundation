@@ -1,10 +1,11 @@
 import { IMemoItem } from '@/types';
 import React from 'react';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { cn, uppercaseSpecialWords } from '@/lib/utils';
 import { getFirstMemoImage } from './utils';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { formatDate } from 'date-fns';
+import Tag from '../ui/tag';
 
 interface Props {
   data: IMemoItem[];
@@ -12,10 +13,18 @@ interface Props {
   hideThumbnail?: boolean;
   hideAuthors?: boolean;
   hideDate?: boolean;
+  showTags?: boolean;
 }
 
 const MemoVList = (props: Props) => {
-  const { data = [], className, hideThumbnail, hideAuthors, hideDate } = props;
+  const {
+    data = [],
+    className,
+    hideThumbnail,
+    hideAuthors,
+    hideDate,
+    showTags = false,
+  } = props;
   return (
     <div className={cn('v-list', className)} data-placement="vertical">
       {data.map((memo, index) => {
@@ -74,6 +83,20 @@ const MemoVList = (props: Props) => {
               {!hideDate && memo.date && (
                 <div className="text-secondary-foreground dark:text-secondary-light font-ibm-sans mt-1 text-sm font-normal">
                   {formatDate(memo.date, 'MMMM dd, yyyy')}
+                </div>
+              )}
+
+              {showTags && memo.tags && memo.tags.length > 0 && (
+                <div className="mt-1">
+                  {memo.tags.map(tag => (
+                    <Tag
+                      key={tag}
+                      href={`/tags/${tag}`}
+                      className="mr-2 text-xs"
+                    >
+                      {uppercaseSpecialWords(tag)}
+                    </Tag>
+                  ))}
                 </div>
               )}
             </div>

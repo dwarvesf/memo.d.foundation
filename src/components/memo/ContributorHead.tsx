@@ -1,14 +1,32 @@
 import { uppercaseSpecialWords } from '@/lib/utils';
-import { Link, TwitterIcon, Tag } from 'lucide-react';
+import { Link, TwitterIcon, Tag as TagIcon } from 'lucide-react';
+import Tag from '../ui/tag';
 
 interface Props {
-  githubData: any;
   contributorMemos: any;
   className?: string;
+  name?: string;
+  githubId?: string;
+  githubLink?: string;
+  websiteLink?: string;
+  discordId?: string;
+  discordName?: string;
+  twitterUserName?: string;
+  bio?: string;
+  avatarUrl?: string;
 }
 
 const ContributorHead = (props: Props) => {
-  const { githubData, contributorMemos } = props;
+  const {
+    bio,
+    githubId,
+    name,
+    githubLink,
+    websiteLink,
+    twitterUserName,
+    contributorMemos,
+    avatarUrl,
+  } = props;
 
   const tags = contributorMemos
     ?.flatMap((memo: any) => memo.tags)
@@ -20,69 +38,75 @@ const ContributorHead = (props: Props) => {
     tags &&
     Object.entries(tags)
       .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count);
-
-  console.log('tagList', tagList);
+      .sort((a, b) => (b.count as number) - (a.count as number));
 
   return (
     <div className="flex justify-between gap-4">
       <div>
-        <h1 className="!my-2 !mb-0 text-4xl font-bold">
-          {githubData?.name || githubData?.login}
-        </h1>
-        <a className="text-xl" href={githubData?.html_url}>
-          {githubData?.login}
-        </a>
-        <p className="text-muted-foreground mt-1">{githubData?.bio}</p>
-        <ul className="mt-2">
-          {githubData?.blog && (
-            <li>
+        <div className="flex justify-between">
+          <div>
+            <h1 className="!my-2 !mb-0 text-4xl font-bold">
+              {name || githubId}
+            </h1>
+            <a className="text-xl" href={githubLink}>
+              {githubId}
+            </a>
+            <p className="text-muted-foreground mt-1">{bio}</p>
+          </div>
+
+          <div className="block flex-none sm:hidden">
+            <img
+              src={avatarUrl}
+              alt="Avatar"
+              className="h-16 w-16 rounded-full"
+            />
+          </div>
+        </div>
+        <div className="mt-2">
+          {websiteLink && (
+            <div>
               <Link className="text-muted-foreground mr-2 inline w-4" />
               <a
-                href={githubData.blog}
+                href={websiteLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >
-                {githubData.blog}
+                {websiteLink}
               </a>
-            </li>
+            </div>
           )}
-          {githubData?.twitter_username && (
-            <li>
+          {twitterUserName && (
+            <div>
               <TwitterIcon className="text-muted-foreground mr-2 inline w-4" />
               <a
-                href={`https://x.com/${githubData?.twitter_username}`}
+                href={`https://x.com/${twitterUserName}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >
-                @{githubData.twitter_username}
+                @{twitterUserName}
               </a>
-            </li>
+            </div>
           )}
           {tagList?.length > 0 && (
-            <li>
-              <Tag className="text-muted-foreground mr-2 inline w-4" />
-              {tagList.slice(0, 5).map(tag => (
-                <a
+            <div>
+              <TagIcon className="text-muted-foreground mr-2 inline w-4" />
+              {tagList.slice(0, 5).map((tag: any) => (
+                <Tag
                   key={tag.name}
                   href={`/tags/${tag.name}`}
-                  className="bg-muted hover:bg-muted/80 hover:text-primary dark:bg-border dark:text-foreground dark:hover:text-primary mr-2 inline-flex items-center rounded-md px-1.5 py-0.5 text-sm font-medium text-[#4b4f53]"
+                  className="mr-2 text-sm"
                 >
                   {uppercaseSpecialWords(tag.name)}
-                </a>
+                </Tag>
               ))}
-            </li>
+            </div>
           )}
-        </ul>
+        </div>
       </div>
-      <div className="flex-none">
-        <img
-          src={githubData?.avatar_url}
-          alt="Avatar"
-          className="h-40 w-40 rounded-full"
-        />
+      <div className="hidden flex-none sm:block">
+        <img src={avatarUrl} alt="Avatar" className="h-40 w-40 rounded-full" />
       </div>
     </div>
   );
