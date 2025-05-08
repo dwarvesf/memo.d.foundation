@@ -1027,9 +1027,7 @@ defmodule Memo.ExportDuckDB do
     else
       # Apply timestamp filtering as before
       if is_nil(last_processed_timestamp) do
-        IO.puts(
-          "No last_processed_timestamp, processing all pattern-matched files (commits_back was not :all)."
-        )
+        IO.puts("No last_processed_timestamp, processing all pattern-matched files.")
 
         pattern_matched_files
       else
@@ -1151,9 +1149,7 @@ defmodule Memo.ExportDuckDB do
     "CAST(#{array} AS FLOAT[])"
   end
 
-  defp serialize_array(nil) do
-    "NULL"
-  end
+  defp serialize_array(nil), do: "NULL"
 
   defp serialize_list(list) do
     normalized =
