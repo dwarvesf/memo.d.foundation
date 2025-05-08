@@ -145,7 +145,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     let githubData = null;
     try {
       // Assuming the contributor slug can be used as a GitHub username
-      const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN }); // Use Octokit
+      const octokit = new Octokit({ auth: process.env.DWARVES_PAT }); // Use Octokit
       // Fetch user profile details (username, avatar, bio)
       const { data: githubUser } = await octokit.rest.users.getByUsername({
         username: contributorSlug,
