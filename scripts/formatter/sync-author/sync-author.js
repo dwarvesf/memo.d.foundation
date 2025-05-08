@@ -171,7 +171,7 @@ function processFile(filePath) {
       }
     }
     const newFrontmatter = newFrontmatterLines.join('\n');
-    const newContent = `---\n${newFrontmatter}\n---\n${fm.content}`;
+    const newContent = `---${newFrontmatter}\n---\n${fm.content}`;
     try {
       fs.writeFileSync(filePath, newContent, 'utf-8');
     } catch (err) {
