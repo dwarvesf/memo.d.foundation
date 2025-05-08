@@ -1,10 +1,10 @@
 defmodule Mix.Tasks.Duckdb.ExportPattern do
   use Mix.Task
 
-  @shortdoc "Exports all vault data to DuckDB matching a pattern (was part of Makefile duckdb-export-pattern target)"
+  @shortdoc "Exports vault data to DuckDB matching a pattern"
 
   @moduledoc """
-  Exports all vault data to DuckDB matching a pattern.
+  Exports the vault data to DuckDB, filtering by a specified pattern. This is the primary export task for incremental processing.
 
   Usage:
     mix duckdb.export_pattern --pattern PATTERN [--vault ../../vault] [--format parquet]
@@ -41,7 +41,7 @@ defmodule Mix.Tasks.Duckdb.ExportPattern do
     vault = opts[:vault] || "../../vault"
     format = opts[:format] || "parquet"
 
-    Memo.Application.export_duckdb(vault, format, :all, pattern)
+    Memo.Application.export_duckdb(vault, format, pattern)
   end
 
   defp parse_args(args) do
