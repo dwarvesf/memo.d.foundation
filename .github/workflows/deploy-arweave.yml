@@ -68,8 +68,10 @@ jobs:
       - name: Process markdown files
         id: deploy
         if: steps.changed-files.outputs.files != ''
+        env:
+          MOCHI_PROFILE_API: ${{ secrets.MOCHI_PROFILE_API }}
         run: |
-          npx tsx scripts/deploy-arweave.ts '${{ steps.changed-files.outputs.files }}' '${{ secrets.AUTHOR_ADDRESS_MAP }}'
+          npx tsx scripts/deploy-arweave.ts '${{ steps.changed-files.outputs.files }}'
 
       - name: Commit and push changes
         run: |
