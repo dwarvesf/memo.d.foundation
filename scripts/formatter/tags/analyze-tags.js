@@ -56,7 +56,7 @@ const wordDict = {
   sdk: 'SDK',
 };
 
-// Function to make AI API calls using Anthropic's Claude
+// Function to make AI API calls
 async function callAI(prompt) {
   // Create a system prompt that forces JSON output
   const systemPrompt = `
@@ -68,7 +68,7 @@ async function callAI(prompt) {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4.1',
+      model: 'gpt-4.1-mini',
       messages: [
         {
           role: 'system',
