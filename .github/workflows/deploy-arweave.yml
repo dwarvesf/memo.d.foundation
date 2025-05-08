@@ -63,11 +63,17 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          git checkout main
-          git submodule foreach --recursive "git checkout main || git checkout master || echo 'Failed to checkout main/master, attempting push on current state' ; git add --all; git commit -m 'chore(ci): update submodule' || echo 'No changes committed'; git push"
+          git checkout main || git checkout master || echo "WARN: Failed to checkout main or master in parent repository. Proceeding with current branch."
+          git submodule foreach --recursive "
+            echo \"Processing submodule: \$name (\$path)\";
+            git checkout main || git checkout master || echo 'WARN: Failed to checkout main/master in submodule \$name, attempting push on current state';
+            git add --all;
+            git commit -m 'chore(ci): update submodule' || echo 'INFO: No changes to commit in submodule \$name';
+            git push || echo \"WARN: Failed to push submodule \$name. Continuing...\";
+          "
           git add --all
-          git commit -m "chore(ci): update submodules and reindex" || echo "No changes committed"
-          git push
+          git commit -m "chore(ci): update submodules and reindex" || echo "INFO: No changes to commit in parent repository"
+          git push || echo "WARN: Failed to push parent repository."
 
       - name: Display deployment results
         if: steps.deploy.outputs.deployments != ''
