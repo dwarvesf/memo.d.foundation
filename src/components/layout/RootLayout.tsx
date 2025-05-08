@@ -142,7 +142,7 @@ function RootLayout({
         <DirectoryTree tree={directoryTree} />
         <div
           ref={scrollContainerRef}
-          className="relative flex flex-1 flex-col overflow-y-auto"
+          className="main-layout relative flex flex-1 flex-col overflow-y-auto"
         >
           <Header
             toggleSidebar={toggleIsOpenSidebar}
