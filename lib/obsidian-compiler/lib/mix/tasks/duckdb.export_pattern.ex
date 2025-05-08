@@ -22,6 +22,7 @@ defmodule Mix.Tasks.Duckdb.ExportPattern do
       case DotenvParser.load_file(".env") do
         vars when is_list(vars) or is_map(vars) ->
           Enum.each(vars, fn {k, v} -> System.put_env(k, v) end)
+
         _ ->
           :ok
       end
@@ -32,6 +33,7 @@ defmodule Mix.Tasks.Duckdb.ExportPattern do
     opts = parse_args(args)
 
     pattern = opts[:pattern]
+
     unless pattern do
       Mix.raise("You must specify --pattern PATTERN")
     end

@@ -399,8 +399,8 @@ defmodule Memo.ExportMarkdown do
               _ ->
                 true
             end
-          end
         end
+      end
     end)
   end
 

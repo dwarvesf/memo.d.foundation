@@ -120,12 +120,16 @@ defmodule Memo.Common.DuckDBUtils do
 
   defp duckdb_cmd(query) do
     {result, exit_code} =
-      System.cmd("duckdb", [
-        "vault.duckdb",
-        "-json",
-        "-c",
-        query
-      ], stderr_to_stdout: true)
+      System.cmd(
+        "duckdb",
+        [
+          "vault.duckdb",
+          "-json",
+          "-c",
+          query
+        ],
+        stderr_to_stdout: true
+      )
 
     cond do
       exit_code != 0 ->

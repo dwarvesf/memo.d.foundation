@@ -22,6 +22,7 @@ defmodule Mix.Tasks.Duckdb.Export do
       case DotenvParser.load_file(".env") do
         vars when is_list(vars) or is_map(vars) ->
           Enum.each(vars, fn {k, v} -> System.put_env(k, v) end)
+
         _ ->
           :ok
       end

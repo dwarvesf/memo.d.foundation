@@ -85,7 +85,10 @@ defmodule Memo.Common.AIUtils do
       case status_code do
         200 ->
           with {:ok, data} <- Jason.decode(body),
-               %{"data" => [%{"embedding" => embedding}], "usage" => %{"total_tokens" => total_tokens}} <-
+               %{
+                 "data" => [%{"embedding" => embedding}],
+                 "usage" => %{"total_tokens" => total_tokens}
+               } <-
                  data do
             %{"embedding" => embedding, "total_tokens" => total_tokens}
           else
