@@ -46,15 +46,40 @@ defmodule Memo.Common.GitUtils do
   Gets modified files in a Git repository.
   """
   def get_modified_files(directory, commits_back \\ "HEAD^") do
-    revision = if valid_revision?(directory, commits_back), do: commits_back, else: "HEAD"
+    # Determine the reference commit. If commits_back is invalid, default to "HEAD".
+    # If commits_back is "HEAD", it implies we want changes relative to the last commit (i.e., uncommitted changes).
+    # Otherwise, commits_back is an older commit (e.g., "HEAD~15", or a specific SHA).
+    reference_commit =
+      if valid_revision?(directory, commits_back) do
+        commits_back
+      else
+        # Default to HEAD if commits_back is not a valid revision string
+        "HEAD"
+      end
+
+    # Construct the git diff command arguments
+    diff_args =
+      cond do
+        # Case 1: We want to see uncommitted changes (working directory vs. HEAD)
+        # This happens if commits_back was explicitly "HEAD" or an invalid revision.
+        reference_commit == "HEAD" ->
+          ["diff", "--name-only", "HEAD"]
+
+        # Case 2: We want to see changes between an older commit (reference_commit) and HEAD.
+        # This covers commits_back like "HEAD~N" or a specific SHA.
+        true ->
+          ["diff", "--name-only", reference_commit, "HEAD"]
+      end
 
     {output, _status} =
-      System.cmd("git", ["diff", "--name-only", revision], cd: directory, stderr_to_stdout: true)
+      System.cmd("git", diff_args, cd: directory, stderr_to_stdout: true)
 
     output
     |> String.split("\n")
     |> Enum.filter(&String.ends_with?(&1, ".md"))
     |> Enum.reject(&String.contains?(&1, "fatal: Needed a single revision"))
+    # Safeguard for empty string results from String.split if output is empty
+    |> Enum.reject(&(&1 == ""))
   end
 
   @doc """

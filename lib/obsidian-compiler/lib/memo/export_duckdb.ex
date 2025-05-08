@@ -71,20 +71,90 @@ defmodule Memo.ExportDuckDB do
       all_files
       |> Enum.filter(&(not FileUtils.ignored?(&1, ignored_patterns, vaultpath)))
 
-    filtered_files = get_files_to_process(vaultpath, commits_back, all_files_to_process, pattern)
-
     case DuckDBUtils.execute_query("SELECT 1") do
       {:ok, _} ->
         with :ok <- install_and_load_extensions(),
-             :ok <- setup_database() do
+             :ok <- setup_database(),
+             {:ok, last_processed_timestamp} <- fetch_last_processed_timestamp() do
+          filtered_files =
+            get_files_to_process(
+              vaultpath,
+              commits_back,
+              all_files_to_process,
+              pattern,
+              last_processed_timestamp
+            )
+
           process_files(filtered_files, vaultpath, all_files_to_process)
           export(export_format)
+          update_last_processed_timestamp()
         else
-          :error -> IO.puts("Failed to set up DuckDB")
+          :error -> IO.puts("Failed to set up DuckDB or process timestamps")
         end
 
       {:error, reason} ->
         IO.puts("Failed to connect to DuckDB: #{reason}")
+    end
+  end
+
+  defp fetch_last_processed_timestamp() do
+    query = "SELECT last_processed_at FROM processing_metadata WHERE id = 1;"
+
+    case DuckDBUtils.execute_query(query) do
+      {:ok, [%{"last_processed_at" => ts_str}]} when is_binary(ts_str) and ts_str != "" ->
+        # Attempt to parse as strict ISO8601 first
+        case DateTime.from_iso8601(ts_str) do
+          {:ok, datetime, _offset} ->
+            IO.puts("Fetched last_processed_at (ISO8601): #{inspect(datetime)}")
+            {:ok, datetime}
+
+          {:error, _} ->
+            # Fallback: try parsing "YYYY-MM-DD HH:MM:SS" format, assuming UTC
+            try do
+              naive_dt_str = String.replace(ts_str, " ", "T")
+              # Raises on error
+              naive_dt = NaiveDateTime.from_iso8601!(naive_dt_str)
+              # Raises on error
+              datetime = DateTime.from_naive!(naive_dt, "Etc/UTC")
+              IO.puts("Fetched last_processed_at (fallback parsed): #{inspect(datetime)}")
+              {:ok, datetime}
+            rescue
+              _e ->
+                IO.puts(
+                  "Warning: Could not parse stored last_processed_at timestamp string (fallback failed): '#{ts_str}'. Processing all relevant files."
+                )
+
+                # Default to nil if all parsing fails
+                {:ok, nil}
+            end
+        end
+
+      # No timestamp found, it's NULL, or not a string we can parse
+      {:ok, _} ->
+        IO.puts("No last_processed_at timestamp found. Processing all relevant files.")
+        {:ok, nil}
+
+      {:error, reason} ->
+        IO.puts("Error fetching last_processed_at: #{reason}. Processing all relevant files.")
+        # If we can't read, assume we need to process all.
+        # Depending on strictness, this could be an :error to halt.
+        {:ok, nil}
+    end
+  end
+
+  defp update_last_processed_timestamp() do
+    current_utc_time = DateTime.utc_now() |> DateTime.truncate(:second)
+    ts_string = DateTime.to_iso8601(current_utc_time)
+    # Use ON CONFLICT for INSERT OR REPLACE behavior
+    query = """
+    INSERT INTO processing_metadata (id, last_processed_at)
+    VALUES (1, '#{ts_string}')
+    ON CONFLICT(id) DO UPDATE SET last_processed_at = EXCLUDED.last_processed_at;
+    """
+
+    case DuckDBUtils.execute_query(query) do
+      {:ok, _} -> IO.puts("Updated last_processed_at to #{ts_string}")
+      {:error, reason} -> IO.puts("Error updating last_processed_at: #{reason}")
     end
   end
 
@@ -114,22 +184,22 @@ defmodule Memo.ExportDuckDB do
 
       {:error, drop_error} ->
         IO.puts("Warning: Failed to drop 'vault' table: #{drop_error}. Proceeding...")
-        # Don't stop here, still try to create and load
     end
 
-    # 2. Create the table using the schema definition
+    # 2. Create the vault table
     IO.puts("Creating 'vault' table...")
-    # Use the existing helper function
-    create_result = create_vault_table()
+    create_vault_result = create_vault_table()
 
-    if create_result == :ok do
+    # 2.1 Create processing_metadata table
+    IO.puts("Creating 'processing_metadata' table...")
+    create_metadata_result = create_processing_metadata_table()
+
+    if create_vault_result == :ok && create_metadata_result == :ok do
       # 2.5 Merge columns to sync schema with allowed frontmatter
       IO.puts("Merging columns to sync schema...")
       merge_columns()
 
       # 3. Load data directly from the Parquet file using explicit column mapping
-      # This avoids column count mismatch errors by selecting only matching columns
-      # Dynamically generate column list from @allowed_frontmatter
       columns = @allowed_frontmatter |> Enum.map(&elem(&1, 0)) |> Enum.join(", ")
 
       load_query = """
@@ -143,13 +213,11 @@ defmodule Memo.ExportDuckDB do
       case DuckDBUtils.execute_query(load_query) do
         {:ok, _} ->
           IO.puts("Data loaded successfully from Parquet file with programmatic column mapping.")
-          # 4. Verify row count after programmatic load
           count_query = "SELECT COUNT(*) as count FROM vault"
 
           case DuckDBUtils.execute_query(count_query) do
             {:ok, [%{"count" => count}]} when count > 0 ->
               IO.puts("Verification successful: Found #{count} rows after explicit insert.")
-              # Signal success for the `with` statement in run/4
               :ok
 
             {:ok, [%{"count" => count}]} ->
@@ -173,9 +241,33 @@ defmodule Memo.ExportDuckDB do
           :error
       end
     else
-      # create_vault_table already logged the error
-      IO.puts("setup_database failed because table creation failed.")
+      IO.puts("setup_database failed because table creation failed (vault or metadata).")
       :error
+    end
+  end
+
+  defp create_processing_metadata_table() do
+    query = """
+    CREATE TABLE IF NOT EXISTS processing_metadata (
+      id INTEGER PRIMARY KEY DEFAULT 1,
+      last_processed_at TIMESTAMP
+    );
+    """
+
+    init_query = """
+    INSERT INTO processing_metadata (id, last_processed_at)
+    VALUES (1, NULL)
+    ON CONFLICT(id) DO NOTHING;
+    """
+
+    with {:ok, _} <- DuckDBUtils.execute_query(query),
+         {:ok, _} <- DuckDBUtils.execute_query(init_query) do
+      IO.puts("Created and initialized processing_metadata table.")
+      :ok
+    else
+      {:error, error} ->
+        IO.puts("Failed to create/initialize processing_metadata table: #{error}")
+        :error
     end
   end
 
@@ -886,29 +978,85 @@ defmodule Memo.ExportDuckDB do
     needs_update
   end
 
-  defp get_files_to_process(directory, commits_back, all_files, pattern) do
-    files =
+  defp get_files_to_process(directory, commits_back, all_files, pattern, last_processed_timestamp) do
+    # Step 1: Git-based filtering (if commits_back is not :all)
+    files_from_git =
       case commits_back do
         :all ->
+          # Start with all export-ignore respected files
           all_files
 
         _ ->
-          git_files = GitUtils.get_modified_files(directory, commits_back)
+          git_relative_paths = GitUtils.get_modified_files(directory, commits_back)
 
-          submodule_files =
+          submodule_relative_paths =
             GitUtils.list_submodules(directory)
             |> Enum.flat_map(&GitUtils.get_submodule_modified_files(directory, &1, commits_back))
 
-          all_git_files = git_files ++ submodule_files
+          all_git_relative_paths = git_relative_paths ++ submodule_relative_paths
 
-          Enum.map(all_git_files, fn file -> Path.join(directory, file) end)
+          all_git_full_paths_set =
+            all_git_relative_paths
+            |> Enum.map(&Path.join(directory, &1))
+            |> MapSet.new()
+
+          Enum.filter(all_files, &MapSet.member?(all_git_full_paths_set, &1))
       end
 
-    if pattern do
-      pattern_files = Path.wildcard(Path.join(directory, pattern))
-      Enum.filter(files, &(&1 in pattern_files))
+    # Step 2: Pattern-based filtering
+    pattern_matched_files =
+      if pattern do
+        # Ensure pattern is joined with directory to match full paths from files_from_git
+        full_pattern_path = Path.join(directory, pattern)
+
+        matching_wildcard_paths_set =
+          Path.wildcard(full_pattern_path)
+          |> MapSet.new()
+
+        Enum.filter(files_from_git, &MapSet.member?(matching_wildcard_paths_set, &1))
+      else
+        # No pattern, use all files from git/all_files stage
+        files_from_git
+      end
+
+    # Step 3: Timestamp-based filtering - ONLY apply if commits_back is NOT :all
+    if commits_back == :all do
+      IO.puts("commits_back is :all, skipping timestamp filtering.")
+      # Return files after git/pattern filter
+      pattern_matched_files
     else
-      files
+      # Apply timestamp filtering as before
+      if is_nil(last_processed_timestamp) do
+        IO.puts(
+          "No last_processed_timestamp, processing all pattern-matched files (commits_back was not :all)."
+        )
+
+        pattern_matched_files
+      else
+        IO.puts("Filtering by mtime against: #{inspect(last_processed_timestamp)}")
+
+        Enum.filter(pattern_matched_files, fn file_path ->
+          case File.stat(file_path) do
+            {:ok, %{mtime: mtime_tuple}} ->
+              # mtime_tuple is {{Y,M,D},{H,Mi,S}}
+              case DateTime.from_naive(NaiveDateTime.from_erl!(mtime_tuple), "Etc/UTC") do
+                {:ok, file_mtime_utc} ->
+                  DateTime.compare(file_mtime_utc, last_processed_timestamp) == :gt
+
+                {:error, reason} ->
+                  IO.puts(
+                    "Warning: Could not convert mtime for #{file_path}: #{inspect(reason)}. Excluding file."
+                  )
+
+                  false
+              end
+
+            {:error, reason} ->
+              IO.puts("Warning: Could not stat file #{file_path}: #{reason}. Excluding file.")
+              false
+          end
+        end)
+      end
     end
   end
 
@@ -946,7 +1094,6 @@ defmodule Memo.ExportDuckDB do
       "aliases" -> serialize_list(value)
       "previous_paths" -> serialize_list(value)
       "md_content" -> escape_multiline_text(value)
-      # Add this line
       "spr_content" -> escape_multiline_text(value)
       "estimated_tokens" -> to_string(value)
       _ -> default_transform_value(value)

@@ -42,8 +42,8 @@ defmodule Memo.Common.Frontmatter do
         is_list(frontmatter) ->
           Enum.any?(frontmatter, fn item ->
             is_map(item) and
-            (Map.get(item, "skip_frontmatter_check") == true or
-             (has_required_fields?(item) and has_valid_optional_fields?(item)))
+              (Map.get(item, "skip_frontmatter_check") == true or
+                 (has_required_fields?(item) and has_valid_optional_fields?(item)))
           end)
 
         true ->

@@ -41,6 +41,8 @@ defmodule Memo.Common.FileUtils do
     if File.exists?(ignore_file) do
       File.read!(ignore_file)
       |> String.split("\n", trim: true)
+      # Remove trailing CR if present
+      |> Enum.map(&String.trim_trailing(&1, "\r"))
       |> Enum.filter(&(&1 != "" and not String.starts_with?(&1, "#")))
     else
       []
