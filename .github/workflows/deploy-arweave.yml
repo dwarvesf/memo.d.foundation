@@ -58,7 +58,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: pnpm install arweave gray-matter crypto js-yaml tsx
+        run: npm install --legacy-peer-deps arweave gray-matter crypto js-yaml tsx
 
       - name: Create wallet file
         run: |
