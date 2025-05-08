@@ -165,78 +165,50 @@ defmodule Memo.ExportDuckDB do
     DuckDBUtils.execute_query("LOAD parquet") |> handle_result()
   end
 
-  # Ensures the vault table is dropped, created, and loaded from Parquet.
+  # Imports the database state from the '../../db' directory (parquet files and schema.sql).
+  # This effectively loads the state saved by the previous EXPORT DATABASE.
   defp setup_database() do
-    IO.puts("Ensuring clean 'vault' table state...")
-
-    # 1. Attempt to drop the table (ignore errors if it doesn't exist)
-    drop_query = "DROP TABLE IF EXISTS vault"
-
-    case DuckDBUtils.execute_query(drop_query) do
+    IO.puts("Importing database state from '../../db'...")
+    case DuckDBUtils.execute_query("IMPORT DATABASE '../../db'") do
       {:ok, _} ->
-        IO.puts("Existing 'vault' table dropped (or did not exist).")
-
-      {:error, drop_error} ->
-        IO.puts("Warning: Failed to drop 'vault' table: #{drop_error}. Proceeding...")
+        IO.puts("Database state imported successfully.")
+        # Note: IMPORT DATABASE drops existing tables before loading.
+        # Schema evolution based on @allowed_frontmatter relies on schema.sql being up-to-date
+        # from a previous EXPORT DATABASE. Dynamic column merging after import might be needed
+        # if schema.sql isn't always current before import.
+        :ok
+      {:error, error} ->
+        IO.puts("Failed to import database state: #{error}")
+        # Attempt to create tables if import failed (e.g., first run or db dir empty)
+        IO.puts("Attempting to create tables as fallback...")
+        create_vault_result = create_vault_table()
+        create_metadata_result = create_processing_metadata_table()
+        if create_vault_result == :ok && create_metadata_result == :ok do
+           IO.puts("Tables created as fallback.")
+           # Merge columns even on fallback creation
+           IO.puts("Merging columns to sync schema after fallback creation...")
+           merge_columns()
+           IO.puts("Tables created as fallback.")
+           # Merge columns even on fallback creation
+           IO.puts("Merging columns to sync schema after fallback creation...")
+           merge_columns()
+           count_rows_and_log() # Log count after fallback
+           :ok
+        else
+           IO.puts("Fallback table creation failed.")
+           :error
+        end
     end
+    count_rows_and_log() # Log count after successful import
+  end
 
-    # 2. Create the vault table
-    IO.puts("Creating 'vault' table...")
-    create_vault_result = create_vault_table()
-
-    # 2.1 Create processing_metadata table
-    IO.puts("Creating 'processing_metadata' table...")
-    create_metadata_result = create_processing_metadata_table()
-
-    if create_vault_result == :ok && create_metadata_result == :ok do
-      # 2.5 Merge columns to sync schema with allowed frontmatter
-      IO.puts("Merging columns to sync schema...")
-      merge_columns()
-
-      # 3. Load data directly from the Parquet file using explicit column mapping
-      columns = @allowed_frontmatter |> Enum.map(&elem(&1, 0)) |> Enum.join(", ")
-
-      load_query = """
-      INSERT INTO vault (#{columns})
-      SELECT #{columns}
-      FROM read_parquet('../../db/vault.parquet')
-      """
-
-      IO.puts("Loading data from '../../db/vault.parquet' with programmatic column mapping...")
-
-      case DuckDBUtils.execute_query(load_query) do
-        {:ok, _} ->
-          IO.puts("Data loaded successfully from Parquet file with programmatic column mapping.")
-          count_query = "SELECT COUNT(*) as count FROM vault"
-
-          case DuckDBUtils.execute_query(count_query) do
-            {:ok, [%{"count" => count}]} when count > 0 ->
-              IO.puts("Verification successful: Found #{count} rows after explicit insert.")
-              :ok
-
-            {:ok, [%{"count" => count}]} ->
-              IO.puts("Error: Insert succeeded but table has #{count} rows. Data load failed.")
-              :error
-
-            {:ok, other_result} ->
-              IO.puts(
-                "Error: Unexpected count query result after insert: #{inspect(other_result)}."
-              )
-
-              :error
-
-            {:error, count_error} ->
-              IO.puts("Error: Failed to count rows after insert: #{count_error}.")
-              :error
-          end
-
-        {:error, load_error} ->
-          IO.puts("Error: Failed to load data using explicit insert: #{load_error}.")
-          :error
-      end
-    else
-      IO.puts("setup_database failed because table creation failed (vault or metadata).")
-      :error
+  defp count_rows_and_log() do
+    count_query = "SELECT COUNT(*) as count FROM vault"
+    case DuckDBUtils.execute_query(count_query) do
+      {:ok, [%{"count" => count}]} ->
+        IO.puts("Vault table row count after setup: #{count}")
+      {:error, error} ->
+        IO.puts("Failed to get vault table row count after setup: #{error}")
     end
   end
 
