@@ -7,12 +7,11 @@ defmodule Mix.Tasks.Duckdb.Export do
   Exports the vault to DuckDB.
 
   Usage:
-    mix duckdb.export [--vault ../../vault] [--format parquet] [--revision HEAD~15]
+    mix duckdb.export [--vault ../../vault] [--format parquet]
 
   Options:
     --vault     Path to the vault (default: ../../vault)
     --format    Export format (default: parquet)
-    --revision  Git revision to export (default: HEAD~15)
   """
 
   @impl true
@@ -34,16 +33,15 @@ defmodule Mix.Tasks.Duckdb.Export do
 
     vault = opts[:vault] || "../../vault"
     format = opts[:format] || "parquet"
-    revision = opts[:revision] || "HEAD~15"
 
-    Memo.Application.export_duckdb(vault, format, revision)
+    Memo.Application.export_duckdb(vault, format)
   end
 
   defp parse_args(args) do
     {opts, _, _} =
       OptionParser.parse(args,
-        switches: [vault: :string, format: :string, revision: :string],
-        aliases: [v: :vault, f: :format, r: :revision]
+        switches: [vault: :string, format: :string],
+        aliases: [v: :vault, f: :format]
       )
 
     opts

@@ -37,17 +37,13 @@ defmodule Memo.Application do
 
   - vaultpath: The path to the vault directory.
   - format: The export format (e.g., "parquet", "csv").
-  - commits_back: Specifies how many commits back to look for changes.
-    Can be :all to process all files, "HEAD~n" where n is a number to look back n commits,
-    or any other value will default to "HEAD^" (the previous commit).
 
   ## Examples
 
-      iex> Memo.Application.export_duckdb("vault", "parquet", "HEAD~15")
-      iex> Memo.Application.export_duckdb("vault", "parquet", :all)
+      iex> Memo.Application.export_duckdb("vault", "parquet")
   """
-  def export_duckdb(vaultpath, format, commits_back \\ "HEAD^", pattern \\ nil) do
-    Memo.ExportDuckDB.run(vaultpath, format, commits_back, pattern)
+  def export_duckdb(vaultpath, format, pattern \\ nil) do
+    Memo.ExportDuckDB.run(vaultpath, format, pattern)
   end
 
   @doc """
