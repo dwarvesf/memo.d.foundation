@@ -70,7 +70,7 @@ defmodule Memo.Common.FileUtils do
         String.starts_with?(path, String.trim_trailing(pattern, "*"))
 
       true ->
-        path == pattern or String.contains?(path, pattern)
+        path == pattern
     end
   end
 end
