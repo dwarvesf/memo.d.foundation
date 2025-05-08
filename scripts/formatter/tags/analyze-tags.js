@@ -1,6 +1,6 @@
 /**
  * Tag Normalization System
- * 
+ *
  * This system processes a list of tags, normalizes them into groups,
  * and marks deprecated tags according to specific rules.
  * It uses a step-by-step AI-assisted approach to ensure accuracy.
@@ -22,7 +22,6 @@ if (!API_KEY) {
 const openai = new OpenAI({
   apiKey: API_KEY,
 });
-
 
 const wordDict = {
   ogif: 'OGIF',
@@ -68,7 +67,7 @@ async function callAI(prompt) {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4.1-mini',
+      model: 'gpt-4.1',
       messages: [
         {
           role: 'system',
@@ -92,7 +91,8 @@ async function callAI(prompt) {
       console.error('Failed to parse JSON from AI response:', parseError);
       // Attempt to extract JSON using regex as fallback
       try {
-        const jsonMatch = completion.choices[0].message.content.match(/\{[\s\S]*\}/);
+        const jsonMatch =
+          completion.choices[0].message.content.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           const extractedJson = JSON.parse(jsonMatch[0]);
           console.log('Extracted JSON using regex fallback');
@@ -109,7 +109,7 @@ async function callAI(prompt) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error';
     console.error('Error calling AI service:', errorMessage);
-    throw error
+    throw error;
   }
 }
 
@@ -137,10 +137,10 @@ export async function processTags(tags) {
     Return your response as a valid JSON object with a "groupings" property containing
     the initial tag groupings.
   `;
-  
-  console.log("Step 1: Initial tag analysis");
+
+  console.log('Step 1: Initial tag analysis');
   const step1Result = await callAI(step1Prompt);
-  
+
   // Step 2: Apply Normalization Rules
   const step2Prompt = `
     Based on the initial tag analysis, apply these normalization rules:
@@ -176,10 +176,10 @@ export async function processTags(tags) {
     Return your response as a valid JSON object with a "groupings" property containing
     the refined tag groupings.
   `;
-  
-  console.log("Step 2: Normalization rules applied");
+
+  console.log('Step 2: Normalization rules applied');
   const step2Result = await callAI(step2Prompt);
-  
+
   // Step 3: Identify Deprecated Tags
   const step3Prompt = `
     Identify tags that should be marked as deprecated based on these criteria:
@@ -211,10 +211,10 @@ export async function processTags(tags) {
     Return your response as a valid JSON object with a "deprecated" property containing
     an array of tags that should be deprecated.
   `;
-  
-  console.log("Step 3: Deprecated tags identified");
+
+  console.log('Step 3: Deprecated tags identified');
   const step3Result = await callAI(step3Prompt);
-  
+
   // Step 4: Apply Technical Terms Reference
   const step4Prompt = `
     Reference this list of special technical terms:
@@ -238,10 +238,10 @@ export async function processTags(tags) {
     - A "groupings" property containing the revised normalized groupings
     - A "deprecated" property containing the revised deprecated tags list
   `;
-  
-  console.log("Step 4: Technical terms reference applied");
+
+  console.log('Step 4: Technical terms reference applied');
   const step4Result = await callAI(step4Prompt);
-  
+
   // Step 5: Format Final Output
   const step5Prompt = `
     Create a JSON object with two properties:
@@ -269,10 +269,10 @@ export async function processTags(tags) {
 
     Return your response as a valid JSON object with "normalized" and "deprecated" properties.
   `;
-  
-  console.log("Step 5: Final output formatted");
+
+  console.log('Step 5: Final output formatted');
   const step5Result = await callAI(step5Prompt);
-  
+
   // Step 6: Verify Final Output
   const step6Prompt = `
     Based on the previous analysis steps, verify the final output:
@@ -297,16 +297,15 @@ export async function processTags(tags) {
 
     Please correct any issues found and provide the verified final JSON output.
   `;
-  
-  console.log("Step 6: Final verification");
+
+  console.log('Step 6: Final verification');
   const finalResult = await callAI(step6Prompt);
-  
+
   return {
     normalized: finalResult?.normalized || {},
-    deprecated: finalResult?.deprecated || []
+    deprecated: finalResult?.deprecated || [],
   };
 }
-
 
 /**
  * Generate priority categories using OpenAI
