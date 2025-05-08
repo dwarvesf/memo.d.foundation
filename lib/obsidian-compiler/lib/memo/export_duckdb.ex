@@ -169,6 +169,7 @@ defmodule Memo.ExportDuckDB do
   # This effectively loads the state saved by the previous EXPORT DATABASE.
   defp setup_database() do
     IO.puts("Importing database state from '../../db'...")
+
     case DuckDBUtils.execute_query("IMPORT DATABASE '../../db'") do
       {:ok, _} ->
         IO.puts("Database state imported successfully.")
@@ -177,36 +178,43 @@ defmodule Memo.ExportDuckDB do
         # from a previous EXPORT DATABASE. Dynamic column merging after import might be needed
         # if schema.sql isn't always current before import.
         :ok
+
       {:error, error} ->
         IO.puts("Failed to import database state: #{error}")
         # Attempt to create tables if import failed (e.g., first run or db dir empty)
         IO.puts("Attempting to create tables as fallback...")
         create_vault_result = create_vault_table()
         create_metadata_result = create_processing_metadata_table()
+
         if create_vault_result == :ok && create_metadata_result == :ok do
-           IO.puts("Tables created as fallback.")
-           # Merge columns even on fallback creation
-           IO.puts("Merging columns to sync schema after fallback creation...")
-           merge_columns()
-           IO.puts("Tables created as fallback.")
-           # Merge columns even on fallback creation
-           IO.puts("Merging columns to sync schema after fallback creation...")
-           merge_columns()
-           count_rows_and_log() # Log count after fallback
-           :ok
+          IO.puts("Tables created as fallback.")
+          # Merge columns even on fallback creation
+          IO.puts("Merging columns to sync schema after fallback creation...")
+          merge_columns()
+          IO.puts("Tables created as fallback.")
+          # Merge columns even on fallback creation
+          IO.puts("Merging columns to sync schema after fallback creation...")
+          merge_columns()
+          # Log count after fallback
+          count_rows_and_log()
+          :ok
         else
-           IO.puts("Fallback table creation failed.")
-           :error
+          IO.puts("Fallback table creation failed.")
+          :error
         end
     end
-    count_rows_and_log() # Log count after successful import
+
+    # Log count after successful import
+    count_rows_and_log()
   end
 
   defp count_rows_and_log() do
     count_query = "SELECT COUNT(*) as count FROM vault"
+
     case DuckDBUtils.execute_query(count_query) do
       {:ok, [%{"count" => count}]} ->
         IO.puts("Vault table row count after setup: #{count}")
+
       {:error, error} ->
         IO.puts("Failed to get vault table row count after setup: #{error}")
     end
