@@ -1,48 +1,90 @@
 import React from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
+import path from 'path';
+import fs from 'fs/promises';
+import slugify from 'slugify';
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest'; // For GitHub API
 
-// Import utility functions from lib directory
+// Import utility functions
+import { getAllMarkdownContents } from '@/lib/content/memo';
+import { getRootLayoutPageProps } from '@/lib/content/utils';
+import { queryDuckDB } from '@/lib/db/utils'; // Utility for DuckDB queries
+import { getFirstMemoImage } from '@/components/memo/utils';
 
 // Import components
+
+// Import contexts and types
 import { IMemoItem, RootLayoutPageProps } from '@/types';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
-import { filterMemo, getAllMarkdownContents } from '@/lib/content/memo';
+
+import { type SerializeResult } from 'next-mdx-remote-client/serialize';
+import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
+import { Json } from '@duckdb/node-api';
 import { RootLayout } from '@/components';
-import Link from 'next/link';
-import { formatContentPath } from '@/lib/utils/path-utils';
+import { getMdxSource } from '@/lib/mdx';
 
 interface ContentPageProps extends RootLayoutPageProps {
-  data: IMemoItem[];
-  contributor: string;
+  frontmatter?: Record<string, any>;
+  slug: string[];
+
+  contributorName?: string; // Make optional
+  contributorMemos?: IMemoItem[]; // Make optional
+  githubData?: RestEndpointMethodTypes['users']['getByUsername']['response']['data'];
+  discordData?: null; // Make optional
+  cryptoData?: null; // Make optional
+  mdxSource?: SerializeResult; // Serialized MDX source
 }
 
 /**
- * Gets all possible paths for static generation
- * @returns Object with paths and fallback setting
+ * Gets static paths for all content pages including contributor profiles
  */
 export const getStaticPaths: GetStaticPaths = async () => {
-  // This function is called at build time to generate all possible paths
-  // When using "output: export" we need to pre-render all paths
-  // that will be accessible in the exported static site
-  const allMemos = await getAllMarkdownContents();
-  const contributors = new Set<string>();
-  allMemos.forEach(memo => {
-    if (memo.authors?.length) {
-      memo.authors.forEach(contributor => {
-        if (contributor) {
-          // Store contributor names in lowercase to avoid case sensitivity issues
-          contributors.add(contributor.toLowerCase());
-        }
-      });
-    }
-  });
-
-  const paths = [...contributors].map(contributor => ({
-    params: { slug: contributor },
+  // --- New logic to get paths for contributor profiles ---
+  const authorsResult = await queryDuckDB(`
+    SELECT DISTINCT UNNEST(authors) AS author
+    FROM vault
+    WHERE authors IS NOT NULL;
+  `);
+  const contributorPaths = authorsResult.map(row => ({
+    params: {
+      slug: slugify(row.author as string, { lower: true, strict: true }),
+    },
   }));
+
+  // Additionally, check for any manually created MDX files in vault/contributor/
+  const contributorVaultDir = path.join(
+    process.cwd(),
+    'public/content/contributor',
+  );
+  let manualMdxPaths: { params: { slug: string } }[] = [];
+  try {
+    const files = await fs.readdir(contributorVaultDir, {
+      withFileTypes: true,
+    });
+    const mdxFiles = files.filter(
+      dirent => dirent.isFile() && dirent.name.endsWith('.mdx'),
+    );
+    manualMdxPaths = mdxFiles.map(file => ({
+      params: { slug: file.name.replace(/\\.mdx$/, '') }, // Prefix with 'contributor'
+    }));
+  } catch (error) {
+    console.error('Error reading vault/contributor directory:', error);
+    // Continue without manual paths if directory doesn't exist or error occurs
+  }
+
+  // Combine all paths
+  const allPaths = [
+    ...contributorPaths, // Include contributor paths from DuckDB
+    ...manualMdxPaths, // Include manual contributor MDX paths
+  ];
+
+  // Deduplicate paths based on slug
+  const uniquePaths = Array.from(
+    new Map(allPaths.map(item => [item.params.slug, item])).values(),
+  );
+
   return {
-    paths,
-    fallback: false, // Must be 'false' for static export
+    paths: uniquePaths,
+    fallback: false, // Essential for static export
   };
 };
 
@@ -51,40 +93,110 @@ export const getStaticPaths: GetStaticPaths = async () => {
  */
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
-    const { slug } = params as { slug: string };
-    const allMemos = await getAllMarkdownContents();
-    const layoutProps = await getRootLayoutPageProps(); // Modified line
+    const { slug: contributorSlug } = params as { slug: string };
 
-    const contributor = slug;
-    if (!contributor) {
-      return { notFound: true };
-    }
+    const layoutProps = await getRootLayoutPageProps();
 
-    // Find the original case of the contributor name
-    const originalContributor =
+    // --- Fetch Contributor Name Casing (from Memos or infer from slug) ---
+    const allMemos = await getAllMarkdownContents(); // Fetch all memos to find original name casing
+    const originalContributorName =
       allMemos
         .find(memo =>
           memo.authors?.some(
-            author => author?.toLowerCase() === contributor.toLowerCase(),
+            author =>
+              slugify(author, { lower: true, strict: true }) ===
+              contributorSlug,
           ),
         )
         ?.authors?.find(
-          author => author?.toLowerCase() === contributor.toLowerCase(),
-        ) || contributor;
+          author =>
+            slugify(author, { lower: true, strict: true }) === contributorSlug,
+        ) || contributorSlug; // Fallback to slug if not found
 
-    const memos = filterMemo({
-      data: allMemos,
-      filters: { authors: originalContributor },
-      limit: null,
-      excludeContent: true,
+    // --- Fetch Internal Data (Memos from DuckDB) ---
+    let contributorMemos: Record<string, Json>[];
+    try {
+      contributorMemos = await queryDuckDB(`
+           SELECT short_title, title, file_path, authors, description, date, tags, md_content
+           FROM vault
+           WHERE ARRAY_CONTAINS(authors, '${originalContributorName}')
+           ORDER BY date DESC;
+         `);
+      contributorMemos = contributorMemos.map(memo => ({
+        ...memo,
+        filePath: memo.file_path,
+        md_content: null, // md_content only used for image extraction
+        image: getFirstMemoImage(
+          {
+            filePath: memo.file_path as string,
+            content: memo.md_content as string,
+          },
+          null,
+        ),
+      }));
+    } catch (error) {
+      console.error(
+        `Failed to fetch memos for ${originalContributorName}:`,
+        error,
+      );
+      contributorMemos = []; // Handle error
+    }
+    // --- Fetch External Data (GitHub Example using Octokit) ---
+    let githubData = null;
+    try {
+      // Assuming the contributor slug can be used as a GitHub username
+      const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN }); // Use Octokit
+      // Fetch user profile details (username, avatar, bio)
+      const { data: githubUser } = await octokit.rest.users.getByUsername({
+        username: contributorSlug,
+      });
+      githubData = githubUser; // Pass the user data
+    } catch (error) {
+      console.error(
+        `Failed to fetch GitHub data for ${contributorSlug}:`,
+        error,
+      );
+      // Handle errors, maybe set githubData to null or an error state
+    }
+
+    // --- Fetch Other External Data (Discord, Crypto, etc.) ---
+    const discordData = null; // Placeholder
+    const cryptoData = null; // Placeholder
+
+    const mdxSource = await getMdxSource({
+      mdxPath: path.join(
+        process.cwd(),
+        'public/content/contributor',
+        `${contributorSlug}.mdx`,
+      ),
+      fallbackPath: path.join(
+        process.cwd(),
+        'public/content/contributor',
+        '[slug].mdx',
+      ),
+      scope: {
+        contributorName: originalContributorName,
+        githubData,
+        discordData,
+        cryptoData,
+        contributorMemos,
+      },
     });
+
+    if (!mdxSource || 'error' in mdxSource) {
+      return { notFound: true }; // Handle serialization error
+    }
 
     return {
       props: {
         ...layoutProps,
-        slug,
-        contributor: originalContributor, // Use the original case for display
-        data: memos,
+        slug: contributorSlug, // Pass the original requested slug
+        contributorName: originalContributorName,
+        githubData,
+        mdxSource,
+        contributorMemos,
+        discordData,
+        frontmatter: mdxSource.frontmatter,
       },
     };
   } catch (error) {
@@ -94,39 +206,27 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export default function ContentPage({
-  contributor,
+  frontmatter,
   directoryTree,
   searchIndex,
-  data,
+  contributorName,
+  githubData,
+  mdxSource,
 }: ContentPageProps) {
+  if (!mdxSource || 'error' in mdxSource) {
+    // We already handle this in getStaticProps
+    return null;
+  }
   return (
     <RootLayout
-      title={contributor}
+      title={frontmatter?.title || `${contributorName}'s Profile`}
+      description={frontmatter?.description || githubData?.bio || ''} // Use GitHub bio as description
+      image={frontmatter?.image || githubData?.avatar_url} // Use GitHub avatar as image
       directoryTree={directoryTree}
       searchIndex={searchIndex}
     >
-      <div className="flex items-center">
-        <div className="flex flex-col">
-          <h1 className="-track-[0.5px] mb-5 pt-0 text-[35px] leading-[42px] font-semibold">
-            {contributor}
-          </h1>
-
-          <h3 className="mt-[var(--subheading-margin)] text-[21px] leading-[140%] font-bold">
-            Contributions
-          </h3>
-          <ul className="mt-[var(--list-margin)] flex list-disc flex-col gap-[var(--list-item-spacing)] pl-5">
-            {data?.map(memo => (
-              <li key={memo.filePath} className="text-lg">
-                <Link
-                  href={formatContentPath(memo.filePath)}
-                  className="hover:text-primary hover:decoration-primary dark:hover:text-primary decoration-link-decoration line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline transition-colors duration-200 ease-in-out dark:text-neutral-300"
-                >
-                  {memo.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="content-wrapper">
+        <RemoteMdxRenderer mdxSource={mdxSource} />
       </div>
     </RootLayout>
   );

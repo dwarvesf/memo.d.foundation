@@ -1,60 +1,69 @@
-import fs from 'fs/promises'; // Use asynchronous promises API
+import fs from 'fs/promises';
 import path from 'path';
 
 /**
- * Gets all markdown files recursively from a directory
+ * Gets all markdown and MDX files recursively from a directory
  * @param dir The directory to search in
  * @param basePath The base path for the current directory
- * @returns Array of slug arrays for each markdown file
+ * @returns Array of slug arrays for each markdown/MDX file
  */
-export async function getAllMarkdownFiles( // Make the function asynchronous
+export async function getAllMarkdownFiles(
   dir: string,
   basePath: string[] = [],
 ): Promise<string[][]> {
-  // Update return type to Promise
   let entries;
   try {
-    entries = await fs.readdir(dir, { withFileTypes: true }); // Use asynchronous readdir
+    entries = await fs.readdir(dir, { withFileTypes: true });
   } catch (error) {
-    // If directory doesn't exist or other error, return empty array
     console.error(`Error reading directory ${dir}: ${error}`);
     return [];
   }
 
   const paths: string[][] = [];
 
-  // Check for readme.md first, then _index.md in the current directory
+  // Check for readme files (markdown and MDX)
   const readmeFilePath = path.join(dir, 'readme.md');
+  const readmeMdxFilePath = path.join(dir, 'readme.mdx');
   const indexFilePath = path.join(dir, '_index.md');
+  const indexMdxFilePath = path.join(dir, '_index.mdx');
 
   let readmeExists = false;
   try {
-    await fs.stat(readmeFilePath); // Use asynchronous stat
+    // Check for readme.md first
+    await fs.stat(readmeFilePath);
     readmeExists = true;
   } catch {
-    // File does not exist
+    // If readme.md doesn't exist, try readme.mdx
+    try {
+      await fs.stat(readmeMdxFilePath);
+      readmeExists = true;
+    } catch {
+      // Neither exists
+    }
   }
 
   let indexExists = false;
   try {
-    await fs.stat(indexFilePath); // Use asynchronous stat
+    // Check for _index.md first
+    await fs.stat(indexFilePath);
     indexExists = true;
   } catch {
-    // File does not exist
+    // If _index.md doesn't exist, try _index.mdx
+    try {
+      await fs.stat(indexMdxFilePath);
+      indexExists = true;
+    } catch {
+      // Neither exists
+    }
   }
 
-  // Prioritize readme.md over _index.md
+  // Prioritize readme over _index
   if (readmeExists && basePath.length > 0) {
-    // If readme.md exists, add the current directory as a path
     paths.push([...basePath]);
-
-    // Also add readme.md as a separate entry
     paths.push([...basePath, 'readme']);
   } else if (indexExists && basePath.length > 0) {
-    // If _index.md exists but readme.md doesn't, add the current directory as a path
     paths.push([...basePath]);
   } else if (entries.length > 0 && basePath.length > 0) {
-    // If neither readme.md nor _index.md exists, add the current directory as a path
     paths.push([...basePath]);
   }
 
@@ -63,15 +72,17 @@ export async function getAllMarkdownFiles( // Make the function asynchronous
     if (entry.isDirectory()) {
       paths.push(
         ...(await getAllMarkdownFiles(res, [...basePath, entry.name])),
-      ); // Await recursive call
+      );
     } else if (
-      entry.name.endsWith('.md') &&
+      // Include both .md and .mdx files
+      (entry.name.endsWith('.md') || entry.name.endsWith('.mdx')) &&
       entry.name !== '_index.md' &&
-      entry.name !== 'readme.md'
+      entry.name !== '_index.mdx' &&
+      entry.name !== 'readme.md' &&
+      entry.name !== 'readme.mdx'
     ) {
-      // Skip _index.md and readme.md as they're already handled above
-      // Remove .md extension for the slug
-      const slugName = entry.name.replace(/\.md$/, '');
+      // Remove file extension (.md or .mdx) for the slug
+      const slugName = entry.name.replace(/\.(md|mdx)$/, '');
       paths.push([...basePath, slugName]);
     }
   }
@@ -81,6 +92,5 @@ export async function getAllMarkdownFiles( // Make the function asynchronous
 
 export function getContentPath(slug: string) {
   const contentDir = path.join(process.cwd(), 'public/content');
-
   return path.join(contentDir, slug);
 }

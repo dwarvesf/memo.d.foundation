@@ -16,6 +16,7 @@ export const wordDict: Record<string, string> = {
   defi: 'DeFi',
   dapp: 'DApp',
   mma: 'MMA',
+  moc: 'MoC',
   saas: 'SaaS',
   web3: 'Web3',
   pm: 'PM',

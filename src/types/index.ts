@@ -82,6 +82,8 @@ export interface IMemoItem {
 
   filePath: string;
   slugArray: string[];
+
+  image?: string;
 }
 
 /**
