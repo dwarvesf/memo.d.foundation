@@ -61,7 +61,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps ethers@5.7.2 gray-matter crypto js-yaml tsx
+        run: npm install --legacy-peer-deps
 
       - name: Run script with files
         if: steps.changed-files.outputs.files != ''
