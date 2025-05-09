@@ -138,10 +138,12 @@ const config = {
             },
             code: {
               fontFamily: 'var(--font-monospace), monospace',
-              fontSize: 'inherit !important',
-              color: '#5c5c5c !important',
-              padding: '1px 3px !important',
-              background: 'transparent !important',
+              fontSize: '0.75em !important',
+              fontWeight: '500 !important',
+              color: 'color-mix(in srgb, var(--primary) 85%, transparent) !important',
+              padding: '0.2em 0.4em !important',
+              background: 'color-mix(in srgb, var(--foreground) 8%, transparent) !important',
+              borderRadius: '4px !important',
             },
             'a:hover': {
               textDecoration: 'underline',
