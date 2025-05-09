@@ -50,7 +50,7 @@ const RightSidebar = (props: Props) => {
     >
       <div className="right-0 flex w-full flex-col gap-y-8 pt-4 pb-10 transition-[top] duration-200 ease-in-out">
         {metadata && (
-          <div className="metadata space-y-6">
+          <div className="metadata space-y-6 pt-6">
             <div className="">
               <h3 className="text-black-secondary dark:text-foreground text-2xs mb-3 font-sans font-semibold tracking-[0.8px] uppercase">
                 Properties

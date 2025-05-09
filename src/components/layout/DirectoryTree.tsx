@@ -142,7 +142,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     <div
       id="sidebar"
       className={cn(
-        'bg-background-secondary xl:w-directory-width h-[calc(100svh-32px)] w-0 flex-col pt-10 pb-2 text-sm leading-normal xl:pr-3',
+        'bg-background-secondary xl:w-directory-width h-[calc(100svh-32px)] w-0 flex-col pt-4 pb-2 text-sm leading-normal xl:pr-3',
         'xl:ml-sidebar',
         'translate-0 transition duration-100 ease-in-out',
         'z-2 overflow-y-auto',

@@ -81,7 +81,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
       {/* Sidebar */}
       <div
-        className={`bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 flex h-full flex-col border-r pt-4 pb-12 font-sans transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-[-100%] xl:translate-x-0'} `}
+        className={`bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 flex h-full flex-col border-r pt-2.5 pb-12 font-sans transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-[-100%] xl:translate-x-0'} `}
         onClick={e => e.target === e.currentTarget && handleClickOutside()}
       >
         {/* Logo and title */}
@@ -151,9 +151,9 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
             >
               <div className="text-foreground-light rounded-full bg-white p-0.5">
                 {isDark ? (
-                  <SunIcon width={12} height={12} />
+                  <SunIcon width={10} height={10} />
                 ) : (
-                  <MoonIcon width={12} height={12} />
+                  <MoonIcon width={10} height={10} />
                 )}
               </div>
             </button>
