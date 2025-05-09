@@ -81,7 +81,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const uniquePaths = Array.from(
     new Map(allPaths.map(item => [item.params.slug, item])).values(),
   );
-
+  const pat = process.env.DWARVES_PAT;
+  const octokit = new Octokit({ auth: process.env.DWARVES_PAT }); // Use Octokit
+  console.log('pat len: ', pat?.length);
+  const rateLimit = await octokit.rateLimit.get();
+  console.log('rate limit: ', rateLimit.data);
   return {
     paths: uniquePaths,
     fallback: false, // Essential for static export
