@@ -95,7 +95,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   for (const aliasKey in aliases) {
     const aliasValue = aliases[aliasKey];
     const aliasKeySegments = aliasKey.split('/').filter(Boolean);
-    const targetDir = path.join(contentDir, ...aliasValue.split('/').filter(Boolean));
+    const targetDir = path.join(
+      contentDir,
+      ...aliasValue.split('/').filter(Boolean),
+    );
     let childSlugs: string[][] = [];
     try {
       childSlugs = await getAllMarkdownFiles(targetDir);
@@ -167,43 +170,39 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     const requestedPathAliasKey = Object.keys(aliases).find(
-      aliasKey => requestedPath === aliasKey
+      aliasKey => requestedPath === aliasKey,
     );
 
     let contentPathSegments = [...requestedPathSegments];
     let canonicalSlug = contentPathSegments;
-    let canonicalPathFound = false;
 
     if (requestedPathAliasKey) {
       // If the current path is an alias key, always use the alias target (overwrite any file)
       const aliasValue = aliases[requestedPathAliasKey];
       contentPathSegments = aliasValue.split('/').filter(Boolean);
       canonicalSlug = contentPathSegments;
-      canonicalPathFound = true;
     } else if (redirects[requestedPath]) {
       const redirectTarget = redirects[requestedPath];
       contentPathSegments = redirectTarget.split('/').filter(Boolean);
       canonicalSlug = contentPathSegments;
-      canonicalPathFound = true;
     } else {
       // Fallback to nested alias logic for subpaths
       let matchedAlias = null;
       let matchedAliasKey = '';
       for (const aliasKey in aliases) {
-        if (
-          aliasKey !== '/' &&
-          requestedPath.startsWith(aliasKey + '/')
-        ) {
+        if (aliasKey !== '/' && requestedPath.startsWith(aliasKey + '/')) {
           matchedAlias = aliases[aliasKey];
           matchedAliasKey = aliasKey;
           break;
         }
       }
       if (matchedAlias) {
-        const canonicalPath = requestedPath.replace(matchedAliasKey, matchedAlias);
+        const canonicalPath = requestedPath.replace(
+          matchedAliasKey,
+          matchedAlias,
+        );
         contentPathSegments = canonicalPath.split('/').filter(Boolean);
         canonicalSlug = contentPathSegments;
-        canonicalPathFound = true;
       } else {
         canonicalSlug = requestedPathSegments;
         contentPathSegments = requestedPathSegments;
