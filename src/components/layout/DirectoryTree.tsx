@@ -122,6 +122,11 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
           )}
           <span>
             {node.ignoreLabelTransform ? node.label : slugToTitle(node.label)}
+            {typeof node.count === 'number' ? (
+              <span className="opacity-50"> ({node.count})</span>
+            ) : (
+              ''
+            )}
           </span>
         </Link>
         {hasChildren && isOpen && (
