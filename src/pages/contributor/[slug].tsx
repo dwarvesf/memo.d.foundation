@@ -157,7 +157,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
         if (userProfiles?.[contributorSlug]) {
           contributorProfile = userProfiles[contributorSlug];
-          console.log(userProfiles);
         } else {
           console.error(
             `No profile found for ${contributorSlug} in userProfiles.json`,
@@ -174,7 +173,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       );
       // Handle errors, maybe set githubData to null or an error state
     }
-    console.log(contributorProfile);
     const mdxSource = await getMdxSource({
       mdxPath: path.join(
         process.cwd(),
