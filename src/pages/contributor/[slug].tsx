@@ -3,7 +3,6 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import path from 'path';
 import fs from 'fs/promises';
 import slugify from 'slugify';
-import { Octokit, RestEndpointMethodTypes } from '@octokit/rest'; // For GitHub API
 
 // Import utility functions
 import { getAllMarkdownContents } from '@/lib/content/memo';
@@ -21,6 +20,7 @@ import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { Json } from '@duckdb/node-api';
 import { RootLayout } from '@/components';
 import { getMdxSource } from '@/lib/mdx';
+import { UserProfile, UserProfileJson } from '@/types/user';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
@@ -28,9 +28,8 @@ interface ContentPageProps extends RootLayoutPageProps {
 
   contributorName?: string; // Make optional
   contributorMemos?: IMemoItem[]; // Make optional
-  githubData?: RestEndpointMethodTypes['users']['getByUsername']['response']['data'];
-  discordData?: null; // Make optional
-  cryptoData?: null; // Make optional
+  contributorProfile?: UserProfile | null; // GitHub profile data
+
   mdxSource?: SerializeResult; // Serialized MDX source
 }
 
@@ -81,11 +80,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const uniquePaths = Array.from(
     new Map(allPaths.map(item => [item.params.slug, item])).values(),
   );
-  const pat = process.env.DWARVES_PAT;
-  const octokit = new Octokit({ auth: process.env.DWARVES_PAT }); // Use Octokit
-  console.log('pat len: ', pat?.length);
-  const rateLimit = await octokit.rateLimit.get();
-  console.log('rate limit: ', rateLimit.data);
+
   return {
     paths: uniquePaths,
     fallback: false, // Essential for static export
@@ -146,15 +141,31 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       contributorMemos = []; // Handle error
     }
     // --- Fetch External Data (GitHub Example using Octokit) ---
-    let githubData = null;
+    let contributorProfile: UserProfile | null = null;
     try {
-      // Assuming the contributor slug can be used as a GitHub username
-      const octokit = new Octokit({ auth: process.env.DWARVES_PAT }); // Use Octokit
-      // Fetch user profile details (username, avatar, bio)
-      const { data: githubUser } = await octokit.rest.users.getByUsername({
-        username: contributorSlug,
-      });
-      githubData = githubUser; // Pass the user data
+      // Check if there's a userProfiles.json file with GitHub usernames
+      const userProfilesPath = path.join(
+        process.cwd(),
+        'public/content/userProfiles.json',
+      );
+
+      try {
+        const userProfilesJson = JSON.parse(
+          await fs.readFile(userProfilesPath, 'utf8'),
+        ) as UserProfileJson;
+        const userProfiles = userProfilesJson?.data || {};
+
+        if (userProfiles?.[contributorSlug]) {
+          contributorProfile = userProfiles[contributorSlug];
+        } else {
+          console.error(
+            `No profile found for ${contributorSlug} in userProfiles.json`,
+          );
+        }
+      } catch (readError) {
+        console.error('Error reading userProfiles.json:', readError);
+        // Continue with null githubData
+      }
     } catch (error) {
       console.error(
         `Failed to fetch GitHub data for ${contributorSlug}:`,
@@ -162,11 +173,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       );
       // Handle errors, maybe set githubData to null or an error state
     }
-
-    // --- Fetch Other External Data (Discord, Crypto, etc.) ---
-    const discordData = null; // Placeholder
-    const cryptoData = null; // Placeholder
-
     const mdxSource = await getMdxSource({
       mdxPath: path.join(
         process.cwd(),
@@ -180,9 +186,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       ),
       scope: {
         contributorName: originalContributorName,
-        githubData,
-        discordData,
-        cryptoData,
+        contributorProfile,
         contributorMemos,
       },
     });
@@ -196,10 +200,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         ...layoutProps,
         slug: contributorSlug, // Pass the original requested slug
         contributorName: originalContributorName,
-        githubData,
+        contributorProfile,
         mdxSource,
         contributorMemos,
-        discordData,
         frontmatter: mdxSource.frontmatter,
       },
     };
@@ -214,8 +217,8 @@ export default function ContentPage({
   directoryTree,
   searchIndex,
   contributorName,
-  githubData,
   mdxSource,
+  contributorProfile,
 }: ContentPageProps) {
   if (!mdxSource || 'error' in mdxSource) {
     // We already handle this in getStaticProps
@@ -224,8 +227,8 @@ export default function ContentPage({
   return (
     <RootLayout
       title={frontmatter?.title || `${contributorName}'s Profile`}
-      description={frontmatter?.description || githubData?.bio || ''} // Use GitHub bio as description
-      image={frontmatter?.image || githubData?.avatar_url} // Use GitHub avatar as image
+      description={frontmatter?.description || contributorProfile?.bio || ''} // Use GitHub bio as description
+      image={frontmatter?.image || contributorProfile?.avatar} // Use GitHub avatar as image
       directoryTree={directoryTree}
       searchIndex={searchIndex}
     >

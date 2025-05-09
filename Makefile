@@ -29,6 +29,7 @@ run:
 	@pnpm run generate-backlinks
 	@pnpm run generate-search-index
 	@pnpm run generate-redirects-map
+	@pnpm run generate-user-profiles
 	@pnpm run dev
 
 duckdb-export:
