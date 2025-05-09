@@ -3,12 +3,15 @@ import {
   ITreeNode,
   GroupedPath,
   MenuFilePath,
+  IMemoItem,
 } from '@/types';
 import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathComponents from utils
 import { formatContentPath } from '../utils/path-utils'; // Import formatContentPath from path-utils
 import path from 'path'; // Import path module
 import fs from 'fs/promises'; // Use promises version for async file reading
 import { uppercaseSpecialWords } from '../utils';
+import { getAllMarkdownContents } from './memo';
+import { memoize } from 'lodash';
 
 /**
  * Transforms the nested menu data structure into the ITreeNode structure
@@ -16,12 +19,16 @@ import { uppercaseSpecialWords } from '../utils';
  * @param menuData The nested menu data.
  * @param currentPath The current path during recursion (used internally).
  * @param pinnedNotes Array of pinned notes.
+ * @param tags Array of tags with name and count.
  * @returns A nested object representing the directory tree in ITreeNode format.
  */
 function transformMenuDataToDirectoryTree(
   menuData: Record<string, GroupedPath>,
   pinnedNotes: Array<{ title: string; url: string; date: string }>,
-  tags: string[], // Add tags parameter
+  tags: {
+    name: string;
+    count: number;
+  }[], // Add tags parameter
   currentPath = '',
 ): Record<string, ITreeNode> {
   const treeNode: Record<string, ITreeNode> = {};
@@ -107,21 +114,46 @@ function transformMenuDataToDirectoryTree(
 
   // Add Tags as children under '/tags' only at the root level
   if (currentPath === '' && tags.length > 0) {
-    tags.forEach(tag => {
+    tags.slice(0, 41).forEach(({ name: tag, count }) => {
       const slugifiedTag = slugifyPathComponents(tag.toLowerCase());
       const tagUrl = `/tags/${slugifiedTag}`;
       treeNode['/tags'].children[tagUrl] = {
-        label: `#${uppercaseSpecialWords(slugifiedTag, '-')}`, // Display tag with # prefix
+        label: `#${uppercaseSpecialWords(slugifiedTag, '-')}`, // Display tag with # prefix and count
         children: {},
         url: tagUrl,
         ignoreLabelTransform: true,
-        // Note: Count is not available from tags.json
+        count, // Include count in the node
       };
     });
   }
 
   return treeNode;
 }
+
+const appendTagsCount = memoize((tags: string[], memos: IMemoItem[]) => {
+  const tagCountMap = new Map<string, number>();
+
+  // Count occurrences of each tag in the memos
+  memos.forEach(memo => {
+    memo.tags?.forEach(tag => {
+      if (tag) {
+        const normalizedTag = tag.toLowerCase().replace(/\s+/g, '-');
+        tagCountMap.set(
+          normalizedTag,
+          (tagCountMap.get(normalizedTag) || 0) + 1,
+        );
+      }
+    });
+  });
+
+  // Append count to each tag
+  return tags
+    .map(tag => ({
+      name: tag,
+      count: tagCountMap.get(tag.toLowerCase()) || 0,
+    }))
+    .sort((a, b) => b.count - a.count); // Sort by count in descending order
+});
 
 export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
   let menuData: Record<string, GroupedPath> = {};
@@ -161,11 +193,13 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
     // Continue with empty tags if file not found or error occurs
   }
 
+  const memos = await getAllMarkdownContents();
+
   // Pass tags array to the transformation function
   const directoryTree = transformMenuDataToDirectoryTree(
     menuData,
     pinnedNotes,
-    tags,
+    appendTagsCount(tags, memos),
   );
   // console.log({ directoryTree, pinnedNotes, tags }); // Keep or remove logging as needed
 
