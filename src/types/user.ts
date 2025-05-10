@@ -67,13 +67,13 @@ export interface UserProfile extends Partial<MochiUserProfile> {
   github?: {
     id: number;
     login: string;
-    avatar_url: string;
-    name: string;
-    bio: string;
-    twitter_username: string;
-    html_url: string;
-    blog: string;
-  };
+    avatar_url?: string;
+    name?: string;
+    bio?: string;
+    twitter_username?: string;
+    html_url?: string;
+    blog?: string;
+  } | null;
 }
 
 export interface UserProfileJson {
