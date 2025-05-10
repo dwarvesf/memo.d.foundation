@@ -181,7 +181,7 @@ async function main() {
   const profilesObject: Record<string, UserProfile> = {};
   successfulProfiles.forEach(profile => {
     if (profile.github_username) {
-      profilesObject[profile.github_username] = profile;
+      profilesObject[profile.github_username.toLowerCase()] = profile;
     }
   });
 
