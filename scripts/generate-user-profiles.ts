@@ -70,8 +70,9 @@ async function getAllAuthors() {
 }
 
 async function getUserProfileByGithubUsername(githubUsername: string) {
-  let githubData: RestEndpointMethodTypes['users']['getByUsername']['response']['data'] =
-    null;
+  let githubData:
+    | RestEndpointMethodTypes['users']['getByUsername']['response']['data']
+    | null = null;
   let mochiData: MochiUserProfile | null = null;
   try {
     // Assuming the contributor slug can be used as a GitHub username
