@@ -14,6 +14,26 @@ import { getAllMarkdownContents } from './memo';
 import { memoize } from 'lodash';
 
 /**
+ * Helper function to read and apply sort order
+ */
+function applySortOrder<T>(
+  items: T[],
+  getItemName: (item: T) => string | number,
+  order: 'asc' | 'desc' = 'asc',
+): T[] {
+  return [...items].sort((a, b) => {
+    const multiplier = order === 'asc' ? 1 : -1;
+    const aa = getItemName(a);
+    const bb = getItemName(b);
+    const isNumber = typeof aa === 'number' && typeof bb === 'number';
+    if (isNumber) {
+      return (aa - bb) * multiplier;
+    }
+    return String(aa).localeCompare(String(bb)) * multiplier;
+  });
+}
+
+/**
  * Transforms the nested menu data structure into the ITreeNode structure
  * expected by the DirectoryTree component.
  * @param menuData The nested menu data.
@@ -43,7 +63,12 @@ function transformMenuDataToDirectoryTree(
         children: {},
       };
 
-      pinnedNotes.forEach(note => {
+      const sortedPinnedNotes = applySortOrder(
+        pinnedNotes,
+        note => note.title, // Sort by title
+      );
+
+      sortedPinnedNotes.forEach(note => {
         // Use note.url as the key and url, note.title as label
         pinnedNotesNode.children[note.url] = {
           label: note.title,
@@ -67,8 +92,12 @@ function transformMenuDataToDirectoryTree(
   const targetChildrenNode =
     currentPath === '' ? treeNode['/'].children : treeNode; // Children go under '/' if at root
 
-  // Process directories (keys in menuData)
-  Object.entries(menuData).forEach(([dirName, group]) => {
+  // Sort and process directories
+  const dirEntries = Object.entries(menuData);
+  const sortedDirectories = applySortOrder(dirEntries, ([dirName]) => dirName);
+
+  // Process directories
+  for (const [dirName, group] of sortedDirectories) {
     // Handle the root path case explicitly for constructing the path
     const fullDirPath =
       currentPath === '' ? '/' + dirName : path.join(currentPath, dirName); // Keep this for path construction
@@ -84,8 +113,14 @@ function transformMenuDataToDirectoryTree(
     );
     Object.assign(children, nestedChildren); // Add nested directories to children
 
-    // Process files in the current directory
-    group.file_paths.forEach((file: MenuFilePath) => {
+    // Sort and process files in the current directory
+    const sortedFiles = applySortOrder<MenuFilePath>(
+      group.file_paths,
+      file => file.title,
+    );
+
+    // Process sorted files
+    for (const file of sortedFiles) {
       // Explicitly type 'file'
       const fullFilePath = '/' + file.file_path; // File paths are already full paths relative to root
 
@@ -96,7 +131,7 @@ function transformMenuDataToDirectoryTree(
         children: {}, // Files have no children in the tree
         url: url, // Add the generated URL
       };
-    });
+    }
 
     // Add the current directory node
     // For directories, the URL is the slugified path without trailing slash (unless root)
@@ -110,11 +145,13 @@ function transformMenuDataToDirectoryTree(
       children: children,
       url: dirUrl, // Add the generated URL for directory
     };
-  });
+  }
 
-  // Add Tags as children under '/tags' only at the root level
+  // Add sorted Tags as children under '/tags' only at the root level
   if (currentPath === '' && tags.length > 0) {
-    tags.slice(0, 41).forEach(({ name: tag, count }) => {
+    // Sort tags by count in descending order
+    const sortedTags = applySortOrder(tags, tag => tag.count, 'desc');
+    sortedTags.slice(0, 41).forEach(({ name: tag, count }) => {
       const slugifiedTag = slugifyPathComponents(tag.toLowerCase());
       const tagUrl = `/tags/${slugifiedTag}`;
       treeNode['/tags'].children[tagUrl] = {
@@ -147,12 +184,10 @@ const appendTagsCount = memoize((tags: string[], memos: IMemoItem[]) => {
   });
 
   // Append count to each tag
-  return tags
-    .map(tag => ({
-      name: tag,
-      count: tagCountMap.get(tag.toLowerCase()) || 0,
-    }))
-    .sort((a, b) => b.count - a.count); // Sort by count in descending order
+  return tags.map(tag => ({
+    name: tag,
+    count: tagCountMap.get(tag.toLowerCase()) || 0,
+  }));
 });
 
 export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
