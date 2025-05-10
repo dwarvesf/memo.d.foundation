@@ -154,10 +154,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           await fs.readFile(userProfilesPath, 'utf8'),
         ) as UserProfileJson;
         const userProfiles = userProfilesJson?.data || {};
-
-        if (userProfiles?.[contributorSlug]) {
-          contributorProfile = userProfiles[contributorSlug];
-        } else {
+        contributorProfile =
+          userProfiles?.[contributorSlug.toLowerCase()] || null;
+        if (!contributorProfile) {
           console.error(
             `No profile found for ${contributorSlug} in userProfiles.json`,
           );
