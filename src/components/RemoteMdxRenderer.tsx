@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import MemoVList from './memo/MemoVList';
 import ContributorHead from './memo/ContributorHead';
 import { formatContentPath } from '@/lib/utils/path-utils';
+import MemoVLinkList from './memo/MemoVLinkList';
 
 interface Props {
   mdxSource: SerializeResult;
@@ -13,6 +14,7 @@ interface Props {
 
 const components: MDXComponents = {
   Link,
+  MemoVLinkList,
   ContributorHead,
   MemoVList,
   MemoLink: props => {
@@ -45,7 +47,6 @@ const components: MDXComponents = {
 };
 const RemoteMdxRenderer = (props: Props) => {
   const { mdxSource } = props;
-
   if (!mdxSource || 'error' in mdxSource) {
     return null;
   }

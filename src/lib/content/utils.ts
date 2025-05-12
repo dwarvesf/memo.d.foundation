@@ -137,7 +137,7 @@ const appendTagsCount = memoize((tags: string[], memos: IMemoItem[]) => {
   memos.forEach(memo => {
     memo.tags?.forEach(tag => {
       if (tag) {
-        const normalizedTag = tag.toLowerCase().replace(/\s+/g, '-');
+        const normalizedTag = tag.toString().toLowerCase().replace(/\s+/g, '-');
         tagCountMap.set(
           normalizedTag,
           (tagCountMap.get(normalizedTag) || 0) + 1,

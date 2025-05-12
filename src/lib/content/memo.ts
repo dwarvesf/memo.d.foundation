@@ -3,6 +3,8 @@ import matter from 'gray-matter';
 import { getAllMarkdownFiles, getContentPath } from './paths';
 import path from 'path';
 import { IMemoItem } from '@/types';
+import { Json } from '@duckdb/node-api';
+import { getFirstMemoImage } from '@/components/memo/utils';
 
 interface GetAllMarkdownContentsOptions {
   includeContent?: boolean;
@@ -60,7 +62,12 @@ export async function getAllMarkdownContents( // Make the function asynchronous
 
 interface FilterMemoProps {
   data: IMemoItem[];
-  filters?: { tags?: string; hiring?: boolean; authors?: string };
+  filters?: {
+    tags?: string;
+    hiring?: boolean;
+    authors?: string;
+    path?: string;
+  };
   sortBy?: keyof IMemoItem;
   sortOrder?: 'asc' | 'desc';
   limit?: number | null;
@@ -108,6 +115,9 @@ export function filterMemo(props: FilterMemoProps) {
             )
           );
         }
+        if (key === 'path') {
+          return memo.filePath.startsWith(value as string);
+        }
 
         return memo[key as keyof IMemoItem] !== value;
       });
@@ -124,4 +134,33 @@ export function filterMemo(props: FilterMemoProps) {
   }
 
   return result;
+}
+
+export function convertToMemoItem(
+  memo: Record<string, Json>,
+  keepContent = false,
+): IMemoItem {
+  const { file_path, md_content, ...rest } = memo;
+  return {
+    ...rest,
+    title: memo.title as string,
+    short_title: memo.short_title as string,
+    description: memo.description as string,
+    date: memo.date as string,
+    content: keepContent ? (md_content as string) : '',
+    filePath: file_path as string,
+    image: getFirstMemoImage(
+      {
+        filePath: file_path as string,
+        content: md_content as string,
+      },
+      null,
+    ),
+  };
+}
+export function convertToMemoItems(
+  memos: Record<string, Json>[],
+  keepContent = false,
+): IMemoItem[] {
+  return memos.map(memo => convertToMemoItem(memo, keepContent));
 }
