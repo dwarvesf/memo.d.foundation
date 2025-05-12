@@ -120,18 +120,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }));
 
   // Combine all paths
+  const excludePaths = ['index'];
   const allPaths = [
     ...markdownPaths,
     ...aliasPaths,
     ...nestedAliasPaths,
     ...redirectPaths,
-  ];
+  ].filter(path => {
+    const slug = path.params.slug.join('/');
+    return !excludePaths.some(excludePath => slug.startsWith(excludePath));
+  });
 
   // Deduplicate paths based on slug
   const uniquePaths = Array.from(
     new Map(allPaths.map(item => [item.params.slug.join('/'), item])).values(),
   );
-
   return {
     paths: uniquePaths,
     fallback: false, // Essential for static export

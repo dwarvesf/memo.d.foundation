@@ -122,7 +122,6 @@ export const getStaticProps: GetStaticProps = async () => {
     if (!mdxSource || 'error' in mdxSource) {
       return { notFound: true }; // Handle serialization error
     }
-    console.log('mdxSource', mdxSource);
     return {
       props: {
         ...layoutProps,
