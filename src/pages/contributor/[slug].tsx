@@ -5,10 +5,9 @@ import fs from 'fs/promises';
 import slugify from 'slugify';
 
 // Import utility functions
-import { getAllMarkdownContents } from '@/lib/content/memo';
+import { convertToMemoItems, getAllMarkdownContents } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { queryDuckDB } from '@/lib/db/utils'; // Utility for DuckDB queries
-import { getFirstMemoImage } from '@/components/memo/utils';
 
 // Import components
 
@@ -17,7 +16,6 @@ import { IMemoItem, RootLayoutPageProps } from '@/types';
 
 import { type SerializeResult } from 'next-mdx-remote-client/serialize';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
-import { Json } from '@duckdb/node-api';
 import { RootLayout } from '@/components';
 import { getMdxSource } from '@/lib/mdx';
 import { UserProfile, UserProfileJson } from '@/types/user';
@@ -113,26 +111,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         ) || contributorSlug; // Fallback to slug if not found
 
     // --- Fetch Internal Data (Memos from DuckDB) ---
-    let contributorMemos: Record<string, Json>[];
+    let contributorMemos: IMemoItem[];
     try {
       contributorMemos = await queryDuckDB(`
            SELECT short_title, title, file_path, authors, description, date, tags, md_content
            FROM vault
            WHERE ARRAY_CONTAINS(authors, '${originalContributorName}')
            ORDER BY date DESC;
-         `);
-      contributorMemos = contributorMemos.map(memo => ({
-        ...memo,
-        filePath: memo.file_path,
-        md_content: null, // md_content only used for image extraction
-        image: getFirstMemoImage(
-          {
-            filePath: memo.file_path as string,
-            content: memo.md_content as string,
-          },
-          null,
-        ),
-      }));
+         `).then(convertToMemoItems);
     } catch (error) {
       console.error(
         `Failed to fetch memos for ${originalContributorName}:`,
@@ -172,6 +158,23 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       );
       // Handle errors, maybe set githubData to null or an error state
     }
+    const contributorMemosByFolder = contributorMemos.reduce(
+      (acc, memo) => {
+        const folderParts = memo.filePath.split('/').slice(0, -1);
+        const lastFolder = folderParts[folderParts.length - 1];
+
+        if (!lastFolder) {
+          return acc;
+        }
+        if (!acc[lastFolder]) {
+          acc[lastFolder] = [];
+        }
+        acc[lastFolder].push(memo);
+        return acc;
+      },
+      {} as Record<string, IMemoItem[]>,
+    );
+
     const mdxSource = await getMdxSource({
       mdxPath: path.join(
         process.cwd(),
@@ -187,6 +190,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         contributorName: originalContributorName,
         contributorProfile,
         contributorMemos,
+        contributorMemosByFolder,
       },
     });
 
