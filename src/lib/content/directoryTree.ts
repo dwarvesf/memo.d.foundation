@@ -35,7 +35,7 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
     });
 
     // pinned
-    if (memo.pinned) {
+    if (memo.pinned && memo.slugArray) {
       root['/pinned'].children[`/${memo.slugArray.join('/')}`] = {
         label:
           memo.title || slugToTitle(memo.slugArray[memo.slugArray.length - 1]),
@@ -46,12 +46,12 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
     let currentNode = root['/'].children;
 
     let currentPath = '';
-    memo.slugArray.forEach((part, partIndex) => {
+    memo.slugArray?.forEach((part, partIndex, arr) => {
       currentPath += '/' + part;
       if (!currentNode[currentPath]) {
         currentNode[currentPath] = {
           label:
-            partIndex === memo.slugArray.length - 1
+            partIndex === arr.length - 1
               ? uppercaseSpecialWords(memo.short_title || memo.title) ||
                 slugToTitle(part)
               : slugToTitle(part),
