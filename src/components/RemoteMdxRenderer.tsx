@@ -8,6 +8,7 @@ import ContributorHead from './memo/ContributorHead';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import MemoVLinkList from './memo/MemoVLinkList';
 import MemoTimelineList from './memo/MemoTimelineList';
+import MemosByCategory from './memo/MemosByCategory';
 
 interface Props {
   mdxSource: SerializeResult;
@@ -19,6 +20,7 @@ const components: MDXComponents = {
   ContributorHead,
   MemoVList,
   MemoTimelineList,
+  MemosByCategory,
   MemoLink: props => {
     const { filePath, className, ...rest } = props;
     return (

@@ -158,22 +158,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       );
       // Handle errors, maybe set githubData to null or an error state
     }
-    const contributorMemosByFolder = contributorMemos.reduce(
-      (acc, memo) => {
-        const folderParts = memo.filePath.split('/').slice(0, -1);
-        const lastFolder = folderParts[folderParts.length - 1];
-
-        if (!lastFolder) {
-          return acc;
-        }
-        if (!acc[lastFolder]) {
-          acc[lastFolder] = [];
-        }
-        acc[lastFolder].push(memo);
-        return acc;
-      },
-      {} as Record<string, IMemoItem[]>,
-    );
 
     const mdxSource = await getMdxSource({
       mdxPath: path.join(
@@ -190,7 +174,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         contributorName: originalContributorName,
         contributorProfile,
         contributorMemos,
-        contributorMemosByFolder,
       },
     });
 
