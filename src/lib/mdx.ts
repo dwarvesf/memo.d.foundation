@@ -54,7 +54,7 @@ export async function getMdxSource(props: GetMdxSourceProps) {
           const varRegex = /{([^}]*)}/g;
           const processedValue = value.replace(varRegex, (match, p1) => {
             const value = get(scope, p1);
-            return value || match;
+            return (value as string) || match;
           });
 
           processedFrontmatter[fmKey] = processedValue;
