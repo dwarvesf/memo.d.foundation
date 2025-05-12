@@ -6,6 +6,8 @@ import { MochiUserProfile, UserProfile } from '../src/types/user.js';
 
 const MOCHI_PROFILE_API = process.env.MOCHI_PROFILE_API;
 const GITHUB_TOKEN = process.env.DWARVES_PAT;
+console.log('MOCHI_PROFILE_API: ', MOCHI_PROFILE_API?.length);
+console.log('GITHUB_TOKEN: ', GITHUB_TOKEN?.length);
 
 async function fetchMochiProfile(
   githubUsername: string,

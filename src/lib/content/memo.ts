@@ -39,9 +39,9 @@ export async function getAllMarkdownContents( // Make the function asynchronous
       short_title: result.data.short_title || '',
       description: result.data.description || '',
       tags: Array.isArray(result.data.tags)
-        ? result.data.tags.filter(
-            tag => tag !== null && tag !== undefined && tag !== '',
-          )
+        ? result.data.tags
+            .filter(tag => tag !== null && tag !== undefined && tag !== '')
+            .map(tag => tag.toString()) // Convert to string
         : [],
       pinned: result.data.pinned || false,
       draft: result.data.draft || false,
