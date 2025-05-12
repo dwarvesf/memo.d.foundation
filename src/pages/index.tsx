@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 
 import { RootLayout } from '../components';
-import { RootLayoutPageProps } from '@/types';
+import { IMemoItem, RootLayoutPageProps } from '@/types';
 
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { convertToMemoItems } from '@/lib/content/memo';
@@ -13,17 +13,6 @@ import { queryDuckDB } from '@/lib/db/utils';
 
 interface HomePageProps extends RootLayoutPageProps {
   mdxSource?: SerializeResult;
-}
-
-interface MemoItem {
-  short_title: string;
-  title: string;
-  file_path: string;
-  authors: string[];
-  description: string;
-  date: string;
-  tags: string[];
-  md_content: string;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -42,7 +31,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const querySelect = `SELECT ${queryFields.join(', ')}`;
 
     // Add default empty arrays and error handling for each query
-    let ogifMemos: MemoItem[] = [];
+    let ogifMemos: IMemoItem[] = [];
     try {
       ogifMemos = await queryDuckDB(`
         ${querySelect}
@@ -55,7 +44,7 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching ogif memos:', error);
     }
 
-    let newMemos: MemoItem[] = [];
+    let newMemos: IMemoItem[] = [];
     try {
       newMemos = await queryDuckDB(`
         ${querySelect}
@@ -67,7 +56,7 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching new memos:', error);
     }
 
-    let teamMemos: MemoItem[] = [];
+    let teamMemos: IMemoItem[] = [];
     try {
       teamMemos = await queryDuckDB(`
         ${querySelect}
@@ -81,7 +70,7 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching team memos:', error);
     }
 
-    let changelogMemos: MemoItem[] = [];
+    let changelogMemos: IMemoItem[] = [];
     try {
       changelogMemos = await queryDuckDB(`
         ${querySelect}
@@ -94,7 +83,7 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching changelog memos:', error);
     }
 
-    let hiringMemos: MemoItem[] = [];
+    let hiringMemos: IMemoItem[] = [];
     try {
       hiringMemos = await queryDuckDB(`
         ${querySelect}
