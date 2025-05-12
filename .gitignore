@@ -73,6 +73,7 @@ memo-*.tar
 
 # Build artifacts and logs from elixir-ls
 **/.elixir_ls/
+**/.elixir-tools/
 
 # Devbox artifacts
 /.devbox/

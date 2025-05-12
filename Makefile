@@ -33,7 +33,7 @@ run:
 	@pnpm run dev
 
 duckdb-export:
-	@rm -f vault.duckdb
+	@rm -f lib/obsidian-compiler/vault.duckdb
 	@cd lib/obsidian-compiler && mix duckdb.export
 
 duckdb-export-all:
