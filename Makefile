@@ -22,6 +22,12 @@ build:
 	@pnpm run build
 	@cp -r db/ out/
 
+build-static:
+	@pnpm install --no-frozen-lockfile
+	@cd lib/obsidian-compiler && mix export_markdown
+	@pnpm run build
+	@cp -r db/ out/
+
 run:
 	@cd lib/obsidian-compiler && mix export_markdown
 	@cd lib/obsidian-compiler && mix duckdb.export
@@ -35,12 +41,6 @@ run:
 duckdb-export:
 	@rm -f lib/obsidian-compiler/vault.duckdb
 	@cd lib/obsidian-compiler && mix duckdb.export
-
-duckdb-export-all:
-	@echo "Removing old database file..."
-	@rm -f lib/obsidian-compiler/vault.db lib/obsidian-compiler/vault.db.wal # Remove DB and WAL file if it exists
-	@echo "Running DuckDB export..."
-	@cd lib/obsidian-compiler && mix duckdb.export_all
 
 duckdb-export-pattern:
 	@rm -f vault.duckdb

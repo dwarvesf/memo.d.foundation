@@ -46,7 +46,7 @@ RUN git init && \
     git config --global --add safe.directory /code && \
     git config --global url."https://github.com/".insteadOf "git@github.com:" && \
     git submodule update --init --recursive --depth 1 && \
-    devbox run build
+    devbox run build-static
 
 # Export runner
 FROM nginx:alpine

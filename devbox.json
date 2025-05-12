@@ -16,10 +16,8 @@
     ],
     "scripts": {
       "build": "make build",
-      "clear-build": "make clear-build",
+      "build-static": "make build-static",
       "run": "make run",
-      "build-target": "make build-target",
-      "run-target": "make run-target",
       "duckdb-export": "make duckdb-export",
       "fetch": "make fetch"
     }
