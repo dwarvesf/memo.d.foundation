@@ -15,6 +15,17 @@ interface HomePageProps extends RootLayoutPageProps {
   mdxSource?: SerializeResult;
 }
 
+interface MemoItem {
+  short_title: string;
+  title: string;
+  file_path: string;
+  authors: string[];
+  description: string;
+  date: string;
+  tags: string[];
+  md_content: string;
+}
+
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const layoutProps = await getRootLayoutPageProps(); // Await the asynchronous function
@@ -31,7 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const querySelect = `SELECT ${queryFields.join(', ')}`;
 
     // Add default empty arrays and error handling for each query
-    let ogifMemos = [];
+    let ogifMemos: MemoItem[] = [];
     try {
       ogifMemos = await queryDuckDB(`
         ${querySelect}
@@ -44,7 +55,7 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching ogif memos:', error);
     }
 
-    let newMemos = [];
+    let newMemos: MemoItem[] = [];
     try {
       newMemos = await queryDuckDB(`
         ${querySelect}
@@ -56,7 +67,7 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching new memos:', error);
     }
 
-    let teamMemos = [];
+    let teamMemos: MemoItem[] = [];
     try {
       teamMemos = await queryDuckDB(`
         ${querySelect}
@@ -70,7 +81,7 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching team memos:', error);
     }
 
-    let changelogMemos = [];
+    let changelogMemos: MemoItem[] = [];
     try {
       changelogMemos = await queryDuckDB(`
         ${querySelect}
@@ -83,7 +94,7 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching changelog memos:', error);
     }
 
-    let hiringMemos = [];
+    let hiringMemos: MemoItem[] = [];
     try {
       hiringMemos = await queryDuckDB(`
         ${querySelect}
