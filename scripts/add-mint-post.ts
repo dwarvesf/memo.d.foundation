@@ -34,12 +34,15 @@ function updateFrontmatter(
     // Get existing content with frontmatter
     const { data: existingFrontmatter, content } = extractFrontmatter(filePath);
 
-    const updatedFrontmatter = yaml.dump({
-      ...existingFrontmatter,
-      ...newFrontmatter,
-    });
+    const updatedFrontmatter = yaml.dump(
+      {
+        ...existingFrontmatter,
+        ...newFrontmatter,
+      },
+      { lineWidth: -1, forceQuotes: true },
+    );
 
-    const updatedContent = `---\n${updatedFrontmatter}---${content}`;
+    const updatedContent = `---\n${updatedFrontmatter}---\n${content}`;
 
     // Write back to file
     fs.writeFileSync(filePath, updatedContent);

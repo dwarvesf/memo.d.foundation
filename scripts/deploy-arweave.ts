@@ -299,10 +299,10 @@ async function processFile(
   data.perma_storage_id = result.id;
 
   // Convert frontmatter back to YAML
-  const newFrontmatter = yaml.dump(data);
+  const newFrontmatter = yaml.dump(data, { lineWidth: -1, forceQuotes: true });
 
   // Update the file
-  const updatedContent = `---\n${newFrontmatter}---${content}`;
+  const updatedContent = `---\n${newFrontmatter}---\n${content}`;
   fs.writeFileSync(filePath, updatedContent);
 
   return {
