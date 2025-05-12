@@ -1,0 +1,14 @@
+@layer components {
+  .love-watch-we-are-doing {
+    @apply !font-sans;
+  }
+  .love-watch-we-are-doing h2 {
+    @apply !font-ibm-sans mt-6 !text-[10px] !font-medium uppercase;
+  }
+  .love-watch-we-are-doing ul {
+    @apply xs:grid-cols-2 !grid !list-none gap-2.5 !pl-0;
+  }
+  .love-watch-we-are-doing a {
+    @apply !text-primary !no-underline hover:!underline;
+  }
+}

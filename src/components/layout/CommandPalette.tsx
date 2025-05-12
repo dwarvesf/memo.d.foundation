@@ -370,7 +370,9 @@ const CommandPalette: React.FC = () => {
         }
 
         // Skip recording if this is the home page
-        if (!isSkip) {
+        if (isSkip) {
+          setRecentPages(parsed);
+        } else {
           // Remove current page if it exists already (to avoid duplicates)
           let newRecentPages = parsed.filter(page => page.path !== currentPath);
 

@@ -5,7 +5,7 @@ export function getFirstMemoImage(
   fallback: string | null = '/assets/home_cover.webp',
 ) {
   // Extract first image from content if available
-  const imageMatch = memo.content?.match(/!\[.*?\]\((.*?)\)/);
+  const imageMatch = memo.content?.match(/!\[[^\]]*?\]\((.*?)\)/);
   const extractedImage = imageMatch ? imageMatch[1] : null;
   if (extractedImage) {
     if (extractedImage.startsWith('/') || extractedImage.startsWith('http')) {

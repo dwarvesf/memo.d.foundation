@@ -1,68 +1,89 @@
 import { GetStaticProps } from 'next';
 
 import { RootLayout } from '../components';
-import { IMemoItem, RootLayoutPageProps } from '@/types';
+import { RootLayoutPageProps } from '@/types';
 
 import { getRootLayoutPageProps } from '@/lib/content/utils';
-import {
-  filterMemo,
-  getAllMarkdownContents,
-  sortMemos,
-} from '@/lib/content/memo';
-import MemoVList from '@/components/memo/MemoVList';
-import MemoVLinkList from '@/components/memo/MemoVLinkList';
+import { convertToMemoItems } from '@/lib/content/memo';
+import { getMdxSource } from '@/lib/mdx';
+import path from 'path';
+import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
+import { SerializeResult } from 'next-mdx-remote-client';
+import { queryDuckDB } from '@/lib/db/utils';
 
 interface HomePageProps extends RootLayoutPageProps {
-  ogifMemos: IMemoItem[];
-  newMemos: IMemoItem[];
-  teamMemos: IMemoItem[];
-  changelogMemos: IMemoItem[];
-  hiringMemos: IMemoItem[];
+  mdxSource?: SerializeResult;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const allMemos = await getAllMarkdownContents(); // Await the asynchronous function
     const layoutProps = await getRootLayoutPageProps(); // Await the asynchronous function
-    const sortedMemos = sortMemos(allMemos);
-    const ogifMemos = filterMemo({
-      data: sortedMemos,
-      filters: {
-        tags: 'ogif',
-      },
-      limit: 5,
-    });
-    const newMemos = filterMemo({
-      data: sortedMemos,
-    });
-    const teamMemos = filterMemo({
-      data: sortedMemos,
-      filters: {
-        tags: 'team',
-      },
-    });
-    const changelogMemos = filterMemo({
-      data: sortedMemos,
-      filters: {
-        tags: 'weekly-digest',
-      },
-    });
-    const hiringMemos = filterMemo({
-      data: sortedMemos,
-      filters: {
-        tags: 'hiring',
-        hiring: true,
-      },
-    });
+    const queryFields = [
+      'short_title',
+      'title',
+      'file_path',
+      'authors',
+      'description',
+      'date',
+      'tags',
+      'md_content',
+    ];
+    const querySelect = `SELECT ${queryFields.join(', ')}`;
+    const ogifMemos = await queryDuckDB(`
+      ${querySelect}
+      FROM vault
+      WHERE ARRAY_CONTAINS(tags, 'ogif')
+      ORDER BY date DESC
+      LIMIT 5
+      `).then(convertToMemoItems);
+    const newMemos = await queryDuckDB(`
+      ${querySelect}
+      FROM vault
+      ORDER BY date DESC
+      LIMIT 3
+      `).then(convertToMemoItems);
+    const teamMemos = await queryDuckDB(`
+      ${querySelect}
+      FROM vault
+      WHERE tags IS NOT NULL
+      AND ARRAY_CONTAINS(tags, 'team')
+      ORDER BY date DESC
+      LIMIT 3
+      `).then(convertToMemoItems);
+    const changelogMemos = await queryDuckDB(`
+      ${querySelect}
+      FROM vault
+      WHERE file_path LIKE 'updates/changelog%'
+      ORDER BY date DESC
+      LIMIT 3
+      `).then(convertToMemoItems);
+    const hiringMemos = await queryDuckDB(`
+      ${querySelect}
+      FROM vault
+      WHERE tags IS NOT NULL
+      AND ARRAY_CONTAINS(tags, 'hiring') AND hiring = true
+      ORDER BY date DESC
+      LIMIT 3
+      `).then(convertToMemoItems);
 
-    return {
-      props: {
-        ...layoutProps,
+    const mdxPath = path.join(process.cwd(), 'public/content/', `index.mdx`);
+    const mdxSource = await getMdxSource({
+      mdxPath,
+      scope: {
         ogifMemos,
         newMemos,
         teamMemos,
         changelogMemos,
         hiringMemos,
+      },
+    });
+    if (!mdxSource || 'error' in mdxSource) {
+      return { notFound: true }; // Handle serialization error
+    }
+    return {
+      props: {
+        ...layoutProps,
+        mdxSource,
       },
     };
   } catch (error) {
@@ -78,12 +99,12 @@ export const getStaticProps: GetStaticProps = async () => {
 export default function Home({
   directoryTree,
   searchIndex,
-  ogifMemos,
-  newMemos,
-  teamMemos,
-  changelogMemos,
-  hiringMemos,
+  mdxSource,
 }: HomePageProps) {
+  if (!mdxSource || 'error' in mdxSource) {
+    // We already handle this in getStaticProps
+    return null;
+  }
   return (
     <RootLayout
       title="Dwarves Memo - Home"
@@ -91,95 +112,7 @@ export default function Home({
       directoryTree={directoryTree}
       searchIndex={searchIndex}
     >
-      <div className="font-serif">
-        <img
-          src="/assets/home_cover.webp"
-          className="no-zoom max-h-[500px] rounded-sm"
-        ></img>
-        <p className="mt-[var(--element-margin)]">
-          Welcome to the Dwarves Memo.
-        </p>
-        <p className="mt-[var(--element-margin)]">
-          This site is a part of our continuous learning engine, where we want
-          to build up the 1% improvement habit, learning in public.
-        </p>
-        <p className="mt-[var(--element-margin)]">
-          Written by Dwarves for product craftsmen.
-        </p>
-        <p className="mt-[var(--element-margin)]">
-          Learned by engineers. Experimented by engineers.
-        </p>
-        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
-          💡 OGIFs
-        </h2>
-        <MemoVLinkList data={ogifMemos} hideDate color="secondary" />
-
-        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
-          ✨ New memos
-        </h2>
-        <MemoVList data={newMemos} hideDate />
-
-        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
-          🧑‍💻 Life at Dwarves
-        </h2>
-        <MemoVList data={teamMemos} hideAuthors hideThumbnail />
-
-        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
-          📝 Changelog
-        </h2>
-        <MemoVLinkList data={changelogMemos} />
-
-        <h2 className="-track-[0.0125] mt-8 mb-2.5 text-[26px] leading-[140%] font-semibold">
-          🤝 Open positions
-        </h2>
-        <MemoVList data={hiringMemos} hideAuthors hideThumbnail hideDate />
-
-        <LoveWhatWeAreDoing />
-      </div>
+      <RemoteMdxRenderer mdxSource={mdxSource} />
     </RootLayout>
-  );
-}
-
-function LoveWhatWeAreDoing() {
-  return (
-    <div className="font-sans">
-      <h2 className="font-ibm-sans mt-6 text-[10px] font-medium uppercase">
-        Love what we are doing?
-      </h2>
-      <ul className="xs:grid-cols-2 mt-2.5 grid list-none gap-2.5 pl-0">
-        <li>
-          <a
-            href="https://discord.gg/dfoundation"
-            className="text-primary text-sm"
-          >
-            🩷 Join our Discord Network →
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://github.com/dwarvesf/playground"
-            className="text-primary text-sm"
-          >
-            🔥 Contribute to our Memo →
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://careers.d.foundation/"
-            className="text-primary text-sm"
-          >
-            🤝 Join us, we are hiring →
-          </a>
-        </li>
-        <li>
-          <a
-            href="http://memo.d.foundation/earn/"
-            className="text-primary text-sm"
-          >
-            🙋 Give us a helping hand →
-          </a>
-        </li>
-      </ul>
-    </div>
   );
 }

@@ -81,9 +81,9 @@ export interface IMemoItem {
   hiring?: boolean;
 
   filePath: string;
-  slugArray: string[];
+  slugArray?: string[];
 
-  image?: string;
+  image?: string | null;
 }
 
 /**
