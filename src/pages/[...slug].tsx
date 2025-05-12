@@ -120,18 +120,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }));
 
   // Combine all paths
+  const excludePaths = ['index'];
   const allPaths = [
     ...markdownPaths,
     ...aliasPaths,
     ...nestedAliasPaths,
     ...redirectPaths,
-  ];
+  ].filter(path => {
+    const slug = path.params.slug.join('/');
+    return !excludePaths.some(excludePath => slug.startsWith(excludePath));
+  });
 
   // Deduplicate paths based on slug
   const uniquePaths = Array.from(
     new Map(allPaths.map(item => [item.params.slug.join('/'), item])).values(),
   );
-
   return {
     paths: uniquePaths,
     fallback: false, // Essential for static export
@@ -389,9 +392,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       author: frontmatter.authors?.[0] || '',
       coAuthors: frontmatter.authors?.slice(1) || [],
       tags: Array.isArray(frontmatter.tags)
-        ? frontmatter.tags.filter(
-            tag => tag !== null && tag !== undefined && tag !== '',
-          )
+        ? frontmatter.tags
+            .filter(tag => tag !== null && tag !== undefined && tag !== '')
+            .map(tag => tag.toString())
         : [],
       folder: canonicalSlug.slice(0, -1).join('/'),
       wordCount: content.split(/\s+/).length ?? 0,
