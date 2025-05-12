@@ -389,9 +389,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       author: frontmatter.authors?.[0] || '',
       coAuthors: frontmatter.authors?.slice(1) || [],
       tags: Array.isArray(frontmatter.tags)
-        ? frontmatter.tags.filter(
-            tag => tag !== null && tag !== undefined && tag !== '',
-          )
+        ? frontmatter.tags
+            .filter(tag => tag !== null && tag !== undefined && tag !== '')
+            .map(tag => tag.toString())
         : [],
       folder: canonicalSlug.slice(0, -1).join('/'),
       wordCount: content.split(/\s+/).length ?? 0,
