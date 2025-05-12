@@ -29,42 +29,73 @@ export const getStaticProps: GetStaticProps = async () => {
       'md_content',
     ];
     const querySelect = `SELECT ${queryFields.join(', ')}`;
-    const ogifMemos = await queryDuckDB(`
-      ${querySelect}
-      FROM vault
-      WHERE ARRAY_CONTAINS(tags, 'ogif')
-      ORDER BY date DESC
-      LIMIT 5
-      `).then(convertToMemoItems);
-    const newMemos = await queryDuckDB(`
-      ${querySelect}
-      FROM vault
-      ORDER BY date DESC
-      LIMIT 3
-      `).then(convertToMemoItems);
-    const teamMemos = await queryDuckDB(`
-      ${querySelect}
-      FROM vault
-      WHERE tags IS NOT NULL
-      AND ARRAY_CONTAINS(tags, 'team')
-      ORDER BY date DESC
-      LIMIT 3
-      `).then(convertToMemoItems);
-    const changelogMemos = await queryDuckDB(`
-      ${querySelect}
-      FROM vault
-      WHERE file_path LIKE 'updates/changelog%'
-      ORDER BY date DESC
-      LIMIT 3
-      `).then(convertToMemoItems);
-    const hiringMemos = await queryDuckDB(`
-      ${querySelect}
-      FROM vault
-      WHERE tags IS NOT NULL
-      AND ARRAY_CONTAINS(tags, 'hiring') AND hiring = true
-      ORDER BY date DESC
-      LIMIT 3
-      `).then(convertToMemoItems);
+
+    // Add default empty arrays and error handling for each query
+    let ogifMemos = [];
+    try {
+      ogifMemos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        WHERE ARRAY_CONTAINS(tags, 'ogif')
+        ORDER BY date DESC
+        LIMIT 5
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching ogif memos:', error);
+    }
+
+    let newMemos = [];
+    try {
+      newMemos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        ORDER BY date DESC
+        LIMIT 3
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching new memos:', error);
+    }
+
+    let teamMemos = [];
+    try {
+      teamMemos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        WHERE tags IS NOT NULL
+        AND ARRAY_CONTAINS(tags, 'team')
+        ORDER BY date DESC
+        LIMIT 3
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching team memos:', error);
+    }
+
+    let changelogMemos = [];
+    try {
+      changelogMemos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        WHERE file_path LIKE 'updates/changelog%'
+        ORDER BY date DESC
+        LIMIT 3
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching changelog memos:', error);
+    }
+
+    let hiringMemos = [];
+    try {
+      hiringMemos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        WHERE tags IS NOT NULL
+        AND ARRAY_CONTAINS(tags, 'hiring') AND hiring = true
+        ORDER BY date DESC
+        LIMIT 3
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching hiring memos:', error);
+    }
 
     const mdxPath = path.join(process.cwd(), 'public/content/', `index.mdx`);
     const mdxSource = await getMdxSource({
