@@ -140,9 +140,80 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
+  defp fetch_time_from_web() do
+    case HTTPoison.get("https://www.timeapi.io/api/Time/current/zone?timeZone=Etc/UTC") do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        case Jason.decode(body) do
+          # Changed "utc_datetime" to "dateTime"
+          {:ok, %{"dateTime" => datetime_str}} ->
+            case DateTime.from_iso8601(datetime_str) do
+              {:ok, datetime, offset} ->
+                # Ensure the datetime is in UTC
+                # TimeAPI's /current/zone endpoint with Etc/UTC should already return it in UTC
+                # but an explicit shift_zone is a good safeguard.
+                dt_utc = DateTime.shift_zone!(datetime, "Etc/UTC")
+                {:ok, dt_utc, offset}
+
+              {:error, reason} ->
+                IO.puts(
+                  "Warning: Failed to parse dateTime string '#{datetime_str}': #{inspect(reason)}"
+                )
+
+                {:error, :datetime_parse_failed}
+            end
+
+          {:ok, other_json} ->
+            IO.puts(
+              "Warning: Unexpected JSON structure from time API. Missing 'dateTime'. Got: #{inspect(other_json)}"
+            )
+
+            {:error, :unexpected_json_structure}
+
+          {:error, reason} ->
+            IO.puts("Warning: Failed to parse JSON response from time API: #{inspect(reason)}")
+            {:error, :json_parse_failed}
+        end
+
+      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
+        IO.puts(
+          "Warning: Time API request failed with status code: #{status_code}, body: #{inspect(body)}"
+        )
+
+        {:error, :http_request_failed}
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        IO.puts("Warning: HTTP request to time API failed: #{inspect(reason)}")
+        {:error, :http_request_error}
+    end
+  end
+
   defp update_last_processed_timestamp() do
-    current_utc_time = DateTime.utc_now() |> DateTime.truncate(:second)
-    ts_string = DateTime.to_iso8601(current_utc_time)
+    system_utc_time = DateTime.utc_now()
+
+    current_utc_time =
+      if system_utc_time.year == 1970 do
+        IO.puts("System time year is 1970. Attempting to fetch current time from web...")
+
+        case fetch_time_from_web() do
+          # _offset can be ignored here as web_datetime is UTC
+          {:ok, web_datetime, _offset} ->
+            IO.puts("Successfully fetched time from web: #{inspect(web_datetime)}")
+            web_datetime
+
+          # Reason already logged in fetch_time_from_web
+          {:error, _reason} ->
+            IO.puts(
+              "Failed to fetch time from web. Falling back to system time: #{inspect(system_utc_time)}"
+            )
+
+            system_utc_time
+        end
+      else
+        system_utc_time
+      end
+
+    truncated_time = DateTime.truncate(current_utc_time, :second)
+    ts_string = DateTime.to_iso8601(truncated_time)
     # Use ON CONFLICT for INSERT OR REPLACE behavior
     query = """
     INSERT INTO processing_metadata (id, last_processed_at)
