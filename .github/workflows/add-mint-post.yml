@@ -63,6 +63,7 @@ jobs:
         run: npm install --legacy-peer-deps gray-matter crypto js-yaml@4.1.0 tsx
 
       - name: Run script with files
+        id: mint
         if: steps.changed-files.outputs.files != ''
         env:
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
@@ -70,6 +71,11 @@ jobs:
         run: |
           export WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}" | base64 -d)
           npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
+
+      - name: Notify Discord
+        if: steps.mint.outputs.mint-success == true || steps.mint.outputs.mint-success == 'true'
+        run: |
+          npx tsx scripts/notify-discord-minted-articles.ts '${{ steps.changed-files.outputs.files }}'
 
       - name: Commit and push changes
         run: |

@@ -302,6 +302,7 @@ async function main() {
     }
 
     console.log('All files processed successfully');
+    console.log('::set-output name=mint-success::true');
   } catch (error) {
     console.error('Error:', error);
     process.exit(1);
