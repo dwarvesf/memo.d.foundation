@@ -8,6 +8,7 @@
   </p>
 </p>
 <p align="center">
+<a href="https://deepwiki.com/dwarvesf/memo.d.foundation"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 <a href="https://jetpack.io/devbox/docs/contributor-quickstart"><img src="https://www.jetpack.io/img/devbox/shield_galaxy.svg" /></a>
 <a href="https://twitter.com/dwarvesf"><img src="https://img.shields.io/badge/dwarvesf-blue?logo=X"></a>
 <a href="https://discord.com/invite/dwarvesv"><img src="https://img.shields.io/badge/Discord-dwarvesv-blue?logo=Discord"></a>
