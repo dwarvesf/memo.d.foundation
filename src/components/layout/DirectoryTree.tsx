@@ -37,15 +37,9 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     const isOpen = openPaths[path];
     const hasChildren = Object.keys(node.children).length > 0;
     const itemChildren = Object.entries(node.children);
-    const withChildrenItems = itemChildren
-      .filter(([, childNode]) => {
-        return Object.keys(childNode.children).length > 0;
-      })
-      .sort(([, a], [, b]) => {
-        if (a.label < b.label) return -1;
-        if (a.label > b.label) return 1;
-        return 0;
-      });
+    const withChildrenItems = itemChildren.filter(([, childNode]) => {
+      return Object.keys(childNode.children).length > 0;
+    });
 
     const withoutChildrenItems = itemChildren.filter(([, childNode]) => {
       return Object.keys(childNode.children).length === 0;
