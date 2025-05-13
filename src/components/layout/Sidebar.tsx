@@ -98,7 +98,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         </Link>
 
         {/* Navigation items */}
-        <nav className="flex flex-1 flex-col p-4 xl:items-center xl:px-2">
+        <nav className="flex flex-1 flex-col gap-1.5 p-4 xl:items-center xl:px-2">
           {navLinks.map((item, index) => (
             <TooltipProvider key={item.url} skipDelayDuration={0}>
               <Tooltip>
@@ -114,7 +114,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                     id={`sidebar-item-${index}`}
                   >
                     <div className="p-2">
-                      {item.Icon && <item.Icon className="h-6 w-6" />}
+                      {item.Icon && <item.Icon className="h-5 w-5" />}
                     </div>
                     <span className="ml-3 inline-block xl:hidden">
                       {item.title}
@@ -135,7 +135,11 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
               className="flex cursor-pointer items-center justify-center hover:opacity-80"
               onClick={toggleTheme}
             >
-              {isDark ? <SunIcon /> : <MoonIcon />}
+              {isDark ? (
+                <SunIcon width={16} height={16} />
+              ) : (
+                <MoonIcon width={16} height={16} />
+              )}
             </button>
             <span className="inline-block flex-1 shrink-0 text-sm leading-6 font-medium xl:hidden">
               {isDark ? 'Light mode' : 'Night mode'}
@@ -151,9 +155,9 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
             >
               <div className="text-foreground-light rounded-full bg-white p-0.5">
                 {isDark ? (
-                  <SunIcon width={10} height={10} />
+                  <SunIcon width={16} height={16} />
                 ) : (
-                  <MoonIcon width={10} height={10} />
+                  <MoonIcon width={16} height={16} />
                 )}
               </div>
             </button>

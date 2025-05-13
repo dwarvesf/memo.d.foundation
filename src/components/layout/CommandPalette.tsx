@@ -412,7 +412,7 @@ const CommandPalette: React.FC = () => {
         aria-label="Open command palette"
       >
         <div className="flex items-center gap-0.5">
-          <div className="text-muted-foreground flex items-center gap-1 text-sm filter-[opacity(50%)]">
+          <div className="text-muted-foreground flex items-center gap-2 text-sm filter-[opacity(50%)]">
             <SearchIcon />
             <span className="">Search note</span>
           </div>
