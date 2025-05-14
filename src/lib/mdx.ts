@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import { get } from 'lodash';
 import { serialize } from 'next-mdx-remote-client/serialize';
 import recmaMdxEscapeMissingComponents from 'recma-mdx-escape-missing-components';
 import remarkGfm from 'remark-gfm';
@@ -43,35 +44,23 @@ export async function getMdxSource(props: GetMdxSourceProps) {
     const processedFrontmatter = { ...mdxSource.frontmatter };
 
     // Loop through each frontmatter key
-    Object.keys(processedFrontmatter).forEach(fmKey => {
-      const value = processedFrontmatter[fmKey];
+    if (scope) {
+      Object.keys(processedFrontmatter).forEach(fmKey => {
+        const value = processedFrontmatter[fmKey];
 
-      // Only process string values
-      if (typeof value === 'string') {
-        // Replace all occurrences of {key} with the corresponding value from scope
-        let processedValue = value;
-
-        if (scope) {
-          Object.keys(scope).forEach(scopeKey => {
-            const placeholder = `{${scopeKey}}`;
-            const scopeValue = scope[scopeKey];
-
-            // Only replace with string or number values
-            if (
-              typeof scopeValue === 'string' ||
-              typeof scopeValue === 'number'
-            ) {
-              processedValue = processedValue.replace(
-                new RegExp(placeholder, 'g'),
-                String(scopeValue),
-              );
-            }
+        // Only process string values
+        if (typeof value === 'string') {
+          // Replace all occurrences of {key} with the corresponding value from scope
+          const varRegex = /{([^}]*)}/g;
+          const processedValue = value.replace(varRegex, (match, p1) => {
+            const value = get(scope, p1);
+            return (value as string) || match;
           });
-        }
 
-        processedFrontmatter[fmKey] = processedValue;
-      }
-    });
+          processedFrontmatter[fmKey] = processedValue;
+        }
+      });
+    }
 
     mdxSource.frontmatter = processedFrontmatter;
   }

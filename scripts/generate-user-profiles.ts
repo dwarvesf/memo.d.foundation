@@ -145,7 +145,11 @@ async function getUserProfileByGithubUsername(
     bio: githubData?.bio || undefined,
     avatar: mochiData?.avatar || githubData?.avatar_url || undefined,
     websiteLink: githubData?.blog || undefined,
-    name: mochiData?.profile_name || githubData?.name || undefined,
+    name:
+      mochiData?.profile_name ||
+      githubData?.name ||
+      githubData?.login ||
+      undefined,
     twitter_username: githubData?.twitter_username || undefined,
     discord_id: discordData?.discord_id || discordData?.platform_identifier,
     discord_username: discordData?.platform_metadata?.username,
