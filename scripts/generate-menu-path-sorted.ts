@@ -253,7 +253,6 @@ async function processDirectoryRecursive(
         absolute: false,
         dot: true,
       });
-      console.log(baseDir, globConfigPath, configFiles);
       const configFile = configFiles[0];
       if (configFile) {
         const config = await parseConfig(path.join(baseDir, configFile));
