@@ -19,7 +19,7 @@ const globAsync = (
 const VAULT_DIR = 'vault';
 const CONFIG_PATTERN = '**/.config.{yaml,yml}';
 const GLOB_MOC_FILE_PATTERN = '§*.md';
-const MOC_REGEX = /^\[§.*.md\]$/gi;
+const READING_FILE_REGEX = /^\[.*.md\]$/gi;
 const OUTPUT_FILE = 'public/content/menu-sorted.json';
 
 // Interfaces
@@ -170,7 +170,7 @@ function sortMarkdownFiles(
 
   // First, sort by patterns
   for (const pattern of filePatterns) {
-    if (MOC_REGEX.test(pattern)) continue; // Skip MoC pattern
+    if (READING_FILE_REGEX.test(pattern)) continue; // Skip the file need to be read pattern
 
     mdFiles.forEach(file => {
       if (matchPattern(file, pattern)) {
@@ -243,13 +243,13 @@ async function processDirectoryRecursive(
       if (sortPatterns.file_patterns?.length || sortPatterns?.folders?.length) {
         filePatterns = sortPatterns.file_patterns;
         folderPatterns = sortPatterns.folders;
-        const mocPatterns = filePatterns.filter(pattern =>
-          MOC_REGEX.test(pattern),
+        const readingFilePatternsList = filePatterns.filter(pattern =>
+          READING_FILE_REGEX.test(pattern),
         );
-        if (mocPatterns.length) {
+        if (readingFilePatternsList.length) {
           mocLinks = await processMoCFiles(
             path.join(baseDir, dirPath),
-            mocPatterns,
+            readingFilePatternsList,
           );
         }
       }
