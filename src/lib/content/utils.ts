@@ -1,17 +1,131 @@
 import {
-  RootLayoutPageProps,
-  ITreeNode,
   GroupedPath,
-  MenuFilePath,
   IMemoItem,
+  ITreeNode,
+  MenuFilePath,
+  NestedMenuPathTree,
+  RootLayoutPageProps,
 } from '@/types';
-import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathComponents from utils
-import { formatContentPath } from '../utils/path-utils'; // Import formatContentPath from path-utils
-import path from 'path'; // Import path module
 import fs from 'fs/promises'; // Use promises version for async file reading
-import { uppercaseSpecialWords } from '../utils';
-import { getAllMarkdownContents } from './memo';
 import { memoize } from 'lodash';
+import path from 'path'; // Import path module
+import { uppercaseSpecialWords } from '../utils';
+import { formatContentPath } from '../utils/path-utils'; // Import formatContentPath from path-utils
+import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathComponents from utils
+import { getAllMarkdownContents } from './memo';
+import { getContentPath } from './paths';
+
+export async function getMenuPathSorted() {
+  try {
+    const jsonContent = await fs.readFile(
+      getContentPath('menu-sorted.json'),
+      'utf-8',
+    );
+    const parsedContent = JSON.parse(jsonContent);
+    return parsedContent as NestedMenuPathTree;
+  } catch (error) {
+    console.error('Error parsing JSON:', error);
+    return {};
+  }
+}
+
+/**
+ * Sorts file paths according to configuration in sortedMenuPaths
+ * @param menuData - Array of file path objects to be sorted
+ * @param sortedMenuPaths - Configuration object defining custom sort order
+ * @returns Sorted array of file path objects
+ */
+function applyRecursiveMenuSortedFiles(
+  menuData: GroupedPath['file_paths'],
+  sortedMenuPaths: NestedMenuPathTree | null,
+): GroupedPath['file_paths'] {
+  if (!sortedMenuPaths) {
+    return menuData;
+  }
+
+  // Extract sorted paths from the menu sorted paths object
+  const sortedKeys = Object.entries(sortedMenuPaths)
+    .filter(([, value]) => {
+      return (
+        typeof value === 'string' &&
+        menuData.some(file => file.file_path === value)
+      );
+    })
+    .map(([, value]) => value as string);
+
+  // Get unsorted files (files not present in sortedKeys)
+  const unsortedFiles = menuData
+    .filter(file => !sortedKeys.includes(file.file_path))
+    .sort((a, b) => a.title.localeCompare(b.title))
+    .map(file => file.file_path);
+
+  // Combine sorted keys with alphabetically sorted unsorted files
+  const combinedSortedPaths = [...sortedKeys, ...unsortedFiles];
+
+  // Map paths back to their original file objects
+  return combinedSortedPaths
+    .map(path => menuData.find(file => file.file_path === path))
+    .filter((file): file is MenuFilePath => file !== undefined);
+}
+
+/**
+ * Recursively applies custom sorting to a menu data structure
+ * @param menuData - Menu structure containing file paths and nested directories
+ * @param sortedMenuPaths - Configuration object defining custom sort order
+ * @returns Sorted menu data structure
+ */
+function applyRecursiveMenuSortedField(
+  menuData: Record<string, GroupedPath> | GroupedPath['next_path'],
+  sortedMenuPaths: NestedMenuPathTree | null,
+): Record<string, GroupedPath> {
+  // Sort paths alphabetically as a fallback
+  const alphabeticallySortedPaths = Object.keys(menuData).sort((a, b) =>
+    a.localeCompare(b),
+  );
+
+  // Get ordered paths from sortedMenuPaths if available
+  const sortedConfigPaths = Object.keys(sortedMenuPaths ?? {});
+
+  // Combine paths: first the ones specified in sortedMenuPaths (if they exist in menuData),
+  // then alphabetically sorted remaining paths
+  const orderedPaths = [
+    // First include paths from sortedMenuPaths that are objects (not strings) and exist in menuData
+    ...sortedConfigPaths.filter(path => {
+      const menuSortedValue = sortedMenuPaths?.[path];
+      return (
+        menuSortedValue instanceof Object &&
+        menuSortedValue !== null &&
+        alphabeticallySortedPaths.includes(path)
+      );
+    }),
+    // Then include remaining paths not already included
+    ...alphabeticallySortedPaths.filter(
+      path => !sortedConfigPaths.includes(path),
+    ),
+  ];
+
+  // Process each path to create entries for the final object
+  const entries = orderedPaths.map(path => {
+    const value = menuData[path];
+    const pathConfig = sortedMenuPaths?.[path] ?? null;
+
+    // If the config for this path is a string, it's a file reference - no need for recursion
+    if (typeof pathConfig === 'string') {
+      return [path, value];
+    }
+
+    // Otherwise, recursively apply sorting to nested structures
+    const processedValue = {
+      ...value, // Fix: spread value instead of menuData
+      file_paths: applyRecursiveMenuSortedFiles(value.file_paths, pathConfig),
+      next_path: applyRecursiveMenuSortedField(value.next_path, pathConfig),
+    };
+
+    return [path, processedValue];
+  }) as [string, GroupedPath][];
+
+  return Object.fromEntries<GroupedPath>(entries);
+}
 
 /**
  * Transforms the nested menu data structure into the ITreeNode structure
@@ -67,8 +181,8 @@ function transformMenuDataToDirectoryTree(
   const targetChildrenNode =
     currentPath === '' ? treeNode['/'].children : treeNode; // Children go under '/' if at root
 
-  // Process directories (keys in menuData)
-  Object.entries(menuData).forEach(([dirName, group]) => {
+  // Process directories
+  for (const [dirName, group] of Object.entries(menuData)) {
     // Handle the root path case explicitly for constructing the path
     const fullDirPath =
       currentPath === '' ? '/' + dirName : path.join(currentPath, dirName); // Keep this for path construction
@@ -84,8 +198,8 @@ function transformMenuDataToDirectoryTree(
     );
     Object.assign(children, nestedChildren); // Add nested directories to children
 
-    // Process files in the current directory
-    group.file_paths.forEach((file: MenuFilePath) => {
+    // Process sorted files
+    for (const file of group.file_paths) {
       // Explicitly type 'file'
       const fullFilePath = '/' + file.file_path; // File paths are already full paths relative to root
 
@@ -96,7 +210,7 @@ function transformMenuDataToDirectoryTree(
         children: {}, // Files have no children in the tree
         url: url, // Add the generated URL
       };
-    });
+    }
 
     // Add the current directory node
     // For directories, the URL is the slugified path without trailing slash (unless root)
@@ -110,7 +224,7 @@ function transformMenuDataToDirectoryTree(
       children: children,
       url: dirUrl, // Add the generated URL for directory
     };
-  });
+  }
 
   // Add Tags as children under '/tags' only at the root level
   if (currentPath === '' && tags.length > 0) {
@@ -194,10 +308,16 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
   }
 
   const memos = await getAllMarkdownContents();
+  const menuSortedPaths = await getMenuPathSorted();
+  // Sort the menu data using the sorted paths
+  const sortedMenuData = applyRecursiveMenuSortedField(
+    menuData,
+    menuSortedPaths,
+  );
 
   // Pass tags array to the transformation function
   const directoryTree = transformMenuDataToDirectoryTree(
-    menuData,
+    sortedMenuData,
     pinnedNotes,
     appendTagsCount(tags, memos),
   );

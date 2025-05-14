@@ -18,6 +18,7 @@
     "generate-backlinks": "tsx scripts/generate-backlinks.ts",
     "generate-summary": "tsx scripts/generate-summary.ts",
     "generate-user-profiles": "tsx scripts/generate-user-profiles.ts",
+    "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",
     "copy-404": "cp out/404/index.html out/404.html"
   },
   "type": "module",
@@ -37,6 +38,7 @@
     "@rainbow-me/rainbowkit": "^2.2.4",
     "@tailwindcss/forms": "^0.5.10",
     "@tanstack/react-query": "^5.72.2",
+    "@types/glob": "^8.1.0",
     "@types/lodash": "^4.17.16",
     "acorn": "^8.14.1",
     "arweave": "^1.15.7",
@@ -48,6 +50,7 @@
     "draft-js": "^0.11.7",
     "ethers": "^6.13.5",
     "gh-pages": "^6.3.0",
+    "glob": "^11.0.2",
     "gray-matter": "^4.0.3",
     "hast-util-to-string": "^3.0.1",
     "html-react-parser": "^5.2.3",

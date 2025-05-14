@@ -95,6 +95,12 @@ export interface MenuFilePath {
   date: string; // Keep date for sorting
 }
 
+export interface NestedMenuPathTree {
+  [key: string]: string | NestedMenuPathTree;
+  // The key is the path, and the value can be a string or another nested object
+  // representing subdirectories.
+}
+
 /**
  * Interface for grouped path data (menu hierarchy node)
  */
