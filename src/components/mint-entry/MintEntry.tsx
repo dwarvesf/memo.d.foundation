@@ -203,7 +203,7 @@ const MintEntry: React.FC<Props> = ({ metadata }) => {
   return (
     <div className="mb-4 grid gap-6 md:grid-cols-2">
       {/* Minting Section */}
-      <Card className="dark:bg-muted/90 rounded-lg bg-[#3a1818] p-6 shadow-xs">
+      <Card className="dark:bg-muted/90 rounded-lg bg-[#f8f0f0] p-6 shadow-xs">
         <div className="relative flex flex-col gap-6">
           {/* NFT Preview */}
           <div className="dark:border-border dark:bg-secondary mx-auto flex h-[192px] w-[192px] flex-col overflow-hidden rounded border bg-[#fff]">
