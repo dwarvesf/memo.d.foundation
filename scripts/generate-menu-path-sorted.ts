@@ -18,8 +18,7 @@ const globAsync = (
 // Constants
 const VAULT_DIR = 'vault';
 const CONFIG_PATTERN = '**/.config.{yaml,yml}';
-const GLOB_MOC_FILE_PATTERN = '§*.md';
-const READING_FILE_REGEX = /^\[.*.md\]$/gi;
+const READING_FILE_REGEX = /^\[.*.md\]$/i;
 const OUTPUT_FILE = 'public/content/menu-sorted.json';
 
 // Interfaces
@@ -91,29 +90,40 @@ function extractMarkdownLinks(content: string): string[] {
   return [...new Set(links)]; // Remove duplicates
 }
 
+function truncateMocFilePattern(mocFilePattern: string): string {
+  // Remove leading and trailing brackets
+  const trimmedPattern = mocFilePattern.replace(/^\[/, '').replace(/\]$/, '');
+  return trimmedPattern;
+}
+
 /**
  * Process MoC files in a directory and extract ordered links
  */
 async function processMoCFiles(
   dirPath: string,
-  mocPatterns: string[],
+  _mocPatterns: string[],
 ): Promise<string[]> {
   try {
-    const mocFiles = await globAsync(GLOB_MOC_FILE_PATTERN, {
-      cwd: dirPath,
-      absolute: false,
-    });
-
-    let allLinks: string[] = [];
-    const mocFilesMatchingPattern = mocFiles.filter(file =>
-      mocPatterns.some(pattern => matchPattern(file, pattern)),
+    const mocPatterns = _mocPatterns.map(pattern =>
+      truncateMocFilePattern(pattern),
     );
-    for (const mocFile of mocFilesMatchingPattern) {
-      const content = await fs.readFile(path.join(dirPath, mocFile), 'utf8');
-      allLinks = [...allLinks, ...extractMarkdownLinks(content)];
-    }
+    let allLinks: string[] = [];
+    // Get all MoC files matching the patterns
+    for (const pattern of mocPatterns) {
+      const mocFiles = await globAsync(pattern, {
+        cwd: dirPath,
+        absolute: false,
+      });
 
-    return allLinks;
+      const mocFilesMatchingPattern = mocFiles.filter(file =>
+        mocPatterns.some(pattern => matchPattern(file, pattern)),
+      );
+      for (const mocFile of mocFilesMatchingPattern) {
+        const content = await fs.readFile(path.join(dirPath, mocFile), 'utf8');
+        allLinks = [...allLinks, ...extractMarkdownLinks(content)];
+      }
+    }
+    return [...new Set(allLinks)]; // Remove duplicates
   } catch (error) {
     console.error(`Error processing MoC files in ${dirPath}:`, error);
     return [];
@@ -208,16 +218,12 @@ function getSortPatterns(config: FilePatterns | null): SortPatterns {
     file_patterns: [],
   };
   const sortConfig = (config?.sort || []).map((pattern: string) =>
-    String(pattern),
+    Array.isArray(pattern) ? `[${pattern}]` : String(pattern),
   );
   sortPatterns.folders =
-    sortConfig
-      .filter(p => p.startsWith('/'))
-      .map(p => p.replace(/^\//, '')) || [];
+    sortConfig.filter(p => p.startsWith('/')).map(p => p.replace(/^\//, '')) ||
+    [];
   sortPatterns.file_patterns = sortConfig.filter(p => !p.startsWith('/')) || [];
-  if (sortPatterns.file_patterns.length) {
-    console.log(sortPatterns.folders);
-  }
   return sortPatterns;
 }
 
@@ -238,19 +244,35 @@ async function processDirectoryRecursive(
     let mocLinks: string[] = [];
 
     if (configPath) {
-      const config = await parseConfig(path.join(baseDir, configPath));
-      const sortPatterns = getSortPatterns(config);
-      if (sortPatterns.file_patterns?.length || sortPatterns?.folders?.length) {
-        filePatterns = sortPatterns.file_patterns;
-        folderPatterns = sortPatterns.folders;
-        const readingFilePatternsList = filePatterns.filter(pattern =>
-          READING_FILE_REGEX.test(pattern),
-        );
-        if (readingFilePatternsList.length) {
-          mocLinks = await processMoCFiles(
-            path.join(baseDir, dirPath),
-            readingFilePatternsList,
+      const globConfigPath = configPath.replace(
+        /(.yml|.yaml)$/g,
+        '.{yaml,yml}',
+      );
+      const configFiles = await globAsync(globConfigPath, {
+        cwd: baseDir,
+        absolute: false,
+        dot: true,
+      });
+      console.log(baseDir, globConfigPath, configFiles);
+      const configFile = configFiles[0];
+      if (configFile) {
+        const config = await parseConfig(path.join(baseDir, configFile));
+        const sortPatterns = getSortPatterns(config);
+        if (
+          sortPatterns.file_patterns?.length ||
+          sortPatterns?.folders?.length
+        ) {
+          filePatterns = sortPatterns.file_patterns;
+          folderPatterns = sortPatterns.folders;
+          const readingFilePatternsList = filePatterns.filter(pattern =>
+            READING_FILE_REGEX.test(pattern),
           );
+          if (readingFilePatternsList.length) {
+            mocLinks = await processMoCFiles(
+              path.join(baseDir, dirPath),
+              readingFilePatternsList,
+            );
+          }
         }
       }
     }
@@ -316,7 +338,11 @@ async function processDirectoryRecursive(
 }
 
 async function processVaultDirectory() {
-  return await processDirectoryRecursive(VAULT_DIR, null, '.');
+  return await processDirectoryRecursive(
+    VAULT_DIR,
+    VAULT_DIR + '/.config.yaml',
+    '.',
+  );
 }
 
 /**
