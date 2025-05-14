@@ -41,7 +41,7 @@ const ContributorHead = (props: Props) => {
       .sort((a, b) => (b.count as number) - (a.count as number));
 
   return (
-    <div className="flex justify-between gap-4">
+    <div className="mb-10 flex justify-between gap-4">
       <div>
         <div className="flex justify-between">
           <div>
@@ -62,7 +62,7 @@ const ContributorHead = (props: Props) => {
             />
           </div>
         </div>
-        <div className="mt-2">
+        <div className="mt-2 gap-1">
           {websiteLink && (
             <div>
               <Link className="text-muted-foreground mr-2 inline w-4" />
