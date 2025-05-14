@@ -3,7 +3,6 @@ import { formatContentPath } from '@/lib/utils/path-utils';
 import { IMemoItem } from '@/types';
 import { formatDate } from 'date-fns';
 import Link from 'next/link';
-import React from 'react';
 
 interface Props {
   data: IMemoItem[];
@@ -14,18 +13,22 @@ const MemoTimelineList = (props: Props) => {
   const { data = [], title } = props;
   return (
     <div>
-      {title && <h3 className="!mt-6 !mb-4">{title}</h3>}
+      {title && (
+        <h3 className="!m-0 !mt-0 !mb-2" style={{ marginTop: '0!important' }}>
+          #{uppercaseSpecialWords(title)}
+        </h3>
+      )}
       {data.map(memo => {
         return (
-          <div key={memo.filePath} className="leading-6.5">
-            <span className="text-muted-foreground font-ibm-sans mr-5 tabular-nums">
+          <div key={memo.filePath} className="flex">
+            <span className="text-muted-foreground font-ibm-sans mr-5 w-20 tabular-nums">
               {formatDate(memo.date, 'dd.MM.yyyy')}
             </span>
             <Link
               href={formatContentPath(memo.filePath || '')}
-              className="font-semibold !no-underline hover:!underline"
+              className="font-medium !no-underline hover:!underline"
             >
-              {uppercaseSpecialWords(memo.title)}
+              {uppercaseSpecialWords(memo.short_title || memo.title)}
             </Link>
           </div>
         );

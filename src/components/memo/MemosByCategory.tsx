@@ -1,5 +1,5 @@
 import { IMemoItem } from '@/types';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import MemoTimelineList from './MemoTimelineList';
 
 interface Props {
@@ -32,7 +32,7 @@ const MemosByCategory = (props: Props) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-4">
       {Object.entries(groupedData).map(([tag, memos]) => (
         <MemoTimelineList key={tag} title={tag} data={memos} />
       ))}
