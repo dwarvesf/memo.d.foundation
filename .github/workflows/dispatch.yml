@@ -53,10 +53,28 @@ jobs:
           git checkout main || git checkout master || echo "WARN: Failed to checkout main or master in parent repository. Proceeding with current branch."
           git submodule foreach --recursive "
             echo \"Processing submodule: \$name (\$path)\";
-            git checkout main || git checkout master || echo 'WARN: Failed to checkout main/master in submodule \$name, attempting push on current state';
+            # Attempt to checkout main or master
+            if git checkout main 2>/dev/null; then
+              echo \"INFO: In submodule \$name, checked out main.\"
+            elif git checkout master 2>/dev/null; then
+              echo \"INFO: In submodule \$name, checked out master.\"
+            else
+              # If checkout failed, print a warning with the current state
+              CURRENT_SUBMODULE_STATE=\$(git rev-parse --abbrev-ref HEAD 2>/dev/null || git rev-parse --short HEAD)
+              echo \"WARN: Failed to checkout main or master in submodule \$name. Current state: \$CURRENT_SUBMODULE_STATE.\";
+            fi
+            
             git add --all;
-            git commit -m 'chore(ci): reindex' || echo 'INFO: No changes to commit in submodule \$name';
-            git push || echo \"WARN: Failed to push submodule \$name. Continuing...\";
+            git commit -m 'chore(ci): reindex' || echo \"INFO: No changes to commit in submodule \$name\";
+            
+            # Only attempt to push if currently on a branch
+            if git symbolic-ref --quiet HEAD; then
+              CURRENT_SUBMODULE_BRANCH=\$(git symbolic-ref --short HEAD)
+              git push || echo \"WARN: Failed to push submodule \$name from branch \$CURRENT_SUBMODULE_BRANCH. Continuing...\";
+            else
+              DETACHED_SUBMODULE_HEAD=\$(git rev-parse --short HEAD)
+              echo \"WARN: Submodule \$name is in a detached HEAD state (\$DETACHED_SUBMODULE_HEAD). Skipping push.\";
+            fi
           "
           git add --all
           git commit -m "chore(ci): reindex" || echo "INFO: No changes to commit in parent repository"
