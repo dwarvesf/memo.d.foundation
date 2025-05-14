@@ -62,7 +62,7 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
 
 export function uppercaseSpecialWords(str = '', separator = ' ') {
   return str
-    .toString()
+    ?.toString()
     .split(separator)
     .map(word => {
       return wordDict[word.toLowerCase()] || word;
