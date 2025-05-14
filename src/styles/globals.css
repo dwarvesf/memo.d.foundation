@@ -119,7 +119,7 @@
   }
 
   html {
-    @apply overflow-x-hidden scroll-smooth;
+    @apply w-screen overflow-x-hidden scroll-smooth;
     scroll-padding-top: 5rem;
   }
 
