@@ -54,19 +54,17 @@ export const CommandSearchInput: React.FC<CommandSearchInputProps> = ({
   };
 
   return (
-    <div className="border-border border-b p-4">
-      <div className="flex items-center">
-        <SearchIcon className="text-muted-foreground mr-2 h-5 w-5" />
-        <div className="relative flex-1">
-          <HighlightWithinTextarea
-            ref={inputRef}
-            value={value}
-            onChange={handleChange}
-            highlight={highlights}
-            placeholder="Search (e.g., @tom, #ai, /playbook)..."
-            keyBindingFn={keyBindingFn}
-          />
-        </div>
+    <div className="placeholder:text-subtle flex w-full items-center bg-transparent p-0 focus-visible:outline-none">
+      <SearchIcon className="mr-2 h-4 w-4 flex-shrink-0 text-gray-400" />
+      <div className="flex-1">
+        <HighlightWithinTextarea
+          ref={inputRef}
+          value={value}
+          onChange={handleChange}
+          highlight={highlights}
+          placeholder="Search (e.g., @tom, #ai, /playbook)..."
+          keyBindingFn={keyBindingFn}
+        />
       </div>
     </div>
   );

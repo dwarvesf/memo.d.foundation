@@ -407,7 +407,7 @@ const CommandPalette: React.FC = () => {
     <div className="command-palette relative z-50">
       {/* Search button */}
       <button
-        className="hover:border-border hidden w-50 cursor-pointer justify-between rounded-lg border border-transparent bg-transparent px-3 py-1.5 transition-all duration-100 ease-in-out md:flex"
+        className="hover:border-border hidden w-[240px] cursor-pointer justify-between rounded-lg border border-transparent bg-transparent px-2 py-2 transition-all duration-100 ease-in-out md:flex"
         onClick={toggleCommandPalette}
         aria-label="Open command palette"
       >
@@ -418,15 +418,12 @@ const CommandPalette: React.FC = () => {
           </div>
         </div>
         <div className="text-muted-foreground flex items-center gap-0.5 text-xs">
-          <kbd
-            className="text-black-secondary dark:bg-border dark:text-foreground rounded-[2px] bg-[#F7F7F7] px-1.5 py-0.5 font-sans shadow-[0px_2px_0px_0px_#D4D3D0] dark:shadow-[0px_2px_0px_0px_#2D2D2D]"
+          <span
+            className="flex items-center justify-center rounded-md bg-[var(--border)] px-1 py-0.5 font-sans text-[12px] leading-4 font-medium text-[var(--muted-foreground)]"
             suppressHydrationWarning
           >
-            {modifier}
-          </kbd>
-          <kbd className="text-black-secondary dark:bg-border dark:text-foreground rounded-[2px] bg-[#F7F7F7] px-1.5 py-0.5 font-sans shadow-[0px_2px_0px_0px_#D4D3D0] dark:shadow-[0px_2px_0px_0px_#2D2D2D]">
-            K
-          </kbd>
+            {modifier} K
+          </span>
         </div>
       </button>
 
