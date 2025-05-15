@@ -48,7 +48,7 @@ const RightSidebar = (props: Props) => {
         'reading:opacity-0 reading:xl:translate-x-[10px] reading:invisible reading:fixed reading:right-[calc((100vw-var(--container-max-width)-var(--nav-sidebar-width))/2-var(--right-sidebar-width)-var(--column-gap))]',
       )}
     >
-      <div className="right-0 flex w-full flex-col gap-y-8 pt-4 pb-10 transition-[top] duration-200 ease-in-out">
+      <div className="bg-background right-0 flex w-full flex-col gap-y-8 pt-4 pb-4 transition-[top] duration-200 ease-in-out">
         {metadata && (
           <div className="metadata space-y-6 pt-6">
             <div className="">
