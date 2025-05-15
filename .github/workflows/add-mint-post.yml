@@ -82,13 +82,26 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git checkout main || git checkout master || echo "WARN: Failed to checkout main or master in parent repository. Proceeding with current branch."
-          git submodule foreach --recursive "
-            echo \"Processing submodule: \$name (\$path)\";
-            git checkout main || git checkout master || echo 'WARN: Failed to checkout main/master in submodule \$name, attempting push on current state';
-            git add --all;
-            git commit -m 'chore(ci): update submodule' || echo 'INFO: No changes to commit in submodule \$name';
-            git push || echo \"WARN: Failed to push submodule \$name. Continuing...\";
-          "
+          # Process Level 1 submodules
+          git submodule foreach '
+            echo "Processing L1 submodule: $name ($path)"
+            git checkout main || git checkout master || echo "WARN: Failed to checkout main/master in L1 submodule $name, attempting push on current state"
+            git add --all
+            git commit -m "chore(ci): reindex" || echo "INFO: No changes to commit in L1 submodule $name"
+            git push || echo "WARN: Failed to push L1 submodule $name. Continuing..."
+
+            # Process Level 2 submodules (submodules of the current L1 submodule)
+            # This command is executed from within the L1 submodule directory
+            # Wrapped in a subshell to catch errors from the inner foreach
+            (git submodule foreach '\''
+              echo "  Processing L2 submodule: $name ($path)"
+              git checkout main || git checkout master || echo "  WARN: Failed to checkout main/master in L2 submodule $name, attempting push on current state"
+              git add --all
+              git commit -m "chore(ci): reindex" || echo "  INFO: No changes to commit in L2 submodule $name"
+              git push || echo "  WARN: Failed to push L2 submodule $name. Continuing..."
+            '\'' || echo "WARN: Inner foreach for L2 in L1 submodule $name ($path) encountered an issue. Continuing...")
+          ' || echo "WARN: Outer foreach for L1 submodules encountered an issue. Attempting to process parent repo."
+          # Commit and push changes in the parent repository
           git add --all
-          git commit -m "chore(ci): update submodules and reindex" || echo "INFO: No changes to commit in parent repository"
+          git commit -m "chore(ci): reindex" || echo "INFO: No changes to commit in parent repository"
           git push || echo "WARN: Failed to push parent repository."
