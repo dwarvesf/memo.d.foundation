@@ -1,6 +1,6 @@
-import { cn, slugToTitle } from '@/lib/utils'; // Import slugToTitle
+import { cn, slugToTitle } from '@/lib/utils';
 import { ITreeNode } from '@/types';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { ChevronDownIcon } from 'lucide-react';
 import { useSessionStorage } from 'usehooks-ts';
@@ -8,13 +8,12 @@ import Link from 'next/link';
 
 interface DirectoryTreeProps {
   tree?: Record<string, ITreeNode>;
-  // pinnedNotes and tags are no longer used directly by DirectoryTree
 }
 
 const DirectoryTree = (props: DirectoryTreeProps) => {
   const { tree } = props;
   const router = useRouter();
-  const currentPath = router.asPath;
+  const isInitializedRef = useRef(false);
   const [openPaths, setOpenPaths] = useSessionStorage<Record<string, boolean>>(
     'directoryTreeOpenPaths',
     {
@@ -25,6 +24,72 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       initializeWithValue: false,
     },
   );
+
+  // Auto-expand paths for the current route
+  useEffect(() => {
+    if (!tree) return;
+
+    // Normalize the current path
+    const currentPath = router.asPath.endsWith('/')
+      ? router.asPath.slice(0, -1)
+      : router.asPath;
+
+    // Function to find the path in the tree
+    const findPathInTree = (
+      nodes: Record<string, ITreeNode>,
+      targetPath: string,
+      parentPaths: string[] = [],
+    ): string[] | null => {
+      for (const [nodePath, node] of Object.entries(nodes)) {
+        // Check if this is our target
+        if (node.url === targetPath) {
+          return [...parentPaths, nodePath];
+        }
+
+        // Check children if they exist
+        if (Object.keys(node.children).length > 0) {
+          const result = findPathInTree(node.children, targetPath, [
+            ...parentPaths,
+            nodePath,
+          ]);
+          if (result) return result;
+        }
+      }
+
+      return null;
+    };
+
+    // Find the path segments that lead to the current page
+    const pathSegments = findPathInTree(tree, currentPath);
+    if (pathSegments) {
+      // Update the open paths
+      setOpenPaths(prev => {
+        const newOpenPaths = { ...prev };
+        pathSegments.forEach(path => {
+          // Ignore leaf nodes that are markdown files
+          if (path.endsWith('.md')) {
+            return;
+          }
+          newOpenPaths[path] = true;
+        });
+        return newOpenPaths;
+      });
+      const leafPath = pathSegments[pathSegments.length - 1];
+      setTimeout(() => {
+        const element = document.querySelector(`[data-path="${leafPath}"]`);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            // Block scrolling to the center on first load, then to nearest
+            // to avoid flickering
+            block: isInitializedRef.current ? 'nearest' : 'center',
+            inline: 'start',
+          });
+        }
+        isInitializedRef.current = true;
+      }, 500);
+    }
+  }, [router.asPath, tree, setOpenPaths]);
 
   const toggleOpenPath = (path: string) => {
     setOpenPaths(prev => ({
@@ -50,16 +115,12 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     }
 
     // Determine if this item should be marked as active
-    // Use node.url for comparison as it's the final link path
     const isActive = (() => {
-      // Never activate expandable groups
-      if (hasChildren) {
-        return false;
-      }
+      const currentPath = router.asPath.endsWith('/')
+        ? router.asPath.slice(0, -1)
+        : router.asPath;
 
       // Check if current path is a readme or index of this path
-      // This logic might need adjustment based on how README URLs are handled
-      // in the new data structure. Assuming node.url for READMEs is the parent path.
       const isCurrentPathSpecial =
         currentPath.endsWith('/readme') || currentPath.endsWith('/_index');
       if (isCurrentPathSpecial) {
@@ -68,7 +129,14 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
           0,
           currentPath.lastIndexOf('/'),
         );
-        return node.url === parentPath;
+        // Normalize both paths by removing any trailing slashes
+        const normalizedParentPath = parentPath.endsWith('/')
+          ? parentPath.slice(0, -1)
+          : parentPath;
+        const normalizedNodeUrl = node.url?.endsWith('/')
+          ? node.url.slice(0, -1)
+          : node.url;
+        return normalizedNodeUrl === normalizedParentPath;
       }
 
       // For all other cases, only highlight exact matches with the node's URL
@@ -83,8 +151,10 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
             depth > 0,
           "after:bg-border pl-3 after:absolute after:top-1/2 after:left-[7px] after:h-full after:w-[1px] after:origin-center after:-translate-y-1/2 after:scale-y-0 after:transition-transform after:duration-300 after:ease-in-out after:content-['']":
             depth > 0,
-          'after:bg-primary after:scale-y-100': isActive && depth > 0,
+          'after:bg-primary after:scale-y-100':
+            isActive && depth > 0 && !hasChildren,
         })}
+        data-path={path}
       >
         <Link
           href={node.url || path} // Use node.url for the link, fallback to path if url is missing
