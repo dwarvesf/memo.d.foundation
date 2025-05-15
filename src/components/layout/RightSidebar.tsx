@@ -48,7 +48,7 @@ const RightSidebar = (props: Props) => {
         'reading:opacity-0 reading:xl:translate-x-[10px] reading:invisible reading:fixed reading:right-[calc((100vw-var(--container-max-width)-var(--nav-sidebar-width))/2-var(--right-sidebar-width)-var(--column-gap))]',
       )}
     >
-      <div className="bg-background right-0 flex w-full flex-col gap-y-8 pt-4 pb-4 transition-[top] duration-200 ease-in-out">
+      <div className="right-0 flex w-full flex-col gap-y-8 pt-4 pb-4 bg-background transition-[top] duration-200 ease-in-out">
         {metadata && (
           <div className="metadata space-y-6 pt-6">
             <div className="">
@@ -156,41 +156,41 @@ const RightSidebar = (props: Props) => {
               metadata.characterCount ||
               metadata.blocksCount ||
               metadata.readingTime) && (
-              <div className="">
-                <h3 className="text-black-secondary dark:text-foreground text-2xs mb-3 font-sans font-semibold tracking-[0.8px] uppercase">
-                  Stats
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  {!!metadata.wordCount && (
-                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
-                      <span>Words:</span>
-                      <span>{metadata.wordCount.toLocaleString()}</span>
-                    </li>
-                  )}
+                <div className="">
+                  <h3 className="text-black-secondary dark:text-foreground text-2xs mb-3 font-sans font-semibold tracking-[0.8px] uppercase">
+                    Stats
+                  </h3>
+                  <ul className="space-y-2 text-sm">
+                    {!!metadata.wordCount && (
+                      <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
+                        <span>Words:</span>
+                        <span>{metadata.wordCount.toLocaleString()}</span>
+                      </li>
+                    )}
 
-                  {!!metadata.characterCount && (
-                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
-                      <span>Characters:</span>
-                      <span>{metadata.characterCount.toLocaleString()}</span>
-                    </li>
-                  )}
+                    {!!metadata.characterCount && (
+                      <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
+                        <span>Characters:</span>
+                        <span>{metadata.characterCount.toLocaleString()}</span>
+                      </li>
+                    )}
 
-                  {!!metadata.blocksCount && (
-                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
-                      <span>Blocks:</span>
-                      <span>{metadata.blocksCount.toLocaleString()}</span>
-                    </li>
-                  )}
+                    {!!metadata.blocksCount && (
+                      <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
+                        <span>Blocks:</span>
+                        <span>{metadata.blocksCount.toLocaleString()}</span>
+                      </li>
+                    )}
 
-                  {!!metadata.readingTime && (
-                    <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
-                      <span>Reading time:</span>
-                      <span>{metadata.readingTime}</span>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            )}
+                    {!!metadata.readingTime && (
+                      <li className="text-secondary-foreground dark:text-secondary-light flex items-center justify-between gap-1 text-xs leading-4 -tracking-[0.125px]">
+                        <span>Reading time:</span>
+                        <span>{metadata.readingTime}</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              )}
           </div>
         )}
       </div>

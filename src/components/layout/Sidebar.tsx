@@ -88,14 +88,18 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     <>
       {/* Sidebar overlay - only shown on mobile when sidebar is open */}
       {isOpen && (
-        <div className="overlay xl:hidden" onClick={() => setIsOpen(false)} />
+        <div
+          className="overlay xl:hidden"
+          onClick={() => setIsOpen(false)}
+        />
       )}
 
       {/* Sidebar */}
       <div
         ref={sidebarRef}
         tabIndex={isOpen ? 0 : -1}
-        className={`sidebar${isOpen ? 'open' : ''} bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 hidden h-full flex-col border-r pt-2.5 pb-12 font-sans transition-transform duration-300 ease-in-out xl:flex xl:translate-x-0`}
+        className={
+          `sidebar${isOpen ? ' open' : ''} hidden xl:flex bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 h-full flex-col border-r pt-2.5 pb-12 font-sans transition-transform duration-300 ease-in-out xl:translate-x-0`}
         onClick={e => e.target === e.currentTarget && handleClickOutside()}
         onKeyDown={handleKeyDown}
         aria-modal={isOpen ? 'true' : undefined}
@@ -170,7 +174,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
               )}
               onClick={toggleTheme}
             >
-              <div className="text-foreground-light border-border rounded-full border bg-white p-0.5">
+              <div className="text-foreground-light rounded-full bg-white p-0.5">
                 {isDark ? (
                   <SunIcon width={16} height={16} />
                 ) : (
