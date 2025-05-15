@@ -9,12 +9,16 @@ import { formatContentPath } from '@/lib/utils/path-utils';
 import MemoVLinkList from './memo/MemoVLinkList';
 import MemoTimelineList from './memo/MemoTimelineList';
 import MemosByCategory from './memo/MemosByCategory';
+import If from './common/If';
+import Choose from './common/Choose';
 
 interface Props {
   mdxSource: SerializeResult;
 }
 
 const components: MDXComponents = {
+  If,
+  Choose,
   Link,
   MemoVLinkList,
   ContributorHead,
