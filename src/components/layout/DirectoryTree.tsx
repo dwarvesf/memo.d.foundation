@@ -79,7 +79,6 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
         const element = document.querySelector(`[data-path="${leafPath}"]`);
         if (element) {
           element.scrollIntoView({
-            behavior: 'smooth',
             // Block scrolling to the center on first load, then to nearest
             // to avoid flickering
             block: isInitializedRef.current ? 'nearest' : 'center',
