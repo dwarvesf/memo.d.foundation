@@ -6,6 +6,42 @@ import yaml from 'js-yaml';
 import crypto from 'crypto';
 import { glob } from 'glob';
 import { resolve } from 'path';
+import dotenv from 'dotenv';
+
+/**
+ * Mint Article Script
+ *
+ * This script deploys markdown content to Arweave and mints it as an NFT.
+ *
+ * Usage:
+ *   ts-node scripts/mint-article.ts "glob/pattern/*.md" ["another/pattern/*.md"] [--dry]
+ *
+ * Environment Variables (place these in a .env file in the project root):
+ *   ARWEAVE_WALLET_JSON - Your Arweave wallet JSON as a string
+ *   WALLET_PRIVATE_KEY - Your Ethereum wallet private key
+ *   CONTRACT_ADDRESS - The address of the NFT contract
+ *   RPC_URL - Ethereum RPC URL
+ *   MOCHI_PROFILE_API - URL for the Mochi profile API
+ *
+ * Example .env file:
+ *   ARWEAVE_WALLET_JSON={"kty":"RSA",...}
+ *   WALLET_PRIVATE_KEY=0x1234...
+ *   CONTRACT_ADDRESS=0xabcd...
+ *   RPC_URL=https://ethereum-mainnet-rpc.allthatnode.com
+ *   MOCHI_PROFILE_API=https://api.mochi.example/profiles
+ */
+
+// Load environment variables from .env file
+dotenv.config();
+
+// Define required environment variables
+const REQUIRED_ENV_VARS = {
+  ARWEAVE_WALLET_JSON: 'Arweave wallet JSON',
+  WALLET_PRIVATE_KEY: 'Ethereum wallet private key',
+  CONTRACT_ADDRESS: 'Contract address',
+  RPC_URL: 'Ethereum RPC URL',
+  MOCHI_PROFILE_API: 'Mochi profile API URL',
+};
 
 const DEFAULT_IMAGE = 'ar://29D_NrcYOiOLMPVROGt5v3URNxftYCDK7z1-kyNPRT0';
 
@@ -147,8 +183,10 @@ async function getAuthorEvmAddress(author: string): Promise<string> {
   try {
     const baseUrl = process.env.MOCHI_PROFILE_API;
     if (!baseUrl) {
-      throw new Error('MOCHI_PROFILE_API is not set');
+      console.warn('MOCHI_PROFILE_API is not set, skipping EVM address lookup');
+      return '';
     }
+
     const url = `${baseUrl}/${author}`;
     const response = await fetch(url);
     if (!response.ok) {
@@ -195,11 +233,7 @@ async function uploadImageToArweave(imagePath: string): Promise<string | null> {
     }
 
     // Load wallet from environment variable
-    const walletJson = process.env.ARWEAVE_WALLET_JSON;
-    if (!walletJson) {
-      throw new Error('ARWEAVE_WALLET_JSON environment variable is not set');
-    }
-
+    const walletJson = process.env.ARWEAVE_WALLET_JSON!;
     const wallet = JSON.parse(walletJson);
 
     // Read the image file
@@ -270,11 +304,7 @@ async function deployContent(
     }
 
     // Load wallet from environment variable
-    const walletJson = process.env.ARWEAVE_WALLET_JSON;
-    if (!walletJson) {
-      throw new Error('ARWEAVE_WALLET_JSON environment variable is not set');
-    }
-
+    const walletJson = process.env.ARWEAVE_WALLET_JSON!;
     const wallet = JSON.parse(walletJson);
 
     // Generate digest
@@ -344,11 +374,6 @@ async function deployToArweave(filePath: string): Promise<OutputResult | null> {
   // Parse frontmatter
   const { data, content } = matter(fileContent);
 
-  // Check if file should be deployed
-  if (!data.should_deploy_perma_storage || data.perma_storage_id) {
-    return null;
-  }
-
   // Extract needed data
   const title = data.title || 'Untitled';
   const description = data.description || '';
@@ -405,14 +430,8 @@ async function mintOnContract(
 
   // Check if perma_storage_id exists
   if (!frontmatter.perma_storage_id) {
-    console.log(`No perma storage id for ${filePath}, exiting...`);
-    return;
-  }
-
-  // Check if already minted
-  if (frontmatter.minted_at && frontmatter.token_id) {
     console.log(
-      `File ${filePath} already has minted_at (${frontmatter.minted_at}) and token_id (${frontmatter.token_id}), skipping...`,
+      `No perma storage id for ${filePath}, cannot mint. Deploy to Arweave first.`,
     );
     return;
   }
@@ -421,30 +440,6 @@ async function mintOnContract(
   console.log(`Found perma_storage_id: ${arweaveTxId}`);
 
   try {
-    // Check if token ID already exists for this arweaveTxId
-    // This is optional and can be used to avoid unnecessary transactions
-    try {
-      const existingTokenId = await contract.getTokenId(arweaveTxId);
-      if (existingTokenId && existingTokenId.toString() !== '0') {
-        console.log(`Token ID already exists: ${existingTokenId.toString()}`);
-
-        // Update frontmatter with minted_at and token_id
-        updateFrontmatter(filePath, {
-          minted_at: getCurrentDate(),
-          token_id: existingTokenId.toString(),
-        });
-
-        console.log(`Updated ${filePath} with existing token_id`);
-        return;
-      }
-    } catch (error) {
-      // getTokenId might not exist or fail, proceed with creating new token
-      console.log(
-        'Could not check existing token ID, proceeding with creation: ',
-        error,
-      );
-    }
-
     // Call the createTokenType function
     console.log(`Creating token type with arweaveTxId: ${arweaveTxId}`);
     const tx = await contract.createTokenType(arweaveTxId);
@@ -530,6 +525,23 @@ async function main() {
     const isDryRun = args.includes('--dry');
     if (isDryRun) {
       console.log('DRY RUN MODE: No actual transactions will be submitted');
+    } else {
+      // Verify required environment variables are set
+      const missingVars = [];
+      for (const [envVar, description] of Object.entries(REQUIRED_ENV_VARS)) {
+        if (!process.env[envVar]) {
+          missingVars.push(`${envVar} (${description})`);
+        }
+      }
+
+      if (missingVars.length > 0) {
+        console.error('Missing required environment variables:');
+        missingVars.forEach(v => console.error(`- ${v}`));
+        console.error(
+          '\nPlease set these variables in your .env file or environment',
+        );
+        process.exit(1);
+      }
     }
 
     // Remove --dry flag from arguments if present
@@ -568,11 +580,6 @@ async function main() {
       path.startsWith('vault/') ? path : `vault/${path}`,
     );
 
-    // Check if Arweave wallet is set (skip in dry run)
-    if (!isDryRun && !process.env.ARWEAVE_WALLET_JSON) {
-      throw new Error('ARWEAVE_WALLET_JSON environment variable is not set');
-    }
-
     // Step 1: Deploy to Arweave
     console.log('=== STEP 1: DEPLOYING TO ARWEAVE ===');
     const deployResults: OutputResult[] = [];
@@ -580,36 +587,18 @@ async function main() {
     for (const filePath of filePaths) {
       try {
         if (isDryRun) {
-          // In dry run, just read the file and check if it should be deployed
-          const { data } = matter(fs.readFileSync(filePath, 'utf8'));
+          // In dry run, just read the file
+          console.log(`[DRY RUN] Would deploy ${filePath} to Arweave`);
 
-          if (!data.should_deploy_perma_storage || data.perma_storage_id) {
-            const skipReason = data.perma_storage_id
-              ? 'already deployed to Arweave'
-              : 'not marked for deployment';
-
-            console.log(
-              `[DRY RUN] Skipped deploying ${filePath} to Arweave (${skipReason})`,
-            );
-
-            deployResults.push({
-              file: filePath,
-              id: (data.perma_storage_id as string) || 'none',
-              digest: 'none',
-              skipped: true,
-              skipReason,
-            });
-          } else {
-            console.log(`[DRY RUN] Would deploy ${filePath} to Arweave`);
-            // Add a mock result for the dry run
-            deployResults.push({
-              file: filePath,
-              id: 'dry-run-arweave-id',
-              digest: 'dry-run-digest',
-            });
-          }
+          // Add a mock result for the dry run
+          deployResults.push({
+            file: filePath,
+            id: 'dry-run-arweave-id',
+            digest: 'dry-run-digest',
+          });
         } else {
-          // Normal operation
+          // Normal operation - always deploy
+          console.log(`Deploying ${filePath} to Arweave...`);
           const result = await deployToArweave(filePath);
           if (result) {
             deployResults.push(result);
@@ -617,23 +606,7 @@ async function main() {
               `Successfully deployed ${filePath} to Arweave with ID: ${result.id}`,
             );
           } else {
-            // Check why it was skipped
-            const { data } = matter(fs.readFileSync(filePath, 'utf8'));
-            const skipReason = data.perma_storage_id
-              ? 'already deployed to Arweave'
-              : 'not marked for deployment';
-
-            console.log(
-              `Skipped deploying ${filePath} to Arweave (${skipReason})`,
-            );
-
-            deployResults.push({
-              file: filePath,
-              id: (data.perma_storage_id as string) || 'none',
-              digest: 'none',
-              skipped: true,
-              skipReason,
-            });
+            console.error(`Failed to deploy ${filePath} to Arweave`);
           }
         }
       } catch (error: unknown) {
@@ -644,25 +617,15 @@ async function main() {
     }
 
     // Step 2: Mint on contract
-    const filesToMint = deployResults.filter(result => !result.skipped);
+    const filesToMint = deployResults;
 
     if (filesToMint.length > 0) {
       console.log('=== STEP 2: MINTING ON CONTRACT ===');
 
-      // Get private key from environment variable (skip check in dry run)
-      const privateKey = process.env.WALLET_PRIVATE_KEY;
-
-      if (!isDryRun && !privateKey) {
-        throw new Error('Private key is not set in environment variables');
-      }
-
-      // Contract address
-      const contractAddress =
-        process.env.CONTRACT_ADDRESS || '0xYourContractAddressHere';
-
-      // RPC URL
-      const rpcUrl =
-        process.env.RPC_URL || 'https://ethereum-mainnet-rpc.allthatnode.com';
+      // Get contract configuration from environment variables
+      const privateKey = process.env.WALLET_PRIVATE_KEY!;
+      const contractAddress = process.env.CONTRACT_ADDRESS!;
+      const rpcUrl = process.env.RPC_URL!;
 
       // For dry run, we don't need to connect to the network or create contract instance
       let contract;
@@ -672,7 +635,7 @@ async function main() {
         const provider = new ethers.JsonRpcProvider(rpcUrl);
 
         // Create a wallet from the private key
-        const wallet = new ethers.Wallet(privateKey!, provider);
+        const wallet = new ethers.Wallet(privateKey, provider);
 
         // Contract ABI
         const contractAbi = [
@@ -761,38 +724,25 @@ async function main() {
     }
 
     console.log('=== PROCESS COMPLETED SUCCESSFULLY ===');
-    // Log summary of minted results
+    // Log summary of results
     console.log('\nMinting Results Summary:');
     console.log('------------------------');
 
-    const processedFiles = deployResults.filter(result => !result.skipped);
-    const skippedFiles = deployResults.filter(result => result.skipped);
-
     if (isDryRun) {
-      console.log(`Files that would be processed: ${processedFiles.length}`);
-      console.log(`Files that would be skipped: ${skippedFiles.length}`);
+      console.log(`Files that would be processed: ${deployResults.length}`);
 
-      if (processedFiles.length > 0) {
+      if (deployResults.length > 0) {
         console.log('\nFiles that would be deployed and minted:');
-        processedFiles.forEach(result => console.log(`- ${result.file}`));
-      }
-
-      if (skippedFiles.length > 0) {
-        console.log('\nFiles that would be skipped:');
-        skippedFiles.forEach(result =>
-          console.log(`- ${result.file} (${result.skipReason})`),
-        );
+        deployResults.forEach(result => console.log(`- ${result.file}`));
       }
     } else {
       console.log(
-        `Files processed: ${processedFiles.map(r => r.file).join(', ') || 'None'}`,
+        `Files processed: ${deployResults.map(r => r.file).join(', ') || 'None'}`,
       );
-      console.log(`Files skipped: ${skippedFiles.length}`);
     }
 
     console.log(`\nTotal files found: ${filePaths.length}`);
-    console.log(`Total files processed: ${processedFiles.length}`);
-    console.log(`Total files skipped: ${skippedFiles.length}`);
+    console.log(`Total files processed: ${deployResults.length}`);
 
     if (isDryRun) {
       console.log('\n[DRY RUN] No actual transactions were submitted');
