@@ -200,6 +200,10 @@ function transformMenuDataToDirectoryTree(
 
     // Process sorted files
     for (const file of group.file_paths) {
+      if (!file.title) {
+        console.log(`File ${file.file_path} has no title. Skipping...`);
+        continue; // Skip files without a title
+      }
       // Explicitly type 'file'
       const fullFilePath = '/' + file.file_path; // File paths are already full paths relative to root
 
@@ -219,11 +223,14 @@ function transformMenuDataToDirectoryTree(
       slugifiedDirPath === '/' ? '/' : slugifiedDirPath.replace(/\/$/, '');
 
     // Add the current directory node to the target children node
-    targetChildrenNode[fullDirPath] = {
-      label: dirName, // Use directory name as label for the directory node
-      children: children,
-      url: dirUrl, // Add the generated URL for directory
-    };
+    const hasChildren = Object.keys(children).length > 0;
+    if (hasChildren) {
+      targetChildrenNode[fullDirPath] = {
+        label: dirName, // Use directory name as label for the directory node
+        children: children,
+        url: dirUrl, // Add the generated URL for directory
+      };
+    }
   }
 
   // Add Tags as children under '/tags' only at the root level
@@ -235,7 +242,6 @@ function transformMenuDataToDirectoryTree(
         label: `#${uppercaseSpecialWords(slugifiedTag, '-')}`, // Display tag with # prefix and count
         children: {},
         url: tagUrl,
-        ignoreLabelTransform: true,
         count, // Include count in the node
       };
     });
