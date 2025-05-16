@@ -1,4 +1,4 @@
-import { cn, slugToTitle } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { ITreeNode } from '@/types';
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
@@ -121,6 +121,9 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
 
     // Determine if this item should be marked as active
     const isActive = (() => {
+      if (hasChildren) {
+        return false;
+      }
       const currentPath = router.asPath.endsWith('/')
         ? router.asPath.slice(0, -1)
         : router.asPath;
@@ -190,7 +193,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
             />
           )}
           <span>
-            {node.ignoreLabelTransform ? node.label : slugToTitle(node.label)}
+            {node.label}
             {typeof node.count === 'number' ? (
               <span className="opacity-50"> ({node.count})</span>
             ) : (
