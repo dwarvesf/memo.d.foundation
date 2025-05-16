@@ -61,6 +61,11 @@ export async function generateRSSFeeds(
           return null;
         }
 
+        // Skip if title or date is missing
+        if (!frontmatter.title || !frontmatter.date) {
+          return null;
+        }
+
         // Create URL
         const url = `${siteUrl}/${slug.join('/')}`;
 
