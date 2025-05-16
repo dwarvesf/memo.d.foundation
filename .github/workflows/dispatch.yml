@@ -1,7 +1,9 @@
 name: Update submodules
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - dev
 
 concurrency:
   group: ${{ github.repository }}-workflow
