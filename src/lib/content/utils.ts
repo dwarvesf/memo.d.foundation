@@ -9,7 +9,7 @@ import {
 import fs from 'fs/promises'; // Use promises version for async file reading
 import { memoize } from 'lodash';
 import path from 'path'; // Import path module
-import { uppercaseSpecialWords } from '../utils';
+import { slugToTitle, uppercaseSpecialWords } from '../utils';
 import { formatContentPath } from '../utils/path-utils'; // Import formatContentPath from path-utils
 import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathComponents from utils
 import { getAllMarkdownContents } from './memo';
@@ -226,7 +226,7 @@ function transformMenuDataToDirectoryTree(
     const hasChildren = Object.keys(children).length > 0;
     if (hasChildren) {
       targetChildrenNode[fullDirPath] = {
-        label: dirName, // Use directory name as label for the directory node
+        label: slugToTitle(dirName), // Use directory name as label for the directory node
         children: children,
         url: dirUrl, // Add the generated URL for directory
       };
