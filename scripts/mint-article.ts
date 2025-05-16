@@ -2,7 +2,6 @@ import { ethers } from 'ethers';
 import Arweave from 'arweave';
 import fs from 'fs';
 import matter from 'gray-matter';
-import yaml from 'js-yaml';
 import crypto from 'crypto';
 import { glob } from 'glob';
 import { resolve } from 'path';
@@ -129,49 +128,76 @@ function resolvePath(filePath: string, path: string): string {
 }
 
 /**
- * Extracts frontmatter data from a markdown file
+ * Adds or updates specific fields in a markdown file's frontmatter
  * @param {string} filePath - Path to the markdown file
- * @returns {Object} - The frontmatter data and content
- */
-function extractFrontmatter(filePath: string): {
-  data: Record<string, unknown>;
-  content: string;
-} {
-  try {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    return matter(fileContent);
-  } catch (error) {
-    console.error(`Error reading frontmatter from ${filePath}:`, error);
-    throw error;
-  }
-}
-
-/**
- * Updates the frontmatter of a markdown file
- * @param {string} filePath - Path to the markdown file
- * @param {Object} newFrontmatter - New frontmatter data to merge with existing
+ * @param {Object} newFields - New frontmatter fields to add or update
  */
 function updateFrontmatter(
   filePath: string,
-  newFrontmatter: Record<string, unknown>,
+  newFields: Record<string, unknown>,
 ): void {
   try {
-    // Get existing content with frontmatter
-    const { data: existingFrontmatter, content } = extractFrontmatter(filePath);
+    // Read the file content
+    const fileContent = fs.readFileSync(filePath, 'utf8');
 
-    const updatedFrontmatter = yaml.dump(
-      {
-        ...existingFrontmatter,
-        ...newFrontmatter,
-      },
-      { lineWidth: -1, forceQuotes: true },
-    );
+    // Find the frontmatter boundaries and capture the content between them
+    const frontmatterMatch = fileContent.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
 
-    const updatedContent = `---\n${updatedFrontmatter}---\n${content}`;
+    if (!frontmatterMatch) {
+      console.error(`No frontmatter found in ${filePath}`);
+      return;
+    }
+
+    // Extract the original frontmatter and content
+    let frontmatterBlock = frontmatterMatch[1];
+    const contentStartIndex = frontmatterMatch[0].length;
+    const content = fileContent.substring(contentStartIndex);
+
+    // Define regexes for fields we specifically want to update if they exist
+    const fieldRegexes: Record<string, RegExp> = {
+      perma_storage_id: /^perma_storage_id:.*$/m,
+      token_id: /^token_id:.*$/m,
+      minted_at: /^minted_at:.*$/m,
+    };
+
+    // Track which fields were added vs updated
+    const addedFields: string[] = [];
+    const updatedFields: string[] = [];
+
+    // Process each field
+    for (const [key, value] of Object.entries(newFields)) {
+      // Check if this is a field we specifically want to update
+      if (fieldRegexes[key] && fieldRegexes[key].test(frontmatterBlock)) {
+        // Field exists, update it
+        frontmatterBlock = frontmatterBlock.replace(
+          fieldRegexes[key],
+          `${key}: ${value}`,
+        );
+        updatedFields.push(key);
+      } else {
+        // Field doesn't exist or isn't one we specifically update, add it
+        frontmatterBlock += `\n${key}: ${value}`;
+        addedFields.push(key);
+      }
+    }
+
+    // Construct the updated file content
+    const updatedContent = `---\n${frontmatterBlock}\n---\n\n${content}`;
 
     // Write back to file
     fs.writeFileSync(filePath, updatedContent);
-    console.log(`Updated frontmatter for ${filePath}`);
+
+    // Log what happened
+    if (updatedFields.length > 0) {
+      console.log(
+        `Updated existing frontmatter fields in ${filePath}: ${updatedFields.join(', ')}`,
+      );
+    }
+    if (addedFields.length > 0) {
+      console.log(
+        `Added new frontmatter fields to ${filePath}: ${addedFields.join(', ')}`,
+      );
+    }
   } catch (error) {
     console.error(`Error updating frontmatter for ${filePath}:`, error);
     throw error;
@@ -266,7 +292,6 @@ async function uploadImageToArweave(imagePath: string): Promise<string | null> {
     // Sign transaction
     await arweave.transactions.sign(transaction, wallet);
 
-    // Submit transaction
     const response: ArweaveResponse =
       await arweave.transactions.post(transaction);
 
@@ -350,7 +375,6 @@ async function deployContent(
     // Sign transaction
     await arweave.transactions.sign(transaction, wallet);
 
-    // Submit transaction
     const response: ArweaveResponse =
       await arweave.transactions.post(transaction);
 
@@ -398,14 +422,9 @@ async function deployToArweave(filePath: string): Promise<OutputResult | null> {
   );
 
   // Update the file with the Arweave ID
-  data.perma_storage_id = result.id;
-
-  // Convert frontmatter back to YAML
-  const newFrontmatter = yaml.dump(data, { lineWidth: -1, forceQuotes: true });
-
-  // Update the file
-  const updatedContent = `---\n${newFrontmatter}---\n${content}`;
-  fs.writeFileSync(filePath, updatedContent);
+  updateFrontmatter(filePath, {
+    perma_storage_id: result.id,
+  });
 
   return {
     file: filePath,
@@ -425,8 +444,9 @@ async function mintOnContract(
 ): Promise<unknown> {
   console.log(`Minting file: ${filePath}`);
 
-  // Extract frontmatter data
-  const { data: frontmatter } = extractFrontmatter(filePath);
+  // Read the file and extract frontmatter
+  const fileContent = fs.readFileSync(filePath, 'utf8');
+  const { data: frontmatter } = matter(fileContent);
 
   // Check if perma_storage_id exists
   if (!frontmatter.perma_storage_id) {
