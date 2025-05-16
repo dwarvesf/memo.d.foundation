@@ -78,10 +78,16 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       setTimeout(() => {
         const element = document.querySelector(`[data-path="${leafPath}"]`);
         if (element) {
+          // Block scrolling to the center on first load, then to nearest
+          // to avoid flickering
+          let block: ScrollLogicalPosition = 'nearest';
+          if (!isInitializedRef.current && !checkInView(element)) {
+            block = 'center';
+          }
           element.scrollIntoView({
-            // Block scrolling to the center on first load, then to nearest
-            // to avoid flickering
-            block: isInitializedRef.current ? 'nearest' : 'center',
+            behavior: 'smooth',
+
+            block,
             inline: 'start',
           });
         }
@@ -228,3 +234,16 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
 };
 
 export default DirectoryTree;
+
+function checkInView(element: Element | null) {
+  if (!element) return;
+  const rect = element.getBoundingClientRect();
+  const inView =
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+
+  return inView;
+}
