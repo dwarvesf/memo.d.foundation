@@ -121,6 +121,9 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
 
     // Determine if this item should be marked as active
     const isActive = (() => {
+      if (hasChildren) {
+        return false;
+      }
       const currentPath = router.asPath.endsWith('/')
         ? router.asPath.slice(0, -1)
         : router.asPath;

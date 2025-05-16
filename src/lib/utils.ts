@@ -41,9 +41,8 @@ export function slugToTitle(slug = '') {
   for (let i = 0; i < words.length; i++) {
     const word = words[i];
     words[i] =
-      wordDict[word] || i == 0
-        ? word.charAt(0).toUpperCase() + word.slice(1)
-        : word;
+      wordDict[word] ||
+      (i == 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word);
   }
 
   return words.join(' ');
