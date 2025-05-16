@@ -65,7 +65,7 @@ const SubscriptionSection: React.FC = () => {
         src={`/assets/img/sticker-${randomSticker}.png`}
         className={cn(
           'no-zoom asepect-square absolute z-10 h-10 object-contain',
-          'right-0 bottom-0 translate-x-1/3 translate-y-1/3 -rotate-10',
+          'right-0 bottom-0 translate-x-1/4 translate-y-1/3 -rotate-10',
           'drop-shadow-[0px_0px_1px_rgba(0,0,0,1)]',
         )}
       />
