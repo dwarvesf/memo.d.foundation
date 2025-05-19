@@ -67,6 +67,11 @@ export interface RootLayoutPageProps {
   searchIndex?: IMiniSearchIndex | null;
 }
 
+export interface ContributorLayoutPageProps {
+  directoryTree?: Record<string, ITreeNode>;
+  searchIndex?: IMiniSearchIndex | null;
+}
+
 export interface IMemoItem {
   content: string;
   title: string;

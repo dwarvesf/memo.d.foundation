@@ -14,11 +14,15 @@ import { queryDuckDB } from '@/lib/db/utils'; // Utility for DuckDB queries
 // Import contexts and types
 import { IMemoItem, RootLayoutPageProps } from '@/types';
 
-import { type SerializeResult } from 'next-mdx-remote-client/serialize';
+import {
+  serialize,
+  type SerializeResult,
+} from 'next-mdx-remote-client/serialize';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
-import { RootLayout } from '@/components';
 import { getMdxSource } from '@/lib/mdx';
 import { UserProfile, UserProfileJson } from '@/types/user';
+import ContributorLayout from '@/components/layout/ContributorLayout';
+import { eachDayOfInterval, formatISO, endOfYear, startOfYear } from 'date-fns';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
@@ -126,6 +130,101 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       );
       contributorMemos = []; // Handle error
     }
+
+    // Group memos by month and sort within each month
+    const aggregatedMemos: IMemoItem[][][] = [];
+
+    if (contributorMemos.length > 0) {
+      // Group memos by year-month
+      const memosByMonth: Record<string, Record<string, IMemoItem[]>> = {};
+
+      contributorMemos.forEach(memo => {
+        if (!memo.date) return;
+
+        // Convert date string to year-month key and day key
+        const date = new Date(memo.date);
+        const yearMonthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        const dayKey = String(date.getDate()).padStart(2, '0');
+
+        if (!memosByMonth[yearMonthKey]) {
+          memosByMonth[yearMonthKey] = {};
+        }
+
+        if (!memosByMonth[yearMonthKey][dayKey]) {
+          memosByMonth[yearMonthKey][dayKey] = [];
+        }
+
+        memosByMonth[yearMonthKey][dayKey].push(memo);
+      });
+
+      // Sort months in descending order (newest first)
+      const sortedMonths = Object.keys(memosByMonth).sort().reverse();
+
+      // For each month, get days and sort them in descending order
+      sortedMonths.forEach(monthKey => {
+        const monthData = memosByMonth[monthKey];
+        const sortedDays = Object.keys(monthData).sort(
+          (a, b) => parseInt(b) - parseInt(a),
+        );
+
+        const monthMemos: IMemoItem[][] = [];
+
+        // Add each day's memos as a separate array
+        sortedDays.forEach(dayKey => {
+          monthMemos.push(monthData[dayKey]);
+        });
+
+        aggregatedMemos.push(monthMemos);
+      });
+    }
+
+    // Generate activity array for contribution heatmap
+    const contributorActivity: {
+      date: string;
+      count: number;
+      level: number;
+    }[] = [];
+
+    // Get current date and create date for 1 year ago
+    const yearStart = startOfYear(new Date());
+    const yearEnd = endOfYear(new Date());
+
+    // Create map of dates to counts from memos
+    const dateCountMap: Record<string, number> = {};
+
+    contributorMemos.forEach(memo => {
+      if (!memo.date) return;
+
+      const memoDate = memo.date.split('T')[0]; // Ensure format YYYY-MM-DD
+      dateCountMap[memoDate] = (dateCountMap[memoDate] || 0) + 1;
+    });
+
+    // Function to get level based on count
+    const getLevel = (count: number): number => {
+      if (count === 0) return 0;
+      if (count < 3) return 1;
+      if (count < 5) return 2;
+      if (count < 10) return 3;
+      return 4;
+    };
+
+    const days = eachDayOfInterval({
+      start: yearStart,
+      end: yearEnd,
+    });
+
+    // Generate array of every day for the past year with counts and levels
+    for (let i = 0; i < days.length; i++) {
+      const dateStr = days[i].toISOString().split('T')[0];
+      const count = dateCountMap[dateStr] || 0;
+
+      contributorActivity.push({
+        date: formatISO(days[i], { representation: 'date' }),
+        count,
+        level: getLevel(count),
+      });
+    }
+
     // --- Fetch External Data (GitHub Example using Octokit) ---
     let contributorProfile: UserProfile | null = null;
     try {
@@ -174,12 +273,43 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         contributorName: originalContributorName,
         contributorProfile,
         contributorMemos,
+        aggregatedMemos,
+        contributorActivity,
       },
     });
 
     if (!mdxSource || 'error' in mdxSource) {
       return { notFound: true }; // Handle serialization error
     }
+
+    // temp
+
+    const newSource = await serialize({
+      source: `
+<ContributorHead
+    name={contributorProfile?.name || ''}
+    githubId={contributorProfile?.github_username || ''}
+    githubLink={contributorProfile?.github_url || ''}
+    websiteLink={contributorProfile?.websiteLink || ''}
+    bio={contributorProfile?.bio || ''}
+    twitterUserName={contributorProfile?.twitter_username || ''}
+    contributorMemos={contributorMemos}
+    avatarUrl={contributorProfile?.avatar || ''}
+/>
+
+<ContributionActivityCalendar data={contributorActivity} />
+
+<ContributorPinnedMemos data={contributorMemos.slice(0, 3)} />
+
+<ContributorContentBody data={contributorMemos} aggregatedMemos={aggregatedMemos} />
+      `,
+    });
+
+    if (!newSource || 'error' in newSource) {
+      return { notFound: true }; // Handle serialization error
+    }
+
+    mdxSource.compiledSource = newSource.compiledSource;
 
     return {
       props: {
@@ -211,7 +341,7 @@ export default function ContentPage({
     return null;
   }
   return (
-    <RootLayout
+    <ContributorLayout
       title={frontmatter?.title || `${contributorName}'s Profile`}
       description={frontmatter?.description || contributorProfile?.bio || ''} // Use GitHub bio as description
       image={frontmatter?.image || contributorProfile?.avatar} // Use GitHub avatar as image
@@ -221,6 +351,6 @@ export default function ContentPage({
       <div className="content-wrapper">
         <RemoteMdxRenderer mdxSource={mdxSource} />
       </div>
-    </RootLayout>
+    </ContributorLayout>
   );
 }
