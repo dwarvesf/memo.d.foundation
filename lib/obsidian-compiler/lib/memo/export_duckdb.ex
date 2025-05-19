@@ -84,8 +84,8 @@ defmodule Memo.ExportDuckDB do
             )
 
           process_files(filtered_files, vaultpath, all_files_to_process)
-          export(export_format)
           update_last_processed_timestamp()
+          export(export_format)
         else
           :error -> IO.puts("Failed to set up DuckDB or process timestamps")
         end
