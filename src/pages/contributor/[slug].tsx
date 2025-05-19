@@ -179,23 +179,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 
     // Generate activity array for contribution heatmap
-    const contributorActivity: {
-      date: string;
-      count: number;
-      level: number;
-    }[] = [];
-
-    // Get current date and create date for 1 year ago
-    const yearStart = startOfYear(new Date());
-    const yearEnd = endOfYear(new Date());
+    const contributorActivity: Record<
+      string,
+      Array<{
+        date: string;
+        count: number;
+        level: number;
+      }>
+    > = {};
 
     // Create map of dates to counts from memos
     const dateCountMap: Record<string, number> = {};
+
+    // Find unique years in the contributor's memos
+    const years = new Set<string>();
 
     contributorMemos.forEach(memo => {
       if (!memo.date) return;
 
       const memoDate = memo.date.split('T')[0]; // Ensure format YYYY-MM-DD
+      const year = memoDate.substring(0, 4);
+      years.add(year);
+
       dateCountMap[memoDate] = (dateCountMap[memoDate] || 0) + 1;
     });
 
@@ -208,22 +213,30 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       return 4;
     };
 
-    const days = eachDayOfInterval({
-      start: yearStart,
-      end: yearEnd,
-    });
+    // Generate activity data for each year
+    years.forEach(year => {
+      const yearStart = startOfYear(new Date(`${year}-01-01`));
+      const yearEnd = endOfYear(new Date(`${year}-12-31`));
 
-    // Generate array of every day for the past year with counts and levels
-    for (let i = 0; i < days.length; i++) {
-      const dateStr = days[i].toISOString().split('T')[0];
-      const count = dateCountMap[dateStr] || 0;
-
-      contributorActivity.push({
-        date: formatISO(days[i], { representation: 'date' }),
-        count,
-        level: getLevel(count),
+      const days = eachDayOfInterval({
+        start: yearStart,
+        end: yearEnd,
       });
-    }
+
+      contributorActivity[year] = [];
+
+      // Generate array of every day for this year with counts and levels
+      for (let i = 0; i < days.length; i++) {
+        const dateStr = days[i].toISOString().split('T')[0];
+        const count = dateCountMap[dateStr] || 0;
+
+        contributorActivity[year].push({
+          date: formatISO(days[i], { representation: 'date' }),
+          count,
+          level: getLevel(count),
+        });
+      }
+    });
 
     // --- Fetch External Data (GitHub Example using Octokit) ---
     let contributorProfile: UserProfile | null = null;

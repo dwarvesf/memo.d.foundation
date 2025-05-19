@@ -11,7 +11,7 @@ interface ContributorPinnedMemosProps {
 
 function ContributorPinnedMemos({ data }: ContributorPinnedMemosProps) {
   return (
-    <div className="relative mx-auto mb-10 grid w-full max-w-3xl gap-y-4">
+    <div className="relative mx-auto mb-10 grid w-full max-w-3xl gap-y-3">
       <span className="text-base">Pinned memos</span>
       <div className="grid auto-rows-auto grid-cols-3 gap-3">
         {data.map(memo => {
