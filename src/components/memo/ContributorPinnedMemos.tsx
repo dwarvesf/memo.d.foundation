@@ -20,8 +20,8 @@ function ContributorPinnedMemos({ data }: ContributorPinnedMemosProps) {
               className="border-border flex flex-col rounded-lg border px-4 py-3 !no-underline transition"
               key={memo.filePath}
             >
-              <div className="flex items-center gap-2">
-                <BookOpenIcon className="w-4" />
+              <div className="flex items-start gap-2">
+                <BookOpenIcon className="w-4 flex-shrink-0" />
                 <Link
                   href={formatContentPath(memo.filePath)}
                   className="m-0 text-sm"
