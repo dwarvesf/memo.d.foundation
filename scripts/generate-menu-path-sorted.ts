@@ -287,26 +287,31 @@ async function processDirectoryRecursive(
     const folders = items.filter(item => stats.get(item)?.isDirectory());
     const sortedFolders = sortDirectories(folders, folderPatterns);
 
-    for (const folder of sortedFolders) {
-      const fullPath = path.join(dirPath, folder);
-      const configFiles = await globAsync(
-        path.join(fullPath, '.config.{yaml,yml}'),
-        {
-          cwd: baseDir,
-          absolute: false,
-          dot: true,
-        },
-      );
-      // Find config for this subdirectory
-      const configYmlPath = configFiles[0] ?? null;
-      // Process subdirectory
-      const itemResults = await processDirectoryRecursive(
-        fullPath,
-        configYmlPath,
-        baseDir,
-      );
-      if (itemResults) {
-        result[folder] = itemResults;
+    // Check if the current directory is VAULT_DIR/opensource
+    const isOpensourceRootLevel = dirPath === path.join(VAULT_DIR, 'opensource');
+
+    if (!isOpensourceRootLevel) {
+      for (const folder of sortedFolders) {
+        const fullPath = path.join(dirPath, folder);
+        const configFiles = await globAsync(
+          path.join(fullPath, '.config.{yaml,yml}'),
+          {
+            cwd: baseDir,
+            absolute: false,
+            dot: true,
+          },
+        );
+        // Find config for this subdirectory
+        const configYmlPath = configFiles[0] ?? null;
+        // Process subdirectory
+        const itemResults = await processDirectoryRecursive(
+          fullPath,
+          configYmlPath,
+          baseDir,
+        );
+        if (itemResults) {
+          result[folder] = itemResults;
+        }
       }
     }
 

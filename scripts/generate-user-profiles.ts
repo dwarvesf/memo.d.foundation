@@ -30,7 +30,7 @@ async function fetchMochiProfile(
 
     return data as MochiUserProfile;
   } catch (error) {
-    console.error(`Failed to fetch profile for ${githubUsername}:`, error);
+    console.error(`Failed to fetch profile for ${githubUsername}: ${error instanceof Error ? error.message : String(error)}`);
     return null;
   }
 }
@@ -113,7 +113,7 @@ async function getUserProfileByGithubUsername(
     // Original fixed delay is no longer needed with dynamic checking
     // await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
   } catch (error) {
-    console.error(`Failed to fetch GitHub data for ${githubUsername}:`, error);
+    console.error(`Failed to fetch GitHub data for ${githubUsername}: ${error instanceof Error ? error.message : String(error)}`);
   }
 
   try {

@@ -146,14 +146,6 @@ async function generateRedirectsMap() {
             const formattedShortLink = shortLink.startsWith('/')
               ? shortLink
               : `/${shortLink}`;
-            if (
-              redirects[formattedShortLink] &&
-              redirects[formattedShortLink] !== currentPathFormatted
-            ) {
-              console.warn(
-                `Conflict: Short link '${formattedShortLink}' maps to both '${redirects[formattedShortLink]}' and '${currentPathFormatted}'. Overwriting with the latter.`,
-              );
-            }
             redirects[formattedShortLink] = currentPathFormatted;
           }
         }
@@ -164,14 +156,6 @@ async function generateRedirectsMap() {
         for (const oldPath of previousPaths) {
           const oldPathFormatted = formatPathForUrl(oldPath);
           if (oldPathFormatted) {
-            if (
-              redirects[oldPathFormatted] &&
-              redirects[oldPathFormatted] !== currentPathFormatted
-            ) {
-              console.warn(
-                `Conflict: Old path '${oldPathFormatted}' maps to both '${redirects[oldPathFormatted]}' and '${currentPathFormatted}'. Overwriting with the latter.`,
-              );
-            }
             redirects[oldPathFormatted] = currentPathFormatted;
           }
         }
