@@ -523,8 +523,6 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       container.attr('transform', transform.toString());
 
       if (transform.k > SHOW_TEXT_AT_SCALE) {
-        forceShowLabel = true;
-
         // Update label visibility state
         gNodes.forEach(node => {
           node.labelVisible = true;
@@ -534,8 +532,6 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
           labelsRef.current!.style('visibility', 'visible');
         }
       } else {
-        forceShowLabel = false;
-
         // Update label visibility state
         gNodes.forEach(node => {
           node.labelVisible = canShowAllLabels;

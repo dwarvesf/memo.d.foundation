@@ -14,7 +14,6 @@ function ContributorContentBody({
   data,
   aggregatedMemos,
 }: ContributorContentBodyProps) {
-  console.log(data);
   const authorUsername = data[0]?.authors?.[0];
   return (
     <Tabs defaultValue="timeline" className="relative mx-auto w-full max-w-3xl">
