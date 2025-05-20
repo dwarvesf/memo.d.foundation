@@ -16,7 +16,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
-import { format } from 'date-fns';
+import {
+  eachDayOfInterval,
+  endOfYear,
+  format,
+  formatISO,
+  startOfYear,
+} from 'date-fns';
 
 interface ContributionActivityCalendarProps {
   data: Record<
@@ -28,6 +34,29 @@ interface ContributionActivityCalendarProps {
     }>
   >;
 }
+
+const getEmptyCurrentYear = () => {
+  const yearStart = startOfYear(new Date());
+  const yearEnd = endOfYear(new Date());
+
+  const days = eachDayOfInterval({
+    start: yearStart,
+    end: yearEnd,
+  });
+
+  const res = [];
+
+  // Generate array of every day for this year with counts and levels
+  for (let i = 0; i < days.length; i++) {
+    res.push({
+      date: formatISO(days[i], { representation: 'date' }),
+      count: 0,
+      level: 0,
+    });
+  }
+
+  return res;
+};
 
 function ContributionActivityCalendar(
   props: ContributionActivityCalendarProps,
@@ -70,7 +99,7 @@ function ContributionActivityCalendar(
         </div>
         <div className="border-border relative rounded-lg border px-4 py-1 pb-2 [&_svg]:w-full">
           <ActivityCalendar
-            data={data[year]}
+            data={data[year] || getEmptyCurrentYear()}
             colorScheme={isDark ? 'dark' : 'light'}
             renderBlock={(block, activity) => {
               if (!activity.count) return block;
