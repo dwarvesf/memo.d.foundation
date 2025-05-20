@@ -1,19 +1,20 @@
 import { IMemoItem } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tab';
-import ContributorMemoTimeline from './ContributorMemoTimeline';
+import ContributorMemoTimeline from './contributor-memo-timeline';
 import MemosByCategory from './MemosByCategory';
 import MemoTimelineList from './MemoTimelineList';
 import MemoMap from './MemoMap';
+import { Activity } from '@/pages/contributor/[slug]';
 
 interface ContributorContentBodyProps {
   data: IMemoItem[];
-  aggregatedMemos: IMemoItem[][][];
+  aggregatedActivities: Activity[][][];
   memoCollectors: Record<string, Array<{ username: string; avatar?: string }>>;
 }
 
 function ContributorContentBody({
   data,
-  aggregatedMemos,
+  aggregatedActivities,
   memoCollectors,
 }: ContributorContentBodyProps) {
   const authorUsername = data[0]?.authors?.[0];
@@ -27,7 +28,7 @@ function ContributorContentBody({
       </TabsList>
       <TabsContent value="timeline">
         <ContributorMemoTimeline
-          data={aggregatedMemos}
+          data={aggregatedActivities}
           memoCollectors={memoCollectors}
         />
       </TabsContent>

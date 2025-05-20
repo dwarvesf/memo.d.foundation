@@ -92,6 +92,18 @@ export interface IMemoItem {
   tokenId?: string | null;
 }
 
+// Define the CollectMemo type
+export interface CollectMemo {
+  title: string;
+  filePath: string;
+  date: string;
+  tokenId: string;
+  type: 'collect'; // To distinguish from regular memos
+}
+
+// Define the Activity type (union of IMemoItem and CollectMemo)
+export type Activity = IMemoItem | CollectMemo;
+
 /**
  * Interface for menu file paths within a group
  */
