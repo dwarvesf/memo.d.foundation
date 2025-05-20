@@ -5,10 +5,17 @@ import { formatContentPath } from '@/lib/utils/path-utils';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 import Jdenticon from 'react-jdenticon';
-import { Avatar } from '../ui/avatar';
+import { Avatar, AvatarImage } from '../ui/avatar';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 
 interface ContributorMemoTimelineProps {
   data: IMemoItem[][][];
+  memoCollectors: Record<string, Array<{ username: string; avatar?: string }>>;
 }
 
 const monthIndex = [
@@ -41,12 +48,49 @@ function TimelineHeader({ date }: { date: string }) {
   );
 }
 
-function TimelineActivity({ data }: { data: IMemoItem[][] }) {
+function Collectors({
+  collectors,
+}: {
+  collectors: Array<{ username: string; avatar?: string }>;
+}) {
+  return collectors.map(collector => {
+    return (
+      <Tooltip key={collector.username}>
+        <TooltipTrigger asChild>
+          <Link href={`/contributor/${collector.username}`}>
+            <Avatar className="dark:bg-secondary flex h-6.5 w-6.5 items-center justify-center border-2 bg-[#fff]">
+              {collector.avatar ? (
+                <AvatarImage src={collector.avatar} className="no-zoom !m-0" />
+              ) : (
+                <Jdenticon value={collector.username} size={24} />
+              )}
+            </Avatar>
+          </Link>
+        </TooltipTrigger>
+        <TooltipContent
+          arrowClassName="!bg-muted-foreground !fill-muted-foreground"
+          className="!bg-muted-foreground !text-muted-foreground-foreground rounded-lg p-2 text-center text-xs font-medium shadow-md"
+          sideOffset={-5}
+        >
+          <span>{collector.username}</span>
+        </TooltipContent>
+      </Tooltip>
+    );
+  });
+}
+
+function TimelineActivity({
+  data,
+  memoCollectors,
+}: {
+  data: IMemoItem[][];
+  memoCollectors: Record<string, Array<{ username: string; avatar?: string }>>;
+}) {
   return data.map(month => {
     const [, m, date] = month[0].date.split('-');
 
     if (month.length === 1) {
-      const random = Math.floor(Math.random() * 5) + 1;
+      const collectors = memoCollectors[month[0].tokenId ?? ''] ?? [];
       return (
         <div key={month[0].date} className="flex">
           <div className="relative mr-3">
@@ -57,26 +101,21 @@ function TimelineActivity({ data }: { data: IMemoItem[][] }) {
           </div>
           <div className="mt-5 flex w-full flex-col gap-y-2">
             <div className="flex justify-between">
-              <span className="flex flex-shrink-1 flex-wrap items-center gap-x-1.5 text-lg">
-                +{random} Collector{random === 1 ? '' : 's'}
-                <div className="flex -space-x-2">
-                  {new Array(random).fill(0).map(() => {
-                    const random = Math.random();
-                    return (
-                      <Avatar
-                        key={random}
-                        className="dark:bg-secondary flex h-6.5 w-6.5 items-center justify-center border-2 bg-[#fff]"
-                      >
-                        <Jdenticon value={random.toString()} size={24} />
-                      </Avatar>
-                    );
-                  })}
-                </div>
-                interested in{' '}
-                <Link href={formatContentPath(month[0].filePath)}>
-                  {month[0].title}
-                </Link>
-              </span>
+              {collectors.length ? (
+                <span className="flex flex-shrink-1 flex-wrap items-center gap-x-1.5 text-lg">
+                  +{collectors.length} Collector
+                  {collectors.length === 1 ? '' : 's'}
+                  <div className="flex -space-x-2">
+                    <Collectors collectors={collectors} />
+                  </div>
+                  interested in{' '}
+                  <Link href={formatContentPath(month[0].filePath)}>
+                    {month[0].title}
+                  </Link>
+                </span>
+              ) : (
+                <span className="text-lg">Published {month[0].title}</span>
+              )}
               <span className="text-muted-foreground text-xs whitespace-nowrap">
                 {monthIndex[parseInt(m) - 1]} {date}
               </span>
@@ -103,7 +142,7 @@ function TimelineActivity({ data }: { data: IMemoItem[][] }) {
           </div>
           <div className="flex flex-col">
             {month.map(d => {
-              const shouldShowCollector = Math.random() > 0.8;
+              const collectors = memoCollectors[d.tokenId ?? ''] ?? [];
               return (
                 <div className="flex items-center" key={d.filePath}>
                   <Link
@@ -113,29 +152,9 @@ function TimelineActivity({ data }: { data: IMemoItem[][] }) {
                     <BookOpenIcon className="h-4 w-4" />
                     <span>{d.title}</span>
                   </Link>
-                  {shouldShowCollector ? (
+                  {collectors.length ? (
                     <div className="!text-muted-foreground ml-auto flex items-center gap-x-1">
-                      <div className="flex -space-x-2">
-                        {new Array(Math.floor(Math.random() * 5))
-                          .fill(0)
-                          .map(() => {
-                            const random = Math.random();
-                            return (
-                              <Avatar
-                                key={random}
-                                className="dark:bg-secondary flex h-6.5 w-6.5 items-center justify-center border-2 bg-[#fff]"
-                              >
-                                <Jdenticon
-                                  value={random.toString()}
-                                  size={24}
-                                />
-                              </Avatar>
-                            );
-                          })}
-                      </div>
-                      <span className="text-sm hover:!no-underline">
-                        collected
-                      </span>
+                      <Collectors collectors={collectors} />
                     </div>
                   ) : null}
                 </div>
@@ -148,17 +167,22 @@ function TimelineActivity({ data }: { data: IMemoItem[][] }) {
   });
 }
 
-function ContributorMemoTimeline({ data }: ContributorMemoTimelineProps) {
+function ContributorMemoTimeline({
+  data,
+  memoCollectors,
+}: ContributorMemoTimelineProps) {
   return (
     <div className="flex flex-col gap-y-10">
-      {data.map(year => {
-        return (
-          <div key={`year-${year[0][0].date}`} className="flex flex-col">
-            <TimelineHeader date={year[0][0].date} />
-            <TimelineActivity data={year} />
-          </div>
-        );
-      })}
+      <TooltipProvider>
+        {data.map(year => {
+          return (
+            <div key={`year-${year[0][0].date}`} className="flex flex-col">
+              <TimelineHeader date={year[0][0].date} />
+              <TimelineActivity data={year} memoCollectors={memoCollectors} />
+            </div>
+          );
+        })}
+      </TooltipProvider>
     </div>
   );
 }

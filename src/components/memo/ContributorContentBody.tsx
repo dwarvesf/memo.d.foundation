@@ -8,11 +8,13 @@ import MemoMap from './MemoMap';
 interface ContributorContentBodyProps {
   data: IMemoItem[];
   aggregatedMemos: IMemoItem[][][];
+  memoCollectors: Record<string, Array<{ username: string; avatar?: string }>>;
 }
 
 function ContributorContentBody({
   data,
   aggregatedMemos,
+  memoCollectors,
 }: ContributorContentBodyProps) {
   const authorUsername = data[0]?.authors?.[0];
   return (
@@ -24,7 +26,10 @@ function ContributorContentBody({
         <TabsTrigger value="memo-map">Memo Map</TabsTrigger>
       </TabsList>
       <TabsContent value="timeline">
-        <ContributorMemoTimeline data={aggregatedMemos} />
+        <ContributorMemoTimeline
+          data={aggregatedMemos}
+          memoCollectors={memoCollectors}
+        />
       </TabsContent>
       <TabsContent value="recently-published">
         <MemoTimelineList title="" data={data.slice(0, 15)} />

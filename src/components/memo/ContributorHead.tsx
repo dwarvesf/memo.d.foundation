@@ -101,11 +101,13 @@ const ContributorHead = (props: Props) => {
             )}
           </div>
         </div>
-        <img
-          src={avatarUrl}
-          alt="Avatar"
-          className="no-zoom mx-0 !-mt-12 h-40 w-40 rounded-full border-8 border-[var(--background)]"
-        />
+        <div className="mx-0 !-mt-12 flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border-8 border-[var(--background)] bg-[var(--background)]">
+          <img
+            src={avatarUrl}
+            alt="Avatar"
+            className="no-zoom !m-0 w-full object-cover"
+          />
+        </div>
       </div>
     </div>
   );

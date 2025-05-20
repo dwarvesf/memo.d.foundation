@@ -301,7 +301,7 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       .text(d => d.title)
       .attr('x', 8)
       .attr('y', 3)
-      .attr('class', 'fill-white')
+      .attr('class', 'fill-current text-foreground')
       .style('font-size', '12px')
       .style('visibility', canShowAllLabels ? 'visible' : 'hidden');
 

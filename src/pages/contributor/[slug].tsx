@@ -31,6 +31,7 @@ interface ContentPageProps extends RootLayoutPageProps {
   contributorName?: string; // Make optional
   contributorMemos?: IMemoItem[]; // Make optional
   contributorProfile?: UserProfile | null; // GitHub profile data
+  memoCollectors?: Record<string, Array<{ username: string; avatar?: string }>>;
 
   mdxSource?: SerializeResult; // Serialized MDX source
 }
@@ -90,6 +91,91 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 /**
+ * Fetches collectors data for a memo with tokenId
+ */
+async function fetchCollectorsData(tokenId: string) {
+  try {
+    // Fetch collectors addresses
+    const mintersResponse = await fetch(
+      `https://memo-nft-api-prod.fly.dev/minters/${tokenId}`,
+    );
+
+    if (!mintersResponse.ok) {
+      throw new Error(
+        `Failed to fetch minters for token ${tokenId}: ${mintersResponse.statusText}`,
+      );
+    }
+
+    const mintersData = await mintersResponse.json();
+    const collectors = [];
+
+    // Process each minter address
+    for (const { minter } of mintersData.data) {
+      try {
+        const profileResponse = await fetch(
+          `https://api.mochi-profile.console.so/api/v1/profiles/get-by-evm/${minter}?no_fetch_amount=false`,
+        );
+
+        if (!profileResponse.ok) {
+          continue; // Skip if profile fetch fails
+        }
+
+        const profileData = await profileResponse.json();
+
+        // Default to using the EVM address
+        let username = minter;
+        const avatar = profileData.avatar || undefined;
+
+        // Try to find a preferred account in the fallback order
+        if (
+          profileData.associated_accounts &&
+          profileData.associated_accounts.length > 0
+        ) {
+          // Sort accounts in preferred order (github > discord > twitter > evm_chain)
+          const platformPriority: Record<string, number> = {
+            github: 1,
+            discord: 2,
+            twitter: 3,
+            evm_chain: 4,
+          };
+
+          const sortedAccounts = [...profileData.associated_accounts].sort(
+            (a, b) => {
+              const priorityA = platformPriority[a.platform as string] || 999;
+              const priorityB = platformPriority[b.platform as string] || 999;
+              return priorityA - priorityB;
+            },
+          );
+
+          // Get the first account in the sorted list
+          const preferredAccount = sortedAccounts[0];
+
+          // Use the username if available, otherwise platform_identifier
+          username =
+            preferredAccount.platform_metadata?.username ||
+            preferredAccount.platform_identifier ||
+            minter;
+        }
+
+        // Add the collector to the results
+        collectors.push({
+          username,
+          ...(avatar ? { avatar } : {}),
+        });
+      } catch (error) {
+        console.error(`Error processing minter ${minter}:`, error);
+        // Continue with next minter
+      }
+    }
+
+    return collectors;
+  } catch (error) {
+    console.error(`Error fetching collectors for token ${tokenId}:`, error);
+    return [];
+  }
+}
+
+/**
  * Gets static props for the content page
  */
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -118,7 +204,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     let contributorMemos: IMemoItem[];
     try {
       contributorMemos = await queryDuckDB(`
-           SELECT short_title, title, file_path, authors, description, date, tags, md_content
+           SELECT short_title, title, file_path, authors, description, date, tags, md_content, token_id
            FROM vault
            WHERE ARRAY_CONTAINS(authors, '${originalContributorName}')
            ORDER BY date DESC;
@@ -129,6 +215,29 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         error,
       );
       contributorMemos = []; // Handle error
+    }
+
+    // Enrich memos with collectors data (if any)
+    const memoCollectors: Record<
+      string,
+      Array<{ username: string; avatar?: string }>
+    > = {};
+
+    // Process each memo that has a tokenId
+    for (const memo of contributorMemos) {
+      if (memo.tokenId) {
+        try {
+          const collectors = await fetchCollectorsData(memo.tokenId);
+          if (collectors.length > 0) {
+            memoCollectors[memo.tokenId] = collectors;
+          }
+        } catch (error) {
+          console.error(
+            `Error enriching memo ${memo.tokenId} with collectors:`,
+            error,
+          );
+        }
+      }
     }
 
     // Group memos by month and sort within each month
@@ -288,6 +397,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         contributorMemos,
         aggregatedMemos,
         contributorActivity,
+        memoCollectors, // Include collectors data in scope
       },
     });
 
@@ -314,7 +424,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 <ContributorPinnedMemos data={contributorMemos.slice(0, 3)} />
 
-<ContributorContentBody data={contributorMemos} aggregatedMemos={aggregatedMemos} />
+<ContributorContentBody data={contributorMemos} aggregatedMemos={aggregatedMemos} memoCollectors={memoCollectors} />
       `,
     });
 
@@ -332,6 +442,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         contributorProfile,
         mdxSource,
         contributorMemos,
+        memoCollectors, // Include in props
         frontmatter: mdxSource.frontmatter,
       },
     };
@@ -348,11 +459,13 @@ export default function ContentPage({
   contributorName,
   mdxSource,
   contributorProfile,
+  memoCollectors,
 }: ContentPageProps) {
   if (!mdxSource || 'error' in mdxSource) {
     // We already handle this in getStaticProps
     return null;
   }
+  console.log(memoCollectors);
   return (
     <ContributorLayout
       title={frontmatter?.title || `${contributorName}'s Profile`}

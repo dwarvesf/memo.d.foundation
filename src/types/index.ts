@@ -88,6 +88,8 @@ export interface IMemoItem {
   slugArray?: string[];
 
   image?: string | null;
+
+  tokenId?: string | null;
 }
 
 /**
