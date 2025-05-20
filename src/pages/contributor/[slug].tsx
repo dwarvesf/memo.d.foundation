@@ -653,13 +653,11 @@ export default function ContentPage({
   contributorName,
   mdxSource,
   contributorProfile,
-  aggregatedActivities,
 }: ContentPageProps) {
   if (!mdxSource || 'error' in mdxSource) {
     // We already handle this in getStaticProps
     return null;
   }
-  console.log(aggregatedActivities);
   return (
     <ContributorLayout
       title={frontmatter?.title || `${contributorName}'s Profile`}

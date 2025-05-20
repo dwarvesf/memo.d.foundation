@@ -4,7 +4,7 @@ import ContributorMemoTimeline from './contributor-memo-timeline';
 import MemosByCategory from './MemosByCategory';
 import MemoTimelineList from './MemoTimelineList';
 import MemoMap from './MemoMap';
-import { Activity } from '@/pages/contributor/[slug]';
+import { Activity } from '@/types';
 
 interface ContributorContentBodyProps {
   data: IMemoItem[];

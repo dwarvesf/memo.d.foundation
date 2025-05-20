@@ -78,7 +78,12 @@ export function PublishMemoActivity({
                 </Link>
               </span>
             ) : (
-              <span className="text-lg">Published {data[0].title}</span>
+              <span className="text-lg">
+                Published{' '}
+                <Link href={formatContentPath(data[0].filePath)}>
+                  {data[0].title}
+                </Link>
+              </span>
             )}
             <span className="text-muted-foreground text-xs whitespace-nowrap">
               {monthIndex[parseInt(m) - 1]} {date}
