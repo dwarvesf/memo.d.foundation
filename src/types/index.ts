@@ -108,3 +108,19 @@ export interface GroupedPath {
   file_paths: MenuFilePath[]; // Files directly within this directory
   next_path: Record<string, GroupedPath>; // Subdirectories
 }
+
+export interface IPromptItem {
+  title: string;
+  description: string;
+  tags: string[];
+  category: string;
+  authors: string[];
+  models: string[];
+  source: string;
+  private: boolean;
+  metadata: Record<string, unknown>;
+  mdContent: string;
+  lastUpdatedAt: string;
+  filePath: string;
+  repo: string;
+}

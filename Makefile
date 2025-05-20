@@ -37,6 +37,7 @@ run:
 	@pnpm run generate-search-index
 	@pnpm run generate-redirects-map
 	@pnpm run generate-user-profiles
+	@pnpm run fetch-prompts
 	@pnpm run dev
 
 duckdb-export:
