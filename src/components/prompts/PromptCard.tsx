@@ -1,4 +1,4 @@
-import { Prompt } from '@/types';
+import type { IPromptItem } from '@/types';
 import React, { useCallback, useState } from 'react';
 import PromptMarkdown from './PromptMarkdown';
 import { promptCardStyles } from './styles';
@@ -6,17 +6,17 @@ import { cn } from '@/lib/utils';
 import { CopyIcon } from 'lucide-react';
 
 interface PromptCardProps {
-  prompt: Prompt;
+  prompt: IPromptItem;
 }
 
 const PromptCard: React.FC<PromptCardProps> = ({ prompt }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(prompt.prompt);
+    navigator.clipboard.writeText(prompt.mdContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [prompt.prompt]);
+  }, [prompt.mdContent]);
 
   return (
     <div className={promptCardStyles.container}>
@@ -40,7 +40,7 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt }) => {
       <div className="flex h-full w-full flex-col">
         {/* Prompt Content */}
         <div className={promptCardStyles.content}>
-          <PromptMarkdown content={prompt.prompt} />
+          <PromptMarkdown content={prompt.mdContent} />
         </div>
 
         {/* Footer */}

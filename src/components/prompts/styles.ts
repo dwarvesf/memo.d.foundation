@@ -47,7 +47,7 @@ export const promptCardStyles = {
   ),
 
   footer:
-    'sticky right-0 bottom-0 left-0 mt-3 flex items-center justify-between',
+    'sticky right-0 bottom-0 left-0 mt-3 flex items-center justify-between gap-2',
 
   title: cn('text-sm font-medium', 'text-neutral-700 dark:text-neutral-300'),
 
