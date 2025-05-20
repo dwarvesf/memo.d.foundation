@@ -2,7 +2,7 @@
 
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { getPrompts } from '@/lib/prompts';
-import { Prompt, RootLayoutPageProps } from '@/types';
+import { IPromptItem, RootLayoutPageProps } from '@/types';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef } from 'react';
@@ -12,7 +12,7 @@ import CategoriesHeader from '../../components/prompts/CategoriesHeader';
 import { useRouteSync } from '@/hooks/useRouteSync';
 
 interface PromptsPageProps extends RootLayoutPageProps {
-  prompts: Prompt[];
+  prompts: IPromptItem[];
 }
 
 /**
@@ -21,7 +21,7 @@ interface PromptsPageProps extends RootLayoutPageProps {
  * @returns Props for the page component
  */
 export const getStaticProps: GetStaticProps<PromptsPageProps> = async () => {
-  const prompts = getPrompts();
+  const prompts = await getPrompts();
   const layoutProps = await getRootLayoutPageProps();
   return {
     props: {
@@ -62,7 +62,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
         };
         return acc;
       },
-      {} as Record<string, { prompts: Prompt[]; title: string }>,
+      {} as Record<string, { prompts: IPromptItem[]; title: string }>,
     );
   }, [categories, prompts]);
 
@@ -177,7 +177,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
               </h2>
               <div className="3xl:grid-cols-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                 {catPrompts.prompts.map(prompt => (
-                  <PromptCard key={prompt.prompt} prompt={prompt} />
+                  <PromptCard key={prompt.filePath} prompt={prompt} />
                 ))}
               </div>
             </section>

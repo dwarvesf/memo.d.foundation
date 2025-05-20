@@ -109,12 +109,18 @@ export interface GroupedPath {
   next_path: Record<string, GroupedPath>; // Subdirectories
 }
 
-export interface Prompt {
+export interface IPromptItem {
   title: string;
   description: string;
-  tags?: string[];
-  models?: string[];
-  authors?: string[];
+  tags: string[];
   category: string;
-  prompt: string;
+  authors: string[];
+  models: string[];
+  source: string;
+  private: boolean;
+  metadata: Record<string, unknown>;
+  mdContent: string;
+  lastUpdatedAt: string;
+  filePath: string;
+  repo: string;
 }
