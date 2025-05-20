@@ -65,6 +65,20 @@
     --toast-background-color: #ededed;
     --color-link-decoration: #dededf;
 
+    /* Card Shadows */
+    --card-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.05),
+      0 12px 24px rgba(0, 0, 0, 0.05);
+    --card-shadow-dark:
+      0 0 0 1px rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0, 0, 0, 0.2),
+      0 12px 24px rgba(0, 0, 0, 0.2);
+    --card-shadow-hover:
+      0 0 0 1px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.05),
+      0 12px 24px rgba(0, 0, 0, 0.08);
+    --card-shadow-hover-dark:
+      0 0 0 1px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3),
+      0 12px 24px rgba(0, 0, 0, 0.3);
+
     /* Spacing and Layout */
     --radius: 0.5rem;
     --container-max-width: 695px;

@@ -127,3 +127,13 @@ export interface GroupedPath {
   file_paths: MenuFilePath[]; // Files directly within this directory
   next_path: Record<string, GroupedPath>; // Subdirectories
 }
+
+export interface Prompt {
+  title: string;
+  description: string;
+  tags?: string[];
+  models?: string[];
+  authors?: string[];
+  category: string;
+  prompt: string;
+}

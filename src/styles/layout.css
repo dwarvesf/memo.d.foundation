@@ -21,7 +21,6 @@
 }
 .main-content {
   grid-area: content;
-  width: var(--container-max-width);
   @variant reading {
     margin-right: calc(
       (
@@ -44,7 +43,6 @@
     column-gap: 0;
   }
   .main-content {
-    width: 100%;
     @variant reading {
       margin-right: auto;
     }

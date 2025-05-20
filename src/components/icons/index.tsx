@@ -13,6 +13,7 @@ import AccountBalanceIcon from './AccountBalanceIcon';
 import OgifIcon from './OgifIcon';
 import HomeIcon from './HomeIcon';
 import LabelIcon from './LabelIcon';
+import PromptIcon from './PromptIcon';
 
 export const MemoIcons = {
   careers: HiringIcon,
@@ -32,4 +33,5 @@ export const MemoIcons = {
   explore: HomeIcon,
   home: HomeIcon,
   search: SearchIcon,
+  prompts: PromptIcon,
 };
