@@ -22,13 +22,7 @@ import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { getMdxSource } from '@/lib/mdx';
 import { UserProfile, UserProfileJson } from '@/types/user';
 import ContributorLayout from '@/components/layout/ContributorLayout';
-import {
-  eachDayOfInterval,
-  formatISO,
-  endOfYear,
-  startOfYear,
-  format,
-} from 'date-fns';
+import { eachDayOfInterval, endOfYear, startOfYear, format } from 'date-fns';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
@@ -528,7 +522,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         const count = dateCountMap[dateStr] || 0;
 
         contributorActivity[year].push({
-          date: formatISO(days[i], { representation: 'date' }),
+          date: dateStr,
           count,
           level: getLevel(count),
         });
