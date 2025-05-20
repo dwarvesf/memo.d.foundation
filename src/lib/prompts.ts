@@ -2,13 +2,21 @@ import { IPromptItem } from '@/types';
 import { Json } from '@duckdb/node-api';
 import { queryDuckDB } from './db/utils';
 
+function capitalizeFirstLetter(string: string): string {
+  const words = string.split(' ');
+  const capitalizedWords = words.map(word => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return capitalizedWords.join(' ');
+}
+
 function convertToPromptItems(data: Record<string, Json>[]): IPromptItem[] {
   return data.map(item => {
     return {
       title: (item.title as string) ?? 'Unnamed',
       description: item.description as string,
       tags: item.tags as string[],
-      category: (item.category as string) ?? 'Misc',
+      category: capitalizeFirstLetter((item.category as string) ?? 'Misc'),
       authors: item.authors as string[],
       models: item.models as string[],
       source: item.source as string,

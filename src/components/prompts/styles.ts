@@ -88,9 +88,9 @@ export const promptMarkdownStyles = {
     'group-hover:text-primary dark:group-hover:text-primary',
   ),
 
-  text: cn(
+  textDefaultColor: cn(
     'text-neutral-500 dark:text-neutral-500',
-    'group-hover:text-neutral-900 dark:group-hover:text-neutral-100',
+    'group-hover:text-current group-hover:dark:text-current',
     'transition-colors duration-200',
   ),
 };

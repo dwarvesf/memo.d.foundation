@@ -1,10 +1,8 @@
 import React, { useMemo } from 'react';
-import ReactMarkdown, { Components } from 'react-markdown';
+import ReactMarkdown, { Components, ExtraProps } from 'react-markdown';
 import type { ComponentPropsWithoutRef } from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
-import { omit } from 'lodash';
-import { promptMDParser } from '@/lib/utils/prompt-parser';
 import { promptMarkdownStyles } from './styles';
 import { cn } from '@/lib/utils';
 
@@ -17,63 +15,91 @@ type CodeProps = ComponentPropsWithoutRef<'code'> & { inline?: boolean };
 const plugins = [remarkGfm];
 const hypePlugins = [rehypeHighlight];
 
-const PromptMarkdownComponents: Components = {
-  span: ({ children, className }) => {
-    if (!className) {
-      return <span>{children}</span>;
+// Define a common type for component props
+type CommonProps = {
+  children?: React.ReactNode;
+  className?: string;
+} & ExtraProps;
+
+// Generic helper function to create components with optional custom rendering
+const createMarkdownComponent = (
+  Tag: keyof React.JSX.IntrinsicElements,
+  customRender?: (props: CommonProps) => React.ReactElement | null,
+) => {
+  const Component = (props: CommonProps) => {
+    if (customRender) {
+      return customRender(props);
     }
 
+    const { children, className } = props;
     return (
       <>
-        <span className={cn('hidden group-hover:inline', className)}>
-          {children}
-        </span>
-        <span className={cn('inline group-hover:hidden')}>{children}</span>
-      </>
-    );
-  },
-
-  code: ({ inline, children, ..._props }: CodeProps) => {
-    const props = omit(_props, ['inline', 'className', 'children', 'node']);
-
-    if (inline) {
-      return (
-        <code className={promptMarkdownStyles.inlineCode} {...props}>
-          {children}
-        </code>
-      );
-    }
-
-    return (
-      <pre className={promptMarkdownStyles.codeBlock.pre}>
-        <code className={promptMarkdownStyles.codeBlock.code} {...props}>
-          {children}
-        </code>
-      </pre>
-    );
-  },
-
-  p: ({ children }) => {
-    const textContent = String(children);
-    const parts = promptMDParser(textContent);
-
-    return (
-      <>
-        {parts.map((part, index) => (
-          <span
-            key={index}
-            className={
-              part.type === 'variable'
-                ? promptMarkdownStyles.template
-                : promptMarkdownStyles.text
-            }
-          >
-            {part.content}
+        <Tag
+          className={cn(
+            promptMarkdownStyles.textDefaultColor,
+            'group-hover:text-current group-hover:dark:text-current',
+          )}
+        >
+          <span className={cn('hidden group-hover:inline', className)}>
+            {children}
           </span>
-        ))}
+          <span className={cn('inline group-hover:hidden')}>{children}</span>
+        </Tag>
       </>
     );
-  },
+  };
+
+  Component.displayName = Tag;
+  return Component;
+};
+
+const PromptMarkdownComponents: Components = {
+  pre: createMarkdownComponent('pre', ({ children }) => (
+    <pre className={promptMarkdownStyles.codeBlock.pre}>{children}</pre>
+  )),
+  code: createMarkdownComponent(
+    'code',
+    ({ inline, children }: CodeProps & ExtraProps) => {
+      if (inline) {
+        return (
+          <code className={promptMarkdownStyles.inlineCode}>{children}</code>
+        );
+      }
+
+      return (
+        <code className={promptMarkdownStyles.codeBlock.code}>{children}</code>
+      );
+    },
+  ),
+
+  // Use the generic helper function for all other components
+  span: createMarkdownComponent('span'),
+  p: createMarkdownComponent('p'),
+  ul: createMarkdownComponent('ul'),
+  ol: createMarkdownComponent('ol'),
+  li: createMarkdownComponent('li'),
+  blockquote: createMarkdownComponent('blockquote'),
+  h1: createMarkdownComponent('h1'),
+  h2: createMarkdownComponent('h2'),
+  h3: createMarkdownComponent('h3'),
+  h4: createMarkdownComponent('h4'),
+  h5: createMarkdownComponent('h5'),
+  h6: createMarkdownComponent('h6'),
+  a: createMarkdownComponent('a'),
+  img: createMarkdownComponent('img'),
+  strong: createMarkdownComponent('strong'),
+  em: createMarkdownComponent('em'),
+  del: createMarkdownComponent('del'),
+  th: createMarkdownComponent('th'),
+  td: createMarkdownComponent('td'),
+  details: createMarkdownComponent('details'),
+  summary: createMarkdownComponent('summary'),
+  mark: createMarkdownComponent('mark'),
+  time: createMarkdownComponent('time'),
+  kbd: createMarkdownComponent('kbd'),
+  sub: createMarkdownComponent('sub'),
+  sup: createMarkdownComponent('sup'),
+  div: createMarkdownComponent('div'),
 };
 
 const PromptMarkdown: React.FC<PromptMarkdownProps> = ({ content }) => {
