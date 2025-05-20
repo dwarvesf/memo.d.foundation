@@ -77,6 +77,9 @@ importers:
       crypto:
         specifier: ^1.0.1
         version: 1.0.1
+      d3:
+        specifier: ^7.9.0
+        version: 7.9.0
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -234,6 +237,9 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@4.0.17)
+      '@types/d3':
+        specifier: ^7.4.3
+        version: 7.4.3
       '@types/draft-js':
         specifier: ^0.11.18
         version: 0.11.18

@@ -29,11 +29,11 @@ function ContributorPinnedMemos({ data }: ContributorPinnedMemosProps) {
                   {memo.title}
                 </Link>
               </div>
-              <p className="text-muted-foreground mt-1 line-clamp-3 text-sm">
+              <p className="text-muted-foreground mt-1 mb-10 line-clamp-3 text-sm">
                 {memo.description}
               </p>
               {memo.tags?.length && (
-                <div className="mt-6 flex flex-wrap gap-1">
+                <div className="mt-auto flex flex-wrap gap-1">
                   {memo.tags.map(t => (
                     <Tag className="text-xs" key={t}>
                       {uppercaseSpecialWords(t)}

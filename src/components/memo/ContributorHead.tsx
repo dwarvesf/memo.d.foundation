@@ -1,6 +1,7 @@
 import { uppercaseSpecialWords } from '@/lib/utils';
 import { Link, TwitterIcon, Tag as TagIcon } from 'lucide-react';
 import Tag from '../ui/tag';
+import Image from 'next/image';
 
 interface Props {
   contributorMemos: any;
@@ -42,13 +43,15 @@ const ContributorHead = (props: Props) => {
 
   return (
     <div className="border-t-border relative mb-10 flex flex-col items-center border-t">
-      <div className="h-56 w-full overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1511884642898-4c92249e20b6?q=80&w=4740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      <div className="relative h-56 w-full overflow-hidden">
+        <Image
+          src="/assets/img/contributor-bg.jpg"
+          layout="fill"
+          alt=""
           className="no-zoom !m-0 w-full object-cover"
         />
       </div>
-      <div className="flex w-full max-w-3xl justify-between">
+      <div className="relative flex w-full max-w-3xl justify-between">
         <div className="flex flex-col">
           <h1 className="!my-6 !mb-0 text-4xl font-bold">{name || githubId}</h1>
           <a className="text-xl" href={githubLink}>
