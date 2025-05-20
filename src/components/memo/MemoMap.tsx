@@ -15,6 +15,7 @@ interface GNode {
   title: string;
   references: number;
   url: string;
+  type?: 'author' | 'tag' | 'memo'; // Type of node
   // D3 simulation properties
   x?: number;
   y?: number;
@@ -76,10 +77,6 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       }
       return false;
     });
-  };
-
-  const getRandomNumberInRange = (min: number, max: number) => {
-    return Math.round(Math.random() * (max - min) + min);
   };
 
   // Find memos by author
@@ -180,7 +177,8 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
     const MAX_DISTANCE = 350;
     const MIN_DISTANCE = 150;
     const MIN_REF_COUNT = 5;
-    const MENU_COUNT_BUFFER = 10;
+    const TAG_NODE_BASE_SIZE = 40;
+    const MEMO_NODE_BASE_SIZE = 10;
     const MIN_ZOOM_LEVEL = 0.1;
     const MAX_ZOOM_LEVEL = 5;
     const HOVER_COLOR_OPACITY = 0.15;
@@ -204,31 +202,95 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
     let gNodes: GNode[] = [];
     const nodeLinks: Link[] = [];
 
-    // Create author node as center
-    const authorNode: GNode = {
-      id: `/contributor/${authorUsername}`,
-      title: `@${authorUsername}`,
-      references: MIN_REF_COUNT + authorMemos.length + MENU_COUNT_BUFFER,
-      url: `/contributor/${authorUsername}`,
-    };
+    // Extract all unique tags from the author's memos
+    const tagToMemosMap: Record<string, IMemoItem[]> = {};
 
-    gNodes.push(authorNode);
+    // Track memo nodes by ID to handle cross-linking between tags
+    const memoNodesById: Record<string, GNode> = {};
 
-    // Add memo nodes connected to the author
     authorMemos.forEach(memo => {
-      const memoNode: GNode = {
-        id: memo.filePath,
-        title: memo.title,
-        references: MIN_REF_COUNT,
-        url: formatContentPath(memo.filePath),
+      if (memo.tags && memo.tags.length > 0) {
+        memo.tags.forEach(tag => {
+          if (!tagToMemosMap[tag]) {
+            tagToMemosMap[tag] = [];
+          }
+          tagToMemosMap[tag].push(memo);
+        });
+      } else {
+        // For memos without tags, create a special "untagged" category
+        const untaggedKey = 'untagged';
+        if (!tagToMemosMap[untaggedKey]) {
+          tagToMemosMap[untaggedKey] = [];
+        }
+        tagToMemosMap[untaggedKey].push(memo);
+      }
+    });
+
+    // Create tag nodes and their associated memo nodes
+    Object.entries(tagToMemosMap).forEach(([tag, tagMemos]) => {
+      const tagNode: GNode = {
+        id: `tag-${tag}`,
+        title: `#${tag}`,
+        references: MIN_REF_COUNT + tagMemos.length * 4,
+        url: `/tags/${tag}`, // This can be modified based on your app's routing
+        type: 'tag',
       };
 
-      gNodes.push(memoNode);
+      gNodes.push(tagNode);
 
-      // Connect memo to author
-      nodeLinks.push({
-        source: memoNode.id,
-        target: authorNode.id,
+      // Add memo nodes connected to this tag
+      tagMemos.forEach(memo => {
+        // Create or reuse memo node
+        if (!memoNodesById[memo.filePath]) {
+          const memoNode: GNode = {
+            id: memo.filePath,
+            title: memo.title,
+            references: MIN_REF_COUNT,
+            url: formatContentPath(memo.filePath),
+            type: 'memo',
+          };
+          memoNodesById[memo.filePath] = memoNode;
+          gNodes.push(memoNode);
+        }
+
+        // Connect memo to tag
+        nodeLinks.push({
+          source: memoNodesById[memo.filePath].id,
+          target: tagNode.id,
+        });
+      });
+    });
+
+    // Look for memos that share multiple tags and create links between tags
+    // This creates a more interconnected network through shared memos
+    const processedTagPairs = new Set<string>();
+
+    Object.entries(tagToMemosMap).forEach(([tagA, memosA]) => {
+      Object.entries(tagToMemosMap).forEach(([tagB, memosB]) => {
+        // Skip self-comparison and already processed pairs
+        if (
+          tagA === tagB ||
+          processedTagPairs.has(`${tagA}-${tagB}`) ||
+          processedTagPairs.has(`${tagB}-${tagA}`)
+        ) {
+          return;
+        }
+
+        // Find shared memos between these tags
+        const sharedMemos = memosA.filter(memoA =>
+          memosB.some(memoB => memoB.filePath === memoA.filePath),
+        );
+
+        // If there are shared memos, create a link between these tags
+        if (sharedMemos.length > 0) {
+          nodeLinks.push({
+            source: `tag-${tagA}`,
+            target: `tag-${tagB}`,
+          });
+
+          // Mark this pair as processed
+          processedTagPairs.add(`${tagA}-${tagB}`);
+        }
       });
     });
 
@@ -243,27 +305,30 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
     const svg = d3.select(svgRef.current);
     const container = svg.append('g');
 
-    // Scale for node size based on references
-    const sizeScale = d3
-      .scaleLinear()
-      .domain([1, d3.max(gNodes, d => d.references || MIN_REF_COUNT) as number])
-      .range([20, 40]);
-
     // Store initial size for search functionality
     gNodes.forEach(node => {
-      node.r = sizeScale(node.references || MIN_REF_COUNT);
+      // Adjust size based on node type
+      if (node.type === 'tag') {
+        node.r = TAG_NODE_BASE_SIZE + (node.references || MIN_REF_COUNT) / 1.5;
+      } else if (node.type === 'memo') {
+        node.r = MEMO_NODE_BASE_SIZE;
+      }
       node.labelVisible = canShowAllLabels;
     });
 
     // Create the simulation with our custom nodes
-    // We have to use any here because D3's type system is hard to match perfectly
     const simulation = d3
       .forceSimulation(gNodes as any)
       .force(
         'charge',
-        d3
-          .forceManyBody()
-          .strength((d: any) => -50 * sizeScale(d.references || MIN_REF_COUNT)),
+        d3.forceManyBody().strength((d: any) => {
+          // Adjust repulsion force based on node type
+          if (d.type === 'tag') {
+            return -100 * (d.r || TAG_NODE_BASE_SIZE);
+          } else {
+            return -30 * (d.r || MEMO_NODE_BASE_SIZE);
+          }
+        }),
       )
       .force(
         'link',
@@ -273,27 +338,63 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
           .distance((d: any) => {
             const source = d.source as any;
             const target = d.target as any;
-            const referenceCount = source.references + target.references;
-            const dynamicDistance = getRandomNumberInRange(
-              MIN_DISTANCE,
-              MAX_DISTANCE +
-                (referenceCount > 50 ? referenceCount * 2 : referenceCount * 3),
-            );
-            return Math.min(dynamicDistance, MAX_DISTANCE + referenceCount * 5);
+
+            // Adjust distance based on node types
+            if (source.type === 'tag' && target.type === 'tag') {
+              // Tag to tag links should be longer
+              return MAX_DISTANCE * 0.8;
+            } else if (
+              (source.type === 'tag' && target.type === 'memo') ||
+              (source.type === 'memo' && target.type === 'tag')
+            ) {
+              // Tag to memo links should be shorter
+              return MIN_DISTANCE * 1.2;
+            } else {
+              // Default distance calculation
+              return MIN_DISTANCE * 1.5;
+            }
           }),
       )
-      .force('center', d3.forceCenter(w, h));
+      .force('center', d3.forceCenter(w, h))
+      // Add collision detection to prevent overlap
+      .force(
+        'collision',
+        d3.forceCollide().radius((d: any) => (d.r || 20) + 8),
+      )
+      // Add some slight gravity toward the center
+      .force('x', d3.forceX(w).strength(0.05))
+      .force('y', d3.forceY(h).strength(0.05));
 
-    const link = container
+    // Create a group for links that will be at the bottom layer
+    const linksGroup = container.append('g').attr('class', 'links-group');
+
+    // Create a group for nodes that will be in the middle layer
+    const nodesGroup = container.append('g').attr('class', 'nodes-group');
+
+    // Create a group for labels that will be at the top layer
+    const labelsGroup = container.append('g').attr('class', 'labels-group');
+
+    const link = linksGroup
       .selectAll('line')
       .data(nodeLinks)
       .enter()
       .append('line')
-      .attr('stroke', LINK_COLOR);
+      .attr('stroke', LINK_COLOR)
+      .attr('stroke-opacity', 0.6)
+      .attr('stroke-width', d => {
+        // Make links between tags thicker
+        const source = d.source as any;
+        const target = d.target as any;
+        if (source.type === 'tag' && target.type === 'tag') {
+          return 2;
+        }
+        return 1;
+      });
 
     linksRef.current = link;
 
-    const label = container
+    // Create labels before nodes to establish layer order
+    const label = labelsGroup
       .selectAll('text')
       .data(gNodes)
       .enter()
@@ -302,8 +403,10 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       .attr('x', 8)
       .attr('y', 3)
       .attr('class', 'fill-current text-foreground')
-      .style('font-size', '12px')
-      .style('visibility', canShowAllLabels ? 'visible' : 'hidden');
+      .style('font-size', d => (d.type === 'tag' ? '14px' : '12px'))
+      .style('font-weight', d => (d.type === 'tag' ? 'bold' : 'normal'))
+      .style('visibility', canShowAllLabels ? 'visible' : 'hidden')
+      .style('pointer-events', 'none'); // Ensures labels don't interfere with mouse events
 
     labelsRef.current = label;
 
@@ -361,10 +464,7 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       });
 
       // Highlight the hovered node
-      d3.select(this).attr(
-        'r',
-        sizeScale(d.references || MIN_REF_COUNT) * HOVER_SCALE_RATIO,
-      );
+      d3.select(this).attr('r', (d.r || 20) * HOVER_SCALE_RATIO);
 
       // Show the title of the hovered node
       labelsRef
@@ -435,10 +535,7 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       isHoveringRef.current = false;
 
       // Restore original node size for the hovered node
-      d3.select(this).attr(
-        'r',
-        d.r || sizeScale(d.references || MIN_REF_COUNT),
-      );
+      d3.select(this).attr('r', d.r || 20);
 
       // If we have a search query, reapply search after a short delay
       if (searchQuery) {
@@ -472,12 +569,13 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       });
     };
 
-    const node = container
+    // Now create nodes after defining the handler functions
+    const node = nodesGroup
       .selectAll('circle')
       .data(gNodes)
       .enter()
       .append('circle')
-      .attr('r', d => sizeScale(d.references || MIN_REF_COUNT))
+      .attr('r', d => d.r || 20)
       .attr('fill', NODE_COLOR)
       .attr('class', 'cursor-pointer')
       .on('mouseover', handleMouseOver as any)
@@ -507,15 +605,13 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       node
         .attr('cx', d => d.x || 0)
         .attr('cy', d => d.y || 0)
-        .attr('r', d => sizeScale(d.references || MIN_REF_COUNT));
+        .attr('r', d => d.r || 20);
 
       label
         .attr('x', d => d.x || 0)
-        .attr(
-          'y',
-          d => (d.y || 0) + sizeScale(d.references || MIN_REF_COUNT) + 25,
-        )
-        .attr('text-anchor', 'middle');
+        .attr('y', d => (d.y || 0) - (d.r || 20) - 10)
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'auto');
     });
 
     const zoomed = (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
@@ -584,7 +680,7 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
       d.fy = d.y;
 
       d3.select(this)
-        .attr('r', sizeScale(d.references || MIN_REF_COUNT) * HOVER_SCALE_RATIO)
+        .attr('r', (d.r || 20) * HOVER_SCALE_RATIO)
         .attr('fill', HIGHLIGHT_COLOR);
 
       labelsRef
@@ -625,8 +721,15 @@ const MemoMap: React.FC<MemoMapProps> = ({ memos, authorUsername }) => {
 
     // Attach click event listener to nodes
     node.on('click', function (event: MouseEvent, d: GNode) {
-      // Navigate using router or window.location depending on your app setup
-      window.location.href = d.url;
+      // For tag nodes, we might want to filter by tag instead of navigating
+      if (d.type === 'tag') {
+        // Optional: implement tag filtering logic here
+        // For now, just navigate to the URL
+        window.location.href = d.url;
+      } else {
+        // Navigate using router or window.location depending on your app setup
+        window.location.href = d.url;
+      }
     });
 
     // Cleanup function
