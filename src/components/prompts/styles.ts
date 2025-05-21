@@ -4,7 +4,7 @@ export const promptCardStyles = {
   container: cn(
     'group relative',
     'rounded-xl border p-4',
-    'h-[360px] w-full overflow-hidden',
+    'h-[300px] w-full overflow-hidden',
     // Default state colors
     'border-neutral-800/10 dark:border-neutral-100/10',
     'bg-gradient-to-br from-neutral-50/80 to-neutral-100/80',
@@ -38,7 +38,7 @@ export const promptCardStyles = {
   ),
 
   content: cn(
-    'flex-1 font-mono text-[13px] break-words space-y-4',
+    'flex-1 font-mono text-[12px] break-words space-y-4',
     'overflow-y-auto p-3',
     'scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-600 scrollbar-track-transparent',
     'bg-white/40 dark:bg-neutral-900/40',
@@ -70,7 +70,7 @@ export const promptMarkdownStyles = {
 
   codeBlock: {
     pre: cn(
-      'overflow-x-auto rounded-xl px-0.5 py-1.5 font-mono text-sm',
+      'overflow-x-auto rounded px-1 py-1.5 font-mono text-[12px]',
       'bg-neutral-200/50 dark:bg-neutral-700/50',
       'backdrop-blur-sm',
       'my-2',

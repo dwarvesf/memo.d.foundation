@@ -179,7 +179,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
                 <h2 className="text-md mb-4 font-bold text-neutral-700 dark:text-neutral-100">
                   {catPrompts.title}
                 </h2>
-                <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4">
                   {catPrompts.prompts.map(prompt => (
                     <PromptCard
                       category={category}
