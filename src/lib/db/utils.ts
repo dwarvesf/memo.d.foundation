@@ -15,7 +15,7 @@ export async function queryDuckDB(
   sql: string,
   options: { filePath?: string; tableName?: string } = {},
 ) {
-  const filePath = options.filePath || 'public/content/prompts.parquet';
+  const filePath = options.filePath || 'db/vault.parquet';
   const tableName = options.tableName || 'vault';
   try {
     // Path to the parquet file
