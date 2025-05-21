@@ -16,6 +16,8 @@ class StorageUtil {
   private _initVaultClient(): any {
     const vaultToken = process.env.VAULT_TOKEN;
     const vaultUrl = process.env.VAULT_ADDR;
+    console.log('vaultUrl: ', vaultUrl?.length);
+    console.log('vaultToken: ', vaultToken?.length);
 
     if (!vaultToken || !vaultUrl) {
       throw new Error(
