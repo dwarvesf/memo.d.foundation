@@ -15,10 +15,10 @@ class StorageUtil {
 
   private _initVaultClient(): any {
     const vaultToken = process.env.VAULT_TOKEN;
-    const vaultUrl = process.env.VAULT_ADDR;
-    console.log('vaultUrl: ', vaultUrl?.length);
-    console.log('vaultToken: ', vaultToken?.length);
-
+    let vaultUrl = process.env.VAULT_ADDR;
+    if (vaultUrl?.endsWith('/')) {
+      vaultUrl = vaultUrl.slice(0, -1);
+    }
     if (!vaultToken || !vaultUrl) {
       throw new Error(
         'Vault token or Vault address is not set in environment variables',
