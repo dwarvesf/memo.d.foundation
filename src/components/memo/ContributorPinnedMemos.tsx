@@ -12,14 +12,14 @@ interface ContributorPinnedMemosProps {
 
 function ContributorPinnedMemos({ data }: ContributorPinnedMemosProps) {
   return (
-    <div className="relative mx-auto mb-10 grid w-full max-w-3xl gap-y-3 px-3.5 md:px-0">
-      <span className="text-base">Pinned memos</span>
+    <div className="relative mx-auto mb-10 grid w-full max-w-3xl gap-y-3">
+      <span className="px-3.5 text-base md:px-0">Pinned memos</span>
       <ScrollArea>
-        <div className="flex auto-rows-auto grid-cols-3 gap-3 md:grid">
+        <div className="flex auto-rows-auto grid-cols-3 gap-3 overflow-hidden px-3.5 md:grid md:px-0">
           {data.map(memo => {
             return (
               <div
-                className="border-border flex w-[calc(100vw-28px)] flex-col rounded-lg border px-4 py-3 !no-underline transition md:w-auto"
+                className="border-border flex w-[calc(100vw-28px)] max-w-[250px] flex-col rounded-lg border px-4 py-3 !no-underline transition md:w-auto"
                 key={memo.filePath}
               >
                 <div className="flex items-start gap-2">

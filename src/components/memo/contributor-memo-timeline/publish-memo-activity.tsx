@@ -59,7 +59,7 @@ export function PublishMemoActivity({
       <div className="flex">
         <div className="relative mr-3">
           <div className="bg-border absolute top-0 bottom-0 left-1/2 w-[1.5px] -translate-x-1/2 rounded-full" />
-          <div className="border-background bg-border relative mt-4 flex items-center justify-center rounded-full border-4 p-1.5">
+          <div className="border-background bg-border relative mt-3.5 flex items-center justify-center rounded-full border-4 p-1.5">
             <Plus className="h-3.5 w-3.5" />
           </div>
         </div>
@@ -98,13 +98,13 @@ export function PublishMemoActivity({
     <div className="flex">
       <div className="relative mr-3">
         <div className="bg-border absolute top-0 bottom-0 left-1/2 w-[1.5px] -translate-x-1/2 rounded-full" />
-        <div className="border-background bg-border relative mt-4 flex items-center justify-center rounded-full border-4 p-1.5">
+        <div className="border-background bg-border relative mt-3.5 flex items-center justify-center rounded-full border-4 p-1.5">
           <HotIcon className="h-3.5 w-3.5" />
         </div>
       </div>
       <div className="mt-5 flex w-full flex-col gap-y-2">
         <div className="flex justify-between">
-          <span className="text-lg">Published {data.length} memos</span>
+          <span className="text-base">Published {data.length} memos</span>
           <span className="text-muted-foreground text-xs">
             {monthIndex[parseInt(m) - 1]} {date}
           </span>
@@ -113,12 +113,12 @@ export function PublishMemoActivity({
           {data.map(d => {
             const collectors = memoCollectors[d.tokenId ?? ''] ?? [];
             return (
-              <div className="flex items-center" key={d.filePath}>
+              <div className="flex flex-wrap items-center" key={d.filePath}>
                 <Link
                   href={formatContentPath(d.filePath)}
-                  className="!text-muted-foreground hover:!text-primary flex items-center gap-x-2"
+                  className="!text-muted-foreground hover:!text-primary flex items-start gap-x-2"
                 >
-                  <BookOpenIcon className="h-4 w-4" />
+                  <BookOpenIcon className="mt-1 h-4 w-4 shrink-0" />
                   <span>{d.title}</span>
                 </Link>
                 {collectors.length ? (
