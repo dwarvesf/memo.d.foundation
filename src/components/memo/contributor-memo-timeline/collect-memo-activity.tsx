@@ -19,7 +19,7 @@ export function CollectMemoActivity({ data }: CollectMemoActivityProps) {
         <div className="relative mr-3">
           <div className="bg-border absolute top-0 bottom-0 left-1/2 w-[1.5px] -translate-x-1/2 rounded-full" />
           <div className="border-background bg-border relative mt-4 flex items-center justify-center rounded-full border-4 p-1.5">
-            <CheckCheck className="h-4 w-4" />
+            <CheckCheck className="h-3.5 w-3.5" />
           </div>
         </div>
         <div className="mt-5 flex w-full flex-col gap-y-2">
@@ -44,7 +44,7 @@ export function CollectMemoActivity({ data }: CollectMemoActivityProps) {
       <div className="relative mr-3">
         <div className="bg-border absolute top-0 bottom-0 left-1/2 w-[1.5px] -translate-x-1/2 rounded-full" />
         <div className="border-background bg-border relative mt-4 flex items-center justify-center rounded-full border-4 p-1.5">
-          <ListCheck className="h-4 w-4" />
+          <ListCheck className="h-3.5 w-3.5" />
         </div>
       </div>
       <div className="mt-5 flex w-full flex-col gap-y-2">
