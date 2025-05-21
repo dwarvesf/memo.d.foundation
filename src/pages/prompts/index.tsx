@@ -153,7 +153,10 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
       hideRightSidebar
       mainClassName="max-w-full w-full xl:p-2"
     >
-      <div className="mx-auto">
+      <div className="mx-auto w-full">
+        <h1 className="mb-4 text-3xl font-bold text-neutral-700 dark:text-neutral-100">
+          Prompt gallery
+        </h1>
         <CategoriesHeader
           categories={categoryTitles}
           activeCategory={activeCategory}
@@ -175,7 +178,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
               <h2 className="mb-4 text-lg font-bold text-neutral-700 dark:text-neutral-100">
                 {catPrompts.title}
               </h2>
-              <div className="3xl:grid-cols-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
                 {catPrompts.prompts.map(prompt => (
                   <PromptCard key={prompt.filePath} prompt={prompt} />
                 ))}

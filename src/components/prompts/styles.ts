@@ -4,16 +4,16 @@ export const promptCardStyles = {
   container: cn(
     'group relative',
     'rounded-xl border p-4',
-    'max-h-[500px] min-h-[240px] w-full overflow-hidden',
+    'h-[360px] w-full overflow-hidden',
     // Default state colors
     'border-neutral-800/10 dark:border-neutral-100/10',
     'bg-gradient-to-br from-neutral-50/80 to-neutral-100/80',
     'dark:from-neutral-900 dark:to-neutral-800',
     'hover:bg-gradient-to-br hover:from-violet-50/90 hover:to-violet-100/90',
     'dark:hover:from-purple-950/10 dark:hover:to-violet-900/10',
-    // Glow effect
-    'shadow-[var(--card-shadow)]',
-    'dark:shadow-[var(--card-shadow-dark)]',
+    // // Glow effect
+    // 'shadow-[var(--card-shadow)]',
+    // 'dark:shadow-[var(--card-shadow-dark)]',
     // Hover state
     'hover:border-violet-500/40 dark:hover:border-violet-500/40',
     'hover:shadow-[var(--card-shadow-hover)]',
@@ -38,11 +38,11 @@ export const promptCardStyles = {
   ),
 
   content: cn(
-    'flex-1 font-mono text-sm break-words whitespace-pre-wrap',
+    'flex-1 font-mono text-sm break-words space-y-4',
     'overflow-y-auto p-3',
     'scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-600 scrollbar-track-transparent',
     'bg-white/40 dark:bg-neutral-900/40',
-    'rounded-lg backdrop-blur-sm',
+    'rounded-xl backdrop-blur-sm',
     'group-hover:bg-white/70 dark:group-hover:bg-neutral-800/70',
   ),
 
@@ -60,7 +60,7 @@ export const promptCardStyles = {
 
 export const promptMarkdownStyles = {
   inlineCode: cn(
-    'rounded-md px-0.5 py-0.5 font-mono text-sm',
+    'rounded-xl px-0.5 py-0.5 font-mono text-sm',
     'bg-neutral-200/50 dark:bg-neutral-700/50',
     'text-neutral-500 dark:text-neutral-500',
     'group-hover:bg-neutral-200/70 dark:group-hover:bg-neutral-700/70',
@@ -70,7 +70,7 @@ export const promptMarkdownStyles = {
 
   codeBlock: {
     pre: cn(
-      'overflow-x-auto rounded-md px-0.5 py-1.5 font-mono text-sm',
+      'overflow-x-auto rounded-xl px-0.5 py-1.5 font-mono text-sm',
       'bg-neutral-200/50 dark:bg-neutral-700/50',
       'backdrop-blur-sm',
       'my-2',

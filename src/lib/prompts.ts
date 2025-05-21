@@ -13,7 +13,7 @@ function capitalizeFirstLetter(string: string): string {
 function convertToPromptItems(data: Record<string, Json>[]): IPromptItem[] {
   return data.map(item => {
     return {
-      title: (item.title as string) ?? 'Unnamed',
+      title: (item.title as string) ?? 'Untitled',
       description: item.description as string,
       tags: item.tags as string[],
       category: capitalizeFirstLetter((item.category as string) ?? 'Misc'),
