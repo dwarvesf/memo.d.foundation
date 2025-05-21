@@ -47,7 +47,10 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
 
   // Get unique categories from prompts
   const categories = useMemo(
-    () => Array.from(new Set(prompts.map(prompt => prompt.category))),
+    () =>
+      Array.from(new Set(prompts.map(prompt => prompt.category))).sort((a, b) =>
+        a.localeCompare(b),
+      ),
     [prompts],
   );
 
