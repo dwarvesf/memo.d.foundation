@@ -9,13 +9,13 @@ export const promptCardStyles = {
     'border-neutral-800/10 dark:border-neutral-100/10',
     'bg-gradient-to-br from-neutral-50/80 to-neutral-100/80',
     'dark:from-neutral-900 dark:to-neutral-800',
-    'hover:bg-gradient-to-br hover:from-violet-50/90 hover:to-violet-100/90',
-    'dark:hover:from-purple-950/10 dark:hover:to-violet-900/10',
+    'hover:bg-gradient-to-br hover:from-pink-50/90 hover:to-pink-100/90',
+    'dark:hover:from-purple-950/10 dark:hover:to-pink-900/10',
     // // Glow effect
     // 'shadow-[var(--card-shadow)]',
     // 'dark:shadow-[var(--card-shadow-dark)]',
     // Hover state
-    'hover:border-violet-500/40 dark:hover:border-violet-500/40',
+    'hover:border-pink-500/40 dark:hover:border-pink-500/40',
     'hover:shadow-[var(--card-shadow-hover)]',
     'dark:hover:shadow-[var(--card-shadow-hover-dark)]',
     'transition-all duration-300 ease-out',
@@ -30,7 +30,7 @@ export const promptCardStyles = {
   ),
 
   categoryLink: cn(
-    'relative cursor-pointer px-2 py-1 text-sm',
+    'relative cursor-pointer px-2 py-1 text-sm flex items-center gap-2',
     'transition-all duration-200 ease-in-out',
     'text-neutral-700 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100',
     'after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full',
@@ -38,7 +38,7 @@ export const promptCardStyles = {
   ),
 
   content: cn(
-    'flex-1 font-mono text-sm break-words space-y-4',
+    'flex-1 font-mono text-[13px] break-words space-y-4',
     'overflow-y-auto p-3',
     'scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-600 scrollbar-track-transparent',
     'bg-white/40 dark:bg-neutral-900/40',
@@ -49,13 +49,13 @@ export const promptCardStyles = {
   footer:
     'sticky right-0 bottom-0 left-0 mt-3 flex items-center justify-between gap-2',
 
-  title: cn('text-sm font-medium', 'text-neutral-700 dark:text-neutral-300'),
-
-  models: cn(
+  title: cn(
     'text-sm font-medium',
     'text-neutral-700 dark:text-neutral-300',
-    'text-right',
+    'flex items-center gap-2',
   ),
+
+  models: cn('text-neutral-500'),
 };
 
 export const promptMarkdownStyles = {

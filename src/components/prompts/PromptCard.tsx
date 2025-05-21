@@ -3,13 +3,21 @@ import React, { useCallback, useState } from 'react';
 import PromptMarkdown from './PromptMarkdown';
 import { promptCardStyles } from './styles';
 import { cn } from '@/lib/utils';
-import { CopyIcon, CheckIcon } from 'lucide-react';
+import { CopyIcon, CheckIcon, Server } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
+import { categoryIcons } from './CategoriesHeader';
 
 interface PromptCardProps {
   prompt: IPromptItem;
+  category?: string;
 }
 
-const PromptCard: React.FC<PromptCardProps> = ({ prompt }) => {
+const PromptCard: React.FC<PromptCardProps> = ({ prompt, category }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -17,6 +25,8 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt }) => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }, [prompt.mdContent]);
+
+  const Icon = categoryIcons[category as keyof typeof categoryIcons];
 
   return (
     <div className={promptCardStyles.container}>
@@ -46,14 +56,25 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt }) => {
         {/* Footer */}
         <div className={promptCardStyles.footer}>
           <div className="flex items-center gap-2">
-            <span className={promptCardStyles.title}>{prompt.title}</span>
+            <span className={promptCardStyles.title}>
+              <Icon className="text-muted-500" size={14} /> {prompt.title}
+            </span>
           </div>
           {prompt.models?.length ? (
-            <div className="flex items-center gap-2">
-              <span className={promptCardStyles.models}>
-                {prompt.models.join(', ')}
-              </span>
-            </div>
+            <TooltipProvider skipDelayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Server size={16} className={promptCardStyles.models} />
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  <div>
+                    {prompt.models.map(model => (
+                      <p key={model}>{model}</p>
+                    ))}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           ) : null}
         </div>
       </div>

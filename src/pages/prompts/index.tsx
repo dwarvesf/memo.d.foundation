@@ -154,7 +154,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
       mainClassName="max-w-full w-full xl:p-2"
     >
       <div className="mx-auto w-full">
-        <h1 className="mb-4 text-3xl font-bold text-neutral-700 dark:text-neutral-100">
+        <h1 className="-mt-2 mb-4 text-3xl font-bold text-neutral-700 dark:text-neutral-100">
           Prompt gallery
         </h1>
         <CategoriesHeader
@@ -167,24 +167,30 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
           }}
         />
         <div className="mt-8 space-y-4">
-          {Object.entries(groupedPrompts).map(([category, catPrompts]) => (
-            <section
-              key={category}
-              id={category}
-              ref={(el: HTMLDivElement | null) => {
-                categoryRefs.current[category] = el;
-              }}
-            >
-              <h2 className="mb-4 text-lg font-bold text-neutral-700 dark:text-neutral-100">
-                {catPrompts.title}
-              </h2>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
-                {catPrompts.prompts.map(prompt => (
-                  <PromptCard key={prompt.filePath} prompt={prompt} />
-                ))}
-              </div>
-            </section>
-          ))}
+          {Object.entries(groupedPrompts).map(([category, catPrompts]) => {
+            return (
+              <section
+                key={category}
+                id={category}
+                ref={(el: HTMLDivElement | null) => {
+                  categoryRefs.current[category] = el;
+                }}
+              >
+                <h2 className="text-md mb-4 font-bold text-neutral-700 dark:text-neutral-100">
+                  {catPrompts.title}
+                </h2>
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
+                  {catPrompts.prompts.map(prompt => (
+                    <PromptCard
+                      category={category}
+                      key={prompt.filePath}
+                      prompt={prompt}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
       </div>
     </RootLayout>
