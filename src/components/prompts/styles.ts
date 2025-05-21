@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 export const promptCardStyles = {
   container: cn(
     'group relative',
-    'rounded-xl border p-4',
+    'rounded-lg border p-4',
     'h-[300px] w-full overflow-hidden',
     // Default state colors
     'border-neutral-800/10 dark:border-neutral-100/10',
@@ -42,7 +42,7 @@ export const promptCardStyles = {
     'overflow-y-auto p-3',
     'scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-600 scrollbar-track-transparent',
     'bg-white/40 dark:bg-neutral-900/40',
-    'rounded-xl backdrop-blur-sm',
+    'rounded-lg backdrop-blur-sm',
     'group-hover:bg-white/70 dark:group-hover:bg-neutral-800/70',
   ),
 
@@ -60,7 +60,7 @@ export const promptCardStyles = {
 
 export const promptMarkdownStyles = {
   inlineCode: cn(
-    'rounded-xl px-0.5 py-0.5 font-mono text-sm',
+    'rounded-lg px-0.5 py-0.5 font-mono text-sm',
     'bg-neutral-200/50 dark:bg-neutral-700/50',
     'text-neutral-500 dark:text-neutral-500',
     'group-hover:bg-neutral-200/70 dark:group-hover:bg-neutral-700/70',

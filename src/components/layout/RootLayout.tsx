@@ -25,6 +25,7 @@ interface RootLayoutProps extends RootLayoutPageProps {
   metadata?: IMetadata;
   hideRightSidebar?: boolean;
   mainClassName?: string;
+  fullWidth?: boolean;
   // pinnedNotes and tags are now included via RootLayoutPageProps
 }
 
@@ -38,6 +39,7 @@ function RootLayout({
   directoryTree,
   searchIndex,
   hideRightSidebar = false,
+  fullWidth = false,
   mainClassName = '',
   // pinnedNotes and tags are no longer used directly by RootLayout
 }: RootLayoutProps) {
@@ -157,7 +159,11 @@ function RootLayout({
           />
 
           {/* Main content grid */}
-          <div className="main-grid relative w-full flex-1 flex-col">
+          <div
+            className={cn('main-grid relative w-full flex-1 flex-col', {
+              'full-width': fullWidth,
+            })}
+          >
             {!hideRightSidebar && <RightSidebar metadata={metadata} />}
             <TableOfContents items={tocItems} />
             <main

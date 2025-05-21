@@ -29,13 +29,13 @@ const CategoriesHeader: React.FC<CategoriesHeaderProps> = ({
   onCategoryClick,
 }) => {
   return (
-    <nav className="mb-4">
-      <ul className="flex flex-wrap gap-2">
+    <nav className="mb-4 overflow-x-auto">
+      <ul className="flex flex-nowrap gap-2">
         {categories.map(({ id, title, count }) => {
           const Icon =
             categoryIcons[title.toLowerCase() as keyof typeof categoryIcons];
           return (
-            <li key={id} className="flex items-center">
+            <li key={id} className="flex items-center whitespace-nowrap">
               <span
                 onClick={() => onCategoryClick(id)}
                 className={cn(

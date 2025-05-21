@@ -151,10 +151,11 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
       directoryTree={directoryTree}
       searchIndex={searchIndex}
       hideRightSidebar
+      fullWidth
       mainClassName="max-w-full w-full xl:p-2"
     >
       <div className="mx-auto w-full">
-        <h1 className="-mt-2 mb-4 text-3xl font-bold text-neutral-700 dark:text-neutral-100">
+        <h1 className="mb-4 text-3xl font-bold text-neutral-700 xl:-mt-10 dark:text-neutral-100">
           Prompt gallery
         </h1>
         <CategoriesHeader
@@ -166,7 +167,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
             handleChangeCategory(category, true);
           }}
         />
-        <div className="mt-8 space-y-4">
+        <div className="mt-8 space-y-4 pb-4">
           {Object.entries(groupedPrompts).map(([category, catPrompts]) => {
             return (
               <section
