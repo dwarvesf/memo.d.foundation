@@ -1,6 +1,7 @@
 import { uppercaseSpecialWords } from '@/lib/utils';
 import { Link, TwitterIcon, Tag as TagIcon } from 'lucide-react';
 import Tag from '../ui/tag';
+import Image from 'next/image';
 
 interface Props {
   contributorMemos: any;
@@ -41,72 +42,76 @@ const ContributorHead = (props: Props) => {
       .sort((a, b) => (b.count as number) - (a.count as number));
 
   return (
-    <div className="mb-10 flex justify-between gap-4">
-      <div>
-        <div className="flex justify-between">
-          <div>
-            <h1 className="!my-2 !mb-0 text-4xl font-bold">
-              {name || githubId}
-            </h1>
-            <a className="text-xl" href={githubLink}>
-              {githubId}
-            </a>
-            <p className="text-muted-foreground mt-1">{bio}</p>
-          </div>
-
-          <div className="block flex-none sm:hidden">
-            <img
-              src={avatarUrl}
-              alt="Avatar"
-              className="h-16 w-16 rounded-full"
-            />
-          </div>
-        </div>
-        <div className="mt-2 gap-1">
-          {websiteLink && (
-            <div>
-              <Link className="text-muted-foreground mr-2 inline w-4" />
-              <a
-                href={websiteLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                {websiteLink}
-              </a>
-            </div>
-          )}
-          {twitterUserName && (
-            <div>
-              <TwitterIcon className="text-muted-foreground mr-2 inline w-4" />
-              <a
-                href={`https://x.com/${twitterUserName}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                @{twitterUserName}
-              </a>
-            </div>
-          )}
-          {tagList?.length > 0 && (
-            <div>
-              <TagIcon className="text-muted-foreground mr-2 inline w-4" />
-              {tagList.slice(0, 5).map((tag: any) => (
-                <Tag
-                  key={tag.name}
-                  href={`/tags/${tag.name}`}
-                  className="mr-2 text-sm"
-                >
-                  {uppercaseSpecialWords(tag.name)}
-                </Tag>
-              ))}
-            </div>
-          )}
-        </div>
+    <div className="border-t-border relative mb-10 flex flex-col items-center border-t">
+      <div className="relative h-56 w-full overflow-hidden">
+        <Image
+          src="/assets/img/contributor-bg.jpg"
+          layout="fill"
+          alt=""
+          className="no-zoom !m-0 w-full rounded-none object-cover"
+        />
       </div>
-      <div className="hidden flex-none sm:block">
-        <img src={avatarUrl} alt="Avatar" className="h-40 w-40 rounded-full" />
+      <div className="relative flex w-full flex-col-reverse justify-between px-3.5 md:max-w-3xl md:flex-row md:px-0">
+        <div className="flex w-full flex-col">
+          <h1 className="!my-3 !mb-0 !text-3xl font-bold md:!my-6 md:!mb-0 md:!text-4xl">
+            {name || githubId}
+          </h1>
+          <a className="text-xl" href={githubLink}>
+            {githubId}
+          </a>
+          <p className="text-muted-foreground mt-1">{bio}</p>
+          <div className="mt-2 gap-1">
+            {websiteLink && (
+              <div className="flex whitespace-nowrap">
+                <Link className="text-muted-foreground mr-2 inline w-4 shrink-0" />
+                <a
+                  href={websiteLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary min-w-0 truncate hover:underline"
+                >
+                  {websiteLink}
+                </a>
+              </div>
+            )}
+            {twitterUserName && (
+              <div>
+                <TwitterIcon className="text-muted-foreground mr-2 inline w-4" />
+                <a
+                  href={`https://x.com/${twitterUserName}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  @{twitterUserName}
+                </a>
+              </div>
+            )}
+            {tagList?.length > 0 && (
+              <div className="mt-2 flex">
+                <TagIcon className="text-muted-foreground mr-2 inline w-4 shrink-0" />
+                <div className="flex flex-wrap gap-2">
+                  {tagList.slice(0, 5).map((tag: any) => (
+                    <Tag
+                      key={tag.name}
+                      href={`/tags/${tag.name}`}
+                      className="text-sm"
+                    >
+                      {uppercaseSpecialWords(tag.name)}
+                    </Tag>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="mx-0 !-mt-12 flex h-30 w-30 shrink-0 items-center justify-center overflow-hidden rounded-full border-6 border-[var(--background)] bg-[var(--background)] md:h-40 md:w-40 md:border-8">
+          <img
+            src={avatarUrl}
+            alt="Avatar"
+            className="no-zoom !m-0 w-full object-cover"
+          />
+        </div>
       </div>
     </div>
   );

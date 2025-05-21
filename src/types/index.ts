@@ -67,6 +67,11 @@ export interface RootLayoutPageProps {
   searchIndex?: IMiniSearchIndex | null;
 }
 
+export interface ContributorLayoutPageProps {
+  directoryTree?: Record<string, ITreeNode>;
+  searchIndex?: IMiniSearchIndex | null;
+}
+
 export interface IMemoItem {
   content: string;
   title: string;
@@ -83,7 +88,21 @@ export interface IMemoItem {
   slugArray?: string[];
 
   image?: string | null;
+
+  tokenId?: string | null;
 }
+
+// Define the CollectMemo type
+export interface CollectMemo {
+  title: string;
+  filePath: string;
+  date: string;
+  tokenId: string;
+  type: 'collect'; // To distinguish from regular memos
+}
+
+// Define the Activity type (union of IMemoItem and CollectMemo)
+export type Activity = IMemoItem | CollectMemo;
 
 /**
  * Interface for menu file paths within a group

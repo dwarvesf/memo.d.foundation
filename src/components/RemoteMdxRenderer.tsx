@@ -11,6 +11,10 @@ import MemoTimelineList from './memo/MemoTimelineList';
 import MemosByCategory from './memo/MemosByCategory';
 import If from './common/If';
 import Choose from './common/Choose';
+import ContributionActivityCalendar from './memo/ContributionActivityCalendar';
+import ContributorPinnedMemos from './memo/ContributorPinnedMemos';
+import ContributorMemoTimeline from './memo/contributor-memo-timeline';
+import ContributorContentBody from './memo/ContributorContentBody';
 
 interface Props {
   mdxSource: SerializeResult;
@@ -22,6 +26,10 @@ const components: MDXComponents = {
   Link,
   MemoVLinkList,
   ContributorHead,
+  ContributionActivityCalendar,
+  ContributorPinnedMemos,
+  ContributorMemoTimeline,
+  ContributorContentBody,
   MemoVList,
   MemoTimelineList,
   MemosByCategory,

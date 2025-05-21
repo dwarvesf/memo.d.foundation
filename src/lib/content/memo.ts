@@ -140,7 +140,7 @@ export function convertToMemoItem(
   memo: Record<string, Json>,
   keepContent = false,
 ): IMemoItem {
-  const { file_path, md_content, ...rest } = memo;
+  const { file_path, md_content, token_id, ...rest } = memo;
   return {
     ...rest,
     title: memo.title as string,
@@ -156,6 +156,7 @@ export function convertToMemoItem(
       },
       null,
     ),
+    tokenId: token_id ? (token_id as string) : null,
   };
 }
 export function convertToMemoItems(
