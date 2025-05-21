@@ -41,6 +41,7 @@ export async function getPrompts(): Promise<IPromptItem[]> {
       `
       SELECT *
       FROM prompt
+      WHERE title IS NOT NULL AND title != ''
       ORDER BY last_updated_at DESC;
     `,
       {
@@ -50,7 +51,6 @@ export async function getPrompts(): Promise<IPromptItem[]> {
     );
 
     const prompts = convertToPromptItems(data);
-
     return prompts;
   } catch (error) {
     console.error('Error fetching prompts:', error);
