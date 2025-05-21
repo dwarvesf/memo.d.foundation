@@ -39,13 +39,13 @@
 }
 
 .main-content {
-  width: var(--container-max-width);
+  width: 100%;
   grid-area: content;
 }
 
 .main-grid:not(.full-width) {
   .main-content {
-    width: 100%;
+    width: var(--container-max-width);
     @variant reading {
       margin-right: calc(
         (

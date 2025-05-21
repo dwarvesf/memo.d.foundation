@@ -75,7 +75,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
   // Initialize active category from URL hash or first category
   useEffect(() => {
     const hashCategory = window.location.hash.replace('#', '');
-    setActiveCategory(hashCategory || categoryTitles[0].id);
+    setActiveCategory(hashCategory || categoryTitles[0]?.id);
   }, [categoryTitles, router.asPath]);
 
   // Handle route changes and scroll to the correct category
