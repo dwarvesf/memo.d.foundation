@@ -504,28 +504,68 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       return 4;
     };
 
+    // Get array of years sorted in descending order (newest first)
+    const sortedYears = Array.from(years).sort((a, b) => b.localeCompare(a));
+    const latestYear =
+      sortedYears.length > 0
+        ? sortedYears[0]
+        : new Date().getFullYear().toString();
+    const currentYear = new Date().getFullYear().toString();
+
+    // Check if the latest year of activity is the current year
+    const isLatestYearCurrent = latestYear === currentYear;
+
     // Generate activity data for each year
-    years.forEach(year => {
-      const yearStart = startOfYear(new Date(`${year}-01-01`));
-      const yearEnd = endOfYear(new Date(`${year}-12-31`));
+    sortedYears.forEach(year => {
+      // For the latest year, if it's the current year, we need to include activity from previous year to today
+      if (year === latestYear && isLatestYearCurrent) {
+        // Get the date from one year ago
+        const today = new Date();
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(today.getFullYear() - 1);
 
-      const days = eachDayOfInterval({
-        start: yearStart,
-        end: yearEnd,
-      });
-
-      contributorActivity[year] = [];
-
-      // Generate array of every day for this year with counts and levels
-      for (let i = 0; i < days.length; i++) {
-        const dateStr = days[i].toISOString().split('T')[0];
-        const count = dateCountMap[dateStr] || 0;
-
-        contributorActivity[year].push({
-          date: dateStr,
-          count,
-          level: getLevel(count),
+        // Create interval from one year ago to today
+        const days = eachDayOfInterval({
+          start: oneYearAgo,
+          end: today,
         });
+
+        contributorActivity[year] = [];
+
+        // Generate array of every day from one year ago to today with counts and levels
+        for (let i = 0; i < days.length; i++) {
+          const dateStr = days[i].toISOString().split('T')[0];
+          const count = dateCountMap[dateStr] || 0;
+
+          contributorActivity[year].push({
+            date: dateStr,
+            count,
+            level: getLevel(count),
+          });
+        }
+      } else {
+        // For other years or if latest year is not current year, generate full year data
+        const yearStart = startOfYear(new Date(`${year}-01-01`));
+        const yearEnd = endOfYear(new Date(`${year}-12-31`));
+
+        const days = eachDayOfInterval({
+          start: yearStart,
+          end: yearEnd,
+        });
+
+        contributorActivity[year] = [];
+
+        // Generate array of every day for this year with counts and levels
+        for (let i = 0; i < days.length; i++) {
+          const dateStr = days[i].toISOString().split('T')[0];
+          const count = dateCountMap[dateStr] || 0;
+
+          contributorActivity[year].push({
+            date: dateStr,
+            count,
+            level: getLevel(count),
+          });
+        }
       }
     });
 
