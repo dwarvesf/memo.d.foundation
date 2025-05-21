@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import PromptMarkdown from './PromptMarkdown';
 import { promptCardStyles } from './styles';
 import { cn } from '@/lib/utils';
-import { CopyIcon } from 'lucide-react';
+import { CopyIcon, CheckIcon } from 'lucide-react';
 
 interface PromptCardProps {
   prompt: IPromptItem;
@@ -30,7 +30,7 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt }) => {
         aria-label="Copy prompt to clipboard"
       >
         {copied ? (
-          'Copied!'
+          <CheckIcon width={18} height={18} className="stroke-primary" />
         ) : (
           <CopyIcon width={18} height={18} className="stroke-primary" />
         )}
