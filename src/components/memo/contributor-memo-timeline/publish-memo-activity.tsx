@@ -60,13 +60,13 @@ export function PublishMemoActivity({
         <div className="relative mr-3">
           <div className="bg-border absolute top-0 bottom-0 left-1/2 w-[1.5px] -translate-x-1/2 rounded-full" />
           <div className="border-background bg-border relative mt-4 flex items-center justify-center rounded-full border-4 p-1.5">
-            <Plus className="h-4 w-4" />
+            <Plus className="h-3.5 w-3.5" />
           </div>
         </div>
         <div className="mt-5 flex w-full flex-col gap-y-2">
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-x-4">
             {collectors.length ? (
-              <span className="flex flex-shrink-1 flex-wrap items-center gap-x-1.5 text-lg">
+              <span className="flex flex-shrink-1 flex-wrap items-center gap-x-1.5 text-base">
                 +{collectors.length} Collector
                 {collectors.length === 1 ? '' : 's'}
                 <div className="flex -space-x-2">
@@ -78,14 +78,14 @@ export function PublishMemoActivity({
                 </Link>
               </span>
             ) : (
-              <span className="text-lg">
+              <span className="text-base">
                 Published{' '}
                 <Link href={formatContentPath(data[0].filePath)}>
                   {data[0].title}
                 </Link>
               </span>
             )}
-            <span className="text-muted-foreground text-xs whitespace-nowrap">
+            <span className="text-muted-foreground text-xs leading-6 whitespace-nowrap">
               {monthIndex[parseInt(m) - 1]} {date}
             </span>
           </div>

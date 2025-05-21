@@ -48,25 +48,27 @@ const ContributorHead = (props: Props) => {
           src="/assets/img/contributor-bg.jpg"
           layout="fill"
           alt=""
-          className="no-zoom !m-0 w-full object-cover"
+          className="no-zoom !m-0 w-full rounded-none object-cover"
         />
       </div>
-      <div className="relative flex w-full max-w-3xl justify-between">
-        <div className="flex flex-col">
-          <h1 className="!my-6 !mb-0 text-4xl font-bold">{name || githubId}</h1>
+      <div className="relative flex w-full flex-col-reverse justify-between px-3.5 md:max-w-3xl md:flex-row md:px-0">
+        <div className="flex w-full flex-col">
+          <h1 className="!my-3 !mb-0 !text-3xl font-bold md:!my-6 md:!mb-0 md:!text-4xl">
+            {name || githubId}
+          </h1>
           <a className="text-xl" href={githubLink}>
             {githubId}
           </a>
           <p className="text-muted-foreground mt-1">{bio}</p>
           <div className="mt-2 gap-1">
             {websiteLink && (
-              <div>
-                <Link className="text-muted-foreground mr-2 inline w-4" />
+              <div className="flex whitespace-nowrap">
+                <Link className="text-muted-foreground mr-2 inline w-4 shrink-0" />
                 <a
                   href={websiteLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline"
+                  className="text-primary min-w-0 truncate hover:underline"
                 >
                   {websiteLink}
                 </a>
@@ -86,22 +88,24 @@ const ContributorHead = (props: Props) => {
               </div>
             )}
             {tagList?.length > 0 && (
-              <div>
-                <TagIcon className="text-muted-foreground mr-2 inline w-4" />
-                {tagList.slice(0, 5).map((tag: any) => (
-                  <Tag
-                    key={tag.name}
-                    href={`/tags/${tag.name}`}
-                    className="mr-2 text-sm"
-                  >
-                    {uppercaseSpecialWords(tag.name)}
-                  </Tag>
-                ))}
+              <div className="mt-2 flex">
+                <TagIcon className="text-muted-foreground mr-2 inline w-4 shrink-0" />
+                <div className="flex flex-wrap gap-2">
+                  {tagList.slice(0, 5).map((tag: any) => (
+                    <Tag
+                      key={tag.name}
+                      href={`/tags/${tag.name}`}
+                      className="text-sm"
+                    >
+                      {uppercaseSpecialWords(tag.name)}
+                    </Tag>
+                  ))}
+                </div>
               </div>
             )}
           </div>
         </div>
-        <div className="mx-0 !-mt-12 flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border-8 border-[var(--background)] bg-[var(--background)]">
+        <div className="mx-0 !-mt-12 flex h-30 w-30 shrink-0 items-center justify-center overflow-hidden rounded-full border-6 border-[var(--background)] bg-[var(--background)] md:h-40 md:w-40 md:border-8">
           <img
             src={avatarUrl}
             alt="Avatar"

@@ -69,7 +69,7 @@ function ContributionActivityCalendar(
 
   return (
     <TooltipProvider>
-      <div className="mx-auto mb-10 flex w-full max-w-3xl flex-col gap-y-2">
+      <div className="mx-auto mb-10 flex w-full max-w-3xl flex-col gap-y-2 px-3.5 md:px-0">
         <div className="flex items-center justify-between">
           <span className="text-base">Activity</span>
           <DropdownMenu>
@@ -97,7 +97,7 @@ function ContributionActivityCalendar(
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="border-border relative rounded-lg border px-4 py-1 pb-2 [&_svg]:w-full">
+        <div className="border-border relative rounded-lg border px-4 py-2 pb-2 md:py-1 md:[&_svg]:w-full">
           <ActivityCalendar
             data={data[year] || getEmptyCurrentYear()}
             colorScheme={isDark ? 'dark' : 'light'}

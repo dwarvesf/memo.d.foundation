@@ -19,10 +19,13 @@ function ContributorContentBody({
 }: ContributorContentBodyProps) {
   const authorUsername = data[0]?.authors?.[0];
   return (
-    <Tabs defaultValue="timeline" className="relative mx-auto w-full max-w-3xl">
+    <Tabs
+      defaultValue="timeline"
+      className="relative mx-auto w-full px-3.5 md:max-w-3xl md:px-0"
+    >
       <TabsList className="mb-2">
         <TabsTrigger value="timeline">Timeline</TabsTrigger>
-        <TabsTrigger value="recently-published">Recently Published</TabsTrigger>
+        <TabsTrigger value="recently-published">Recently</TabsTrigger>
         <TabsTrigger value="by-tag">By Tag</TabsTrigger>
         <TabsTrigger value="memo-map">Memo Map</TabsTrigger>
       </TabsList>
