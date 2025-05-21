@@ -25,6 +25,7 @@ const navLinks = [
   { title: 'Hiring', url: '/careers', Icon: MemoIcons.careers },
   { title: 'Changelog', url: '/updates/changelog', Icon: MemoIcons.updates },
   { title: 'OGIFs', url: '/updates/ogif', Icon: MemoIcons.ogif },
+  { title: 'Prompts', url: '/prompts', Icon: MemoIcons.prompts },
 ];
 
 interface SidebarProps {
@@ -55,8 +56,9 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     const allMatchUrls = navLinks
       .filter(link => router.asPath.startsWith(link.url))
       .map(link => link.url);
-    const longestMatch = allMatchUrls.reduce((a, b) =>
-      a.length > b.length ? a : b,
+    const longestMatch = allMatchUrls.reduce(
+      (a, b) => (a.length > b.length ? a : b),
+      '',
     );
     if (longestMatch === '/' && router.asPath !== '/') return false;
     return longestMatch === url;

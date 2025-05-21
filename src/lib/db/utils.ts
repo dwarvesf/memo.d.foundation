@@ -1,23 +1,36 @@
 import path from 'path';
 import { DuckDBInstance } from '@duckdb/node-api';
 
-// Create a singleton instance for reuse
-let duckdbInstance: DuckDBInstance | null = null;
+// Create a map to store DuckDB instances by file path
+const duckdbInstances: Map<string, DuckDBInstance> = new Map();
 
 /**
- * Execute a SQL query against a DuckDB database using the vault.parquet file
+ * Execute a SQL query against a DuckDB database using the specified parquet file
  *
  * @param sql The SQL query to execute
+ * @param filePath The path to the parquet file
  * @returns The query result as an array of objects
  */
-export async function queryDuckDB(sql: string) {
+export async function queryDuckDB(
+  sql: string,
+  options: { filePath?: string; tableName?: string } = {},
+) {
+  const filePath = options.filePath || 'db/vault.parquet';
+  const tableName = options.tableName || 'vault';
   try {
-    // Path to the vault.parquet file
-    const parquetPath = path.join(process.cwd(), 'db', 'vault.parquet');
+    // Path to the parquet file
+    const parquetPath = path.join(process.cwd(), filePath);
 
-    // Create or reuse an in-memory database instance
+    // Create or reuse a DuckDB instance for the given file path
+    if (!duckdbInstances.has(parquetPath)) {
+      const instance = await DuckDBInstance.create(':memory:');
+      duckdbInstances.set(parquetPath, instance);
+    }
+
+    const duckdbInstance = duckdbInstances.get(parquetPath);
+
     if (!duckdbInstance) {
-      duckdbInstance = await DuckDBInstance.create(':memory:');
+      throw new Error('Failed to retrieve DuckDB instance.');
     }
 
     // Create connection
@@ -25,7 +38,7 @@ export async function queryDuckDB(sql: string) {
 
     // Register the parquet file as a table
     await connection.run(
-      `CREATE VIEW IF NOT EXISTS vault AS SELECT * FROM parquet_scan('${parquetPath}');`,
+      `CREATE VIEW IF NOT EXISTS ${tableName} AS SELECT * FROM parquet_scan('${parquetPath}');`,
     );
 
     // Execute the query and get all results at once

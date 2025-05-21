@@ -6,8 +6,6 @@ import { MochiUserProfile, UserProfile } from '../src/types/user.js';
 
 const MOCHI_PROFILE_API = process.env.MOCHI_PROFILE_API;
 const GITHUB_TOKEN = process.env.DWARVES_PAT;
-console.log('MOCHI_PROFILE_API: ', MOCHI_PROFILE_API?.length);
-console.log('GITHUB_TOKEN: ', GITHUB_TOKEN?.length);
 
 async function fetchMochiProfile(
   githubUsername: string,
@@ -74,7 +72,9 @@ async function getUserProfileByGithubUsername(
 ): Promise<UserProfile | null> {
   const existingProfile = existingProfiles[githubUsername.toLowerCase()];
   if (existingProfile && (existingProfile.id || existingProfile.avatar)) {
-    console.log(`Skipping fetch for ${githubUsername}, profile already exists.`);
+    console.log(
+      `Skipping fetch for ${githubUsername}, profile already exists.`,
+    );
     return existingProfile;
   }
 
@@ -89,19 +89,26 @@ async function getUserProfileByGithubUsername(
     // Check GitHub rate limit before making the request
     const { data: rateLimit } = await octokit.rest.rateLimit.get();
     const coreLimit = rateLimit.resources.core;
-    console.log(`GitHub Core Rate Limit: Remaining - ${coreLimit.remaining}, Reset - ${new Date(coreLimit.reset * 1000).toLocaleTimeString()}`);
+    console.log(
+      `GitHub Core Rate Limit: Remaining - ${coreLimit.remaining}, Reset - ${new Date(coreLimit.reset * 1000).toLocaleTimeString()}`,
+    );
 
-    if (coreLimit.remaining < 50) { // Check if remaining calls are low (e.g., less than 50)
+    if (coreLimit.remaining < 50) {
+      // Check if remaining calls are low (e.g., less than 50)
       const resetTime = new Date(coreLimit.reset * 1000);
       const timeToWait = resetTime.getTime() - Date.now() + 5000; // Add a 5-second buffer
       const MAX_WAIT_TIME_MS = 30000; // Maximum wait time in milliseconds (30 seconds)
 
       if (timeToWait > MAX_WAIT_TIME_MS) {
-        console.warn(`Calculated wait time (${timeToWait}ms) exceeds maximum allowed (${MAX_WAIT_TIME_MS}ms). Skipping GitHub fetch for ${githubUsername}.`);
+        console.warn(
+          `Calculated wait time (${timeToWait}ms) exceeds maximum allowed (${MAX_WAIT_TIME_MS}ms). Skipping GitHub fetch for ${githubUsername}.`,
+        );
         // Skip the GitHub API call and proceed with available data (or null if no existing profile)
         return existingProfile || null; // Return existing profile if available, otherwise null
       } else if (timeToWait > 0) {
-        console.log(`Rate limit low, waiting for ${timeToWait}ms until reset for ${githubUsername}.`);
+        console.log(
+          `Rate limit low, waiting for ${timeToWait}ms until reset for ${githubUsername}.`,
+        );
         await new Promise(resolve => setTimeout(resolve, timeToWait));
       }
     }
@@ -207,7 +214,9 @@ async function main() {
   try {
     const data = await fs.readFile(existingProfilesPath, 'utf8');
     existingProfiles = JSON.parse(data).data || {};
-    console.log(`Loaded ${Object.keys(existingProfiles).length} existing profiles`);
+    console.log(
+      `Loaded ${Object.keys(existingProfiles).length} existing profiles`,
+    );
   } catch (error: any) {
     if (error.code === 'ENOENT') {
       console.log('No existing userProfiles.json found, starting fresh.');
@@ -223,7 +232,10 @@ async function main() {
   const successfulProfiles: UserProfile[] = [];
 
   for (const author of allAuthors) {
-    const profile = await getUserProfileByGithubUsername(author, existingProfiles);
+    const profile = await getUserProfileByGithubUsername(
+      author,
+      existingProfiles,
+    );
     if (profile !== null) {
       successfulProfiles.push(profile);
     }

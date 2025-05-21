@@ -23,6 +23,9 @@ interface RootLayoutProps extends RootLayoutPageProps {
   image?: string;
   tocItems?: ITocItem[];
   metadata?: IMetadata;
+  hideRightSidebar?: boolean;
+  mainClassName?: string;
+  fullWidth?: boolean;
   // pinnedNotes and tags are now included via RootLayoutPageProps
 }
 
@@ -35,6 +38,9 @@ function RootLayout({
   tocItems,
   directoryTree,
   searchIndex,
+  hideRightSidebar = false,
+  fullWidth = false,
+  mainClassName = '',
   // pinnedNotes and tags are no longer used directly by RootLayout
 }: RootLayoutProps) {
   const { theme, toggleTheme } = useThemeContext();
@@ -153,10 +159,20 @@ function RootLayout({
           />
 
           {/* Main content grid */}
-          <div className="main-grid relative w-full flex-1 flex-col">
-            <RightSidebar metadata={metadata} />
+          <div
+            className={cn('main-grid relative w-full flex-1 flex-col', {
+              'full-width': fullWidth,
+            })}
+          >
+            {!hideRightSidebar && <RightSidebar metadata={metadata} />}
             <TableOfContents items={tocItems} />
-            <main className="main-content mx-auto max-w-[var(--container-max-width)] min-w-0 flex-1 p-[var(--main-padding-mobile)] font-serif xl:p-[var(--main-padding)]">
+            <main
+              className={cn(
+                'main-content w-container-max mx-auto max-w-[var(--container-max-width)] xl:w-full',
+                'min-w-0 flex-1 p-[var(--main-padding-mobile)] font-serif xl:p-[var(--main-padding)]',
+                mainClassName,
+              )}
+            >
               {/* Yggdrasil tree background */}
               <Image
                 className={cn(
