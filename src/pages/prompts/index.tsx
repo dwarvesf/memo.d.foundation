@@ -42,7 +42,6 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
 }) => {
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const router = useRouter();
-  const [activeCategory, setActiveCategory] = React.useState<string>('');
   const { updateRoute } = useRouteSync();
 
   // Get unique categories from prompts
@@ -75,32 +74,6 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
     count: cat.prompts.length,
   }));
 
-  // Initialize active category from URL hash or first category
-  useEffect(() => {
-    const hashCategory = window.location.hash.replace('#', '');
-    setActiveCategory(hashCategory || categoryTitles[0]?.id);
-  }, [categoryTitles, router.asPath]);
-
-  // Handle route changes and scroll to the correct category
-  useEffect(() => {
-    const onPathChange = () => {
-      // get category by hash
-      const category = window.location.hash.replace('#', '');
-      if (category && categoryRefs.current[category]) {
-        categoryRefs.current[category]?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      }
-    };
-    onPathChange();
-    router.events.on('hashChangeComplete', onPathChange);
-    return () => {
-      router.events.off('hashChangeComplete', onPathChange);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleChangeCategory = (category: string, isScrolling: boolean) => {
     const currentCategory = window.location.hash.replace('#', '');
     // Check if the current category is the same as the new category
@@ -115,7 +88,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
         scroll: false,
       });
     } else {
-      updateRoute(`#${category}`);
+      updateRoute(`${window.location.pathname}#${category}`, true);
     }
   };
 
@@ -161,15 +134,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
         <h1 className="mb-4 inline-flex transform text-3xl font-bold text-neutral-700 dark:text-neutral-100">
           Prompt gallery
         </h1>
-        <CategoriesHeader
-          categories={categoryTitles}
-          activeCategory={activeCategory}
-          onCategoryClick={category => {
-            setActiveCategory(category);
-            // Router update hash category
-            handleChangeCategory(category, true);
-          }}
-        />
+        <CategoriesHeader categories={categoryTitles} />
         <div className="mt-8 space-y-4 pb-4">
           {Object.entries(groupedPrompts).map(([category, catPrompts]) => {
             return (

@@ -8,6 +8,7 @@ import {
   Calculator,
   Component,
 } from 'lucide-react';
+import Link from 'next/link';
 
 export const categoryIcons = {
   general: Activity,
@@ -19,15 +20,16 @@ export const categoryIcons = {
 
 interface CategoriesHeaderProps {
   categories: { id: string; title: string; count: number }[];
-  activeCategory: string;
-  onCategoryClick: (category: string) => void;
 }
 
-const CategoriesHeader: React.FC<CategoriesHeaderProps> = ({
-  categories,
-  activeCategory,
-  onCategoryClick,
-}) => {
+const getHashId = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.hash.replace('#', '');
+  }
+  return '';
+};
+
+const CategoriesHeader: React.FC<CategoriesHeaderProps> = ({ categories }) => {
   return (
     <nav className="mb-4 overflow-x-auto">
       <ul className="flex flex-nowrap gap-2">
@@ -36,18 +38,18 @@ const CategoriesHeader: React.FC<CategoriesHeaderProps> = ({
             categoryIcons[title.toLowerCase() as keyof typeof categoryIcons];
           return (
             <li key={id} className="flex items-center whitespace-nowrap">
-              <span
-                onClick={() => onCategoryClick(id)}
+              <Link
+                href={`#${id}`}
                 className={cn(
                   promptCardStyles.categoryLink,
-                  id === activeCategory
-                    ? 'after:scale-x-100'
-                    : 'after:scale-x-0',
+                  id === getHashId() ? 'after:scale-x-100' : 'after:scale-x-0',
                 )}
+                shallow
+                // scroll={false}
               >
                 <Icon size={14} className="text-neutral-500" />
                 {title} ({count})
-              </span>
+              </Link>
             </li>
           );
         })}
