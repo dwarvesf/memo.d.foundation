@@ -201,6 +201,9 @@ const config = {
               marginBottom: '0',
               marginTop: 'var(--element-margin)',
             },
+            iframe: {
+              marginTop: 'var(--element-margin)',
+            },
             'h3 + p, h4 + p, h5 + p': {
               marginTop: 'var(--subsubheading-margin)',
             },
