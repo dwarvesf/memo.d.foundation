@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm run generate-menu && pnpm run generate-menu-path-sorted && pnpm run generate-backlinks && pnpm run generate-search-index && pnpm run generate-redirects-map && pnpm run generate-user-profiles && pnpm run fetch-prompts && next build && pnpm run generate-rss && pnpm run copy-404",
+    "build": "pnpm run generate-menu && pnpm run generate-menu-path-sorted && pnpm run generate-backlinks && pnpm run generate-search-index && pnpm run generate-redirects-map && pnpm run generate-shorten-map && pnpm run generate-user-profiles && pnpm run fetch-prompts && next build && pnpm run generate-rss && pnpm run copy-404",
     "start": "next start",
     "lint": "next lint",
     "deploy": "gh-pages -d out",
@@ -14,10 +14,12 @@
     "generate-rss": "tsx scripts/generate-rss.ts",
     "generate-search-index": "tsx scripts/generate-search-index.ts",
     "generate-redirects-map": "tsx scripts/generate-redirects-map.ts",
+    "generate-shorten-map": "tsx scripts/generate-shorten-map.ts",
     "generate-menu": "tsx scripts/generate-menu.ts",
     "generate-backlinks": "tsx scripts/generate-backlinks.ts",
     "generate-summary": "tsx scripts/generate-summary.ts",
     "generate-user-profiles": "tsx scripts/generate-user-profiles.ts",
+    "generate-nginx-conf": "tsx scripts/generate-nginx-redirect-map.ts",
     "fetch-prompts": "tsx scripts/fetch-prompts.ts",
     "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",
     "copy-404": "cp out/404/index.html out/404.html"

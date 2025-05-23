@@ -78,7 +78,14 @@ LABEL maintainer="anhnx@d.foundation" \
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
+# Copy static assets
 COPY --from=builder /code/out/ /usr/share/nginx/html
+
+# Copy the generated Nginx redirect map configuration
+COPY --from=builder /code/public/content/nginx_redirect_map.conf /etc/nginx/conf.d/nginx_redirect_map.conf
+
+# Copy custom Nginx configuration replace the default server block configuration
+COPY --from=builder /code/nginx/nginx.custom.conf /etc/nginx/conf.d/default.conf
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost/ || exit 1
