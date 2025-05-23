@@ -5,11 +5,20 @@ import { getPrompts } from '@/lib/prompts';
 import { IPromptItem, RootLayoutPageProps } from '@/types';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'; // Added useCallback
 import RootLayout from '../../components/layout/RootLayout';
-import PromptCard from '../../components/prompts/PromptCard';
 import CategoriesHeader from '../../components/prompts/CategoriesHeader';
-import { useRouteSync } from '@/hooks/useRouteSync';
+import PromptCard from '../../components/prompts/PromptCard';
+
+const useSafeLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 interface PromptsPageProps extends RootLayoutPageProps {
   prompts: IPromptItem[];
@@ -42,7 +51,8 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
 }) => {
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const router = useRouter();
-  const { updateRoute } = useRouteSync();
+  const [isInitialLoadScrollHandled, setIsInitialLoadScrollHandled] =
+    useState(false);
 
   // Get unique categories from prompts
   const categories = useMemo(
@@ -74,52 +84,118 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
     count: cat.prompts.length,
   }));
 
-  const handleChangeCategory = (category: string, isScrolling: boolean) => {
-    const currentCategory = window.location.hash.replace('#', '');
-    // Check if the current category is the same as the new category
-    // If it is, do nothing
-    if (currentCategory === category) {
-      return;
-    }
+  const handleChangeCategory = useCallback(
+    (categorySlug: string, triggeredByScroll: boolean) => {
+      const currentHash = window.location.hash.replace('#', '');
+      if (currentHash === categorySlug) {
+        return;
+      }
 
-    // Router update hash category
-    if (isScrolling) {
-      router.replace(`#${category}`, undefined, {
-        scroll: false,
-      });
-    } else {
-      updateRoute(`${window.location.pathname}#${category}`, true);
-    }
-  };
+      if (triggeredByScroll) {
+        // For updates triggered by scrolling:
+        // Directly use history.replaceState to update hash without scrolling or adding to history.
+        // This bypasses Next.js router's scroll handling for this specific case.
+        const newUrl = `${window.location.pathname}#${categorySlug}`;
+        window.history.replaceState(
+          { ...window.history.state, as: newUrl, url: newUrl },
+          '',
+          newUrl,
+        );
+      } else {
+        // For updates triggered by user click (e.g., from CategoriesHeader):
+        // Push URL, DO add to history, DO scroll to the element.
+        router.replace(`#${categorySlug}`, undefined, { scroll: true }); // scroll: true is default, can be omitted
+      }
+    },
+    [router], // Dependency for useCallback
+  );
 
   // Update route based on scroll position
+  const debouncedScrollUpdateRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Effect for initial scroll to hash on page load/refresh
+  useSafeLayoutEffect(() => {
+    if (router.isReady && !isInitialLoadScrollHandled) {
+      const hash = window.location.hash.substring(1); // Get hash without '#'
+      if (hash) {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ block: 'start' }); // Default behavior 'auto' is instant
+        }
+        // Defer setting the flag to allow scroll to take effect before observer logic fully engages
+        const timerId = setTimeout(() => {
+          setIsInitialLoadScrollHandled(true);
+        }, 0);
+        return () => clearTimeout(timerId);
+      } else {
+        // No hash, still defer setting the flag for consistent behavior timing
+        const timerId = setTimeout(() => {
+          setIsInitialLoadScrollHandled(true);
+        }, 0);
+        return () => clearTimeout(timerId);
+      }
+    }
+  }, [router.isReady, router.asPath, isInitialLoadScrollHandled]);
+
   useEffect(() => {
+    if (!isInitialLoadScrollHandled) {
+      return; // Don't set up observer until initial scroll is handled
+    }
+
     const observer = new IntersectionObserver(
       entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const slugifiedCategory = entry.target.id;
-            // Router update hash category
-            handleChangeCategory(slugifiedCategory, false);
+        if (!isInitialLoadScrollHandled) return;
+
+        const intersectingEntries = entries.filter(
+          entry => entry.isIntersecting,
+        );
+
+        if (intersectingEntries.length > 0) {
+          // Sort by top position to find the one closest to the top of the viewport
+          intersectingEntries.sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
+          );
+
+          // The first one is the "most active" at the top
+          const activeEntry = intersectingEntries[0];
+          const slugifiedCategory = activeEntry.target.id;
+
+          if (debouncedScrollUpdateRef.current) {
+            clearTimeout(debouncedScrollUpdateRef.current);
           }
-        });
+          debouncedScrollUpdateRef.current = setTimeout(() => {
+            handleChangeCategory(slugifiedCategory, true);
+          }, 150); // Debounce time: 150ms
+        }
       },
-      { threshold: 0.5 },
+      { threshold: 0.5 }, // Adjust threshold as needed
     );
 
+    const currentCategoryRefs = categoryRefs.current;
     categories.forEach(category => {
+      // `categories` is a dependency
       const slugifiedCategory = category.toLowerCase().replace(/\s+/g, '-');
-      const ref = categoryRefs.current[slugifiedCategory];
+      const ref = currentCategoryRefs[slugifiedCategory];
       if (ref) {
         observer.observe(ref);
       }
     });
 
     return () => {
+      // Disconnect observer when component unmounts or dependencies change
+      categories.forEach(category => {
+        const slugifiedCategory = category.toLowerCase().replace(/\s+/g, '-');
+        const ref = currentCategoryRefs[slugifiedCategory];
+        if (ref) {
+          observer.unobserve(ref); // More precise cleanup
+        }
+      });
+      if (debouncedScrollUpdateRef.current) {
+        clearTimeout(debouncedScrollUpdateRef.current);
+      }
       observer.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [categories, handleChangeCategory, isInitialLoadScrollHandled]); // Added isInitialLoadScrollHandled
 
   return (
     <RootLayout
@@ -134,7 +210,10 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
         <h1 className="mb-4 inline-flex transform text-3xl font-bold text-neutral-700 dark:text-neutral-100">
           Prompt gallery
         </h1>
-        <CategoriesHeader categories={categoryTitles} />
+        <CategoriesHeader
+          categories={categoryTitles}
+          onSelectCategory={slug => handleChangeCategory(slug, false)}
+        />
         <div className="mt-8 space-y-4 pb-4">
           {Object.entries(groupedPrompts).map(([category, catPrompts]) => {
             return (

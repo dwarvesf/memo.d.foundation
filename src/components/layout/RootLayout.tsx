@@ -29,6 +29,8 @@ interface RootLayoutProps extends RootLayoutPageProps {
   // pinnedNotes and tags are now included via RootLayoutPageProps
 }
 
+const scrollOnTopIgnoreRoutes = ['/prompts'];
+
 function RootLayout({
   children,
   title = 'Dwarves Memo',
@@ -53,7 +55,7 @@ function RootLayout({
   } = useLayoutContext();
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
-  useScrollToTopOnRouteChange(scrollContainerRef);
+  useScrollToTopOnRouteChange(scrollContainerRef, scrollOnTopIgnoreRoutes);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
