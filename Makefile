@@ -20,12 +20,14 @@ build:
 	@cd lib/obsidian-compiler && mix export_markdown
 	@cd lib/obsidian-compiler && mix duckdb.export
 	@pnpm run build
+	@pnpm run generate-nginx-conf
 	@cp -r db/ out/
 
 build-static:
 	@pnpm install --no-frozen-lockfile
 	@cd lib/obsidian-compiler && mix export_markdown
 	@pnpm run build
+	@pnpm run generate-nginx-conf
 	@cp -r db/ out/
 
 run:
@@ -36,6 +38,7 @@ run:
 	@pnpm run generate-backlinks
 	@pnpm run generate-search-index
 	@pnpm run generate-redirects-map
+	@pnpm run generate-shorten-map
 	@pnpm run generate-user-profiles
 	@pnpm run fetch-prompts
 	@pnpm run dev
