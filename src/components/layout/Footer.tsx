@@ -67,7 +67,7 @@ const Footer = () => {
           </svg>
         </a>
         <a
-          href="https://dwarves.foundation/"
+          href="https://d.foundation/"
           target="_blank"
           rel="noreferrer"
           className="aspect-square cursor-pointer"
@@ -85,7 +85,7 @@ const Footer = () => {
           </svg>
         </a>
         <a
-          href="mailto:team@dwarves.foundation"
+          href="mailto:team@d.foundation"
           target="_blank"
           rel="noreferrer"
           className="aspect-square cursor-pointer"
