@@ -1,0 +1,40 @@
+name: Generate Redirects
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  generate_redirects:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch all history for all branches and tags for pull_request events
+          # to correctly identify changed files. For workflow_dispatch, a shallow clone is fine.
+          fetch-depth: 0
+          token: ${{ secrets.DWARVES_PAT }}
+          submodules: recursive
+
+      - name: Install devbox
+        uses: jetpack-io/devbox-install-action@v0.12.0
+        with:
+          enable-cache: true
+          devbox-version: 0.14.2
+  
+      - name: Build redirects
+        run: devbox run build-redirects
+
+      - name: Commit and push changes if any
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add vault/**/*.md vault/**/*.mdx
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(ci): auto-generate redirect aliases"
+            git push
+          else
+            echo "No changes to commit"
+          fi

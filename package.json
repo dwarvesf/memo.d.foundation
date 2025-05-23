@@ -20,6 +20,7 @@
     "generate-summary": "tsx scripts/generate-summary.ts",
     "generate-user-profiles": "tsx scripts/generate-user-profiles.ts",
     "generate-nginx-conf": "tsx scripts/generate-nginx-redirect-map.ts",
+    "generate-redirects-frontmatter": "tsx scripts/generate-redirects-from-frontmatter.ts",
     "fetch-prompts": "tsx scripts/fetch-prompts.ts",
     "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",
     "copy-404": "cp out/404/index.html out/404.html"

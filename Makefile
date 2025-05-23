@@ -30,6 +30,10 @@ build-static:
 	@pnpm run generate-nginx-conf
 	@cp -r db/ out/
 
+build-redirects:
+	@pnpm install --no-frozen-lockfile
+	@pnpm run generate-redirects-frontmatter vault
+
 run:
 	@cd lib/obsidian-compiler && mix export_markdown
 	@cd lib/obsidian-compiler && mix duckdb.export

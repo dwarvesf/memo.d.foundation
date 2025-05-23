@@ -19,7 +19,8 @@
       "build-static": "make build-static",
       "run": "make run",
       "duckdb-export": "make duckdb-export",
-      "fetch": "make fetch"
+      "fetch": "make fetch",
+      "build-redirects": "make build-redirects"
     }
   }
 }
