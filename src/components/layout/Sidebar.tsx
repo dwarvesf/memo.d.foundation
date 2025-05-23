@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LogoIcon from '../icons/LogoIcon';
@@ -36,6 +36,7 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   const router = useRouter();
   const { isDark, toggleTheme } = useThemeContext();
+  const sidebarRef = useRef<HTMLDivElement>(null);
   // Close sidebar when changing routes
   useEffect(() => {
     const handleRouteChange = () => {
@@ -48,6 +49,20 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router, setIsOpen]);
+
+  // Focus sidebar when opened (mobile)
+  useEffect(() => {
+    if (isOpen && sidebarRef.current) {
+      sidebarRef.current.focus();
+    }
+  }, [isOpen]);
+
+  // Close on Esc key
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Escape') {
+      setIsOpen(false);
+    }
+  };
 
   // Check if current path matches link
   const isActiveUrl = (url: string) => {
@@ -76,15 +91,21 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       {/* Sidebar overlay - only shown on mobile when sidebar is open */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-20 bg-black/50 xl:hidden"
+          className="overlay xl:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <div
-        className={`bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 flex h-full flex-col border-r pt-4 pb-12 font-sans transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-[-100%] xl:translate-x-0'} `}
+        ref={sidebarRef}
+        tabIndex={isOpen ? 0 : -1}
+        className={
+          `sidebar${isOpen ? ' open' : ''} hidden xl:flex bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 h-full flex-col border-r pt-2.5 pb-12 font-sans transition-transform duration-300 ease-in-out xl:translate-x-0`}
         onClick={e => e.target === e.currentTarget && handleClickOutside()}
+        onKeyDown={handleKeyDown}
+        aria-modal={isOpen ? 'true' : undefined}
+        role="navigation"
       >
         {/* Logo and title */}
         <Link
@@ -100,7 +121,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         </Link>
 
         {/* Navigation items */}
-        <nav className="flex flex-1 flex-col p-4 xl:items-center xl:px-2">
+        <nav className="flex flex-1 flex-col gap-1.5 p-4 xl:items-center xl:px-2">
           {navLinks.map((item, index) => (
             <TooltipProvider key={item.url} skipDelayDuration={0}>
               <Tooltip>
@@ -116,7 +137,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                     id={`sidebar-item-${index}`}
                   >
                     <div className="p-2">
-                      {item.Icon && <item.Icon className="h-6 w-6" />}
+                      {item.Icon && <item.Icon className="h-5 w-5" />}
                     </div>
                     <span className="ml-3 inline-block xl:hidden">
                       {item.title}
@@ -137,7 +158,11 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
               className="flex cursor-pointer items-center justify-center hover:opacity-80"
               onClick={toggleTheme}
             >
-              {isDark ? <SunIcon /> : <MoonIcon />}
+              {isDark ? (
+                <SunIcon width={16} height={16} />
+              ) : (
+                <MoonIcon width={16} height={16} />
+              )}
             </button>
             <span className="inline-block flex-1 shrink-0 text-sm leading-6 font-medium xl:hidden">
               {isDark ? 'Light mode' : 'Night mode'}
@@ -153,9 +178,9 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
             >
               <div className="text-foreground-light rounded-full bg-white p-0.5">
                 {isDark ? (
-                  <SunIcon width={12} height={12} />
+                  <SunIcon width={16} height={16} />
                 ) : (
-                  <MoonIcon width={12} height={12} />
+                  <MoonIcon width={16} height={16} />
                 )}
               </div>
             </button>

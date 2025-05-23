@@ -1,0 +1,42 @@
+/* Heading-specific font sizes for code elements */
+
+/* Base styles for all code elements */
+[role='code'] {
+  display: inline-block;
+  background-color: var(--muted);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  color: var(--foreground);
+  font-family: var(--font-monospace), monospace;
+}
+
+/* Heading-specific font sizes */
+h1[role='code'],
+h1 [role='code'] {
+  font-size: 1.38em !important;
+}
+
+h2[role='code'],
+h2 [role='code'] {
+  font-size: 1.31em !important;
+}
+
+h3[role='code'],
+h3 [role='code'] {
+  font-size: 1.19em !important;
+}
+
+h4[role='code'],
+h4 [role='code'] {
+  font-size: 1.13em !important;
+}
+
+h5[role='code'],
+h5 [role='code'] {
+  font-size: 1.06em !important;
+}
+
+h6[role='code'],
+h6 [role='code'] {
+  font-size: 1em !important;
+}
