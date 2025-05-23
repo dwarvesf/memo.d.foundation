@@ -84,13 +84,12 @@ export const promptMarkdownStyles = {
   },
 
   template: cn(
-    'text-neutral-500 dark:text-neutral-500',
+    'group-[&:not(:hover)]:text-neutral-500 group-[&:not(:hover)]:dark:text-neutral-500',
     'group-hover:text-primary dark:group-hover:text-primary',
   ),
 
   textDefaultColor: cn(
-    'text-neutral-500 dark:text-neutral-500',
-    'group-hover:text-current group-hover:dark:text-current',
+    'group-[&:not(:hover)]:!text-neutral-500 group-[&:not(:hover)]:dark:!text-neutral-500',
     'transition-colors duration-200',
   ),
 };

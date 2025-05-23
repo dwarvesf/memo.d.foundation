@@ -6,12 +6,16 @@ export function useRouteSync() {
   const [, setUpdate] = useState(0);
   const isInternalUpdate = useRef(false);
 
-  const updateRoute = (newPath: string) => {
+  const updateRoute = (newPath: string, isReplace = false) => {
     // Mark this as an internal update
     isInternalUpdate.current = true;
 
     // Update URL without triggering navigation events
-    window.history.pushState(null, '', newPath);
+    if (isReplace) {
+      window.history.replaceState(null, '', newPath);
+    } else {
+      window.history.pushState(null, '', newPath);
+    }
 
     // Update router state to keep it in sync
     router.asPath = newPath;

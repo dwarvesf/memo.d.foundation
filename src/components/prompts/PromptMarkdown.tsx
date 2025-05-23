@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import { promptMarkdownStyles } from './styles';
 import { cn } from '@/lib/utils';
+import { promptMDParser } from '@/lib/utils/prompt-parser';
 
 interface PromptMarkdownProps {
   content: string;
@@ -21,6 +22,19 @@ type CommonProps = {
   className?: string;
 } & ExtraProps;
 
+function getParsedMDContent(children: React.ReactNode) {
+  const parsedMd = promptMDParser(children);
+  return parsedMd.map((part, index) =>
+    part.type === 'text' ? (
+      <>{part.content}</>
+    ) : (
+      <span key={index} className={promptMarkdownStyles.template}>
+        {part.content}
+      </span>
+    ),
+  );
+}
+
 // Generic helper function to create components with optional custom rendering
 const createMarkdownComponent = (
   Tag: keyof React.JSX.IntrinsicElements,
@@ -33,19 +47,9 @@ const createMarkdownComponent = (
 
     const { children, className } = props;
     return (
-      <>
-        <Tag
-          className={cn(
-            promptMarkdownStyles.textDefaultColor,
-            'group-hover:text-current group-hover:dark:text-current',
-          )}
-        >
-          <span className={cn('hidden group-hover:inline', className)}>
-            {children}
-          </span>
-          <span className={cn('inline group-hover:hidden')}>{children}</span>
-        </Tag>
-      </>
+      <Tag className={cn(promptMarkdownStyles.textDefaultColor, className)}>
+        {getParsedMDContent(children)}
+      </Tag>
     );
   };
 

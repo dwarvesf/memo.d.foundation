@@ -4,15 +4,36 @@
  */
 export interface TemplatePart {
   type: 'text' | 'variable';
-  content: string;
+  content: React.ReactNode;
 }
 
-export const promptMDParser = (text: string): TemplatePart[] => {
+export const promptMDParser = (text: React.ReactNode): TemplatePart[] => {
   const parts: TemplatePart[] = [];
   let lastIndex = 0;
   // Match single, double, or triple curly braces
-  const regex = /(\{(?:\{(?:\{[^}]*\}|[^}])*\}|[^}])*\})/g;
+  // Match template variables while ignoring code blocks
+  // 1. (?<!function\s*|class\s*|interface\s*|=>\s*) - Negative lookbehind for code constructs
+  // 2. (?<!\\) - Ignore escaped braces
+  // 3. \{(?:
+  //    a. [^{}\n]+ - Content without braces or newlines
+  //    b. | - OR
+  //    c. \{[^{}\n]+\} - Nested single level
+  //    d. | - OR
+  //    e. \{\{[^{}\n]+\}\} - Nested double level
+  //    )\}
+  const regex =
+    /(?<!function\s*|class\s*|interface\s*|=>\s*)(?<!\\)\{(?:[^{}\n]+|\{[^{}\n]+\}|\{\{[^{}\n]+\}\})\}/g;
   let match;
+
+  if (typeof text !== 'string') {
+    // If the text is not a string, return it as it is
+    return [
+      {
+        type: 'text',
+        content: text,
+      },
+    ];
+  }
 
   while ((match = regex.exec(text)) !== null) {
     // Add text before template variable
