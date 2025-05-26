@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import minimist from 'minimist';
 
 const VAULT_PATH = path.join(process.cwd(), 'vault');
+const ALIAS_PREFIX = '/s/';
 
 interface RedirectsMap {
   [alias: string]: string;
@@ -59,21 +60,77 @@ function formatFilePathToUrl(filePath: string): string {
 }
 
 /**
- * Main function to generate redirects map from frontmatter
+ * Generates and manages redirects from frontmatter in markdown files.
+ *
+ * This function scans markdown files, processes their frontmatter,
+ * and performs the following operations:
+ *
+ * - For files with existing 'redirect' arrays in frontmatter: validates and tracks aliases
+ * - For files without redirects: generates a random alias with prefix, adds it to the frontmatter,
+ *   and records it in the redirects map
+ *
+ * The function preserves formatting when updating frontmatter and maintains a registry
+ * of used aliases to prevent duplicates.
+ *
+ * @remarks
+ * Command line usage:
+ * - `node script.js --path=<targetPath>` to scan a directory
+ * - `node script.js --files=<file1>,<file2>,...` to process specific files
+ *
+ * @throws Will exit process with code 1 if no valid input is provided
+ * @throws Logs errors for files that cannot be processed but continues execution
+ *
+ * @example
+ * ```
+ * await generateRedirectsFromFrontmatter();
+ * // When called with: node script.js --path=./content/posts
+ * // Or: node script.js --files=./content/post1.md,./content/post2.md
+ * ```
  */
 async function generateRedirectsFromFrontmatter() {
   const argv = minimist(process.argv.slice(2));
 
-  const targetPath = argv._[0];
+  let files: string[] = [];
 
-  if (!targetPath) {
-    console.error('Please provide a target path to scan for markdown files.');
+  // Handle target path
+  if (argv.path || argv._[0]) {
+    const targetPath = argv.path || argv._[0];
+    files = await findMarkdownFiles(targetPath);
+  }
+  // Handle list of files
+  else if (argv.files) {
+    const filesListInput =
+      typeof argv.files === 'string' ? argv.files.split(',') : argv.files;
+    const filesList = Array.isArray(filesListInput)
+      ? filesListInput
+      : [filesListInput];
+    files = filesList.map(f => path.resolve(f));
+
+    // Validate files exist and are markdown
+    for (const file of files) {
+      try {
+        const stat = await fs.stat(file);
+        if (
+          !stat.isFile() ||
+          (!file.endsWith('.md') && !file.endsWith('.mdx'))
+        ) {
+          console.warn(`Warning: ${file} is not a markdown file, skipping.`);
+        }
+      } catch (error) {
+        console.warn(`Warning: Could not access file ${file}, skipping.`);
+      }
+    }
+
+    // Filter out invalid files
+    files = files.filter(file => file.endsWith('.md') || file.endsWith('.mdx'));
+  }
+
+  if (files.length === 0) {
+    console.error('Please provide a valid target path or list of files.');
     process.exit(1);
   }
 
   const redirects: RedirectsMap = {};
-
-  const files = await findMarkdownFiles(targetPath);
 
   // Map to track used aliases to detect duplicates
   const usedAliases = new Set<string>();
@@ -103,7 +160,7 @@ async function generateRedirectsFromFrontmatter() {
         // No redirect property, generate a random alias
         let alias: string;
         do {
-          alias = '/s/' + generateRandomAlias();
+          alias = ALIAS_PREFIX + generateRandomAlias();
         } while (usedAliases.has(alias));
         redirects[alias] = canonicalPath;
         usedAliases.add(alias);
