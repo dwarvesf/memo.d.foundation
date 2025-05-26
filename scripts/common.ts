@@ -153,12 +153,14 @@ export async function getAliasPaths(): Promise<Record<string, string>> {
     try {
       childSlugs = await getAllMarkdownFiles(targetDir);
     } catch {
+      nestedAliasPaths[aliasKey] = aliasValue;
       // If the alias target doesn't exist, skip
       continue;
     }
     for (const childSlug of childSlugs) {
       // Don't add the root alias itself (handled by aliasPaths)
       if (childSlug.length === 0) {
+        nestedAliasPaths[aliasKey] = aliasValue;
         continue;
       }
       const newAliasSlug = [...aliasKeySegments, ...childSlug].join('/');
@@ -169,7 +171,41 @@ export async function getAliasPaths(): Promise<Record<string, string>> {
       nestedAliasPaths[newAliasSlug] = redirectTarget;
     }
   }
-  return Object.assign({}, aliases, nestedAliasPaths);
+  return Object.assign({}, nestedAliasPaths, aliases);
+}
+
+function getIsSelfReferential(entryURL: string, targetURL: string): boolean {
+  // Check if the entry URL is a self-referential alias
+  return normalizePathWithSlash(entryURL) === normalizePathWithSlash(targetURL);
+}
+
+function getNestedRelatedAliases(
+  aliases: Record<string, string>,
+): Record<string, string> {
+  const nestedAliases: Record<string, string> = {};
+  for (const [aliasKey, aliasValue] of Object.entries(aliases)) {
+    // Split the alias key into segments
+    const segments = aliasKey.split('/').filter(Boolean);
+    // Create a new key for each segment
+    for (let i = 1; i <= segments.length; i++) {
+      const newKey = segments.slice(i).join('/');
+      if (!newKey) {
+        continue; // Skip empty keys
+      }
+      const isSelfReferential = getIsSelfReferential(newKey, aliasValue);
+      if (isSelfReferential) {
+        break;
+      }
+      if (!nestedAliases[newKey]) {
+        nestedAliases[newKey] = aliasValue;
+      }
+    }
+    // Add the original alias if it doesn't already exist
+    if (!nestedAliases[aliasKey]) {
+      nestedAliases[aliasKey] = aliasValue;
+    }
+  }
+  return nestedAliases;
 }
 
 export async function getReversedAliasPaths(): Promise<Record<string, string>> {
@@ -179,7 +215,7 @@ export async function getReversedAliasPaths(): Promise<Record<string, string>> {
   const reversedAliases = Object.fromEntries(
     Object.entries(aliases).map(([key, value]) => [value, key]),
   );
-  return reversedAliases;
+  return getNestedRelatedAliases(reversedAliases);
 }
 
 export async function getRedirects(): Promise<Record<string, string>> {
