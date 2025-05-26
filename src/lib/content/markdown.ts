@@ -20,6 +20,7 @@ import slugify from 'slugify';
 import { ITocItem } from '@/types';
 import rehypeHighlight from 'rehype-highlight';
 import { getContentPath } from './paths';
+import rehypeRaw from 'rehype-raw';
 
 // Define interfaces for the AST nodes
 interface ImageNode {
@@ -417,6 +418,7 @@ export async function getMarkdownContent(filePath: string) {
       'th',
       'td',
       'video', // Add video tag
+      'iframe', // Add iframe tag
       // SVG tags for Mermaid
       'svg',
       'g',
@@ -451,6 +453,16 @@ export async function getMarkdownContent(filePath: string) {
         'height',
         'autoplay',
         'muted',
+      ],
+      iframe: [
+        'src',
+        'width',
+        'height',
+        'allow',
+        'allowfullscreen',
+        'frameborder',
+        'title',
+        'referrerpolicy',
       ],
       // SVG attributes
       svg: [
@@ -565,6 +577,7 @@ export async function getMarkdownContent(filePath: string) {
       // singleDollarTextMath: false,
     }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw) // Allow raw HTML
     .use(rehypeVideos)
     .use(rehypeSanitize, schema as never) // Move sanitize BEFORE adding nextjs links
     // .use(rehypeKatex) // Render math blocks
