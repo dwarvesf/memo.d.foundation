@@ -1,7 +1,3 @@
-declare type RecursivePartial<T> = {
-  [P in keyof T]?: RecursivePartial<T[P]>;
-};
-
 declare global {
   interface Window {
     _memo_frontmatter: {
@@ -12,4 +8,3 @@ declare global {
     };
   }
 }
-export { RecursivePartial };

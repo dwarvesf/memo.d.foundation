@@ -13,6 +13,7 @@ import { WALLETCONNECT_PROJECT_ID } from '@/constants/nft';
 import '@rainbow-me/rainbowkit/styles.css';
 import { useThemeContext } from './theme';
 import { merge } from 'lodash';
+import { RecursivePartial } from '@/types/utils';
 
 export const Web3ProviderInner = ({ children }: PropsWithChildren) => {
   useAccountEffect({
