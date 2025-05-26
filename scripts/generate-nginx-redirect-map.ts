@@ -5,6 +5,7 @@ import {
   getJSONFileContent,
   getRedirects,
   normalizePathWithSlash,
+  getAllMarkdownFiles,
 } from './common.js';
 
 const CONTENT_DIR = path.join(process.cwd(), 'public/content');
@@ -14,12 +15,71 @@ const SHORTEN_REDIRECTS_JSON_PATH = path.join(
 );
 const NGINX_MAP_OUTPUT_PATH = path.join(CONTENT_DIR, 'nginx_redirect_map.conf');
 
-async function generateNginxRedirectMap() {
-  const redirects = await getRedirects();
-  const alias = await getReversedAliasPaths();
+/**
+ * Filters and returns valid shortened paths from the provided redirects and alias records.
+ * 
+ * This function validates shortened redirects against three criteria:
+ * 1. The target URL matches an alias URL or target
+ * 2. The target URL matches a redirect source or target
+ * 3. The target URL corresponds to an existing markdown file
+ *
+ * @param redirects - Object containing source paths as keys and target paths as values
+ * @param alias - Object containing alias paths as keys and their target paths as values
+ * @returns A filtered object containing only valid shortened redirect entries
+ * @async
+ */
+async function getValidShortenPaths(
+  redirects: Record<string, string> = {},
+  alias: Record<string, string> = {},
+) {
   const shortenRedirects = await getJSONFileContent(
     SHORTEN_REDIRECTS_JSON_PATH,
   );
+  const markdownFiles = (await getAllMarkdownFiles(CONTENT_DIR)).map(
+    slugs => `/${slugs.join('/')}`,
+  );
+
+  const aliasEntries = Object.entries(alias).map(([key, value]) => [
+    normalizePathWithSlash(key),
+    normalizePathWithSlash(value),
+  ]);
+  const redirectEntries = Object.entries(redirects).map(([key, value]) => [
+    normalizePathWithSlash(key),
+    normalizePathWithSlash(value),
+  ]);
+
+  return Object.fromEntries(
+    Object.entries(shortenRedirects).filter(([, targetUrl]) => {
+      // If is an alias
+      if (
+        aliasEntries.some(
+          ([aliasURL, aliasTarget]) =>
+            aliasTarget === targetUrl || aliasURL === targetUrl,
+        )
+      ) {
+        return true;
+      }
+
+      // If is a redirect
+      if (
+        redirectEntries.some(
+          ([redirectSource, redirectTarget]) =>
+            redirectSource === targetUrl || redirectTarget === targetUrl,
+        )
+      ) {
+        return true;
+      }
+
+      // Check if the target URL is a valid markdown file path
+      return markdownFiles.includes(targetUrl);
+    }),
+  );
+}
+
+async function generateNginxRedirectMap() {
+  const redirects = await getRedirects();
+  const alias = await getReversedAliasPaths();
+  const shortenRedirects = await getValidShortenPaths(redirects, alias);
 
   let mapContent = 'map $request_uri $redirect_target {\n';
   mapContent += '    default 0;\n';
