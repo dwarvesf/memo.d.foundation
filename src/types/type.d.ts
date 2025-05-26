@@ -12,3 +12,4 @@ declare global {
     };
   }
 }
+export { RecursivePartial };

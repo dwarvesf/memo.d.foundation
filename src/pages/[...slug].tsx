@@ -454,7 +454,7 @@ export default function ContentPage({
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    (window as any)._memo_frontmatter = frontmatter || {};
+    window._memo_frontmatter = frontmatter || {};
   }, [frontmatter]);
 
   // Existing useEffect for internal links
