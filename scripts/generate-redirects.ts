@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import minimist from 'minimist';
 
 const VAULT_PATH = path.join(process.cwd(), 'vault');
-const ALIAS_PREFIX = '/s/';
+const ALIAS_PREFIX = '/';
 
 interface RedirectsMap {
   [alias: string]: string;
