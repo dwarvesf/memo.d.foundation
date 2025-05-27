@@ -7,6 +7,17 @@ defmodule Memo.ExportDuckDB do
   alias Memo.Common.{FileUtils, Frontmatter, GitUtils, DuckDBUtils, AIUtils}
 
   @min_content_length 100
+  @embed_ignore_frontmatter [
+    "file_path",
+    "md_content",
+    "spr_content",
+    "embeddings_openai",
+    "embeddings_spr_custom",
+    "estimated_tokens",
+    "previous_paths",
+    "has_redirects",
+    "redirect"
+  ]
   @allowed_frontmatter [
     {"file_path", "TEXT UNIQUE"},
     {"md_content", "TEXT"},
@@ -48,6 +59,7 @@ defmodule Memo.ExportDuckDB do
     {"ai_summary", "BOOLEAN"},
     {"ai_generated_summary", "VARCHAR[]"},
     {"has_redirects", "BOOLEAN"},
+    {"redirect", "VARCHAR[]"}
   ]
 
   def run(vaultpath, format, pattern \\ nil) do
@@ -249,6 +261,8 @@ defmodule Memo.ExportDuckDB do
         # Schema evolution based on @allowed_frontmatter relies on schema.sql being up-to-date
         # from a previous EXPORT DATABASE. Dynamic column merging after import might be needed
         # if schema.sql isn't always current before import.
+        IO.puts("Merging columns to sync schema after successful import...")
+        merge_columns()
         :ok
 
       {:error, error} ->
@@ -524,17 +538,7 @@ defmodule Memo.ExportDuckDB do
                     end
                   end)
 
-                # Process redirect field and set has_redirects based on its content
-                raw_redirect_field = Map.get(frontmatter, "redirect", []) # Changed "redirects" to "redirect"
-                normalized_redirect_array = normalize_array_value(raw_redirect_field, "redirect") # Changed "redirects" to "redirect"
-
-                normalized_frontmatter =
-                  normalized_frontmatter
-                  # Do not store the 'redirect' array itself if not in @allowed_frontmatter
-                  |> Map.put("has_redirects", not Enum.empty?(normalized_redirect_array))
-
                 existing_data = Map.get(existing_data_map, relative_path, %{})
-
                 too_short = String.length(md_content) < @min_content_length
 
                 embeddings_updated =
@@ -577,16 +581,7 @@ defmodule Memo.ExportDuckDB do
                     Map.put(acc, key, Map.get(normalized_frontmatter, key))
                   end)
                   # Exclude derived/dynamic fields
-                  |> Map.drop([
-                    "file_path",
-                    "md_content",
-                    "spr_content",
-                    "embeddings_openai",
-                    "embeddings_spr_custom",
-                    "estimated_tokens",
-                    "previous_paths",
-                    "has_redirects" # Add has_redirects to derived fields to exclude from comparison
-                  ])
+                  |> Map.drop(@embed_ignore_frontmatter)
 
                 existing_fm_for_comparison =
                   @allowed_frontmatter
@@ -594,15 +589,7 @@ defmodule Memo.ExportDuckDB do
                   |> Enum.reduce(%{}, fn key, acc ->
                     Map.put(acc, key, Map.get(existing_data, key))
                   end)
-                  |> Map.drop([
-                    "file_path",
-                    "md_content",
-                    "spr_content",
-                    "embeddings_openai",
-                    "embeddings_spr_custom",
-                    "estimated_tokens",
-                    "previous_paths"
-                  ])
+                  |> Map.drop(@embed_ignore_frontmatter)
 
                 # Normalize values for consistent comparison (handles dates, arrays, numbers vs strings)
                 current_fm_normalized_for_compare =
