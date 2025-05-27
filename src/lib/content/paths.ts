@@ -34,7 +34,7 @@ export const getStaticJSONPaths = memoize(
   async (): Promise<Record<string, string>> => {
     const contentDir = path.join(process.cwd(), 'public/content');
     const redirectsPaths = await getRedirectsNotToAliases();
-    const aliasesPaths = await getReversedAliasPaths(false);
+    const aliasesPaths = await getReversedAliasPaths();
     const markdownPaths = (await getAllMarkdownFiles(contentDir))
       .filter(
         slugArray =>

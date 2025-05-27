@@ -23,7 +23,7 @@ const navLinks = [
   },
   { title: 'Earn', url: '/earn', Icon: MemoIcons.earn },
   { title: 'Hiring', url: '/careers', Icon: MemoIcons.careers },
-  { title: 'Changelog', url: '/updates/changelog', Icon: MemoIcons.updates },
+  { title: 'Changelog', url: '/changelog', Icon: MemoIcons.updates },
   { title: 'OGIFs', url: '/updates/ogif', Icon: MemoIcons.ogif },
   { title: 'Prompts', url: '/prompts', Icon: MemoIcons.prompts },
 ];
