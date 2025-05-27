@@ -454,35 +454,6 @@
 
 /* --- Mobile Sidebar & Overlay --- */
 @media (max-width: 1280px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: var(--nav-sidebar-width-mobile);
-    height: 100vh;
-    background: var(--background);
-    z-index: 50;
-    transform: translateX(-100%);
-    visibility: hidden;
-    transition:
-      transform 250ms ease-in-out,
-      visibility 0ms linear 250ms;
-    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.08);
-    padding-top: 16px;
-    padding-bottom: 16px;
-    outline: none;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
-    visibility: visible;
-    transition:
-      transform 250ms ease-in-out,
-      visibility 0ms linear 0ms;
-  }
-
   .overlay {
     position: fixed;
     inset: 0;
