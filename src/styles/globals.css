@@ -79,7 +79,7 @@
     --element-margin: 14px;
     --paragraph-margin: 16px;
     --column-gap: 28px;
-    --nav-sidebar-width-mobile: 51px;
+    --nav-sidebar-width-mobile: 287px;
     --nav-sidebar-width: 51px;
     --nav-sidebar-offset: 0px;
     --right-sidebar-width: 200px;
@@ -458,8 +458,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 80vw;
-    max-width: 300px;
+    width: var(--nav-sidebar-width-mobile);
     height: 100vh;
     background: var(--background);
     z-index: 50;
