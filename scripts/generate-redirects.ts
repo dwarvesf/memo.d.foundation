@@ -6,6 +6,9 @@ import minimist from 'minimist';
 
 const VAULT_PATH = path.join(process.cwd(), 'vault');
 const ALIAS_PREFIX = '/';
+const ALIAS_LENGTH = 7; // Length of the alias to generate
+const ALIAS_RANDOM_BYTES = 4; // Number of random bytes to generate for alias
+const ALIAS_MAX_RANDOM_BYTES = 20; // Maximum bytes to generate for alias
 
 interface RedirectsMap {
   [alias: string]: string;
@@ -34,18 +37,29 @@ async function findMarkdownFiles(dir: string): Promise<string[]> {
   return files;
 }
 
+function normalizeRandomAlias(alias: string): string {
+  return alias.replace(/[^a-zA-Z0-9]/g, '');
+}
+
 /**
  * Generate a random short alias string of 6-8 characters
  */
 function generateRandomAlias(): string {
-  // Generate 4 random bytes and convert to base64url string, then take 6-8 chars
-  const randomBytes = crypto.randomBytes(4);
-  const base64url = randomBytes
-    .toString('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
-  return base64url.slice(0, 7); // 7 chars for balance
+  const randomBytes = crypto.randomBytes(ALIAS_RANDOM_BYTES);
+  let base64 = randomBytes.toString('base64');
+  // Remove non-alphanumeric characters
+  let alphanumericAlias = normalizeRandomAlias(base64);
+  let bytesNeeded = ALIAS_RANDOM_BYTES;
+  
+  // Ensure the alias is long enough, if not, generate more bytes
+  while (alphanumericAlias.length < 6) {
+    const bytesToGenerate = Math.min(bytesNeeded, ALIAS_MAX_RANDOM_BYTES);
+    base64 = crypto.randomBytes(bytesToGenerate).toString('base64');
+    alphanumericAlias = normalizeRandomAlias(base64);
+    bytesNeeded++;
+  }
+  
+  return alphanumericAlias.slice(0, ALIAS_LENGTH);
 }
 
 /**
