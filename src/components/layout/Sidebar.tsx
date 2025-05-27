@@ -49,9 +49,15 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     };
   }, [router, setIsOpen]);
 
-  // Focus sidebar when opened (mobile)
+  // Focus sidebar when opened (desktop only)
   useEffect(() => {
-    if (isOpen && sidebarRef.current) {
+    // Only focus on desktop devices
+    if (
+      isOpen &&
+      sidebarRef.current &&
+      typeof window !== 'undefined' &&
+      window.innerWidth >= 768 // adjust breakpoint as needed
+    ) {
       sidebarRef.current.focus();
     }
   }, [isOpen]);
@@ -95,7 +101,16 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       <div
         ref={sidebarRef}
         tabIndex={isOpen ? 0 : -1}
-        className={`sidebar${isOpen ? 'open' : ''} bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 hidden h-full flex-col border-r pt-2.5 pb-12 font-sans transition-transform duration-300 ease-in-out xl:flex xl:translate-x-0`}
+        className={cn(
+          'sidebar bg-background border-border w-sidebar-mobile xl:w-sidebar fixed top-0 left-0 z-40 h-full flex-col border-r pt-2.5 pb-12 font-sans transition-transform duration-300 ease-in-out outline-none',
+          {
+            open: isOpen,
+            flex: isOpen,
+            'hidden xl:flex': !isOpen,
+            'translate-x-0': isOpen,
+            '-translate-x-full xl:translate-x-0': !isOpen,
+          },
+        )}
         onClick={e => e.target === e.currentTarget && handleClickOutside()}
         onKeyDown={handleKeyDown}
         aria-modal={isOpen ? 'true' : undefined}
