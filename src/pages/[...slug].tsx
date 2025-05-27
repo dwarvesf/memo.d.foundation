@@ -452,6 +452,11 @@ export default function ContentPage({
   const contentRef = useRef<HTMLDivElement>(null);
   const { theme, isThemeLoaded } = useThemeContext();
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window._memo_frontmatter = frontmatter || {};
+  }, [frontmatter]);
+
   // Existing useEffect for internal links
   useEffect(() => {
     const handleInternalLinks = (event: MouseEvent) => {
