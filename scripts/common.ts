@@ -1,12 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { exec } from 'child_process';
 
 const CONTENT_DIR = path.join(process.cwd(), 'public/content');
 const REDIRECTS_JSON_PATH = path.join(CONTENT_DIR, 'redirects.json');
 const ALIAS_JSON_PATH = path.join(CONTENT_DIR, 'aliases.json');
 
-function removingTrailingSlash(path: string): string {
+export function removingTrailingSlash(path: string): string {
   return path.replace(/\/$/, '');
 }
 
@@ -33,20 +32,6 @@ export async function getJSONFileContent(
     );
     return {};
   }
-}
-
-export async function execPromise(command: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = exec(command, { cwd: process.cwd() }, (error) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve();
-      }
-    });
-    child.stdout?.pipe(process.stdout);
-    child.stderr?.pipe(process.stderr);
-  });
 }
 
 /**
@@ -208,17 +193,109 @@ function getNestedRelatedAliases(
   return nestedAliases;
 }
 
-export async function getReversedAliasPaths(): Promise<Record<string, string>> {
+export async function getReversedAliasPaths(
+  withNested = true,
+): Promise<Record<string, string>> {
   const aliases = await getAliasPaths();
 
   // Reverse the keys and values
   const reversedAliases = Object.fromEntries(
     Object.entries(aliases).map(([key, value]) => [value, key]),
   );
-  return getNestedRelatedAliases(reversedAliases);
+  return withNested
+    ? getNestedRelatedAliases(reversedAliases)
+    : reversedAliases;
 }
 
 export async function getRedirects(): Promise<Record<string, string>> {
   const redirects = await getJSONFileContent(REDIRECTS_JSON_PATH);
   return redirects;
+}
+
+export async function getNginxRedirects(): Promise<Record<string, string>> {
+  const redirects = await getRedirects();
+  const aliases = await getReversedAliasPaths();
+  const allMarkdownFiles = await getAllMarkdownFiles(CONTENT_DIR);
+  const aliasesEntries = Object.entries(aliases);
+
+  const markdownPaths = allMarkdownFiles
+    .filter(
+      slugArray =>
+        !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
+        !slugArray[0]?.toLowerCase()?.startsWith('tags'),
+    )
+    .map(slugArray => slugArray.join('/'));
+
+  // Filter out redirects that are already in aliases
+  const filteredRedirects: Record<string, string> = {};
+  for (const [redirectKey, redirectValue] of Object.entries(redirects)) {
+    const normalizedRedirectKey = normalizePathWithSlash(redirectKey);
+    const normalizedRedirectValue = normalizePathWithSlash(redirectValue);
+    const isMatchedAlias = aliasesEntries.some(([aliasKey, _]) => {
+      const normalizedAliasKey = normalizePathWithSlash(aliasKey);
+      return normalizedRedirectKey === normalizedAliasKey;
+    });
+    if (!isMatchedAlias) {
+      const aliasRedirectValue = aliasesEntries.find(([aliasKey]) => {
+        const normalizedAliasKey = normalizePathWithSlash(aliasKey);
+        return normalizedRedirectValue === normalizedAliasKey;
+      });
+      if (aliasRedirectValue) {
+        filteredRedirects[normalizedRedirectKey] = aliasRedirectValue[1];
+        continue;
+      }
+
+      const isMatchedMdPath = markdownPaths.find(
+        mdPath =>
+          normalizePathWithSlash(mdPath) === normalizedRedirectValue,
+      );
+      if (isMatchedMdPath) {
+        filteredRedirects[normalizedRedirectKey] = isMatchedMdPath;
+      }
+    }
+  }
+  return filteredRedirects;
+}
+
+export async function getRedirectsNotToAliases(): Promise<
+  Record<string, string>
+> {
+  const redirects = await getRedirects();
+  const aliases = await getReversedAliasPaths();
+  const allMarkdownFiles = await getAllMarkdownFiles(CONTENT_DIR);
+  const aliasesEntries = Object.entries(aliases);
+
+  const markdownPaths = allMarkdownFiles
+    .filter(
+      slugArray =>
+        !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
+        !slugArray[0]?.toLowerCase()?.startsWith('tags'),
+    )
+    .map(slugArray => slugArray.join('/'));
+
+  // Filter out redirects that are already in aliases
+  const filteredRedirects: Record<string, string> = {};
+  for (const [redirectKey, redirectValue] of Object.entries(redirects)) {
+    const normalizedRedirectKey = normalizePathWithSlash(redirectKey);
+    const normalizedRedirectValue = normalizePathWithSlash(redirectValue);
+    const isMatchedAlias = aliasesEntries.some(([aliasKey, _]) => {
+      const normalizedAliasKey = normalizePathWithSlash(aliasKey);
+      return normalizedRedirectKey === normalizedAliasKey;
+    });
+    if (!isMatchedAlias) {
+      const aliasRedirectValue = aliasesEntries.find(([aliasKey]) => {
+        const normalizedAliasKey = normalizePathWithSlash(aliasKey);
+        return normalizedRedirectValue === normalizedAliasKey;
+      });
+      if (!aliasRedirectValue) {
+        const isMatchedMdPath = markdownPaths.find(
+          mdPath => normalizePathWithSlash(mdPath) === normalizedRedirectValue,
+        );
+        if (!isMatchedMdPath) {
+          filteredRedirects[normalizedRedirectKey] = normalizedRedirectValue;
+        }
+      }
+    }
+  }
+  return filteredRedirects;
 }

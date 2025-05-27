@@ -6,7 +6,6 @@ import path from 'path';
 import fs from 'fs/promises';
 
 // Import utility functions
-import { getAllMarkdownFiles } from '../lib/content/paths';
 import { getMarkdownContent } from '../lib/content/markdown';
 import { getAllMarkdownContents } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
@@ -32,6 +31,8 @@ import {
 } from '@/types';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { getMdxSource } from '@/lib/mdx';
+import { normalizePathWithSlash } from '../../scripts/common';
+import { getStaticJSONPaths } from '@/lib/content/paths';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content?: string;
@@ -51,82 +52,15 @@ interface ContentPageProps extends RootLayoutPageProps {
  */
 export const getStaticPaths: GetStaticPaths = async () => {
   // Existing logic to get paths from public/content (excluding contributor/tags)
-  const contentDir = path.join(process.cwd(), 'public/content');
-  const aliasesPath = path.join(contentDir, 'aliases.json');
-  const redirectsPath = path.join(contentDir, 'redirects.json');
+  const paths = await getStaticJSONPaths();
 
-  let aliases: Record<string, string> = {};
-  let redirects: Record<string, string> = {};
-
-  try {
-    const aliasesContent = await fs.readFile(aliasesPath, 'utf8');
-    aliases = JSON.parse(aliasesContent);
-  } catch (error) {
-    console.error(`Error reading aliases.json in getStaticPaths: ${error}`);
-    aliases = {};
-  }
-
-  try {
-    const redirectsContent = await fs.readFile(redirectsPath, 'utf8');
-    redirects = JSON.parse(redirectsContent);
-  } catch (error) {
-    console.error(`Error reading redirects.json in getStaticPaths: ${error}`);
-    redirects = {};
-  }
-
-  // 1. Gather all markdown file paths (excluding contributor/tags)
-  const markdownPaths = (await getAllMarkdownFiles(contentDir))
-    .filter(
-      slugArray =>
-        !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
-        !slugArray[0]?.toLowerCase()?.startsWith('tags'),
-    )
-    .map(slugArray => ({
-      params: { slug: slugArray },
-    }));
-
-  // 2. Gather all alias paths (top-level)
-  const aliasPaths = Object.keys(aliases).map(alias => ({
-    params: { slug: alias.split('/').filter(Boolean) },
-  }));
-
-  // 3. Gather nested alias paths by enumerating all children under each alias target
-  const nestedAliasPaths: { params: { slug: string[] } }[] = [];
-  for (const aliasKey in aliases) {
-    const aliasValue = aliases[aliasKey];
-    const aliasKeySegments = aliasKey.split('/').filter(Boolean);
-    const targetDir = path.join(
-      contentDir,
-      ...aliasValue.split('/').filter(Boolean),
-    );
-    let childSlugs: string[][] = [];
-    try {
-      childSlugs = await getAllMarkdownFiles(targetDir);
-    } catch {
-      // If the alias target doesn't exist, skip
-      continue;
-    }
-    for (const childSlug of childSlugs) {
-      // Don't add the root alias itself (handled by aliasPaths)
-      if (childSlug.length === 0) continue;
-      const newAliasSlug = [...aliasKeySegments, ...childSlug];
-      nestedAliasPaths.push({ params: { slug: newAliasSlug } });
-    }
-  }
-
-  // 4. Gather redirect paths
-  const redirectPaths = Object.keys(redirects).map(redirect => ({
-    params: { slug: redirect.split('/').filter(Boolean) },
+  const appPaths = Object.keys(paths).map(path => ({
+    params: { slug: path.split('/').filter(Boolean) },
   }));
 
   // Combine all paths
   const excludePaths = ['index'];
-  const allPaths = [
-    ...markdownPaths,
-    ...aliasPaths,
-    ...nestedAliasPaths,
-    ...redirectPaths,
-  ].filter(path => {
+  const allPaths = appPaths.filter(path => {
     const slug = path.params.slug.join('/');
     return !excludePaths.some(excludePath => slug.startsWith(excludePath));
   });
@@ -148,69 +82,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string[] };
     const requestedPathSegments = slug;
-    const requestedPath = `/${requestedPathSegments.join('/')}`;
-
-    // --- ALIAS OVERWRITES FILE IF ALIAS KEY EXISTS ---
-    const contentDir = path.join(process.cwd(), 'public/content');
-    const aliasesPath = path.join(contentDir, 'aliases.json');
-    const redirectsPath = path.join(contentDir, 'redirects.json');
-
-    let aliases: Record<string, string> = {};
-    let redirects: Record<string, string> = {};
-
-    try {
-      const aliasesContent = await fs.readFile(aliasesPath, 'utf8');
-      aliases = JSON.parse(aliasesContent);
-    } catch {
-      aliases = {};
-    }
-
-    try {
-      const redirectsContent = await fs.readFile(redirectsPath, 'utf8');
-      redirects = JSON.parse(redirectsContent);
-    } catch {
-      redirects = {};
-    }
-
-    const requestedPathAliasKey = Object.keys(aliases).find(
-      aliasKey => requestedPath === aliasKey,
+    const requestedPath = normalizePathWithSlash(
+      requestedPathSegments.join('/'),
     );
 
-    let contentPathSegments = [...requestedPathSegments];
-    let canonicalSlug = contentPathSegments;
+    const paths = await getStaticJSONPaths();
 
-    if (requestedPathAliasKey) {
-      // If the current path is an alias key, always use the alias target (overwrite any file)
-      const aliasValue = aliases[requestedPathAliasKey];
-      contentPathSegments = aliasValue.split('/').filter(Boolean);
-      canonicalSlug = contentPathSegments;
-    } else if (redirects[requestedPath]) {
-      const redirectTarget = redirects[requestedPath];
-      contentPathSegments = redirectTarget.split('/').filter(Boolean);
-      canonicalSlug = contentPathSegments;
-    } else {
-      // Fallback to nested alias logic for subpaths
-      let matchedAlias = null;
-      let matchedAliasKey = '';
-      for (const aliasKey in aliases) {
-        if (aliasKey !== '/' && requestedPath.startsWith(aliasKey + '/')) {
-          matchedAlias = aliases[aliasKey];
-          matchedAliasKey = aliasKey;
-          break;
-        }
-      }
-      if (matchedAlias) {
-        const canonicalPath = requestedPath.replace(
-          matchedAliasKey,
-          matchedAlias,
-        );
-        contentPathSegments = canonicalPath.split('/').filter(Boolean);
-        canonicalSlug = contentPathSegments;
-      } else {
-        canonicalSlug = requestedPathSegments;
-        contentPathSegments = requestedPathSegments;
-      }
-    }
+    const targetPath = paths[requestedPath] ?? requestedPath;
+
+    const canonicalSlug = targetPath.split('/').filter(Boolean);
 
     // Pass includeContent: false as we only need metadata for layout props
     const layoutProps = await getRootLayoutPageProps();
