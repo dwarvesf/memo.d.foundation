@@ -46,7 +46,8 @@ defmodule Memo.ExportDuckDB do
     {"token_id", "VARCHAR"},
     {"previous_paths", "VARCHAR[]"},
     {"ai_summary", "BOOLEAN"},
-    {"ai_generated_summary", "VARCHAR[]"}
+    {"ai_generated_summary", "VARCHAR[]"},
+    {"has_redirects", "BOOLEAN"},
   ]
 
   def run(vaultpath, format, pattern \\ nil) do
@@ -523,6 +524,15 @@ defmodule Memo.ExportDuckDB do
                     end
                   end)
 
+                # Process redirect field and set has_redirects based on its content
+                raw_redirect_field = Map.get(frontmatter, "redirect", []) # Changed "redirects" to "redirect"
+                normalized_redirect_array = normalize_array_value(raw_redirect_field, "redirect") # Changed "redirects" to "redirect"
+
+                normalized_frontmatter =
+                  normalized_frontmatter
+                  # Do not store the 'redirect' array itself if not in @allowed_frontmatter
+                  |> Map.put("has_redirects", not Enum.empty?(normalized_redirect_array))
+
                 existing_data = Map.get(existing_data_map, relative_path, %{})
 
                 too_short = String.length(md_content) < @min_content_length
@@ -574,7 +584,8 @@ defmodule Memo.ExportDuckDB do
                     "embeddings_openai",
                     "embeddings_spr_custom",
                     "estimated_tokens",
-                    "previous_paths"
+                    "previous_paths",
+                    "has_redirects" # Add has_redirects to derived fields to exclude from comparison
                   ])
 
                 existing_fm_for_comparison =
