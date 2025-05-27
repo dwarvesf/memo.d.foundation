@@ -73,6 +73,27 @@ function formatFilePathToUrl(filePath: string): string {
   return '/' + noExt.split(path.sep).join('/');
 }
 
+async function getInitialGeneratedAlias(): Promise<string[]> {
+  const files = await findMarkdownFiles(VAULT_PATH);
+  const aliases: string[] = [];
+  for (const file of files) {
+    try {
+      const content = await fs.readFile(file, 'utf-8');
+      const { data: frontmatter } = matter(content);
+      if (frontmatter.redirect && Array.isArray(frontmatter.redirect)) {
+        for (const aliasRaw of frontmatter.redirect) {
+          if (typeof aliasRaw === 'string') {
+            aliases.push(aliasRaw);
+          }
+        }
+      }
+    } catch (error) {
+      // console.error(`Error reading file ${file}:`, error);
+    }
+  }
+  return aliases;
+}
+
 /**
  * Generates and manages redirects from frontmatter in markdown files.
  *
@@ -144,10 +165,12 @@ async function generateRedirectsFromFrontmatter() {
     process.exit(1);
   }
 
+  const initialUsedAliases = await getInitialGeneratedAlias();
+
   const redirects: RedirectsMap = {};
 
   // Map to track used aliases to detect duplicates
-  const usedAliases = new Set<string>();
+  const usedAliases = new Set<string>(initialUsedAliases);
 
   for (const file of files) {
     try {
