@@ -1,4 +1,5 @@
 import React from 'react';
+import { SquareActivity } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -122,14 +123,22 @@ const Footer = () => {
             viewBox="0 0 24 24"
             stroke="#9b9b9b"
             fill="transparent"
-            stroke-width="3.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="3.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M4 11a9 9 0 0 1 9 9" />
             <path d="M4 4a16 16 0 0 1 16 16" />
             <circle cx="5" cy="19" r="1" />
           </svg>
+        </a>
+        <a
+          href="/status"
+          target="_blank"
+          rel="noreferrer"
+          className="aspect-square cursor-pointer"
+        >
+          <SquareActivity className="h-[18px] w-[18px] text-[#9b9b9b]" />
         </a>
       </div>
 
