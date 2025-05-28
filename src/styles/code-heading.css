@@ -1,0 +1,106 @@
+/* Heading-specific font sizes for code elements */
+
+/* Base styles for all code elements with role='code' - Higher specificity to override Tailwind */
+[role='code'],
+*[role='code'] {
+  display: inline-block !important;
+  background-color: var(--muted) !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-monospace, 'IBM Plex Mono'), monospace !important;
+  font-weight: 500 !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--border) !important;
+  line-height: 1.2 !important;
+  vertical-align: baseline !important;
+  white-space: nowrap !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Hover state for interactive code elements */
+[role='code']:hover,
+*[role='code']:hover {
+  background-color: var(--muted) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Dark mode adjustments */
+.dark [role='code'],
+.dark *[role='code'] {
+  background-color: var(--secondary-background) !important;
+  border-color: var(--border) !important;
+}
+
+.dark [role='code']:hover,
+.dark *[role='code']:hover {
+  background-color: var(--muted) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Heading-specific font sizes - making them responsive */
+h1[role='code'],
+h1 [role='code'] {
+  font-size: 1.4rem !important;
+  padding: 0.3rem 0.6rem !important;
+}
+
+h2[role='code'],
+h2 [role='code'] {
+  font-size: 1.25rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+h3[role='code'],
+h3 [role='code'] {
+  font-size: 1.1rem !important;
+  padding: 0.2rem 0.4rem !important;
+}
+
+h4[role='code'],
+h4 [role='code'] {
+  font-size: 1rem !important;
+  padding: 0.2rem 0.4rem !important;
+}
+
+h5[role='code'],
+h5 [role='code'] {
+  font-size: 0.9rem !important;
+  padding: 0.15rem 0.35rem !important;
+}
+
+h6[role='code'],
+h6 [role='code'] {
+  font-size: 0.85rem !important;
+  padding: 0.15rem 0.35rem !important;
+}
+
+/* Inline code within paragraphs */
+p [role='code'],
+li [role='code'],
+td [role='code'],
+.prose [role='code'] {
+  font-size: 0.9em !important;
+  padding: 0.2rem 0.4rem !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+/* Special handling for long code snippets */
+[role='code'].code-long {
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+  max-width: 100% !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Selection styling for code elements */
+[role='code']::selection {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+}
+
+/* Focus styles for accessibility */
+[role='code']:focus {
+  outline: 2px solid var(--primary) !important;
+  outline-offset: 2px !important;
+}
