@@ -13,7 +13,8 @@ import { slugToTitle, uppercaseSpecialWords } from '../utils';
 import { formatContentPath } from '../utils/path-utils'; // Import formatContentPath from path-utils
 import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathComponents from utils
 import { getAllMarkdownContents } from './memo';
-import { getContentPath } from './paths';
+import { getContentPath, getStaticJSONPaths } from './paths';
+import { normalizePathWithSlash } from '../../../scripts/common';
 
 export async function getMenuPathSorted() {
   try {
@@ -127,13 +128,31 @@ function applyRecursiveMenuSortedField(
   return Object.fromEntries<GroupedPath>(entries);
 }
 
+function getRedirectPath(
+  _targetPath: string,
+  staticJSONPaths: Record<string, string>,
+) {
+  const targetPath = normalizePathWithSlash(_targetPath);
+  // Create a reverse mapping of staticJSONPaths for quick lookup
+  const staticPaths = Object.fromEntries(
+    Object.entries(staticJSONPaths).map(([key, value]) => [value, key]),
+  );
+  // Check if the targetPath exists in staticPaths
+  if (staticPaths[targetPath]) {
+    return staticPaths[targetPath];
+  }
+  // If not found, return the original targetPath
+  return _targetPath;
+}
+
 /**
  * Transforms the nested menu data structure into the ITreeNode structure
  * expected by the DirectoryTree component.
  * @param menuData The nested menu data.
- * @param currentPath The current path during recursion (used internally).
  * @param pinnedNotes Array of pinned notes.
  * @param tags Array of tags with name and count.
+ * @param currentPath The current path during recursion (used internally).
+ * @param staticJSONPaths Object mapping browser paths to target Markdown paths.
  * @returns A nested object representing the directory tree in ITreeNode format.
  */
 function transformMenuDataToDirectoryTree(
@@ -144,6 +163,7 @@ function transformMenuDataToDirectoryTree(
     count: number;
   }[], // Add tags parameter
   currentPath = '',
+  staticJSONPaths: Record<string, string> = {},
 ): Record<string, ITreeNode> {
   const treeNode: Record<string, ITreeNode> = {};
 
@@ -162,7 +182,7 @@ function transformMenuDataToDirectoryTree(
         pinnedNotesNode.children[note.url] = {
           label: note.title,
           children: {},
-          url: note.url,
+          url: getRedirectPath(note.url, staticJSONPaths),
         };
       });
       treeNode['/pinned'] = pinnedNotesNode; // Add Pinned node first
@@ -195,6 +215,7 @@ function transformMenuDataToDirectoryTree(
       pinnedNotes,
       tags, // Pass tags in recursive call
       fullDirPath,
+      staticJSONPaths, // Pass static JSON paths for redirects
     );
     Object.assign(children, nestedChildren); // Add nested directories to children
 
@@ -212,7 +233,7 @@ function transformMenuDataToDirectoryTree(
       children[fullFilePath] = {
         label: file.title, // Use file title as label
         children: {}, // Files have no children in the tree
-        url: url, // Add the generated URL
+        url: getRedirectPath(url, staticJSONPaths), // Add the generated URL
       };
     }
 
@@ -228,7 +249,7 @@ function transformMenuDataToDirectoryTree(
       targetChildrenNode[fullDirPath] = {
         label: slugToTitle(dirName), // Use directory name as label for the directory node
         children: children,
-        url: dirUrl, // Add the generated URL for directory
+        url: getRedirectPath(dirUrl, staticJSONPaths), // Add the generated URL for directory
       };
     }
   }
@@ -279,6 +300,15 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
   let menuData: Record<string, GroupedPath> = {};
   let pinnedNotes: Array<{ title: string; url: string; date: string }> = [];
   let tags: string[] = [];
+  // <browser path, target markdown path>
+  let staticJSONPaths: Record<string, string> = {};
+
+  try {
+    staticJSONPaths = await getStaticJSONPaths();
+  } catch (error) {
+    console.error('Error fetching static Aliases JSON Paths:', error);
+    // Continue with empty staticJSONPaths if file not found or error occurs
+  }
 
   try {
     // Attempt to fetch menu data from the static JSON file
@@ -326,6 +356,8 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
     sortedMenuData,
     pinnedNotes,
     appendTagsCount(tags, memos),
+    '', // Start with empty currentPath
+    staticJSONPaths,
   );
   // console.log({ directoryTree, pinnedNotes, tags }); // Keep or remove logging as needed
 

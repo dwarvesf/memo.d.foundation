@@ -1,12 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { exec } from 'child_process';
 
 const CONTENT_DIR = path.join(process.cwd(), 'public/content');
 const REDIRECTS_JSON_PATH = path.join(CONTENT_DIR, 'redirects.json');
 const ALIAS_JSON_PATH = path.join(CONTENT_DIR, 'aliases.json');
 
-function removingTrailingSlash(path: string): string {
+export function removingTrailingSlash(path: string): string {
   return path.replace(/\/$/, '');
 }
 
@@ -33,20 +32,6 @@ export async function getJSONFileContent(
     );
     return {};
   }
-}
-
-export async function execPromise(command: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = exec(command, { cwd: process.cwd() }, (error) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve();
-      }
-    });
-    child.stdout?.pipe(process.stdout);
-    child.stderr?.pipe(process.stderr);
-  });
 }
 
 /**
@@ -174,40 +159,6 @@ export async function getAliasPaths(): Promise<Record<string, string>> {
   return Object.assign({}, nestedAliasPaths, aliases);
 }
 
-function getIsSelfReferential(entryURL: string, targetURL: string): boolean {
-  // Check if the entry URL is a self-referential alias
-  return normalizePathWithSlash(entryURL) === normalizePathWithSlash(targetURL);
-}
-
-function getNestedRelatedAliases(
-  aliases: Record<string, string>,
-): Record<string, string> {
-  const nestedAliases: Record<string, string> = {};
-  for (const [aliasKey, aliasValue] of Object.entries(aliases)) {
-    // Split the alias key into segments
-    const segments = aliasKey.split('/').filter(Boolean);
-    // Create a new key for each segment
-    for (let i = 1; i <= segments.length; i++) {
-      const newKey = segments.slice(i).join('/');
-      if (!newKey) {
-        continue; // Skip empty keys
-      }
-      const isSelfReferential = getIsSelfReferential(newKey, aliasValue);
-      if (isSelfReferential) {
-        break;
-      }
-      if (!nestedAliases[newKey]) {
-        nestedAliases[newKey] = aliasValue;
-      }
-    }
-    // Add the original alias if it doesn't already exist
-    if (!nestedAliases[aliasKey]) {
-      nestedAliases[aliasKey] = aliasValue;
-    }
-  }
-  return nestedAliases;
-}
-
 export async function getReversedAliasPaths(): Promise<Record<string, string>> {
   const aliases = await getAliasPaths();
 
@@ -215,10 +166,120 @@ export async function getReversedAliasPaths(): Promise<Record<string, string>> {
   const reversedAliases = Object.fromEntries(
     Object.entries(aliases).map(([key, value]) => [value, key]),
   );
-  return getNestedRelatedAliases(reversedAliases);
+  return reversedAliases;
 }
 
 export async function getRedirects(): Promise<Record<string, string>> {
   const redirects = await getJSONFileContent(REDIRECTS_JSON_PATH);
   return redirects;
+}
+
+async function filterRedirectsLogic(
+  processRedirect: (
+    normalizedRedirectKey: string,
+    normalizedRedirectValue: string,
+    aliasesEntries: [string, string][],
+    markdownPaths: string[],
+    filteredRedirects: Record<string, string>,
+  ) => void,
+): Promise<Record<string, string>> {
+  const redirects = await getRedirects();
+  const aliases = await getReversedAliasPaths();
+  const allMarkdownFiles = await getAllMarkdownFiles(CONTENT_DIR);
+  const aliasesEntries = Object.entries(aliases);
+
+  const markdownPaths = allMarkdownFiles
+    .filter(
+      slugArray =>
+        !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
+        !slugArray[0]?.toLowerCase()?.startsWith('tags'),
+    )
+    .map(slugArray => slugArray.join('/'));
+
+  const filteredRedirects: Record<string, string> = {};
+
+  for (const [redirectKey, redirectValue] of Object.entries(redirects)) {
+    const normalizedRedirectKey = normalizePathWithSlash(redirectKey);
+    const normalizedRedirectValue = normalizePathWithSlash(redirectValue);
+
+    const isMatchedAlias = aliasesEntries.some(([aliasKey, aliasVal]) => {
+      const normalizedAliasKey = normalizePathWithSlash(aliasKey);
+      const normalizedAliasValue = normalizePathWithSlash(aliasVal);
+      const isMatchedReversedValues =
+        normalizedRedirectValue === normalizedAliasKey ||
+        normalizedRedirectKey === normalizedAliasValue;
+      if (isMatchedReversedValues) {
+        return true;
+      }
+      return normalizedRedirectKey === normalizedAliasKey;
+    });
+
+    if (!isMatchedAlias) {
+      processRedirect(
+        normalizedRedirectKey,
+        normalizedRedirectValue,
+        aliasesEntries,
+        markdownPaths,
+        filteredRedirects,
+      );
+    }
+  }
+  return filteredRedirects;
+}
+
+export async function getNginxRedirects(): Promise<Record<string, string>> {
+  return filterRedirectsLogic(
+    (
+      normalizedRedirectKey,
+      normalizedRedirectValue,
+      aliasesEntries,
+      markdownPaths,
+      filteredRedirects,
+    ) => {
+      const aliasRedirectValue = aliasesEntries.find(([aliasKey]) => {
+        const normalizedAliasKey = normalizePathWithSlash(aliasKey);
+        return normalizedRedirectValue === normalizedAliasKey;
+      });
+
+      if (aliasRedirectValue) {
+        filteredRedirects[normalizedRedirectKey] = aliasRedirectValue[1];
+        return;
+      }
+
+      const isMatchedMdPath = markdownPaths.find(
+        mdPath => normalizePathWithSlash(mdPath) === normalizedRedirectValue,
+      );
+      if (isMatchedMdPath) {
+        filteredRedirects[normalizedRedirectKey] = isMatchedMdPath;
+      }
+    },
+  );
+}
+
+export async function getRedirectsNotToAliases(): Promise<
+  Record<string, string>
+> {
+  return filterRedirectsLogic(
+    (
+      normalizedRedirectKey,
+      normalizedRedirectValue,
+      aliasesEntries,
+      markdownPaths,
+      filteredRedirects,
+    ) => {
+      const aliasRedirectValue = aliasesEntries.find(([aliasKey]) => {
+        const normalizedAliasKey = normalizePathWithSlash(aliasKey);
+        return normalizedRedirectValue === normalizedAliasKey;
+      });
+
+      if (!aliasRedirectValue) {
+        const isMatchedMdPath = markdownPaths.find(
+          mdPath => normalizePathWithSlash(mdPath) === normalizedRedirectValue,
+        );
+        if (!isMatchedMdPath) {
+          filteredRedirects[normalizedRedirectKey] = normalizedRedirectValue;
+        }
+      }
+    },
+  );
 }

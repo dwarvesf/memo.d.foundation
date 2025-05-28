@@ -1,10 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
 import {
-  getReversedAliasPaths,
-  getJSONFileContent,
-  normalizePathWithSlash,
   getAllMarkdownFiles,
+  getJSONFileContent,
+  getNginxRedirects,
+  getReversedAliasPaths,
+  normalizePathWithSlash,
 } from './common.js';
 
 const CONTENT_DIR = path.join(process.cwd(), 'public/content');
@@ -59,12 +60,13 @@ async function getValidShortenPaths(alias: Record<string, string> = {}) {
 
 async function generateNginxRedirectMap() {
   const alias = await getReversedAliasPaths();
+  const redirects = await getNginxRedirects();
   const shortenRedirects = await getValidShortenPaths(alias);
 
   let mapContent = 'map $request_uri $redirect_target {\n';
   mapContent += '    default 0;\n';
 
-  const paths = [alias, shortenRedirects];
+  const paths = [alias, redirects, shortenRedirects];
   // Flatten the array of objects into a single array of objects
   const flattenedPaths = paths.reduce<Record<string, string>>((acc, obj) => {
     const mapEntries = Object.entries(obj).map<Record<string, string>>(
