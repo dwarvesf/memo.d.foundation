@@ -304,6 +304,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       // File does not exist
     }
 
+    let readmeExists = false;
     if (!directPathExists) {
       const indexFilePath = path.join(
         process.cwd(),
@@ -323,7 +324,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         ...canonicalSlug,
       );
 
-      let readmeExists = false;
       try {
         await fs.stat(readmeFilePath);
         readmeExists = true;
@@ -409,7 +409,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       firstImage: getFirstMemoImage(
         {
           content: rawContent,
-          filePath: path.join(...canonicalSlug) + '.md',
+          filePath: path.join(...canonicalSlug) + (readmeExists ? '' : '.md'),
         },
         null,
       ),
