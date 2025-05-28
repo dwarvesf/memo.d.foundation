@@ -43,7 +43,7 @@ jobs:
         id: changed-files
         run: |
           # Install DuckDB
-          wget -q https://github.com/duckdb/duckdb/releases/download/v1.0.0/duckdb_cli-linux-amd64.zip
+          wget -q https://github.com/duckdb/duckdb/releases/download/v1.3.0/duckdb_cli-linux-amd64.zip
           unzip -q duckdb_cli-linux-amd64.zip
           chmod +x duckdb
 
@@ -72,24 +72,18 @@ jobs:
             echo "Processing submodules for their latest .md changes..."
             # The script block for foreach is single-quoted. Variables like $path, $name are expanded by foreach.
             # $ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH is an env var and will be available.
-            git submodule foreach --recursive '
-              echo "Processing submodule: $name ($path)"
-              if [ ! -e ".git" ]; then
-                echo "Warning: $name at $path does not appear to be a git repository or submodule. Skipping."
-                continue
-              fi
-    
-              SUBMODULE_LATEST_COMMIT_SHA=$(git rev-parse HEAD)
-              echo "Getting changed .md files from submodule $name''s latest commit (SHA: $SUBMODULE_LATEST_COMMIT_SHA)..."
+            # $path is the path to the submodule, $name is its name.
+            git submodule foreach --quiet '
+              ALL_CHANGED_IN_SUB_COMMIT=$(git show --pretty=format: --name-only HEAD)
               
-              # Get .md files from the latest commit in the submodule
-              SUBMODULE_MD_FILES=$(git log --pretty=format: --name-only -n 1 HEAD -- "*.md")
+              # Filter for .md and .mdx files
+              SUBMODULE_MD_FILES=$(printf "%s\n" "$ALL_CHANGED_IN_SUB_COMMIT" | awk '\''/\.md$/ || /\.mdx$/'\'' || true)
               
               if [ -n "$SUBMODULE_MD_FILES" ]; then
-                # Prepend submodule path using awk and append to accumulator
-                echo "$SUBMODULE_MD_FILES" | awk -v current_submodule_path="$path" "{print current_submodule_path \"/\" \$0}" >> "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH"
+                printf "%s\n" "$SUBMODULE_MD_FILES" | awk '\''{print $0}'\'' >> "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH"
+                echo "  Added .md/.mdx files from submodule $name: $(echo "$SUBMODULE_MD_FILES" | tr "\n" " ")"
               else
-                echo "No .md files found in the latest commit of submodule $name."
+                echo "  No .md/.mdx files found in the latest commit of submodule $name."
               fi
             '
           fi
@@ -99,17 +93,35 @@ jobs:
             # Sort, remove duplicates, filter out potential empty lines, then format as comma-separated
             # Ensure grep -v '^$' is used to remove empty lines that might result from `|| true` or empty submodule logs
             CONSOLIDATED_MD_FILES=$(sort "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" | uniq | grep -v '^$' | tr '\n' ',' | sed 's/,$//')
-            rm "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH"
           fi
     
           if [ -z "$CONSOLIDATED_MD_FILES" ]; then
             echo "No markdown files found in the latest commits of the parent or relevant submodules to process."
             echo "files=" >> $GITHUB_OUTPUT
+            rm -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH"
             exit 0 
           fi
     
-          echo "Markdown files from latest commits (parent & submodules): $CONSOLIDATED_MD_FILES"
-          SQL_IN_LIST=$(echo "$CONSOLIDATED_MD_FILES" | awk -F, '{for(i=1;i<=NF;i++) printf (i==1 ? "" : "," ) "\047" $i "\047"}')
+          # Build SQL_IN_LIST safely, handling special characters in filenames
+          SQL_IN_LIST_BUILDER=""
+          # Process accumulator only if it exists and is not empty
+          if [ -s "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" ]; then
+            PROCESSED_CONTENT_FOR_SQL=$(sort "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" | uniq | grep -v '^$' || true)
+            if [ -n "$PROCESSED_CONTENT_FOR_SQL" ]; then
+              while IFS= read -r filepath; do
+                # Escape single quotes for SQL: ' -> ''
+                # Using printf "%s" to pass filepath to sed to avoid issues if filepath starts with -
+                sql_escaped_filepath=$(printf "%s" "$filepath" | sed "s/'/''/g")
+                if [ -z "$SQL_IN_LIST_BUILDER" ]; then
+                  SQL_IN_LIST_BUILDER="'$sql_escaped_filepath'"
+                else
+                  SQL_IN_LIST_BUILDER="$SQL_IN_LIST_BUILDER,'$sql_escaped_filepath'"
+                fi
+              done <<< "$PROCESSED_CONTENT_FOR_SQL"
+            fi
+            rm -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" # Delete accumulator after use
+          fi
+          SQL_IN_LIST="$SQL_IN_LIST_BUILDER"
     
           if [ -z "$SQL_IN_LIST" ]; then
             echo "No markdown files to check against parquet after formatting for SQL."
@@ -117,13 +129,16 @@ jobs:
             exit 0
           fi
     
-          DB_QUERY="SELECT file_path FROM 'db/vault.parquet' WHERE file_path IN ($SQL_IN_LIST) AND has_redirects = false;"
-          echo "Executing DuckDB query: $DB_QUERY"
+          # Select files that are in the changed list and do not yet have a redirect recorded in the parquet file
+          # (redirect is NULL or an empty list/array).
+          DB_QUERY="SELECT file_path FROM 'db/vault.parquet' WHERE file_path IN ($SQL_IN_LIST) AND (redirect IS NULL OR ARRAY_LENGTH(redirect) = 0)"
           
           FILES_TO_PROCESS_FROM_DB=$(./duckdb -list -noheader -c "$DB_QUERY" | tr '\n' ',' | sed 's/,$//')
+
+          rm -f duckdb duckdb_cli-linux-amd64.zip
     
           if [ -z "$FILES_TO_PROCESS_FROM_DB" ]; then
-            echo "No files found in vault.parquet that match the criteria (are in the collected .md files list and have has_redirects = false)."
+            echo "No files found in vault.parquet that match the criteria (are in the collected .md/.mdx files list and have redirect IS NULL or an empty list/array)."
             echo "files=" >> $GITHUB_OUTPUT
             exit 0
           fi
