@@ -26,6 +26,7 @@ const navLinks = [
   { title: 'Hiring', url: '/careers', Icon: MemoIcons.careers },
   { title: 'Changelog', url: '/changelog', Icon: MemoIcons.updates },
   { title: 'OGIFs', url: '/updates/ogif', Icon: MemoIcons.ogif },
+  { title: 'Prompts', url: '/prompts', Icon: MemoIcons.prompts },
 ];
 
 interface SidebarProps {
