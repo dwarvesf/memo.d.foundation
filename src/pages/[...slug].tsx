@@ -8,7 +8,10 @@ import fs from 'fs/promises';
 // Import utility functions
 import { getMarkdownContent } from '../lib/content/markdown';
 import { getAllMarkdownContents } from '@/lib/content/memo';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
+import {
+  getRootLayoutPageProps,
+  getServerSideRedirectPath,
+} from '@/lib/content/utils';
 import { slugToTitle } from '@/lib/utils';
 import { getFirstMemoImage } from '@/components/memo/utils';
 
@@ -32,7 +35,7 @@ import {
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { getMdxSource } from '@/lib/mdx';
 import { normalizePathWithSlash } from '../../scripts/common';
-import { getStaticJSONPaths } from '@/lib/content/paths';
+import { getRedirectsBackLinks, getStaticJSONPaths } from '@/lib/content/paths';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content?: string;
@@ -264,7 +267,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       allBacklinks = {};
     }
 
-    const backlinks = allBacklinks[slug.join('/')] || [];
+    const backlinks = getRedirectsBackLinks(
+      slug.join('/'),
+      allBacklinks,
+      paths,
+    );
 
     const metadata = {
       created: frontmatter.date?.toString() || null,
@@ -276,7 +283,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             .filter(tag => tag !== null && tag !== undefined && tag !== '')
             .map(tag => tag.toString())
         : [],
-      folder: canonicalSlug.slice(0, -1).join('/'),
+      folder: getServerSideRedirectPath(
+        canonicalSlug.slice(0, -1).join('/'),
+        paths,
+      ),
       wordCount: content.split(/\s+/).length ?? 0,
       readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
       characterCount: content.length ?? 0,

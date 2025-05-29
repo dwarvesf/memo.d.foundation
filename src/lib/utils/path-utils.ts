@@ -1,6 +1,38 @@
 import path from 'path';
 import { slugifyPathComponents } from './slugify';
 
+function removingTrailingSlash(path: string): string {
+  return path.replace(/\/$/, '');
+}
+
+function removingRedundantSymbols(path: string): string {
+  return path.replace(/\"|"/, '');
+}
+
+function normalizePathWithSlash(path: string): string {
+  if (path.startsWith('/')) {
+    return removingTrailingSlash(removingRedundantSymbols(path));
+  }
+  return removingTrailingSlash(removingRedundantSymbols(`/${path}`));
+}
+
+/**
+ * Get the client-side redirect path for a given URL.
+ * @param url The original URL.
+ * @returns The resolved URL, which may be redirected.
+ */
+export function getClientSideRedirectPath(url: string): string {
+  if (!url || url === '/') {
+    return url;
+  }
+  let unifiedRedirects: Record<string, string> = {};
+  if (typeof window !== 'undefined') {
+    unifiedRedirects = (globalThis as any)._app_unified_redirects || {};
+  }
+  const normalizedUrl = normalizePathWithSlash(url);
+  return unifiedRedirects[normalizedUrl] || url;
+}
+
 /**
  * Formats a content file path into a URL path, handling special cases like /readme and /_index.
  * @param filePath The original file path (e.g., 'vault/some/directory/README.md').
@@ -27,7 +59,7 @@ export function formatContentPath(filePath: string): string {
     if (url.endsWith('/')) {
       url = url.slice(0, -1);
     }
-    return url;
+    return getClientSideRedirectPath(url);
   } else {
     // Generate slugified URL for other files, removing .md suffix
     const slugifiedPath = slugifyPathComponents(filePath);
@@ -42,6 +74,6 @@ export function formatContentPath(filePath: string): string {
       url = url.slice(0, -1);
     }
 
-    return url;
+    return getClientSideRedirectPath(url);
   }
 }
