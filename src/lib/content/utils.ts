@@ -128,7 +128,13 @@ function applyRecursiveMenuSortedField(
   return Object.fromEntries<GroupedPath>(entries);
 }
 
-function getRedirectPath(
+/**
+ * Gets the server-side redirect path for a given target path.
+ * @param _targetPath The original target path.
+ * @param staticJSONPaths The static JSON paths mapping.
+ * @returns The resolved server-side redirect path.
+ */
+export function getServerSideRedirectPath(
   _targetPath: string,
   staticJSONPaths: Record<string, string>,
 ) {
@@ -182,7 +188,7 @@ function transformMenuDataToDirectoryTree(
         pinnedNotesNode.children[note.url] = {
           label: note.title,
           children: {},
-          url: getRedirectPath(note.url, staticJSONPaths),
+          url: getServerSideRedirectPath(note.url, staticJSONPaths),
         };
       });
       treeNode['/pinned'] = pinnedNotesNode; // Add Pinned node first
@@ -233,7 +239,7 @@ function transformMenuDataToDirectoryTree(
       children[fullFilePath] = {
         label: file.title, // Use file title as label
         children: {}, // Files have no children in the tree
-        url: getRedirectPath(url, staticJSONPaths), // Add the generated URL
+        url: getServerSideRedirectPath(url, staticJSONPaths), // Add the generated URL
       };
     }
 
@@ -249,7 +255,7 @@ function transformMenuDataToDirectoryTree(
       targetChildrenNode[fullDirPath] = {
         label: slugToTitle(dirName), // Use directory name as label for the directory node
         children: children,
-        url: getRedirectPath(dirUrl, staticJSONPaths), // Add the generated URL for directory
+        url: getServerSideRedirectPath(dirUrl, staticJSONPaths), // Add the generated URL for directory
       };
     }
   }

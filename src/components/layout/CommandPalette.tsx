@@ -1,24 +1,25 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from 'react';
-import { useRouter } from 'next/router';
-import { useSearch } from '../search';
+import { useLayoutContext } from '@/contexts/layout';
 import { groupBy, slugToTitle } from '@/lib/utils';
-import { SearchResult } from '../search/SearchProvider';
+import { getClientSideRedirectPath } from '@/lib/utils/path-utils';
+import { slugifyPathComponents } from '@/lib/utils/slugify';
+import { IRecentPageStorageItem, ISearchResultItem } from '@/types';
+import { Editor } from 'draft-js';
+import { BookOpenIcon, CopyIcon, PinIcon, Share2Icon } from 'lucide-react';
+import { useRouter } from 'next/router';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
-import { IRecentPageStorageItem, ISearchResultItem } from '@/types';
-import CommandPaletteModal from './CommandPaletteModal';
-import { BookOpenIcon, PinIcon, CopyIcon, Share2Icon } from 'lucide-react';
 import HotIcon from '../icons/HotIcon';
-import { slugifyPathComponents } from '@/lib/utils/slugify';
 import SearchIcon from '../icons/SearchIcon';
-import { Editor } from 'draft-js';
-import { useLayoutContext } from '@/contexts/layout';
+import { useSearch } from '../search';
+import { SearchResult } from '../search/SearchProvider';
+import CommandPaletteModal from './CommandPaletteModal';
 
 const defaultSearchResult: SearchResult = {
   flat: [],
@@ -91,7 +92,7 @@ const CommandPalette: React.FC = () => {
             slugifiedPath = slugifiedPath.slice(0, -3); // Remove .md extension
           }
 
-          router.push('/' + slugifiedPath);
+          router.push(getClientSideRedirectPath('/' + slugifiedPath));
           close();
         }
         return;
@@ -135,7 +136,7 @@ const CommandPalette: React.FC = () => {
           const path = selected.path.startsWith('/')
             ? selected.path
             : '/' + selected.path;
-          router.push(path);
+          router.push(getClientSideRedirectPath(path));
           close();
         }
       }

@@ -1,4 +1,20 @@
+import { getStaticJSONPaths } from '@/lib/content/paths';
 import { Html, Head, Main, NextScript } from 'next/document';
+
+const unifiedRedirectPaths = await (async () => {
+  let staticJSONPaths: Record<string, string> = {};
+
+  try {
+    staticJSONPaths = await getStaticJSONPaths();
+  } catch (error) {
+    console.error('Error fetching static Aliases JSON Paths:', error);
+    // Continue with empty staticJSONPaths if file not found or error occurs
+  }
+
+  return Object.fromEntries(
+    Object.entries(staticJSONPaths).map(([key, value]) => [value, key]),
+  );
+})();
 
 export default function Document() {
   return (
@@ -24,6 +40,14 @@ export default function Document() {
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            // Add the unified redirects to the global window object
+            // This will be used in the client-side to handle redirects
+            // Since this is a static JSON file can only be loaded at build time
+            __html: `window._app_unified_redirects = ${JSON.stringify(unifiedRedirectPaths)};`,
+          }}
         />
       </Head>
       <body className="min-h-screen antialiased">

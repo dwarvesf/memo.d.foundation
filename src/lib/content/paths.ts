@@ -88,3 +88,30 @@ export const getStaticJSONPaths = memoize(
     );
   },
 );
+
+export const getRedirectsBackLinks = memoize(
+  (
+    link: string,
+    appBackLinks: Record<string, { title: string; path: string }[]>,
+    staticRedirectsPaths: Record<string, string>,
+  ) => {
+    const targetBackLinks = appBackLinks[link] || [];
+    if (!targetBackLinks.length) {
+      return [];
+    }
+    const mdFilesToAliases = Object.fromEntries(
+      Object.entries(staticRedirectsPaths).map(([key, value]) => [value, key]),
+    );
+    return targetBackLinks.map(backLink => {
+      const normalizedPath = normalizePathWithSlash(backLink.path);
+      const redirectTarget = mdFilesToAliases[normalizedPath];
+      if (redirectTarget) {
+        return {
+          title: backLink.title,
+          path: redirectTarget,
+        };
+      }
+      return backLink;
+    });
+  },
+);

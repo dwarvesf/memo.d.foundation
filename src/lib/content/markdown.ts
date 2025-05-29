@@ -19,7 +19,7 @@ import type {
 import slugify from 'slugify';
 import { ITocItem } from '@/types';
 import rehypeHighlight from 'rehype-highlight';
-import { getContentPath } from './paths';
+import { getContentPath, getStaticJSONPaths } from './paths';
 import rehypeRaw from 'rehype-raw';
 
 // Define interfaces for the AST nodes
@@ -248,7 +248,10 @@ function remarkResolveImagePaths(fileDir: string) {
  * Custom remark plugin to process links and resolve relative paths
  * @param markdownFilePath Path to the markdown file being processed
  */
-function remarkProcessLinks(markdownFilePath: string) {
+function remarkProcessLinks(
+  markdownFilePath: string,
+  aliasJSONPaths: Record<string, string>,
+) {
   return (tree: Root) => {
     visit(tree, 'link', (node: Link) => {
       const linkNode = node as Link; // Use mdast Link type
@@ -293,7 +296,7 @@ function remarkProcessLinks(markdownFilePath: string) {
           if (finalUrl === '') finalUrl = '/'; // Handle root index/readme
         }
       }
-      linkNode.url = finalUrl;
+      linkNode.url = getServerSideRedirectPath(finalUrl, aliasJSONPaths);
     });
   };
 }
@@ -358,6 +361,7 @@ function rehypeNextjsLinks() {
  * @returns Object with frontmatter, processed HTML content, and table of contents
  */
 import aliasesJson from '../../../public/content/aliases.json';
+import { getServerSideRedirectPath } from './utils';
 
 export async function getMarkdownContent(filePath: string) {
   // Filter out files that are shadowed by an alias key
@@ -366,6 +370,7 @@ export async function getMarkdownContent(filePath: string) {
   const relPath = path.relative(contentDir, filePath);
   const relPathNoExt = relPath.replace(/\.mdx?$/, '').replace(/\\/g, '/');
   const aliasKeys = Object.keys(aliasesJson);
+  const aliasJSONPaths = await getStaticJSONPaths();
 
   // If this file matches an alias key (e.g. brainery.md for /brainery), skip rendering
   if (
@@ -569,7 +574,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(remarkGfm)
     .use(remarkLineBreaks)
     .use(() => remarkResolveImagePaths(filePath))
-    .use(() => remarkProcessLinks(filePath)) // Process links and resolve paths
+    .use(() => remarkProcessLinks(filePath, aliasJSONPaths)) // Process links and resolve paths
     .use(remarkExtractSummaries) // Extract and remove summary code blocks
     .use(remarkToc) // Extract table of contents and create heading ID mapping
     .use(remarkBlockCount) // Count blocks
