@@ -114,19 +114,7 @@ const CommandPalette: React.FC = () => {
           toast.success('Copied memo content!');
           close();
         } else if (selected.action === 'share') {
-          const shareLink = (window?._memo_frontmatter?.redirect || [])
-            .map(link => {
-              return (
-                window.location.protocol + '//' + window.location.host + link
-              );
-            })
-            .reduce((a, c) => {
-              if (c.length < a.length) {
-                return c;
-              }
-              return a;
-            }, window.location.href);
-          navigator.clipboard.writeText(shareLink);
+          navigator.clipboard.writeText(window.location.href);
           toast.success('Copied memo link!');
           close();
         } else {
@@ -419,26 +407,23 @@ const CommandPalette: React.FC = () => {
     <div className="command-palette relative z-50">
       {/* Search button */}
       <button
-        className="hover:border-border hidden w-50 cursor-pointer justify-between rounded-lg border border-transparent bg-transparent px-3 py-1.5 transition-all duration-100 ease-in-out md:flex"
+        className="hover:border-border hidden w-[240px] cursor-pointer justify-between rounded-lg border border-transparent bg-transparent px-2 py-2 transition-all duration-100 ease-in-out md:flex"
         onClick={toggleCommandPalette}
         aria-label="Open command palette"
       >
         <div className="flex items-center gap-0.5">
-          <div className="text-muted-foreground flex items-center gap-1 text-sm filter-[opacity(50%)]">
+          <div className="text-muted-foreground flex items-center gap-2 text-sm filter-[opacity(50%)]">
             <SearchIcon />
             <span className="">Search note</span>
           </div>
         </div>
         <div className="text-muted-foreground flex items-center gap-0.5 text-xs">
-          <kbd
-            className="text-black-secondary dark:bg-border dark:text-foreground rounded-[2px] bg-[#F7F7F7] px-1.5 py-0.5 font-sans shadow-[0px_2px_0px_0px_#D4D3D0] dark:shadow-[0px_2px_0px_0px_#2D2D2D]"
+          <span
+            className="flex items-center justify-center rounded-md bg-[var(--border)] px-1 py-0.5 font-sans text-[12px] leading-4 font-medium text-[var(--muted-foreground)]"
             suppressHydrationWarning
           >
-            {modifier}
-          </kbd>
-          <kbd className="text-black-secondary dark:bg-border dark:text-foreground rounded-[2px] bg-[#F7F7F7] px-1.5 py-0.5 font-sans shadow-[0px_2px_0px_0px_#D4D3D0] dark:shadow-[0px_2px_0px_0px_#2D2D2D]">
-            K
-          </kbd>
+            {modifier} K
+          </span>
         </div>
       </button>
 
