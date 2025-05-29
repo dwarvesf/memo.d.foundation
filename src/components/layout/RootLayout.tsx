@@ -187,7 +187,7 @@ function RootLayout({
                 height={1080}
               />
               {/* Content */}
-              <div className="memo-content pb-8">{children}</div>
+              <div className="memo-content pt-6 pb-8">{children}</div>
             </main>
 
             <div className="toc-space"></div>
