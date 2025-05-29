@@ -154,10 +154,27 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps gray-matter crypto js-yaml@4.1.0 tsx
 
+      - uses: actions/github-script@v7
+        if: steps.changed-files.outputs.files != ''
+        id: normalize-paths
+        with:
+          script: |
+            const files = '${{ steps.changed-files.outputs.files }}'.split(',').filter(Boolean).map(f => {
+              const isHasVaultPrefix = f.startsWith('vault/');
+              if (isHasVaultPrefix) {
+                return f
+              }
+              const segments = f.split('/').filter(Boolean);
+              // If the file does not start with 'vault/', prepend it
+              return ['vault', ...segments].join('/');
+            });
+            return files;
+          result-encoding: string
+
       - name: Run script with files
         if: steps.changed-files.outputs.files != ''
         run: |
-          npx tsx generate-redirects.ts --files='${{ steps.changed-files.outputs.files }}'
+          npx tsx scripts/generate-redirects.ts --files='${{ steps.normalize-paths.outputs.result }}'
 
       - name: Commit and push changes
         run: |
