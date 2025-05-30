@@ -10,6 +10,7 @@ import path from 'path';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { SerializeResult } from 'next-mdx-remote-client';
 import { queryDuckDB } from '@/lib/db/utils';
+import { serialize } from 'next-mdx-remote-client/serialize';
 
 interface HomePageProps extends RootLayoutPageProps {
   mdxSource?: SerializeResult;
@@ -327,6 +328,7 @@ export const getStaticProps: GetStaticProps = async () => {
         teamMemos,
         changelogMemos,
         hiringMemos,
+        directoryTree: layoutProps.directoryTree,
         worthReadingBlocks: {
           block1: {
             title: 'Engineering',
@@ -361,9 +363,90 @@ export const getStaticProps: GetStaticProps = async () => {
         },
       },
     });
+
+    // temp
+    const newSource = await serialize({
+      source: `
+      ---
+title: null
+description: null
+date: null
+---
+
+## Welcome to Dwarves Memo
+
+This site is a part of our continuous learning engine, where we want to build up the 1% improvement habit, learning in public.
+
+- Research: [vibe coding](updates/build-log/vibe-coding/readme.md)
+- Hiring: [🧠 growth lead](careers/open-positions/growth-lead.md), [💼 sales manager](careers/open-positions/sales-manager.md)
+- Just shipped: [brainery](updates/build-log/brainery/readme.md), [memo](updates/build-log/memo/readme.md), [mcp-playbook](updates/build-log/playbook/readme.md)
+- Latest report: [2025 May report](updates/forward/2025-05.md)
+
+<If condition={worthReadingBlocks}>
+  <WorthReading {...worthReadingBlocks} />
+</If>
+
+<If condition={latestMemos && filters}>
+  <MemoFilterList title="Latest memos" all={latestMemos} filters={filters} />
+</If>
+
+<TagsMarquee directoryTree={directoryTree} />
+
+<div className="love-watch-we-are-doing">
+  <h2>
+    Love what we are doing?
+  </h2>
+  <ul>
+    <li>
+      <a
+        href="https://discord.gg/dfoundation"
+        className="text-primary text-sm" >
+        🩷 Join our Discord Network →
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://github.com/dwarvesf/playground"
+        className="!text-primary text-sm" >
+        🔥 Contribute to our Memo →
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://careers.d.foundation/"
+        className="text-primary text-sm" >
+        🤝 Join us, we are hiring →
+      </a>
+    </li>
+    <li>
+      <a
+        href="http://memo.d.foundation/earn/"
+        className="text-primary text-sm" >
+        🙋 Give us a helping hand →
+      </a>
+    </li>
+  </ul>
+</div>
+
+---
+
+> Ecclesiastes 7:12:
+> “For wisdom is a defence, and money is a defence: but the excellency of knowledge is, that wisdom giveth life to them that have it.”
+
+_Written by Dwarves for product craftsmen._\
+_Learned by engineers. Experimented by engineers._
+`,
+    });
+
+    if (!newSource || 'error' in newSource) {
+      return { notFound: true }; // Handle serialization error
+    }
+
     if (!mdxSource || 'error' in mdxSource) {
       return { notFound: true }; // Handle serialization error
     }
+
+    mdxSource.compiledSource = newSource.compiledSource;
     return {
       props: {
         ...layoutProps,
