@@ -97,6 +97,63 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching hiring memos:', error);
     }
 
+    // Add queries for WorthReading blocks
+    let block1Memos: IMemoItem[] = [];
+    try {
+      block1Memos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        WHERE tags IS NOT NULL
+        AND ARRAY_CONTAINS(tags, 'engineering')
+        ORDER BY date DESC
+        LIMIT 5
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching block1 memos:', error);
+    }
+
+    let block2Memos: IMemoItem[] = [];
+    try {
+      block2Memos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        WHERE tags IS NOT NULL
+        AND ARRAY_CONTAINS(tags, 'blockchain')
+        ORDER BY date DESC
+        LIMIT 5
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching block2 memos:', error);
+    }
+
+    let block3Memos: IMemoItem[] = [];
+    try {
+      block3Memos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        WHERE tags IS NOT NULL
+        AND ARRAY_CONTAINS(tags, 'market-report')
+        ORDER BY date DESC
+        LIMIT 5
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching block3 memos:', error);
+    }
+
+    let block4Memos: IMemoItem[] = [];
+    try {
+      block4Memos = await queryDuckDB(`
+        ${querySelect}
+        FROM vault
+        WHERE tags IS NOT NULL
+        AND ARRAY_CONTAINS(tags, 'AI')
+        ORDER BY date DESC
+        LIMIT 5
+        `).then(convertToMemoItems);
+    } catch (error) {
+      console.error('Error fetching block4 memos:', error);
+    }
+
     const mdxPath = path.join(process.cwd(), 'public/content/', `index.mdx`);
     const mdxSource = await getMdxSource({
       mdxPath,
@@ -106,6 +163,32 @@ export const getStaticProps: GetStaticProps = async () => {
         teamMemos,
         changelogMemos,
         hiringMemos,
+        worthReadingBlocks: {
+          block1: {
+            title: 'Engineering Excellence',
+            subtitle: 'Latest insights from our engineering team',
+            tag: 'engineering',
+            memos: block1Memos,
+          },
+          block2: {
+            title: 'Blockchain',
+            subtitle: 'Deep dives into blockchain',
+            tag: 'blockchain',
+            memos: block2Memos,
+          },
+          block3: {
+            title: 'Wealth',
+            subtitle: 'Growth and prosperity',
+            tag: 'market-report',
+            memos: block3Memos,
+          },
+          block4: {
+            title: 'AI',
+            subtitle: 'Exploring the frontiers of artificial intelligence',
+            tag: 'AI',
+            memos: block4Memos,
+          },
+        },
       },
     });
     if (!mdxSource || 'error' in mdxSource) {

@@ -1,0 +1,110 @@
+import { formatContentPath } from '@/lib/utils/path-utils';
+import { BentoCard, BentoGrid } from './bento-grid';
+import { IMemoItem } from '@/types';
+import { BlocksIcon, BookOpenIcon, BrainIcon, SproutIcon } from 'lucide-react';
+import Link from 'next/link';
+import { format } from 'date-fns';
+
+interface BlockProps {
+  title: string;
+  subtitle: string;
+  tag: string;
+  memos: IMemoItem[];
+}
+
+interface WorthReadingProps {
+  block1: BlockProps;
+  block2: BlockProps;
+  block3: BlockProps;
+  block4: BlockProps;
+}
+
+const getIconForBlock = (index: number) => {
+  const icons = {
+    1: BookOpenIcon,
+    2: BlocksIcon,
+    3: SproutIcon,
+    4: BrainIcon,
+  };
+  return icons[index as keyof typeof icons];
+};
+
+const dummyTexts = [
+  "You're not supposed to read this",
+  'Bruh why are you reading this?',
+  'This is a secret',
+  "I'm not sure why you're reading this",
+];
+
+const WorthReading = ({
+  block1,
+  block2,
+  block3,
+  block4,
+}: WorthReadingProps) => {
+  const blocks = [block1, block2, block3, block4];
+
+  return (
+    <div className="relative flex flex-col">
+      <h2>Worth Reading</h2>
+      <BentoGrid>
+        {blocks.map((block, index) => {
+          const Icon = getIconForBlock(index + 1);
+          const isWide = index === 1 || index === 2;
+
+          return (
+            <BentoCard
+              key={block.tag}
+              name={block.title}
+              description={block.subtitle}
+              Icon={Icon}
+              href={`/tags/${block.tag}`}
+              cta="View all"
+              className={isWide ? 'col-span-5' : 'col-span-4'}
+              background={
+                <>
+                  <ul className="mt-0 flex list-none flex-col gap-y-1 p-0">
+                    {block.memos.map(memo => (
+                      <li
+                        key={memo.filePath}
+                        className="truncate p-0 whitespace-nowrap"
+                      >
+                        <Link
+                          href={formatContentPath(memo.filePath)}
+                          className="hover:text-primary text-sm !no-underline transition-colors"
+                        >
+                          {format(memo.date, 'yyyy MMM dd')}:{' '}
+                          {memo.short_title || memo.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="pointer-events-none absolute right-0 bottom-0 flex w-full translate-y-full flex-col gap-y-1 p-6 pt-0 opacity-50 blur">
+                    {Array(10)
+                      .fill(0)
+                      .map(() => {
+                        const text =
+                          dummyTexts[
+                            Math.floor(Math.random() * dummyTexts.length)
+                          ];
+                        return (
+                          <span
+                            key={Date.now()}
+                            className="text-muted-foreground truncate text-sm whitespace-nowrap"
+                          >
+                            {new Date().getFullYear()} Jan 12: {text}
+                          </span>
+                        );
+                      })}
+                  </div>
+                </>
+              }
+            />
+          );
+        })}
+      </BentoGrid>
+    </div>
+  );
+};
+
+export default WorthReading;
