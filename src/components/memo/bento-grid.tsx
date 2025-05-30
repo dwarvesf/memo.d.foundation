@@ -51,8 +51,8 @@ const BentoCard = ({
     {...props}
   >
     <div className="relative p-6 pb-1">{background}</div>
-    <div className="pointer-events-none absolute bottom-0 z-10 flex flex-col gap-1 p-6 opacity-80">
-      <Icon className="text-muted-foreground h-12 w-12 origin-left" />
+    <div className="pointer-events-none absolute bottom-0 z-10 flex flex-col gap-1 p-6 opacity-90">
+      <Icon className="text-muted-foreground h-8 w-8 origin-left" />
       <p className="text-foreground !m-0 text-xl font-semibold">{name}</p>
       <span className="text-muted-foreground !m-0 max-w-lg">{description}</span>
     </div>
