@@ -135,7 +135,7 @@ jobs:
           
           FILES_TO_PROCESS_FROM_DB=$(./duckdb -list -noheader -c "$DB_QUERY" | tr '\n' ',' | sed 's/,$//')
 
-          rm -f duckdb duckdb_cli-linux-amd64.zip
+          rm -f duckdb duckdb_cli-linux-amd64.zip vault_1.15.5_linux_amd64.zip
     
           if [ -z "$FILES_TO_PROCESS_FROM_DB" ]; then
             echo "No files found in vault.parquet that match the criteria (are in the collected .md/.mdx files list and have redirect IS NULL or an empty list/array)."
