@@ -13,26 +13,27 @@ There is a need to provide users with RSS/Atom feeds containing a variable numbe
     - The script also uses asynchronous file system operations for improved performance, aligning with ADR-0001.
 
 2.  **Nginx Configuration (`nginx/nginx.custom.conf`):**
-    - Nginx is configured to inspect the `limit` query parameter on feed URLs.
-    - **For general feed paths** (e.g., `/rss.xml`, `/atom.xml`, `/feed.xml` excluding `/feed/index.xml`):
-      - A `map $arg_limit $limited_feed_path` directive is used. This map checks if `$arg_limit` is a positive integer.
-      - If valid, `$limited_feed_path` is set to `/$feed_type_$arg_limit.xml` (where `$feed_type` is captured from the request URI).
-      - If invalid or not present, `$limited_feed_path` is empty.
-      - The `location` block uses `try_files $limited_feed_path $uri /404.html;` to attempt to serve the limited version, then the original, then a 404 page. This avoids using `try_files` inside an `if` block.
+    - Nginx is configured to inspect the `limit` query parameter on feed URLs using `map` directives.
+    - **For general feed paths** (e.g., `/rss.xml`, `/atom.xml`, `/feed.xml`, `/index.xml`):
+      - A `map $arg_limit $general_limited_feed_path` directive is used. This map checks if `$arg_limit` is a positive integer.
+      - If valid, `$general_limited_feed_path` is set to `/${feed_type}_$arg_limit.xml` (where `$feed_type` is captured from the request URI like `location ~ ^/(?<feed_type>rss|atom|feed|index)\.xml$`).
+      - If invalid or not present, it defaults to `/${feed_type}_20.xml`.
+      - The `location` block uses `try_files $general_limited_feed_path $uri /404.html;` to attempt to serve the limited version (either user-specified or default 20), then the original URI (e.g. `/rss.xml`), then a 404 page.
     - **For the specific `/feed/index.xml` path:**
-      - The `location = /feed/index.xml` block uses an `if` block to check for a valid positive integer `limit` query parameter (`$arg_limit`).
-      - If a valid `limit` is present, it uses a `rewrite ^/feed/index\.xml$ /feed_$arg_limit.xml last;` to internally redirect the request to a file named `/feed_N.xml` at the root level (e.g., `/feed_50.xml`).
-      - If no valid `limit` is present, or if the rewrite does not occur, `try_files /feed.xml /404.html;` is used to serve the default `/feed.xml` file or a 404 error.
-      - Note: This implementation uses a `rewrite` inside an `if`, which is generally discouraged in Nginx configurations, and it targets a file at the root (`/feed_N.xml`) rather than within the `/feed/` subdirectory (`/feed/index_N.xml`).
+      - A separate `map $arg_limit $feed_index_limited_feed_path` directive is used.
+      - If `$arg_limit` is a valid positive integer, `$feed_index_limited_feed_path` is set to `/feed_$arg_limit.xml`.
+      - If invalid or not present, it defaults to `/feed_20.xml`.
+      - The `location = /feed/index.xml` block uses `try_files $feed_index_limited_feed_path /feed.xml /404.html;` to attempt to serve the limited version (user-specified or default 20), then the default `/feed.xml`, then a 404 page.
+    - This approach consistently uses `map` directives and `try_files`, avoiding `if` blocks for request rewriting, which is generally a more robust and recommended Nginx practice.
 
 ## Consequences
 
 - **Positive:**
-  - Users can request feeds with a specific number of items.
+  - Users can request feeds with a specific number of items; if no limit is specified or an invalid one is provided, a default limit of 20 items is applied.
   - Reduced server load for clients that only need a few items, as smaller, pre-generated files are served.
-  - Nginx configuration remains relatively clean by using `map` and avoiding `try_files` in `if` blocks.
+  - Nginx configuration is robust and adheres to best practices by using `map` directives and avoiding `if` for rewrites.
   - Feed generation script is more performant due to async operations.
 - **Negative:**
-  - Increased build time due to the generation of multiple feed variants.
+  - Increased build time due to the generation of multiple feed variants (including the default '20' variants if not explicitly generated for other limits).
   - Increased storage space required for the pre-generated feed files.
-  - The number of `limit` variants is fixed at build time. Dynamic limits beyond the pre-generated ones are not supported by this approach.
+  - The number of `limit` variants is fixed at build time. Dynamic limits beyond the pre-generated ones (other than the default 20) are not supported by this approach.
