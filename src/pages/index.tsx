@@ -367,12 +367,6 @@ export const getStaticProps: GetStaticProps = async () => {
     // temp
     const newSource = await serialize({
       source: `
-      ---
-title: null
-description: null
-date: null
----
-
 ## Welcome to Dwarves Memo
 
 This site is a part of our continuous learning engine, where we want to build up the 1% improvement habit, learning in public.
@@ -433,7 +427,7 @@ This site is a part of our continuous learning engine, where we want to build up
 > Ecclesiastes 7:12:
 > “For wisdom is a defence, and money is a defence: but the excellency of knowledge is, that wisdom giveth life to them that have it.”
 
-_Written by Dwarves for product craftsmen._\
+_Written by Dwarves for product craftsmen._\\
 _Learned by engineers. Experimented by engineers._
 `,
     });
