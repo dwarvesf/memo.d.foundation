@@ -20,8 +20,8 @@ import { getContentPath } from '@/lib/content/paths';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
-
   mdxSource?: SerializeResult; // Serialized MDX source
+  contributorAspects: Record<string, Record<string, number>>;
 }
 
 /**
@@ -57,34 +57,53 @@ export const getStaticProps: GetStaticProps = async () => {
       string,
       { date: string; title: string; url: string }
     > = {};
+    const contributorAspects: Record<string, Record<string, number>> = {};
     let topCount = 0;
 
     sortMemos(allMemos).forEach(memo => {
-      const { authors } = memo;
+      const { authors, tags } = memo;
       if (authors) {
         authors.forEach(author => {
-          if (contributors.has(author)) {
-            contributionCount[author] ||= 0;
-            contributionCount[author] += 1;
-            topCount = Math.max(topCount, contributionCount[author]);
-            const d = contributorLatestWork[author].date;
-            if (isAfter(memo.date, d)) {
-              contributorLatestWork[author] = {
-                date: memo.date,
-                title: memo.title,
-                url: getContentPath(memo.filePath),
-              };
-            }
-            return;
+          // Initialize contributor data if not exists
+          if (!contributors.has(author)) {
+            contributors.add(author);
+            contributionCount[author] = 0;
+            contributorAspects[author] = {};
+            contributorLatestWork[author] = {
+              date: memo.date,
+              title: memo.title,
+              url: getContentPath(memo.filePath),
+            };
           }
-          contributors.add(author);
-          contributionCount[author] = 0;
+
+          // Update contribution count
+          contributionCount[author] += 1;
           topCount = Math.max(topCount, contributionCount[author]);
-          contributorLatestWork[author] = {
-            date: memo.date,
-            title: memo.title,
-            url: getContentPath(memo.filePath),
-          };
+
+          // Update latest work if newer
+          if (isAfter(memo.date, contributorLatestWork[author].date)) {
+            contributorLatestWork[author] = {
+              date: memo.date,
+              title: memo.title,
+              url: getContentPath(memo.filePath),
+            };
+          }
+
+          // Update tag counts for contributor
+          if (tags && tags.length > 0) {
+            const tagCounts = contributorAspects[author];
+            tags.forEach(tag => {
+              if (tag) {
+                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+              }
+            });
+
+            // Keep only top 5 tags by count
+            const sortedTags = Object.entries(tagCounts)
+              .sort(([, a], [, b]) => b - a)
+              .slice(0, 5);
+            contributorAspects[author] = Object.fromEntries(sortedTags);
+          }
         });
       }
     });
@@ -107,6 +126,7 @@ export const getStaticProps: GetStaticProps = async () => {
         contributionCount,
         contributorLatestWork,
         topCount,
+        contributorAspects,
       },
     });
 
@@ -116,7 +136,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     const newSource = await serialize({
       source:
-        '<ContributorList data={contributors} contributorLatestWork={contributorLatestWork} contributionCount={contributionCount} topCount={topCount} />',
+        '<ContributorList data={contributors} contributorLatestWork={contributorLatestWork} contributionCount={contributionCount} topCount={topCount} contributorAspects={contributorAspects} />',
     });
 
     if (!newSource || 'error' in newSource) {
@@ -130,6 +150,7 @@ export const getStaticProps: GetStaticProps = async () => {
         ...layoutProps,
         mdxSource,
         frontmatter: mdxSource.frontmatter,
+        contributorAspects,
       },
     };
   } catch (error) {

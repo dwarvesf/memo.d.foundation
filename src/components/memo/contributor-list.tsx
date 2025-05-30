@@ -19,14 +19,7 @@ import Jdenticon from 'react-jdenticon';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 import { ChartConfig, ChartContainer } from '../ui/chart';
 import BookOpenIcon from '../icons/BookOpenIcon';
-import {
-  Brain,
-  FlaskConical,
-  Hammer,
-  Network,
-  SigmaIcon,
-  Waypoints,
-} from 'lucide-react';
+import { SigmaIcon } from 'lucide-react';
 import Link from 'next/link';
 
 const chartConfig = {
@@ -69,48 +62,18 @@ function getContributorName(data: MochiUserProfile | string) {
   return data.profile_name;
 }
 
-type AspectData = { aspect: string; point: number };
-
-const aspectIcon = {
-  Technician: FlaskConical,
-  Manager: Network,
-  Operator: Waypoints,
-  Consultant: Brain,
-  Builder: Hammer,
-};
-
-function generateRandomAspectData() {
-  const aspects = [
-    'Technician',
-    'Manager',
-    'Operator',
-    'Consultant',
-    'Builder',
-  ];
-  const data: AspectData[] = aspects.map(aspect => ({
-    aspect,
-    point: Math.floor(Math.random() * 20) + 1, // Random number between 1 and 20
-  }));
-
-  // Find the aspect with the highest point value
-  const topAspect = data.reduce(
-    (prev, current) => (prev.point > current.point ? prev : current),
-    data[0],
-  );
-
-  return { data, topAspect };
-}
-
 function Contributor({
   data,
   count,
   topCount,
   latestWork,
+  aspects,
 }: {
   topCount: number;
   count: number;
   data: MochiUserProfile | string;
   latestWork: { date: string; url: string; title: string };
+  aspects: Record<string, number>;
 }) {
   const isUnknown = typeof data === 'string';
 
@@ -122,13 +85,24 @@ function Contributor({
     return <AvatarImage className="no-zoom !m-0" src={data.avatar} />;
   }, [data, isUnknown]);
 
-  // Generate random aspect data for the radar chart
-  const { data: aspectData, topAspect } = useMemo(
-    () => generateRandomAspectData(),
-    [],
-  );
+  // Convert aspects data to radar chart format
+  const aspectData = useMemo(() => {
+    return Object.entries(aspects).map(([aspect, point]) => ({
+      aspect,
+      point,
+    }));
+  }, [aspects]);
 
-  const Icon = aspectIcon[topAspect.aspect as keyof typeof aspectIcon];
+  // Find the aspect with the highest point value
+  const topAspect = useMemo(() => {
+    if (aspectData.length === 0) {
+      return { aspect: 'Builder', point: 0 };
+    }
+    return aspectData.reduce(
+      (prev, current) => (prev.point > current.point ? prev : current),
+      aspectData[0],
+    );
+  }, [aspectData]);
 
   return (
     <div className="relative flex w-full justify-start">
@@ -146,7 +120,7 @@ function Contributor({
           </div>
         </HoverCardTrigger>
         <HoverCardContent side="right" asChild>
-          <div className="!bg-background flex flex-col !p-0">
+          <div className="!bg-background flex w-[400px] flex-col items-center !p-0">
             <div className="border-border mb-5 flex w-full items-start gap-x-2 border-b px-3 py-2">
               <Avatar className="dark:bg-secondary mt-1 flex h-9 w-9 items-center justify-center border-2 bg-[#fff]">
                 {avatar}
@@ -156,7 +130,6 @@ function Contributor({
                   {getContributorName(data)}
                 </span>
                 <span className="text-muted-foreground flex w-full items-center gap-x-1 text-sm">
-                  <Icon className="h-3 w-3 shrink-0" />
                   <span className="shrink-0">{topAspect.aspect}</span>
                 </span>
                 <div className="text-muted-foreground flex items-center gap-x-1 text-sm">
@@ -172,7 +145,7 @@ function Contributor({
                 </span>
               </div>
             </div>
-            <ChartContainer config={chartConfig} className="">
+            <ChartContainer config={chartConfig} className="w-full">
               <RadarChart data={aspectData}>
                 <PolarAngleAxis dataKey="aspect" />
                 <PolarGrid />
@@ -180,6 +153,7 @@ function Contributor({
                   dataKey="point"
                   fillOpacity={0.6}
                   className="fill-primary"
+                  isAnimationActive={false}
                 />
               </RadarChart>
             </ChartContainer>
@@ -195,6 +169,7 @@ function ContributorList({
   contributionCount,
   contributorLatestWork,
   topCount,
+  contributorAspects,
 }: {
   data: (MochiUserProfile | string)[];
   contributionCount: Record<string, number>;
@@ -203,6 +178,7 @@ function ContributorList({
     { date: string; title: string; url: string }
   >;
   topCount: number;
+  contributorAspects: Record<string, Record<string, number>>;
 }) {
   const sortByContributionCount = data.sort((a, b) => {
     const nameA = typeof a === 'string' ? a : getContributorName(a);
@@ -230,7 +206,7 @@ function ContributorList({
           behind our second brain
         </p>
 
-        <Card className="mt-10 pb-0">
+        <Card className="mt-10">
           <CardHeader className="font-sans">
             <CardTitle>
               Viewing contributors sorted by their contribution
@@ -240,17 +216,20 @@ function ContributorList({
             </CardDescription>
           </CardHeader>
           <ScrollArea className="relative">
-            <CardContent className="flex max-h-[calc(100vh-36rem)] flex-col items-start gap-y-1">
+            <CardContent className="flex flex-col items-start gap-y-1">
               <div className="bg-border absolute left-1/2 h-full w-px" />
               <div className="bg-border absolute left-4/5 h-full w-px" />
               {sortByContributionCount.map(d => {
+                const name = getContributorName(d);
+                const aspects = contributorAspects[name] || {};
                 return (
                   <Contributor
-                    key={getContributorName(d)}
+                    key={name}
                     data={d}
                     topCount={topCount}
-                    count={contributionCount[getContributorName(d)]}
-                    latestWork={contributorLatestWork[getContributorName(d)]}
+                    count={contributionCount[name]}
+                    latestWork={contributorLatestWork[name]}
+                    aspects={aspects}
                   />
                 );
               })}
