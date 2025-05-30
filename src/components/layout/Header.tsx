@@ -27,15 +27,15 @@ const Header: React.FC<HeaderProps> = ({
   const { isMacOS } = useLayoutContext();
   const modifier = isMacOS ? '⌘' : 'Ctrl';
   return (
-    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 top-0 w-full shrink-0 font-sans backdrop-blur">
-      <div className="mx-auto flex h-full items-center justify-between border-b p-2 xl:border-none xl:px-5">
+    <header className="bg-background/80 sticky top-0 z-10 w-full backdrop-blur-md">
+      <div className="flex h-14 items-center justify-between px-4 py-2.5">
         <div className="flex items-center gap-2.5">
           {/* Mobile sidebar toggle button */}
           <button
             id="sidebar-toggle"
             onClick={toggleSidebar}
             aria-label="Toggle sidebar"
-            className="flex h-10 w-10 cursor-pointer items-center justify-center focus:outline-none xl:hidden"
+            className="mobile-toggle xl:hidden"
           >
             <svg
               width="20"
@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Logo (shown on mobile) */}
-          <Link href="/" className="flex items-center gap-2 xl:hidden">
+          <Link href="/" className="flex items-center gap-2 py-1.25 xl:hidden">
             <LogoIcon className="h-[32px] w-[29px] min-w-6 shrink-0"></LogoIcon>
             <span className="font-ibm-sans text-xs text-[11px] leading-[14.849px] font-bold -tracking-[0.157px] uppercase">
               Dwarves
