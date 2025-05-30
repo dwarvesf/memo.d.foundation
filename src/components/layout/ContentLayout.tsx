@@ -252,7 +252,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
                 </svg>
                 <span className="text-muted-foreground">Folder:</span>
                 <Link
-                  href={`/${metadata.folder}`}
+                  href={metadata.folder}
                   className="text-primary hover:underline"
                 >
                   {metadata.folder}

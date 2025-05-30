@@ -142,7 +142,7 @@ const RightSidebar = (props: Props) => {
                     />
                     <span>Folder:</span>{' '}
                     <Link
-                      href={`/${metadata.folder}`}
+                      href={metadata.folder}
                       className="hover:text-primary inline break-all hover:underline"
                     >
                       {metadata.folder}
