@@ -34,8 +34,8 @@ const RSS_LIMIT_VARIANTS = (() => {
 // --- Types ---
 type Frontmatter = {
   title?: string | string[];
-  date?: string | Date;
-  lastmod?: string | Date;
+  date?: string;
+  lastmod?: string;
   description?: string | string[];
   authors?: string[] | string;
   draft?: boolean | string;
@@ -63,21 +63,20 @@ async function fileExists(filePath: string): Promise<boolean> {
   }
 }
 
-function parseDateSafe(
-  dateInput: any,
-  fallbackDate: Date = new Date(),
+function validateDateInput(
+  dateInput: string | undefined | null,
 ): string {
   if (!dateInput) {
-    return fallbackDate.toISOString();
+    return '';
   }
   try {
     const date = new Date(String(dateInput));
     if (isNaN(date.getTime())) {
-      return fallbackDate.toISOString();
+      return '';
     }
-    return date.toISOString();
+    return dateInput; // Return the original input if it's a valid date
   } catch (e) {
-    return fallbackDate.toISOString();
+    return '';
   }
 }
 
@@ -228,8 +227,13 @@ async function createRSSItemFromSlug(slug: string[]): Promise<RSSItem | null> {
   }
 
   const url = `${SITE_URL}/${slug.join('/')}`;
-  const pubDate = parseDateSafe(frontmatter.date);
-  const modDate = parseDateSafe(frontmatter.lastmod, new Date(pubDate)); // Fallback to pubDate if lastmod is invalid
+  const pubDate = validateDateInput(frontmatter.date);
+  const modDate = validateDateInput(frontmatter.lastmod) ?? pubDate; // Fallback to pubDate if lastmod is invalid
+
+  // Ensure pubDate is valid
+  if (!pubDate) {
+    return null;
+  }
 
   // Create description/excerpt
   const excerpt =

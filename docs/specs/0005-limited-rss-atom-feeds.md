@@ -20,7 +20,8 @@ Implement support for a `limit` query parameter on RSS and Atom feed URLs to all
 ### Feed Generation (`scripts/generate-rss.ts`)
 
 - Modify the existing script to iterate through a predefined list of limit values (e.g., 10, 15, 20, ..., 100). It's crucial that a version with `limit=20` is generated for each feed type to support Nginx's default fallback.
-- For each limit value and each feed type (RSS, Atom), generate the corresponding XML content, truncating the list of items to the specified limit.
+- Source items for feeds are first filtered to include only those with valid `date` frontmatter. Posts with invalid or missing dates are excluded.
+- For each limit value and each feed type (RSS, Atom), generate the corresponding XML content from the filtered and sorted list of items, truncating this list to the specified limit.
 - Save the generated XML content to files named according to the pattern `{feed_type}_{limit}.xml` in the output directory (e.g., `out/rss_50.xml`, `out/atom_20.xml`).
 - For the `/feed/index.xml` case, the script should generate files named `out/feed_{limit}.xml` at the root of the output directory (e.g., `out/feed_50.xml`, `out/feed_20.xml`).
 - Ensure the script uses asynchronous file system operations (`fs/promises`) for reading source markdown files and writing output feed files.

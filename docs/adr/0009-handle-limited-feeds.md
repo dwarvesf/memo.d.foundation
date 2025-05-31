@@ -9,7 +9,8 @@ There is a need to provide users with RSS/Atom feeds containing a variable numbe
 1.  **Feed Generation (`scripts/generate-rss.ts`):**
 
     - The script has been updated to pre-generate multiple versions of each feed type (RSS, Atom).
-    - For each base feed (e.g., `rss.xml`), variants corresponding to predefined limits (e.g., `rss_10.xml`, `rss_50.xml`) are created. These files are named using the pattern `{feed_type}_{limit}.xml` for root feeds (e.g., `rss_50.xml`) and `{subdirectory}/{feed_name}_{limit}.xml` for feeds in subdirectories (e.g., `feed/index_50.xml`).
+    - Before generating limited feeds, the script first filters all potential content to include only items with valid `date` frontmatter. Items with missing or invalid dates are excluded from all feed generation.
+    - For each base feed (e.g., `rss.xml`), variants corresponding to predefined limits (e.g., `rss_10.xml`, `rss_50.xml`) are created from this filtered and sorted list of items. These files are named using the pattern `{feed_type}_{limit}.xml` for root feeds (e.g., `rss_50.xml`) and `{subdirectory}/{feed_name}_{limit}.xml` for feeds in subdirectories (e.g., `feed/index_50.xml`).
     - The script also uses asynchronous file system operations for improved performance, aligning with ADR-0001.
 
 2.  **Nginx Configuration (`nginx/nginx.custom.conf`):**
