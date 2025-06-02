@@ -120,203 +120,46 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching hiring memos:', error);
     }
 
-    // Add queries for WorthReading blocks
-    let block1Memos: IMemoItem[] = [];
+    // get all memos with tags (object with title and tags field)
+    let memosWithTags: { title: string; tags: string[] }[] = [];
     try {
-      block1Memos = await queryDuckDB(`
-        ${querySelect}
+      memosWithTags = await queryDuckDB(`
+        SELECT title, tags, file_path, date, authors
         FROM vault
         WHERE tags IS NOT NULL
-        AND ARRAY_CONTAINS(tags, 'engineering')
         ORDER BY date DESC
-        LIMIT 5
-        `).then(convertToMemoItems);
+      `).then(async results => {
+        const filteredResults = results.filter(
+          result => result.title && Array.isArray(result.tags),
+        );
+
+        return await Promise.all(
+          filteredResults.map(async result => {
+            const authorAvatars =
+              result.authors && Array.isArray(result.authors)
+                ? await Promise.all(
+                    result.authors.map(async author => {
+                      const profile = await fetchContributorProfile(
+                        author as string,
+                      );
+                      return profile.avatar ?? null;
+                    }),
+                  )
+                : [];
+
+            return {
+              title: result.title as string,
+              tags: result.tags as string[],
+              filePath: result.file_path as string,
+              date: result.date as string,
+              authors: result.authors as string[],
+              authorAvatars,
+            };
+          }),
+        );
+      });
     } catch (error) {
-      console.error('Error fetching block1 memos:', error);
-    }
-
-    let block2Memos: IMemoItem[] = [];
-    try {
-      block2Memos = await queryDuckDB(`
-        ${querySelect}
-        FROM vault
-        WHERE tags IS NOT NULL
-        AND ARRAY_CONTAINS(tags, 'blockchain')
-        ORDER BY date DESC
-        LIMIT 5
-        `).then(convertToMemoItems);
-    } catch (error) {
-      console.error('Error fetching block2 memos:', error);
-    }
-
-    let block3Memos: IMemoItem[] = [];
-    try {
-      block3Memos = await queryDuckDB(`
-        ${querySelect}
-        FROM vault
-        WHERE tags IS NOT NULL
-        AND ARRAY_CONTAINS(tags, 'market-report')
-        ORDER BY date DESC
-        LIMIT 5
-        `).then(convertToMemoItems);
-    } catch (error) {
-      console.error('Error fetching block3 memos:', error);
-    }
-
-    let block4Memos: IMemoItem[] = [];
-    try {
-      block4Memos = await queryDuckDB(`
-        ${querySelect}
-        FROM vault
-        WHERE tags IS NOT NULL
-        AND ARRAY_CONTAINS(tags, 'AI')
-        ORDER BY date DESC
-        LIMIT 5
-        `).then(convertToMemoItems);
-    } catch (error) {
-      console.error('Error fetching block4 memos:', error);
-    }
-
-    // Query for top 10 latest memos overall
-    let latestMemos: IMemoItem[] = [];
-    try {
-      latestMemos = await queryDuckDB(`
-        ${querySelect}
-        FROM vault
-        ORDER BY date DESC
-        LIMIT 10
-        `).then(convertToMemoItems);
-
-      // Enrich authors with their profiles
-      latestMemos = await Promise.all(
-        latestMemos.map(async memo => {
-          if (!memo.authors || !Array.isArray(memo.authors)) {
-            return memo;
-          }
-
-          const authorAvatars = await Promise.all(
-            memo.authors.map(async author => {
-              const profile = await fetchContributorProfile(author);
-              return profile.avatar ?? null;
-            }),
-          );
-
-          return {
-            ...memo,
-            authorAvatars,
-          };
-        }),
-      );
-    } catch (error) {
-      console.error('Error fetching latest memos:', error);
-    }
-
-    // Query for top 10 latest web3 memos
-    let latestWeb3Memos: IMemoItem[] = [];
-    try {
-      latestWeb3Memos = await queryDuckDB(`
-        ${querySelect}
-        FROM vault
-        WHERE tags IS NOT NULL
-        AND ARRAY_CONTAINS(tags, 'web3')
-        ORDER BY date DESC
-        LIMIT 10
-        `).then(convertToMemoItems);
-
-      // Enrich authors with their avatars
-      latestWeb3Memos = await Promise.all(
-        latestWeb3Memos.map(async memo => {
-          if (!memo.authors || !Array.isArray(memo.authors)) {
-            return memo;
-          }
-
-          const authorAvatars = await Promise.all(
-            memo.authors.map(async author => {
-              const profile = await fetchContributorProfile(author);
-              return profile.avatar ?? null;
-            }),
-          );
-
-          return {
-            ...memo,
-            authorAvatars,
-          };
-        }),
-      );
-    } catch (error) {
-      console.error('Error fetching web3 memos:', error);
-    }
-
-    // Query for top 10 latest design memos
-    let latestDesignMemos: IMemoItem[] = [];
-    try {
-      latestDesignMemos = await queryDuckDB(`
-        ${querySelect}
-        FROM vault
-        WHERE tags IS NOT NULL
-        AND ARRAY_CONTAINS(tags, 'design')
-        ORDER BY date DESC
-        LIMIT 10
-        `).then(convertToMemoItems);
-
-      // Enrich authors with their avatars
-      latestDesignMemos = await Promise.all(
-        latestDesignMemos.map(async memo => {
-          if (!memo.authors || !Array.isArray(memo.authors)) {
-            return memo;
-          }
-
-          const authorAvatars = await Promise.all(
-            memo.authors.map(async author => {
-              const profile = await fetchContributorProfile(author);
-              return profile.avatar ?? null;
-            }),
-          );
-
-          return {
-            ...memo,
-            authorAvatars,
-          };
-        }),
-      );
-    } catch (error) {
-      console.error('Error fetching design memos:', error);
-    }
-
-    // Query for top 10 latest culture memos
-    let latestCultureMemos: IMemoItem[] = [];
-    try {
-      latestCultureMemos = await queryDuckDB(`
-        ${querySelect}
-        FROM vault
-        WHERE tags IS NOT NULL
-        AND ARRAY_CONTAINS(tags, 'culture')
-        ORDER BY date DESC
-        LIMIT 10
-        `).then(convertToMemoItems);
-
-      // Enrich authors with their avatars
-      latestCultureMemos = await Promise.all(
-        latestCultureMemos.map(async memo => {
-          if (!memo.authors || !Array.isArray(memo.authors)) {
-            return memo;
-          }
-
-          const authorAvatars = await Promise.all(
-            memo.authors.map(async author => {
-              const profile = await fetchContributorProfile(author);
-              return profile.avatar ?? null;
-            }),
-          );
-
-          return {
-            ...memo,
-            authorAvatars,
-          };
-        }),
-      );
-    } catch (error) {
-      console.error('Error fetching culture memos:', error);
+      console.error('Error fetching memos with tags:', error);
     }
 
     const mdxPath = path.join(process.cwd(), 'public/content/', `index.mdx`);
@@ -329,38 +172,7 @@ export const getStaticProps: GetStaticProps = async () => {
         changelogMemos,
         hiringMemos,
         directoryTree: layoutProps.directoryTree,
-        worthReadingBlocks: {
-          block1: {
-            title: 'Engineering',
-            subtitle: 'Craftsmen knowledge',
-            tag: 'engineering',
-            memos: block1Memos,
-          },
-          block2: {
-            title: 'Blockchain',
-            subtitle: 'Decentralized future',
-            tag: 'blockchain',
-            memos: block2Memos,
-          },
-          block3: {
-            title: 'Wealth',
-            subtitle: 'Growth and prosperity',
-            tag: 'market-report',
-            memos: block3Memos,
-          },
-          block4: {
-            title: 'Artificial Intelligence',
-            subtitle: 'Pushing human limits',
-            tag: 'AI',
-            memos: block4Memos,
-          },
-        },
-        latestMemos,
-        filters: {
-          web3: latestWeb3Memos,
-          design: latestDesignMemos,
-          culture: latestCultureMemos,
-        },
+        memosWithTags,
       },
     });
 
@@ -376,12 +188,35 @@ This site is a part of our continuous learning engine, where we want to build up
 - Just shipped: [brainery](updates/build-log/brainery/readme.md), [memo](updates/build-log/memo/readme.md), [mcp-playbook](updates/build-log/playbook/readme.md)
 - Latest report: [2025 May report](updates/forward/2025-05.md)
 
-<If condition={worthReadingBlocks}>
-  <WorthReading {...worthReadingBlocks} />
+<If condition={memosWithTags}>
+  <WorthReading 
+    memos={memosWithTags}
+    blocks={[
+      {
+        title: 'Engineering',
+        subtitle: 'Craftsmen knowledge',
+        tag: 'engineering',
+      },
+      {
+        title: 'Blockchain',
+        subtitle: 'Decentralized future',
+        tag: 'blockchain',
+      },
+      {
+        title: 'Wealth',
+        subtitle: 'Growth and prosperity',
+        tag: 'market-report',
+      },
+      {
+        title: 'Artificial Intelligence',
+        subtitle: 'Pushing human limits',
+        tag: 'AI',
+      },
+    ]} />
 </If>
 
-<If condition={latestMemos && filters}>
-  <MemoFilterList title="Latest memos" all={latestMemos} filters={filters} />
+<If condition={memosWithTags}>
+  <MemoFilterList title="Latest memos" all={memosWithTags} filters={['web3', 'design', 'culture']} />
 </If>
 
 <TagsMarquee directoryTree={directoryTree} />
@@ -425,7 +260,7 @@ This site is a part of our continuous learning engine, where we want to build up
 ---
 
 > Ecclesiastes 7:12:
-> “For wisdom is a defence, and money is a defence: but the excellency of knowledge is, that wisdom giveth life to them that have it.”
+> "For wisdom is a defence, and money is a defence: but the excellency of knowledge is, that wisdom giveth life to them that have it."
 
 _Written by Dwarves for product craftsmen._\\
 _Learned by engineers. Experimented by engineers._

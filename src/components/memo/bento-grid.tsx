@@ -41,7 +41,7 @@ const BentoCard = ({
   <div
     key={name}
     className={cn(
-      'group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl',
+      'relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl',
       // light styles
       'bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]',
       // dark styles
@@ -52,7 +52,7 @@ const BentoCard = ({
   >
     <div className="relative p-6 pb-1">{background}</div>
     <div className="pointer-events-none absolute bottom-0 z-10 flex flex-col gap-1 p-6 opacity-90">
-      <Icon className="text-muted-foreground h-8 w-8 origin-left" />
+      <Icon className="text-muted-foreground h-8 w-8" />
       <p className="text-foreground !m-0 text-xl font-semibold">{name}</p>
       <span className="text-muted-foreground !m-0 max-w-lg">{description}</span>
     </div>
