@@ -487,6 +487,7 @@ export default function ContentPage({
             title={frontmatter.title}
             description={frontmatter.description}
             backlinks={backlinks}
+            tableOfContents={tocItems}
             hideFrontmatter={frontmatter.hide_frontmatter}
             hideTitle={frontmatter.hide_title}
             metadata={metadata}
