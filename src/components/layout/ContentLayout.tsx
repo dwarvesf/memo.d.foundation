@@ -4,13 +4,16 @@ import { cn } from '@/lib/utils';
 import katex from 'katex';
 import { IBackLinkItem, IMetadata } from '@/types';
 import SummaryBlock from '../memo/SummaryBlock';
+import PageTableOfContents from './PageTableOfContents';
+import { ITocItem } from '@/types';
+
 interface ContentLayoutProps {
   children: React.ReactNode;
   title?: string;
   description?: string;
   image?: string;
   metadata?: IMetadata;
-  tableOfContents?: string;
+  tableOfContents?: ITocItem[];
   backlinks?: IBackLinkItem[];
   hideFrontmatter?: boolean;
   hideTitle?: boolean;
@@ -20,6 +23,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
   children,
   title = 'Untitled',
   metadata,
+  tableOfContents,
   backlinks = [],
   hideFrontmatter = false,
   hideTitle = false,
@@ -75,6 +79,9 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
 
       {/* Main content with prose styling */}
       <SummaryBlock summary={metadata?.summary}></SummaryBlock>
+      {tableOfContents && tableOfContents.length > 0 && (
+        <PageTableOfContents items={tableOfContents} />
+      )}
       <div
         ref={mathContainerRef}
         className={cn(
