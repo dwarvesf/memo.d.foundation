@@ -202,19 +202,26 @@ async function filterRedirectsLogic(
     const normalizedRedirectKey = normalizePathWithSlash(redirectKey);
     const normalizedRedirectValue = normalizePathWithSlash(redirectValue);
 
-    const isMatchedAlias = aliasesEntries.some(([aliasKey, aliasVal]) => {
-      const normalizedAliasKey = normalizePathWithSlash(aliasKey);
-      const normalizedAliasValue = normalizePathWithSlash(aliasVal);
-      const isMatchedReversedValues =
-        normalizedRedirectValue === normalizedAliasKey ||
-        normalizedRedirectKey === normalizedAliasValue;
-      if (isMatchedReversedValues) {
-        return true;
-      }
-      return normalizedRedirectKey === normalizedAliasKey;
-    });
+    // Special case: Always include README.md redirects, regardless of alias conflicts
+    const isReadmeRedirect = normalizedRedirectKey
+      .toLowerCase()
+      .endsWith('/readme.md');
 
-    if (!isMatchedAlias) {
+    const isMatchedAlias =
+      !isReadmeRedirect &&
+      aliasesEntries.some(([aliasKey, aliasVal]) => {
+        const normalizedAliasKey = normalizePathWithSlash(aliasKey);
+        const normalizedAliasValue = normalizePathWithSlash(aliasVal);
+        const isMatchedReversedValues =
+          normalizedRedirectValue === normalizedAliasKey ||
+          normalizedRedirectKey === normalizedAliasValue;
+        if (isMatchedReversedValues) {
+          return true;
+        }
+        return normalizedRedirectKey === normalizedAliasKey;
+      });
+
+    if (!isMatchedAlias || isReadmeRedirect) {
       processRedirect(
         normalizedRedirectKey,
         normalizedRedirectValue,
