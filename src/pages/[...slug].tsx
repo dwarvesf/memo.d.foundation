@@ -472,6 +472,8 @@ export default function ContentPage({
       !frontmatter?.hide_subscription &&
       !['home', 'tags', 'contributor'].some(path => slug.includes(path));
 
+    const shouldRenderTableOfContent = frontmatter?.toc ?? false;
+
     return (
       <RootLayout
         title={frontmatter.title || 'Dwarves Memo'}
@@ -487,7 +489,7 @@ export default function ContentPage({
             title={frontmatter.title}
             description={frontmatter.description}
             backlinks={backlinks}
-            tableOfContents={tocItems}
+            tableOfContents={shouldRenderTableOfContent ? tocItems : undefined}
             hideFrontmatter={frontmatter.hide_frontmatter}
             hideTitle={frontmatter.hide_title}
             metadata={metadata}

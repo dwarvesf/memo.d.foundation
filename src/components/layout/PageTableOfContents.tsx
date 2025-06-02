@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import { ITocItem } from '@/types';
 import Link from 'next/link';
@@ -12,7 +14,7 @@ const getHeadingLevelClass = (level: number) => {
 };
 
 const PageTableOfContents: React.FC<PageTableOfContentsProps> = ({ items }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Default to false for server render
 
   const renderTocItems = (items: ITocItem[], depth = 0) => {
     const listStyle = depth === 0 ? 'list-disc' : 'list-circle'; // Use list-disc for top level, list-circle for nested
