@@ -1,47 +1,138 @@
 import fs from 'fs';
+import fsp from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Get site URL from environment or use default
+// --- Configuration ---
 const SITE_URL = process.env.SITE_URL || 'https://memo.d.foundation';
 const SITE_TITLE = 'Dwarves Memo';
 const SITE_DESCRIPTION = 'Knowledge sharing platform for Dwarves Foundation';
+
+const CONTENT_DIR = path.join(__dirname, '../public/content');
 const OUTPUT_DIR = path.join(__dirname, '../out');
 
+const RSS_TARGET_FILES = ['feed', 'rss', 'index']; // Basenames for RSS 2.0 files
+const ATOM_TARGET_FILES = ['atom']; // Basenames for Atom 1.0 files
+
+const FEED_LIMITS = {
+  MIN: 10, // Minimum number of items for limited feeds
+  MAX: 100, // Maximum number of items for limited feeds
+  STEP: 5, // Step for generating different limited feed sizes
+};
+
+const RSS_LIMIT_VARIANTS = (() => {
+  const variants = [];
+  for (let i = FEED_LIMITS.MIN; i <= FEED_LIMITS.MAX; i += FEED_LIMITS.STEP) {
+    variants.push(i);
+  }
+  return variants;
+})();
+
+// --- Types ---
+type Frontmatter = {
+  title?: string | string[];
+  date?: string;
+  lastmod?: string;
+  description?: string | string[];
+  authors?: string[] | string;
+  draft?: boolean | string;
+  [key: string]: any; // Allow other frontmatter fields
+};
+
+type RSSItem = {
+  title: string | string[];
+  url: string;
+  pubDate: string; // ISO string
+  modDate: string; // ISO string
+  description: string | string[];
+  content: string;
+  author: string;
+};
+
+// --- Utility Functions ---
+
+async function fileExists(filePath: string): Promise<boolean> {
+  try {
+    await fsp.access(filePath, fs.constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function validateDateInput(
+  dateInput: string | undefined | null,
+): string {
+  if (!dateInput) {
+    return '';
+  }
+  try {
+    const date = new Date(String(dateInput));
+    if (isNaN(date.getTime())) {
+      return '';
+    }
+    return dateInput; // Return the original input if it's a valid date
+  } catch (e) {
+    return '';
+  }
+}
+
+function escapeXml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function formatXmlTextField(fieldValue: string | string[] | undefined): string {
+  if (Array.isArray(fieldValue)) {
+    return fieldValue
+      .filter(Boolean)
+      .map(t => escapeXml(String(t)))
+      .join(', ');
+  }
+  return escapeXml(String(fieldValue || ''));
+}
+
+
 /**
- * Gets all markdown files recursively from a directory
+ * Gets all markdown file slugs recursively from a directory.
+ * A slug is an array of path segments.
  */
-function getAllMarkdownFiles(dir: fs.PathLike, basePath: string[] = []): string[][] {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const paths = [];
+async function getAllMarkdownSlugs(dir: string, basePath: string[] = []): Promise<string[][]> {
+  const entries = await fsp.readdir(dir, { withFileTypes: true });
+  const paths: string[][] = [];
 
   // Check for readme.md first, then _index.md in the current directory
-  const readmeFilePath = path.join(dir.toString(), 'readme.md');
-  const indexFilePath = path.join(dir.toString(), '_index.md');
+  const readmeFilePath = path.join(dir, 'readme.md');
+  const indexFilePath = path.join(dir, '_index.md');
 
-  // Prioritize readme.md over _index.md
-  if (fs.existsSync(readmeFilePath) && basePath.length > 0) {
-    // If readme.md exists, add the current directory as a path
+  const readmeExists = await fileExists(readmeFilePath);
+  const indexExists = await fileExists(indexFilePath);
+
+  // Prioritize readme.md over _index.md for directory representation
+  if (readmeExists && basePath.length > 0) {
     paths.push([...basePath]);
-  } else if (fs.existsSync(indexFilePath) && basePath.length > 0) {
-    // If _index.md exists but readme.md doesn't, add the current directory as a path
+  } else if (indexExists && basePath.length > 0) {
     paths.push([...basePath]);
   }
 
   for (const entry of entries) {
-    const res = path.resolve(dir.toString(), entry.name);
+    const res = path.resolve(dir, entry.name);
     if (entry.isDirectory()) {
-      paths.push(...getAllMarkdownFiles(res, [...basePath, entry.name]));
+      paths.push(...await getAllMarkdownSlugs(res, [...basePath, entry.name]));
     } else if (
       entry.name.endsWith('.md') &&
       entry.name !== '_index.md' &&
       entry.name !== 'readme.md'
     ) {
-      // Skip _index.md and readme.md as they're already handled above
-      // Remove .md extension for the slug
+      // Skip _index.md and readme.md as they're handled above for directory slugs
+      // Remove .md extension for the file slug
       const slugName = entry.name.replace(/\.md$/, '');
       paths.push([...basePath, slugName]);
     }
@@ -51,247 +142,125 @@ function getAllMarkdownFiles(dir: fs.PathLike, basePath: string[] = []): string[
 }
 
 /**
- * Reads and parses markdown content from a file
+ * Reads and parses markdown content from a file path.
+ * Attempts to find the correct file path based on slug (supports _index.md and readme.md).
  */
-function getMarkdownContent(filePath: fs.PathOrFileDescriptor) {
-  // Read the markdown file
-  const markdownContent = fs.readFileSync(filePath, 'utf-8');
+async function getMarkdownContent(
+  slug: string[],
+): Promise<{ frontmatter: Frontmatter; content: string } | null> {
+  const possiblePaths = [
+    path.join(CONTENT_DIR, ...slug) + '.md', // Standard file
+    path.join(CONTENT_DIR, ...slug, 'readme.md'), // readme.md
+    path.join(CONTENT_DIR, ...slug, '_index.md'), // Hugo _index.md
+  ];
 
-  // Parse frontmatter and content
-  const frontmatterMatch = markdownContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-
-  if (!frontmatterMatch) {
-    return {
-      frontmatter: {},
-      content: markdownContent
-    };
+  let filePath: string | undefined;
+  for (const p of possiblePaths) {
+    if (await fileExists(p)) {
+      filePath = p;
+      break;
+    }
   }
 
-  const frontmatterStr = frontmatterMatch[1];
-  const content = frontmatterMatch[2];
+  if (!filePath) {
+    console.warn(`Could not find markdown file for slug: ${slug.join('/')}`);
+    return null;
+  }
 
-  // Parse frontmatter
-  const frontmatter: Record<string, string | string[] | null> = {};
-  frontmatterStr.split('\n').forEach(line => {
-    try {
-      const match = line.match(/^([^:]+):\s*(.*)$/);
-      if (match) {
-        const key = match[1].trim();
-        let value: string | string[] | null = match[2].trim();
+  try {
+    const markdownContent = await fsp.readFile(filePath, 'utf-8');
+    const frontmatterMatch = markdownContent.match(
+      /^---\n([\s\S]*?)\n---\n([\s\S]*)$/,
+    );
 
-        // Handle arrays
-        if (value.startsWith('[') && value.endsWith(']')) {
-          value = value.slice(1, -1).split(',').map(v => v.trim());
-        }
-
-        // Handle dates safely
-        if (key === 'date' || key === 'lastmod') {
-          // Try to parse the date to ensure it's valid
-          try {
-            if (value && typeof value === 'string') { // Only try to parse if value is a string
-              new Date(value).toISOString();
-            } else {
-              value = null; // Set explicit null for empty values or non-string values
-            }
-          } catch (e) {
-            // Silently set invalid dates to null without warning
-            value = null; // Set to null so we can use the current date later
-          }
-        }
-
-        frontmatter[key] = value;
-      }
-    } catch (error) {
-      console.warn(`Error parsing frontmatter line: ${line}`, error);
+    if (!frontmatterMatch) {
+      return { frontmatter: {}, content: markdownContent };
     }
-  });
+
+    const frontmatterStr = frontmatterMatch[1];
+    const content = frontmatterMatch[2];
+
+    const frontmatter: Frontmatter = {};
+    frontmatterStr.split('\n').forEach(line => {
+      try {
+        const match = line.match(/^([^:]+):\s*(.*)$/);
+        if (match) {
+          const key = match[1].trim();
+          let value: any = match[2].trim();
+
+          // Attempt to parse JSON values (arrays, booleans, numbers)
+          try {
+            value = JSON.parse(value);
+          } catch (e) {
+            // Not JSON, keep as string
+          }
+
+          frontmatter[key] = value;
+        }
+      } catch (error) {
+        console.warn(`Error parsing frontmatter line: ${line}`, error);
+      }
+    });
+
+    return { frontmatter, content };
+  } catch (error) {
+    console.error(`Error reading or parsing file ${filePath}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Creates an RSSItem object from a markdown slug.
+ */
+async function createRSSItemFromSlug(slug: string[]): Promise<RSSItem | null> {
+  const contentData = await getMarkdownContent(slug);
+  if (!contentData) return null;
+
+  const { frontmatter, content } = contentData;
+
+  // Skip if the post is marked as draft
+  if (
+    frontmatter.draft === true ||
+    String(frontmatter.draft).toLowerCase() === 'true'
+  ) {
+    return null;
+  }
+
+  const url = `${SITE_URL}/${slug.join('/')}`;
+  const pubDate = validateDateInput(frontmatter.date);
+  const modDate = validateDateInput(frontmatter.lastmod) ?? pubDate; // Fallback to pubDate if lastmod is invalid
+
+  // Ensure pubDate is valid
+  if (!pubDate) {
+    return null;
+  }
+
+  // Create description/excerpt
+  const excerpt =
+    content
+      .replace(/<[^>]*>/g, '') // Remove HTML tags
+      .substring(0, 280) // Limit to 280 chars
+      .trim() + '...';
+
+  const author = Array.isArray(frontmatter.authors)
+    ? frontmatter.authors[0] || 'Dwarves Foundation'
+    : frontmatter.authors || 'Dwarves Foundation';
 
   return {
-    frontmatter,
-    content
+    title: frontmatter.title || slug[slug.length - 1],
+    url,
+    pubDate,
+    modDate,
+    description: frontmatter.description || excerpt,
+    content,
+    author,
   };
 }
 
 /**
- * Helper function to escape XML special characters
+ * Generates RSS 2.0 XML format.
  */
-function escapeXml(unsafe: string) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
-
-/**
- * Generates RSS feeds in multiple formats (RSS, Atom)
- */
-async function generateRSSFeeds() {
-  console.log('Generating RSS feeds...');
-
-  // Get all markdown files
-  const contentDir = path.join(__dirname, '../public/content');
-  const allSlugs = getAllMarkdownFiles(contentDir);
-
-  // Process content for all files
-  const items = allSlugs.map(slug => {
-    try {
-      // Try multiple file path options to support Hugo's _index.md convention
-      let filePath = path.join(contentDir, ...slug) + '.md';
-
-      // If the direct path doesn't exist, check if there's an _index.md or readme.md file in the directory
-      if (!fs.existsSync(filePath)) {
-        const indexFilePath = path.join(contentDir, ...slug, '_index.md');
-        const readmeFilePath = path.join(contentDir, ...slug, 'readme.md');
-
-        if (fs.existsSync(readmeFilePath)) {
-          // Prioritize readme.md if it exists
-          filePath = readmeFilePath;
-        } else if (fs.existsSync(indexFilePath)) {
-          filePath = indexFilePath;
-        } else {
-          return null;
-        }
-      }
-
-      // Get content and frontmatter
-      const { frontmatter, content } = getMarkdownContent(filePath);
-
-      // Skip if the post is marked as draft
-      if (frontmatter.draft === 'true' || String(frontmatter.draft).toLowerCase() === 'true') {
-        return null;
-      }
-
-      // Create URL
-      const url = `${SITE_URL}/${slug.join('/')}`;
-
-      // Extract date with error handling
-      let pubDate;
-      try {
-        pubDate = frontmatter.date
-          ? new Date(typeof frontmatter.date === 'string' ? frontmatter.date : String(frontmatter.date)).toISOString()
-          : new Date().toISOString();
-      } catch (error) {
-        // Silently use current date without warning
-        pubDate = new Date().toISOString();
-      }
-
-      let modDate;
-      try {
-        modDate = frontmatter.lastmod
-          ? new Date(typeof frontmatter.lastmod === 'string' ? frontmatter.lastmod : String(frontmatter.lastmod)).toISOString()
-          : pubDate;
-      } catch (error) {
-        // Silently use pubDate without warning
-        modDate = pubDate;
-      }
-
-      // Create description/excerpt
-      const excerpt = content
-        .replace(/<[^>]*>/g, '') // Remove HTML tags
-        .substring(0, 280) // Limit to 280 chars
-        .trim() + '...';
-
-      return {
-        title: frontmatter.title || slug[slug.length - 1],
-        url,
-        pubDate,
-        modDate,
-        description: frontmatter.description || excerpt,
-        content,
-        author: Array.isArray(frontmatter.authors) ? frontmatter.authors[0] : 'Dwarves Foundation',
-      };
-    } catch (error) {
-      console.error(`Error processing file for RSS: ${slug.join('/')}`, error);
-      return null;
-    }
-  });
-
-  // Filter out null items
-  const validItems = items.filter(item => item !== null);
-
-  // Generate RSS XML
-  generateAndSaveRSSFeeds(validItems);
-
-  console.log('RSS feeds generated successfully!');
-}
-
-/**
- * Generate and save RSS feeds in multiple formats
- */
-function generateAndSaveRSSFeeds(items: any[]) {
-  // Filter out any items with invalid dates
-  items = items.filter(item => {
-    try {
-      new Date(item.pubDate).toISOString();
-      new Date(item.modDate).toISOString();
-      return true;
-    } catch (error) {
-      // Silently skip without warning
-      return false;
-    }
-  });
-
-  // Sort by date (newest first)
-  items.sort((a, b) => {
-    try {
-      return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
-    } catch (error) {
-      return 0; // Keep original order if dates can't be compared
-    }
-  });
-
-  // Generate RSS XML
-  const rssXml = generateRSSXml(items);
-  const atomXml = generateAtomXml(items);
-
-  // Create output directory if it doesn't exist
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  }
-
-  // Write to common RSS file paths
-  const rssOutputPaths = [
-    path.join(OUTPUT_DIR, 'feed.xml'),
-    path.join(OUTPUT_DIR, 'rss.xml'),
-    path.join(OUTPUT_DIR, 'index.xml')
-  ];
-
-  const atomOutputPaths = [
-    path.join(OUTPUT_DIR, 'atom.xml')
-  ];
-
-  // Create feed directory
-  const rssDir = path.join(OUTPUT_DIR, 'feed');
-  const rssIndexPath = path.join(rssDir, 'index.xml');
-
-  if (!fs.existsSync(rssDir)) {
-    fs.mkdirSync(rssDir, { recursive: true });
-  }
-
-  // Write RSS XML files
-  rssOutputPaths.forEach(filePath => {
-    fs.writeFileSync(filePath, rssXml);
-    console.log(`Generated RSS feed: ${filePath}`);
-  });
-
-  // Also write to /feed/index.xml
-  fs.writeFileSync(rssIndexPath, rssXml);
-  console.log(`Generated RSS feed: ${rssIndexPath}`);
-
-  // Write Atom XML files
-  atomOutputPaths.forEach(filePath => {
-    fs.writeFileSync(filePath, atomXml);
-    console.log(`Generated Atom feed: ${filePath}`);
-  });
-}
-
-/**
- * Generates RSS 2.0 XML format
- */
-function generateRSSXml(items: any[]) {
-  // Current date for lastBuildDate
+function generateRSSXml(items: RSSItem[]): string {
   const lastBuildDate = new Date().toUTCString();
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -307,14 +276,13 @@ function generateRSSXml(items: any[]) {
     <sy:updateFrequency>1</sy:updateFrequency>
 `;
 
-  // Add items
   items.forEach(item => {
     xml += `    <item>
-      <title>${escapeXml(item.title)}</title>
+      <title>${formatXmlTextField(item.title)}</title>
       <link>${item.url}</link>
       <pubDate>${new Date(item.pubDate).toUTCString()}</pubDate>
       <dc:creator><![CDATA[${item.author}]]></dc:creator>
-      <description><![CDATA[${item.description}]]></description>
+      <description><![CDATA[${formatXmlTextField(item.description)}]]></description>
       <content:encoded><![CDATA[${item.content}]]></content:encoded>
       <guid isPermaLink="true">${item.url}</guid>
     </item>
@@ -328,10 +296,9 @@ function generateRSSXml(items: any[]) {
 }
 
 /**
- * Generates Atom 1.0 XML format
+ * Generates Atom 1.0 XML format.
  */
-function generateAtomXml(items: any[]) {
-  // Current date for updated
+function generateAtomXml(items: RSSItem[]): string {
   const updated = new Date().toISOString();
 
   let xml = `<?xml version="1.0" encoding="utf-8"?>
@@ -344,18 +311,17 @@ function generateAtomXml(items: any[]) {
   <subtitle>${escapeXml(SITE_DESCRIPTION)}</subtitle>
 `;
 
-  // Add entries
   items.forEach(item => {
     xml += `  <entry>
-    <title>${escapeXml(item.title)}</title>
-    <link href="${item.url}" rel="alternate" type="text/html" title="${escapeXml(item.title)}" />
+    <title>${formatXmlTextField(item.title)}</title>
+    <link href="${item.url}" rel="alternate" type="text/html" title="${formatXmlTextField(item.title)}" />
     <published>${item.pubDate}</published>
     <updated>${item.modDate}</updated>
     <id>${item.url}</id>
     <author>
       <name>${item.author}</name>
     </author>
-    <summary type="html"><![CDATA[${item.description}]]></summary>
+    <summary type="html"><![CDATA[${formatXmlTextField(item.description)}]]></summary>
     <content type="html"><![CDATA[${item.content}]]></content>
   </entry>
 `;
@@ -366,8 +332,88 @@ function generateAtomXml(items: any[]) {
   return xml;
 }
 
-// Run the RSS generator
-generateRSSFeeds().catch(error => {
-  console.error('Error generating RSS feeds:', error);
+/**
+ * Gets the output filename for a feed based on base name and optional limit.
+ */
+function getFeedOutputFilename(baseName: string, limit?: number): string {
+  return limit ? `${baseName}_${limit}.xml` : `${baseName}.xml`;
+}
+
+/**
+ * Generates and saves RSS and Atom feeds for a given list of items and an optional limit.
+ */
+async function generateAndSaveFeed(items: RSSItem[], limit?: number): Promise<void> {
+  const limitedItems = limit ? items.slice(0, limit) : items;
+
+  const rssXml = generateRSSXml(limitedItems);
+  const atomXml = generateAtomXml(limitedItems);
+
+  // Ensure output directory exists
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    await fsp.mkdir(OUTPUT_DIR, { recursive: true });
+  }
+
+  // Write RSS files
+  for (const baseName of RSS_TARGET_FILES) {
+    const filePath = path.join(
+      OUTPUT_DIR,
+      getFeedOutputFilename(baseName, limit),
+    );
+    await fsp.writeFile(filePath, rssXml);
+  }
+
+
+  // Write Atom files
+  for (const baseName of ATOM_TARGET_FILES) {
+    const filePath = path.join(
+      OUTPUT_DIR,
+      getFeedOutputFilename(baseName, limit),
+    );
+    await fsp.writeFile(filePath, atomXml);
+  }
+
+  console.log(`Generated feeds with limit ${limit ?? 'none'}.`);
+}
+
+/**
+ * Main function to generate all RSS and Atom feeds.
+ */
+async function main() {
+  console.log('Starting RSS feed generation...');
+
+  // Get all markdown slugs
+  const allSlugs = await getAllMarkdownSlugs(CONTENT_DIR);
+
+  // Create RSS items from slugs
+  const items = (await Promise.all(allSlugs.map(slug => createRSSItemFromSlug(slug))))
+    .filter((item): item is RSSItem => item !== null); // Filter out null items and assert type
+
+  // Sort items by date (newest first)
+  const sortedItems = items.sort((a, b) => {
+    try {
+      return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
+    } catch (error) {
+      console.warn(
+        `Error comparing dates for items: ${a.url}, ${b.url}`,
+        error,
+      );
+      return 0; // Keep original order if dates can't be compared
+    }
+  });
+
+  // Generate feeds for all limit variants
+  for (const limit of RSS_LIMIT_VARIANTS) {
+    await generateAndSaveFeed(sortedItems, limit);
+  }
+
+  // Generate the default feed without limit
+  await generateAndSaveFeed(sortedItems, undefined);
+
+  console.log('RSS feed generation completed successfully!');
+}
+
+// Run the main function
+main().catch(error => {
+  console.error('Error during RSS feed generation:', error);
   process.exit(1);
 });
