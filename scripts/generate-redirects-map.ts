@@ -139,6 +139,21 @@ async function generateRedirectsMap() {
         continue;
       }
 
+      // Add redirect for README.md files to parent directory URL
+      if (filePath && /\/README\.md$/i.test(filePath)) {
+        // Slugify the original .md path (relative to vault)
+        const relativeMdPath = filePath.startsWith('/')
+          ? filePath
+          : `/${filePath}`;
+        const slugifiedMdPath = slugifyPathComponents(relativeMdPath);
+        // Format parent directory URL
+        const parentDir = path.dirname(filePath);
+        const parentUrl = formatPathForUrl(parentDir);
+        if (parentUrl && slugifiedMdPath) {
+          redirects[slugifiedMdPath] = parentUrl;
+        }
+      }
+
       // Process short links
       if (shortLinks && Array.isArray(shortLinks)) {
         for (const shortLink of shortLinks) {
