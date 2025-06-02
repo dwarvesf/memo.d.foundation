@@ -1,5 +1,6 @@
 import { getStaticJSONPaths } from '@/lib/content/paths';
 import { Html, Head, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 
 const unifiedRedirectPaths = await (async () => {
   let staticJSONPaths: Record<string, string> = {};
@@ -48,6 +49,11 @@ export default function Document() {
             // Since this is a static JSON file can only be loaded at build time
             __html: `window._app_unified_redirects = ${JSON.stringify(unifiedRedirectPaths)};`,
           }}
+        />
+        <Script
+          src="https://plausible.io/js/script.js"
+          data-domain="memo.d.foundation"
+          defer
         />
       </Head>
       <body className="min-h-screen antialiased">
