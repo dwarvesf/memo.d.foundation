@@ -5,28 +5,21 @@ import Link from 'next/link';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { Avatar, AvatarImage } from '../ui/avatar';
 import Jdenticon from 'react-jdenticon';
-import { MessageSquareIcon } from 'lucide-react';
 
 interface MemoFilterListProps {
   title: string;
   all: (IMemoItem & { authorAvatars: string[] })[];
-  filters?: {
-    [k: string]: (IMemoItem & { authorAvatars: string[] })[];
-  };
+  filters?: string[];
 }
 
 function List({ data }: { data: (IMemoItem & { authorAvatars: string[] })[] }) {
   return (
     <div className="flex flex-col">
-      {data.map((memo, memoIndex) => (
+      {data.map(memo => (
         <div
           className="flex flex-row gap-x-2 py-3 not-last:border-b"
           key={memo.filePath}
         >
-          <div className="text-muted-foreground flex flex-col items-center justify-center">
-            <MessageSquareIcon className="h-5 w-5" />
-            <span className="text-xs">{200 - memoIndex * 19}</span>
-          </div>
           <div className="flex flex-col">
             <Link
               href={formatContentPath(memo.filePath)}
@@ -67,7 +60,7 @@ function List({ data }: { data: (IMemoItem & { authorAvatars: string[] })[] }) {
   );
 }
 
-function MemoFilterList({ title, all, filters = {} }: MemoFilterListProps) {
+function MemoFilterList({ title, all, filters }: MemoFilterListProps) {
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   return (
@@ -86,7 +79,7 @@ function MemoFilterList({ title, all, filters = {} }: MemoFilterListProps) {
             all
           </button>
           <span className="text-muted-foreground/50 mx-0.5">/</span>
-          {Object.keys(filters).map((filter, index) => (
+          {filters?.map((filter, index) => (
             <>
               <button
                 onClick={() => setSelectedFilter(filter)}
@@ -106,7 +99,15 @@ function MemoFilterList({ title, all, filters = {} }: MemoFilterListProps) {
           ))}
         </div>
       </div>
-      <List data={selectedFilter ? filters[selectedFilter] : all} />
+      <List
+        data={
+          selectedFilter
+            ? all
+                .filter(memo => memo.tags?.includes(selectedFilter))
+                .slice(0, 10)
+            : all.slice(0, 10)
+        }
+      />
     </div>
   );
 }

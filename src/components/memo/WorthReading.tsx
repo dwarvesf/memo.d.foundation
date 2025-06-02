@@ -1,6 +1,5 @@
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { BentoCard, BentoGrid } from './bento-grid';
-import { IMemoItem } from '@/types';
 import { BlocksIcon, BookOpenIcon, BrainIcon, SproutIcon } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
@@ -9,14 +8,11 @@ interface BlockProps {
   title: string;
   subtitle: string;
   tag: string;
-  memos: IMemoItem[];
 }
 
 interface WorthReadingProps {
-  block1: BlockProps;
-  block2: BlockProps;
-  block3: BlockProps;
-  block4: BlockProps;
+  memos: { title: string; tags: string[]; filePath: string; date: string }[];
+  blocks: BlockProps[];
 }
 
 const getIconForBlock = (index: number) => {
@@ -36,14 +32,7 @@ const dummyTexts = [
   "I'm not sure why you're reading this",
 ];
 
-const WorthReading = ({
-  block1,
-  block2,
-  block3,
-  block4,
-}: WorthReadingProps) => {
-  const blocks = [block1, block2, block3, block4];
-
+const WorthReading = ({ blocks, memos }: WorthReadingProps) => {
   return (
     <div className="relative flex flex-col">
       <h2>Worth Reading</h2>
@@ -51,6 +40,10 @@ const WorthReading = ({
         {blocks.map((block, index) => {
           const Icon = getIconForBlock(index + 1);
           const isWide = index === 1 || index === 2;
+
+          const data = memos
+            .filter(memo => memo.tags.includes(block.tag))
+            .slice(0, 5);
 
           return (
             <BentoCard
@@ -64,17 +57,16 @@ const WorthReading = ({
               background={
                 <>
                   <ul className="mt-0 flex list-none flex-col gap-y-1 p-0">
-                    {block.memos.map(memo => (
+                    {data.map(memo => (
                       <li
-                        key={memo.filePath}
+                        key={memo.title}
                         className="truncate p-0 whitespace-nowrap"
                       >
                         <Link
                           href={formatContentPath(memo.filePath)}
-                          className="hover:text-primary text-sm !no-underline transition-colors"
+                          className="hover:text-primary text-sm !no-underline transition-colors before:hidden hover:!no-underline"
                         >
-                          {format(memo.date, 'yyyy MMM dd')}:{' '}
-                          {memo.short_title || memo.title}
+                          {format(memo.date, 'yyyy MMM dd')}: {memo.title}
                         </Link>
                       </li>
                     ))}
