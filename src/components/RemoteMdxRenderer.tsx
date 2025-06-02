@@ -46,10 +46,6 @@ const components: MDXComponents = {
       />
     );
   },
-  a: props => {
-    const { href, ...rest } = props;
-    return <Link href={formatContentPath(href)} {...rest} />;
-  },
   wrapper(props) {
     const { children } = props;
     return (
