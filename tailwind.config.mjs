@@ -139,7 +139,6 @@ const config = {
             code: {
               fontFamily: 'var(--font-monospace), monospace',
               fontSize: 'inherit !important',
-              color: '#5c5c5c !important',
               padding: '1px 3px !important',
               background: 'transparent !important',
             },
