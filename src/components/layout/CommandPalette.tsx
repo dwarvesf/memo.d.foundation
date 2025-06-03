@@ -19,6 +19,7 @@ import { slugifyPathComponents } from '@/lib/utils/slugify';
 import SearchIcon from '../icons/SearchIcon';
 import { Editor } from 'draft-js';
 import { useLayoutContext } from '@/contexts/layout';
+import { getClientSideRedirectPath } from '@/lib/utils/path-utils';
 
 const defaultSearchResult: SearchResult = {
   flat: [],
@@ -91,7 +92,8 @@ const CommandPalette: React.FC = () => {
             slugifiedPath = slugifiedPath.slice(0, -3); // Remove .md extension
           }
 
-          router.push('/' + slugifiedPath);
+          router.push(getClientSideRedirectPath('/' + slugifiedPath));
+
           close();
         }
         return;
@@ -135,7 +137,8 @@ const CommandPalette: React.FC = () => {
           const path = selected.path.startsWith('/')
             ? selected.path
             : '/' + selected.path;
-          router.push(path);
+
+          router.push(getClientSideRedirectPath(path));
           close();
         }
       }
