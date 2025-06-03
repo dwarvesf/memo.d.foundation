@@ -154,6 +154,22 @@ async function generateRedirectsMap() {
         }
       }
 
+      // Add redirects for .md files to their non-.md versions
+      if (
+        filePath &&
+        filePath.toLowerCase().endsWith('.md') &&
+        !/\/README\.md$/i.test(filePath)
+      ) {
+        const slugifiedMdPath = slugifyPathComponents(filePath);
+        const slugifiedNonMdPath = slugifiedMdPath.endsWith('.md')
+          ? slugifiedMdPath.slice(0, -3)
+          : slugifiedMdPath;
+
+        if (slugifiedMdPath !== slugifiedNonMdPath) {
+          redirects[slugifiedMdPath] = slugifiedNonMdPath;
+        }
+      }
+
       // Process short links
       if (shortLinks && Array.isArray(shortLinks)) {
         for (const shortLink of shortLinks) {
