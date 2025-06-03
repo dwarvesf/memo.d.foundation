@@ -114,7 +114,19 @@ const CommandPalette: React.FC = () => {
           toast.success('Copied memo content!');
           close();
         } else if (selected.action === 'share') {
-          navigator.clipboard.writeText(window.location.href);
+          const shareLink = (window?._memo_frontmatter?.redirect || [])
+            .map(link => {
+              return (
+                window.location.protocol + '//' + window.location.host + link
+              );
+            })
+            .reduce((a, c) => {
+              if (c.length < a.length) {
+                return c;
+              }
+              return a;
+            }, window.location.href);
+          navigator.clipboard.writeText(shareLink);
           toast.success('Copied memo link!');
           close();
         } else {

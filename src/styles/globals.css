@@ -451,6 +451,7 @@
 @import './markdown.css';
 @import './layout.css';
 @import './components.css';
+@import './command-palette.css';
 
 /* --- Mobile Sidebar & Overlay --- */
 @media (max-width: 1280px) {

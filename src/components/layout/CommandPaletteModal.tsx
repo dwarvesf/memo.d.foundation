@@ -56,54 +56,6 @@ const CommandPaletteModal = (props: Props) => {
   );
   return (
     <>
-      <style>{`
-        .modal-overlay-bg {
-          background: rgba(0,0,0,0.2);
-        }
-        @media (prefers-color-scheme: dark) {
-          .modal-overlay-bg {
-            background: rgba(0,0,0,0.5);
-          }
-        }
-        .cmd-idle-icon svg {
-          width: 20px;
-          height: 20px;
-        }
-        /* Custom hover for search modal results */
-        .command-palette-modal-result:hover,
-        .command-palette-modal-result[aria-selected="true"],
-        .command-palette-modal-result.selected {
-          background: rgba(82, 82, 82, 0.1) !important;
-          mix-blend-mode: multiply;
-        }
-        /* Section borders - darker in light theme */
-        .search-section-border {
-          border-bottom-color: #dbdbdb;
-        }
-        .footer-section-border {
-          border-top-color: #dbdbdb;
-        }
-        .result-item-border {
-          border-bottom-color: #dbdbdb;
-        }
-        .dark .search-section-border,
-        .dark .footer-section-border,
-        .dark .result-item-border,
-        [data-theme='dark'] .search-section-border,
-        [data-theme='dark'] .footer-section-border,
-        [data-theme='dark'] .result-item-border {
-          border-bottom-color: var(--border);
-          border-top-color: var(--border);
-        }
-        /* Darker background for Esc key in light theme */
-        .esc-key {
-          background: rgba(0, 0, 0, 0.08) !important;
-        }
-        .dark .esc-key,
-        [data-theme='dark'] .esc-key {
-          background: var(--border) !important;
-        }
-      `}</style>
       {isOpen &&
         typeof document !== 'undefined' &&
         createPortal(
