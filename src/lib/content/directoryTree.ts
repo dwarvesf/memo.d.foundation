@@ -38,7 +38,8 @@ export function buildDirectorTree(allMemos: IMemoItem[]) {
     if (memo.pinned && memo.slugArray) {
       root['/pinned'].children[`/${memo.slugArray.join('/')}`] = {
         label:
-          memo.title || slugToTitle(memo.slugArray[memo.slugArray.length - 1]),
+          uppercaseSpecialWords(memo.short_title || memo.title) ||
+          slugToTitle(memo.slugArray[memo.slugArray.length - 1]),
         children: {},
       };
     }

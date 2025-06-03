@@ -163,7 +163,12 @@ export function getServerSideRedirectPath(
  */
 function transformMenuDataToDirectoryTree(
   menuData: Record<string, GroupedPath>,
-  pinnedNotes: Array<{ title: string; url: string; date: string }>,
+  pinnedNotes: Array<{
+    title: string;
+    short_title?: string;
+    url: string;
+    date: string;
+  }>,
   tags: {
     name: string;
     count: number;
@@ -186,7 +191,7 @@ function transformMenuDataToDirectoryTree(
       pinnedNotes.forEach(note => {
         // Use note.url as the key and url, note.title as label
         pinnedNotesNode.children[note.url] = {
-          label: note.title,
+          label: note.short_title || note.title,
           children: {},
           url: getServerSideRedirectPath(note.url, staticJSONPaths),
         };
@@ -304,7 +309,12 @@ const appendTagsCount = memoize((tags: string[], memos: IMemoItem[]) => {
 
 export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
   let menuData: Record<string, GroupedPath> = {};
-  let pinnedNotes: Array<{ title: string; url: string; date: string }> = [];
+  let pinnedNotes: Array<{
+    title: string;
+    short_title?: string;
+    url: string;
+    date: string;
+  }> = [];
   let tags: string[] = [];
   // <browser path, target markdown path>
   let staticJSONPaths: Record<string, string> = {};
