@@ -265,6 +265,7 @@ async function generateMenuIndex(): Promise<void> {
 interface PinnedNoteDbRow {
   file_path: string | null;
   title: string | null;
+  short_title: string | null;
   date: string | null; // Assuming date is stored/read as string
   pinned: boolean | null;
 }
@@ -295,7 +296,7 @@ async function generatePinnedNotes(): Promise<void> {
 
     // Use SQL for filtering, ordering, and limiting
     const query = `
-      SELECT file_path, title, date
+      SELECT file_path, title, short_title, date
       FROM read_parquet('${parquetPathForDb}')
       WHERE
         pinned = true AND
@@ -310,6 +311,7 @@ async function generatePinnedNotes(): Promise<void> {
     const pinnedNotes = results.map(row => {
       const filePath = row.file_path || '';
       const title = row.title || ''; // Already filtered non-empty in SQL
+      const short_title = row.short_title || ''; // Already filtered non-empty in SQL
       const date = String(row.date || ''); // Explicitly convert date to string
 
       // Slugify the path for URL generation
@@ -330,7 +332,7 @@ async function generatePinnedNotes(): Promise<void> {
       // 3. Prepend slash for final URL
       const url = '/' + slugifiedPath;
 
-      return { title, url, date };
+      return { title, url, short_title, date };
     });
 
     // Create the output directory if it doesn't exist
