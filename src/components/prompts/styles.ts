@@ -22,7 +22,7 @@ export const promptCardStyles = {
   ),
 
   copyButton: cn(
-    'absolute top-2 right-2 z-10',
+    'absolute top-2 right-2 z-1',
     'rounded px-2 py-1 text-xs',
     'bg-neutral-200/80 text-[var(--primary)] dark:bg-neutral-700/80 dark:text-[var(--primary)]',
     'opacity-0 transition-opacity group-hover:opacity-100',

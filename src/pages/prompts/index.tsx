@@ -206,7 +206,7 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
       fullWidth
       mainClassName="max-w-full w-full xl:p-2"
     >
-      <div className="mx-auto w-full xl:-mt-8">
+      <div className="mx-auto w-full xl:-mt-6">
         <h1 className="mb-4 inline-flex transform text-3xl font-bold text-neutral-700 dark:text-neutral-100">
           Prompt gallery
         </h1>
