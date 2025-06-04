@@ -5,7 +5,7 @@ import path from 'path';
 // Import utility functions
 import { getAllMarkdownContents, sortMemos } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
-import { queryDuckDB } from '@/lib/db/utils';
+import { getContributorStats } from '@/lib/contributor-stats';
 
 import { RootLayoutPageProps } from '@/types';
 
@@ -44,48 +44,6 @@ async function fetchContributorProfile(contributorSlug: string) {
   } catch (error) {
     console.warn((error as Error).message);
     return contributorSlug;
-  }
-}
-
-/**
- * Fetches and processes contributor stats from the parquet file
- */
-async function fetchContributorStats() {
-  (await import('dotenv')).config();
-  try {
-    // Query the parquet file using DuckDB
-    const sql = `
-      SELECT 
-        username,
-        analysis_result
-      FROM contributors;`;
-
-    const results = await queryDuckDB(sql, {
-      filePath: `gs://${process.env.LANDING_ZONE_GCS_BUCKET}/profiles/contributors.parquet`,
-      tableName: 'contributors',
-      authSql: `
-      INSTALL s3;
-      LOAD s3;
-      CREATE OR REPLACE SECRET secret (
-          TYPE gcs,
-          KEY_ID '${process.env.LANDING_ZONE_GCS_KEY_ID}',
-          SECRET '${process.env.LANDING_ZONE_GCS_SECRET}'
-      );`,
-    });
-
-    // Convert array to object keyed by username
-    const contributorStats = results.reduce(
-      (acc: Record<string, any>, item: any) => {
-        acc[item.username] = item;
-        return acc;
-      },
-      {},
-    );
-
-    return contributorStats;
-  } catch (error) {
-    console.error('Error fetching contributor stats:', error);
-    return {};
   }
 }
 
@@ -137,8 +95,8 @@ export const getStaticProps: GetStaticProps = async () => {
       Array.from(contributors).map(fetchContributorProfile),
     );
 
-    // Fetch contributor stats from parquet file
-    const contributorStats = await fetchContributorStats();
+    // Fetch contributor stats using the new utility function
+    const contributorStats = await getContributorStats();
 
     // --- Read Processed MDX Content ---
     const mdxPath = path.join(
