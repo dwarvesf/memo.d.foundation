@@ -8,18 +8,28 @@ const duckdbInstances: Map<string, DuckDBInstance> = new Map();
  * Execute a SQL query against a DuckDB database using the specified parquet file
  *
  * @param sql The SQL query to execute
- * @param filePath The path to the parquet file
+ * @param filePath The path to the parquet file (can be local path, http(s):// or s3:// URL)
+ * @param authSql The SQL query to execute to authenticate the connection to the remote file system
  * @returns The query result as an array of objects
  */
 export async function queryDuckDB(
   sql: string,
-  options: { filePath?: string; tableName?: string } = {},
+  options: { filePath?: string; tableName?: string; authSql?: string } = {},
 ) {
   const filePath = options.filePath || 'db/vault.parquet';
   const tableName = options.tableName || 'vault';
   try {
-    // Path to the parquet file
-    const parquetPath = path.join(process.cwd(), filePath);
+    // Determine if the path is remote (http(s):// or s3://) or local
+    const isRemote =
+      filePath.startsWith('http://') ||
+      filePath.startsWith('https://') ||
+      filePath.startsWith('s3://') ||
+      filePath.startsWith('gs://');
+
+    // Get the actual path - for local files, make it absolute
+    const parquetPath = isRemote
+      ? filePath
+      : path.join(process.cwd(), filePath);
 
     // Create or reuse a DuckDB instance for the given file path
     if (!duckdbInstances.has(parquetPath)) {
@@ -35,6 +45,19 @@ export async function queryDuckDB(
 
     // Create connection
     const connection = await duckdbInstance.connect();
+
+    if (isRemote) {
+      await connection.run(
+        `
+        INSTALL httpfs;
+        LOAD httpfs;
+      `,
+      );
+
+      if (options.authSql) {
+        await connection.run(options.authSql);
+      }
+    }
 
     // Register the parquet file as a table
     await connection.run(
