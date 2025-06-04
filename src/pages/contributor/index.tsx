@@ -5,6 +5,7 @@ import path from 'path';
 // Import utility functions
 import { getAllMarkdownContents, sortMemos } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
+import { queryDuckDB } from '@/lib/db/utils';
 
 import { RootLayoutPageProps } from '@/types';
 
@@ -21,7 +22,7 @@ import { getContentPath } from '@/lib/content/paths';
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
   mdxSource?: SerializeResult; // Serialized MDX source
-  contributorAspects: Record<string, Record<string, number>>;
+  contributorStats: Record<string, any>;
 }
 
 /**
@@ -46,6 +47,40 @@ async function fetchContributorProfile(contributorSlug: string) {
   }
 }
 
+/**
+ * Fetches and processes contributor stats from the parquet file
+ */
+async function fetchContributorStats() {
+  try {
+    // Query the parquet file using DuckDB
+    const sql = `
+      SELECT 
+        username,
+        analysis_result
+      FROM contributors
+    `;
+    const results = await queryDuckDB(sql, {
+      filePath:
+        'https://storage.cloud.google.com/df-landing-zone/profiles/contributors.parquet',
+      tableName: 'contributors',
+    });
+
+    // Convert array to object keyed by username
+    const contributorStats = results.reduce(
+      (acc: Record<string, any>, item: any) => {
+        acc[item.username] = item;
+        return acc;
+      },
+      {},
+    );
+
+    return contributorStats;
+  } catch (error) {
+    console.error('Error fetching contributor stats:', error);
+    return {};
+  }
+}
+
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const allMemos = await getAllMarkdownContents();
@@ -57,18 +92,16 @@ export const getStaticProps: GetStaticProps = async () => {
       string,
       { date: string; title: string; url: string }
     > = {};
-    const contributorAspects: Record<string, Record<string, number>> = {};
     let topCount = 0;
 
     sortMemos(allMemos).forEach(memo => {
-      const { authors, tags } = memo;
+      const { authors } = memo;
       if (authors) {
         authors.forEach(author => {
           // Initialize contributor data if not exists
           if (!contributors.has(author)) {
             contributors.add(author);
             contributionCount[author] = 0;
-            contributorAspects[author] = {};
             contributorLatestWork[author] = {
               date: memo.date,
               title: memo.title,
@@ -88,22 +121,6 @@ export const getStaticProps: GetStaticProps = async () => {
               url: getContentPath(memo.filePath),
             };
           }
-
-          // Update tag counts for contributor
-          if (tags && tags.length > 0) {
-            const tagCounts = contributorAspects[author];
-            tags.forEach(tag => {
-              if (tag) {
-                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-              }
-            });
-
-            // Keep only top 5 tags by count
-            const sortedTags = Object.entries(tagCounts)
-              .sort(([, a], [, b]) => b - a)
-              .slice(0, 5);
-            contributorAspects[author] = Object.fromEntries(sortedTags);
-          }
         });
       }
     });
@@ -111,6 +128,9 @@ export const getStaticProps: GetStaticProps = async () => {
     const enrichedContributors = await Promise.all(
       Array.from(contributors).map(fetchContributorProfile),
     );
+
+    // Fetch contributor stats from parquet file
+    const contributorStats = await fetchContributorStats();
 
     // --- Read Processed MDX Content ---
     const mdxPath = path.join(
@@ -126,7 +146,7 @@ export const getStaticProps: GetStaticProps = async () => {
         contributionCount,
         contributorLatestWork,
         topCount,
-        contributorAspects,
+        contributorStats,
       },
     });
 
@@ -136,7 +156,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     const newSource = await serialize({
       source:
-        '<ContributorList data={contributors} contributorLatestWork={contributorLatestWork} contributionCount={contributionCount} topCount={topCount} contributorAspects={contributorAspects} />',
+        '<ContributorList data={contributors} contributorLatestWork={contributorLatestWork} contributionCount={contributionCount} topCount={topCount} contributorStats={contributorStats} />',
     });
 
     if (!newSource || 'error' in newSource) {
@@ -150,7 +170,7 @@ export const getStaticProps: GetStaticProps = async () => {
         ...layoutProps,
         mdxSource,
         frontmatter: mdxSource.frontmatter,
-        contributorAspects,
+        contributorStats,
       },
     };
   } catch (error) {

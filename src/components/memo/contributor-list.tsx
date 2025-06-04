@@ -16,8 +16,19 @@ import {
 import { Avatar, AvatarImage } from '../ui/avatar';
 import { useMemo } from 'react';
 import Jdenticon from 'react-jdenticon';
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
-import { ChartConfig, ChartContainer } from '../ui/chart';
+import {
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+} from 'recharts';
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '../ui/chart';
 import BookOpenIcon from '../icons/BookOpenIcon';
 import { SigmaIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -25,6 +36,7 @@ import Link from 'next/link';
 const chartConfig = {
   point: {
     label: 'Points',
+    color: 'var(--primary)',
   },
 } satisfies ChartConfig;
 
@@ -67,15 +79,16 @@ function Contributor({
   count,
   topCount,
   latestWork,
-  aspects,
+  contributorStats,
 }: {
   topCount: number;
   count: number;
   data: MochiUserProfile | string;
   latestWork: { date: string; url: string; title: string };
-  aspects: Record<string, number>;
+  contributorStats: Record<string, any>;
 }) {
   const isUnknown = typeof data === 'string';
+  const name = getContributorName(data);
 
   const avatar = useMemo(() => {
     if (isUnknown) {
@@ -85,13 +98,55 @@ function Contributor({
     return <AvatarImage className="no-zoom !m-0" src={data.avatar} />;
   }, [data, isUnknown]);
 
-  // Convert aspects data to radar chart format
+  // Convert stats data to radar chart format
   const aspectData = useMemo(() => {
-    return Object.entries(aspects).map(([aspect, point]) => ({
-      aspect,
-      point,
-    }));
-  }, [aspects]);
+    const stats = contributorStats[name]?.analysis_result;
+    const empty = [
+      { aspect: 'Technician', point: 0, fullMark: 10 },
+      { aspect: 'Manager', point: 0, fullMark: 10 },
+      { aspect: 'Operator', point: 0, fullMark: 10 },
+      { aspect: 'Consultant', point: 0, fullMark: 10 },
+      { aspect: 'Builder', point: 0, fullMark: 10 },
+    ];
+    if (!stats) return empty;
+
+    try {
+      const parsed = JSON.parse(stats);
+      const attributes = parsed.attributes;
+      if (!attributes) return empty;
+
+      return [
+        {
+          aspect: 'Technician',
+          point: attributes.technician,
+          fullMark: 10,
+        },
+        {
+          aspect: 'Manager',
+          point: attributes.manager,
+          fullMark: 10,
+        },
+        {
+          aspect: 'Operator',
+          point: attributes.operator,
+          fullMark: 10,
+        },
+        {
+          aspect: 'Consultant',
+          point: attributes.consultant,
+          fullMark: 10,
+        },
+        {
+          aspect: 'Builder',
+          point: attributes.builder,
+          fullMark: 10,
+        },
+      ];
+    } catch (e) {
+      console.error('Error parsing contributor stats:', e);
+      return [];
+    }
+  }, [contributorStats, name]);
 
   // Find the aspect with the highest point value
   const topAspect = useMemo(() => {
@@ -116,19 +171,17 @@ function Contributor({
             <Avatar className="dark:bg-secondary flex h-5 w-5 items-center justify-center border-2 bg-[#fff]">
               {avatar}
             </Avatar>
-            <span className="shrink-0 text-sm">{getContributorName(data)}</span>
+            <span className="shrink-0 text-sm">{name}</span>
           </div>
         </HoverCardTrigger>
         <HoverCardContent side="right" asChild>
-          <div className="!bg-background flex w-[400px] flex-col items-center !p-0">
+          <div className="!bg-background flex w-[300px] flex-col items-center !p-0">
             <div className="border-border mb-5 flex w-full items-start gap-x-2 border-b px-3 py-2">
               <Avatar className="dark:bg-secondary mt-1 flex h-9 w-9 items-center justify-center border-2 bg-[#fff]">
                 {avatar}
               </Avatar>
               <div className="flex min-w-0 flex-col items-start">
-                <span className="text-lg font-bold">
-                  {getContributorName(data)}
-                </span>
+                <span className="text-lg font-bold">{name}</span>
                 <span className="text-muted-foreground flex w-full items-center gap-x-1 text-sm">
                   <span className="shrink-0">{topAspect.aspect}</span>
                 </span>
@@ -147,12 +200,22 @@ function Contributor({
             </div>
             <ChartContainer config={chartConfig} className="w-full">
               <RadarChart data={aspectData}>
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <PolarRadiusAxis
+                  angle={90}
+                  hide
+                  tick={false}
+                  domain={[0, 10]}
+                />
                 <PolarAngleAxis dataKey="aspect" />
                 <PolarGrid />
                 <Radar
                   dataKey="point"
                   fillOpacity={0.6}
-                  className="fill-primary"
+                  fill="var(--primary)"
                   isAnimationActive={false}
                 />
               </RadarChart>
@@ -169,7 +232,7 @@ function ContributorList({
   contributionCount,
   contributorLatestWork,
   topCount,
-  contributorAspects,
+  contributorStats,
 }: {
   data: (MochiUserProfile | string)[];
   contributionCount: Record<string, number>;
@@ -178,7 +241,7 @@ function ContributorList({
     { date: string; title: string; url: string }
   >;
   topCount: number;
-  contributorAspects: Record<string, Record<string, number>>;
+  contributorStats: Record<string, any>;
 }) {
   const sortByContributionCount = data.sort((a, b) => {
     const nameA = typeof a === 'string' ? a : getContributorName(a);
@@ -221,7 +284,6 @@ function ContributorList({
               <div className="bg-border absolute left-4/5 h-full w-px" />
               {sortByContributionCount.map(d => {
                 const name = getContributorName(d);
-                const aspects = contributorAspects[name] || {};
                 return (
                   <Contributor
                     key={name}
@@ -229,7 +291,7 @@ function ContributorList({
                     topCount={topCount}
                     count={contributionCount[name]}
                     latestWork={contributorLatestWork[name]}
-                    aspects={aspects}
+                    contributorStats={contributorStats}
                   />
                 );
               })}
