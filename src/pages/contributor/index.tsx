@@ -57,8 +57,7 @@ async function fetchContributorStats() {
       SELECT 
         username,
         analysis_result
-      FROM contributors;
-    `;
+      FROM contributors;`;
 
     const results = await queryDuckDB(sql, {
       filePath: `gs://${process.env.LANDING_ZONE_GCS_BUCKET}/profiles/contributors.parquet`,
@@ -70,8 +69,7 @@ async function fetchContributorStats() {
           TYPE gcs,
           KEY_ID '${process.env.LANDING_ZONE_GCS_KEY_ID}',
           SECRET '${process.env.LANDING_ZONE_GCS_SECRET}'
-      );
-      `,
+      );`,
     });
 
     // Convert array to object keyed by username
