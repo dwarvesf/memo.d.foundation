@@ -51,6 +51,7 @@ async function fetchContributorProfile(contributorSlug: string) {
  * Fetches and processes contributor stats from the parquet file
  */
 async function fetchContributorStats() {
+  (await import('dotenv')).config();
   try {
     // Query the parquet file using DuckDB
     const sql = `
