@@ -54,14 +54,22 @@ async function fetchContributorStats() {
   try {
     // Query the parquet file using DuckDB
     const sql = `
+      INSTALL s3;
+      Load s3;
+      CREATE OR REPLACE SECRET secret (
+          TYPE gcs,
+          KEY_ID '${process.env.LANDING_ZONE_GCS_KEY_ID}',
+          SECRET '${process.env.LANDING_ZONE_GCS_SECRET}'
+      );
+
       SELECT 
         username,
         analysis_result
       FROM contributors
     `;
+
     const results = await queryDuckDB(sql, {
-      filePath:
-        'https://storage.cloud.google.com/df-landing-zone/profiles/contributors.parquet',
+      filePath: `gs://${process.env.LANDING_ZONE_GCS_BUCKET}/profiles/contributors.parquet`,
       tableName: 'contributors',
     });
 
