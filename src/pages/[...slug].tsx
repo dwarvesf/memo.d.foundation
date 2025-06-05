@@ -402,7 +402,50 @@ export default function ContentPage({
           );
           if (elements && elements.length > 0) {
             const elementsArray = Array.from(elements);
-            mermaid.default.run({ nodes: elementsArray });
+            mermaid.default.run({
+              nodes: elementsArray,
+              postRenderCallback: (svgId: string) => {
+                const svgElement = document.getElementById(
+                  svgId,
+                ) as SVGElement | null;
+                if (svgElement) {
+                  const container =
+                    svgElement.parentElement as HTMLElement | null;
+                  if (container) {
+                    // Style the container (the <code> block)
+                    container.style.display = 'block'; // Ensure it behaves as a block
+                    container.style.maxHeight = '75vh'; // Max height is viewport height
+                    container.style.overflow = 'hidden'; // Crucial for containing the SVG
+                    container.style.position = 'relative'; // For positioning controls and enabling grab cursor
+                    container.style.cursor = 'grab'; // Initial cursor for panning
+
+                    // Style the SVG element
+                    svgElement.style.width = '100%';
+                    svgElement.style.height = '100%';
+                    svgElement.style.maxWidth = '100%'; // Ensure it doesn't overflow container width
+                    svgElement.style.maxHeight = '100%';
+                    svgElement.style.display = 'block';
+                    svgElement.style.transformOrigin = 'top center'; // Zoom and pan relative to center
+
+                    // Initialize or retrieve current transform state
+                    const svgRect = svgElement.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+
+                    // Calculate scale to fit diagram within container while maintaining aspect ratio
+                    const scaleX = containerRect.width / svgRect.width;
+                    const scaleY = containerRect.height / svgRect.height;
+                    const initialOptimalScale = Math.min(scaleX, scaleY);
+
+                    // Initialize scale, defaulting to the optimal scale if not already set
+                    const scale = parseFloat(
+                      svgElement.dataset.scale || String(initialOptimalScale),
+                    );
+
+                    svgElement.style.transform = `scale(${scale})`;
+                  }
+                }
+              },
+            });
           }
         } catch (error) {
           console.error('Failed to initialize or run Mermaid:', error);
