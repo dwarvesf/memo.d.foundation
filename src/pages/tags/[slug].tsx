@@ -61,17 +61,22 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       return { notFound: true };
     }
 
-    // Find the original case of the tag
+    const allOriginalTags = new Set<string>();
+    allMemos.forEach(memo => {
+      if (memo.tags?.length) {
+        memo.tags.forEach(tag => {
+          if (tag) {
+            allOriginalTags.add(tag);
+          }
+        });
+      }
+    });
+
+    // Find the original tag that matches the slug
     const originalTag =
-      allMemos
-        .find(memo =>
-          memo.tags?.some(
-            tag => tag?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug,
-          ),
-        )
-        ?.tags?.find(
-          tag => tag?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug,
-        ) || slug;
+      [...allOriginalTags].find(
+        tag => tag.toLowerCase().replace(/\s+/g, '-') === normalizedSlug,
+      ) || slug;
 
     const memos = filterMemo({
       data: allMemos,

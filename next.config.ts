@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   reactStrictMode: true,
+  staticPageGenerationTimeout: 120,
   experimental: {
     largePageDataBytes: 1024 * 1024,
   },
