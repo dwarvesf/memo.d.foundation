@@ -1,12 +1,12 @@
 {
   "packages": {
-    "awscli": "1.32.21",
-    "git": "2.48.1",
+    "awscli": "1.37.21",
+    "git": "2.49.0",
     "elixir": "1.18.1",
-    "elixir-ls": "0.21.3",
-    "nodejs": "23.9.0",
-    "duckdb": "1.2.1",
-    "pnpm": "10.10.0"
+    "elixir-ls": "0.25.0",
+    "nodejs": "23.11.0",
+    "duckdb": "1.2.2",
+    "pnpm": "10.11.0"
   },
   "shell": {
     "init_hook": [
