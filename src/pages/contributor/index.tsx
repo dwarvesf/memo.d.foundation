@@ -17,7 +17,7 @@ import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { getMdxSource } from '@/lib/mdx';
 import ContributorLayout from '@/components/layout/ContributorLayout';
 import { isAfter } from 'date-fns';
-import { getContentPath } from '@/lib/content/paths';
+import { slugifyPathComponents } from '@/lib/utils/slugify';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
@@ -47,6 +47,28 @@ async function fetchContributorProfile(contributorSlug: string) {
   }
 }
 
+/**
+ * Formats a file path from the vault into a URL-friendly path.
+ * Removes '.md' extension, slugifies path components using the project's logic,
+ * and ensures a leading slash.
+ * Example: 'Folder Name/File Name.md' -> '/folder-name/file-name'
+ */
+function formatPathForUrl(filePath: string | null | undefined): string | null {
+  if (!filePath) {
+    return null;
+  }
+  // Remove .md extension if present
+  const pathWithoutExt = filePath.endsWith('.md')
+    ? filePath.slice(0, -3)
+    : filePath;
+
+  // Slugify using the project's function
+  const slugifiedPath = slugifyPathComponents(pathWithoutExt);
+
+  // Ensure leading slash
+  return slugifiedPath.startsWith('/') ? slugifiedPath : `/${slugifiedPath}`;
+}
+
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const allMemos = await getAllMarkdownContents();
@@ -71,7 +93,7 @@ export const getStaticProps: GetStaticProps = async () => {
             contributorLatestWork[author] = {
               date: memo.date,
               title: memo.title,
-              url: getContentPath(memo.filePath),
+              url: formatPathForUrl(memo.filePath) ?? '',
             };
           }
 
@@ -84,7 +106,7 @@ export const getStaticProps: GetStaticProps = async () => {
             contributorLatestWork[author] = {
               date: memo.date,
               title: memo.title,
-              url: getContentPath(memo.filePath),
+              url: formatPathForUrl(memo.filePath) ?? '',
             };
           }
         });
