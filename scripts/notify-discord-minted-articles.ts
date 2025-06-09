@@ -4,12 +4,10 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { title } from 'process';
 
-const mcpDiscord = new Client(
-  {
-    name: "Discord MCP Client",
-    version: "1.0.0"
-  }
-);
+const mcpDiscord = new Client({
+  name: 'Discord MCP Client',
+  version: '1.0.0',
+});
 
 /**
  * Extracts frontmatter data from a markdown file
@@ -44,31 +42,38 @@ function sleep(ms: number): Promise<void> {
  * @param {number} initialDelay - Initial delay in milliseconds
  * @returns {Promise<void>}
  */
-async function connectWithRetry(maxRetries = 3, initialDelay = 1000): Promise<void> {
+async function connectWithRetry(
+  maxRetries = 3,
+  initialDelay = 1000,
+): Promise<void> {
   let retries = 0;
   let delay = initialDelay;
 
   while (retries <= maxRetries) {
     try {
-      console.log(`Attempt ${retries + 1}/${maxRetries + 1} to connect to MCP Discord...`);
+      console.log(
+        `Attempt ${retries + 1}/${maxRetries + 1} to connect to MCP Discord...`,
+      );
 
-      await mcpDiscord.connect(new StdioClientTransport({
-        command: "npx",
-        args: [
-          "@lmquang/mcp-discord-webhook@latest"
-        ],
-        env: {
-          "PATH": process.env.PATH || "/usr/local/bin:/usr/bin:/bin",
-          "OPENAI_API_KEY": process.env.OPENAI_API_KEY || "",
-        },
-      }));
+      await mcpDiscord.connect(
+        new StdioClientTransport({
+          command: 'npx',
+          args: ['@lmquang/mcp-discord-webhook@latest'],
+          env: {
+            PATH: process.env.PATH || '/usr/local/bin:/usr/bin:/bin',
+            OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
+          },
+        }),
+      );
 
-      console.log("Successfully connected to MCP Discord");
+      console.log('Successfully connected to MCP Discord');
       return;
     } catch (error) {
       retries++;
       if (retries > maxRetries) {
-        console.error("Maximum retries reached. Failed to connect to MCP Discord.");
+        console.error(
+          'Maximum retries reached. Failed to connect to MCP Discord.',
+        );
         throw error;
       }
 
@@ -86,32 +91,41 @@ async function connectWithRetry(maxRetries = 3, initialDelay = 1000): Promise<vo
  * @param {number} initialDelay - Initial delay in milliseconds
  * @returns {Promise<void>}
  */
-async function callToolWithRetry(message: string, title: string, maxRetries = 3, initialDelay = 1000): Promise<void> {
+async function callToolWithRetry(
+  message: string,
+  title: string,
+  maxRetries = 3,
+  initialDelay = 1000,
+): Promise<void> {
   let retries = 0;
   let delay = initialDelay;
 
   while (retries <= maxRetries) {
     try {
-      console.log(`Attempt ${retries + 1}/${maxRetries + 1} to call Discord webhook...`);
+      console.log(
+        `Attempt ${retries + 1}/${maxRetries + 1} to call Discord webhook...`,
+      );
 
       await mcpDiscord.callTool({
-        name: "discord-send-embed",
+        name: 'discord-send-embed',
         arguments: {
-          username: "Memo NFT",
+          username: 'Memo NFT',
           webhookUrl: process.env.DISCORD_WEBHOOK_URL,
           content: message,
           title: title,
           autoFormat: true,
           embeds: [],
-        }
+        },
       });
 
-      console.log("Successfully sent Discord message");
+      console.log('Successfully sent Discord message');
       return;
     } catch (error) {
       retries++;
       if (retries > maxRetries) {
-        console.error("Maximum retries reached. Failed to send Discord message.");
+        console.error(
+          'Maximum retries reached. Failed to send Discord message.',
+        );
         throw error;
       }
 
@@ -128,20 +142,23 @@ async function callToolWithRetry(message: string, title: string, maxRetries = 3,
 async function main() {
   try {
     // Get command line arguments (file paths)
-    const filePaths = process.argv[2]
-      .trim()
-      .split(',')
-      .filter(Boolean)
-      .map(path => `vault/${path}`);
+    // Skip the first two arguments (node and script path)
+    const args = process.argv.slice(2);
 
-    if (filePaths.length === 0) {
+    if (args.length === 0) {
       console.log('No files to process');
       return;
     }
 
-    console.log("Argument received:", process.argv[2]);
+    // Map each argument to a file path prefixed with 'vault/'
+    const filePaths = args.map(path =>
+      path.startsWith('vault/') ? path : `vault/${path}`,
+    );
 
-    let message = 'Please compose a message to notify the community that the following notes have been minted:\n';
+    console.log(`Arguments received: ${args.length} file paths`);
+
+    let message =
+      'Please compose a message to notify the community that the following notes have been minted:\n';
     let mintedFiles = '';
     for (const filePath of filePaths) {
       try {
@@ -161,17 +178,17 @@ async function main() {
       }
     }
     if (mintedFiles.length === 0) {
-      console.log("No minted files to notify");
+      console.log('No minted files to notify');
       return;
     }
     message += mintedFiles;
-    console.log("Message to send:", message);
+    console.log('Message to send:', message);
 
     // Connect to MCP Discord with retry mechanism
     await connectWithRetry();
 
     // Call Discord webhook with retry mechanism
-    await callToolWithRetry(message, "📢 New notes minted in the Memo");
+    await callToolWithRetry(message, '📢 New notes minted in the Memo');
   } catch (error) {
     console.error('Error:', error);
     process.exit(1);

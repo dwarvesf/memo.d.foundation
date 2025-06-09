@@ -23,6 +23,7 @@
     "fetch-prompts": "tsx scripts/fetch-prompts.ts",
     "fetch-contributor-stats": "tsx scripts/fetch-contributor-stats.ts",
     "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",
+    "mint-articles": "tsx scripts/mint-article.ts",
     "copy-404": "cp out/404/index.html out/404.html"
   },
   "type": "module",
@@ -128,6 +129,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
     "eslint-config-prettier": "^10.1.1",
+    "glob": "^11.0.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
     "notion-to-md": "4.0.0-alpha.4",

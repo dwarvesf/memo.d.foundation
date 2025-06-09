@@ -1,4 +1,4 @@
-name: Add post to mint contract
+name: Mint Articles to Arweave & Contract
 
 on:
   workflow_dispatch: # Keep manual trigger
@@ -39,20 +39,21 @@ jobs:
             secret_id="${{ secrets.VAULT_SECRET_ID }}")
           echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
 
-      - name: Get changed files
-        id: changed-files
+      - name: Get files to process
+        id: get-files
         run: |
           # Install DuckDB
           wget -q https://github.com/duckdb/duckdb/releases/download/v1.2.1/duckdb_cli-linux-amd64.zip
           unzip -q duckdb_cli-linux-amd64.zip
           chmod +x duckdb
 
-          # Query for files that have perma_storage_id = 'true'
-          CHANGED_FILES=$(./duckdb -csv -noheader -c "SELECT COALESCE(STRING_AGG(file_path, ','), '') FROM 'db/vault.parquet' WHERE should_mint = true AND minted_at IS NULL AND token_id IS NULL;" | tr -d '"')
+          # Query for files that need to be processed
+          # We now get all files that should be minted, regardless of their current state
+          FILES_TO_PROCESS=$(./duckdb -csv -noheader -c "SELECT COALESCE(STRING_AGG(file_path, ' '), '') FROM 'db/vault.parquet' WHERE should_mint = true AND token_id IS NULL;" | tr -d '"')
 
           # Output the results
-          echo "Found markdown files for permanent storage: $CHANGED_FILES"
-          echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "Found files to process: $FILES_TO_PROCESS"
+          echo "files=$FILES_TO_PROCESS" >> $GITHUB_OUTPUT
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -60,22 +61,29 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps gray-matter crypto js-yaml@4.1.0 tsx
+        run: npm install --legacy-peer-deps arweave ethers gray-matter crypto glob dotenv tsx
 
-      - name: Run script with files
+      - name: Run mint-article script
         id: mint
-        if: steps.changed-files.outputs.files != ''
+        if: steps.get-files.outputs.files != ''
         env:
           CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
           RPC_URL: ${{ vars.RPC_URL }}
+          MOCHI_PROFILE_API: ${{ secrets.MOCHI_PROFILE_API }}
         run: |
+          # Get decrypted wallet private key from Vault
           export WALLET_PRIVATE_KEY=$(vault write -field=plaintext transit/decrypt/memo-d-foundation-WALLET_PRIVATE_KEY ciphertext="${{ secrets.ENCRYPTED_WALLET_PRIVATE_KEY }}" | base64 -d)
-          npx tsx scripts/add-mint-post.ts '${{ steps.changed-files.outputs.files }}'
+
+          # Get Arweave wallet JSON from secrets
+          export ARWEAVE_WALLET_JSON='${{ secrets.ARWEAVE_WALLET_JSON }}'
+
+          # Run the script with each file path as a separate argument
+          npx tsx scripts/mint-article.ts ${{ steps.get-files.outputs.files }}
 
       - name: Notify Discord
         if: steps.mint.outputs.mint-success == true || steps.mint.outputs.mint-success == 'true'
         run: |
-          npx tsx scripts/notify-discord-minted-articles.ts '${{ steps.changed-files.outputs.files }}'
+          npx tsx scripts/notify-discord-minted-articles.ts ${{ steps.get-files.outputs.files }}
 
       - name: Commit and push changes
         run: |
