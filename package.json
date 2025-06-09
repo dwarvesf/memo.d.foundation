@@ -132,8 +132,7 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
-    "typescript": "^5",
-    "typescript-language-server": "^4.3.4"
+    "typescript": "^5"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

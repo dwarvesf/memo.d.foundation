@@ -3,9 +3,6 @@
   "lsp": {
     "elixir-ls": {
       "command": "devbox run -- pushd lib/obsidian-compiler && elixir-ls"
-    },
-    "typescript-ls": {
-      "command": "devbox run -- npx -y typescript-language-server --stdio"
     }
   },
   "mcpServers": {
