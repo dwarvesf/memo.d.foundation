@@ -12,7 +12,8 @@
     "init_hook": [
       "make lib-setup",
       "make fetch",
-      "git update-index --assume-unchanged .cursor/mcp.json"
+      "git update-index --assume-unchanged .cursor/mcp.json",
+      "pnpm exec playwright install"
     ],
     "scripts": {
       "build": "make build",
