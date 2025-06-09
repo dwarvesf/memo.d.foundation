@@ -18,6 +18,7 @@ import ContributorContentBody from './memo/ContributorContentBody';
 import WorthReading from './memo/WorthReading';
 import MemoFilterList from './memo/MemoFilterList';
 import TagsMarquee from './memo/TagsMarquee';
+import ContributorList from './memo/contributor-list';
 
 interface Props {
   mdxSource: SerializeResult;
@@ -34,6 +35,7 @@ const components: MDXComponents = {
   ContributorMemoTimeline,
   ContributorContentBody,
   MemoFilterList,
+  ContributorList,
   MemoVList,
   MemoTimelineList,
   MemosByCategory,
