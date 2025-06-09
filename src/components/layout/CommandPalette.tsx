@@ -26,6 +26,8 @@ const defaultSearchResult: SearchResult = {
   grouped: {},
 };
 
+const NOT_FOUND_TITLE = '404 - page not found';
+
 const CommandPalette: React.FC = () => {
   const { isMacOS } = useLayoutContext();
   const [isOpen, setIsOpen] = useState(false);
@@ -356,64 +358,77 @@ const CommandPalette: React.FC = () => {
     const storedRecents = localStorage.getItem('recentPages');
     // Record current page visit
     const currentPath = router.asPath;
-    const currentTitle = document.title;
-    const isSkip = currentPath === '/' || currentPath == '/index.html';
+    const currentTitle = document.title; // This is the most reliable source after page navigation
+    const isHomePage = currentPath === '/' || currentPath === '/index.html';
     const timestamp = new Date().getTime();
 
-    // Get current page info and strip redundant title parts if present
+    // Normalize page title for checks
     let pageTitle = currentTitle;
-    if (pageTitle.includes(' | ')) {
+    // The title set by RootLayout for 404 pages is "404 - Page Not Found"
+    // The title set by [...slug].tsx for other pages might include " - Dwarves Memo"
+    // We should primarily check against the specific 404 title.
+    const is404Page = pageTitle.toLowerCase() === NOT_FOUND_TITLE;
+
+    // Filter out 404s from existing stored recents
+    let existingRecents: IRecentPageStorageItem[] = [];
+    if (storedRecents) {
+      try {
+        const parsed = JSON.parse(storedRecents);
+        if (Array.isArray(parsed)) {
+          existingRecents = parsed.filter(
+            page => page.title.toLowerCase() !== NOT_FOUND_TITLE,
+          );
+        }
+      } catch (error) {
+        console.error(
+          'Error parsing or filtering recent pages from localStorage',
+          error,
+        );
+        existingRecents = []; // Reset if parsing/filtering fails
+      }
+    }
+
+    if (isHomePage || is404Page) {
+      // If it's the home page or a 404 page, just set the (filtered) recents and don't add current page
+      setRecentPages(existingRecents);
+      if (
+        is404Page &&
+        storedRecents &&
+        JSON.stringify(existingRecents) !== storedRecents
+      ) {
+        // If 404s were filtered out, update localStorage
+        localStorage.setItem('recentPages', JSON.stringify(existingRecents));
+      }
+      return;
+    }
+
+    // Proceed to add the current valid page
+    // Strip " | {suffix}" suffix if present for consistency
+    if (pageTitle.toLowerCase().indexOf(' | ') > -1) {
       pageTitle = pageTitle.split(' | ')[0].trim();
     }
 
     const currentPage: IRecentPageStorageItem = {
       path: currentPath,
-      title: pageTitle,
+      title: pageTitle, // Use the potentially stripped title
       timestamp: timestamp,
     };
 
-    if (storedRecents) {
-      try {
-        let parsed: IRecentPageStorageItem[] = [];
-        try {
-          parsed = JSON.parse(storedRecents);
-          if (!Array.isArray(parsed)) {
-            parsed = [];
-          }
-        } catch (error) {
-          console.error('Error parsing recent pages from localStorage', error);
-        }
+    // Remove current page if it exists already (to avoid duplicates and update timestamp)
+    let newRecentPages = existingRecents.filter(
+      page => page.path !== currentPath,
+    );
 
-        // Skip recording if this is the home page
-        if (isSkip) {
-          setRecentPages(parsed);
-        } else {
-          // Remove current page if it exists already (to avoid duplicates)
-          let newRecentPages = parsed.filter(page => page.path !== currentPath);
+    // Add current page to the beginning
+    newRecentPages.unshift(currentPage);
 
-          // Add current page to the beginning
-          newRecentPages.unshift(currentPage);
-          const maxLength = 5;
-          // Keep only the last 10 pages
-          if (newRecentPages.length > maxLength) {
-            newRecentPages = newRecentPages.slice(0, maxLength);
-          }
-          setRecentPages(newRecentPages);
-
-          // Store back to localStorage
-          localStorage.setItem('recentPages', JSON.stringify(newRecentPages));
-          return;
-        }
-        return;
-      } catch (e) {
-        console.error('Error parsing recent pages', e);
-      }
-    } else {
-      // If no recent pages, create an array
-      const initialRecentPages: IRecentPageStorageItem[] = [currentPage];
-      setRecentPages(initialRecentPages);
-      localStorage.setItem('recentPages', JSON.stringify(initialRecentPages));
+    const maxLength = 5; // Max recent pages to keep
+    if (newRecentPages.length > maxLength) {
+      newRecentPages = newRecentPages.slice(0, maxLength);
     }
+
+    setRecentPages(newRecentPages);
+    localStorage.setItem('recentPages', JSON.stringify(newRecentPages));
   }, [router.asPath]);
 
   const modifier = isMacOS ? '⌘' : 'ctrl';
