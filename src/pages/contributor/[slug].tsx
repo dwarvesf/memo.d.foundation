@@ -672,6 +672,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         memoCollectors, // Include in props
         aggregatedActivities, // Include aggregated activities in props
         frontmatter: mdxSource.frontmatter,
+        seo: {
+          title:
+            mdxSource.frontmatter?.title ||
+            `${originalContributorName}'s Profile`,
+          description:
+            mdxSource.frontmatter?.description || contributorProfile?.bio || '',
+          image: mdxSource.frontmatter?.image || contributorProfile?.avatar,
+          keywords: Array.isArray(mdxSource.frontmatter?.tags)
+            ? mdxSource.frontmatter.tags.join(', ')
+            : undefined,
+        },
       },
     };
   } catch (error) {
@@ -681,25 +692,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export default function ContentPage({
-  frontmatter,
   directoryTree,
   searchIndex,
-  contributorName,
   mdxSource,
-  contributorProfile,
 }: ContentPageProps) {
   if (!mdxSource || 'error' in mdxSource) {
     // We already handle this in getStaticProps
     return null;
   }
   return (
-    <ContributorLayout
-      title={frontmatter?.title || `${contributorName}'s Profile`}
-      description={frontmatter?.description || contributorProfile?.bio || ''} // Use GitHub bio as description
-      image={frontmatter?.image || contributorProfile?.avatar} // Use GitHub avatar as image
-      directoryTree={directoryTree}
-      searchIndex={searchIndex}
-    >
+    <ContributorLayout directoryTree={directoryTree} searchIndex={searchIndex}>
       <div className="content-wrapper">
         <RemoteMdxRenderer mdxSource={mdxSource} />
       </div>

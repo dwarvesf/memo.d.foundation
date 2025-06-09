@@ -14,18 +14,15 @@ import { CodeblockHeaderInjector } from '../codeblock/CodeblockHeader';
 
 interface ContributorLayoutProps extends ContributorLayoutPageProps {
   children: React.ReactNode;
-  title?: string;
-  description?: string;
-  image?: string;
-  tocItems?: ITocItem[];
-  metadata?: IMetadata;
+  // title, description, image are no longer used here for Head tags
+  // as PageSeo in _app.tsx handles them.
+  tocItems?: ITocItem[]; // tocItems might still be used for other things
+  metadata?: IMetadata; // metadata might still be used for other things
 }
 
 function ContributorLayout({
   children,
-  title = 'Dwarves Memo',
-  description = 'Knowledge sharing platform for Dwarves Foundation',
-  image,
+  // title, description, image are no longer directly used here for Head tags
   metadata,
   directoryTree,
   searchIndex,
@@ -65,21 +62,8 @@ function ContributorLayout({
   return (
     <SearchProvider searchIndex={searchIndex}>
       <Head>
-        <title>{title}</title>
-        <meta property="title" content={title} />
-        <meta property="og:title" content={title} />
-
-        {description && <meta name="description" content={description} />}
-        {description && (
-          <meta property="og:description" content={description} />
-        )}
-
-        {image && <meta property="og:image" content={image} />}
-        {!!metadata?.tags?.length && (
-          <meta name="keywords" content={metadata?.tags.join(', ')} />
-        )}
+        {/* General SEO and site-wide tags remain. Page-specific SEO is handled by PageSeo in _app.tsx */}
         <meta property="og:type" content="article" />
-
         <meta property="og:site_name" content="Dwarves Memo"></meta>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link
@@ -101,13 +85,13 @@ function ContributorLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
-          title={`${title} - RSS Feed`}
+          title="Dwarves Memo - RSS Feed"
           href="/feed.xml"
         />
         <link
           rel="alternate"
           type="application/atom+xml"
-          title={`${title} - Atom Feed`}
+          title="Dwarves Memo - Atom Feed"
           href="/atom.xml"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -117,7 +101,7 @@ function ContributorLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&amp;display=swap"
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"
           rel="stylesheet"
         ></link>
         <link

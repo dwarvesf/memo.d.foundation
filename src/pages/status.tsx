@@ -1,4 +1,16 @@
 import React from 'react';
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      seo: {
+        title: 'System Status - Dwarves Memo',
+        description: 'Current status of Dwarves Foundation systems.',
+      },
+    }, // Provide default seo props even on error
+  };
+};
 
 const StatusPage = () => {
   return (

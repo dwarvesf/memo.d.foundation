@@ -10,7 +10,14 @@ export const getStaticProps: GetStaticProps = async () => {
     const layoutProps = await getRootLayoutPageProps();
 
     return {
-      props: layoutProps,
+      props: {
+        ...layoutProps,
+        seo: {
+          title: '404 - Page Not Found',
+          description: 'The page you are looking for does not exist.',
+          // No specific image for 404, can use a default or omit
+        },
+      },
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
@@ -24,7 +31,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const NotFound = (props: RootLayoutPageProps) => {
   return (
-    <RootLayout {...props} title="404 - Page Not Found">
+    <RootLayout {...props}>
       <div className="font-charter flex h-[calc(100vh-60px-24px-10rem)] w-full flex-col items-center justify-center text-center">
         <h1 className="mt-0 flex items-end gap-[22px]">
           <span className="xs:text-[140px] border-none text-[100px] leading-[90%] font-normal tracking-[-3.04px]">

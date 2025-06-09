@@ -91,6 +91,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         slug,
         tag: originalTag, // Use the original case for display
         data: memos,
+        seo: {
+          title: `Tag: ${uppercaseSpecialWords(originalTag)} - Dwarves Memo`,
+          description: `Content tagged with "${uppercaseSpecialWords(originalTag)}" on Dwarves Memo.`,
+        },
       },
     };
   } catch (error) {
@@ -130,11 +134,7 @@ export default function TagDetailPage({
     return keys;
   }, [groupedMemos]);
   return (
-    <RootLayout
-      title={tag}
-      directoryTree={directoryTree}
-      searchIndex={searchIndex}
-    >
+    <RootLayout directoryTree={directoryTree} searchIndex={searchIndex}>
       <div className="flex items-center">
         <div className="flex flex-col">
           <h1 className="-track-[0.5px] mb-5 pt-0 text-[35px] leading-[42px] font-semibold">

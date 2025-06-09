@@ -57,6 +57,14 @@ export const getStaticProps: GetStaticProps = async () => {
         ...layoutProps,
         mdxSource,
         frontmatter: mdxSource.frontmatter,
+        seo: {
+          title: mdxSource.frontmatter?.title,
+          description: mdxSource.frontmatter?.description,
+          image: mdxSource.frontmatter?.image,
+          keywords: Array.isArray(mdxSource.frontmatter?.tags)
+            ? mdxSource.frontmatter.tags.join(', ')
+            : undefined,
+        },
       },
     };
   } catch (error) {
@@ -66,7 +74,6 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default function ContentPage({
-  frontmatter,
   directoryTree,
   searchIndex,
   mdxSource,
@@ -76,13 +83,7 @@ export default function ContentPage({
     return null;
   }
   return (
-    <RootLayout
-      title={frontmatter?.title}
-      description={frontmatter?.description} // Use GitHub bio as description
-      image={frontmatter?.image} // Use GitHub avatar as image
-      directoryTree={directoryTree}
-      searchIndex={searchIndex}
-    >
+    <RootLayout directoryTree={directoryTree} searchIndex={searchIndex}>
       <div className="content-wrapper">
         <RemoteMdxRenderer mdxSource={mdxSource} />
       </div>

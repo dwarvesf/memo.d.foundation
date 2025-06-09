@@ -17,11 +17,10 @@ import { CodeblockHeaderInjector } from '../codeblock/CodeblockHeader';
 
 interface RootLayoutProps extends RootLayoutPageProps {
   children: React.ReactNode;
-  title?: string;
-  description?: string;
-  image?: string;
+  // title, description, image are no longer used here for Head tags
+  // as PageSeo in _app.tsx handles them.
   tocItems?: ITocItem[];
-  metadata?: IMetadata;
+  metadata?: IMetadata; // metadata might still be used for other things like right sidebar
   hideRightSidebar?: boolean;
   mainClassName?: string;
   fullWidth?: boolean;
@@ -32,9 +31,7 @@ const scrollOnTopIgnoreRoutes = ['/prompts'];
 
 function RootLayout({
   children,
-  title = 'Dwarves Memo',
-  description = 'Knowledge sharing platform for Dwarves Foundation',
-  image,
+  // title, description, image are no longer directly used here for Head tags
   metadata,
   tocItems,
   directoryTree,
@@ -79,21 +76,7 @@ function RootLayout({
   return (
     <SearchProvider searchIndex={searchIndex}>
       <Head>
-        <title>{title}</title>
-        <meta property="title" content={title} />
-        <meta property="og:title" content={title} />
-
-        {description && <meta name="description" content={description} />}
-        {description && (
-          <meta property="og:description" content={description} />
-        )}
-
-        {image && <meta property="og:image" content={image} />}
-        {!!metadata?.tags?.length && (
-          <meta name="keywords" content={metadata?.tags.join(', ')} />
-        )}
-        <meta property="og:type" content="article" />
-
+        {/* General SEO and site-wide tags remain. Page-specific SEO is handled by PageSeo in _app.tsx */}
         <meta property="og:site_name" content="Dwarves Memo"></meta>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link
@@ -115,13 +98,13 @@ function RootLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
-          title={`${title} - RSS Feed`}
+          title={`Dwarves Memo - RSS Feed`}
           href="/feed.xml"
         />
         <link
           rel="alternate"
           type="application/atom+xml"
-          title={`${title} - Atom Feed`}
+          title={`Dwarves Memo - Atom Feed`}
           href="/atom.xml"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -131,7 +114,7 @@ function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&amp;display=swap"
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"
           rel="stylesheet"
         ></link>
         <link

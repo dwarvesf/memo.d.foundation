@@ -280,6 +280,9 @@ _Learned by engineers. Experimented by engineers._
       props: {
         ...layoutProps,
         mdxSource,
+        seo: {
+          title: 'Dwarves Memo - Home',
+        },
       },
     };
   } catch (error) {
@@ -302,12 +305,7 @@ export default function Home({
     return null;
   }
   return (
-    <RootLayout
-      title="Dwarves Memo - Home"
-      description="Knowledge sharing platform for Dwarves Foundation"
-      directoryTree={directoryTree}
-      searchIndex={searchIndex}
-    >
+    <RootLayout directoryTree={directoryTree} searchIndex={searchIndex}>
       <RemoteMdxRenderer mdxSource={mdxSource} />
     </RootLayout>
   );

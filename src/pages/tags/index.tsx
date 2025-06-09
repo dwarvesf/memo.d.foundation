@@ -10,7 +10,13 @@ export const getStaticProps: GetStaticProps = async () => {
     const layoutProps = await getRootLayoutPageProps();
 
     return {
-      props: layoutProps,
+      props: {
+        ...layoutProps,
+        seo: {
+          title: 'Tags',
+          description: 'Browse content by tags on Dwarves Memo.',
+        },
+      },
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
@@ -31,7 +37,7 @@ const TagsPage = (props: RootLayoutPageProps) => {
     return Object.entries(tagsNode).sort(([a], [b]) => a.localeCompare(b));
   }, [directoryTree]);
   return (
-    <RootLayout {...props} title="Tags">
+    <RootLayout {...props}>
       <div className="flex items-center">
         {tags && (
           <div className="flex flex-col gap-4">

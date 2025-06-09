@@ -1,30 +1,33 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { GetStaticProps, GetStaticPaths } from 'next';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import path from 'path';
 import fs from 'fs/promises';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import path from 'path';
+import { useEffect, useMemo, useRef } from 'react';
 
 // Import utility functions
-import { getMarkdownContent } from '../lib/content/markdown';
+import { getFirstMemoImage } from '@/components/memo/utils';
 import { getAllMarkdownContents } from '@/lib/content/memo';
 import {
   getRootLayoutPageProps,
   getServerSideRedirectPath,
 } from '@/lib/content/utils';
 import { slugToTitle } from '@/lib/utils';
-import { getFirstMemoImage } from '@/components/memo/utils';
+import { getMarkdownContent } from '../lib/content/markdown';
 
 // Import components
-import { RootLayout, ContentLayout } from '../components';
-import SubscriptionSection from '../components/layout/SubscriptionSection';
 import UtterancComments from '@/components/layout/UtterancComments';
 import MintEntry from '@/components/mint-entry/MintEntry';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer'; // Add this import
 import { SerializeResult } from 'next-mdx-remote-client/serialize'; // Add this import
+import { ContentLayout, RootLayout } from '../components';
+import SubscriptionSection from '../components/layout/SubscriptionSection';
 
 // Import contexts and types
 import { useThemeContext } from '@/contexts/theme';
+import { getRedirectsBackLinks, getStaticJSONPaths } from '@/lib/content/paths';
+import { getMdxSource } from '@/lib/mdx';
+import { formatContentPath } from '@/lib/utils/path-utils';
 import {
   IBackLinkItem,
   IMemoItem,
@@ -32,10 +35,7 @@ import {
   ITocItem,
   RootLayoutPageProps,
 } from '@/types';
-import { formatContentPath } from '@/lib/utils/path-utils';
-import { getMdxSource } from '@/lib/mdx';
 import { normalizePathWithSlash } from '../../scripts/common';
-import { getRedirectsBackLinks, getStaticJSONPaths } from '@/lib/content/paths';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content?: string;
@@ -171,6 +171,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           backlinks: [], // Backlinks aren't implemented for MDX yet
           isListPage: false,
           isMdxPage: true,
+          seo: {
+            // Add SEO props for MDX pages
+            title: frontmatter?.title,
+            description: frontmatter?.description,
+            image: frontmatter?.image,
+            keywords: Array.isArray(frontmatter?.tags)
+              ? frontmatter.tags.join(', ')
+              : undefined,
+          },
         },
       };
     }
@@ -244,6 +253,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             slug,
             childMemos: allMemos,
             isListPage: true,
+            seo: {
+              // Add SEO props for list pages
+              title: slug.map(slugToTitle).join(' > '),
+            },
           },
         };
       } else {
@@ -316,6 +329,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         metadata,
         isListPage: false,
         isMdxPage: false,
+        seo: {
+          // Add SEO props for standard markdown pages
+          title: frontmatter.title,
+          description: frontmatter.description,
+          image: metadata?.firstImage,
+          keywords: Array.isArray(frontmatter.tags)
+            ? frontmatter.tags.join(', ')
+            : undefined,
+        },
       },
     };
   } catch (error) {
@@ -468,11 +490,7 @@ export default function ContentPage({
   if (isListPage) {
     const title = slug.map(slugToTitle).join(' > ');
     return (
-      <RootLayout
-        title={title}
-        searchIndex={searchIndex}
-        directoryTree={directoryTree}
-      >
+      <RootLayout searchIndex={searchIndex} directoryTree={directoryTree}>
         <div className="flex items-center justify-center">
           {childMemos && (
             <div className="flex w-fit flex-col gap-4">
@@ -497,13 +515,7 @@ export default function ContentPage({
   } else if (isMdxPage && mdxSource) {
     // MDX Page Rendering
     return (
-      <RootLayout
-        title={frontmatter?.title}
-        description={frontmatter?.description} // Use GitHub bio as description
-        image={frontmatter?.image} // Use GitHub avatar as image
-        directoryTree={directoryTree}
-        searchIndex={searchIndex}
-      >
+      <RootLayout directoryTree={directoryTree} searchIndex={searchIndex}>
         <div className="content-wrapper">
           <RemoteMdxRenderer mdxSource={mdxSource} />
         </div>
@@ -519,9 +531,6 @@ export default function ContentPage({
 
     return (
       <RootLayout
-        title={frontmatter.title || 'Dwarves Memo'}
-        description={frontmatter.description}
-        image={metadata?.firstImage}
         tocItems={tocItems}
         metadata={metadata}
         directoryTree={directoryTree}
@@ -548,11 +557,7 @@ export default function ContentPage({
   } else {
     // Handle case where content or frontmatter is undefined (shouldn't happen with fallback: false)
     return (
-      <RootLayout
-        title="Not Found"
-        directoryTree={directoryTree}
-        searchIndex={searchIndex}
-      >
+      <RootLayout directoryTree={directoryTree} searchIndex={searchIndex}>
         <div>Page not found.</div>
       </RootLayout>
     );

@@ -36,6 +36,11 @@ export const getStaticProps: GetStaticProps<PromptsPageProps> = async () => {
     props: {
       ...layoutProps,
       prompts,
+      seo: {
+        title: 'AI Prompts - Dwarves Memo',
+        description:
+          'A collection of AI prompts for various tasks and categories.',
+      },
     },
   };
 };
@@ -199,7 +204,6 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
 
   return (
     <RootLayout
-      title="AI Prompts"
       directoryTree={directoryTree}
       searchIndex={searchIndex}
       hideRightSidebar
