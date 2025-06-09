@@ -5,18 +5,68 @@ import path from 'path';
 // Import utility functions
 import { getAllMarkdownContents, sortMemos } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
+import { getContributorStats } from '@/lib/contributor-stats';
 
 import { RootLayoutPageProps } from '@/types';
 
-import { type SerializeResult } from 'next-mdx-remote-client/serialize';
+import {
+  serialize,
+  type SerializeResult,
+} from 'next-mdx-remote-client/serialize';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
-import { RootLayout } from '@/components';
 import { getMdxSource } from '@/lib/mdx';
+import ContributorLayout from '@/components/layout/ContributorLayout';
+import { isAfter } from 'date-fns';
+import { slugifyPathComponents } from '@/lib/utils/slugify';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
-
   mdxSource?: SerializeResult; // Serialized MDX source
+  contributorStats: Record<string, any>;
+}
+
+/**
+ * Fetches the contributor's wallet address from their GitHub username
+ */
+async function fetchContributorProfile(contributorSlug: string) {
+  try {
+    const response = await fetch(
+      `https://api.mochi-profile.console.so/api/v1/profiles/github/get-by-username/${contributorSlug}`,
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch profile for GitHub user ${contributorSlug}: ${response.statusText}`,
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.warn((error as Error).message);
+    return contributorSlug;
+  }
+}
+
+/**
+ * Formats a file path from the vault into a URL-friendly path.
+ * Removes '.md' extension, slugifies path components using the project's logic,
+ * and ensures a leading slash.
+ * Example: 'Folder Name/File Name.md' -> '/folder-name/file-name'
+ */
+function formatPathForUrl(filePath: string | null | undefined): string | null {
+  if (!filePath) {
+    return null;
+  }
+  // Remove .md extension if present
+  const pathWithoutExt = filePath.endsWith('.md')
+    ? filePath.slice(0, -3)
+    : filePath;
+
+  // Slugify using the project's function
+  const slugifiedPath = slugifyPathComponents(pathWithoutExt);
+
+  // Ensure leading slash
+  return slugifiedPath.startsWith('/') ? slugifiedPath : `/${slugifiedPath}`;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -25,15 +75,50 @@ export const getStaticProps: GetStaticProps = async () => {
     const layoutProps = await getRootLayoutPageProps();
 
     const contributors = new Set<string>();
+    const contributionCount: Record<string, number> = {};
+    const contributorLatestWork: Record<
+      string,
+      { date: string; title: string; url: string }
+    > = {};
+    let topCount = 0;
+
     sortMemos(allMemos).forEach(memo => {
       const { authors } = memo;
       if (authors) {
         authors.forEach(author => {
-          if (contributors.has(author)) return;
-          contributors.add(author);
+          // Initialize contributor data if not exists
+          if (!contributors.has(author)) {
+            contributors.add(author);
+            contributionCount[author] = 0;
+            contributorLatestWork[author] = {
+              date: memo.date,
+              title: memo.title,
+              url: formatPathForUrl(memo.filePath) ?? '',
+            };
+          }
+
+          // Update contribution count
+          contributionCount[author] += 1;
+          topCount = Math.max(topCount, contributionCount[author]);
+
+          // Update latest work if newer
+          if (isAfter(memo.date, contributorLatestWork[author].date)) {
+            contributorLatestWork[author] = {
+              date: memo.date,
+              title: memo.title,
+              url: formatPathForUrl(memo.filePath) ?? '',
+            };
+          }
         });
       }
     });
+
+    const enrichedContributors = await Promise.all(
+      Array.from(contributors).map(fetchContributorProfile),
+    );
+
+    // Fetch contributor stats using the new utility function
+    const contributorStats = await getContributorStats();
 
     // --- Read Processed MDX Content ---
     const mdxPath = path.join(
@@ -45,18 +130,35 @@ export const getStaticProps: GetStaticProps = async () => {
     const mdxSource = await getMdxSource({
       mdxPath,
       scope: {
-        contributors: Array.from(contributors),
+        contributors: enrichedContributors,
+        contributionCount,
+        contributorLatestWork,
+        topCount,
+        contributorStats,
       },
     });
 
     if (!mdxSource || 'error' in mdxSource) {
       return { notFound: true }; // Handle serialization error
     }
+
+    const newSource = await serialize({
+      source:
+        '<ContributorList data={contributors} contributorLatestWork={contributorLatestWork} contributionCount={contributionCount} topCount={topCount} contributorStats={contributorStats} />',
+    });
+
+    if (!newSource || 'error' in newSource) {
+      return { notFound: true }; // Handle serialization error
+    }
+
+    mdxSource.compiledSource = newSource.compiledSource;
+
     return {
       props: {
         ...layoutProps,
         mdxSource,
         frontmatter: mdxSource.frontmatter,
+        contributorStats,
       },
     };
   } catch (error) {
@@ -76,7 +178,7 @@ export default function ContentPage({
     return null;
   }
   return (
-    <RootLayout
+    <ContributorLayout
       title={frontmatter?.title}
       description={frontmatter?.description} // Use GitHub bio as description
       image={frontmatter?.image} // Use GitHub avatar as image
@@ -86,6 +188,6 @@ export default function ContentPage({
       <div className="content-wrapper">
         <RemoteMdxRenderer mdxSource={mdxSource} />
       </div>
-    </RootLayout>
+    </ContributorLayout>
   );
 }
