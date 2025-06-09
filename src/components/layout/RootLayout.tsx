@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import Image from 'next/image';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useThemeContext } from '@/contexts/theme';
@@ -175,17 +174,6 @@ function RootLayout({
                 mainClassName,
               )}
             >
-              {/* Yggdrasil tree background */}
-              <Image
-                className={cn(
-                  'yggdrasil-tree no-zoom pointer-events-none object-contain opacity-[0.03] md:w-[20vw] xl:w-[20vw] dark:opacity-100',
-                  'absolute bottom-8 left-1/2 w-[50vw] max-w-xs -translate-x-1/2 xl:translate-x-[80%]',
-                )}
-                src="/assets/img/footer-bg.svg"
-                alt=""
-                width={1920}
-                height={1080}
-              />
               {/* Content */}
               <div className="memo-content pt-2 pb-8">{children}</div>
             </main>
