@@ -3,6 +3,7 @@ import { BentoCard, BentoGrid } from './bento-grid';
 import { BlocksIcon, BookOpenIcon, BrainIcon, SproutIcon } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 interface BlockProps {
   title: string;
@@ -53,7 +54,10 @@ const WorthReading = ({ blocks, memos }: WorthReadingProps) => {
               Icon={Icon}
               href={`/tags/${block.tag}`}
               cta="View all"
-              className={isWide ? 'col-span-5' : 'col-span-4'}
+              className={cn('col-span-1', {
+                'sm:col-span-5': isWide,
+                'sm:col-span-4': !isWide,
+              })}
               background={
                 <>
                   <ul className="mt-0 flex list-none flex-col gap-y-1 p-0">
