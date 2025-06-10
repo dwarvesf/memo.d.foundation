@@ -6,7 +6,6 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
-import rehypeMermaid from 'rehype-mermaid';
 import remarkMath from 'remark-math';
 import matter from 'gray-matter';
 import { SKIP, visit } from 'unist-util-visit';
@@ -592,13 +591,6 @@ export async function getMarkdownContent(filePath: string) {
     .use(rehypeTable) // Wrap tables in a container div
     .use(rehypeCodeblock) // Add the custom class plugin here
     .use(rehypeHighlight)
-    .use(rehypeMermaid, {
-      dark: true,
-      strategy: 'img-svg',
-      mermaidConfig: {
-        theme: 'neutral',
-      },
-    })
 
     .use(rehypeStringify);
   // Process the content

@@ -31,57 +31,15 @@ export const ThemeProvider = (props: PropsWithChildren) => {
   const { children } = props;
   const [theme, setThemeInternal] = useState<ITheme>('light');
   const [isThemeLoaded, setIsThemeLoaded] = useState(false);
-
-  const flipImageSource = useCallback((theme: ITheme) => {
-    document.querySelectorAll('picture').forEach(element => {
-      const img = element.querySelector('img');
-      const darkSource = element.querySelector(
-        "source[media='(prefers-color-scheme: dark)']",
-      ) as HTMLSourceElement | undefined;
-      if (!darkSource || !img) return;
-
-      let lightSource = element.querySelector(
-        "source[media='(prefers-color-scheme: light)']",
-      ) as HTMLSourceElement | undefined;
-      if (!lightSource) {
-        lightSource = document.createElement('source');
-        lightSource.media = '(prefers-color-scheme: light)';
-        lightSource.srcset = img.src;
-        element.prepend(lightSource);
-      }
-
-      if (theme === 'dark') {
-        img.src = darkSource.srcset;
-      } else {
-        img.src = lightSource.srcset;
-      }
+  const setTheme = useCallback((updater: SetStateAction<ITheme>) => {
+    setThemeInternal(prev => {
+      const theme = typeof updater === 'function' ? updater(prev) : updater;
+      localStorage.setItem('theme', theme);
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+      return theme;
     });
   }, []);
-
-  const updateColorSchemeMeta = (theme: ITheme) => {
-    let meta = document.querySelector('meta[name="color-scheme"]');
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'color-scheme');
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute('content', theme);
-  };
-
-  const setTheme = useCallback(
-    (updater: SetStateAction<ITheme>) => {
-      setThemeInternal(prev => {
-        const theme = typeof updater === 'function' ? updater(prev) : updater;
-        localStorage.setItem('theme', theme);
-        document.documentElement.classList.toggle('dark', theme === 'dark');
-        document.documentElement.setAttribute('data-theme', theme);
-        updateColorSchemeMeta(theme);
-        flipImageSource(theme);
-        return theme;
-      });
-    },
-    [flipImageSource],
-  );
 
   const toggleTheme = useCallback(() => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
@@ -110,10 +68,9 @@ export const ThemeProvider = (props: PropsWithChildren) => {
     // Set the theme state
     setTheme(initialTheme);
     setIsThemeLoaded(true);
-    flipImageSource(initialTheme);
     // No need to handle system theme changes since we're not using 'system' theme anymore
     // We'll still keep the media query for initial setup, but we won't need the change handler
-  }, [setTheme, flipImageSource]);
+  }, [setTheme]);
 
   return (
     <ThemeContext.Provider
@@ -135,41 +92,6 @@ export const ThemeProvider = (props: PropsWithChildren) => {
                   }
                   document.documentElement.classList.add(theme);
                   document.documentElement.setAttribute('data-theme', theme);
-
-                  var meta = document.querySelector('meta[name="color-scheme"]');
-                  if (!meta) {
-                    meta = document.createElement('meta');
-                    meta.setAttribute('name', 'color-scheme');
-                    document.head.appendChild(meta);
-                  }
-                  meta.setAttribute('content', theme);
-
-                  function flipImageSource(theme) {
-                    document.querySelectorAll("picture").forEach(function(element) {
-                      var img = element.querySelector("img");
-                      var darkSource = element.querySelector(
-                        "source[media='(prefers-color-scheme: dark)']"
-                      );
-                      if (!darkSource || !img) return;
-
-                      var lightSource = element.querySelector(
-                        "source[media='(prefers-color-scheme: light)']"
-                      );
-                      if (!lightSource) {
-                        lightSource = document.createElement("source");
-                        lightSource.media = "(prefers-color-scheme: light)";
-                        lightSource.srcset = img.src;
-                        element.prepend(lightSource);
-                      }
-
-                      if (theme === "dark") {
-                        img.src = darkSource.srcset;
-                      } else {
-                        img.src = lightSource.srcset;
-                      }
-                    });
-                  }
-                  flipImageSource(theme);
                 } catch (e) {}
               })();
             `}
