@@ -2,7 +2,8 @@
   "$schema": "./opencode-schema.json",
   "lsp": {
     "elixir-ls": {
-      "command": "devbox run -- pushd lib/obsidian-compiler && elixir-ls"
+      "command": "devbox",
+      "args": ["run", "--", "pushd lib/obsidian-compiler && elixir-ls"]
     }
   },
   "mcpServers": {
