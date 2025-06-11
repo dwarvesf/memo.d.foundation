@@ -1,37 +1,11 @@
 import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
 import { queryDuckDB } from '../src/lib/db/utils.js';
+import { fetchContributorProfile } from '../src/lib/contributor-profile.js';
 import fs from 'fs/promises';
 import path from 'path';
 import { MochiUserProfile, UserProfile } from '../src/types/user.js';
 
-const MOCHI_PROFILE_API = process.env.MOCHI_PROFILE_API;
 const GITHUB_TOKEN = process.env.DWARVES_PAT;
-
-async function fetchMochiProfile(
-  githubUsername: string,
-): Promise<MochiUserProfile | null> {
-  try {
-    const response = await fetch(`${MOCHI_PROFILE_API}/${githubUsername}`, {
-      headers: {
-        accept: 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      console.error(
-        `Error fetching data for ${githubUsername}: ${response.statusText}`,
-      );
-      return null;
-    }
-
-    const data = await response.json();
-
-    return data as MochiUserProfile;
-  } catch (error) {
-    console.error(`Failed to fetch profile for ${githubUsername}: ${error instanceof Error ? error.message : String(error)}`);
-    return null;
-  }
-}
 
 async function getAllAuthors(): Promise<string[]> {
   const authorsResult = await queryDuckDB(`
@@ -120,11 +94,13 @@ async function getUserProfileByGithubUsername(
     // Original fixed delay is no longer needed with dynamic checking
     // await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
   } catch (error) {
-    console.error(`Failed to fetch GitHub data for ${githubUsername}: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(
+      `Failed to fetch GitHub data for ${githubUsername}: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 
   try {
-    mochiData = await fetchMochiProfile(githubUsername);
+    mochiData = await fetchContributorProfile(githubUsername);
   } catch (error) {
     console.error(
       `Failed to fetch Mochi profile for ${githubUsername}:`,

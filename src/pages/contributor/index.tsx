@@ -18,33 +18,12 @@ import { getMdxSource } from '@/lib/mdx';
 import ContributorLayout from '@/components/layout/ContributorLayout';
 import { isAfter } from 'date-fns';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
+import { fetchContributorProfiles } from '@/lib/contributor-profile';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
   mdxSource?: SerializeResult; // Serialized MDX source
   contributorStats: Record<string, any>;
-}
-
-/**
- * Fetches the contributor's wallet address from their GitHub username
- */
-async function fetchContributorProfile(contributorSlug: string) {
-  try {
-    const response = await fetch(
-      `https://api.mochi-profile.console.so/api/v1/profiles/github/get-by-username/${contributorSlug}`,
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch profile for GitHub user ${contributorSlug}: ${response.statusText}`,
-      );
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.warn((error as Error).message);
-    return contributorSlug;
-  }
 }
 
 /**
@@ -113,9 +92,10 @@ export const getStaticProps: GetStaticProps = async () => {
       }
     });
 
-    const enrichedContributors = await Promise.all(
-      Array.from(contributors).map(fetchContributorProfile),
-    );
+    const contributorsArray = Array.from(contributors);
+    const enrichedContributors = (
+      await fetchContributorProfiles(contributorsArray)
+    ).map((profile, index) => profile ?? contributorsArray[index]);
 
     // Fetch contributor stats using the new utility function
     const contributorStats = await getContributorStats();

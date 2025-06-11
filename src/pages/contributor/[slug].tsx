@@ -20,9 +20,10 @@ import {
 } from 'next-mdx-remote-client/serialize';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { getMdxSource } from '@/lib/mdx';
-import { UserProfile, UserProfileJson } from '@/types/user';
+import { MochiUserProfile, UserProfile, UserProfileJson } from '@/types/user';
 import ContributorLayout from '@/components/layout/ContributorLayout';
 import { eachDayOfInterval, endOfYear, startOfYear, format } from 'date-fns';
+import { fetchContributorProfile } from '@/lib/contributor-profile';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
@@ -181,22 +182,14 @@ async function fetchCollectorsData(tokenId: string) {
  */
 async function fetchContributorWalletAddress(contributorSlug: string) {
   try {
-    const response = await fetch(
-      `https://api.mochi-profile.console.so/api/v1/profiles/github/get-by-username/${contributorSlug}`,
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch profile for GitHub user ${contributorSlug}: ${response.statusText}`,
-      );
-    }
-
-    const profileData = await response.json();
+    const profileData = (await fetchContributorProfile(
+      contributorSlug,
+    )) as MochiUserProfile;
 
     // Look for EVM accounts in the associated_accounts
     if (
-      profileData.associated_accounts &&
-      profileData.associated_accounts.length > 0
+      profileData?.associated_accounts &&
+      profileData?.associated_accounts.length > 0
     ) {
       // Filter only EVM chain accounts
       const evmAccounts = profileData.associated_accounts.filter(

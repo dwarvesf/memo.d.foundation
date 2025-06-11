@@ -11,31 +11,10 @@ import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { SerializeResult } from 'next-mdx-remote-client';
 import { queryDuckDB } from '@/lib/db/utils';
 import { serialize } from 'next-mdx-remote-client/serialize';
+import { fetchContributorProfiles } from '@/lib/contributor-profile';
 
 interface HomePageProps extends RootLayoutPageProps {
   mdxSource?: SerializeResult;
-}
-
-/**
- * Fetches the contributor's wallet address from their GitHub username
- */
-async function fetchContributorProfile(contributorSlug: string) {
-  try {
-    const response = await fetch(
-      `https://api.mochi-profile.console.so/api/v1/profiles/github/get-by-username/${contributorSlug}`,
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch profile for GitHub user ${contributorSlug}: ${response.statusText}`,
-      );
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.warn(error);
-    return contributorSlug;
-  }
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -137,14 +116,14 @@ export const getStaticProps: GetStaticProps = async () => {
           filteredResults.map(async result => {
             const authorAvatars =
               result.authors && Array.isArray(result.authors)
-                ? await Promise.all(
-                    result.authors.map(async author => {
-                      const profile = await fetchContributorProfile(
-                        author as string,
-                      );
-                      return profile.avatar ?? null;
-                    }),
-                  )
+                ? (
+                    await fetchContributorProfiles(
+                      result.authors.filter(
+                        (author): author is string =>
+                          typeof author === 'string',
+                      ),
+                    )
+                  ).map(profile => profile?.avatar ?? null)
                 : [];
 
             return {
