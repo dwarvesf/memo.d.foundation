@@ -1,5 +1,5 @@
 import { IMemoItem } from '@/types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { formatContentPath } from '@/lib/utils/path-utils';
@@ -80,7 +80,7 @@ function MemoFilterList({ title, all, filters }: MemoFilterListProps) {
           </button>
           <span className="text-muted-foreground/50 mx-0.5">/</span>
           {filters?.map((filter, index) => (
-            <>
+            <React.Fragment key={filter}>
               <button
                 onClick={() => setSelectedFilter(filter)}
                 className={cn('cursor-pointer transition', {
@@ -95,7 +95,7 @@ function MemoFilterList({ title, all, filters }: MemoFilterListProps) {
               {index < Object.keys(filters).length - 1 && (
                 <span className="text-muted-foreground/50 mx-0.5">/</span>
               )}
-            </>
+            </React.Fragment>
           ))}
         </div>
       </div>
