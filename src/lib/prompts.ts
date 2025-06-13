@@ -25,6 +25,7 @@ function convertToPromptItems(data: Record<string, Json>[]): IPromptItem[] {
       mdContent: item.md_content as string,
       lastUpdatedAt: item.last_updated_at as string,
       filePath: item.file_path as string,
+      modelPromptUrl: item.model_prompt_url as string,
       repo: item.repo as string,
     };
   });

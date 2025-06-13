@@ -38,13 +38,19 @@ jobs:
           echo "Found markdown files for permanent storage: $CHANGED_FILES"
           echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v4
+  
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps arweave gray-matter crypto js-yaml@4.1.0 tsx
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install Arweave
+        run: pnpm add -D arweave
 
       - name: Create wallet file
         run: |

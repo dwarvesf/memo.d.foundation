@@ -146,13 +146,16 @@ jobs:
           echo "Markdown files to process (from DB query): $FILES_TO_PROCESS_FROM_DB"
           echo "files=$FILES_TO_PROCESS_FROM_DB" >> $GITHUB_OUTPUT
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps gray-matter crypto js-yaml@4.1.0 tsx
+        run: pnpm install --no-frozen-lockfile
 
       - uses: actions/github-script@v7
         if: steps.changed-files.outputs.files != ''

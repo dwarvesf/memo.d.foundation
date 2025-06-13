@@ -141,5 +141,6 @@ export interface IPromptItem {
   mdContent: string;
   lastUpdatedAt: string;
   filePath: string;
+  modelPromptUrl: string;
   repo: string;
 }
