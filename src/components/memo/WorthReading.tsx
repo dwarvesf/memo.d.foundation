@@ -43,7 +43,11 @@ const WorthReading = ({ blocks, memos }: WorthReadingProps) => {
           const isWide = index === 1 || index === 2;
 
           const data = memos
-            .filter(memo => memo.tags.includes(block.tag))
+            .filter(
+              memo =>
+                memo.tags.includes(block.tag) ||
+                memo.tags.includes(block.tag.toLocaleLowerCase()),
+            )
             .slice(0, 5);
 
           return (
