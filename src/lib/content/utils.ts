@@ -200,11 +200,39 @@ function transformMenuDataToDirectoryTree(
     }
 
     // Add Home and Tags nodes after Pinned
+    treeNode['/'] = { label: 'Explore', children: {}, url: '/' };
+    treeNode['/resources'] = {
+      label: 'Resources',
+      children: {
+        '/tags': {
+          label: 'Tags',
+          children: {},
+          url: '/tags',
+        },
+        '/contributor': {
+          label: 'Contributors',
+          children: {},
+          url: '/contributor',
+        },
+        '/links': {
+          label: 'Links',
+          children: {},
+          url: '/links',
+        },
+        '/about': {
+          label: 'About',
+          children: {},
+          url: '/about',
+        },
+      },
+      url: '/resources',
+    };
     treeNode['/'] = { label: 'Home', children: {}, url: '/' };
     treeNode['/tags'] = {
       label: 'Popular Tags',
       children: {},
       url: '/tags',
+      hidden: true, // Hide this node in the tree view
     };
   }
 

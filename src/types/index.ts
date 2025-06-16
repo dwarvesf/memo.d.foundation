@@ -33,6 +33,7 @@ export interface IMetadata {
 export interface ITreeNode {
   label: string;
   children: Record<string, ITreeNode>;
+  hidden?: boolean;
   count?: number;
   url?: string; // Add url property
 }
