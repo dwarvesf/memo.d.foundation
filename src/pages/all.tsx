@@ -10,6 +10,7 @@ import { formatContentPath } from '@/lib/utils/path-utils';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import Jdenticon from 'react-jdenticon';
 import React, { useState, useEffect, useRef } from 'react'; // List component uses React.Fragment
+import { uppercaseSpecialWords } from '@/lib/utils';
 
 interface MonthGroup {
   name: string;
@@ -152,38 +153,53 @@ function List({ data }: { data: (IMemoItem & { authorAvatars: string[] })[] }) {
                 .replaceAll('/', '.')}
             </span>
           )}
-          <div className="flex flex-col">
+          <div className="flex min-w-0 flex-col">
             <Link
               href={formatContentPath(memo.filePath)}
-              className="text-foreground block truncate text-base font-semibold"
+              className="text-foreground line-clamp-2 overflow-hidden text-base font-semibold"
             >
               {memo.title}
             </Link>
-            <div className="flex items-center gap-x-1 text-sm">
-              <div className="flex flex-row -space-x-2">
-                {memo.authorAvatars?.map((avatar, index) => (
-                  <Avatar
-                    key={`${avatar}_${memo.title}`}
-                    className="dark:bg-secondary flex h-4 w-4 items-center justify-center border bg-[#fff]"
+            <div className="flex flex-col gap-x-2 sm:flex-row sm:items-center">
+              {memo?.authors?.length ? (
+                <div className="flex items-center gap-x-1 text-sm">
+                  <div className="flex flex-row -space-x-2">
+                    {memo.authorAvatars?.map((avatar, index) => (
+                      <Avatar
+                        key={`${avatar}_${memo.title}`}
+                        className="dark:bg-secondary flex h-4 w-4 items-center justify-center border bg-[#fff]"
+                      >
+                        {avatar ? (
+                          <AvatarImage src={avatar} className="no-zoom !m-0" />
+                        ) : (
+                          <Jdenticon
+                            value={memo.authors?.[index] ?? ''}
+                            size={16}
+                          />
+                        )}
+                      </Avatar>
+                    ))}
+                  </div>
+                  <span className="text-muted-foreground">
+                    by{' '}
+                    <Link href={`/contributor/${memo.authors?.[0]}`}>
+                      {memo.authors?.[0]}
+                    </Link>
+                    {(memo.authors?.length ?? 0) > 1 ? ` and others` : ''}
+                  </span>
+                </div>
+              ) : null}
+              <div className="space-x-1">
+                {memo.tags?.slice(0, 3).map(tag => (
+                  <Link
+                    key={tag}
+                    href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="dark:bg-border hover:text-primary text-2xs rounded-[2.8px] bg-[#f9fafb] px-1.5 leading-[1.7] font-medium text-neutral-500 hover:underline"
                   >
-                    {avatar ? (
-                      <AvatarImage src={avatar} className="no-zoom !m-0" />
-                    ) : (
-                      <Jdenticon
-                        value={memo.authors?.[index] ?? ''}
-                        size={16}
-                      />
-                    )}
-                  </Avatar>
+                    {uppercaseSpecialWords(tag)}
+                  </Link>
                 ))}
               </div>
-              <span className="text-muted-foreground">
-                by{' '}
-                <Link href={`/contributor/${memo.authors?.[0]}`}>
-                  {memo.authors?.[0]}
-                </Link>
-                {(memo.authors?.length ?? 0) > 1 ? ` and others` : ''}
-              </span>
             </div>
           </div>
         </div>
