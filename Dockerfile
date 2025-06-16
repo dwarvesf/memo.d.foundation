@@ -61,10 +61,10 @@ RUN git init && \
   git clean -fdx && \
   git checkout ${RAILWAY_GIT_BRANCH} && \
   git config --global --add safe.directory /code && \
-  # Use the provided personal access token for any GitHub operations (username set to x-access-token).
-  git config --global url."https://${DWARVES_PAT}@github.com/".insteadOf "https://github.com/" && \
-  # Also rewrite SSH-style URLs to the same token-authenticated HTTPS prefix.
-  git config --global url."https://${DWARVES_PAT}@github.com/".insteadOf "git@github.com:" && \
+  # Use the provided personal access token for any GitHub HTTPS operations, including private submodules.
+  git config --global url."https://${DWARVES_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/" && \
+  # Rewrite any git@github.com: style SSH URLs directly to the token-embedded HTTPS form so they are also authenticated.
+  git config --global url."https://${DWARVES_PAT}:x-oauth-basic@github.com/".insteadOf "git@github.com:" && \
   git submodule update --init --recursive --depth 1 && \
   devbox run build-static
 
