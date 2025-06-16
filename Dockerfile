@@ -2,9 +2,9 @@
 FROM jetpackio/devbox:latest AS builder
 
 LABEL stage="builder" \
-  maintainer="anhnx@d.foundation" \
-  org.opencontainers.image.title="Memo.d.foundation Builder" \
-  org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation"
+      maintainer="anhnx@d.foundation" \
+      org.opencontainers.image.title="Memo.d.foundation Builder" \
+      org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation"
 
 # Set locale environment variables for UTF-8 support
 ENV LANG C.UTF-8
@@ -56,26 +56,26 @@ COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} ./ ./
 
 # Map git to current directory, install devbox project, and build
 RUN git init && \
-  git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
-  git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
-  git clean -fdx && \
-  git checkout ${RAILWAY_GIT_BRANCH} && \
-  git config --global --add safe.directory /code && \
-  # Use the provided personal access token for any GitHub HTTPS operations, including private submodules.
-  git config --global url."https://${DWARVES_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/" && \
-  # Rewrite any git@github.com: style SSH URLs directly to the token-embedded HTTPS form so they are also authenticated.
-  git config --global url."https://${DWARVES_PAT}:x-oauth-basic@github.com/".insteadOf "git@github.com:" && \
-  git submodule update --init --recursive --depth 1 && \
-  devbox run build-static
+    git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
+    git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
+    git clean -fdx && \
+    git checkout ${RAILWAY_GIT_BRANCH} && \
+    git config --global --add safe.directory /code && \
+    # Use the provided personal access token for any GitHub HTTPS operations, including private submodules.
+    git config --global url."https://${DWARVES_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/" && \
+    # Rewrite any git@github.com: SSH style URLs to HTTPS so the token mapping above applies.
+    git config --global url."https://github.com/".insteadOf "git@github.com:" && \
+    git submodule update --init --recursive --depth 1 && \
+    devbox run build-static
 
 # Export runner
 FROM nginx:alpine
 
 LABEL maintainer="anhnx@d.foundation" \
-  org.opencontainers.image.title="memo.d.foundation Frontend" \
-  org.opencontainers.image.version="1.0.0" \
-  org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation"
-# Add org.opencontainers.image.revision=$(git rev-parse HEAD) in your CI/CD build arguments for this label
+      org.opencontainers.image.title="memo.d.foundation Frontend" \
+      org.opencontainers.image.version="1.0.0" \
+      org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation"
+      # Add org.opencontainers.image.revision=$(git rev-parse HEAD) in your CI/CD build arguments for this label
 
 # Set locale environment variables for UTF-8 support
 ENV LANG C.UTF-8
