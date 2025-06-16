@@ -149,6 +149,49 @@ function rehypeCodeblock() {
 }
 
 /**
+ * Custom rehype plugin to convert inline code elements to span elements with mark-text-block class
+ */
+function rehypeInlineCodeToSpan() {
+  return (tree: HastRoot) => {
+    visit(tree, 'element', (node: Element, index, parent) => {
+      if (node.tagName === 'code') {
+        // Check if the parent is NOT a 'pre' element.
+        // Inline code <code> elements are direct children of other elements like <p>,
+        // whereas code blocks are <code> within <pre>.
+        const parentIsPre =
+          parent &&
+          (parent as Element).type === 'element' &&
+          (parent as Element).tagName === 'pre';
+
+        if (!parentIsPre) {
+          node.tagName = 'span';
+          node.properties = node.properties || {}; // Ensure properties object exists
+
+          // Initialize or update className
+          let classNames: string[] = [];
+          if (Array.isArray(node.properties.className)) {
+            classNames = node.properties.className.map(String);
+          } else if (typeof node.properties.className === 'string') {
+            classNames = [node.properties.className];
+          }
+
+          // Remove any existing highlighting classes that might be there by mistake
+          classNames = classNames.filter(
+            (cn: string) => !cn.startsWith('language-') && cn !== 'hljs',
+          );
+
+          // Add 'mark-text-block' if not already present
+          if (!classNames.includes('mark-text-block')) {
+            classNames.push('mark-text-block');
+          }
+          node.properties.className = classNames;
+        }
+      }
+    });
+  };
+}
+
+/**
  * Custom remark plugin to count blocks
  */
 function remarkBlockCount() {
@@ -583,6 +626,7 @@ export async function getMarkdownContent(filePath: string) {
     }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw) // Allow raw HTML
+    .use(rehypeInlineCodeToSpan) // Convert inline code to span with quote-block class
     .use(rehypeVideos)
     .use(rehypeSanitize, schema as never) // Move sanitize BEFORE adding nextjs links
     // .use(rehypeKatex) // Render math blocks
