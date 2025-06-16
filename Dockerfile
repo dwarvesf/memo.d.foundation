@@ -61,6 +61,9 @@ RUN git init && \
     git clean -fdx && \
     git checkout ${RAILWAY_GIT_BRANCH} && \
     git config --global --add safe.directory /code && \
+    # Use the provided personal access token for any GitHub HTTPS operations, including private submodules.
+    git config --global url."https://${DWARVES_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/" && \
+    # Rewrite any git@github.com: SSH style URLs to HTTPS so the token mapping above applies.
     git config --global url."https://github.com/".insteadOf "git@github.com:" && \
     git submodule update --init --recursive --depth 1 && \
     devbox run build-static
