@@ -9,7 +9,8 @@ import { fetchContributorProfiles } from '@/lib/contributor-profile';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import Jdenticon from 'react-jdenticon';
-import React from 'react'; // List component uses React.Fragment
+import React, { useState, useEffect, useRef } from 'react'; // List component uses React.Fragment
+import { uppercaseSpecialWords } from '@/lib/utils';
 
 interface MonthGroup {
   name: string;
@@ -152,38 +153,53 @@ function List({ data }: { data: (IMemoItem & { authorAvatars: string[] })[] }) {
                 .replaceAll('/', '.')}
             </span>
           )}
-          <div className="flex flex-col">
+          <div className="flex min-w-0 flex-col">
             <Link
               href={formatContentPath(memo.filePath)}
-              className="text-foreground text-base font-semibold"
+              className="text-foreground line-clamp-2 overflow-hidden text-base font-semibold"
             >
               {memo.title}
             </Link>
-            <div className="flex items-center gap-x-1 text-sm">
-              <div className="flex flex-row -space-x-2">
-                {memo.authorAvatars?.map((avatar, index) => (
-                  <Avatar
-                    key={`${avatar}_${memo.title}`}
-                    className="dark:bg-secondary flex h-4 w-4 items-center justify-center border bg-[#fff]"
+            <div className="flex flex-col gap-x-2 sm:flex-row sm:items-center">
+              {memo?.authors?.length ? (
+                <div className="flex items-center gap-x-1 text-sm">
+                  <div className="flex flex-row -space-x-2">
+                    {memo.authorAvatars?.map((avatar, index) => (
+                      <Avatar
+                        key={`${avatar}_${memo.title}`}
+                        className="dark:bg-secondary flex h-4 w-4 items-center justify-center border bg-[#fff]"
+                      >
+                        {avatar ? (
+                          <AvatarImage src={avatar} className="no-zoom !m-0" />
+                        ) : (
+                          <Jdenticon
+                            value={memo.authors?.[index] ?? ''}
+                            size={16}
+                          />
+                        )}
+                      </Avatar>
+                    ))}
+                  </div>
+                  <span className="text-muted-foreground">
+                    by{' '}
+                    <Link href={`/contributor/${memo.authors?.[0]}`}>
+                      {memo.authors?.[0]}
+                    </Link>
+                    {(memo.authors?.length ?? 0) > 1 ? ` and others` : ''}
+                  </span>
+                </div>
+              ) : null}
+              <div className="space-x-1">
+                {memo.tags?.slice(0, 3).map(tag => (
+                  <Link
+                    key={tag}
+                    href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="dark:bg-border hover:text-primary text-2xs rounded-[2.8px] bg-[#f9fafb] px-1.5 leading-[1.7] font-medium text-neutral-500 hover:underline"
                   >
-                    {avatar ? (
-                      <AvatarImage src={avatar} className="no-zoom !m-0" />
-                    ) : (
-                      <Jdenticon
-                        value={memo.authors?.[index] ?? ''}
-                        size={16}
-                      />
-                    )}
-                  </Avatar>
+                    {uppercaseSpecialWords(tag)}
+                  </Link>
                 ))}
               </div>
-              <span className="text-muted-foreground">
-                authored by{' '}
-                <Link href={`/contributor/${memo.authors?.[0]}`}>
-                  {memo.authors?.[0]}
-                </Link>
-                {(memo.authors?.length ?? 0) > 1 ? ` and others` : ''}
-              </span>
             </div>
           </div>
         </div>
@@ -197,6 +213,99 @@ export default function All({
   searchIndex,
   groupedMemos,
 }: AllPageProps) {
+  const allFlatMemos = groupedMemos.flatMap(yearGroup =>
+    yearGroup.months.flatMap(monthGroup => monthGroup.posts),
+  );
+
+  const initialDisplayCount = 50;
+  const [displayedMemos, setDisplayedMemos] = useState(
+    allFlatMemos.slice(0, initialDisplayCount),
+  );
+  const [hasMore, setHasMore] = useState(
+    allFlatMemos.length > initialDisplayCount,
+  );
+  const loadingRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        const target = entries[0];
+        if (target.isIntersecting && hasMore) {
+          loadMoreMemos();
+        }
+      },
+      {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 1.0,
+      },
+    );
+
+    if (loadingRef.current) {
+      observer.observe(loadingRef.current);
+    }
+
+    return () => {
+      if (loadingRef.current) {
+        observer.unobserve(loadingRef.current);
+      }
+    };
+  }, [hasMore, allFlatMemos]); // Add allFlatMemos to dependencies
+
+  const loadMoreMemos = () => {
+    const currentLength = displayedMemos.length;
+    const nextFifty = allFlatMemos.slice(
+      currentLength,
+      currentLength + initialDisplayCount,
+    );
+    setDisplayedMemos(prevMemos => [...prevMemos, ...nextFifty]);
+    setHasMore(currentLength + nextFifty.length < allFlatMemos.length);
+  };
+
+  // Group displayed memos by year and month for rendering
+  const groupedDisplayedMemos: YearGroup[] = [];
+  const tempGroupedDisplayedMemos: Record<
+    string,
+    Record<string, (IMemoItem & { authorAvatars: string[] })[]>
+  > = {};
+
+  displayedMemos.forEach(memo => {
+    const date = new Date(memo.date);
+    const year = date.getFullYear().toString();
+    const month = date.toLocaleString('en-US', { month: 'long' });
+
+    if (!tempGroupedDisplayedMemos[year]) {
+      tempGroupedDisplayedMemos[year] = {};
+    }
+    if (!tempGroupedDisplayedMemos[year][month]) {
+      tempGroupedDisplayedMemos[year][month] = [];
+    }
+    tempGroupedDisplayedMemos[year][month].push(memo);
+  });
+
+  const sortedYears = Object.keys(tempGroupedDisplayedMemos).sort(
+    (a, b) => parseInt(b) - parseInt(a),
+  );
+
+  sortedYears.forEach(year => {
+    const yearGroup: YearGroup = { year, months: [] };
+    const monthsData = tempGroupedDisplayedMemos[year];
+
+    const sortedMonths = Object.keys(monthsData).sort((a, b) => {
+      const dateA = new Date(Date.parse(a + ' 1, 2000'));
+      const dateB = new Date(Date.parse(b + ' 1, 2000'));
+      return dateB.getMonth() - dateA.getMonth();
+    });
+
+    sortedMonths.forEach(month => {
+      yearGroup.months.push({
+        name: month,
+        posts: monthsData[month],
+      });
+    });
+    groupedDisplayedMemos.push(yearGroup);
+  });
+
   return (
     <RootLayout
       title="Dwarves Memo - All Posts"
@@ -207,7 +316,7 @@ export default function All({
       <div className="memo-content">
         <div className="prose dark:prose-invert article-content">
           <h1 className="!mt-0 mb-8 text-4xl font-bold">All memos</h1>
-          {groupedMemos.map(yearGroup => (
+          {groupedDisplayedMemos.map(yearGroup => (
             <div key={yearGroup.year}>
               <h2 className="mt-8 mb-4 !text-2xl font-bold">
                 {yearGroup.year}
@@ -225,6 +334,9 @@ export default function All({
               ))}
             </div>
           ))}
+          {hasMore && (
+            <div ref={loadingRef} className="flex justify-center py-4" />
+          )}
         </div>
       </div>
     </RootLayout>
