@@ -115,6 +115,10 @@
   .article-content li > *:first-child {
     @apply !mt-0;
   }
+
+  .mark-text-block {
+    @apply text-primary bg-primary/5 rounded-md px-1 py-0 font-mono text-[0.835rem];
+  }
 }
 
 @layer utilities {
