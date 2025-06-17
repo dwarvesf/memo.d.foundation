@@ -140,6 +140,11 @@
     @apply my-6 !list-none space-y-3 !pl-7;
   }
 
+  .enhanced-list ul,
+  .enhanced-list ol {
+    @apply !pl-5;
+  }
+
   .enhanced-list > .enhanced-list__item {
     @apply relative;
   }
