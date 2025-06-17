@@ -151,7 +151,7 @@ function rehypeCodeblock() {
 /**
  * Custom rehype plugin to convert inline code elements to span elements with mark-text-block class
  */
-function rehypeInlineCodeToSpan() {
+export function rehypeInlineCodeToSpan() {
   return (tree: HastRoot) => {
     visit(tree, 'element', (node: Element, index, parent) => {
       if (node.tagName === 'code') {
