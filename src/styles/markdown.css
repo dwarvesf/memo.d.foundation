@@ -117,7 +117,7 @@
   }
 
   .mark-text-block {
-    @apply text-primary rounded-md bg-gray-500/10 px-1.5 py-1;
+    @apply text-primary bg-primary/5 rounded-md px-1 py-0 font-mono text-[0.835rem];
   }
 }
 
