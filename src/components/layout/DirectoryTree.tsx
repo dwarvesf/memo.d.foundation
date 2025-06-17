@@ -17,7 +17,6 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     // Ensure all nodes have a url, defaulting to the key if not present
     if (tree[key].hidden) {
       delete tree[key];
-      return;
     }
   });
   const router = useRouter();
