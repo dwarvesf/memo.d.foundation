@@ -175,6 +175,19 @@
     content: counter(enhanced-counter);
     @apply text-primary flex items-center justify-center text-xs font-medium;
   }
+
+  .contains-task-list {
+    @apply list-none !pl-0;
+  }
+
+  .contains-task-list ul,
+  .contains-task-list ol {
+    @apply !mt-1.5 !pl-6;
+  }
+
+  .task-list-item::marker {
+    @apply !text-transparent;
+  }
 }
 
 @layer utilities {

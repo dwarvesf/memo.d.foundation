@@ -412,11 +412,11 @@ export function rehypeEnhanceLists() {
             ? [node.properties.className]
             : [];
         node.properties = node.properties || {};
-        node.properties.className = [
-          ...existingClasses,
-          'enhanced-list',
-          'enhanced-list--unordered',
-        ];
+        node.properties.className = existingClasses.includes(
+          'contains-task-list',
+        )
+          ? existingClasses
+          : [...existingClasses, 'enhanced-list', 'enhanced-list--unordered'];
       }
 
       // Add enhanced classes to ordered lists
@@ -427,11 +427,11 @@ export function rehypeEnhanceLists() {
             ? [node.properties.className]
             : [];
         node.properties = node.properties || {};
-        node.properties.className = [
-          ...existingClasses,
-          'enhanced-list',
-          'enhanced-list--ordered',
-        ];
+        node.properties.className = existingClasses.includes(
+          'contains-task-list',
+        )
+          ? existingClasses
+          : [...existingClasses, 'enhanced-list', 'enhanced-list--ordered'];
       }
 
       // Add enhanced classes to list items
@@ -442,7 +442,9 @@ export function rehypeEnhanceLists() {
             ? [node.properties.className]
             : [];
         node.properties = node.properties || {};
-        node.properties.className = [...existingClasses, 'enhanced-list__item'];
+        node.properties.className = existingClasses.includes('task-list-item')
+          ? existingClasses
+          : [...existingClasses, 'enhanced-list__item'];
       }
     });
   };
