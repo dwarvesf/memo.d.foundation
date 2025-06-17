@@ -151,7 +151,7 @@ function rehypeCodeblock() {
 /**
  * Custom rehype plugin to convert inline code elements to span elements with mark-text-block class
  */
-function rehypeInlineCodeToSpan() {
+export function rehypeInlineCodeToSpan() {
   return (tree: HastRoot) => {
     visit(tree, 'element', (node: Element, index, parent) => {
       if (node.tagName === 'code') {
@@ -399,6 +399,56 @@ function rehypeNextjsLinks() {
 }
 
 /**
+ * Custom rehype plugin to enhance lists with improved styling classes
+ */
+export function rehypeEnhanceLists() {
+  return (tree: HastRoot) => {
+    visit(tree, 'element', (node: Element) => {
+      // Add enhanced classes to unordered lists
+      if (node.tagName === 'ul') {
+        const existingClasses = Array.isArray(node.properties?.className)
+          ? node.properties.className
+          : typeof node.properties?.className === 'string'
+            ? [node.properties.className]
+            : [];
+        node.properties = node.properties || {};
+        node.properties.className = [
+          ...existingClasses,
+          'enhanced-list',
+          'enhanced-list--unordered',
+        ];
+      }
+
+      // Add enhanced classes to ordered lists
+      if (node.tagName === 'ol') {
+        const existingClasses = Array.isArray(node.properties?.className)
+          ? node.properties.className
+          : typeof node.properties?.className === 'string'
+            ? [node.properties.className]
+            : [];
+        node.properties = node.properties || {};
+        node.properties.className = [
+          ...existingClasses,
+          'enhanced-list',
+          'enhanced-list--ordered',
+        ];
+      }
+
+      // Add enhanced classes to list items
+      if (node.tagName === 'li') {
+        const existingClasses = Array.isArray(node.properties?.className)
+          ? node.properties.className
+          : typeof node.properties?.className === 'string'
+            ? [node.properties.className]
+            : [];
+        node.properties = node.properties || {};
+        node.properties.className = [...existingClasses, 'enhanced-list__item'];
+      }
+    });
+  };
+}
+
+/**
  * Reads and parses markdown content from a file
  * @param filePath Path to the markdown file
  * @returns Object with frontmatter, processed HTML content, and table of contents
@@ -632,6 +682,7 @@ export async function getMarkdownContent(filePath: string) {
     // .use(rehypeKatex) // Render math blocks
     .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
     .use(rehypeNextjsLinks) // Add this new plugin here AFTER sanitize
+    .use(rehypeEnhanceLists) // Add enhanced classes to lists
     .use(rehypeTable) // Wrap tables in a container div
     .use(rehypeCodeblock) // Add the custom class plugin here
     .use(rehypeHighlight)
