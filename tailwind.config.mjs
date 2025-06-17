@@ -294,6 +294,50 @@ const config = {
             pre: {
               padding: '0.625rem 1rem',
             },
+            'input[type="checkbox"]': {
+              appearance: 'none',
+              width: '1.25rem',
+              height: '1.25rem',
+              border: '2px solid var(--muted-foreground)',
+              borderRadius: '0.25rem',
+              backgroundColor: 'var(--background)',
+              position: 'relative',
+              cursor: 'pointer',
+              verticalAlign: 'text-top',
+              marginRight: '0.5rem',
+              flexShrink: '0',
+              transition: 'all 0.15s ease-in-out',
+              '&:checked': {
+                backgroundColor: 'var(--primary)',
+                borderColor: 'var(--primary)',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  left: '0.25rem',
+                  top: '0.065rem',
+                  width: '0.45rem',
+                  height: '0.725rem',
+                  border: '2px solid white',
+                  borderTop: 'none',
+                  borderLeft: 'none',
+                  transform: 'rotate(45deg)',
+                },
+              },
+              '&:focus': {
+                outline: '1px solid',
+                outlineOffset: '1px',
+                '&:not(:checked)': {
+                  outlineColor: 'var(--muted-foreground)',
+                },
+                '&:checked': {
+                  outlineColor: 'var(--primary-hover-color)',
+                },
+              },
+              '&:disabled': {
+                opacity: '0.5',
+                cursor: 'not-allowed',
+              },
+            },
           },
         },
         dark: {

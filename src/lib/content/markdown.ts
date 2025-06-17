@@ -508,6 +508,7 @@ export async function getMarkdownContent(filePath: string) {
       'del',
       'div',
       'span',
+      'input', // Add input tag for checkboxes
       // Table elements
       'table',
       'thead',
@@ -542,6 +543,7 @@ export async function getMarkdownContent(filePath: string) {
       th: ['align', 'scope', 'colspan', 'rowspan'],
       td: ['align', 'colspan', 'rowspan'],
       code: [['className', /^language-./, 'math-inline', 'math-display']],
+      input: ['type', 'checked', 'disabled'], // Add input attributes for checkboxes
       video: [
         'src',
         'controls',
