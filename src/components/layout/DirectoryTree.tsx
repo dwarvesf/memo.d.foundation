@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { ITreeNode } from '@/types';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { ChevronDownIcon } from 'lucide-react';
 import { useSessionStorage } from 'usehooks-ts';
@@ -11,7 +11,18 @@ interface DirectoryTreeProps {
 }
 
 const DirectoryTree = (props: DirectoryTreeProps) => {
-  const { tree } = props;
+  const { tree: treeProps } = props;
+  const tree = useMemo(() => {
+    const tree = { ...treeProps };
+    Object.keys(tree).forEach(key => {
+      // Ensure all nodes have a url, defaulting to the key if not present
+      if (tree[key].hidden) {
+        delete tree[key];
+      }
+    });
+
+    return tree;
+  }, [treeProps]);
   const router = useRouter();
   const isInitializedRef = useRef(false);
   const [openPaths, setOpenPaths] = useSessionStorage<Record<string, boolean>>(
@@ -114,7 +125,9 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     const withoutChildrenItems = itemChildren.filter(([, childNode]) => {
       return Object.keys(childNode.children).length === 0;
     });
+
     const allItems = [...withChildrenItems, ...withoutChildrenItems];
+
     if (depth === 0 && !hasChildren) {
       return null;
     }
