@@ -227,7 +227,6 @@ function transformMenuDataToDirectoryTree(
       },
       url: '/resources',
     };
-    treeNode['/'] = { label: 'Home', children: {}, url: '/' };
     treeNode['/tags'] = {
       label: 'Popular Tags',
       children: {},
