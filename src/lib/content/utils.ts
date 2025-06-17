@@ -204,6 +204,11 @@ function transformMenuDataToDirectoryTree(
     treeNode['/resources'] = {
       label: 'Resources',
       children: {
+        '/all': {
+          label: 'All',
+          children: {},
+          url: '/all',
+        },
         '/tags': {
           label: 'Tags',
           children: {},
