@@ -30,6 +30,7 @@
   .prose td {
     @apply border !px-3 py-2.5 text-left align-top;
   }
+
   .prose thead {
     @apply bg-muted sticky top-0;
   }
@@ -37,16 +38,20 @@
   .prose th {
     @apply font-medium;
   }
+
   .article-content > *:first-child {
     @apply !mt-0;
   }
+
   .article-content ul li,
   .article-content ol li {
     @apply !my-0;
   }
+
   .table-container {
     @apply !mt-4 overflow-x-auto;
   }
+
   .table-container > table {
     @apply !my-0;
   }
@@ -54,21 +59,27 @@
   .language-math {
     @apply block w-full !py-1 !text-[1.0625rem];
   }
+
   .language-math.math-inline {
     @apply inline;
   }
+
   .katex-display {
     @apply !my-0;
   }
+
   .prose :where(h2 + *):not(:where([class~='not-prose'])) {
     @apply !mt-[var(--element-margin)];
   }
+
   .article-content blockquote {
     @apply relative grid grid-cols-[32px_1fr] gap-x-2.5 overflow-hidden rounded-lg bg-[var(--primary-color-lighten)] p-4 px-3 text-base leading-6;
     place-items: center flex-start;
-    isolation: isolate; /* Creates a new stacking context */
+    isolation: isolate;
+    /* Creates a new stacking context */
     margin-top: var(--element-margin) !important;
   }
+
   .article-content blockquote * {
     grid-column: 2/2;
     grid-row: auto;
@@ -87,6 +98,7 @@
     grid-column: 1/1;
     place-self: flex-start;
   }
+
   .article-content blockquote::after {
     content: var(--dwarves-icon);
     position: absolute;
@@ -100,11 +112,13 @@
     transform: translate3d(30%, 10%, 0);
     opacity: 0.4;
   }
+
   .article-content h3,
   .article-content h4,
   .article-content h5 {
     margin-top: var(--subheading-margin) !important;
   }
+
   .article-content table a,
   .article-content h2 a,
   .article-content h3 a,
@@ -112,12 +126,49 @@
   .article-content h5 a {
     @apply !text-foreground hover:!text-primary;
   }
+
   .article-content li > *:first-child {
     @apply !mt-0;
   }
 
   .mark-text-block {
     @apply text-primary bg-primary/5 rounded-md px-1 py-0 font-mono text-[0.835rem];
+  }
+
+  /* Enhanced List Styling using Tailwind CSS and ::marker */
+  .enhanced-list {
+    @apply my-6 !list-none space-y-3;
+  }
+
+  .enhanced-list > .enhanced-list__item {
+    @apply relative;
+  }
+
+  .enhanced-list > .enhanced-list__item::before {
+    @apply absolute top-[0.2rem] -left-6 h-[1.25rem] w-[1.25rem] rounded-full leading-relaxed;
+    background-color: color-mix(in srgb, var(--primary) 15%, transparent);
+  }
+
+  .enhanced-list--unordered > .enhanced-list__item::before {
+    content: '';
+    background-image: url('/assets/img/arrow-right.svg');
+    background-size: 0.9rem;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  /* Ordered list styling with Tailwind utilities */
+  .enhanced-list--ordered {
+    counter-reset: enhanced-counter;
+  }
+
+  .enhanced-list--ordered > .enhanced-list__item {
+    counter-increment: enhanced-counter;
+  }
+
+  .enhanced-list--ordered > .enhanced-list__item::before {
+    content: counter(enhanced-counter);
+    @apply text-primary flex items-center justify-center text-xs font-bold;
   }
 }
 
