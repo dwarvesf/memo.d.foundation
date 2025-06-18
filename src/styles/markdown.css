@@ -195,3 +195,9 @@
     @apply mt-0;
   }
 }
+
+.tldr {
+  > p:first-child + p {
+    margin-top: 0px !important;
+  }
+}

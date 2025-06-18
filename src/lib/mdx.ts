@@ -3,7 +3,11 @@ import { get } from 'lodash';
 import { serialize } from 'next-mdx-remote-client/serialize';
 import recmaMdxEscapeMissingComponents from 'recma-mdx-escape-missing-components';
 import remarkGfm from 'remark-gfm';
-import { rehypeEnhanceLists, rehypeInlineCodeToSpan } from './content/markdown';
+import {
+  rehypeEnhanceLists,
+  rehypeInlineCodeToSpan,
+  remarkExtractTLDR,
+} from './content/markdown';
 
 interface GetMdxSourceProps {
   mdxPath: string;
@@ -35,7 +39,7 @@ export async function getMdxSource(props: GetMdxSourceProps) {
           parseFrontmatter: true,
           mdxOptions: {
             recmaPlugins: [recmaMdxEscapeMissingComponents],
-            remarkPlugins: [remarkGfm],
+            remarkPlugins: [remarkGfm, remarkExtractTLDR],
             rehypePlugins: [rehypeInlineCodeToSpan, rehypeEnhanceLists],
           },
         },
