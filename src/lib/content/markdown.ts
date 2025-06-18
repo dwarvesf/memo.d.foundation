@@ -224,6 +224,65 @@ function remarkExtractSummaries() {
 }
 
 /**
+ * Custom remark plugin to extract, remove TLDR code blocks and convert them
+ * to a blockquote with a class
+ * Eg:
+ * ```tldr
+ * This is a TLDR summary
+ * ```
+ * To:
+ * <blockquote class="tldr">
+ *   <p>This is a TLDR summary</p>
+ * </blockquote>
+ */
+export function remarkExtractTLDR() {
+  return (tree: Root) => {
+    visit(tree, 'code', (node: Code, index, parent) => {
+      if (node.lang === 'tldr' && parent && typeof index === 'number') {
+        // Create a blockquote node with TL;DR: prefix and the TLDR content
+        const tldrContent = node.value.trim();
+        const tldrLines = tldrContent.split('\n').filter(Boolean);
+        if (tldrLines.length === 0) {
+          return [SKIP, index];
+        }
+        const blockquoteNode = {
+          type: 'blockquote' as const,
+          children: [
+            {
+              type: 'paragraph' as const,
+              children: [
+                {
+                  type: 'text' as const,
+                  value: 'tl;dr;',
+                },
+              ],
+            },
+            ...tldrLines.map(line => ({
+              type: 'paragraph' as const,
+              children: [
+                {
+                  type: 'text' as const,
+                  value: line.trim(),
+                },
+              ],
+            })),
+          ],
+          data: {
+            hProperties: {
+              className: ['tldr'],
+            },
+          },
+        };
+
+        // Replace the code block with the blockquote
+        parent.children[index] = blockquoteNode;
+        return [SKIP, index];
+      }
+    });
+  };
+}
+
+/**
  * Custom rehype plugin to add IDs to headings
  */
 function rehypeAddHeadingIds() {
@@ -673,6 +732,7 @@ export async function getMarkdownContent(filePath: string) {
     .use(() => remarkResolveImagePaths(filePath))
     .use(() => remarkProcessLinks(filePath, aliasJSONPaths)) // Process links and resolve paths
     .use(remarkExtractSummaries) // Extract and remove summary code blocks
+    .use(remarkExtractTLDR) // Extract and convert TLDR code blocks to blockquotes
     .use(remarkToc) // Extract table of contents and create heading ID mapping
     .use(remarkBlockCount) // Count blocks
     .use(remarkMath, {

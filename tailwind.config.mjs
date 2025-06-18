@@ -200,6 +200,9 @@ const config = {
               marginBottom: '0',
               marginTop: 'var(--element-margin)',
             },
+            'blockquote > p': {
+              marginTop: 'calc(var(--element-margin) / 2)',
+            },
             iframe: {
               marginTop: 'var(--element-margin)',
             },
