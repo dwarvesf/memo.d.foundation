@@ -1,5 +1,4 @@
 import typography from '@tailwindcss/typography';
-import { transform } from 'lodash';
 import plugin from 'tailwindcss/plugin';
 
 /** @type {import('tailwindcss').Config} */
