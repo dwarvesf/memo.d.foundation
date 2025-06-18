@@ -252,8 +252,8 @@ export function remarkExtractTLDR() {
               type: 'paragraph' as const,
               children: [
                 {
-                  type: 'text' as const,
-                  value: 'tl;dr;',
+                  type: 'strong' as const,
+                  children: [{ type: 'text' as const, value: 'tl;dr;' }],
                 },
               ],
             },
