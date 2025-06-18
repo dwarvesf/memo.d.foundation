@@ -7,7 +7,9 @@ import {
   rehypeEnhanceLists,
   rehypeInlineCodeToSpan,
   remarkExtractTLDR,
+  remarkProcessLinks,
 } from './content/markdown';
+import { getStaticJSONPaths } from './content/paths';
 
 interface GetMdxSourceProps {
   mdxPath: string;
@@ -24,12 +26,18 @@ export async function getMdxSource(props: GetMdxSourceProps) {
     .then(() => true)
     .catch(() => false);
 
+  let path = mdxPath;
   if (mdxFileExists) {
     mdxContent = await fs.readFile(mdxPath, 'utf-8');
   } else {
     if (fallbackPath) {
+      path = fallbackPath;
       mdxContent = await fs.readFile(fallbackPath, 'utf-8');
     }
+  }
+  let aliasJSONPaths = {};
+  if (mdxContent) {
+    aliasJSONPaths = await getStaticJSONPaths();
   }
   const mdxSource = mdxContent
     ? await serialize({
@@ -39,7 +47,11 @@ export async function getMdxSource(props: GetMdxSourceProps) {
           parseFrontmatter: true,
           mdxOptions: {
             recmaPlugins: [recmaMdxEscapeMissingComponents],
-            remarkPlugins: [remarkGfm, remarkExtractTLDR],
+            remarkPlugins: [
+              remarkGfm,
+              remarkExtractTLDR,
+              () => remarkProcessLinks(path, aliasJSONPaths),
+            ],
             rehypePlugins: [rehypeInlineCodeToSpan, rehypeEnhanceLists],
           },
         },

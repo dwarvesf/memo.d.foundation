@@ -350,7 +350,7 @@ function remarkResolveImagePaths(fileDir: string) {
  * Custom remark plugin to process links and resolve relative paths
  * @param markdownFilePath Path to the markdown file being processed
  */
-function remarkProcessLinks(
+export function remarkProcessLinks(
   markdownFilePath: string,
   aliasJSONPaths: Record<string, string>,
 ) {
@@ -370,6 +370,8 @@ function remarkProcessLinks(
         // Link is already absolute from the site root (or should be treated as such)
         if (targetUrl.endsWith('.md')) {
           finalUrl = targetUrl.slice(0, -3);
+        } else if (targetUrl.endsWith('.mdx')) {
+          finalUrl = targetUrl.slice(0, -4);
         } else {
           finalUrl = targetUrl;
         }
@@ -389,6 +391,10 @@ function remarkProcessLinks(
 
         if (finalUrl.endsWith('.md')) {
           finalUrl = finalUrl.slice(0, -3);
+        }
+
+        if (finalUrl.endsWith('.mdx')) {
+          finalUrl = finalUrl.slice(0, -4);
         }
         // Handle cases where the link might now be to an index page like /folder/ (previously /folder/_index or /folder/readme)
         // This might need adjustment based on how your `_index.md` or `readme.md` files are treated for URLs.
