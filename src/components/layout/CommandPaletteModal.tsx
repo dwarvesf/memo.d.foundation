@@ -8,6 +8,7 @@ import { CommandSearchInput } from './CommandSearchInput';
 import { MemoIcons } from '../icons';
 import { Editor } from 'draft-js';
 import { useThemeContext } from '@/contexts/theme';
+import Head from 'next/head';
 
 interface Props {
   isOpen: boolean;
@@ -27,26 +28,26 @@ interface Props {
   selectedCategory: string;
   isSearching: boolean;
   setIsSearching: (isSearching: boolean) => void;
+  onClose: () => void;
 }
 
-const CommandPaletteModal = (props: Props) => {
-  const {
-    isOpen,
-    result,
-    defaultResult,
-    goto,
-    searchInputRef,
-    searchContainerRef,
-    setQuery,
-    query,
-    setSelectedIndex,
-    selectedIndex,
-    setSelectedCategory,
-    selectedCategory,
-    isSearching,
-    setIsSearching,
-  } = props;
-
+export function CommandPaletteModal({
+  isOpen,
+  result,
+  defaultResult,
+  goto,
+  searchInputRef,
+  searchContainerRef,
+  setQuery,
+  query,
+  setSelectedIndex,
+  selectedIndex,
+  setSelectedCategory,
+  selectedCategory,
+  isSearching,
+  setIsSearching,
+  onClose,
+}: Props) {
   const { theme } = useThemeContext();
 
   const selectedItem = result.grouped[selectedCategory]?.[selectedIndex];
@@ -54,8 +55,17 @@ const CommandPaletteModal = (props: Props) => {
     () => getCategoryIcon(selectedItem?.category || ''),
     [selectedItem?.category],
   );
+
   return (
     <>
+      {isOpen && (
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+          />
+        </Head>
+      )}
       {isOpen &&
         typeof document !== 'undefined' &&
         createPortal(
@@ -64,6 +74,11 @@ const CommandPaletteModal = (props: Props) => {
             style={{
               background:
                 theme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.2)',
+            }}
+            onClick={e => {
+              if (e.target === e.currentTarget) {
+                onClose();
+              }
             }}
           >
             <div
@@ -308,13 +323,11 @@ const CommandPaletteModal = (props: Props) => {
         )}
     </>
   );
-};
-
-export default CommandPaletteModal;
+}
 
 function getCategoryIcon(
   category: string,
-): React.FunctionComponent<React.SVGProps<SVGSVGElement>> {
+): React.FunctionComponent<React.ComponentProps<'svg'>> {
   const icon = category.split(' > ')[0];
 
   return MemoIcons[icon as keyof typeof MemoIcons] || MemoIcons.playbook;
