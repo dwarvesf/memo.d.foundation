@@ -177,7 +177,7 @@
   }
 
   .contains-task-list {
-    @apply list-none !pl-0;
+    @apply !list-none !pl-6;
   }
 
   .contains-task-list ul,
