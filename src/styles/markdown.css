@@ -177,12 +177,16 @@
   }
 
   .contains-task-list {
-    @apply list-none !pl-0;
+    @apply !list-none !pl-0;
   }
 
   .contains-task-list ul,
   .contains-task-list ol {
     @apply !mt-1.5 !pl-6;
+  }
+
+  .task-list-item:has(input[type='checkbox']) {
+    padding-inline-start: 1.5rem !important;
   }
 
   .task-list-item::marker {
