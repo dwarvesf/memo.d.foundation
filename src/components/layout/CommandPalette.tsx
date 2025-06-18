@@ -12,7 +12,7 @@ import { SearchResult } from '../search/SearchProvider';
 import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
 import { IRecentPageStorageItem, ISearchResultItem } from '@/types';
-import CommandPaletteModal from './CommandPaletteModal';
+import { CommandPaletteModal } from './CommandPaletteModal';
 import { BookOpenIcon, PinIcon, CopyIcon, Share2Icon } from 'lucide-react';
 import HotIcon from '../icons/HotIcon';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
@@ -482,6 +482,7 @@ const CommandPalette: React.FC = () => {
         goto={goto}
         isSearching={isSearching}
         setIsSearching={setIsSearching}
+        onClose={close}
       />
     </div>
   );
