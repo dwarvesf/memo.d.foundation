@@ -1,4 +1,5 @@
 import typography from '@tailwindcss/typography';
+import { transform } from 'lodash';
 import plugin from 'tailwindcss/plugin';
 
 /** @type {import('tailwindcss').Config} */
@@ -303,12 +304,12 @@ const config = {
               backgroundColor: 'var(--background)',
               position: 'relative',
               verticalAlign: 'middle',
-              marginRight: '6px',
               display: 'inline-block',
               position: 'relative',
               flexShrink: '0',
-              margin: '0 .2em .25em 0',
+              margin: '0 0 .25em 0',
               transition: 'all 0.15s ease-in-out',
+              transform: 'translateX(-5px)',
               '&:checked': {
                 backgroundColor: 'var(--primary)',
                 borderColor: 'var(--primary)',
