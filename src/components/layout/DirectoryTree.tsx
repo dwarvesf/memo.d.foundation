@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { ChevronDownIcon } from 'lucide-react';
 import { useSessionStorage } from 'usehooks-ts';
 import Link from 'next/link';
+import { normalizePathWithSlash } from '@/lib/utils/path-utils';
 
 interface DirectoryTreeProps {
   tree?: Record<string, ITreeNode>;
@@ -41,9 +42,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     if (!tree) return;
 
     // Normalize the current path
-    const currentPath = router.asPath.endsWith('/')
-      ? router.asPath.slice(0, -1)
-      : router.asPath;
+    const currentPath = normalizePathWithSlash(router.asPath);
 
     // Function to find the path in the tree
     const findPathInTree = (
@@ -52,8 +51,13 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       parentPaths: string[] = [],
     ): string[] | null => {
       for (const [nodePath, node] of Object.entries(nodes)) {
+        // Normalize the node's URL for comparison
+        const normalizedNodeUrl = node.url
+          ? normalizePathWithSlash(node.url)
+          : null;
+
         // Check if this is our target
-        if (node.url === targetPath) {
+        if (normalizedNodeUrl === targetPath) {
           return [...parentPaths, nodePath];
         }
 
@@ -137,9 +141,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       if (hasChildren) {
         return false;
       }
-      const currentPath = router.asPath.endsWith('/')
-        ? router.asPath.slice(0, -1)
-        : router.asPath;
+      const currentPath = normalizePathWithSlash(router.asPath);
 
       // Check if current path is a readme or index of this path
       const isCurrentPathSpecial =
@@ -150,18 +152,19 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
           0,
           currentPath.lastIndexOf('/'),
         );
-        // Normalize both paths by removing any trailing slashes
-        const normalizedParentPath = parentPath.endsWith('/')
-          ? parentPath.slice(0, -1)
-          : parentPath;
-        const normalizedNodeUrl = node.url?.endsWith('/')
-          ? node.url.slice(0, -1)
-          : node.url;
+        // Normalize both paths
+        const normalizedParentPath = normalizePathWithSlash(parentPath);
+        const normalizedNodeUrl = node.url
+          ? normalizePathWithSlash(node.url)
+          : '';
         return normalizedNodeUrl === normalizedParentPath;
       }
 
       // For all other cases, only highlight exact matches with the node's URL
-      return currentPath === node.url;
+      const normalizedNodeUrl = node.url
+        ? normalizePathWithSlash(node.url)
+        : '';
+      return currentPath === normalizedNodeUrl;
     })();
 
     return (

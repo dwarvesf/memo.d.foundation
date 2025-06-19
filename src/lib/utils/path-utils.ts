@@ -9,7 +9,7 @@ function removingRedundantSymbols(path: string): string {
   return path.replace(/\"|"/, '');
 }
 
-function normalizePathWithSlash(path: string): string {
+export function normalizePathWithSlash(path: string): string {
   if (path.startsWith('/')) {
     return removingTrailingSlash(removingRedundantSymbols(path));
   }
@@ -19,26 +19,44 @@ function normalizePathWithSlash(path: string): string {
 /**
  * Get the client-side redirect path for a given URL.
  * @param url The original URL.
+ * @param staticRedirects Optional static redirects map for server-side use
  * @returns The resolved URL, which may be redirected.
  */
-export function getClientSideRedirectPath(url: string): string {
+export function getClientSideRedirectPath(
+  url: string,
+  staticRedirects?: Record<string, string>,
+): string {
   if (!url || url === '/') {
     return url;
   }
-  let unifiedRedirects: Record<string, string> = {};
-  if (typeof window !== 'undefined') {
-    unifiedRedirects = (globalThis as any)._app_unified_redirects || {};
-  }
+
+  // Normalize the URL first
   const normalizedUrl = normalizePathWithSlash(url);
-  return unifiedRedirects[normalizedUrl] || url;
+
+  // Handle server-side case
+  if (typeof window === 'undefined') {
+    // If static redirects are provided (server-side), use them to avoid hydration mismatch
+    if (staticRedirects) {
+      return staticRedirects[normalizedUrl] || normalizedUrl;
+    }
+    return normalizedUrl;
+  }
+
+  // Handle client-side case
+  const unifiedRedirects = (globalThis as any)._app_unified_redirects || {};
+  return unifiedRedirects[normalizedUrl] || normalizedUrl;
 }
 
 /**
  * Formats a content file path into a URL path, handling special cases like /readme and /_index.
  * @param filePath The original file path (e.g., 'vault/some/directory/README.md').
+ * @param staticRedirects Optional static redirects map for server-side use
  * @returns The formatted URL path (e.g., '/some/directory').
  */
-export function formatContentPath(filePath: string): string {
+export function formatContentPath(
+  filePath: string,
+  staticRedirects?: Record<string, string>,
+): string {
   const lowerCasePath = filePath.toLowerCase();
 
   // Check if it's a README or _index file
@@ -59,7 +77,7 @@ export function formatContentPath(filePath: string): string {
     if (url.endsWith('/')) {
       url = url.slice(0, -1);
     }
-    return getClientSideRedirectPath(url);
+    return getClientSideRedirectPath(url, staticRedirects);
   } else {
     // Generate slugified URL for other files, removing .md suffix
     const slugifiedPath = slugifyPathComponents(filePath);
@@ -74,6 +92,6 @@ export function formatContentPath(filePath: string): string {
       url = url.slice(0, -1);
     }
 
-    return getClientSideRedirectPath(url);
+    return getClientSideRedirectPath(url, staticRedirects);
   }
 }

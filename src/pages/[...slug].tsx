@@ -34,7 +34,7 @@ import {
 } from '@/types';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { getMdxSource } from '@/lib/mdx';
-import { normalizePathWithSlash } from '../../scripts/common';
+import { normalizePathWithSlash } from '@/lib/utils/path-utils';
 import { getRedirectsBackLinks, getStaticJSONPaths } from '@/lib/content/paths';
 
 interface ContentPageProps extends RootLayoutPageProps {
@@ -90,7 +90,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     );
 
     const paths = await getStaticJSONPaths();
-
     const targetPath = paths[requestedPath] ?? requestedPath;
 
     const canonicalSlug = targetPath.split('/').filter(Boolean);

@@ -6,6 +6,7 @@ import { IBackLinkItem, IMetadata } from '@/types';
 import SummaryBlock from '../memo/SummaryBlock';
 import PageTableOfContents from './PageTableOfContents';
 import { ITocItem } from '@/types';
+import { normalizePathWithSlash } from '@/lib/utils/path-utils';
 
 interface ContentLayoutProps {
   children: React.ReactNode;
@@ -103,7 +104,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
             {backlinks.map((link, index) => (
               <li key={index} className="p-0 text-base">
                 <Link
-                  href={link.path}
+                  href={normalizePathWithSlash(link.path)}
                   className="hover:text-primary hover:decoration-primary decoration-link-decoration underline hover:underline"
                 >
                   📄 {link.title}
