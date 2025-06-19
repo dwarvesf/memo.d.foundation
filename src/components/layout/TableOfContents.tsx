@@ -10,14 +10,7 @@ const getHeadingLevelClass = (level: number) => {
   return `heading-level-${level}`;
 };
 const getIndicatorWidth = (depth: number) => {
-  switch (depth) {
-    case 2:
-      return 16;
-    case 3:
-      return 12;
-    default:
-      return 16;
-  }
+  return Math.max((6 - depth) * 4, 4);
 };
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
