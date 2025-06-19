@@ -1,0 +1,38 @@
+name: Build and Push Docker Base Image
+
+on:
+  push:
+    branches:
+      - ci/docker
+    paths:
+      - '.github/workflows/docker-base-publish.yml'
+      - 'Dockerfile.base'
+
+jobs:
+  docker-base-build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -f docker/Dockerfile.base -t ghcr.io/${{ github.repository }}:base-${{ github.sha }} .
+          docker tag ghcr.io/${{ github.repository }}:base-${{ github.sha }} ghcr.io/${{ github.repository }}:base-latest
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/${{ github.repository }}:base-${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}:base-latest
