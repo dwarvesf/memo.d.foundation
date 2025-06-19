@@ -10,7 +10,14 @@ const getHeadingLevelClass = (level: number) => {
   return `heading-level-${level}`;
 };
 const getIndicatorWidth = (depth: number) => {
-  return (6 - depth) * 5;
+  switch (depth) {
+    case 2:
+      return 16;
+    case 3:
+      return 12;
+    default:
+      return 16;
+  }
 };
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
@@ -27,8 +34,11 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
           >
             <Link
               href={`#${item.id}`}
-              style={{ width: `${getIndicatorWidth(item.depth)}px` }}
-              className={cn('bg-border flex h-0.5 text-transparent', {
+              style={{
+                width: `${getIndicatorWidth(item.depth)}px`,
+                borderRadius: '2px',
+              }}
+              className={cn('bg-border mr-2.5 flex h-0.5 text-transparent', {
                 'bg-border-dark dark:bg-border-light': item.id === activeId,
               })}
               onClick={e => {
@@ -59,11 +69,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               style={{ marginLeft: `${depth * 16}px` }}
               href={`#${item.id}`}
               className={cn(
-                'text-foreground flex rounded-lg p-1 text-[13px] leading-4 transition-all duration-150',
+                'flex cursor-pointer items-center gap-1 rounded px-2 py-1.25 text-left text-xs leading-normal font-medium',
                 getHeadingLevelClass(item.depth),
-                'hover:bg-background-tertiary-light hover:dark:bg-background-tertiary',
+                'hover:bg-background-secondary-light hover:dark:bg-background-secondary',
                 {
+                  'text-muted-foreground': item.id !== activeId,
                   'text-primary': item.id === activeId,
+                  'hover:text-foreground': item.id !== activeId,
                 },
               )}
               onClick={e => {
@@ -149,12 +161,12 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   if (!items?.length) return null;
   return (
     <div className="toc relative z-10 hidden md:block">
-      <div className="toc-indicators peer fixed top-[var(--header-height)] right-0 mt-15 cursor-pointer pr-2 pb-4 pl-5">
+      <div className="toc-indicators peer fixed top-[104px] right-0 mr-2 cursor-pointer pr-2 pb-4 pl-5">
         <div className=""> {renderTocIndicators(items || [])}</div>
       </div>
       <div
         className={cn(
-          'toc-modal bg-background fixed top-[var(--header-height)] right-0 m-2 mt-17 rounded-xl',
+          'toc-modal bg-background fixed top-[80px] right-0 mr-6 mb-2 ml-2 rounded-xl',
           'border shadow-[0px_4px_6px_-2px_#10182808,0px_12px_16px_-4px_#10182814]',
           'invisible translate-x-[12px] opacity-0',
           'ease transition-all duration-300',
@@ -162,7 +174,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
           'hover:visible hover:translate-x-0 hover:opacity-100',
         )}
       >
-        <div className="max-h-[min(680px,calc(100vh-var(--header-height)-68px-32px-2rem))] max-w-[240px] overflow-y-auto p-4">
+        <div className="max-h-[min(680px,calc(100vh-var(--header-height)-68px-32px-2rem))] max-w-[240px] overflow-y-auto p-3">
           {renderTocModalItems(items || [])}
         </div>
       </div>
