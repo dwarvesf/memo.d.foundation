@@ -75,7 +75,7 @@ COPY --from=source /code .
 # Build the static assets using a cache mount.
 # This tells Docker to persist the ./.next/cache directory between builds,
 # enabling "warm" builds without relying on a local cache from the host.
-RUN --mount=type=cache,target=./.next/cache make build-static
+RUN make build-static
 
 # --- Runner Stage ---
 # This is the final, small image that will run in production.
