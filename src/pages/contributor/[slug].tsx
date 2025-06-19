@@ -20,7 +20,12 @@ import {
 } from 'next-mdx-remote-client/serialize';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { getMdxSource } from '@/lib/mdx';
-import { MochiUserProfile, UserProfile, UserProfileJson } from '@/types/user';
+import {
+  ContributorProfile,
+  GithubMetadata,
+  MochiUserProfile,
+  UserProfile,
+} from '@/types/user';
 import ContributorLayout from '@/components/layout/ContributorLayout';
 import { eachDayOfInterval, endOfYear, startOfYear, format } from 'date-fns';
 import { fetchContributorProfile } from '@/lib/contributor-profile';
@@ -177,49 +182,58 @@ async function fetchCollectorsData(tokenId: string) {
   }
 }
 
-/**
- * Fetches the contributor's wallet address from their GitHub username
- */
-async function fetchContributorWalletAddress(contributorSlug: string) {
+async function fetchMochiContributorProfile(contributorSlug: string) {
   try {
-    const profileData = (await fetchContributorProfile(
-      contributorSlug,
-    )) as MochiUserProfile;
-
-    // Look for EVM accounts in the associated_accounts
-    if (
-      profileData?.associated_accounts &&
-      profileData?.associated_accounts.length > 0
-    ) {
-      // Filter only EVM chain accounts
-      const evmAccounts = profileData.associated_accounts.filter(
-        (account: any) => account.platform === 'evm-chain',
-      );
-
-      if (evmAccounts.length > 0) {
-        // Sort by updated_at in descending order (latest first)
-        // If updated_at is not available, those accounts will be ordered last
-        const sortedAccounts = evmAccounts.sort((a: any, b: any) => {
-          if (!a.updated_at) return 1;
-          if (!b.updated_at) return -1;
-          return (
-            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-          );
-        });
-
-        // Return the most recently updated EVM account
-        return sortedAccounts[0].platform_identifier;
-      }
+    const profileData = await fetchContributorProfile(contributorSlug);
+    if (!profileData) {
+      console.error(`No profile data found for ${contributorSlug}`);
+      return null;
     }
-
-    return null; // No wallet address found
+    return profileData;
   } catch (error) {
     console.error(
-      `Error fetching wallet address for ${contributorSlug}:`,
+      `Error fetching contributor profile for ${contributorSlug}:`,
       error,
     );
     return null;
   }
+}
+
+/**
+ * Get the contributor's wallet address from their Mochi profile.
+ */
+async function getContributorWalletAddress(
+  mochiProfile: MochiUserProfile | null,
+) {
+  const profileData = mochiProfile;
+
+  // Look for EVM accounts in the associated_accounts
+  if (
+    profileData?.associated_accounts &&
+    profileData?.associated_accounts.length > 0
+  ) {
+    // Filter only EVM chain accounts
+    const evmAccounts = profileData.associated_accounts.filter(
+      (account: any) => account.platform === 'evm-chain',
+    );
+
+    if (evmAccounts.length > 0) {
+      // Sort by updated_at in descending order (latest first)
+      // If updated_at is not available, those accounts will be ordered last
+      const sortedAccounts = evmAccounts.sort((a: any, b: any) => {
+        if (!a.updated_at) return 1;
+        if (!b.updated_at) return -1;
+        return (
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+        );
+      });
+
+      // Return the most recently updated EVM account
+      return sortedAccounts[0].platform_identifier;
+    }
+  }
+
+  return null; // No wallet address found
 }
 
 /**
@@ -381,6 +395,45 @@ function aggregateActivities(
   return aggregatedActivities;
 }
 
+function addParseGithubMetadata(
+  profile: ContributorProfile,
+  mochiProfile: MochiUserProfile | null,
+): UserProfile {
+  const nextProfile = { ...profile };
+  try {
+    if (profile.github_metadata) {
+      nextProfile.github_metadata_json = JSON.parse(
+        profile.github_metadata,
+      ) as GithubMetadata;
+    }
+  } catch (error) {
+    console.error(
+      `Error parsing GitHub metadata for ${profile.username}:`,
+      error,
+    );
+  }
+  const fallbackAvatar = `https://github.com/${nextProfile?.username}.png`;
+
+  const userProfile = {
+    name:
+      nextProfile?.github_metadata_json?.name ||
+      nextProfile?.linkedin_metadata_json?.name ||
+      mochiProfile?.profile_name ||
+      '',
+    githubId: nextProfile?.username || '',
+    githubLink: nextProfile?.github_url || '',
+    websiteLink: nextProfile?.github_metadata_json?.blog || '',
+    bio:
+      nextProfile?.github_metadata_json?.bio ||
+      nextProfile?.linkedin_metadata_json?.about ||
+      '',
+    twitterUserName: nextProfile?.github_metadata_json?.twitter_username || '',
+    avatar: mochiProfile?.avatar || fallbackAvatar,
+    facebookLink: nextProfile?.facebook_url || '',
+  };
+  return userProfile;
+}
+
 /**
  * Gets static props for the content page
  */
@@ -423,9 +476,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       contributorMemos = []; // Handle error
     }
 
+    // Fetch contributor profile from Mochi
+    const mochiContributorProfile =
+      await fetchMochiContributorProfile(contributorSlug);
+
     // Fetch contributor's wallet address
-    const contributorWalletAddress =
-      await fetchContributorWalletAddress(contributorSlug);
+    const contributorWalletAddress = await getContributorWalletAddress(
+      mochiContributorProfile,
+    );
 
     // Fetch memos collected by the contributor (with basic info)
     let memosCollected: CollectMemo[] = [];
@@ -565,34 +623,29 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     // --- Fetch External Data (GitHub Example using Octokit) ---
     let contributorProfile: UserProfile | null = null;
     try {
-      // Check if there's a userProfiles.json file with GitHub usernames
-      const userProfilesPath = path.join(
-        process.cwd(),
-        'public/content/userProfiles.json',
+      const contributorProfiles = await queryDuckDB<ContributorProfile>(
+        `
+             SELECT *
+             FROM profiles
+             WHERE username == '${originalContributorName}';
+           `,
+        {
+          filePath: 'public/content/contributor-stats.parquet',
+          tableName: 'profiles',
+        },
       );
-
-      try {
-        const userProfilesJson = JSON.parse(
-          await fs.readFile(userProfilesPath, 'utf8'),
-        ) as UserProfileJson;
-        const userProfiles = userProfilesJson?.data || {};
-        contributorProfile =
-          userProfiles?.[contributorSlug.toLowerCase()] || null;
-        if (!contributorProfile) {
-          console.error(
-            `No profile found for ${contributorSlug} in userProfiles.json`,
-          );
-        }
-      } catch (readError) {
-        console.error('Error reading userProfiles.json:', readError);
-        // Continue with null githubData
+      if (contributorProfiles.length > 0) {
+        contributorProfile = addParseGithubMetadata(
+          contributorProfiles[0],
+          mochiContributorProfile,
+        );
+      } else {
+        console.error(
+          `No profile found for ${originalContributorName} in profiles table`,
+        );
       }
     } catch (error) {
-      console.error(
-        `Failed to fetch GitHub data for ${contributorSlug}:`,
-        error,
-      );
-      // Handle errors, maybe set githubData to null or an error state
+      console.error(`No profile found for ${originalContributorName}`, error);
     }
 
     const mdxSource = await getMdxSource({
