@@ -1,0 +1,105 @@
+# syntax=docker/dockerfile:1
+# Base image for memo.d.foundation builds
+# Uses official Elixir image for reliability, then installs Node.js, DuckDB, pnpm, and other tools
+
+FROM elixir:1.18.4-otp-26 as base
+
+LABEL maintainer="anhnx@d.foundation" \
+      org.opencontainers.image.title="Memo.d.foundation Base Build Environment" \
+      org.opencontainers.image.description="Base image with Elixir, Node.js, DuckDB, and build tools" \
+      org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation" \
+      org.opencontainers.image.version="1.0.0"
+
+# Set locale environment variables for UTF-8 support
+ENV LANG=en_US.UTF-8 \
+      LC_ALL=en_US.UTF-8 \
+      NODE_ENV=production \
+      MIX_ENV=prod \
+      MAKEFLAGS="-j$(nproc)"
+
+# Install system dependencies and build tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git \
+      curl \
+      bash \
+      unzip \
+      build-essential \
+      locales \
+      ca-certificates \
+      tzdata \
+      && rm -rf /var/lib/apt/lists/*
+
+# Set up UTF-8 locale
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+      locale-gen en_US.UTF-8 && \
+      update-locale LANG=en_US.UTF-8
+
+# Install Node.js (LTS) from NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - && \
+      apt-get install -y nodejs && \
+      node --version && npm --version
+
+# Install DuckDB
+RUN echo "Installing DuckDB..." && \
+      curl -L --connect-timeout 30 --max-time 300 --retry 3 --retry-delay 10 \
+      https://github.com/duckdb/duckdb/releases/download/v1.2.2/duckdb_cli-linux-amd64.zip \
+      -o duckdb.zip && \
+      unzip duckdb.zip && \
+      mv duckdb /usr/local/bin/ && \
+      chmod +x /usr/local/bin/duckdb && \
+      rm duckdb.zip && \
+      echo "DuckDB installed successfully"
+
+# Install and configure pnpm globally
+RUN echo "Installing pnpm..." && \
+      npm install -g pnpm@10.11.0 && \
+      pnpm config set store-dir /root/.pnpm-store && \
+      pnpm config set cache-dir /root/.pnpm-cache && \
+      pnpm config set network-timeout 60000 && \
+      pnpm config set fetch-retries 3 && \
+      pnpm config set fetch-retry-mintimeout 10000 && \
+      pnpm config set fetch-retry-maxtimeout 60000
+
+# Set up Elixir environment with proper configuration
+RUN echo "Setting up Elixir environment..." && \
+      mix local.hex --force && \
+      mix local.rebar --force && \
+      mix hex.config api_url https://hex.pm/api && \
+      mix hex.config offline false && \
+      mix hex.config http_timeout 60000 && \
+      mix hex.config http_concurrency 8 && \
+      mkdir -p /root/.mix && \
+      mkdir -p /root/.hex
+
+# Configure Git for optimal performance in container environment
+RUN echo "Configuring Git..." && \
+      git config --global init.defaultBranch main && \
+      git config --global advice.detachedHead false && \
+      git config --global gc.auto 0 && \
+      git config --global fetch.parallel 4 && \
+      git config --global submodule.fetchJobs 4 && \
+      git config --global protocol.version 2 && \
+      git config --global url."https://github.com/".insteadOf "git@github.com:"
+
+# Create working directory
+WORKDIR /code
+
+# Verify all tools are working
+RUN echo "Verifying installation..." && \
+      echo "Elixir version: $(elixir --version | head -1)" && \
+      echo "Erlang version: $(erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().' -noshell)" && \
+      echo "Node.js version: $(node --version)" && \
+      echo "npm version: $(npm --version)" && \
+      echo "pnpm version: $(pnpm --version)" && \
+      echo "Git version: $(git --version)" && \
+      echo "DuckDB version: $(duckdb --version)" && \
+      echo "Debian version: $(cat /etc/debian_version)" && \
+      echo "Build tools: $(gcc --version | head -1)" && \
+      echo "All tools installed successfully!"
+
+# Health check to ensure the base image is working
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+      CMD elixir --version && node --version && duckdb --version || exit 1
+
+# Default command
+CMD ["sh"]
