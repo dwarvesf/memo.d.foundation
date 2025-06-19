@@ -105,11 +105,7 @@ defmodule Memo.Common.LinkUtils do
         |> Slugify.slugify_link_path()
         |> remove_index_suffix()
 
-      if file_valid?(link, current_file) do
-        "[#{alt_text}](#{resolved_path})"
-      else
-        "[#{alt_text}]()"
-      end
+      build_link(alt_text, resolved_path, link, current_file)
     end)
   end
 
@@ -123,11 +119,7 @@ defmodule Memo.Common.LinkUtils do
 
       alt_text = Path.basename(resolved_path, ".md")
 
-      if file_valid?(link, current_file) do
-        "[#{alt_text}](#{resolved_path})"
-      else
-        "[#{alt_text}]()"
-      end
+      build_link(alt_text, resolved_path, link, current_file)
     end)
   end
 
@@ -138,7 +130,7 @@ defmodule Memo.Common.LinkUtils do
         |> String.replace(~r/\\$/, "")
         |> Slugify.slugify_link_path()
 
-      if file_exists?(link, current_file) do
+      if file_valid?(link, current_file, false) do
         "![](#{resolved_path})"
       else
         "![]()"
@@ -154,15 +146,19 @@ defmodule Memo.Common.LinkUtils do
         |> Slugify.slugify_link_path()
         |> remove_index_suffix()
 
-      if file_valid?(link, current_file) do
-        "[#{alt_text}](#{resolved_path})"
-      else
-        "[#{alt_text}]()"
-      end
+      build_link(alt_text, resolved_path, link, current_file)
     end)
   end
 
-  defp file_valid?(link, current_file) do
+  defp build_link(alt_text, resolved_path, link, current_file) do
+    if file_valid?(link, current_file, false) do
+      "[#{alt_text}](#{resolved_path})"
+    else
+      "[#{alt_text}]()"
+    end
+  end
+
+  defp file_valid?(link, current_file, check_frontmatter \\ true) do
     link = String.replace(link, "%20", " ")
     current_dir = Path.dirname(current_file)
     full_path = Path.join(current_dir, link)
@@ -170,18 +166,39 @@ defmodule Memo.Common.LinkUtils do
 
     IO.puts("Checking file validity: #{normalized_path}")
 
-    File.exists?(normalized_path) &&
-      Frontmatter.contains_required_frontmatter_keys?(normalized_path)
+    file_exists = 
+      if File.exists?(normalized_path) do
+        true
+      else
+        # For index.md(x) and readme.md(x) files, try case-insensitive matching
+        filename = Path.basename(link)
+        downcased_filename = String.downcase(filename)
+        
+        if downcased_filename in ["index.md", "readme.md", "index.mdx", "readme.mdx"] do
+          case_insensitive_file_exists?(current_dir, filename)
+        else
+          false
+        end
+      end
+
+    if check_frontmatter do
+      file_exists && Frontmatter.contains_required_frontmatter_keys?(normalized_path)
+    else
+      file_exists
+    end
   end
 
-  defp file_exists?(link, current_file) do
-    link = String.replace(link, "%20", " ")
-    current_dir = Path.dirname(current_file)
-    full_path = Path.join(current_dir, link)
-    normalized_path = Path.expand(full_path)
-
-    IO.puts("Checking file existence: #{normalized_path}")
-    File.exists?(normalized_path)
+  defp case_insensitive_file_exists?(directory, target_filename) do
+    target_lowercase = String.downcase(target_filename)
+    
+    case File.ls(directory) do
+      {:ok, files} ->
+        Enum.any?(files, fn file ->
+          String.downcase(file) == target_lowercase
+        end)
+      {:error, _} ->
+        false
+    end
   end
 
   defp remove_index_suffix(path) do

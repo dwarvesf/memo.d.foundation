@@ -62,8 +62,9 @@ RUN git init && \
     git checkout ${RAILWAY_GIT_BRANCH} && \
     git config --global --add safe.directory /code && \
     git config --global url."https://github.com/".insteadOf "git@github.com:" && \
-    git submodule update --init --recursive --depth 1 && \
-    devbox run build-static
+    git submodule update --init --recursive --depth 1
+
+RUN devbox run build-static
 
 # Export runner
 FROM nginx:alpine
