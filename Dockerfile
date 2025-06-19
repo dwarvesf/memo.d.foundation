@@ -1,6 +1,6 @@
 # --- Base Stage ---
 # Use the official base image which has all the necessary tools installed.
-FROM ghcr.io/dwarvesf/memo.d.foundation:base-latest AS base
+FROM asia-southeast1-docker.pkg.dev/df-infrastructure/memo-d-foundation/base AS base
 WORKDIR /code
 
 # --- Source Stage ---
