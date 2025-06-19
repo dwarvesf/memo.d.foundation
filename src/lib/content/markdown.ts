@@ -1,26 +1,28 @@
+import { ITocItem } from '@/types';
 import fs from 'fs/promises'; // Use asynchronous promises API
-import path from 'path';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
-import rehypeStringify from 'rehype-stringify';
-import remarkMath from 'remark-math';
 import matter from 'gray-matter';
-import { SKIP, visit } from 'unist-util-visit';
-import type { Heading, Root, Link, Literal, Code } from 'mdast';
 import type {
   Element,
-  Properties,
   Root as HastRoot,
   Text as HastText,
+  Properties,
 } from 'hast';
-import slugify from 'slugify';
-import { ITocItem } from '@/types';
+import type { Code, Heading, Link, Literal, Root } from 'mdast';
+import path from 'path';
 import rehypeHighlight from 'rehype-highlight';
-import { getContentPath, getStaticJSONPaths } from './paths';
+import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+import rehypeStringify from 'rehype-stringify';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import slugify from 'slugify';
+import { unified } from 'unified';
+import { SKIP, visit } from 'unist-util-visit';
+import { getContentPath, getStaticJSONPaths } from './paths';
+import { unescape } from 'lodash';
 
 // Define interfaces for the AST nodes
 interface ImageNode {
@@ -39,7 +41,26 @@ interface FileData {
 }
 
 function preprocessDollarSigns(markdown: string) {
-  return markdown.replace(/\$(\d[\d,.]*)/g, '[CURRENCY:$1]');
+  // First handle currency formatting to avoid conflicts with math
+  let result = markdown.replace(/\$(\d[\d,.]*)/g, '[CURRENCY:$1]');
+
+  // Fix multiline display math blocks by converting them to single-line format
+  // This helps remark-math parse them correctly as inlineMath nodes
+  result = result.replace(/\$\$\s*([\s\S]*?)\s*\$\$/g, (match, content) => {
+    // Normalize the content while preserving important LaTeX formatting
+    const cleanContent = content
+      .trim()
+      // Replace line breaks with spaces, but preserve \\\\ which are LaTeX line breaks
+      .replace(/\n\s*/g, ' ')
+      // Normalize multiple spaces to single space, but avoid breaking \\\\
+      .replace(/\s+/g, ' ')
+      // Clean up spaces around \\\\
+      .replace(/\s*\\\\\s*/g, ' \\\\ ');
+
+    return `$$${cleanContent}$$`;
+  });
+
+  return result;
 }
 
 function postprocessDollarSigns(html: string) {
@@ -163,28 +184,43 @@ export function rehypeInlineCodeToSpan() {
           (parent as Element).type === 'element' &&
           (parent as Element).tagName === 'pre';
 
-        if (!parentIsPre) {
+        // Check if this is a math element (has math-related classes)
+        const classNames = Array.isArray(node.properties?.className)
+          ? node.properties.className
+          : typeof node.properties?.className === 'string'
+            ? [node.properties.className]
+            : [];
+
+        const isMathElement = classNames.some(
+          (className: string | number) =>
+            typeof className === 'string' &&
+            ['math-inline', 'math-display', 'language-math'].includes(
+              className,
+            ),
+        );
+
+        if (!parentIsPre && !isMathElement) {
           node.tagName = 'span';
           node.properties = node.properties || {}; // Ensure properties object exists
 
           // Initialize or update className
-          let classNames: string[] = [];
+          let updatedClassNames: string[] = [];
           if (Array.isArray(node.properties.className)) {
-            classNames = node.properties.className.map(String);
+            updatedClassNames = node.properties.className.map(String);
           } else if (typeof node.properties.className === 'string') {
-            classNames = [node.properties.className];
+            updatedClassNames = [node.properties.className];
           }
 
           // Remove any existing highlighting classes that might be there by mistake
-          classNames = classNames.filter(
+          updatedClassNames = updatedClassNames.filter(
             (cn: string) => !cn.startsWith('language-') && cn !== 'hljs',
           );
 
           // Add 'mark-text-block' if not already present
-          if (!classNames.includes('mark-text-block')) {
-            classNames.push('mark-text-block');
+          if (!updatedClassNames.includes('mark-text-block')) {
+            updatedClassNames.push('mark-text-block');
           }
-          node.properties.className = classNames;
+          node.properties.className = updatedClassNames;
         }
       }
     });
@@ -579,6 +615,40 @@ export async function getMarkdownContent(filePath: string) {
       'td',
       'video', // Add video tag
       'iframe', // Add iframe tag
+      // KaTeX math elements
+      'math',
+      'semantics',
+      'mrow',
+      'mi',
+      'mo',
+      'mn',
+      'msub',
+      'msup',
+      'msubsup',
+      'mfrac',
+      'msqrt',
+      'mroot',
+      'mtext',
+      'mspace',
+      'menclose',
+      'mpadded',
+      'mphantom',
+      'annotation',
+      'mtable',
+      'mtr',
+      'mtd',
+      'mlabeledtr',
+      'maligngroup',
+      'malignmark',
+      'mglyph',
+      'munder',
+      'mover',
+      'munderover',
+      'mmultiscripts',
+      'mprescripts',
+      'none',
+      'mfenced',
+      'maction',
       // SVG tags for Mermaid
       'svg',
       'g',
@@ -625,6 +695,40 @@ export async function getMarkdownContent(filePath: string) {
         'title',
         'referrerpolicy',
       ],
+      // KaTeX math attributes
+      math: ['xmlns', 'display'],
+      semantics: [],
+      mrow: [],
+      mi: ['mathvariant'],
+      mo: ['stretchy', 'fence', 'separator', 'lspace', 'rspace', 'form'],
+      mn: [],
+      msub: [],
+      msup: [],
+      msubsup: [],
+      mfrac: ['linethickness'],
+      msqrt: [],
+      mroot: [],
+      mtext: [],
+      mspace: ['width', 'height', 'depth'],
+      menclose: ['notation'],
+      mpadded: ['width', 'lspace', 'voffset'],
+      mphantom: [],
+      annotation: ['encoding'],
+      mtable: ['align', 'rowalign', 'columnalign', 'groupalign'],
+      mtr: [],
+      mtd: ['columnspan', 'rowspan'],
+      mlabeledtr: [],
+      maligngroup: [],
+      malignmark: [],
+      mglyph: ['src', 'alt', 'width', 'height'],
+      munder: [],
+      mover: [],
+      munderover: [],
+      mmultiscripts: [],
+      mprescripts: [],
+      none: [],
+      mfenced: ['open', 'close', 'separators'],
+      maction: ['actiontype', 'selection'],
       // SVG attributes
       svg: [
         'width',
@@ -727,7 +831,9 @@ export async function getMarkdownContent(filePath: string) {
   // Process the Markdown content
   const processor = unified()
     .use(remarkParse)
+    .use(remarkMath) // Process math blocks BEFORE remarkGfm to avoid conflicts
     .use(remarkGfm)
+    .use(remarkFixMathEntities) // Fix HTML entities in math content AFTER remarkGfm
     .use(remarkLineBreaks)
     .use(() => remarkResolveImagePaths(filePath))
     .use(() => remarkProcessLinks(filePath, aliasJSONPaths)) // Process links and resolve paths
@@ -735,15 +841,13 @@ export async function getMarkdownContent(filePath: string) {
     .use(remarkExtractTLDR) // Extract and convert TLDR code blocks to blockquotes
     .use(remarkToc) // Extract table of contents and create heading ID mapping
     .use(remarkBlockCount) // Count blocks
-    .use(remarkMath, {
-      // singleDollarTextMath: false,
-    }) // Process math blocks
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw) // Allow raw HTML
-    .use(rehypeInlineCodeToSpan) // Convert inline code to span with quote-block class
+    .use(rehypeRaw) // Allow raw HTML - must come early to properly parse math
     .use(rehypeVideos)
-    .use(rehypeSanitize, schema as never) // Move sanitize BEFORE adding nextjs links
-    // .use(rehypeKatex) // Render math blocks
+    .use(rehypeFixMathEntities) // Fix entity encoding in HTML before KaTeX
+    .use(rehypeKatex) // Render math blocks with KaTeX
+    .use(rehypeInlineCodeToSpan) // Convert inline code to span with quote-block class - AFTER KaTeX
+    .use(rehypeSanitize, schema as never) // Move sanitize AFTER KaTeX to preserve math elements
     .use(rehypeAddHeadingIds) // Add IDs to headings in HTML
     .use(rehypeNextjsLinks) // Add this new plugin here AFTER sanitize
     .use(rehypeEnhanceLists) // Add enhanced classes to lists
@@ -810,4 +914,44 @@ export async function getMarkdownMetadata(slugPath: string) {
   const markdownContent = await fs.readFile(filePath, 'utf-8'); // Use asynchronous readFile
   const { data: frontmatter } = matter(markdownContent);
   return frontmatter;
+}
+
+/**
+ * Custom remark plugin to fix math content that has HTML entities
+ */
+function remarkFixMathEntities() {
+  return (tree: Root) => {
+    visit(tree, ['math', 'inlineMath'], (node: any) => {
+      if (node.value && typeof node.value === 'string') {
+        // Fix HTML entities that might have been introduced
+        node.value = unescape(node.value);
+      }
+    });
+  };
+}
+
+/**
+ * Custom rehype plugin to fix entity encoding in math elements before KaTeX processing
+ * This runs on the HTML AST and fixes entities that were encoded during markdown->HTML conversion
+ */
+function rehypeFixMathEntities() {
+  return (tree: HastRoot) => {
+    visit(tree, 'element', (node: Element) => {
+      if (
+        node.tagName === 'span' &&
+        node.properties &&
+        node.properties.className &&
+        Array.isArray(node.properties.className) &&
+        (node.properties.className.includes('math-display') ||
+          node.properties.className.includes('math-inline'))
+      ) {
+        // Fix entities in text nodes within math elements
+        visit(node, 'text', (textNode: HastText) => {
+          if (textNode.value && typeof textNode.value === 'string') {
+            textNode.value = unescape(textNode.value);
+          }
+        });
+      }
+    });
+  };
 }
