@@ -40,11 +40,16 @@ defmodule Memo.Common.Slugify do
   end
 
   defp slugify_links_in_text(text) do
-    regex = ~r/\[([^\]]+)\]\(([^)]+)\)/
+    regex = ~r/!?\[([^\]]*)\]\(([^)]+)\)/
 
-    Regex.replace(regex, text, fn _, link_text, link ->
+    Regex.replace(regex, text, fn full_match, link_text, link ->
       slugified_link = slugify_link_path(link)
-      "[#{link_text}](#{slugified_link})"
+      
+      if String.starts_with?(full_match, "!") do
+        "![#{link_text}](#{slugified_link})"
+      else
+        "[#{link_text}](#{slugified_link})"
+      end
     end)
   end
 
