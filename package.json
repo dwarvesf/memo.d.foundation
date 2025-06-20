@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm run generate-menu && pnpm run generate-menu-path-sorted && pnpm run generate-backlinks && pnpm run generate-search-index && pnpm run generate-redirects-map && pnpm run generate-shorten-map && pnpm run generate-user-profiles && pnpm run fetch-prompts && pnpm run fetch-contributor-stats && next build && pnpm run generate-rss && pnpm run copy-404",
+    "build": "pnpm run generate-menu && pnpm run generate-menu-path-sorted && pnpm run generate-backlinks && pnpm run generate-search-index && pnpm run generate-redirects-map && pnpm run generate-shorten-map && pnpm run generate-user-profiles && pnpm run fetch-prompts && pnpm run fetch-contributor-stats && next build && pnpm run generate-rss && pnpm run copy-404 && pnpm run generate-pageviews",
     "start": "next start",
     "lint": "next lint",
     "deploy": "gh-pages -d out",
@@ -20,6 +20,7 @@
     "generate-summary": "tsx scripts/generate-summary.ts",
     "generate-user-profiles": "tsx scripts/generate-user-profiles.ts",
     "generate-nginx-conf": "tsx scripts/generate-nginx-redirect-map.ts",
+    "generate-pageviews": "tsx scripts/generate-pageviews.ts",
     "fetch-prompts": "tsx scripts/fetch-prompts.ts",
     "fetch-contributor-stats": "tsx scripts/fetch-contributor-stats.ts",
     "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",

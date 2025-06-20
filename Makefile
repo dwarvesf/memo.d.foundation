@@ -40,6 +40,7 @@ run:
 	@pnpm run generate-redirects-map
 	@pnpm run generate-shorten-map
 	@pnpm run generate-user-profiles
+	@pnpm run generate-pageviews
 	@pnpm run fetch-prompts
 	@pnpm run dev
 
