@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import {
   rehypeEnhanceLists,
   rehypeInlineCodeToSpan,
+  rehypeNextjsLinks,
   remarkExtractTLDR,
   remarkProcessLinks,
 } from './content/markdown';
@@ -52,7 +53,11 @@ export async function getMdxSource(props: GetMdxSourceProps) {
               remarkExtractTLDR,
               () => remarkProcessLinks(path, aliasJSONPaths),
             ],
-            rehypePlugins: [rehypeInlineCodeToSpan, rehypeEnhanceLists],
+            rehypePlugins: [
+              rehypeInlineCodeToSpan,
+              rehypeEnhanceLists,
+              rehypeNextjsLinks,
+            ],
           },
         },
       })

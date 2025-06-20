@@ -30,7 +30,7 @@ export function getClientSideRedirectPath(url: string): string {
     unifiedRedirects = (globalThis as any)._app_unified_redirects || {};
   }
   const normalizedUrl = normalizePathWithSlash(url);
-  return unifiedRedirects[normalizedUrl] || url;
+  return removingTrailingSlash(unifiedRedirects[normalizedUrl] || url);
 }
 
 /**
