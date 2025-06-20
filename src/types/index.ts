@@ -15,6 +15,7 @@ export interface IMetadata {
   tags: string[];
   folder: string;
   wordCount: number;
+  pageViewCount: number;
   readingTime: string;
   characterCount: number;
   blocksCount: number;

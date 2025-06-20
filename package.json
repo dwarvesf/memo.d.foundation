@@ -20,6 +20,7 @@
     "generate-summary": "tsx scripts/generate-summary.ts",
     "generate-user-profiles": "tsx scripts/generate-user-profiles.ts",
     "generate-nginx-conf": "tsx scripts/generate-nginx-redirect-map.ts",
+    "generate-pageviews": "tsx scripts/generate-pageviews.ts",
     "fetch-prompts": "tsx scripts/fetch-prompts.ts",
     "fetch-contributor-stats": "tsx scripts/fetch-contributor-stats.ts",
     "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",

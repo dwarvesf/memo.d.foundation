@@ -273,6 +273,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       paths,
     );
 
+    const pageViewsPath = path.join(
+      process.cwd(),
+      'public/content/pageviews.json',
+    );
+
+    let pageViews: Record<string, number> = {};
+    try {
+      const pageViewsContent = await fs.readFile(pageViewsPath, 'utf8');
+      pageViews = JSON.parse(pageViewsContent);
+    } catch (error) {
+      console.error(`Error reading pageviews.json in getStaticProps: ${error}`);
+      pageViews = {};
+    }
+    const pageViewCount = pageViews[requestedPath] || 1;
+
     const metadata = {
       created: frontmatter.date?.toString() || null,
       updated: frontmatter.lastmod?.toString() || null,
@@ -287,6 +302,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         canonicalSlug.slice(0, -1).join('/'),
         paths,
       ),
+      pageViewCount,
       wordCount: content.split(/\s+/).length ?? 0,
       readingTime: `${Math.ceil(content.split(/\s+/).length / 200)}m`,
       characterCount: content.length ?? 0,
