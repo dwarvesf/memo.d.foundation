@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 const PLAUSIBLE_API_TOKEN = process.env.PLAUSIBLE_API_TOKEN;
