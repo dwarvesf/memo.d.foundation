@@ -20,6 +20,7 @@ ARG VAULT_PATH
 
 ARG MOCHI_PROFILE_API
 ARG DWARVES_PAT
+ARG PLAUSIBLE_API_TOKEN
 
 
 
@@ -31,6 +32,7 @@ ENV RAILWAY_GIT_REPO_OWNER=$RAILWAY_GIT_REPO_OWNER
 ARG RAILWAY_GIT_REPO_NAME=memo.d.foundation
 ENV RAILWAY_GIT_REPO_NAME=$RAILWAY_GIT_REPO_NAME
 
+ENV PLAUSIBLE_API_TOKEN=$PLAUSIBLE_API_TOKEN
 ENV OPENAI_API_KEY=$OPENAI_API_KEY
 ENV JINA_API_KEY=$JINA_API_KEY
 ENV JINA_BASE_URL=$JINA_BASE_URL
@@ -56,13 +58,13 @@ COPY --chown=${DEVBOX_USER}:${DEVBOX_USER} ./ ./
 
 # Map git to current directory, install devbox project, and build
 RUN git init && \
-    git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
-    git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
-    git clean -fdx && \
-    git checkout ${RAILWAY_GIT_BRANCH} && \
-    git config --global --add safe.directory /code && \
-    git config --global url."https://github.com/".insteadOf "git@github.com:" && \
-    git submodule update --init --recursive --depth 1
+      git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
+      git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
+      git clean -fdx && \
+      git checkout ${RAILWAY_GIT_BRANCH} && \
+      git config --global --add safe.directory /code && \
+      git config --global url."https://github.com/".insteadOf "git@github.com:" && \
+      git submodule update --init --recursive --depth 1
 
 RUN devbox run build-static
 
@@ -73,7 +75,7 @@ LABEL maintainer="anhnx@d.foundation" \
       org.opencontainers.image.title="memo.d.foundation Frontend" \
       org.opencontainers.image.version="1.0.0" \
       org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation"
-      # Add org.opencontainers.image.revision=$(git rev-parse HEAD) in your CI/CD build arguments for this label
+# Add org.opencontainers.image.revision=$(git rev-parse HEAD) in your CI/CD build arguments for this label
 
 # Set locale environment variables for UTF-8 support
 ENV LANG C.UTF-8
@@ -89,7 +91,7 @@ COPY --from=builder /code/public/content/nginx_redirect_map.conf /etc/nginx/conf
 COPY --from=builder /code/nginx/nginx.custom.conf /etc/nginx/conf.d/default.conf
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost/ || exit 1
+      CMD curl -f http://localhost/ || exit 1
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
