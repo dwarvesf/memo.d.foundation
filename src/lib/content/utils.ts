@@ -128,6 +128,13 @@ function applyRecursiveMenuSortedField(
   return Object.fromEntries<GroupedPath>(entries);
 }
 
+function removeTrailingSlash(path?: string): string {
+  if (!path) {
+    return '';
+  }
+  return path.endsWith('/') ? path.slice(0, -1) : path;
+}
+
 /**
  * Gets the server-side redirect path for a given target path.
  * @param _targetPath The original target path.
@@ -145,10 +152,10 @@ export function getServerSideRedirectPath(
   );
   // Check if the targetPath exists in staticPaths
   if (staticPaths[targetPath]) {
-    return staticPaths[targetPath];
+    return removeTrailingSlash(staticPaths[targetPath]);
   }
   // If not found, return the original targetPath
-  return _targetPath;
+  return removeTrailingSlash(targetPath);
 }
 
 /**
