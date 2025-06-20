@@ -138,29 +138,17 @@ export function getServerSideRedirectPath(
   _targetPath: string,
   staticJSONPaths: Record<string, string>,
 ) {
-  if (!_targetPath || _targetPath === '/') {
-    return _targetPath;
-  }
-
   const targetPath = normalizePathWithSlash(_targetPath);
-
-  // Check if the targetPath exists in staticJSONPaths directly
-  if (staticJSONPaths[targetPath]) {
-    return staticJSONPaths[targetPath];
-  }
-
   // Create a reverse mapping of staticJSONPaths for quick lookup
-  const reversePaths = Object.fromEntries(
+  const staticPaths = Object.fromEntries(
     Object.entries(staticJSONPaths).map(([key, value]) => [value, key]),
   );
-
-  // Check if the targetPath exists in reversePaths
-  if (reversePaths[targetPath]) {
-    return reversePaths[targetPath];
+  // Check if the targetPath exists in staticPaths
+  if (staticPaths[targetPath]) {
+    return staticPaths[targetPath];
   }
-
-  // If not found in either direction, return the normalized path
-  return targetPath;
+  // If not found, return the original targetPath
+  return _targetPath;
 }
 
 /**
@@ -256,11 +244,6 @@ function transformMenuDataToDirectoryTree(
   const targetChildrenNode =
     currentPath === '' ? treeNode['/'].children : treeNode; // Children go under '/' if at root
 
-  // Create reverse mapping for formatContentPath to use (outside the loop for performance)
-  const reverseStaticJSONPaths = Object.fromEntries(
-    Object.entries(staticJSONPaths).map(([key, value]) => [value, key]),
-  );
-
   // Process directories
   for (const [dirName, group] of Object.entries(menuData)) {
     // Handle the root path case explicitly for constructing the path
@@ -288,7 +271,7 @@ function transformMenuDataToDirectoryTree(
       // Explicitly type 'file'
       const fullFilePath = '/' + file.file_path; // File paths are already full paths relative to root
 
-      const url = formatContentPath(file.file_path, reverseStaticJSONPaths);
+      const url = formatContentPath(file.file_path);
 
       children[fullFilePath] = {
         label: file.title, // Use file title as label
