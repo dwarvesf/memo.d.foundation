@@ -211,14 +211,17 @@
     from {
       transform: translateX(0);
     }
+
     to {
       transform: translateX(calc(-100% - var(--gap)));
     }
   }
+
   @keyframes marquee-vertical {
     from {
       transform: translateY(0);
     }
+
     to {
       transform: translateY(calc(-100% - var(--gap)));
     }
@@ -325,9 +328,19 @@
     @apply relative;
   }
 
-  /* Command palette open state */
+  /* Command palette open state - iOS Safari friendly */
   body.cmd-palette-open {
-    @apply overflow-hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Mobile bottom sheet animation override */
+  @media (max-width: 639px) {
+    .command-palette-modal {
+      animation: slideUpFadeIn 0.25s ease-out !important;
+    }
   }
 }
 
@@ -398,6 +411,18 @@
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
