@@ -80,3 +80,54 @@ export interface UserProfileJson {
   data: Record<string, UserProfile>;
   updated_at: string;
 }
+
+export interface GithubMetadata {
+  name: string;
+  bio: string | null;
+  location: string | null;
+  company: string | null;
+  public_repos: number | null;
+  followers: number | null;
+  following: number | null;
+  hireable: boolean | null;
+  twitter_username: string | null;
+  blog: string | null;
+  email: string | null;
+  error: boolean;
+}
+
+export interface LinkedInMetadata {
+  name?: string;
+  headline?: string;
+  location?: string;
+  current_company?: string;
+  current_position?: string;
+  connections?: number;
+  followers?: number | null;
+  about?: string;
+  industry?: string;
+  education?: string;
+  skills?: any[];
+  experiences?: any[];
+  experience_count?: number;
+}
+
+export interface ContributorProfile {
+  profile_url: string;
+  username: string;
+  github_url: string;
+  linkedin_url: string;
+  discord_usernames: string;
+  analysis_result: null;
+  github_crawl_status: string;
+  last_attempted_at: number;
+  github_extraction_error: string;
+  github_crawled_at: number;
+  github_metadata: string;
+  github_metadata_json?: GithubMetadata;
+  linkedin_crawl_status: string;
+  last_crawled_at: number;
+  linkedin_metadata: string;
+  linkedin_metadata_json?: LinkedInMetadata;
+  facebook_url: string;
+}
