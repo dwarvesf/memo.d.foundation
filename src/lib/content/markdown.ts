@@ -474,7 +474,7 @@ function rehypeVideos() {
 /**
  * Custom rehype plugin to add a class to internal links for Next.js router handling
  */
-function rehypeNextjsLinks() {
+export function rehypeNextjsLinks() {
   return (tree: HastRoot) => {
     visit(tree, 'element', (node: Element) => {
       if (
