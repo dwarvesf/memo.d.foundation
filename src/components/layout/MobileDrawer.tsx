@@ -164,6 +164,41 @@ const MobileDrawer = ({
     return null;
   };
 
+  const findFolderByPath = (
+    nodes: Record<string, ITreeNode>,
+    targetPathSegments: string[],
+    currentSegmentIndex: number = 0,
+    parentPaths: ITreeNode[] = [],
+  ): { pathSegments: ITreeNode[]; folderNode: ITreeNode } | null => {
+    if (currentSegmentIndex >= targetPathSegments.length) {
+      return null; // Path segments exhausted, no folder found
+    }
+
+    const segmentLabel = targetPathSegments[currentSegmentIndex];
+
+    for (const node of Object.values(nodes)) {
+      if (node.label === segmentLabel) {
+        const newParentPaths = [...parentPaths, node];
+        if (currentSegmentIndex === targetPathSegments.length - 1) {
+          // This is the last segment, check if it's a folder
+          if (node.children && Object.keys(node.children).length > 0) {
+            return { pathSegments: newParentPaths, folderNode: node };
+          }
+        } else if (node.children && Object.keys(node.children).length > 0) {
+          // Not the last segment, but it's a folder, continue searching in children
+          const result = findFolderByPath(
+            node.children,
+            targetPathSegments,
+            currentSegmentIndex + 1,
+            newParentPaths,
+          );
+          if (result) return result;
+        }
+      }
+    }
+    return null;
+  };
+
   useEffect(() => {
     if (!directoryTree || !isOpen) return;
 
@@ -174,7 +209,8 @@ const MobileDrawer = ({
     const pathResult = findPathInTree(directoryTree, currentPath);
 
     if (pathResult) {
-      const { pathSegments } = pathResult;
+      // Case 1: A node with a URL matching the current path was found
+      const { pathSegments, leafNode } = pathResult;
 
       const newNavigationStack: {
         level: Record<string, ITreeNode>;
@@ -184,23 +220,40 @@ const MobileDrawer = ({
         directoryTree;
       let tempCurrentTitle: string = './';
 
-      // Build the navigation stack and determine the current level and title
-      // Iterate up to the parent of the leaf node
-      for (let i = 0; i < pathSegments.length - 1; i++) {
-        const segment = pathSegments[i];
-        newNavigationStack.push({
-          level: tempCurrentTreeLevel!,
-          title: tempCurrentTitle,
-        });
-        tempCurrentTreeLevel = segment.children;
-        tempCurrentTitle = segment.label;
+      const leafNodeHasChildren =
+        leafNode.children && Object.keys(leafNode.children).length > 0;
+
+      if (leafNodeHasChildren) {
+        // If the matched node is a folder (has children), navigate into it.
+        // The navigation stack should include all parents up to this folder.
+        for (let i = 0; i < pathSegments.length; i++) {
+          const segment = pathSegments[i];
+          newNavigationStack.push({
+            level: tempCurrentTreeLevel!,
+            title: tempCurrentTitle,
+          });
+          tempCurrentTreeLevel = segment.children;
+          tempCurrentTitle = segment.label;
+        }
+      } else {
+        // If the matched node is a file (no children), navigate to its parent's level.
+        // The navigation stack should include all parents up to the parent of the leaf node.
+        for (let i = 0; i < pathSegments.length - 1; i++) {
+          const segment = pathSegments[i];
+          newNavigationStack.push({
+            level: tempCurrentTreeLevel!,
+            title: tempCurrentTitle,
+          });
+          tempCurrentTreeLevel = segment.children;
+          tempCurrentTitle = segment.label;
+        }
       }
 
       setCurrentTreeLevel(tempCurrentTreeLevel);
       navigationStack.current = newNavigationStack;
       setCurrentTitle(tempCurrentTitle);
 
-      // Auto-scroll the active link into view
+      // Auto-scroll the active link into view (only for actual links/files)
       setTimeout(() => {
         if (autoScrollRef.current) {
           let block: ScrollLogicalPosition = 'nearest';
@@ -219,10 +272,42 @@ const MobileDrawer = ({
         isInitializedRef.current = true;
       }, 500);
     } else {
-      // If no path found, reset to root
-      setCurrentTreeLevel(directoryTree);
-      navigationStack.current = [];
-      setCurrentTitle('./');
+      // Case 2: No node with a URL was found. Check if the path corresponds to a folder node (without a URL).
+      const pathSegments = currentPath.split('/').filter(s => s !== '');
+      const folderResult = findFolderByPath(directoryTree, pathSegments);
+
+      if (folderResult) {
+        const { pathSegments: folderPathSegments } = folderResult;
+        const newNavigationStack: {
+          level: Record<string, ITreeNode>;
+          title: string;
+        }[] = [];
+        let tempCurrentTreeLevel: Record<string, ITreeNode> | undefined =
+          directoryTree;
+        let tempCurrentTitle: string = './';
+
+        // Navigate into the found folder
+        for (let i = 0; i < folderPathSegments.length; i++) {
+          const segment = folderPathSegments[i];
+          newNavigationStack.push({
+            level: tempCurrentTreeLevel!,
+            title: tempCurrentTitle,
+          });
+          tempCurrentTreeLevel = segment.children;
+          tempCurrentTitle = segment.label;
+        }
+
+        setCurrentTreeLevel(tempCurrentTreeLevel);
+        navigationStack.current = newNavigationStack;
+        setCurrentTitle(tempCurrentTitle);
+
+        // No auto-scroll for folders, as per "only set the active node that contain the node that having no child"
+      } else {
+        // Case 3: No path found (neither file nor folder), reset to root
+        setCurrentTreeLevel(directoryTree);
+        navigationStack.current = [];
+        setCurrentTitle('./');
+      }
     }
   }, [isOpen, directoryTree, router.asPath]);
 
