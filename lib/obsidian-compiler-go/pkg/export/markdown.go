@@ -345,8 +345,8 @@ func (e *MarkdownExporter) exportDBDirectory(dbPath string) {
 		return
 	}
 
-	exportDBPath := filepath.Join(e.exportPath, "../../db")
-	slugifiedExportDBPath := e.preserveRelativePrefixAndSlugify(exportDBPath)
+	// Export db folder inside the content directory
+	exportDBPath := filepath.Join(e.exportPath, "db")
 
 	// Check cache
 	currentMTime := cache.GetDirectoryMTime(dbPath)
@@ -358,19 +358,26 @@ func (e *MarkdownExporter) exportDBDirectory(dbPath string) {
 	}
 
 	// Copy directory
-	e.copyDirectory(dbPath, slugifiedExportDBPath)
-	fmt.Printf("Exported db folder: %s -> %s\n", dbPath, slugifiedExportDBPath)
+	e.copyDirectory(dbPath, exportDBPath)
+	fmt.Printf("Exported db folder: %s -> %s\n", dbPath, exportDBPath)
 
 	// Update cache
-	e.cache.Set(dbPath, cache.CreateDBDirectoryEntry(dbPath, slugifiedExportDBPath))
+	e.cache.Set(dbPath, cache.CreateDBDirectoryEntry(dbPath, exportDBPath))
 }
 
 // copyDirectory recursively copies a directory
 func (e *MarkdownExporter) copyDirectory(source, destination string) error {
-	slugifiedDestination := e.preserveRelativePrefixAndSlugify(destination)
+	// Check if this is the db directory (don't slugify db paths)
+	isDBDirectory := strings.Contains(source, "/db") || strings.Contains(source, "\\db") || strings.HasSuffix(destination, "/db") || strings.HasSuffix(destination, "\\db")
+	
+	finalDestination := destination
+	if !isDBDirectory {
+		// Only slugify non-db directories
+		finalDestination = e.preserveRelativePrefixAndSlugify(destination)
+	}
 	
 	// Create destination directory
-	if err := os.MkdirAll(slugifiedDestination, 0755); err != nil {
+	if err := os.MkdirAll(finalDestination, 0755); err != nil {
 		return err
 	}
 
@@ -381,7 +388,13 @@ func (e *MarkdownExporter) copyDirectory(source, destination string) error {
 
 	for _, entry := range entries {
 		sourcePath := filepath.Join(source, entry.Name())
-		destPath := filepath.Join(slugifiedDestination, slugify.SlugifyFilename(entry.Name()))
+		
+		// Only slugify filenames for non-db directories
+		destName := entry.Name()
+		if !isDBDirectory {
+			destName = slugify.SlugifyFilename(entry.Name())
+		}
+		destPath := filepath.Join(finalDestination, destName)
 
 		if fileutils.IsIgnored(sourcePath, e.ignoredPatterns, e.vaultPath) {
 			continue
