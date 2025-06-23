@@ -1,0 +1,137 @@
+name: Monitor Vault Parquet
+
+on:
+  schedule:
+    # Send daily status report at 9 AM UTC
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      send_notification:
+        description: 'Send Discord notification'
+        required: false
+        default: true
+        type: boolean
+      verbose_output:
+        description: 'Show verbose output'
+        required: false
+        default: false
+        type: boolean
+  push:
+    branches:
+      - ci/monitoring
+
+jobs:
+  monitor-vault:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check vault.parquet exists
+        run: |
+          if [ ! -f "db/vault.parquet" ]; then
+            echo "❌ vault.parquet file not found!"
+            exit 1
+          fi
+          echo "✅ vault.parquet file exists ($(du -h db/vault.parquet | cut -f1))"
+
+      - name: Run Vault Monitoring (Scheduled)
+        if: github.event_name == 'schedule'
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          echo "📊 Running scheduled vault monitoring..."
+          pnpm exec tsx scripts/monitor-vault-parquet.ts --send
+
+      - name: Run Vault Monitoring (Manual)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          echo "🔍 Running manual vault monitoring..."
+          ARGS=""
+          if [ "${{ github.event.inputs.send_notification }}" == "true" ]; then
+            ARGS="$ARGS --send"
+          fi
+          if [ "${{ github.event.inputs.verbose_output }}" == "true" ]; then
+            ARGS="$ARGS --verbose"
+          fi
+          pnpm exec tsx scripts/monitor-vault-parquet.ts $ARGS
+
+      - name: Upload monitoring results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitoring-failure-logs
+          path: |
+            npm-debug.log*
+            yarn-debug.log*
+            yarn-error.log*
+          retention-days: 1
+
+  health-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate vault.parquet structure
+        run: |
+          echo "🔍 Validating vault.parquet structure..."
+
+          # Check if DuckDB can read the file
+          if command -v duckdb &> /dev/null; then
+            echo "Using system DuckDB..."
+            duckdb -c "SELECT COUNT(*) as records FROM 'db/vault.parquet';"
+            duckdb -c "DESCRIBE SELECT * FROM 'db/vault.parquet' LIMIT 1;" | head -10
+          else
+            echo "DuckDB not available, using Node.js validation..."
+            pnpm exec tsx scripts/monitor-vault-parquet.ts --verbose
+          fi
+
+      - name: Test Discord webhook (dry run)
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          echo "🧪 Testing Discord webhook connection..."
+          if [ -n "$DISCORD_WEBHOOK_URL" ]; then
+            echo "Discord webhook URL is configured ✅"
+            # Test the script without sending to Discord
+            pnpm exec tsx scripts/monitor-vault-parquet.ts --verbose
+          else
+            echo "⚠️ Discord webhook URL not configured"
+            echo "Set DISCORD_WEBHOOK_URL secret to enable notifications"
+          fi

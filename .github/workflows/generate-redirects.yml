@@ -52,12 +52,12 @@ jobs:
           # Export this for subshells used by git submodule foreach
           export ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH="/tmp/all_changed_md_files_accumulator.txt"
           rm -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" # Ensure it's clean
-    
+
           # Get all files changed in the latest commit of the parent repository
           PARENT_CHANGED_FILES=$(git log --pretty=format: --name-only -n 1 ${{ github.sha }})
           echo "Files changed in parent repository's latest commit (SHA: ${{ github.sha }}):"
           echo "$PARENT_CHANGED_FILES"
-    
+
           # Check if the 'vault' directory/submodule itself was affected in the parent's latest commit.
           # This is the condition for processing submodules for their .md changes.
           PROCESS_SUBMODULES_FOR_MD_FILES=false
@@ -67,7 +67,7 @@ jobs:
           else
             echo "'vault' (submodule or directory) was NOT affected in the parent's latest commit. Submodules will not be scanned for their recent .md changes."
           fi
-    
+
           if [ "$PROCESS_SUBMODULES_FOR_MD_FILES" = true ]; then
             echo "Processing submodules for their latest .md changes..."
             # The script block for foreach is single-quoted. Variables like $path, $name are expanded by foreach.
@@ -87,21 +87,21 @@ jobs:
               fi
             '
           fi
-    
+
           CONSOLIDATED_MD_FILES=""
           if [ -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" ]; then
             # Sort, remove duplicates, filter out potential empty lines, then format as comma-separated
             # Ensure grep -v '^$' is used to remove empty lines that might result from `|| true` or empty submodule logs
             CONSOLIDATED_MD_FILES=$(sort "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" | uniq | grep -v '^$' | tr '\n' ',' | sed 's/,$//')
           fi
-    
+
           if [ -z "$CONSOLIDATED_MD_FILES" ]; then
             echo "No markdown files found in the latest commits of the parent or relevant submodules to process."
             echo "files=" >> $GITHUB_OUTPUT
             rm -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH"
             exit 0 
           fi
-    
+
           # Build SQL_IN_LIST safely, handling special characters in filenames
           SQL_IN_LIST_BUILDER=""
           # Process accumulator only if it exists and is not empty
@@ -122,27 +122,27 @@ jobs:
             rm -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" # Delete accumulator after use
           fi
           SQL_IN_LIST="$SQL_IN_LIST_BUILDER"
-    
+
           if [ -z "$SQL_IN_LIST" ]; then
             echo "No markdown files to check against parquet after formatting for SQL."
             echo "files=" >> $GITHUB_OUTPUT
             exit 0
           fi
-    
+
           # Select files that are in the changed list and do not yet have a redirect recorded in the parquet file
           # (redirect is NULL or an empty list/array).
           DB_QUERY="SELECT file_path FROM 'db/vault.parquet' WHERE file_path IN ($SQL_IN_LIST) AND (redirect IS NULL OR ARRAY_LENGTH(redirect) = 0)"
-          
+
           FILES_TO_PROCESS_FROM_DB=$(./duckdb -list -noheader -c "$DB_QUERY" | tr '\n' ',' | sed 's/,$//')
 
           rm -f duckdb duckdb_cli-linux-amd64.zip vault_1.15.5_linux_amd64.zip
-    
+
           if [ -z "$FILES_TO_PROCESS_FROM_DB" ]; then
             echo "No files found in vault.parquet that match the criteria (are in the collected .md/.mdx files list and have redirect IS NULL or an empty list/array)."
             echo "files=" >> $GITHUB_OUTPUT
             exit 0
           fi
-    
+
           echo "Markdown files to process (from DB query): $FILES_TO_PROCESS_FROM_DB"
           echo "files=$FILES_TO_PROCESS_FROM_DB" >> $GITHUB_OUTPUT
 
@@ -184,30 +184,24 @@ jobs:
           npx tsx scripts/generate-redirects.ts --files='${{ steps.normalize-paths.outputs.result }}'
 
       - name: Commit and push changes
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git checkout main || git checkout master || echo "WARN: Failed to checkout main or master in parent repository. Proceeding with current branch."
-          # Process Level 1 submodules
-          git submodule foreach '
-            echo "Processing L1 submodule: $name ($path)"
-            git checkout main || git checkout master || echo "WARN: Failed to checkout main/master in L1 submodule $name, attempting push on current state"
-            git add --all
-            git commit -m "chore(ci): redirects" || echo "INFO: No changes to commit in L1 submodule $name"
-            git push || echo "WARN: Failed to push L1 submodule $name. Continuing..."
+        uses: ./.github/actions/git-commit-push
+        with:
+          commit-message: 'chore(ci): redirects'
 
-            # Process Level 2 submodules (submodules of the current L1 submodule)
-            # This command is executed from within the L1 submodule directory
-            # Wrapped in a subshell to catch errors from the inner foreach
-            (git submodule foreach '\''
-              echo "  Processing L2 submodule: $name ($path)"
-              git checkout main || git checkout master || echo "  WARN: Failed to checkout main/master in L2 submodule $name, attempting push on current state"
-              git add --all
-              git commit -m "chore(ci): redirects" || echo "  INFO: No changes to commit in L2 submodule $name"
-              git push || echo "  WARN: Failed to push L2 submodule $name. Continuing..."
-            '\'' || echo "WARN: Inner foreach for L2 in L1 submodule $name ($path) encountered an issue. Continuing...")
-          ' || echo "WARN: Outer foreach for L1 submodules encountered an issue. Attempting to process parent repo."
-          # Commit and push changes in the parent repository
-          git add --all
-          git commit -m "chore(ci): redirects" || echo "INFO: No changes to commit in parent repository"
-          git push || echo "WARN: Failed to push parent repository."
+      - name: Notify Discord on Success
+        if: success() && steps.changed-files.outputs.files != ''
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '✅ Redirects Generated Successfully'
+          description: 'Redirect mappings have been generated and committed for changed markdown files'
+          color: 0x00ff00
+
+      - name: Notify Discord on Failure
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '❌ Redirect Generation Failed'
+          description: 'Failed to generate redirect mappings. Please check the workflow logs.'
+          color: 0xff0000

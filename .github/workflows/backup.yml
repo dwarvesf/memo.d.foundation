@@ -3,7 +3,7 @@ name: Backup
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 2 * * *"
+    - cron: '0 2 * * *'
 
 jobs:
   backup:
@@ -61,3 +61,21 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: backup
           DEST_DIR: db/backup
+
+      - name: Notify Discord on Success
+        if: success()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '✅ Database Backup Completed'
+          description: 'Daily database backup to S3 completed successfully'
+          color: 0x00ff00
+
+      - name: Notify Discord on Failure
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '❌ Database Backup Failed'
+          description: 'Daily database backup to S3 failed. Please check the logs.'
+          color: 0xff0000

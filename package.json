@@ -23,7 +23,9 @@
     "fetch-prompts": "tsx scripts/fetch-prompts.ts",
     "fetch-contributor-stats": "tsx scripts/fetch-contributor-stats.ts",
     "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",
-    "copy-404": "mkdir -p out/404 && cp out/404.html out/404/index.html"
+    "monitor-parquet": "tsx scripts/monitor-parquet.ts",
+    "monitor-parquet-notify": "tsx scripts/monitor-parquet.ts --notify",
+    "copy-404": "cp out/404/index.html out/404.html"
   },
   "type": "module",
   "homepage": "https://memo.d.foundation/",

@@ -1,0 +1,57 @@
+name: Test Git Action
+on:
+  workflow_dispatch:
+    inputs:
+      test_message:
+        description: 'Test commit message'
+        required: true
+        default: 'test: verify git action works'
+  push:
+    branches:
+      - ci/monitoring
+    paths:
+      - '.github/workflows/test-git-action.yml'
+
+jobs:
+  test-git-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DWARVES_PAT }}
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Make a small change
+        run: |
+          echo "# Test file created at $(date)" > test-file-$(date +%s).md
+
+      - name: Test git action
+        uses: ./.github/actions/git-commit-push
+        with:
+          commit-message: ${{ github.event.inputs.test_message }}
+
+      - name: Cleanup test file
+        run: |
+          rm -f test-file-*.md
+          git add -A
+          git commit -m "cleanup: remove test files" || echo "No test files to remove"
+
+      - name: Notify Discord on Success
+        if: success()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '✅ Git Action Test Passed'
+          description: 'Reusable git action is working correctly'
+          color: 0x00ff00
+
+      - name: Notify Discord on Failure
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '❌ Git Action Test Failed'
+          description: "There's an issue with the reusable git action"
+          color: 0xff0000
