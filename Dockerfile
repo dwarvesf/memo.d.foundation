@@ -22,6 +22,8 @@ ENV RAILWAY_GIT_REPO_OWNER=$RAILWAY_GIT_REPO_OWNER
 ENV RAILWAY_GIT_REPO_NAME=$RAILWAY_GIT_REPO_NAME
 ENV RAILWAY_ENVIRONMENT_NAME=$RAILWAY_ENVIRONMENT_NAME
 
+COPY . .
+
 # Initialize git and fetch the specified branch
 RUN git init && \
       git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
