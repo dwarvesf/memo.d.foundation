@@ -420,14 +420,15 @@ function addParseGithubMetadata(
       nextProfile?.linkedin_metadata_json?.name ||
       mochiProfile?.profile_name ||
       '',
+    github_username: nextProfile?.username || '',
     githubId: nextProfile?.username || '',
-    githubLink: nextProfile?.github_url || '',
+    github_url: nextProfile?.github_url || nextProfile?.profile_url || '',
     websiteLink: nextProfile?.github_metadata_json?.blog || '',
     bio:
       nextProfile?.github_metadata_json?.bio ||
       nextProfile?.linkedin_metadata_json?.about ||
       '',
-    twitterUserName: nextProfile?.github_metadata_json?.twitter_username || '',
+    twitter_username: nextProfile?.github_metadata_json?.twitter_username || '',
     avatar: mochiProfile?.avatar || fallbackAvatar,
     facebookLink: nextProfile?.facebook_url || '',
   };
