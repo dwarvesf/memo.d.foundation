@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Drawer, DrawerContent } from '../ui/drawer';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tab';
 import { ITreeNode } from '@/types';
+import { useRouter } from 'next/router';
 
 interface NavLink {
   title: string;
@@ -34,12 +35,16 @@ interface DirectoryTreeMenuProps {
   nodes: Record<string, ITreeNode>;
   onSelectNode: (node: ITreeNode) => void;
   onSelectLink: () => void;
+  isActiveUrl: (url: string) => boolean;
+  autoScrollRef: React.RefObject<HTMLAnchorElement | null>;
 }
 
 const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
   nodes,
   onSelectNode,
   onSelectLink,
+  isActiveUrl,
+  autoScrollRef,
 }) => {
   const sortedNodes = Object.values(nodes).sort((a, b) => {
     const aIsFolder = a.children && Object.keys(a.children).length > 0;
@@ -58,6 +63,7 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
         const isLink = node.url && !hasChildren;
 
         if (isLink) {
+          const isActive = isActiveUrl(node.url!);
           return (
             <Link
               key={node.url}
@@ -65,8 +71,13 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
               className={cn(
                 'hover:bg-muted dark:hover:bg-muted flex items-center justify-start rounded-lg text-sm transition-colors',
                 'justify-between px-2 py-1.5',
+                {
+                  'text-primary': isActive,
+                },
               )}
               onClick={onSelectLink}
+              data-path={node.url}
+              ref={isActive ? autoScrollRef : null}
             >
               <div className="flex items-center">
                 <FileTextIcon className="text-muted-foreground h-4 w-4 flex-none" />
@@ -108,23 +119,107 @@ const MobileDrawer = ({
   isDark,
   directoryTree,
 }: MobileDrawerProps) => {
+  const router = useRouter();
+  const isInitializedRef = useRef(false);
+  const autoScrollRef = useRef<HTMLAnchorElement>(null);
+
   const [currentTreeLevel, setCurrentTreeLevel] = useState<
     Record<string, ITreeNode> | undefined
   >(directoryTree);
-  const navigationStack = useRef<Record<string, ITreeNode>[]>([]);
+  const navigationStack = useRef<
+    { level: Record<string, ITreeNode>; title: string }[]
+  >([]);
   const [currentTitle, setCurrentTitle] = useState<string>('./');
 
-  React.useEffect(() => {
-    if (isOpen) {
+  const findPathInTree = (
+    nodes: Record<string, ITreeNode>,
+    targetPath: string,
+    parentPaths: ITreeNode[] = [],
+  ): { pathSegments: ITreeNode[]; leafNode: ITreeNode } | null => {
+    for (const node of Object.values(nodes)) {
+      if (node.url === targetPath) {
+        return { pathSegments: [...parentPaths, node], leafNode: node };
+      }
+
+      if (node.children && Object.keys(node.children).length > 0) {
+        const result = findPathInTree(node.children, targetPath, [
+          ...parentPaths,
+          node,
+        ]);
+        if (result) return result;
+      }
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    if (!directoryTree || !isOpen) return;
+
+    const currentPath = router.asPath.endsWith('/')
+      ? router.asPath.slice(0, -1)
+      : router.asPath;
+
+    const pathResult = findPathInTree(directoryTree, currentPath);
+
+    if (pathResult) {
+      const { pathSegments } = pathResult;
+
+      const newNavigationStack: {
+        level: Record<string, ITreeNode>;
+        title: string;
+      }[] = [];
+      let tempCurrentTreeLevel: Record<string, ITreeNode> | undefined =
+        directoryTree;
+      let tempCurrentTitle: string = './';
+
+      // Build the navigation stack and determine the current level and title
+      // Iterate up to the parent of the leaf node
+      for (let i = 0; i < pathSegments.length - 1; i++) {
+        const segment = pathSegments[i];
+        newNavigationStack.push({
+          level: tempCurrentTreeLevel!,
+          title: tempCurrentTitle,
+        });
+        tempCurrentTreeLevel = segment.children;
+        tempCurrentTitle = segment.label;
+      }
+
+      setCurrentTreeLevel(tempCurrentTreeLevel);
+      navigationStack.current = newNavigationStack;
+      setCurrentTitle(tempCurrentTitle);
+
+      // Auto-scroll the active link into view
+      setTimeout(() => {
+        if (autoScrollRef.current) {
+          let block: ScrollLogicalPosition = 'nearest';
+          if (
+            !isInitializedRef.current &&
+            !checkInView(autoScrollRef.current)
+          ) {
+            block = 'center';
+          }
+          autoScrollRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block,
+            inline: 'start',
+          });
+        }
+        isInitializedRef.current = true;
+      }, 500);
+    } else {
+      // If no path found, reset to root
       setCurrentTreeLevel(directoryTree);
       navigationStack.current = [];
       setCurrentTitle('./');
     }
-  }, [isOpen, directoryTree]);
+  }, [isOpen, directoryTree, router.asPath]);
 
   const handleSelectNode = (node: ITreeNode) => {
     if (node.children) {
-      navigationStack.current.push(currentTreeLevel!);
+      navigationStack.current.push({
+        level: currentTreeLevel!,
+        title: currentTitle,
+      }); // Store current level and its title
       setCurrentTreeLevel(node.children);
       setCurrentTitle(node.label);
     }
@@ -132,13 +227,9 @@ const MobileDrawer = ({
 
   const handleBack = () => {
     if (navigationStack.current.length > 0) {
-      const previousLevel = navigationStack.current.pop();
-      setCurrentTreeLevel(previousLevel);
-      setCurrentTitle(
-        navigationStack.current.length === 0
-          ? './'
-          : Object.values(previousLevel!)[0]?.label || './',
-      );
+      const previousState = navigationStack.current.pop();
+      setCurrentTreeLevel(previousState!.level);
+      setCurrentTitle(previousState!.title); // Restore previous title
     }
   };
 
@@ -222,6 +313,8 @@ const MobileDrawer = ({
                     nodes={currentTreeLevel}
                     onSelectNode={handleSelectNode}
                     onSelectLink={() => setIsOpen(false)}
+                    isActiveUrl={isActiveUrl}
+                    autoScrollRef={autoScrollRef}
                   />
                 </div>
               )}
@@ -252,3 +345,16 @@ const MobileDrawer = ({
 };
 
 export default MobileDrawer;
+
+function checkInView(element: Element | null) {
+  if (!element) return false;
+  const rect = element.getBoundingClientRect();
+  const inView =
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+
+  return inView;
+}
