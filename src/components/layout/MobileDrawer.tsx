@@ -130,6 +130,18 @@ const MobileDrawer = ({
     { level: Record<string, ITreeNode>; title: string }[]
   >([]);
   const [currentTitle, setCurrentTitle] = useState<string>('./');
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('mobileDrawerTab') || 'main';
+    }
+    return 'main';
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mobileDrawerTab', activeTab);
+    }
+  }, [activeTab]);
 
   const findPathInTree = (
     nodes: Record<string, ITreeNode>,
@@ -243,7 +255,8 @@ const MobileDrawer = ({
       >
         <div className="flex h-full flex-col justify-between">
           <Tabs
-            defaultValue="main"
+            value={activeTab}
+            onValueChange={setActiveTab}
             className="flex max-h-[calc(100%-120px)] flex-1 flex-col !p-0"
           >
             <TabsList className="grid !h-10 w-full grid-cols-2 !overflow-hidden !rounded-none !rounded-t-xl !border-none !p-0">
