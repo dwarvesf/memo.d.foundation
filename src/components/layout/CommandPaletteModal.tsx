@@ -27,7 +27,6 @@ interface Props {
   selectedCategory: string;
   isSearching: boolean;
   setIsSearching: (isSearching: boolean) => void;
-  onClose: () => void;
 }
 
 export function CommandPaletteModal({

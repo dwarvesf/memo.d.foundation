@@ -495,7 +495,6 @@ const CommandPalette: React.FC = () => {
         goto={goto}
         isSearching={isSearching}
         setIsSearching={setIsSearching}
-        onClose={close}
       />
     </div>
   );
