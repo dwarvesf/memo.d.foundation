@@ -141,7 +141,11 @@ function RootLayout({
       </Head>
       {/* Sidebar */}
 
-      <Sidebar isOpen={isOpenSidebar} setIsOpen={setIsOpenSidebar} />
+      <Sidebar
+        directoryTree={directoryTree}
+        isOpen={isOpenSidebar}
+        setIsOpen={setIsOpenSidebar}
+      />
 
       <div
         className={`bg-background text-foreground relative flex h-screen font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
