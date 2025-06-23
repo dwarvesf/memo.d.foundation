@@ -113,7 +113,13 @@ const RightSidebar = (props: Props) => {
                     <span>{displayMintCount} collectors</span>
                   </li>
                 )}
-
+                {metadata.pageViewCount && (
+                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
+                    <EyeIcon className="h-3.5 w-3.5" />
+                    <span>Views:</span>{' '}
+                    <span>{metadata.pageViewCount.toLocaleString()}</span>
+                  </li>
+                )}
                 {metadata.tags && metadata.tags.length > 0 && (
                   <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
                     <TagIcon className="h-3.5 w-3.5" />
@@ -127,13 +133,6 @@ const RightSidebar = (props: Props) => {
                         {uppercaseSpecialWords(tag)}
                       </Link>
                     ))}
-                  </li>
-                )}
-                {metadata.pageViewCount && (
-                  <li className="text-secondary-foreground dark:text-secondary-light flex flex-wrap items-center gap-1 text-xs leading-4 -tracking-[0.125px]">
-                    <EyeIcon className="h-3.5 w-3.5" />
-                    <span>Views:</span>{' '}
-                    <span>{metadata.pageViewCount.toLocaleString()}</span>
                   </li>
                 )}
               </ul>
