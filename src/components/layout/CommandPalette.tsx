@@ -12,7 +12,7 @@ import { SearchResult } from '../search/SearchProvider';
 import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
 import { IRecentPageStorageItem, ISearchResultItem } from '@/types';
-import CommandPaletteModal from './CommandPaletteModal';
+import { CommandPaletteModal } from './CommandPaletteModal';
 import { BookOpenIcon, PinIcon, CopyIcon, Share2Icon } from 'lucide-react';
 import HotIcon from '../icons/HotIcon';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
@@ -52,11 +52,18 @@ const CommandPalette: React.FC = () => {
     setIsOpen(prev => {
       const newIsOpen = !prev;
       if (newIsOpen) {
-        // Opening command palette - just add the class to body
+        // Store current scroll position
+        const scrollY = window.scrollY;
+        document.body.style.top = `-${scrollY}px`;
         document.body.classList.add('cmd-palette-open');
       } else {
-        // Closing command palette - simply remove the class
+        // Restore scroll position
+        const scrollY = document.body.style.top;
         document.body.classList.remove('cmd-palette-open');
+        document.body.style.top = '';
+        if (scrollY) {
+          window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
       }
       return newIsOpen;
     });
@@ -68,7 +75,13 @@ const CommandPalette: React.FC = () => {
   const close = useCallback(() => {
     setIsOpen(false);
     setQuery('');
+    // Restore scroll position
+    const scrollY = document.body.style.top;
     document.body.classList.remove('cmd-palette-open');
+    document.body.style.top = '';
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
     // Make sure we delay focus restoration to avoid scroll position jumps
     setTimeout(() => {
       document.body.focus();

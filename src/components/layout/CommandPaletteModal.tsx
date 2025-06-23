@@ -29,24 +29,22 @@ interface Props {
   setIsSearching: (isSearching: boolean) => void;
 }
 
-const CommandPaletteModal = (props: Props) => {
-  const {
-    isOpen,
-    result,
-    defaultResult,
-    goto,
-    searchInputRef,
-    searchContainerRef,
-    setQuery,
-    query,
-    setSelectedIndex,
-    selectedIndex,
-    setSelectedCategory,
-    selectedCategory,
-    isSearching,
-    setIsSearching,
-  } = props;
-
+export function CommandPaletteModal({
+  isOpen,
+  result,
+  defaultResult,
+  goto,
+  searchInputRef,
+  searchContainerRef,
+  setQuery,
+  query,
+  setSelectedIndex,
+  selectedIndex,
+  setSelectedCategory,
+  selectedCategory,
+  isSearching,
+  setIsSearching,
+}: Props) {
   const { theme } = useThemeContext();
 
   const selectedItem = result.grouped[selectedCategory]?.[selectedIndex];
@@ -54,13 +52,14 @@ const CommandPaletteModal = (props: Props) => {
     () => getCategoryIcon(selectedItem?.category || ''),
     [selectedItem?.category],
   );
+
   return (
     <>
       {isOpen &&
         typeof document !== 'undefined' &&
         createPortal(
           <div
-            className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:items-center sm:justify-center sm:p-4"
             style={{
               background:
                 theme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.2)',
@@ -68,9 +67,16 @@ const CommandPaletteModal = (props: Props) => {
           >
             <div
               ref={searchContainerRef}
-              className="dark:bg-background flex max-h-[85vh] w-full max-w-[800px] flex-col overflow-hidden rounded-[8px] border border-[var(--border)] backdrop-blur-xl sm:max-h-[80vh] md:max-h-[75vh]"
+              className={cn(
+                'command-palette-modal dark:bg-background flex w-full flex-col overflow-hidden border border-[var(--border)] backdrop-blur-xl',
+                // Mobile: bottom sheet styles
+                'fixed right-0 bottom-0 left-0 max-h-[85vh] rounded-t-[16px] border-b-0',
+                // Desktop: centered modal styles
+                'sm:relative sm:max-h-[80vh] sm:max-w-[800px] sm:rounded-[8px] sm:border-b',
+                'md:max-h-[75vh]',
+              )}
               style={{
-                animation: 'fadeIn 0.15s ease-out',
+                animation: isOpen ? 'fadeIn 0.15s ease-out' : undefined,
                 background:
                   'color-mix(in oklab, var(--background) 75%, transparent)',
                 WebkitBackdropFilter: 'blur(16px)',
@@ -90,7 +96,7 @@ const CommandPaletteModal = (props: Props) => {
                 />
               </div>
 
-              <div className="flex h-[509px] min-h-0 overflow-hidden">
+              <div className="flex h-[450px] min-h-0 overflow-hidden sm:h-[509px]">
                 <div className="flex flex-1 basis-2/5 flex-col overflow-y-auto">
                   {/* Search result.flat */}
                   {query && Object.keys(result.grouped).length > 0 && (
@@ -308,13 +314,11 @@ const CommandPaletteModal = (props: Props) => {
         )}
     </>
   );
-};
-
-export default CommandPaletteModal;
+}
 
 function getCategoryIcon(
   category: string,
-): React.FunctionComponent<React.SVGProps<SVGSVGElement>> {
+): React.FunctionComponent<React.ComponentProps<'svg'>> {
   const icon = category.split(' > ')[0];
 
   return MemoIcons[icon as keyof typeof MemoIcons] || MemoIcons.playbook;

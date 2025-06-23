@@ -45,18 +45,15 @@ export const CommandSearchInput: React.FC<CommandSearchInputProps> = ({
 
   const keyBindingFn = (e: KeyboardEvent) => {
     if (e.code === 'Enter') {
-      // Function to execute...
       return false;
     }
-
-    // Return Draft's default command for this key.
     return getDefaultKeyBinding(e);
   };
 
   return (
     <div className="placeholder:text-subtle flex w-full items-center bg-transparent p-0 focus-visible:outline-none">
       <SearchIcon className="mr-2 h-4 w-4 flex-shrink-0 text-gray-400" />
-      <div className="flex-1">
+      <div className="relative min-h-[24px] flex-1">
         <HighlightWithinTextarea
           ref={inputRef}
           value={value}
