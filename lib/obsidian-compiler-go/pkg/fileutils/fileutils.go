@@ -128,11 +128,12 @@ func NormalizePath(path string) string {
 	return filepath.Clean(path)
 }
 
-// FilterMarkdownFiles filters a list of files to only include .md files
+// FilterMarkdownFiles filters a list of files to only include .md and .mdx files
 func FilterMarkdownFiles(files []string) []string {
 	var mdFiles []string
 	for _, file := range files {
-		if strings.HasSuffix(strings.ToLower(file), ".md") {
+		lowerFile := strings.ToLower(file)
+		if strings.HasSuffix(lowerFile, ".md") || strings.HasSuffix(lowerFile, ".mdx") {
 			mdFiles = append(mdFiles, file)
 		}
 	}
