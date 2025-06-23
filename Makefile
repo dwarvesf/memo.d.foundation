@@ -39,9 +39,9 @@ run:
 	@pnpm run generate-search-index
 	@pnpm run generate-redirects-map
 	@pnpm run generate-shorten-map
-	@pnpm run generate-user-profiles
 	@pnpm run generate-pageviews
 	@pnpm run fetch-prompts
+	@pnpm run fetch-contributor-stats
 	@pnpm run dev
 
 duckdb-export:
