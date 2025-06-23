@@ -95,17 +95,19 @@ const Sidebar = ({ isOpen, setIsOpen, directoryTree }: SidebarProps) => {
 
   // Check if current path matches link
   const isActiveUrl = (url: string) => {
-    const exactMatch = navLinks.find(link => link.url === router.asPath);
-    if (exactMatch) return router.asPath === url;
-    const allMatchUrls = navLinks
-      .filter(link => router.asPath.startsWith(link.url))
-      .map(link => link.url);
-    const longestMatch = allMatchUrls.reduce(
-      (a, b) => (a.length > b.length ? a : b),
-      '', // Add initial value to prevent error when array is empty
-    );
-    if (longestMatch === '/' && router.asPath !== '/') return false;
-    return longestMatch === url;
+    // Normalize current path: remove query params/hash and trailing slash (unless it's just '/')
+    const currentPath = router.asPath.split('?')[0].split('#')[0];
+    const normalizedCurrentPath =
+      currentPath.endsWith('/') && currentPath !== '/'
+        ? currentPath.slice(0, -1)
+        : currentPath;
+
+    // Normalize target URL: remove trailing slash (unless it's just '/')
+    const normalizedUrl =
+      url.endsWith('/') && url !== '/' ? url.slice(0, -1) : url;
+
+    // Only exact match should be highlighted
+    return normalizedCurrentPath === normalizedUrl;
   };
 
   // Sidebar content component for desktop

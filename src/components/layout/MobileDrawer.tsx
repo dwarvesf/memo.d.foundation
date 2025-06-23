@@ -281,7 +281,7 @@ const MobileDrawer = ({
                     onClick={() => setIsOpen(false)}
                   >
                     <div className="flex items-center">
-                      {item.Icon && <item.Icon className="bg-muted h-4 w-4" />}
+                      {item.Icon && <item.Icon className="h-4 w-4" />}
                       <span className="ml-3 inline-block">{item.title}</span>
                     </div>
                     <ChevronRightIcon className="h-4 w-4 flex-none text-gray-400" />
@@ -296,11 +296,8 @@ const MobileDrawer = ({
               {/* Tree directory content */}
               <div className="mx-4 flex items-center border-b py-3">
                 {navigationStack.current.length > 0 && (
-                  <button
-                    onClick={handleBack}
-                    className="hover:bg-muted mr-2 rounded-md p-0"
-                  >
-                    <ArrowLeftIcon className="bg-muted h-4 w-4 flex-none" />
+                  <button onClick={handleBack} className="mr-2 rounded-md p-0">
+                    <ArrowLeftIcon className="h-4 w-4 flex-none" />
                   </button>
                 )}
                 <h3 className="font-sans !text-sm font-medium">
