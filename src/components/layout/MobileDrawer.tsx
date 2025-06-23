@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { ChevronRightIcon, FolderTreeIcon, BookmarkIcon } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tab';
+import { ITreeNode } from '@/types';
 
 interface NavLink {
   title: string;
@@ -19,6 +20,7 @@ interface MobileDrawerProps {
   isActiveUrl: (url: string) => boolean;
   toggleTheme: () => void;
   isDark: boolean;
+  directoryTree?: Record<string, ITreeNode>;
 }
 
 const MobileDrawer = ({
@@ -29,6 +31,7 @@ const MobileDrawer = ({
   isActiveUrl,
   toggleTheme,
   isDark,
+  directoryTree,
 }: MobileDrawerProps) => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen} direction="bottom">
@@ -88,7 +91,7 @@ const MobileDrawer = ({
               className="flex flex-1 flex-col overflow-y-auto p-4"
             >
               {/* Tree directory content will go here */}
-              <p>Tree directory content will be added later.</p>
+              <pre>{JSON.stringify(directoryTree, null, 2)}</pre>
             </TabsContent>
           </Tabs>
 

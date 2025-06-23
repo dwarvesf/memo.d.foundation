@@ -14,6 +14,7 @@ import MoonIcon from '../icons/MoonIcon';
 import { useThemeContext } from '@/contexts/theme';
 import { cn } from '@/lib/utils';
 import { MemoIcons } from '../icons';
+import { ITreeNode } from '@/types';
 
 const navLinks = [
   { title: 'Home', url: '/', Icon: MemoIcons.home },
@@ -32,9 +33,10 @@ const navLinks = [
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  directoryTree?: Record<string, ITreeNode>;
 }
 
-const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
+const Sidebar = ({ isOpen, setIsOpen, directoryTree }: SidebarProps) => {
   const router = useRouter();
   const { isDark, toggleTheme } = useThemeContext();
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -199,6 +201,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     <>
       {/* Mobile Drawer */}
       <MobileDrawer
+        directoryTree={directoryTree}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         handleKeyDown={handleKeyDown}
