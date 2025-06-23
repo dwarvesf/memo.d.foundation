@@ -3,11 +3,9 @@ import { Drawer, DrawerContent } from '../ui/drawer';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import {
-  ChevronRightIcon,
   FolderTreeIcon,
   BookmarkIcon,
-  ArrowLeftIcon,
-  FileTextIcon,
+  FilePenIcon,
   FolderIcon,
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tab';
@@ -56,7 +54,7 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
   });
 
   return (
-    <nav className="flex flex-1 flex-col gap-1.5 p-4">
+    <nav className="flex flex-1 flex-col divide-y divide-[#dbdbdb] px-5 dark:divide-[var(--border)]">
       {sortedNodes.map(node => {
         const hasChildren =
           node.children && Object.keys(node.children).length > 0;
@@ -69,8 +67,8 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
               key={node.url}
               href={node.url!}
               className={cn(
-                'hover:bg-muted dark:hover:bg-muted flex items-center justify-start rounded-lg text-sm transition-colors',
-                'justify-between px-2 py-1.5',
+                'hover:bg-muted dark:hover:bg-muted flex items-center justify-start text-sm transition-colors',
+                'justify-between px-2 py-2',
                 {
                   'text-primary': isActive,
                 },
@@ -80,7 +78,12 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
               ref={isActive ? autoScrollRef : null}
             >
               <div className="flex items-center">
-                <FileTextIcon className="text-muted-foreground h-4 w-4 flex-none" />
+                <FilePenIcon
+                  className={cn('h-4 w-4 flex-none', {
+                    'text-muted-foreground': !isActive,
+                    'text-primary': isActive,
+                  })}
+                />
                 <span className="ml-3 inline-block">{node.label}</span>
               </div>
             </Link>
@@ -91,15 +94,14 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
               key={node.label}
               onClick={() => onSelectNode(node)}
               className={cn(
-                'hover:bg-muted dark:hover:bg-muted flex items-center justify-start rounded-lg text-sm transition-colors',
-                'w-full justify-between px-2 py-1.5',
+                'hover:bg-muted dark:hover:bg-muted flex items-center justify-start text-sm transition-colors',
+                'w-full justify-between px-2 py-2',
               )}
             >
               <div className="flex items-center">
                 <FolderIcon className="text-muted-foreground h-4 w-4 flex-none" />
                 <span className="ml-3 inline-block">{node.label}</span>
               </div>
-              <ChevronRightIcon className="h-4 w-4 text-gray-400" />
             </button>
           );
         }
@@ -337,70 +339,74 @@ const MobileDrawer = ({
         className={cn('h-full', 'flex flex-col')}
         onKeyDown={handleKeyDown}
         role="navigation"
+        style={{
+          background: 'color-mix(in oklab, var(--background) 75%, transparent)',
+          backdropFilter: 'blur(16px)',
+        }}
       >
         <div className="flex h-full flex-col justify-between">
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
-            className="flex max-h-[calc(100%-120px)] flex-1 flex-col !p-0"
+            className="flex max-h-[calc(100%-66px)] flex-1 flex-col"
           >
-            <TabsList className="grid !h-10 w-full grid-cols-2 !overflow-hidden !rounded-none !rounded-t-xl !border-none !p-0">
-              <TabsTrigger
-                className="!h-10 !rounded-none !shadow-none"
-                value="main"
-              >
-                <BookmarkIcon className="mr-2 h-4 w-4" /> Home
-              </TabsTrigger>
-              <TabsTrigger
-                className="!h-10 !rounded-none !shadow-none"
-                value="tree"
-              >
-                <FolderTreeIcon className="mr-2 h-4 w-4" /> All pages
-              </TabsTrigger>
-            </TabsList>
+            <div className="border-b border-[#dbdbdb] p-1 dark:border-[var(--border)]">
+              <TabsList className="grid w-full grid-cols-2 !bg-transparent">
+                <TabsTrigger className="!shadow-none" value="main">
+                  <BookmarkIcon className="mr-2 h-4 w-4" /> Home
+                </TabsTrigger>
+                <TabsTrigger className="!shadow-none" value="tree">
+                  <FolderTreeIcon className="mr-2 h-4 w-4" /> All pages
+                </TabsTrigger>
+              </TabsList>
+            </div>
             <TabsContent
               value="main"
               className="flex flex-1 flex-col overflow-y-auto"
             >
               {/* Navigation items */}
-              <nav className="flex flex-1 flex-col gap-1.5 p-4">
+              <nav className="flex flex-1 flex-col px-4 py-1">
                 {navLinks.map((item, index) => (
                   <Link
                     key={item.url}
                     href={item.url}
-                    className={cn(
-                      'hover:bg-muted dark:hover:bg-muted flex items-center justify-start rounded-lg text-sm font-medium transition-colors',
-                      'justify-between px-2 py-2', // Mobile specific styling
-                      {
-                        'text-primary': isActiveUrl(item.url),
-                      },
-                    )}
+                    className={cn('flex items-center p-2 text-sm', {
+                      'text-primary': isActiveUrl(item.url),
+                    })}
                     id={`sidebar-item-${index}`}
                     onClick={() => setIsOpen(false)}
                   >
-                    <div className="flex items-center">
-                      {item.Icon && <item.Icon className="h-4 w-4" />}
-                      <span className="ml-3 inline-block">{item.title}</span>
-                    </div>
-                    <ChevronRightIcon className="h-4 w-4 flex-none text-gray-400" />
+                    {item.Icon && (
+                      <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg">
+                        <item.Icon className="text-primary h-4 w-4" />
+                      </div>
+                    )}
+                    <span className="inline-block">{item.title}</span>
                   </Link>
                 ))}
               </nav>
             </TabsContent>
             <TabsContent
               value="tree"
-              className="m-0 flex flex-1 flex-col overflow-y-auto py-0"
+              className="m-0 flex flex-1 flex-col overflow-y-auto"
             >
               {/* Tree directory content */}
-              <div className="mx-4 flex items-center border-b py-3">
-                {navigationStack.current.length > 0 && (
-                  <button onClick={handleBack} className="mr-2 rounded-md p-0">
-                    <ArrowLeftIcon className="h-4 w-4 flex-none" />
+              <div className="mx-4 flex items-center py-3">
+                {navigationStack.current.length > 0 ? (
+                  <button
+                    onClick={handleBack}
+                    className="text-muted-foreground flex items-center space-x-2 rounded-md p-0"
+                  >
+                    ./
+                    <span className="text-muted-foreground font-sans !text-sm font-medium">
+                      {currentTitle}
+                    </span>
                   </button>
+                ) : (
+                  <span className="text-muted-foreground font-sans !text-sm font-medium">
+                    {currentTitle}
+                  </span>
                 )}
-                <h3 className="font-sans !text-sm font-medium">
-                  {currentTitle}
-                </h3>
               </div>
               {currentTreeLevel && (
                 <div className="flex-1 overflow-y-auto">
@@ -417,21 +423,13 @@ const MobileDrawer = ({
           </Tabs>
 
           {/* Theme toggle and Close Menu */}
-          <div className="mx-4 flex-none space-y-2 border-t pt-4 pb-4">
-            <div className="flex flex-col gap-2">
-              <button
-                className="bg-muted flex h-10 items-center justify-center rounded-lg border text-sm font-medium"
-                onClick={toggleTheme}
-              >
-                {isDark ? 'Turn Light Mode On' : 'Turn Dark Mode On'}
-              </button>
-              <button
-                className="hover:bg-muted flex h-10 items-center justify-center rounded-lg text-sm font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                Close Menu
-              </button>
-            </div>
+          <div className="flex-none space-y-2 border border-t-[#dbdbdb] p-3 dark:border-[var(--border)]">
+            <button
+              className="bg-muted flex h-10 w-full items-center justify-center rounded-lg border text-sm font-medium"
+              onClick={toggleTheme}
+            >
+              {isDark ? 'Turn Light Mode On' : 'Turn Dark Mode On'}
+            </button>
           </div>
         </div>
       </DrawerContent>
