@@ -17,7 +17,7 @@ fetch-force:
 
 build:
 	@pnpm install --no-frozen-lockfile
-	@cd lib/obsidian-compiler && mix export_markdown
+	@cd lib/obsidian-compiler-go/ && ./obsidian-compiler export-markdown --vault=../../vault --export=../../public/content
 	@cd lib/obsidian-compiler && mix duckdb.export
 	@pnpm run build
 	@pnpm run generate-nginx-conf
@@ -25,13 +25,13 @@ build:
 
 build-static:
 	@pnpm install --no-frozen-lockfile
-	@cd lib/obsidian-compiler && mix export_markdown
+	@cd lib/obsidian-compiler-go/ && ./obsidian-compiler export-markdown --vault=../../vault --export=../../public/content
 	@pnpm run build
 	@pnpm run generate-nginx-conf
 	@cp -r db/ out/
 
 run:
-	@cd lib/obsidian-compiler-go/ && ./obsidian-compiler export-markdown --vault=../../vault --export=../../content
+	@cd lib/obsidian-compiler-go/ && ./obsidian-compiler export-markdown --vault=../../vault --export=../../public/content
 	@cd lib/obsidian-compiler && mix duckdb.export
 	@pnpm run generate-menu
 	@pnpm run generate-menu-path-sorted
@@ -39,7 +39,7 @@ run:
 	@pnpm run generate-search-index
 	@pnpm run generate-redirects-map
 	@pnpm run generate-shorten-map
-	# @pnpm run generate-pageviews
+	@pnpm run generate-pageviews
 	@pnpm run fetch-prompts
 	@pnpm run fetch-contributor-stats
 	@pnpm run dev
