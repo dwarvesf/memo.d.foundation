@@ -111,6 +111,8 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
   );
 };
 
+const DEFAULT_ROOT = './';
+
 const MobileDrawer = ({
   isOpen,
   setIsOpen,
@@ -131,7 +133,7 @@ const MobileDrawer = ({
   const navigationStack = useRef<
     { level: Record<string, ITreeNode>; title: string }[]
   >([]);
-  const [currentTitle, setCurrentTitle] = useState<string>('./');
+  const [currentTitle, setCurrentTitle] = useState<string>(DEFAULT_ROOT);
   const [activeTab, setActiveTab] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('mobileDrawerTab') || 'main';
@@ -220,7 +222,7 @@ const MobileDrawer = ({
       }[] = [];
       let tempCurrentTreeLevel: Record<string, ITreeNode> | undefined =
         directoryTree;
-      let tempCurrentTitle: string = './';
+      let tempCurrentTitle: string = DEFAULT_ROOT;
 
       const leafNodeHasChildren =
         leafNode.children && Object.keys(leafNode.children).length > 0;
@@ -286,7 +288,7 @@ const MobileDrawer = ({
         }[] = [];
         let tempCurrentTreeLevel: Record<string, ITreeNode> | undefined =
           directoryTree;
-        let tempCurrentTitle: string = './';
+        let tempCurrentTitle: string = DEFAULT_ROOT;
 
         // Navigate into the found folder
         for (let i = 0; i < folderPathSegments.length; i++) {
@@ -308,7 +310,7 @@ const MobileDrawer = ({
         // Case 3: No path found (neither file nor folder), reset to root
         setCurrentTreeLevel(directoryTree);
         navigationStack.current = [];
-        setCurrentTitle('./');
+        setCurrentTitle(DEFAULT_ROOT);
       }
     }
   }, [isOpen, directoryTree, router.asPath]);
@@ -336,7 +338,7 @@ const MobileDrawer = ({
     <Drawer open={isOpen} onOpenChange={setIsOpen} direction="bottom">
       <DrawerContent
         hideHandle
-        className={cn('h-full', 'flex flex-col')}
+        className="flex h-full !max-h-[500px] flex-col border"
         onKeyDown={handleKeyDown}
         role="navigation"
         style={{
@@ -353,7 +355,7 @@ const MobileDrawer = ({
             <div className="border-b border-[#dbdbdb] p-1 dark:border-[var(--border)]">
               <TabsList className="grid w-full grid-cols-2 !bg-transparent">
                 <TabsTrigger className="!shadow-none" value="main">
-                  <BookmarkIcon className="mr-2 h-4 w-4" /> Home
+                  <BookmarkIcon className="mr-2 h-4 w-4" /> Main
                 </TabsTrigger>
                 <TabsTrigger className="!shadow-none" value="tree">
                   <FolderTreeIcon className="mr-2 h-4 w-4" /> All pages
@@ -365,15 +367,14 @@ const MobileDrawer = ({
               className="flex flex-1 flex-col overflow-y-auto"
             >
               {/* Navigation items */}
-              <nav className="flex flex-1 flex-col px-4 py-1">
-                {navLinks.map((item, index) => (
+              <nav className="px-4 py-1">
+                {navLinks.map(item => (
                   <Link
                     key={item.url}
                     href={item.url}
                     className={cn('flex items-center p-2 text-sm', {
                       'text-primary': isActiveUrl(item.url),
                     })}
-                    id={`sidebar-item-${index}`}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.Icon && (
@@ -390,12 +391,11 @@ const MobileDrawer = ({
               value="tree"
               className="m-0 flex flex-1 flex-col overflow-y-auto"
             >
-              {/* Tree directory content */}
               <div className="mx-4 flex items-center py-3">
                 {navigationStack.current.length > 0 ? (
                   <button
                     onClick={handleBack}
-                    className="text-muted-foreground flex items-center space-x-2 rounded-md p-0"
+                    className="text-muted-foreground m-0 flex items-center space-x-2 rounded-md p-0 leading-0"
                   >
                     ./
                     <span className="text-muted-foreground font-sans !text-sm font-medium">
