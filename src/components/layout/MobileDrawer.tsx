@@ -338,7 +338,8 @@ const MobileDrawer = ({
     <Drawer open={isOpen} onOpenChange={setIsOpen} direction="bottom">
       <DrawerContent
         hideHandle
-        className="flex h-full !max-h-[500px] flex-col border"
+        // height = search command palette height
+        className="flex h-full !max-h-[538px] flex-col border"
         onKeyDown={handleKeyDown}
         role="navigation"
         style={{

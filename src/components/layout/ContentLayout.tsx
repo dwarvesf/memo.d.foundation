@@ -1,11 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { cn, uppercaseSpecialWords } from '@/lib/utils';
 import katex from 'katex';
 import { IBackLinkItem, IMetadata } from '@/types';
 import SummaryBlock from '../memo/SummaryBlock';
 import PageTableOfContents from './PageTableOfContents';
 import { ITocItem } from '@/types';
+
+import { EyeIcon, TagIcon, Calendar1Icon, UserIcon } from 'lucide-react';
+import { formatDate } from 'date-fns';
 
 interface ContentLayoutProps {
   children: React.ReactNode;
@@ -76,6 +79,36 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
         </div>
       )}
 
+      <div className="mb-5 flex flex-wrap gap-4 border-b pb-8 xl:hidden">
+        {metadata?.author && (
+          <div className="text-muted-foreground flex items-center gap-2 text-sm">
+            <UserIcon className="h-4 w-4" />
+            <Link
+              href={`/contributor/${metadata?.author}`}
+              className="hover:text-primary underline"
+            >
+              {metadata?.author}
+            </Link>
+          </div>
+        )}
+
+        {metadata?.created && (
+          <div className="text-muted-foreground flex items-center gap-2 text-sm">
+            <Calendar1Icon className="h-4 w-4" />
+            <span>
+              {formatDate(metadata?.created as string, 'MMM dd, yyyy')}
+            </span>
+          </div>
+        )}
+
+        {metadata?.pageViewCount && (
+          <li className="text-muted-foreground flex items-center gap-2 text-sm">
+            <EyeIcon className="h-4 w-4" />
+            <span>{metadata?.pageViewCount.toLocaleString()}</span>
+          </li>
+        )}
+      </div>
+
       {/* Main content with prose styling */}
       <SummaryBlock summary={metadata?.summary}></SummaryBlock>
       {tableOfContents && tableOfContents.length > 0 && (
@@ -91,6 +124,26 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
       >
         {children}
       </div>
+
+      {metadata?.tags && metadata?.tags.length > 0 && (
+        <div className="mt-10 flex flex-wrap items-center gap-2 border-t pt-6 xl:hidden">
+          <div className="flex items-center space-x-1">
+            <TagIcon className="h-3.5 w-3.5" />
+            <span>Tags:</span>
+          </div>
+          {metadata?.tags.slice(0, 3).map((tag, index) => (
+            <Link
+              key={index}
+              href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}
+              className="bg-muted hover:bg-muted/80 hover:text-primary dark:bg-border dark:text-foreground dark:hover:text-primary inline-flex items-center rounded-md px-1.5 py-0.5 text-sm font-medium text-[#4b4f53]"
+            >
+              {uppercaseSpecialWords(tag)}
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {/* <pre>{JSON.stringify(metadata, null, 2)}</pre> */}
 
       {/* Backlinks section */}
       {backlinks.length > 0 && (
