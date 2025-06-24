@@ -130,4 +130,7 @@ export interface ContributorProfile {
   linkedin_metadata: string;
   linkedin_metadata_json?: LinkedInMetadata;
   facebook_url: string;
+  mochi_profile_url?: string;
+  mochi_profile_crawl_status?: string;
+  mochi_profile_metadata?: MochiUserProfile;
 }
