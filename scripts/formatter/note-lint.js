@@ -1,97 +1,344 @@
-/**
- * note-lint.js
- *
- * A modular note convention checker for Markdown files.
- *
- * Function:
- * - Recursively scans a target directory for Markdown (.md) files.
- * - Loads all rule modules from the 'rules' subdirectory.
- * - Applies each rule's check function to every Markdown file.
- * - Reports any violations found by the rules.
- * - Exits with code 2 if any violations are found, otherwise exits normally.
- *
- * How to run:
- *   node scripts/formatter/note-lint.js <path-to-directory> [comma-separated-rule-names]
- *
- * Example:
- *   node scripts/formatter/note-lint.js vault/
- *   node scripts/formatter/note-lint.js vault frontmatter,no-heading1
- *
- * Rules:
- * - Each rule is a separate module in the 'rules' directory.
- * - Each rule module exports a 'check(file, content)' function that returns an array of violation messages.
- */
-
-import fs from 'fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import matter from 'gray-matter';
+import allRules from './rules/index.js'; // Import the consolidated rules
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// ANSI escape codes for colors
+const colors = {
+  red: (text) => `\x1b[31m${text}\x1b[0m`,
+  yellow: (text) => `\x1b[33m${text}\x1b[0m`,
+  gray: (text) => `\x1b[90m${text}\x1b[0m`,
+  green: (text) => `\x1b[32m${text}\x1b[0m`,
+  blue: (text) => `\x1b[34m${text}\x1b[0m`,
+};
 
-const rulesDir = path.join(__dirname, 'rules');
-
-async function loadRules(enabledRules) {
-  let ruleFiles = fs.readdirSync(rulesDir).filter(f => f.endsWith('.js'));
-  if (enabledRules && enabledRules.length > 0) {
-    // Filter ruleFiles to only those in enabledRules (match by filename without extension)
-    ruleFiles = ruleFiles.filter(f =>
-      enabledRules.includes(path.basename(f, '.js')),
-    );
+const DEFAULT_CONFIG = {
+  rules: {
+    'markdown/relative-link-exists': 'error',
+    'markdown/no-heading1': 'warn',
+    'markdown/frontmatter': 'warn'
   }
-  const rules = [];
-  for (const f of ruleFiles) {
-    const mod = await import(path.join(rulesDir, f).replace(/\\/g, '/'));
-    rules.push(mod);
-  }
-  return rules;
-}
+};
 
-function searchFiles(dir, results) {
-  const filesAndDirs = fs.readdirSync(dir, { withFileTypes: true });
-  for (const entry of filesAndDirs) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      searchFiles(fullPath, results);
-    } else if (entry.isFile() && fullPath.endsWith('.md')) {
-      results.push(fullPath);
+class NoteLint {
+  constructor() {
+    this.rules = allRules.rules; // Use the imported rules directly
+  }
+
+  lintFiles(filePaths, config) {
+    const results = [];
+    let totalErrorCount = 0;
+    let totalWarningCount = 0;
+    let totalFixableErrorCount = 0;
+    let totalFixableWarningCount = 0;
+
+    for (const filePath of filePaths) {
+      const fileContent = readFileSync(filePath, 'utf8');
+      const fileResults = this.lintFile(filePath, fileContent, config);
+      results.push(fileResults);
+
+      totalErrorCount += fileResults.errorCount;
+      totalWarningCount += fileResults.warningCount;
+      totalFixableErrorCount += fileResults.fixableErrorCount;
+      totalFixableWarningCount += fileResults.fixableWarningCount;
     }
+
+    return {
+      results,
+      errorCount: totalErrorCount,
+      warningCount: totalWarningCount,
+      fixableErrorCount: totalFixableErrorCount,
+      fixableWarningCount: totalFixableWarningCount,
+    };
   }
-}
 
-const args = process.argv.slice(2);
-const targetPath = args[0];
+  lintFile(filePath, fileContent, config) {
+    const messages = [];
+    let errorCount = 0;
+    let warningCount = 0;
+    let fixableErrorCount = 0;
+    let fixableWarningCount = 0;
 
-if (!targetPath) {
-  console.error('Usage: node note-lint.js <path> [comma-separated-rule-names]');
-  process.exit(1);
-}
+    const parsed = matter(fileContent);
+    const frontmatter = parsed.data;
+    const markdownContent = parsed.content;
 
-const enabledRulesArg = args[1];
-const enabledRules = enabledRulesArg
-  ? enabledRulesArg.split(',').map(r => r.trim())
-  : [];
+    for (const ruleName in config.rules) {
+      const ruleConfig = config.rules[ruleName];
+      const severity = this.getSeverity(ruleConfig);
+      const options = Array.isArray(ruleConfig) ? ruleConfig[1] : {};
 
-const files = [];
-searchFiles(targetPath, files);
+      if (severity === 0) continue; // Rule is off
 
-let hasError = false;
+      const ruleModule = this.rules[ruleName];
+      if (ruleModule) {
+        const ruleContext = {
+          filePath,
+          config, // Overall config
+          severity, // Severity for this specific rule
+          options,  // Options for this specific rule
+          report: (message) => {
+            const finalMessage = { ...message, severity: ruleContext.severity };
+            // If a fix object is directly provided, use it.
+            // If a fix function is provided, execute it and store the result.
+            if (typeof message.fix === 'function') {
+              // A simple fixer object for now. In ESLint, this is more complex.
+              // For now, we assume the fix function directly returns { range, text }
+              // or takes a simple fixer that returns it.
+              // Given our rules now directly return the fix object, this part is simplified.
+              finalMessage.fix = message.fix(); // Execute the fix function if it's a function
+            } else if (message.fix) {
+              finalMessage.fix = message.fix; // Use the fix object directly if it's not a function
+            }
+            messages.push(finalMessage);
+            if (finalMessage.severity === 2) {
+              errorCount++;
+              if (finalMessage.fix) fixableErrorCount++;
+            } else if (finalMessage.severity === 1) {
+              warningCount++;
+              if (finalMessage.fix) fixableWarningCount++;
+            }
+          },
+          getSourceCode: () => fileContent,
+          getFrontmatter: () => frontmatter,
+          getMarkdownContent: () => markdownContent,
+        };
 
-(async () => {
-  const rules = await loadRules(enabledRules);
-  for (const file of files) {
-    const content = fs.readFileSync(file, 'utf8');
-    for (const rule of rules) {
-      const violations = rule.check(file, content);
-      if (violations && violations.length > 0) {
-        hasError = true;
-        for (const v of violations) {
-          console.log(`❌ ${file}: ${v}`);
+        const ruleCreator = ruleModule.create(ruleContext);
+        if (typeof ruleCreator.check === 'function') {
+          ruleCreator.check();
         }
       }
     }
+
+    return {
+      filePath,
+      messages,
+      errorCount,
+      warningCount,
+      fixableErrorCount,
+      fixableWarningCount,
+    };
   }
-  if (hasError) {
-    process.exit(2);
+
+  getSeverity(ruleConfig) {
+    if (Array.isArray(ruleConfig)) {
+      const severity = ruleConfig[0];
+      if (typeof severity === 'string') {
+        if (severity === 'off') return 0;
+        if (severity === 'warn') return 1;
+        if (severity === 'error') return 2;
+      } else if (typeof severity === 'number') {
+        return severity;
+      }
+    } else if (typeof ruleConfig === 'string') {
+      if (ruleConfig === 'off') return 0;
+      if (ruleConfig === 'warn') return 1;
+      if (ruleConfig === 'error') return 2;
+    } else if (typeof ruleConfig === 'number') {
+      return ruleConfig;
+    }
+    return 0; // Default to off if invalid config
   }
-})();
+
+  applyFixes(results) {
+    for (const fileResult of results.results) {
+      if (fileResult.fixableErrorCount > 0 || fileResult.fixableWarningCount > 0) {
+        let fileContent = readFileSync(fileResult.filePath, 'utf8');
+        // Filter and sort fixes by range in descending order to avoid issues with offset changes
+        const fixes = fileResult.messages
+          .filter(m => m.fix && m.fix.range) // Added m.fix.range check
+          .sort((a, b) => b.fix.range[0] - a.fix.range[0]);
+
+        console.log(`Applying fixes for ${fileResult.filePath}:`, fixes); // Debug log
+
+        for (const message of fixes) {
+          const { range, text } = message.fix;
+          fileContent = fileContent.substring(0, range[0]) + text + fileContent.substring(range[1]);
+        }
+        writeFileSync(fileResult.filePath, fileContent, 'utf8');
+      }
+    }
+  }
+}
+
+// CLI functionality starts here
+async function loadConfig(configPath) {
+  if (!configPath) {
+    const defaultJsConfig = path.resolve(process.cwd(), '.notelintrc.js');
+    const defaultJsonConfig = path.resolve(process.cwd(), '.notelintrc.json');
+    const packageJsonPath = path.resolve(process.cwd(), 'package.json');
+
+    if (existsSync(defaultJsConfig)) {
+      return (await import(defaultJsConfig)).default;
+    } else if (existsSync(defaultJsonConfig)) {
+      return JSON.parse(readFileSync(defaultJsonConfig, 'utf8'));
+    } else if (existsSync(packageJsonPath)) {
+      const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+      if (packageJson.notelint) {
+        return packageJson.notelint;
+      }
+    }
+    return DEFAULT_CONFIG;
+  }
+
+  const resolvedPath = path.resolve(process.cwd(), configPath);
+  if (!existsSync(resolvedPath)) {
+    console.error(colors.red(`Error: Configuration file not found at ${resolvedPath}`));
+    process.exit(1);
+  }
+
+  if (resolvedPath.endsWith('.js')) {
+    return (await import(resolvedPath)).default;
+  } else if (resolvedPath.endsWith('.json')) {
+    return JSON.parse(readFileSync(resolvedPath, 'utf8'));
+  } else {
+    console.error(colors.red(`Error: Unsupported configuration file format for ${resolvedPath}`));
+    process.exit(1);
+  }
+}
+
+function findMarkdownFiles(dir, ignorePatterns = ['node_modules']) {
+  let files = [];
+  const entries = readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (ignorePatterns.some(pattern => fullPath.includes(pattern))) {
+      continue;
+    }
+
+    if (entry.isDirectory()) {
+      files = files.concat(findMarkdownFiles(fullPath, ignorePatterns));
+    } else if (entry.isFile() && entry.name.endsWith('.md')) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  let files = [];
+  let fix = false;
+  let configPath = null;
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === '--fix') {
+      fix = true;
+    } else if (arg === '-c' || arg === '--config') {
+      if (i + 1 < args.length) {
+        configPath = args[++i];
+      } else {
+        console.error(colors.red('Error: --config requires a path.'));
+        process.exit(1);
+      }
+    } else {
+      files.push(arg);
+    }
+  }
+
+  let filePaths = [];
+  if (files.length === 0) {
+    filePaths = findMarkdownFiles(process.cwd());
+  } else {
+    for (const pattern of files) {
+      if (pattern.includes('**') || pattern.includes('*')) {
+        const baseDir = path.dirname(pattern.split('**')[0] || pattern.split('*')[0] || '.');
+        filePaths = filePaths.concat(findMarkdownFiles(path.resolve(process.cwd(), baseDir)).filter(filePath => {
+          return filePath.endsWith('.md');
+        }));
+      } else {
+        const resolvedPath = path.resolve(process.cwd(), pattern);
+        if (existsSync(resolvedPath) && statSync(resolvedPath).isFile() && resolvedPath.endsWith('.md')) {
+          filePaths.push(resolvedPath);
+        } else {
+          console.warn(colors.yellow(`Warning: File not found or not a markdown file: ${pattern}`));
+        }
+      }
+    }
+    filePaths = [...new Set(filePaths)];
+  }
+
+  if (filePaths.length === 0) {
+    console.log(colors.yellow('No markdown files found to lint.'));
+    process.exit(0);
+  }
+
+  const config = await loadConfig(configPath);
+  const linter = new NoteLint();
+  const results = linter.lintFiles(filePaths, config);
+
+  if (fix) {
+    linter.applyFixes(results);
+    const fixedErrors = results.fixableErrorCount;
+    const fixedWarnings = results.fixableWarningCount;
+    const fixedFiles = results.results.filter(r => r.fixableErrorCount > 0 || r.fixableWarningCount > 0).length;
+
+    if (fixedErrors > 0 || fixedWarnings > 0) {
+      console.log(colors.green(`✓ Fixed ${fixedErrors} errors and ${fixedWarnings} warnings in ${fixedFiles} files`));
+      for (const fileResult of results.results) {
+        if (fileResult.fixableErrorCount > 0 || fileResult.fixableWarningCount > 0) {
+          console.log(colors.gray(`  ${fileResult.filePath}: ${fileResult.fixableErrorCount + fileResult.fixableWarningCount} issues fixed`));
+        }
+      }
+    } else {
+      const colorSummary = results.errorCount > 0 ? colors.red : (results.warningCount > 0 ? colors.yellow : colors.green);
+      console.log(colorSummary(`✖ ${results.errorCount} errors, ${results.warningCount} warnings (0 fixable)`));
+    }
+  } else {
+    // Use the aggregated counts from the results object
+    const totalErrors = results.errorCount;
+    const totalWarnings = results.warningCount;
+    const totalFixableErrors = results.fixableErrorCount;
+    const totalFixableWarnings = results.fixableWarningCount;
+
+    for (const fileResult of results.results) {
+      if (fileResult.messages.length > 0) {
+        console.log(colors.gray(fileResult.filePath));
+        for (const message of fileResult.messages) {
+          const severityColor = message.severity === 2 ? colors.red : colors.yellow;
+          const severityText = message.severity === 2 ? 'error' : 'warning';
+          console.log(
+            `  ${colors.blue(`${message.line}:${message.column}`)}   ${severityColor(severityText)}    ${message.message}  ${colors.gray(message.ruleId)}`
+          );
+        }
+      }
+    }
+
+    const summaryColor = totalErrors > 0 ? colors.red : (totalWarnings > 0 ? colors.yellow : colors.green);
+    const summaryText = [];
+    if (totalErrors > 0) summaryText.push(`${totalErrors} errors`);
+    if (totalWarnings > 0) summaryText.push(`${totalWarnings} warnings`);
+
+    const fixableSummary = [];
+    if (totalFixableErrors > 0) fixableSummary.push(`${totalFixableErrors} errors`);
+    if (totalFixableWarnings > 0) fixableSummary.push(`${totalFixableWarnings} warnings`);
+
+    let finalSummary = '';
+    if (totalErrors > 0 || totalWarnings > 0) {
+      finalSummary = `✖ ${summaryText.join(', ')}`;
+      if (fixableSummary.length > 0) {
+        finalSummary += ` (${fixableSummary.join(', ')} potentially fixable with --fix)`;
+      } else {
+        finalSummary += ` (0 fixable)`;
+      }
+    } else {
+      finalSummary = `✓ No issues found!`;
+    }
+    console.log(summaryColor(finalSummary));
+
+    if (totalErrors > 0) {
+      process.exit(1);
+    }
+  }
+}
+
+// Execute main function if this script is run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(error => {
+    console.error(colors.red('An unexpected error occurred:'), error);
+    process.exit(1);
+  });
+}

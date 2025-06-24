@@ -1,91 +1,85 @@
 import fs from 'fs';
 import path from 'path';
 
-/**
- * Rule: Check if relative link paths (images and other files) exist.
- * Returns an array of violation messages if any linked file does not exist.
- */
+const rule = {
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Validates that relative links in markdown point to existing files.',
+      category: 'Markdown',
+      recommended: true
+    },
+    fixable: null, // This rule doesn't have a simple auto-fix that can be applied generically
+    schema: []
+  },
+  create(context) {
+    const filePath = context.filePath;
+    const fileContent = context.getSourceCode();
+    const fileDir = path.dirname(filePath);
 
-function check(file, content) {
-  const violations = [];
-  // Regex to match markdown links and images syntax: ![alt](path) or [text](path)
-  // Capture the path inside parentheses
-  const linkRegex = /!?\[[^\]]*\]\(([^)]+)\)/g;
+    return {
+      check: () => { // Removed destructuring here
+        const linkRegex = /!?\[[^\]]*\]\(([^)]+)\)/g;
+        const lines = fileContent.split('\n');
+        let inCodeBlock = false;
 
-  // Directory of the markdown file
-  const fileDir = path.dirname(file);
+        let match;
+        while ((match = linkRegex.exec(fileContent)) !== null) {
+          const matchIndex = match.index;
+          let lineIndex = 0;
+          let currentOffset = 0;
 
-  // Split content into lines for code block detection
-  const lines = content.split('\n');
-  let inCodeBlock = false;
-  let lineIndex = 0;
+          while (lineIndex < lines.length && currentOffset + lines[lineIndex].length <= matchIndex) {
+            if (/^```/.test(lines[lineIndex].trim())) {
+              inCodeBlock = !inCodeBlock;
+            }
+            currentOffset += lines[lineIndex].length + 1; // +1 for newline character
+            lineIndex++;
+          }
 
-  let match;
-  while ((match = linkRegex.exec(content)) !== null) {
-    // Find the line number of the match
-    const matchIndex = match.index;
+          if (inCodeBlock) {
+            continue;
+          }
 
-    // Reset lineIndex and inCodeBlock for each match to correctly detect code blocks
-    lineIndex = 0;
-    inCodeBlock = false;
+          let linkPath = match[1].trim();
 
-    while (
-      lineIndex < lines.length &&
-      content.indexOf(
-        lines[lineIndex],
-        lineIndex === 0
-          ? 0
-          : content.indexOf(lines[lineIndex - 1]) + lines[lineIndex - 1].length,
-      ) <= matchIndex
-    ) {
-      const line = lines[lineIndex];
-      if (/^```/.test(line)) {
-        inCodeBlock = !inCodeBlock;
+          try {
+            linkPath = decodeURIComponent(linkPath);
+          } catch (e) {
+            // If decoding fails, keep original linkPath
+          }
+
+          if (linkPath.startsWith('<') && linkPath.endsWith('>')) {
+            linkPath = linkPath.slice(1, -1);
+          }
+
+          const hashIndex = linkPath.indexOf('#');
+          if (hashIndex !== -1) {
+            linkPath = linkPath.slice(0, hashIndex);
+          }
+
+          if (
+            !/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(linkPath) &&
+            linkPath !== '' &&
+            !path.isAbsolute(linkPath)
+          ) {
+            const resolvedPath = path.resolve(fileDir, linkPath);
+
+            if (!fs.existsSync(resolvedPath)) {
+              context.report({
+                ruleId: 'markdown/relative-link-exists',
+                severity: context.severity,
+                message: `Relative link points to non-existent file: ${linkPath}`,
+                line: lineIndex + 1, // Line numbers are 1-based
+                column: match.index - currentOffset + 1, // Column numbers are 1-based
+                nodeType: 'link',
+              });
+            }
+          }
+        }
       }
-      lineIndex++;
-    }
-
-    if (inCodeBlock) {
-      // Skip links inside code blocks
-      continue;
-    }
-
-    let linkPath = match[1].trim();
-
-    // Decode URI components to handle escape symbols like %20
-    try {
-      linkPath = decodeURIComponent(linkPath);
-    } catch (e) {
-      // If decoding fails, keep original linkPath
-    }
-
-    // Normalize linkPath by removing enclosing angle brackets if any
-    if (linkPath.startsWith('<') && linkPath.endsWith('>')) {
-      linkPath = linkPath.slice(1, -1);
-    }
-
-    // Remove anchor part after '#' if present for file existence check
-    const hashIndex = linkPath.indexOf('#');
-    if (hashIndex !== -1) {
-      linkPath = linkPath.slice(0, hashIndex);
-    }
-
-    // Ignore links with protocols like http://, https://, mailto:, ftp:, etc.
-    if (
-      !/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(linkPath) && // no protocol scheme
-      linkPath !== '' && // not empty after removing anchor
-      !path.isAbsolute(linkPath)
-    ) {
-      // Resolve the absolute path of the linked file
-      const resolvedPath = path.resolve(fileDir, linkPath);
-
-      if (!fs.existsSync(resolvedPath)) {
-        violations.push(`Link path does not exist: "${linkPath}"`);
-      }
-    }
+    };
   }
+};
 
-  return violations;
-}
-
-export { check };
+export default rule;

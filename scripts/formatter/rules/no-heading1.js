@@ -1,28 +1,78 @@
-/**
- * Rule: Warn if the file contains a heading 1 ("# ").
- * Returns an array of violation messages if any.
- */
-function check(file, content) {
-  // Skip frontmatter if present
-  let body = content;
-  if (content.startsWith('---')) {
-    const end = content.indexOf('---', 3);
-    if (end !== -1) {
-      body = content.slice(end + 3);
-    }
-  }
-  const lines = body.split('\n');
-  const violations = [];
-  let inCodeBlock = false;
-  lines.forEach((line, idx) => {
-    if (/^```/.test(line)) {
-      inCodeBlock = !inCodeBlock;
-    }
-    if (!inCodeBlock && /^#\s+/.test(line)) {
-      violations.push(`Heading 1 found on line ${idx + 1}: "${line.trim()}"`);
-    }
-  });
-  return violations;
-}
+const rule = {
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Prevents usage of H1 headings (#) in markdown files and can auto-fix by converting to H2.',
+      category: 'Markdown',
+      recommended: true
+    },
+    fixable: 'code',
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowInRoot: {
+            type: 'boolean',
+            default: false
+          }
+        },
+        additionalProperties: false
+      }
+    ]
+  },
+  create(context) {
+    const options = context.options || {};
+    const allowInRoot = options.allowInRoot === true;
+    const fileContent = context.getSourceCode();
+    const markdownContent = context.getMarkdownContent(); // Content after frontmatter
 
-export { check };
+    return {
+      check: () => {
+        const lines = fileContent.split('\n');
+        let inCodeBlock = false;
+        let frontmatterOffset = fileContent.indexOf(markdownContent);
+        if (frontmatterOffset === -1) frontmatterOffset = 0; // If no frontmatter, content starts at 0
+
+        lines.forEach((line, idx) => {
+          const originalLineNumber = idx + 1;
+          const isContentLine = (fileContent.indexOf(line) >= frontmatterOffset);
+
+          if (/^```/.test(line.trim())) {
+            inCodeBlock = !inCodeBlock;
+          }
+
+          if (!inCodeBlock && /^#\s+/.test(line)) {
+            // Check if it's an H1 heading
+            const isH1 = line.trim().startsWith('# ') && !line.trim().startsWith('##');
+
+            if (isH1) {
+              // If allowInRoot is true, only report if it's not the very first line of the content
+              if (allowInRoot && isContentLine && originalLineNumber === 1) {
+                return; // Allow H1 if it's the first line of content and option is enabled
+              }
+
+              const start = fileContent.indexOf(line);
+              // The range for replacing the first '#' character
+              const range = [start, start + 1];
+
+              context.report({
+                ruleId: 'markdown/no-heading1',
+                severity: context.severity,
+                message: 'H1 headings are not allowed in this document',
+                line: originalLineNumber,
+                column: 1,
+                nodeType: 'heading',
+                fix: { // Directly provide the fix object
+                  range: range,
+                  text: '##'
+                }
+              });
+            }
+          }
+        });
+      }
+    };
+  }
+};
+
+export default rule;
