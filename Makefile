@@ -54,5 +54,3 @@ duckdb-export-pattern:
 
 sync-hashnode:
 	@cd lib/obsidian-compiler && mix sync_hashnode
-
-BUMP_VERSION=true
