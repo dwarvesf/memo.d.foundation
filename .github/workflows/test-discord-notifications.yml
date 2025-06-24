@@ -1,0 +1,62 @@
+name: Test Discord Notifications
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Test type'
+        required: true
+        type: choice
+        options:
+          - success
+          - failure
+          - warning
+  push:
+    branches:
+      - ci/monitoring
+    paths:
+      - '.github/workflows/test-discord-notifications.yml'
+
+jobs:
+  test-notifications:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate Success
+        if: github.event.inputs.test_type == 'success'
+        run: echo "✅ Simulating success scenario"
+
+      - name: Simulate Failure
+        if: github.event.inputs.test_type == 'failure'
+        run: |
+          echo "❌ Simulating failure scenario"
+          exit 1
+
+      - name: Simulate Warning
+        if: github.event.inputs.test_type == 'warning'
+        run: echo "⚠️ Simulating warning scenario"
+
+      - name: Notify Discord on Success
+        if: success()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '✅ Test Notification - Success'
+          description: 'This is a test success notification from memo.d.foundation'
+          color: 0x00ff00
+
+      - name: Notify Discord on Failure
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '❌ Test Notification - Failure'
+          description: 'This is a test failure notification from memo.d.foundation'
+          color: 0xff0000
+
+      - name: Notify Discord on Warning
+        if: github.event.inputs.test_type == 'warning'
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '⚠️ Test Notification - Warning'
+          description: 'This is a test warning notification from memo.d.foundation'
+          color: 0xffa500
