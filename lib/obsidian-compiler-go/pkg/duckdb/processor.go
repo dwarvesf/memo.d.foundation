@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/dwarvesfoundation/obsidian-compiler/pkg/ai"
 	"github.com/dwarvesfoundation/obsidian-compiler/pkg/frontmatter"
 )
 
@@ -21,6 +22,7 @@ type Processor struct {
 	numWorkers      int
 	ignorePatterns  []string
 	forceAll        bool
+	aiClient        *ai.Client
 }
 
 type ProcessorOption func(*Processor)
@@ -57,6 +59,7 @@ func NewProcessor(inputPath, outputPath, dbPath string, opts ...ProcessorOption)
 		pattern:        "**/*.md",
 		numWorkers:     10,
 		ignorePatterns: []string{},
+		aiClient:       ai.NewClient(),
 	}
 
 	for _, opt := range opts {
@@ -245,12 +248,53 @@ func (p *Processor) processFiles(ctx context.Context, files []string) error {
 
 	// Process documents with embeddings
 	if len(needsEmbeddings) > 0 {
+		fmt.Printf("Generating embeddings for %d documents...\n", len(needsEmbeddings))
+		
+		// Generate embeddings for each document
+		for i := range needsEmbeddings {
+			if err := p.generateEmbeddings(&needsEmbeddings[i]); err != nil {
+				fmt.Printf("Warning: failed to generate embeddings for %s: %v\n", needsEmbeddings[i].FilePath, err)
+				// Continue with zero embeddings rather than failing
+			}
+		}
+		
 		fmt.Printf("Updating %d documents with embeddings...\n", len(needsEmbeddings))
-		// TODO: Generate embeddings here when AI integration is implemented
 		if err := p.db.BatchUpsert(needsEmbeddings, true); err != nil {
 			return fmt.Errorf("failed to upsert documents with embeddings: %w", err)
 		}
 	}
+
+	return nil
+}
+
+func (p *Processor) generateEmbeddings(doc *Document) error {
+	// Generate SPR compression
+	if spr, err := p.aiClient.SPRCompress(doc.MDContent); err == nil && spr != "" {
+		doc.SPRContent = spr
+	} else {
+		doc.SPRContent = ""
+	}
+
+	// Generate OpenAI embeddings for the full content
+	if result, err := p.aiClient.EmbedOpenAI(doc.MDContent); err == nil {
+		doc.EmbeddingsOpenAI = result.Embedding
+		doc.TotalTokens = result.TotalTokens
+	} else {
+		// Keep the zero embeddings initialized in processFile
+		doc.TotalTokens = 0
+	}
+
+	// Generate custom embeddings for SPR content (or original if no SPR)
+	contentForCustom := doc.SPRContent
+	if contentForCustom == "" {
+		contentForCustom = doc.MDContent
+	}
+	
+	if result, err := p.aiClient.EmbedCustom(contentForCustom); err == nil {
+		doc.EmbeddingsSPRCustom = result.Embedding
+		doc.TotalTokens += result.TotalTokens
+	}
+	// If error, keep the zero embeddings initialized in processFile
 
 	return nil
 }
@@ -347,16 +391,16 @@ func (p *Processor) processFile(filePath string) (Document, error) {
 	doc.Date = extractDate(fm, "date")
 	doc.MintedAt = extractDate(fm, "minted_at")
 
-	// TODO: Calculate token counts when AI integration is ready
-	doc.EstimatedTokens = int64(len(mdContent) / 4) // Rough estimate
+	// Estimate token count (roughly 4 characters per token)
+	doc.EstimatedTokens = int64(len(mdContent) / 4)
 	doc.TotalTokens = 0
 
 	// Initialize empty embeddings arrays with proper sizes
-	// These will be populated when AI integration is implemented
+	// These will be populated if embeddings are needed
 	doc.EmbeddingsOpenAI = make([]float32, 1536)      // OpenAI embeddings size
 	doc.EmbeddingsSPRCustom = make([]float32, 1024)   // Jina embeddings size
 	
-	// SPR content is empty for now (will be populated by AI)
+	// SPR content will be populated if embeddings are generated
 	doc.SPRContent = ""
 
 	return doc, nil

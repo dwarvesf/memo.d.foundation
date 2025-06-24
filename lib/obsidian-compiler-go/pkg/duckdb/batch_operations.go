@@ -46,13 +46,25 @@ func (db *DB) upsertBatch(documents []Document, updateEmbeddings bool) error {
 	}
 	defer tx.Rollback()
 
+	// Collect file paths for deletion
+	filePaths := make([]string, len(documents))
+	for i, doc := range documents {
+		filePaths[i] = doc.FilePath
+	}
+
+	// Delete existing records first to avoid array update issues
+	if err := db.deleteDocuments(tx, filePaths); err != nil {
+		return fmt.Errorf("failed to delete existing documents: %w", err)
+	}
+
+	// Now insert the documents
 	for _, doc := range documents {
 		if updateEmbeddings {
-			if err := db.upsertWithEmbeddings(tx, doc); err != nil {
+			if err := db.insertWithEmbeddings(tx, doc); err != nil {
 				return err
 			}
 		} else {
-			if err := db.upsertWithoutEmbeddings(tx, doc); err != nil {
+			if err := db.insertWithoutEmbeddings(tx, doc); err != nil {
 				return err
 			}
 		}
@@ -61,7 +73,25 @@ func (db *DB) upsertBatch(documents []Document, updateEmbeddings bool) error {
 	return tx.Commit()
 }
 
-func (db *DB) upsertWithEmbeddings(tx *sql.Tx, doc Document) error {
+func (db *DB) deleteDocuments(tx *sql.Tx, filePaths []string) error {
+	if len(filePaths) == 0 {
+		return nil
+	}
+
+	// Build the IN clause with placeholders
+	placeholders := make([]string, len(filePaths))
+	args := make([]interface{}, len(filePaths))
+	for i, path := range filePaths {
+		placeholders[i] = "?"
+		args[i] = path
+	}
+
+	query := fmt.Sprintf("DELETE FROM vault WHERE file_path IN (%s)", strings.Join(placeholders, ", "))
+	_, err := tx.Exec(query, args...)
+	return err
+}
+
+func (db *DB) insertWithEmbeddings(tx *sql.Tx, doc Document) error {
 	// Debug: check for empty string fields that should be arrays
 	if doc.Tags == nil {
 		doc.Tags = []string{}
@@ -98,48 +128,7 @@ func (db *DB) upsertWithEmbeddings(tx *sql.Tx, doc Document) error {
 		FloatArrayToString(doc.EmbeddingsOpenAI) + `, ` + FloatArrayToString(doc.EmbeddingsSPRCustom) + `, ` + 
 		ArrayToString(doc.Social) + `, ?, ?, ` + ArrayToString(doc.Aliases) + `, ?, ?, ?, ?, ?, ` + 
 		ArrayToString(doc.PreviousPaths) + `, ` + ArrayToString(doc.PICs) + `, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ` + 
-		ArrayToString(doc.Redirect) + `, ?)
-	ON CONFLICT (file_path) DO UPDATE SET
-		title = EXCLUDED.title,
-		short_title = EXCLUDED.short_title,
-		description = EXCLUDED.description,
-		tags = EXCLUDED.tags,
-		authors = EXCLUDED.authors,
-		date = EXCLUDED.date,
-		pinned = EXCLUDED.pinned,
-		hide_frontmatter = EXCLUDED.hide_frontmatter,
-		hide_title = EXCLUDED.hide_title,
-		hide_on_sidebar = EXCLUDED.hide_on_sidebar,
-		md_content = EXCLUDED.md_content,
-		spr_content = EXCLUDED.spr_content,
-		embeddings_openai = EXCLUDED.embeddings_openai,
-		embeddings_spr_custom = EXCLUDED.embeddings_spr_custom,
-		social = EXCLUDED.social,
-		estimated_tokens = EXCLUDED.estimated_tokens,
-		total_tokens = EXCLUDED.total_tokens,
-		aliases = EXCLUDED.aliases,
-		icy = EXCLUDED.icy,
-		hiring = EXCLUDED.hiring,
-		github = EXCLUDED.github,
-		website = EXCLUDED.website,
-		avatar = EXCLUDED.avatar,
-		previous_paths = EXCLUDED.previous_paths,
-		PICs = EXCLUDED.PICs,
-		bounty = EXCLUDED.bounty,
-		status = EXCLUDED.status,
-		featured = EXCLUDED.featured,
-		draft = EXCLUDED.draft,
-		minted_at = EXCLUDED.minted_at,
-		should_deploy_perma_storage = EXCLUDED.should_deploy_perma_storage,
-		should_mint = EXCLUDED.should_mint,
-		perma_storage_id = EXCLUDED.perma_storage_id,
-		token_id = EXCLUDED.token_id,
-		function = EXCLUDED.function,
-		ai_generated_summary = EXCLUDED.ai_generated_summary,
-		ai_summary = EXCLUDED.ai_summary,
-		discord_id = EXCLUDED.discord_id,
-		redirect = EXCLUDED.redirect,
-		has_redirects = EXCLUDED.has_redirects`
+		ArrayToString(doc.Redirect) + `, ?)`
 
 	// Parameters must match the ? placeholders in the query
 	// Arrays are embedded directly in the query string, not passed as parameters
@@ -184,7 +173,7 @@ func (db *DB) upsertWithEmbeddings(tx *sql.Tx, doc Document) error {
 	return err
 }
 
-func (db *DB) upsertWithoutEmbeddings(tx *sql.Tx, doc Document) error {
+func (db *DB) insertWithoutEmbeddings(tx *sql.Tx, doc Document) error {
 	// Ensure arrays are not nil
 	if doc.Tags == nil {
 		doc.Tags = []string{}
@@ -219,43 +208,7 @@ func (db *DB) upsertWithoutEmbeddings(tx *sql.Tx, doc Document) error {
 	) VALUES (?, ?, ?, ?, ` + ArrayToString(doc.Tags) + `, ` + ArrayToString(doc.Authors) + `, ?, ?, ?, ?, ?, ?, ` + 
 		ArrayToString(doc.Social) + `, ` + ArrayToString(doc.Aliases) + `, ?, ?, ?, ?, ?, ` + 
 		ArrayToString(doc.PreviousPaths) + `, ` + ArrayToString(doc.PICs) + `, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ` + 
-		ArrayToString(doc.Redirect) + `, ?)
-	ON CONFLICT (file_path) DO UPDATE SET
-		title = EXCLUDED.title,
-		short_title = EXCLUDED.short_title,
-		description = EXCLUDED.description,
-		tags = EXCLUDED.tags,
-		authors = EXCLUDED.authors,
-		date = EXCLUDED.date,
-		pinned = EXCLUDED.pinned,
-		hide_frontmatter = EXCLUDED.hide_frontmatter,
-		hide_title = EXCLUDED.hide_title,
-		hide_on_sidebar = EXCLUDED.hide_on_sidebar,
-		md_content = EXCLUDED.md_content,
-		social = EXCLUDED.social,
-		aliases = EXCLUDED.aliases,
-		icy = EXCLUDED.icy,
-		hiring = EXCLUDED.hiring,
-		github = EXCLUDED.github,
-		website = EXCLUDED.website,
-		avatar = EXCLUDED.avatar,
-		previous_paths = EXCLUDED.previous_paths,
-		PICs = EXCLUDED.PICs,
-		bounty = EXCLUDED.bounty,
-		status = EXCLUDED.status,
-		featured = EXCLUDED.featured,
-		draft = EXCLUDED.draft,
-		minted_at = EXCLUDED.minted_at,
-		should_deploy_perma_storage = EXCLUDED.should_deploy_perma_storage,
-		should_mint = EXCLUDED.should_mint,
-		perma_storage_id = EXCLUDED.perma_storage_id,
-		token_id = EXCLUDED.token_id,
-		function = EXCLUDED.function,
-		ai_generated_summary = EXCLUDED.ai_generated_summary,
-		ai_summary = EXCLUDED.ai_summary,
-		discord_id = EXCLUDED.discord_id,
-		redirect = EXCLUDED.redirect,
-		has_redirects = EXCLUDED.has_redirects`
+		ArrayToString(doc.Redirect) + `, ?)`
 
 	// Parameters must match the ? placeholders in the query
 	// Arrays are embedded directly in the query string, not passed as parameters
