@@ -56,3 +56,20 @@ duckdb-export-pattern:
 
 sync-hashnode:
 	@cd lib/obsidian-compiler && mix sync_hashnode
+
+# NFT Report Commands
+nft-report-test:
+	@echo "🧪 Running NFT Report Test Suite..."
+	@pnpm test:nft
+
+nft-report-dry:
+	@echo "🔍 Running NFT Report (Dry Run - Verbose Output)..."
+	@pnpm run nft-report-verbose
+
+nft-report-test-parquet:
+	@echo "🧪 Testing NFT Report Parquet Queries..."
+	@pnpm exec tsx scripts/memo-nft-report.ts --test-parquet
+
+nft-report-send:
+	@echo "📊 Running NFT Report and Sending to Discord..."
+	@pnpm run nft-report-send
