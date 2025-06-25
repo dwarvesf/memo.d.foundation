@@ -99,10 +99,10 @@ export async function getCompactContributorFromParquet(): Promise<
 
     return jsonProfiles.map(profile => {
       const {
-        facebook_url,
-        linkedin_url,
+        facebook_url = null,
+        linkedin_url = null,
         username,
-        github_url,
+        github_url = null,
         github_metadata,
         mochi_profile_metadata,
         linkedin_metadata,
@@ -137,7 +137,10 @@ export async function getCompactContributorFromParquet(): Promise<
         facebook_url,
         linkedin_url,
         username,
-        name: github_metadata?.name.replace(username, '').trim() || username,
+        name:
+          github_metadata?.name.replace(username, '').trim() ||
+          username ||
+          null,
         github_url,
         avatar:
           mochi_avatar || github_avatar_from_mochi || github_avatar || null,
@@ -146,8 +149,8 @@ export async function getCompactContributorFromParquet(): Promise<
         github_handle: username,
         website_url: github_metadata?.blog,
         company: linkedin_metadata?.current_company || github_metadata?.company,
-        position: linkedin_metadata?.current_position,
-        x_username: github_metadata?.twitter_username,
+        position: linkedin_metadata?.current_position ?? null,
+        x_username: github_metadata?.twitter_username ?? null,
         x_url: github_metadata?.twitter_username
           ? `https://x.com/${github_metadata?.twitter_username}`
           : null,
