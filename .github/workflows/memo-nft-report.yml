@@ -72,7 +72,7 @@ jobs:
         if: github.event_name == 'schedule'
         env:
           MEMO_NFT_DB_CONNECTION_STRING: ${{ secrets.MEMO_NFT_DB_CONNECTION_STRING }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL_MEMO_LOGS }}
         run: |
           echo "📊 Running scheduled NFT report..."
           pnpm exec tsx scripts/memo-nft-report.ts --send
@@ -81,7 +81,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         env:
           MEMO_NFT_DB_CONNECTION_STRING: ${{ secrets.MEMO_NFT_DB_CONNECTION_STRING }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL_MEMO_LOGS }}
         run: |
           echo "🔍 Running manual NFT report..."
           ARGS=""

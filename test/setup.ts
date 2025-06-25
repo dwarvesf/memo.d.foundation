@@ -3,10 +3,10 @@
  * Configures global test environment and utilities
  */
 
-import { jest } from '@jest/globals';
+import { vi } from 'vitest';
 
 // Set longer timeout for DuckDB operations
-jest.setTimeout(30000);
+vi.setConfig({ testTimeout: 30000 });
 
 // Mock environment variables for tests
 if (!process.env.NODE_ENV) {
@@ -20,9 +20,13 @@ if (!process.env.NODE_ENV) {
 
 // Global test utilities
 declare global {
-  const testUtils: Record<string, unknown>;
+  interface globalThis {
+    testUtils: Record<string, unknown>;
+  }
 }
 
-globalThis.testUtils = {
-  // Add any global test utilities here
-};
+Object.assign(globalThis, {
+  testUtils: {
+    // Add any global test utilities here
+  },
+});

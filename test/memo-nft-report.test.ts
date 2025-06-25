@@ -1,6 +1,6 @@
 /**
  * @file memo-nft-report.test.ts
- * @description Jest test suite for Memo NFT Report functionality
+ * @description Vitest test suite for Memo NFT Report functionality
  *
  * Tests the core functionality of the NFT reporting system including:
  * - Data collection from both sources
@@ -9,7 +9,7 @@
  * - Mock data validation
  */
 
-import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from 'vitest';
 import { DuckDBInstance, DuckDBConnection } from '@duckdb/node-api';
 
 // Mock data interfaces

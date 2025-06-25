@@ -1,3 +1,5 @@
+.PHONY: setup lib-setup fetch fetch-force update-submodule build build-static run duckdb-export duckdb-export-pattern sync-hashnode test
+
 setup:
 	@if ! command -v devbox >/dev/null 2>&1; then curl -fsSL https://get.jetpack.io/devbox | bash; fi
 	@devbox install
@@ -14,6 +16,10 @@ fetch:
 fetch-force:
 	@cd lib/obsidian-compiler && mix fetch
 	@./git-fetch.sh --force
+
+update-submodule:
+	@echo "Updating submodules..."
+	@git submodule update --init --recursive --depth 1
 
 build:
 	@pnpm install --no-frozen-lockfile
@@ -57,6 +63,10 @@ duckdb-export-pattern:
 sync-hashnode:
 	@cd lib/obsidian-compiler && mix sync_hashnode
 
+
+test:
+	pnpm test
+
 # NFT Report Commands
 nft-report-test:
 	@echo "🧪 Running NFT Report Test Suite..."
@@ -64,7 +74,7 @@ nft-report-test:
 
 nft-report-dry:
 	@echo "🔍 Running NFT Report (Dry Run - Verbose Output)..."
-	@pnpm run nft-report-verbose
+	@pnpm exec tsx scripts/memo-nft-report.ts --verbose
 
 nft-report-test-parquet:
 	@echo "🧪 Testing NFT Report Parquet Queries..."
@@ -72,4 +82,4 @@ nft-report-test-parquet:
 
 nft-report-send:
 	@echo "📊 Running NFT Report and Sending to Discord..."
-	@pnpm run nft-report-send
+	@pnpm exec tsx scripts/memo-nft-report.ts --send
