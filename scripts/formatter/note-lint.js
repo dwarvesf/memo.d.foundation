@@ -217,9 +217,9 @@ function findMarkdownFiles(dir, ignorePatterns = ['node_modules']) {
   return files;
 }
 
-async function main() {
+export async function main(inputFiles = []) {
   const args = process.argv.slice(2);
-  let files = [];
+  let files = inputFiles;
   let fix = false;
   let configPath = null;
 
@@ -247,11 +247,11 @@ async function main() {
       if (pattern.includes('**') || pattern.includes('*')) {
         const baseDir = path.dirname(pattern.split('**')[0] || pattern.split('*')[0] || '.');
         filePaths = filePaths.concat(findMarkdownFiles(path.resolve(process.cwd(), baseDir)).filter(filePath => {
-          return filePath.endsWith('.md');
+          return filePath.endsWith('.md') || filePath.endsWith('.mdx');
         }));
       } else {
         const resolvedPath = path.resolve(process.cwd(), pattern);
-        if (existsSync(resolvedPath) && statSync(resolvedPath).isFile() && resolvedPath.endsWith('.md')) {
+        if (existsSync(resolvedPath) && statSync(resolvedPath).isFile() && (resolvedPath.endsWith('.md') || resolvedPath.endsWith('.mdx'))) {
           filePaths.push(resolvedPath);
         } else {
           console.warn(colors.yellow(`Warning: File not found or not a markdown file: ${pattern}`));
