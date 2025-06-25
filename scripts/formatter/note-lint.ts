@@ -1,10 +1,19 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import allRules from './rules/index.js'; // Import the consolidated rules
+import allRules from './rules/index.js';
+import {
+  Colors,
+  RuleContext,
+  DefaultConfig,
+  LintMessage,
+  FileLintResult,
+  LintResults,
+  RuleModule
+} from './rules/types.js';
 
 // ANSI escape codes for colors
-const colors = {
+const colors: Colors = {
   red: (text) => `\x1b[31m${text}\x1b[0m`,
   yellow: (text) => `\x1b[33m${text}\x1b[0m`,
   gray: (text) => `\x1b[90m${text}\x1b[0m`,
@@ -12,7 +21,7 @@ const colors = {
   blue: (text) => `\x1b[34m${text}\x1b[0m`,
 };
 
-const DEFAULT_CONFIG = {
+const DEFAULT_CONFIG: DefaultConfig = {
   rules: {
     'markdown/relative-link-exists': 'error',
     'markdown/no-heading1': 'warn',
@@ -21,12 +30,14 @@ const DEFAULT_CONFIG = {
 };
 
 class NoteLint {
+  private rules: { [key: string]: RuleModule };
+
   constructor() {
     this.rules = allRules.rules; // Use the imported rules directly
   }
 
-  lintFiles(filePaths, config) {
-    const results = [];
+  lintFiles(filePaths: string[], config: DefaultConfig): LintResults {
+    const results: FileLintResult[] = [];
     let totalErrorCount = 0;
     let totalWarningCount = 0;
     let totalFixableErrorCount = 0;
@@ -52,8 +63,8 @@ class NoteLint {
     };
   }
 
-  lintFile(filePath, fileContent, config) {
-    const messages = [];
+  lintFile(filePath: string, fileContent: string, config: DefaultConfig): FileLintResult {
+    const messages: LintMessage[] = [];
     let errorCount = 0;
     let warningCount = 0;
     let fixableErrorCount = 0;
@@ -72,23 +83,17 @@ class NoteLint {
 
       const ruleModule = this.rules[ruleName];
       if (ruleModule) {
-        const ruleContext = {
+        const ruleContext: RuleContext = {
           filePath,
           config, // Overall config
           severity, // Severity for this specific rule
           options,  // Options for this specific rule
           report: (message) => {
-            const finalMessage = { ...message, severity: ruleContext.severity };
-            // If a fix object is directly provided, use it.
-            // If a fix function is provided, execute it and store the result.
+            const finalMessage: LintMessage = { ...message, severity: ruleContext.severity };
             if (typeof message.fix === 'function') {
-              // A simple fixer object for now. In ESLint, this is more complex.
-              // For now, we assume the fix function directly returns { range, text }
-              // or takes a simple fixer that returns it.
-              // Given our rules now directly return the fix object, this part is simplified.
-              finalMessage.fix = message.fix(); // Execute the fix function if it's a function
+              finalMessage.fix = (message.fix as Function)();
             } else if (message.fix) {
-              finalMessage.fix = message.fix; // Use the fix object directly if it's not a function
+              finalMessage.fix = message.fix;
             }
             messages.push(finalMessage);
             if (finalMessage.severity === 2) {
@@ -121,7 +126,7 @@ class NoteLint {
     };
   }
 
-  getSeverity(ruleConfig) {
+  getSeverity(ruleConfig: string | number | [string | number, any]): number {
     if (Array.isArray(ruleConfig)) {
       const severity = ruleConfig[0];
       if (typeof severity === 'string') {
@@ -141,19 +146,18 @@ class NoteLint {
     return 0; // Default to off if invalid config
   }
 
-  applyFixes(results) {
+  applyFixes(results: LintResults): void {
     for (const fileResult of results.results) {
       if (fileResult.fixableErrorCount > 0 || fileResult.fixableWarningCount > 0) {
         let fileContent = readFileSync(fileResult.filePath, 'utf8');
-        // Filter and sort fixes by range in descending order to avoid issues with offset changes
         const fixes = fileResult.messages
-          .filter(m => m.fix && m.fix.range) // Added m.fix.range check
-          .sort((a, b) => b.fix.range[0] - a.fix.range[0]);
+          .filter(m => m.fix && m.fix.range)
+          .sort((a, b) => b.fix!.range[0] - a.fix!.range[0]); // Use non-null assertion
 
-        console.log(`Applying fixes for ${fileResult.filePath}:`, fixes); // Debug log
+        console.log(`Applying fixes for ${fileResult.filePath}:`, fixes);
 
         for (const message of fixes) {
-          const { range, text } = message.fix;
+          const { range, text } = message.fix!; // Use non-null assertion
           fileContent = fileContent.substring(0, range[0]) + text + fileContent.substring(range[1]);
         }
         writeFileSync(fileResult.filePath, fileContent, 'utf8');
@@ -163,14 +167,15 @@ class NoteLint {
 }
 
 // CLI functionality starts here
-async function loadConfig(configPath) {
+async function loadConfig(configPath: string | null): Promise<DefaultConfig> {
   if (!configPath) {
     const defaultJsConfig = path.resolve(process.cwd(), '.notelintrc.js');
     const defaultJsonConfig = path.resolve(process.cwd(), '.notelintrc.json');
     const packageJsonPath = path.resolve(process.cwd(), 'package.json');
 
     if (existsSync(defaultJsConfig)) {
-      return (await import(defaultJsConfig)).default;
+      const configModule = await import(defaultJsConfig);
+      return configModule.default;
     } else if (existsSync(defaultJsonConfig)) {
       return JSON.parse(readFileSync(defaultJsonConfig, 'utf8'));
     } else if (existsSync(packageJsonPath)) {
@@ -189,7 +194,8 @@ async function loadConfig(configPath) {
   }
 
   if (resolvedPath.endsWith('.js')) {
-    return (await import(resolvedPath)).default;
+    const configModule = await import(resolvedPath);
+    return configModule.default;
   } else if (resolvedPath.endsWith('.json')) {
     return JSON.parse(readFileSync(resolvedPath, 'utf8'));
   } else {
@@ -198,8 +204,8 @@ async function loadConfig(configPath) {
   }
 }
 
-function findMarkdownFiles(dir, ignorePatterns = ['node_modules']) {
-  let files = [];
+function findMarkdownFiles(dir: string, ignorePatterns: string[] = ['node_modules']): string[] {
+  let files: string[] = [];
   const entries = readdirSync(dir, { withFileTypes: true });
 
   for (const entry of entries) {
@@ -217,11 +223,11 @@ function findMarkdownFiles(dir, ignorePatterns = ['node_modules']) {
   return files;
 }
 
-export async function main(inputFiles = []) {
+export async function main(inputFiles: string[] = []): Promise<void> {
   const args = process.argv.slice(2);
-  let files = inputFiles;
+  let files: string[] = inputFiles;
   let fix = false;
-  let configPath = null;
+  let configPath: string | null = null;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -239,7 +245,7 @@ export async function main(inputFiles = []) {
     }
   }
 
-  let filePaths = [];
+  let filePaths: string[] = [];
   if (files.length === 0) {
     filePaths = findMarkdownFiles(process.cwd());
   } else {
@@ -288,7 +294,6 @@ export async function main(inputFiles = []) {
       console.log(colorSummary(`✖ ${results.errorCount} errors, ${results.warningCount} warnings (0 fixable)`));
     }
   } else {
-    // Use the aggregated counts from the results object
     const totalErrors = results.errorCount;
     const totalWarnings = results.warningCount;
     const totalFixableErrors = results.fixableErrorCount;
@@ -308,11 +313,11 @@ export async function main(inputFiles = []) {
     }
 
     const summaryColor = totalErrors > 0 ? colors.red : (totalWarnings > 0 ? colors.yellow : colors.green);
-    const summaryText = [];
+    const summaryText: string[] = [];
     if (totalErrors > 0) summaryText.push(`${totalErrors} errors`);
     if (totalWarnings > 0) summaryText.push(`${totalWarnings} warnings`);
 
-    const fixableSummary = [];
+    const fixableSummary: string[] = [];
     if (totalFixableErrors > 0) fixableSummary.push(`${totalFixableErrors} errors`);
     if (totalFixableWarnings > 0) fixableSummary.push(`${totalFixableWarnings} warnings`);
 
@@ -337,7 +342,7 @@ export async function main(inputFiles = []) {
 
 // Execute main function if this script is run directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(colors.red('An unexpected error occurred:'), error);
     process.exit(1);
   });

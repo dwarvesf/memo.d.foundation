@@ -1,4 +1,6 @@
-const rule = {
+import { RuleModule, RuleContext } from './types.js';
+
+const rule: RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -20,11 +22,11 @@ const rule = {
       }
     ]
   },
-  create(context) {
+  create(context: RuleContext) {
     const options = context.options || {};
-    const allowInRoot = options.allowInRoot === true;
-    const fileContent = context.getSourceCode();
-    const markdownContent = context.getMarkdownContent(); // Content after frontmatter
+    const allowInRoot: boolean = options.allowInRoot === true;
+    const fileContent: string = context.getSourceCode();
+    const markdownContent: string = context.getMarkdownContent(); // Content after frontmatter
 
     return {
       check: () => {
@@ -53,7 +55,7 @@ const rule = {
 
               const start = fileContent.indexOf(line);
               // The range for replacing the first '#' character
-              const range = [start, start + 1];
+              const range: [number, number] = [start, start + 1];
 
               context.report({
                 ruleId: 'markdown/no-heading1',

@@ -1,4 +1,6 @@
-const rule = {
+import { RuleModule, RuleContext } from './types.js';
+
+const rule: RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -23,14 +25,14 @@ const rule = {
       }
     ]
   },
-  create(context) {
+  create(context: RuleContext) {
     const options = context.options || {};
-    const requiredFields = options.required || [];
+    const requiredFields: string[] = options.required || [];
     const fileContent = context.getSourceCode();
-    const parsedFrontmatter = context.getFrontmatter(); // This is the parsed object
+    const parsedFrontmatter: { [key: string]: any } = context.getFrontmatter(); // This is the parsed object
 
     // Helper to find the line number of a key in the raw frontmatter string
-    const getLineNumberForKey = (key, rawFrontmatterString) => {
+    const getLineNumberForKey = (key: string, rawFrontmatterString: string): number => {
       const lines = rawFrontmatterString.split('\n');
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].startsWith(`${key}:`)) {
@@ -72,7 +74,7 @@ const rule = {
         const frontmatterLines = rawFrontmatterString.split('\n');
 
         // 2. Validate frontmatter format (adapted from original checkFrontmatter)
-        const keys = new Set();
+        const keys = new Set<string>();
         let curlyOpen = 0, curlyClose = 0;
         let squareOpen = 0, squareClose = 0;
         const forbiddenChars = ['\t', '\0', '\b', '\f', '\v'];

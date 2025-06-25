@@ -3,10 +3,10 @@ import { defineConfig } from 'tsup';
 export default defineConfig({
   clean: true,
   splitting: false,
-  target: 'es2019',
+  target: 'es2017',
   format: ['cjs'],
-  entry: ['scripts/formatter/ci-lint.js'],
+  entry: ['scripts/formatter/ci-lint.ts'],
   outDir: 'out/tools',
   shims: true,
-  noExternal: ['gray-matter'],
+  noExternal: ['gray-matter', 'js-yaml', 'esprima'],
 });

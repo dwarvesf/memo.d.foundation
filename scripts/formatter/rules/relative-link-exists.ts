@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { RuleModule, RuleContext } from './types.js';
 
-const rule = {
+const rule: RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -12,18 +13,18 @@ const rule = {
     fixable: null, // This rule doesn't have a simple auto-fix that can be applied generically
     schema: []
   },
-  create(context) {
-    const filePath = context.filePath;
-    const fileContent = context.getSourceCode();
-    const fileDir = path.dirname(filePath);
+  create(context: RuleContext) {
+    const filePath: string = context.filePath;
+    const fileContent: string = context.getSourceCode();
+    const fileDir: string = path.dirname(filePath);
 
     return {
-      check: () => { // Removed destructuring here
+      check: () => {
         const linkRegex = /!?\[[^\]]*\]\(([^)]+)\)/g;
         const lines = fileContent.split('\n');
         let inCodeBlock = false;
 
-        let match;
+        let match: RegExpExecArray | null;
         while ((match = linkRegex.exec(fileContent)) !== null) {
           const matchIndex = match.index;
           let lineIndex = 0;
