@@ -5,7 +5,7 @@ import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { convertToMemoItems } from '@/lib/content/memo';
 import { queryDuckDB } from '@/lib/db/utils';
 import Link from 'next/link';
-import { getCompactContributorFromParquet } from '@/lib/contributor-stats';
+import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import Jdenticon from 'react-jdenticon';
@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     let allMemos: (IMemoItem & { authorAvatars: string[] })[] = [];
     try {
-      const userProfiles = await getCompactContributorFromParquet();
+      const userProfiles = await getCompactContributorsFromContentJSON();
       const avatarMap = userProfiles.reduce(
         (acc, profile) => {
           if (profile.avatar) {
