@@ -20,15 +20,10 @@ import {
 } from 'next-mdx-remote-client/serialize';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { getMdxSource } from '@/lib/mdx';
-import {
-  ContributorProfile,
-  GithubMetadata,
-  MochiUserProfile,
-  UserProfile,
-} from '@/types/user';
+import { CompactContributorProfile, UserProfile } from '@/types/user';
 import ContributorLayout from '@/components/layout/ContributorLayout';
 import { eachDayOfInterval, endOfYear, startOfYear, format } from 'date-fns';
-import { fetchContributorProfile } from '@/lib/contributor-profile';
+import { getCompactContributorFromParquet } from '@/lib/contributor-stats';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
@@ -180,60 +175,6 @@ async function fetchCollectorsData(tokenId: string) {
     console.error(`Error fetching collectors for token ${tokenId}:`, error);
     return [];
   }
-}
-
-async function fetchMochiContributorProfile(contributorSlug: string) {
-  try {
-    const profileData = await fetchContributorProfile(contributorSlug);
-    if (!profileData) {
-      console.error(`No profile data found for ${contributorSlug}`);
-      return null;
-    }
-    return profileData;
-  } catch (error) {
-    console.error(
-      `Error fetching contributor profile for ${contributorSlug}:`,
-      error,
-    );
-    return null;
-  }
-}
-
-/**
- * Get the contributor's wallet address from their Mochi profile.
- */
-async function getContributorWalletAddress(
-  mochiProfile: MochiUserProfile | null,
-) {
-  const profileData = mochiProfile;
-
-  // Look for EVM accounts in the associated_accounts
-  if (
-    profileData?.associated_accounts &&
-    profileData?.associated_accounts.length > 0
-  ) {
-    // Filter only EVM chain accounts
-    const evmAccounts = profileData.associated_accounts.filter(
-      (account: any) => account.platform === 'evm-chain',
-    );
-
-    if (evmAccounts.length > 0) {
-      // Sort by updated_at in descending order (latest first)
-      // If updated_at is not available, those accounts will be ordered last
-      const sortedAccounts = evmAccounts.sort((a: any, b: any) => {
-        if (!a.updated_at) return 1;
-        if (!b.updated_at) return -1;
-        return (
-          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-        );
-      });
-
-      // Return the most recently updated EVM account
-      return sortedAccounts[0].platform_identifier;
-    }
-  }
-
-  return null; // No wallet address found
 }
 
 /**
@@ -395,46 +336,6 @@ function aggregateActivities(
   return aggregatedActivities;
 }
 
-function addParseGithubMetadata(
-  profile: ContributorProfile,
-  mochiProfile: MochiUserProfile | null,
-): UserProfile {
-  const nextProfile = { ...profile };
-  try {
-    if (profile.github_metadata) {
-      nextProfile.github_metadata_json = JSON.parse(
-        profile.github_metadata,
-      ) as GithubMetadata;
-    }
-  } catch (error) {
-    console.error(
-      `Error parsing GitHub metadata for ${profile.username}:`,
-      error,
-    );
-  }
-  const fallbackAvatar = `https://github.com/${nextProfile?.username}.png`;
-
-  const userProfile = {
-    name:
-      nextProfile?.github_metadata_json?.name ||
-      nextProfile?.linkedin_metadata_json?.name ||
-      mochiProfile?.profile_name ||
-      '',
-    github_username: nextProfile?.username || '',
-    githubId: nextProfile?.username || '',
-    github_url: nextProfile?.github_url || nextProfile?.profile_url || '',
-    websiteLink: nextProfile?.github_metadata_json?.blog || '',
-    bio:
-      nextProfile?.github_metadata_json?.bio ||
-      nextProfile?.linkedin_metadata_json?.about ||
-      '',
-    twitter_username: nextProfile?.github_metadata_json?.twitter_username || '',
-    avatar: mochiProfile?.avatar || fallbackAvatar,
-    facebookLink: nextProfile?.facebook_url || '',
-  };
-  return userProfile;
-}
-
 /**
  * Gets static props for the content page
  */
@@ -477,19 +378,27 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       contributorMemos = []; // Handle error
     }
 
-    // Fetch contributor profile from Mochi
-    const mochiContributorProfile =
-      await fetchMochiContributorProfile(contributorSlug);
-
-    // Fetch contributor's wallet address
-    const contributorWalletAddress = await getContributorWalletAddress(
-      mochiContributorProfile,
-    );
+    // --- Fetch External Data (GitHub Example using Octokit) ---
+    let contributorProfile: CompactContributorProfile | null = null;
+    try {
+      const userProfiles = await getCompactContributorFromParquet();
+      contributorProfile =
+        userProfiles.find(
+          profile => profile.username === originalContributorName,
+        ) ?? null;
+      if (!contributorProfile) {
+        throw new Error(`No profile found for ${originalContributorName}`);
+      }
+    } catch (error) {
+      console.error(`No profile found for ${originalContributorName}`, error);
+    }
 
     // Fetch memos collected by the contributor (with basic info)
     let memosCollected: CollectMemo[] = [];
-    if (contributorWalletAddress) {
-      memosCollected = await fetchCollectedMemos(contributorWalletAddress);
+    if (contributorProfile && contributorProfile?.wallet_address) {
+      memosCollected = await fetchCollectedMemos(
+        contributorProfile?.wallet_address,
+      );
     }
 
     // Enrich memos with collectors data (if any)
@@ -621,34 +530,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       }
     });
 
-    // --- Fetch External Data (GitHub Example using Octokit) ---
-    let contributorProfile: UserProfile | null = null;
-    try {
-      const contributorProfiles = await queryDuckDB<ContributorProfile>(
-        `
-             SELECT *
-             FROM profiles
-             WHERE username == '${originalContributorName}';
-           `,
-        {
-          filePath: 'public/content/contributor-stats.parquet',
-          tableName: 'profiles',
-        },
-      );
-      if (contributorProfiles.length > 0) {
-        contributorProfile = addParseGithubMetadata(
-          contributorProfiles[0],
-          mochiContributorProfile,
-        );
-      } else {
-        console.error(
-          `No profile found for ${originalContributorName} in profiles table`,
-        );
-      }
-    } catch (error) {
-      console.error(`No profile found for ${originalContributorName}`, error);
-    }
-
     const mdxSource = await getMdxSource({
       mdxPath: path.join(
         process.cwd(),
@@ -667,23 +548,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         aggregatedActivities,
         contributorActivity,
         memoCollectors, // Include collectors data in scope
-        walletAddress: contributorWalletAddress, // Include wallet address in scope
+        walletAddress: contributorProfile?.wallet_address, // Include wallet address in scope
       },
     });
 
-    if (!mdxSource || 'error' in mdxSource) {
+    if (!contributorProfile || !mdxSource || 'error' in mdxSource) {
       return { notFound: true }; // Handle serialization error
     }
-
-    // temp
 
     const newSource = await serialize({
       source: `
 <ContributorHead
     name={contributorProfile?.name || ''}
-    githubId={contributorProfile?.github_username || ''}
+    githubId={contributorProfile?.username || ''}
     githubLink={contributorProfile?.github_url || ''}
-    websiteLink={contributorProfile?.websiteLink || ''}
+    websiteLink={contributorProfile?.website_url || ''}
     bio={contributorProfile?.bio || ''}
     twitterUserName={contributorProfile?.twitter_username || ''}
     contributorMemos={contributorMemos}
@@ -694,10 +573,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 <ContributorPinnedMemos data={contributorMemos.slice(0, 3)} />
 
-<ContributorContentBody 
-    data={contributorMemos} 
-    aggregatedActivities={aggregatedActivities} 
-    memoCollectors={memoCollectors} 
+<ContributorContentBody
+    data={contributorMemos}
+    aggregatedActivities={aggregatedActivities}
+    memoCollectors={memoCollectors}
 />
       `,
     });

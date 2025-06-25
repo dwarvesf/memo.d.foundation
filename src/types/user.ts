@@ -136,14 +136,17 @@ export interface ContributorProfile {
 export interface CompactContributorProfile {
   github_handle: string;
   username: string;
+  name?: string;
   bio: string;
   discord_handle: string;
-  website: string;
+  website_url: string;
   linkedin_url?: string;
   facebook_url?: string;
   github_url?: string;
   x_url?: string;
+  x_username?: string;
   avatar?: string;
   current_position?: string;
   company?: string;
+  wallet_address?: string;
 }

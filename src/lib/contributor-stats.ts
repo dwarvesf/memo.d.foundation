@@ -1,4 +1,8 @@
-import { CompactContributorProfile, ContributorProfile } from '@/types/user';
+import {
+  CompactContributorProfile,
+  ContributorProfile,
+  MochiUserProfile,
+} from '@/types/user';
 import { queryDuckDB } from './db/utils';
 
 /**
@@ -33,6 +37,41 @@ export async function getContributorFromParquet(): Promise<
     console.error('Error fetching contributor stats:', error);
     return [];
   }
+}
+
+/**
+ * Get the contributor's wallet address from their Mochi profile.
+ */
+function getContributorWalletAddress(mochiProfile: MochiUserProfile | null) {
+  const profileData = mochiProfile;
+
+  // Look for EVM accounts in the associated_accounts
+  if (
+    profileData?.associated_accounts &&
+    profileData?.associated_accounts.length > 0
+  ) {
+    // Filter only EVM chain accounts
+    const evmAccounts = profileData.associated_accounts.filter(
+      (account: any) => account.platform === 'evm-chain',
+    );
+
+    if (evmAccounts.length > 0) {
+      // Sort by updated_at in descending order (latest first)
+      // If updated_at is not available, those accounts will be ordered last
+      const sortedAccounts = evmAccounts.sort((a: any, b: any) => {
+        if (!a.updated_at) return 1;
+        if (!b.updated_at) return -1;
+        return (
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+        );
+      });
+
+      // Return the most recently updated EVM account
+      return sortedAccounts[0].platform_identifier;
+    }
+  }
+
+  return null; // No wallet address found
 }
 
 export async function getCompactContributorFromParquet(): Promise<
@@ -90,22 +129,29 @@ export async function getCompactContributorFromParquet(): Promise<
 
       const bio = github_metadata?.bio || linkedin_metadata?.about;
 
+      const wallet_address = getContributorWalletAddress(
+        mochi_profile_metadata as MochiUserProfile | null,
+      );
+
       return {
         facebook_url,
         linkedin_url,
         username,
+        name: github_metadata?.name.replace(username, '').trim() || username,
         github_url,
         avatar:
           mochi_avatar || github_avatar_from_mochi || github_avatar || null,
         bio,
-        discord_handle: discord_username,
+        discord_handle: discord_username ?? null,
         github_handle: username,
-        website: github_metadata?.blog,
+        website_url: github_metadata?.blog,
         company: linkedin_metadata?.current_company || github_metadata?.company,
         position: linkedin_metadata?.current_position,
+        x_username: github_metadata?.twitter_username,
         x_url: github_metadata?.twitter_username
           ? `https://x.com/${github_metadata?.twitter_username}`
-          : undefined,
+          : null,
+        wallet_address,
       } as CompactContributorProfile;
     }) as CompactContributorProfile[];
   } catch (error) {
