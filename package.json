@@ -26,7 +26,9 @@
     "monitor-parquet": "tsx scripts/monitor-parquet.ts",
     "monitor-parquet-notify": "tsx scripts/monitor-parquet.ts --notify",
     "copy-404": "mkdir -p out/404 && cp out/404.html out/404/index.html",
-    "build-tools": "tsup"
+    "build-tools": "tsup",
+    "setup-hook-local": "npx -y tsx scripts/git-shell-hook.ts setup",
+    "setup-gh-lint": "npx -y tsx scripts/git-shell-hook.ts github-actions"
   },
   "type": "module",
   "homepage": "https://memo.d.foundation/",

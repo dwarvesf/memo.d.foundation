@@ -16,6 +16,8 @@ interface HookConfig {
   submodules?: string[]; // If empty, applies to all submodules
 }
 
+const DEFAULT_LINTING_SCRIPT_URL = 'https://memo.d.foundation/tools/ci-lint.js';
+
 class GitSubmoduleHookManager {
   private rootDir: string;
   private submodules: SubmoduleInfo[] = [];
@@ -336,7 +338,9 @@ class GitSubmoduleHookManager {
           !modules.includes(submodule.name) &&
           !modules.includes(submodule.path)
         ) {
-          console.log(`⏭ Skipping submodule ${submodule.name} (${submodule.path})`);
+          console.log(
+            `⏭ Skipping submodule ${submodule.name} (${submodule.path})`,
+          );
           continue;
         }
       }
@@ -650,7 +654,6 @@ esac
     fs.writeFileSync(scriptPath, combinedScript, { mode: 0o755 });
   }
 
-
   /**
    * Create README.md for hook scripts in a submodule
    */
@@ -770,6 +773,224 @@ If you encounter issues:
 
     fs.writeFileSync(readmePath, readme);
   }
+
+  /**
+   * Create GitHub Actions workflow files for linting in submodules
+   */
+  async setupGithubActionsWorkflows(
+    lintScriptUrl: string,
+    modules?: string[],
+    workflowName: string = 'markdown-lint',
+    triggerEvents: string[] = ['push', 'pull_request'],
+  ): Promise<void> {
+    console.log(
+      '🚀 Setting up GitHub Actions workflows for markdown linting...',
+    );
+
+    this.submodules = this.parseGitmodules();
+
+    if (this.submodules.length === 0) {
+      console.log('⚠ No submodules found to create GitHub Actions workflows');
+      return;
+    }
+
+    console.log('\n📝 Creating GitHub Actions workflow files in submodules...');
+
+    for (const submodule of this.submodules) {
+      const submodulePath = path.join(this.rootDir, submodule.path);
+
+      if (!fs.existsSync(submodulePath)) {
+        console.log(`⚠ Submodule path does not exist: ${submodulePath}`);
+        continue;
+      }
+
+      if (!this.isGitRepository(submodulePath)) {
+        console.log(`⚠ Not a git repository: ${submodulePath}`);
+        continue;
+      }
+
+      // Check if specific submodules were requested
+      if (modules && modules.length > 0) {
+        if (
+          !modules.includes(submodule.name) &&
+          !modules.includes(submodule.path)
+        ) {
+          console.log(
+            `⏭ Skipping submodule ${submodule.name} (${submodule.path})`,
+          );
+          continue;
+        }
+      }
+
+      try {
+        await this.createGithubActionsWorkflow(
+          submodulePath,
+          submodule.name,
+          lintScriptUrl,
+          workflowName,
+          triggerEvents,
+        );
+        console.log(
+          `✓ Created GitHub Actions workflow in ${submodule.name} (${submodule.path})`,
+        );
+      } catch (error) {
+        console.error(
+          `✗ Failed to create GitHub Actions workflow in ${submodule.path}:`,
+          error,
+        );
+      }
+    }
+
+    console.log('\n✅ GitHub Actions workflow setup complete!');
+    console.log('\n📖 Next steps:');
+    console.log('   1. Commit and push the new workflow files');
+    console.log(
+      '   2. GitHub Actions will run automatically on configured trigger events',
+    );
+    console.log(
+      '   3. Check the Actions tab in each repository for workflow status',
+    );
+  }
+
+  /**
+   * Create a GitHub Actions workflow file in a submodule
+   */
+  private async createGithubActionsWorkflow(
+    submodulePath: string,
+    submoduleName: string,
+    lintScriptUrl: string,
+    workflowName: string,
+    triggerEvents: string[],
+  ): Promise<void> {
+    // Create .github/workflows directory if it doesn't exist
+    const workflowsDir = path.join(submodulePath, '.github', 'workflows');
+    if (!fs.existsSync(workflowsDir)) {
+      fs.mkdirSync(workflowsDir, { recursive: true });
+    }
+
+    const workflowPath = path.join(workflowsDir, `${workflowName}.yml`);
+
+    // Determine the script execution method based on URL extension
+    const isTypeScript = lintScriptUrl.endsWith('.ts');
+    const isJavaScript = lintScriptUrl.endsWith('.js');
+
+    let executeCommand = '';
+    if (isTypeScript) {
+      executeCommand = 'npx tsx ${{ runner.temp }}/lint-script.ts';
+    } else if (isJavaScript) {
+      executeCommand = 'node ${{ runner.temp }}/lint-script.js';
+    } else {
+      executeCommand =
+        'chmod +x ${{ runner.temp }}/lint-script && ${{ runner.temp }}/lint-script';
+    }
+
+    const triggerSection = triggerEvents.reduce((acc, event) => {
+      if (event === 'push' || event === 'pull_request') {
+        acc += `  ${event}:\n`;
+        acc += `    branches:\n`;
+        acc += `      - main\n`;
+        acc += `      - master\n`;
+        acc += `    paths:\n`;
+        acc += `      - '**/*.md'\n`;
+        acc += `      - '**/*.mdx'\n`;
+      } else {
+        acc += `  ${event}:\n`;
+      }
+      return acc;
+    }, '');
+
+    const concurrencyGroup = '${{ github.repository }}-linting-workflow';
+    const changedFilesEnvText = 'CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}';
+
+    const workflowContent = `name: ${workflowName.charAt(0).toUpperCase() + workflowName.slice(1)} Check
+
+# Auto-generated GitHub Actions workflow for ${submoduleName}
+# Runs markdown linting using script from: ${lintScriptUrl}
+
+on:
+${triggerSection}
+  workflow_dispatch: # Allow manual trigger
+
+concurrency:
+  group: ${concurrencyGroup}
+  cancel-in-progress: false
+
+jobs:
+  lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false # Avoid checking out submodules to speed up the process
+
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: |
+          # Install tsx for TypeScript execution if needed
+          ${isTypeScript ? 'npm install -g tsx' : '# No TypeScript dependencies needed'}
+          
+          # Install any project dependencies if package.json exists
+          if [ -f "package.json" ]; then
+            pnpm install
+          fi
+
+      - name: Download lint script
+        run: |
+          echo "📥 Downloading lint script from: ${lintScriptUrl}"
+          curl -sSL "${lintScriptUrl}" -o \${{ runner.temp }}/lint-script${isTypeScript ? '.ts' : isJavaScript ? '.js' : ''}
+
+          # Verify download
+          if [ ! -s "\${{ runner.temp }}/lint-script${isTypeScript ? '.ts' : isJavaScript ? '.js' : ''}" ]; then
+            echo "❌ Error: Downloaded script is empty"
+            exit 1
+          fi
+          
+          echo "✅ Script downloaded successfully"
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46.0.5
+        with:
+          separator: ','
+
+      - name: Run markdown linting
+        run: |
+          echo "🔍 Running markdown linting for ${submoduleName}..."
+          ${executeCommand}
+        env:
+          # Pass any environment variables needed by the linting script
+          GITHUB_ACTIONS: true
+          REPO_NAME: ${submoduleName}
+          ${changedFilesEnvText}
+      
+      - name: Upload linting results (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-results-\${{ github.run_id }}
+          path: |
+            **/*.md
+            .github/
+          retention-days: 30
+`;
+
+    fs.writeFileSync(workflowPath, workflowContent);
+  }
 }
 
 // CLI interface
@@ -781,6 +1002,7 @@ Usage:
   npx -y tsx git-shell-hook.ts setup [options]       Setup automatic hook installation for submodules
   npx -y tsx git-shell-hook.ts remove [options]      Remove hooks from submodules
   npx -y tsx git-shell-hook.ts status                Show hook status for all submodules
+  npx -y tsx git-shell-hook.ts github-actions [options] Create GitHub Actions workflow files for linting
 
 Setup Options:
   --script-url <url>        GitHub raw URL of the script to execute (required)
@@ -791,12 +1013,24 @@ Remove Options:
   --hook-type <type>        Hook type to remove: pre-commit, pre-push, post-commit (default: pre-commit)
   --modules <modules>       Comma-separated list of specific modules to target (optional, default: all)
 
+GitHub Actions Options:
+  --script-url <url>        GitHub raw URL of the linting script (required)
+  --modules <modules>       Comma-separated list of specific modules to target (optional, default: all)
+  --workflow-name <name>    Name for the workflow (default: markdown-lint)
+  --trigger-events <events> Comma-separated list of trigger events (default: push,pull_request)
+
 Examples:
   # Setup automatic hook installation for submodules (creates scripts, docs, and installs hooks)
   npx -y tsx git-shell-hook.ts setup --script-url https://script-url.js
 
   # Setup hooks for specific modules only
   npx -y tsx git-shell-hook.ts setup --script-url https://script-url.js --modules vault,research
+
+  # Create GitHub Actions workflow for all modules
+  npx -y tsx git-shell-hook.ts github-actions --script-url https://raw.githubusercontent.com/dwarvesf/memo.d.foundation/main/scripts/formatter/ci-lint.js
+
+  # Create GitHub Actions workflow for specific modules only
+  npx -y tsx git-shell-hook.ts github-actions --script-url https://script-url.js --modules vault,research --workflow-name custom-lint
 
   # Remove hooks from all modules
   npx -y tsx git-shell-hook.ts remove --hook-type pre-commit
@@ -841,9 +1075,11 @@ async function main(): Promise<void> {
   const manager = new GitSubmoduleHookManager();
 
   try {
-    let scriptUrl = '';
+    let scriptUrl = DEFAULT_LINTING_SCRIPT_URL;
     let hookType: 'pre-commit' | 'pre-push' | 'post-commit' = 'pre-commit';
     let modules: string[] = [];
+    let workflowName = 'markdown-lint';
+    let triggerEvents = ['push', 'pull_request'];
 
     // Parse arguments
     for (let i = 1; i < args.length; i++) {
@@ -857,9 +1093,15 @@ async function main(): Promise<void> {
         case '--modules':
           modules = args[++i].split(',').map(s => s.trim());
           break;
+        case '--workflow-name':
+          workflowName = args[++i];
+          break;
+        case '--trigger-events':
+          triggerEvents = args[++i].split(',').map(s => s.trim());
+          break;
       }
     }
-    
+
     switch (command) {
       case 'remove':
         manager.removeHooksFromSubmodules(hookType, modules);
@@ -875,7 +1117,27 @@ async function main(): Promise<void> {
           process.exit(1);
         }
 
-        await manager.setupSubmodulesHooks(scriptUrl, hookType, modules.length > 0 ? modules : undefined);
+        await manager.setupSubmodulesHooks(
+          scriptUrl,
+          hookType,
+          modules.length > 0 ? modules : undefined,
+        );
+        break;
+      }
+
+      case 'github-actions': {
+        if (!scriptUrl) {
+          console.error('Error: --script-url is required for github-actions');
+          printUsage();
+          process.exit(1);
+        }
+
+        await manager.setupGithubActionsWorkflows(
+          scriptUrl,
+          modules.length > 0 ? modules : undefined,
+          workflowName,
+          triggerEvents,
+        );
         break;
       }
 

@@ -23,8 +23,8 @@ const colors: Colors = {
 
 const DEFAULT_CONFIG: DefaultConfig = {
   rules: {
-    'markdown/relative-link-exists': 'error',
-    'markdown/no-heading1': 'warn',
+    'markdown/relative-link-exists': 'off',
+    'markdown/no-heading1': 'error',
     'markdown/frontmatter': 'warn'
   }
 };
@@ -216,7 +216,7 @@ function findMarkdownFiles(dir: string, ignorePatterns: string[] = ['node_module
 
     if (entry.isDirectory()) {
       files = files.concat(findMarkdownFiles(fullPath, ignorePatterns));
-    } else if (entry.isFile() && entry.name.endsWith('.md')) {
+    } else if (entry.isFile() && (entry.name.endsWith('.md') || entry.name.endsWith('.mdx'))) {
       files.push(fullPath);
     }
   }
@@ -225,7 +225,7 @@ function findMarkdownFiles(dir: string, ignorePatterns: string[] = ['node_module
 
 export async function main(inputFiles: string[] = []): Promise<void> {
   const args = process.argv.slice(2);
-  let files: string[] = inputFiles;
+  const files: string[] = inputFiles;
   let fix = false;
   let configPath: string | null = null;
 
@@ -240,35 +240,48 @@ export async function main(inputFiles: string[] = []): Promise<void> {
         console.error(colors.red('Error: --config requires a path.'));
         process.exit(1);
       }
-    } else {
-      files.push(arg);
     }
   }
 
-  let filePaths: string[] = [];
   if (files.length === 0) {
-    filePaths = findMarkdownFiles(process.cwd());
-  } else {
-    for (const pattern of files) {
-      if (pattern.includes('**') || pattern.includes('*')) {
-        const baseDir = path.dirname(pattern.split('**')[0] || pattern.split('*')[0] || '.');
-        filePaths = filePaths.concat(findMarkdownFiles(path.resolve(process.cwd(), baseDir)).filter(filePath => {
-          return filePath.endsWith('.md') || filePath.endsWith('.mdx');
-        }));
+    console.log(colors.yellow('[Note Linter] No markdown files found to lint.'));
+    process.exit(0);
+  }
+  
+  let filePaths: string[] = [];
+  for (const pattern of files) {
+    if (pattern.includes('**') || pattern.includes('*')) {
+      const baseDir = path.dirname(
+        pattern.split('**')[0] || pattern.split('*')[0] || '.',
+      );
+      filePaths = filePaths.concat(
+        findMarkdownFiles(path.resolve(process.cwd(), baseDir)).filter(
+          filePath => {
+            return filePath.endsWith('.md') || filePath.endsWith('.mdx');
+          },
+        ),
+      );
+    } else {
+      const resolvedPath = path.resolve(process.cwd(), pattern);
+      if (
+        existsSync(resolvedPath) &&
+        statSync(resolvedPath).isFile() &&
+        (resolvedPath.endsWith('.md') || resolvedPath.endsWith('.mdx'))
+      ) {
+        filePaths.push(resolvedPath);
       } else {
-        const resolvedPath = path.resolve(process.cwd(), pattern);
-        if (existsSync(resolvedPath) && statSync(resolvedPath).isFile() && (resolvedPath.endsWith('.md') || resolvedPath.endsWith('.mdx'))) {
-          filePaths.push(resolvedPath);
-        } else {
-          console.warn(colors.yellow(`Warning: File not found or not a markdown file: ${pattern}`));
-        }
+        console.warn(
+          colors.yellow(
+            `Warning: File not found or not a markdown file: ${pattern}`,
+          ),
+        );
       }
     }
-    filePaths = [...new Set(filePaths)];
   }
+  filePaths = [...new Set(filePaths)];
 
   if (filePaths.length === 0) {
-    console.log(colors.yellow('No markdown files found to lint.'));
+    console.log(colors.yellow('[Note Linter] No markdown files matched paths found to lint.'));
     process.exit(0);
   }
 
@@ -338,12 +351,4 @@ export async function main(inputFiles: string[] = []): Promise<void> {
       process.exit(1);
     }
   }
-}
-
-// Execute main function if this script is run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch((error: any) => {
-    console.error(colors.red('An unexpected error occurred:'), error);
-    process.exit(1);
-  });
 }

@@ -8,7 +8,7 @@ export default defineConfig({
   entry: ['scripts/formatter/ci-lint.ts'],
   outDir: 'out/tools',
   shims: true,
-  noExternal: ['gray-matter', 'js-yaml', 'esprima'],
+  noExternal: ['gray-matter', 'js-yaml', 'esprima', 'dotenv'],
   outExtension() {
     return {
       js: `.js`,
