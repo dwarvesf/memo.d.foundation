@@ -40,6 +40,15 @@ import {
 } from '../ui/dropdown';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../ui/tab';
+import {
+  ListIcon,
+  GridIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  FacebookIcon,
+  GithubIcon,
+} from 'lucide-react';
 
 function AvatarCluster({ authors }: { authors: CompactContributorProfile[] }) {
   const [first, second, third, fourth, fifth, sixth, seventh, eighth] =
@@ -116,6 +125,97 @@ function AvatarCluster({ authors }: { authors: CompactContributorProfile[] }) {
         {eighth}
       </Avatar>
     </div>
+  );
+}
+
+function ContributorGridCard({
+  data,
+  count,
+}: {
+  data: CompactContributorProfile | string;
+  count: number;
+}) {
+  const isUnknown = typeof data === 'string';
+  const name = typeof data === 'string' ? data : data.name;
+  const username = typeof data === 'string' ? data : data.username;
+  const socialProfiles = useMemo(() => {
+    if (typeof data === 'string') return [];
+    const profiles = [];
+    if (data.github_url)
+      profiles.push({ type: 'github', url: data.github_url });
+    if (data.x_url) profiles.push({ type: 'twitter', url: data.x_url });
+    if (data.linkedin_url)
+      profiles.push({ type: 'linkedin', url: data.linkedin_url });
+    if (data.facebook_url)
+      profiles.push({ type: 'facebook', url: data.facebook_url });
+    return profiles;
+  }, [data]);
+
+  const avatar = useMemo(() => {
+    if (isUnknown) {
+      return <Jdenticon value={data} size={40} />;
+    }
+    return <AvatarImage className="no-zoom !m-0" src={data.avatar} />;
+  }, [data, isUnknown]);
+
+  return (
+    <Card className="flex flex-col items-center justify-between p-4 text-center shadow-none transition-shadow duration-200 hover:shadow-md">
+      <Link
+        href={`/contributor/${username}`}
+        className="flex flex-col items-center"
+      >
+        <Avatar className="dark:bg-secondary mb-3 flex h-16 w-16 items-center justify-center border-2 bg-[#fff]">
+          {avatar}
+        </Avatar>
+        <CardTitle className="text-md leading-tight font-bold">
+          {name}
+        </CardTitle>
+        {!isUnknown && data.username && (
+          <CardDescription className="text-muted-foreground mt-1 text-xs">
+            @{data.username}
+          </CardDescription>
+        )}
+      </Link>
+      <div className="flex flex-col items-center space-y-4">
+        <div className="flex gap-x-2">
+          {socialProfiles.map(profile => {
+            let IconComponent;
+            switch (profile.type) {
+              case 'github':
+                IconComponent = GithubIcon;
+                break;
+              case 'twitter':
+                IconComponent = TwitterIcon;
+                break;
+              case 'linkedin':
+                IconComponent = LinkedinIcon;
+                break;
+              case 'facebook':
+                IconComponent = FacebookIcon;
+                break;
+              default:
+                return null;
+            }
+            return (
+              <Link
+                key={profile.url}
+                href={profile.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {IconComponent && (
+                  <IconComponent className="text-muted-foreground hover:text-foreground h-4 w-4" />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+        <div className="text-muted-foreground flex items-center gap-x-1 text-xs">
+          <SigmaIcon className="h-3 w-3 shrink-0" />
+          <span className="shrink-0">{count} memos</span>
+        </div>
+      </div>
+    </Card>
   );
 }
 
@@ -291,6 +391,29 @@ function Contributor({
   );
 }
 
+function ContributorGrid({
+  data,
+  contributionCount,
+}: {
+  data: (CompactContributorProfile | string)[];
+  contributionCount: Record<string, number>;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      {data.map(d => {
+        const name = typeof d === 'string' ? d : (d.username ?? '');
+        return (
+          <ContributorGridCard
+            key={name}
+            data={d}
+            count={contributionCount[name]}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
 function ContributorList({
   data,
   contributionCount,
@@ -306,6 +429,8 @@ function ContributorList({
   topCount: number;
 }) {
   const [viewing, setViewing] = useState<'all' | 'craftsmen' | 'alumni'>('all');
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
+
   const sortByContributionCount = data.sort((a, b) => {
     const nameA = typeof a === 'string' ? a : (a.username ?? '');
     const nameB = typeof b === 'string' ? b : (b.username ?? '');
@@ -351,55 +476,82 @@ function ContributorList({
           behind our second brain
         </p>
 
-        <Card className="mt-10">
-          <CardHeader className="font-sans">
-            <CardTitle className="flex items-center justify-between">
-              <span>Contributors are sorted by their memos count</span>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="text-xs">
-                    Viewing {viewing}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => setViewing('all')}>
-                    <SigmaIcon />
-                    All
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setViewing('craftsmen')}>
-                    <HammerIcon />
-                    Dwarves Craftsmen
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setViewing('alumni')}>
-                    <GraduationCapIcon />
-                    Dwarves Alumni
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </CardTitle>
-            <CardDescription>{desc}</CardDescription>
-          </CardHeader>
-          <ScrollArea className="relative">
-            <CardContent className="flex flex-col items-start gap-y-1">
-              <div className="bg-border absolute left-1/2 h-full w-px" />
-              <div className="bg-border absolute left-4/5 h-full w-px" />
-              {sortByContributionCount.map(d => {
-                const name = typeof d === 'string' ? d : (d.username ?? '');
-                return (
-                  <Contributor
-                    key={name}
-                    data={d}
-                    topCount={topCount}
-                    count={contributionCount[name]}
-                    latestWork={contributorLatestWork[name]}
-                    viewing={viewing}
-                  />
-                );
-              })}
-            </CardContent>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-        </Card>
+        <Tabs
+          value={viewMode}
+          onValueChange={value => setViewMode(value as 'list' | 'grid')}
+          className="mt-10 w-full space-y-5"
+        >
+          <div className="flex items-center justify-between gap-x-2">
+            <TabsList>
+              <TabsTrigger value="grid" className="flex items-center gap-x-1">
+                <GridIcon className="h-4 w-4" />
+                Grid
+              </TabsTrigger>
+              <TabsTrigger value="list" className="flex items-center gap-x-1">
+                <ListIcon className="h-4 w-4" />
+                List
+              </TabsTrigger>
+            </TabsList>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="text-xs">
+                  Viewing {viewing}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => setViewing('all')}>
+                  <SigmaIcon />
+                  All
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setViewing('craftsmen')}>
+                  <HammerIcon />
+                  Dwarves Craftsmen
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setViewing('alumni')}>
+                  <GraduationCapIcon />
+                  Dwarves Alumni
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <TabsContent value="list" className="w-full">
+            <Card className="w-full">
+              <CardHeader className="font-sans">
+                <CardTitle>
+                  Contributors are sorted by their memos count
+                </CardTitle>
+                <CardDescription>{desc}</CardDescription>
+              </CardHeader>
+              <ScrollArea className="relative">
+                <CardContent className="flex flex-col items-start gap-y-1">
+                  <div className="bg-border absolute left-1/2 h-full w-px" />
+                  <div className="bg-border absolute left-4/5 h-full w-px" />
+                  {sortByContributionCount.map(d => {
+                    const name = typeof d === 'string' ? d : (d.username ?? '');
+                    return (
+                      <Contributor
+                        key={name}
+                        data={d}
+                        topCount={topCount}
+                        count={contributionCount[name]}
+                        latestWork={contributorLatestWork[name]}
+                        viewing={viewing}
+                      />
+                    );
+                  })}
+                </CardContent>
+                <ScrollBar orientation="vertical" />
+              </ScrollArea>
+            </Card>
+          </TabsContent>
+          <TabsContent value="grid" className="w-full">
+            <ContributorGrid
+              data={sortByContributionCount}
+              contributionCount={contributionCount}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

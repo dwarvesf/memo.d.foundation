@@ -18,7 +18,7 @@ import ContributorContentBody from './memo/ContributorContentBody';
 import WorthReading from './memo/WorthReading';
 import MemoFilterList from './memo/MemoFilterList';
 import TagsMarquee from './memo/TagsMarquee';
-import ContributorList from './memo/contributor-list';
+import ContributorList from './memo/contributor-view';
 
 interface Props {
   mdxSource: SerializeResult;

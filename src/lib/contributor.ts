@@ -43,6 +43,13 @@ function getContributorWalletAddress(mochiProfile: MochiUserProfile | null) {
 
 function getContributorName(data: ContributorProfile) {
   const mochiProfile = data.mochi_profile_metadata;
+  const githubName = data.github_metadata?.name
+    .replace(data.username, '')
+    .trim();
+
+  if (githubName) {
+    return githubName;
+  }
 
   if (
     mochiProfile?.associated_accounts &&
@@ -73,11 +80,7 @@ function getContributorName(data: ContributorProfile) {
     }
   }
 
-  return (
-    data.github_metadata?.name.replace(data.username, '').trim() ||
-    data.username ||
-    null
-  );
+  return data.username || null;
 }
 
 export async function getCompactContributorsFromContentJSON(): Promise<
@@ -136,7 +139,7 @@ export async function getCompactContributorsFromContentJSON(): Promise<
         name: getContributorName(profile),
         github_url,
         avatar:
-          mochi_avatar || github_avatar_from_mochi || github_avatar || null,
+          mochi_avatar || github_avatar || github_avatar_from_mochi || null,
         bio,
         discord_handle: discord_username ?? null,
         github_handle: username,
