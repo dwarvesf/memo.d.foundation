@@ -9,4 +9,9 @@ export default defineConfig({
   outDir: 'out/tools',
   shims: true,
   noExternal: ['gray-matter', 'js-yaml', 'esprima'],
+  outExtension() {
+    return {
+      js: `.js`,
+    };
+  },
 });

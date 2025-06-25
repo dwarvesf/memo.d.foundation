@@ -660,8 +660,11 @@ esac
     scriptUrl: string,
     hookType: string,
   ): Promise<void> {
-    const hookTypeUppercase = hookType.toUpperCase();
-    const readmePath = path.join(submodulePath, hookTypeUppercase + '_HOOK_README.md');
+    const hookTypeUppercase = hookType.toUpperCase().replace('-', '_');
+    const readmePath = path.join(
+      submodulePath,
+      hookTypeUppercase + '_HOOK_README.md',
+    );
 
     const readme = `# Git Hooks for ${submoduleName}
 
