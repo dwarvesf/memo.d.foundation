@@ -127,7 +127,7 @@ export async function getCompactContributorFromParquet(): Promise<
           account => account.platform === 'github',
         )?.platform_metadata?.avatar;
 
-      const bio = github_metadata?.bio || linkedin_metadata?.about;
+      const bio = github_metadata?.bio || linkedin_metadata?.about || null;
 
       const wallet_address = getContributorWalletAddress(
         mochi_profile_metadata as MochiUserProfile | null,
