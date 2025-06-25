@@ -11,7 +11,7 @@ import { RootLayoutPageProps } from '@/types';
 import ContributorLayout from '@/components/layout/ContributorLayout';
 import { isAfter } from 'date-fns';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
-import ContributorList from '@/components/memo/contributor-list';
+import ContributorList from '@/components/memo/contributor-view';
 import { CompactContributorProfile } from '@/types/user';
 
 interface ContentPageProps extends RootLayoutPageProps {
