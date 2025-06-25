@@ -34,6 +34,14 @@ build-static:
 	@pnpm run build-ci-lint
 	@cp -r db/ out/
 
+build-incremental:
+	@echo "🚀 Starting incremental build with content-aware caching..."
+	@pnpm install --no-frozen-lockfile
+	@chmod +x scripts/smart-build.sh
+	@scripts/smart-build.sh
+	@pnpm run generate-nginx-conf
+	@cp -r db/ out/
+
 run:
 	@cd lib/obsidian-compiler && mix export_markdown
 	@cd lib/obsidian-compiler && mix duckdb.export

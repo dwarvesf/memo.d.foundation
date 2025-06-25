@@ -125,11 +125,12 @@ COPY --from=deps /code/lib/obsidian-compiler/deps ./lib/obsidian-compiler/deps
 # Copy the full source code (with submodules) from the 'source' stage
 COPY --from=source /code .
 
-# Build the static assets using cache mounts for Next.js and build processes
-# This tells Docker to persist build caches between builds for faster rebuilds
-RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs-cache,target=/code/.next/cache \
-      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-build-cache,target=/tmp/build-cache \
-      make build-static
+# Build the static assets using enhanced content-aware caching strategy
+# Combines Next.js cache with smart build script for content-based cache invalidation
+RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-smart-cache,target=/tmp/build-cache \
+      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs-cache,target=/code/.next/cache \
+      chmod +x scripts/smart-build.sh && \
+      scripts/smart-build.sh
 
 # --- Runner Stage ---
 # This is the final, small image that will run in production.
