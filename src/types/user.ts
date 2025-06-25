@@ -123,11 +123,30 @@ export interface ContributorProfile {
   last_attempted_at: number;
   github_extraction_error: string;
   github_crawled_at: number;
-  github_metadata: string;
-  github_metadata_json?: GithubMetadata;
+  github_metadata?: GithubMetadata;
   linkedin_crawl_status: string;
   last_crawled_at: number;
-  linkedin_metadata: string;
-  linkedin_metadata_json?: LinkedInMetadata;
+  linkedin_metadata?: LinkedInMetadata;
   facebook_url: string;
+  mochi_profile_url?: string;
+  mochi_profile_crawl_status?: string;
+  mochi_profile_metadata?: MochiUserProfile;
+}
+
+export interface CompactContributorProfile {
+  github_handle: string;
+  username: string;
+  name?: string;
+  bio: string;
+  discord_handle: string;
+  website_url: string;
+  linkedin_url?: string;
+  facebook_url?: string;
+  github_url?: string;
+  x_url?: string;
+  x_username?: string;
+  avatar?: string;
+  current_position?: string;
+  company?: string;
+  wallet_address?: string;
 }

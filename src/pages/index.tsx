@@ -10,7 +10,7 @@ import path from 'path';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { SerializeResult } from 'next-mdx-remote-client';
 import { queryDuckDB } from '@/lib/db/utils';
-import { fetchContributorProfiles } from '@/lib/contributor-profile';
+import { getCompactContributorFromParquet } from '@/lib/contributor-stats';
 
 interface HomePageProps extends RootLayoutPageProps {
   mdxSource?: SerializeResult;
@@ -100,7 +100,19 @@ export const getStaticProps: GetStaticProps = async () => {
 
     // get all memos with tags (object with title and tags field)
     let memosWithTags: { title: string; tags: string[] }[] = [];
+    let avatarMap: Record<string, string | null> = {};
     try {
+      const userProfiles = await getCompactContributorFromParquet();
+      avatarMap = userProfiles.reduce(
+        (acc, profile) => {
+          if (profile.avatar) {
+            acc[profile.username] = profile.avatar;
+          }
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+
       memosWithTags = await queryDuckDB(`
         SELECT title, tags, file_path, date, authors
         FROM vault
@@ -115,14 +127,7 @@ export const getStaticProps: GetStaticProps = async () => {
           filteredResults.map(async result => {
             const authorAvatars =
               result.authors && Array.isArray(result.authors)
-                ? (
-                    await fetchContributorProfiles(
-                      result.authors.filter(
-                        (author): author is string =>
-                          typeof author === 'string',
-                      ),
-                    )
-                  ).map(profile => profile?.avatar ?? null)
+                ? result.authors.map(author => avatarMap[author] ?? null)
                 : [];
 
             return {

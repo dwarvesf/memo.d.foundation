@@ -1,29 +1,26 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
-import path from 'path';
 
 // Import utility functions
 import { getAllMarkdownContents, sortMemos } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
-import { getContributorStats } from '@/lib/contributor-stats';
+import { getContributorFromParquet } from '@/lib/contributor-stats';
 
 import { RootLayoutPageProps } from '@/types';
 
-import {
-  serialize,
-  type SerializeResult,
-} from 'next-mdx-remote-client/serialize';
-import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
-import { getMdxSource } from '@/lib/mdx';
 import ContributorLayout from '@/components/layout/ContributorLayout';
 import { isAfter } from 'date-fns';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
-import { fetchContributorProfiles } from '@/lib/contributor-profile';
+import ContributorList from '@/components/memo/contributor-list';
+import { MochiUserProfile } from '@/types/user';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
-  mdxSource?: SerializeResult; // Serialized MDX source
   contributorStats: Record<string, any>;
+  contributorLatestWork: any;
+  contributors: (MochiUserProfile | string)[];
+  contributionCount: any;
+  topCount: any;
 }
 
 /**
@@ -92,52 +89,40 @@ export const getStaticProps: GetStaticProps = async () => {
       }
     });
 
-    const contributorsArray = Array.from(contributors);
-    const enrichedContributors = (
-      await fetchContributorProfiles(contributorsArray)
-    ).map((profile, index) => profile ?? contributorsArray[index]);
-
     // Fetch contributor stats using the new utility function
-    const contributorStats = await getContributorStats();
+    const contributorProfiles = await getContributorFromParquet();
+    const contributorsArray = Array.from(contributors);
 
-    // --- Read Processed MDX Content ---
-    const mdxPath = path.join(
-      process.cwd(),
-      'public/content/contributor',
-      `index.mdx`,
-    );
+    const enrichedContributors = contributorsArray.map(username => {
+      if (contributorProfiles.some(profile => profile.username === username)) {
+        const foundProfile = contributorProfiles.find(
+          profile => profile.username === username,
+        );
 
-    const mdxSource = await getMdxSource({
-      mdxPath,
-      scope: {
-        contributors: enrichedContributors,
-        contributionCount,
-        contributorLatestWork,
-        topCount,
-        contributorStats,
+        if (foundProfile?.mochi_profile_metadata?.id) {
+          return foundProfile.mochi_profile_metadata;
+        }
+      }
+      return username; // Fallback if no profile found
+    });
+
+    const contributorStats = contributorProfiles?.reduce<Record<string, any>>(
+      (acc, profile) => {
+        const { username } = profile;
+        acc[username] = profile;
+
+        return acc;
       },
-    });
-
-    if (!mdxSource || 'error' in mdxSource) {
-      return { notFound: true }; // Handle serialization error
-    }
-
-    const newSource = await serialize({
-      source:
-        '<ContributorList data={contributors} contributorLatestWork={contributorLatestWork} contributionCount={contributionCount} topCount={topCount} contributorStats={contributorStats} />',
-    });
-
-    if (!newSource || 'error' in newSource) {
-      return { notFound: true }; // Handle serialization error
-    }
-
-    mdxSource.compiledSource = newSource.compiledSource;
+      {},
+    );
 
     return {
       props: {
         ...layoutProps,
-        mdxSource,
-        frontmatter: mdxSource.frontmatter,
+        contributors: enrichedContributors,
+        contributorLatestWork,
+        contributionCount,
+        topCount,
         contributorStats,
       },
     };
@@ -151,12 +136,12 @@ export default function ContentPage({
   frontmatter,
   directoryTree,
   searchIndex,
-  mdxSource,
+  contributorStats,
+  contributorLatestWork,
+  contributors,
+  contributionCount,
+  topCount,
 }: ContentPageProps) {
-  if (!mdxSource || 'error' in mdxSource) {
-    // We already handle this in getStaticProps
-    return null;
-  }
   return (
     <ContributorLayout
       title={frontmatter?.title}
@@ -166,7 +151,13 @@ export default function ContentPage({
       searchIndex={searchIndex}
     >
       <div className="content-wrapper">
-        <RemoteMdxRenderer mdxSource={mdxSource} />
+        <ContributorList
+          data={contributors}
+          contributorLatestWork={contributorLatestWork}
+          contributionCount={contributionCount}
+          topCount={topCount}
+          contributorStats={contributorStats}
+        />
       </div>
     </ContributorLayout>
   );

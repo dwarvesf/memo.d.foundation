@@ -199,7 +199,7 @@ function Contributor({
     if (!stats) return empty;
 
     try {
-      const parsed = JSON.parse(stats);
+      const parsed = stats;
       const attributes = parsed.attributes;
       if (!attributes) return empty;
 
@@ -292,8 +292,8 @@ function Contributor({
                 <span className="text-muted-foreground flex w-full items-center gap-x-1 text-sm">
                   <BookOpenIcon className="h-3 w-3 shrink-0" />
                   <span className="shrink-0">Latest: </span>
-                  <Link className="truncate" href={latestWork.url}>
-                    {latestWork.title}
+                  <Link className="truncate" href={latestWork?.url}>
+                    {latestWork?.title}
                   </Link>
                 </span>
               </div>
@@ -346,6 +346,7 @@ function ContributorList({
     { username: string; analysis_result: string; is_alumni: boolean }
   >;
 }) {
+  console.log({ data });
   const [viewing, setViewing] = useState<'all' | 'craftsmen' | 'alumni'>('all');
   const sortByContributionCount = data.sort((a, b) => {
     const nameA = typeof a === 'string' ? a : getContributorName(a);

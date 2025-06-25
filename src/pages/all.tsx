@@ -5,7 +5,7 @@ import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { convertToMemoItems } from '@/lib/content/memo';
 import { queryDuckDB } from '@/lib/db/utils';
 import Link from 'next/link';
-import { fetchContributorProfiles } from '@/lib/contributor-profile';
+import { getCompactContributorFromParquet } from '@/lib/contributor-stats';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import Jdenticon from 'react-jdenticon';
@@ -42,6 +42,17 @@ export const getStaticProps: GetStaticProps = async () => {
 
     let allMemos: (IMemoItem & { authorAvatars: string[] })[] = [];
     try {
+      const userProfiles = await getCompactContributorFromParquet();
+      const avatarMap = userProfiles.reduce(
+        (acc, profile) => {
+          if (profile.avatar) {
+            acc[profile.username] = profile.avatar;
+          }
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+
       allMemos = await queryDuckDB(`
         ${querySelect}
         FROM vault
@@ -53,14 +64,7 @@ export const getStaticProps: GetStaticProps = async () => {
           convertedMemos.map(async memo => {
             const authorAvatars =
               memo.authors && Array.isArray(memo.authors)
-                ? (
-                    await fetchContributorProfiles(
-                      memo.authors.filter(
-                        (author): author is string =>
-                          typeof author === 'string',
-                      ),
-                    )
-                  ).map(profile => profile?.avatar ?? null)
+                ? memo.authors.map(author => avatarMap[author] ?? null)
                 : [];
             return {
               ...memo,
