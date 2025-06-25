@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from '../ui/card';
 import { ScrollArea, ScrollBar } from '../ui/scrollarea';
-import { MochiUserProfile } from '@/types/user';
+import { CompactContributorProfile } from '@/types/user';
 import {
   HoverCard,
   HoverCardContent,
@@ -41,7 +41,7 @@ import {
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 
-function AvatarCluster({ authors }: { authors: MochiUserProfile[] }) {
+function AvatarCluster({ authors }: { authors: CompactContributorProfile[] }) {
   const [first, second, third, fourth, fifth, sixth, seventh, eighth] =
     authors.map(a => (
       <AvatarImage key={a.avatar} src={a.avatar} className="no-zoom !m-0" />
@@ -126,57 +126,22 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-function getContributorName(data: MochiUserProfile | string) {
-  if (typeof data === 'string') {
-    return data;
-  }
-
-  if (data.associated_accounts && data.associated_accounts.length > 0) {
-    // Look for github account
-    const githubAccount = data.associated_accounts.find(
-      account => account.platform === 'github',
-    );
-    if (githubAccount?.platform_metadata?.username) {
-      return githubAccount.platform_metadata.username;
-    }
-
-    // Look for discord account
-    const discordAccount = data.associated_accounts.find(
-      account => account.platform === 'discord',
-    );
-    if (discordAccount?.platform_metadata?.username) {
-      return discordAccount.platform_metadata.username;
-    }
-
-    // Look for twitter account
-    const twitterAccount = data.associated_accounts.find(
-      account => account.platform === 'twitter',
-    );
-    if (twitterAccount?.platform_metadata?.username) {
-      return twitterAccount.platform_metadata.username;
-    }
-  }
-
-  return data.profile_name;
-}
-
 function Contributor({
   data,
   count,
   topCount,
   latestWork,
-  contributorStats,
   viewing,
 }: {
   topCount: number;
   count: number;
-  data: MochiUserProfile | string;
+  data: CompactContributorProfile | string;
   latestWork: { date: string; url: string; title: string };
-  contributorStats: Record<string, any>;
   viewing: 'all' | 'craftsmen' | 'alumni';
 }) {
   const isUnknown = typeof data === 'string';
-  const name = getContributorName(data);
+  const name = typeof data === 'string' ? data : data.name;
+  const isAlumni = typeof data !== 'string' && data.is_alumni;
 
   const avatar = useMemo(() => {
     if (isUnknown) {
@@ -188,7 +153,7 @@ function Contributor({
 
   // Convert stats data to radar chart format
   const aspectData = useMemo(() => {
-    const stats = contributorStats[name]?.analysis_result;
+    const stats = typeof data === 'string' ? null : data?.analysis_result;
     const empty = [
       { aspect: 'Technician', point: 0, fullMark: 10 },
       { aspect: 'Manager', point: 0, fullMark: 10 },
@@ -199,8 +164,7 @@ function Contributor({
     if (!stats) return empty;
 
     try {
-      const parsed = stats;
-      const attributes = parsed.attributes;
+      const attributes = stats.attributes;
       if (!attributes) return empty;
 
       return [
@@ -234,7 +198,7 @@ function Contributor({
       console.error('Error parsing contributor stats:', e);
       return [];
     }
-  }, [contributorStats, name]);
+  }, [name]);
 
   // Find the aspect with the highest point value
   const topAspect = useMemo(() => {
@@ -249,8 +213,8 @@ function Contributor({
 
   const isHighlight =
     viewing === 'all' ||
-    (viewing === 'craftsmen' && !contributorStats[name]?.is_alumni) ||
-    (viewing === 'alumni' && contributorStats[name]?.is_alumni);
+    (viewing === 'craftsmen' && !isAlumni) ||
+    (viewing === 'alumni' && isAlumni);
 
   return (
     <div
@@ -332,25 +296,19 @@ function ContributorList({
   contributionCount,
   contributorLatestWork,
   topCount,
-  contributorStats,
 }: {
-  data: (MochiUserProfile | string)[];
+  data: (CompactContributorProfile | string)[];
   contributionCount: Record<string, number>;
   contributorLatestWork: Record<
     string,
     { date: string; title: string; url: string }
   >;
   topCount: number;
-  contributorStats: Record<
-    string,
-    { username: string; analysis_result: string; is_alumni: boolean }
-  >;
 }) {
-  console.log({ data });
   const [viewing, setViewing] = useState<'all' | 'craftsmen' | 'alumni'>('all');
   const sortByContributionCount = data.sort((a, b) => {
-    const nameA = typeof a === 'string' ? a : getContributorName(a);
-    const nameB = typeof b === 'string' ? b : getContributorName(b);
+    const nameA = typeof a === 'string' ? a : (a.username ?? '');
+    const nameB = typeof b === 'string' ? b : (b.username ?? '');
 
     const countA = contributionCount[nameA];
     const countB = contributionCount[nameB];
@@ -426,7 +384,7 @@ function ContributorList({
               <div className="bg-border absolute left-1/2 h-full w-px" />
               <div className="bg-border absolute left-4/5 h-full w-px" />
               {sortByContributionCount.map(d => {
-                const name = getContributorName(d);
+                const name = typeof d === 'string' ? d : (d.username ?? '');
                 return (
                   <Contributor
                     key={name}
@@ -434,7 +392,6 @@ function ContributorList({
                     topCount={topCount}
                     count={contributionCount[name]}
                     latestWork={contributorLatestWork[name]}
-                    contributorStats={contributorStats}
                     viewing={viewing}
                   />
                 );

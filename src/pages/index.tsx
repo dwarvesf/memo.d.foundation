@@ -10,7 +10,7 @@ import path from 'path';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { SerializeResult } from 'next-mdx-remote-client';
 import { queryDuckDB } from '@/lib/db/utils';
-import { getCompactContributorFromParquet } from '@/lib/contributor-stats';
+import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
 
 interface HomePageProps extends RootLayoutPageProps {
   mdxSource?: SerializeResult;
@@ -102,7 +102,7 @@ export const getStaticProps: GetStaticProps = async () => {
     let memosWithTags: { title: string; tags: string[] }[] = [];
     let avatarMap: Record<string, string | null> = {};
     try {
-      const userProfiles = await getCompactContributorFromParquet();
+      const userProfiles = await getCompactContributorsFromContentJSON();
       avatarMap = userProfiles.reduce(
         (acc, profile) => {
           if (profile.avatar) {

@@ -23,7 +23,7 @@ import { getMdxSource } from '@/lib/mdx';
 import { CompactContributorProfile, UserProfile } from '@/types/user';
 import ContributorLayout from '@/components/layout/ContributorLayout';
 import { eachDayOfInterval, endOfYear, startOfYear, format } from 'date-fns';
-import { getCompactContributorFromParquet } from '@/lib/contributor-stats';
+import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
@@ -381,7 +381,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     // --- Fetch External Data (GitHub Example using Octokit) ---
     let contributorProfile: CompactContributorProfile | null = null;
     try {
-      const userProfiles = await getCompactContributorFromParquet();
+      const userProfiles = await getCompactContributorsFromContentJSON();
       contributorProfile =
         userProfiles.find(
           profile => profile.username === originalContributorName,

@@ -4,7 +4,7 @@ import { GetStaticProps } from 'next';
 // Import utility functions
 import { getAllMarkdownContents, sortMemos } from '@/lib/content/memo';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
-import { getContributorFromParquet } from '@/lib/contributor-stats';
+import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
 
 import { RootLayoutPageProps } from '@/types';
 
@@ -12,15 +12,18 @@ import ContributorLayout from '@/components/layout/ContributorLayout';
 import { isAfter } from 'date-fns';
 import { slugifyPathComponents } from '@/lib/utils/slugify';
 import ContributorList from '@/components/memo/contributor-list';
-import { MochiUserProfile } from '@/types/user';
+import { CompactContributorProfile } from '@/types/user';
 
 interface ContentPageProps extends RootLayoutPageProps {
   frontmatter?: Record<string, any>;
   contributorStats: Record<string, any>;
-  contributorLatestWork: any;
-  contributors: (MochiUserProfile | string)[];
-  contributionCount: any;
-  topCount: any;
+  contributorLatestWork: Record<
+    string,
+    { date: string; title: string; url: string }
+  >;
+  contributors: (CompactContributorProfile | string)[];
+  contributionCount: Record<string, number>;
+  topCount: number;
 }
 
 /**
@@ -90,7 +93,7 @@ export const getStaticProps: GetStaticProps = async () => {
     });
 
     // Fetch contributor stats using the new utility function
-    const contributorProfiles = await getContributorFromParquet();
+    const contributorProfiles = await getCompactContributorsFromContentJSON();
     const contributorsArray = Array.from(contributors);
 
     const enrichedContributors = contributorsArray.map(username => {
@@ -99,22 +102,10 @@ export const getStaticProps: GetStaticProps = async () => {
           profile => profile.username === username,
         );
 
-        if (foundProfile?.mochi_profile_metadata?.id) {
-          return foundProfile.mochi_profile_metadata;
-        }
+        return foundProfile;
       }
       return username; // Fallback if no profile found
     });
-
-    const contributorStats = contributorProfiles?.reduce<Record<string, any>>(
-      (acc, profile) => {
-        const { username } = profile;
-        acc[username] = profile;
-
-        return acc;
-      },
-      {},
-    );
 
     return {
       props: {
@@ -123,7 +114,6 @@ export const getStaticProps: GetStaticProps = async () => {
         contributorLatestWork,
         contributionCount,
         topCount,
-        contributorStats,
       },
     };
   } catch (error) {
@@ -136,12 +126,16 @@ export default function ContentPage({
   frontmatter,
   directoryTree,
   searchIndex,
-  contributorStats,
   contributorLatestWork,
   contributors,
   contributionCount,
   topCount,
 }: ContentPageProps) {
+  console.log({
+    contributorLatestWork,
+    contributors,
+    contributionCount,
+  });
   return (
     <ContributorLayout
       title={frontmatter?.title}
@@ -156,7 +150,6 @@ export default function ContentPage({
           contributorLatestWork={contributorLatestWork}
           contributionCount={contributionCount}
           topCount={topCount}
-          contributorStats={contributorStats}
         />
       </div>
     </ContributorLayout>

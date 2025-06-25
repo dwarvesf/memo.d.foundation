@@ -41,7 +41,7 @@ run:
 	@pnpm run generate-shorten-map
 	@pnpm run generate-pageviews
 	@pnpm run fetch-prompts
-	@pnpm run fetch-contributor-stats
+	@pnpm run fetch-contributors
 	@pnpm run dev
 
 duckdb-export:

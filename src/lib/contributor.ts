@@ -3,41 +3,8 @@ import {
   ContributorProfile,
   MochiUserProfile,
 } from '@/types/user';
-import { queryDuckDB } from './db/utils';
-
-/**
- * Gets the list of contributor stats
- * @returns Array of contributor stats
- */
-export async function getContributorFromParquet(): Promise<
-  ContributorProfile[]
-> {
-  try {
-    const profiles = await queryDuckDB(`SELECT * FROM contributors;`, {
-      filePath: 'public/content/contributor-stats.parquet',
-      tableName: 'contributors',
-    });
-
-    const jsonProfiles = (profiles as any[]).map(profile => {
-      const output: Record<string, any> = {};
-
-      Object.keys(profile).forEach(key => {
-        try {
-          output[key] = JSON.parse(profile[key]);
-        } catch {
-          output[key] = profile[key];
-        }
-      });
-
-      return output;
-    });
-
-    return jsonProfiles as unknown as ContributorProfile[];
-  } catch (error) {
-    console.error('Error fetching contributor stats:', error);
-    return [];
-  }
-}
+import path from 'path';
+import fs from 'fs/promises';
 
 /**
  * Get the contributor's wallet address from their Mochi profile.
@@ -51,7 +18,7 @@ function getContributorWalletAddress(mochiProfile: MochiUserProfile | null) {
     profileData?.associated_accounts.length > 0
   ) {
     // Filter only EVM chain accounts
-    const evmAccounts = profileData.associated_accounts.filter(
+    const evmAccounts = profileData?.associated_accounts.filter(
       (account: any) => account.platform === 'evm-chain',
     );
 
@@ -74,28 +41,56 @@ function getContributorWalletAddress(mochiProfile: MochiUserProfile | null) {
   return null; // No wallet address found
 }
 
-export async function getCompactContributorFromParquet(): Promise<
+function getContributorName(data: ContributorProfile) {
+  const mochiProfile = data.mochi_profile_metadata;
+
+  if (
+    mochiProfile?.associated_accounts &&
+    mochiProfile?.associated_accounts.length > 0
+  ) {
+    // Look for github account
+    const githubAccount = mochiProfile?.associated_accounts.find(
+      account => account.platform === 'github',
+    );
+    if (githubAccount?.platform_metadata?.username) {
+      return githubAccount.platform_metadata.username;
+    }
+
+    // Look for discord account
+    const discordAccount = mochiProfile?.associated_accounts.find(
+      account => account.platform === 'discord',
+    );
+    if (discordAccount?.platform_metadata?.username) {
+      return discordAccount.platform_metadata.username;
+    }
+
+    // Look for twitter account
+    const twitterAccount = mochiProfile?.associated_accounts.find(
+      account => account.platform === 'twitter',
+    );
+    if (twitterAccount?.platform_metadata?.username) {
+      return twitterAccount.platform_metadata.username;
+    }
+  }
+
+  return (
+    data.github_metadata?.name.replace(data.username, '').trim() ||
+    data.username ||
+    null
+  );
+}
+
+export async function getCompactContributorsFromContentJSON(): Promise<
   CompactContributorProfile[]
 > {
   try {
-    const profiles = await queryDuckDB(`SELECT * FROM contributors;`, {
-      filePath: 'public/content/contributor-stats.parquet',
-      tableName: 'contributors',
-    });
+    const jsonContributorsPath = path.join(
+      process.cwd(),
+      'public/content/contributors.json',
+    );
+    const jsonProfilesString = await fs.readFile(jsonContributorsPath, 'utf8');
 
-    const jsonProfiles = (profiles as any[]).map(profile => {
-      const output: Record<string, any> = {};
-
-      Object.keys(profile).forEach(key => {
-        try {
-          output[key] = JSON.parse(profile[key]);
-        } catch {
-          output[key] = profile[key];
-        }
-      });
-
-      return output;
-    }) as ContributorProfile[];
+    const jsonProfiles = JSON.parse(jsonProfilesString) as ContributorProfile[];
 
     return jsonProfiles.map(profile => {
       const {
@@ -106,6 +101,7 @@ export async function getCompactContributorFromParquet(): Promise<
         github_metadata,
         mochi_profile_metadata,
         linkedin_metadata,
+        analysis_result,
       } = profile;
 
       let github_handle = '';
@@ -137,10 +133,7 @@ export async function getCompactContributorFromParquet(): Promise<
         facebook_url,
         linkedin_url,
         username,
-        name:
-          github_metadata?.name.replace(username, '').trim() ||
-          username ||
-          null,
+        name: getContributorName(profile),
         github_url,
         avatar:
           mochi_avatar || github_avatar_from_mochi || github_avatar || null,
@@ -155,8 +148,9 @@ export async function getCompactContributorFromParquet(): Promise<
           ? `https://x.com/${github_metadata?.twitter_username}`
           : null,
         wallet_address,
+        analysis_result,
       } as CompactContributorProfile;
-    }) as CompactContributorProfile[];
+    });
   } catch (error) {
     console.error('Error fetching contributor stats:', error);
     return [];

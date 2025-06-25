@@ -112,13 +112,36 @@ export interface LinkedInMetadata {
   experience_count?: number;
 }
 
+export interface ProfileAnalysis {
+  attributes: Attributes;
+  summary: string;
+  confidence: number;
+  articleCount: number;
+  topArticles: TopArticle[];
+  updatedAt: string;
+}
+
+interface Attributes {
+  technician: number;
+  manager: number;
+  operator: number;
+  consultant: number;
+  builder: number;
+}
+
+interface TopArticle {
+  title: string;
+  score: number;
+  primaryAttribute: string;
+}
+
 export interface ContributorProfile {
   profile_url: string;
   username: string;
   github_url: string;
   linkedin_url: string;
   discord_usernames: string;
-  analysis_result: null;
+  analysis_result?: ProfileAnalysis;
   github_crawl_status: string;
   last_attempted_at: number;
   github_extraction_error: string;
@@ -149,4 +172,6 @@ export interface CompactContributorProfile {
   current_position?: string;
   company?: string;
   wallet_address?: string;
+  analysis_result?: ProfileAnalysis;
+  is_alumni?: boolean;
 }
