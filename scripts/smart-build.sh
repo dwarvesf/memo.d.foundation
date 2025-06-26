@@ -26,14 +26,20 @@ if [ -d "$VAULT_CACHE" ]; then
     DB_CACHE="$CACHE_DIR/db-$VAULT_HASH"
     if [ -d "$DB_CACHE" ]; then
         echo "✅ Using cached DuckDB output"
-        cp -r "$DB_CACHE"/* ./
+        mkdir -p db
+        cp -r "$DB_CACHE"/* db/
     else
         echo "🔄 Running DuckDB export (db cache missing)"
         cd lib/obsidian-compiler && mix duckdb.export
         cd ../..
         # Cache the db output
-        mkdir -p "$DB_CACHE"
-        cp -r db/ "$DB_CACHE/"
+        if [ -d "db" ]; then
+            mkdir -p "$DB_CACHE"
+            cp -r db/* "$DB_CACHE/"
+            echo "💾 Cached DuckDB output to: $DB_CACHE"
+        else
+            echo "⚠️  Warning: db/ directory not found after DuckDB export"
+        fi
     fi
 else
     echo "🔄 Processing vault with Elixir (content changed)"
@@ -58,9 +64,9 @@ else
     
     # Cache the DuckDB output
     DB_CACHE="$CACHE_DIR/db-$VAULT_HASH"
-    mkdir -p "$DB_CACHE"
     if [ -d "db" ]; then
-        cp -r db/ "$DB_CACHE/"
+        mkdir -p "$DB_CACHE"
+        cp -r db/* "$DB_CACHE/"
         echo "💾 Cached DuckDB output to: $DB_CACHE"
     else
         echo "⚠️  Warning: db/ directory not found after DuckDB export"
@@ -139,6 +145,11 @@ pnpm run next-build
 # Generate nginx configuration (required for Docker build)
 echo "Running post-build..."
 pnpm run post-build
+
+if [ -d "db" ]; then
+    echo "📦 Copying db/ to out/"
+    cp -r db/ out/
+fi
 
 echo "✅ Smart build completed successfully!"
 

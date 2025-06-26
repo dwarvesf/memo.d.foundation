@@ -39,7 +39,6 @@ build-incremental:
 	@pnpm install --no-frozen-lockfile
 	@chmod +x scripts/smart-build.sh
 	@scripts/smart-build.sh
-	@cp -r db/ out/
 
 run:
 	@cd lib/obsidian-compiler && mix export_markdown
