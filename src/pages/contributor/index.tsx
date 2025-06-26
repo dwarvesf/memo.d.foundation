@@ -131,11 +131,6 @@ export default function ContentPage({
   contributionCount,
   topCount,
 }: ContentPageProps) {
-  console.log({
-    contributorLatestWork,
-    contributors,
-    contributionCount,
-  });
   return (
     <ContributorLayout
       title={frontmatter?.title}

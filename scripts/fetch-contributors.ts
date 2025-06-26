@@ -50,7 +50,7 @@ async function main() {
 
     await fs.rm(destinationPath, { force: true }).catch(() => {});
 
-    console.log(`File saved to ${destinationPath}`);
+    console.log(`File saved to ${CONTRIBUTOR_DEST_FILE_PATH}`);
   } catch (error) {
     console.error('Error fetching and saving contributor stats:', error);
   }

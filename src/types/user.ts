@@ -138,6 +138,7 @@ interface TopArticle {
 export interface ContributorProfile {
   profile_url: string;
   username: string;
+  member_type?: 'community' | 'alumni' | 'dwarves';
   github_url: string;
   linkedin_url: string;
   discord_usernames: string;
@@ -161,6 +162,7 @@ export interface CompactContributorProfile {
   username: string;
   name?: string;
   bio: string;
+  member_type?: 'community' | 'alumni' | 'dwarves';
   discord_handle: string;
   website_url: string;
   linkedin_url?: string;
@@ -173,5 +175,4 @@ export interface CompactContributorProfile {
   company?: string;
   wallet_address?: string;
   analysis_result?: ProfileAnalysis;
-  is_alumni?: boolean;
 }

@@ -30,7 +30,12 @@ import {
   ChartTooltipContent,
 } from '../ui/chart';
 import BookOpenIcon from '../icons/BookOpenIcon';
-import { GraduationCapIcon, HammerIcon, SigmaIcon } from 'lucide-react';
+import {
+  GraduationCapIcon,
+  HammerIcon,
+  SigmaIcon,
+  UsersIcon,
+} from 'lucide-react';
 import Link from 'next/link';
 import {
   DropdownMenu,
@@ -231,17 +236,14 @@ function Contributor({
   count,
   topCount,
   latestWork,
-  viewing,
 }: {
   topCount: number;
   count: number;
   data: CompactContributorProfile | string;
   latestWork: { date: string; url: string; title: string };
-  viewing: 'all' | 'craftsmen' | 'alumni';
 }) {
   const isUnknown = typeof data === 'string';
   const name = typeof data === 'string' ? data : data.name;
-  const isAlumni = typeof data !== 'string' && data.is_alumni;
 
   const avatar = useMemo(() => {
     if (isUnknown) {
@@ -311,18 +313,8 @@ function Contributor({
     );
   }, [aspectData]);
 
-  const isHighlight =
-    viewing === 'all' ||
-    (viewing === 'craftsmen' && !isAlumni) ||
-    (viewing === 'alumni' && isAlumni);
-
   return (
-    <div
-      className={cn('relative flex w-full justify-start transition', {
-        'opacity-100': isHighlight,
-        'opacity-10': !isHighlight,
-      })}
-    >
+    <div className={cn('relative flex w-full justify-start transition')}>
       <div
         className="absolute inset-0 rounded bg-[rgb(235,235,235)] dark:bg-[rgb(56,56,56)]"
         style={{ width: `${(count / topCount) * 100}%` }}
@@ -338,7 +330,7 @@ function Contributor({
             </div>
           </Link>
         </HoverCardTrigger>
-        <HoverCardContent hidden={!isHighlight} side="right" asChild>
+        <HoverCardContent side="right" asChild>
           <div className="!bg-background flex w-[300px] flex-col items-center !p-0">
             <div className="border-border mb-5 flex w-full items-start gap-x-2 border-b px-3 py-2">
               <Avatar className="dark:bg-secondary mt-1 flex h-9 w-9 items-center justify-center border-2 bg-[#fff]">
@@ -394,13 +386,34 @@ function Contributor({
 function ContributorGrid({
   data,
   contributionCount,
+  viewing,
+  craftsmenDesc,
+  alumniDesc,
+  communityDesc,
 }: {
   data: (CompactContributorProfile | string)[];
   contributionCount: Record<string, number>;
+  viewing: 'all' | 'craftsmen' | 'alumni' | 'community';
+  craftsmenDesc: string;
+  alumniDesc: string;
+  communityDesc: string;
 }) {
-  return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {data.map(d => {
+  const craftsmen = data.filter(
+    d =>
+      typeof d !== 'string' &&
+      d.member_type !== 'alumni' &&
+      d.member_type !== 'community',
+  );
+  const alumni = data.filter(
+    d => typeof d !== 'string' && d.member_type === 'alumni',
+  );
+  const community = data.filter(
+    d => typeof d !== 'string' && d.member_type === 'community',
+  );
+
+  const renderGrid = (contributors: (CompactContributorProfile | string)[]) => (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      {contributors.map(d => {
         const name = typeof d === 'string' ? d : (d.username ?? '');
         return (
           <ContributorGridCard
@@ -412,6 +425,51 @@ function ContributorGrid({
       })}
     </div>
   );
+
+  if (viewing === 'all') {
+    return (
+      <div className="flex flex-col">
+        <div className="mb-1 text-xl font-semibold">Craftsmen</div>
+        <p className="text-muted-foreground mb-4 text-sm">{craftsmenDesc}</p>
+        {renderGrid(craftsmen)}
+        <div className="mt-10 mb-1 text-xl font-semibold">Alumni</div>
+        <p className="text-muted-foreground mb-4 text-sm">{alumniDesc}</p>
+        {renderGrid(alumni)}
+        <div className="mt-10 mb-1 text-xl font-semibold">Community</div>
+        <p className="text-muted-foreground mb-4 text-sm">{communityDesc}</p>
+        {renderGrid(community)}
+      </div>
+    );
+  }
+  if (viewing === 'craftsmen') {
+    return (
+      <div className="flex flex-col">
+        <div className="mb-1 text-xl font-semibold">Craftsmen</div>
+        <p className="text-muted-foreground mb-4 text-sm">{craftsmenDesc}</p>
+        {renderGrid(craftsmen)}
+      </div>
+    );
+  }
+
+  if (viewing === 'alumni') {
+    return (
+      <div className="flex flex-col">
+        <div className="mb-1 text-xl font-semibold">Alumni</div>
+        <p className="text-muted-foreground mb-4 text-sm">{alumniDesc}</p>
+        {renderGrid(alumni)}
+      </div>
+    );
+  }
+
+  if (viewing === 'community') {
+    return (
+      <div className="flex flex-col">
+        <div className="mb-1 text-xl font-semibold">Community</div>
+        <p className="text-muted-foreground mb-4 text-sm">{communityDesc}</p>
+        {renderGrid(community)}
+      </div>
+    );
+  }
 }
 
 function ContributorList({
@@ -428,10 +486,45 @@ function ContributorList({
   >;
   topCount: number;
 }) {
-  const [viewing, setViewing] = useState<'all' | 'craftsmen' | 'alumni'>('all');
+  const [viewing, setViewing] = useState<
+    'all' | 'craftsmen' | 'alumni' | 'community'
+  >('all');
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
 
+  const filteredData = useMemo(() => {
+    if (viewing === 'all') return data;
+    if (viewing === 'alumni') {
+      return data.filter(
+        d => typeof d !== 'string' && d.member_type === 'alumni',
+      );
+    }
+    if (viewing === 'community') {
+      return data.filter(
+        d => typeof d !== 'string' && d.member_type === 'community',
+      );
+    }
+    if (viewing === 'craftsmen') {
+      return data.filter(
+        d =>
+          typeof d !== 'string' &&
+          d.member_type !== 'alumni' &&
+          d.member_type !== 'community',
+      );
+    }
+    return data;
+  }, [data, viewing]);
+
   const sortByContributionCount = data.sort((a, b) => {
+    const nameA = typeof a === 'string' ? a : (a.username ?? '');
+    const nameB = typeof b === 'string' ? b : (b.username ?? '');
+
+    const countA = contributionCount[nameA];
+    const countB = contributionCount[nameB];
+
+    return countB - countA;
+  });
+
+  const sortByFilteredContributionCount = filteredData.sort((a, b) => {
     const nameA = typeof a === 'string' ? a : (a.username ?? '');
     const nameB = typeof b === 'string' ? b : (b.username ?? '');
 
@@ -451,11 +544,14 @@ function ContributorList({
     if (viewing === 'alumni') {
       return "Dwarves Alumni's work laid the foundation for those who come after";
     }
+    if (viewing === 'community') {
+      return 'Dwarves Community is a vibrant group of contributors who share their knowledge and skills';
+    }
     return `Viewing all contributors`;
   }, [viewing]);
 
   return (
-    <div className="border-t-border relative mb-10 flex flex-col items-center border-t">
+    <div className="border-t-border relative mb-10 flex flex-col items-center border-t font-serif">
       <div className="relative h-56 w-full overflow-hidden">
         <Image
           src="/assets/img/contributor-list-bg.jpg"
@@ -464,7 +560,7 @@ function ContributorList({
           className="no-zoom !m-0 w-full rounded-none object-cover"
         />
       </div>
-      <div className="relative mx-auto w-full max-w-3xl px-3.5 md:px-0">
+      <div className="relative mx-auto w-full max-w-5xl px-3.5 md:px-0">
         <AvatarCluster
           authors={sortByContributionCount
             .filter(d => typeof d !== 'string')
@@ -512,12 +608,16 @@ function ContributorList({
                   <GraduationCapIcon />
                   Dwarves Alumni
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setViewing('community')}>
+                  <UsersIcon />
+                  Dwarves Community
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
           <TabsContent value="list" className="w-full">
             <Card className="w-full">
-              <CardHeader className="font-sans">
+              <CardHeader>
                 <CardTitle>
                   Contributors are sorted by their memos count
                 </CardTitle>
@@ -527,7 +627,7 @@ function ContributorList({
                 <CardContent className="flex flex-col items-start gap-y-1">
                   <div className="bg-border absolute left-1/2 h-full w-px" />
                   <div className="bg-border absolute left-4/5 h-full w-px" />
-                  {sortByContributionCount.map(d => {
+                  {sortByFilteredContributionCount.map(d => {
                     const name = typeof d === 'string' ? d : (d.username ?? '');
                     return (
                       <Contributor
@@ -536,7 +636,6 @@ function ContributorList({
                         topCount={topCount}
                         count={contributionCount[name]}
                         latestWork={contributorLatestWork[name]}
-                        viewing={viewing}
                       />
                     );
                   })}
@@ -547,8 +646,18 @@ function ContributorList({
           </TabsContent>
           <TabsContent value="grid" className="w-full">
             <ContributorGrid
-              data={sortByContributionCount}
+              data={sortByFilteredContributionCount}
               contributionCount={contributionCount}
+              viewing={viewing}
+              craftsmenDesc={
+                'Dwarves Craftsmen working diligently to empower the next innovation'
+              }
+              alumniDesc={
+                "Dwarves Alumni's work laid the foundation for those who come after"
+              }
+              communityDesc={
+                'Dwarves Community is a vibrant group of contributors who share their knowledge and skills'
+              }
             />
           </TabsContent>
         </Tabs>
