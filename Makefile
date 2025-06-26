@@ -85,3 +85,5 @@ nft-report-test-parquet:
 nft-report-send:
 	@echo "📊 Running NFT Report and Sending to Discord..."
 	@pnpm exec tsx scripts/memo-nft-report.ts --send
+	
+BUMPVERSION=1.0.0
