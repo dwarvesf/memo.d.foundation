@@ -1,4 +1,4 @@
-.PHONY: setup lib-setup fetch fetch-force update-submodule build build-static run duckdb-export duckdb-export-pattern sync-hashnode test
+.PHONY: setup lib-setup fetch fetch-force build build-static run duckdb-export duckdb-export-pattern sync-hashnode test
 
 setup:
 	@if ! command -v devbox >/dev/null 2>&1; then curl -fsSL https://get.jetpack.io/devbox | bash; fi
@@ -16,10 +16,6 @@ fetch:
 fetch-force:
 	@cd lib/obsidian-compiler && mix fetch
 	@./git-fetch.sh --force
-
-update-submodule:
-	@echo "Updating submodules..."
-	@git submodule update --init --recursive --depth 1
 
 build:
 	@pnpm install --no-frozen-lockfile
