@@ -335,6 +335,13 @@
     height: 100%;
     overflow: hidden;
   }
+
+  /* Mobile bottom sheet animation override */
+  @media (max-width: 639px) {
+    .command-palette-modal {
+      animation: slideUpFadeIn 0.25s ease-out !important;
+    }
+  }
 }
 
 /* Utilities */
