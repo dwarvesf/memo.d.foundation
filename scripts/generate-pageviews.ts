@@ -77,7 +77,6 @@ async function generatePageviewsJSON() {
     console.log(`Pageviews data written to ${PAGEVIEWS_OUTPUT_PATH}`);
   } catch (error) {
     console.error('Error generating pageviews:', error);
-    process.exit(1);
   }
 }
 
