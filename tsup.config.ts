@@ -7,7 +7,14 @@ export default defineConfig({
   target: 'es2017',
   format: ['cjs'],
   shims: true,
-  noExternal: ['gray-matter', 'js-yaml', 'esprima', 'dotenv'],
+  noExternal: [
+    'gray-matter',
+    'js-yaml',
+    'esprima',
+    'dotenv',
+    'prettier/standalone',
+    'prettier/parser-markdown',
+  ],
   outExtension() {
     return {
       js: `.js`,

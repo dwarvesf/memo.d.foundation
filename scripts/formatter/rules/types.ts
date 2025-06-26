@@ -22,7 +22,11 @@ export interface LintMessage {
   line: number;
   column: number;
   nodeType: string;
-  fix?: { range: [number, number]; text: string };
+  fix?: {
+    range: [number, number];
+    text: string;
+    format?: (content: string) => string | Promise<string>;
+  };
 }
 
 export interface FileLintResult {
@@ -47,6 +51,7 @@ export interface RuleContext {
   config: DefaultConfig;
   severity: number;
   options: any;
+  fix: boolean;
   report: (message: Omit<LintMessage, 'severity'> & {
     severity?: number;
   }) => void;
@@ -54,6 +59,8 @@ export interface RuleContext {
   getFrontmatter: () => { [key: string]: any };
   getMarkdownContent: () => string;
 }
+
+type CheckRuleModule = { check: () => void | Promise<void> };
 
 export interface RuleModule {
   meta: {
@@ -65,6 +72,7 @@ export interface RuleModule {
     };
     fixable: 'code' | null;
     schema: any[];
+    isRunFormatAfterAll?: boolean;
   };
-  create: (context: RuleContext) => { check: () => void };
+  create: (context: RuleContext) => Promise<CheckRuleModule> | CheckRuleModule;
 }

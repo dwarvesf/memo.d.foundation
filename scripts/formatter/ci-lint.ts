@@ -9,14 +9,16 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
+// GitHub Actions context
+const isGithubActions =
+  process.env.GITHUB_ACTIONS === 'true' || !!process.env.GITHUB_ACTIONS;
+
 /**
  * Get markdown files to lint.
  * - On GitHub Actions: use GITHUB_SHA and GITHUB_BASE_REF to get changed files in the PR or push.
  * - Locally: use git diff --cached --name-only for staged files.
  */
 async function getMarkdownFiles(): Promise<string[]> {
-  // GitHub Actions context
-  const isGithubActions = process.env.GITHUB_ACTIONS === 'true' || !!process.env.GITHUB_ACTIONS;
   if (isGithubActions) {
     try {
       let files: string[] = [];
@@ -49,6 +51,12 @@ async function getMarkdownFiles(): Promise<string[]> {
   }
 }
 
+/**
+ * Modular CI lint/format runner for markdown files.
+ * Uses rule-based architecture (see rules/ directory).
+ * - Linting: checks for rule violations.
+ * - Formatting: applies rule-based formatting if lint passes.
+ */
 async function main(): Promise<void> {
   const filePaths = await getMarkdownFiles();
 
@@ -57,6 +65,7 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
+  console.log(`Linting markdown files...`);
   await noteLinter(filePaths);
 }
 
