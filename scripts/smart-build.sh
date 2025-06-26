@@ -21,12 +21,30 @@ if [ -d "$VAULT_CACHE" ]; then
     mkdir -p public/content
     cp -r "$VAULT_CACHE"/* public/content/
     echo "📋 Restored cached content from: $VAULT_CACHE"
+    
+    # Also need to ensure db/ directory exists (DuckDB output)
+    DB_CACHE="$CACHE_DIR/db-$VAULT_HASH"
+    if [ -d "$DB_CACHE" ]; then
+        echo "✅ Using cached DuckDB output"
+        cp -r "$DB_CACHE"/* ./
+    else
+        echo "🔄 Running DuckDB export (db cache missing)"
+        cd lib/obsidian-compiler && mix duckdb.export
+        cd ../..
+        # Cache the db output
+        mkdir -p "$DB_CACHE"
+        cp -r db/ "$DB_CACHE/"
+    fi
 else
     echo "🔄 Processing vault with Elixir (content changed)"
     echo "⏱️  Starting Elixir markdown compilation..."
 
     # Run Elixir markdown processing
     cd lib/obsidian-compiler && mix export_markdown
+    
+    # Export to DuckDB (creates db/ directory)
+    echo "⏱️  Exporting to DuckDB..."
+    mix duckdb.export
     cd ../..
 
     # Cache the processed output
@@ -36,6 +54,16 @@ else
         echo "💾 Cached Elixir output to: $VAULT_CACHE"
     else
         echo "⚠️  Warning: public/content directory not found after Elixir processing"
+    fi
+    
+    # Cache the DuckDB output
+    DB_CACHE="$CACHE_DIR/db-$VAULT_HASH"
+    mkdir -p "$DB_CACHE"
+    if [ -d "db" ]; then
+        cp -r db/ "$DB_CACHE/"
+        echo "💾 Cached DuckDB output to: $DB_CACHE"
+    else
+        echo "⚠️  Warning: db/ directory not found after DuckDB export"
     fi
 fi
 
