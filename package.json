@@ -25,7 +25,10 @@
     "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",
     "monitor-parquet": "tsx scripts/monitor-parquet.ts",
     "monitor-parquet-notify": "tsx scripts/monitor-parquet.ts --notify",
-    "copy-404": "mkdir -p out/404 && cp out/404.html out/404/index.html"
+    "copy-404": "mkdir -p out/404 && cp out/404.html out/404/index.html",
+    "build-ci-lint": "tsup scripts/formatter/ci-lint.ts --config tsup.config.ts --out-dir out/tools",
+    "setup-hook-local": "npx -y tsx scripts/git-shell-hook.ts setup",
+    "setup-gh-lint": "npx -y tsx scripts/git-shell-hook.ts github-actions"
   },
   "type": "module",
   "homepage": "https://memo.d.foundation/",
@@ -137,6 +140,7 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.0",
     "typescript": "^5"
   },
   "pnpm": {

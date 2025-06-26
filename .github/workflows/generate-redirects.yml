@@ -9,7 +9,7 @@ on:
       - 'db/vault.parquet'
 
 concurrency:
-  group: ${{ github.repository }}-workflow
+  group: ${{ github.repository }}-gen-redirect-workflow
   cancel-in-progress: false
 
 env:
@@ -24,7 +24,7 @@ jobs:
         with:
           token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
-          fetch-depth: 0 # Fetch all history for git diff to work correctly
+          fetch-depth: 1
 
       - name: Install Vault CLI
         run: |

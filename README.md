@@ -52,6 +52,68 @@ pnpm run generate-search-index
 
 This script creates a static JSON file at `public/content/search-index.json` that's loaded dynamically by the client when needed, instead of being included in every page's props.
 
+## Git Submodule Hook Manager
+
+Our Git Submodule Hook Manager (`scripts/git-shell-hook.ts`) automates git hooks and GitHub Actions workflows across submodules with features for:
+
+- Automated hook installation across all submodules
+- GitHub Actions workflow creation for markdown linting
+- Recursive submodule discovery
+- Dynamic script execution on git operations
+- Complete hook management (install/remove/status)
+
+### Quick Start
+
+#### Build the Linting Script
+
+```bash
+# Generate linting script and host it in `/public/tools/ci-lint.js` to be used by the git hooks
+pnpm run build-ci-lint
+```
+
+#### Setup Git Hooks for All Submodules
+
+```bash
+# Setup pre-commit hooks for markdown linting across all submodules
+pnpm run setup-hook-local
+```
+
+#### Create GitHub Actions Workflows
+
+```bash
+# Create GitHub Actions workflows for markdown linting in all submodules
+pnpm run setup-gh-lint
+
+# Setup hooks only for specific submodules
+npx -y tsx scripts/git-shell-hook.ts setup --modules vault,research,playbook
+```
+
+#### Check Hook Status
+
+```bash
+# View hook status across all submodules
+npx -y tsx scripts/git-shell-hook.ts status
+
+# Create custom workflow with specific triggers
+npx -y tsx scripts/git-shell-hook.ts github-actions \
+  --workflow-name custom-quality-check \
+  --trigger-events push,pull_request,schedule \
+  --modules vault,research
+```
+
+### Individual Submodule Management
+
+After running the setup command, each submodule will have its own hook management script:
+
+```bash
+# In any submodule directory
+./pre-commit-hook.sh install  # Install hook
+./pre-commit-hook.sh remove   # Remove hook
+./pre-commit-hook.sh status   # Check status
+```
+
+For detailed documentation and troubleshooting, see the generated README files in each submodule after running the setup commands.
+
 ## Code of conduct
 
 We expect all contributors to adhere to our [code of conduct](^15^), which is based on the [Contributor Covenant](https://www.contributor-covenant.org/). By participating in this project, you agree to abide by its terms. Please report any unacceptable behavior to [team@d.foundation](mailto:team@d.foundation).
