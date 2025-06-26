@@ -1,3 +1,5 @@
+.PHONY: setup lib-setup fetch fetch-force build build-static run duckdb-export duckdb-export-pattern sync-hashnode test
+
 setup:
 	@if ! command -v devbox >/dev/null 2>&1; then curl -fsSL https://get.jetpack.io/devbox | bash; fi
 	@devbox install
@@ -56,3 +58,24 @@ duckdb-export-pattern:
 
 sync-hashnode:
 	@cd lib/obsidian-compiler && mix sync_hashnode
+
+
+test:
+	pnpm test
+
+# NFT Report Commands
+nft-report-test:
+	@echo "🧪 Running NFT Report Test Suite..."
+	@pnpm test:nft
+
+nft-report-dry:
+	@echo "🔍 Running NFT Report (Dry Run - Verbose Output)..."
+	@pnpm exec tsx scripts/memo-nft-report.ts --verbose
+
+nft-report-test-parquet:
+	@echo "🧪 Testing NFT Report Parquet Queries..."
+	@pnpm exec tsx scripts/memo-nft-report.ts --test-parquet
+
+nft-report-send:
+	@echo "📊 Running NFT Report and Sending to Discord..."
+	@pnpm exec tsx scripts/memo-nft-report.ts --send

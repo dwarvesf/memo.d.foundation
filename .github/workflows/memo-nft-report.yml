@@ -1,0 +1,105 @@
+name: Memo NFT Report
+
+on:
+  schedule:
+    # Send daily report at 9 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      send_notification:
+        description: 'Send Discord notification'
+        required: false
+        default: true
+        type: boolean
+      verbose_output:
+        description: 'Show verbose output'
+        required: false
+        default: false
+        type: boolean
+  push:
+    branches:
+      - ci/nft-reporting
+
+jobs:
+  nft-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run NFT Report Tests
+        run: pnpm test:nft
+
+      - name: Test NFT database connectivity
+        env:
+          MEMO_NFT_DB_CONNECTION_STRING: ${{ secrets.MEMO_NFT_DB_CONNECTION_STRING }}
+        run: |
+          echo "🔍 Testing database connectivity..."
+          if [ -n "$MEMO_NFT_DB_CONNECTION_STRING" ]; then
+            echo "✅ Database connection string is configured"
+          else
+            echo "❌ MEMO_NFT_DB_CONNECTION_STRING secret not configured"
+            exit 1
+          fi
+
+      - name: Test remote parquet accessibility
+        run: |
+          echo "🔍 Testing remote parquet file accessibility..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://memo.d.foundation/db/vault.parquet")
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Remote parquet file is accessible"
+          else
+            echo "❌ Remote parquet file not accessible (HTTP: $HTTP_CODE)"
+            exit 1
+          fi
+
+      - name: Run NFT Report (Scheduled)
+        if: github.event_name == 'schedule'
+        env:
+          MEMO_NFT_DB_CONNECTION_STRING: ${{ secrets.MEMO_NFT_DB_CONNECTION_STRING }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL_MEMO_LOGS }}
+        run: |
+          echo "📊 Running scheduled NFT report..."
+          pnpm exec tsx scripts/memo-nft-report.ts --send
+
+      - name: Run NFT Report (Manual)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          MEMO_NFT_DB_CONNECTION_STRING: ${{ secrets.MEMO_NFT_DB_CONNECTION_STRING }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL_MEMO_LOGS }}
+        run: |
+          echo "🔍 Running manual NFT report..."
+          ARGS=""
+          if [ "${{ github.event.inputs.send_notification }}" == "true" ]; then
+            ARGS="$ARGS --send"
+          fi
+          if [ "${{ github.event.inputs.verbose_output }}" == "true" ]; then
+            ARGS="$ARGS --verbose"
+          fi
+          pnpm exec tsx scripts/memo-nft-report.ts $ARGS
+
+      - name: Upload failure logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nft-report-failure-logs
+          path: |
+            npm-debug.log*
+            yarn-debug.log*
+            yarn-error.log*
+          retention-days: 3

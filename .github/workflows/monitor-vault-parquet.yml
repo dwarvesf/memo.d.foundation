@@ -53,7 +53,7 @@ jobs:
       - name: Run Vault Monitoring (Scheduled)
         if: github.event_name == 'schedule'
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL_MEMO_LOGS }}
         run: |
           echo "📊 Running scheduled vault monitoring..."
           pnpm exec tsx scripts/monitor-vault-parquet.ts --send
@@ -61,7 +61,7 @@ jobs:
       - name: Run Vault Monitoring (Manual)
         if: github.event_name == 'workflow_dispatch'
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL_MEMO_LOGS }}
         run: |
           echo "🔍 Running manual vault monitoring..."
           ARGS=""
@@ -124,7 +124,7 @@ jobs:
 
       - name: Test Discord webhook (dry run)
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL_MEMO_LOGS }}
         run: |
           echo "🧪 Testing Discord webhook connection..."
           if [ -n "$DISCORD_WEBHOOK_URL" ]; then
