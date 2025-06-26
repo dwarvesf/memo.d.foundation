@@ -147,13 +147,9 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
-<<<<<<< HEAD
     "tsup": "^8.5.0",
-    "typescript": "^5"
-=======
     "typescript": "^5",
     "vitest": "^3.2.4"
->>>>>>> 801b470a6a3 (fix: test setup)
   },
   "pnpm": {
     "onlyBuiltDependencies": [
