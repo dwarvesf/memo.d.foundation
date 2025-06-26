@@ -38,26 +38,26 @@ RUN git init && \
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-vault,target=/tmp/vault-cache \
       git config --global --add safe.directory /code/vault && \
       if [ -d "/tmp/vault-cache/.git" ]; then \
-            echo "Using cached vault submodule"; \
-            cp -r /tmp/vault-cache vault/; \
-            cd vault && \
-            git config --global --add safe.directory '*' && \
-            git remote set-url origin https://github.com/dwarvesf/brainery.git && \
-            git fetch --depth 1 --no-tags origin main && \
-            git checkout main && \
-            git submodule update --init --recursive --depth 1; \
-            echo "Vault submodule updated to latest: $(cd vault && git rev-parse --short HEAD)"; \
+      echo "Using cached vault submodule"; \
+      cp -r /tmp/vault-cache vault/; \
+      cd vault && \
+      git config --global --add safe.directory '*' && \
+      git remote set-url origin https://github.com/dwarvesf/brainery.git && \
+      git fetch --depth 1 --no-tags origin main && \
+      git checkout main && \
+      git submodule update --init --recursive --depth 1; \
+      echo "Vault submodule updated to latest: $(cd vault && git rev-parse --short HEAD)"; \
       else \
-            echo "Initializing vault submodule cache"; \
-            git submodule update --init --recursive --depth 1; \
-            cd vault && \
-            git config --global --add safe.directory '*' && \
-            git remote set-url origin https://github.com/dwarvesf/brainery.git && \
-            git fetch --depth 1 --no-tags origin main && \
-            git checkout main && \
-            git submodule update --init --recursive --depth 1; \
-            cd .. && \
-            cp -r vault /tmp/vault-cache/; \
+      echo "Initializing vault submodule cache"; \
+      git submodule update --init --recursive --depth 1; \
+      cd vault && \
+      git config --global --add safe.directory '*' && \
+      git remote set-url origin https://github.com/dwarvesf/brainery.git && \
+      git fetch --depth 1 --no-tags origin main && \
+      git checkout main && \
+      git submodule update --init --recursive --depth 1; \
+      cd .. && \
+      cp -r vault /tmp/vault-cache/; \
       fi
 
 # --- Deps Stage ---
@@ -129,8 +129,7 @@ COPY --from=source /code .
 # Combines Next.js cache with smart build script for content-based cache invalidation
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-smart-cache,target=/tmp/build-cache \
       --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs-cache,target=/code/.next/cache \
-      chmod +x scripts/smart-build.sh && \
-      scripts/smart-build.sh
+      make build-incremental
 
 # --- Runner Stage ---
 # This is the final, small image that will run in production.

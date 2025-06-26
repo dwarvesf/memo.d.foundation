@@ -24,11 +24,11 @@ if [ -d "$VAULT_CACHE" ]; then
 else
     echo "🔄 Processing vault with Elixir (content changed)"
     echo "⏱️  Starting Elixir markdown compilation..."
-    
+
     # Run Elixir markdown processing
     cd lib/obsidian-compiler && mix export_markdown
     cd ../..
-    
+
     # Cache the processed output
     mkdir -p "$VAULT_CACHE"
     if [ -d "public/content" ]; then
@@ -66,31 +66,31 @@ else
     echo "🔄 Running TypeScript generation scripts (content changed)"
     echo "⏱️  Generating navigation menu..."
     pnpm run generate-menu
-    
+
     echo "⏱️  Generating menu path sorted..."
     pnpm run generate-menu-path-sorted
-    
+
     echo "⏱️  Generating backlinks..."
     pnpm run generate-backlinks
-    
+
     echo "⏱️  Generating search index..."
     pnpm run generate-search-index
-    
+
     echo "⏱️  Generating redirects map..."
     pnpm run generate-redirects-map
-    
+
     echo "⏱️  Generating shorten map..."
     pnpm run generate-shorten-map
-    
+
     echo "⏱️  Generating pageviews..."
     pnpm run generate-pageviews
-    
+
     echo "⏱️  Fetching prompts..."
     pnpm run fetch-prompts
-    
+
     echo "⏱️  Fetching contributors..."
     pnpm run fetch-contributors
-    
+
     # Cache the TypeScript generation output
     mkdir -p "$TS_CACHE"
     if [ -d "public/content" ]; then
@@ -106,11 +106,11 @@ echo "🏗️  Building Next.js application..."
 echo "⏱️  Starting Next.js static generation (3,228 pages)..."
 
 # Use the existing next-build command
-pnpm run build
+pnpm run next-build
 
 # Generate nginx configuration (required for Docker build)
-echo "🔧 Generating nginx configuration..."
-pnpm run generate-nginx-conf
+echo "Running post-build..."
+pnpm run post-build
 
 echo "✅ Smart build completed successfully!"
 
@@ -119,10 +119,10 @@ echo "🧹 Cleaning up old cache entries..."
 if [ -d "$CACHE_DIR" ]; then
     # Remove vault caches older than 5 most recent
     ls -1t "$CACHE_DIR"/vault-* 2>/dev/null | tail -n +6 | xargs rm -rf 2>/dev/null || true
-    
-    # Remove TypeScript caches older than 5 most recent  
+
+    # Remove TypeScript caches older than 5 most recent
     ls -1t "$CACHE_DIR"/ts-* 2>/dev/null | tail -n +6 | xargs rm -rf 2>/dev/null || true
-    
+
     REMAINING_CACHES=$(ls -1 "$CACHE_DIR" 2>/dev/null | wc -l)
     echo "📊 Cache entries remaining: $REMAINING_CACHES"
 fi

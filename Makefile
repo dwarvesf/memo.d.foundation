@@ -39,7 +39,6 @@ build-incremental:
 	@pnpm install --no-frozen-lockfile
 	@chmod +x scripts/smart-build.sh
 	@scripts/smart-build.sh
-	@pnpm run generate-nginx-conf
 	@cp -r db/ out/
 
 run:
