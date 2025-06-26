@@ -21,22 +21,36 @@ const colors: Colors = {
   blue: (text) => `\x1b[34m${text}\x1b[0m`,
 };
 
+const FRONTMATTER_ORDER = [
+  'title',
+  'short_title',
+  'description',
+  'date',
+  'authors',
+  '...',
+  'tags',
+];
+
 const DEFAULT_CONFIG: DefaultConfig = {
   rules: {
     'markdown/relative-link-exists': 'off',
     'markdown/no-heading1': 'error',
-    'markdown/frontmatter': 'warn'
-  }
+    'markdown/frontmatter': [
+      'error',
+      { required: ['title', 'description', 'date'], orders: FRONTMATTER_ORDER },
+    ],
+    'markdown/prettier': 'warn',
+  },
 };
 
 class NoteLint {
   private rules: { [key: string]: RuleModule };
 
   constructor() {
-    this.rules = allRules.rules; // Use the imported rules directly
+    this.rules = allRules.rules;
   }
 
-  lintFiles(filePaths: string[], config: DefaultConfig): LintResults {
+  async lintFiles(filePaths: string[], config: DefaultConfig, fix: boolean): Promise<LintResults> {
     const results: FileLintResult[] = [];
     let totalErrorCount = 0;
     let totalWarningCount = 0;
@@ -45,7 +59,7 @@ class NoteLint {
 
     for (const filePath of filePaths) {
       const fileContent = readFileSync(filePath, 'utf8');
-      const fileResults = this.lintFile(filePath, fileContent, config);
+      const fileResults = await this.lintFile(filePath, fileContent, config, fix);
       results.push(fileResults);
 
       totalErrorCount += fileResults.errorCount;
@@ -63,7 +77,7 @@ class NoteLint {
     };
   }
 
-  lintFile(filePath: string, fileContent: string, config: DefaultConfig): FileLintResult {
+  async lintFile(filePath: string, fileContent: string, config: DefaultConfig, fix: boolean): Promise<FileLintResult> {
     const messages: LintMessage[] = [];
     let errorCount = 0;
     let warningCount = 0;
@@ -74,8 +88,17 @@ class NoteLint {
     const frontmatter = parsed.data;
     const markdownContent = parsed.content;
 
-    for (const ruleName in config.rules) {
-      const ruleConfig = config.rules[ruleName];
+    // Sort config rules by runFormatAfterAll
+    const sortedRules = Object.fromEntries(
+      Object.entries(config.rules).sort(([a], [b]) => {
+        const aIsFormat = this.rules[a]?.meta.isRunFormatAfterAll ? 1 : 0;
+        const bIsFormat = this.rules[b]?.meta.isRunFormatAfterAll ? 1 : 0;
+        return aIsFormat - bIsFormat; // Sort formatting rules to the end
+      }),
+    );
+
+    for (const ruleName in sortedRules) {
+      const ruleConfig = sortedRules[ruleName];
       const severity = this.getSeverity(ruleConfig);
       const options = Array.isArray(ruleConfig) ? ruleConfig[1] : {};
 
@@ -88,6 +111,7 @@ class NoteLint {
           config, // Overall config
           severity, // Severity for this specific rule
           options,  // Options for this specific rule
+          fix,
           report: (message) => {
             const finalMessage: LintMessage = { ...message, severity: ruleContext.severity };
             if (typeof message.fix === 'function') {
@@ -109,9 +133,9 @@ class NoteLint {
           getMarkdownContent: () => markdownContent,
         };
 
-        const ruleCreator = ruleModule.create(ruleContext);
+        const ruleCreator = await ruleModule.create(ruleContext);
         if (typeof ruleCreator.check === 'function') {
-          ruleCreator.check();
+          await ruleCreator.check();
         }
       }
     }
@@ -146,19 +170,28 @@ class NoteLint {
     return 0; // Default to off if invalid config
   }
 
-  applyFixes(results: LintResults): void {
+  async applyFixes(results: LintResults): Promise<void> {
     for (const fileResult of results.results) {
       if (fileResult.fixableErrorCount > 0 || fileResult.fixableWarningCount > 0) {
         let fileContent = readFileSync(fileResult.filePath, 'utf8');
         const fixes = fileResult.messages
-          .filter(m => m.fix && m.fix.range)
+          .filter(m => m.fix && m.fix.range && !m.fix.format) // Ensure fix is defined and has a range
           .sort((a, b) => b.fix!.range[0] - a.fix!.range[0]); // Use non-null assertion
 
-        console.log(`Applying fixes for ${fileResult.filePath}:`, fixes);
+        // console.log(`Applying fixes for ${fileResult.filePath}:`, fixes);
 
         for (const message of fixes) {
           const { range, text } = message.fix!; // Use non-null assertion
           fileContent = fileContent.substring(0, range[0]) + text + fileContent.substring(range[1]);
+        }
+
+        const formatFixes = fileResult.messages
+          .filter(m => m.fix && m.fix.format); // Ensure fix is defined and has
+        
+        for (const message of formatFixes) {
+          if (message.fix?.format) {
+            fileContent = await message.fix.format(fileContent) as string;
+          }
         }
         writeFileSync(fileResult.filePath, fileContent, 'utf8');
       }
@@ -287,10 +320,10 @@ export async function main(inputFiles: string[] = []): Promise<void> {
 
   const config = await loadConfig(configPath);
   const linter = new NoteLint();
-  const results = linter.lintFiles(filePaths, config);
+  const results = await linter.lintFiles(filePaths, config, fix);
 
   if (fix) {
-    linter.applyFixes(results);
+    await linter.applyFixes(results);
     const fixedErrors = results.fixableErrorCount;
     const fixedWarnings = results.fixableWarningCount;
     const fixedFiles = results.results.filter(r => r.fixableErrorCount > 0 || r.fixableWarningCount > 0).length;
