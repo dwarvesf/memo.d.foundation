@@ -105,8 +105,12 @@ fi
 echo "🏗️  Building Next.js application..."
 echo "⏱️  Starting Next.js static generation (3,228 pages)..."
 
-# Use the existing next-build command which includes nginx config generation
+# Use the existing next-build command
 pnpm run build
+
+# Generate nginx configuration (required for Docker build)
+echo "🔧 Generating nginx configuration..."
+pnpm run generate-nginx-conf
 
 echo "✅ Smart build completed successfully!"
 
