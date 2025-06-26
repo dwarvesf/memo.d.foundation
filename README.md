@@ -54,34 +54,38 @@ This script creates a static JSON file at `public/content/search-index.json` tha
 
 ## Git Submodule Hook Manager
 
-This repository includes a powerful Git Submodule Hook Manager (`scripts/git-shell-hook.ts`) that helps manage git hooks and GitHub Actions workflows across multiple submodules automatically.
+Our Git Submodule Hook Manager (`scripts/git-shell-hook.ts`) automates git hooks and GitHub Actions workflows across submodules with features for:
 
-### Features
-
-- **Automated Hook Setup**: Automatically installs git hooks across all dwarvesf organization submodules
-- **GitHub Actions Integration**: Creates GitHub Actions workflows for automated markdown linting
-- **Submodule Discovery**: Recursively discovers all submodules, including nested ones
-- **Dynamic Script Execution**: Downloads and executes the latest scripts on each git operation
-- **Comprehensive Management**: Install, remove, and check status of hooks across submodules
+- Automated hook installation across all submodules
+- GitHub Actions workflow creation for markdown linting
+- Recursive submodule discovery
+- Dynamic script execution on git operations
+- Complete hook management (install/remove/status)
 
 ### Quick Start
+
+#### Build the Linting Script
+
+```bash
+# Generate linting script and host it in `/public/tools/ci-lint.js` to be used by the git hooks
+pnpm run build-ci-lint
+```
 
 #### Setup Git Hooks for All Submodules
 
 ```bash
 # Setup pre-commit hooks for markdown linting across all submodules
-npx -y tsx scripts/git-shell-hook.ts setup \
-  --script-url https://script-url.js \
-  --hook-type pre-commit
+pnpm run setup-hook-local
 ```
 
 #### Create GitHub Actions Workflows
 
 ```bash
 # Create GitHub Actions workflows for markdown linting in all submodules
-npx -y tsx scripts/git-shell-hook.ts github-actions \
-  --script-url https://script-url.js \
-  --workflow-name markdown-lint
+pnpm run setup-gh-lint
+
+# Setup hooks only for specific submodules
+npx -y tsx scripts/git-shell-hook.ts setup --modules vault,research,playbook
 ```
 
 #### Check Hook Status
@@ -89,46 +93,12 @@ npx -y tsx scripts/git-shell-hook.ts github-actions \
 ```bash
 # View hook status across all submodules
 npx -y tsx scripts/git-shell-hook.ts status
-```
 
-### Available Commands
-
-| Command          | Description                         | Options                                                            |
-| ---------------- | ----------------------------------- | ------------------------------------------------------------------ |
-| `setup`          | Setup git hooks for submodules      | `--script-url`, `--hook-type`, `--modules`                         |
-| `github-actions` | Create GitHub Actions workflows     | `--script-url`, `--modules`, `--workflow-name`, `--trigger-events` |
-| `remove`         | Remove hooks from submodules        | `--hook-type`, `--modules`                                         |
-| `status`         | Show hook status for all submodules | None                                                               |
-
-### Advanced Usage
-
-#### Target Specific Modules
-
-```bash
-# Setup hooks only for specific submodules
-npx -y tsx scripts/git-shell-hook.ts setup \
-  --script-url https://script-url.js \
-  --modules vault,research,playbook
-```
-
-#### Custom GitHub Actions Configuration
-
-```bash
 # Create custom workflow with specific triggers
 npx -y tsx scripts/git-shell-hook.ts github-actions \
-  --script-url https://script-url.js \
   --workflow-name custom-quality-check \
   --trigger-events push,pull_request,schedule \
   --modules vault,research
-```
-
-#### Different Hook Types
-
-```bash
-# Setup pre-push hooks instead of pre-commit
-npx -y tsx scripts/git-shell-hook.ts setup \
-  --script-url https://script-url.js \
-  --hook-type pre-push
 ```
 
 ### Individual Submodule Management
