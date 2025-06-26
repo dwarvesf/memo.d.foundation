@@ -335,8 +335,6 @@
     height: 100%;
     overflow: hidden;
   }
-
-  /* Mobile bottom sheet animation override removed - handled by component */
 }
 
 /* Utilities */
