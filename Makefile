@@ -21,7 +21,7 @@ build:
 	@cd lib/obsidian-compiler && mix duckdb.export
 	@pnpm run build
 	@pnpm run generate-nginx-conf
-	@pnpm run build-tools
+	@pnpm run build-ci-lint
 	@cp -r db/ out/
 
 build-static:
@@ -29,7 +29,7 @@ build-static:
 	@cd lib/obsidian-compiler && mix export_markdown
 	@pnpm run build
 	@pnpm run generate-nginx-conf
-	@pnpm run build-tools
+	@pnpm run build-ci-lint
 	@cp -r db/ out/
 
 run:
