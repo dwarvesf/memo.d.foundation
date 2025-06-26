@@ -105,6 +105,7 @@ export async function getCompactContributorsFromContentJSON(): Promise<
         mochi_profile_metadata,
         linkedin_metadata,
         analysis_result,
+        member_type,
       } = profile;
 
       let github_handle = '';
@@ -152,6 +153,7 @@ export async function getCompactContributorsFromContentJSON(): Promise<
           : null,
         wallet_address,
         analysis_result,
+        member_type,
       } as CompactContributorProfile;
     });
   } catch (error) {
