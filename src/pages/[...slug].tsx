@@ -287,7 +287,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       pageViews = {};
     }
     const pageViewCount = pageViews[requestedPath] || 1;
-
+    const firstImage = getFirstMemoImage(
+      {
+        content: rawContent,
+        filePath: path.join(...canonicalSlug) + (readmeExists ? '' : '.md'),
+      },
+      null,
+    );
     const metadata = {
       created: frontmatter.date?.toString() || null,
       updated: frontmatter.lastmod?.toString() || null,
@@ -311,14 +317,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       permaStorageId: frontmatter.perma_storage_id || '',
       title: frontmatter.title || '',
       authorRole: frontmatter.author_role || '',
-      image: frontmatter.img || '',
-      firstImage: getFirstMemoImage(
-        {
-          content: rawContent,
-          filePath: path.join(...canonicalSlug) + (readmeExists ? '' : '.md'),
-        },
-        null,
-      ),
+      image: frontmatter.img || frontmatter.image || firstImage || '',
+      firstImage,
       summary,
     };
     return {
@@ -537,7 +537,7 @@ export default function ContentPage({
       <RootLayout
         title={frontmatter.title || 'Dwarves Memo'}
         description={frontmatter.description}
-        image={metadata?.firstImage}
+        image={metadata?.image}
         tocItems={tocItems}
         metadata={metadata}
         directoryTree={directoryTree}

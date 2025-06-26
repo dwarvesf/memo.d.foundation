@@ -30,6 +30,17 @@ interface RootLayoutProps extends RootLayoutPageProps {
 
 const scrollOnTopIgnoreRoutes = ['/prompts'];
 
+function getAbsoluteImageUrl(image?: string): string | undefined {
+  if (!image) {
+    image = '/assets/home_cover.webp'; // Default image if none provided
+  }
+  if (/^https?:\/\//.test(image)) return image;
+  if (typeof window !== 'undefined') {
+    return `${window.location.origin}${image.startsWith('/') ? '' : '/'}${image}`;
+  }
+  return `https://memo.d.foundation${image.startsWith('/') ? '' : '/'}${image}`;
+}
+
 function RootLayout({
   children,
   title = 'Dwarves Memo',
@@ -76,6 +87,8 @@ function RootLayout({
     };
   }, [toggleReadingMode]);
 
+  const absoluteImage = getAbsoluteImageUrl(metadata?.image || image);
+
   return (
     <SearchProvider searchIndex={searchIndex}>
       <Head>
@@ -88,7 +101,7 @@ function RootLayout({
           <meta property="og:description" content={description} />
         )}
 
-        {image && <meta property="og:image" content={image} />}
+        {absoluteImage && <meta property="og:image" content={absoluteImage} />}
         {!!metadata?.tags?.length && (
           <meta name="keywords" content={metadata?.tags.join(', ')} />
         )}
