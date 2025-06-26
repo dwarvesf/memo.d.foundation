@@ -72,7 +72,7 @@ export function CommandPaletteModal({
     <>
       <div
         ref={searchContainerRef}
-        className="search-section-border relative flex h-[45px] flex-shrink-0 items-center border-b border-[var(--border)] px-4"
+        className="search-section-border relative flex h-11 flex-shrink-0 items-center border-b border-[var(--border)] px-4"
       >
         <CommandSearchInput
           value={query}
