@@ -72,7 +72,7 @@ export function CommandPaletteModal({
     <>
       <div
         ref={searchContainerRef}
-        className="search-section-border relative flex h-[45px] flex-shrink-0 items-center border-b border-[var(--border)] px-4"
+        className="search-section-border relative flex h-11 flex-shrink-0 items-center border-b border-[var(--border)] px-4"
       >
         <CommandSearchInput
           value={query}
@@ -312,7 +312,7 @@ export function CommandPaletteModal({
             <div
               className={cn(
                 'command-palette-modal dark:bg-background flex w-full flex-col overflow-hidden border border-[var(--border)] backdrop-blur-xl',
-                'relative max-h-[80vh] max-w-[800px] rounded-[8px] border-b',
+                'relative max-h-[80vh] max-w-[800px] rounded-lg border-b',
                 'md:max-h-[75vh]',
               )}
               style={{
@@ -342,7 +342,7 @@ export function CommandPaletteModal({
     >
       <DrawerContent
         hideHandle={true}
-        className="command-palette-modal max-h-[85vh] rounded-t-[16px] border-b-0"
+        className="command-palette-modal max-h-[85vh] rounded-t-2xl border-b-0"
         style={{
           background: 'color-mix(in oklab, var(--background) 75%, transparent)',
           WebkitBackdropFilter: 'blur(16px)',
