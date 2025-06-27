@@ -467,7 +467,7 @@ const MobileDrawer = ({
               value="tree"
               className="m-0 flex flex-1 flex-col overflow-y-auto"
             >
-              <div className="mx-4 flex h-14 items-center">
+              <div className="mx-9 flex h-14 items-center">
                 <nav className="flex items-center space-x-0.5 text-sm">
                   <button
                     onClick={() => {
