@@ -37,8 +37,10 @@ RUN git init && \
 # This mounts a cache for the vault submodule to avoid re-downloading 790MB each time
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-vault,target=/tmp/vault-cache \
       git config --global --add safe.directory /code/vault && \
-      if [ -d "/tmp/vault-cache/.git" ]; then \
+      # Check if cache exists by looking for git objects
+      if [ -d "/tmp/vault-cache/.git/objects" ] && [ "$(ls -A /tmp/vault-cache/.git/objects 2>/dev/null)" ]; then \
       echo "Using cached vault submodule"; \
+      # Copy cached vault to working directory
       cp -r /tmp/vault-cache vault/; \
       cd vault && \
       git config --global --add safe.directory '*' && \
@@ -46,7 +48,7 @@ RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIR
       git fetch --depth 1 --no-tags origin main && \
       git checkout main && \
       git submodule update --init --recursive --depth 1; \
-      echo "Vault submodule updated to latest: $(cd vault && git rev-parse --short HEAD)"; \
+      echo "Vault submodule updated to latest: $(git rev-parse --short HEAD)"; \
       else \
       echo "Initializing vault submodule cache"; \
       git submodule update --init --recursive --depth 1; \
@@ -57,7 +59,9 @@ RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIR
       git checkout main && \
       git submodule update --init --recursive --depth 1; \
       cd .. && \
-      cp -r vault /tmp/vault-cache/; \
+      # Populate cache for future builds
+      rm -rf /tmp/vault-cache/* /tmp/vault-cache/.* 2>/dev/null || true && \
+      cp -r vault/. /tmp/vault-cache/; \
       fi
 
 # --- Deps Stage ---
@@ -125,11 +129,11 @@ COPY --from=deps /code/lib/obsidian-compiler/deps ./lib/obsidian-compiler/deps
 # Copy the full source code (with submodules) from the 'source' stage
 COPY --from=source /code .
 
-# Build the static assets using enhanced content-aware caching strategy
-# Combines Next.js cache with smart build script for content-based cache invalidation
-RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-smart-cache,target=/tmp/build-cache \
-      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs-cache,target=/code/.next/cache \
-      make build-incremental
+# Build the static assets using cache mounts for Next.js and build processes
+# This tells Docker to persist build caches between builds for faster rebuilds
+RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs-cache,target=/code/.next/cache \
+      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-build-cache,target=/tmp/build-cache \
+      make build-static
 
 # --- Runner Stage ---
 # This is the final, small image that will run in production.
