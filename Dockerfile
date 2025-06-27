@@ -37,11 +37,13 @@ RUN git init && \
 # This mounts a cache for the vault submodule to avoid re-downloading 790MB each time
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-vault,target=/tmp/vault-cache \
       git config --global --add safe.directory /code/vault && \
-      # Check if cache exists by looking for git objects
-      if [ -d "/tmp/vault-cache/.git/objects" ] && [ "$(ls -A /tmp/vault-cache/.git/objects 2>/dev/null)" ]; then \
+      # Check if cache exists by looking for any files in cache directory
+      if [ -d "/tmp/vault-cache" ] && [ "$(ls -A /tmp/vault-cache 2>/dev/null)" ]; then \
       echo "Using cached vault submodule"; \
+      # Remove existing vault directory if it exists
+      rm -rf vault && \
       # Copy cached vault to working directory
-      cp -r /tmp/vault-cache vault/; \
+      cp -r /tmp/vault-cache vault && \
       cd vault && \
       git config --global --add safe.directory '*' && \
       git remote set-url origin https://github.com/dwarvesf/brainery.git && \
@@ -60,7 +62,7 @@ RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIR
       git submodule update --init --recursive --depth 1; \
       cd .. && \
       # Populate cache for future builds
-      rm -rf /tmp/vault-cache/* /tmp/vault-cache/.* 2>/dev/null || true && \
+      rm -rf /tmp/vault-cache/* 2>/dev/null || true && \
       cp -r vault/. /tmp/vault-cache/; \
       fi
 
