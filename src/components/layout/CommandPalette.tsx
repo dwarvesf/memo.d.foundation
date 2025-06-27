@@ -38,7 +38,6 @@ const CommandPalette: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('');
   const searchInputRef = useRef<Editor>(null);
-  const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isSearching, setIsSearching] = useState(false);
   const { search } = useSearch();
@@ -288,21 +287,10 @@ const CommandPalette: React.FC = () => {
     const options = {
       capture: true,
     };
-    // Close when clicking outside
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        searchContainerRef.current &&
-        !searchContainerRef.current.contains(e.target as Node)
-      ) {
-        close();
-      }
-    };
 
     document.addEventListener('keydown', handleKeyDown, options);
-    document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('keydown', handleKeyDown, options);
-      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [
     isOpen,
@@ -483,7 +471,6 @@ const CommandPalette: React.FC = () => {
       <CommandPaletteModal
         isOpen={isOpen}
         searchInputRef={searchInputRef}
-        searchContainerRef={searchContainerRef}
         query={query}
         setQuery={setQuery}
         result={result}

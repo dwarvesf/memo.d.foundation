@@ -19,7 +19,6 @@ interface Props {
   };
   goto: () => void;
   searchInputRef: React.RefObject<Editor | null>;
-  searchContainerRef: React.RefObject<HTMLDivElement | null>;
   setQuery: (query: string) => void;
   query: string;
   setSelectedIndex: (index: number) => void;
@@ -37,7 +36,6 @@ export function CommandPaletteModal({
   defaultResult,
   goto,
   searchInputRef,
-  searchContainerRef,
   setQuery,
   query,
   setSelectedIndex,
@@ -70,10 +68,7 @@ export function CommandPaletteModal({
   // Shared content for both desktop and mobile views
   const bodyRender = (
     <>
-      <div
-        ref={searchContainerRef}
-        className="search-section-border relative flex h-11 flex-shrink-0 items-center border-b border-[var(--border)] px-4"
-      >
+      <div className="search-section-border relative flex h-11 flex-shrink-0 items-center border-b border-[var(--border)] px-4">
         <CommandSearchInput
           value={query}
           onChange={(value: string) => {
@@ -107,7 +102,8 @@ export function CommandPaletteModal({
                               selected: isSelected,
                             },
                           )}
-                          onClick={() => {
+                          onClick={e => {
+                            e.stopPropagation();
                             goto();
                           }}
                           onMouseEnter={() => {
@@ -173,6 +169,7 @@ export function CommandPaletteModal({
                           )}
                           onClick={e => {
                             e.preventDefault();
+                            e.stopPropagation();
                             goto();
                           }}
                           onMouseEnter={() => {
@@ -299,35 +296,40 @@ export function CommandPaletteModal({
   // Desktop modal version (unchanged for screens >= 640px)
   const desktopModal = (
     <>
-      {isOpen &&
-        typeof document !== 'undefined' &&
+      {typeof document !== 'undefined' &&
         createPortal(
-          <div
-            className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-            style={{
-              background:
-                theme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.2)',
-            }}
-          >
+          isOpen ? (
             <div
-              className={cn(
-                'command-palette-modal dark:bg-background flex w-full flex-col overflow-hidden border border-[var(--border)] backdrop-blur-xl',
-                'relative max-h-[80vh] max-w-[800px] rounded-lg border-b',
-                'md:max-h-[75vh]',
-              )}
+              className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
               style={{
-                animation: 'fadeIn 0.15s ease-out',
                 background:
-                  'color-mix(in oklab, var(--background) 75%, transparent)',
-                WebkitBackdropFilter: 'blur(16px)',
-                backdropFilter: 'blur(16px)',
-                boxShadow:
-                  '0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 25px 25px -5px rgba(0, 0, 0, 0.15)',
+                  theme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.2)',
+              }}
+              onClick={() => {
+                onClose();
               }}
             >
-              {bodyRender}
+              <div
+                className={cn(
+                  'command-palette-modal dark:bg-background flex w-full flex-col overflow-hidden border border-[var(--border)] backdrop-blur-xl',
+                  'relative max-h-[80vh] max-w-[800px] rounded-lg border-b',
+                  'md:max-h-[75vh]',
+                )}
+                onClick={e => e.stopPropagation()}
+                style={{
+                  animation: 'fadeIn 0.15s ease-out',
+                  background:
+                    'color-mix(in oklab, var(--background) 75%, transparent)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  backdropFilter: 'blur(16px)',
+                  boxShadow:
+                    '0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 25px 25px -5px rgba(0, 0, 0, 0.15)',
+                }}
+              >
+                {bodyRender}
+              </div>
             </div>
-          </div>,
+          ) : null,
           document.body,
         )}
     </>
