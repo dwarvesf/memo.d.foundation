@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import { Drawer, DrawerContent } from '../ui/drawer';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -11,11 +17,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tab';
 import { ITreeNode } from '@/types';
 import { useRouter } from 'next/router';
+import { MemoIcons } from '../icons';
 
 interface NavLink {
   title: string;
   url: string;
   Icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  description?: string;
 }
 
 interface MobileDrawerProps {
@@ -54,7 +62,7 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
   });
 
   return (
-    <nav className="flex flex-1 flex-col divide-y divide-[#dbdbdb] px-5 dark:divide-[var(--border)]">
+    <nav className="flex flex-1 flex-col px-5">
       {sortedNodes.map(node => {
         const hasChildren =
           node.children && Object.keys(node.children).length > 0;
@@ -67,7 +75,7 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
               key={node.url}
               href={node.url!}
               className={cn(
-                'hover:bg-muted dark:hover:bg-muted flex items-center justify-start text-sm transition-colors',
+                'flex items-center justify-start text-sm transition-colors',
                 'justify-between px-2 py-2',
                 {
                   'text-primary': isActive,
@@ -78,13 +86,23 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
               ref={isActive ? autoScrollRef : null}
             >
               <div className="flex items-center">
-                <FilePenIcon
-                  className={cn('h-4 w-4 flex-none', {
-                    'text-muted-foreground': !isActive,
-                    'text-primary': isActive,
-                  })}
-                />
-                <span className="ml-3 inline-block">{node.label}</span>
+                <div
+                  className={cn(
+                    'mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md',
+                    {
+                      'bg-primary/10': isActive,
+                      'bg-muted/50': !isActive,
+                    },
+                  )}
+                >
+                  <FilePenIcon
+                    className={cn('h-4 w-4', {
+                      'text-muted-foreground': !isActive,
+                      'text-primary': isActive,
+                    })}
+                  />
+                </div>
+                <span className="inline-block font-normal">{node.label}</span>
               </div>
             </Link>
           );
@@ -94,13 +112,15 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
               key={node.label}
               onClick={() => onSelectNode(node)}
               className={cn(
-                'hover:bg-muted dark:hover:bg-muted flex items-center justify-start text-sm transition-colors',
+                'flex items-center justify-start text-sm transition-colors',
                 'w-full justify-between px-2 py-2',
               )}
             >
               <div className="flex items-center">
-                <FolderIcon className="text-muted-foreground h-4 w-4 flex-none" />
-                <span className="ml-3 inline-block">{node.label}</span>
+                <div className="bg-primary/10 mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md">
+                  <FolderIcon className="text-primary h-4 w-4" />
+                </div>
+                <span className="inline-block font-normal">{node.label}</span>
               </div>
             </button>
           );
@@ -111,7 +131,7 @@ const DirectoryTreeMenu: React.FC<DirectoryTreeMenuProps> = ({
   );
 };
 
-const DEFAULT_ROOT = './';
+const DEFAULT_ROOT = '__ROOT__';
 
 const MobileDrawer = ({
   isOpen,
@@ -134,6 +154,10 @@ const MobileDrawer = ({
     { level: Record<string, ITreeNode>; title: string }[]
   >([]);
   const [currentTitle, setCurrentTitle] = useState<string>(DEFAULT_ROOT);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionDirection, setTransitionDirection] = useState<
+    'forward' | 'backward'
+  >('forward');
   const [activeTab, setActiveTab] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('mobileDrawerTab') || 'main';
@@ -147,141 +171,90 @@ const MobileDrawer = ({
     }
   }, [activeTab]);
 
-  const findPathInTree = (
-    nodes: Record<string, ITreeNode>,
-    targetPath: string,
-    parentPaths: ITreeNode[] = [],
-  ): { pathSegments: ITreeNode[]; leafNode: ITreeNode } | null => {
-    for (const node of Object.values(nodes)) {
-      if (node.url === targetPath) {
-        return { pathSegments: [...parentPaths, node], leafNode: node };
-      }
+  // Memoize expensive tree traversal functions
+  const findPathInTree = useCallback(
+    (
+      nodes: Record<string, ITreeNode>,
+      targetPath: string,
+      parentPaths: ITreeNode[] = [],
+    ): { pathSegments: ITreeNode[]; leafNode: ITreeNode } | null => {
+      for (const node of Object.values(nodes)) {
+        if (node.url === targetPath) {
+          return { pathSegments: [...parentPaths, node], leafNode: node };
+        }
 
-      if (node.children && Object.keys(node.children).length > 0) {
-        const result = findPathInTree(node.children, targetPath, [
-          ...parentPaths,
-          node,
-        ]);
-        if (result) return result;
-      }
-    }
-    return null;
-  };
-
-  const findFolderByPath = (
-    nodes: Record<string, ITreeNode>,
-    targetPathSegments: string[],
-    currentSegmentIndex: number = 0,
-    parentPaths: ITreeNode[] = [],
-  ): { pathSegments: ITreeNode[]; folderNode: ITreeNode } | null => {
-    if (currentSegmentIndex >= targetPathSegments.length) {
-      return null; // Path segments exhausted, no folder found
-    }
-
-    const segmentLabel = targetPathSegments[currentSegmentIndex];
-
-    for (const node of Object.values(nodes)) {
-      if (node.label === segmentLabel) {
-        const newParentPaths = [...parentPaths, node];
-        if (currentSegmentIndex === targetPathSegments.length - 1) {
-          // This is the last segment, check if it's a folder
-          if (node.children && Object.keys(node.children).length > 0) {
-            return { pathSegments: newParentPaths, folderNode: node };
-          }
-        } else if (node.children && Object.keys(node.children).length > 0) {
-          // Not the last segment, but it's a folder, continue searching in children
-          const result = findFolderByPath(
-            node.children,
-            targetPathSegments,
-            currentSegmentIndex + 1,
-            newParentPaths,
-          );
+        if (node.children && Object.keys(node.children).length > 0) {
+          const result = findPathInTree(node.children, targetPath, [
+            ...parentPaths,
+            node,
+          ]);
           if (result) return result;
         }
       }
-    }
-    return null;
-  };
+      return null;
+    },
+    [],
+  );
 
-  useEffect(() => {
-    if (!directoryTree || !isOpen) return;
-
-    const currentPath = router.asPath.endsWith('/')
-      ? router.asPath.slice(0, -1)
-      : router.asPath;
-
-    const pathResult = findPathInTree(directoryTree, currentPath);
-
-    if (pathResult) {
-      // Case 1: A node with a URL matching the current path was found
-      const { pathSegments, leafNode } = pathResult;
-
-      const newNavigationStack: {
-        level: Record<string, ITreeNode>;
-        title: string;
-      }[] = [];
-      let tempCurrentTreeLevel: Record<string, ITreeNode> | undefined =
-        directoryTree;
-      let tempCurrentTitle: string = DEFAULT_ROOT;
-
-      const leafNodeHasChildren =
-        leafNode.children && Object.keys(leafNode.children).length > 0;
-
-      if (leafNodeHasChildren) {
-        // If the matched node is a folder (has children), navigate into it.
-        // The navigation stack should include all parents up to this folder.
-        for (let i = 0; i < pathSegments.length; i++) {
-          const segment = pathSegments[i];
-          newNavigationStack.push({
-            level: tempCurrentTreeLevel!,
-            title: tempCurrentTitle,
-          });
-          tempCurrentTreeLevel = segment.children;
-          tempCurrentTitle = segment.label;
-        }
-      } else {
-        // If the matched node is a file (no children), navigate to its parent's level.
-        // The navigation stack should include all parents up to the parent of the leaf node.
-        for (let i = 0; i < pathSegments.length - 1; i++) {
-          const segment = pathSegments[i];
-          newNavigationStack.push({
-            level: tempCurrentTreeLevel!,
-            title: tempCurrentTitle,
-          });
-          tempCurrentTreeLevel = segment.children;
-          tempCurrentTitle = segment.label;
-        }
+  const findFolderByPath = useCallback(
+    (
+      nodes: Record<string, ITreeNode>,
+      targetPathSegments: string[],
+      currentSegmentIndex: number = 0,
+      parentPaths: ITreeNode[] = [],
+    ): { pathSegments: ITreeNode[]; folderNode: ITreeNode } | null => {
+      if (currentSegmentIndex >= targetPathSegments.length) {
+        return null; // Path segments exhausted, no folder found
       }
 
-      setCurrentTreeLevel(tempCurrentTreeLevel);
-      navigationStack.current = newNavigationStack;
-      setCurrentTitle(tempCurrentTitle);
+      const segmentLabel = targetPathSegments[currentSegmentIndex];
 
-      // Auto-scroll the active link into view (only for actual links/files)
-      setTimeout(() => {
-        if (autoScrollRef.current) {
-          let block: ScrollLogicalPosition = 'nearest';
-          if (
-            !isInitializedRef.current &&
-            !checkInView(autoScrollRef.current)
-          ) {
-            block = 'center';
+      for (const node of Object.values(nodes)) {
+        if (node.label === segmentLabel) {
+          const newParentPaths = [...parentPaths, node];
+          if (currentSegmentIndex === targetPathSegments.length - 1) {
+            // This is the last segment, check if it's a folder
+            if (node.children && Object.keys(node.children).length > 0) {
+              return { pathSegments: newParentPaths, folderNode: node };
+            }
+          } else if (node.children && Object.keys(node.children).length > 0) {
+            // Not the last segment, but it's a folder, continue searching in children
+            const result = findFolderByPath(
+              node.children,
+              targetPathSegments,
+              currentSegmentIndex + 1,
+              newParentPaths,
+            );
+            if (result) return result;
           }
-          autoScrollRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block,
-            inline: 'start',
-          });
         }
-        isInitializedRef.current = true;
-      }, 500);
-    } else {
-      // Case 2: No node with a URL was found. Check if the path corresponds to a folder node (without a URL).
-      const pathSegments = currentPath.split('/').filter(s => s !== '');
-      const folderResult = findFolderByPath(directoryTree, pathSegments);
+      }
+      return null;
+    },
+    [],
+  );
 
-      if (folderResult) {
-        const { pathSegments: folderPathSegments } = folderResult;
+  // Memoize current path processing
+  const currentPath = useMemo(() => {
+    const path = router.asPath.endsWith('/')
+      ? router.asPath.slice(0, -1)
+      : router.asPath;
+    return path;
+  }, [router.asPath]);
+
+  // Debounce and optimize the heavy tree processing
+  useEffect(() => {
+    // Only run when drawer is actually opened and we have a directory tree
+    if (!directoryTree || !isOpen) return;
+
+    // Use requestAnimationFrame to defer heavy computation
+    const timeoutId = setTimeout(() => {
+      const pathResult = findPathInTree(directoryTree, currentPath);
+
+      if (pathResult) {
+        // Case 1: A node with a URL matching the current path was found
+        const { pathSegments, leafNode } = pathResult;
+
         const newNavigationStack: {
           level: Record<string, ITreeNode>;
           title: string;
@@ -290,49 +263,168 @@ const MobileDrawer = ({
           directoryTree;
         let tempCurrentTitle: string = DEFAULT_ROOT;
 
-        // Navigate into the found folder
-        for (let i = 0; i < folderPathSegments.length; i++) {
-          const segment = folderPathSegments[i];
-          newNavigationStack.push({
-            level: tempCurrentTreeLevel!,
-            title: tempCurrentTitle,
-          });
-          tempCurrentTreeLevel = segment.children;
-          tempCurrentTitle = segment.label;
+        const leafNodeHasChildren =
+          leafNode.children && Object.keys(leafNode.children).length > 0;
+
+        if (leafNodeHasChildren) {
+          // If the matched node is a folder (has children), navigate into it.
+          // The navigation stack should include all parents up to this folder.
+          for (let i = 0; i < pathSegments.length; i++) {
+            const segment = pathSegments[i];
+            newNavigationStack.push({
+              level: tempCurrentTreeLevel!,
+              title: tempCurrentTitle,
+            });
+            tempCurrentTreeLevel = segment.children;
+            tempCurrentTitle = segment.label;
+          }
+        } else {
+          // If the matched node is a file (no children), navigate to its parent's level.
+          // The navigation stack should include all parents up to the parent of the leaf node.
+          for (let i = 0; i < pathSegments.length - 1; i++) {
+            const segment = pathSegments[i];
+            newNavigationStack.push({
+              level: tempCurrentTreeLevel!,
+              title: tempCurrentTitle,
+            });
+            tempCurrentTreeLevel = segment.children;
+            tempCurrentTitle = segment.label;
+          }
         }
 
         setCurrentTreeLevel(tempCurrentTreeLevel);
         navigationStack.current = newNavigationStack;
         setCurrentTitle(tempCurrentTitle);
 
-        // No auto-scroll for folders, as per "only set the active node that contain the node that having no child"
+        // Auto-scroll the active link into view (only for actual links/files)
+        if (autoScrollRef.current) {
+          const scrollTimeout = setTimeout(() => {
+            if (autoScrollRef.current) {
+              let block: ScrollLogicalPosition = 'nearest';
+              if (
+                !isInitializedRef.current &&
+                !checkInView(autoScrollRef.current)
+              ) {
+                block = 'center';
+              }
+              autoScrollRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block,
+                inline: 'start',
+              });
+            }
+            isInitializedRef.current = true;
+          }, 100); // Reduced from 500ms to 100ms
+
+          return () => clearTimeout(scrollTimeout);
+        }
       } else {
-        // Case 3: No path found (neither file nor folder), reset to root
-        setCurrentTreeLevel(directoryTree);
-        navigationStack.current = [];
-        setCurrentTitle(DEFAULT_ROOT);
+        // Case 2: No node with a URL was found. Check if the path corresponds to a folder node (without a URL).
+        const pathSegments = currentPath.split('/').filter(s => s !== '');
+        const folderResult = findFolderByPath(directoryTree, pathSegments);
+
+        if (folderResult) {
+          const { pathSegments: folderPathSegments } = folderResult;
+          const newNavigationStack: {
+            level: Record<string, ITreeNode>;
+            title: string;
+          }[] = [];
+          let tempCurrentTreeLevel: Record<string, ITreeNode> | undefined =
+            directoryTree;
+          let tempCurrentTitle: string = DEFAULT_ROOT;
+
+          // Navigate into the found folder
+          for (let i = 0; i < folderPathSegments.length; i++) {
+            const segment = folderPathSegments[i];
+            newNavigationStack.push({
+              level: tempCurrentTreeLevel!,
+              title: tempCurrentTitle,
+            });
+            tempCurrentTreeLevel = segment.children;
+            tempCurrentTitle = segment.label;
+          }
+
+          setCurrentTreeLevel(tempCurrentTreeLevel);
+          navigationStack.current = newNavigationStack;
+          setCurrentTitle(tempCurrentTitle);
+
+          // No auto-scroll for folders, as per "only set the active node that contain the node that having no child"
+        } else {
+          // Case 3: No path found (neither file nor folder), reset to root
+          setCurrentTreeLevel(directoryTree);
+          navigationStack.current = [];
+          setCurrentTitle(DEFAULT_ROOT);
+        }
       }
-    }
-  }, [isOpen, directoryTree, router.asPath]);
+    }, 16); // Use requestAnimationFrame timing (~16ms)
 
-  const handleSelectNode = (node: ITreeNode) => {
-    if (node.children) {
-      navigationStack.current.push({
-        level: currentTreeLevel!,
-        title: currentTitle,
-      }); // Store current level and its title
-      setCurrentTreeLevel(node.children);
-      setCurrentTitle(node.label);
-    }
-  };
+    return () => clearTimeout(timeoutId);
+  }, [isOpen, directoryTree, currentPath, findPathInTree, findFolderByPath]);
 
-  const handleBack = () => {
-    if (navigationStack.current.length > 0) {
-      const previousState = navigationStack.current.pop();
-      setCurrentTreeLevel(previousState!.level);
-      setCurrentTitle(previousState!.title); // Restore previous title
-    }
-  };
+  // Memoize handlers to prevent recreating on every render
+  const handleSelectNode = useCallback(
+    (node: ITreeNode) => {
+      if (node.children) {
+        setIsTransitioning(true);
+        setTransitionDirection('forward');
+
+        setTimeout(() => {
+          navigationStack.current.push({
+            level: currentTreeLevel!,
+            title: currentTitle,
+          }); // Store current level and its title
+          setCurrentTreeLevel(node.children);
+          setCurrentTitle(node.label);
+
+          setTimeout(() => {
+            setIsTransitioning(false);
+          }, 50);
+        }, 200);
+      }
+    },
+    [currentTreeLevel, currentTitle],
+  );
+
+  // Memoize the click handler to prevent recreating
+  const handleNavLinkClick = useCallback(() => {
+    setIsOpen(false);
+  }, [setIsOpen]);
+
+  // Memoize navLinks rendering to prevent unnecessary re-renders
+  const renderedNavLinks = useMemo(() => {
+    return navLinks.map(item => {
+      const isActive = isActiveUrl(item.url);
+      return (
+        <Link
+          key={item.url}
+          href={item.url}
+          className={cn('flex items-center p-2 text-sm', {
+            'text-primary': isActive,
+          })}
+          onClick={handleNavLinkClick}
+        >
+          {item.Icon && (
+            <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg">
+              <item.Icon className="text-primary h-4 w-4" />
+            </div>
+          )}
+          <div className="flex-1">
+            <div className="inline-block">{item.title}</div>
+            {item.description && (
+              <div
+                className={cn('mt-0.5 text-xs', {
+                  'text-primary': isActive,
+                  'text-muted-foreground': !isActive,
+                })}
+              >
+                {item.description}
+              </div>
+            )}
+          </div>
+        </Link>
+      );
+    });
+  }, [navLinks, isActiveUrl, handleNavLinkClick]);
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen} direction="bottom">
@@ -344,6 +436,7 @@ const MobileDrawer = ({
         role="navigation"
         style={{
           background: 'color-mix(in oklab, var(--background) 75%, transparent)',
+          WebkitBackdropFilter: 'blur(16px)',
           backdropFilter: 'blur(16px)',
         }}
       >
@@ -368,53 +461,94 @@ const MobileDrawer = ({
               className="flex flex-1 flex-col overflow-y-auto"
             >
               {/* Navigation items */}
-              <nav className="px-4 py-1">
-                {navLinks.map(item => (
-                  <Link
-                    key={item.url}
-                    href={item.url}
-                    className={cn('flex items-center p-2 text-sm', {
-                      'text-primary': isActiveUrl(item.url),
-                    })}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.Icon && (
-                      <div className="cmd-idle-icon bg-primary/10 mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg">
-                        <item.Icon className="text-primary h-4 w-4" />
-                      </div>
-                    )}
-                    <span className="inline-block">{item.title}</span>
-                  </Link>
-                ))}
-              </nav>
+              <nav className="space-y-1 px-4 py-2">{renderedNavLinks}</nav>
             </TabsContent>
             <TabsContent
               value="tree"
               className="m-0 flex flex-1 flex-col overflow-y-auto"
             >
-              <div className="mx-4 flex items-center py-3">
-                {navigationStack.current.length > 0 ? (
+              <div className="mx-4 flex h-14 items-center">
+                <nav className="flex items-center space-x-0.5 text-sm">
                   <button
-                    onClick={handleBack}
-                    className="text-muted-foreground m-0 flex items-center space-x-2 rounded-md p-0 leading-0"
+                    onClick={() => {
+                      setIsTransitioning(true);
+                      setTransitionDirection('backward');
+
+                      setTimeout(() => {
+                        setCurrentTreeLevel(directoryTree);
+                        navigationStack.current = [];
+                        setCurrentTitle(DEFAULT_ROOT);
+
+                        setTimeout(() => {
+                          setIsTransitioning(false);
+                        }, 50);
+                      }, 200);
+                    }}
+                    className="text-muted-foreground hover:text-foreground -ml-2 flex min-h-12 items-center justify-center rounded-md px-2 py-2 font-sans font-medium transition-colors"
                   >
-                    ./
-                    <span className="text-muted-foreground font-sans !text-sm font-medium">
-                      {currentTitle}
-                    </span>
+                    <MemoIcons.home className="h-4 w-4" />
                   </button>
-                ) : (
-                  <span className="text-muted-foreground font-sans !text-sm font-medium">
-                    {currentTitle}
-                  </span>
-                )}
+                  {navigationStack.current
+                    .filter(navItem => navItem.title !== DEFAULT_ROOT)
+                    .map((navItem, index) => (
+                      <React.Fragment key={index}>
+                        <span className="text-muted-foreground px-1">/</span>
+                        <button
+                          onClick={() => {
+                            setIsTransitioning(true);
+                            setTransitionDirection('backward');
+
+                            setTimeout(() => {
+                              // Navigate to this specific level - need to find the original index
+                              const originalIndex =
+                                navigationStack.current.findIndex(
+                                  item => item === navItem,
+                                );
+                              const newStack = navigationStack.current.slice(
+                                0,
+                                originalIndex + 1,
+                              );
+                              const targetState = newStack[newStack.length - 1];
+                              navigationStack.current = newStack.slice(0, -1);
+                              setCurrentTreeLevel(targetState.level);
+                              setCurrentTitle(targetState.title);
+
+                              setTimeout(() => {
+                                setIsTransitioning(false);
+                              }, 50);
+                            }, 200);
+                          }}
+                          className="text-muted-foreground hover:text-foreground min-h-12 rounded-md px-2 py-2 font-sans font-medium transition-colors"
+                        >
+                          {navItem.title}
+                        </button>
+                      </React.Fragment>
+                    ))}
+                  {navigationStack.current.length > 0 &&
+                    currentTitle !== DEFAULT_ROOT && (
+                      <>
+                        <span className="text-muted-foreground px-1">/</span>
+                        <span className="text-foreground flex min-h-12 items-center px-2 py-2 font-sans font-medium">
+                          {currentTitle}
+                        </span>
+                      </>
+                    )}
+                </nav>
               </div>
               {currentTreeLevel && (
-                <div className="flex-1 overflow-y-auto">
+                <div
+                  className={`flex-1 overflow-y-auto transition-all duration-300 ease-out ${
+                    isTransitioning
+                      ? transitionDirection === 'forward'
+                        ? 'translate-x-8 transform opacity-0'
+                        : '-translate-x-8 transform opacity-0'
+                      : 'translate-x-0 transform opacity-100'
+                  }`}
+                >
                   <DirectoryTreeMenu
                     nodes={currentTreeLevel}
                     onSelectNode={handleSelectNode}
-                    onSelectLink={() => setIsOpen(false)}
+                    onSelectLink={handleNavLinkClick}
                     isActiveUrl={isActiveUrl}
                     autoScrollRef={autoScrollRef}
                   />
