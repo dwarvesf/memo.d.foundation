@@ -139,7 +139,6 @@ const config = {
             code: {
               fontFamily: 'var(--font-monospace), monospace',
               fontSize: 'inherit !important',
-              padding: '1px 3px !important',
               background: 'transparent !important',
             },
             'a:hover': {
