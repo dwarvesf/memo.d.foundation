@@ -976,16 +976,6 @@ jobs:
           GITHUB_ACTIONS: true
           REPO_NAME: ${submoduleName}
           ${changedFilesEnvText}
-      
-      - name: Upload linting results (on failure)
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lint-results-\${{ github.run_id }}
-          path: |
-            **/*.md
-            .github/
-          retention-days: 30
 `;
 
     fs.writeFileSync(workflowPath, workflowContent);
