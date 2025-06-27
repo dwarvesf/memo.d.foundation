@@ -132,7 +132,7 @@
   }
 
   .mark-text-block {
-    @apply text-primary bg-primary/5 rounded-md px-1 py-0 font-mono text-[0.835rem];
+    @apply text-primary bg-primary/5 rounded-md px-1 py-0 font-mono text-[0.835em];
   }
 
   /* Enhanced List Styling using Tailwind CSS and ::marker */
