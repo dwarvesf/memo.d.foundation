@@ -19,6 +19,7 @@ export interface LintMessage {
   ruleId: string;
   severity: number;
   message: string;
+  fixableCount?: number; // Number of fixable issues
   line: number;
   column: number;
   nodeType: string;
@@ -51,10 +52,11 @@ export interface RuleContext {
   config: DefaultConfig;
   severity: number;
   options: any;
-  fix: boolean;
-  report: (message: Omit<LintMessage, 'severity'> & {
-    severity?: number;
-  }) => void;
+  report: (
+    message: Omit<LintMessage, 'severity'> & {
+      severity?: number;
+    },
+  ) => void;
   getSourceCode: () => string;
   getFrontmatter: () => { [key: string]: any };
   getMarkdownContent: () => string;

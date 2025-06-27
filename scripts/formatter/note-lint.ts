@@ -1,7 +1,13 @@
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'fs';
+import {
+  readFileSync,
+  writeFileSync,
+  existsSync,
+  readdirSync,
+  statSync,
+} from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import allRules from './rules/index.js';
+import allRules, { MARKDOWN_RULES_NAME } from './rules/index.js';
 import {
   Colors,
   RuleContext,
@@ -9,39 +15,30 @@ import {
   LintMessage,
   FileLintResult,
   LintResults,
-  RuleModule
+  RuleModule,
 } from './rules/types.js';
 
 // ANSI escape codes for colors
 const colors: Colors = {
-  red: (text) => `\x1b[31m${text}\x1b[0m`,
-  yellow: (text) => `\x1b[33m${text}\x1b[0m`,
-  gray: (text) => `\x1b[90m${text}\x1b[0m`,
-  green: (text) => `\x1b[32m${text}\x1b[0m`,
-  blue: (text) => `\x1b[34m${text}\x1b[0m`,
+  red: text => `\x1b[31m${text}\x1b[0m`,
+  yellow: text => `\x1b[33m${text}\x1b[0m`,
+  gray: text => `\x1b[90m${text}\x1b[0m`,
+  green: text => `\x1b[32m${text}\x1b[0m`,
+  blue: text => `\x1b[34m${text}\x1b[0m`,
 };
-
-const FRONTMATTER_ORDER = [
-  'title',
-  'short_title',
-  'description',
-  'date',
-  'authors',
-  '...',
-  'tags',
-];
 
 const DEFAULT_CONFIG: DefaultConfig = {
   rules: {
-    'markdown/relative-link-exists': 'off',
-    'markdown/no-heading1': 'error',
-    'markdown/frontmatter': [
+    [MARKDOWN_RULES_NAME.RELATIVE_LINK_EXISTS]: 'off',
+    [MARKDOWN_RULES_NAME.NO_HEADING1]: 'error',
+    [MARKDOWN_RULES_NAME.FRONTMATTER]: [
       'error',
-      { required: ['title', 'description', 'date'], orders: FRONTMATTER_ORDER },
+      { required: ['title', 'description', 'date'] },
     ],
-    'markdown/prettier': 'warn',
+    [MARKDOWN_RULES_NAME.PRETTIER]: 'warn',
   },
 };
+
 
 class NoteLint {
   private rules: { [key: string]: RuleModule };
@@ -50,7 +47,10 @@ class NoteLint {
     this.rules = allRules.rules;
   }
 
-  async lintFiles(filePaths: string[], config: DefaultConfig, fix: boolean): Promise<LintResults> {
+  async lintFiles(
+    filePaths: string[],
+    config: DefaultConfig,
+  ): Promise<LintResults> {
     const results: FileLintResult[] = [];
     let totalErrorCount = 0;
     let totalWarningCount = 0;
@@ -59,7 +59,7 @@ class NoteLint {
 
     for (const filePath of filePaths) {
       const fileContent = readFileSync(filePath, 'utf8');
-      const fileResults = await this.lintFile(filePath, fileContent, config, fix);
+      const fileResults = await this.lintFile(filePath, fileContent, config);
       results.push(fileResults);
 
       totalErrorCount += fileResults.errorCount;
@@ -77,7 +77,11 @@ class NoteLint {
     };
   }
 
-  async lintFile(filePath: string, fileContent: string, config: DefaultConfig, fix: boolean): Promise<FileLintResult> {
+  async lintFile(
+    filePath: string,
+    fileContent: string,
+    config: DefaultConfig,
+  ): Promise<FileLintResult> {
     const messages: LintMessage[] = [];
     let errorCount = 0;
     let warningCount = 0;
@@ -110,10 +114,12 @@ class NoteLint {
           filePath,
           config, // Overall config
           severity, // Severity for this specific rule
-          options,  // Options for this specific rule
-          fix,
-          report: (message) => {
-            const finalMessage: LintMessage = { ...message, severity: ruleContext.severity };
+          options, // Options for this specific rule
+          report: message => {
+            const finalMessage: LintMessage = {
+              ...message,
+              severity: ruleContext.severity,
+            };
             if (typeof message.fix === 'function') {
               finalMessage.fix = (message.fix as Function)();
             } else if (message.fix) {
@@ -122,10 +128,20 @@ class NoteLint {
             messages.push(finalMessage);
             if (finalMessage.severity === 2) {
               errorCount++;
-              if (finalMessage.fix) fixableErrorCount++;
+              if (finalMessage.fixableCount) {
+                errorCount += finalMessage.fixableCount - 1;
+                fixableErrorCount += finalMessage.fixableCount;
+              } else if (finalMessage.fix) {
+                fixableErrorCount++;
+              }
             } else if (finalMessage.severity === 1) {
               warningCount++;
-              if (finalMessage.fix) fixableWarningCount++;
+              if (finalMessage.fixableCount) {
+                warningCount += finalMessage.fixableCount - 1;
+                fixableWarningCount += finalMessage.fixableCount;
+              } else if (finalMessage.fix) {
+                fixableWarningCount++;
+              }
             }
           },
           getSourceCode: () => fileContent,
@@ -172,25 +188,40 @@ class NoteLint {
 
   async applyFixes(results: LintResults): Promise<void> {
     for (const fileResult of results.results) {
-      if (fileResult.fixableErrorCount > 0 || fileResult.fixableWarningCount > 0) {
+      if (
+        fileResult.fixableErrorCount > 0 ||
+        fileResult.fixableWarningCount > 0
+      ) {
         let fileContent = readFileSync(fileResult.filePath, 'utf8');
         const fixes = fileResult.messages
           .filter(m => m.fix && m.fix.range && !m.fix.format) // Ensure fix is defined and has a range
           .sort((a, b) => b.fix!.range[0] - a.fix!.range[0]); // Use non-null assertion
-
-        // console.log(`Applying fixes for ${fileResult.filePath}:`, fixes);
+        const relativePath = path.relative(
+          process.cwd(),
+          fileResult.filePath,
+        );
+        // console.log(
+        //   colors.green(`Applying fixes for ${relativePath}...`),
+        // );
 
         for (const message of fixes) {
           const { range, text } = message.fix!; // Use non-null assertion
-          fileContent = fileContent.substring(0, range[0]) + text + fileContent.substring(range[1]);
+          fileContent =
+            fileContent.substring(0, range[0]) +
+            text +
+            fileContent.substring(range[1]);
         }
 
-        const formatFixes = fileResult.messages
-          .filter(m => m.fix && m.fix.format); // Ensure fix is defined and has
-        
+        const formatFixes = fileResult.messages.filter(
+          m => m.fix && m.fix.format,
+        ); // Ensure fix is defined and has
+
         for (const message of formatFixes) {
           if (message.fix?.format) {
-            fileContent = await message.fix.format(fileContent) as string;
+            console.log(
+              colors.gray(`  Applying format fix for ${relativePath} ...`),
+            );
+            fileContent = (await message.fix.format(fileContent)) as string;
           }
         }
         writeFileSync(fileResult.filePath, fileContent, 'utf8');
@@ -222,7 +253,9 @@ async function loadConfig(configPath: string | null): Promise<DefaultConfig> {
 
   const resolvedPath = path.resolve(process.cwd(), configPath);
   if (!existsSync(resolvedPath)) {
-    console.error(colors.red(`Error: Configuration file not found at ${resolvedPath}`));
+    console.error(
+      colors.red(`Error: Configuration file not found at ${resolvedPath}`),
+    );
     process.exit(1);
   }
 
@@ -232,12 +265,19 @@ async function loadConfig(configPath: string | null): Promise<DefaultConfig> {
   } else if (resolvedPath.endsWith('.json')) {
     return JSON.parse(readFileSync(resolvedPath, 'utf8'));
   } else {
-    console.error(colors.red(`Error: Unsupported configuration file format for ${resolvedPath}`));
+    console.error(
+      colors.red(
+        `Error: Unsupported configuration file format for ${resolvedPath}`,
+      ),
+    );
     process.exit(1);
   }
 }
 
-function findMarkdownFiles(dir: string, ignorePatterns: string[] = ['node_modules']): string[] {
+function findMarkdownFiles(
+  dir: string,
+  ignorePatterns: string[] = ['node_modules'],
+): string[] {
   let files: string[] = [];
   const entries = readdirSync(dir, { withFileTypes: true });
 
@@ -249,14 +289,20 @@ function findMarkdownFiles(dir: string, ignorePatterns: string[] = ['node_module
 
     if (entry.isDirectory()) {
       files = files.concat(findMarkdownFiles(fullPath, ignorePatterns));
-    } else if (entry.isFile() && (entry.name.endsWith('.md') || entry.name.endsWith('.mdx'))) {
+    } else if (
+      entry.isFile() &&
+      (entry.name.endsWith('.md') || entry.name.endsWith('.mdx'))
+    ) {
       files.push(fullPath);
     }
   }
   return files;
 }
 
-export async function main(inputFiles: string[] = []): Promise<void> {
+export async function main(
+  inputFiles: string[] = [],
+  prettierFix?: boolean,
+): Promise<void> {
   const args = process.argv.slice(2);
   const files: string[] = inputFiles;
   let fix = false;
@@ -277,10 +323,12 @@ export async function main(inputFiles: string[] = []): Promise<void> {
   }
 
   if (files.length === 0) {
-    console.log(colors.yellow('[Note Linter] No markdown files found to lint.'));
+    console.log(
+      colors.yellow('[Note Linter] No markdown files found to lint.'),
+    );
     process.exit(0);
   }
-  
+
   let filePaths: string[] = [];
   for (const pattern of files) {
     if (pattern.includes('**') || pattern.includes('*')) {
@@ -314,58 +362,129 @@ export async function main(inputFiles: string[] = []): Promise<void> {
   filePaths = [...new Set(filePaths)];
 
   if (filePaths.length === 0) {
-    console.log(colors.yellow('[Note Linter] No markdown files matched paths found to lint.'));
+    console.log(
+      colors.yellow(
+        '[Note Linter] No markdown files matched paths found to lint.',
+      ),
+    );
     process.exit(0);
   }
 
   const config = await loadConfig(configPath);
   const linter = new NoteLint();
-  const results = await linter.lintFiles(filePaths, config, fix);
+  const results = await linter.lintFiles(filePaths, config);
 
   if (fix) {
     await linter.applyFixes(results);
     const fixedErrors = results.fixableErrorCount;
     const fixedWarnings = results.fixableWarningCount;
-    const fixedFiles = results.results.filter(r => r.fixableErrorCount > 0 || r.fixableWarningCount > 0).length;
+    const fixedFiles = results.results.filter(
+      r => r.fixableErrorCount > 0 || r.fixableWarningCount > 0,
+    ).length;
 
     if (fixedErrors > 0 || fixedWarnings > 0) {
-      console.log(colors.green(`✓ Fixed ${fixedErrors} errors and ${fixedWarnings} warnings in ${fixedFiles} files`));
+      console.log(
+        colors.green(
+          `✓ Fixed ${fixedErrors} errors and ${fixedWarnings} warnings in ${fixedFiles} files`,
+        ),
+      );
       for (const fileResult of results.results) {
-        if (fileResult.fixableErrorCount > 0 || fileResult.fixableWarningCount > 0) {
-          console.log(colors.gray(`  ${fileResult.filePath}: ${fileResult.fixableErrorCount + fileResult.fixableWarningCount} issues fixed`));
+        if (
+          fileResult.fixableErrorCount > 0 ||
+          fileResult.fixableWarningCount > 0
+        ) {
+          console.log(
+            colors.gray(
+              `  ${fileResult.filePath}: ${fileResult.fixableErrorCount + fileResult.fixableWarningCount} issues fixed`,
+            ),
+          );
         }
       }
     } else {
-      const colorSummary = results.errorCount > 0 ? colors.red : (results.warningCount > 0 ? colors.yellow : colors.green);
-      console.log(colorSummary(`✖ ${results.errorCount} errors, ${results.warningCount} warnings (0 fixable)`));
+      const colorSummary =
+        results.errorCount > 0
+          ? colors.red
+          : results.warningCount > 0
+            ? colors.yellow
+            : colors.green;
+      console.log(
+        colorSummary(
+          `✖ ${results.errorCount} errors, ${results.warningCount} warnings (0 fixable)`,
+        ),
+      );
     }
   } else {
-    const totalErrors = results.errorCount;
-    const totalWarnings = results.warningCount;
-    const totalFixableErrors = results.fixableErrorCount;
-    const totalFixableWarnings = results.fixableWarningCount;
+    let totalErrors = results.errorCount;
+    let totalWarnings = results.warningCount;
+    let totalFixableErrors = results.fixableErrorCount;
+    let totalFixableWarnings = results.fixableWarningCount;
 
     for (const fileResult of results.results) {
       if (fileResult.messages.length > 0) {
         console.log(colors.gray(fileResult.filePath));
         for (const message of fileResult.messages) {
-          const severityColor = message.severity === 2 ? colors.red : colors.yellow;
+          const isPrettierFix =
+            Boolean(message.ruleId === MARKDOWN_RULES_NAME.PRETTIER && prettierFix && message.fix?.format);
+          if (isPrettierFix) {
+            const { messages: _ignoredMsgs, ...rest } = fileResult;
+            // Apply Prettier fixes
+            await linter.applyFixes({
+              results: [
+                {
+                  ...rest,
+                  // This is a hack to apply Prettier fixes only
+                  messages: [message],
+                },
+              ],
+            } as LintResults);
+            // Adjust counts for Prettier fixes
+            if (message.severity === 2) {
+              totalErrors--;
+              totalFixableErrors--;
+            }
+            if (message.severity === 1) {
+              totalWarnings--;
+              totalFixableWarnings--;
+            }
+            continue; // Skip logging for Prettier fixes
+          }
+          const severityColor =
+            message.severity === 2 ? colors.red : colors.yellow;
           const severityText = message.severity === 2 ? 'error' : 'warning';
-          console.log(
-            `  ${colors.blue(`${message.line}:${message.column}`)}   ${severityColor(severityText)}    ${message.message}  ${colors.gray(message.ruleId)}`
-          );
+          const isIncludedBreakLine =
+            message.message.includes('\n') ||
+            message.message.includes('\r\n');
+          if (isIncludedBreakLine) {
+            const lines = message.message.split(/\r?\n/);
+            lines.forEach((line, index) => {
+              console.log(
+                `  ${colors.blue(`${message.line}:${message.column}`)}   ${severityColor(severityText)}    ${line}  ${colors.gray(message.ruleId)}`,
+              );
+            })
+          } else {
+            console.log(
+              `  ${colors.blue(`${message.line}:${message.column}`)}   ${severityColor(severityText)}    ${message.message}  ${colors.gray(message.ruleId)}`,
+            );
+          }
         }
       }
     }
 
-    const summaryColor = totalErrors > 0 ? colors.red : (totalWarnings > 0 ? colors.yellow : colors.green);
+    const summaryColor =
+      totalErrors > 0
+        ? colors.red
+        : totalWarnings > 0
+          ? colors.yellow
+          : colors.green;
     const summaryText: string[] = [];
     if (totalErrors > 0) summaryText.push(`${totalErrors} errors`);
     if (totalWarnings > 0) summaryText.push(`${totalWarnings} warnings`);
 
     const fixableSummary: string[] = [];
-    if (totalFixableErrors > 0) fixableSummary.push(`${totalFixableErrors} errors`);
-    if (totalFixableWarnings > 0) fixableSummary.push(`${totalFixableWarnings} warnings`);
+    if (totalFixableErrors > 0)
+      fixableSummary.push(`${totalFixableErrors} errors`);
+    if (totalFixableWarnings > 0)
+      fixableSummary.push(`${totalFixableWarnings} warnings`);
 
     let finalSummary = '';
     if (totalErrors > 0 || totalWarnings > 0) {

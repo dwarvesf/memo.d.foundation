@@ -53,12 +53,13 @@ function buildFrontmatter(
 ): string {
   const fm: { [key: string]: any } = {};
   for (const key of requiredFields) {
+    const defaultValue = `["${key.toUpperCase()}_VALUE"]`;
     if (data[key] === undefined || data[key] === null || data[key] === '') {
-      const defaultValue = `[${key.toUpperCase()}_VALUE]`;
       fm[key] = defaultValue;
     } else if (key === 'date') {
       const formatted = formatDateToYMD(data[key]);
-      fm[key] = formatted === null ? null : formatted;
+      fm[key] =
+        formatted === null && data[key] !== defaultValue ? null : formatted;
     } else {
       fm[key] = data[key];
     }
@@ -129,6 +130,61 @@ function buildFrontmatter(
   yaml += '---\n';
   return yaml;
 }
+// Helper to get current order of original frontmatter keys
+const getCompareFrontmatterOrder = (
+  frontmatterLines: string[],
+  orders: string[],
+): {
+  currentOrder: string[];
+  expectedOrder: string[];
+  isMatched: boolean;
+} => {
+  if (!orders.length) {
+    return {
+      currentOrder: [],
+      expectedOrder: [],
+      isMatched: true,
+    }; // No orders specified, so everything is matched
+  }
+  const currentOrder: string[] = [];
+  for (const line of frontmatterLines) {
+    const match = line.match(/^([\w\-\.]+):/);
+    if (match) {
+      const key = match[1];
+      if (!currentOrder.includes(key)) {
+        currentOrder.push(key);
+      }
+    }
+  }
+  const isIncluded3Dots = orders.includes('...');
+
+  const notIncludedExtra = currentOrder.filter(key => !orders.includes(key));
+  let expectedOrder = orders.reduce((acc, o) => {
+    if (o === '...') {
+      return acc.concat(notIncludedExtra);
+    }
+    if (currentOrder.includes(o)) {
+      acc.push(o);
+    }
+    return acc;
+  }, [] as string[]);
+  if (!isIncluded3Dots) {
+    expectedOrder = expectedOrder.concat(notIncludedExtra);
+  }
+  let isMatched = true;
+  for (const orderKey of expectedOrder) {
+    const currentIndex = expectedOrder.indexOf(orderKey);
+    isMatched = currentIndex !== -1 && currentOrder[currentIndex] === orderKey;
+    if (!isMatched) {
+      break; // No need to check further if already not matched
+    }
+  }
+  return {
+    currentOrder,
+    expectedOrder,
+    isMatched,
+  };
+};
 
 const rule: RuleModule = {
   meta: {
@@ -172,20 +228,6 @@ const rule: RuleModule = {
     const orders: string[] = options.orders || [];
     const fileContent = context.getSourceCode();
     const parsedFrontmatter: { [key: string]: any } = context.getFrontmatter(); // This is the parsed object
-
-    // Helper to find the line number of a key in the raw frontmatter string
-    const getLineNumberForKey = (
-      key: string,
-      rawFrontmatterString: string,
-    ): number => {
-      const lines = rawFrontmatterString.split('\n');
-      for (let i = 0; i < lines.length; i++) {
-        if (lines[i].startsWith(`${key}:`)) {
-          return i + 1; // 1-based line number
-        }
-      }
-      return 1; // Default to first line if not found (e.g., for missing fields)
-    };
 
     return {
       check: () => {
@@ -346,10 +388,6 @@ const rule: RuleModule = {
           requiredFields,
           orders,
         );
-        const fullOriginalFrontmatterBlock = fileContent.substring(
-          0,
-          endOfFrontmatterDelimiter + 3,
-        ); // Includes both '---' delimiters
 
         // Find missing required fields
         const missingFields = requiredFields.filter(
@@ -359,27 +397,34 @@ const rule: RuleModule = {
             parsedFrontmatter[field] === '',
         );
 
-        if (missingFields.length > 0) {
-          for (const field of missingFields) {
-            context.report({
-              ruleId: 'markdown/frontmatter',
-              severity: context.severity,
-              message: `Required frontmatter field missing: '${field}'.`,
-              line: getLineNumberForKey(field, rawFrontmatterString) + 1, // Report at the line where it would be inserted
-              column: 1,
-              nodeType: 'frontmatter',
-            });
-          }
-        }
+        const { currentOrder, expectedOrder, isMatched } =
+          getCompareFrontmatterOrder(frontmatterLines, orders);
 
-        if (
-          builtFrontmatterString.trim() !== fullOriginalFrontmatterBlock.trim()
-        ) {
+        if (!isMatched || missingFields.length > 0) {
+          let matchMsg = '';
+          if (!isMatched) {
+            matchMsg +=
+              'Frontmatter fields are not in the expected order. ' +
+              'Expected: ' +
+              `[${expectedOrder.join(', ')}]; ` +
+              'Current: ' +
+              `[${currentOrder.join(', ')}]`;
+          }
+          let missingMsg = '';
+          if (missingFields.length > 0) {
+            missingMsg += missingFields
+              .map(field => `Required frontmatter field missing: '${field}'`)
+              .join('\n');
+          }
+
+          const message = [matchMsg, missingMsg].filter(Boolean).join('\n');
+
           context.report({
             ruleId: 'markdown/frontmatter',
             severity: context.severity,
-            message: 'Frontmatter is not in canonical format or order.',
-            line: 1, // Report at the start of the file
+            message,
+            fixableCount: [matchMsg, missingMsg].filter(Boolean).length,
+            line: 2, // Report at the start of the delimiter line
             column: 1,
             nodeType: 'frontmatter',
             fix: {
