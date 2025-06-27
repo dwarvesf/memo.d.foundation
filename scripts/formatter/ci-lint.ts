@@ -65,8 +65,13 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
+  // Doing automatic formatting with Prettier
+  // This is disabled in GitHub Actions to avoid unnecessary changes in PRs.
+  // In local development, we want to format files automatically.
+  const prettierFix = !isGithubActions;
+
   console.log(`Linting markdown files...`);
-  await noteLinter(filePaths);
+  await noteLinter(filePaths, prettierFix);
 }
 
 main().catch((error: any) => {

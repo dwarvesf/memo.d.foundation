@@ -70,11 +70,10 @@ const rule: RuleModule = {
       delete config.plugins;
     }
 
-    const isFixContext = context.fix;
     const prettierOptions = {
+      ...config,
       parser: 'markdown',
       plugins: [parserMarkdown],
-      ...config,
     };
     let prettierError: Error | null = null;
     let isFormatted = true;
@@ -93,7 +92,7 @@ const rule: RuleModule = {
 
     return {
       check: async () => {
-        if (prettierError && !isFixContext || !isFormatted) {
+        if (prettierError || !isFormatted) {
           const errorMessage = prettierError
             ? `Prettier check failed: ${prettierError.message || prettierError}`
             : 'The markdown file is not formatted according to Prettier standards.';

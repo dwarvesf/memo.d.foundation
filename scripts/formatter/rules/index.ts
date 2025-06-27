@@ -4,6 +4,13 @@ import frontmatter from './frontmatter.js';
 import formatNote from './format-note.js';
 import { RuleModule } from './types.js'; // Import RuleModule for typing
 
+export const MARKDOWN_RULES_NAME = {
+  RELATIVE_LINK_EXISTS: 'markdown/relative-link-exists',
+  NO_HEADING1: 'markdown/no-heading1',
+  FRONTMATTER: 'markdown/frontmatter',
+  PRETTIER: 'markdown/prettier',
+} as const;
+
 interface RulesCollection {
   rules: {
     [key: string]: RuleModule;
@@ -12,10 +19,10 @@ interface RulesCollection {
 
 const rulesCollection: RulesCollection = {
   rules: {
-    'markdown/relative-link-exists': relativeLinkExists,
-    'markdown/no-heading1': noHeading1,
-    'markdown/frontmatter': frontmatter,
-    'markdown/prettier': formatNote,
+    [MARKDOWN_RULES_NAME.RELATIVE_LINK_EXISTS]: relativeLinkExists,
+    [MARKDOWN_RULES_NAME.NO_HEADING1]: noHeading1,
+    [MARKDOWN_RULES_NAME.FRONTMATTER]: frontmatter,
+    [MARKDOWN_RULES_NAME.PRETTIER]: formatNote,
   },
 };
 
