@@ -127,7 +127,11 @@ function ContributorLayout({
       </Head>
       {/* Sidebar */}
 
-      <Sidebar isOpen={isOpenSidebar} setIsOpen={setIsOpenSidebar} />
+      <Sidebar
+        isOpen={isOpenSidebar}
+        setIsOpen={setIsOpenSidebar}
+        directoryTree={directoryTree}
+      />
 
       <div
         className={`bg-background text-foreground relative flex h-screen transition-colors ${readingMode ? 'reading-mode' : ''}`}
