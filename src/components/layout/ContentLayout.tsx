@@ -84,7 +84,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
           <div className="text-muted-foreground flex items-center gap-2 text-sm">
             <UserIcon className="h-4 w-4" />
             <Link
-              href={`/contributor/${metadata?.author}`}
+              href={`/contributor/${metadata?.author.toLocaleLowerCase()}`}
               className="hover:text-primary underline"
             >
               {metadata?.author}

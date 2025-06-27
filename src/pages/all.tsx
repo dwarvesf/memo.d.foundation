@@ -186,7 +186,9 @@ function List({ data }: { data: (IMemoItem & { authorAvatars: string[] })[] }) {
                   </div>
                   <span className="text-muted-foreground">
                     by{' '}
-                    <Link href={`/contributor/${memo.authors?.[0]}`}>
+                    <Link
+                      href={`/contributor/${memo.authors?.[0].toLocaleLowerCase()}`}
+                    >
                       {memo.authors?.[0]}
                     </Link>
                     {(memo.authors?.length ?? 0) > 1 ? ` and others` : ''}

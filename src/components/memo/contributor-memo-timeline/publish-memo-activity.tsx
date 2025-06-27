@@ -24,7 +24,7 @@ function Collectors({
     return (
       <Tooltip key={collector.username}>
         <TooltipTrigger asChild>
-          <Link href={`/contributor/${collector.username}`}>
+          <Link href={`/contributor/${collector.username.toLocaleLowerCase()}`}>
             <Avatar className="dark:bg-secondary flex h-6.5 w-6.5 items-center justify-center border-2 bg-[#fff]">
               {collector.avatar ? (
                 <AvatarImage src={collector.avatar} className="no-zoom !m-0" />

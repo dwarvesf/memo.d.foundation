@@ -81,7 +81,7 @@ const RightSidebar = (props: Props) => {
                     <UserIcon className="h-3.5 w-3.5" />
                     <span>Author:</span>
                     <Link
-                      href={`/contributor/${metadata.author}`}
+                      href={`/contributor/${metadata.author.toLocaleLowerCase()}`}
                       className="hover:text-primary hover:underline"
                     >
                       {metadata.author}
@@ -97,7 +97,7 @@ const RightSidebar = (props: Props) => {
                     {metadata.coAuthors.map((author, index) => (
                       <Link
                         key={author}
-                        href={`/contributor/${author}`}
+                        href={`/contributor/${author.toLocaleLowerCase()}`}
                         className="hover:text-primary hover:underline"
                       >
                         {author}

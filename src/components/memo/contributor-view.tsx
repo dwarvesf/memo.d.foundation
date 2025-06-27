@@ -166,7 +166,7 @@ function ContributorGridCard({
   return (
     <Card className="flex flex-col items-center justify-between p-4 text-center shadow-none transition-shadow duration-200 hover:shadow-md">
       <Link
-        href={`/contributor/${username}`}
+        href={`/contributor/${username.toLocaleLowerCase()}`}
         className="flex flex-col items-center"
       >
         <Avatar className="dark:bg-secondary mb-3 flex h-16 w-16 items-center justify-center border-2 bg-[#fff]">
@@ -321,7 +321,7 @@ function Contributor({
       />
       <HoverCard>
         <HoverCardTrigger asChild>
-          <Link href={`/contributor/${name}`}>
+          <Link href={`/contributor/${name?.toLocaleUpperCase()}`}>
             <div className="relative flex cursor-pointer items-center justify-start gap-1.5 px-2 py-1">
               <Avatar className="dark:bg-secondary flex h-5 w-5 items-center justify-center border-2 bg-[#fff]">
                 {avatar}

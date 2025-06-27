@@ -80,7 +80,7 @@ const MemoVList = (props: Props) => {
                       <React.Fragment key={author}>
                         <Link
                           className="text-secondary-foreground hover:text-primary underline"
-                          href={`/contributor/${author}`}
+                          href={`/contributor/${author.toLocaleLowerCase()}`}
                         >
                           {author}
                         </Link>
