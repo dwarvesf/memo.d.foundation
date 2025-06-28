@@ -18,37 +18,22 @@ ENV RAILWAY_GIT_REPO_NAME=$RAILWAY_GIT_REPO_NAME
 
 COPY . .
 
-# Initialize git and fetch the specified branch
-RUN git init && \
+# Initialize git, fetch branch, and setup submodules in one step with caching
+RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-git-objects,target=/root/.cache/git \
+      # Configure git globally
+      git config --global --add safe.directory /code && \
+      git config --global --add safe.directory /code/vault && \
+      git config --global --add safe.directory '*' && \
+      git config --global url."https://github.com/".insteadOf "git@github.com:" && \
+      # Initialize git and fetch the specified branch
+      git init && \
       git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
       git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
       git clean -fdx && \
       git checkout ${RAILWAY_GIT_BRANCH} && \
-      git config --global --add safe.directory /code && \
-      git config --global url."https://github.com/".insteadOf "git@github.com:"
-
-# --- Vault Stage ---
-# Separate stage for vault submodule with optimized caching
-FROM base AS vault
-WORKDIR /code
-
-# Copy git configuration from source
-COPY --from=source /code/.git /code/.git
-COPY --from=source /code/.gitmodules /code/.gitmodules
-
-# Cache the vault submodule more efficiently
-# Use git's native caching capabilities instead of manual file copying
-RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-git-cache,target=/root/.cache/git \
-      git config --global --add safe.directory /code && \
-      git config --global --add safe.directory /code/vault && \
-      git config --global url."https://github.com/".insteadOf "git@github.com:" && \
-      # Use git's reference repository feature for caching
-      mkdir -p /root/.cache/git/brainery.git && \
-      git clone --bare --shared https://github.com/dwarvesf/brainery.git /root/.cache/git/brainery.git 2>/dev/null || true && \
-      # Initialize submodule with reference to cached repository
-      git submodule update --init --recursive --depth 1 --reference-if-able /root/.cache/git/brainery.git && \
+      # Initialize submodules
+      git submodule update --init --recursive --depth 1 && \
       cd vault && \
-      git config --global --add safe.directory '*' && \
       git remote set-url origin https://github.com/dwarvesf/brainery.git && \
       git fetch --depth 1 --no-tags origin main && \
       git checkout main && \
@@ -63,13 +48,13 @@ COPY --from=source /code/package.json /code/pnpm-lock.yaml ./
 COPY --from=source /code/lib/obsidian-compiler/mix.exs /code/lib/obsidian-compiler/mix.lock ./lib/obsidian-compiler/
 
 # Install Node.js dependencies with optimized cache strategy
-RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-pnpm,target=/root/.local/share/pnpm \
-      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-pnpm-state,target=/root/.pnpm-state \
+RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-pnpm,target=/root/.local/share/pnpm \
+      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-pnpm-state,target=/root/.pnpm-state \
       pnpm install --frozen-lockfile
 
 # Install Elixir dependencies with cache
-RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-mix,target=/root/.mix \
-      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-hex,target=/root/.hex \
+RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-mix,target=/root/.mix \
+      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-hex,target=/root/.hex \
       cd lib/obsidian-compiler && \
       mix deps.get && \
       mix compile
@@ -113,16 +98,13 @@ COPY --from=deps /code/node_modules ./node_modules
 COPY --from=deps /code/lib/obsidian-compiler/_build ./lib/obsidian-compiler/_build
 COPY --from=deps /code/lib/obsidian-compiler/deps ./lib/obsidian-compiler/deps
 
-# Copy source code
+# Copy source code (including vault from source stage)
 COPY --from=source /code .
 
-# Copy vault from vault stage
-COPY --from=vault /code/vault ./vault
-
 # Build with comprehensive caching
-RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-nextjs,target=/code/.next/cache \
-      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-turbo,target=/code/.turbo \
-      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-build,target=/tmp/build \
+RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs,target=/code/.next/cache \
+      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-turbo,target=/code/.turbo \
+      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-build,target=/tmp/build \
       make build-static
 
 # --- Runtime Stage ---
