@@ -4,48 +4,15 @@
 FROM asia-southeast1-docker.pkg.dev/df-infrastructure/memo-d-foundation/base AS base
 WORKDIR /code
 
-# --- Git Base Stage ---
-# This stage only handles git repository setup and rarely changes
-FROM base AS git-base
+# --- Source Stage ---
+# Handle all source code and git operations in one stage since Railway provides the repo
+FROM base AS source
 WORKDIR /code
 
 ARG RAILWAY_GIT_BRANCH=main
 ARG RAILWAY_GIT_REPO_OWNER=dwarvesf
 ARG RAILWAY_GIT_REPO_NAME=memo.d.foundation
-
-# Copy only git-related files to minimize layer invalidation
-COPY .git .git
-COPY .gitmodules .gitmodules
-
-# Initialize git repository (this layer rarely changes)
-RUN git config --global --add safe.directory /code && \
-      git config --global --add safe.directory /code/vault && \
-      git config --global --add safe.directory '*' && \
-      git config --global url."https://github.com/".insteadOf "git@github.com:" && \
-      git remote set-url origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
-      git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
-      git checkout ${RAILWAY_GIT_BRANCH}
-
-# --- Vault Stage ---
-# Separate stage for vault submodule - only rebuilds when .gitmodules changes
-FROM git-base AS vault
-WORKDIR /code
-
 ARG RAILWAY_ENVIRONMENT_NAME
-
-# Fetch vault submodule with caching (this is the expensive 790MB operation)
-RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-git-objects,target=/root/.cache/git \
-      git submodule update --init --recursive --depth 1 vault && \
-      cd vault && \
-      git remote set-url origin https://github.com/dwarvesf/brainery.git && \
-      git fetch --depth 1 --no-tags origin main && \
-      git checkout main && \
-      git submodule update --init --recursive --depth 1
-
-# --- Source Stage ---
-# This stage handles source code and rebuilds frequently but is lightweight
-FROM git-base AS source
-WORKDIR /code
 
 # Copy source files in order of change frequency (least to most)
 # Package files first (change less frequently)
@@ -63,9 +30,36 @@ COPY scripts/ ./scripts/
 COPY test/ ./test/
 COPY lib/ ./lib/
 
-# Copy build configuration last (Makefile, etc.)
-COPY Makefile tsconfig.json next.config.js tailwind.config.js ./
-COPY *.md *.json *.js *.ts ./
+# Copy build configuration files that exist
+COPY Makefile tsconfig.json ./
+COPY next.config.ts tailwind.config.mjs ./
+COPY *.md ./
+
+# Copy git-related files if they exist, then initialize git and submodules
+COPY .gitmodules ./
+COPY . .
+
+# Initialize git and fetch vault submodule with caching
+RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-git-objects,target=/root/.cache/git \
+      # Configure git globally
+      git config --global --add safe.directory /code && \
+      git config --global --add safe.directory /code/vault && \
+      git config --global --add safe.directory '*' && \
+      git config --global url."https://github.com/".insteadOf "git@github.com:" && \
+      # Initialize git repository if needed
+      if [ ! -d ".git" ]; then \
+        git init && \
+        git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
+        git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
+        git checkout ${RAILWAY_GIT_BRANCH}; \
+      fi && \
+      # Initialize vault submodule (this is the expensive 790MB operation)
+      git submodule update --init --recursive --depth 1 vault && \
+      cd vault && \
+      git remote set-url origin https://github.com/dwarvesf/brainery.git && \
+      git fetch --depth 1 --no-tags origin main && \
+      git checkout main && \
+      git submodule update --init --recursive --depth 1
 
 # --- Deps Stage ---
 FROM base AS deps
@@ -128,11 +122,8 @@ COPY --from=deps /code/node_modules ./node_modules
 COPY --from=deps /code/lib/obsidian-compiler/_build ./lib/obsidian-compiler/_build
 COPY --from=deps /code/lib/obsidian-compiler/deps ./lib/obsidian-compiler/deps
 
-# Copy source code (lightweight, changes frequently)
+# Copy source code (including vault from source stage)
 COPY --from=source /code .
-
-# Copy vault (heavy, changes infrequently, cached separately)
-COPY --from=vault /code/vault ./vault
 
 # Build with comprehensive caching - each cache targets specific build artifacts
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs,target=/code/.next/cache \
