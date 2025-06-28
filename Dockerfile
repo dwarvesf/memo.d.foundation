@@ -105,7 +105,8 @@ COPY --from=source /code .
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs,target=/code/.next/cache \
       --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-turbo,target=/code/.turbo \
       --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-build,target=/tmp/build \
-      make build-static
+      chmod +x scripts/smart-build.sh && \
+      ./scripts/smart-build.sh
 
 # --- Runtime Stage ---
 FROM nginx:alpine
