@@ -1,53 +1,83 @@
 # b794785d-77e3-4281-a780-3c9c7f3e77cf is the railway service id which is used to identify the cache for each service.
-# Optimized Dockerfile with improved caching strategy
+# Optimized Dockerfile with intelligent layer caching strategy
 # --- Base Stage ---
 FROM asia-southeast1-docker.pkg.dev/df-infrastructure/memo-d-foundation/base AS base
 WORKDIR /code
 
-# --- Source Stage ---
-FROM base AS source
+# --- Git Base Stage ---
+# This stage only handles git repository setup and rarely changes
+FROM base AS git-base
 WORKDIR /code
 
 ARG RAILWAY_GIT_BRANCH=main
 ARG RAILWAY_GIT_REPO_OWNER=dwarvesf
 ARG RAILWAY_GIT_REPO_NAME=memo.d.foundation
 
-ENV RAILWAY_GIT_BRANCH=$RAILWAY_GIT_BRANCH
-ENV RAILWAY_GIT_REPO_OWNER=$RAILWAY_GIT_REPO_OWNER
-ENV RAILWAY_GIT_REPO_NAME=$RAILWAY_GIT_REPO_NAME
+# Copy only git-related files to minimize layer invalidation
+COPY .git .git
+COPY .gitmodules .gitmodules
 
-COPY . .
-
-# Initialize git, fetch branch, and setup submodules in one step with caching
-RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-git-objects,target=/root/.cache/git \
-      # Configure git globally
-      git config --global --add safe.directory /code && \
+# Initialize git repository (this layer rarely changes)
+RUN git config --global --add safe.directory /code && \
       git config --global --add safe.directory /code/vault && \
       git config --global --add safe.directory '*' && \
       git config --global url."https://github.com/".insteadOf "git@github.com:" && \
-      # Initialize git and fetch the specified branch
-      git init && \
-      git remote add origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
+      git remote set-url origin https://github.com/${RAILWAY_GIT_REPO_OWNER}/${RAILWAY_GIT_REPO_NAME}.git && \
       git fetch --depth 1 --no-tags origin ${RAILWAY_GIT_BRANCH} && \
-      git clean -fdx && \
-      git checkout ${RAILWAY_GIT_BRANCH} && \
-      # Initialize submodules
-      git submodule update --init --recursive --depth 1 && \
+      git checkout ${RAILWAY_GIT_BRANCH}
+
+# --- Vault Stage ---
+# Separate stage for vault submodule - only rebuilds when .gitmodules changes
+FROM git-base AS vault
+WORKDIR /code
+
+ARG RAILWAY_ENVIRONMENT_NAME
+
+# Fetch vault submodule with caching (this is the expensive 790MB operation)
+RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-git-objects,target=/root/.cache/git \
+      git submodule update --init --recursive --depth 1 vault && \
       cd vault && \
       git remote set-url origin https://github.com/dwarvesf/brainery.git && \
       git fetch --depth 1 --no-tags origin main && \
       git checkout main && \
       git submodule update --init --recursive --depth 1
 
+# --- Source Stage ---
+# This stage handles source code and rebuilds frequently but is lightweight
+FROM git-base AS source
+WORKDIR /code
+
+# Copy source files in order of change frequency (least to most)
+# Package files first (change less frequently)
+COPY package.json pnpm-lock.yaml ./
+COPY lib/obsidian-compiler/mix.exs lib/obsidian-compiler/mix.lock ./lib/obsidian-compiler/
+
+# Copy configuration files
+COPY components.json devbox.json devbox.lock ./
+COPY nginx/ ./nginx/
+COPY public/ ./public/
+
+# Copy source code (changes most frequently)
+COPY src/ ./src/
+COPY scripts/ ./scripts/
+COPY test/ ./test/
+COPY lib/ ./lib/
+
+# Copy build configuration last (Makefile, etc.)
+COPY Makefile tsconfig.json next.config.js tailwind.config.js ./
+COPY *.md *.json *.js *.ts ./
+
 # --- Deps Stage ---
 FROM base AS deps
 WORKDIR /code
 
-# Copy dependency files
+# Copy only dependency files for maximum cache efficiency
 COPY --from=source /code/package.json /code/pnpm-lock.yaml ./
 COPY --from=source /code/lib/obsidian-compiler/mix.exs /code/lib/obsidian-compiler/mix.lock ./lib/obsidian-compiler/
 
-# Install Node.js dependencies with optimized cache strategy
+ARG RAILWAY_ENVIRONMENT_NAME
+
+# Install Node.js dependencies with cache
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-pnpm,target=/root/.local/share/pnpm \
       --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-pnpm-state,target=/root/.pnpm-state \
       pnpm install --frozen-lockfile
@@ -93,18 +123,22 @@ ENV MOCHI_PROFILE_API=$MOCHI_PROFILE_API
 ENV DWARVES_PAT=$DWARVES_PAT
 ENV PLAUSIBLE_API_TOKEN=$PLAUSIBLE_API_TOKEN
 
-# Copy dependencies
+# Copy dependencies (cached from deps stage)
 COPY --from=deps /code/node_modules ./node_modules
 COPY --from=deps /code/lib/obsidian-compiler/_build ./lib/obsidian-compiler/_build
 COPY --from=deps /code/lib/obsidian-compiler/deps ./lib/obsidian-compiler/deps
 
-# Copy source code (including vault from source stage)
+# Copy source code (lightweight, changes frequently)
 COPY --from=source /code .
 
-# Build with comprehensive caching
+# Copy vault (heavy, changes infrequently, cached separately)
+COPY --from=vault /code/vault ./vault
+
+# Build with comprehensive caching - each cache targets specific build artifacts
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs,target=/code/.next/cache \
       --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-turbo,target=/code/.turbo \
       --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-build,target=/tmp/build \
+      --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-obsidian,target=/code/lib/obsidian-compiler/_build \
       chmod +x scripts/smart-build.sh && \
       ./scripts/smart-build.sh
 
