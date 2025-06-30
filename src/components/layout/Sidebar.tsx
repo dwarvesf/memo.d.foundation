@@ -17,17 +17,48 @@ import { MemoIcons } from '../icons';
 import { ITreeNode } from '@/types';
 
 const navLinks = [
-  { title: 'Home', url: '/', Icon: MemoIcons.home },
+  {
+    title: 'Home',
+    url: '/',
+    Icon: MemoIcons.home,
+    description: 'Dashboard and overview',
+  },
   {
     title: 'Consulting',
     url: '/consulting',
     Icon: MemoIcons.consulting,
+    description: 'Professional services and expertise',
   },
-  { title: 'Earn', url: '/earn', Icon: MemoIcons.earn },
-  { title: 'Hiring', url: '/careers', Icon: MemoIcons.careers },
-  { title: 'Changelog', url: '/changelog', Icon: MemoIcons.updates },
-  { title: 'OGIFs', url: '/updates/ogif', Icon: MemoIcons.ogif },
-  { title: 'Prompts', url: '/prompts', Icon: MemoIcons.prompts },
+  {
+    title: 'Earn',
+    url: '/earn',
+    Icon: MemoIcons.earn,
+    description: 'Opportunities and rewards',
+  },
+  {
+    title: 'Hiring',
+    url: '/careers',
+    Icon: MemoIcons.careers,
+    description: 'Join our team',
+  },
+  {
+    title: 'Changelog',
+    url: '/changelog',
+    Icon: MemoIcons.updates,
+    description: 'Latest updates and releases',
+  },
+  {
+    title: 'OGIFs',
+    url: '/updates/ogif',
+    Icon: MemoIcons.ogif,
+    description: 'Weekly team updates',
+  },
+  {
+    title: 'Prompts',
+    url: '/prompts',
+    Icon: MemoIcons.prompts,
+    description: 'AI prompts and templates',
+  },
 ];
 
 interface SidebarProps {
