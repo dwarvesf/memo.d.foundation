@@ -31,6 +31,7 @@ function ContributorLayout({
   searchIndex,
 }: ContributorLayoutProps) {
   const { theme, toggleTheme } = useThemeContext();
+
   const {
     isOpenSidebar,
     setIsOpenSidebar,

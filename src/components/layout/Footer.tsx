@@ -1,9 +1,11 @@
 import React from 'react';
 import { SquareActivity } from 'lucide-react';
+import { useLayoutContext } from '@/contexts/layout';
 
 const Footer = () => {
+  const { openShortcutDialog } = useLayoutContext();
   return (
-    <footer className="border-t-border bg-background fixed right-0 bottom-0 left-0 z-40 flex h-8 items-stretch overflow-hidden border-t px-3 py-0 text-[0.875rem] leading-[140%] font-normal tracking-[-0.0125rem]">
+    <footer className="border-t-border bg-background fixed right-0 bottom-0 left-0 z-40 flex h-8 items-stretch justify-between overflow-hidden border-t px-3 py-0 text-[0.875rem] leading-[140%] font-normal tracking-[-0.0125rem]">
       <div className="socials flex items-center gap-x-[10px] pr-3">
         <a
           href="https://github.com/dwarvesf"
@@ -140,6 +142,20 @@ const Footer = () => {
         >
           <SquareActivity className="h-[18px] w-[18px] text-[#9b9b9b]" />
         </a>
+      </div>
+
+      <div className="hidden items-center text-[11px] text-[#9b9b9b] sm:flex">
+        <button
+          onClick={openShortcutDialog}
+          className="cursor-pointer"
+          aria-label="Open keyboard shortcuts"
+        >
+          Press
+          <kbd className="text-[var(--muted-foreground) mx-1 h-6 rounded border bg-[var(--border)] px-1 text-[11px] leading-1">
+            ?
+          </kbd>
+          to see shortcuts
+        </button>
       </div>
 
       {/* You can add additional footer sections here */}
