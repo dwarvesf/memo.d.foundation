@@ -15,7 +15,7 @@ const getIndicatorWidth = (depth: number) => {
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
-  const isUserClicking = React.useRef(false);
+  const shouldBlockHeadingObserver = React.useRef(false);
   // Function to render TOC items recursively
   const renderTocIndicators = (items: ITocItem[]) => {
     return (
@@ -40,6 +40,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
                 if (element) {
                   element.scrollIntoView({ behavior: 'smooth' });
                   setActiveId(item.id);
+                  window.history.pushState(null, '', `#${item.id}`);
                 }
               }}
             >
@@ -77,9 +78,10 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
                 document
                   .getElementById(item.id)
                   ?.scrollIntoView({ behavior: 'smooth' });
-                isUserClicking.current = true;
+                shouldBlockHeadingObserver.current = true;
+                window.history.pushState(null, '', `#${item.id}`);
                 setTimeout(() => {
-                  isUserClicking.current = false;
+                  shouldBlockHeadingObserver.current = false;
                 }, 1000);
               }}
             >
@@ -118,8 +120,18 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
     if (headingElements.length === 0) return;
 
-    // Set initial active ID
-    setActiveId(headingElements[0].id);
+    // Check for hash on initial load and set activeId if valid
+    const initialHash = window.location.hash.substring(1); // Remove '#'
+    if (initialHash && tocIds.has(initialHash)) {
+      shouldBlockHeadingObserver.current = true;
+      setActiveId(initialHash);
+      setTimeout(() => {
+        shouldBlockHeadingObserver.current = false;
+      }, 1000);
+    } else {
+      // Set initial active ID to the first heading if no valid hash or hash not found
+      setActiveId(headingElements[0].id);
+    }
 
     // Use Intersection Observer for better performance
     const observerOptions = {
@@ -128,7 +140,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
     };
 
     const headingObserver = new IntersectionObserver(entries => {
-      if (isUserClicking.current) return;
+      if (shouldBlockHeadingObserver.current) return;
       // Get all headings that are currently intersecting
       const visibleHeadings = entries
         .filter(entry => entry.isIntersecting)
