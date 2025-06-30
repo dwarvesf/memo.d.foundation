@@ -346,7 +346,13 @@ const appendTagsCount = memoize((tags: string[], memos: IMemoItem[]) => {
     .sort((a, b) => b.count - a.count); // Sort by count in descending order
 });
 
+let CACHED_ROOT_LAYOUT_PAGE_PROPS: RootLayoutPageProps | null = null;
+
 export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
+  if (CACHED_ROOT_LAYOUT_PAGE_PROPS) {
+    return CACHED_ROOT_LAYOUT_PAGE_PROPS;
+  }
+
   let menuData: Record<string, GroupedPath> = {};
   let pinnedNotes: Array<{
     title: string;
@@ -416,7 +422,8 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
   );
   // console.log({ directoryTree, pinnedNotes, tags }); // Keep or remove logging as needed
 
-  return {
+  CACHED_ROOT_LAYOUT_PAGE_PROPS = {
     directoryTree,
   };
+  return CACHED_ROOT_LAYOUT_PAGE_PROPS;
 }

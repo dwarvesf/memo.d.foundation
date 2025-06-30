@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  turbopack: {
+    resolveExtensions: ['.js', '.jsx', '.md', '.mdx', '.ts', '.tsx'],
+  },
   reactStrictMode: true,
   staticPageGenerationTimeout: 120,
   experimental: {
