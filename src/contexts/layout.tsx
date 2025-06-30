@@ -1,3 +1,4 @@
+import KeyboardShortcutDialog from '@/components/layout/KeyboardShortcutDialog';
 import { useIsMounted } from '@/hooks/useIsMounted';
 import {
   ComponentType,
@@ -9,12 +10,15 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 export type ILayout = 'light' | 'dark';
 export interface LayoutContextType {
   readingMode: boolean;
   setReadingMode: (readingMode: boolean) => void;
   toggleReadingMode: () => void;
+  openShortcutDialog: () => void;
+  closeShortcutDialog: () => void;
   isOpenSidebar: boolean;
   setIsOpenSidebar: (isOpenSidebar: boolean) => void;
   toggleIsOpenSidebar: () => void;
@@ -24,6 +28,8 @@ const DefaultContextValues = {
   readingMode: false,
   setReadingMode: () => {},
   toggleReadingMode: () => {},
+  openShortcutDialog: () => {},
+  closeShortcutDialog: () => {},
   isOpenSidebar: false,
   setIsOpenSidebar: () => {},
   toggleIsOpenSidebar: () => {},
@@ -38,6 +44,32 @@ export const LayoutProvider = (props: PropsWithChildren) => {
   const [readingMode, setReadingModeInternal] = useState(false);
   const isMounted = useIsMounted();
   const [isMacOS, setIsMacOS] = useState(true);
+
+  const [isShortcutDialogOpen, setIsShortcutDialogOpen] = useState(false);
+  const openShortcutDialog = useCallback(() => {
+    setIsShortcutDialogOpen(true);
+  }, []);
+
+  const closeShortcutDialog = useCallback(() => {
+    setIsShortcutDialogOpen(false);
+  }, []);
+
+  useHotkeys(
+    '?',
+    event => {
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement ||
+        event.target instanceof HTMLSelectElement
+      ) {
+        return;
+      }
+      event.preventDefault();
+      openShortcutDialog();
+    },
+    { useKey: true },
+    [openShortcutDialog],
+  );
 
   const toggleIsOpenSidebar = useCallback(() => {
     setIsOpenSidebar(prev => !prev);
@@ -79,10 +111,16 @@ export const LayoutProvider = (props: PropsWithChildren) => {
         isOpenSidebar,
         setIsOpenSidebar,
         toggleIsOpenSidebar,
+        openShortcutDialog,
+        closeShortcutDialog,
         isMacOS,
       }}
     >
       {children}
+      <KeyboardShortcutDialog
+        isOpen={isShortcutDialogOpen}
+        onClose={closeShortcutDialog}
+      />
     </LayoutContext.Provider>
   );
 };
