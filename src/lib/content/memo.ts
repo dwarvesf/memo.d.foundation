@@ -5,33 +5,37 @@ import path from 'path';
 import { IMemoItem } from '@/types';
 import { Json } from '@duckdb/node-api';
 import { getFirstMemoImage } from '@/components/memo/utils';
+import { memoryCache } from '@/lib/memory-cache';
 
 interface GetAllMarkdownContentsOptions {
   includeContent?: boolean;
 }
 
-export async function getAllMarkdownContents( // Make the function asynchronous
+export async function getAllMarkdownContents(
   basePath = '',
   options: GetAllMarkdownContentsOptions = {},
 ): Promise<IMemoItem[]> {
-  // Update return type to Promise
-  const { includeContent = true } = options; // Default to true
+  const { includeContent = true } = options;
+  // Generate a unique cache key based on basePath and options
+  const cacheKey = `getAllMarkdownContents:${basePath}:${JSON.stringify(options)}`;
+  const cached = memoryCache.get<IMemoItem[]>(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   const contentDir = getContentPath(basePath);
-  const allPaths = await getAllMarkdownFiles(contentDir); // Await the asynchronous function
+  const allPaths = await getAllMarkdownFiles(contentDir);
   const baseSlugArray = basePath.split('/').filter(Boolean);
 
-  // Create an array of promises for each file operation
   const memoPromises = allPaths.map(async slugArray => {
     const filePath = path.join(contentDir, ...slugArray) + '.md';
     try {
       await fs.stat(filePath);
     } catch {
-      return null; // Return null if file doesn't exist
+      return null;
     }
 
-    // Read the markdown file
     const markdownContent = await fs.readFile(filePath, 'utf-8');
-    // Parse frontmatter and content
     const result = matter(markdownContent);
     const item: IMemoItem = {
       content: includeContent ? result.content : '',
@@ -41,7 +45,7 @@ export async function getAllMarkdownContents( // Make the function asynchronous
       tags: Array.isArray(result.data.tags)
         ? result.data.tags
             .filter(tag => tag !== null && tag !== undefined && tag !== '')
-            .map(tag => tag.toString()) // Convert to string
+            .map(tag => tag.toString())
         : [],
       pinned: result.data.pinned || false,
       draft: result.data.draft || false,
@@ -54,10 +58,11 @@ export async function getAllMarkdownContents( // Make the function asynchronous
     return item;
   });
 
-  // Await all promises concurrently
-  const memos = await Promise.all(memoPromises);
-
-  return memos.filter(Boolean) as IMemoItem[];
+  const memos = (await Promise.all(memoPromises)).filter(
+    Boolean,
+  ) as IMemoItem[];
+  memoryCache.set(cacheKey, memos);
+  return memos;
 }
 
 interface FilterMemoProps {

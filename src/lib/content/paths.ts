@@ -5,6 +5,7 @@ import {
   normalizePathWithSlash,
 } from '../../../scripts/common';
 import { readFileSync } from 'fs';
+import { memoryCache } from '@/lib/memory-cache';
 
 export { getAllMarkdownFiles };
 
@@ -13,7 +14,7 @@ export function getContentPath(slug: string) {
   return path.join(contentDir, slug);
 }
 
-let CACHED_JSON_PATH: Record<string, string> | null = null;
+const CACHED_JSON_PATHS_KEY = 'staticJsonPaths';
 
 /**
  * Generates a map of static JSON paths for the application.
@@ -32,8 +33,11 @@ let CACHED_JSON_PATH: Record<string, string> | null = null;
  *          where all paths are normalized with slashes.
  */
 export const getStaticJSONPaths = async (): Promise<Record<string, string>> => {
-  if (CACHED_JSON_PATH) {
-    return CACHED_JSON_PATH;
+  const CACHED_JSON_PATHS = memoryCache.get<Record<string, string>>(
+    CACHED_JSON_PATHS_KEY,
+  );
+  if (CACHED_JSON_PATHS) {
+    return CACHED_JSON_PATHS;
   }
   const staticJsonPath = path.join(
     process.cwd(),
@@ -42,8 +46,9 @@ export const getStaticJSONPaths = async (): Promise<Record<string, string>> => {
 
   try {
     const jsonData = readFileSync(staticJsonPath, 'utf-8');
-    CACHED_JSON_PATH = JSON.parse(jsonData) as Record<string, string>;
-    return CACHED_JSON_PATH ?? {};
+    const paths = JSON.parse(jsonData) as Record<string, string>;
+    memoryCache.set(CACHED_JSON_PATHS_KEY, paths);
+    return paths;
   } catch (error) {
     console.error('Error reading static paths JSON:', error);
     return {};
