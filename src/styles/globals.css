@@ -477,6 +477,10 @@
   }
 }
 
+[data-sonner-toaster] {
+  @apply flex flex-col items-center;
+}
+
 [data-sonner-toast][data-styled='true'] {
   @apply !w-[unset] max-w-[var(--width)] rounded-lg !p-3.5 text-sm;
 }
