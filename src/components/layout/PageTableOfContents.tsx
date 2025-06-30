@@ -35,6 +35,7 @@ const PageTableOfContents: React.FC<PageTableOfContentsProps> = ({ items }) => {
                 document
                   .getElementById(item.id)
                   ?.scrollIntoView({ behavior: 'smooth' });
+                window.history.pushState(null, '', `#${item.id}`);
               }}
             >
               {item.value}
