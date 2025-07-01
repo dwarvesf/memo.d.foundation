@@ -2,6 +2,15 @@ name: Update submodules
 
 on:
   workflow_dispatch:
+    inputs:
+      clear-processed-metadata:
+        description: 'Clear processed metadata before exporting duckdb to parquet?'
+        type: choice
+        required: false
+        default: 'false'
+        options:
+          - true
+          - false
 
 concurrency:
   group: ${{ github.repository }}-workflow
@@ -31,6 +40,11 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           devbox run -- pnpm run generate-summary
+
+      - name: Clear processed metadata
+        if: ${{ github.event.inputs.clear-processed-metadata == 'true' }}
+        run: |
+          devbox run -- rm -f db/processing_metadata.parquet
 
       - name: Export DB
         shell: bash

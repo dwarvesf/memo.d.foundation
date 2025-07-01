@@ -1021,6 +1021,72 @@ defmodule Memo.ExportDuckDB do
     needs_update
   end
 
+  defp get_file_last_commit_timestamp(file_path) do
+    vault_abs = Path.expand("vault")
+    file_abs = Path.expand(file_path)
+    file_relative_to_vault = Path.relative_to(file_abs, vault_abs)
+
+    # Find the git root for this file (could be main vault or submodule)
+    containing_dir_abs = Path.dirname(file_abs)
+    git_root = find_git_root_for_file(containing_dir_abs)
+
+    # Calculate file path relative to its git repository
+    file_relative_to_git_root = Path.relative_to(file_abs, git_root)
+
+    case System.cmd("git", [
+      "log",
+      "-1",
+      "--format=%cI",
+      "--",
+      file_relative_to_git_root
+    ], cd: git_root, stderr_to_stdout: true) do
+      {timestamp_str, 0} ->
+        case DateTime.from_iso8601(String.trim(timestamp_str)) do
+          {:ok, datetime, _offset} ->
+            {:ok, datetime}
+          {:error, reason} ->
+            {:error, "Failed to parse Git timestamp '#{timestamp_str}': #{inspect(reason)}"}
+        end
+
+      {error_output, _status} ->
+        # If git log fails, try to get the file's first commit (for new files)
+        case System.cmd("git", [
+          "log",
+          "--reverse",
+          "-1",
+          "--format=%cI",
+          "--",
+          file_relative_to_git_root
+        ], cd: git_root, stderr_to_stdout: true) do
+          {timestamp_str, 0} ->
+            case DateTime.from_iso8601(String.trim(timestamp_str)) do
+              {:ok, datetime, _offset} ->
+                {:ok, datetime}
+              {:error, reason} ->
+                {:error, "Failed to parse Git timestamp '#{timestamp_str}': #{inspect(reason)}"}
+            end
+          {_, _} ->
+            {:error, "Git log failed for #{file_path}: #{error_output}"}
+        end
+    end
+  end
+
+  defp find_git_root_for_file(start_dir) do
+    case System.cmd("git", ["rev-parse", "--show-toplevel"], cd: start_dir) do
+      {path, 0} ->
+        String.trim(path)
+      _ ->
+        # Fallback to current directory if git command fails
+        case System.cmd("git", ["rev-parse", "--show-toplevel"], cd: ".") do
+          {path, 0} ->
+            String.trim(path)
+          _ ->
+            IO.puts("Warning: Could not determine git root directory. Defaulting to '.'")
+            "."
+        end
+    end
+  end
+
   defp get_files_to_process(directory, all_files, pattern, last_processed_timestamp) do
     # Step 1: Pattern-based filtering
     pattern_matched_files =
@@ -1038,33 +1104,26 @@ defmodule Memo.ExportDuckDB do
         all_files
       end
 
-    # Step 2: Timestamp-based filtering
+    # Step 2: Timestamp-based filtering using Git commit timestamps
     if is_nil(last_processed_timestamp) do
       IO.puts("No last_processed_timestamp, processing all pattern-matched files.")
 
       pattern_matched_files
     else
-      IO.puts("Filtering by mtime against: #{inspect(last_processed_timestamp)}")
+      IO.puts("Filtering by Git commit timestamp against: #{inspect(last_processed_timestamp)}")
 
       Enum.filter(pattern_matched_files, fn file_path ->
-        case File.stat(file_path) do
-          {:ok, %{mtime: mtime_tuple}} ->
-            # mtime_tuple is {{Y,M,D},{H,Mi,S}}
-            case DateTime.from_naive(NaiveDateTime.from_erl!(mtime_tuple), "Etc/UTC") do
-              {:ok, file_mtime_utc} ->
-                DateTime.compare(file_mtime_utc, last_processed_timestamp) == :gt
-
-              {:error, reason} ->
-                IO.puts(
-                  "Warning: Could not convert mtime for #{file_path}: #{inspect(reason)}. Excluding file."
-                )
-
-                false
-            end
+        case get_file_last_commit_timestamp(file_path) do
+          {:ok, file_commit_timestamp} ->
+            DateTime.compare(file_commit_timestamp, last_processed_timestamp) == :gt
 
           {:error, reason} ->
-            IO.puts("Warning: Could not stat file #{file_path}: #{reason}. Excluding file.")
-            false
+            IO.puts(
+              "Warning: Could not get Git commit timestamp for #{file_path}: #{inspect(reason)}. Including file for processing."
+            )
+
+            # Include file if we can't determine Git timestamp (safer approach)
+            true
         end
       end)
     end
