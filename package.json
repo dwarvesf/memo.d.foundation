@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "pnpm run generate-menu && pnpm run generate-menu-path-sorted && pnpm run generate-backlinks && pnpm run generate-search-index && pnpm run generate-redirects-map && pnpm run generate-shorten-map && pnpm run generate-pageviews && pnpm run fetch-prompts && pnpm run fetch-contributors && next build && pnpm run generate-rss && pnpm run copy-404",
+    "dev": "pnpm run generate-static-paths && next dev",
+    "build": "pnpm run generate-menu && pnpm run generate-menu-path-sorted && pnpm run generate-backlinks && pnpm run generate-search-index && pnpm run generate-redirects-map && pnpm run generate-shorten-map && pnpm run generate-pageviews && pnpm run fetch-prompts && pnpm run fetch-contributors && pnpm run generate-static-paths && next build && pnpm run generate-rss && pnpm run copy-404",
     "start": "next start",
     "lint": "next lint",
     "deploy": "gh-pages -d out",
@@ -25,6 +25,7 @@
     "generate-menu-path-sorted": "tsx scripts/generate-menu-path-sorted.ts",
     "monitor-parquet": "tsx scripts/monitor-parquet.ts",
     "monitor-parquet-notify": "tsx scripts/monitor-parquet.ts --notify",
+    "generate-static-paths": "tsx scripts/generate-static-paths.ts",
     "build-ci-lint": "tsup scripts/formatter/ci-lint.ts --config tsup.config.ts --out-dir out/tools",
     "setup-hook-local": "npx -y tsx scripts/git-shell-hook.ts setup",
     "setup-gh-lint": "npx -y tsx scripts/git-shell-hook.ts github-actions",

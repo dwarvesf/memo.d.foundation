@@ -15,6 +15,7 @@ import { slugifyPathComponents } from '../utils/slugify'; // Import slugifyPathC
 import { getAllMarkdownContents } from './memo';
 import { getContentPath, getStaticJSONPaths } from './paths';
 import { normalizePathWithSlash } from '../../../scripts/common';
+import { memoryCache } from '@/lib/memory-cache';
 
 export async function getMenuPathSorted() {
   try {
@@ -346,7 +347,16 @@ const appendTagsCount = memoize((tags: string[], memos: IMemoItem[]) => {
     .sort((a, b) => b.count - a.count); // Sort by count in descending order
 });
 
+const CACHED_ROOT_LAYOUT_PAGE_PROPS_KEY = 'rootLayoutPageProps';
+
 export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
+  const CACHED_ROOT_LAYOUT_PAGE_PROPS = memoryCache.get<RootLayoutPageProps>(
+    CACHED_ROOT_LAYOUT_PAGE_PROPS_KEY,
+  );
+  if (CACHED_ROOT_LAYOUT_PAGE_PROPS) {
+    return CACHED_ROOT_LAYOUT_PAGE_PROPS;
+  }
+
   let menuData: Record<string, GroupedPath> = {};
   let pinnedNotes: Array<{
     title: string;
@@ -416,7 +426,10 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
   );
   // console.log({ directoryTree, pinnedNotes, tags }); // Keep or remove logging as needed
 
-  return {
+  const rootLayoutPageProps: RootLayoutPageProps = {
     directoryTree,
   };
+
+  memoryCache.set(CACHED_ROOT_LAYOUT_PAGE_PROPS_KEY, rootLayoutPageProps);
+  return rootLayoutPageProps;
 }
