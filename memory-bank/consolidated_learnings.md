@@ -11,3 +11,11 @@
 
 - Removed redundant or less useful hotkeys (e.g., `shift+]` and `shift+[` for same-level heading navigation) when a more general hotkey (e.g., `]` and `[`) already provides the desired functionality (unconstrained navigation through all headings).
 - Always ensure that keyboard shortcut documentation (e.g., `KeyboardShortcutDialog.tsx`) accurately reflects the actual hotkey implementation (e.g., `TableOfContents.tsx`) to maintain UI/UX consistency.
+
+## Data Structures & Rendering
+
+**Pattern: Flattening Hierarchical Data for Linear Rendering**
+
+- For hierarchical data structures (e.g., nested `ITocItem` arrays) where filtering and linear rendering (e.g., in a search result list) are required, flatten the structure into a single-level array first.
+- Preserve relevant hierarchical properties (e.g., `depth`) in the flattened items for UI presentation (e.g., indentation).
+- _Rationale:_ Simplifies rendering logic by avoiding complex recursive rendering and ensures correct display order, especially when filtering.

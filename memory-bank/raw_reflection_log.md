@@ -1,20 +1,19 @@
 ---
 Date: 2025-07-01
-TaskRef: "Fix hotkey error 'g>shift+g' not supported"
+TaskRef: 'Fix incorrect render order in HeadingNavigator.tsx'
 
 Learnings:
-- The `react-hotkeys-hook` library does not support hotkey sequences where a part of the sequence is a key combination (e.g., `g>shift+g`).
-- Hotkeys should be defined either as simple sequences (e.g., `g>g`) or simple combinations (e.g., `shift+g`).
-- The `KeyboardShortcutDialog.tsx` component is for display only; the actual hotkey registration occurs in components like `TableOfContents.tsx` using `useHotkeys`.
+  - The original recursive `filterAndRenderHeadings` function in `HeadingNavigator.tsx` caused incorrect rendering order due to its depth-first traversal and conditional `CommandGroup` pushing.
+  - Flattening the hierarchical `ITocItem` array into a single-level array while preserving the `depth` property allows for a simpler, linear filtering and rendering process.
+  - Using `useCallback` for `getPrefix` and `flattenTocItems` ensures these utility functions are memoized and do not cause unnecessary re-renders.
 
 Difficulties:
-- Initially, it was unclear if the issue was with the display of the hotkey or its registration. Searching for the problematic hotkey string helped pinpoint the registration location.
+  - Ensuring the `depth` property was correctly used for UI indentation after flattening the structure. This was handled by applying `ml-` classes based on `item.depth` directly to `CommandItem`.
 
 Successes:
-- Successfully identified the source of the hotkey registration.
-- Correctly modified the hotkey definition to a supported format (`shift+g`) in `TableOfContents.tsx`.
-- Updated the display of the hotkey in `KeyboardShortcutDialog.tsx` to match the new definition.
+  - Successfully refactored the `filterAndRenderHeadings` logic to first flatten the `tocItems` and then filter and render them, resolving the incorrect render order.
+  - Maintained the visual indentation based on heading depth.
 
 Improvements_Identified_For_Consolidation:
-- General pattern: `react-hotkeys-hook` limitations regarding complex hotkey strings (sequences with combinations).
+  - General pattern: For hierarchical data structures where filtering and linear rendering are required, flattening the structure first can simplify the rendering logic and ensure correct order.
 ---

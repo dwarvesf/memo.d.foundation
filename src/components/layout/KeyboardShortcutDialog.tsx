@@ -68,6 +68,10 @@ const shortcutData: ShortcutSection[] = [
         label: 'Previous heading (any level)',
         keys: ['['],
       },
+      {
+        label: 'Search and navigate headings',
+        keys: ['G', 'H'],
+      },
     ],
   },
 ];
