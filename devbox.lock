@@ -65,6 +65,10 @@
         }
       }
     },
+    "darwin.apple_sdk.frameworks.CoreServices": {
+      "resolved": "github:NixOS/nixpkgs/61c0f513911459945e2cb8bf333dc849f1b976ff?narHash=sha256-p2dWAQcLVzquy9LxYCZPwyUdugw78Qv3ChvnX755qHA%3D#darwin.apple_sdk.frameworks.CoreServices",
+      "source": "nixpkg"
+    },
     "duckdb@1.2.2": {
       "last_modified": "2025-05-29T08:12:58Z",
       "resolved": "github:NixOS/nixpkgs/3866ad91cfc172f08a6839def503d8fc2923c603#duckdb",

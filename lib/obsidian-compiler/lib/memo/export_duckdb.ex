@@ -96,8 +96,8 @@ defmodule Memo.ExportDuckDB do
               last_processed_timestamp
             )
 
-          process_files(filtered_files, vaultpath, all_files_to_process)
-          update_last_processed_timestamp()
+          processed_files = process_files(filtered_files, vaultpath, all_files_to_process)
+          update_file_processing_metadata(processed_files, vaultpath)
           export(export_format)
         else
           :error -> IO.puts("Failed to set up DuckDB or process timestamps")
@@ -109,33 +109,34 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp fetch_last_processed_timestamp() do
-    query = "SELECT last_processed_at FROM processing_metadata WHERE id = 1;"
+    # Get the earliest last_processed_at from all files to use as a fallback global timestamp
+    # This maintains backward compatibility while transitioning to per-file tracking
+    query = """
+    SELECT MIN(last_processed_at) as global_last_processed_at
+    FROM processing_metadata
+    WHERE last_processed_at IS NOT NULL
+    """
 
     case DuckDBUtils.execute_query(query) do
-      {:ok, [%{"last_processed_at" => ts_str}]} when is_binary(ts_str) and ts_str != "" ->
-        # Attempt to parse as strict ISO8601 first
+      {:ok, [%{"global_last_processed_at" => ts_str}]} when is_binary(ts_str) and ts_str != "" ->
         case DateTime.from_iso8601(ts_str) do
           {:ok, datetime, _offset} ->
-            IO.puts("Fetched last_processed_at (ISO8601): #{inspect(datetime)}")
+            IO.puts("Fetched global last_processed_at (ISO8601): #{inspect(datetime)}")
             {:ok, datetime}
 
           {:error, _} ->
             # Fallback: try parsing "YYYY-MM-DD HH:MM:SS" format, assuming UTC
             try do
               naive_dt_str = String.replace(ts_str, " ", "T")
-              # Raises on error
               naive_dt = NaiveDateTime.from_iso8601!(naive_dt_str)
-              # Raises on error
               datetime = DateTime.from_naive!(naive_dt, "Etc/UTC")
-              IO.puts("Fetched last_processed_at (fallback parsed): #{inspect(datetime)}")
+              IO.puts("Fetched global last_processed_at (fallback parsed): #{inspect(datetime)}")
               {:ok, datetime}
             rescue
               _e ->
                 IO.puts(
                   "Warning: Could not parse stored last_processed_at timestamp string (fallback failed): '#{ts_str}'. Processing all relevant files."
                 )
-
-                # Default to nil if all parsing fails
                 {:ok, nil}
             end
         end
@@ -147,9 +148,50 @@ defmodule Memo.ExportDuckDB do
 
       {:error, reason} ->
         IO.puts("Error fetching last_processed_at: #{reason}. Processing all relevant files.")
-        # If we can't read, assume we need to process all.
-        # Depending on strictness, this could be an :error to halt.
         {:ok, nil}
+    end
+  end
+
+  defp fetch_file_processing_metadata(file_paths) do
+    if Enum.empty?(file_paths) do
+      %{}
+    else
+      escaped_paths = Enum.map(file_paths, &"'#{escape_string(&1)}'")
+
+      query = """
+      SELECT file_path, last_processed_at, git_commit_timestamp, processing_status
+      FROM processing_metadata
+      WHERE file_path IN (#{Enum.join(escaped_paths, ", ")})
+      """
+
+      case DuckDBUtils.execute_query(query) do
+        {:ok, results} ->
+          Enum.reduce(results, %{}, fn row, acc ->
+            parsed_last_processed_at =
+              case row["last_processed_at"] do
+                ts_str when is_binary(ts_str) and ts_str != "" ->
+                  parse_timestamp(ts_str)
+                _ -> nil
+              end
+
+            parsed_git_commit_timestamp =
+              case row["git_commit_timestamp"] do
+                ts_str when is_binary(ts_str) and ts_str != "" ->
+                  parse_timestamp(ts_str)
+                _ -> nil
+              end
+
+            Map.put(acc, row["file_path"], %{
+              last_processed_at: parsed_last_processed_at,
+              git_commit_timestamp: parsed_git_commit_timestamp,
+              processing_status: row["processing_status"]
+            })
+          end)
+
+        {:error, error} ->
+          IO.puts("Failed to fetch file processing metadata: #{error}")
+          %{}
+      end
     end
   end
 
@@ -201,6 +243,12 @@ defmodule Memo.ExportDuckDB do
   end
 
   defp update_last_processed_timestamp() do
+    # This function is now a no-op since we update per-file metadata
+    # during the batch processing instead of a global timestamp
+    IO.puts("Skipping global timestamp update - using per-file processing metadata.")
+  end
+
+  defp update_file_processing_metadata(processed_files, vaultpath) do
     system_utc_time = DateTime.utc_now()
 
     current_utc_time =
@@ -208,17 +256,14 @@ defmodule Memo.ExportDuckDB do
         IO.puts("System time year is 1970. Attempting to fetch current time from web...")
 
         case fetch_time_from_web() do
-          # _offset can be ignored here as web_datetime is UTC
           {:ok, web_datetime, _offset} ->
             IO.puts("Successfully fetched time from web: #{inspect(web_datetime)}")
             web_datetime
 
-          # Reason already logged in fetch_time_from_web
           {:error, _reason} ->
             IO.puts(
               "Failed to fetch time from web. Falling back to system time: #{inspect(system_utc_time)}"
             )
-
             system_utc_time
         end
       else
@@ -227,16 +272,70 @@ defmodule Memo.ExportDuckDB do
 
     truncated_time = DateTime.truncate(current_utc_time, :second)
     ts_string = DateTime.to_iso8601(truncated_time)
-    # Use ON CONFLICT for INSERT OR REPLACE behavior
+
+    if Enum.empty?(processed_files) do
+      IO.puts("No files processed, skipping processing metadata update.")
+    else
+      # Update processing metadata for each processed file
+      processed_files
+      |> Enum.chunk_every(50) # Process in batches of 50
+      |> Enum.each(fn file_batch ->
+        update_batch_processing_metadata(file_batch, ts_string, vaultpath)
+      end)
+
+      IO.puts("Updated processing metadata for #{length(processed_files)} files.")
+    end
+  end
+
+  defp update_batch_processing_metadata(file_paths, ts_string, vaultpath) do
+    # Get Git commit timestamps for all files in this batch
+    file_git_timestamps =
+      Enum.reduce(file_paths, %{}, fn file_path, acc ->
+        case get_file_last_commit_timestamp(file_path) do
+          {:ok, git_timestamp} ->
+            Map.put(acc, file_path, DateTime.to_iso8601(git_timestamp))
+          {:error, _} ->
+            Map.put(acc, file_path, ts_string) # Fallback to processing time
+        end
+      end)
+
+    # Prepare batch upsert values
+    values =
+      Enum.map(file_paths, fn file_path ->
+        vault_abs = Path.expand(vaultpath)
+        file_abs = Path.expand(file_path)
+        relative_path = Path.relative_to(file_abs, vault_abs)
+        git_timestamp = Map.get(file_git_timestamps, file_path, ts_string)
+
+        "(
+          '#{escape_string(relative_path)}',
+          '#{ts_string}',
+          '#{git_timestamp}',
+          'processed',
+          '#{ts_string}',
+          '#{ts_string}'
+        )"
+      end)
+      |> Enum.join(", ")
+
     query = """
-    INSERT INTO processing_metadata (id, last_processed_at)
-    VALUES (1, '#{ts_string}')
-    ON CONFLICT(id) DO UPDATE SET last_processed_at = EXCLUDED.last_processed_at;
+    INSERT INTO processing_metadata (
+      file_path, last_processed_at, git_commit_timestamp,
+      processing_status, created_at, updated_at
+    )
+    VALUES #{values}
+    ON CONFLICT(file_path) DO UPDATE SET
+      last_processed_at = EXCLUDED.last_processed_at,
+      git_commit_timestamp = EXCLUDED.git_commit_timestamp,
+      processing_status = EXCLUDED.processing_status,
+      updated_at = '#{ts_string}';
     """
 
     case DuckDBUtils.execute_query(query) do
-      {:ok, _} -> IO.puts("Updated last_processed_at to #{ts_string}")
-      {:error, reason} -> IO.puts("Error updating last_processed_at: #{reason}")
+      {:ok, _} ->
+        IO.puts("Updated processing metadata for batch of #{length(file_paths)} files")
+      {:error, reason} ->
+        IO.puts("Error updating processing metadata batch: #{reason}")
     end
   end
 
@@ -263,7 +362,14 @@ defmodule Memo.ExportDuckDB do
         # if schema.sql isn't always current before import.
         IO.puts("Merging columns to sync schema after successful import...")
         merge_columns()
-        :ok
+
+        # Check and migrate processing metadata if needed
+        case migrate_processing_metadata_if_needed() do
+          :ok -> :ok
+          :error ->
+            IO.puts("Warning: Processing metadata migration failed, but continuing...")
+            :ok
+        end
 
       {:error, error} ->
         IO.puts("Failed to import database state: #{error}")
@@ -306,28 +412,274 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
+  defp migrate_processing_metadata_if_needed() do
+    # Check if table exists and what schema it has
+    check_table_query = """
+    SELECT column_name, data_type
+    FROM information_schema.columns
+    WHERE table_name = 'processing_metadata'
+    ORDER BY column_name;
+    """
+
+    case DuckDBUtils.execute_query(check_table_query) do
+      {:ok, columns} ->
+        column_names = Enum.map(columns, & &1["column_name"])
+
+        cond do
+          # Table doesn't exist - nothing to migrate
+          Enum.empty?(columns) ->
+            IO.puts("No processing_metadata table found - no migration needed.")
+            :ok
+
+          # Old schema detected (has 'id' column) - need to migrate
+          "id" in column_names ->
+            IO.puts("Detected old processing_metadata schema. Migrating to per-file tracking...")
+            migrate_from_old_schema()
+
+          # New schema already exists (has 'file_path' column) - no migration needed
+          "file_path" in column_names ->
+            IO.puts("Processing metadata table already uses per-file schema - no migration needed.")
+            :ok
+
+          # Unknown schema - create backup and recreate
+          true ->
+            IO.puts("Warning: Unknown processing_metadata schema detected. Creating backup and recreating...")
+            backup_and_recreate_processing_metadata()
+        end
+
+      {:error, error} ->
+        IO.puts("Failed to check processing_metadata schema for migration: #{error}")
+        :error
+    end
+  end
+
   defp create_processing_metadata_table() do
+    # First, check if the old schema exists and migrate if needed
+    case migrate_processing_metadata_schema() do
+      :ok ->
+        IO.puts("Processing metadata schema migration completed successfully.")
+        :ok
+
+      :error ->
+        IO.puts("Failed to migrate processing metadata schema.")
+        :error
+    end
+  end
+
+  defp migrate_processing_metadata_schema() do
+    # Check if table exists and what schema it has
+    check_table_query = """
+    SELECT column_name, data_type
+    FROM information_schema.columns
+    WHERE table_name = 'processing_metadata'
+    ORDER BY column_name;
+    """
+
+    case DuckDBUtils.execute_query(check_table_query) do
+      {:ok, columns} ->
+        column_names = Enum.map(columns, & &1["column_name"])
+
+        cond do
+          # Table doesn't exist - create new schema
+          Enum.empty?(columns) ->
+            create_new_processing_metadata_table()
+
+          # Old schema detected (has 'id' column)
+          "id" in column_names ->
+            IO.puts("Detected old processing_metadata schema. Migrating to per-file tracking...")
+            migrate_from_old_schema()
+
+          # New schema already exists (has 'file_path' column)
+          "file_path" in column_names ->
+            IO.puts("Processing metadata table already uses per-file schema.")
+            ensure_processing_metadata_index()
+
+          # Unknown schema
+          true ->
+            IO.puts("Warning: Unknown processing_metadata schema detected. Creating backup and recreating...")
+            backup_and_recreate_processing_metadata()
+        end
+
+      {:error, _error} ->
+        # Table doesn't exist, create new one
+        create_new_processing_metadata_table()
+    end
+  end
+
+  defp create_new_processing_metadata_table() do
     query = """
-    CREATE TABLE IF NOT EXISTS processing_metadata (
-      id INTEGER PRIMARY KEY DEFAULT 1,
-      last_processed_at TIMESTAMP
+    CREATE TABLE processing_metadata (
+      file_path TEXT PRIMARY KEY,
+      last_processed_at TIMESTAMP,
+      git_commit_timestamp TIMESTAMP,
+      processing_status VARCHAR DEFAULT 'processed',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """
 
-    init_query = """
-    INSERT INTO processing_metadata (id, last_processed_at)
-    VALUES (1, NULL)
-    ON CONFLICT(id) DO NOTHING;
+    case DuckDBUtils.execute_query(query) do
+      {:ok, _} ->
+        IO.puts("Created new processing_metadata table with per-file tracking.")
+        ensure_processing_metadata_index()
+
+      {:error, error} ->
+        IO.puts("Failed to create processing_metadata table: #{error}")
+        :error
+    end
+  end
+
+  defp migrate_from_old_schema() do
+    # Step 1: Extract the old global timestamp
+    old_timestamp_query = "SELECT last_processed_at FROM processing_metadata WHERE id = 1"
+
+    old_timestamp = case DuckDBUtils.execute_query(old_timestamp_query) do
+      {:ok, [%{"last_processed_at" => ts}]} when not is_nil(ts) ->
+        case DateTime.from_iso8601(ts) do
+          {:ok, datetime, _} -> datetime
+          {:error, _} ->
+            # Try parsing as naive datetime
+            try do
+              naive_dt = NaiveDateTime.from_iso8601!(String.replace(ts, " ", "T"))
+              DateTime.from_naive!(naive_dt, "Etc/UTC")
+            rescue
+              _ -> nil
+            end
+        end
+
+      _ -> nil
+    end
+
+    # Step 2: Create backup of old table
+    backup_query = "CREATE TABLE processing_metadata_backup AS SELECT * FROM processing_metadata"
+
+    case DuckDBUtils.execute_query(backup_query) do
+      {:ok, _} ->
+        IO.puts("Created backup of old processing_metadata table.")
+
+        # Step 3: Drop old table
+        drop_query = "DROP TABLE processing_metadata"
+        case DuckDBUtils.execute_query(drop_query) do
+          {:ok, _} ->
+            # Step 4: Create new table
+            case create_new_processing_metadata_table() do
+              :ok ->
+                # Step 5: Migrate data if we have an old timestamp
+                if old_timestamp do
+                  migrate_existing_files_with_timestamp(old_timestamp)
+                else
+                  IO.puts("No valid old timestamp found. New table created without migration data.")
+                  :ok
+                end
+
+              :error -> :error
+            end
+
+          {:error, error} ->
+            IO.puts("Failed to drop old processing_metadata table: #{error}")
+            :error
+        end
+
+      {:error, error} ->
+        IO.puts("Failed to create backup of old processing_metadata table: #{error}")
+        :error
+    end
+  end
+
+  defp migrate_existing_files_with_timestamp(old_timestamp) do
+    IO.puts("Migrating existing files using old timestamp: #{DateTime.to_iso8601(old_timestamp)}")
+
+    # Get all files from vault table to populate with old timestamp
+    files_query = "SELECT DISTINCT file_path FROM vault WHERE file_path IS NOT NULL"
+
+    case DuckDBUtils.execute_query(files_query) do
+      {:ok, results} ->
+        file_paths = Enum.map(results, & &1["file_path"])
+
+        if Enum.empty?(file_paths) do
+          IO.puts("No files found in vault table to migrate.")
+          :ok
+        else
+          # Populate new table with existing files using old timestamp
+          ts_string = DateTime.to_iso8601(old_timestamp)
+
+          values =
+            Enum.map(file_paths, fn file_path ->
+              "(
+                '#{escape_string(file_path)}',
+                '#{ts_string}',
+                '#{ts_string}',
+                'migrated',
+                '#{ts_string}',
+                '#{ts_string}'
+              )"
+            end)
+            |> Enum.join(", ")
+
+          migration_query = """
+          INSERT INTO processing_metadata (
+            file_path, last_processed_at, git_commit_timestamp,
+            processing_status, created_at, updated_at
+          )
+          VALUES #{values};
+          """
+
+          case DuckDBUtils.execute_query(migration_query) do
+            {:ok, _} ->
+              IO.puts("Successfully migrated #{length(file_paths)} files to new processing_metadata schema.")
+              :ok
+
+            {:error, error} ->
+              IO.puts("Failed to migrate existing files: #{error}")
+              :error
+          end
+        end
+
+      {:error, error} ->
+        IO.puts("Failed to fetch existing files for migration: #{error}")
+        :error
+    end
+  end
+
+  defp backup_and_recreate_processing_metadata() do
+    timestamp = DateTime.utc_now() |> DateTime.to_iso8601() |> String.replace(":", "_")
+    backup_table_name = "processing_metadata_backup_#{timestamp}"
+
+    backup_query = "CREATE TABLE #{backup_table_name} AS SELECT * FROM processing_metadata"
+
+    case DuckDBUtils.execute_query(backup_query) do
+      {:ok, _} ->
+        IO.puts("Created backup table: #{backup_table_name}")
+
+        drop_query = "DROP TABLE processing_metadata"
+        case DuckDBUtils.execute_query(drop_query) do
+          {:ok, _} ->
+            create_new_processing_metadata_table()
+
+          {:error, error} ->
+            IO.puts("Failed to drop processing_metadata table: #{error}")
+            :error
+        end
+
+      {:error, error} ->
+        IO.puts("Failed to create backup table: #{error}")
+        :error
+    end
+  end
+
+  defp ensure_processing_metadata_index() do
+    index_query = """
+    CREATE INDEX IF NOT EXISTS idx_processing_metadata_last_processed_at
+    ON processing_metadata(last_processed_at);
     """
 
-    with {:ok, _} <- DuckDBUtils.execute_query(query),
-         {:ok, _} <- DuckDBUtils.execute_query(init_query) do
-      IO.puts("Created and initialized processing_metadata table.")
-      :ok
-    else
+    case DuckDBUtils.execute_query(index_query) do
+      {:ok, _} ->
+        :ok
+
       {:error, error} ->
-        IO.puts("Failed to create/initialize processing_metadata table: #{error}")
-        :error
+        IO.puts("Warning: Failed to create index on processing_metadata: #{error}")
+        :ok  # Don't fail the entire operation for index creation
     end
   end
 
@@ -684,6 +1036,9 @@ defmodule Memo.ExportDuckDB do
 
     paths = Enum.map(all_files_to_process, &Path.relative_to(&1, vaultpath))
     remove_old_files(paths)
+
+    # Return the list of processed files for metadata tracking
+    files
   end
 
   defp fetch_all_previous_paths(file_paths) do
@@ -1104,29 +1459,79 @@ defmodule Memo.ExportDuckDB do
         all_files
       end
 
-    # Step 2: Timestamp-based filtering using Git commit timestamps
+    vault_abs = Path.expand(directory)
+
+    # Convert file paths to relative paths for processing metadata lookup
+    relative_file_paths =
+      Enum.map(pattern_matched_files, fn file_path ->
+        file_abs = Path.expand(file_path)
+        Path.relative_to(file_abs, vault_abs)
+      end)
+
+    # Step 2: Fetch per-file processing metadata
+    processing_metadata = fetch_file_processing_metadata(relative_file_paths)
+
+    # Step 3: Smart filtering using per-file metadata + Git timestamps
     if is_nil(last_processed_timestamp) do
-      IO.puts("No last_processed_timestamp, processing all pattern-matched files.")
-
-      pattern_matched_files
+      IO.puts("No global last_processed_timestamp, using per-file processing metadata for filtering.")
     else
-      IO.puts("Filtering by Git commit timestamp against: #{inspect(last_processed_timestamp)}")
+      IO.puts("Using per-file processing metadata with fallback to global timestamp: #{inspect(last_processed_timestamp)}")
+    end
 
+    files_to_process =
       Enum.filter(pattern_matched_files, fn file_path ->
-        case get_file_last_commit_timestamp(file_path) do
-          {:ok, file_commit_timestamp} ->
-            DateTime.compare(file_commit_timestamp, last_processed_timestamp) == :gt
+        file_abs = Path.expand(file_path)
+        relative_path = Path.relative_to(file_abs, vault_abs)
 
-          {:error, reason} ->
-            IO.puts(
-              "Warning: Could not get Git commit timestamp for #{file_path}: #{inspect(reason)}. Including file for processing."
-            )
+        # Get file's processing metadata
+        file_metadata = Map.get(processing_metadata, relative_path)
 
-            # Include file if we can't determine Git timestamp (safer approach)
+        case file_metadata do
+          nil ->
+            # File has never been processed - include it
+            IO.puts("Including unprocessed file: #{relative_path}")
             true
+
+          %{last_processed_at: nil} ->
+            # File exists in metadata but never processed - include it
+            IO.puts("Including file with no processing timestamp: #{relative_path}")
+            true
+
+          %{last_processed_at: file_processed_at, git_commit_timestamp: git_timestamp} ->
+            # File has been processed - check if it needs reprocessing
+            case get_file_last_commit_timestamp(file_path) do
+              {:ok, current_git_timestamp} ->
+                # Compare current Git timestamp with stored Git timestamp and processing timestamp
+                git_changed = is_nil(git_timestamp) or
+                             DateTime.compare(current_git_timestamp, git_timestamp) == :gt
+
+                # Also check against file's last processed time
+                processed_recently = not is_nil(file_processed_at) and
+                                   DateTime.compare(current_git_timestamp, file_processed_at) != :gt
+
+                if git_changed and not processed_recently do
+                  IO.puts("Including file with Git changes: #{relative_path} (Git: #{DateTime.to_iso8601(current_git_timestamp)} > Processed: #{if file_processed_at, do: DateTime.to_iso8601(file_processed_at), else: "never"})")
+                  true
+                else
+                  false
+                end
+
+              {:error, reason} ->
+                # Can't get Git timestamp - check against global timestamp as fallback
+                if is_nil(last_processed_timestamp) or is_nil(file_processed_at) or
+                   DateTime.compare(last_processed_timestamp, file_processed_at) == :gt do
+                  IO.puts("Including file (Git timestamp unavailable, using fallback): #{relative_path} - #{inspect(reason)}")
+                  true
+                else
+                  IO.puts("Skipping file (processed after global timestamp): #{relative_path}")
+                  false
+                end
+            end
         end
       end)
-    end
+
+    IO.puts("Filtered #{length(pattern_matched_files)} files to #{length(files_to_process)} files for processing.")
+    files_to_process
   end
 
   defp regenerate_embeddings(file_path, md_content, frontmatter) do
@@ -1441,4 +1846,28 @@ defmodule Memo.ExportDuckDB do
 
   defp handle_result({:ok, _result}), do: :ok
   defp handle_result({:error, _error}), do: :error
+
+  # Helper function to parse timestamps from DuckDB in various formats
+  defp parse_timestamp(ts_str) when is_binary(ts_str) and ts_str != "" do
+    # First try ISO8601 format (e.g., "2025-07-01T02:38:18.000Z")
+    case DateTime.from_iso8601(ts_str) do
+      {:ok, datetime, _offset} ->
+        datetime
+
+      {:error, _} ->
+        # Try DuckDB's "YYYY-MM-DD HH:MM:SS" format, assuming UTC
+        try do
+          # Convert "YYYY-MM-DD HH:MM:SS" to "YYYY-MM-DDTHH:MM:SS"
+          naive_dt_str = String.replace(ts_str, " ", "T")
+          naive_dt = NaiveDateTime.from_iso8601!(naive_dt_str)
+          DateTime.from_naive!(naive_dt, "Etc/UTC")
+        rescue
+          _e ->
+            IO.puts("Warning: Could not parse timestamp string: '#{ts_str}'")
+            nil
+        end
+    end
+  end
+
+  defp parse_timestamp(_), do: nil
 end
