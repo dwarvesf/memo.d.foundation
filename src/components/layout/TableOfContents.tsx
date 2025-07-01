@@ -1,11 +1,24 @@
 import { cn } from '@/lib/utils';
 import { ITocItem } from '@/types';
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 interface TableOfContentsProps {
   items?: ITocItem[];
 }
+
+// Helper to flatten TOC items for easier navigation
+const flattenTocItems = (items: ITocItem[]): ITocItem[] => {
+  let flattened: ITocItem[] = [];
+  items.forEach(item => {
+    flattened.push(item);
+    if (item.children && item.children.length > 0) {
+      flattened = flattened.concat(flattenTocItems(item.children));
+    }
+  });
+  return flattened;
+};
 const getHeadingLevelClass = (level: number) => {
   return `heading-level-${level}`;
 };
@@ -15,7 +28,25 @@ const getIndicatorWidth = (depth: number) => {
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
-  const shouldBlockHeadingObserver = React.useRef(false);
+  const shouldBlockHeadingObserver = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Still needed for blocking observer
+
+  const scrollToId = useCallback((id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setActiveId(id);
+      shouldBlockHeadingObserver.current = true;
+      window.history.pushState(null, '', `#${id}`);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        shouldBlockHeadingObserver.current = false;
+      }, 1000);
+    }
+  }, []);
+
   // Function to render TOC items recursively
   const renderTocIndicators = (items: ITocItem[]) => {
     return (
@@ -36,12 +67,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               })}
               onClick={e => {
                 e.preventDefault();
-                const element = document.getElementById(item.id);
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
-                  setActiveId(item.id);
-                  window.history.pushState(null, '', `#${item.id}`);
-                }
+                scrollToId(item.id);
               }}
             >
               {item.value}
@@ -74,15 +100,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               )}
               onClick={e => {
                 e.preventDefault();
-                setActiveId(item.id);
-                document
-                  .getElementById(item.id)
-                  ?.scrollIntoView({ behavior: 'smooth' });
-                shouldBlockHeadingObserver.current = true;
-                window.history.pushState(null, '', `#${item.id}`);
-                setTimeout(() => {
-                  shouldBlockHeadingObserver.current = false;
-                }, 1000);
+                scrollToId(item.id);
               }}
             >
               {item.value}
@@ -123,11 +141,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
     // Check for hash on initial load and set activeId if valid
     const initialHash = window.location.hash.substring(1); // Remove '#'
     if (initialHash && tocIds.has(initialHash)) {
-      shouldBlockHeadingObserver.current = true;
-      setActiveId(initialHash);
-      setTimeout(() => {
-        shouldBlockHeadingObserver.current = false;
-      }, 1000);
+      scrollToId(initialHash);
     } else {
       // Set initial active ID to the first heading if no valid hash or hash not found
       setActiveId(headingElements[0].id);
@@ -160,8 +174,67 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
     return () => {
       // Clean up observer when component unmounts
       headingObserver.disconnect();
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
-  }, [items]);
+  }, [items, scrollToId]);
+
+  // Hotkey logic
+  useHotkeys(
+    'g>g',
+    () => {
+      const mainLayoutNode = document.querySelector('.main-layout');
+      mainLayoutNode?.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    { enableOnFormTags: true, preventDefault: true, sequenceTimeoutMs: 500 },
+    [],
+  );
+
+  useHotkeys(
+    'shift+g',
+    () => {
+      const mainLayoutNode = document.querySelector('.main-layout');
+      mainLayoutNode?.scrollTo({
+        top: mainLayoutNode.scrollHeight,
+        behavior: 'smooth',
+      });
+    },
+    { enableOnFormTags: true, preventDefault: true },
+    [],
+  );
+
+  useHotkeys(
+    ']',
+    () => {
+      if (!items || items.length === 0) return;
+      const flattenedItems = flattenTocItems(items);
+      const currentIndex = flattenedItems.findIndex(
+        item => item.id === activeId,
+      );
+      if (currentIndex !== -1 && currentIndex < flattenedItems.length - 1) {
+        scrollToId(flattenedItems[currentIndex + 1].id);
+      }
+    },
+    { enableOnFormTags: true, preventDefault: true, useKey: true },
+    [items, activeId, scrollToId],
+  );
+
+  useHotkeys(
+    '[',
+    () => {
+      if (!items || items.length === 0) return;
+      const flattenedItems = flattenTocItems(items);
+      const currentIndex = flattenedItems.findIndex(
+        item => item.id === activeId,
+      );
+      if (currentIndex > 0) {
+        scrollToId(flattenedItems[currentIndex - 1].id);
+      }
+    },
+    { enableOnFormTags: true, preventDefault: true, useKey: true },
+    [items, activeId, scrollToId],
+  );
 
   if (!items?.length) return null;
   return (
