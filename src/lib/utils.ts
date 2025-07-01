@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { ITocItem } from '@/types';
 export const wordDict: Record<string, string> = {
   ogif: 'OGIF',
   llm: 'LLM',
@@ -78,3 +79,15 @@ export function formatAddress(address: string) {
   )}...${address.substring(address.length - 4)}`;
   return formattedAddress;
 }
+
+// Helper to flatten TOC items for easier navigation
+export const flattenTocItems = (items: ITocItem[]): ITocItem[] => {
+  let flattened: ITocItem[] = [];
+  items.forEach(item => {
+    flattened.push(item);
+    if (item.children && item.children.length > 0) {
+      flattened = flattened.concat(flattenTocItems(item.children));
+    }
+  });
+  return flattened;
+};

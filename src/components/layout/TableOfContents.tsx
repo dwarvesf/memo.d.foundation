@@ -3,22 +3,13 @@ import { ITocItem } from '@/types';
 import Link from 'next/link';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
+import HeadingNavigator from './HeadingNavigator';
+import { flattenTocItems } from '@/lib/utils';
 
 interface TableOfContentsProps {
   items?: ITocItem[];
 }
 
-// Helper to flatten TOC items for easier navigation
-const flattenTocItems = (items: ITocItem[]): ITocItem[] => {
-  let flattened: ITocItem[] = [];
-  items.forEach(item => {
-    flattened.push(item);
-    if (item.children && item.children.length > 0) {
-      flattened = flattened.concat(flattenTocItems(item.children));
-    }
-  });
-  return flattened;
-};
 const getHeadingLevelClass = (level: number) => {
   return `heading-level-${level}`;
 };
@@ -238,25 +229,28 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
   if (!items?.length) return null;
   return (
-    <div className="toc relative z-10 hidden md:block">
-      <div className="toc-indicators peer fixed top-[104px] right-0 mr-2 cursor-pointer pr-2 pb-4 pl-5">
-        <div className=""> {renderTocIndicators(items || [])}</div>
-      </div>
-      <div
-        className={cn(
-          'toc-modal bg-background fixed top-[80px] right-0 mr-6 mb-2 ml-2 rounded-xl',
-          'border shadow-[0px_4px_6px_-2px_#10182808,0px_12px_16px_-4px_#10182814]',
-          'invisible translate-x-[12px] opacity-0',
-          'ease transition-all duration-300',
-          'peer-hover:visible peer-hover:translate-x-0 peer-hover:opacity-100',
-          'hover:visible hover:translate-x-0 hover:opacity-100',
-        )}
-      >
-        <div className="max-h-[min(680px,calc(100vh-var(--header-height)-68px-32px-2rem))] max-w-[240px] overflow-y-auto p-3">
-          {renderTocModalItems(items || [])}
+    <>
+      <HeadingNavigator items={items} scrollToId={scrollToId} />
+      <div className="toc relative z-10 hidden md:block">
+        <div className="toc-indicators peer fixed top-[104px] right-0 mr-2 cursor-pointer pr-2 pb-4 pl-5">
+          <div className=""> {renderTocIndicators(items || [])}</div>
+        </div>
+        <div
+          className={cn(
+            'toc-modal bg-background fixed top-[80px] right-0 mr-6 mb-2 ml-2 rounded-xl',
+            'border shadow-[0px_4px_6px_-2px_#10182808,0px_12px_16px_-4px_#10182814]',
+            'invisible translate-x-[12px] opacity-0',
+            'ease transition-all duration-300',
+            'peer-hover:visible peer-hover:translate-x-0 peer-hover:opacity-100',
+            'hover:visible hover:translate-x-0 hover:opacity-100',
+          )}
+        >
+          <div className="max-h-[min(680px,calc(100vh-var(--header-height)-68px-32px-2rem))] max-w-[240px] overflow-y-auto p-3">
+            {renderTocModalItems(items || [])}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
