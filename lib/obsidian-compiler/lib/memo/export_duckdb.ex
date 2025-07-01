@@ -97,7 +97,7 @@ defmodule Memo.ExportDuckDB do
             )
 
           processed_files = process_files(filtered_files, vaultpath, all_files_to_process)
-          update_file_processing_metadata(processed_files)
+          update_file_processing_metadata(processed_files, vaultpath)
           export(export_format)
         else
           :error -> IO.puts("Failed to set up DuckDB or process timestamps")
@@ -170,20 +170,14 @@ defmodule Memo.ExportDuckDB do
             parsed_last_processed_at =
               case row["last_processed_at"] do
                 ts_str when is_binary(ts_str) and ts_str != "" ->
-                  case DateTime.from_iso8601(ts_str) do
-                    {:ok, datetime, _offset} -> datetime
-                    {:error, _} -> nil
-                  end
+                  parse_timestamp(ts_str)
                 _ -> nil
               end
 
             parsed_git_commit_timestamp =
               case row["git_commit_timestamp"] do
                 ts_str when is_binary(ts_str) and ts_str != "" ->
-                  case DateTime.from_iso8601(ts_str) do
-                    {:ok, datetime, _offset} -> datetime
-                    {:error, _} -> nil
-                  end
+                  parse_timestamp(ts_str)
                 _ -> nil
               end
 
@@ -254,7 +248,7 @@ defmodule Memo.ExportDuckDB do
     IO.puts("Skipping global timestamp update - using per-file processing metadata.")
   end
 
-  defp update_file_processing_metadata(processed_files) do
+  defp update_file_processing_metadata(processed_files, vaultpath) do
     system_utc_time = DateTime.utc_now()
 
     current_utc_time =
@@ -286,14 +280,14 @@ defmodule Memo.ExportDuckDB do
       processed_files
       |> Enum.chunk_every(50) # Process in batches of 50
       |> Enum.each(fn file_batch ->
-        update_batch_processing_metadata(file_batch, ts_string)
+        update_batch_processing_metadata(file_batch, ts_string, vaultpath)
       end)
 
       IO.puts("Updated processing metadata for #{length(processed_files)} files.")
     end
   end
 
-  defp update_batch_processing_metadata(file_paths, ts_string) do
+  defp update_batch_processing_metadata(file_paths, ts_string, vaultpath) do
     # Get Git commit timestamps for all files in this batch
     file_git_timestamps =
       Enum.reduce(file_paths, %{}, fn file_path, acc ->
@@ -308,7 +302,7 @@ defmodule Memo.ExportDuckDB do
     # Prepare batch upsert values
     values =
       Enum.map(file_paths, fn file_path ->
-        vault_abs = Path.expand("vault")
+        vault_abs = Path.expand(vaultpath)
         file_abs = Path.expand(file_path)
         relative_path = Path.relative_to(file_abs, vault_abs)
         git_timestamp = Map.get(file_git_timestamps, file_path, ts_string)
@@ -318,8 +312,8 @@ defmodule Memo.ExportDuckDB do
           '#{ts_string}',
           '#{git_timestamp}',
           'processed',
-          CURRENT_TIMESTAMP,
-          CURRENT_TIMESTAMP
+          '#{ts_string}',
+          '#{ts_string}'
         )"
       end)
       |> Enum.join(", ")
@@ -334,7 +328,7 @@ defmodule Memo.ExportDuckDB do
       last_processed_at = EXCLUDED.last_processed_at,
       git_commit_timestamp = EXCLUDED.git_commit_timestamp,
       processing_status = EXCLUDED.processing_status,
-      updated_at = CURRENT_TIMESTAMP;
+      updated_at = '#{ts_string}';
     """
 
     case DuckDBUtils.execute_query(query) do
@@ -1519,11 +1513,6 @@ defmodule Memo.ExportDuckDB do
                   IO.puts("Including file with Git changes: #{relative_path} (Git: #{DateTime.to_iso8601(current_git_timestamp)} > Processed: #{if file_processed_at, do: DateTime.to_iso8601(file_processed_at), else: "never"})")
                   true
                 else
-                  if processed_recently do
-                    IO.puts("Skipping recently processed file: #{relative_path}")
-                  else
-                    IO.puts("Skipping unchanged file: #{relative_path}")
-                  end
                   false
                 end
 
@@ -1857,4 +1846,28 @@ defmodule Memo.ExportDuckDB do
 
   defp handle_result({:ok, _result}), do: :ok
   defp handle_result({:error, _error}), do: :error
+
+  # Helper function to parse timestamps from DuckDB in various formats
+  defp parse_timestamp(ts_str) when is_binary(ts_str) and ts_str != "" do
+    # First try ISO8601 format (e.g., "2025-07-01T02:38:18.000Z")
+    case DateTime.from_iso8601(ts_str) do
+      {:ok, datetime, _offset} ->
+        datetime
+
+      {:error, _} ->
+        # Try DuckDB's "YYYY-MM-DD HH:MM:SS" format, assuming UTC
+        try do
+          # Convert "YYYY-MM-DD HH:MM:SS" to "YYYY-MM-DDTHH:MM:SS"
+          naive_dt_str = String.replace(ts_str, " ", "T")
+          naive_dt = NaiveDateTime.from_iso8601!(naive_dt_str)
+          DateTime.from_naive!(naive_dt, "Etc/UTC")
+        rescue
+          _e ->
+            IO.puts("Warning: Could not parse timestamp string: '#{ts_str}'")
+            nil
+        end
+    end
+  end
+
+  defp parse_timestamp(_), do: nil
 end
