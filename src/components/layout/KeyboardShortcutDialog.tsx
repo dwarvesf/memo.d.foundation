@@ -37,11 +37,11 @@ const shortcutData: ShortcutSection[] = [
     shortcuts: [
       {
         label: 'Open search command',
-        keys: [isMac ? '⌘' : 'ctrl', 'k'],
+        keys: [isMac ? '⌘' : 'Ctrl', 'K'],
       },
       {
         label: 'Toggle reading mode',
-        keys: [isMac ? '⌘' : 'ctrl', 'shift', 'f'],
+        keys: [isMac ? '⌘' : 'Ctrl', 'Shift', 'F'],
       },
       {
         label: 'Bring up this help dialog',
@@ -51,7 +51,28 @@ const shortcutData: ShortcutSection[] = [
   },
   {
     title: 'Memo navigation',
-    shortcuts: [],
+    shortcuts: [
+      {
+        label: 'Jump to top of page',
+        keys: ['G', 'G'],
+      },
+      {
+        label: 'Jump to bottom of page',
+        keys: ['Shift', 'G'],
+      },
+      {
+        label: 'Next heading (any level)',
+        keys: [']'],
+      },
+      {
+        label: 'Previous heading (any level)',
+        keys: ['['],
+      },
+      {
+        label: 'Search and navigate headings',
+        keys: ['G', 'H'],
+      },
+    ],
   },
 ];
 

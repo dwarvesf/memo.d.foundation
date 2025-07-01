@@ -63,6 +63,7 @@
     "acorn": "^8.14.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "crypto": "^1.0.1",
     "d3": "^7.9.0",
     "date-fns": "^4.1.0",

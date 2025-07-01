@@ -1,11 +1,15 @@
 import { cn } from '@/lib/utils';
 import { ITocItem } from '@/types';
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import HeadingNavigator from './HeadingNavigator';
+import { flattenTocItems } from '@/lib/utils';
 
 interface TableOfContentsProps {
   items?: ITocItem[];
 }
+
 const getHeadingLevelClass = (level: number) => {
   return `heading-level-${level}`;
 };
@@ -15,7 +19,25 @@ const getIndicatorWidth = (depth: number) => {
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
-  const shouldBlockHeadingObserver = React.useRef(false);
+  const shouldBlockHeadingObserver = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Still needed for blocking observer
+
+  const scrollToId = useCallback((id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setActiveId(id);
+      shouldBlockHeadingObserver.current = true;
+      window.history.pushState(null, '', `#${id}`);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        shouldBlockHeadingObserver.current = false;
+      }, 1000);
+    }
+  }, []);
+
   // Function to render TOC items recursively
   const renderTocIndicators = (items: ITocItem[]) => {
     return (
@@ -36,12 +58,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               })}
               onClick={e => {
                 e.preventDefault();
-                const element = document.getElementById(item.id);
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
-                  setActiveId(item.id);
-                  window.history.pushState(null, '', `#${item.id}`);
-                }
+                scrollToId(item.id);
               }}
             >
               {item.value}
@@ -74,15 +91,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               )}
               onClick={e => {
                 e.preventDefault();
-                setActiveId(item.id);
-                document
-                  .getElementById(item.id)
-                  ?.scrollIntoView({ behavior: 'smooth' });
-                shouldBlockHeadingObserver.current = true;
-                window.history.pushState(null, '', `#${item.id}`);
-                setTimeout(() => {
-                  shouldBlockHeadingObserver.current = false;
-                }, 1000);
+                scrollToId(item.id);
               }}
             >
               {item.value}
@@ -123,11 +132,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
     // Check for hash on initial load and set activeId if valid
     const initialHash = window.location.hash.substring(1); // Remove '#'
     if (initialHash && tocIds.has(initialHash)) {
-      shouldBlockHeadingObserver.current = true;
-      setActiveId(initialHash);
-      setTimeout(() => {
-        shouldBlockHeadingObserver.current = false;
-      }, 1000);
+      scrollToId(initialHash);
     } else {
       // Set initial active ID to the first heading if no valid hash or hash not found
       setActiveId(headingElements[0].id);
@@ -160,30 +165,92 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
     return () => {
       // Clean up observer when component unmounts
       headingObserver.disconnect();
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
-  }, [items]);
+  }, [items, scrollToId]);
+
+  // Hotkey logic
+  useHotkeys(
+    'g>g',
+    () => {
+      const mainLayoutNode = document.querySelector('.main-layout');
+      mainLayoutNode?.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    { enableOnFormTags: true, preventDefault: true, sequenceTimeoutMs: 500 },
+    [],
+  );
+
+  useHotkeys(
+    'shift+g',
+    () => {
+      const mainLayoutNode = document.querySelector('.main-layout');
+      mainLayoutNode?.scrollTo({
+        top: mainLayoutNode.scrollHeight,
+        behavior: 'smooth',
+      });
+    },
+    { enableOnFormTags: true, preventDefault: true },
+    [],
+  );
+
+  useHotkeys(
+    ']',
+    () => {
+      if (!items || items.length === 0) return;
+      const flattenedItems = flattenTocItems(items);
+      const currentIndex = flattenedItems.findIndex(
+        item => item.id === activeId,
+      );
+      if (currentIndex !== -1 && currentIndex < flattenedItems.length - 1) {
+        scrollToId(flattenedItems[currentIndex + 1].id);
+      }
+    },
+    { enableOnFormTags: true, preventDefault: true, useKey: true },
+    [items, activeId, scrollToId],
+  );
+
+  useHotkeys(
+    '[',
+    () => {
+      if (!items || items.length === 0) return;
+      const flattenedItems = flattenTocItems(items);
+      const currentIndex = flattenedItems.findIndex(
+        item => item.id === activeId,
+      );
+      if (currentIndex > 0) {
+        scrollToId(flattenedItems[currentIndex - 1].id);
+      }
+    },
+    { enableOnFormTags: true, preventDefault: true, useKey: true },
+    [items, activeId, scrollToId],
+  );
 
   if (!items?.length) return null;
   return (
-    <div className="toc relative z-10 hidden md:block">
-      <div className="toc-indicators peer fixed top-[104px] right-0 mr-2 cursor-pointer pr-2 pb-4 pl-5">
-        <div className=""> {renderTocIndicators(items || [])}</div>
-      </div>
-      <div
-        className={cn(
-          'toc-modal bg-background fixed top-[80px] right-0 mr-6 mb-2 ml-2 rounded-xl',
-          'border shadow-[0px_4px_6px_-2px_#10182808,0px_12px_16px_-4px_#10182814]',
-          'invisible translate-x-[12px] opacity-0',
-          'ease transition-all duration-300',
-          'peer-hover:visible peer-hover:translate-x-0 peer-hover:opacity-100',
-          'hover:visible hover:translate-x-0 hover:opacity-100',
-        )}
-      >
-        <div className="max-h-[min(680px,calc(100vh-var(--header-height)-68px-32px-2rem))] max-w-[240px] overflow-y-auto p-3">
-          {renderTocModalItems(items || [])}
+    <>
+      <HeadingNavigator items={items} scrollToId={scrollToId} />
+      <div className="toc relative z-10 hidden md:block">
+        <div className="toc-indicators peer fixed top-[104px] right-0 mr-2 cursor-pointer pr-2 pb-4 pl-5">
+          <div className=""> {renderTocIndicators(items || [])}</div>
+        </div>
+        <div
+          className={cn(
+            'toc-modal bg-background fixed top-[80px] right-0 mr-6 mb-2 ml-2 rounded-xl',
+            'border shadow-[0px_4px_6px_-2px_#10182808,0px_12px_16px_-4px_#10182814]',
+            'invisible translate-x-[12px] opacity-0',
+            'ease transition-all duration-300',
+            'peer-hover:visible peer-hover:translate-x-0 peer-hover:opacity-100',
+            'hover:visible hover:translate-x-0 hover:opacity-100',
+          )}
+        >
+          <div className="max-h-[min(680px,calc(100vh-var(--header-height)-68px-32px-2rem))] max-w-[240px] overflow-y-auto p-3">
+            {renderTocModalItems(items || [])}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
