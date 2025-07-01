@@ -102,7 +102,7 @@ const HeadingNavigator: React.FC<HeadingNavigatorProps> = ({
                 value={item.value} // This is used for searching
                 onSelect={() => handleSelect(item.id)}
                 className={cn(
-                  'flex cursor-pointer items-center gap-1 space-x-2 rounded px-2 py-1.25 text-left text-xs leading-normal font-medium',
+                  'flex cursor-pointer rounded px-2 text-xs leading-normal font-medium',
                   {
                     'ml-0': item.depth === 2,
                     'ml-5': item.depth === 3,
