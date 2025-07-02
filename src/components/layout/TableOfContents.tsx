@@ -197,8 +197,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
   useHotkeys(
     ']',
-    () => {
+    e => {
       if (!items || items.length === 0) return;
+      if (e.metaKey || e.ctrlKey) return; // Ignore if meta or ctrl is pressed
       const flattenedItems = flattenTocItems(items);
       const currentIndex = flattenedItems.findIndex(
         item => item.id === activeId,
@@ -213,8 +214,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
   useHotkeys(
     '[',
-    () => {
+    e => {
       if (!items || items.length === 0) return;
+      if (e.metaKey || e.ctrlKey) return; // Ignore if meta or ctrl is pressed
       const flattenedItems = flattenTocItems(items);
       const currentIndex = flattenedItems.findIndex(
         item => item.id === activeId,
