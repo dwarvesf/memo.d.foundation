@@ -94,6 +94,10 @@ export interface IMemoItem {
   tokenId?: string | null;
 }
 
+export interface IMemoItemWithAuthors extends IMemoItem {
+  authorAvatars: string[];
+}
+
 // Define the CollectMemo type
 export interface CollectMemo {
   title: string;
