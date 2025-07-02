@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -56,36 +56,10 @@ function RootLayout({
   // pinnedNotes and tags are no longer used directly by RootLayout
 }: RootLayoutProps) {
   const { theme, toggleTheme } = useThemeContext();
-  const {
-    isOpenSidebar,
-    setIsOpenSidebar,
-    toggleIsOpenSidebar,
-    readingMode,
-    toggleReadingMode,
-  } = useLayoutContext();
+  const { readingMode } = useLayoutContext();
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
   useScrollToTopOnRouteChange(scrollContainerRef, scrollOnTopIgnoreRoutes);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        (event.key === 'f' || event.key === 'F') &&
-        event.shiftKey &&
-        (event.ctrlKey || event.metaKey)
-      ) {
-        event.preventDefault();
-        toggleReadingMode();
-      }
-    };
-    const options = {
-      capture: true,
-    };
-    document.addEventListener('keydown', handleKeyDown, options);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown, options);
-    };
-  }, [toggleReadingMode]);
 
   const absoluteImage = getAbsoluteImageUrl(metadata?.image || image);
 
@@ -154,11 +128,7 @@ function RootLayout({
       </Head>
       {/* Sidebar */}
 
-      <Sidebar
-        directoryTree={directoryTree}
-        isOpen={isOpenSidebar}
-        setIsOpen={setIsOpenSidebar}
-      />
+      <Sidebar directoryTree={directoryTree} />
 
       <div
         className={`bg-background text-foreground relative flex h-screen font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
@@ -168,13 +138,7 @@ function RootLayout({
           ref={scrollContainerRef}
           className="main-layout relative flex flex-1 flex-col overflow-y-auto"
         >
-          <Header
-            toggleSidebar={toggleIsOpenSidebar}
-            toggleTheme={toggleTheme}
-            toggleReadingMode={toggleReadingMode}
-            theme={theme}
-            readingMode={readingMode}
-          />
+          <Header toggleTheme={toggleTheme} theme={theme} />
 
           {/* Main content grid */}
           <div

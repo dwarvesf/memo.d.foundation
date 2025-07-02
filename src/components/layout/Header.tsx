@@ -12,19 +12,13 @@ import HeaderUser from './HeaderUser';
 import { useLayoutContext } from '@/contexts/layout';
 
 interface HeaderProps {
-  toggleSidebar: () => void;
   toggleTheme: () => void;
-  toggleReadingMode: () => void;
   theme: 'light' | 'dark';
-  readingMode: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  toggleSidebar,
-  toggleReadingMode,
-  readingMode,
-}) => {
-  const { isMacOS } = useLayoutContext();
+const Header: React.FC<HeaderProps> = () => {
+  const { isMacOS, readingMode, toggleReadingMode, toggleIsOpenSidebar } =
+    useLayoutContext();
   const modifier = isMacOS ? '⌘' : 'Ctrl';
   return (
     <header className="bg-background/80 sticky top-0 z-10 w-full backdrop-blur-md">
@@ -33,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({
           {/* Mobile sidebar toggle button */}
           <button
             id="sidebar-toggle"
-            onClick={toggleSidebar}
+            onClick={toggleIsOpenSidebar}
             aria-label="Toggle sidebar"
             className="mobile-toggle xl:hidden"
           >

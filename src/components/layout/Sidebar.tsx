@@ -15,6 +15,7 @@ import { useThemeContext } from '@/contexts/theme';
 import { cn } from '@/lib/utils';
 import { MemoIcons } from '../icons';
 import { ITreeNode } from '@/types';
+import { useLayoutContext } from '@/contexts/layout';
 
 const navLinks = [
   { title: 'Home', url: '/', Icon: MemoIcons.home },
@@ -31,20 +32,19 @@ const navLinks = [
 ];
 
 interface SidebarProps {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
   directoryTree?: Record<string, ITreeNode>;
 }
 
-const Sidebar = ({ isOpen, setIsOpen, directoryTree }: SidebarProps) => {
+const Sidebar = ({ directoryTree }: SidebarProps) => {
   const router = useRouter();
   const { isDark, toggleTheme } = useThemeContext();
+  const { isOpenSidebar, setIsOpenSidebar } = useLayoutContext();
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   // Close sidebar when changing routes
   useEffect(() => {
     const handleRouteChange = () => {
-      setIsOpen(false);
+      setIsOpenSidebar(false);
     };
 
     router.events.on('routeChangeComplete', handleRouteChange);
@@ -52,20 +52,20 @@ const Sidebar = ({ isOpen, setIsOpen, directoryTree }: SidebarProps) => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router, setIsOpen]);
+  }, [router, setIsOpenSidebar]);
 
   // Focus sidebar when opened (desktop only)
   useEffect(() => {
     // Only focus on desktop devices
     if (
-      isOpen &&
+      isOpenSidebar &&
       sidebarRef.current &&
       typeof window !== 'undefined' &&
       window.innerWidth >= 768 // adjust breakpoint as needed
     ) {
       sidebarRef.current.focus();
     }
-  }, [isOpen]);
+  }, [isOpenSidebar]);
 
   // Close mobile drawer when switching to desktop screen size
   useEffect(() => {
@@ -73,9 +73,9 @@ const Sidebar = ({ isOpen, setIsOpen, directoryTree }: SidebarProps) => {
       if (
         typeof window !== 'undefined' &&
         window.innerWidth >= 1280 &&
-        isOpen
+        isOpenSidebar
       ) {
-        setIsOpen(false); // Close mobile drawer when switching to desktop (xl: 1280px+)
+        setIsOpenSidebar(false); // Close mobile drawer when switching to desktop (xl: 1280px+)
       }
     };
 
@@ -84,12 +84,12 @@ const Sidebar = ({ isOpen, setIsOpen, directoryTree }: SidebarProps) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [isOpen, setIsOpen]);
+  }, [isOpenSidebar, setIsOpenSidebar]);
 
   // Close on Esc key
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape') {
-      setIsOpen(false);
+      setIsOpenSidebar(false);
     }
   };
 
@@ -204,8 +204,8 @@ const Sidebar = ({ isOpen, setIsOpen, directoryTree }: SidebarProps) => {
       {/* Mobile Drawer */}
       <MobileDrawer
         directoryTree={directoryTree}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isOpenSidebar}
+        setIsOpen={setIsOpenSidebar}
         handleKeyDown={handleKeyDown}
         navLinks={navLinks}
         isActiveUrl={isActiveUrl}
