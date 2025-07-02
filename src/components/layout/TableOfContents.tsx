@@ -207,7 +207,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
         scrollToId(flattenedItems[currentIndex + 1].id);
       }
     },
-    { enableOnFormTags: true, preventDefault: true, useKey: true },
+    { enableOnFormTags: true, useKey: true },
     [items, activeId, scrollToId],
   );
 
@@ -223,7 +223,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
         scrollToId(flattenedItems[currentIndex - 1].id);
       }
     },
-    { enableOnFormTags: true, preventDefault: true, useKey: true },
+    { enableOnFormTags: true, useKey: true },
     [items, activeId, scrollToId],
   );
 
