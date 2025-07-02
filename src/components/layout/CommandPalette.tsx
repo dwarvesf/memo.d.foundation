@@ -20,6 +20,7 @@ import SearchIcon from '../icons/SearchIcon';
 import { Editor } from 'draft-js';
 import { useLayoutContext } from '@/contexts/layout';
 import { getClientSideRedirectPath } from '@/lib/utils/path-utils';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 const defaultSearchResult: SearchResult = {
   flat: [],
@@ -248,15 +249,22 @@ const CommandPalette: React.FC = () => {
     scrollResultIntoView,
   ]);
 
+  useHotkeys(
+    ['ctrl+k', 'cmd+k'],
+    () => {
+      toggleCommandPalette();
+    },
+    {
+      enableOnFormTags: true,
+      preventDefault: true,
+      useKey: true,
+    },
+    [toggleCommandPalette],
+  );
+
   // Handle keyboard shortcuts and navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Command/Ctrl + K to toggle palette
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        toggleCommandPalette();
-      }
-
       // Only process other keyboard events if palette is open
       if (!isOpen) return;
 

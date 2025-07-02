@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -32,36 +32,10 @@ function ContributorLayout({
 }: ContributorLayoutProps) {
   const { theme, toggleTheme } = useThemeContext();
 
-  const {
-    isOpenSidebar,
-    setIsOpenSidebar,
-    toggleIsOpenSidebar,
-    readingMode,
-    toggleReadingMode,
-  } = useLayoutContext();
+  const { readingMode } = useLayoutContext();
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
   useScrollToTopOnRouteChange(scrollContainerRef);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        (event.key === 'f' || event.key === 'F') &&
-        event.shiftKey &&
-        (event.ctrlKey || event.metaKey)
-      ) {
-        event.preventDefault();
-        toggleReadingMode();
-      }
-    };
-    const options = {
-      capture: true,
-    };
-    document.addEventListener('keydown', handleKeyDown, options);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown, options);
-    };
-  }, [toggleReadingMode]);
 
   return (
     <SearchProvider searchIndex={searchIndex}>
@@ -128,11 +102,7 @@ function ContributorLayout({
       </Head>
       {/* Sidebar */}
 
-      <Sidebar
-        isOpen={isOpenSidebar}
-        setIsOpen={setIsOpenSidebar}
-        directoryTree={directoryTree}
-      />
+      <Sidebar directoryTree={directoryTree} />
 
       <div
         className={`bg-background text-foreground relative flex h-screen transition-colors ${readingMode ? 'reading-mode' : ''}`}
@@ -142,13 +112,7 @@ function ContributorLayout({
           ref={scrollContainerRef}
           className="main-layout relative flex flex-1 flex-col overflow-y-auto"
         >
-          <Header
-            toggleSidebar={toggleIsOpenSidebar}
-            toggleTheme={toggleTheme}
-            toggleReadingMode={toggleReadingMode}
-            theme={theme}
-            readingMode={readingMode}
-          />
+          <Header toggleTheme={toggleTheme} theme={theme} />
 
           {/* Main content grid */}
           <main className="pb-10">{children}</main>

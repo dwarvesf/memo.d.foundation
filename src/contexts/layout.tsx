@@ -102,6 +102,23 @@ export const LayoutProvider = (props: PropsWithChildren) => {
     setIsMacOS(window.navigator.userAgent.includes('Macintosh'));
   }, []);
 
+  useHotkeys(
+    'f+shift+cmd, f+shift+ctrl',
+    event => {
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement ||
+        event.target instanceof HTMLSelectElement
+      ) {
+        return;
+      }
+      event.preventDefault();
+      toggleReadingMode();
+    },
+    { useKey: true },
+    [toggleReadingMode],
+  );
+
   return (
     <LayoutContext.Provider
       value={{
