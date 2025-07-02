@@ -24,10 +24,13 @@ const navLinks = [
     url: '/consulting',
     Icon: MemoIcons.consulting,
   },
-  { title: 'Earn', url: '/earn', Icon: MemoIcons.earn },
+  { title: 'Handbook', url: '/handbook', Icon: MemoIcons.handbook },
+  { title: 'Playbook', url: '/playbook', Icon: MemoIcons.playbook },
+  // { title: 'Earn', url: '/earn', Icon: MemoIcons.earn },
   { title: 'Hiring', url: '/careers', Icon: MemoIcons.careers },
   { title: 'Changelog', url: '/changelog', Icon: MemoIcons.updates },
-  { title: 'OGIFs', url: '/updates/ogif', Icon: MemoIcons.ogif },
+  { title: 'Contributor', url: '/contributor', Icon: MemoIcons.playground },
+  // { title: 'OGIFs', url: '/updates/ogif', Icon: MemoIcons.ogif },
   { title: 'Prompts', url: '/prompts', Icon: MemoIcons.prompts },
 ];
 
