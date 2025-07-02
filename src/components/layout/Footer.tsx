@@ -1,11 +1,12 @@
 import React from 'react';
 import { SquareActivity } from 'lucide-react';
 import { useLayoutContext } from '@/contexts/layout';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 const Footer = () => {
   const { openShortcutDialog } = useLayoutContext();
   return (
-    <footer className="border-t-border bg-background fixed right-0 bottom-0 left-0 z-40 flex h-8 items-stretch justify-between overflow-hidden border-t px-3 py-0 text-[0.875rem] leading-[140%] font-normal tracking-[-0.0125rem]">
+    <footer className="border-t-border bg-background fixed right-0 bottom-0 left-0 z-40 flex h-8 items-stretch justify-between border-t px-3 py-0 text-[0.875rem] leading-[140%] font-normal tracking-[-0.0125rem]">
       <div className="socials flex items-center gap-x-[10px] pr-3">
         <a
           href="https://github.com/dwarvesf"
@@ -145,17 +146,32 @@ const Footer = () => {
       </div>
 
       <div className="hidden items-center text-[11px] text-[#9b9b9b] sm:flex">
-        <button
-          onClick={openShortcutDialog}
-          className="cursor-pointer"
-          aria-label="Open keyboard shortcuts"
-        >
-          Press
+        <div>
+          Use
           <kbd className="text-[var(--muted-foreground) mx-1 h-6 rounded border bg-[var(--border)] px-1 text-[11px] leading-1">
-            ?
+            {'['}
           </kbd>
-          to see shortcuts
-        </button>
+          or
+          <kbd className="text-[var(--muted-foreground) mx-1 h-6 rounded border bg-[var(--border)] px-1 text-[11px] leading-1">
+            {']'}
+          </kbd>
+          to navigate headings
+        </div>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={openShortcutDialog}
+              className="bg-border absolute -top-8 right-3 h-6 w-6 cursor-pointer rounded-full"
+              aria-label="Open keyboard shortcuts"
+            >
+              ?
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="left" sideOffset={-5}>
+            <span>Keyboard shortcuts</span>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {/* You can add additional footer sections here */}
