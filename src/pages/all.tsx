@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next';
 import { RootLayout } from '../components';
-import { IMemoItem, RootLayoutPageProps } from '@/types';
+import { IMemoItemWithAuthors, RootLayoutPageProps } from '@/types';
 import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { convertToMemoItems } from '@/lib/content/memo';
 import { queryDuckDB } from '@/lib/db/utils';
@@ -8,7 +8,7 @@ import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
 import { MemoList } from '@/components/memo/MemoList';
 
 interface AllPageProps extends RootLayoutPageProps {
-  allMemos: IMemoItem[];
+  allMemos: IMemoItemWithAuthors[];
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps = async () => {
     ];
     const querySelect = `SELECT ${queryFields.join(', ')}`;
 
-    let allMemos: IMemoItem[] = [];
+    let allMemos: IMemoItemWithAuthors[] = [];
     try {
       const userProfiles = await getCompactContributorsFromContentJSON();
       const avatarMap = userProfiles.reduce(

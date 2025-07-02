@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { IMemoItem } from '@/types';
+import { IMemoItemWithAuthors } from '@/types';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import Jdenticon from 'react-jdenticon';
@@ -8,7 +8,7 @@ import { uppercaseSpecialWords } from '@/lib/utils';
 
 interface MonthGroup {
   name: string;
-  posts: IMemoItem[];
+  posts: IMemoItemWithAuthors[];
 }
 
 interface YearGroup {
@@ -17,11 +17,11 @@ interface YearGroup {
 }
 
 interface MemoListProps {
-  memos: IMemoItem[];
+  memos: IMemoItemWithAuthors[];
   title?: string;
 }
 
-function List({ data }: { data: IMemoItem[] }) {
+function List({ data }: { data: IMemoItemWithAuthors[] }) {
   return (
     <div className="flex flex-col">
       {data.map(memo => (
@@ -147,7 +147,7 @@ export function MemoList({ memos, title = 'All memos' }: MemoListProps) {
   const groupedDisplayedMemos: YearGroup[] = [];
   const tempGroupedDisplayedMemos: Record<
     string,
-    Record<string, IMemoItem[]>
+    Record<string, IMemoItemWithAuthors[]>
   > = {};
 
   displayedMemos.forEach(memo => {

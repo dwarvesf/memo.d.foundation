@@ -26,7 +26,7 @@ import { SerializeResult } from 'next-mdx-remote-client/serialize'; // Add this 
 import { useThemeContext } from '@/contexts/theme';
 import {
   IBackLinkItem,
-  IMemoItem,
+  IMemoItemWithAuthors,
   IMetadata,
   ITocItem,
   RootLayoutPageProps,
@@ -47,7 +47,7 @@ interface ContentPageProps extends RootLayoutPageProps {
   metadata?: IMetadata;
   isListPage?: boolean;
   isMdxPage?: boolean; // Flag to indicate MDX content
-  childMemos?: IMemoItem[];
+  childMemos?: IMemoItemWithAuthors[];
 }
 
 /**

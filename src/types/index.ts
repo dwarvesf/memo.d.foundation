@@ -92,7 +92,10 @@ export interface IMemoItem {
   image?: string | null;
 
   tokenId?: string | null;
-  authorAvatars?: string[];
+}
+
+export interface IMemoItemWithAuthors extends IMemoItem {
+  authorAvatars: string[];
 }
 
 // Define the CollectMemo type
