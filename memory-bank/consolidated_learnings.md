@@ -19,3 +19,8 @@
 - For hierarchical data structures (e.g., nested `ITocItem` arrays) where filtering and linear rendering (e.g., in a search result list) are required, flatten the structure into a single-level array first.
 - Preserve relevant hierarchical properties (e.g., `depth`) in the flattened items for UI presentation (e.g., indentation).
 - _Rationale:_ Simplifies rendering logic by avoiding complex recursive rendering and ensures correct display order, especially when filtering.
+
+**Pattern: Extracting Complex UI Logic into Reusable Components**
+
+- Extract complex UI logic and state management (e.g., infinite scrolling, data grouping, filtering) into dedicated, reusable components.
+- _Rationale:_ Improves code organization, maintainability, and reusability across different pages or sections of the application.

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import path from 'path';
 import fs from 'fs/promises';
 
@@ -32,10 +31,11 @@ import {
   ITocItem,
   RootLayoutPageProps,
 } from '@/types';
-import { formatContentPath } from '@/lib/utils/path-utils';
 import { getMdxSource } from '@/lib/mdx';
 import { normalizePathWithSlash } from '../../scripts/common';
 import { getRedirectsBackLinks, getStaticJSONPaths } from '@/lib/content/paths';
+import { MemoList } from '@/components/memo/MemoList';
+import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content?: string;
@@ -235,9 +235,29 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       } else if (indexExists) {
         filePath = indexFilePath;
       } else if (directoryExists) {
-        const allMemos = await getAllMarkdownContents(canonicalSlug.join('/'), {
+        const userProfiles = await getCompactContributorsFromContentJSON();
+        const avatarMap = userProfiles.reduce(
+          (acc, profile) => {
+            if (profile.avatar) {
+              acc[profile.username] = profile.avatar;
+            }
+            return acc;
+          },
+          {} as Record<string, string>,
+        );
+
+        const preMemos = await getAllMarkdownContents(canonicalSlug.join('/'), {
           includeContent: false,
         });
+
+        const allMemos = preMemos.map(memo => {
+          const authorAvatars =
+            memo.authors && Array.isArray(memo.authors)
+              ? memo.authors.map(author => avatarMap[author] ?? null)
+              : [];
+          return { ...memo, authorAvatars };
+        });
+
         return {
           props: {
             ...layoutProps,
@@ -489,25 +509,7 @@ export default function ContentPage({
         searchIndex={searchIndex}
         directoryTree={directoryTree}
       >
-        <div className="flex items-center justify-center">
-          {childMemos && (
-            <div className="flex w-fit flex-col gap-4">
-              <h1 className="text-2xl font-bold">{title}</h1>
-              <ul className="list-disc pl-5">
-                {childMemos.map(memo => (
-                  <li key={memo.filePath} className="text-lg">
-                    <Link
-                      href={formatContentPath(memo.filePath)}
-                      className="hover:text-primary hover:decoration-primary dark:hover:text-primary decoration-link-decoration line-clamp-3 text-[1.0625rem] -tracking-[0.0125rem] underline transition-colors duration-200 ease-in-out dark:text-neutral-300"
-                    >
-                      {memo.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+        <MemoList title={title} memos={childMemos || []} />
       </RootLayout>
     );
   } else if (isMdxPage && mdxSource) {
