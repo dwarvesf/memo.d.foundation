@@ -32,10 +32,11 @@ import { toast } from 'sonner';
 
 interface Props {
   className?: string;
+  pageTitle: string;
 }
 
 const ShareButton = (props: Props) => {
-  const { className } = props;
+  const { className, pageTitle } = props;
 
   const pageUrl = useMemo(() => {
     if (typeof window === 'undefined') {
@@ -135,21 +136,53 @@ const ShareButton = (props: Props) => {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-3">
-          <Button variant="outline" className="h-auto justify-start">
-            <XIcon className="mr-2 !h-7 !w-7" />
-            Share to X
+          <Button variant="outline" className="h-auto justify-start" asChild>
+            <a
+              href={`https://x.com/intent/tweet?url=${encodeURIComponent(
+                pageUrl,
+              )}&text=${encodeURIComponent(pageTitle)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <XIcon className="mr-2 !h-7 !w-7" />
+              Share to X
+            </a>
           </Button>
-          <Button variant="outline" className="h-auto justify-start">
-            <FacebookIcon className="mr-2 !h-7 !w-7" />
-            Share to Facebook
+          <Button variant="outline" className="h-auto justify-start" asChild>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                pageUrl,
+              )}&quote=${encodeURIComponent(pageTitle)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FacebookIcon className="mr-2 !h-7 !w-7" />
+              Share to Facebook
+            </a>
           </Button>
-          <Button variant="outline" className="h-auto justify-start">
-            <LinkedinIcon className="mr-2 !h-7 !w-7" />
-            Share to LinkedIn
+          <Button variant="outline" className="h-auto justify-start" asChild>
+            <a
+              href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+                pageUrl,
+              )}&title=${encodeURIComponent(pageTitle)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <LinkedinIcon className="mr-2 !h-7 !w-7" />
+              Share to LinkedIn
+            </a>
           </Button>
-          <Button variant="outline" className="h-auto justify-start">
-            <EmailIcon className="mr-2 !h-7 !w-7" />
-            Share to Email
+          <Button variant="outline" className="h-auto justify-start" asChild>
+            <a
+              href={`mailto:?subject=${encodeURIComponent(
+                pageTitle,
+              )}&body=${encodeURIComponent(`Check out this page: ${pageUrl}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <EmailIcon className="mr-2 !h-7 !w-7" />
+              Share to Email
+            </a>
           </Button>
         </div>
       </DialogContent>
