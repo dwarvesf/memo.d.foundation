@@ -6,8 +6,14 @@
 
 import fs from 'fs';
 import path from 'path';
-import { DuckDBConnection, DuckDBInstance, DuckDBValue } from '@duckdb/node-api'; // Import DuckDB API
+import {
+  DuckDBConnection,
+  DuckDBInstance,
+  DuckDBValue,
+} from '@duckdb/node-api'; // Import DuckDB API
+import { slugifyPathComponents } from '../src/lib/utils/slugify.js';
 import MiniSearch from 'minisearch';
+import { normalizePathWithSlash } from './common.js';
 
 /**
  * Extract paths from file path to create category
@@ -31,6 +37,7 @@ interface DuckDbQueryResultRow {
   spr_content: string | null;
   tags: DuckDBValue | null;
   authors: DuckDBValue | null;
+  keywords?: DuckDBValue | null;
   date: string | null; // Assuming date is stored/read as string
   draft: boolean | null;
   hiring: boolean | null;
@@ -38,25 +45,71 @@ interface DuckDbQueryResultRow {
 }
 
 // Define the structure for documents to be indexed by MiniSearch
-interface SearchDocument {
+export interface SearchDocument {
   id: string;
   file_path: string;
+  web_path: string;
   title: string;
   description: string;
   spr_content: string;
   tags: string[];
   authors: string[];
+  keywords: string[];
   date: string;
   category: string;
 }
 
+function transformWebPath(
+  filePath: string,
+  staticPaths: Record<string, string>,
+): string {
+  const originalFilePath = filePath;
+  // Remove /readme, /_index suffixes with optional .md and case-insensitive
+  const suffixRegex = /\/(readme|_index)(\.md)?$/i;
+  const cleanedPath = originalFilePath.replace(suffixRegex, '');
+
+  // Use the slugifyPathComponents function from backlinks.ts
+  let slugifiedPath = slugifyPathComponents(cleanedPath);
+
+  // If the original file path ended with .md, remove the extension from the slugified path
+  if (originalFilePath.endsWith('.md')) {
+    slugifiedPath = slugifiedPath.slice(0, -3); // Remove .md extension
+  }
+  // Check if the slugified path exists in static paths
+  return (
+    staticPaths[normalizePathWithSlash(slugifiedPath)] ||
+    normalizePathWithSlash(slugifiedPath)
+  );
+}
+
 async function generateSearchIndex() {
   const parquetFilePath = path.join(process.cwd(), 'db/vault.parquet');
-  const outputPath = path.join(process.cwd(), 'public/content/search-index.json');
+  const outputPath = path.join(
+    process.cwd(),
+    'public/content/search-index.json',
+  );
   let instance: DuckDBInstance | null = null;
   let connection: DuckDBConnection | null = null;
+  let staticJSONPaths: Record<string, string> = {};
 
   console.log(`Generating search index from ${parquetFilePath}...`);
+
+  const staticJsonPath = path.join(
+    process.cwd(),
+    'public/content/static-paths.json',
+  );
+
+  if (fs.existsSync(staticJsonPath)) {
+    try {
+      const jsonData = fs.readFileSync(staticJsonPath, 'utf-8');
+      const parsedPaths = JSON.parse(jsonData) as Record<string, string>;
+      staticJSONPaths = Object.fromEntries(
+        Object.entries(parsedPaths).map(([key, value]) => [value, key]),
+      );
+    } catch (error) {
+      console.error('Error reading static paths JSON:', error);
+    }
+  }
 
   try {
     if (!fs.existsSync(parquetFilePath)) {
@@ -76,6 +129,7 @@ async function generateSearchIndex() {
       // 'md_content', // Not currently used in indexing logic below
       'spr_content',
       'tags',
+      'keywords',
       'authors',
       'date',
       'draft',
@@ -88,7 +142,9 @@ async function generateSearchIndex() {
     const reader = await connection.runAndReadAll(query);
     // Type assertion needed because getRowObjects returns Record<string, DuckDBValue>
     const results = reader.getRowObjects() as unknown as DuckDbQueryResultRow[];
-    console.log(`Retrieved ${results.length} rows from Parquet file via DuckDB.`);
+    console.log(
+      `Retrieved ${results.length} rows from Parquet file via DuckDB.`,
+    );
 
     const searchDocuments: SearchDocument[] = results
       .map((row, idx) => {
@@ -99,27 +155,39 @@ async function generateSearchIndex() {
         const sprContent = row.spr_content || '';
 
         // Extract items from DuckDBValue for list types, ensuring they are arrays
-        const tagsList = row.tags && (row.tags as any).items && Array.isArray((row.tags as any).items)
-          ? (row.tags as any).items
-          : [];
-        const authorsList = row.authors && (row.authors as any).items && Array.isArray((row.authors as any).items)
-          ? (row.authors as any).items
-          : [];
+        const tagsList =
+          row.tags &&
+          (row.tags as any).items &&
+          Array.isArray((row.tags as any).items)
+            ? (row.tags as any).items
+            : [];
+        const authorsList =
+          row.authors &&
+          (row.authors as any).items &&
+          Array.isArray((row.authors as any).items)
+            ? (row.authors as any).items
+            : [];
+        const keywordsList =
+          row.keywords &&
+          (row.keywords as any).items &&
+          Array.isArray((row.keywords as any).items)
+            ? (row.keywords as any).items
+            : [];
 
-        // Filter tags and ensure authors are strings (or handle appropriately if they can be other types)
+        // Filter tags, authors, keywords as strings
         const tags: string[] = tagsList.filter(
-          (tag: any): tag is string => typeof tag === 'string' && tag !== '', // Add explicit any type
+          (tag: any): tag is string => typeof tag === 'string' && tag !== '',
         );
         const authors: string[] = authorsList.filter(
-          (author: any): author is string => typeof author === 'string' // Add explicit any type
+          (author: any): author is string => typeof author === 'string',
+        );
+        const keywords: string[] = keywordsList.filter(
+          (kw: any): kw is string => typeof kw === 'string' && kw !== '',
         );
 
-        const date = row.date || ''; // Assuming date is string
+        const date = row.date || '';
         const draft = row.draft === true;
-        // Note: Original logic was `hiring = row[9] === false;`. This keeps that logic.
-        // If `hiring=true` in the data means "is hiring post", then `!row.hiring` might be intended for exclusion.
-        // Double-check if `hiring: false` in the data means "exclude this". The current logic excludes if `hiring` is NOT false.
-        const isHiringPost = row.hiring === true; // Let's use a clearer variable name
+        const isHiringPost = row.hiring === true;
         const status = row.status || '';
 
         // --- Exclusion Logic ---
@@ -132,23 +200,29 @@ async function generateSearchIndex() {
 
         // --- Create Search Document ---
         return {
-          id: String(idx), // Use index as ID
+          id: String(idx),
           file_path: filePath,
+          web_path: transformWebPath(filePath, staticJSONPaths),
           title,
           description,
-          spr_content: sprContent?.replace(/\n/g, '<hr />'), // Use replace with global regex instead of replaceAll
+          spr_content: sprContent?.replace(/\n/g, '<hr />'),
           tags,
           authors,
+          keywords,
           date,
           category: extractCategory(filePath),
         };
       })
-      .filter((doc): doc is SearchDocument => doc !== null); // Filter out null entries (excluded docs)
+      .filter((doc): doc is SearchDocument => doc !== null);
 
-    console.log(`Filtered down to ${searchDocuments.length} documents for indexing.`);
+    console.log(
+      `Filtered down to ${searchDocuments.length} documents for indexing.`,
+    );
 
     if (searchDocuments.length === 0) {
-      console.warn("Warning: No documents to index after filtering. Check exclusion logic and data source.");
+      console.warn(
+        'Warning: No documents to index after filtering. Check exclusion logic and data source.',
+      );
       // Write an empty index file
       fs.writeFileSync(outputPath, JSON.stringify({ index: {} }));
       console.log(`Empty search index generated at: ${outputPath}`);
@@ -158,29 +232,44 @@ async function generateSearchIndex() {
     // --- MiniSearch Indexing ---
     console.log('Initializing MiniSearch...');
     const miniSearch = new MiniSearch<SearchDocument>({
-      fields: ['title', 'description', 'tags', 'authors', 'category'], // Fields to index
-      storeFields: [ // Fields to store and return in search results
+      fields: [
+        'title',
+        'description',
+        'tags',
+        'authors',
+        'category',
+        'keywords',
+        'spr_content',
+      ], // Fields to index (now includes spr_content and keywords)
+      storeFields: [
         'file_path',
+        'web_path',
         'title',
         'description',
         'spr_content',
         'tags',
         'authors',
+        'keywords',
         'date',
         'category',
       ],
       searchOptions: {
-        boost: { title: 2, tags: 1.5, authors: 1.2, category: 1.1 },
-        fuzzy: 0.2, // Allow some fuzziness
-        prefix: true, // Allow prefix searching
+        boost: {
+          title: 2,
+          keywords: 1.7,
+          spr_content: 1.5,
+          tags: 1.4,
+          authors: 1.2,
+        },
+        fuzzy: 0.2,
+        prefix: true,
       },
-      // Custom field extractor for array fields
       extractField: (document, fieldName) => {
         const value = document[fieldName as keyof SearchDocument];
         if (Array.isArray(value)) {
-          return value.join(' '); // Join array elements for indexing
+          return value.join(' ');
         }
-        return value as string || ''; // Return string value or empty string
+        return (value as string) || '';
       },
     });
 
@@ -206,7 +295,6 @@ async function generateSearchIndex() {
     );
 
     console.log(`Search index successfully generated at: ${outputPath}`);
-
   } catch (error) {
     console.error('Error generating search index:', error);
     process.exit(1); // Exit with error on failure

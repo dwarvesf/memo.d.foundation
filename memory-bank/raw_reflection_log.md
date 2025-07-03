@@ -1,21 +1,41 @@
+------
+Date: 2025-07-03
+TaskRef: "Fix MiniSearch index to include spr_content and keywords for search"
+Learnings:
+- MiniSearch will only search fields explicitly listed in the `fields` array; missing fields in the index config or document schema will not be searchable.
+- The backend index and frontend MiniSearch config must be kept in sync for all searchable fields.
+- Adding a new field (like `keywords`) requires updating both the DuckDB row extraction and the MiniSearch document schema.
+Difficulties:
+- The original script did not extract or index `keywords`, and `spr_content` was omitted from the indexed fields, causing search failures for those fields.
+- Ensuring type safety and correct array extraction from DuckDBValue objects is important for robust indexing.
+Successes:
+- After updating the script and regenerating the index, both `spr_content` and `keywords` are now searchable as intended.
+Improvements_Identified_For_Consolidation:
+- Always verify that all intended search fields are present in both the backend index and frontend config.
 ---
+
 Date: 2025-07-01
 TaskRef: 'Fix incorrect render order in HeadingNavigator.tsx'
 
 Learnings:
-  - The original recursive `filterAndRenderHeadings` function in `HeadingNavigator.tsx` caused incorrect rendering order due to its depth-first traversal and conditional `CommandGroup` pushing.
-  - Flattening the hierarchical `ITocItem` array into a single-level array while preserving the `depth` property allows for a simpler, linear filtering and rendering process.
-  - Using `useCallback` for `getPrefix` and `flattenTocItems` ensures these utility functions are memoized and do not cause unnecessary re-renders.
+
+- The original recursive `filterAndRenderHeadings` function in `HeadingNavigator.tsx` caused incorrect rendering order due to its depth-first traversal and conditional `CommandGroup` pushing.
+- Flattening the hierarchical `ITocItem` array into a single-level array while preserving the `depth` property allows for a simpler, linear filtering and rendering process.
+- Using `useCallback` for `getPrefix` and `flattenTocItems` ensures these utility functions are memoized and do not cause unnecessary re-renders.
 
 Difficulties:
-  - Ensuring the `depth` property was correctly used for UI indentation after flattening the structure. This was handled by applying `ml-` classes based on `item.depth` directly to `CommandItem`.
+
+- Ensuring the `depth` property was correctly used for UI indentation after flattening the structure. This was handled by applying `ml-` classes based on `item.depth` directly to `CommandItem`.
 
 Successes:
-  - Successfully refactored the `filterAndRenderHeadings` logic to first flatten the `tocItems` and then filter and render them, resolving the incorrect render order.
-  - Maintained the visual indentation based on heading depth.
+
+- Successfully refactored the `filterAndRenderHeadings` logic to first flatten the `tocItems` and then filter and render them, resolving the incorrect render order.
+- Maintained the visual indentation based on heading depth.
 
 Improvements_Identified_For_Consolidation:
-  - General pattern: For hierarchical data structures where filtering and linear rendering are required, flattening the structure first can simplify the rendering logic and ensure correct order.
+
+- General pattern: For hierarchical data structures where filtering and linear rendering are required, flattening the structure first can simplify the rendering logic and ensure correct order.
+
 ---
 
 ---

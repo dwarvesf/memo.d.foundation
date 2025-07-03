@@ -34,7 +34,7 @@ const plugins = [remarkGfm];
 const RenderMarkdown = ({ content }: Props) => {
   const formattedContent = useMemo(() => {
     if (!content) return null;
-    return content.replace(/<hr\s*\/?>/gi, '\n');
+    return content.replace(/<hr\s*\/?>/gi, '\n').replace(/\\n/gi, '\n');
   }, [content]);
 
   if (!formattedContent) return null;

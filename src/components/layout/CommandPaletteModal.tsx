@@ -220,17 +220,13 @@ export function CommandPaletteModal({
                 </h3>
 
                 {/* Description */}
-                <p className="mt-3.5 w-full font-serif text-sm font-medium">
+                <p className="mt-3.5 font-serif text-sm font-medium">
                   {selectedItem.description}
                 </p>
 
                 {/* Content preview */}
                 {selectedItem.spr_content && (
                   <div className="text-secondary-light dark:text-secondary-dark mt-8 self-start font-serif">
-                    <span className="text-xs font-medium uppercase underline">
-                      on this page
-                    </span>
-
                     <div className="mt-5 text-sm [&_code]:italic">
                       <RenderMarkdown content={selectedItem.spr_content} />
                     </div>

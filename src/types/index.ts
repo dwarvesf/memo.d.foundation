@@ -29,6 +29,7 @@ export interface IMetadata {
 
   firstImage?: string;
   summary?: string;
+  sprContent?: string; // Serialized content for printing
 }
 
 export interface ITreeNode {

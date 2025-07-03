@@ -70,7 +70,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
             {formattedTitle}
           </h1>
 
-          <ShareButton className="mt-2" />
+          <ShareButton className="mt-2" metadata={metadata} />
         </div>
       )}
 

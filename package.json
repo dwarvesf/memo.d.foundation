@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm run generate-static-paths && next dev",
-    "build": "pnpm run generate-menu && pnpm run generate-menu-path-sorted && pnpm run generate-backlinks && pnpm run generate-search-index && pnpm run generate-redirects-map && pnpm run generate-shorten-map && pnpm run generate-pageviews && pnpm run fetch-prompts && pnpm run fetch-contributors && pnpm run generate-static-paths && next build && pnpm run generate-rss && pnpm run copy-404",
+    "build": "tsx scripts/memo-build.ts",
     "start": "next start",
     "lint": "next lint",
     "deploy": "gh-pages -d out",

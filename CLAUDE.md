@@ -65,7 +65,7 @@ This is a unique hybrid system combining:
 
 - The `vault/` directory is a git submodule containing pure content - avoid modifying during development
 - Content generation scripts must run before Next.js build for proper static generation
-- Client-side search uses MiniSearch with pre-generated indices for performance
+- Client-side search uses Fuse.js with pre-generated indices for performance
 - MDX rendering supports mathematical expressions (KaTeX), code highlighting, and custom components
 - Web3 integration for NFT minting and contributor rewards
 

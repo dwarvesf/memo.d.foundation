@@ -44,7 +44,7 @@ devbox run run
 
 ### Search Index
 
-The app uses client-side search with MiniSearch. To improve build performance and reduce page size, we generate a separate search index file during the build process:
+The app uses client-side search with Fuse.js. To improve build performance and reduce page size, we generate a separate search index file during the build process:
 
 ```sh
 pnpm run generate-search-index

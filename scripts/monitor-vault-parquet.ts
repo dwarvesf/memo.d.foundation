@@ -66,7 +66,7 @@ async function collectVaultMetrics(): Promise<VaultMetrics> {
     // Embedding status
     const embeddingResult = await connection.runAndReadAll(`
       SELECT 
-        COUNT(CASE WHEN embeddings_openai IS NULL THEN 1 END) + 
+        COUNT(CASE WHEN embeddings_gemini IS NULL THEN 1 END) + 
         COUNT(CASE WHEN embeddings_spr_custom IS NULL THEN 1 END) as missing_embeddings
       FROM read_parquet('${vaultPath}')
       WHERE md_content IS NOT NULL AND LENGTH(md_content) > 100

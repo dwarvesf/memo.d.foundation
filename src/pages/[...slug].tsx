@@ -36,6 +36,7 @@ import { normalizePathWithSlash } from '../../scripts/common';
 import { getRedirectsBackLinks, getStaticJSONPaths } from '@/lib/content/paths';
 import { MemoList } from '@/components/memo/MemoList';
 import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
+import { SearchDocument } from '../../scripts/generate-search-index';
 
 interface ContentPageProps extends RootLayoutPageProps {
   content?: string;
@@ -314,6 +315,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
       null,
     );
+    let searchingIndex: SearchDocument[] = [];
+    try {
+      const searchIndexPath = path.join(
+        process.cwd(),
+        'public/content/search-index.json',
+      );
+      const searchIndexContent = await fs.readFile(searchIndexPath, 'utf8');
+      const parsedContent = JSON.parse(searchIndexContent);
+      if (
+        parsedContent?.index?.storedFields &&
+        typeof parsedContent?.index?.storedFields === 'object'
+      ) {
+        searchingIndex = Object.values(parsedContent.index?.storedFields);
+      }
+    } catch (error) {
+      console.error(
+        `Error reading search-index.json in getStaticProps: ${error}`,
+      );
+    }
+    const sprContent = searchingIndex.find(
+      i => i.file_path === requestedPath || i.web_path === requestedPath,
+    );
     const metadata = {
       created: frontmatter.date?.toString() || null,
       updated: frontmatter.lastmod?.toString() || null,
@@ -340,6 +363,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       image: frontmatter.img || frontmatter.image || firstImage || '',
       firstImage,
       summary,
+      sprContent: sprContent?.spr_content || '',
     };
     return {
       props: {
