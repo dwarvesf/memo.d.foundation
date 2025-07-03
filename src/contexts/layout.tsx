@@ -1,4 +1,5 @@
 import KeyboardShortcutDialog from '@/components/layout/KeyboardShortcutDialog';
+import ShareDialog from '@/components/ShareDialog';
 import { useIsMounted } from '@/hooks/useIsMounted';
 import {
   ComponentType,
@@ -16,6 +17,8 @@ export type ILayout = 'light' | 'dark';
 export interface LayoutContextType {
   readingMode: boolean;
   setReadingMode: (readingMode: boolean) => void;
+  isShareDialogOpen: boolean;
+  setIsShareDialogOpen: (open: boolean) => void;
   toggleReadingMode: () => void;
   openShortcutDialog: () => void;
   closeShortcutDialog: () => void;
@@ -27,6 +30,8 @@ export interface LayoutContextType {
 const DefaultContextValues = {
   readingMode: false,
   setReadingMode: () => {},
+  isShareDialogOpen: false,
+  setIsShareDialogOpen: () => {},
   toggleReadingMode: () => {},
   openShortcutDialog: () => {},
   closeShortcutDialog: () => {},
@@ -46,6 +51,8 @@ export const LayoutProvider = (props: PropsWithChildren) => {
   const [isMacOS, setIsMacOS] = useState(true);
 
   const [isShortcutDialogOpen, setIsShortcutDialogOpen] = useState(false);
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+
   const openShortcutDialog = useCallback(() => {
     setIsShortcutDialogOpen(true);
   }, []);
@@ -119,6 +126,17 @@ export const LayoutProvider = (props: PropsWithChildren) => {
     [toggleReadingMode],
   );
 
+  useHotkeys(
+    ['mod+s', 'ctrl+s'],
+    () => {
+      setIsShareDialogOpen(true);
+    },
+    {
+      preventDefault: true,
+      enableOnFormTags: false,
+    },
+  );
+
   return (
     <LayoutContext.Provider
       value={{
@@ -130,6 +148,8 @@ export const LayoutProvider = (props: PropsWithChildren) => {
         toggleIsOpenSidebar,
         openShortcutDialog,
         closeShortcutDialog,
+        isShareDialogOpen,
+        setIsShareDialogOpen,
         isMacOS,
       }}
     >
@@ -137,6 +157,10 @@ export const LayoutProvider = (props: PropsWithChildren) => {
       <KeyboardShortcutDialog
         isOpen={isShortcutDialogOpen}
         onClose={closeShortcutDialog}
+      />
+      <ShareDialog
+        isOpen={isShareDialogOpen}
+        onOpenChange={setIsShareDialogOpen}
       />
     </LayoutContext.Provider>
   );

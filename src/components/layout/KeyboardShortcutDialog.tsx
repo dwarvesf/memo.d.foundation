@@ -47,6 +47,10 @@ const shortcutData: ShortcutSection[] = [
         label: 'Bring up this help dialog',
         keys: ['?'],
       },
+      {
+        label: 'Share the current page',
+        keys: [isMac ? '⌘' : 'Ctrl', 'S'],
+      },
     ],
   },
   {
