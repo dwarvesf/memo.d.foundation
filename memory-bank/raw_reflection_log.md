@@ -14,6 +14,21 @@ Improvements_Identified_For_Consolidation:
 - Always verify that all intended search fields are present in both the backend index and frontend config.
 ---
 
+Date: 2025-07-03
+TaskRef: "Reset scroll offset to top on user input search in CommandPaletteModal"
+Learnings:
+
+- For scrollable lists in React, using a ref and resetting `scrollTop` in a `useEffect` tied to the search query ensures the scroll position resets on input.
+- This pattern improves UX for search-driven modals and avoids stale scroll positions when results change.
+  Difficulties:
+- Identifying the correct scrollable container and ensuring the ref is attached to the right element.
+  Successes:
+- Implemented scroll reset on query change, resulting in expected behavior for the command palette modal.
+  Improvements_Identified_For_Consolidation:
+- Use a ref and effect to reset scroll position for any dynamic, filterable list UI.
+
+---
+
 Date: 2025-07-01
 TaskRef: 'Fix incorrect render order in HeadingNavigator.tsx'
 

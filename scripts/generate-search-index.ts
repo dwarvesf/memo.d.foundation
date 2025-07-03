@@ -71,8 +71,8 @@ function transformWebPath(
   // Use the slugifyPathComponents function from backlinks.ts
   let slugifiedPath = slugifyPathComponents(cleanedPath);
 
-  // If the original file path ended with .md, remove the extension from the slugified path
-  if (originalFilePath.endsWith('.md')) {
+  // If the slugifiedPath path ended with .md, remove the extension from the slugified path
+  if (slugifiedPath.endsWith('.md')) {
     slugifiedPath = slugifiedPath.slice(0, -3); // Remove .md extension
   }
   // Check if the slugified path exists in static paths
