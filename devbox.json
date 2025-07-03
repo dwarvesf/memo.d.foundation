@@ -19,6 +19,7 @@
       "build-static": "make build-static",
       "run": "make run",
       "duckdb-export": "make duckdb-export",
+      "duckdb-export-force": "make duckdb-export-force",
       "fetch": "make fetch"
     }
   }

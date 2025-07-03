@@ -41,13 +41,28 @@ defmodule Mix.Tasks.Duckdb.ExportPattern do
     vault = opts[:vault] || "../../vault"
     format = opts[:format] || "parquet"
 
-    Memo.Application.export_duckdb(vault, format, pattern)
+    ignore_filter = opts[:ignore_filter] || false
+    ignore_embeddings_check = opts[:ignore_embeddings_check] || false
+
+    Memo.Application.export_duckdb(
+      vault,
+      format,
+      pattern,
+      ignore_filter: ignore_filter,
+      ignore_embeddings_check: ignore_embeddings_check
+    )
   end
 
   defp parse_args(args) do
     {opts, _, _} =
       OptionParser.parse(args,
-        switches: [pattern: :string, vault: :string, format: :string],
+        switches: [
+          pattern: :string,
+          vault: :string,
+          format: :string,
+          ignore_filter: :boolean,
+          ignore_embeddings_check: :boolean
+        ],
         aliases: [p: :pattern, v: :vault, f: :format]
       )
 

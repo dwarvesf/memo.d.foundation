@@ -15,11 +15,9 @@ import { IRecentPageStorageItem, ISearchResultItem } from '@/types';
 import { CommandPaletteModal } from './CommandPaletteModal';
 import { BookOpenIcon, PinIcon, CopyIcon, Share2Icon } from 'lucide-react';
 import HotIcon from '../icons/HotIcon';
-import { slugifyPathComponents } from '@/lib/utils/slugify';
 import SearchIcon from '../icons/SearchIcon';
 import { Editor } from 'draft-js';
 import { useLayoutContext } from '@/contexts/layout';
-import { getClientSideRedirectPath } from '@/lib/utils/path-utils';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 const defaultSearchResult: SearchResult = {
@@ -93,22 +91,8 @@ const CommandPalette: React.FC = () => {
     try {
       if (query) {
         const selected = result.grouped[selectedCategory]?.[selectedIndex];
-        if (selected && selected.file_path) {
-          const originalFilePath = selected.file_path;
-          // Remove /readme, /_index suffixes with optional .md and case-insensitive
-          const suffixRegex = /\/(readme|_index)(\.md)?$/i;
-          const cleanedPath = originalFilePath.replace(suffixRegex, '');
-
-          // Use the slugifyPathComponents function from backlinks.ts
-          let slugifiedPath = slugifyPathComponents(cleanedPath);
-
-          // If the original file path ended with .md, remove the extension from the slugified path
-          if (originalFilePath.endsWith('.md')) {
-            slugifiedPath = slugifiedPath.slice(0, -3); // Remove .md extension
-          }
-
-          router.push(getClientSideRedirectPath('/' + slugifiedPath));
-
+        if (selected && selected.web_path) {
+          router.push(selected.web_path);
           close();
         }
         return;
@@ -153,7 +137,7 @@ const CommandPalette: React.FC = () => {
             ? selected.path
             : '/' + selected.path;
 
-          router.push(getClientSideRedirectPath(path));
+          router.push(path);
           close();
         }
       }

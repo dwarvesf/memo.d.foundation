@@ -11,7 +11,8 @@ defmodule Memo.ExportDuckDB do
     "file_path",
     "md_content",
     "spr_content",
-    "embeddings_openai",
+    "keywords",
+    "embeddings_gemini",
     "embeddings_spr_custom",
     "estimated_tokens",
     "previous_paths",
@@ -22,7 +23,8 @@ defmodule Memo.ExportDuckDB do
     {"file_path", "TEXT UNIQUE"},
     {"md_content", "TEXT"},
     {"spr_content", "TEXT"},
-    {"embeddings_openai", "FLOAT[1536]"},
+    {"keywords", "VARCHAR[]"},
+    {"embeddings_gemini", "FLOAT[768]"},
     {"embeddings_spr_custom", "FLOAT[1024]"},
     {"title", "VARCHAR"},
     {"short_title", "VARCHAR"},
@@ -62,7 +64,7 @@ defmodule Memo.ExportDuckDB do
     {"redirect", "VARCHAR[]"}
   ]
 
-  def run(vaultpath, format, pattern \\ nil) do
+  def run(vaultpath, format, pattern \\ nil, opts \\ []) do
     load_env()
 
     vaultpath = vaultpath || "vault"
@@ -88,17 +90,28 @@ defmodule Memo.ExportDuckDB do
         with :ok <- install_and_load_extensions(),
              :ok <- setup_database(),
              {:ok, last_processed_timestamp} <- fetch_last_processed_timestamp() do
+          ignore_filter = Keyword.get(opts, :ignore_filter, false)
           filtered_files =
-            get_files_to_process(
-              vaultpath,
-              all_files_to_process,
-              pattern,
-              last_processed_timestamp
-            )
+            if ignore_filter do
+              all_files_to_process
+            else
+              get_files_to_process(
+                vaultpath,
+                all_files_to_process,
+                pattern,
+                last_processed_timestamp
+              )
+            end
 
-          processed_files = process_files(filtered_files, vaultpath, all_files_to_process)
-          update_file_processing_metadata(processed_files, vaultpath)
-          export(export_format)
+          if (length(filtered_files) == 0) do
+            IO.puts("No files to process based on the given pattern or last processed timestamp.")
+            :ok
+          else
+            ignore_embeddings_check = Keyword.get(opts, :ignore_embeddings_check, false)
+            processed_files = process_files(filtered_files, vaultpath, all_files_to_process, ignore_embeddings_check)
+            update_file_processing_metadata(processed_files, vaultpath)
+            export(export_format)
+          end
         else
           :error -> IO.puts("Failed to set up DuckDB or process timestamps")
         end
@@ -841,7 +854,7 @@ defmodule Memo.ExportDuckDB do
     end
   end
 
-  defp process_files(files, vaultpath, all_files_to_process) do
+  defp process_files(files, vaultpath, all_files_to_process, ignore_embeddings_check \\ false) do
     vault_abs = Path.expand(vaultpath)
 
     relative_paths =
@@ -894,9 +907,13 @@ defmodule Memo.ExportDuckDB do
                 too_short = String.length(md_content) < @min_content_length
 
                 embeddings_updated =
-                  not too_short and needs_embeddings_update(existing_data, md_content)
+                  if ignore_embeddings_check do
+                    not too_short
+                  else
+                    not too_short and needs_embeddings_update(existing_data, md_content)
+                  end
 
-                {new_spr_content, new_embeddings_openai, new_embeddings_spr_custom,
+                {new_spr_content, new_embeddings_gemini, new_embeddings_spr_custom,
                  updated_frontmatter} =
                   if embeddings_updated do
                     regenerated =
@@ -904,7 +921,7 @@ defmodule Memo.ExportDuckDB do
 
                     {
                       Map.get(regenerated, "spr_content"),
-                      Map.get(regenerated, "embeddings_openai"),
+                      Map.get(regenerated, "embeddings_gemini"),
                       Map.get(regenerated, "embeddings_spr_custom"),
                       regenerated
                     }
@@ -912,13 +929,13 @@ defmodule Memo.ExportDuckDB do
                     # When embeddings are NOT updated, use existing data for embeddings and spr_content
                     existing_embeddings_and_spr = %{
                       "spr_content" => existing_data["spr_content"],
-                      "embeddings_openai" => existing_data["embeddings_openai"],
+                      "embeddings_gemini" => existing_data["embeddings_gemini"],
                       "embeddings_spr_custom" => existing_data["embeddings_spr_custom"]
                     }
 
                     {
                       existing_data["spr_content"],
-                      existing_data["embeddings_openai"],
+                      existing_data["embeddings_gemini"],
                       existing_data["embeddings_spr_custom"],
                       # Merge existing embeddings and spr_content into the normalized frontmatter
                       Map.merge(normalized_frontmatter, existing_embeddings_and_spr)
@@ -978,7 +995,7 @@ defmodule Memo.ExportDuckDB do
                   # New flag
                   frontmatter_changed: frontmatter_changed,
                   new_spr_content: new_spr_content,
-                  new_embeddings_openai: new_embeddings_openai,
+                  new_embeddings_gemini: new_embeddings_gemini,
                   new_embeddings_spr_custom: new_embeddings_spr_custom
                 }
 
@@ -1012,7 +1029,7 @@ defmodule Memo.ExportDuckDB do
                                     embeddings_updated: embeddings_updated,
                                     frontmatter_changed: frontmatter_changed,
                                     new_spr_content: new_spr_content,
-                                    new_embeddings_openai: new_embeddings_openai,
+                                    new_embeddings_gemini: new_embeddings_gemini,
                                     new_embeddings_spr_custom: new_embeddings_spr_custom
                                   } ->
         merged_frontmatter =
@@ -1026,7 +1043,7 @@ defmodule Memo.ExportDuckDB do
           # Pass the flag along
           frontmatter_changed: frontmatter_changed,
           new_spr_content: new_spr_content,
-          new_embeddings_openai: new_embeddings_openai,
+          new_embeddings_gemini: new_embeddings_gemini,
           new_embeddings_spr_custom: new_embeddings_spr_custom
         }
       end)
@@ -1220,7 +1237,7 @@ defmodule Memo.ExportDuckDB do
                   # This ensures that for existing records where only frontmatter (not content) changed,
                   # we only update the metadata fields, preserving existing embeddings and spr_content.
                   &(&1 != "file_path" and
-                      &1 != "embeddings_openai" and
+                      &1 != "embeddings_gemini" and
                       &1 != "embeddings_spr_custom" and
                       &1 != "spr_content")
                 )
@@ -1284,7 +1301,7 @@ defmodule Memo.ExportDuckDB do
               |> Enum.filter(
                 # Fallback: Exclude embeddings, spr_content, and file_path from the SET clause.
                 &(&1 != "file_path" and
-                    &1 != "embeddings_openai" and
+                    &1 != "embeddings_gemini" and
                     &1 != "embeddings_spr_custom" and
                     &1 != "spr_content")
               )
@@ -1326,8 +1343,8 @@ defmodule Memo.ExportDuckDB do
     # Use fuzzy matching for md_content and spr_content similarity threshold 80%
     # Use String.jaro_distance for similarity check
 
-    embeddings_openai =
-      case existing_data["embeddings_openai"] do
+    embeddings_gemini =
+      case existing_data["embeddings_gemini"] do
         nil ->
           nil
 
@@ -1368,7 +1385,7 @@ defmodule Memo.ExportDuckDB do
     similarity_threshold = 0.7
 
     content_changed = similarity < similarity_threshold
-    embeddings_exist = not is_nil(embeddings_openai) and not is_nil(embeddings_spr_custom)
+    embeddings_exist = not is_nil(embeddings_gemini) and not is_nil(embeddings_spr_custom)
 
     # Re-embed if content changed or if embeddings don't exist (for new files or if lost)
     needs_update = content_changed or not embeddings_exist or not spr_content_exists
@@ -1536,17 +1553,31 @@ defmodule Memo.ExportDuckDB do
 
   defp regenerate_embeddings(file_path, md_content, frontmatter) do
     IO.puts("Embedding file: #{file_path}")
-    spr_content = AIUtils.spr_compress(md_content)
+
+    # Get the JSON response with keywords and summary
+    ai_result = AIUtils.spr_compress(md_content)
+
+    # Extract keywords and summary from the AI result
+    {keywords, spr_content} = case ai_result do
+      %{"keywords" => keywords, "summary" => summary} when is_list(keywords) and is_binary(summary) ->
+        {keywords, summary}
+      %{"summary" => summary} when is_binary(summary) ->
+        {[], summary}
+      _ ->
+        {[], ""}
+    end
+
     estimated_tokens = div(String.length(md_content), 4)
 
     custom_embedding = AIUtils.embed_custom(spr_content)
 
-    openai_embedding = AIUtils.embed_openai(md_content)
+    gemini_embedding = AIUtils.embed_gemini(md_content)
 
     frontmatter
     |> Map.put("spr_content", spr_content)
+    |> Map.put("keywords", keywords)
     |> Map.put("embeddings_spr_custom", custom_embedding["embedding"])
-    |> Map.put("embeddings_openai", openai_embedding["embedding"])
+    |> Map.put("embeddings_gemini", gemini_embedding["embedding"])
     |> Map.put("estimated_tokens", estimated_tokens)
     |> (fn fm ->
           fm
@@ -1561,11 +1592,12 @@ defmodule Memo.ExportDuckDB do
 
   defp transform_value(value, key) do
     case key do
-      "embeddings_openai" -> serialize_array(value)
+      "embeddings_gemini" -> serialize_array(value)
       "embeddings_spr_custom" -> serialize_array(value)
       "tags" -> serialize_list(value)
       "authors" -> serialize_list(value)
       "aliases" -> serialize_list(value)
+      "keywords" -> serialize_list(value)
       "previous_paths" -> serialize_list(value)
       "md_content" -> escape_multiline_text(value)
       "spr_content" -> escape_multiline_text(value)
@@ -1592,7 +1624,7 @@ defmodule Memo.ExportDuckDB do
 
   defp serialize_array(array) when is_list(array) do
     if Enum.empty?(array) do
-      # If the array is empty, determine if it should be OpenAI (1536) or custom (1024) embeddings
+      # If the array is empty, determine if it should be Gemini (768) or custom (1024) embeddings
       column_type =
         cond do
           # Use the call stack to determine which type of array this is
@@ -1600,10 +1632,10 @@ defmodule Memo.ExportDuckDB do
           |> elem(1)
           |> Enum.any?(fn {_m, _f, _a, kw} ->
             Keyword.get(kw, :line) != nil &&
-                Enum.at(kw, 1) == {:key, "embeddings_openai"}
+                Enum.at(kw, 1) == {:key, "embeddings_gemini"}
           end) ->
-            # For OpenAI embeddings, use 1536 zeros
-            "[#{Enum.join(List.duplicate("0", 1536), ", ")}]"
+            # For Gemini embeddings, use 768 zeros
+            "[#{Enum.join(List.duplicate("0", 768), ", ")}]"
 
           # For custom embeddings or any other array
           true ->

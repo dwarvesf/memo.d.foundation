@@ -65,6 +65,16 @@ export function CommandPaletteModal({
     [selectedItem?.category],
   );
 
+  // Ref for scrollable result list
+  const resultListRef = React.useRef<HTMLDivElement>(null);
+
+  // Reset scroll offset to top on query change
+  useEffect(() => {
+    if (resultListRef.current) {
+      resultListRef.current.scrollTop = 0;
+    }
+  }, [query]);
+
   // Shared content for both desktop and mobile views
   const bodyRender = (
     <>
@@ -80,7 +90,10 @@ export function CommandPaletteModal({
       </div>
 
       <div className="flex h-[450px] min-h-0 overflow-hidden sm:h-[509px]">
-        <div className="flex flex-1 basis-2/5 flex-col overflow-y-auto">
+        <div
+          className="flex flex-1 basis-2/5 flex-col overflow-y-auto"
+          ref={resultListRef}
+        >
           {/* Search result.flat */}
           {query && Object.keys(result.grouped).length > 0 && (
             <div>
@@ -220,7 +233,7 @@ export function CommandPaletteModal({
                 </h3>
 
                 {/* Description */}
-                <p className="mt-3.5 w-full font-serif text-sm font-medium">
+                <p className="mt-3.5 font-serif text-sm font-medium">
                   {selectedItem.description}
                 </p>
 

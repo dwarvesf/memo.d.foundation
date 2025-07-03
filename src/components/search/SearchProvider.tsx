@@ -13,6 +13,7 @@ import {
 interface Document {
   id: string;
   file_path: string;
+  web_path?: string;
   title: string;
   description: string;
   authors?: string[];
@@ -71,7 +72,10 @@ const extractCategory = (filePath: string): string => {
 function getMatchingLines(content: string, pattern: string): string {
   if (!content || !pattern) return '';
 
-  const lines = content.replace(/<hr\s*\/?>/gi, '\n').split('\n');
+  const lines = content
+    .replace(/\\n/g, '\n')
+    .replace(/<hr\s*\/?>/gi, '\n')
+    .split('\n');
   const regex = new RegExp(pattern.split(' ').join('|'), 'gi');
   const matchingLines = lines.filter(line => regex.test(line)).slice(0, 1);
 
@@ -195,7 +199,14 @@ export const SearchProvider: React.FC<{
       try {
         // Define common MiniSearch options
         const miniSearchOptions = {
-          fields: ['title', 'description', 'tags', 'authors', 'spr_content'],
+          fields: [
+            'title',
+            'description',
+            'tags',
+            'authors',
+            'spr_content',
+            'keywords',
+          ],
           storeFields: [
             'file_path',
             'title',
@@ -205,9 +216,16 @@ export const SearchProvider: React.FC<{
             'date',
             'category',
             'spr_content',
+            'keywords',
           ],
           searchOptions: {
-            boost: { title: 2, tags: 1.5, authors: 1.2 },
+            boost: {
+              title: 2,
+              keywords: 1.7,
+              spr_content: 1.5,
+              tags: 1.4,
+              authors: 1.2,
+            },
             fuzzy: 0.2,
             prefix: true,
           },
@@ -218,6 +236,9 @@ export const SearchProvider: React.FC<{
             }
             if (fieldName === 'authors' && Array.isArray(document.authors)) {
               return document.authors.join(' ');
+            }
+            if (fieldName === 'keywords' && Array.isArray(document.keywords)) {
+              return document.keywords.join(' ');
             }
             return document[fieldName] || '';
           },

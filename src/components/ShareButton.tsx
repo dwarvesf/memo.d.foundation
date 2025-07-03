@@ -14,17 +14,21 @@ import {
   ChevronDownIcon,
   // Printer,
   LinkIcon,
+  PrinterIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useLayoutContext } from '@/contexts/layout';
+import { IMetadata } from '@/types';
+import { createPrintableMarkdown } from '@/lib/content/markdown-printer';
 
 interface Props {
   className?: string;
+  metadata?: IMetadata;
 }
 
 const ShareButton = (props: Props) => {
-  const { className } = props;
+  const { className, metadata } = props;
   const { setIsShareDialogOpen } = useLayoutContext();
 
   const pageUrl = useMemo(() => {
@@ -108,6 +112,20 @@ const ShareButton = (props: Props) => {
             <LinkIcon className="mr-2 h-4 w-4" />
             <span>Copy link</span>
           </DropdownMenuItem>
+          {metadata?.sprContent ? (
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() =>
+                createPrintableMarkdown({
+                  title: metadata.title,
+                  spr_content: metadata.sprContent!,
+                })
+              }
+            >
+              <PrinterIcon className="mr-2 h-4 w-4" />
+              <span>Print lesson</span>
+            </DropdownMenuItem>
+          ) : null}
           {/* <DropdownMenuItem className="cursor-pointer">
               <Printer className="mr-2 h-4 w-4" /> <span>Print cheatsheet</span>
             </DropdownMenuItem> */}

@@ -42,8 +42,8 @@ defmodule Memo.Application do
 
       iex> Memo.Application.export_duckdb("vault", "parquet")
   """
-  def export_duckdb(vaultpath, format, pattern \\ nil) do
-    Memo.ExportDuckDB.run(vaultpath, format, pattern)
+  def export_duckdb(vaultpath, format, pattern \\ nil, opts \\ []) do
+    Memo.ExportDuckDB.run(vaultpath, format, pattern, opts)
   end
 
   @doc """
