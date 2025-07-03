@@ -71,7 +71,7 @@ const createIframeContent = ({ title }: MarkdownPrinterProps) => {
             * { box-sizing: border-box; margin: 0; padding: 0; }
             
             body {
-              font-family: charter, Georgia, Cambria, serif;
+              font-family: 'Public Sans', sans-serif;
               font-size: 12pt;
               line-height: 1.5;
               color: #000000;
