@@ -6,6 +6,7 @@ import { IBackLinkItem, IMetadata } from '@/types';
 import SummaryBlock from '../memo/SummaryBlock';
 import PageTableOfContents from './PageTableOfContents';
 import { ITocItem } from '@/types';
+import ShareButton from '@/components/ShareButton'; // Import the new ShareButton component
 
 import { EyeIcon, TagIcon, Calendar1Icon, UserIcon } from 'lucide-react';
 import { formatDate } from 'date-fns';
@@ -64,18 +65,12 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
     <div className="content-layout xl:m-h-[400px]">
       {/* Title section */}
       {!hideTitle && (
-        <div className="flex flex-col items-start justify-between md:flex-row">
-          {/* Hidden metadata for search engines */}
-          <div className="hidden">{title}</div>
-          {metadata?.tags && (
-            <div className="hidden">tags: {metadata.tags.join(', ')}</div>
-          )}
+        <div className="flex-start flex justify-between space-x-2">
+          <h1 className="mt-0 mb-5 pb-0 font-serif text-3xl leading-[1.2em] font-semibold tracking-tight md:text-[35px]">
+            {formattedTitle}
+          </h1>
 
-          <div className="flex-1">
-            <h1 className="mt-0 mb-5 pb-0 font-serif text-[35px] leading-[42px] font-semibold tracking-tight">
-              {formattedTitle}
-            </h1>
-          </div>
+          <ShareButton pageTitle={formattedTitle} className="mt-2" />
         </div>
       )}
 
