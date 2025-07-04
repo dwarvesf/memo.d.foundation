@@ -391,6 +391,13 @@ export const SearchProvider: React.FC<{
             ? getMatchingLines(document.spr_content || '', query)
             : '';
 
+          document.title = query
+            ? document.title.replace(
+                new RegExp(query, 'gi'),
+                match => `<span>${match}</span>`,
+              )
+            : document.title;
+
           return document;
         }),
       );

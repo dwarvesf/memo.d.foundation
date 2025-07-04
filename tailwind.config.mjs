@@ -220,6 +220,9 @@ const config = {
             ol: {
               listStyleType: 'decimal',
             },
+            a: {
+              wordBreak: 'break-all',
+            },
             'ul, ol': {
               margin: '0',
               padding: '0',

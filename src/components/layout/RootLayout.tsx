@@ -131,7 +131,7 @@ function RootLayout({
       <Sidebar directoryTree={directoryTree} />
 
       <div
-        className={`bg-background text-foreground relative flex h-screen font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
+        className={`bg-background text-foreground custom-h-screen relative flex font-sans transition-colors ${readingMode ? 'reading-mode' : ''}`}
       >
         <DirectoryTree tree={directoryTree} />
         <div
