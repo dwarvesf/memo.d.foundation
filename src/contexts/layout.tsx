@@ -110,13 +110,18 @@ export const LayoutProvider = (props: PropsWithChildren) => {
   }, []);
 
   useHotkeys(
-    'f+shift+cmd, f+shift+ctrl',
+    'cmd+shift+f, ctrl+shift+f', // Listen for cmd+f and ctrl+f
     event => {
       if (
         event.target instanceof HTMLInputElement ||
         event.target instanceof HTMLTextAreaElement ||
         event.target instanceof HTMLSelectElement
       ) {
+        return;
+      }
+      // Explicitly check for shift key
+      // Avoid default browser search behavior
+      if (!event.shiftKey) {
         return;
       }
       event.preventDefault();

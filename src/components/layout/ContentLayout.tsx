@@ -138,8 +138,6 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
         </div>
       )}
 
-      {/* <pre>{JSON.stringify(metadata, null, 2)}</pre> */}
-
       {/* Backlinks section */}
       {backlinks.length > 0 && (
         <div className="mentionin border-border mt-12 border-t pt-6">
