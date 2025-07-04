@@ -52,7 +52,7 @@ function generateRandomAlias(): string {
   let bytesNeeded = ALIAS_RANDOM_BYTES;
   
   // Ensure the alias is long enough, if not, generate more bytes
-  while (alphanumericAlias.length < 6) {
+  while (alphanumericAlias.length < ALIAS_LENGTH) {
     const bytesToGenerate = Math.min(bytesNeeded, ALIAS_MAX_RANDOM_BYTES);
     base64 = crypto.randomBytes(bytesToGenerate).toString('base64');
     alphanumericAlias = normalizeRandomAlias(base64);
