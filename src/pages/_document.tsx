@@ -60,7 +60,7 @@ export default function Document() {
           defer
         />
       </Head>
-      <body className="min-h-screen antialiased">
+      <body className="custom-min-h-screen antialiased">
         <Main />
         <NextScript />
       </body>

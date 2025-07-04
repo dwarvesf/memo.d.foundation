@@ -118,6 +118,23 @@
     @apply border-border;
   }
 
+  .custom-h-screen {
+    height: 100vh;
+    height: 100dvh;
+    /* Modern browsers */
+    overflow: auto;
+    /* Prevent content overflow */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .custom-min-h-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+    /* Modern browsers */
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   html {
     @apply w-screen overflow-x-hidden scroll-smooth;
     scroll-padding-top: 5rem;
