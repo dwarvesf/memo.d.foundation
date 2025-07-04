@@ -26,125 +26,11 @@ jobs:
           submodules: recursive
           fetch-depth: 1
 
-      - name: Install Vault CLI
-        run: |
-          rm -rf vault_1.15.5_linux_amd64.zip
-          wget https://releases.hashicorp.com/vault/1.15.5/vault_1.15.5_linux_amd64.zip
-          sudo unzip -o vault_1.15.5_linux_amd64.zip -d /usr/local/bin/
-
-      - name: Authenticate with Vault AppRole
-        run: |
-          VAULT_TOKEN=$(vault write -field=token auth/approle/login \
-            role_id="${{ secrets.VAULT_ROLE_ID }}" \
-            secret_id="${{ secrets.VAULT_SECRET_ID }}")
-          echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
-
-      - name: Get changed files
+      - name: Get changed files from Memo
         id: changed-files
-        run: |
-          # Install DuckDB
-          wget -q https://github.com/duckdb/duckdb/releases/download/v1.3.0/duckdb_cli-linux-amd64.zip
-          unzip -q duckdb_cli-linux-amd64.zip
-          chmod +x duckdb
-
-          echo "Collecting .md files changed in the latest commit and processing submodules conditionally."
-
-          # Export this for subshells used by git submodule foreach
-          export ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH="/tmp/all_changed_md_files_accumulator.txt"
-          rm -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" # Ensure it's clean
-
-          # Get all files changed in the latest commit of the parent repository
-          PARENT_CHANGED_FILES=$(git log --pretty=format: --name-only -n 1 ${{ github.sha }})
-          echo "Files changed in parent repository's latest commit (SHA: ${{ github.sha }}):"
-          echo "$PARENT_CHANGED_FILES"
-
-          # Check if the 'vault' directory/submodule itself was affected in the parent's latest commit.
-          # This is the condition for processing submodules for their .md changes.
-          PROCESS_SUBMODULES_FOR_MD_FILES=false
-          if echo "$PARENT_CHANGED_FILES" | grep -q "^vault"; then
-            echo "'vault' (submodule or directory) was affected in the parent's latest commit. Will scan submodules for their recent .md changes."
-            PROCESS_SUBMODULES_FOR_MD_FILES=true
-          else
-            echo "'vault' (submodule or directory) was NOT affected in the parent's latest commit. Submodules will not be scanned for their recent .md changes."
-          fi
-
-          if [ "$PROCESS_SUBMODULES_FOR_MD_FILES" = true ]; then
-            echo "Processing submodules for their latest .md changes..."
-            # The script block for foreach is single-quoted. Variables like $path, $name are expanded by foreach.
-            # $ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH is an env var and will be available.
-            # $path is the path to the submodule, $name is its name.
-            git submodule foreach --quiet '
-              ALL_CHANGED_IN_SUB_COMMIT=$(git show --pretty=format: --name-only HEAD)
-              
-              # Filter for .md and .mdx files
-              SUBMODULE_MD_FILES=$(printf "%s\n" "$ALL_CHANGED_IN_SUB_COMMIT" | awk '\''/\.md$/ || /\.mdx$/'\'' || true)
-              
-              if [ -n "$SUBMODULE_MD_FILES" ]; then
-                printf "%s\n" "$SUBMODULE_MD_FILES" | awk '\''{print $0}'\'' >> "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH"
-                echo "  Added .md/.mdx files from submodule $name: $(echo "$SUBMODULE_MD_FILES" | tr "\n" " ")"
-              else
-                echo "  No .md/.mdx files found in the latest commit of submodule $name."
-              fi
-            '
-          fi
-
-          CONSOLIDATED_MD_FILES=""
-          if [ -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" ]; then
-            # Sort, remove duplicates, filter out potential empty lines, then format as comma-separated
-            # Ensure grep -v '^$' is used to remove empty lines that might result from `|| true` or empty submodule logs
-            CONSOLIDATED_MD_FILES=$(sort "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" | uniq | grep -v '^$' | tr '\n' ',' | sed 's/,$//')
-          fi
-
-          if [ -z "$CONSOLIDATED_MD_FILES" ]; then
-            echo "No markdown files found in the latest commits of the parent or relevant submodules to process."
-            echo "files=" >> $GITHUB_OUTPUT
-            rm -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH"
-            exit 0 
-          fi
-
-          # Build SQL_IN_LIST safely, handling special characters in filenames
-          SQL_IN_LIST_BUILDER=""
-          # Process accumulator only if it exists and is not empty
-          if [ -s "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" ]; then
-            PROCESSED_CONTENT_FOR_SQL=$(sort "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" | uniq | grep -v '^$' || true)
-            if [ -n "$PROCESSED_CONTENT_FOR_SQL" ]; then
-              while IFS= read -r filepath; do
-                # Escape single quotes for SQL: ' -> ''
-                # Using printf "%s" to pass filepath to sed to avoid issues if filepath starts with -
-                sql_escaped_filepath=$(printf "%s" "$filepath" | sed "s/'/''/g")
-                if [ -z "$SQL_IN_LIST_BUILDER" ]; then
-                  SQL_IN_LIST_BUILDER="'$sql_escaped_filepath'"
-                else
-                  SQL_IN_LIST_BUILDER="$SQL_IN_LIST_BUILDER,'$sql_escaped_filepath'"
-                fi
-              done <<< "$PROCESSED_CONTENT_FOR_SQL"
-            fi
-            rm -f "$ALL_CHANGED_MD_FILES_ACCUMULATOR_PATH" # Delete accumulator after use
-          fi
-          SQL_IN_LIST="$SQL_IN_LIST_BUILDER"
-
-          if [ -z "$SQL_IN_LIST" ]; then
-            echo "No markdown files to check against parquet after formatting for SQL."
-            echo "files=" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          # Select files that are in the changed list and do not yet have a redirect recorded in the parquet file
-          # (redirect is NULL or an empty list/array).
-          DB_QUERY="SELECT file_path FROM 'db/vault.parquet' WHERE file_path IN ($SQL_IN_LIST) AND (redirect IS NULL OR ARRAY_LENGTH(redirect) = 0)"
-
-          FILES_TO_PROCESS_FROM_DB=$(./duckdb -list -noheader -c "$DB_QUERY" | tr '\n' ',' | sed 's/,$//')
-
-          rm -f duckdb duckdb_cli-linux-amd64.zip vault_1.15.5_linux_amd64.zip
-
-          if [ -z "$FILES_TO_PROCESS_FROM_DB" ]; then
-            echo "No files found in vault.parquet that match the criteria (are in the collected .md/.mdx files list and have redirect IS NULL or an empty list/array)."
-            echo "files=" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          echo "Markdown files to process (from DB query): $FILES_TO_PROCESS_FROM_DB"
-          echo "files=$FILES_TO_PROCESS_FROM_DB" >> $GITHUB_OUTPUT
+        uses: tj-actions/changed-files@v46.0.5
+        with:
+          separator: ','
 
       - name: Install PNPM
         uses: pnpm/action-setup@v4
@@ -162,24 +48,22 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - uses: actions/github-script@v7
-        if: steps.changed-files.outputs.files != ''
+        if: steps.changed-files.outputs.added_files != ''
         id: normalize-paths
         with:
           script: |
-            const files = '${{ steps.changed-files.outputs.files }}'.split(',').filter(Boolean).map(f => {
-              const isHasVaultPrefix = f.startsWith('vault/');
-              if (isHasVaultPrefix) {
-                return f
+            const files = '${{ steps.changed-files.outputs.added_files }}'.split(',').filter((f) => {
+              if (!f) {
+                return false;
               }
-              const segments = f.split('/').filter(Boolean);
-              // If the file does not start with 'vault/', prepend it
-              return ['vault', ...segments].join('/');
+              // Filter out files that are not markdown files or do not start with 'vault/'
+              return (f.endsWith('.md') || f.endsWith('.mdx')) && f.startsWith('vault/');
             });
             return files;
           result-encoding: string
 
       - name: Run script with files
-        if: steps.changed-files.outputs.files != ''
+        if: steps.normalize-paths.outputs.result != ''
         run: |
           npx tsx scripts/generate-redirects.ts --files='${{ steps.normalize-paths.outputs.result }}'
 
@@ -189,7 +73,7 @@ jobs:
           commit-message: 'chore(ci): redirects'
 
       - name: Notify Discord on Success
-        if: success() && steps.changed-files.outputs.files != ''
+        if: success() && steps.normalize-paths.outputs.result != ''
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
