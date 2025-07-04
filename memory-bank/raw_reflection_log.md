@@ -1,17 +1,37 @@
-------
+---------
+Date: 2025-07-04
+TaskRef: "Reset scroll to top on selectedItem change in CommandPaletteModal"
+
+Learnings:
+- When implementing a scrollable list in React, resetting the scroll position (`scrollTop = 0`) on both query and selected item changes ensures the user always sees the top of the list when context changes.
+- Using multiple `useEffect` hooks with different dependencies (e.g., `[query]`, `[selectedItem]`) is a clean and idiomatic way to handle UI side effects in React.
+- This pattern is especially useful for command palette, autocomplete, or search UIs where the visible content can change due to selection or filtering.
+
+Difficulties:
+- The initial implementation used an incorrect ref for the scrollable container, which did not properly reset the scroll position. The user identified and corrected the ref usage to ensure the scroll reset works as intended.
+
+Successes:
+- After correcting the ref, the scroll reset logic is robust and user-friendly, improving UX for keyboard and mouse navigation.
+
+Improvements_Identified_For_Consolidation:
+- General React UI pattern: useEffect-based scroll reset for dynamic lists, ensuring the correct ref is used for the scrollable element.
+---
+
 Date: 2025-07-03
 TaskRef: "Fix MiniSearch index to include spr_content and keywords for search"
 Learnings:
+
 - MiniSearch will only search fields explicitly listed in the `fields` array; missing fields in the index config or document schema will not be searchable.
 - The backend index and frontend MiniSearch config must be kept in sync for all searchable fields.
 - Adding a new field (like `keywords`) requires updating both the DuckDB row extraction and the MiniSearch document schema.
-Difficulties:
+  Difficulties:
 - The original script did not extract or index `keywords`, and `spr_content` was omitted from the indexed fields, causing search failures for those fields.
 - Ensuring type safety and correct array extraction from DuckDBValue objects is important for robust indexing.
-Successes:
+  Successes:
 - After updating the script and regenerating the index, both `spr_content` and `keywords` are now searchable as intended.
-Improvements_Identified_For_Consolidation:
+  Improvements_Identified_For_Consolidation:
 - Always verify that all intended search fields are present in both the backend index and frontend config.
+
 ---
 
 Date: 2025-07-03

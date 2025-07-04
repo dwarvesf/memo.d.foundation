@@ -1,6 +1,10 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { cn, uppercaseSpecialWords } from '@/lib/utils';
+import {
+  cn,
+  enrichedQueryMatchedValue,
+  uppercaseSpecialWords,
+} from '@/lib/utils';
 import { SearchResult } from '../search/SearchProvider';
 import { ISearchResultItem } from '@/types';
 import RenderMarkdown from '../RenderMarkdown';
@@ -67,6 +71,7 @@ export function CommandPaletteModal({
 
   // Ref for scrollable result list
   const resultListRef = React.useRef<HTMLDivElement>(null);
+  const contentListRef = React.useRef<HTMLDivElement>(null);
 
   // Reset scroll offset to top on query change
   useEffect(() => {
@@ -74,6 +79,13 @@ export function CommandPaletteModal({
       resultListRef.current.scrollTop = 0;
     }
   }, [query]);
+
+  // Reset scroll offset to top on selectedItem change
+  useEffect(() => {
+    if (contentListRef.current) {
+      contentListRef.current.scrollTop = 0;
+    }
+  }, [selectedItem]);
 
   // Shared content for both desktop and mobile views
   const bodyRender = (
@@ -100,9 +112,15 @@ export function CommandPaletteModal({
               {Object.entries(result.grouped).map(
                 ([category, categoryResults]) => (
                   <div key={category} className="flex flex-col">
-                    <div className="px-3 py-1.5 text-xs font-medium capitalize">
-                      {uppercaseSpecialWords(category)}
-                    </div>
+                    <div
+                      className="[&_span]:text-primary px-3 py-1.5 text-xs font-medium capitalize [&_span]:underline"
+                      dangerouslySetInnerHTML={{
+                        __html: enrichedQueryMatchedValue(
+                          uppercaseSpecialWords(category),
+                          query,
+                        ),
+                      }}
+                    />
                     {categoryResults.map((result, index) => {
                       const isSelected = selectedItem?.id === result.id;
                       return (
@@ -124,9 +142,12 @@ export function CommandPaletteModal({
                             setSelectedCategory(category);
                           }}
                         >
-                          <div className="line-clamp-1 font-medium">
-                            {result.title}
-                          </div>
+                          <div
+                            className="[&_span]:text-primary line-clamp-1 font-medium [&_span]:underline"
+                            dangerouslySetInnerHTML={{
+                              __html: result.title,
+                            }}
+                          />
                           {result.matchingLines && (
                             <div
                               className={cn(
@@ -212,6 +233,7 @@ export function CommandPaletteModal({
         </div>
         {query && !!result.flat.length && (
           <div
+            ref={contentListRef}
             className={cn(
               'bg-background-secondary hidden flex-1 basis-3/5 flex-col items-center overflow-y-auto border-l px-9 py-6 md:flex',
             )}
@@ -223,14 +245,21 @@ export function CommandPaletteModal({
             {selectedItem && (
               <>
                 {/* Category/Path */}
-                <span className="mt-3.5 text-center text-xs capitalize">
-                  {uppercaseSpecialWords(selectedItem.category)}
-                </span>
+                <span
+                  className="[&_span]:text-primary mt-3.5 text-center text-xs capitalize [&_span]:underline"
+                  dangerouslySetInnerHTML={{
+                    __html: enrichedQueryMatchedValue(
+                      uppercaseSpecialWords(selectedItem.category),
+                      query,
+                    ),
+                  }}
+                />
 
                 {/* Title */}
-                <h3 className="m-0 mt-2 text-center font-serif text-2xl leading-tight font-medium">
-                  {selectedItem.title}
-                </h3>
+                <h3
+                  className="[&_span]:text-primary m-0 mt-2 text-center font-serif text-2xl leading-tight font-medium [&_span]:underline"
+                  dangerouslySetInnerHTML={{ __html: selectedItem.title }}
+                />
 
                 {/* Description */}
                 <p className="mt-3.5 font-serif text-sm font-medium">
@@ -244,8 +273,17 @@ export function CommandPaletteModal({
                       on this page
                     </span>
 
-                    <div className="mt-5 text-sm [&_code]:italic">
-                      <RenderMarkdown content={selectedItem.spr_content} />
+                    <div className="[&_span.spr-content-highlight]:text-primary mt-5 text-sm [&_code]:italic [&_span.spr-content-highlight]:underline">
+                      <RenderMarkdown
+                        content={selectedItem.spr_content}
+                        getHighlightedText={value =>
+                          enrichedQueryMatchedValue(
+                            value,
+                            query,
+                            'spr-content-highlight',
+                          )
+                        }
+                      />
                     </div>
                   </div>
                 )}

@@ -72,6 +72,20 @@ export function uppercaseSpecialWords(str = '', separator = ' ') {
     })
     .join(separator);
 }
+
+export function enrichedQueryMatchedValue(
+  value: string,
+  query?: string,
+  className = '',
+) {
+  return query
+    ? value.replace(
+        new RegExp(query, 'gi'),
+        match => `<span class="${className}">${match}</span>`,
+      )
+    : value;
+}
+
 export function formatAddress(address: string) {
   const formattedAddress = `${address.substring(
     0,
