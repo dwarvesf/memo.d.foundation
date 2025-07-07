@@ -17,7 +17,7 @@ import { getFirstMemoImage } from '@/components/memo/utils';
 // Import components
 import { RootLayout, ContentLayout } from '../components';
 import SubscriptionSection from '../components/layout/SubscriptionSection';
-import UtterancComments from '@/components/layout/UtterancComments';
+import GiscusComments from '@/components/layout/GiscusComments';
 import MintEntry from '@/components/mint-entry/MintEntry';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer'; // Add this import
 import { SerializeResult } from 'next-mdx-remote-client/serialize'; // Add this import
@@ -583,7 +583,7 @@ export default function ContentPage({
           </ContentLayout>
           {shouldShowSubscription && <SubscriptionSection />}
           {!!metadata?.tokenId && <MintEntry metadata={metadata} />}
-          <UtterancComments />
+          <GiscusComments />
         </div>
       </RootLayout>
     );
