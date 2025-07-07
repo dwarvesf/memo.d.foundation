@@ -17,6 +17,20 @@ import {
   LintResults,
   RuleModule,
 } from './rules/types.js';
+import { execSync } from 'child_process';
+
+// Command for checking is in git repository and doing add changed files
+const gitAddChangedFiles = `git add -A`;
+
+function executeGitAddChangedFiles(): void {
+  try {
+    execSync(gitAddChangedFiles, { stdio: 'ignore' });
+  } catch (error) {
+    console.error(
+      colors.red(`Error on adding git changed files: ${(error as any).message}`),
+    );
+  }
+}
 
 // ANSI escape codes for colors
 const colors: Colors = {
@@ -376,6 +390,7 @@ export async function main(
 
   if (fix) {
     await linter.applyFixes(results);
+    executeGitAddChangedFiles();
     const fixedErrors = results.fixableErrorCount;
     const fixedWarnings = results.fixableWarningCount;
     const fixedFiles = results.results.filter(
@@ -446,6 +461,7 @@ export async function main(
               totalWarnings--;
               totalFixableWarnings--;
             }
+            executeGitAddChangedFiles();
             continue; // Skip logging for Prettier fixes
           }
           const severityColor =
