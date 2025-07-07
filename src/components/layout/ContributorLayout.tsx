@@ -105,7 +105,7 @@ function ContributorLayout({
       <Sidebar directoryTree={directoryTree} />
 
       <div
-        className={`bg-background text-foreground relative flex h-screen transition-colors ${readingMode ? 'reading-mode' : ''}`}
+        className={`bg-background text-foreground custom-h-screen relative flex transition-colors ${readingMode ? 'reading-mode' : ''}`}
       >
         <DirectoryTree tree={directoryTree} />
         <div
