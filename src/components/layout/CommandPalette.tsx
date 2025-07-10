@@ -13,8 +13,7 @@ import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
 import { IRecentPageStorageItem, ISearchResultItem } from '@/types';
 import { CommandPaletteModal } from './CommandPaletteModal';
-import { BookOpenIcon, PinIcon, CopyIcon, Share2Icon } from 'lucide-react';
-import HotIcon from '../icons/HotIcon';
+import { BookOpenIcon, CopyIcon, Share2Icon } from 'lucide-react';
 import SearchIcon from '../icons/SearchIcon';
 import { Editor } from 'draft-js';
 import { useLayoutContext } from '@/contexts/layout';
@@ -497,22 +496,6 @@ function getDefaultSearchResult(recentPages: IRecentPageStorageItem[]) {
       path: page.path,
       icon: <BookOpenIcon className="stroke-primary" />,
     })),
-    {
-      id: 'hot',
-      title: "What's been hot lately",
-      description: 'See featured posts',
-      category: 'Welcome to Dwarves Memo',
-      icon: <HotIcon className="stroke-primary" />,
-      path: '/',
-    },
-    {
-      id: 'pinned',
-      title: 'Pinned note',
-      description: 'View our latest announcement',
-      category: 'Welcome to Dwarves Memo',
-      icon: <PinIcon className="stroke-primary" />,
-      path: '/',
-    },
     {
       id: 'copy',
       title: 'Copy memo content',
