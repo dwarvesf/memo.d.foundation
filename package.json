@@ -143,6 +143,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
     "eslint-config-prettier": "^10.1.5",
+    "hastscript": "^9.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
     "notion-to-md": "4.0.0-alpha.4",

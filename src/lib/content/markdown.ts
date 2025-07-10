@@ -1,6 +1,7 @@
 import { ITocItem } from '@/types';
 import fs from 'fs/promises'; // Use asynchronous promises API
 import matter from 'gray-matter';
+import { h } from 'hastscript';
 import type {
   Element,
   Root as HastRoot,
@@ -330,7 +331,7 @@ function rehypeAddHeadingIds() {
     if (!headingTextMap) return;
 
     visit(tree, 'element', (node: Element) => {
-      if (/^h[2-5]$/.test(node.tagName)) {
+      if (/^h[2-6]$/.test(node.tagName)) {
         // Extract text content from heading
         let textContent = '';
         visit(node, 'text', (textNode: HastText) => {
@@ -344,7 +345,62 @@ function rehypeAddHeadingIds() {
           const nextCount = currentCount + 1;
           headingTextCount.set(textContent, nextCount);
           node.properties = node.properties || ({} as Properties);
-          node.properties.id = nextCount > 1 ? `${id}-${nextCount}` : id;
+          const headingId = nextCount > 1 ? `${id}-${nextCount}` : id;
+          node.properties.id = headingId;
+
+          // Create the link icon element
+          const linkIcon = h(
+            'span',
+            {
+              className:
+                'absolute right-full top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pr-3',
+              'aria-label': `Link to section ${textContent}`,
+              title: `Link to section ${textContent}`,
+            },
+            h(
+              'span',
+              {
+                className:
+                  'text-muted-foreground hover:text-foreground w-6 rounded-md hidden sm:flex items-center justify-center h-6 border',
+              },
+              h(
+                'svg',
+                {
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  stroke: 'currentColor',
+                  strokeWidth: '2',
+                  strokeLinecap: 'round',
+                  strokeLinejoin: 'round',
+                  className: 'w-3 h-3 text-current',
+                },
+                h('path', {
+                  d: 'M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71',
+                }),
+                h('path', {
+                  d: 'M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71',
+                }),
+              ),
+            ),
+          );
+
+          // Wrap the heading content in a div to apply relative positioning
+          // and insert the link icon as a sibling within that div.
+          // This requires changing the heading node itself.
+          // The original heading content will be a child of this new div.
+          const originalChildren = [...node.children];
+          node.children = [
+            h(
+              'div',
+              {
+                className: 'relative inline-block group cursor-pointer',
+                'data-heading-id': headingId, // Custom attribute to easily retrieve the ID
+              }, // Use group for hover effect
+              ...originalChildren,
+              linkIcon,
+            ),
+          ];
         }
       }
     });
