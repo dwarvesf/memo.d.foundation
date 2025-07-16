@@ -72,30 +72,32 @@ function ContributionActivityCalendar(
       <div className="mx-auto mb-10 flex w-full max-w-3xl flex-col gap-y-2 px-3.5 md:px-0">
         <div className="flex items-center justify-between">
           <span className="text-base">Activity</span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="text-xs">
-                <CalendarIcon className="!h-3 !w-3" />
-                Viewing {year}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {Object.keys(data)
-                .sort((a, b) => b.localeCompare(a))
-                .map(year => (
-                  <DropdownMenuItem key={year} onClick={() => setYear(year)}>
-                    {year}
-                    <DropdownMenuShortcut>
-                      &#8721;
-                      {data[year].reduce(
-                        (acc, activity) => acc + activity.count,
-                        0,
-                      )}
-                    </DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {Object.keys(data).length > 0 ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="text-xs">
+                  <CalendarIcon className="!h-3 !w-3" />
+                  Viewing {year}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {Object.keys(data)
+                  .sort((a, b) => b.localeCompare(a))
+                  .map(year => (
+                    <DropdownMenuItem key={year} onClick={() => setYear(year)}>
+                      {year}
+                      <DropdownMenuShortcut>
+                        &#8721;
+                        {data[year].reduce(
+                          (acc, activity) => acc + activity.count,
+                          0,
+                        )}
+                      </DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                  ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : null}
         </div>
         <div className="border-border relative rounded-lg border px-4 py-2 pb-2 md:py-1 md:[&_svg]:w-full">
           <ActivityCalendar

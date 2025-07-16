@@ -15,6 +15,7 @@ interface Props {
   twitterUserName?: string;
   bio?: string;
   avatarUrl?: string;
+  showClaimProfile?: boolean;
 }
 
 const ContributorHead = (props: Props) => {
@@ -27,6 +28,7 @@ const ContributorHead = (props: Props) => {
     twitterUserName,
     contributorMemos,
     avatarUrl,
+    showClaimProfile = false,
   } = props;
 
   const tags = contributorMemos
@@ -113,6 +115,32 @@ const ContributorHead = (props: Props) => {
           />
         </div>
       </div>
+      {showClaimProfile ? (
+        <div className="relative mt-2 flex w-full flex-col-reverse justify-between px-3.5 md:max-w-3xl md:flex-row md:px-0">
+          <div className="bg-primary/10 mt-4 w-full rounded-xl p-4">
+            <div className="flex items-center text-lg font-bold">
+              Claim Your Contributor Profile
+            </div>
+            <p className="text-foreground mt-2">
+              Your contributions to our journey matter. Claim your onchain
+              profile in our Discord server.
+            </p>
+            <p className="text-foreground">
+              These profiles are vital infrastructure for our evolution into a
+              protocol, connecting you to a wider network of innovators,
+              regardless of your current relationship with Dwarves.
+            </p>
+            <button
+              onClick={() =>
+                window.open('https://discord.com/invite/dfoundation', '_blank')
+              }
+              className="mt-4 w-full cursor-pointer rounded-full bg-black py-2 font-semibold text-white"
+            >
+              Claim Your Profile
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

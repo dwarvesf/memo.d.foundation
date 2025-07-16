@@ -48,9 +48,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
     FROM vault
     WHERE authors IS NOT NULL;
   `);
-  const contributorPaths = authorsResult.map(row => ({
+  const profilesFromParquet = await getCompactContributorsFromContentJSON();
+  const profilesUserSet = new Set();
+  authorsResult.forEach(row => {
+    if (row.author) {
+      profilesUserSet.add(row.author as string);
+    }
+  });
+  profilesFromParquet.forEach(profile => {
+    if (profile.username) {
+      profilesUserSet.add(profile.username);
+    }
+  });
+
+  const contributorPaths = Array.from(profilesUserSet).map(username => ({
     params: {
-      slug: slugify(row.author as string, { lower: true, strict: true }),
+      slug: slugify(username as string, { lower: true, strict: true }),
     },
   }));
 
@@ -530,6 +543,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       }
     });
 
+    if (contributorProfile) {
+      Object.keys(contributorProfile).forEach(key => {
+        if (
+          typeof contributorProfile[key as keyof CompactContributorProfile] ===
+          'undefined'
+        ) {
+          delete contributorProfile[key as keyof CompactContributorProfile];
+        }
+      });
+    }
+
     const mdxSource = await getMdxSource({
       mdxPath: path.join(
         process.cwd(),
@@ -567,6 +591,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     twitterUserName={contributorProfile?.twitter_username || ''}
     contributorMemos={contributorMemos}
     avatarUrl={contributorProfile?.avatar || ''}
+    showClaimProfile={!contributorProfile?.wallet_address}
+
 />
 
 <ContributionActivityCalendar data={contributorActivity} />

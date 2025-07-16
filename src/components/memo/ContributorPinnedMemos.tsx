@@ -11,6 +11,9 @@ interface ContributorPinnedMemosProps {
 }
 
 function ContributorPinnedMemos({ data }: ContributorPinnedMemosProps) {
+  if (data.length === 0) {
+    return null;
+  }
   return (
     <div className="relative mx-auto mb-10 grid w-full max-w-3xl gap-y-3">
       <span className="px-3.5 text-base md:px-0">Pinned memos</span>

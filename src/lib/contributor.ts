@@ -44,7 +44,7 @@ function getContributorWalletAddress(mochiProfile: MochiUserProfile | null) {
 function getContributorName(data: ContributorProfile) {
   const mochiProfile = data.mochi_profile_metadata;
   const githubName = data.github_metadata?.name
-    .replace(data.username, '')
+    ?.replace(data.username, '')
     .trim();
 
   if (githubName) {
@@ -101,10 +101,10 @@ export async function getCompactContributorsFromContentJSON(): Promise<
         linkedin_url = null,
         username,
         github_url = null,
-        github_metadata,
-        mochi_profile_metadata,
-        linkedin_metadata,
-        analysis_result,
+        github_metadata = null,
+        mochi_profile_metadata = null,
+        linkedin_metadata = null,
+        analysis_result = null,
         member_type,
       } = profile;
 

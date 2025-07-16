@@ -230,7 +230,7 @@ function ContributorGridCard({
         </div>
         <div className="text-muted-foreground flex items-center gap-x-1 text-xs">
           <SigmaIcon className="h-3 w-3 shrink-0" />
-          <span className="shrink-0">{count} memos</span>
+          <span className="shrink-0">{count || 0} memos</span>
         </div>
       </div>
     </Card>
