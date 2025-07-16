@@ -411,14 +411,7 @@ function ContributorGrid({
   alumniDesc: string;
   communityDesc: string;
 }) {
-  const allNonAlumniCommunity = data.filter(
-    d =>
-      typeof d !== 'string' &&
-      d.member_type !== 'alumni' &&
-      d.member_type !== 'community',
-  );
-
-  const craftsmenWith10Memos = allNonAlumniCommunity.filter(
+  const craftsmenWith10Memos = data.filter(
     d =>
       (contributionCount[typeof d !== 'string' ? (d.username ?? '') : ''] ??
         0) >= 10,
@@ -427,6 +420,13 @@ function ContributorGrid({
   const theRest = data.filter(
     d =>
       typeof d !== 'string' && (contributionCount[d.username ?? ''] ?? 0) < 10,
+  );
+
+  const dwarves = data.filter(
+    d =>
+      typeof d !== 'string' &&
+      d.member_type !== 'alumni' &&
+      d.member_type !== 'community',
   );
 
   const alumni = data.filter(
@@ -470,7 +470,7 @@ function ContributorGrid({
       <div className="flex flex-col">
         <div className="mb-1 text-xl font-semibold">Dwarves</div>
         <p className="text-muted-foreground mb-4 text-sm">{craftsmenDesc}</p>
-        {renderGrid(allNonAlumniCommunity)}
+        {renderGrid(dwarves)}
       </div>
     );
   }
