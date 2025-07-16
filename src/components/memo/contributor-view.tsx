@@ -405,17 +405,29 @@ function ContributorGrid({
 }: {
   data: (CompactContributorProfile | string)[];
   contributionCount: Record<string, number>;
-  viewing: 'all' | 'craftsmen' | 'alumni' | 'community';
+  viewing: 'all' | 'dwarves' | 'alumni' | 'community';
   craftsmenDesc: string;
   alumniDesc: string;
   communityDesc: string;
 }) {
-  const craftsmen = data.filter(
+  const allNonAlumniCommunity = data.filter(
     d =>
       typeof d !== 'string' &&
       d.member_type !== 'alumni' &&
       d.member_type !== 'community',
   );
+
+  const craftsmenWith10Memos = allNonAlumniCommunity.filter(
+    d =>
+      (contributionCount[typeof d !== 'string' ? (d.username ?? '') : ''] ??
+        0) >= 10,
+  );
+
+  const theRest = data.filter(
+    d =>
+      typeof d !== 'string' && (contributionCount[d.username ?? ''] ?? 0) < 10,
+  );
+
   const alumni = data.filter(
     d => typeof d !== 'string' && d.member_type === 'alumni',
   );
@@ -443,22 +455,21 @@ function ContributorGrid({
       <div className="flex flex-col">
         <div className="mb-1 text-xl font-semibold">Craftsmen</div>
         <p className="text-muted-foreground mb-4 text-sm">{craftsmenDesc}</p>
-        {renderGrid(craftsmen)}
-        <div className="mt-10 mb-1 text-xl font-semibold">Alumni</div>
-        <p className="text-muted-foreground mb-4 text-sm">{alumniDesc}</p>
-        {renderGrid(alumni)}
-        <div className="mt-10 mb-1 text-xl font-semibold">Community</div>
-        <p className="text-muted-foreground mb-4 text-sm">{communityDesc}</p>
-        {renderGrid(community)}
+        {renderGrid(craftsmenWith10Memos)}
+        <div className="mt-10 mb-1 text-xl font-semibold">Contributors</div>
+        <p className="text-muted-foreground mb-4 text-sm">
+          The dedicated members who lay the foundation for our community
+        </p>
+        {renderGrid(theRest)}
       </div>
     );
   }
-  if (viewing === 'craftsmen') {
+  if (viewing === 'dwarves') {
     return (
       <div className="flex flex-col">
-        <div className="mb-1 text-xl font-semibold">Craftsmen</div>
+        <div className="mb-1 text-xl font-semibold">Dwarves</div>
         <p className="text-muted-foreground mb-4 text-sm">{craftsmenDesc}</p>
-        {renderGrid(craftsmen)}
+        {renderGrid(allNonAlumniCommunity)}
       </div>
     );
   }
@@ -482,6 +493,7 @@ function ContributorGrid({
       </div>
     );
   }
+  return null; // Should not happen
 }
 
 function ContributorList({
@@ -499,32 +511,35 @@ function ContributorList({
   topCount: number;
 }) {
   const [viewing, setViewing] = useState<
-    'all' | 'craftsmen' | 'alumni' | 'community'
+    'all' | 'dwarves' | 'alumni' | 'community'
   >('all');
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
 
   const filteredData = useMemo(() => {
-    if (viewing === 'all') return data;
-    if (viewing === 'alumni') {
-      return data.filter(
-        d => typeof d !== 'string' && d.member_type === 'alumni',
-      );
+    const allNonAlumniCommunity = data.filter(
+      d =>
+        typeof d !== 'string' &&
+        d.member_type !== 'alumni' &&
+        d.member_type !== 'community',
+    );
+    const alumni = data.filter(
+      d => typeof d !== 'string' && d.member_type === 'alumni',
+    );
+    const community = data.filter(
+      d => typeof d !== 'string' && d.member_type === 'community',
+    );
+
+    if (viewing === 'all') {
+      // For 'all' viewing, we combine craftsmenWith10Memos and theRest
+      // The sorting will handle the order, but we need to ensure both groups are present.
+      // For the purpose of filtering, we return the original data and let ContributorGrid handle the split.
+      return data;
     }
-    if (viewing === 'community') {
-      return data.filter(
-        d => typeof d !== 'string' && d.member_type === 'community',
-      );
-    }
-    if (viewing === 'craftsmen') {
-      return data.filter(
-        d =>
-          typeof d !== 'string' &&
-          d.member_type !== 'alumni' &&
-          d.member_type !== 'community',
-      );
-    }
+    if (viewing === 'alumni') return alumni;
+    if (viewing === 'community') return community;
+    if (viewing === 'dwarves') return allNonAlumniCommunity; // Changed to include all non-alumni/non-community
     return data;
-  }, [data, viewing]);
+  }, [data, viewing, contributionCount]);
 
   const sortByContributionCount = data.sort((a, b) => {
     const nameA = typeof a === 'string' ? a : (a.username ?? '');
@@ -548,10 +563,10 @@ function ContributorList({
 
   const desc = useMemo(() => {
     if (viewing === 'all') {
-      return 'Hover over a contributor to see their details';
+      return 'All Dwarves community members';
     }
-    if (viewing === 'craftsmen') {
-      return 'Dwarves Craftsmen working diligently to empower the next innovation';
+    if (viewing === 'dwarves') {
+      return 'Dwarves working diligently to empower the next innovation';
     }
     if (viewing === 'alumni') {
       return "Dwarves Alumni's work laid the foundation for those who come after";
@@ -612,17 +627,17 @@ function ContributorList({
                   <SigmaIcon />
                   All
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setViewing('craftsmen')}>
+                <DropdownMenuItem onClick={() => setViewing('dwarves')}>
                   <HammerIcon />
-                  Dwarves Craftsmen
+                  Dwarves
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setViewing('alumni')}>
                   <GraduationCapIcon />
-                  Dwarves Alumni
+                  Alumni
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setViewing('community')}>
                   <UsersIcon />
-                  Dwarves Community
+                  Community
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
