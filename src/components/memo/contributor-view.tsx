@@ -15,7 +15,8 @@ import {
   HoverCardTrigger,
 } from '../ui/hover-card';
 import { Avatar, AvatarImage } from '../ui/avatar';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Jdenticon from 'react-jdenticon';
 import {
   PolarAngleAxis,
@@ -510,10 +511,30 @@ function ContributorList({
   >;
   topCount: number;
 }) {
+  const router = useRouter();
+  const { view: queryViewing } = router.query;
+
+  const initialViewing = useMemo(() => {
+    const validViews = ['dwarves', 'alumni', 'community'];
+    if (typeof queryViewing === 'string' && validViews.includes(queryViewing)) {
+      return queryViewing as 'dwarves' | 'alumni' | 'community';
+    }
+    return 'all';
+  }, [queryViewing]);
+
   const [viewing, setViewing] = useState<
     'all' | 'dwarves' | 'alumni' | 'community'
-  >('all');
+  >(initialViewing);
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
+
+  useEffect(() => {
+    const validViews = ['dwarves', 'alumni', 'community'];
+    if (typeof queryViewing === 'string' && validViews.includes(queryViewing)) {
+      setViewing(queryViewing as 'dwarves' | 'alumni' | 'community');
+    } else {
+      setViewing('all');
+    }
+  }, [queryViewing]);
 
   const filteredData = useMemo(() => {
     const allNonAlumniCommunity = data.filter(
