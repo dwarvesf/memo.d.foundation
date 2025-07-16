@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
+import { Badge } from '../ui/badge';
 import { ScrollArea, ScrollBar } from '../ui/scrollarea';
 import { CompactContributorProfile } from '@/types/user';
 import {
@@ -14,7 +15,8 @@ import {
   HoverCardTrigger,
 } from '../ui/hover-card';
 import { Avatar, AvatarImage } from '../ui/avatar';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Jdenticon from 'react-jdenticon';
 import {
   PolarAngleAxis,
@@ -163,8 +165,19 @@ function ContributorGridCard({
     return <AvatarImage className="no-zoom !m-0" src={data.avatar} />;
   }, [data, isUnknown]);
 
+  const memberType = typeof data === 'string' ? null : data.member_type;
+
   return (
-    <Card className="flex flex-col items-center justify-between p-4 text-center shadow-none transition-shadow duration-200 hover:shadow-md">
+    <Card className="relative flex flex-col items-center justify-between p-4 text-center shadow-none transition-shadow duration-200 hover:shadow-md">
+      {memberType &&
+        (memberType === 'alumni' || memberType === 'community') && (
+          <Badge
+            variant={memberType === 'alumni' ? 'default' : 'secondary'}
+            className="absolute top-2 right-2 px-2 py-0.5 text-xs"
+          >
+            {memberType.charAt(0).toUpperCase() + memberType.slice(1)}
+          </Badge>
+        )}
       <Link
         href={`/contributor/${username.toLocaleLowerCase()}`}
         className="flex flex-col items-center"
@@ -393,17 +406,29 @@ function ContributorGrid({
 }: {
   data: (CompactContributorProfile | string)[];
   contributionCount: Record<string, number>;
-  viewing: 'all' | 'craftsmen' | 'alumni' | 'community';
+  viewing: 'all' | 'dwarves' | 'alumni' | 'community';
   craftsmenDesc: string;
   alumniDesc: string;
   communityDesc: string;
 }) {
-  const craftsmen = data.filter(
+  const craftsmenWith10Memos = data.filter(
+    d =>
+      (contributionCount[typeof d !== 'string' ? (d.username ?? '') : ''] ??
+        0) >= 10,
+  );
+
+  const theRest = data.filter(
+    d =>
+      typeof d !== 'string' && (contributionCount[d.username ?? ''] ?? 0) < 10,
+  );
+
+  const dwarves = data.filter(
     d =>
       typeof d !== 'string' &&
       d.member_type !== 'alumni' &&
       d.member_type !== 'community',
   );
+
   const alumni = data.filter(
     d => typeof d !== 'string' && d.member_type === 'alumni',
   );
@@ -431,22 +456,21 @@ function ContributorGrid({
       <div className="flex flex-col">
         <div className="mb-1 text-xl font-semibold">Craftsmen</div>
         <p className="text-muted-foreground mb-4 text-sm">{craftsmenDesc}</p>
-        {renderGrid(craftsmen)}
-        <div className="mt-10 mb-1 text-xl font-semibold">Alumni</div>
-        <p className="text-muted-foreground mb-4 text-sm">{alumniDesc}</p>
-        {renderGrid(alumni)}
-        <div className="mt-10 mb-1 text-xl font-semibold">Community</div>
-        <p className="text-muted-foreground mb-4 text-sm">{communityDesc}</p>
-        {renderGrid(community)}
+        {renderGrid(craftsmenWith10Memos)}
+        <div className="mt-10 mb-1 text-xl font-semibold">Contributors</div>
+        <p className="text-muted-foreground mb-4 text-sm">
+          The dedicated members who lay the foundation for our community
+        </p>
+        {renderGrid(theRest)}
       </div>
     );
   }
-  if (viewing === 'craftsmen') {
+  if (viewing === 'dwarves') {
     return (
       <div className="flex flex-col">
-        <div className="mb-1 text-xl font-semibold">Craftsmen</div>
+        <div className="mb-1 text-xl font-semibold">Dwarves</div>
         <p className="text-muted-foreground mb-4 text-sm">{craftsmenDesc}</p>
-        {renderGrid(craftsmen)}
+        {renderGrid(dwarves)}
       </div>
     );
   }
@@ -470,6 +494,7 @@ function ContributorGrid({
       </div>
     );
   }
+  return null; // Should not happen
 }
 
 function ContributorList({
@@ -486,33 +511,56 @@ function ContributorList({
   >;
   topCount: number;
 }) {
+  const router = useRouter();
+  const { view: queryViewing } = router.query;
+
+  const initialViewing = useMemo(() => {
+    const validViews = ['dwarves', 'alumni', 'community'];
+    if (typeof queryViewing === 'string' && validViews.includes(queryViewing)) {
+      return queryViewing as 'dwarves' | 'alumni' | 'community';
+    }
+    return 'all';
+  }, [queryViewing]);
+
   const [viewing, setViewing] = useState<
-    'all' | 'craftsmen' | 'alumni' | 'community'
-  >('all');
+    'all' | 'dwarves' | 'alumni' | 'community'
+  >(initialViewing);
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
 
+  useEffect(() => {
+    const validViews = ['dwarves', 'alumni', 'community'];
+    if (typeof queryViewing === 'string' && validViews.includes(queryViewing)) {
+      setViewing(queryViewing as 'dwarves' | 'alumni' | 'community');
+    } else {
+      setViewing('all');
+    }
+  }, [queryViewing]);
+
   const filteredData = useMemo(() => {
-    if (viewing === 'all') return data;
-    if (viewing === 'alumni') {
-      return data.filter(
-        d => typeof d !== 'string' && d.member_type === 'alumni',
-      );
+    const allNonAlumniCommunity = data.filter(
+      d =>
+        typeof d !== 'string' &&
+        d.member_type !== 'alumni' &&
+        d.member_type !== 'community',
+    );
+    const alumni = data.filter(
+      d => typeof d !== 'string' && d.member_type === 'alumni',
+    );
+    const community = data.filter(
+      d => typeof d !== 'string' && d.member_type === 'community',
+    );
+
+    if (viewing === 'all') {
+      // For 'all' viewing, we combine craftsmenWith10Memos and theRest
+      // The sorting will handle the order, but we need to ensure both groups are present.
+      // For the purpose of filtering, we return the original data and let ContributorGrid handle the split.
+      return data;
     }
-    if (viewing === 'community') {
-      return data.filter(
-        d => typeof d !== 'string' && d.member_type === 'community',
-      );
-    }
-    if (viewing === 'craftsmen') {
-      return data.filter(
-        d =>
-          typeof d !== 'string' &&
-          d.member_type !== 'alumni' &&
-          d.member_type !== 'community',
-      );
-    }
+    if (viewing === 'alumni') return alumni;
+    if (viewing === 'community') return community;
+    if (viewing === 'dwarves') return allNonAlumniCommunity; // Changed to include all non-alumni/non-community
     return data;
-  }, [data, viewing]);
+  }, [data, viewing, contributionCount]);
 
   const sortByContributionCount = data.sort((a, b) => {
     const nameA = typeof a === 'string' ? a : (a.username ?? '');
@@ -536,10 +584,10 @@ function ContributorList({
 
   const desc = useMemo(() => {
     if (viewing === 'all') {
-      return 'Hover over a contributor to see their details';
+      return 'All Dwarves community members';
     }
-    if (viewing === 'craftsmen') {
-      return 'Dwarves Craftsmen working diligently to empower the next innovation';
+    if (viewing === 'dwarves') {
+      return 'Dwarves working diligently to empower the next innovation';
     }
     if (viewing === 'alumni') {
       return "Dwarves Alumni's work laid the foundation for those who come after";
@@ -600,17 +648,17 @@ function ContributorList({
                   <SigmaIcon />
                   All
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setViewing('craftsmen')}>
+                <DropdownMenuItem onClick={() => setViewing('dwarves')}>
                   <HammerIcon />
-                  Dwarves Craftsmen
+                  Dwarves
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setViewing('alumni')}>
                   <GraduationCapIcon />
-                  Dwarves Alumni
+                  Alumni
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setViewing('community')}>
                   <UsersIcon />
-                  Dwarves Community
+                  Community
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
