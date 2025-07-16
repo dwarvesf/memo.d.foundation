@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
+import { Badge } from '../ui/badge';
 import { ScrollArea, ScrollBar } from '../ui/scrollarea';
 import { CompactContributorProfile } from '@/types/user';
 import {
@@ -163,8 +164,19 @@ function ContributorGridCard({
     return <AvatarImage className="no-zoom !m-0" src={data.avatar} />;
   }, [data, isUnknown]);
 
+  const memberType = typeof data === 'string' ? null : data.member_type;
+
   return (
-    <Card className="flex flex-col items-center justify-between p-4 text-center shadow-none transition-shadow duration-200 hover:shadow-md">
+    <Card className="relative flex flex-col items-center justify-between p-4 text-center shadow-none transition-shadow duration-200 hover:shadow-md">
+      {memberType &&
+        (memberType === 'alumni' || memberType === 'community') && (
+          <Badge
+            variant={memberType === 'alumni' ? 'default' : 'secondary'}
+            className="absolute top-2 right-2 px-2 py-0.5 text-xs"
+          >
+            {memberType.charAt(0).toUpperCase() + memberType.slice(1)}
+          </Badge>
+        )}
       <Link
         href={`/contributor/${username.toLocaleLowerCase()}`}
         className="flex flex-col items-center"
