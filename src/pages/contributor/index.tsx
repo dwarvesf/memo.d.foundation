@@ -94,6 +94,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
     // Fetch contributor stats using the new utility function
     const contributorProfiles = await getCompactContributorsFromContentJSON();
+    contributorProfiles.forEach(profile => {
+      contributors.add(profile.username);
+    });
     const contributorsArray = Array.from(contributors);
 
     const enrichedContributors = contributorsArray.map(username => {
@@ -101,6 +104,16 @@ export const getStaticProps: GetStaticProps = async () => {
         const foundProfile = contributorProfiles.find(
           profile => profile.username === username,
         );
+        if (foundProfile) {
+          Object.keys(foundProfile).forEach(key => {
+            if (
+              typeof foundProfile[key as keyof CompactContributorProfile] ===
+              'undefined'
+            ) {
+              delete foundProfile[key as keyof CompactContributorProfile];
+            }
+          });
+        }
 
         return foundProfile;
       }

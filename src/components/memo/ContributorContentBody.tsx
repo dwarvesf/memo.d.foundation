@@ -18,6 +18,9 @@ function ContributorContentBody({
   memoCollectors,
 }: ContributorContentBodyProps) {
   const authorUsername = data[0]?.authors?.[0];
+  if (data.length === 0) {
+    return null;
+  }
   return (
     <Tabs
       defaultValue="timeline"
