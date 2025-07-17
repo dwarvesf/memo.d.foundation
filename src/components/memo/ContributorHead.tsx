@@ -119,7 +119,7 @@ const ContributorHead = (props: Props) => {
         <div className="relative mt-2 flex w-full flex-col-reverse justify-between px-3.5 md:max-w-3xl md:flex-row md:px-0">
           <div className="mt-4 w-full rounded-xl bg-[var(--primary-color-lighten)] p-4">
             <div className="flex items-center text-lg font-bold">
-              Claim Your Profile
+              Claim your profile
             </div>
             <p className="text-foreground mt-2">
               Your contributions to our journey matter. Claim your onchain
@@ -127,8 +127,8 @@ const ContributorHead = (props: Props) => {
             </p>
             <p className="text-foreground">
               Your connection is vital infrastructure for our evolution into a
-              protocol, connecting you to a wider network of innovators,
-              regardless of your current relationship with Dwarves.
+              protocol, connecting you to a wider network of like-minded
+              individuals, regardless of your current relationship with Dwarves.
             </p>
             <button
               onClick={() =>
@@ -136,7 +136,7 @@ const ContributorHead = (props: Props) => {
               }
               className="mt-4 w-full cursor-pointer rounded-full bg-black py-2 font-semibold text-white transition-all duration-100 hover:bg-black/80"
             >
-              Claim Your Profile
+              Get verified
             </button>
           </div>
         </div>
