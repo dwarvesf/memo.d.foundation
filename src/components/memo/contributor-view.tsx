@@ -257,6 +257,7 @@ function Contributor({
 }) {
   const isUnknown = typeof data === 'string';
   const name = typeof data === 'string' ? data : data.name;
+  const username = typeof data === 'string' ? data : data.username;
 
   const avatar = useMemo(() => {
     if (isUnknown) {
@@ -268,7 +269,10 @@ function Contributor({
 
   // Convert stats data to radar chart format
   const aspectData = useMemo(() => {
-    const stats = typeof data === 'string' ? null : data?.analysis_result;
+    const stats =
+      typeof data === 'string' || !data?.analysis_result
+        ? null
+        : data?.analysis_result;
     const empty = [
       { aspect: 'Technician', point: 0, fullMark: 10 },
       { aspect: 'Manager', point: 0, fullMark: 10 },
@@ -334,7 +338,7 @@ function Contributor({
       />
       <HoverCard>
         <HoverCardTrigger asChild>
-          <Link href={`/contributor/${name?.toLocaleUpperCase()}`}>
+          <Link href={`/contributor/${username.toLocaleLowerCase()}`}>
             <div className="relative flex cursor-pointer items-center justify-start gap-1.5 px-2 py-1">
               <Avatar className="dark:bg-secondary flex h-5 w-5 items-center justify-center border-2 bg-[#fff]">
                 {avatar}
@@ -358,13 +362,15 @@ function Contributor({
                   <SigmaIcon className="h-3 w-3 shrink-0" />
                   <span className="shrink-0">Total memos: {count}</span>
                 </div>
-                <span className="text-muted-foreground flex w-full items-center gap-x-1 text-sm">
-                  <BookOpenIcon className="h-3 w-3 shrink-0" />
-                  <span className="shrink-0">Latest: </span>
-                  <Link className="truncate" href={latestWork?.url}>
-                    {latestWork?.title}
-                  </Link>
-                </span>
+                {latestWork ? (
+                  <span className="text-muted-foreground flex w-full items-center gap-x-1 text-sm">
+                    <BookOpenIcon className="h-3 w-3 shrink-0" />
+                    <span className="shrink-0">Latest: </span>
+                    <Link className="truncate" href={latestWork?.url}>
+                      {latestWork?.title}
+                    </Link>
+                  </span>
+                ) : null}
               </div>
             </div>
             <ChartContainer config={chartConfig} className="w-full">
@@ -682,7 +688,7 @@ function ContributorList({
                         key={name}
                         data={d}
                         topCount={topCount}
-                        count={contributionCount[name]}
+                        count={contributionCount[name] || 0}
                         latestWork={contributorLatestWork[name]}
                       />
                     );
