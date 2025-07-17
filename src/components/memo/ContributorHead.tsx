@@ -117,16 +117,16 @@ const ContributorHead = (props: Props) => {
       </div>
       {showClaimProfile ? (
         <div className="relative mt-2 flex w-full flex-col-reverse justify-between px-3.5 md:max-w-3xl md:flex-row md:px-0">
-          <div className="bg-primary/10 mt-4 w-full rounded-xl p-4">
+          <div className="mt-4 w-full rounded-xl bg-[var(--primary-color-lighten)] p-4">
             <div className="flex items-center text-lg font-bold">
-              Claim Your Contributor Profile
+              Claim Your Profile
             </div>
             <p className="text-foreground mt-2">
               Your contributions to our journey matter. Claim your onchain
               profile in our Discord server.
             </p>
             <p className="text-foreground">
-              These profiles are vital infrastructure for our evolution into a
+              Your connection is vital infrastructure for our evolution into a
               protocol, connecting you to a wider network of innovators,
               regardless of your current relationship with Dwarves.
             </p>
@@ -134,7 +134,7 @@ const ContributorHead = (props: Props) => {
               onClick={() =>
                 window.open('https://discord.com/invite/dfoundation', '_blank')
               }
-              className="mt-4 w-full cursor-pointer rounded-full bg-black py-2 font-semibold text-white"
+              className="mt-4 w-full cursor-pointer rounded-full bg-black py-2 font-semibold text-white transition-all duration-100 hover:bg-black/80"
             >
               Claim Your Profile
             </button>
