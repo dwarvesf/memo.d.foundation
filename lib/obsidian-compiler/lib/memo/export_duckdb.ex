@@ -1387,10 +1387,12 @@ defmodule Memo.ExportDuckDB do
     content_changed = similarity < similarity_threshold
     embeddings_exist = not is_nil(embeddings_gemini) and not is_nil(embeddings_spr_custom)
 
-    # Re-embed if content changed or if embeddings don't exist (for new files or if lost)
-    needs_update = content_changed or not embeddings_exist or not spr_content_exists
-
-    needs_update
+    if not spr_content_exists do
+      true
+    else
+      # Re-embed if content changed or if embeddings don't exist (for new files or if lost)
+      content_changed or not embeddings_exist
+    end
   end
 
   defp get_file_last_commit_timestamp(file_path) do

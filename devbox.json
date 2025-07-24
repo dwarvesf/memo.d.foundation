@@ -20,6 +20,7 @@
       "run": "make run",
       "duckdb-export": "make duckdb-export",
       "duckdb-export-force": "make duckdb-export-force",
+      "duckdb-export-ignore-filter": "make duckdb-export-ignore-filter",
       "fetch": "make fetch"
     }
   }
