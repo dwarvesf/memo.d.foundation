@@ -56,6 +56,10 @@ duckdb-export-force:
 	@rm -f lib/obsidian-compiler/vault.duckdb
 	@cd lib/obsidian-compiler && mix duckdb.export --ignore-filter --ignore-embeddings-check
 
+duckdb-export-ignore-filter:
+	@rm -f lib/obsidian-compiler/vault.duckdb
+	@cd lib/obsidian-compiler && mix duckdb.export --ignore-filter
+
 duckdb-export-pattern:
 	@rm -f vault.duckdb
 	@cd lib/obsidian-compiler && mix duckdb.export_pattern --pattern "$(pattern)"

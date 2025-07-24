@@ -32,6 +32,7 @@ function extractCategory(filePath: string): string {
 interface DuckDbQueryResultRow {
   file_path: string | null;
   title: string | null;
+  short_title?: string | null;
   description: string | null;
   md_content: string | null;
   spr_content: string | null;
@@ -50,6 +51,7 @@ export interface SearchDocument {
   file_path: string;
   web_path: string;
   title: string;
+  short_title: string;
   description: string;
   spr_content: string;
   tags: string[];
@@ -126,6 +128,7 @@ async function generateSearchIndex() {
       'file_path',
       'title',
       'description',
+      'short_title',
       // 'md_content', // Not currently used in indexing logic below
       'spr_content',
       'tags',
@@ -151,6 +154,7 @@ async function generateSearchIndex() {
         // --- Data Extraction and Transformation ---
         const filePath = row.file_path || '';
         const title = row.title || '';
+        const shortTitle = row.short_title || '';
         const description = row.description || '';
         const sprContent = row.spr_content || '';
 
@@ -194,7 +198,7 @@ async function generateSearchIndex() {
         const exclude = draft || isHiringPost || (status && status !== 'Open');
 
         // Return null if excluded, filter out later
-        if (exclude || !title || !description) {
+        if (exclude || (!title && !shortTitle)) {
           return null;
         }
 
@@ -204,6 +208,7 @@ async function generateSearchIndex() {
           file_path: filePath,
           web_path: transformWebPath(filePath, staticJSONPaths),
           title,
+          short_title: shortTitle,
           description,
           spr_content: sprContent?.replace(/\n/g, '<hr />'),
           tags,
@@ -234,6 +239,7 @@ async function generateSearchIndex() {
     const miniSearch = new MiniSearch<SearchDocument>({
       fields: [
         'title',
+        'short_title',
         'description',
         'tags',
         'authors',
@@ -245,6 +251,7 @@ async function generateSearchIndex() {
         'file_path',
         'web_path',
         'title',
+        'short_title',
         'description',
         'spr_content',
         'tags',
@@ -256,6 +263,7 @@ async function generateSearchIndex() {
       searchOptions: {
         boost: {
           title: 2,
+          short_title: 1.9,
           keywords: 1.7,
           spr_content: 1.5,
           tags: 1.4,

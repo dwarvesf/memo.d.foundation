@@ -201,6 +201,7 @@ export const SearchProvider: React.FC<{
         const miniSearchOptions = {
           fields: [
             'title',
+            'short_title',
             'description',
             'tags',
             'authors',
@@ -210,6 +211,7 @@ export const SearchProvider: React.FC<{
           storeFields: [
             'file_path',
             'title',
+            'short_title',
             'description',
             'tags',
             'authors',
@@ -221,6 +223,7 @@ export const SearchProvider: React.FC<{
           searchOptions: {
             boost: {
               title: 2,
+              short_title: 1.9,
               keywords: 1.7,
               spr_content: 1.5,
               tags: 1.4,
