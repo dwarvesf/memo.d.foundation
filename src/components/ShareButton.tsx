@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -21,6 +21,7 @@ import { toast } from 'sonner';
 import { useLayoutContext } from '@/contexts/layout';
 import { IMetadata } from '@/types';
 import { createPrintableMarkdown } from '@/lib/content/markdown-printer';
+import { plausible } from '@/analytics/plausible';
 
 interface Props {
   className?: string;
@@ -31,7 +32,7 @@ const ShareButton = (props: Props) => {
   const { className, metadata } = props;
   const { setIsShareDialogOpen } = useLayoutContext();
 
-  const pageUrl = useMemo(() => {
+  const getPageUrl = () => {
     if (typeof window === 'undefined') {
       return '';
     }
@@ -46,11 +47,14 @@ const ShareButton = (props: Props) => {
         }
         return a;
       }, window.location.href);
-  }, []);
+  };
 
   const copyLinktoClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(pageUrl);
+      await navigator.clipboard.writeText(getPageUrl());
+      plausible.trackShare('memo_link_copied', getPageUrl(), {
+        title: metadata?.title || 'Untitled Memo',
+      });
       toast.success('Copied memo link!');
     } catch (error) {
       console.error('Failed to copy link:', error);
@@ -70,6 +74,10 @@ const ShareButton = (props: Props) => {
           ''.replace(/\n\s*\n\s*\n/g, '\n\n').trim();
       }
       navigator.clipboard.writeText(content);
+
+      plausible.trackShare('memo_content_copied', getPageUrl(), {
+        title: metadata?.title || 'Untitled Memo',
+      });
       toast.success('Copied memo content!');
     } catch (error) {
       console.error('Failed to copy memo content:', error);
@@ -116,10 +124,13 @@ const ShareButton = (props: Props) => {
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={() =>
-                createPrintableMarkdown({
-                  title: metadata.title,
-                  spr_content: metadata.sprContent!,
-                })
+                createPrintableMarkdown(
+                  {
+                    title: metadata.title,
+                    spr_content: metadata.sprContent!,
+                  },
+                  getPageUrl,
+                )
               }
             >
               <PrinterIcon className="mr-2 h-4 w-4" />

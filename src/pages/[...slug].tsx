@@ -405,7 +405,7 @@ export default function ContentPage({
   useEffect(() => {
     if (typeof window === 'undefined') return;
     window._memo_frontmatter = frontmatter || {};
-  }, [frontmatter]);
+  }, [frontmatter, router.asPath]);
 
   // Existing useEffect for internal links
   useEffect(() => {

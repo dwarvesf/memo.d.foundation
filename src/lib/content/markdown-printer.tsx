@@ -1,3 +1,4 @@
+import { plausible } from '@/analytics/plausible';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import ReactMarkdown, { Components } from 'react-markdown';
@@ -64,8 +65,6 @@ const createIframeContent = ({ title }: MarkdownPrinterProps) => {
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>${title || 'Document'}</title>
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
           <style>
             /* Reset and base styles */
             * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -229,7 +228,10 @@ const createIframeContent = ({ title }: MarkdownPrinterProps) => {
     `;
 };
 
-export const createPrintableMarkdown = (p: MarkdownPrinterProps) => {
+export const createPrintableMarkdown = (
+  p: MarkdownPrinterProps,
+  getUrl: () => string,
+) => {
   // Create iframe for isolated printing
   const iframe = document.createElement('iframe');
   iframe.style.position = 'absolute';
@@ -266,13 +268,42 @@ export const createPrintableMarkdown = (p: MarkdownPrinterProps) => {
     );
   }
 
-  // Wait for content to load, then trigger print
-  setTimeout(() => {
-    iframe.contentWindow?.print();
+  iframe.onload = () => {
+    // Ensure KaTeX and Highlight.js are loaded
+    const katexScript = iframeDoc.createElement('script');
+    katexScript.src =
+      'https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js';
+    iframeDoc.body.appendChild(katexScript);
 
-    // Remove iframe after printing
-    setTimeout(() => {
-      document.body.removeChild(iframe);
-    }, 1000);
-  }, 500);
+    const highlightScript = iframeDoc.createElement('script');
+    highlightScript.src =
+      'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+    iframeDoc.body.appendChild(highlightScript);
+
+    const promises = [
+      new Promise<void>(resolve => {
+        katexScript.onload = () => resolve();
+      }),
+      new Promise<void>(resolve => {
+        highlightScript.onload = () => resolve();
+      }),
+    ];
+
+    // Use all settled to ensure all scripts are loaded before printing
+    // This allows us to handle any errors in loading scripts gracefully
+    Promise.allSettled(promises).then(() => {
+      // Log the print event
+      plausible.trackShare('print_lesson', getUrl(), {
+        title: p.title || 'Untitled markdown',
+      });
+
+      // Doing printing after scripts are loaded
+      iframe.contentWindow?.print();
+
+      // Remove iframe after printing
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+      }, 1000);
+    });
+  };
 };

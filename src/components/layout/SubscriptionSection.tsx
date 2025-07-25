@@ -1,3 +1,4 @@
+import { plausible } from '@/analytics/plausible';
 import { cn } from '@/lib/utils';
 import React, { useState, useMemo } from 'react';
 import { toast } from 'sonner';
@@ -26,6 +27,11 @@ const SubscriptionSection: React.FC = () => {
     }
 
     setIsSubmitting(true);
+
+    plausible.trackSubscribe(window.location.href, {
+      type: 'subscribe_memo',
+      email: trimmedEmail,
+    });
 
     try {
       const response = await fetch(
