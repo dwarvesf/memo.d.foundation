@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import HeadingNavigator from './HeadingNavigator';
 import { flattenTocItems } from '@/lib/utils';
+import { useAudioEffects } from '@/hooks/useAudioEffects';
 
 interface TableOfContentsProps {
   items?: ITocItem[];
@@ -21,6 +22,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
   const shouldBlockHeadingObserver = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Still needed for blocking observer
+  const { playSharpClick, isSoundEnabled } = useAudioEffects();
 
   const scrollToId = useCallback((id: string) => {
     const element = document.getElementById(id);
@@ -53,13 +55,17 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
                 width: `${getIndicatorWidth(item.depth)}px`,
                 borderRadius: '2px',
               }}
-              className={cn('bg-border mr-2.5 flex h-0.5 text-transparent', {
-                'bg-border-dark dark:bg-border-light': item.id === activeId,
-              })}
+              className={cn(
+                'bg-border hover:bg-border-dark/70 dark:hover:bg-border-light/70 mr-2.5 flex h-0.5 text-transparent transition-all',
+                {
+                  'bg-border-dark dark:bg-border-light': item.id === activeId,
+                },
+              )}
               onClick={e => {
                 e.preventDefault();
                 scrollToId(item.id);
               }}
+              onMouseEnter={() => isSoundEnabled && playSharpClick()}
             >
               {item.value}
             </Link>
@@ -80,7 +86,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               style={{ marginLeft: `${depth * 16}px` }}
               href={`#${item.id}`}
               className={cn(
-                'flex cursor-pointer items-center gap-1 rounded px-2 py-1.25 text-left text-xs leading-normal font-medium',
+                'flex cursor-pointer items-center gap-1 rounded px-2 py-1.25 text-left text-xs leading-normal font-medium transition-all',
                 getHeadingLevelClass(item.depth),
                 'hover:bg-background-secondary-light hover:dark:bg-background-secondary',
                 {
@@ -93,6 +99,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
                 e.preventDefault();
                 scrollToId(item.id);
               }}
+              onMouseEnter={() => isSoundEnabled && playSharpClick()}
             >
               {item.value}
             </Link>
