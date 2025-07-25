@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
+import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ModalProps {
@@ -6,22 +7,111 @@ interface ModalProps {
   src: string;
   alt: string;
   onClose: () => void;
+  initialRect?: DOMRect | null;
+  naturalWidth?: number;
+  naturalHeight?: number;
 }
 
 // Separate modal component using React
-const ImageFullScreenModal = ({ isOpen, src, alt, onClose }: ModalProps) => {
+const ImageFullScreenModal = ({
+  isOpen,
+  src,
+  alt,
+  onClose: _onClose,
+  initialRect,
+  naturalWidth = 0,
+  naturalHeight = 0,
+}: ModalProps) => {
   const [scale, setScale] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
-  // Reset position and scale when modal opens
+  const initialScaling = useMemo(() => {
+    if (!initialRect || !naturalWidth || !naturalHeight) {
+      return {
+        initialScale: 0.1,
+        initialPosition: { x: 0, y: 0 },
+        finalScale: 1,
+        finalPosition: { x: 0, y: 0 },
+      };
+    }
+
+    // Calculate what scale the image should be at to match its original rendered size
+    const currentScale = Math.min(
+      initialRect.width / naturalWidth,
+      initialRect.height / naturalHeight,
+    );
+
+    // Calculate target scale with viewport constraints
+    // Maximum scale is the smaller of:
+    // 1. Natural size (scale 1.0)
+    // 2. What fits in 90% of viewport
+    const viewportScale = Math.min(
+      (window.innerWidth * 0.9) / naturalWidth,
+      (window.innerHeight * 0.9) / naturalHeight,
+    );
+
+    // Target scale: scale up to natural size, but don't overflow viewport
+    const idealScale = currentScale < 1.0 ? 1.0 : currentScale;
+    const targetScale = Math.min(idealScale, viewportScale);
+
+    // Calculate positions
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const originalCenterX = initialRect.left + initialRect.width / 2;
+    const originalCenterY = initialRect.top + initialRect.height / 2;
+
+    return {
+      initialScale: currentScale,
+      initialPosition: {
+        x: originalCenterX - centerX,
+        y: originalCenterY - centerY,
+      },
+      finalScale: targetScale,
+      finalPosition: { x: 0, y: 0 },
+    };
+  }, [initialRect, naturalWidth, naturalHeight]);
+
+  // Handle modal opening animation
   useEffect(() => {
     if (isOpen) {
+      // Immediately set initial state (from original image position/scale)
+      setScale(initialScaling.initialScale);
+      setPosition(initialScaling.initialPosition);
+      setIsAnimating(true);
+      setHasInitialized(true);
+
+      // Animate to final position and scale after a brief delay to allow initial render
+      const timer = setTimeout(() => {
+        setScale(initialScaling.finalScale);
+        setPosition(initialScaling.finalPosition);
+        setTimeout(() => setIsAnimating(false), 400);
+      }, 16); // Use requestAnimationFrame timing
+
+      return () => clearTimeout(timer);
+    } else {
+      // Reset when closing
       setScale(1);
       setPosition({ x: 0, y: 0 });
+      setIsAnimating(false);
+      setHasInitialized(false);
     }
-  }, [isOpen]);
+  }, [isOpen, initialScaling]);
+
+  const onClose = () => {
+    setIsAnimating(true);
+    setIsClosing(true);
+    setScale(initialScaling.initialScale);
+    setPosition(initialScaling.initialPosition);
+    setTimeout(() => {
+      _onClose();
+      setIsClosing(false);
+    }, 400); // Match animation duration
+  };
 
   // Close modal on ESC key
   useEffect(() => {
@@ -46,8 +136,40 @@ const ImageFullScreenModal = ({ isOpen, src, alt, onClose }: ModalProps) => {
     e.preventDefault();
     const delta = e.deltaY * -0.01;
     setScale(prevScale => {
-      // Limit scale between 0.5 and 5
-      return Math.max(0.5, Math.min(prevScale + delta, 5));
+      // Calculate viewport-constrained maximum scale
+      const viewportScale = Math.min(
+        (window.innerWidth * 0.9) / (naturalWidth || 1),
+        (window.innerHeight * 0.9) / (naturalHeight || 1),
+      );
+
+      // Maximum scale: natural size 5 or viewport fit, whichever is smaller
+      const maxScale = Math.max(5, viewportScale);
+
+      // Minimum scale: allow zooming out to 0.5x for better navigation
+      const minScale = Math.min(0.5, viewportScale);
+
+      return Math.max(minScale, Math.min(prevScale + delta, maxScale));
+    });
+  };
+
+  // Handle zoom-in and zoom-out
+  const handleZoom = (direction: 'in' | 'out') => {
+    setScale(prevScale => {
+      // Calculate viewport-constrained maximum scale
+      const viewportScale = Math.min(
+        (window.innerWidth * 0.9) / (naturalWidth || 1),
+        (window.innerHeight * 0.9) / (naturalHeight || 1),
+      );
+
+      // Maximum scale: natural size 5 or viewport fit, whichever is smaller
+      const maxScale = Math.max(5, viewportScale);
+
+      // Minimum scale: allow zooming out to 0.5x for better navigation
+      const minScale = Math.min(0.5, viewportScale);
+
+      return direction === 'in'
+        ? Math.min(maxScale, prevScale + 0.2)
+        : Math.max(minScale, prevScale - 0.2);
     });
   };
 
@@ -94,11 +216,20 @@ const ImageFullScreenModal = ({ isOpen, src, alt, onClose }: ModalProps) => {
     setIsDragging(false);
   };
 
-  if (!isOpen) return null;
+  // Don't render until we've initialized with proper starting position
+  if (!isOpen || !hasInitialized) return null;
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-[1000] bg-white/70 backdrop-blur-md transition-opacity duration-300 dark:bg-black/70 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+      className={cn(
+        'fixed inset-0 z-[1000] transition-all duration-1400 dark:bg-black/70',
+        {
+          'visible bg-white/70 opacity-100 backdrop-blur-md dark:bg-black/70':
+            isOpen,
+          'invisible bg-transparent opacity-0 backdrop-blur-none':
+            !isOpen || isClosing,
+        },
+      )}
       onClick={onClose}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
@@ -107,11 +238,16 @@ const ImageFullScreenModal = ({ isOpen, src, alt, onClose }: ModalProps) => {
         <img
           src={src}
           alt={alt}
-          className="absolute top-1/2 left-1/2 max-h-[90vh] max-w-[90vw] object-contain select-none"
+          className="absolute top-1/2 left-1/2 max-h-none max-w-none object-contain select-none"
           style={{
-            transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) scale(${scale})`,
-            transition: isDragging ? 'none' : 'transform 0.2s',
+            transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) scale(${scale})`,
+            transition: isDragging
+              ? 'none'
+              : isAnimating
+                ? 'transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1)'
+                : 'transform 200ms ease-out',
             cursor: isDragging ? 'grabbing' : 'grab',
+            transformOrigin: 'center center',
           }}
           onClick={e => e.stopPropagation()}
           onMouseDown={handleMouseDown}
@@ -135,7 +271,7 @@ const ImageFullScreenModal = ({ isOpen, src, alt, onClose }: ModalProps) => {
             className="rounded p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800"
             onClick={e => {
               e.stopPropagation();
-              setScale(Math.max(0.5, scale - 0.2));
+              handleZoom('out');
             }}
           >
             <svg
@@ -158,7 +294,13 @@ const ImageFullScreenModal = ({ isOpen, src, alt, onClose }: ModalProps) => {
             className="rounded p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800"
             onClick={e => {
               e.stopPropagation();
-              setScale(1);
+              // Reset to ideal scale (natural size or viewport fit)
+              const viewportScale = Math.min(
+                (window.innerWidth * 0.9) / (naturalWidth || 1),
+                (window.innerHeight * 0.9) / (naturalHeight || 1),
+              );
+              const idealScale = Math.min(1.0, viewportScale);
+              setScale(idealScale);
               setPosition({ x: 0, y: 0 });
             }}
           >
@@ -180,7 +322,7 @@ const ImageFullScreenModal = ({ isOpen, src, alt, onClose }: ModalProps) => {
             className="rounded p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800"
             onClick={e => {
               e.stopPropagation();
-              setScale(Math.min(5, scale + 0.2));
+              handleZoom('in');
             }}
           >
             <svg
