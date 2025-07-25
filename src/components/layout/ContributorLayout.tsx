@@ -119,7 +119,7 @@ function ContributorLayout({
         </div>
         <Footer />
       </div>
-      <ImageZoomProvider />
+      <ImageZoomProvider mainScrollContainerRef={scrollContainerRef} />
       <CodeblockHeaderInjector metadata={metadata} />
     </SearchProvider>
   );
