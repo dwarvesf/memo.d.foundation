@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip';
 import { categoryIcons } from './CategoriesHeader';
+import { plausible } from '@/analytics/plausible';
 
 interface PromptCardProps {
   prompt: IPromptItem;
@@ -21,6 +22,12 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt, category }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
+    plausible.trackEvent('copy_prompt', {
+      props: {
+        promptId: prompt.title,
+        category,
+      },
+    });
     navigator.clipboard.writeText(prompt.mdContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

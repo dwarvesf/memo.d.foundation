@@ -58,6 +58,7 @@ export default function Document() {
           src="https://plausible.io/js/script.js"
           data-domain="memo.d.foundation"
           defer
+          strategy="beforeInteractive"
         />
       </Head>
       <body className="custom-min-h-screen antialiased">
