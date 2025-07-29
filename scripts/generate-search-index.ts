@@ -158,6 +158,14 @@ async function generateSearchIndex() {
         const description = row.description || '';
         const sprContent = row.spr_content || '';
 
+        // Extract file name without extension
+        const fileName = path.basename(filePath, path.extname(filePath));
+
+        // Clean hyphens and slashes in file name by spacing
+        const cleanedFileName = fileName.replace(/[-/]/g, ' ');
+
+        const fileNameForSearch = [cleanedFileName, fileName];
+
         // Extract items from DuckDBValue for list types, ensuring they are arrays
         const tagsList =
           row.tags &&
@@ -185,7 +193,10 @@ async function generateSearchIndex() {
         const authors: string[] = authorsList.filter(
           (author: any): author is string => typeof author === 'string',
         );
-        const keywords: string[] = keywordsList.filter(
+        const keywords: string[] = [
+          ...keywordsList,
+          ...fileNameForSearch,
+        ].filter(
           (kw: any): kw is string => typeof kw === 'string' && kw !== '',
         );
 
@@ -275,6 +286,9 @@ async function generateSearchIndex() {
       extractField: (document, fieldName) => {
         const value = document[fieldName as keyof SearchDocument];
         if (Array.isArray(value)) {
+          if (fieldName === 'keywords') {
+            return value.join(', '); // Join keywords with comma for better search
+          }
           return value.join(' ');
         }
         return (value as string) || '';
