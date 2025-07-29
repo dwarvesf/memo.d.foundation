@@ -45,6 +45,7 @@ jobs:
           INFINITY_OPENAI_BASE_URL: ${{ secrets.INFINITY_OPENAI_BASE_URL }}
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           JINA_BASE_URL: ${{ secrets.JINA_BASE_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Commit and push changes
         uses: ./.github/actions/git-commit-push
