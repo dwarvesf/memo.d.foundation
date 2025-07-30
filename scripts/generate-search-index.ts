@@ -13,7 +13,7 @@ import {
 } from '@duckdb/node-api'; // Import DuckDB API
 import { slugifyPathComponents } from '../src/lib/utils/slugify.js';
 import MiniSearch from 'minisearch';
-import { normalizePathWithSlash } from './common.js';
+import { cleanExtension, normalizePathWithSlash } from './common.js';
 
 /**
  * Extract paths from file path to create category
@@ -71,12 +71,8 @@ function transformWebPath(
   const cleanedPath = originalFilePath.replace(suffixRegex, '');
 
   // Use the slugifyPathComponents function from backlinks.ts
-  let slugifiedPath = slugifyPathComponents(cleanedPath);
+  const slugifiedPath = cleanExtension(slugifyPathComponents(cleanedPath));
 
-  // If the slugifiedPath path ended with .md, remove the extension from the slugified path
-  if (slugifiedPath.endsWith('.md')) {
-    slugifiedPath = slugifiedPath.slice(0, -3); // Remove .md extension
-  }
   // Check if the slugified path exists in static paths
   return (
     staticPaths[normalizePathWithSlash(slugifiedPath)] ||

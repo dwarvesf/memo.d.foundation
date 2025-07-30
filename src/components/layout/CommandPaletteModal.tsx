@@ -128,7 +128,7 @@ export function CommandPaletteModal({
                           id={`result-${result.id}`}
                           key={result.file_path}
                           className={cn(
-                            'result-item-border command-palette-modal-result border-border group flex w-full flex-col border-b px-3 py-2.5 text-left text-sm last:border-b-0',
+                            'result-item-border command-palette-modal-result border-border group flex w-full cursor-pointer flex-col border-b px-3 py-2.5 text-left text-sm last:border-b-0',
                             {
                               selected: isSelected,
                             },

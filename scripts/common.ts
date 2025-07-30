@@ -20,6 +20,14 @@ export function normalizePathWithSlash(path: string): string {
   return removingTrailingSlash(removingRedundantSymbols(`/${path}`));
 }
 
+export function cleanExtension(filepathOrWebpath: string) {
+  const ext = path.extname(normalizePathWithSlash(filepathOrWebpath));
+  if (ext === '.md' || ext === '.mdx') {
+    return filepathOrWebpath.replace(ext, '');
+  }
+  return filepathOrWebpath;
+}
+
 export async function getJSONFileContent(
   filePath: string,
 ): Promise<Record<string, string>> {

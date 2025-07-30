@@ -14,11 +14,19 @@
 }
 
 /* Custom hover for search modal results */
-.command-palette-modal-result:hover,
-.command-palette-modal-result[aria-selected='true'],
-.command-palette-modal-result.selected {
-  background: rgba(82, 82, 82, 0.1) !important;
+html:not([data-theme='dark']) .command-palette-modal-result:hover,
+html:not([data-theme='dark'])
+  .command-palette-modal-result[aria-selected='true'],
+html:not([data-theme='dark']) .command-palette-modal-result.selected {
+  background: rgba(82, 82, 82, 0.1);
   mix-blend-mode: multiply;
+}
+
+[data-theme='dark'] .command-palette-modal-result:hover,
+[data-theme='dark'] .command-palette-modal-result[aria-selected='true'],
+[data-theme='dark'] .command-palette-modal-result.selected {
+  background: rgba(211, 211, 211, 0.1);
+  mix-blend-mode: plus-lighter;
 }
 
 /* Section borders - darker in light theme */
