@@ -3,6 +3,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
+import { useAudioEffects } from '@/hooks/useAudioEffects';
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap font-sans rounded-lg text-sm leading-6 font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer",
@@ -35,22 +36,80 @@ const buttonVariants = cva(
   },
 );
 
+interface ButtonProps
+  extends React.ComponentProps<'button'>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  enableSounds?: boolean;
+  soundOnHover?: 'slide' | 'none';
+  soundOnClick?: 'pop' | 'sharp-click' | 'button-toggle' | 'none';
+  isToggled?: boolean;
+}
+
 function Button({
   className,
   variant,
   size,
   asChild = false,
+  enableSounds = true,
+  soundOnHover = 'none',
+  soundOnClick = 'pop',
+  isToggled,
+  onClick,
+  onMouseEnter,
   ...props
-}: React.ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot : 'button';
+  const {
+    playSlide,
+    playPop,
+    playSharpClick,
+    playButtonUp,
+    playButtonDown,
+    isSoundEnabled,
+  } = useAudioEffects();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (enableSounds && isSoundEnabled) {
+      if (soundOnClick === 'button-toggle') {
+        // For toggle buttons, play different sounds based on state
+        if (isToggled !== undefined) {
+          if (isToggled) {
+            playButtonDown();
+          } else {
+            playButtonUp();
+          }
+        } else {
+          playPop();
+        }
+      } else if (soundOnClick === 'pop') {
+        playPop();
+      } else if (soundOnClick === 'sharp-click') {
+        playSharpClick();
+      }
+    }
+
+    if (onClick) {
+      onClick(e);
+    }
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (enableSounds && isSoundEnabled && soundOnHover === 'slide') {
+      playSlide();
+    }
+
+    if (onMouseEnter) {
+      onMouseEnter(e);
+    }
+  };
 
   return (
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
       {...props}
     />
   );

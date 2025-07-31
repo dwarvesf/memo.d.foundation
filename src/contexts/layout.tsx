@@ -1,5 +1,6 @@
 import KeyboardShortcutDialog from '@/components/layout/KeyboardShortcutDialog';
 import ShareDialog from '@/components/ShareDialog';
+import { useAudioEffects } from '@/hooks/useAudioEffects';
 import { useIsMounted } from '@/hooks/useIsMounted';
 import {
   ComponentType,
@@ -49,6 +50,7 @@ export const LayoutProvider = (props: PropsWithChildren) => {
   const [readingMode, setReadingModeInternal] = useState(false);
   const isMounted = useIsMounted();
   const [isMacOS, setIsMacOS] = useState(true);
+  const { isSoundEnabled, playButtonUp, playButtonDown } = useAudioEffects();
 
   const [isShortcutDialogOpen, setIsShortcutDialogOpen] = useState(false);
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
@@ -96,8 +98,18 @@ export const LayoutProvider = (props: PropsWithChildren) => {
   }, []);
 
   const toggleReadingMode = useCallback(() => {
-    setReadingMode(prev => !prev);
-  }, [setReadingMode]);
+    setReadingMode(prev => {
+      if (isSoundEnabled) {
+        if (prev) {
+          playButtonDown();
+        } else {
+          playButtonUp();
+        }
+      }
+
+      return !prev;
+    });
+  }, [setReadingMode, isSoundEnabled, playButtonUp, playButtonDown]);
 
   useEffect(() => {
     if (!isMounted()) return;
