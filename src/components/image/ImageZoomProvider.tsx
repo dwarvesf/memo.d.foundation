@@ -14,10 +14,10 @@ const ImageZoomProvider = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState('');
   const [imageAlt, setImageAlt] = useState('');
-  const [initialRect, setInitialRect] = useState<DOMRect | null>(null);
   const [naturalDimensions, setNaturalDimensions] = useState({
     width: 0,
     height: 0,
+    ref: null as HTMLImageElement | null,
   });
   const [currentImage, setCurrentImage] = useState<HTMLImageElement | null>(
     null,
@@ -37,14 +37,11 @@ const ImageZoomProvider = ({
       img.classList.add('cursor-zoom-in');
       img.addEventListener('click', e => {
         e.stopPropagation();
-        // Capture current image position for animation
-        const rect = img.getBoundingClientRect();
-        setInitialRect(rect);
-
         // Get natural image dimensions
         setNaturalDimensions({
           width: img.naturalWidth || img.width,
           height: img.naturalHeight || img.height,
+          ref: img,
         });
 
         // Store reference to current image and hide it
@@ -146,9 +143,9 @@ const ImageZoomProvider = ({
         isOpen={modalOpen}
         src={imageSrc}
         alt={imageAlt}
-        initialRect={initialRect}
         naturalWidth={naturalDimensions.width}
         naturalHeight={naturalDimensions.height}
+        imgRef={naturalDimensions.ref}
         onClose={handleCloseModal}
         mainScrollContainerRef={mainScrollContainerRef}
       />
