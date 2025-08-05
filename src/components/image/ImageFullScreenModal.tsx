@@ -1,9 +1,10 @@
 import { cn } from '@/lib/utils';
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
-  useMemo,
+  useLayoutEffect,
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
@@ -14,6 +15,7 @@ interface ModalProps {
   alt: string;
   onClose: () => void;
   initialRect?: DOMRect | null;
+  imgRef?: HTMLImageElement | null;
   naturalWidth?: number;
   naturalHeight?: number;
   mainScrollContainerRef: React.RefObject<HTMLDivElement | null>;
@@ -33,10 +35,10 @@ const ImageFullScreenModal = forwardRef(
       src,
       alt,
       onClose: _onClose,
-      initialRect,
       naturalWidth = 0,
       naturalHeight = 0,
       mainScrollContainerRef,
+      imgRef,
     }: ModalProps,
     ref: React.Ref<ImageModalHandle>,
   ) => {
@@ -47,51 +49,54 @@ const ImageFullScreenModal = forwardRef(
     const [hasInitialized, setHasInitialized] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
 
-    const initialScaling = useMemo(() => {
-      if (!initialRect || !naturalWidth || !naturalHeight) {
+    const getInitialScaling = useCallback(
+      (rect: DOMRect | null | undefined) => {
+        if (!rect || !naturalWidth || !naturalHeight) {
+          return {
+            initialScale: 0.1,
+            initialPosition: { x: 0, y: 0 },
+            finalScale: 1,
+            finalPosition: { x: 0, y: 0 },
+          };
+        }
+
+        // Calculate what scale the image should be at to match its original rendered size
+        const currentScale = Math.min(
+          rect.width / naturalWidth,
+          rect.height / naturalHeight,
+        );
+
+        // Calculate target scale with viewport constraints
+        // Maximum scale is the smaller of:
+        // 1. Natural size (scale 1.0)
+        // 2. What fits in 90% of viewport
+        const viewportScale = Math.min(
+          (window.innerWidth * 0.9) / naturalWidth,
+          (window.innerHeight * 0.9) / naturalHeight,
+        );
+
+        // Target scale: scale up to natural size, but don't overflow viewport
+        const idealScale = currentScale < 1.0 ? 1.0 : currentScale;
+        const targetScale = Math.min(idealScale, viewportScale);
+
+        // Calculate positions
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        const originalCenterX = rect.left + rect.width / 2;
+        const originalCenterY = rect.top + rect.height / 2;
+
         return {
-          initialScale: 0.1,
-          initialPosition: { x: 0, y: 0 },
-          finalScale: 1,
+          initialScale: currentScale,
+          initialPosition: {
+            x: originalCenterX - centerX,
+            y: originalCenterY - centerY,
+          },
+          finalScale: targetScale,
           finalPosition: { x: 0, y: 0 },
         };
-      }
-
-      // Calculate what scale the image should be at to match its original rendered size
-      const currentScale = Math.min(
-        initialRect.width / naturalWidth,
-        initialRect.height / naturalHeight,
-      );
-
-      // Calculate target scale with viewport constraints
-      // Maximum scale is the smaller of:
-      // 1. Natural size (scale 1.0)
-      // 2. What fits in 90% of viewport
-      const viewportScale = Math.min(
-        (window.innerWidth * 0.9) / naturalWidth,
-        (window.innerHeight * 0.9) / naturalHeight,
-      );
-
-      // Target scale: scale up to natural size, but don't overflow viewport
-      const idealScale = currentScale < 1.0 ? 1.0 : currentScale;
-      const targetScale = Math.min(idealScale, viewportScale);
-
-      // Calculate positions
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      const originalCenterX = initialRect.left + initialRect.width / 2;
-      const originalCenterY = initialRect.top + initialRect.height / 2;
-
-      return {
-        initialScale: currentScale,
-        initialPosition: {
-          x: originalCenterX - centerX,
-          y: originalCenterY - centerY,
-        },
-        finalScale: targetScale,
-        finalPosition: { x: 0, y: 0 },
-      };
-    }, [initialRect, naturalWidth, naturalHeight]);
+      },
+      [naturalWidth, naturalHeight],
+    );
 
     // Helper for cubic-bezier easing (0.25, 0.8, 0.25, 1)
     const easeOutCubic = (t: number) => {
@@ -103,16 +108,13 @@ const ImageFullScreenModal = forwardRef(
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
     // Handle modal opening animation
-    useEffect(() => {
+    useLayoutEffect(() => {
       let animationFrameId: number;
-      let startTime: number;
-      const duration = ANIMATE_DURATION; // Match CSS transition duration
+      const imgRect = imgRef?.getBoundingClientRect();
+      const initialScaling = getInitialScaling(imgRect);
 
-      const animate = (currentTime: number) => {
-        if (!startTime) startTime = currentTime;
-        const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / duration, 1);
-        const easedProgress = easeOutCubic(progress);
+      const animate = () => {
+        const easedProgress = easeOutCubic(1);
 
         setScale(
           lerp(
@@ -133,10 +135,6 @@ const ImageFullScreenModal = forwardRef(
             easedProgress,
           ),
         });
-
-        if (progress < 1) {
-          animationFrameId = requestAnimationFrame(animate);
-        }
       };
 
       if (isOpen) {
@@ -157,7 +155,7 @@ const ImageFullScreenModal = forwardRef(
       return () => {
         cancelAnimationFrame(animationFrameId);
       };
-    }, [isOpen, initialScaling]);
+    }, [isOpen, getInitialScaling]);
 
     const onClose = () => {
       let animationFrameId: number;
@@ -171,8 +169,9 @@ const ImageFullScreenModal = forwardRef(
         if (!startTime) startTime = currentTime;
         const elapsedTime = currentTime - startTime;
         const progress = Math.min(elapsedTime / duration, 1);
-        const easedProgress = easeOutCubic(progress);
-
+        const imgRect = imgRef?.getBoundingClientRect();
+        const initialScaling = getInitialScaling(imgRect);
+        const easedProgress = easeOutCubic(1);
         setScale(
           lerp(currentScale, initialScaling.initialScale, easedProgress),
         );
@@ -312,7 +311,7 @@ const ImageFullScreenModal = forwardRef(
           'visible bg-black/20 opacity-100 backdrop-blur-md dark:bg-black/20':
             isOpen,
           'invisible bg-transparent opacity-0 backdrop-blur-none': !isOpen,
-          'bg-transparent backdrop-blur-xs': isClosing,
+          'bg-transparent backdrop-blur-xs dark:bg-transparent': isClosing,
         })}
         onClick={onClose}
         onMouseUp={handleMouseUp}
@@ -326,6 +325,10 @@ const ImageFullScreenModal = forwardRef(
             className="absolute top-1/2 left-1/2 max-h-none max-w-none object-contain select-none"
             style={{
               transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) scale(${scale})`,
+              willChange: 'transform',
+              transition: isDragging
+                ? undefined
+                : `all ${ANIMATE_DURATION}ms cubic-bezier(0.25, 0.8, 0.25, 1)`,
               cursor: isDragging ? 'grabbing' : 'grab',
               transformOrigin: 'center center',
             }}
