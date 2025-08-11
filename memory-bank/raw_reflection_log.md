@@ -1,20 +1,69 @@
----------
+------------
+Date: 2025-08-11
+TaskRef: "Migrate sentence-case.ts from Gemini API to OpenRouter API"
+
+Learnings:
+- Migrating from Gemini to OpenRouter requires updating both the API endpoint and the environment variable for the API key.
+- The OpenRouter API expects a different payload structure (model, messages, etc.) and returns results in choices[0].message.content.
+- All runtime checks and error messages must reference the correct API key variable to avoid runtime errors.
+- Regex-based extraction and replacement logic remains unchanged during API migration.
+
+Difficulties:
+- Initial code referenced GEMINI_API_KEY in a runtime check, causing a TypeScript error after migration. Resolved by updating to OPENROUTER_API_KEY everywhere.
+
+Successes:
+- The migration was completed with minimal code changes and no impact on the core logic.
+- The code now aligns with OpenRouter's requirements and is ready for further enhancements.
+
+Improvements_Identified_For_Consolidation:
+- When migrating LLM API integrations, always update both the endpoint, payload, and all references to environment variables in runtime checks and error handling.
+
+---
+
+Date: 2025-08-11
+TaskRef: "Add custom headers to OpenRouter API call in sentence-case.ts"
+
+Learnings:
+
+- OpenRouter supports custom headers such as 'HTTP-Referer' and 'X-Title' for additional context or tracking.
+- These headers must be included directly in the fetch request's headers object, not as a nested property.
+- The model can be set to 'google/gemini-2.5-flash' for Gemini compatibility via OpenRouter.
+
+Difficulties:
+
+- Initial attempt used an unused extraHeaders object; correct approach is to add headers directly to fetch.
+
+Successes:
+
+- The API call now includes the required custom headers, ensuring proper attribution and context for OpenRouter requests.
+
+Improvements_Identified_For_Consolidation:
+
+- When adding custom headers to API requests, always include them directly in the headers object of the fetch call.
+
+---
+
 Date: 2025-07-04
 TaskRef: "Reset scroll to top on selectedItem change in CommandPaletteModal"
 
 Learnings:
+
 - When implementing a scrollable list in React, resetting the scroll position (`scrollTop = 0`) on both query and selected item changes ensures the user always sees the top of the list when context changes.
 - Using multiple `useEffect` hooks with different dependencies (e.g., `[query]`, `[selectedItem]`) is a clean and idiomatic way to handle UI side effects in React.
 - This pattern is especially useful for command palette, autocomplete, or search UIs where the visible content can change due to selection or filtering.
 
 Difficulties:
+
 - The initial implementation used an incorrect ref for the scrollable container, which did not properly reset the scroll position. The user identified and corrected the ref usage to ensure the scroll reset works as intended.
 
 Successes:
+
 - After correcting the ref, the scroll reset logic is robust and user-friendly, improving UX for keyboard and mouse navigation.
 
 Improvements_Identified_For_Consolidation:
+
 - General React UI pattern: useEffect-based scroll reset for dynamic lists, ensuring the correct ref is used for the scrollable element.
+
 ---
 
 Date: 2025-07-03

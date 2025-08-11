@@ -51,6 +51,12 @@ async function getMarkdownFiles(): Promise<string[]> {
   }
 }
 
+// Check if the event is a pull request
+// by checking the GITHUB_EVENT_NAME environment variable
+function getIsPullRequestEvent() {
+  return process.env.GITHUB_EVENT_NAME === 'pull_request';
+}
+
 /**
  * Modular CI lint/format runner for markdown files.
  * Uses rule-based architecture (see rules/ directory).
@@ -68,10 +74,10 @@ async function main(): Promise<void> {
   // Doing automatic formatting with Prettier
   // This is disabled in GitHub Actions to avoid unnecessary changes in PRs.
   // In local development, we want to format files automatically.
-  const prettierFix = !isGithubActions;
+  const gitHookFixes = !isGithubActions || getIsPullRequestEvent();
 
   console.log(`Linting markdown files...`);
-  await noteLinter(filePaths, prettierFix);
+  await noteLinter(filePaths, gitHookFixes);
 }
 
 main().catch((error: any) => {

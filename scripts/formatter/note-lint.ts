@@ -18,6 +18,7 @@ import {
   RuleModule,
 } from './rules/types.js';
 import { execSync } from 'child_process';
+import * as core from '@actions/core';
 
 // Command for checking is in git repository and doing add changed files
 const gitAddChangedFiles = `git add -A`;
@@ -27,7 +28,9 @@ function executeGitAddChangedFiles(): void {
     execSync(gitAddChangedFiles, { stdio: 'ignore' });
   } catch (error) {
     console.error(
-      colors.red(`Error on adding git changed files: ${(error as any).message}`),
+      colors.red(
+        `Error on adding git changed files: ${(error as any).message}`,
+      ),
     );
   }
 }
@@ -50,9 +53,9 @@ const DEFAULT_CONFIG: DefaultConfig = {
       { required: ['title', 'description', 'date'] },
     ],
     [MARKDOWN_RULES_NAME.PRETTIER]: 'warn',
+    [MARKDOWN_RULES_NAME.SENTENCE_CASE]: 'error',
   },
 };
-
 
 class NoteLint {
   private rules: { [key: string]: RuleModule };
@@ -210,10 +213,7 @@ class NoteLint {
         const fixes = fileResult.messages
           .filter(m => m.fix && m.fix.range && !m.fix.format) // Ensure fix is defined and has a range
           .sort((a, b) => b.fix!.range[0] - a.fix!.range[0]); // Use non-null assertion
-        const relativePath = path.relative(
-          process.cwd(),
-          fileResult.filePath,
-        );
+        const relativePath = path.relative(process.cwd(), fileResult.filePath);
         // console.log(
         //   colors.green(`Applying fixes for ${relativePath}...`),
         // );
@@ -288,6 +288,36 @@ async function loadConfig(configPath: string | null): Promise<DefaultConfig> {
   }
 }
 
+function setOutput(key: string, output: any) {
+  // Check is Github Action
+  if (process.env.GITHUB_ACTIONS === 'true' || !!process.env.GITHUB_ACTIONS) {
+    core.setOutput(key, output);
+  }
+}
+
+function handleSetChangedMadeToOutput(changedMade: string[]) {
+  if (changedMade.length > 0) {
+    // Set an array of changed made
+    const mappingTitle: Record<string, string> = {
+      [MARKDOWN_RULES_NAME.SENTENCE_CASE]:
+        'Sentence case formatting applied to headings and titles',
+      [MARKDOWN_RULES_NAME.NO_HEADING1]:
+        'No heading level 1 fixes applied',
+      [MARKDOWN_RULES_NAME.PRETTIER]:
+        'Prettier formatting applied',
+    };
+    // Get uniq made changes
+    const uniqueChanges = Array.from(new Set(changedMade));
+
+    // Mapping title
+    const mappedTitles = uniqueChanges.map(change => {
+      const title = mappingTitle[change];
+      return title ? `- ✅ ${title}` : null;
+    }).filter(Boolean).join('\n');
+    setOutput('changed-made', mappedTitles);
+  }
+}
+
 function findMarkdownFiles(
   dir: string,
   ignorePatterns: string[] = ['node_modules'],
@@ -315,7 +345,7 @@ function findMarkdownFiles(
 
 export async function main(
   inputFiles: string[] = [],
-  prettierFix?: boolean,
+  gitHookFixes?: boolean,
 ): Promise<void> {
   const args = process.argv.slice(2);
   const files: string[] = inputFiles;
@@ -389,6 +419,8 @@ export async function main(
   const results = await linter.lintFiles(filePaths, config);
 
   if (fix) {
+    let changedMade = [];
+
     await linter.applyFixes(results);
     executeGitAddChangedFiles();
     const fixedErrors = results.fixableErrorCount;
@@ -403,6 +435,7 @@ export async function main(
           `✓ Fixed ${fixedErrors} errors and ${fixedWarnings} warnings in ${fixedFiles} files`,
         ),
       );
+      let totalFilesFixed = 0;
       for (const fileResult of results.results) {
         if (
           fileResult.fixableErrorCount > 0 ||
@@ -413,7 +446,18 @@ export async function main(
               `  ${fileResult.filePath}: ${fileResult.fixableErrorCount + fileResult.fixableWarningCount} issues fixed`,
             ),
           );
+
+          totalFilesFixed += 1;
+
+          for (const message of fileResult.messages) {
+            changedMade.push(message.ruleId);
+          }
         }
+      }
+      // Emit already fixed errors to GitHub workflow environment
+      if (totalFilesFixed > 0) {
+        setOutput('fixed', totalFilesFixed);
+        handleSetChangedMadeToOutput(changedMade);
       }
     } else {
       const colorSummary =
@@ -434,13 +478,21 @@ export async function main(
     let totalFixableErrors = results.fixableErrorCount;
     let totalFixableWarnings = results.fixableWarningCount;
 
+    let alreadyFixed = 0;
+    let changedMade = [];
+
     for (const fileResult of results.results) {
       if (fileResult.messages.length > 0) {
         console.log(colors.gray(fileResult.filePath));
         for (const message of fileResult.messages) {
-          const isPrettierFix =
-            Boolean(message.ruleId === MARKDOWN_RULES_NAME.PRETTIER && prettierFix && message.fix?.format);
-          if (isPrettierFix) {
+          const isGitHookFixes = Boolean(gitHookFixes && message.fix?.format);
+          const availableRulesForGitHookFixes = (
+            [
+              MARKDOWN_RULES_NAME.PRETTIER,
+              MARKDOWN_RULES_NAME.SENTENCE_CASE,
+            ] as string[]
+          ).includes(message.ruleId);
+          if (isGitHookFixes && availableRulesForGitHookFixes) {
             const { messages: _ignoredMsgs, ...rest } = fileResult;
             // Apply Prettier fixes
             await linter.applyFixes({
@@ -461,6 +513,8 @@ export async function main(
               totalWarnings--;
               totalFixableWarnings--;
             }
+            alreadyFixed++;
+            changedMade.push(message.ruleId);
             executeGitAddChangedFiles();
             continue; // Skip logging for Prettier fixes
           }
@@ -468,15 +522,14 @@ export async function main(
             message.severity === 2 ? colors.red : colors.yellow;
           const severityText = message.severity === 2 ? 'error' : 'warning';
           const isIncludedBreakLine =
-            message.message.includes('\n') ||
-            message.message.includes('\r\n');
+            message.message.includes('\n') || message.message.includes('\r\n');
           if (isIncludedBreakLine) {
             const lines = message.message.split(/\r?\n/);
             lines.forEach((line, index) => {
               console.log(
                 `  ${colors.blue(`${message.line}:${message.column}`)}   ${severityColor(severityText)}    ${line}  ${colors.gray(message.ruleId)}`,
               );
-            })
+            });
           } else {
             console.log(
               `  ${colors.blue(`${message.line}:${message.column}`)}   ${severityColor(severityText)}    ${message.message}  ${colors.gray(message.ruleId)}`,
@@ -517,6 +570,12 @@ export async function main(
 
     if (totalErrors > 0) {
       process.exit(1);
+    }
+
+    // Emit already fixed errors to GitHub workflow environment
+    if (alreadyFixed > 0) {
+      setOutput('fixed', alreadyFixed);
+      handleSetChangedMadeToOutput(changedMade);
     }
   }
 }

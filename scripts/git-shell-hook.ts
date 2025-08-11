@@ -884,6 +884,38 @@ If you encounter issues:
         'chmod +x ${{ runner.temp }}/lint-script && ${{ runner.temp }}/lint-script';
     }
 
+    // Add auto-commit and PR comment steps after formatting
+    const autoCommitStep = `
+      - name: Commit and push changes
+        if: \${{ github.event_name == 'pull_request' && steps.markdown-lint.outputs.fixed > 0 }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin \${{ github.head_ref }}:\${{ github.head_ref }}
+          git checkout \${{ github.head_ref }}
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: automatic formatting (sentence case, prettier, lint fixes) [skip ci]"
+            git push origin HEAD:\${{ github.head_ref }}
+          else
+            echo "No changes to commit."
+          fi`;
+
+    const prCommentStep = `
+      - name: Add PR comment with formatting summary
+        if: \${{ github.event_name == 'pull_request' && steps.markdown-lint.outputs.fixed > 0 }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: "formatting-summary"
+          message: |
+            🤖 Automatic Formatting Applied
+
+            **Files formatted:** \${{ steps.markdown-lint.outputs.fixed }}
+            **Changes made:**
+            \${{ steps.markdown-lint.outputs.changed-made }}
+
+            View workflow run: [View Run](\${{ github.server_url }}/\${{ github.repository }}/actions/runs/\${{ github.run_id }})`;
+
     const triggerSection = triggerEvents.reduce((acc, event) => {
       if (event === 'push' || event === 'pull_request') {
         acc += `  ${event}:\n`;
@@ -968,6 +1000,7 @@ jobs:
           separator: ','
 
       - name: Run markdown linting
+        id: markdown-lint
         run: |
           echo "🔍 Running markdown linting for ${submoduleName}..."
           ${executeCommand}
@@ -975,7 +1008,11 @@ jobs:
           # Pass any environment variables needed by the linting script
           GITHUB_ACTIONS: true
           REPO_NAME: ${submoduleName}
+          OPENROUTER_API_KEY: \${{ secrets.OPENROUTER_API_KEY }}
+          GITHUB_EVENT_NAME: \${{ github.event_name }}
           ${changedFilesEnvText}
+${autoCommitStep}
+${prCommentStep}
 `;
 
     fs.writeFileSync(workflowPath, workflowContent);

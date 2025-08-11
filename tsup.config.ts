@@ -14,6 +14,7 @@ export default defineConfig({
     'dotenv',
     'prettier/standalone',
     'prettier/parser-markdown',
+    '@actions/core',
   ],
   outExtension() {
     return {
