@@ -86,62 +86,118 @@ const ShareButton = (props: Props) => {
 
   return (
     <div className={cn('inline-flex', className)} role="group">
-      <Button
-        variant="outline"
-        className="flex items-center gap-2 rounded-r-none text-sm shadow-none"
-        size="sm"
-        onClick={() => setIsShareDialogOpen(true)}
-      >
-        <Share2Icon className="text-muted-foreground !h-4 !w-4" />
-        Share
-      </Button>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="!w-8 min-w-auto rounded-l-none border-l-0 shadow-none"
-          >
-            <ChevronDownIcon className="text-muted-foreground !h-4 !w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => copyMemoContent()}
-          >
-            <CopyIcon className="mr-2 h-4 w-4" />
-            <span>Copy page</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => copyLinktoClipboard()}
-          >
-            <LinkIcon className="mr-2 h-4 w-4" />
-            <span>Copy link</span>
-          </DropdownMenuItem>
-          {metadata?.sprContent ? (
+      {/* Desktop: Show full button with text */}
+      <div className="hidden sm:flex">
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 rounded-r-none text-sm shadow-none"
+          size="sm"
+          onClick={() => setIsShareDialogOpen(true)}
+        >
+          <Share2Icon className="text-muted-foreground !h-4 !w-4" />
+          Share
+        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="!w-8 min-w-auto rounded-l-none border-l-0 shadow-none"
+            >
+              <ChevronDownIcon className="text-muted-foreground !h-4 !w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
             <DropdownMenuItem
               className="cursor-pointer"
-              onClick={() =>
-                createPrintableMarkdown(
-                  {
-                    title: metadata.title,
-                    spr_content: metadata.sprContent!,
-                  },
-                  getPageUrl,
-                )
-              }
+              onClick={() => copyMemoContent()}
             >
-              <PrinterIcon className="mr-2 h-4 w-4" />
-              <span>Print lesson</span>
+              <CopyIcon className="mr-2 h-4 w-4" />
+              <span>Copy page</span>
             </DropdownMenuItem>
-          ) : null}
-          {/* <DropdownMenuItem className="cursor-pointer">
-              <Printer className="mr-2 h-4 w-4" /> <span>Print cheatsheet</span>
-            </DropdownMenuItem> */}
-        </DropdownMenuContent>
-      </DropdownMenu>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => copyLinktoClipboard()}
+            >
+              <LinkIcon className="mr-2 h-4 w-4" />
+              <span>Copy link</span>
+            </DropdownMenuItem>
+            {metadata?.sprContent ? (
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() =>
+                  createPrintableMarkdown(
+                    {
+                      title: metadata.title,
+                      spr_content: metadata.sprContent!,
+                    },
+                    getPageUrl,
+                  )
+                }
+              >
+                <PrinterIcon className="mr-2 h-4 w-4" />
+                <span>Print lesson</span>
+              </DropdownMenuItem>
+            ) : null}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Mobile: Icon-only dropdown with all share options */}
+      <div className="flex sm:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="!w-8 min-w-auto shadow-none"
+              aria-label="Share options"
+            >
+              <Share2Icon className="text-muted-foreground !h-4 !w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => setIsShareDialogOpen(true)}
+            >
+              <Share2Icon className="mr-2 h-4 w-4" />
+              <span>Share</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => copyMemoContent()}
+            >
+              <CopyIcon className="mr-2 h-4 w-4" />
+              <span>Copy page</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => copyLinktoClipboard()}
+            >
+              <LinkIcon className="mr-2 h-4 w-4" />
+              <span>Copy link</span>
+            </DropdownMenuItem>
+            {metadata?.sprContent ? (
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() =>
+                  createPrintableMarkdown(
+                    {
+                      title: metadata.title,
+                      spr_content: metadata.sprContent!,
+                    },
+                    getPageUrl,
+                  )
+                }
+              >
+                <PrinterIcon className="mr-2 h-4 w-4" />
+                <span>Print lesson</span>
+              </DropdownMenuItem>
+            ) : null}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 };

@@ -65,12 +65,12 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
     <div className="content-layout xl:m-h-[400px]">
       {/* Title section */}
       {!hideTitle && (
-        <div className="flex-start flex justify-between space-x-2">
-          <h1 className="mt-0 mb-5 pb-0 font-serif text-3xl leading-[1.2em] font-semibold tracking-tight md:text-[35px]">
+        <div className="flex items-start justify-between gap-3 sm:gap-4">
+          <h1 className="mt-0 mb-5 min-w-0 flex-1 pb-0 font-serif text-3xl leading-[1.2em] font-semibold tracking-tight md:text-[35px]">
             {formattedTitle}
           </h1>
 
-          <ShareButton className="mt-2" metadata={metadata} />
+          <ShareButton className="mt-2 flex-shrink-0" metadata={metadata} />
         </div>
       )}
 
