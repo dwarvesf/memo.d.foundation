@@ -121,6 +121,7 @@
     "wagmi": "^2.14.16"
   },
   "devDependencies": {
+    "@actions/core": "^1.11.1",
     "@eslint/eslintrc": "^3",
     "@notionhq/client": "^2.3.0",
     "@tailwindcss/postcss": "^4",
