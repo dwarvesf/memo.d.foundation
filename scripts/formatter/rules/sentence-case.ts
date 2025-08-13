@@ -104,8 +104,8 @@ Input: ${JSON.stringify(items)}
           content: prompt,
         },
       ],
-      temperature: 0.2,
-      max_tokens: 2048,
+      temperature: 0.7,
+      max_tokens: 1024 * 5,
     }),
   });
 
