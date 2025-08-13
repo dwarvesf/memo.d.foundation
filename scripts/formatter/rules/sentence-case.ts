@@ -1,5 +1,14 @@
 import { RuleModule, RuleContext } from './types.js';
 
+const extractJsonFromMarkdown = (md: string) => {
+  // Regular expression to find a code block starting with ```json and capture its content.
+  // The `[\s\S]*?` pattern is a non-greedy match for any character, including newlines.
+  const regex = /```json\s*([\s\S]*?)\s*```/;
+  const match = md.match(regex);
+  // Return the captured group (the JSON content) if a match is found.
+  return match ? match[1] : md;
+};
+
 // Regex patterns (copied from format-sentence-case.js)
 const FRONTMATTER_TITLE_REGEX = /^title:\s*["']?(.+?)["']?\s*$/m;
 const HEADING_REGEX = /^(#{1,6})\s*(.+)$/gm;
@@ -80,13 +89,15 @@ async function convertToSentenceCaseWithLLM(
 
   const prompt = `
 You are an expert at formatting titles. Given a list of titles (each is a short phrase, not a sentence):
-- Convert each to SENTENCE CASE
-- Keep the proper nouns, acronyms and short forms as standard (like Google, JavaScript, Golang, HOC etc).
-- DO NOT remove any words, characters (e.g do not remove colon in "TL;DR: Speedrunning MCP auth with SSE transport") or add any extra text, explanation, or formatting
-- DO NOT add punctuation.
+- Convert each to SENTENCE CASE.
+- Do NOT change, add, or remove any words, symbols, or characters. Only change capitalization as needed for sentence case.
+- Do NOT add or remove any words.
+- Do NOT add punctuation.
+- Keep proper nouns, acronyms, and short forms as they are (e.g., Google, JavaScript, Golang, HOC, TL;DR).
 - Return the result as a JSON array of strings, in the same order as input.
 
 Input: ${JSON.stringify(items)}
+Output (JSON array of strings only):
 `;
   const response = await fetch(OPENROUTER_API_URL, {
     method: 'POST',
@@ -97,7 +108,7 @@ Input: ${JSON.stringify(items)}
       'X-Title': 'sentence case',
     },
     body: JSON.stringify({
-      model: 'openai/gpt-4.1-nano',
+      model: 'google/gemini-2.5-flash-lite',
       messages: [
         {
           role: 'user',
@@ -105,7 +116,7 @@ Input: ${JSON.stringify(items)}
         },
       ],
       temperature: 0.7,
-      max_tokens: 1024 * 5,
+      max_tokens: 2048,
     }),
   });
 
@@ -127,10 +138,12 @@ Input: ${JSON.stringify(items)}
   // Try to parse the JSON array from the response
   let arr;
   try {
-    arr = JSON.parse(content);
+    arr = JSON.parse(extractJsonFromMarkdown(content));
     if (!Array.isArray(arr)) throw new Error('Not an array');
   } catch {
-    throw new Error('Failed to parse OpenRouter output as JSON array: ' + content);
+    throw new Error(
+      'Failed to parse OpenRouter output as JSON array: ' + content,
+    );
   }
   return arr;
 }
@@ -151,7 +164,9 @@ async function getNewContent(fileContent: string) {
     const original = originalItems[i];
     const converted = convertedItems[i];
 
-    if (original === converted) continue; // No change needed for this item
+    if (original === converted) {
+      continue; // No change needed for this item
+    }
 
     // Escape special regex characters in original string
     const escapedOriginal = original.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -170,6 +185,27 @@ async function getNewContent(fileContent: string) {
       'g',
     );
     newContent = newContent.replace(markdownLinkRegex, `[${converted}]$1`);
+
+    // Special handling for headings (### Heading)
+    const headingRegex = new RegExp(
+      `^(#{1,6})\\s*${escapedOriginal}$`,
+      'gm',
+    );
+    newContent = newContent.replace(headingRegex, `$1 ${converted}`);
+
+    // Special handling for frontmatter title
+    const frontmatterTitleRegex = new RegExp(
+      `^title:\\s*["']?${escapedOriginal}["']?\\s*$`,
+      'm',
+    );
+    newContent = newContent.replace(frontmatterTitleRegex, `title: "${converted}"`);
+
+    // Special handling for bullet definitions (- **text**: description)
+    const bulletDefinitionRegex = new RegExp(
+      `^\\s*(?:[-*]|\\d+\\.)\\s+\\*\\*${escapedOriginal}(?::)?\\*\\*:?`,
+      'gm',
+    );
+    newContent = newContent.replace(bulletDefinitionRegex, `**${converted}**:`);
 
     // Use a regex with word boundaries for other replacements
     // This is a simplified approach. A more robust solution might involve
