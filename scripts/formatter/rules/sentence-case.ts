@@ -99,31 +99,59 @@ You are an expert at formatting titles. Given a list of titles (each is a short 
 Input: ${JSON.stringify(items)}
 Output (JSON array of strings only):
 `;
-  const response = await fetch(OPENROUTER_API_URL, {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+    'HTTP-Referer': 'https://memo.d.foundation',
+    'X-Title': 'sentence case',
+  };
+  const bodyData = {
+    messages: [
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    temperature: 0.7,
+    max_tokens: 2048,
+  };
+  let response = await fetch(OPENROUTER_API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://memo.d.foundation',
-      'X-Title': 'sentence case',
-    },
+    headers,
     body: JSON.stringify({
       model: 'google/gemini-2.5-flash-lite',
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 2048,
+      ...bodyData,
     }),
   });
 
   if (!response.ok) {
-    throw new Error(
-      `OpenRouter API error: ${response.status} ${response.statusText} - ${await response.text()}`,
-    );
+    const isOutOfCredits = response.status === 402; // 402 Payment Required
+    let responseError: Error | null = null;
+    // If out of credits
+    if (isOutOfCredits) {
+      // Try with free models
+      response = await fetch(OPENROUTER_API_URL, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          model: 'qwen/qwen3-coder:free',
+          ...bodyData,
+        }),
+      });
+      if (!response.ok) {
+        responseError = new Error(
+          `OpenRouter API error: ${response.status} ${response.statusText} - ${await response.text()}`,
+        );
+      }
+    } else {
+      responseError = new Error(
+        `OpenRouter API error: ${response.status} ${response.statusText} - ${await response.text()}`,
+      );
+    }
+
+    if (responseError) {
+      throw responseError;
+    }
   }
 
   const data = await response.json();
@@ -148,14 +176,15 @@ Output (JSON array of strings only):
   return arr;
 }
 
-async function getNewContent(fileContent: string) {
+async function getNewContent(fileContent: string, _convertedItems?: string[]) {
   const originalItems = extractItems(fileContent);
 
   if (originalItems.length === 0) {
     return; // No items to process
   }
 
-  const convertedItems = await convertToSentenceCaseWithLLM(originalItems);
+  const convertedItems =
+    _convertedItems ?? (await convertToSentenceCaseWithLLM(originalItems));
 
   let newContent = fileContent;
   let changesMade = 0;
@@ -187,10 +216,7 @@ async function getNewContent(fileContent: string) {
     newContent = newContent.replace(markdownLinkRegex, `[${converted}]$1`);
 
     // Special handling for headings (### Heading)
-    const headingRegex = new RegExp(
-      `^(#{1,6})\\s*${escapedOriginal}$`,
-      'gm',
-    );
+    const headingRegex = new RegExp(`^(#{1,6})\\s*${escapedOriginal}$`, 'gm');
     newContent = newContent.replace(headingRegex, `$1 ${converted}`);
 
     // Special handling for frontmatter title
@@ -198,7 +224,10 @@ async function getNewContent(fileContent: string) {
       `^title:\\s*["']?${escapedOriginal}["']?\\s*$`,
       'm',
     );
-    newContent = newContent.replace(frontmatterTitleRegex, `title: "${converted}"`);
+    newContent = newContent.replace(
+      frontmatterTitleRegex,
+      `title: "${converted}"`,
+    );
 
     // Special handling for bullet definitions (- **text**: description)
     const bulletDefinitionRegex = new RegExp(
@@ -220,6 +249,7 @@ async function getNewContent(fileContent: string) {
     return {
       newContent,
       changesMade,
+      convertedItems,
     };
   }
 }
@@ -249,7 +279,7 @@ const sentenceCaseRule: RuleModule = {
         }
 
         try {
-          const { newContent = fileContent, changesMade = 0 } =
+          const { changesMade = 0, convertedItems } =
             (await getNewContent(fileContent)) || {};
           if (changesMade > 0) {
             context.report({
@@ -262,9 +292,9 @@ const sentenceCaseRule: RuleModule = {
               nodeType: 'Program',
               fix: {
                 range: [0, fileContent.length], // Replace entire file content
-                text: newContent,
+                text: fileContent,
                 format: async (content: string) => {
-                  const data = await getNewContent(content);
+                  const data = await getNewContent(content, convertedItems);
                   return data?.newContent || content;
                 },
               },
