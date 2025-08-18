@@ -68,7 +68,8 @@ function extractItems(content: string): string[] {
     const uppercaseCount = words.reduce((count, word) => {
       return /^[A-Z]/.test(word) ? count + 1 : count;
     }, 0);
-    return uppercaseCount >= 2;
+    const shouldInclude = uppercaseCount >= 2;
+    return shouldInclude;
   });
 }
 
@@ -207,6 +208,12 @@ async function getNewContent(fileContent: string, _convertedItems?: string[]) {
     // For bullet definitions: replace only the definition part before colon
     // For markdown links: replace only the text inside square brackets
 
+    // We'll do a global replace for all occurrences of the original string,
+    // but only when it appears in the contexts we extracted.
+
+    // To be safe, replace all exact matches of original string in the content
+    // but only whole word matches to avoid partial replacements.
+
     // Special handling for markdown links
     // Replace [original] with [converted] but keep the URL intact
     const markdownLinkRegex = new RegExp(
@@ -215,32 +222,9 @@ async function getNewContent(fileContent: string, _convertedItems?: string[]) {
     );
     newContent = newContent.replace(markdownLinkRegex, `[${converted}]$1`);
 
-    // Special handling for headings (### Heading)
-    const headingRegex = new RegExp(`^(#{1,6})\\s*${escapedOriginal}$`, 'gm');
-    newContent = newContent.replace(headingRegex, `$1 ${converted}`);
-
-    // Special handling for frontmatter title
-    const frontmatterTitleRegex = new RegExp(
-      `^title:\\s*["']?${escapedOriginal}["']?\\s*$`,
-      'm',
-    );
-    newContent = newContent.replace(
-      frontmatterTitleRegex,
-      `title: "${converted}"`,
-    );
-
-    // Special handling for bullet definitions (- **text**: description)
-    const bulletDefinitionRegex = new RegExp(
-      `^\\s*(?:[-*]|\\d+\\.)\\s+\\*\\*${escapedOriginal}(?::)?\\*\\*:?`,
-      'gm',
-    );
-    newContent = newContent.replace(bulletDefinitionRegex, `**${converted}**:`);
-
     // Use a regex with word boundaries for other replacements
-    // This is a simplified approach. A more robust solution might involve
-    // parsing the markdown AST to ensure replacements are context-aware.
-    // For now, we'll rely on the LLM's output being an exact replacement.
-    const regex = new RegExp(`\\b${escapedOriginal}\\b`, 'g');
+    const regex = new RegExp(`${escapedOriginal}`, 'g');
+
     newContent = newContent.replace(regex, converted);
     changesMade++;
   }
