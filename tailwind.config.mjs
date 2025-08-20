@@ -256,7 +256,7 @@ const config = {
               maxWidth: '100%',
               borderRadius: '5px',
               margin: '0px auto 0 auto',
-              maxHeight: '500px',
+              maxHeight: 'auto',
             },
             'p:has(img)': {
               display: 'flex',
