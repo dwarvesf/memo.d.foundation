@@ -10,6 +10,8 @@ import {
 } from '../ui/tooltip';
 import HeaderUser from './HeaderUser';
 import { useLayoutContext } from '@/contexts/layout';
+import { useAudioEffects } from '@/hooks/useAudioEffects';
+import { Volume2Icon, VolumeOffIcon } from 'lucide-react';
 
 interface HeaderProps {
   toggleTheme: () => void;
@@ -19,7 +21,19 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = () => {
   const { isMacOS, readingMode, toggleReadingMode, toggleIsOpenSidebar } =
     useLayoutContext();
+  const { isSoundEnabled, toggleSound, playButtonUp, playButtonDown } =
+    useAudioEffects();
   const modifier = isMacOS ? '⌘' : 'Ctrl';
+
+  const handleSoundToggle = () => {
+    if (isSoundEnabled) {
+      playButtonDown(); // Play before disabling
+      setTimeout(() => toggleSound(), 100);
+    } else {
+      toggleSound();
+      setTimeout(() => playButtonUp(), 100); // Play after enabling
+    }
+  };
   return (
     <header className="bg-background/80 sticky top-0 z-10 w-full backdrop-blur-md">
       <div className="flex h-14 items-center justify-between px-4 py-2.5">
@@ -63,6 +77,23 @@ const Header: React.FC<HeaderProps> = () => {
         <div className="ml-auto flex items-center gap-3.5">
           {/* Command palette */}
           <CommandPalette />
+
+          {/* Sound toggle */}
+          <button
+            className="flex cursor-pointer items-center justify-center border-0 bg-transparent p-1 outline-none hover:opacity-95 active:opacity-100"
+            onClick={handleSoundToggle}
+            aria-label={isSoundEnabled ? 'Disable sounds' : 'Enable sounds'}
+            data-sound-enabled={isSoundEnabled ? 'true' : 'false'}
+          >
+            <span className="select-none">
+              {isSoundEnabled ? (
+                <Volume2Icon className="h-4 w-4 fill-[#333639]" />
+              ) : (
+                <VolumeOffIcon className="h-4 w-4 fill-[#333639]" />
+              )}
+            </span>
+          </button>
+
           {/* Reading mode toggle */}
           <TooltipProvider>
             <Tooltip>
