@@ -18,6 +18,18 @@ const MARKDOWN_LINK_REGEX = /^-\s+\[([^\]]+)\]\([^)]+\)/gm;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
+const EXAMPLE_NOUN_WORDS = [
+  'React Query',
+  'E2B',
+  'B2B',
+  'Google',
+  'JavaScript',
+  'Golang',
+  'HOC',
+  'TL;DR',
+  // Add more noun, acronym words
+]
+
 // Helper to extract items from content (adapted from format-sentence-case.js)
 function extractItems(content: string): string[] {
   // Remove code blocks to avoid matching inside them
@@ -90,11 +102,10 @@ async function convertToSentenceCaseWithLLM(
 
   const prompt = `
 You are an expert at formatting titles. Given a list of titles (each is a short phrase, not a sentence):
-- Convert each to SENTENCE CASE.
-- Do NOT change, add, or remove any words, symbols, or characters. Only change capitalization as needed for sentence case.
-- Do NOT add or remove any words.
+- **Crucially**, preserve the original capitalization of all proper nouns, acronyms, and short forms (e.g., **${EXAMPLE_NOUN_WORDS.join(', ')}**).
+- Convert all other words to **sentence case**.
+- Do NOT change, add, or remove any words, symbols, or characters.
 - Do NOT add punctuation.
-- Keep proper nouns, acronyms, and short forms as they are (e.g., Google, JavaScript, Golang, HOC, TL;DR).
 - Return the result as a JSON array of strings, in the same order as input.
 
 Input: ${JSON.stringify(items)}
@@ -222,8 +233,12 @@ async function getNewContent(fileContent: string, _convertedItems?: string[]) {
     );
     newContent = newContent.replace(markdownLinkRegex, `[${converted}]$1`);
 
+    // Special handling for headings (### Heading)
+    const headingRegex = new RegExp(`^(#{1,6})\\s*${escapedOriginal}`, 'gm');
+    newContent = newContent.replace(headingRegex, `$1 ${converted}`);
+
     // Use a regex with word boundaries for other replacements
-    const regex = new RegExp(`${escapedOriginal}`, 'g');
+    const regex = new RegExp(`\\b${escapedOriginal}\\b`, 'g');
 
     newContent = newContent.replace(regex, converted);
     changesMade++;
