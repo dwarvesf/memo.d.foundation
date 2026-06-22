@@ -339,16 +339,18 @@ function createFrontmatterString(frontmatter: Record<string, any>): string {
 
 async function convertNotionToMarkdown() {
     try {
-        // Query Notion database
-        const response = await notion.databases.query({
-            database_id: DATABASE_ID,
+        // Query Notion data source (v5: databases -> dataSources)
+        const response = await notion.dataSources.query({
+            data_source_id: DATABASE_ID,
         });
 
         console.log(`Found ${response.results.length} pages in the Notion database`);
         console.log(`Saving markdown files to: ${CONTENT_DIR}`);
         console.log(`Saving images to: ${IMAGES_DIR}`);
 
-        for (const page of response.results) {
+        for (const page of response.results.filter(
+            (r): r is Extract<typeof r, { object: 'page' }> => r.object === 'page',
+        )) {
             try {
                 const pageId = page.id;
 

@@ -39,7 +39,7 @@ function updateFrontmatter(
         ...existingFrontmatter,
         ...newFrontmatter,
       },
-      { lineWidth: -1, forceQuotes: true },
+      { lineWidth: -1 },
     );
 
     const updatedContent = `---\n${updatedFrontmatter}---\n${content}`;

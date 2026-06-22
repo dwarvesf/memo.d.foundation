@@ -30,7 +30,7 @@ const PageTableOfContents: React.FC<PageTableOfContentsProps> = ({ items }) => {
                 'text-primary text-[15px] leading-4 underline transition-all duration-150', // Adjusted font size to 15px
                 getHeadingLevelClass(item.depth),
               )}
-              onClick={e => {
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                 e.preventDefault();
                 document
                   .getElementById(item.id)

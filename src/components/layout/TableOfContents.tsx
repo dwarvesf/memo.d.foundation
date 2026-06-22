@@ -56,7 +56,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
               className={cn('bg-border mr-2.5 flex h-0.5 text-transparent', {
                 'bg-border-dark dark:bg-border-light': item.id === activeId,
               })}
-              onClick={e => {
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                 e.preventDefault();
                 scrollToId(item.id);
               }}
@@ -89,7 +89,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
                   'hover:text-foreground': item.id !== activeId,
                 },
               )}
-              onClick={e => {
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                 e.preventDefault();
                 scrollToId(item.id);
               }}

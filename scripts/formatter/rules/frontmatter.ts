@@ -300,7 +300,7 @@ const rule: RuleModule = {
           let colonCount = 0;
           let inSingleQuote = false;
           let inDoubleQuote = false;
-          for (let char of line) {
+          for (const char of line) {
             if (char === "'" && !inDoubleQuote) inSingleQuote = !inSingleQuote;
             else if (char === '"' && !inSingleQuote)
               inDoubleQuote = !inDoubleQuote;
@@ -334,11 +334,11 @@ const rule: RuleModule = {
             keys.add(key);
           }
 
-          let lineForQuoteCheck = line
+          const lineForQuoteCheck = line
             .replace(/"([^"\\]|\\.)*"/g, '')
             .replace(/'([^'\\]|\\.)*'/g, '');
-          let singleQuotes = (lineForQuoteCheck.match(/'/g) || []).length;
-          let doubleQuotes = (lineForQuoteCheck.match(/"/g) || []).length;
+          const singleQuotes = (lineForQuoteCheck.match(/'/g) || []).length;
+          const doubleQuotes = (lineForQuoteCheck.match(/"/g) || []).length;
           if (singleQuotes % 2 !== 0) {
             context.report({
               ruleId: 'markdown/frontmatter',

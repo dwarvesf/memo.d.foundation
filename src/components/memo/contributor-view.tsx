@@ -15,7 +15,13 @@ import {
   HoverCardTrigger,
 } from '../ui/hover-card';
 import { Avatar, AvatarImage } from '../ui/avatar';
-import { useMemo, useState, useEffect } from 'react';
+import {
+  useMemo,
+  useState,
+  useEffect,
+  type ComponentType,
+  type SVGProps,
+} from 'react';
 import { useRouter } from 'next/router';
 import Jdenticon from 'react-jdenticon';
 import {
@@ -48,14 +54,8 @@ import {
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../ui/tab';
-import {
-  ListIcon,
-  GridIcon,
-  TwitterIcon,
-  LinkedinIcon,
-  FacebookIcon,
-  GithubIcon,
-} from 'lucide-react';
+import { ListIcon, GridIcon } from 'lucide-react';
+import { FaGithub, FaXTwitter, FaLinkedin, FaFacebook } from 'react-icons/fa6';
 
 function AvatarCluster({ authors }: { authors: CompactContributorProfile[] }) {
   const [first, second, third, fourth, fifth, sixth, seventh, eighth] =
@@ -197,19 +197,19 @@ function ContributorGridCard({
       <div className="flex flex-col items-center space-y-4">
         <div className="flex gap-x-2">
           {socialProfiles.map(profile => {
-            let IconComponent;
+            let IconComponent: ComponentType<SVGProps<SVGElement>> | undefined;
             switch (profile.type) {
               case 'github':
-                IconComponent = GithubIcon;
+                IconComponent = FaGithub;
                 break;
               case 'twitter':
-                IconComponent = TwitterIcon;
+                IconComponent = FaXTwitter;
                 break;
               case 'linkedin':
-                IconComponent = LinkedinIcon;
+                IconComponent = FaLinkedin;
                 break;
               case 'facebook':
-                IconComponent = FacebookIcon;
+                IconComponent = FaFacebook;
                 break;
               default:
                 return null;

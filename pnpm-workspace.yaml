@@ -1,10 +1,39 @@
 allowBuilds:
+  '@eslint-community/eslint-utils': set this to true or false
+  '@typescript-eslint/eslint-plugin': set this to true or false
+  '@typescript-eslint/parser': set this to true or false
+  '@typescript-eslint/type-utils': set this to true or false
+  '@typescript-eslint/utils': set this to true or false
+  arconnect: set this to true or false
+  arweave: set this to true or false
   bufferutil: set this to true or false
   core-js: set this to true or false
   esbuild: set this to true or false
+  eslint: set this to true or false
+  eslint-config-next: set this to true or false
+  eslint-config-prettier: set this to true or false
+  eslint-import-resolver-typescript: set this to true or false
+  eslint-module-utils: set this to true or false
+  eslint-plugin-import: set this to true or false
+  eslint-plugin-jsx-a11y: set this to true or false
+  eslint-plugin-react: set this to true or false
+  eslint-plugin-react-hooks: set this to true or false
   keccak: set this to true or false
   sharp: set this to true or false
+  typescript-eslint: set this to true or false
   unrs-resolver: set this to true or false
   utf-8-validate: set this to true or false
 onlyBuiltDependencies:
   - sharp
+
+# Keep the conventional virtual-store layout so dependency type resolution
+# (e.g. @types/react) and `pnpm run`'s deps status check stay stable.
+virtualStoreDir: .pnpm
+
+# pnpm 11 blocks install scripts of dependencies by default and exits non-zero
+# with ERR_PNPM_IGNORED_BUILDS, which would abort `pnpm run <script>` due to
+# the verify-deps-before-run preflight. The affected packages all ship
+# prebuilt platform binaries (e.g. sharp, esbuild) or have no-op postinstall
+# scripts (e.g. eslint toolchain, core-js), so they function without running
+# those scripts. Disable the preflight so `pnpm run` invokes tools directly.
+verifyDepsBeforeRun: false

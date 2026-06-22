@@ -1,6 +1,10 @@
+import type { ComponentType, SVGProps } from 'react';
 import { uppercaseSpecialWords } from '@/lib/utils';
-import { Link, TwitterIcon, Tag as TagIcon } from 'lucide-react';
+import { Link, Tag as TagIcon } from 'lucide-react';
+import { FaXTwitter } from 'react-icons/fa6';
 import Tag from '../ui/tag';
+
+const TwitterIcon: ComponentType<SVGProps<SVGElement>> = FaXTwitter;
 import Image from 'next/image';
 
 interface Props {
