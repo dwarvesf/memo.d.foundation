@@ -1,9 +1,106 @@
-# b794785d-77e3-4281-a780-3c9c7f3e77cf is the railway service id which is used to identify the cache for each service. There is no way to get it from the environment variables.
+# syntax=docker/dockerfile:1
+# Self-contained multi-stage Dockerfile for Railway/CI builds.
+#
+# Previously this build depended on a private base image hosted in Google
+# Artifact Registry (asia-southeast1-docker.pkg.dev/df-infrastructure/
+# memo-d-foundation/base). Railway's builders cannot authenticate to that
+# registry anonymously, so `FROM <base>` failed at metadata resolution with a
+# 403 Forbidden. This Dockerfile inlines the base toolchain (previously built
+# separately in Dockerfile.base) directly, so the build pulls only from public
+# registries (docker.io).
+#
+# b794785d-77e3-4281-a780-3c9c7f3e77cf is the railway service id which is used
+# to identify the cache for each service. There is no way to get it from the
+# environment variables.
 # So we need to hardcode it in the Dockerfile.
+
 # --- Base Stage ---
-# Use the official base image which has all the necessary tools installed.
-FROM asia-southeast1-docker.pkg.dev/df-infrastructure/memo-d-foundation/base AS base
+# Toolchain: Elixir 1.18 (OTP 26), Node.js 23, DuckDB, pnpm. Inlined from
+# Dockerfile.base so no private-registry pull is required.
+FROM elixir:1.18.4-otp-26 AS base
 WORKDIR /code
+
+LABEL maintainer="anhnx@d.foundation" \
+      org.opencontainers.image.title="Memo.d.foundation Base Build Environment" \
+      org.opencontainers.image.description="Base image with Elixir, Node.js, DuckDB, and build tools" \
+      org.opencontainers.image.source="https://github.com/dwarvesf/memo.d.foundation" \
+      org.opencontainers.image.version="1.0.0"
+
+# Set locale environment variables for UTF-8 support
+ENV LANG=en_US.UTF-8 \
+      LC_ALL=en_US.UTF-8 \
+      NODE_ENV=production \
+      MIX_ENV=prod \
+      MAKEFLAGS="-j$(nproc)"
+
+# Install system dependencies and build tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git \
+      curl \
+      bash \
+      unzip \
+      build-essential \
+      locales \
+      ca-certificates \
+      tzdata \
+      && rm -rf /var/lib/apt/lists/*
+
+# Set up UTF-8 locale
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+      locale-gen en_US.UTF-8 && \
+      update-locale LANG=en_US.UTF-8
+
+# Install Node.js (23.x) from NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - && \
+      apt-get install -y nodejs && \
+      node --version && npm --version
+
+# Install DuckDB
+RUN echo "Installing DuckDB..." && \
+      curl -L --connect-timeout 30 --max-time 300 --retry 3 --retry-delay 10 \
+      https://github.com/duckdb/duckdb/releases/download/v1.2.2/duckdb_cli-linux-amd64.zip \
+      -o duckdb.zip && \
+      unzip duckdb.zip && \
+      mv duckdb /usr/local/bin/ && \
+      chmod +x /usr/local/bin/duckdb && \
+      rm duckdb.zip && \
+      echo "DuckDB installed successfully"
+
+# Install and configure pnpm globally. Pinned to the major.minor that generates
+# pnpm-lock.yaml (lockfileVersion 9.0). pnpm-workspace.yaml's
+# onlyBuiltDependencies/ignoredBuiltDependencies make
+# `pnpm install --frozen-lockfile` exit 0 in non-interactive CI (pnpm 11
+# otherwise hard-fails with ERR_PNPM_IGNORED_BUILDS on uncategorised build
+# scripts).
+RUN echo "Installing pnpm..." && \
+      npm install -g pnpm@11.6.0 && \
+      pnpm config set store-dir /root/.pnpm-store && \
+      pnpm config set cache-dir /root/.pnpm-cache && \
+      pnpm config set network-timeout 60000 && \
+      pnpm config set fetch-retries 3 && \
+      pnpm config set fetch-retry-mintimeout 10000 && \
+      pnpm config set fetch-retry-maxtimeout 60000
+
+# Set up Elixir environment with proper configuration
+RUN echo "Setting up Elixir environment..." && \
+      mix local.hex --force && \
+      mix local.rebar --force && \
+      mix hex.config api_url https://hex.pm/api && \
+      mix hex.config offline false && \
+      mix hex.config http_timeout 60000 && \
+      mix hex.config http_concurrency 8 && \
+      mkdir -p /root/.mix && \
+      mkdir -p /root/.hex
+
+# Configure Git for optimal performance in container environment
+RUN echo "Configuring Git..." && \
+      git config --global init.defaultBranch main && \
+      git config --global advice.detachedHead false && \
+      git config --global gc.auto 0 && \
+      git config --global fetch.parallel 4 && \
+      git config --global submodule.fetchJobs 4 && \
+      git config --global protocol.version 2 && \
+      git config --global url."https://github.com/".insteadOf "git@github.com:"
 
 # --- Source Stage ---
 # Fetches the latest source code and submodules from git. This stage ensures
