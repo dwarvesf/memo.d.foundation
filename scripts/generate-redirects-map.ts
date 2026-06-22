@@ -5,7 +5,7 @@ import {
   DuckDBInstance,
   DuckDBValue,
 } from '@duckdb/node-api'; // Import Instance, Connection, and Value
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 // Import the project's own slugify function
 import { slugifyPathComponents } from '../src/lib/utils/slugify.js'; // Use .js extension for ES module imports
 

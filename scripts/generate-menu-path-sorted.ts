@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import type { Stats } from 'fs';
 import path from 'path';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { glob, type GlobOptions } from 'glob';
 
 // Create async glob function
