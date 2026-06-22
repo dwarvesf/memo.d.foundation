@@ -226,15 +226,10 @@ COPY --from=deps /code/lib/obsidian-compiler/deps ./lib/obsidian-compiler/deps
 COPY --from=source /code .
 
 # Build the static assets using cache mounts for Next.js and build processes
-# This tells Docker to persist build caches between builds for faster rebuilds.
-# SKIP_INSTALL=1 skips the `pnpm install --no-frozen-lockfile` line in the
-# build-static Makefile target — the deps stage already installed frozen with
-# the pnpm store cache mount, and re-running the install here (without that
-# store mount) causes pnpm 11 to re-link node_modules against a missing store,
-# leaving package files (e.g. tsx/dist/cli.mjs) empty.
+# This tells Docker to persist build caches between builds for faster rebuilds
 RUN --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-nextjs-cache,target=/code/.next/cache \
       --mount=type=cache,id=s/b794785d-77e3-4281-a780-3c9c7f3e77cf-${RAILWAY_ENVIRONMENT_NAME}-build-cache,target=/tmp/build-cache \
-      make build-static SKIP_INSTALL=1
+      make build-static
 
 # --- Runner Stage ---
 # This is the final, small image that will run in production.

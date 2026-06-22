@@ -27,7 +27,7 @@ build:
 	@cp -r db/ out/
 
 build-static:
-	@if [ -z "$(SKIP_INSTALL)" ]; then pnpm install --no-frozen-lockfile; fi
+	@pnpm install --no-frozen-lockfile
 	@cd lib/obsidian-compiler && mix export_markdown
 	@pnpm run build
 	@pnpm run generate-nginx-conf

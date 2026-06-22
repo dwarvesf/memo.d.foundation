@@ -29,9 +29,15 @@ dangerouslyAllowAllBuilds: true
 # stay in the Dockerfile).
 network-timeout: 60000
 
-# Keep the conventional virtual-store layout so dependency type resolution
-# (e.g. @types/react) and tooling that walks .pnpm stay stable.
-virtualStoreDir: .pnpm
+# Intentionally NOT setting `virtualStoreDir`. pnpm's default,
+# `node_modules/.pnpm`, keeps the virtual store INSIDE node_modules, so the
+# Dockerfile builder stage's `COPY --from=deps /code/node_modules` captures it.
+# Setting it to `.pnpm` (project root) moves the store OUTSIDE node_modules,
+# breaks that COPY, and leaves every package's `node_modules/<pkg>` symlink
+# dangling in the builder — surfacing as MODULE_NOT_FOUND for bins like
+# `tsx/dist/cli.mjs`. The previous `virtualStoreDir: .pnpm` here was a
+# regression introduced by the pnpm 11 migration (main had no pnpm-workspace.yaml
+# and used the default); reverted to default.
 
 # Disable pnpm 11's deps preflight, which `pnpm run <script>` runs before
 # invoking the tool. With a stale local node_modules (e.g. unrun lockfile
