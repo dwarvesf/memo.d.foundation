@@ -20,6 +20,15 @@ ignoredBuiltDependencies:
   - unrs-resolver
   - utf-8-validate
 
+# Network/retry tuning. pnpm 11 removed support for these keys in the global
+# config.yaml (ERR_PNPM_CONFIG_SET_UNSUPPORTED_YAML_CONFIG_KEY), so they live
+# here in pnpm-workspace.yaml and apply to both local and container installs.
+# This preserves the retry behaviour the Dockerfile previously set via
+# `pnpm config set` (the remaining keys — store-dir, cache-dir, fetch-retries,
+# fetch-retry-mintimeout/maxtimeout — are still accepted as global config and
+# stay in the Dockerfile).
+network-timeout: 60000
+
 # Keep the conventional virtual-store layout so dependency type resolution
 # (e.g. @types/react) and `pnpm run`'s deps status check stay stable.
 virtualStoreDir: .pnpm

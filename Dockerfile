@@ -76,7 +76,6 @@ RUN echo "Installing pnpm..." && \
       npm install -g pnpm@11.6.0 && \
       pnpm config set store-dir /root/.pnpm-store && \
       pnpm config set cache-dir /root/.pnpm-cache && \
-      pnpm config set network-timeout 60000 && \
       pnpm config set fetch-retries 3 && \
       pnpm config set fetch-retry-mintimeout 10000 && \
       pnpm config set fetch-retry-maxtimeout 60000
