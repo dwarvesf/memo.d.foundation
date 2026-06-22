@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import fs from 'fs';
 import matter from 'gray-matter';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 
 /**
  * Extracts frontmatter data from a markdown file
@@ -39,7 +39,7 @@ function updateFrontmatter(
         ...existingFrontmatter,
         ...newFrontmatter,
       },
-      { lineWidth: -1, forceQuotes: true },
+      { lineWidth: -1 },
     );
 
     const updatedContent = `---\n${updatedFrontmatter}---\n${content}`;

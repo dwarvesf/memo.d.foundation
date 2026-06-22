@@ -419,7 +419,7 @@ export async function main(
   const results = await linter.lintFiles(filePaths, config);
 
   if (fix) {
-    let changedMade = [];
+    const changedMade = [];
 
     await linter.applyFixes(results);
     executeGitAddChangedFiles();
@@ -479,7 +479,7 @@ export async function main(
     let totalFixableWarnings = results.fixableWarningCount;
 
     let alreadyFixed = 0;
-    let changedMade = [];
+    const changedMade = [];
 
     for (const fileResult of results.results) {
       if (fileResult.messages.length > 0) {

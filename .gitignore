@@ -109,3 +109,6 @@ scripts/notion/notion-output/
 
 # test output
 coverage/
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo

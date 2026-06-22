@@ -1,0 +1,47 @@
+# pnpm 11 build-approval. pnpm 11 blocks install scripts by default and exits
+# non-zero with ERR_PNPM_IGNORED_BUILDS on any package with a build script that
+# isn't explicitly approved. That hard-fails non-interactive
+# `pnpm install --frozen-lockfile` in CI/Docker.
+#
+# Allow all build scripts to run, restoring pnpm 10's behaviour (pnpm 10 ran
+# every install script silently — no approval flow). The packages with build
+# scripts in this repo's dep tree are all well-known toolchain/native-binding
+# packages (sharp, esbuild, core-js, keccak, bufferutil, utf-8-validate,
+# unrs-resolver, arconnect, arweave) that ship prebuilt platform binaries or
+# no-op postinstalls, so running their scripts is safe.
+#
+# Verified to be robust to poisoned pnpm-store state in the Docker build cache
+# mount (where a half-finished prior install could otherwise override
+# per-package approval lists and re-trigger ERR_PNPM_IGNORED_BUILDS), and
+# future-proof against new deps adding build scripts.
+#
+# Trade-off: a compromised dependency with a malicious install script would
+# execute on install. This matches the pre-pnpm-11 risk surface and is
+# acceptable for this trusted internal repo (standard Next.js/React toolchain).
+dangerouslyAllowAllBuilds: true
+
+# Network/retry tuning. pnpm 11 removed support for these keys in the global
+# config.yaml (ERR_PNPM_CONFIG_SET_UNSUPPORTED_YAML_CONFIG_KEY), so they live
+# here in pnpm-workspace.yaml and apply to both local and container installs.
+# This preserves the retry behaviour the Dockerfile previously set via
+# `pnpm config set` (the remaining keys — store-dir, cache-dir, fetch-retries,
+# fetch-retry-mintimeout/maxtimeout — are still accepted as global config and
+# stay in the Dockerfile).
+network-timeout: 60000
+
+# Intentionally NOT setting `virtualStoreDir`. pnpm's default,
+# `node_modules/.pnpm`, keeps the virtual store INSIDE node_modules, so the
+# Dockerfile builder stage's `COPY --from=deps /code/node_modules` captures it.
+# Setting it to `.pnpm` (project root) moves the store OUTSIDE node_modules,
+# breaks that COPY, and leaves every package's `node_modules/<pkg>` symlink
+# dangling in the builder — surfacing as MODULE_NOT_FOUND for bins like
+# `tsx/dist/cli.mjs`. The previous `virtualStoreDir: .pnpm` here was a
+# regression introduced by the pnpm 11 migration (main had no pnpm-workspace.yaml
+# and used the default); reverted to default.
+
+# Disable pnpm 11's deps preflight, which `pnpm run <script>` runs before
+# invoking the tool. With a stale local node_modules (e.g. unrun lockfile
+# changes) the preflight can exit non-zero and block tool invocation for reasons
+# unrelated to the script. Disable it so `pnpm run` invokes tools directly
+# without re-validating the install layout on every run.
+verifyDepsBeforeRun: false

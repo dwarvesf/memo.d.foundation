@@ -1,5 +1,9 @@
 import { useThemeContext } from '@/contexts/theme';
-import { ActivityCalendar } from 'react-activity-calendar';
+import {
+  ActivityCalendar,
+  type Activity,
+  type BlockElement,
+} from 'react-activity-calendar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -103,7 +107,7 @@ function ContributionActivityCalendar(
           <ActivityCalendar
             data={data[year] || getEmptyCurrentYear()}
             colorScheme={isDark ? 'dark' : 'light'}
-            renderBlock={(block, activity) => {
+            renderBlock={(block: BlockElement, activity: Activity) => {
               if (!activity.count) return block;
               return (
                 <Tooltip>

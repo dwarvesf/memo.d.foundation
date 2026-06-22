@@ -407,7 +407,7 @@ async function queryDatabaseWithPagination(databaseId: string, filter: any = nul
     // Debug: retrieve and log database schema
     try {
         console.log("Retrieving database schema to debug property types...");
-        const dbResponse = await notion.databases.retrieve({ database_id: databaseId });
+        const dbResponse = await notion.dataSources.retrieve({ data_source_id: databaseId });
         console.log("Database properties:");
         for (const propertyName in (dbResponse as any).properties) {
             const property = (dbResponse as any).properties[propertyName];
@@ -421,7 +421,7 @@ async function queryDatabaseWithPagination(databaseId: string, filter: any = nul
         try {
             // Prepare query options
             const queryOptions: any = {
-                database_id: databaseId,
+                data_source_id: databaseId,
                 page_size: 100, // Maximum allowed by Notion API
             };
 
@@ -435,8 +435,8 @@ async function queryDatabaseWithPagination(databaseId: string, filter: any = nul
                 queryOptions.start_cursor = nextCursor;
             }
 
-            // Query Notion database
-            const response = await notion.databases.query(queryOptions);
+            // Query Notion data source (v5: databases -> dataSources)
+            const response = await notion.dataSources.query(queryOptions);
 
             // Add results to our collection
             allResults = [...allResults, ...response.results];

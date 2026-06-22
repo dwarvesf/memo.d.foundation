@@ -74,7 +74,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
     const pathSegments = findPathInTree(tree, currentPath);
     if (pathSegments) {
       // Update the open paths
-      setOpenPaths(prev => {
+      setOpenPaths((prev: Record<string, boolean>) => {
         const newOpenPaths = { ...prev };
         pathSegments.forEach(path => {
           // Ignore leaf nodes that are markdown files
@@ -108,7 +108,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
   }, [router.asPath, tree, setOpenPaths]);
 
   const toggleOpenPath = (path: string) => {
-    setOpenPaths(prev => ({
+    setOpenPaths((prev: Record<string, boolean>) => ({
       ...prev,
       [path]: !prev[path],
     }));
@@ -179,7 +179,7 @@ const DirectoryTree = (props: DirectoryTreeProps) => {
       >
         <Link
           href={node.url || path} // Use node.url for the link, fallback to path if url is missing
-          onClick={e => {
+          onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
             if (hasChildren) {
               e.preventDefault();
               toggleOpenPath(path);

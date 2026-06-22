@@ -2,7 +2,7 @@ import Arweave from 'arweave';
 import fs from 'fs';
 import matter from 'gray-matter';
 import crypto from 'crypto';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { resolve } from 'path';
 
 const DEFAULT_IMAGE = 'ar://29D_NrcYOiOLMPVROGt5v3URNxftYCDK7z1-kyNPRT0';
@@ -299,7 +299,7 @@ async function processFile(
   data.perma_storage_id = result.id;
 
   // Convert frontmatter back to YAML
-  const newFrontmatter = yaml.dump(data, { lineWidth: -1, forceQuotes: true });
+  const newFrontmatter = yaml.dump(data, { lineWidth: -1 });
 
   // Update the file
   const updatedContent = `---\n${newFrontmatter}---\n${content}`;
