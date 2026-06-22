@@ -67,11 +67,11 @@ RUN echo "Installing DuckDB..." && \
       echo "DuckDB installed successfully"
 
 # Install and configure pnpm globally. Pinned to the major.minor that generates
-# pnpm-lock.yaml (lockfileVersion 9.0). pnpm-workspace.yaml's
-# onlyBuiltDependencies/ignoredBuiltDependencies make
-# `pnpm install --frozen-lockfile` exit 0 in non-interactive CI (pnpm 11
-# otherwise hard-fails with ERR_PNPM_IGNORED_BUILDS on uncategorised build
-# scripts).
+# pnpm-lock.yaml (lockfileVersion 9.0). The deps stage copies pnpm-workspace.yaml
+# (see below) which sets `dangerouslyAllowAllBuilds: true` so pnpm 11 runs all
+# install scripts instead of hard-failing with ERR_PNPM_IGNORED_BUILDS in
+# non-interactive CI. pnpm 10 ran all build scripts silently; this restores that
+# behaviour and is robust to poisoned store state in the build cache mount.
 RUN echo "Installing pnpm..." && \
       npm install -g pnpm@11.6.0 && \
       pnpm config set store-dir /root/.pnpm-store && \
@@ -164,8 +164,12 @@ WORKDIR /code
 ARG RAILWAY_ENVIRONMENT_NAME
 ENV RAILWAY_ENVIRONMENT_NAME=$RAILWAY_ENVIRONMENT_NAME
 
-# Copy dependency definition files from the 'source' stage
+# Copy dependency definition files from the 'source' stage. pnpm-workspace.yaml
+# MUST be present here: pnpm 11 reads build-approval config (dangerouslyAllowAll
+# Builds) from it during `pnpm install --frozen-lockfile`; without it pnpm falls
+# back to its default and hard-fails with ERR_PNPM_IGNORED_BUILDS.
 COPY --from=source /code/package.json /code/pnpm-lock.yaml ./
+COPY --from=source /code/pnpm-workspace.yaml ./
 COPY --from=source /code/lib/obsidian-compiler/mix.exs /code/lib/obsidian-compiler/mix.lock ./lib/obsidian-compiler/
 
 # Install Node.js dependencies with cache mount for pnpm store

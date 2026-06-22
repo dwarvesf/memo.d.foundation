@@ -1,24 +1,24 @@
-# Packages permitted to run install scripts (pnpm 11 build-approval flow).
-# sharp compiles native bindings; the other toolchain packages ship prebuilt
-# platform binaries via optionalDependencies and do not need their postinstall.
-onlyBuiltDependencies:
-  - sharp
-
-# Packages whose install scripts are explicitly ignored — silently skipped,
-# no ERR_PNPM_IGNORED_BUILDS. pnpm 11 hard-fails CI/Docker `pnpm install` on
-# any package with a build script that is in neither `onlyBuiltDependencies`
-# nor this list. All of these ship prebuilt binaries, so skipping their
-# scripts is safe on the linux/amd64 build image (and matches the old pnpm 10
-# default behaviour, which silently skipped them).
-ignoredBuiltDependencies:
-  - arconnect
-  - arweave
-  - bufferutil
-  - core-js
-  - esbuild
-  - keccak
-  - unrs-resolver
-  - utf-8-validate
+# pnpm 11 build-approval. pnpm 11 blocks install scripts by default and exits
+# non-zero with ERR_PNPM_IGNORED_BUILDS on any package with a build script that
+# isn't explicitly approved. That hard-fails non-interactive
+# `pnpm install --frozen-lockfile` in CI/Docker.
+#
+# Allow all build scripts to run, restoring pnpm 10's behaviour (pnpm 10 ran
+# every install script silently — no approval flow). The packages with build
+# scripts in this repo's dep tree are all well-known toolchain/native-binding
+# packages (sharp, esbuild, core-js, keccak, bufferutil, utf-8-validate,
+# unrs-resolver, arconnect, arweave) that ship prebuilt platform binaries or
+# no-op postinstalls, so running their scripts is safe.
+#
+# Verified to be robust to poisoned pnpm-store state in the Docker build cache
+# mount (where a half-finished prior install could otherwise override
+# per-package approval lists and re-trigger ERR_PNPM_IGNORED_BUILDS), and
+# future-proof against new deps adding build scripts.
+#
+# Trade-off: a compromised dependency with a malicious install script would
+# execute on install. This matches the pre-pnpm-11 risk surface and is
+# acceptable for this trusted internal repo (standard Next.js/React toolchain).
+dangerouslyAllowAllBuilds: true
 
 # Network/retry tuning. pnpm 11 removed support for these keys in the global
 # config.yaml (ERR_PNPM_CONFIG_SET_UNSUPPORTED_YAML_CONFIG_KEY), so they live
@@ -30,12 +30,12 @@ ignoredBuiltDependencies:
 network-timeout: 60000
 
 # Keep the conventional virtual-store layout so dependency type resolution
-# (e.g. @types/react) and `pnpm run`'s deps status check stay stable.
+# (e.g. @types/react) and tooling that walks .pnpm stay stable.
 virtualStoreDir: .pnpm
 
-# pnpm 11's deps preflight, which `pnpm run <script>` runs before invoking the
-# tool, exits non-zero on the ERR_PNPM_IGNORED_BUILDS notice above. The
-# affected packages ship prebuilt binaries, so the preflight failure is
-# spurious. Disable it so `pnpm run` invokes tools directly without
-# re-validating the install layout on every run.
+# Disable pnpm 11's deps preflight, which `pnpm run <script>` runs before
+# invoking the tool. With a stale local node_modules (e.g. unrun lockfile
+# changes) the preflight can exit non-zero and block tool invocation for reasons
+# unrelated to the script. Disable it so `pnpm run` invokes tools directly
+# without re-validating the install layout on every run.
 verifyDepsBeforeRun: false
