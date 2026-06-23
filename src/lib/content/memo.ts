@@ -9,13 +9,27 @@ import { memoryCache } from '@/lib/memory-cache';
 
 interface GetAllMarkdownContentsOptions {
   includeContent?: boolean;
+  excludeDrafts?: boolean;
+}
+
+/**
+ * Single source of truth for whether a page is publishable to any surface.
+ *
+ * Only `draft` is enforced today, but the predicate is intentionally written
+ * over a partial frontmatter so additional gates (e.g. `archived`) can be
+ * added here later without touching every call site.
+ */
+export function isPublished(
+  frontmatter: Pick<IMemoItem, 'draft'> | undefined | null,
+): boolean {
+  return !frontmatter?.draft;
 }
 
 export async function getAllMarkdownContents(
   basePath = '',
   options: GetAllMarkdownContentsOptions = {},
 ): Promise<IMemoItem[]> {
-  const { includeContent = true } = options;
+  const { includeContent = true, excludeDrafts = false } = options;
   // Generate a unique cache key based on basePath and options
   const cacheKey = `getAllMarkdownContents:${basePath}:${JSON.stringify(options)}`;
   const cached = memoryCache.get<IMemoItem[]>(cacheKey);
@@ -58,9 +72,10 @@ export async function getAllMarkdownContents(
     return item;
   });
 
-  const memos = (await Promise.all(memoPromises)).filter(
-    Boolean,
-  ) as IMemoItem[];
+  let memos = (await Promise.all(memoPromises)).filter(Boolean) as IMemoItem[];
+  if (excludeDrafts) {
+    memos = memos.filter(isPublished);
+  }
   memoryCache.set(cacheKey, memos);
   return memos;
 }

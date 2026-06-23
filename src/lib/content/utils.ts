@@ -408,7 +408,7 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
     // Continue with empty tags if file not found or error occurs
   }
 
-  const memos = await getAllMarkdownContents();
+  const memos = await getAllMarkdownContents('', { excludeDrafts: true });
   const menuSortedPaths = await getMenuPathSorted();
   // Sort the menu data using the sorted paths
   const sortedMenuData = applyRecursiveMenuSortedField(

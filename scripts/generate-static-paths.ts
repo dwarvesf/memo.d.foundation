@@ -5,9 +5,43 @@ import {
   getReversedAliasPaths,
   normalizePathWithSlash,
 } from './common.js';
-import { writeFile } from 'fs/promises';
+import { readFile, writeFile, stat } from 'fs/promises';
+import matter from 'gray-matter';
 
 const CONTENT_DIR = path.join(process.cwd(), 'public/content');
+
+/**
+ * A slug from getAllMarkdownFiles may resolve to `<slug>.md`, `<slug>.mdx`, or a
+ * directory index (`<slug>/readme.md`, `<slug>/_index.md`, or just a folder).
+ * Returns true if the underlying source file carries `draft: true`. Directory
+ * entries with no concrete source file are treated as published (the folder
+ * listing already excludes draft children via getAllMarkdownContents).
+ */
+const isDraftSlug = async (slug: string): Promise<boolean> => {
+  const candidates = [
+    `${slug}.md`,
+    `${slug}.mdx`,
+    path.join(slug, 'readme.md'),
+    path.join(slug, 'readme.mdx'),
+    path.join(slug, '_index.md'),
+    path.join(slug, '_index.mdx'),
+  ];
+  for (const candidate of candidates) {
+    const filePath = path.join(CONTENT_DIR, candidate);
+    try {
+      await stat(filePath);
+    } catch {
+      continue;
+    }
+    try {
+      const raw = await readFile(filePath, 'utf-8');
+      return matter(raw).data?.draft === true;
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
 const STATIC_JSON_PATHS = path.join(
   process.cwd(),
   'public/content/static-paths.json',
@@ -16,13 +50,17 @@ const STATIC_JSON_PATHS = path.join(
 const generateStaticJSONPaths = async () => {
   const redirectsPaths = await getRedirectsNotToAliases();
   const aliasesPaths = await getReversedAliasPaths();
-  const markdownPaths = (await getAllMarkdownFiles(CONTENT_DIR))
+  const allMarkdownSlugs = (await getAllMarkdownFiles(CONTENT_DIR))
     .filter(
       slugArray =>
         !slugArray[0]?.toLowerCase()?.startsWith('contributor') &&
         !slugArray[0]?.toLowerCase()?.startsWith('tags'),
     )
     .map(slugArray => slugArray.join('/'));
+
+  // Exclude draft pages so a draft is never a directly reachable static path.
+  const draftFlags = await Promise.all(allMarkdownSlugs.map(isDraftSlug));
+  const markdownPaths = allMarkdownSlugs.filter((_, i) => !draftFlags[i]);
 
   // Aliases paths as primary paths
   const aliasesEntries = Object.entries(aliasesPaths);
