@@ -50,7 +50,7 @@ async function generateBacklinksIndex(): Promise<void> {
     const query = `
       SELECT file_path, md_content, title
       FROM read_parquet('${parquetPathForDb}')
-      WHERE md_content IS NOT NULL AND file_path IS NOT NULL AND title IS NOT NULL AND title != '';
+      WHERE md_content IS NOT NULL AND file_path IS NOT NULL AND title IS NOT NULL AND title != '' AND draft IS NOT TRUE;
     `;
 
     console.log('Executing DuckDB query for content data...');

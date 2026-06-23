@@ -6,7 +6,7 @@ import fs from 'fs/promises';
 
 // Import utility functions
 import { getMarkdownContent } from '../lib/content/markdown';
-import { getAllMarkdownContents } from '@/lib/content/memo';
+import { getAllMarkdownContents, isPublished } from '@/lib/content/memo';
 import {
   getRootLayoutPageProps,
   getServerSideRedirectPath,
@@ -163,6 +163,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       // Extract metadata similar to markdown files for consistency
       const frontmatter: Record<string, any> = mdxSource.frontmatter || {};
 
+      // A draft page must not be reachable by URL in production.
+      if (process.env.NODE_ENV === 'production' && !isPublished(frontmatter)) {
+        return { notFound: true };
+      }
+
       return {
         props: {
           ...layoutProps,
@@ -249,6 +254,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
         const preMemos = await getAllMarkdownContents(canonicalSlug.join('/'), {
           includeContent: false,
+          excludeDrafts: true,
         });
 
         const allMemos = preMemos.map(memo => {
@@ -274,6 +280,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const { content, frontmatter, tocItems, rawContent, blockCount, summary } =
       await getMarkdownContent(filePath);
+
+    // A draft page must not be reachable by URL in production.
+    if (process.env.NODE_ENV === 'production' && !isPublished(frontmatter)) {
+      return { notFound: true };
+    }
 
     const backlinksPath = path.join(
       process.cwd(),
