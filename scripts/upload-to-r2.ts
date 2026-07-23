@@ -299,7 +299,9 @@ function createR2ClientFromEnv(env: NodeJS.ProcessEnv = process.env): R2Client {
     return fetch(`https://${host}${canonicalUri}`, {
       method,
       headers: { ...headers, authorization },
-      body,
+      // Buffer is a Uint8Array at runtime, but the DOM lib's BodyInit doesn't
+      // accept Node's Buffer type; re-wrap so `next build`'s typecheck passes.
+      body: body ? new Uint8Array(body) : undefined,
     });
   }
 
