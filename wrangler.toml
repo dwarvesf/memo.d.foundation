@@ -1,0 +1,15 @@
+name = "memo-d-foundation"
+pages_build_output_dir = "out"
+compatibility_date = "2026-07-23"
+compatibility_flags = ["nodejs_compat"]
+
+# Pages Functions live in ./functions (repo root, sibling to `out/`) and are
+# auto-detected by Cloudflare Pages; no explicit config needed for them here.
+#
+# Build command for the Pages project (set in the dashboard or via
+# `wrangler pages project create` + CI config, not in this file):
+#   pnpm install --frozen-lockfile && pnpm run build && pnpm run generate-cf-redirects
+# Build output directory: out
+#
+# See docs/cf-migration/pages-deploy.md for the full deploy runbook,
+# the _redirects/Function split, and the RSS ?limit= handling.
