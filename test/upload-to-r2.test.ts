@@ -10,7 +10,7 @@ import os from 'os';
 import path from 'path';
 import crypto from 'crypto';
 import { describe, test, expect, beforeEach, afterEach } from 'vitest';
-import { resolveArtifacts, uploadArtifacts, type R2Client } from '../scripts/upload-to-r2';
+import { resolveArtifacts, uploadArtifacts, uploadBuffer, type R2Client } from '../scripts/upload-to-r2';
 
 let repoRoot: string;
 
@@ -175,5 +175,80 @@ describe('uploadArtifacts', () => {
 
     expect(plans.every(p => p.action === 'dry-run')).toBe(true);
     expect(plans).toHaveLength(found.length * 2);
+  });
+});
+
+// posts.json (M4-05b): a generated in-memory object, not scanned off disk
+// like the #302 artifacts above, so it goes through uploadBuffer directly
+// (the same content-hash HEAD-before-PUT logic uploadArtifacts uses per file).
+describe('uploadBuffer (posts.json, the memo_posts R2 twin)', () => {
+  function createRecordingClient(existingShaByKey: Record<string, string> = {}): {
+    client: R2Client;
+    puts: Array<{ key: string; body: Buffer; contentType: string; contentSha256: string }>;
+  } {
+    const puts: Array<{ key: string; body: Buffer; contentType: string; contentSha256: string }> = [];
+    const client: R2Client = {
+      async headObject(key) {
+        const sha = existingShaByKey[key];
+        return sha ? { contentSha256: sha } : null;
+      },
+      async putObject(key, body, opts) {
+        puts.push({ key, body, ...opts });
+      },
+    };
+    return { client, puts };
+  }
+
+  const samplePostsJson = Buffer.from(
+    JSON.stringify([
+      { filePath: 'consulting/navigate/social-proof.md', date: '2025-09-08', title: 'Social proof', authors: ['monotykamary'], tags: ['consulting'] },
+    ]),
+  );
+
+  test('uploads posts.json to a commit-scoped key and a latest key, as JSON content-type', async () => {
+    const { client, puts } = createRecordingClient();
+
+    const plans = await uploadBuffer(client, samplePostsJson, 'posts.json', 'memo-posts', {
+      commitSha: 'abc1234',
+    });
+
+    expect(plans.map(p => p.key).sort()).toEqual(
+      ['derived/abc1234/posts.json', 'derived/latest/posts.json'].sort(),
+    );
+    expect(plans.every(p => p.action === 'upload')).toBe(true);
+    expect(puts.every(p => p.contentType === 'application/json')).toBe(true);
+  });
+
+  test('is idempotent: unchanged posts.json content skips the write', async () => {
+    const sha256 = crypto.createHash('sha256').update(samplePostsJson).digest('hex');
+    const { client, puts } = createRecordingClient({
+      'derived/abc1234/posts.json': sha256,
+      'derived/latest/posts.json': sha256,
+    });
+
+    const plans = await uploadBuffer(client, samplePostsJson, 'posts.json', 'memo-posts', {
+      commitSha: 'abc1234',
+    });
+
+    expect(plans.every(p => p.action === 'skip-unchanged')).toBe(true);
+    expect(puts).toHaveLength(0);
+  });
+
+  test('dry-run never touches the client', async () => {
+    const throwingClient: R2Client = {
+      headObject: async () => {
+        throw new Error('headObject must not be called during dry-run');
+      },
+      putObject: async () => {
+        throw new Error('putObject must not be called during dry-run');
+      },
+    };
+
+    const plans = await uploadBuffer(throwingClient, samplePostsJson, 'posts.json', 'memo-posts', {
+      commitSha: 'abc1234',
+      dryRun: true,
+    });
+
+    expect(plans.every(p => p.action === 'dry-run')).toBe(true);
   });
 });

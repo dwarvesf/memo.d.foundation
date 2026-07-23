@@ -6,7 +6,11 @@
  * Artifact list is the exact set named in the #302 build-inventory
  * (docs/cf-migration/build-inventory.md): db/vault.parquet (carries the
  * embeddings), the search index, and the rendered `out/` tree. No other
- * paths are invented here.
+ * paths are invented here. One more object is generated (not scanned off
+ * disk): `posts.json`, the per-post rows extracted from db/vault.parquet by
+ * extract-memo-posts.ts -- the R2 twin of upload-memo-posts-to-d1.ts's
+ * memo_posts table (M4-05b, completing the DuckDB-kill M4-06 found
+ * unfinished in the aggregate-only content_rollups this script also feeds).
  *
  * Each file is uploaded to two keys so a re-run never duplicates objects:
  *   derived/<commitSha>/<relKey>  - immutable, one object per commit
@@ -24,8 +28,9 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
+import { extractMemoPosts } from './extract-memo-posts';
 
-export type ArtifactKind = 'vault-db' | 'search-index' | 'rendered';
+export type ArtifactKind = 'vault-db' | 'search-index' | 'rendered' | 'memo-posts';
 
 export interface ArtifactSource {
   kind: ArtifactKind;
@@ -151,6 +156,45 @@ export interface UploadPlan {
   action: 'upload' | 'skip-unchanged' | 'dry-run';
 }
 
+// Shared upload-one-object logic (content-hash HEAD-before-PUT skip, two
+// keys per object) factored out so an in-memory buffer (e.g. the generated
+// posts.json below) can reuse it without a round-trip through the filesystem
+// the way resolveArtifacts's on-disk artifacts do.
+export async function uploadBuffer(
+  client: R2Client,
+  body: Buffer,
+  relKey: string,
+  kind: ArtifactKind,
+  opts: { commitSha: string; dryRun?: boolean },
+): Promise<UploadPlan[]> {
+  const sha256 = crypto.createHash('sha256').update(body).digest('hex');
+  const contentType = guessContentType(relKey);
+  const plans: UploadPlan[] = [];
+
+  const keys = [`derived/${opts.commitSha}/${relKey}`, `derived/latest/${relKey}`];
+
+  for (const key of keys) {
+    let action: UploadPlan['action'] = 'upload';
+
+    if (opts.dryRun) {
+      action = 'dry-run';
+    } else {
+      const existing = await client.headObject(key);
+      if (existing?.contentSha256 === sha256) {
+        action = 'skip-unchanged';
+      }
+    }
+
+    if (action === 'upload') {
+      await client.putObject(key, body, { contentType, contentSha256: sha256 });
+    }
+
+    plans.push({ key, relKey, kind, sizeBytes: body.length, sha256, action });
+  }
+
+  return plans;
+}
+
 export async function uploadArtifacts(
   client: R2Client,
   artifacts: ArtifactSource[],
@@ -160,39 +204,7 @@ export async function uploadArtifacts(
 
   for (const artifact of artifacts) {
     const body = fs.readFileSync(artifact.localPath);
-    const sha256 = crypto.createHash('sha256').update(body).digest('hex');
-    const contentType = guessContentType(artifact.relKey);
-
-    const keys = [
-      `derived/${opts.commitSha}/${artifact.relKey}`,
-      `derived/latest/${artifact.relKey}`,
-    ];
-
-    for (const key of keys) {
-      let action: UploadPlan['action'] = 'upload';
-
-      if (opts.dryRun) {
-        action = 'dry-run';
-      } else {
-        const existing = await client.headObject(key);
-        if (existing?.contentSha256 === sha256) {
-          action = 'skip-unchanged';
-        }
-      }
-
-      if (action === 'upload') {
-        await client.putObject(key, body, { contentType, contentSha256: sha256 });
-      }
-
-      plans.push({
-        key,
-        relKey: artifact.relKey,
-        kind: artifact.kind,
-        sizeBytes: body.length,
-        sha256,
-        action,
-      });
-    }
+    plans.push(...(await uploadBuffer(client, body, artifact.relKey, artifact.kind, opts)));
   }
 
   return plans;
@@ -345,6 +357,17 @@ async function main() {
     : createR2ClientFromEnv();
 
   const plans = await uploadArtifacts(client, found, { commitSha, dryRun });
+
+  // Per-post rows (memo_posts' R2 twin): derived from db/vault.parquet, not
+  // an on-disk build artifact, so it goes through uploadBuffer directly
+  // rather than resolveArtifacts/uploadArtifacts's file-scan path.
+  const posts = await extractMemoPosts(path.join(repoRoot, 'db/vault.parquet'));
+  const postsBody = Buffer.from(JSON.stringify(posts, null, 2));
+  const postsPlans = await uploadBuffer(client, postsBody, 'posts.json', 'memo-posts', {
+    commitSha,
+    dryRun,
+  });
+  plans.push(...postsPlans);
 
   for (const plan of plans) {
     console.log(
