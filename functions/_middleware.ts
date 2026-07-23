@@ -23,6 +23,7 @@
 // tighten these types before the first real deploy.
 import { REDIRECT_MAP } from './_generated-redirect-map.js';
 import { feedLimitFilename } from './lib/feed-limit.js';
+import { OVERSIZE_ASSET_MAP } from './lib/oversize-assets.js';
 
 async function serveWithFallback(
   assets: { fetch: (req: Request) => Promise<Response> },
@@ -42,6 +43,21 @@ export const onRequest = async (context: any): Promise<Response> => {
   const { request, env, next } = context;
   const url = new URL(request.url);
   const { pathname } = url;
+
+  // 5 vault assets exceed Pages' 25 MiB per-file upload limit and are
+  // excluded from `out/` at build time (see M4-02-PAGES-CUTOVER-RECORD.md).
+  // They were uploaded once to the memo-derived R2 bucket; proxy them
+  // through here instead of a redirect, so the bucket can stay private.
+  const oversizeKey = OVERSIZE_ASSET_MAP[pathname];
+  if (oversizeKey) {
+    const object = await env.MEMO_DERIVED.get(oversizeKey);
+    if (object === null) return next();
+    const headers = new Headers();
+    object.writeHttpMetadata(headers);
+    headers.set('etag', object.httpEtag);
+    headers.set('cache-control', 'public, max-age=31536000, immutable');
+    return new Response(object.body, { headers });
+  }
 
   const redirectTarget = REDIRECT_MAP[pathname];
   if (redirectTarget && redirectTarget !== pathname) {
@@ -66,7 +82,13 @@ export const onRequest = async (context: any): Promise<Response> => {
       feedMatch[1],
       url.searchParams.get('limit'),
     );
-    return serveWithFallback(env.ASSETS, url.origin, limitedPath, pathname, request);
+    return serveWithFallback(
+      env.ASSETS,
+      url.origin,
+      limitedPath,
+      pathname,
+      request,
+    );
   }
   if (pathname === '/feed/index.xml') {
     const limitedPath = feedLimitFilename(
