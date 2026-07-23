@@ -122,3 +122,11 @@ Current: `memo.d.foundation` (zone `d.foundation`) points at Railway.
 Repoint the `memo` DNS record back at the current Railway target. The Railway
 deployment is live, untouched, and was never disabled; no data migration is
 involved (D1/R2 derived data is additive and unused by the Railway path).
+
+## DNS flip — EXECUTED (conductor, 2026-07-23)
+
+- Custom domain `memo.d.foundation` attached to the Pages project (validation: pending → active in ~60s).
+- The `memo` CNAME in the `d.foundation` zone flipped: `mkdwtxbw.up.railway.app` (DNS-only) → `memo-d-foundation.pages.dev` (proxied).
+- Post-flip verification on the production domain: root 200, `/rss.xml` 200 with 20 items, garbage path 404, `/updates` + `/playbook` byte-parity with the verified pages.dev deployment.
+- **Rollback:** repoint the `memo` CNAME to `mkdwtxbw.up.railway.app` (DNS-only) and detach the custom domain. Railway deployment still live and untouched.
+- Railway is now zero-traffic; its teardown follows the M5-04 runbook after a rollback buffer.
