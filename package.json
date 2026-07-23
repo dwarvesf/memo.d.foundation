@@ -26,6 +26,8 @@
     "monitor-parquet": "tsx scripts/monitor-parquet.ts",
     "monitor-parquet-notify": "tsx scripts/monitor-parquet.ts --notify",
     "generate-static-paths": "tsx scripts/generate-static-paths.ts",
+    "upload-to-r2": "tsx scripts/upload-to-r2.ts",
+    "upload-rollups-to-d1": "tsx scripts/upload-rollups-to-d1.ts",
     "build-ci-lint": "tsup scripts/formatter/ci-lint.ts --config tsup.config.ts --out-dir out/tools",
     "setup-hook-local": "npx -y tsx scripts/git-shell-hook.ts setup",
     "setup-gh-lint": "npx -y tsx scripts/git-shell-hook.ts github-actions",

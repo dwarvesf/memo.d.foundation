@@ -1,0 +1,68 @@
+name: Upload derived artifacts to R2
+
+# CF-N.4 (memo-track sub-goal 05): builds the site the same way `make
+# build-static` does today, then uploads the artifacts named in the #302
+# build-inventory (db/vault.parquet, the search index, the rendered out/)
+# to R2, plus a small content-metrics rollup to D1.
+#
+# DEPLOY-GATED: this workflow needs the R2 bucket + D1 database provisioned
+# and the secrets below set before a real (non dry-run) run can succeed.
+# Trigger is workflow_dispatch-only for now so it never runs (and never
+# fails on missing secrets) until that's done; flip to a `push: main` trigger
+# once the bucket/database exist. dry_run defaults to true for the same
+# reason - an operator has to opt in to a real upload.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Resolve + plan only, no network calls to R2/D1'
+        required: false
+        default: true
+        type: boolean
+
+concurrency:
+  group: ${{ github.repository }}-derived-to-r2
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout contents repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Install devbox
+        uses: jetpack-io/devbox-install-action@v0.12.0
+        with:
+          enable-cache: true
+          devbox-version: 0.14.2
+
+      - name: Build static site (mirrors `make build-static`)
+        shell: bash
+        run: devbox run build-static
+        env:
+          # Existing content-pipeline secrets this build already depends on
+          # (unrelated to R2/D1; same names Railway already uses).
+          PLAUSIBLE_API_TOKEN: ${{ secrets.PLAUSIBLE_API_TOKEN }}
+
+      - name: Upload derived artifacts to R2
+        shell: bash
+        run: pnpm exec tsx scripts/upload-to-r2.ts $DRY_RUN_FLAG
+        env:
+          DRY_RUN_FLAG: ${{ inputs.dry_run && '--dry-run' || '' }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+
+      - name: Upload content rollup to D1
+        shell: bash
+        run: pnpm exec tsx scripts/upload-rollups-to-d1.ts $DRY_RUN_FLAG
+        env:
+          DRY_RUN_FLAG: ${{ inputs.dry_run && '--dry-run' || '' }}
+          D1_ACCOUNT_ID: ${{ secrets.D1_ACCOUNT_ID }}
+          D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
+          D1_API_TOKEN: ${{ secrets.D1_API_TOKEN }}
