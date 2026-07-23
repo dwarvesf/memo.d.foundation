@@ -112,3 +112,11 @@ if should_update || [ "$1" == "--force" ]; then
 else
     echo "Submodules are up-to-date (last updated: $(date -r "$CACHE_FILE")). Use --force to update anyway."
 fi
+
+# Every branch above tolerates per-submodule failure (SSH->HTTPS fallback,
+# `|| true`/`|| echo`) so one dead pointer doesn't abort the whole tree. That
+# also means a fully broken submodule (dead repo, 404, bad SHA) used to leave
+# this script exiting 0 with a silently stale/partial checkout. Verify the
+# actual end state instead of trusting the update loop's exit code.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+git submodule status --recursive | "$SCRIPT_DIR/scripts/verify-submodules.sh"
