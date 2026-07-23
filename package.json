@@ -19,6 +19,8 @@
     "generate-backlinks": "tsx scripts/generate-backlinks.ts",
     "generate-summary": "tsx scripts/generate-summary.ts",
     "generate-nginx-conf": "tsx scripts/generate-nginx-redirect-map.ts",
+    "generate-cf-redirects": "tsx scripts/generate-cf-redirects.ts",
+    "verify-cf-redirects": "tsx scripts/verify-cf-redirects.ts",
     "generate-pageviews": "tsx scripts/generate-pageviews.ts",
     "fetch-prompts": "tsx scripts/fetch-prompts.ts",
     "fetch-contributors": "tsx scripts/fetch-contributors.ts",

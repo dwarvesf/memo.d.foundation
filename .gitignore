@@ -90,6 +90,11 @@ package.json
 out
 public/content
 
+# CF Pages: generated at build time by scripts/generate-cf-redirects.ts,
+# consumed by functions/_middleware.ts. functions/_middleware.ts itself is
+# hand-written and stays tracked.
+functions/_generated-redirect-map.ts
+
 # cache
 .memo_export_cache.json
 .submodule_update_cache
