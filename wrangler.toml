@@ -3,6 +3,15 @@ pages_build_output_dir = "out"
 compatibility_date = "2026-07-23"
 compatibility_flags = ["nodejs_compat"]
 
+# Serves the handful of vault assets that exceed Pages' 25 MiB per-file
+# upload limit (excluded from the `out/` deploy, see functions/_middleware.ts
+# and docs/cf-migration/M4-02-PAGES-CUTOVER-RECORD.md "Deviations and known
+# gaps" #2). Bucket stays private; the Function proxies the object through,
+# it is not exposed via R2's public r2.dev domain.
+[[r2_buckets]]
+binding = "MEMO_DERIVED"
+bucket_name = "memo-derived"
+
 # Pages Functions live in ./functions (repo root, sibling to `out/`) and are
 # auto-detected by Cloudflare Pages; no explicit config needed for them here.
 #

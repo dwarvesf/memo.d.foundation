@@ -92,11 +92,41 @@ key prefixes, sizes verified by re-download):
    HEAD-before-PUT resumes cleanly). Nothing currently consumes the `out/`
    mirror.
 2. **5 asset files exceed Pages' 25 MiB per-file limit** and were excluded
-   from the deploy (Pages hard-rejects them). They 404 on pages.dev but serve
-   on Railway: `research/assets/builder-design-pattern.pdf` (33 MB, + 2 alias
-   copies) and `playground/topics/blockchain/assets/build_custom_ai_agent_with_elizaos_result.gif`
-   (28 MB, + 1 alias copy). Follow-up options: compress them in the vault, or
-   serve them from R2 via the middleware.
+   from the deploy (Pages hard-rejects them): the same PDF is physically
+   duplicated at 3 paths under `public/content/` (34,491,168 bytes each) and
+   the same GIF at 2 paths (29,778,758 bytes each), the vault export copies
+   an asset into every category tree (`research/`, `playground/`) that
+   references it, so one underlying file becomes several identical build
+   outputs.
+
+   **Fixed** (`fix/oversize-assets-r2`, PR #TODO, 2026-07-23): each distinct
+   file (2 total) uploaded once to `memo-derived` R2 at
+   `assets/oversize/<filename>` via `wrangler r2 object put`, verified
+   byte-identical by re-download + SHA-256. `functions/_middleware.ts` gained
+   a small hand-maintained map (`functions/lib/oversize-assets.ts`, 5 paths →
+   2 R2 keys) checked before the redirect/feed logic: a hit fetches the
+   object via a private R2 binding (`wrangler.toml` `[[r2_buckets]]`,
+   `MEMO_DERIVED`) and streams it back with `Content-Type`/`ETag` from R2
+   metadata plus a 1-year immutable `Cache-Control`. The bucket stays
+   private; nothing is exposed via R2's public r2.dev domain. Redeployed via
+   `wrangler pages deploy out/ --branch main` (no site rebuild needed, only
+   the Functions bundle + `wrangler.toml` binding changed).
+
+   All 5 paths verified 200 on the live `memo.d.foundation` domain with
+   correct `Content-Length` (34,491,168 / 29,778,758) and, for one sampled
+   path, a byte-identical SHA-256 against the source file. Root, `/rss.xml`,
+   a garbage-path 404, and an existing small PDF at the same directory shape
+   (`singleton-design-pattern.pdf`) re-verified 200/404 as expected, no
+   regression.
+
+   | Path                                                                                         | Status | Content-Length |
+   | -------------------------------------------------------------------------------------------- | ------ | -------------- |
+   | `/content/research/assets/builder-design-pattern.pdf`                                        | 200    | 34,491,168     |
+   | `/content/research/topics/architecture/assets/builder-design-pattern.pdf`                    | 200    | 34,491,168     |
+   | `/content/playground/topics/architecture/assets/builder-design-pattern.pdf`                  | 200    | 34,491,168     |
+   | `/content/research/topics/blockchain/assets/build_custom_ai_agent_with_elizaos_result.gif`   | 200    | 29,778,758     |
+   | `/content/playground/topics/blockchain/assets/build_custom_ai_agent_with_elizaos_result.gif` | 200    | 29,778,758     |
+
 3. **BSD vs GNU `cp`:** the Makefile's `cp -r db/ out/` puts files at
    `out/db/` on Linux but at `out/` on macOS; fixed by hand this run. Only
    matters for local macOS builds; the Pages CI build command should run on
