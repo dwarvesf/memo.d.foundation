@@ -19,10 +19,10 @@
  * lib/obsidian-compiler; when run from repo root pass --vault vault --output public/content)
  */
 import * as fs from "fs";
-import * as fsp from "fs/promises";
 import * as nodePath from "path";
 import { execFileSync } from "child_process";
 import { createHash } from "crypto";
+import * as yaml from "js-yaml";
 
 const P = nodePath.posix;
 
@@ -154,10 +154,6 @@ export function wrapMultilineKatex(content: string): string {
 // Frontmatter (port of Memo.Common.Frontmatter)
 // ---------------------------------------------------------------------------
 
-// gray-matter/js-yaml are borrowed from the parent node_modules.
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const yaml = require("js-yaml");
-
 function parseFrontmatter(content: string): any | null {
   // ~r/^---\n(.*?)\n---/s
   const m = /^---\n([\s\S]*?)\n---/.exec(content);
@@ -279,12 +275,15 @@ export function extractLinks(content: string): string[] {
   let m: RegExpExecArray | null;
   EXTRACT_RE.lastIndex = 0;
   while ((m = EXTRACT_RE.exec(content)) !== null) {
-    // Mirror the Elixir flat_map clause ordering (first non-nil group wins).
-    if (m[1] !== undefined) links.push(m[1]); // image embed
-    else if (m[3] !== undefined) links.push(m[2]); // [[x.md|alt]] -> pre (the path)
-    else if (m[5] !== undefined) links.push(m[4]); // [[x|alt]] -> file
-    else if (m[6] !== undefined) links.push(m[6]); // [[x.md]]
-    else if (m[7] !== undefined) links.push(m[7]); // [[x]]
+    // Faithful to the Elixir flat_map: its clauses match on the arity of the
+    // Regex.scan result list, and Elixir drops trailing non-participating groups. So
+    // plain [[x]] (group 7 -> 8-elem list) and [[x.md]] (group 6 -> 7-elem list) match
+    // NONE of the 2/4/6-arity clauses and are silently dropped. Only three shapes are
+    // ever extracted: image embeds, the .md path of [[x.md|alt]], the file of [[x|alt]].
+    if (m[1] !== undefined) links.push(m[1]); // ![[img]]  -> 2-elem clause
+    else if (m[3] !== undefined) links.push(m[2]); // [[x.md|alt]] -> 4-elem clause (pre)
+    else if (m[5] !== undefined) links.push(m[4]); // [[x|alt]]    -> 6-elem clause (file)
+    // [[x.md]] and [[x]] intentionally NOT extracted (Elixir arity-drop parity).
   }
   return links;
 }
@@ -588,7 +587,19 @@ function processFileContent(file: string, vaultDir: string, allFiles: string[], 
 export function runExport(opts: Opts): { exported: number; skipped: number } {
   const { vault: vaultDir, output: exportpath, dbDir } = opts;
   const ignorePatterns = readExportIgnoreFile(P.join(vaultDir, ".export-ignore"));
-  const paths = listFilesRecursive(vaultDir);
+  let paths = listFilesRecursive(vaultDir);
+  // Debug/parity hook: N2_ORDER_FILE pins the file-traversal order (one path per line) so
+  // the port can be proven byte-identical to the Elixir oracle under IDENTICAL ordering,
+  // isolating the fuzzy-resolver's order-sensitivity from any logic difference. Not used in
+  // production (production uses the deterministic sorted order Node yields).
+  if (process.env.N2_ORDER_FILE && fs.existsSync(process.env.N2_ORDER_FILE)) {
+    const order = fs
+      .readFileSync(process.env.N2_ORDER_FILE, "utf8")
+      .split("\n")
+      .filter((l) => l !== "");
+    const rank = new Map(order.map((p, i) => [p, i]));
+    paths = [...paths].sort((a, b) => (rank.get(a) ?? 1e9) - (rank.get(b) ?? 1e9));
+  }
   const allFiles = paths.filter((p) => {
     try {
       return fs.statSync(p).isFile();
@@ -631,7 +642,7 @@ function parseArgs(argv: string[]): Opts {
   return { vault, output, dbDir };
 }
 
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const opts = parseArgs(process.argv.slice(2));
   const start = Date.now();
   const { exported, skipped } = runExport(opts);
