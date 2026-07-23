@@ -15,6 +15,9 @@
 
 import { execSync } from 'child_process';
 import { collectVaultMetrics } from './monitor-vault-parquet';
+import { createD1ClientFromEnv, type D1Client } from './d1-env-client';
+
+export type { D1Client };
 
 export interface ContentRollup {
   commitSha: string;
@@ -35,10 +38,6 @@ export async function computeRollup(commitSha: string): Promise<ContentRollup> {
     pinned: metrics.pinned,
     missingEmbeddings: metrics.missingEmbeddings,
   };
-}
-
-export interface D1Client {
-  execute(sql: string, params?: unknown[]): Promise<unknown>;
 }
 
 export const CREATE_ROLLUP_TABLE_SQL = `CREATE TABLE IF NOT EXISTS content_rollups (
@@ -81,39 +80,6 @@ export async function uploadRollup(
     rollup.pinned,
     rollup.missingEmbeddings,
   ]);
-}
-
-function requireEnv(env: NodeJS.ProcessEnv, name: string): string {
-  const value = env[name];
-  if (!value) {
-    throw new Error(`Missing required env var: ${name}`);
-  }
-  return value;
-}
-
-function createD1ClientFromEnv(env: NodeJS.ProcessEnv = process.env): D1Client {
-  const accountId = requireEnv(env, 'D1_ACCOUNT_ID');
-  const databaseId = requireEnv(env, 'D1_DATABASE_ID');
-  const apiToken = requireEnv(env, 'D1_API_TOKEN');
-  const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/database/${databaseId}/query`;
-
-  return {
-    async execute(sql, params = []) {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          authorization: `Bearer ${apiToken}`,
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({ sql, params }),
-      });
-      const json: any = await res.json().catch(() => ({}));
-      if (!res.ok || json?.success === false) {
-        throw new Error(`D1 query failed: ${res.status} ${JSON.stringify(json?.errors ?? json)}`);
-      }
-      return json;
-    },
-  };
 }
 
 async function main() {
