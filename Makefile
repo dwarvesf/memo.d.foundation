@@ -19,7 +19,7 @@ fetch-force:
 
 build:
 	@pnpm install --no-frozen-lockfile
-	@cd lib/obsidian-compiler && mix export_markdown
+	@pnpm exec tsx scripts/export-markdown.ts --vault vault --output public/content --db db
 	@$(MAKE) duckdb-export
 	@pnpm run build
 	@pnpm run generate-nginx-conf
@@ -28,14 +28,14 @@ build:
 
 build-static:
 	@pnpm install --no-frozen-lockfile
-	@cd lib/obsidian-compiler && mix export_markdown
+	@pnpm exec tsx scripts/export-markdown.ts --vault vault --output public/content --db db
 	@pnpm run build
 	@pnpm run generate-nginx-conf
 	@pnpm run build-ci-lint
 	@cp -r db/ out/
 
 run:
-	@cd lib/obsidian-compiler && mix export_markdown
+	@pnpm exec tsx scripts/export-markdown.ts --vault vault --output public/content --db db
 	@$(MAKE) duckdb-export
 	@pnpm run generate-menu
 	@pnpm run generate-menu-path-sorted
