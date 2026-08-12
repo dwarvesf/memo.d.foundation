@@ -539,8 +539,15 @@ function replacePathPrefix(path: string, oldPrefix: string, newPrefix: string): 
   const relativePart = P.relative(normalizedOld, normalizedPath);
   const insidePrefix = relativePart !== normalizedPath && !relativePart.startsWith("..");
   if (insidePrefix) {
-    const result = P.join(newPrefix, relativePart);
-    return path.startsWith("../") ? result : nodePath.resolve(result);
+    // PARITY FIX: Elixir's mirror branch calls Path.expand(result) here, but that branch
+    // is never exercised in real Elixir usage (mix only ever runs from lib/obsidian-compiler
+    // with "../../"-prefixed default args, so path always starts with "../" and Elixir always
+    // takes the `result` branch instead). Resolving to an absolute path here, combined with
+    // slugify_path/slugify_directory slugifying every path segment, corrupts the whole cwd
+    // chain into the output path when this script is invoked in its OTHER documented mode
+    // (relative args from the repo root, e.g. --vault vault --output public/content, which
+    // CI uses). The relative `result` is already correct and cwd-relative in both modes.
+    return P.join(newPrefix, relativePart);
   }
   // fallback
   const oldBase = P.basename(oldPrefix);
@@ -557,6 +564,78 @@ function preserveRelativePrefixAndSlugify(path: string): string {
     return prefix + slugifyPath(rest);
   }
   return slugifyPath(path);
+}
+
+// ---------------------------------------------------------------------------
+// Assets + db directory copy (port of export_assets_folder / export_db_directory /
+// copy_directory). Not a content transform (no byte-parity claim, per
+// docs/cf-migration/compiler-rewrite.md Scope edges), but load-bearing for the CI
+// cutover: exported markdown links point at these slugified asset paths, and
+// public/ is served statically, so a missing copy step 404s every embedded image.
+// ---------------------------------------------------------------------------
+
+// Elixir's Path.join is a plain string join (collapses duplicate slashes only, never
+// resolves ".." segments), unlike Node's path.posix.join which normalizes ".." away.
+// export_db_directory relies on that non-normalizing join; replicate it exactly here.
+function elixirJoin(a: string, b: string): string {
+  return `${a}/${b}`.replace(/\/{2,}/g, "/");
+}
+
+function copyDirectoryRecursive(
+  source: string,
+  destination: string,
+  ignorePatterns: string[],
+  vaultpath: string
+): void {
+  const slugifiedDestination = preserveRelativePrefixAndSlugify(destination);
+  fs.mkdirSync(slugifiedDestination, { recursive: true });
+  let items: string[];
+  try {
+    items = fs.readdirSync(source);
+  } catch {
+    return;
+  }
+  for (const item of items) {
+    const sourcePath = P.join(source, item);
+    if (ignored(sourcePath, ignorePatterns, vaultpath)) continue;
+    const destPath = P.join(slugifiedDestination, slugifyFilename(item));
+    let isDir = false;
+    try {
+      isDir = fs.statSync(sourcePath).isDirectory();
+    } catch {
+      continue;
+    }
+    if (isDir) {
+      // Skip only if BOTH directories are named "assets" (avoid assets/assets nesting).
+      if (!(P.basename(sourcePath) === "assets" && P.basename(source) === "assets")) {
+        copyDirectoryRecursive(sourcePath, destPath, ignorePatterns, vaultpath);
+      }
+    } else {
+      fs.mkdirSync(P.dirname(destPath), { recursive: true });
+      fs.copyFileSync(sourcePath, destPath);
+    }
+  }
+}
+
+function exportAssetsFolder(
+  assetPath: string,
+  vaultpath: string,
+  exportpath: string,
+  ignorePatterns: string[]
+): void {
+  const isAssetsDir =
+    P.basename(assetPath) === "assets" && P.basename(P.dirname(assetPath)) !== "assets";
+  if (!isAssetsDir || ignored(assetPath, ignorePatterns, vaultpath)) return;
+  const targetPath = replacePathPrefix(assetPath, vaultpath, exportpath);
+  const slugifiedTargetPath = preserveRelativePrefixAndSlugify(targetPath);
+  copyDirectoryRecursive(assetPath, slugifiedTargetPath, ignorePatterns, vaultpath);
+}
+
+function exportDbDirectory(dbpath: string, exportpath: string): void {
+  if (!fs.existsSync(dbpath) || !fs.statSync(dbpath).isDirectory()) return;
+  const exportDbPath = elixirJoin(exportpath, "../../db");
+  const slugifiedExportDbPath = preserveRelativePrefixAndSlugify(exportDbPath);
+  copyDirectoryRecursive(dbpath, slugifiedExportDbPath, [], dbpath);
 }
 
 // ---------------------------------------------------------------------------
@@ -607,6 +686,13 @@ export function runExport(opts: Opts): { exported: number; skipped: number } {
       return false;
     }
   });
+  const allDirs = paths.filter((p) => {
+    try {
+      return fs.statSync(p).isDirectory();
+    } catch {
+      return false;
+    }
+  });
   const allValidFiles = allFiles.filter((f) => !isIgnored(f, ignorePatterns, vaultDir));
 
   let exported = 0;
@@ -627,6 +713,12 @@ export function runExport(opts: Opts): { exported: number; skipped: number } {
     fs.writeFileSync(slugifiedExportFile, converted);
     exported++;
   }
+
+  for (const dir of allDirs) {
+    exportAssetsFolder(dir, vaultDir, exportpath, ignorePatterns);
+  }
+  exportDbDirectory(dbDir, exportpath);
+
   return { exported, skipped };
 }
 

@@ -69,14 +69,11 @@ jobs:
           git -C vault submodule status --recursive | bash scripts/verify-submodules.sh
           echo "vault at $(git -C vault rev-parse --short HEAD)"
 
-      # Toolchain mirrors the Dockerfile: Elixir 1.18.4/OTP 26, Node 23,
-      # pnpm 11.6.0, DuckDB CLI 1.2.2.
-      - name: Set up Elixir
-        uses: erlef/setup-beam@v1
-        with:
-          elixir-version: '1.18.4'
-          otp-version: '26'
-
+      # Toolchain: Node 23, pnpm 11.6.0, DuckDB CLI 1.2.2. Elixir/OTP setup dropped;
+      # export_markdown now runs as scripts/export-markdown.ts (byte-parity verified
+      # against lib/obsidian-compiler's Elixir oracle, see docs/cf-migration/compiler-rewrite.md).
+      # DuckDB CLI stays: the TS port shells out to the same `duckdb` binary for `dsql`
+      # blocks (IMPORT DATABASE + the markdown_link TEMP MACRO), just like the Elixir did.
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -97,30 +94,11 @@ jobs:
           sudo mv /tmp/duckdb /usr/local/bin/duckdb
           duckdb --version
 
-      - name: Cache mix deps
-        uses: actions/cache@v4
-        with:
-          path: |
-            lib/obsidian-compiler/deps
-            lib/obsidian-compiler/_build
-          key: mix-${{ runner.os }}-elixir-1.18.4-otp-26-${{ hashFiles('lib/obsidian-compiler/mix.lock') }}
-          restore-keys: |
-            mix-${{ runner.os }}-elixir-1.18.4-otp-26-
-
       - name: Install Node dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Install Elixir dependencies
-        working-directory: lib/obsidian-compiler
-        run: |
-          mix local.hex --force
-          mix local.rebar --force
-          mix deps.get
-          mix compile
-
       - name: Export markdown from vault
-        working-directory: lib/obsidian-compiler
-        run: mix export_markdown
+        run: pnpm exec tsx scripts/export-markdown.ts --vault vault --output public/content --db db
 
       # Same sequence as the cutover record and `make build-static`:
       # pnpm run build -> generate-nginx-conf -> build-ci-lint -> db copy.
