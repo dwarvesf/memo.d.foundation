@@ -135,7 +135,7 @@ jobs:
       - name: Deploy to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           npx wrangler@4 pages deploy out \
             --project-name memo-d-foundation \
@@ -150,7 +150,7 @@ jobs:
       - name: Upload derived objects to R2
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           # posts.json is generated, not scanned off disk (same rows as the
           # memo_posts D1 table; see scripts/upload-to-r2.ts header).
@@ -180,7 +180,7 @@ jobs:
       - name: Upload rollup and memo_posts to D1
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           D1_DATABASE_ID=$(npx wrangler@4 d1 info dwarves-prod --json | jq -r '.uuid')
           test -n "$D1_DATABASE_ID" && test "$D1_DATABASE_ID" != "null"
