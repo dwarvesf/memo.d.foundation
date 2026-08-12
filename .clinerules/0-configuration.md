@@ -8,7 +8,7 @@
 - Styling: Tailwind CSS
 - Validation: Zod (for various schemas, if used)
 - Form Handling: React Hook Form (validation with Zod, UI with Shadcn form components)
-- Database: DuckDB (via `@duckdb/duckdb-wasm`, `@duckdb/node-api`) and Parquet (via `hyparquet`)
+- Database: DuckDB (via `@duckdb/node-api`)
 - Authentication: RainbowKit, Wagmi (for Web3 authentication)
 - Deployment: Vercel (implied by Next.js)
 - Version Control: Git (GitHub)
