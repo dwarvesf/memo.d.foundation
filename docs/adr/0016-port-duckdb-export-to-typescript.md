@@ -12,7 +12,7 @@ That left the build split across two toolchains. The downstream artifact layer a
 
 The Elixir task also had two behaviours worth naming:
 
-1. It builds every DuckDB statement by string concatenation and shells out to the `duckdb` CLI once per query. A large batch can exceed `ARG_MAX`, and when it does the batch is silently dropped.
+1. It builds every DuckDB statement by string concatenation and shells out to the `duckdb` CLI once per query. A large batch can exceed `ARG_MAX`. When it does, the failure is caught and printed as a `Batch upsert failed` line, then the loop continues and the task still exits zero. The rows are gone and the exit code says the export succeeded.
 2. On the frontmatter-only upsert path it omits `keywords` from its exclusion list, so it overwrites the stored keywords with the frontmatter value, which is almost always absent. Only the embedding-regeneration path ever writes keywords back. An incremental run therefore strips keywords from every note it does not regenerate.
 
 The second is a real defect. `scripts/generate-search-index.ts` indexes `keywords` and boosts it above `spr_content`, so the wipe quietly degrades site search.
@@ -35,10 +35,10 @@ The port is faithful down to the generated SQL text, because several storage qui
 
 Two deliberate departures from the oracle:
 
-| Behaviour                             | Elixir oracle                   | TypeScript port | Why                                                                                         |
-| ------------------------------------- | ------------------------------- | --------------- | ------------------------------------------------------------------------------------------- |
-| Oversize query batch                  | silently dropped past `ARG_MAX` | fails loud      | the port uses the in-process engine, so the limit does not exist and silence would be worse |
-| `keywords` on frontmatter-only upsert | overwritten, usually to null    | carried forward | the wipe degrades search; fixing it in the port is the point                                |
+| Behaviour                             | Elixir oracle                                       | TypeScript port | Why                                                                                                          |
+| ------------------------------------- | --------------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------ |
+| Oversize query batch                  | dropped past `ARG_MAX`, logged but still exits zero | fails loud      | the port uses the in-process engine, so the limit does not exist and a zero exit on lost rows would be worse |
+| `keywords` on frontmatter-only upsert | overwritten, usually to null                        | carried forward | the wipe degrades search; fixing it in the port is the point                                                 |
 
 Live embedding generation is not ported. The legacy `processing_metadata` migration paths are not ported either, because `db/schema.sql` has been on the per-file schema long enough that it cannot regress to the older shape.
 

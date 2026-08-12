@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-Secrets used to be fetched at runtime from a HashiCorp Vault instance. The repo reached it through the `node-vault` package, a set of `VAULT_*` environment variables, and Vault build arguments baked into both Dockerfiles. The Elixir compiler additionally used Vault as a fallback source for the Gemini API key when the environment variable was absent.
+Secrets used to be fetched at runtime from a HashiCorp Vault instance. The repo reached it through the `node-vault` package, a set of `VAULT_*` environment variables, and Vault build arguments baked into `Dockerfile` and `Dockerfile.legacy`. The Elixir compiler additionally used Vault as a fallback source for the Gemini API key when the environment variable was absent.
 
 The Vault instance has been shut down. Every code path that reached for it was therefore either dead or a latency cost on the way to a failure, and the container images were still declaring build arguments for a service that no longer answers.
 
@@ -49,4 +49,14 @@ Deleting them is a separate cleanup decision and was not bundled into this chang
 
 ## Verification
 
-Search the repository, excluding the content submodule, for `node-vault`, `VAULT_ADDR`, `VAULT_TOKEN`, and related identifiers. The only remaining matches should be explanatory comments in `src/lib/storage.ts` and `Memo.Common.AIUtils` recording that the fallback was removed, plus this record.
+Searching the source for the identifiers `node-vault`, `VAULT_ADDR`, and `VAULT_TOKEN` returns nothing.
+
+Searching for the bare word `Vault` under `src/` and `lib/` returns three hits, none of them a live dependency:
+
+| Hit                   | What it is                                                 |
+| --------------------- | ---------------------------------------------------------- |
+| `src/lib/storage.ts`  | comment recording that the credentials moved to ADC        |
+| `Memo.Common.AIUtils` | comment recording that the Gemini-key fallback was removed |
+| `Memo.ExportDuckDB`   | a log line about the DuckDB table named `vault`, unrelated |
+
+That third hit is the trap: `vault` is overloaded in this repo. The `vault/` submodule is the content repository and the DuckDB content table is also called `vault`. Neither has anything to do with HashiCorp Vault. Scope any search accordingly.
