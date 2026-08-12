@@ -45,10 +45,13 @@ defmodule Memo.Common.AIUtils do
   http_options: [recv_timeout: 60_000]
 }
 
+  @default_base_url "https://opencode.ai/zen/go/v1"
+  @default_model "deepseek-v4-flash"
+
   def spr_compress(text) do
     text
     |> String.replace("\n", " ")
-    |> (&if(String.length(&1) > 100, do: compress_text_gemini(&1), else: %{"keywords" => [], "summary" => ""})).()
+    |> (&if(String.length(&1) > 100, do: compress_text_llm(&1), else: %{"keywords" => [], "summary" => ""})).()
   end
 
   def embed_custom(text) do
@@ -67,42 +70,39 @@ defmodule Memo.Common.AIUtils do
     end
   end
 
-  defp compress_text_gemini(text) do
-    api_key = get_gemini_api_key()
+  # Text generation runs on the opencode-go OpenAI-compatible endpoint (flat-rate tier).
+  # Any failure, including a missing key, degrades to an empty result so the export never crashes.
+  defp compress_text_llm(text) do
+    api_key = System.get_env("OPENCODE_GO_API_KEY")
 
-    with true <- is_binary(api_key),
-         headers = [{"Content-Type", "application/json"}, {"x-goog-api-key", api_key}],
+    with true <- is_binary(api_key) and api_key != "",
+         headers = [{"Content-Type", "application/json"}, {"Authorization", "Bearer #{api_key}"}],
          payload =
            Jason.encode!(%{
-             "contents" => [
+             "model" => env_or("OPENCODE_GO_MODEL", @default_model),
+             "temperature" => 0.1,
+             "max_tokens" => 2048,
+             "messages" => [
                %{
-                 "parts" => [
-                   %{"text" => "#{@config.spr_compression_prompt}\n\n#{text}"}
-                 ]
-               }
-             ],
-             "generationConfig" => %{
-               "temperature" => 0.1,
-               "maxOutputTokens" => 2048,
-               "thinkingConfig" => %{ # Add this block for disabled thinking
-                 "thinkingBudget" => 0,
-                 "includeThoughts" => true
+                 "role" => "system",
+                 "content" => "You are a helpful assistant. Do not show your thinking process."
                },
-             },
-             "systemInstruction" => %{
-               "parts" => [%{"text" => "You are a helpful assistant. Do not show your thinking process."}]
-             }
+               %{
+                 "role" => "user",
+                 "content" => "#{@config.spr_compression_prompt}\n\n#{text}"
+               }
+             ]
            }),
          {:ok, %HTTPoison.Response{body: body}} <-
            HTTPoison.post(
-             "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+             "#{env_or("OPENCODE_GO_BASE_URL", @default_base_url)}/chat/completions",
              payload,
              headers,
              @config.http_options
            ),
          {:ok, decoded_body} <- Jason.decode(body),
          false <- Map.has_key?(decoded_body, "error"),
-         %{"candidates" => [%{"content" => %{"parts" => [%{"text" => content}]}}]} <- decoded_body do
+         %{"choices" => [%{"message" => %{"content" => content}} | _]} <- decoded_body do
       # Try to parse the JSON response - handle nested JSON strings
       case Jason.decode(content) do
         {:ok, %{"keywords" => keywords, "summary" => summary}} when is_list(keywords) and is_binary(summary) ->
@@ -145,6 +145,13 @@ defmodule Memo.Common.AIUtils do
       end
     else
       _ -> %{"keywords" => [], "summary" => ""}
+    end
+  end
+
+  defp env_or(var, default) do
+    case System.get_env(var) do
+      value when is_binary(value) and value != "" -> value
+      _ -> default
     end
   end
 

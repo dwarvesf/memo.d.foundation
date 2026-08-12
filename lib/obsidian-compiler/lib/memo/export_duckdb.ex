@@ -917,7 +917,12 @@ defmodule Memo.ExportDuckDB do
                  updated_frontmatter} =
                   if embeddings_updated do
                     regenerated =
-                      regenerate_embeddings(relative_path, md_content, normalized_frontmatter)
+                      regenerate_embeddings(
+                        relative_path,
+                        md_content,
+                        normalized_frontmatter,
+                        existing_data
+                      )
 
                     {
                       Map.get(regenerated, "spr_content"),
@@ -1553,7 +1558,7 @@ defmodule Memo.ExportDuckDB do
     files_to_process
   end
 
-  defp regenerate_embeddings(file_path, md_content, frontmatter) do
+  defp regenerate_embeddings(file_path, md_content, frontmatter, existing_data) do
     IO.puts("Embedding file: #{file_path}")
 
     # Get the JSON response with keywords and summary
@@ -1571,20 +1576,30 @@ defmodule Memo.ExportDuckDB do
 
     estimated_tokens = div(String.length(md_content), 4)
 
-    custom_embedding = AIUtils.embed_custom(spr_content)
-
-    gemini_embedding = AIUtils.embed_gemini(md_content)
+    # Embeddings are generated but never read: not here, not by the site (search is
+    # MiniSearch over text), not by the D1 export. Their last external consumer,
+    # fortress-api, is decommissioned. So skip the two vector API calls by default and
+    # keep whatever vectors the row already had. Set MEMO_EMBEDDINGS=1 to re-enable.
+    {custom_embedding, gemini_embedding} =
+      if skip_embeddings?() do
+        {existing_data["embeddings_spr_custom"], existing_data["embeddings_gemini"]}
+      else
+        {AIUtils.embed_custom(spr_content)["embedding"],
+         AIUtils.embed_gemini(md_content)["embedding"]}
+      end
 
     frontmatter
     |> Map.put("spr_content", spr_content)
     |> Map.put("keywords", keywords)
-    |> Map.put("embeddings_spr_custom", custom_embedding["embedding"])
-    |> Map.put("embeddings_gemini", gemini_embedding["embedding"])
+    |> Map.put("embeddings_spr_custom", custom_embedding)
+    |> Map.put("embeddings_gemini", gemini_embedding)
     |> Map.put("estimated_tokens", estimated_tokens)
     |> (fn fm ->
           fm
         end).()
   end
+
+  defp skip_embeddings?, do: System.get_env("MEMO_EMBEDDINGS") not in ["1", "true"]
 
   defp ensure_all_columns(frontmatter) do
     Map.merge(Enum.into(@allowed_frontmatter, %{}, fn {key, _} -> {key, nil} end), frontmatter)

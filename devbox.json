@@ -1,6 +1,5 @@
 {
   "packages": {
-    "awscli": "1.37.21",
     "git": "2.49.0",
     "elixir": "1.18.1",
     "elixir-ls": "0.25.0",
