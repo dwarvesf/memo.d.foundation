@@ -25,10 +25,10 @@ by editing a markdown file in one of these git repos.
 
 Two independent consumers of the checked-out tree:
 
-- **CI build** (`generate-redirects.yml`, `derived-to-r2.yml`, `publish-pages.yml`,
-  `add-mint-post.yml`, `deploy-arweave.yml`, `test-git-action.yml`): all use
-  `actions/checkout@v4` with `submodules: recursive` (+ `secrets.DWARVES_PAT` on the
-  ones touching private repos). This is the robust path: if a submodule fetch fails,
+- **CI build** (`generate-redirects.yml`, `publish-pages.yml`, `add-mint-post.yml`,
+  `deploy-arweave.yml`): all use
+  `actions/checkout@v4` with `submodules: recursive` (`secrets.DWARVES_PAT` has since
+  been dropped from every checkout). This is the robust path: if a submodule fetch fails,
   the checkout step itself fails and the job goes red. Nobody has to notice a silent
   partial checkout here.
 - **Local dev / manual reindex** (`make fetch`, `make fetch-force` -> `git-fetch.sh`):
