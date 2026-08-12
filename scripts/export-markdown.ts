@@ -613,7 +613,7 @@ function copyDirectoryRecursive(
   }
   for (const item of items) {
     const sourcePath = P.join(source, item);
-    if (ignored(sourcePath, ignorePatterns, vaultpath)) continue;
+    if (isIgnored(sourcePath, ignorePatterns, vaultpath)) continue;
     const destPath = P.join(slugifiedDestination, slugifyFilename(item));
     let isDir = false;
     try {
@@ -641,7 +641,7 @@ function exportAssetsFolder(
 ): void {
   const isAssetsDir =
     P.basename(assetPath) === "assets" && P.basename(P.dirname(assetPath)) !== "assets";
-  if (!isAssetsDir || ignored(assetPath, ignorePatterns, vaultpath)) return;
+  if (!isAssetsDir || isIgnored(assetPath, ignorePatterns, vaultpath)) return;
   const targetPath = replacePathPrefix(assetPath, vaultpath, exportpath);
   const slugifiedTargetPath = preserveRelativePrefixAndSlugify(targetPath);
   copyDirectoryRecursive(assetPath, slugifiedTargetPath, ignorePatterns, vaultpath);
