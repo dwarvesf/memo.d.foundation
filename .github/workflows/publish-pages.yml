@@ -97,3 +97,18 @@ jobs:
           GIT_FORCE_HTTPS: '1'
           SKIP_REINDEX: ${{ inputs.skip_reindex && '1' || '0' }}
         run: bash scripts/build-and-deploy.sh
+
+      # This is the only publish path, so a silent failure means the site
+      # serves stale content until someone notices by hand. Failure only:
+      # the deploy runs on every push to main, so a success ping is noise.
+      # Same action + webhook the retired backup.yml / dispatch.yml used.
+      - name: Notify Discord on Failure
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: '❌ Pages Publish Failed'
+          description: |
+            memo.d.foundation did not publish. The site is serving stale content until this is fixed.
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          color: 0xff0000
