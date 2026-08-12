@@ -6,81 +6,118 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Essential Commands
 
-- `make run`: Start development server with markdown compilation and generation scripts
-- `make build`: Full production build including all generation scripts and static assets
-- `pnpm run dev`: Run Next.js development server (after running make run once)
-- `pnpm run build`: Build Next.js application with all pre-build scripts
-- `pnpm run lint`: Run ESLint for code quality checks
-- `pnpm run format`: Format code using Prettier
+- `make build`: Full production build (`mix export_markdown` + `mix duckdb.export` + `pnpm run build` + nginx conf + lint + copy `db/`). Regenerates the DuckDB export locally; needs the Elixir/DuckDB toolchain.
+- `make build-static`: Same as `make build` minus `mix duckdb.export` (uses the `db/vault.parquet` already checked out). This is the build CI actually runs (`publish-pages.yml` inlines these same steps).
+- `pnpm run dev`: Run the Next.js dev server (`make run` sets up content first; see below).
+- `pnpm run build`: `tsx scripts/memo-build.ts`, the TypeScript pre-build/generation step Next.js needs before `next build` runs internally.
+- `pnpm run lint`: ESLint.
+- `pnpm run format`: Prettier over `src/`.
+- `pnpm test`: Vitest.
 
 ### Content Generation Scripts
 
-- `pnpm run generate-menu`: Generate navigation menu structure
-- `pnpm run generate-search-index`: Generate client-side search index
-- `pnpm run generate-backlinks`: Generate backlink relationships between notes
-- `pnpm run generate-redirects-map`: Generate URL redirect mappings
-- `pnpm run generate-user-profiles`: Generate contributor profile data
-- `pnpm run fetch-prompts`: Fetch external prompt data
-- `pnpm run fetch-contributor-stats`: Update contributor statistics
+- `pnpm run generate-menu` / `generate-menu-path-sorted`: navigation menu structure.
+- `pnpm run generate-search-index`: client-side MiniSearch index.
+- `pnpm run generate-backlinks`: backlink relationships between notes.
+- `pnpm run generate-redirects-map` / `generate-shorten-map`: URL redirect and short-link maps.
+- `pnpm run generate-cf-redirects` / `verify-cf-redirects`: builds `out/_redirects` for Cloudflare Pages and checks it against the full redirect map for silent drops (Pages caps `_redirects` at 2,000 rules; anything over that cap is handled instead by `functions/_middleware.ts`, not this file).
+- `pnpm run generate-rss`: pre-generates `{rss,atom,feed,index}_N.xml` for every N from 10 to 100 in steps of 5, plus the unlimited feed.
+- `pnpm run generate-pageviews`: pulls Plausible stats (degrades gracefully if `PLAUSIBLE_API_TOKEN` is unset).
+- `pnpm run fetch-prompts` / `fetch-contributors`: external data fetches.
+- `pnpm run upload-to-r2` / `upload-rollups-to-d1`: push derived build artifacts (parquet, search index, posts.json) to R2 and the content rollup to D1.
 
 ### Elixir Commands (Obsidian Compiler)
 
-- `cd lib/obsidian-compiler && mix export_markdown`: Convert Obsidian vault to markdown
-- `cd lib/obsidian-compiler && mix duckdb.export`: Export content to DuckDB database
-- `cd lib/obsidian-compiler && mix test`: Run Elixir tests for markdown processing
+- `cd lib/obsidian-compiler && mix export_markdown`: convert the `vault/` submodule to standardized markdown + `public/content/`. **Still the production build step** (see "Content compiler" below), not yet replaced.
+- `cd lib/obsidian-compiler && mix duckdb.export`: export content + embeddings to `db/vault.parquet`.
+- `cd lib/obsidian-compiler && mix test`: run Elixir tests for markdown processing.
 
 ## Architecture Overview
 
-### Hybrid Stack Architecture
+### Stack
 
-This is a unique hybrid system combining:
+- **Frontend**: Next.js 16.2.9 (React 19.2.7), Pages Router (`src/pages/`, file-based routing; no App Router), TypeScript.
+- **Rendering mode**: `next.config.ts` sets `output: 'export'` (`images.unoptimized: true`). This is a **static export**: no SSR, no ISR, no Next.js server at runtime. Every route is pre-rendered to `out/` at build time.
+- **Content processing**: Elixir application (`lib/obsidian-compiler/`) for markdown compilation (`mix export_markdown`) and the DuckDB/embeddings export (`mix duckdb.export`).
+- **Content source**: git submodule `vault/` → `dwarvesf/brainery` (see `.gitmodules`), which itself has further nested submodules (not re-derived here; check `vault/.gitmodules` if you need the full graph).
+- **Database**: DuckDB, exported to `db/vault.parquet` (content + `embeddings_gemini`/`embeddings_spr_custom` columns), copied into `public/content/db/` at build time and read client-side via `@duckdb/duckdb-wasm`.
+- **Deployment**: **Cloudflare Pages** (project `memo-d-foundation`), fronted by Cloudflare Pages Functions, with derived data pushed to Cloudflare R2 and Cloudflare D1. `memo.d.foundation` DNS was cut over from Railway to the Pages project on 2026-07-23 (`docs/cf-migration/M4-02-PAGES-CUTOVER-RECORD.md`); Railway is zero-traffic and pending teardown, not the live target. **Railway/`make build` Docker deploy is retired, not current.**
 
-- **Frontend**: Next.js (React) with TypeScript for the web application
-- **Content Processing**: Elixir application (`lib/obsidian-compiler`) for markdown compilation
-- **Content Source**: Git submodule (`vault/`) containing Obsidian markdown files
-- **Database**: DuckDB for content indexing and search
-- **Deployment**: Static site generation with dynamic features
+### Cloudflare Pages layer
+
+- `wrangler.toml`: Pages project `memo-d-foundation`, build output `out`. Declares the `MEMO_DERIVED` R2 binding (bucket `memo-derived`) used only by the Pages Function below, kept private (not exposed via `r2.dev`).
+- `functions/_middleware.ts` (Cloudflare Pages Function, runs on every request). Three jobs a pure static export can't do on its own:
+  1. Serves the redirect/alias/shorten-link map with no rule-count cap (works around the 2,000-row static `_redirects` limit; `REDIRECT_MAP` is generated by `scripts/generate-cf-redirects.ts`, gitignored).
+  2. Handles `?limit=N` on `/rss.xml`, `/atom.xml`, `/feed.xml`, `/index.xml`, `/feed/index.xml` by rewriting to the matching pre-generated static file (request rewrite, not a dynamic render).
+  3. Proxies the handful of vault assets that exceed Pages' 25 MiB per-file upload limit out of the private `memo-derived` R2 bucket (`lib/oversize-assets.ts`; those files are excluded from `out/` at build time and were uploaded to R2 once).
+- D1: the `dwarves-prod` database (shared, resolved by name via `wrangler d1 info`) receives a content rollup and per-post rows (`scripts/upload-rollups-to-d1.ts`, `scripts/upload-memo-posts-to-d1.ts`).
+
+### Content compiler: Elixir today, TypeScript port unwired
+
+`lib/obsidian-compiler`'s `mix export_markdown` is **still the production markdown-compilation step** as of this branch's point on `main`. A TypeScript port exists and is verified at 100% byte-parity against the Elixir output (`docs/cf-migration/compiler-rewrite.md`), but it is **not wired into the build**: `Makefile`, and CI (`publish-pages.yml`) still call `mix export_markdown`. Do not assume the TS port is live; if you need the detail (scope, parity method, what's deliberately not ported), read `docs/cf-migration/compiler-rewrite.md` rather than re-deriving it here.
 
 ### Key Directories
 
-- `src/`: Next.js application source code
-  - `components/`: Reusable React components organized by feature
-  - `pages/`: Next.js page components with file-based routing
-  - `lib/`: Utility libraries for content processing, MDX handling
-  - `hooks/`: Custom React hooks
-  - `styles/`: CSS and styling files
-- `lib/obsidian-compiler/`: Elixir application for markdown processing
-- `vault/`: Git submodule containing all markdown content (Obsidian vault)
-- `scripts/`: TypeScript scripts for content generation and processing
-- `public/content/`: Generated JSON files for search, navigation, and metadata
+- `src/`: Next.js application source.
+  - `pages/`: Pages Router routes (file-based routing).
+  - `components/`: reusable React components by feature.
+  - `lib/`: content processing, MDX handling.
+  - `hooks/`, `contexts/`, `styles/`, `types/`, `analytics/`, `constants/`.
+- `lib/obsidian-compiler/`: Elixir application for markdown processing and the DuckDB export.
+- `vault/`: git submodule (Obsidian vault content), avoid modifying during development.
+- `scripts/`: TypeScript scripts for content generation, redirects, R2/D1 upload, and the NFT report.
+- `functions/`: Cloudflare Pages Functions (`_middleware.ts` and its helpers).
+- `db/`: `vault.parquet` (DuckDB content + embeddings export, regenerated via `mix duckdb.export`, dispatched by the `dispatch.yml` "Update submodules" workflow), `processing_metadata*.parquet`, `schema.sql`, `load.sql`.
+- `public/content/`: generated JSON/content files for search, navigation, and metadata (plus the copied `db/` at build time).
+- `docs/cf-migration/`: the Railway → Cloudflare Pages migration record. Read here for full history/detail instead of duplicating it in this file: `pages-deploy.md` (config-only prep, redirect + RSS mapping), `build-inventory.md` (build-artifact validation run), `compiler-rewrite.md` (Elixir → TS parity report), `content-sot.md` (submodule ingest + Notion-authoring fingerprint), `comments-search-decision.md` (comments/search evidence decisions), `M4-02-PAGES-CUTOVER-RECORD.md` (the actual cutover + DNS flip record).
 
 ### Content Processing Pipeline
 
-1. Obsidian markdown files in `vault/` submodule
-2. Elixir compiler processes markdown → standardized format + DuckDB export
-3. TypeScript scripts generate navigation, search indices, and metadata
-4. Next.js builds static site with client-side search and dynamic features
+1. Obsidian markdown files in the `vault/` submodule.
+2. Elixir compiler (`mix export_markdown`) processes markdown → standardized format in `public/content/`; `mix duckdb.export` produces `db/vault.parquet`.
+3. TypeScript scripts (`scripts/`) generate navigation, search indices, redirects, and metadata.
+4. Next.js statically exports the site (`output: 'export'`) to `out/`.
+5. `pnpm run generate-cf-redirects` builds `out/_redirects`; oversize files (>25 MiB) are stripped from `out/` before deploy.
+6. `wrangler pages deploy out` ships to Cloudflare Pages; derived artifacts (`db/vault.parquet`, search index, `posts.json`) are pushed to R2, and a rollup to D1.
+
+### CI Workflows (`.github/workflows/`)
+
+| Workflow | Trigger | Does |
+|---|---|---|
+| `publish-pages.yml` | push to `main` (content/build paths), daily cron, manual | The live deploy pipeline: builds (still via `mix export_markdown`), deploys to Cloudflare Pages, uploads derived artifacts to R2, and a rollup to D1. Gated inert until repo var `PAGES_PUBLISH_ENABLED=true`. |
+| `dispatch.yml` ("Update submodules") | manual only | Bumps the `vault` submodule to latest, regenerates AI summaries, runs `mix duckdb.export`, commits `db/`. |
+| `derived-to-r2.yml` | manual only | Older/parallel R2+D1 upload path (`upload-to-r2.ts`), separate credential set (`R2_ACCESS_KEY_ID` etc.) from the one `publish-pages.yml` uses; deploy-gated, defaults to dry-run. |
+| `backup.yml` | daily cron, manual | Backs up the DB. |
+| `add-mint-post.yml` | push to `db/vault.parquet`, manual | Adds new posts to the mint contract. |
+| `deploy-arweave.yml` | push to `db/vault.parquet`, manual | Deploys markdown to Arweave. |
+| `generate-redirects.yml` | push to `db/vault.parquet`, manual | Regenerates the redirect map. |
+| `memo-nft-report.yml` | daily cron, manual | Sends the NFT report to Discord. |
+| `monitor-vault-parquet.yml` | daily cron, manual | Monitors `db/vault.parquet` health, reports to Discord. |
+| `test-discord-notifications.yml` | manual, push to `ci/monitoring` | Test harness for the Discord notification action. |
+| `test-git-action.yml` | manual, push to `ci/monitoring` | Test harness for the shared git-commit-push action. |
 
 ### Important Technical Notes
 
-- The `vault/` directory is a git submodule containing pure content - avoid modifying during development
-- Content generation scripts must run before Next.js build for proper static generation
-- Client-side search uses MiniSearch with pre-generated indices for performance
-- MDX rendering supports mathematical expressions (KaTeX), code highlighting, and custom components
-- Web3 integration for NFT minting and contributor rewards
+- The `vault/` directory is a git submodule containing pure content; avoid modifying during development.
+- Content generation scripts must run before the Next.js static export for proper output.
+- Client-side search uses MiniSearch with pre-generated indices for performance.
+- MDX rendering supports mathematical expressions (KaTeX), code highlighting, and custom components.
+- Web3 integration (wagmi/viem/ethers) for NFT minting and contributor rewards.
+- No Next.js server runs in production; anything that looks like it needs server-side logic at request time belongs in `functions/_middleware.ts` (Cloudflare Pages Functions), not a Next.js API route.
 
 ### Development Workflow
 
-1. Run `make run` for full development setup (compiles markdown + starts dev server)
-2. Content changes require re-running Elixir export: `cd lib/obsidian-compiler && mix export_markdown`
-3. Navigation/search changes require regenerating indices before seeing updates
-4. Use `make build` for production builds that include all generation steps
+1. Run `make run` for full local dev setup (compiles markdown + starts the dev server with all generation scripts).
+2. Content changes require re-running the Elixir export: `cd lib/obsidian-compiler && mix export_markdown`.
+3. Navigation/search changes require regenerating indices before seeing updates.
+4. Use `make build-static` to reproduce the CI build locally (Elixir toolchain still required); `make build` additionally regenerates `db/vault.parquet` via `mix duckdb.export`.
 
 ### Key Libraries and Frameworks
 
-- **Next.js 15**: React framework with static site generation
-- **MDX**: Markdown with React components for rich content
-- **TailwindCSS**: Utility-first CSS framework
-- **Elixir/Mix**: Functional language for robust markdown processing
-- **DuckDB**: Embedded analytical database for content queries
-- **TypeScript**: Type-safe JavaScript throughout the stack
+- **Next.js 16.2.9 / React 19.2.7**: Pages Router, static export (`output: 'export'`).
+- **MDX**: Markdown with React components for rich content.
+- **TailwindCSS 4**: utility-first CSS.
+- **Elixir/Mix**: markdown compilation (`lib/obsidian-compiler/`), still production; TS port exists but unwired (see "Content compiler" above).
+- **DuckDB** (`@duckdb/duckdb-wasm`, `@duckdb/node-api`): embedded analytical database for content queries, exported from `db/vault.parquet`.
+- **TypeScript**: throughout the stack (scripts, functions, Next.js app).
+- **Cloudflare Workers/Pages types**: not yet added as a dependency; `functions/_middleware.ts` currently types its Pages Function context loosely as `any` pending that.
