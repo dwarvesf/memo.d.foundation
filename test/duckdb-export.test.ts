@@ -12,6 +12,9 @@
 
 import { describe, test, expect } from 'vitest';
 import {
+  Duck,
+  batchUpsertIntoDuckdb,
+  vaultTableDdl,
   jaroDistance,
   elixirFloat,
   graphemeLength,
@@ -242,6 +245,68 @@ describe('needsEmbeddingsUpdate (change-detection predicate)', () => {
         'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
       ),
     ).toBe(true);
+  });
+});
+
+describe('batchUpsertIntoDuckdb (frontmatter-only path)', () => {
+  const seed = async (): Promise<Duck> => {
+    const db = await Duck.open();
+    await db.exec(vaultTableDdl());
+    await db.exec(
+      `INSERT INTO vault (file_path, md_content, spr_content, keywords, title)
+       VALUES ('a.md', 'body', 'stored summary', ['alpha', 'beta'], 'Old')`,
+    );
+    return db;
+  };
+  const fileRow = (db: Duck) =>
+    db
+      .rows<{
+        title: string;
+        keywords: string[] | null;
+        spr_content: string | null;
+      }>(`SELECT title, keywords, spr_content FROM vault WHERE file_path = 'a.md'`)
+      .then(r => r[0]);
+
+  test('a changed frontmatter updates its own columns but carries keywords forward', async () => {
+    // The AI columns are only ever written by the regeneration path, so a note that skips
+    // regeneration must keep the stored keywords. The Elixir omits keywords from that
+    // carry-forward and blanks them on every incremental run; this port does not.
+    const db = await seed();
+    await batchUpsertIntoDuckdb(db, [
+      {
+        filePath: 'a.md',
+        mdContent: 'body',
+        frontmatter: { file_path: 'a.md', md_content: 'body', title: 'New' },
+        embeddingsUpdated: false,
+        frontmatterChanged: true,
+      },
+    ]);
+    const row = await fileRow(db);
+    expect(row.title).toBe('New');
+    expect(row.keywords).toEqual(['alpha', 'beta']);
+    expect(row.spr_content).toBe('stored summary');
+  });
+
+  test('the regeneration path still writes keywords', async () => {
+    const db = await seed();
+    await batchUpsertIntoDuckdb(db, [
+      {
+        filePath: 'a.md',
+        mdContent: 'body',
+        frontmatter: {
+          file_path: 'a.md',
+          md_content: 'body',
+          title: 'New',
+          keywords: ['gamma'],
+          spr_content: 'fresh summary',
+        },
+        embeddingsUpdated: true,
+        frontmatterChanged: true,
+      },
+    ]);
+    const row = await fileRow(db);
+    expect(row.keywords).toEqual(['gamma']);
+    expect(row.spr_content).toBe('fresh summary');
   });
 });
 
