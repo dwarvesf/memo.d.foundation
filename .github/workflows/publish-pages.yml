@@ -65,7 +65,7 @@ jobs:
       LANG: C.UTF-8
     steps:
       - name: Checkout contents repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
           fetch-depth: 1
@@ -74,12 +74,12 @@ jobs:
       # both compilers are TypeScript now and reach DuckDB through
       # @duckdb/node-api, so the runner needs nothing else.
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
         with:
           version: 11.6.0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '23'
           cache: pnpm
