@@ -46,6 +46,25 @@ stage() {
   echo "=== $* ==="
 }
 
+# The Cloudflare API returns transient 5xx. A single 502 on one R2 put reds a
+# 15-minute run whose Pages deploy already succeeded, so retry the idempotent
+# single-shot calls instead of paying for a full rebuild.
+retry() {
+  local attempt=1 max=3
+  while true; do
+    if "$@"; then
+      return 0
+    fi
+    if [ "$attempt" -ge "$max" ]; then
+      echo "ERROR: '$*' failed after ${max} attempts." >&2
+      return 1
+    fi
+    echo "attempt ${attempt}/${max} failed, retrying in $((attempt * 10))s: $*" >&2
+    sleep $((attempt * 10))
+    attempt=$((attempt + 1))
+  done
+}
+
 require_env() {
   local name
   for name in "$@"; do
@@ -136,7 +155,7 @@ deploy_pages() {
 r2_put() {
   local src="$1" key="$2" content_type="$3" prefix
   for prefix in "derived/${DEPLOY_COMMIT_SHA}" "derived/latest"; do
-    npx wrangler@4 r2 object put "${R2_BUCKET}/${prefix}/${key}" \
+    retry npx wrangler@4 r2 object put "${R2_BUCKET}/${prefix}/${key}" \
       --file "$src" --content-type "$content_type" --remote
   done
 }
@@ -162,7 +181,7 @@ EOF
 # The database id is resolved from the name, so no extra variable is needed.
 upload_to_d1() {
   local database_id
-  database_id=$(npx wrangler@4 d1 info "$D1_DATABASE_NAME" --json | jq -r '.uuid')
+  database_id=$(retry npx wrangler@4 d1 info "$D1_DATABASE_NAME" --json | jq -r '.uuid')
   if [ -z "$database_id" ] || [ "$database_id" = "null" ]; then
     echo "ERROR: could not resolve the D1 database id for ${D1_DATABASE_NAME}." >&2
     exit 1
@@ -195,4 +214,7 @@ main() {
   stage "Done, deployed ${DEPLOY_COMMIT_SHA}"
 }
 
-main "$@"
+# Sourced (by test/build-and-deploy.test.ts) the file only defines functions.
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+  main "$@"
+fi
