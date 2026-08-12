@@ -19,6 +19,8 @@
  *     off upstream; the columns and the carry-forward behaviour are preserved.
  *   - The legacy processing_metadata migration paths are not ported (db/schema.sql has
  *     been on the per-file schema for a long time and cannot regress to the `id` shape).
+ *   - `keywords` is carried forward on the frontmatter-only upsert path, where the Elixir
+ *     wipes it. Marked `DIVERGENCE:` at batch_upsert_into_duckdb.
  *
  * Usage:
  *   tsx scripts/duckdb-export.ts [--vault vault] [--db db] [--format parquet]
@@ -684,7 +686,7 @@ function skipEmbeddings(): boolean {
 // DuckDB access
 // ---------------------------------------------------------------------------
 
-class Duck {
+export class Duck {
   private constructor(private readonly conn: DuckDBConnection) {}
 
   static async open(): Promise<Duck> {
@@ -711,6 +713,11 @@ class Duck {
   }
 }
 
+export function vaultTableDdl(): string {
+  const cols = ALLOWED_FRONTMATTER.map(([n, t]) => `${quoteIdent(n)} ${t}`).join(", ");
+  return `CREATE TABLE IF NOT EXISTS vault (${cols})`;
+}
+
 /**
  * Port of setup_database. The Elixir issues `IMPORT DATABASE '../../db'`, which replays
  * schema.sql then load.sql verbatim, and load.sql carries hardcoded '../../db/...' COPY
@@ -731,9 +738,7 @@ async function setupDatabase(db: Duck, dbDir: string): Promise<void> {
     }
   } else {
     console.error("duckdb-export: no exported database at " + dbDir + ", creating tables");
-    await db.exec(
-      `CREATE TABLE IF NOT EXISTS vault (${ALLOWED_FRONTMATTER.map(([n, t]) => `${quoteIdent(n)} ${t}`).join(", ")})`
-    );
+    await db.exec(vaultTableDdl());
     await db.exec(`CREATE TABLE IF NOT EXISTS processing_metadata (
       file_path TEXT PRIMARY KEY,
       last_processed_at TIMESTAMP,
@@ -1040,18 +1045,25 @@ async function runOrThrow(db: Duck, sql: string, what: string): Promise<void> {
   if (err) throw new Error(`${what}: ${err}`);
 }
 
-async function batchUpsertIntoDuckdb(db: Duck, processed: ProcessedFile[]): Promise<void> {
+export async function batchUpsertIntoDuckdb(db: Duck, processed: ProcessedFile[]): Promise<void> {
   const keys = ALLOWED_KEYS;
   const updateAll = keys.filter((k) => k !== "file_path").map((k) => `${quoteIdent(k)} = EXCLUDED.${quoteIdent(k)}`).join(", ");
-  // Existing rows whose frontmatter changed but whose content did not keep their vectors
-  // and summary: those columns stay out of the SET clause.
+  // Existing rows whose frontmatter changed but whose content did not keep their vectors,
+  // summary and keywords: those columns stay out of the SET clause.
+  // DIVERGENCE from lib/obsidian-compiler: the Elixir omits `keywords` from this exclusion
+  // list, so every note taking this path has its keywords overwritten with the frontmatter
+  // value, which is almost always absent and therefore NULL. Only regenerate_embeddings
+  // ever writes keywords, so an incremental run silently strips them from any note it does
+  // not regenerate. generate-search-index.ts weights keywords above spr_content, so the
+  // wipe degrades site search. The oracle is not fixed: it is being deleted.
   const updateFmOnly = keys
     .filter(
       (k) =>
         k !== "file_path" &&
         k !== "embeddings_gemini" &&
         k !== "embeddings_spr_custom" &&
-        k !== "spr_content"
+        k !== "spr_content" &&
+        k !== "keywords"
     )
     .map((k) => `${quoteIdent(k)} = EXCLUDED.${quoteIdent(k)}`)
     .join(", ");
