@@ -27,11 +27,11 @@
 │   └── schema.sql        # Database schema
 ├── functions/            # Cloudflare Pages Functions (_middleware.ts and helpers)
 ├── lib/
-│   └── obsidian-compiler/ # Elixir compiler: markdown export (production) + DuckDB export (oracle only)
+│   └── obsidian-compiler/ # Elixir compiler: parity oracle for both TS compilers, plus mix fetch / sync_hashnode
 ├── public/               # Static assets (images, fonts, favicon)
 ├── scripts/              # Various utility scripts (e.g., generation, fetching, monitoring)
 │   ├── duckdb-export.ts  # TypeScript DuckDB reindexer, rebuilds db/vault.parquet
-│   ├── export-markdown.ts # TypeScript markdown compiler port (not yet wired into the build)
+│   ├── export-markdown.ts # TypeScript markdown compiler, builds public/content
 │   └── formatter/        # Scripts for formatting and linting
 ├── src/
 │   ├── components/       # Reusable React components

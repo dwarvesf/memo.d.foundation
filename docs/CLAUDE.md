@@ -29,6 +29,7 @@ From `lib/obsidian-compiler/`:
 ## Important Notes
 
 - **The `vault` submodule is purely content, when doing any thing Claude doesn't need to look inside this directory in order to save time/tokens**
-- **Prefer adding over modifying.** The markdown compiler's output is consumed byte-for-byte by the downstream TypeScript layer, so a small behaviour change here can silently shift the whole site.
-- **`mix duckdb.export` is now a verification oracle, not a build step.** `scripts/duckdb-export.ts` is the production path. Change the Elixir task only to keep the oracle usable for diffing; the TypeScript port is where real fixes go. The port already diverges deliberately on `keywords` retention (see the root `CLAUDE.md`).
+- **Prefer adding over modifying.** The oracle's output is diffed byte-for-byte against the TypeScript ports, so a small behaviour change here turns every parity run red.
+- **`mix export_markdown` and `mix duckdb.export` are verification oracles, not build steps.** `scripts/export-markdown.ts` and `scripts/duckdb-export.ts` are the production paths. Change the Elixir tasks only to keep the oracles usable for diffing; the TypeScript ports are where real fixes go. The DuckDB port already diverges deliberately on `keywords` retention (see the root `CLAUDE.md`).
+- **`mix fetch`, `mix sync_hashnode`, and `mix duckdb.export_pattern` are still production.** They were never ported, so the Elixir toolchain is still a real dependency for those targets.
 - **`Memo.Common.AIUtils` generates text through opencode-go**, not Google. The Elixir and TypeScript implementations must stay in step or the oracle diff becomes meaningless.
