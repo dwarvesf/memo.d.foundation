@@ -20,9 +20,9 @@
  */
 import * as fs from "fs";
 import * as nodePath from "path";
-import { execFileSync } from "child_process";
 import { createHash } from "crypto";
 import * as yaml from "js-yaml";
+import { DuckDBInstance } from "@duckdb/node-api";
 
 const P = nodePath.posix;
 
@@ -407,27 +407,28 @@ function convertMarkdownLinks(content: string, resolved: Map<string, string>, cu
 }
 
 // ---------------------------------------------------------------------------
-// DuckDB dsql blocks (port of Memo.Common.DuckDBUtils, via the duckdb CLI)
+// DuckDB dsql blocks (port of Memo.Common.DuckDBUtils, via @duckdb/node-api)
 // ---------------------------------------------------------------------------
 
 const MACRO =
   "CREATE OR REPLACE TEMP MACRO markdown_link(title, file_path) AS '[' || COALESCE(title, '/' || REGEXP_REPLACE(REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(-/|-$|_index$)', ''), '/readme$', '')) || '](/' || REGEXP_REPLACE(REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(-/|-$|_index$)', ''), '/readme$', '') || ')'";
 
-function duckdbQueryTemp(query: string, dbDir: string): { ok: boolean; data: any } {
+async function duckdbQueryTemp(query: string, dbDir: string): Promise<{ ok: boolean; data: any }> {
+  // Fresh in-memory database per query, mirroring the previous one-shot
+  // `duckdb -json -cmd "IMPORT DATABASE ..." -cmd <macro> -c <query>` CLI call.
   try {
-    const out = execFileSync(
-      "duckdb",
-      ["-json", "-cmd", `IMPORT DATABASE '${dbDir}'`, "-cmd", MACRO, "-c", query],
-      { encoding: "utf8", maxBuffer: 256 * 1024 * 1024 }
-    );
-    if (out === "") return { ok: true, data: [] };
+    const instance = await DuckDBInstance.create(":memory:");
+    const connection = await instance.connect();
     try {
-      return { ok: true, data: JSON.parse(out) };
-    } catch {
-      return { ok: true, data: out };
+      await connection.run(`IMPORT DATABASE '${dbDir}'`);
+      await connection.run(MACRO);
+      const result = await connection.runAndReadAll(query);
+      return { ok: true, data: result.getRowObjectsJson() };
+    } finally {
+      connection.closeSync();
     }
   } catch (e: any) {
-    return { ok: false, data: e.stderr || e.message };
+    return { ok: false, data: e.message };
   }
 }
 
@@ -517,13 +518,28 @@ function resultToMarkdownList(result: any, query: string): string {
     .join("\n");
 }
 
-function processDuckdbQueries(content: string, dbDir: string): string {
-  let out = content.replace(/```dsql-table\n([\s\S]*?)```/g, (_full, query) => {
-    const r = duckdbQueryTemp(query, dbDir);
+async function replaceAsync(
+  str: string,
+  re: RegExp,
+  fn: (query: string) => Promise<string>
+): Promise<string> {
+  const parts: string[] = [];
+  let last = 0;
+  for (const m of str.matchAll(re)) {
+    parts.push(str.slice(last, m.index), await fn(m[1]));
+    last = m.index + m[0].length;
+  }
+  parts.push(str.slice(last));
+  return parts.join("");
+}
+
+async function processDuckdbQueries(content: string, dbDir: string): Promise<string> {
+  let out = await replaceAsync(content, /```dsql-table\n([\s\S]*?)```/g, async (query) => {
+    const r = await duckdbQueryTemp(query, dbDir);
     return r.ok ? resultToMarkdownTable(r.data, query) : `Error executing query: ${r.data}`;
   });
-  out = out.replace(/```dsql-list\n([\s\S]*?)```/g, (_full, query) => {
-    const r = duckdbQueryTemp(query, dbDir);
+  out = await replaceAsync(out, /```dsql-list\n([\s\S]*?)```/g, async (query) => {
+    const r = await duckdbQueryTemp(query, dbDir);
     return r.ok ? resultToMarkdownList(r.data, query) : `Error executing query: ${r.data}`;
   });
   return out;
@@ -652,18 +668,23 @@ interface Opts {
   dbDir: string;
 }
 
-function processFileContent(file: string, vaultDir: string, allFiles: string[], dbDir: string): string {
+async function processFileContent(
+  file: string,
+  vaultDir: string,
+  allFiles: string[],
+  dbDir: string
+): Promise<string> {
   const content = fs.readFileSync(file, "utf8");
   const links = extractLinks(content);
   const resolved = resolveLinks(links, allFiles, vaultDir);
   let out = convertLinks(content, resolved, file);
-  out = processDuckdbQueries(out, dbDir);
+  out = await processDuckdbQueries(out, dbDir);
   out = slugifyMarkdownLinks(out);
   out = wrapMultilineKatex(out);
   return out;
 }
 
-export function runExport(opts: Opts): { exported: number; skipped: number } {
+export async function runExport(opts: Opts): Promise<{ exported: number; skipped: number }> {
   const { vault: vaultDir, output: exportpath, dbDir } = opts;
   const ignorePatterns = readExportIgnoreFile(P.join(vaultDir, ".export-ignore"));
   let paths = listFilesRecursive(vaultDir);
@@ -708,7 +729,7 @@ export function runExport(opts: Opts): { exported: number; skipped: number } {
       skipped++;
       continue;
     }
-    const converted = processFileContent(file, vaultDir, allValidFiles, dbDir);
+    const converted = await processFileContent(file, vaultDir, allValidFiles, dbDir);
     fs.mkdirSync(P.dirname(slugifiedExportFile), { recursive: true });
     fs.writeFileSync(slugifiedExportFile, converted);
     exported++;
@@ -737,7 +758,7 @@ function parseArgs(argv: string[]): Opts {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const opts = parseArgs(process.argv.slice(2));
   const start = Date.now();
-  const { exported, skipped } = runExport(opts);
+  const { exported, skipped } = await runExport(opts);
   console.error(
     `export-markdown(ts): exported ${exported}, skipped(root) ${skipped} in ${(
       (Date.now() - start) /
