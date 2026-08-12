@@ -1,71 +1,28 @@
 import { Storage } from '@google-cloud/storage';
-import Vault from 'node-vault';
-import { Buffer } from 'buffer';
 
+// Credentials used to come from HashiCorp Vault. That instance is
+// decommissioned, so the bucket name and the GCS credentials are read from the
+// environment instead. Credentials follow Google's standard Application
+// Default Credentials chain (GOOGLE_APPLICATION_CREDENTIALS, gcloud login, or
+// the workload identity of the host).
 class StorageUtil {
   private bucketName: string;
-  private vaultClient: any;
   private gcsClient: Storage | null;
 
   constructor() {
-    this.bucketName = 'df-landing-zone';
-    this.vaultClient = this._initVaultClient();
+    this.bucketName = process.env.LANDING_ZONE_GCS_BUCKET || 'df-landing-zone';
     this.gcsClient = null;
   }
 
-  private _initVaultClient(): any {
-    const vaultToken = process.env.VAULT_TOKEN;
-    let vaultUrl = process.env.VAULT_ADDR;
-    if (vaultUrl?.endsWith('/')) {
-      vaultUrl = vaultUrl.slice(0, -1);
+  private _initGcsClient(): Storage {
+    if (!this.gcsClient) {
+      this.gcsClient = new Storage();
     }
-    if (!vaultToken || !vaultUrl) {
-      throw new Error(
-        'Vault token or Vault address is not set in environment variables',
-      );
-    }
-    return Vault({
-      apiVersion: 'v1',
-      endpoint: vaultUrl,
-      token: vaultToken,
-    });
-  }
-
-  private async _initGcsClient(): Promise<Storage> {
-    if (this.gcsClient) {
-      return this.gcsClient;
-    }
-    const vaultPath = process.env.VAULT_PATH;
-    if (!vaultPath) {
-      throw new Error('VAULT_PATH environment variable is not set');
-    }
-    let secret;
-    try {
-      secret = await this.vaultClient.read(vaultPath);
-    } catch (error) {
-      console.error(
-        `Failed to read Vault secret at path ${vaultPath}: ${(error as Error).message}`,
-      );
-      throw error;
-    }
-    const bucketName = secret.data.data.BUCKET_NAME;
-    if (bucketName) {
-      this.bucketName = bucketName;
-    }
-    const gcpCredsBase64 = secret.data.data.GCP_SERVICE_ACCOUNT;
-    let credsJson;
-    try {
-      const decoded = Buffer.from(gcpCredsBase64, 'base64').toString('utf-8');
-      credsJson = JSON.parse(decoded);
-    } catch {
-      credsJson = JSON.parse(gcpCredsBase64);
-    }
-    this.gcsClient = new Storage({ credentials: credsJson });
     return this.gcsClient;
   }
 
   async readData(filePath: string) {
-    const gcsClient = await this._initGcsClient();
+    const gcsClient = this._initGcsClient();
     const bucket = gcsClient.bucket(this.bucketName);
     const file = bucket.file(filePath);
 
