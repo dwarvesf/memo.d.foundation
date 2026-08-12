@@ -92,16 +92,15 @@ jobs:
 **A. Test Backup Workflow Notifications:**
 
 ```bash
-# Trigger manually to test notifications
-# Go to Actions > Backup > Run workflow
-# This will test both success and failure scenarios
+# RETIRED: the Backup workflow was deleted along with its notifications.
 ```
 
 **B. Test Dispatch Workflow Notifications:**
 
 ```bash
-# Go to Actions > Update submodules > Run workflow
-# This tests submodule update notifications
+# RETIRED: "Update submodules" was folded into Publish to Cloudflare Pages.
+# Go to Actions > Publish to Cloudflare Pages > Run workflow
+# That workflow has no Discord notifications yet.
 ```
 
 #### 2.2 **Test Failure Scenarios Safely**

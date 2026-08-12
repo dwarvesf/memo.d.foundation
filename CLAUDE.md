@@ -13,6 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm run lint`: ESLint.
 - `pnpm run format`: Prettier over `src/`.
 - `pnpm test`: Vitest.
+- `bash scripts/build-and-deploy.sh`: The whole publish pipeline (vault advance, DuckDB reindex, markdown compile, site build, Cloudflare Pages deploy, R2 + D1 upload). Runner-agnostic, configured by environment variables; the header comment lists them. `SKIP_REINDEX=1` skips the reindex for a docs-only redeploy.
 
 ### Content Generation Scripts
 

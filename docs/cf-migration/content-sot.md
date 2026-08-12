@@ -25,10 +25,10 @@ by editing a markdown file in one of these git repos.
 
 Two independent consumers of the checked-out tree:
 
-- **CI build** (`generate-redirects.yml`, `derived-to-r2.yml`, `backup.yml`,
-  `add-mint-post.yml`, `deploy-arweave.yml`, `test-git-action.yml`): all use
-  `actions/checkout@v4` with `submodules: recursive` (+ `secrets.DWARVES_PAT` on the
-  ones touching private repos). This is the robust path: if a submodule fetch fails,
+- **CI build** (`generate-redirects.yml`, `publish-pages.yml`, `add-mint-post.yml`,
+  `deploy-arweave.yml`): all use
+  `actions/checkout@v4` with `submodules: recursive` (`secrets.DWARVES_PAT` has since
+  been dropped from every checkout). This is the robust path: if a submodule fetch fails,
   the checkout step itself fails and the job goes red. Nobody has to notice a silent
   partial checkout here.
 - **Local dev / manual reindex** (`make fetch`, `make fetch-force` -> `git-fetch.sh`):
@@ -38,7 +38,9 @@ Two independent consumers of the checked-out tree:
   only, no schedule. Runs `pnpm run generate-summary` + `duckdb-export` (embeddings,
   `db/vault.parquet`) against whatever the recursive submodule checkout resolves to,
   then commits the result back. Already flagged manual-only + fragile by the #302
-  inventory; see `## Known gap not fixed here` below.
+  inventory; see `## Known gap not fixed here` below. **SUPERSEDED**: this workflow
+  is deleted. The reindex is a stage of `scripts/build-and-deploy.sh`, called by
+  `publish-pages.yml`; `generate-summary` was not carried over.
 
 ## 2. The fragility: what DF-120 found, what was already fixed, what wasn't
 
@@ -59,7 +61,7 @@ Reading it closely:
   `git submodule foreach 'try_https_fallback "$PWD"'`) never checks its own exit
   code, so a submodule failing on BOTH transports is swallowed.
 - Every per-submodule checkout/pull step is deliberately `|| true` / `|| echo
-  "Failed to ..."` so one dead submodule doesn't abort the whole tree (fine, by
+"Failed to ..."` so one dead submodule doesn't abort the whole tree (fine, by
   design, for resilience) -- but the script itself never turns any of that into a
   final non-zero exit. `make fetch` always returned 0, dead submodules or not.
 
@@ -80,7 +82,7 @@ Verified (`docs/cf-migration/content-sot.md` companion proof, not duplicated her
 see the PR for the full transcript):
 
 - **Positive control**: real repo state, all 19 submodules resolved -> `All
-  submodules verified OK (19 checked)`, exit 0.
+submodules verified OK (19 checked)`, exit 0.
 - **Negative control**: synthetic `-`/`+` lines fed to the script (mirroring an
   uninitialized submodule and a stale-checkout submodule) -> exits 1, names the
   broken path on stderr.
@@ -94,6 +96,14 @@ logic itself (works, just doesn't self-report), and it does not touch
 broken `actions/checkout` submodule fetch already fails the job natively).
 
 ### Known gap not fixed here
+
+**Closed since.** `dispatch.yml` and `backup.yml` are deleted. The reindex runs as
+a stage of `scripts/build-and-deploy.sh` on every publish, so the parquet can no
+longer drift from the deployed site, and a dead submodule pointer fails the daily
+publish instead of waiting for someone to press a button. The spend concern below
+is answered by the exporter's own incremental gate: `needs_embeddings_update` only
+re-embeds notes whose content changed. The rest of this section is the record of
+the state before that change.
 
 `dispatch.yml` staying `workflow_dispatch`-only (no cron) means a future dead
 pointer could sit unnoticed until someone manually re-runs it, exactly like the
@@ -138,7 +148,7 @@ What it would actually take:
      above: a bad/expired integration token or a malformed page should fail the CI
      job, not silently skip that note.
 3. **CI wiring**: a new step (or a new job) alongside the existing `actions/checkout
-   submodules: recursive` step, running the adapter before `make build`/
+submodules: recursive` step, running the adapter before `make build`/
    `build-static`, with its own secret (`NOTION_TOKEN` or similar) and its own
    Discord failure notification (mirroring `dispatch.yml`'s pattern).
 4. **The editorial/promotion-gate question** DF-120 already surfaces for the
