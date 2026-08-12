@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Essential Commands
 
 - `make build`: Full production build (`tsx scripts/export-markdown.ts` + `make duckdb-export` + `pnpm run build` + nginx conf + lint + copy `db/`). Regenerates `db/vault.parquet` locally. No Elixir toolchain needed.
-- `make build-static`: Same as `make build` minus the DuckDB export (uses the `db/vault.parquet` already checked out). This is the build CI actually runs (`publish-pages.yml` inlines these same steps).
+- `make build-static`: Same as `make build` minus the DuckDB export (uses the `db/vault.parquet` already checked out). CI runs the same sequence through `scripts/build-and-deploy.sh`, which does reindex.
 - `pnpm run dev`: Run the Next.js dev server (`make run` sets up content first; see below).
 - `pnpm run build`: `tsx scripts/memo-build.ts`, the TypeScript pre-build/generation step Next.js needs before `next build` runs internally.
 - `pnpm run lint`: ESLint.
@@ -26,7 +26,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm run generate-pageviews`: pulls Plausible stats (degrades gracefully if `PLAUSIBLE_API_TOKEN` is unset).
 - `pnpm run fetch-prompts` / `fetch-contributors`: external data fetches.
 - `pnpm run upload-rollups-to-d1`: push the content rollup to D1.
-- `pnpm run upload-to-r2`: pushes derived build artifacts (parquet, search index, posts.json) to R2, but needs S3-style R2 keys the account does not have. CI does not use it; see the credential hazards noted under CI Workflows.
+- `pnpm run upload-to-r2`: pushes derived build artifacts (parquet, search index, posts.json) to R2, but needs S3-style R2 keys the account does not have. CI does not use it; see the credential hazard noted under CI Workflows.
 
 ### DuckDB Export (TypeScript)
 
