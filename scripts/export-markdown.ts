@@ -20,9 +20,9 @@
  */
 import * as fs from "fs";
 import * as nodePath from "path";
-import { execFileSync } from "child_process";
 import { createHash } from "crypto";
 import * as yaml from "js-yaml";
+import { DuckDBInstance } from "@duckdb/node-api";
 
 const P = nodePath.posix;
 
@@ -407,27 +407,28 @@ function convertMarkdownLinks(content: string, resolved: Map<string, string>, cu
 }
 
 // ---------------------------------------------------------------------------
-// DuckDB dsql blocks (port of Memo.Common.DuckDBUtils, via the duckdb CLI)
+// DuckDB dsql blocks (port of Memo.Common.DuckDBUtils, via @duckdb/node-api)
 // ---------------------------------------------------------------------------
 
 const MACRO =
   "CREATE OR REPLACE TEMP MACRO markdown_link(title, file_path) AS '[' || COALESCE(title, '/' || REGEXP_REPLACE(REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(-/|-$|_index$)', ''), '/readme$', '')) || '](/' || REGEXP_REPLACE(REGEXP_REPLACE(LOWER(REGEXP_REPLACE(REPLACE(REPLACE(file_path, '.md', ''), ' ', '-'),'[^a-zA-Z0-9/_-]+', '-')), '(-/|-$|_index$)', ''), '/readme$', '') || ')'";
 
-function duckdbQueryTemp(query: string, dbDir: string): { ok: boolean; data: any } {
+async function duckdbQueryTemp(query: string, dbDir: string): Promise<{ ok: boolean; data: any }> {
+  // Fresh in-memory database per query, mirroring the previous one-shot
+  // `duckdb -json -cmd "IMPORT DATABASE ..." -cmd <macro> -c <query>` CLI call.
   try {
-    const out = execFileSync(
-      "duckdb",
-      ["-json", "-cmd", `IMPORT DATABASE '${dbDir}'`, "-cmd", MACRO, "-c", query],
-      { encoding: "utf8", maxBuffer: 256 * 1024 * 1024 }
-    );
-    if (out === "") return { ok: true, data: [] };
+    const instance = await DuckDBInstance.create(":memory:");
+    const connection = await instance.connect();
     try {
-      return { ok: true, data: JSON.parse(out) };
-    } catch {
-      return { ok: true, data: out };
+      await connection.run(`IMPORT DATABASE '${dbDir}'`);
+      await connection.run(MACRO);
+      const result = await connection.runAndReadAll(query);
+      return { ok: true, data: result.getRowObjectsJson() };
+    } finally {
+      connection.closeSync();
     }
   } catch (e: any) {
-    return { ok: false, data: e.stderr || e.message };
+    return { ok: false, data: e.message };
   }
 }
 
@@ -517,13 +518,28 @@ function resultToMarkdownList(result: any, query: string): string {
     .join("\n");
 }
 
-function processDuckdbQueries(content: string, dbDir: string): string {
-  let out = content.replace(/```dsql-table\n([\s\S]*?)```/g, (_full, query) => {
-    const r = duckdbQueryTemp(query, dbDir);
+async function replaceAsync(
+  str: string,
+  re: RegExp,
+  fn: (query: string) => Promise<string>
+): Promise<string> {
+  const parts: string[] = [];
+  let last = 0;
+  for (const m of str.matchAll(re)) {
+    parts.push(str.slice(last, m.index), await fn(m[1]));
+    last = m.index + m[0].length;
+  }
+  parts.push(str.slice(last));
+  return parts.join("");
+}
+
+async function processDuckdbQueries(content: string, dbDir: string): Promise<string> {
+  let out = await replaceAsync(content, /```dsql-table\n([\s\S]*?)```/g, async (query) => {
+    const r = await duckdbQueryTemp(query, dbDir);
     return r.ok ? resultToMarkdownTable(r.data, query) : `Error executing query: ${r.data}`;
   });
-  out = out.replace(/```dsql-list\n([\s\S]*?)```/g, (_full, query) => {
-    const r = duckdbQueryTemp(query, dbDir);
+  out = await replaceAsync(out, /```dsql-list\n([\s\S]*?)```/g, async (query) => {
+    const r = await duckdbQueryTemp(query, dbDir);
     return r.ok ? resultToMarkdownList(r.data, query) : `Error executing query: ${r.data}`;
   });
   return out;
@@ -539,8 +555,15 @@ function replacePathPrefix(path: string, oldPrefix: string, newPrefix: string): 
   const relativePart = P.relative(normalizedOld, normalizedPath);
   const insidePrefix = relativePart !== normalizedPath && !relativePart.startsWith("..");
   if (insidePrefix) {
-    const result = P.join(newPrefix, relativePart);
-    return path.startsWith("../") ? result : nodePath.resolve(result);
+    // PARITY FIX: Elixir's mirror branch calls Path.expand(result) here, but that branch
+    // is never exercised in real Elixir usage (mix only ever runs from lib/obsidian-compiler
+    // with "../../"-prefixed default args, so path always starts with "../" and Elixir always
+    // takes the `result` branch instead). Resolving to an absolute path here, combined with
+    // slugify_path/slugify_directory slugifying every path segment, corrupts the whole cwd
+    // chain into the output path when this script is invoked in its OTHER documented mode
+    // (relative args from the repo root, e.g. --vault vault --output public/content, which
+    // CI uses). The relative `result` is already correct and cwd-relative in both modes.
+    return P.join(newPrefix, relativePart);
   }
   // fallback
   const oldBase = P.basename(oldPrefix);
@@ -560,6 +583,78 @@ function preserveRelativePrefixAndSlugify(path: string): string {
 }
 
 // ---------------------------------------------------------------------------
+// Assets + db directory copy (port of export_assets_folder / export_db_directory /
+// copy_directory). Not a content transform (no byte-parity claim, per
+// docs/cf-migration/compiler-rewrite.md Scope edges), but load-bearing for the CI
+// cutover: exported markdown links point at these slugified asset paths, and
+// public/ is served statically, so a missing copy step 404s every embedded image.
+// ---------------------------------------------------------------------------
+
+// Elixir's Path.join is a plain string join (collapses duplicate slashes only, never
+// resolves ".." segments), unlike Node's path.posix.join which normalizes ".." away.
+// export_db_directory relies on that non-normalizing join; replicate it exactly here.
+function elixirJoin(a: string, b: string): string {
+  return `${a}/${b}`.replace(/\/{2,}/g, "/");
+}
+
+function copyDirectoryRecursive(
+  source: string,
+  destination: string,
+  ignorePatterns: string[],
+  vaultpath: string
+): void {
+  const slugifiedDestination = preserveRelativePrefixAndSlugify(destination);
+  fs.mkdirSync(slugifiedDestination, { recursive: true });
+  let items: string[];
+  try {
+    items = fs.readdirSync(source);
+  } catch {
+    return;
+  }
+  for (const item of items) {
+    const sourcePath = P.join(source, item);
+    if (isIgnored(sourcePath, ignorePatterns, vaultpath)) continue;
+    const destPath = P.join(slugifiedDestination, slugifyFilename(item));
+    let isDir = false;
+    try {
+      isDir = fs.statSync(sourcePath).isDirectory();
+    } catch {
+      continue;
+    }
+    if (isDir) {
+      // Skip only if BOTH directories are named "assets" (avoid assets/assets nesting).
+      if (!(P.basename(sourcePath) === "assets" && P.basename(source) === "assets")) {
+        copyDirectoryRecursive(sourcePath, destPath, ignorePatterns, vaultpath);
+      }
+    } else {
+      fs.mkdirSync(P.dirname(destPath), { recursive: true });
+      fs.copyFileSync(sourcePath, destPath);
+    }
+  }
+}
+
+function exportAssetsFolder(
+  assetPath: string,
+  vaultpath: string,
+  exportpath: string,
+  ignorePatterns: string[]
+): void {
+  const isAssetsDir =
+    P.basename(assetPath) === "assets" && P.basename(P.dirname(assetPath)) !== "assets";
+  if (!isAssetsDir || isIgnored(assetPath, ignorePatterns, vaultpath)) return;
+  const targetPath = replacePathPrefix(assetPath, vaultpath, exportpath);
+  const slugifiedTargetPath = preserveRelativePrefixAndSlugify(targetPath);
+  copyDirectoryRecursive(assetPath, slugifiedTargetPath, ignorePatterns, vaultpath);
+}
+
+function exportDbDirectory(dbpath: string, exportpath: string): void {
+  if (!fs.existsSync(dbpath) || !fs.statSync(dbpath).isDirectory()) return;
+  const exportDbPath = elixirJoin(exportpath, "../../db");
+  const slugifiedExportDbPath = preserveRelativePrefixAndSlugify(exportDbPath);
+  copyDirectoryRecursive(dbpath, slugifiedExportDbPath, [], dbpath);
+}
+
+// ---------------------------------------------------------------------------
 // Driver
 // ---------------------------------------------------------------------------
 
@@ -573,18 +668,23 @@ interface Opts {
   dbDir: string;
 }
 
-function processFileContent(file: string, vaultDir: string, allFiles: string[], dbDir: string): string {
+async function processFileContent(
+  file: string,
+  vaultDir: string,
+  allFiles: string[],
+  dbDir: string
+): Promise<string> {
   const content = fs.readFileSync(file, "utf8");
   const links = extractLinks(content);
   const resolved = resolveLinks(links, allFiles, vaultDir);
   let out = convertLinks(content, resolved, file);
-  out = processDuckdbQueries(out, dbDir);
+  out = await processDuckdbQueries(out, dbDir);
   out = slugifyMarkdownLinks(out);
   out = wrapMultilineKatex(out);
   return out;
 }
 
-export function runExport(opts: Opts): { exported: number; skipped: number } {
+export async function runExport(opts: Opts): Promise<{ exported: number; skipped: number }> {
   const { vault: vaultDir, output: exportpath, dbDir } = opts;
   const ignorePatterns = readExportIgnoreFile(P.join(vaultDir, ".export-ignore"));
   let paths = listFilesRecursive(vaultDir);
@@ -607,6 +707,13 @@ export function runExport(opts: Opts): { exported: number; skipped: number } {
       return false;
     }
   });
+  const allDirs = paths.filter((p) => {
+    try {
+      return fs.statSync(p).isDirectory();
+    } catch {
+      return false;
+    }
+  });
   const allValidFiles = allFiles.filter((f) => !isIgnored(f, ignorePatterns, vaultDir));
 
   let exported = 0;
@@ -622,11 +729,17 @@ export function runExport(opts: Opts): { exported: number; skipped: number } {
       skipped++;
       continue;
     }
-    const converted = processFileContent(file, vaultDir, allValidFiles, dbDir);
+    const converted = await processFileContent(file, vaultDir, allValidFiles, dbDir);
     fs.mkdirSync(P.dirname(slugifiedExportFile), { recursive: true });
     fs.writeFileSync(slugifiedExportFile, converted);
     exported++;
   }
+
+  for (const dir of allDirs) {
+    exportAssetsFolder(dir, vaultDir, exportpath, ignorePatterns);
+  }
+  exportDbDirectory(dbDir, exportpath);
+
   return { exported, skipped };
 }
 
@@ -645,7 +758,7 @@ function parseArgs(argv: string[]): Opts {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const opts = parseArgs(process.argv.slice(2));
   const start = Date.now();
-  const { exported, skipped } = runExport(opts);
+  const { exported, skipped } = await runExport(opts);
   console.error(
     `export-markdown(ts): exported ${exported}, skipped(root) ${skipped} in ${(
       (Date.now() - start) /
