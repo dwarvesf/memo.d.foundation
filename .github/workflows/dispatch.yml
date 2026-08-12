@@ -2,6 +2,14 @@ name: Update submodules
 
 on:
   workflow_dispatch:
+  schedule:
+    # Weekly, Sunday 20:00 UTC: ahead of publish-pages.yml's daily 22:00 UTC
+    # cron so a fresh reindex is available before that publish. Runs
+    # generate-summary + duckdb-export against every vault file via paid
+    # OpenAI/Gemini/Jina APIs, so this stays weekly, not daily, to bound
+    # embedding-regen cost. Tune the cadence if staleness or cost pressure
+    # changes.
+    - cron: '0 20 * * 0'
 
 concurrency:
   group: ${{ github.repository }}-workflow
