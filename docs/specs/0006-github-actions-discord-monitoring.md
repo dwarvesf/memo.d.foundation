@@ -6,41 +6,18 @@ This specification documents the comprehensive Discord monitoring system impleme
 
 ## Implemented Monitoring
 
-### 1. **Database Backup Monitoring** (`.github/workflows/backup.yml`)
+### 1. **Database Backup Monitoring** (`.github/workflows/backup.yml`) [RETIRED]
 
-**Triggers:**
+The daily S3 backup workflow was deleted. R2 object versioning on the derived
+bucket is the backup now, and the parquet content is in git history. Its Discord
+notifications went with it.
 
-- Daily at 2 AM UTC via cron schedule
-- Manual workflow dispatch
+### 2. **Submodule Update Monitoring** (`.github/workflows/dispatch.yml`) [RETIRED]
 
-**Monitored Events:**
-
-- ✅ **Success**: Daily database backup to S3 completed successfully
-- ❌ **Failure**: Database backup process failed (DuckDB export, S3 upload, or general workflow failure)
-
-**Notification Details:**
-
-- Success: Green embed with confirmation message
-- Failure: Red embed with error details and link to workflow logs
-
-### 2. **Submodule Update Monitoring** (`.github/workflows/dispatch.yml`)
-
-**Triggers:**
-
-- Manual workflow dispatch
-- Submodule content changes
-
-**Monitored Events:**
-
-- ✅ **Success**: All submodules updated and reindexed successfully
-- ❌ **Failure**: Submodule update, AI summary generation, or commit/push failures
-
-**Key Components Monitored:**
-
-- Git submodule synchronization (Level 1 and Level 2 submodules)
-- AI-generated summary creation
-- Database export process
-- Repository commit and push operations
+The manual-only "Update submodules" workflow was deleted. Its submodule advance
+and DuckDB reindex are stages of `.github/workflows/publish-pages.yml`, which
+runs them on every publish via `scripts/build-and-deploy.sh`. That workflow has
+no Discord notifications yet.
 
 ### 3. **Redirect Generation Monitoring** (`.github/workflows/generate-redirects.yml`)
 
