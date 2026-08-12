@@ -12,9 +12,6 @@ concurrency:
   group: ${{ github.repository }}-gen-redirect-workflow
   cancel-in-progress: false
 
-env:
-  VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-
 jobs:
   generate-redirects:
     runs-on: ubuntu-latest

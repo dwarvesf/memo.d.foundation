@@ -27,7 +27,6 @@ jobs:
 
       - name: Run AI generate summary script
         env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           devbox run -- pnpm run generate-summary
@@ -39,7 +38,6 @@ jobs:
           git config --global user.name "GitHub Actions"
           devbox run duckdb-export
         env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           INFINITY_API_KEY: ${{ secrets.INFINITY_API_KEY }}
           INFINITY_OPENAI_BASE_URL: ${{ secrets.INFINITY_OPENAI_BASE_URL }}

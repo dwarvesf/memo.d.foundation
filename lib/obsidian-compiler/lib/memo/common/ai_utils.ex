@@ -291,61 +291,22 @@ defmodule Memo.Common.AIUtils do
     end
   end
 
-  # Retrieve GEMINI_API_KEY from HashiCorp Vault
+  # Retrieve GEMINI_API_KEY from the environment. The HashiCorp Vault fallback
+  # was removed when that Vault instance was decommissioned.
   defp get_gemini_api_key() do
     # Use persistent cache in process dictionary for efficiency
     case Process.get(:gemini_api_key) do
       api_key when is_binary(api_key) and api_key != "" ->
         api_key
       _ ->
-        # Try environment variable first as fallback
         case System.get_env("GEMINI_API_KEY") do
           api_key when is_binary(api_key) and api_key != "" ->
             Process.put(:gemini_api_key, api_key)
             api_key
           _ ->
-            # Fetch from HashiCorp Vault and cache
-            api_key = fetch_from_vault()
-            if is_binary(api_key) and api_key != "" do
-              Process.put(:gemini_api_key, api_key)
-            end
-            api_key
+            IO.puts("GEMINI_API_KEY is not set; skipping Gemini call")
+            nil
         end
-    end
-  end
-
-  defp fetch_from_vault() do
-    vault_addr = System.get_env("VAULT_ADDR")
-    vault_path = System.get_env("VAULT_PATH")
-    vault_token = System.get_env("VAULT_TOKEN")
-
-    with true <- is_binary(vault_addr) and vault_addr != "",
-         true <- is_binary(vault_path) and vault_path != "",
-         true <- is_binary(vault_token) and vault_token != "",
-         vault_url <- "#{vault_addr}/v1/#{vault_path}",
-         headers <- [
-           {"Content-Type", "application/json"},
-           {"X-Vault-Token", vault_token}
-         ],
-         {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
-           HTTPoison.get(vault_url, headers, @config.http_options),
-         {:ok, %{"data" => %{"data" => vault_data}}} <- Jason.decode(body),
-         %{"GEMINI_API_KEY" => api_key} <- vault_data,
-         true <- is_binary(api_key) and api_key != "" do
-      api_key
-    else
-      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        IO.puts("Vault request failed with status #{status_code}: #{body}")
-        nil
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        IO.puts("Vault HTTP request failed: #{inspect(reason)}")
-        nil
-      {:error, %Jason.DecodeError{}} ->
-        IO.puts("Failed to parse Vault response JSON")
-        nil
-      error ->
-        IO.puts("Vault integration error: #{inspect(error)}")
-        nil
     end
   end
 end

@@ -210,9 +210,8 @@ The following GitHub secrets must be configured:
 
 ### Deployment Keys
 
-- `VAULT_ADDR`, `VAULT_ROLE_ID`, `VAULT_SECRET_ID`: HashiCorp Vault authentication
 - `ARWEAVE_WALLET_JSON`: Arweave wallet for permanent storage
-- `ENCRYPTED_WALLET_PRIVATE_KEY`: Encrypted wallet for NFT minting
+- `WALLET_PRIVATE_KEY`: Wallet signing key for NFT minting
 
 ## Notification Examples
 
