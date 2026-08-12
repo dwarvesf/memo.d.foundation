@@ -9,11 +9,13 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     name: Backup DB
+    # Read-only on git: the backup lands in S3, nothing is pushed back.
+    permissions:
+      contents: read
     steps:
       - name: Checkout contents repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
           fetch-depth: 1
 

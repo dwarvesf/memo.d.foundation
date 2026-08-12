@@ -44,13 +44,15 @@ jobs:
     if: vars.PAGES_PUBLISH_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    # Read-only on git: this job publishes to Cloudflare, it never pushes back.
+    permissions:
+      contents: read
     env:
       LANG: C.UTF-8
     steps:
       - name: Checkout contents repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.DWARVES_PAT }}
           submodules: recursive
           fetch-depth: 1
 
