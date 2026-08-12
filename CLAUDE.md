@@ -112,7 +112,7 @@ HashiCorp Vault is decommissioned and fully removed from this repo. `node-vault`
 - `vault/`: git submodule (Obsidian vault content), avoid modifying during development.
 - `scripts/`: TypeScript scripts for content generation, redirects, R2/D1 upload, and the NFT report.
 - `functions/`: Cloudflare Pages Functions (`_middleware.ts` and its helpers).
-- `db/`: `vault.parquet` (DuckDB content export, regenerated via `make duckdb-export`, dispatched by the `dispatch.yml` "Update submodules" workflow), `processing_metadata*.parquet`, `schema.sql`, `load.sql`.
+- `db/`: `vault.parquet` (DuckDB content export, regenerated via `make duckdb-export` as the reindex stage of every publish), `processing_metadata*.parquet`, `schema.sql`, `load.sql`.
 - `public/content/`: generated JSON/content files for search, navigation, and metadata. The parquet is not copied here; `db/` is copied to `out/db/` at build time.
 - `docs/adr/`: numbered architecture decision records. The recent ones covering the current build shape are `0016` (DuckDB export ported to TypeScript, Elixir kept as oracle), `0017` (opencode-go generation, embeddings gated off), and `0018` (HashiCorp Vault decommissioned).
 - `docs/cf-migration/`: the Railway → Cloudflare Pages migration record. Read here for full history/detail instead of duplicating it in this file: `pages-deploy.md` (config-only prep, redirect + RSS mapping), `build-inventory.md` (build-artifact validation run), `compiler-rewrite.md` (Elixir → TS parity report), `content-sot.md` (submodule ingest + Notion-authoring fingerprint), `comments-search-decision.md` (comments/search evidence decisions), `M4-02-PAGES-CUTOVER-RECORD.md` (the actual cutover + DNS flip record).
@@ -120,7 +120,7 @@ HashiCorp Vault is decommissioned and fully removed from this repo. `node-vault`
 ### Content Processing Pipeline
 
 1. Obsidian markdown files in the `vault/` submodule.
-2. `scripts/export-markdown.ts` processes markdown → standardized format in `public/content/`; `make duckdb-export` produces `db/vault.parquet`. The parquet regen is a separate, manually dispatched job, not part of the per-push deploy build.
+2. `scripts/export-markdown.ts` processes markdown → standardized format in `public/content/`; `make duckdb-export` produces `db/vault.parquet`. The parquet regen runs on every publish, before the markdown compile, so the index cannot drift from the deployed site. `SKIP_REINDEX=1` skips it for a docs-only redeploy.
 3. TypeScript scripts (`scripts/`) generate navigation, search indices, redirects, and metadata.
 4. Next.js statically exports the site (`output: 'export'`) to `out/`.
 5. `pnpm run generate-cf-redirects` builds `out/_redirects`; oversize files (>25 MiB) are stripped from `out/` before deploy.
@@ -128,25 +128,22 @@ HashiCorp Vault is decommissioned and fully removed from this repo. `node-vault`
 
 ### CI Workflows (`.github/workflows/`)
 
-| Workflow | Trigger | Does |
-|---|---|---|
-| `publish-pages.yml` | push to `main` (content/build paths), daily cron, manual | The live deploy pipeline: builds (via `tsx scripts/export-markdown.ts`, no Elixir setup step), deploys to Cloudflare Pages, uploads derived artifacts to R2, and a rollup to D1. Gated on repo var `PAGES_PUBLISH_ENABLED`, which is now `true`, so the job runs rather than skipping. |
-| `dispatch.yml` ("Update submodules") | manual only | Bumps the `vault` submodule to latest, regenerates AI summaries, runs the DuckDB export (`devbox run duckdb-export`, the TypeScript path), commits `db/`. |
-| `backup.yml` | daily cron, manual | Backs up the DB. |
-| `add-mint-post.yml` | push to `db/vault.parquet`, manual | Adds new posts to the mint contract. |
-| `deploy-arweave.yml` | push to `db/vault.parquet`, manual | Deploys markdown to Arweave. |
-| `generate-redirects.yml` | push to `db/vault.parquet`, manual | Regenerates the redirect map. |
-| `memo-nft-report.yml` | daily cron, manual | Sends the NFT report to Discord. |
-| `monitor-vault-parquet.yml` | daily cron, manual | Monitors `db/vault.parquet` health, reports to Discord. |
+| Workflow                    | Trigger                                                  | Does                                                                                                                                                                                                                                                                                                                                                                |
+| --------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `publish-pages.yml`         | push to `main` (content/build paths), daily cron, manual | The only publish path, and a thin caller of `scripts/build-and-deploy.sh`: advance the vault, reindex, compile, build, deploy to Cloudflare Pages, upload derived artifacts to R2 and a rollup to D1. Gated on repo var `PAGES_PUBLISH_ENABLED`, which is now `true`, so the job runs rather than skipping. A `skip_reindex` dispatch input maps to `SKIP_REINDEX`. |
+| `add-mint-post.yml`         | push to `db/vault.parquet`, manual                       | Adds new posts to the mint contract.                                                                                                                                                                                                                                                                                                                                |
+| `deploy-arweave.yml`        | push to `db/vault.parquet`, manual                       | Deploys markdown to Arweave.                                                                                                                                                                                                                                                                                                                                        |
+| `generate-redirects.yml`    | push to `db/vault.parquet`, manual                       | Regenerates the redirect map.                                                                                                                                                                                                                                                                                                                                       |
+| `memo-nft-report.yml`       | daily cron, manual                                       | Sends the NFT report to Discord.                                                                                                                                                                                                                                                                                                                                    |
+| `monitor-vault-parquet.yml` | daily cron, manual                                       | Monitors `db/vault.parquet` health, reports to Discord.                                                                                                                                                                                                                                                                                                             |
 
-`derived-to-r2.yml` was deleted; its R2 and D1 upload is now inline in `publish-pages.yml`, driven by `wrangler` on the Cloudflare API token rather than the S3-style `R2_*`/`D1_*` key set the old workflow used. The `test-discord-notifications.yml` and `test-git-action.yml` throwaway harnesses were deleted too.
+Deleted workflows, and where their work went: `derived-to-r2.yml` (R2 and D1 upload, now a stage of the pipeline script, driven by `wrangler` on the Cloudflare API token rather than the S3-style `R2_*`/`D1_*` key set), `dispatch.yml` "Update submodules" (vault advance plus DuckDB reindex, now stages of the same script, so the parquet can no longer drift from the deployed site; its `generate-summary` step was not carried over because it rewrites vault frontmatter and pushes it back), `backup.yml` (the daily S3 backup, redundant against R2 object versioning and git history), and the `test-discord-notifications.yml` / `test-git-action.yml` throwaway harnesses.
 
-Cloudflare credentials are provisioned as repo **secrets**: `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. The four `AWS_*` secrets were deleted.
+Cloudflare credentials are provisioned as repo **secrets**: `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. The four `AWS_*` secrets were deleted, and with `backup.yml` gone they have no consumer left.
 
-Two credential hazards follow from that deletion, both still live:
+One credential hazard is still live: `pnpm run upload-to-r2` requires `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`, which the account does not have. The pipeline deliberately bypasses that script and calls `wrangler r2 object put` instead. Treat the script as unwired.
 
-- `backup.yml` still reads `AWS_S3_BUCKET`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`. Those secrets no longer exist, so the daily backup runs with empty credentials.
-- `pnpm run upload-to-r2` requires `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`, which the account does not have. `publish-pages.yml` deliberately bypasses that script and calls `wrangler r2 object put` instead. Treat the script as unwired.
+Retiring `backup.yml` and `dispatch.yml` also removed two Discord failure alarms. The single publish path has none, which is worth a follow-up.
 
 ### Important Technical Notes
 
