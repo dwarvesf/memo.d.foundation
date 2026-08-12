@@ -122,6 +122,19 @@ jobs:
         working-directory: lib/obsidian-compiler
         run: mix export_markdown
 
+      # db/vault.parquet is no longer committed to git (dispatch.yml
+      # regenerates and uploads it to R2 instead). Pull the latest copy down
+      # before the build reads it (src/lib/db/utils.ts defaults to this
+      # path); db/schema.sql, db/load.sql, db/processing_metadata*.parquet
+      # stay git-tracked and are already present from the checkout.
+      - name: Download latest vault.parquet from R2
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx wrangler@4 r2 object get "memo-derived/derived/latest/db/vault.parquet" \
+            --file db/vault.parquet --remote
+
       # Same sequence as the cutover record and `make build-static`:
       # pnpm run build -> generate-nginx-conf -> build-ci-lint -> db copy.
       # PLAUSIBLE_API_TOKEN is optional; generate-pageviews degrades gracefully.

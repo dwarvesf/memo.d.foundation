@@ -47,6 +47,21 @@ jobs:
           JINA_BASE_URL: ${{ secrets.JINA_BASE_URL }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
+      # db/vault.parquet is regenerated every run (~22-27MB) and is no longer
+      # committed to git (157 stale commits, 2.3GB .git bloat). Publish it to
+      # R2 instead, at both an immutable per-SHA key and the mutable "latest"
+      # pointer consumers read; same bucket/key convention publish-pages.yml
+      # already uses for its derived-object uploads.
+      - name: Upload vault.parquet to R2
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          for prefix in "derived/${GITHUB_SHA}" "derived/latest"; do
+            npx wrangler@4 r2 object put "memo-derived/${prefix}/db/vault.parquet" \
+              --file db/vault.parquet --content-type application/octet-stream --remote
+          done
+
       - name: Commit and push changes
         uses: ./.github/actions/git-commit-push
         with:

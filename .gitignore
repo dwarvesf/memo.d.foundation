@@ -120,3 +120,8 @@ tsconfig.tsbuildinfo
 
 # wrangler local state (created by wrangler pages/r2/d1 commands)
 .wrangler/
+
+# regenerated on every dispatch.yml run and uploaded to R2 (memo-derived
+# bucket, derived/latest/db/vault.parquet); no longer committed, see
+# db/schema.sql and db/load.sql for the durable schema
+db/vault.parquet
