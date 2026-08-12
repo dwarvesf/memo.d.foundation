@@ -6,8 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Essential Commands
 
-- `make build`: Full production build (`mix export_markdown` + `mix duckdb.export` + `pnpm run build` + nginx conf + lint + copy `db/`). Regenerates the DuckDB export locally; needs the Elixir/DuckDB toolchain.
-- `make build-static`: Same as `make build` minus `mix duckdb.export` (uses the `db/vault.parquet` already checked out). This is the build CI actually runs (`publish-pages.yml` inlines these same steps).
+- `make build`: Full production build (`mix export_markdown` + `make duckdb-export` + `pnpm run build` + nginx conf + lint + copy `db/`). Regenerates `db/vault.parquet` locally; still needs the Elixir toolchain for the markdown step.
+- `make build-static`: Same as `make build` minus the DuckDB export (uses the `db/vault.parquet` already checked out). This is the build CI actually runs (`publish-pages.yml` inlines these same steps).
 - `pnpm run dev`: Run the Next.js dev server (`make run` sets up content first; see below).
 - `pnpm run build`: `tsx scripts/memo-build.ts`, the TypeScript pre-build/generation step Next.js needs before `next build` runs internally.
 - `pnpm run lint`: ESLint.
@@ -26,11 +26,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm run fetch-prompts` / `fetch-contributors`: external data fetches.
 - `pnpm run upload-to-r2` / `upload-rollups-to-d1`: push derived build artifacts (parquet, search index, posts.json) to R2 and the content rollup to D1.
 
+### DuckDB Export (TypeScript)
+
+`scripts/duckdb-export.ts` rebuilds `db/vault.parquet` from the vault. It is the TypeScript port of the Elixir `mix duckdb.export` and it is the wired-in production path.
+
+- `make duckdb-export`: the normal run (`tsx scripts/duckdb-export.ts`).
+- `make duckdb-export-force`: adds `--ignore-filter --ignore-embeddings-check`.
+- `make duckdb-export-ignore-filter`: adds `--ignore-filter` only.
+- `make duckdb-export-pattern pattern=<glob>`: **still Elixir** (`mix duckdb.export_pattern`); the pattern variant was not ported.
+
 ### Elixir Commands (Obsidian Compiler)
 
-- `cd lib/obsidian-compiler && mix export_markdown`: convert the `vault/` submodule to standardized markdown + `public/content/`. **Still the production build step** (see "Content compiler" below), not yet replaced.
-- `cd lib/obsidian-compiler && mix duckdb.export`: export content + embeddings to `db/vault.parquet`.
-- `cd lib/obsidian-compiler && mix test`: run Elixir tests for markdown processing.
+- `cd lib/obsidian-compiler && mix export_markdown`: convert the `vault/` submodule to standardized markdown + `public/content/`. **Still the production markdown step** (see "Content compiler" below), not yet replaced.
+- `cd lib/obsidian-compiler && mix duckdb.export`: the retained **verification oracle** for the TypeScript exporter. Nothing in the build calls it. Run it when you need to prove a `duckdb-export.ts` change still matches the reference implementation.
+- `cd lib/obsidian-compiler && mix test`: run Elixir tests for markdown processing and `AIUtils`.
 
 ## Architecture Overview
 
@@ -38,9 +47,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **Frontend**: Next.js 16.2.9 (React 19.2.7), Pages Router (`src/pages/`, file-based routing; no App Router), TypeScript.
 - **Rendering mode**: `next.config.ts` sets `output: 'export'` (`images.unoptimized: true`). This is a **static export**: no SSR, no ISR, no Next.js server at runtime. Every route is pre-rendered to `out/` at build time.
-- **Content processing**: Elixir application (`lib/obsidian-compiler/`) for markdown compilation (`mix export_markdown`) and the DuckDB/embeddings export (`mix duckdb.export`).
+- **Content processing**: split. Markdown compilation is still Elixir (`lib/obsidian-compiler/`, `mix export_markdown`); the DuckDB export is TypeScript (`scripts/duckdb-export.ts`).
 - **Content source**: git submodule `vault/` → `dwarvesf/brainery` (see `.gitmodules`), which itself has further nested submodules (not re-derived here; check `vault/.gitmodules` if you need the full graph).
-- **Database**: DuckDB, exported to `db/vault.parquet` (content + `embeddings_gemini`/`embeddings_spr_custom` columns), copied into `public/content/db/` at build time and read client-side via `@duckdb/duckdb-wasm`.
+- **Database**: DuckDB, exported to `db/vault.parquet` (content + `embeddings_gemini`/`embeddings_spr_custom` columns), copied into `public/content/db/` at build time. Read at **build time only**, through `@duckdb/node-api` in Node scripts. There is no browser-side DuckDB: `@duckdb/duckdb-wasm` was removed as a dependency and no client code queries the parquet.
 - **Deployment**: **Cloudflare Pages** (project `memo-d-foundation`), fronted by Cloudflare Pages Functions, with derived data pushed to Cloudflare R2 and Cloudflare D1. `memo.d.foundation` DNS was cut over from Railway to the Pages project on 2026-07-23 (`docs/cf-migration/M4-02-PAGES-CUTOVER-RECORD.md`); Railway is zero-traffic and pending teardown, not the live target. **Railway/`make build` Docker deploy is retired, not current.**
 
 ### Cloudflare Pages layer
@@ -52,9 +61,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   3. Proxies the handful of vault assets that exceed Pages' 25 MiB per-file upload limit out of the private `memo-derived` R2 bucket (`lib/oversize-assets.ts`; those files are excluded from `out/` at build time and were uploaded to R2 once).
 - D1: the `dwarves-prod` database (shared, resolved by name via `wrangler d1 info`) receives a content rollup and per-post rows (`scripts/upload-rollups-to-d1.ts`, `scripts/upload-memo-posts-to-d1.ts`).
 
-### Content compiler: Elixir today, TypeScript port unwired
+### Content compilers: one ported, one not
 
-`lib/obsidian-compiler`'s `mix export_markdown` is **still the production markdown-compilation step** as of this branch's point on `main`. A TypeScript port exists and is verified at 100% byte-parity against the Elixir output (`docs/cf-migration/compiler-rewrite.md`), but it is **not wired into the build**: `Makefile`, and CI (`publish-pages.yml`) still call `mix export_markdown`. Do not assume the TS port is live; if you need the detail (scope, parity method, what's deliberately not ported), read `docs/cf-migration/compiler-rewrite.md` rather than re-deriving it here.
+`lib/obsidian-compiler/` holds two Mix tasks. They are at different stages, so do not reason about them as one unit.
+
+```
+ vault/ (Obsidian markdown submodule)
+   |
+   |-- markdown compilation ------> public/content/**
+   |     PRODUCTION: mix export_markdown        (Elixir)
+   |     PORTED, UNWIRED: scripts/export-markdown.ts
+   |
+   '-- parquet reindex ------------> db/vault.parquet
+         PRODUCTION: scripts/duckdb-export.ts   (TypeScript, via make duckdb-export)
+         ORACLE ONLY: mix duckdb.export         (Elixir, nothing calls it)
+```
+
+- **Markdown compilation is still Elixir.** `Makefile` and CI (`publish-pages.yml`) call `mix export_markdown`. A TypeScript port exists at `scripts/export-markdown.ts`, verified at 100% byte-parity, but it is not wired in. Do not assume it is live. Detail: `docs/cf-migration/compiler-rewrite.md`.
+- **The DuckDB export is now TypeScript.** `make duckdb-export` runs `scripts/duckdb-export.ts`. The Elixir `mix duckdb.export` is retained purely as a verification oracle, so a port change can be diffed against the reference implementation. Decision record: `docs/adr/0016-port-duckdb-export-to-typescript.md`.
+- The TypeScript exporter carries one **deliberate divergence** from the oracle: it keeps `keywords` on the frontmatter-only upsert path, where the Elixir blanks them. `keywords` is a MiniSearch-weighted field, so the Elixir behaviour silently degraded site search on every incremental run. The oracle was not corrected because it is on the way out.
+
+### AI generation and embeddings
+
+- **Text generation** (SPR summaries + the `keywords` list) runs on **opencode-go**, an OpenAI-compatible endpoint at `https://opencode.ai/zen/go/v1/chat/completions`, model `deepseek-v4-flash`, flat-rate tier. Key: `OPENCODE_GO_API_KEY`. Override with `OPENCODE_GO_BASE_URL` / `OPENCODE_GO_MODEL`. Implemented twice, in `scripts/duckdb-export.ts` and in `Memo.Common.AIUtils`, because the oracle has to match. A missing key degrades to an empty result rather than failing the export.
+- **Embeddings are off by default.** Both the vector columns are carried forward from the existing row unless `MEMO_EMBEDDINGS` is set to `1` or `true`. The Elixir oracle can regenerate them (Gemini for `embeddings_gemini`, Jina for `embeddings_spr_custom`); the TypeScript exporter does not implement live generation and throws if the gate is set.
+- **Nothing consumes the vectors.** Site search is MiniSearch, purely lexical (`scripts/generate-search-index.ts`). No app or Pages Function code reads either embedding column, and the D1 rollup carries only a `missing_embeddings` health count, not the vectors. Treat the columns as dormant schema, not a live feature.
+- Credentials no longer come from HashiCorp Vault; see "Credentials" below.
+
+### Credentials
+
+HashiCorp Vault is decommissioned and fully removed from this repo. `node-vault` is gone, `Dockerfile` and `Dockerfile.legacy` dropped their Vault build args, and the Elixir Gemini-key Vault fallback is deleted.
+
+- GCS access (`src/lib/storage.ts`) uses Google **Application Default Credentials**: `GOOGLE_APPLICATION_CREDENTIALS`, `gcloud auth`, or host workload identity. The bucket name comes from `LANDING_ZONE_GCS_BUCKET`.
+- Every other credential is a plain environment variable, supplied in CI as a repo secret.
+- The five `VAULT_*` repo secrets still exist but are dead; nothing reads them. `ENCRYPTED_WALLET_PRIVATE_KEY` is also retained and permanently undecryptable, because the Vault Transit key that could unseal it died with the Vault instance. Do not write code that depends on either.
 
 ### Key Directories
 
@@ -63,18 +103,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - `components/`: reusable React components by feature.
   - `lib/`: content processing, MDX handling.
   - `hooks/`, `contexts/`, `styles/`, `types/`, `analytics/`, `constants/`.
-- `lib/obsidian-compiler/`: Elixir application for markdown processing and the DuckDB export.
+- `lib/obsidian-compiler/`: Elixir application. Still production for markdown processing; the DuckDB export half is now oracle-only.
 - `vault/`: git submodule (Obsidian vault content), avoid modifying during development.
 - `scripts/`: TypeScript scripts for content generation, redirects, R2/D1 upload, and the NFT report.
 - `functions/`: Cloudflare Pages Functions (`_middleware.ts` and its helpers).
-- `db/`: `vault.parquet` (DuckDB content + embeddings export, regenerated via `mix duckdb.export`, dispatched by the `dispatch.yml` "Update submodules" workflow), `processing_metadata*.parquet`, `schema.sql`, `load.sql`.
+- `db/`: `vault.parquet` (DuckDB content export, regenerated via `make duckdb-export`, dispatched by the `dispatch.yml` "Update submodules" workflow), `processing_metadata*.parquet`, `schema.sql`, `load.sql`.
 - `public/content/`: generated JSON/content files for search, navigation, and metadata (plus the copied `db/` at build time).
+- `docs/adr/`: numbered architecture decision records. The recent ones covering the current build shape are `0016` (DuckDB export ported to TypeScript, Elixir kept as oracle), `0017` (opencode-go generation, embeddings gated off), and `0018` (HashiCorp Vault decommissioned).
 - `docs/cf-migration/`: the Railway → Cloudflare Pages migration record. Read here for full history/detail instead of duplicating it in this file: `pages-deploy.md` (config-only prep, redirect + RSS mapping), `build-inventory.md` (build-artifact validation run), `compiler-rewrite.md` (Elixir → TS parity report), `content-sot.md` (submodule ingest + Notion-authoring fingerprint), `comments-search-decision.md` (comments/search evidence decisions), `M4-02-PAGES-CUTOVER-RECORD.md` (the actual cutover + DNS flip record).
 
 ### Content Processing Pipeline
 
 1. Obsidian markdown files in the `vault/` submodule.
-2. Elixir compiler (`mix export_markdown`) processes markdown → standardized format in `public/content/`; `mix duckdb.export` produces `db/vault.parquet`.
+2. Elixir compiler (`mix export_markdown`) processes markdown → standardized format in `public/content/`; `make duckdb-export` (TypeScript) produces `db/vault.parquet`. The parquet regen is a separate, manually dispatched job, not part of the per-push deploy build.
 3. TypeScript scripts (`scripts/`) generate navigation, search indices, redirects, and metadata.
 4. Next.js statically exports the site (`output: 'export'`) to `out/`.
 5. `pnpm run generate-cf-redirects` builds `out/_redirects`; oversize files (>25 MiB) are stripped from `out/` before deploy.
@@ -84,17 +125,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | Workflow | Trigger | Does |
 |---|---|---|
-| `publish-pages.yml` | push to `main` (content/build paths), daily cron, manual | The live deploy pipeline: builds (still via `mix export_markdown`), deploys to Cloudflare Pages, uploads derived artifacts to R2, and a rollup to D1. Gated inert until repo var `PAGES_PUBLISH_ENABLED=true`. |
-| `dispatch.yml` ("Update submodules") | manual only | Bumps the `vault` submodule to latest, regenerates AI summaries, runs `mix duckdb.export`, commits `db/`. |
-| `derived-to-r2.yml` | manual only | Older/parallel R2+D1 upload path (`upload-to-r2.ts`), separate credential set (`R2_ACCESS_KEY_ID` etc.) from the one `publish-pages.yml` uses; deploy-gated, defaults to dry-run. |
+| `publish-pages.yml` | push to `main` (content/build paths), daily cron, manual | The live deploy pipeline: builds (still via `mix export_markdown`), deploys to Cloudflare Pages, uploads derived artifacts to R2, and a rollup to D1. Gated on repo var `PAGES_PUBLISH_ENABLED`, which is now `true`, so the job runs rather than skipping. |
+| `dispatch.yml` ("Update submodules") | manual only | Bumps the `vault` submodule to latest, regenerates AI summaries, runs the DuckDB export (`devbox run duckdb-export`, the TypeScript path), commits `db/`. |
 | `backup.yml` | daily cron, manual | Backs up the DB. |
 | `add-mint-post.yml` | push to `db/vault.parquet`, manual | Adds new posts to the mint contract. |
 | `deploy-arweave.yml` | push to `db/vault.parquet`, manual | Deploys markdown to Arweave. |
 | `generate-redirects.yml` | push to `db/vault.parquet`, manual | Regenerates the redirect map. |
 | `memo-nft-report.yml` | daily cron, manual | Sends the NFT report to Discord. |
 | `monitor-vault-parquet.yml` | daily cron, manual | Monitors `db/vault.parquet` health, reports to Discord. |
-| `test-discord-notifications.yml` | manual, push to `ci/monitoring` | Test harness for the Discord notification action. |
-| `test-git-action.yml` | manual, push to `ci/monitoring` | Test harness for the shared git-commit-push action. |
+
+`derived-to-r2.yml` was deleted; its R2 and D1 upload is now inline in `publish-pages.yml`, on the Cloudflare credential set rather than the retired `AWS_*`/`R2_ACCESS_KEY_ID` pair. The `test-discord-notifications.yml` and `test-git-action.yml` throwaway harnesses were deleted too.
+
+Cloudflare credentials reach the workflows as repo **secrets**: `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. The four `AWS_*` secrets were deleted.
 
 ### Important Technical Notes
 
@@ -110,14 +152,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 1. Run `make run` for full local dev setup (compiles markdown + starts the dev server with all generation scripts).
 2. Content changes require re-running the Elixir export: `cd lib/obsidian-compiler && mix export_markdown`.
 3. Navigation/search changes require regenerating indices before seeing updates.
-4. Use `make build-static` to reproduce the CI build locally (Elixir toolchain still required); `make build` additionally regenerates `db/vault.parquet` via `mix duckdb.export`.
+4. Use `make build-static` to reproduce the CI build locally (Elixir toolchain still required for the markdown step); `make build` additionally regenerates `db/vault.parquet` via `make duckdb-export`.
 
 ### Key Libraries and Frameworks
 
 - **Next.js 16.2.9 / React 19.2.7**: Pages Router, static export (`output: 'export'`).
 - **MDX**: Markdown with React components for rich content.
 - **TailwindCSS 4**: utility-first CSS.
-- **Elixir/Mix**: markdown compilation (`lib/obsidian-compiler/`), still production; TS port exists but unwired (see "Content compiler" above).
-- **DuckDB** (`@duckdb/duckdb-wasm`, `@duckdb/node-api`): embedded analytical database for content queries, exported from `db/vault.parquet`.
+- **Elixir/Mix**: markdown compilation (`lib/obsidian-compiler/`), still production; TS port exists but unwired. The DuckDB-export half is oracle-only (see "Content compilers" above).
+- **DuckDB** (`@duckdb/node-api`): embedded analytical database for content queries at build time, exported to `db/vault.parquet`. Node-side only; there is no WASM/browser DuckDB.
+- **MiniSearch**: the site's search engine, lexical, over a pre-generated index.
 - **TypeScript**: throughout the stack (scripts, functions, Next.js app).
 - **Cloudflare Workers/Pages types**: not yet added as a dependency; `functions/_middleware.ts` currently types its Pages Function context loosely as `any` pending that.

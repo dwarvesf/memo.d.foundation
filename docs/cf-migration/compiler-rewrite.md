@@ -31,10 +31,17 @@ public/content/**/*.md (+ assets, + copied db/*.parquet)
 site artifacts (menu/search/backlinks/redirects JSON, out/ static HTML, RSS)
 ```
 
-Out of scope (unchanged, still Elixir): `mix duckdb.export` (regenerates `db/vault.parquet`
-rows + embeddings from source; needs paid embedding providers; run only by manual
-`workflow_dispatch`). That is a separate DuckDB/embeddings pipeline, not the markdown
-compiler, and the inventory already documented its freshness/automation gap.
+Out of scope for THIS sub-goal: `mix duckdb.export` (regenerates `db/vault.parquet` rows +
+embeddings from source; run only by manual `workflow_dispatch`). That is a separate
+DuckDB/embeddings pipeline, not the markdown compiler, and the inventory already documented
+its freshness/automation gap.
+
+> **Superseded on that point.** The DuckDB export has since been ported separately and is
+> now the wired-in production path (`scripts/duckdb-export.ts`, via `make duckdb-export`);
+> the Elixir task is retained as its oracle. Live embedding generation was not ported, and
+> embeddings are now off by default behind `MEMO_EMBEDDINGS`. See
+> `docs/adr/0016-port-duckdb-export-to-typescript.md`. The statements below about
+> `mix duckdb.export` describe this document's original scope, not current `main`.
 
 ## The Elixir pipeline, mapped to the TS port
 
@@ -134,9 +141,11 @@ vault --output public/content --db db` instead of the Elixir setup + `mix export
 The Elixir setup-beam step, mix deps cache, and `mix compile`/`mix export_markdown` steps
 are removed from that workflow; the DuckDB CLI setup step stays (both compilers shell out
 to the same `duckdb` binary for `dsql` blocks). `lib/obsidian-compiler/` itself is **not**
-deleted, it stays in the tree as a reference/rollback path and for `dispatch.yml`'s
-separate `mix duckdb.export` task (a different Mix task, unrelated to markdown export,
-still Elixir, untouched by this cutover).
+deleted, it stays in the tree as a reference/rollback path. The `Makefile` markdown target
+followed CI onto the same `tsx scripts/export-markdown.ts` invocation. The separate DuckDB
+export half (`mix duckdb.export`, unrelated to the markdown compiler) was ported to
+TypeScript afterwards; `backup.yml` and `dispatch.yml` reach it through the `duckdb-export`
+Make target, which now runs `tsx scripts/duckdb-export.ts`.
 
 Two things surfaced while wiring this in, both fixed in the same change:
 
@@ -172,6 +181,9 @@ and db), not just `*.md`/`*.mdx`:
 | Asset files (1222)       | 100% byte-identical (new: not covered by the original claim)                                           |
 | db files (5)             | 100% byte-identical (new: not covered by the original claim)                                           |
 | Full tree (1883 files)   | Identical except the Elixir-only `.memo_export_cache.json` (intentionally not ported, see Scope edges) |
+Elixir still left in the tree after this cutover: `mix fetch`, `mix sync_hashnode`, and
+`mix duckdb.export_pattern`. The `Dockerfile` still installs hex and runs `mix compile` for
+those. `lib/obsidian-compiler/` stays as the oracle for re-verification.
 
 ## Reproduce
 

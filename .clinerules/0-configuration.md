@@ -10,7 +10,9 @@
 - Form Handling: React Hook Form (validation with Zod, UI with Shadcn form components)
 - Database: DuckDB (via `@duckdb/node-api`)
 - Authentication: RainbowKit, Wagmi (for Web3 authentication)
-- Deployment: Vercel (implied by Next.js)
+- Search: MiniSearch (client-side, lexical, over a pre-generated index)
+- AI text generation: opencode-go (`deepseek-v4-flash`), OpenAI-compatible endpoint
+- Deployment: Cloudflare Pages (static export, `output: 'export'`), with Pages Functions, R2 and D1
 - Version Control: Git (GitHub)
 
 ## Project Structure
@@ -23,8 +25,13 @@
 │   ├── load.sql          # SQL for loading data
 │   ├── processing_metadata.parquet # Parquet metadata
 │   └── schema.sql        # Database schema
+├── functions/            # Cloudflare Pages Functions (_middleware.ts and helpers)
+├── lib/
+│   └── obsidian-compiler/ # Elixir compiler: markdown export (production) + DuckDB export (oracle only)
 ├── public/               # Static assets (images, fonts, favicon)
 ├── scripts/              # Various utility scripts (e.g., generation, fetching, monitoring)
+│   ├── duckdb-export.ts  # TypeScript DuckDB reindexer, rebuilds db/vault.parquet
+│   ├── export-markdown.ts # TypeScript markdown compiler port (not yet wired into the build)
 │   └── formatter/        # Scripts for formatting and linting
 ├── src/
 │   ├── components/       # Reusable React components
@@ -33,11 +40,9 @@
 │   ├── contexts/         # React Contexts (e.g., ThemeProvider, Web3Provider)
 │   ├── hooks/            # Custom React hooks
 │   ├── lib/              # Shared utility functions, helpers, constants
-│   │   └── obsidian-compiler/ # Elixir compiler for Obsidian notes
-│   ├── pages/            # Next.js Pages Router: pages, API routes
+│   ├── pages/            # Next.js Pages Router (static export; no runtime API routes)
 │   │   ├── _app.tsx      # Custom App component
-│   │   ├── _document.tsx # Custom Document component (if present)
-│   │   └── api/          # API routes
+│   │   └── _document.tsx # Custom Document component (if present)
 │   ├── styles/           # Global CSS styles
 │   │   └── globals.css
 │   └── types/            # Shared TypeScript types and interfaces
@@ -60,7 +65,7 @@ _Note: File extensions (.js, .mjs, .cjs, .ts) might vary slightly based on proje
 ## Development Workflow
 
 - Cline helps write and review code changes
-- Vercel automatically deploys from main branch
+- `.github/workflows/publish-pages.yml` deploys to Cloudflare Pages on push to main
 - `pnpm dev`: Starts the development server after generating static paths.
 - `pnpm build`: Generates various static assets, indexes, and then builds the Next.js application.
 - `pnpm test`: Runs Vitest tests.
