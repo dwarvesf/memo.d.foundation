@@ -20,7 +20,7 @@ fetch-force:
 build:
 	@pnpm install --no-frozen-lockfile
 	@cd lib/obsidian-compiler && mix export_markdown
-	@cd lib/obsidian-compiler && mix duckdb.export
+	@$(MAKE) duckdb-export
 	@pnpm run build
 	@pnpm run generate-nginx-conf
 	@pnpm run build-ci-lint
@@ -36,7 +36,7 @@ build-static:
 
 run:
 	@cd lib/obsidian-compiler && mix export_markdown
-	@cd lib/obsidian-compiler && mix duckdb.export
+	@$(MAKE) duckdb-export
 	@pnpm run generate-menu
 	@pnpm run generate-menu-path-sorted
 	@pnpm run generate-backlinks
@@ -49,16 +49,13 @@ run:
 	@pnpm run dev
 
 duckdb-export:
-	@rm -f lib/obsidian-compiler/vault.duckdb
-	@cd lib/obsidian-compiler && mix duckdb.export
+	@pnpm exec tsx scripts/duckdb-export.ts
 
 duckdb-export-force:
-	@rm -f lib/obsidian-compiler/vault.duckdb
-	@cd lib/obsidian-compiler && mix duckdb.export --ignore-filter --ignore-embeddings-check
+	@pnpm exec tsx scripts/duckdb-export.ts --ignore-filter --ignore-embeddings-check
 
 duckdb-export-ignore-filter:
-	@rm -f lib/obsidian-compiler/vault.duckdb
-	@cd lib/obsidian-compiler && mix duckdb.export --ignore-filter
+	@pnpm exec tsx scripts/duckdb-export.ts --ignore-filter
 
 duckdb-export-pattern:
 	@rm -f vault.duckdb

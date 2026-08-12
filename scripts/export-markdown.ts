@@ -235,7 +235,7 @@ export function listFilesRecursive(dir: string): string[] {
   return out;
 }
 
-function readExportIgnoreFile(ignoreFile: string): string[] {
+export function readExportIgnoreFile(ignoreFile: string): string[] {
   if (!fs.existsSync(ignoreFile)) return [];
   return fs
     .readFileSync(ignoreFile, "utf8")
@@ -257,7 +257,7 @@ function matchPattern(path: string, pattern: string): boolean {
   return path === pattern;
 }
 
-function ignored(file: string, patterns: string[], vaultpath: string): boolean {
+export function isIgnored(file: string, patterns: string[], vaultpath: string): boolean {
   const rel = P.relative(vaultpath, file);
   const normalized = normalizePath(rel);
   return patterns.some((p) => matchPattern(normalized, p));
@@ -607,7 +607,7 @@ export function runExport(opts: Opts): { exported: number; skipped: number } {
       return false;
     }
   });
-  const allValidFiles = allFiles.filter((f) => !ignored(f, ignorePatterns, vaultDir));
+  const allValidFiles = allFiles.filter((f) => !isIgnored(f, ignorePatterns, vaultDir));
 
   let exported = 0;
   let skipped = 0;
