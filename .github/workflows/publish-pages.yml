@@ -4,6 +4,16 @@ name: Publish to Cloudflare Pages
 # replacing the retired Railway auto-build path. Mirrors the proven M4-02
 # cutover build step-for-step; see docs/cf-migration/M4-02-PAGES-CUTOVER-RECORD.md.
 #
+# This is the only publish path. The reindex that used to live in the
+# manual-only "Update submodules" workflow (dispatch.yml) and in the daily
+# backup workflow (backup.yml) now runs here, so db/vault.parquet is always as
+# fresh as the deploy. Both of those workflows are retired.
+#
+# The pipeline itself lives in scripts/build-and-deploy.sh, which is
+# runner-agnostic: this workflow only provisions the toolchain and passes
+# environment variables. Any machine with the same toolchain can run the same
+# pipeline with no rewrite.
+#
 # GATED: inert (skipped, not red) until the repo variable PAGES_PUBLISH_ENABLED
 # is set to 'true' and CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID exist.
 
@@ -27,12 +37,16 @@ on:
       - wrangler.toml
       - .github/workflows/publish-pages.yml
   workflow_dispatch:
+    inputs:
+      skip_reindex:
+        description: 'Skip the DuckDB reindex (docs-only redeploy)'
+        type: boolean
+        default: false
   schedule:
     # Daily at 22:00 UTC (05:00 VN, after the VN workday's vault pushes).
-    # The vault-bump path (dispatch.yml "Update submodules") is manual-only,
-    # so this schedule is what keeps content flowing: the build below always
+    # This schedule is what keeps content flowing: the build below always
     # advances the vault submodule to latest origin/main (exactly what the
-    # retired Railway Dockerfile did on every build).
+    # retired Railway Dockerfile did on every build) and reindexes it.
     - cron: '0 22 * * *'
 
 concurrency:
@@ -56,26 +70,9 @@ jobs:
           submodules: recursive
           fetch-depth: 1
 
-      - name: Verify submodule chain (tripwire)
-        run: bash scripts/verify-submodules.sh
-
-      # Railway parity: the retired Dockerfile always built against the vault's
-      # latest origin/main, not the superproject pin. Without this, content
-      # would freeze at the pin, which only moves on manual dispatch.yml runs.
-      - name: Advance vault submodule to latest main
-        run: |
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
-          git -C vault fetch --depth 1 --no-tags origin main
-          git -C vault checkout --detach FETCH_HEAD
-          git -C vault submodule update --init --recursive --depth 1
-          git -C vault submodule status --recursive | bash scripts/verify-submodules.sh
-          echo "vault at $(git -C vault rev-parse --short HEAD)"
-
-      # Toolchain: Node 23, pnpm 11.6.0. Elixir/OTP setup dropped; export_markdown
-      # now runs as scripts/export-markdown.ts (byte-parity verified against
-      # lib/obsidian-compiler's Elixir oracle, see docs/cf-migration/compiler-rewrite.md).
-      # No DuckDB CLI either: `dsql` blocks (IMPORT DATABASE + the markdown_link
-      # TEMP MACRO) run through @duckdb/node-api, same as the rest of the codebase.
+      # Toolchain: Node 23, pnpm 11.6.0. No Elixir setup and no DuckDB CLI:
+      # both compilers are TypeScript now and reach DuckDB through
+      # @duckdb/node-api, so the runner needs nothing else.
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -87,105 +84,16 @@ jobs:
           node-version: '23'
           cache: pnpm
 
-      - name: Install Node dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Export markdown from vault
-        run: pnpm exec tsx scripts/export-markdown.ts --vault vault --output public/content --db db
-
-      # Same sequence as the cutover record and `make build-static`:
-      # pnpm run build -> generate-nginx-conf -> build-ci-lint -> db copy.
-      # PLAUSIBLE_API_TOKEN is optional; generate-pageviews degrades gracefully.
-      - name: Build static site
+      # Everything else is scripts/build-and-deploy.sh: vault -> deps ->
+      # reindex -> compile -> build -> Pages -> R2 -> D1. Keep this step thin;
+      # pipeline changes belong in the script, not here.
+      - name: Reindex, build and deploy
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           PLAUSIBLE_API_TOKEN: ${{ secrets.PLAUSIBLE_API_TOKEN }}
-        run: |
-          pnpm run build
-          pnpm run generate-nginx-conf
-          pnpm run build-ci-lint
-          cp -r db out/
-
-      - name: Generate Cloudflare redirects
-        run: pnpm run generate-cf-redirects
-
-      - name: Verify redirect parity (fails on drops)
-        run: pnpm run verify-cf-redirects
-
-      # Pages hard-rejects the WHOLE upload if any single file exceeds 25 MiB.
-      # Same sweep the cutover did, generic by size, not a filename list.
-      # Before stripping, verify every oversize file already has an R2 proxy
-      # entry (scripts/verify-oversize-assets.ts); an unmapped file fails the
-      # step loudly instead of silently deploying without it (404 for readers).
-      - name: Exclude files over the Pages 25 MiB per-file limit
-        run: |
-          over=$(find out -type f -size +25M)
-          if [ -n "$over" ]; then
-            echo "Excluding from deploy (Pages rejects files > 25 MiB):"
-            while IFS= read -r f; do
-              ls -lh "$f"
-            done <<< "$over"
-            echo "$over" | pnpm exec tsx scripts/verify-oversize-assets.ts out
-            while IFS= read -r f; do
-              rm -f -- "$f"
-            done <<< "$over"
-          else
-            echo "No files over 25 MiB."
-          fi
-
-      - name: Deploy to Cloudflare Pages
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          npx wrangler@4 pages deploy out \
-            --project-name memo-d-foundation \
-            --branch main \
-            --commit-hash "$GITHUB_SHA" \
-            --commit-dirty=true
-
-      # Derived-data uploads, exactly as the cutover record documents:
-      # the 3 load-bearing objects to R2 via `wrangler r2 object put` at both
-      # derived/<sha>/ and derived/latest/ prefixes (the scripted upload-to-r2
-      # path needs S3 keys the account doesn't have; see cutover deviation 1).
-      - name: Upload derived objects to R2
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          # posts.json is generated, not scanned off disk (same rows as the
-          # memo_posts D1 table; see scripts/upload-to-r2.ts header).
-          cat > .ci-gen-posts.mts <<'EOF'
-          import fs from 'fs';
-          import { extractMemoPosts } from './scripts/extract-memo-posts';
-          const rows = await extractMemoPosts('db/vault.parquet');
-          fs.writeFileSync('/tmp/posts.json', JSON.stringify(rows));
-          console.log(`posts.json: ${rows.length} rows`);
-          EOF
-          pnpm exec tsx .ci-gen-posts.mts
-
-          upload() {
-            src="$1"; key="$2"; ct="$3"
-            for prefix in "derived/${GITHUB_SHA}" "derived/latest"; do
-              npx wrangler@4 r2 object put "memo-derived/${prefix}/${key}" \
-                --file "$src" --content-type "$ct" --remote
-            done
-          }
-          upload db/vault.parquet                    db/vault.parquet  application/octet-stream
-          upload public/content/search-index.json    search-index.json application/json
-          upload /tmp/posts.json                     posts.json        application/json
-
-      # D1 rollup + per-post rows into the shared prod database dwarves-prod,
-      # via the repo's own upload scripts (Cloudflare D1 HTTP API; the database
-      # id is resolved from the name so no extra variable is needed).
-      - name: Upload rollup and memo_posts to D1
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          D1_DATABASE_ID=$(npx wrangler@4 d1 info dwarves-prod --json | jq -r '.uuid')
-          test -n "$D1_DATABASE_ID" && test "$D1_DATABASE_ID" != "null"
-          export D1_DATABASE_ID
-          export D1_ACCOUNT_ID="$CLOUDFLARE_ACCOUNT_ID"
-          export D1_API_TOKEN="$CLOUDFLARE_API_TOKEN"
-          pnpm exec tsx scripts/upload-rollups-to-d1.ts
-          pnpm exec tsx scripts/upload-memo-posts-to-d1.ts
+          OPENCODE_GO_API_KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
+          DEPLOY_COMMIT_SHA: ${{ github.sha }}
+          GIT_FORCE_HTTPS: '1'
+          SKIP_REINDEX: ${{ inputs.skip_reindex && '1' || '0' }}
+        run: bash scripts/build-and-deploy.sh
