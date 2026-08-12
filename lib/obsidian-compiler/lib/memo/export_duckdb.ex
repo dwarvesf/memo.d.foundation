@@ -1576,8 +1576,10 @@ defmodule Memo.ExportDuckDB do
 
     estimated_tokens = div(String.length(md_content), 4)
 
-    # Nothing in this repo reads the embedding columns, so MEMO_SKIP_EMBEDDINGS lets an
-    # operator drop the two vector API calls and keep whatever vectors the row already had.
+    # Embeddings are generated but never read: not here, not by the site (search is
+    # MiniSearch over text), not by the D1 export. Their last external consumer,
+    # fortress-api, is decommissioned. So skip the two vector API calls by default and
+    # keep whatever vectors the row already had. Set MEMO_EMBEDDINGS=1 to re-enable.
     {custom_embedding, gemini_embedding} =
       if skip_embeddings?() do
         {existing_data["embeddings_spr_custom"], existing_data["embeddings_gemini"]}
@@ -1597,7 +1599,7 @@ defmodule Memo.ExportDuckDB do
         end).()
   end
 
-  defp skip_embeddings?, do: System.get_env("MEMO_SKIP_EMBEDDINGS") in ["1", "true"]
+  defp skip_embeddings?, do: System.get_env("MEMO_EMBEDDINGS") not in ["1", "true"]
 
   defp ensure_all_columns(frontmatter) do
     Map.merge(Enum.into(@allowed_frontmatter, %{}, fn {key, _} -> {key, nil} end), frontmatter)
