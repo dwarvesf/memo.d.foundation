@@ -142,6 +142,9 @@ jobs:
 
       # Pages hard-rejects the WHOLE upload if any single file exceeds 25 MiB.
       # Same sweep the cutover did, generic by size, not a filename list.
+      # Before stripping, verify every oversize file already has an R2 proxy
+      # entry (scripts/verify-oversize-assets.ts); an unmapped file fails the
+      # step loudly instead of silently deploying without it (404 for readers).
       - name: Exclude files over the Pages 25 MiB per-file limit
         run: |
           over=$(find out -type f -size +25M)
@@ -149,6 +152,9 @@ jobs:
             echo "Excluding from deploy (Pages rejects files > 25 MiB):"
             while IFS= read -r f; do
               ls -lh "$f"
+            done <<< "$over"
+            echo "$over" | pnpm exec tsx scripts/verify-oversize-assets.ts out
+            while IFS= read -r f; do
               rm -f -- "$f"
             done <<< "$over"
           else
