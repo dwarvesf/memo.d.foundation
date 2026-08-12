@@ -1,7 +1,6 @@
 import { GetStaticProps } from 'next';
 import { RootLayout } from '../components';
 import { IMemoItemWithAuthors, RootLayoutPageProps } from '@/types';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { convertToMemoItems } from '@/lib/content/memo';
 import { queryDuckDB } from '@/lib/db/utils';
 import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
@@ -13,7 +12,6 @@ interface AllPageProps extends RootLayoutPageProps {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const layoutProps = await getRootLayoutPageProps();
     const queryFields = [
       'short_title',
       'title',
@@ -67,7 +65,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
       props: {
-        ...layoutProps,
         allMemos,
       },
     };
@@ -81,16 +78,11 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-export default function All({
-  directoryTree,
-  searchIndex,
-  allMemos,
-}: AllPageProps) {
+export default function All({ searchIndex, allMemos }: AllPageProps) {
   return (
     <RootLayout
       title="Dwarves Memo - All Posts"
       description="All posts grouped by year and month"
-      directoryTree={directoryTree}
       searchIndex={searchIndex}
     >
       <div className="memo-content">

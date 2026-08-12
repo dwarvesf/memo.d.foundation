@@ -2,18 +2,16 @@ import { Marquee } from '../ui/marquee';
 import Tag from '../ui/tag';
 import { ITreeNode } from '@/types';
 import { useMemo } from 'react';
+import { useDirectoryTree } from '@/contexts/directory-tree';
 
-interface TagsMarqueeProps {
-  directoryTree: Record<string, ITreeNode>;
-}
-
-function TagsMarquee(props: TagsMarqueeProps) {
-  const { directoryTree } = props;
+// Rendered from vault MDX, which still passes a `directoryTree` prop. The real
+// tree comes from context; the prop is ignored.
+function TagsMarquee() {
+  const directoryTree = useDirectoryTree();
   const tags = useMemo(() => {
-    if (!directoryTree) return [];
-    const tagsNode = directoryTree['/tags'].children;
+    const tagsNode = directoryTree?.['/tags']?.children;
 
-    if (!tagsNode) return []; // Add this check as well, just in case children is null/undefined
+    if (!tagsNode) return [];
 
     return Object.entries(tagsNode).sort(([a], [b]) => a.localeCompare(b));
   }, [directoryTree]);

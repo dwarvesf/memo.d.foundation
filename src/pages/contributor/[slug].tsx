@@ -6,7 +6,6 @@ import slugify from 'slugify';
 
 // Import utility functions
 import { convertToMemoItems, getAllMarkdownContents } from '@/lib/content/memo';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { queryDuckDB } from '@/lib/db/utils'; // Utility for DuckDB queries
 
 // Import components
@@ -356,8 +355,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug: contributorSlug } = params as { slug: string };
 
-    const layoutProps = await getRootLayoutPageProps();
-
     // --- Fetch Contributor Name Casing (from Memos or infer from slug) ---
     const allMemos = await getAllMarkdownContents(); // Fetch all memos to find original name casing
     const originalContributorName =
@@ -615,7 +612,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
       props: {
-        ...layoutProps,
         slug: contributorSlug, // Pass the original requested slug
         contributorName: originalContributorName,
         contributorProfile,
@@ -634,7 +630,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export default function ContentPage({
   frontmatter,
-  directoryTree,
   searchIndex,
   contributorName,
   mdxSource,
@@ -649,7 +644,6 @@ export default function ContentPage({
       title={frontmatter?.title || `${contributorName}'s Profile`}
       description={frontmatter?.description || contributorProfile?.bio || ''} // Use GitHub bio as description
       image={frontmatter?.image || contributorProfile?.avatar} // Use GitHub avatar as image
-      directoryTree={directoryTree}
       searchIndex={searchIndex}
     >
       <div className="content-wrapper">

@@ -5,7 +5,6 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 
 // Import components
 import { IMemoItem, RootLayoutPageProps } from '@/types';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { filterMemo, getAllMarkdownContents } from '@/lib/content/memo';
 import { RootLayout } from '@/components';
 import Link from 'next/link';
@@ -54,7 +53,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { slug } = params as { slug: string };
     const allMemos = await getAllMarkdownContents();
-    const layoutProps = await getRootLayoutPageProps();
 
     const normalizedSlug = slug.toLowerCase();
     if (!normalizedSlug) {
@@ -87,7 +85,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     return {
       props: {
-        ...layoutProps,
         slug,
         tag: originalTag, // Use the original case for display
         data: memos,
@@ -101,7 +98,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export default function TagDetailPage({
   tag,
-  directoryTree,
   searchIndex,
   data,
 }: ContentPageProps) {
@@ -130,11 +126,7 @@ export default function TagDetailPage({
     return keys;
   }, [groupedMemos]);
   return (
-    <RootLayout
-      title={tag}
-      directoryTree={directoryTree}
-      searchIndex={searchIndex}
-    >
+    <RootLayout title={tag} searchIndex={searchIndex}>
       <div className="flex items-center">
         <div className="flex flex-col">
           <h1 className="-track-[0.5px] mb-5 pt-0 text-[35px] leading-[42px] font-semibold">

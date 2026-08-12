@@ -46,6 +46,7 @@ run:
 	@pnpm run generate-pageviews
 	@pnpm run fetch-prompts
 	@pnpm run fetch-contributors
+	@pnpm run generate-directory-tree
 	@pnpm run dev
 
 duckdb-export:

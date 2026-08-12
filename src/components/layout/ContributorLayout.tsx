@@ -7,6 +7,7 @@ import Footer from './Footer';
 import DirectoryTree from './DirectoryTree';
 import { IMetadata, ITocItem, ContributorLayoutPageProps } from '@/types';
 import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
+import { useDirectoryTree } from '@/contexts/directory-tree';
 import ImageZoomProvider from '../image/ImageZoomProvider';
 import { SearchProvider } from '../search';
 import { useScrollToTopOnRouteChange } from '@/hooks/useScrollToTopOnRouteChange';
@@ -27,9 +28,9 @@ function ContributorLayout({
   description = 'Knowledge sharing platform for Dwarves Foundation',
   image,
   metadata,
-  directoryTree,
   searchIndex,
 }: ContributorLayoutProps) {
+  const directoryTree = useDirectoryTree();
   const { theme, toggleTheme } = useThemeContext();
 
   const { readingMode } = useLayoutContext();

@@ -7,10 +7,7 @@ import fs from 'fs/promises';
 // Import utility functions
 import { getMarkdownContent } from '../lib/content/markdown';
 import { getAllMarkdownContents, isPublished } from '@/lib/content/memo';
-import {
-  getRootLayoutPageProps,
-  getServerSideRedirectPath,
-} from '@/lib/content/utils';
+import { getServerSideRedirectPath } from '@/lib/content/utils';
 import { slugToTitle } from '@/lib/utils';
 import { getFirstMemoImage } from '@/components/memo/utils';
 
@@ -96,9 +93,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const canonicalSlug = targetPath.split('/').filter(Boolean);
 
-    // Pass includeContent: false as we only need metadata for layout props
-    const layoutProps = await getRootLayoutPageProps();
-
     // --- Check for MDX files first ---
     // (Variable names must not conflict with those above)
     const mdxFilePath2 =
@@ -170,7 +164,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
       return {
         props: {
-          ...layoutProps,
           mdxSource,
           frontmatter,
           slug,
@@ -267,7 +260,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
         return {
           props: {
-            ...layoutProps,
             slug,
             childMemos: allMemos,
             isListPage: true,
@@ -378,7 +370,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
     return {
       props: {
-        ...layoutProps,
         content,
         frontmatter: JSON.parse(JSON.stringify(frontmatter)),
         slug,
@@ -403,7 +394,6 @@ export default function ContentPage({
   backlinks,
   tocItems,
   metadata,
-  directoryTree,
   searchIndex,
   isListPage,
   isMdxPage,
@@ -539,11 +529,7 @@ export default function ContentPage({
   if (isListPage) {
     const title = slug.map(slugToTitle).join(' > ');
     return (
-      <RootLayout
-        title={title}
-        searchIndex={searchIndex}
-        directoryTree={directoryTree}
-      >
+      <RootLayout title={title} searchIndex={searchIndex}>
         <MemoList title={title} memos={childMemos || []} />
       </RootLayout>
     );
@@ -554,7 +540,6 @@ export default function ContentPage({
         title={frontmatter?.title}
         description={frontmatter?.description} // Use GitHub bio as description
         image={frontmatter?.image} // Use GitHub avatar as image
-        directoryTree={directoryTree}
         searchIndex={searchIndex}
       >
         <div className="content-wrapper">
@@ -577,7 +562,6 @@ export default function ContentPage({
         image={metadata?.image}
         tocItems={tocItems}
         metadata={metadata}
-        directoryTree={directoryTree}
         searchIndex={searchIndex}
       >
         <div className="content-wrapper">
@@ -601,11 +585,7 @@ export default function ContentPage({
   } else {
     // Handle case where content or frontmatter is undefined (shouldn't happen with fallback: false)
     return (
-      <RootLayout
-        title="Not Found"
-        directoryTree={directoryTree}
-        searchIndex={searchIndex}
-      >
+      <RootLayout title="Not Found" searchIndex={searchIndex}>
         <div>Page not found.</div>
       </RootLayout>
     );

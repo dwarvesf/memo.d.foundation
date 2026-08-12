@@ -8,6 +8,7 @@ import DirectoryTree from './DirectoryTree';
 import { IMetadata, ITocItem, RootLayoutPageProps } from '@/types';
 import RightSidebar from './RightSidebar';
 import { useLayoutContext, withLayoutContext } from '@/contexts/layout';
+import { useDirectoryTree } from '@/contexts/directory-tree';
 import TableOfContents from './TableOfContents';
 import ImageZoomProvider from '../image/ImageZoomProvider';
 import { SearchProvider } from '../search';
@@ -48,13 +49,13 @@ function RootLayout({
   image,
   metadata,
   tocItems,
-  directoryTree,
   searchIndex,
   hideRightSidebar = false,
   fullWidth = false,
   mainClassName = '',
   // pinnedNotes and tags are no longer used directly by RootLayout
 }: RootLayoutProps) {
+  const directoryTree = useDirectoryTree();
   const { theme, toggleTheme } = useThemeContext();
   const { readingMode } = useLayoutContext();
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);

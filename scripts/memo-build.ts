@@ -13,6 +13,8 @@ const commands = [
   'pnpm run fetch-contributors',
   'pnpm run generate-static-paths',
   'pnpm run generate-search-index',
+  // Must run before `next build` so the emitted JSON is copied out of public/.
+  'pnpm run generate-directory-tree',
   'next build',
   'pnpm run generate-rss',
   'pnpm run copy-404',

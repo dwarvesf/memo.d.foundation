@@ -3,7 +3,6 @@ import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import { getTagsWithCounts } from '@/lib/content/tags-utils';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { RootLayoutPageProps } from '@/types';
 import { truncate } from 'lodash';
 
@@ -19,7 +18,6 @@ interface TagsPageProps extends RootLayoutPageProps {
 export const getStaticProps: GetStaticProps<TagsPageProps> = async () => {
   try {
     const tagCounts = await getTagsWithCounts();
-    const layoutProps = await getRootLayoutPageProps();
 
     return {
       props: {
@@ -27,7 +25,6 @@ export const getStaticProps: GetStaticProps<TagsPageProps> = async () => {
           name: tag.name,
           count: tag.count.toString(), // Convert count to string as per requirement
         })),
-        ...layoutProps,
       },
     };
   } catch (error) {
@@ -40,9 +37,9 @@ export const getStaticProps: GetStaticProps<TagsPageProps> = async () => {
   }
 };
 
-const TagsPage = ({ tagCounts, directoryTree }: TagsPageProps) => {
+const TagsPage = ({ tagCounts }: TagsPageProps) => {
   return (
-    <RootLayout title="Tags" directoryTree={directoryTree}>
+    <RootLayout title="Tags">
       <div className="flex items-center">
         {tagCounts && tagCounts.length > 0 && (
           <div className="flex flex-col gap-4">

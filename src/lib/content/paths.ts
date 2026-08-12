@@ -1,4 +1,4 @@
-import { memoize } from 'lodash';
+import memoize from 'lodash/memoize.js';
 import path from 'path';
 import {
   getAllMarkdownFiles,

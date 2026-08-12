@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Toaster } from '@/components/ui/sonner';
 import { Web3Provider } from '@/contexts/Web3Provider';
+import { DirectoryTreeProvider } from '@/contexts/directory-tree';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -39,8 +40,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider>
       <Web3Provider>
-        <Component {...pageProps} />
-        <Toaster position="top-center" />
+        <DirectoryTreeProvider>
+          <Component {...pageProps} />
+          <Toaster position="top-center" />
+        </DirectoryTreeProvider>
       </Web3Provider>
     </ThemeProvider>
   );

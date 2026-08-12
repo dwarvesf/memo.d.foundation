@@ -65,13 +65,13 @@ export interface ISearchResultItem {
   index?: number;
 }
 
+// The nav tree is no longer a page prop: it is fetched client-side once from
+// /content/directory-tree.json. See src/contexts/directory-tree.tsx.
 export interface RootLayoutPageProps {
-  directoryTree?: Record<string, ITreeNode>;
   searchIndex?: IMiniSearchIndex | null;
 }
 
 export interface ContributorLayoutPageProps {
-  directoryTree?: Record<string, ITreeNode>;
   searchIndex?: IMiniSearchIndex | null;
 }
 

@@ -1,6 +1,5 @@
 'use client';
 
-import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { getPrompts } from '@/lib/prompts';
 import { IPromptItem, RootLayoutPageProps } from '@/types';
 import { GetStaticProps } from 'next';
@@ -31,10 +30,8 @@ interface PromptsPageProps extends RootLayoutPageProps {
  */
 export const getStaticProps: GetStaticProps<PromptsPageProps> = async () => {
   const prompts = await getPrompts();
-  const layoutProps = await getRootLayoutPageProps();
   return {
     props: {
-      ...layoutProps,
       prompts,
     },
   };
@@ -44,11 +41,7 @@ export const getStaticProps: GetStaticProps<PromptsPageProps> = async () => {
  * Prompts category page component
  * Displays a grid of prompt cards filtered by category
  */
-const PromptsPage: React.FC<PromptsPageProps> = ({
-  directoryTree,
-  searchIndex,
-  prompts,
-}) => {
+const PromptsPage: React.FC<PromptsPageProps> = ({ searchIndex, prompts }) => {
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const router = useRouter();
   const [isInitialLoadScrollHandled, setIsInitialLoadScrollHandled] =
@@ -200,7 +193,6 @@ const PromptsPage: React.FC<PromptsPageProps> = ({
   return (
     <RootLayout
       title="AI Prompts"
-      directoryTree={directoryTree}
       searchIndex={searchIndex}
       hideRightSidebar
       fullWidth

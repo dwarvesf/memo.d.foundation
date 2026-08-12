@@ -1,16 +1,13 @@
 import React from 'react';
 import { RootLayout } from '@/components';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { RootLayoutPageProps } from '@/types';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const layoutProps = await getRootLayoutPageProps();
-
     return {
-      props: layoutProps,
+      props: {},
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
