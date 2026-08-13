@@ -7,6 +7,11 @@ import {
   getReversedAliasPaths,
   normalizePathWithSlash,
 } from './common.js';
+import {
+  RSS_ALIAS_BASENAMES,
+  RSS_CANONICAL_BASENAME,
+  RSS_LIMIT_VARIANTS,
+} from './feed-config.js';
 
 // Cloudflare Pages CF-N.1: generates the redirect config for Pages from the
 // SAME source data (public/content/{redirects,aliases,shorten-redirects}.json)
@@ -91,15 +96,44 @@ async function getValidShortenPaths(
   );
 }
 
+/**
+ * `rss_N.xml`/`index_N.xml` used to be separate, byte-identical copies of
+ * `feed_N.xml` written by scripts/generate-rss.ts (a leftover of the old
+ * nginx try_files design). generate-rss.ts now writes only the canonical
+ * `feed`/`atom` basename; this builds the alias rules that resolve the old
+ * literal `_N` filenames to it, one canonical file per limit value instead
+ * of a byte-identical copy per alias.
+ *
+ * Deliberately excludes the bare `/rss.xml` and `/index.xml` (no `_N`
+ * suffix): those are requested with `?limit=`, and whether Cloudflare
+ * Pages' static `_redirects` forwards an incoming query string to the
+ * destination isn't documented, so a redirect risks silently dropping
+ * `?limit=` and serving the wrong item count. functions/_middleware.ts
+ * resolves those two bare names directly (canonicalized to the `feed`
+ * files, no redirect, so the query string is never at risk).
+ */
+function getFeedAliasRedirects(): Record<string, string> {
+  const rules: Record<string, string> = {};
+  for (const alias of RSS_ALIAS_BASENAMES) {
+    for (const limit of RSS_LIMIT_VARIANTS) {
+      rules[`/${alias}_${limit}.xml`] = `/${RSS_CANONICAL_BASENAME}_${limit}.xml`;
+    }
+  }
+  return rules;
+}
+
 function flattenRules(
   alias: Record<string, string>,
   redirects: Record<string, string>,
   shortenRedirects: Record<string, string>,
+  feedAliases: Record<string, string>,
 ): [string, string][] {
   // Same precedence as generate-nginx-redirect-map.ts: alias, then redirects,
-  // then shortenRedirects, each later map overriding the earlier on conflict.
+  // then shortenRedirects, each later map overriding the earlier on
+  // conflict. feedAliases is applied last (rss.xml/index.xml -> feed.xml);
+  // nothing in the content-derived maps legitimately targets those paths.
   const merged: Record<string, string> = {};
-  for (const obj of [alias, redirects, shortenRedirects]) {
+  for (const obj of [alias, redirects, shortenRedirects, feedAliases]) {
     for (const [key, value] of Object.entries(obj)) {
       merged[normalizePathWithSlash(key)] = normalizePathWithSlash(value);
     }
@@ -113,8 +147,9 @@ async function generateCfRedirects() {
   const alias = await getReversedAliasPaths();
   const redirects = await getNginxRedirects();
   const shortenRedirects = await getValidShortenPaths(alias);
+  const feedAliases = getFeedAliasRedirects();
 
-  const rules = flattenRules(alias, redirects, shortenRedirects);
+  const rules = flattenRules(alias, redirects, shortenRedirects, feedAliases);
   console.log(
     `Generated ${rules.length} redirect rules (alias + redirects + shorten).`,
   );

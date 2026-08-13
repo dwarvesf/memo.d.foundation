@@ -2,6 +2,11 @@ import fs from 'fs';
 import fsp from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {
+  ATOM_BASENAME,
+  RSS_CANONICAL_BASENAME,
+  RSS_LIMIT_VARIANTS,
+} from './feed-config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,22 +19,11 @@ const SITE_DESCRIPTION = 'Knowledge sharing platform for Dwarves Foundation';
 const CONTENT_DIR = path.join(__dirname, '../public/content');
 const OUTPUT_DIR = path.join(__dirname, '../out');
 
-const RSS_TARGET_FILES = ['feed', 'rss', 'index']; // Basenames for RSS 2.0 files
-const ATOM_TARGET_FILES = ['atom']; // Basenames for Atom 1.0 files
-
-const FEED_LIMITS = {
-  MIN: 10, // Minimum number of items for limited feeds
-  MAX: 100, // Maximum number of items for limited feeds
-  STEP: 5, // Step for generating different limited feed sizes
-};
-
-const RSS_LIMIT_VARIANTS = (() => {
-  const variants = [];
-  for (let i = FEED_LIMITS.MIN; i <= FEED_LIMITS.MAX; i += FEED_LIMITS.STEP) {
-    variants.push(i);
-  }
-  return variants;
-})();
+// Only the canonical basename gets a physical file now; `rss`/`index`
+// resolve to it via a redirect (scripts/generate-cf-redirects.ts) instead
+// of a second byte-identical copy, see scripts/feed-config.ts.
+const RSS_TARGET_FILES = [RSS_CANONICAL_BASENAME];
+const ATOM_TARGET_FILES = [ATOM_BASENAME];
 
 // --- Types ---
 type Frontmatter = {
