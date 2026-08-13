@@ -142,6 +142,7 @@ build_site() {
   pnpm run generate-cf-redirects
   pnpm run verify-cf-redirects
   drop_oversize_files
+  pnpm run generate-assetsignore
 }
 
 deploy_pages() {
