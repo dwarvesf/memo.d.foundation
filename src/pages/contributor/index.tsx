@@ -3,7 +3,6 @@ import { GetStaticProps } from 'next';
 
 // Import utility functions
 import { getAllMarkdownContents, sortMemos } from '@/lib/content/memo';
-import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
 
 import { RootLayoutPageProps } from '@/types';
@@ -51,7 +50,6 @@ function formatPathForUrl(filePath: string | null | undefined): string | null {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const allMemos = await getAllMarkdownContents();
-    const layoutProps = await getRootLayoutPageProps();
 
     const contributors = new Set<string>();
     const contributionCount: Record<string, number> = {};
@@ -122,7 +120,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
       props: {
-        ...layoutProps,
         contributors: enrichedContributors,
         contributorLatestWork,
         contributionCount,
@@ -137,7 +134,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
 export default function ContentPage({
   frontmatter,
-  directoryTree,
   searchIndex,
   contributorLatestWork,
   contributors,
@@ -149,7 +145,6 @@ export default function ContentPage({
       title={frontmatter?.title}
       description={frontmatter?.description} // Use GitHub bio as description
       image={frontmatter?.image} // Use GitHub avatar as image
-      directoryTree={directoryTree}
       searchIndex={searchIndex}
     >
       <div className="content-wrapper">

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { IMemoItem } from '@/types';
 import { getAllMarkdownContents } from './memo';
-import { memoize } from 'lodash';
+import memoize from 'lodash/memoize.js';
 import { uppercaseSpecialWords } from '../utils';
 
 interface TagCount {

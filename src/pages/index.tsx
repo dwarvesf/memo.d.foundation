@@ -3,7 +3,6 @@ import { GetStaticProps } from 'next';
 import { RootLayout } from '../components';
 import { IMemoItem, RootLayoutPageProps } from '@/types';
 
-import { getRootLayoutPageProps } from '@/lib/content/utils';
 import { convertToMemoItems } from '@/lib/content/memo';
 import { getMdxSource } from '@/lib/mdx';
 import path from 'path';
@@ -18,7 +17,6 @@ interface HomePageProps extends RootLayoutPageProps {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const layoutProps = await getRootLayoutPageProps(); // Await the asynchronous function
     const queryFields = [
       'short_title',
       'title',
@@ -154,7 +152,9 @@ export const getStaticProps: GetStaticProps = async () => {
         teamMemos,
         changelogMemos,
         hiringMemos,
-        directoryTree: layoutProps.directoryTree,
+        // The vault's index.mdx still references this identifier when it renders
+        // <TagsMarquee />, which now reads the tree from context instead.
+        directoryTree: {},
         memosWithTags,
       },
     });
@@ -165,7 +165,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
       props: {
-        ...layoutProps,
         mdxSource,
       },
     };
@@ -179,11 +178,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-export default function Home({
-  directoryTree,
-  searchIndex,
-  mdxSource,
-}: HomePageProps) {
+export default function Home({ searchIndex, mdxSource }: HomePageProps) {
   if (!mdxSource || 'error' in mdxSource) {
     // We already handle this in getStaticProps
     return null;
@@ -192,7 +187,6 @@ export default function Home({
     <RootLayout
       title="Dwarves Memo - Home"
       description="Knowledge sharing platform for Dwarves Foundation"
-      directoryTree={directoryTree}
       searchIndex={searchIndex}
     >
       <RemoteMdxRenderer mdxSource={mdxSource} />

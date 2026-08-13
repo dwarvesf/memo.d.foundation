@@ -4,10 +4,9 @@ import {
   ITreeNode,
   MenuFilePath,
   NestedMenuPathTree,
-  RootLayoutPageProps,
 } from '@/types';
 import fs from 'fs/promises'; // Use promises version for async file reading
-import { memoize } from 'lodash';
+import memoize from 'lodash/memoize.js';
 import path from 'path'; // Import path module
 import { slugToTitle, uppercaseSpecialWords } from '../utils';
 import { formatContentPath } from '../utils/path-utils'; // Import formatContentPath from path-utils
@@ -347,14 +346,20 @@ const appendTagsCount = memoize((tags: string[], memos: IMemoItem[]) => {
     .sort((a, b) => b.count - a.count); // Sort by count in descending order
 });
 
-const CACHED_ROOT_LAYOUT_PAGE_PROPS_KEY = 'rootLayoutPageProps';
+const CACHED_DIRECTORY_TREE_KEY = 'directoryTree';
 
-export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
-  const CACHED_ROOT_LAYOUT_PAGE_PROPS = memoryCache.get<RootLayoutPageProps>(
-    CACHED_ROOT_LAYOUT_PAGE_PROPS_KEY,
+/**
+ * Builds the sidebar nav tree. The result is identical for every page, so it is
+ * written once to `public/content/directory-tree.json` by
+ * `scripts/generate-directory-tree.ts` and fetched by the client, instead of
+ * being inlined into each page's props.
+ */
+export async function getDirectoryTree(): Promise<Record<string, ITreeNode>> {
+  const CACHED_DIRECTORY_TREE = memoryCache.get<Record<string, ITreeNode>>(
+    CACHED_DIRECTORY_TREE_KEY,
   );
-  if (CACHED_ROOT_LAYOUT_PAGE_PROPS) {
-    return CACHED_ROOT_LAYOUT_PAGE_PROPS;
+  if (CACHED_DIRECTORY_TREE) {
+    return CACHED_DIRECTORY_TREE;
   }
 
   let menuData: Record<string, GroupedPath> = {};
@@ -424,12 +429,7 @@ export async function getRootLayoutPageProps(): Promise<RootLayoutPageProps> {
     '', // Start with empty currentPath
     staticJSONPaths,
   );
-  // console.log({ directoryTree, pinnedNotes, tags }); // Keep or remove logging as needed
 
-  const rootLayoutPageProps: RootLayoutPageProps = {
-    directoryTree,
-  };
-
-  memoryCache.set(CACHED_ROOT_LAYOUT_PAGE_PROPS_KEY, rootLayoutPageProps);
-  return rootLayoutPageProps;
+  memoryCache.set(CACHED_DIRECTORY_TREE_KEY, directoryTree);
+  return directoryTree;
 }
