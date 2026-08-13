@@ -9,7 +9,7 @@ import path from 'path';
 import RemoteMdxRenderer from '@/components/RemoteMdxRenderer';
 import { SerializeResult } from 'next-mdx-remote-client';
 import { queryDuckDB } from '@/lib/db/utils';
-import { getCompactContributorsFromContentJSON } from '@/lib/contributor';
+import { MemosWithTagsProvider } from '@/contexts/memos-with-tags';
 
 interface HomePageProps extends RootLayoutPageProps {
   mdxSource?: SerializeResult;
@@ -96,53 +96,6 @@ export const getStaticProps: GetStaticProps = async () => {
       console.error('Error fetching hiring memos:', error);
     }
 
-    // get all memos with tags (object with title and tags field)
-    let memosWithTags: { title: string; tags: string[] }[] = [];
-    let avatarMap: Record<string, string | null> = {};
-    try {
-      const userProfiles = await getCompactContributorsFromContentJSON();
-      avatarMap = userProfiles.reduce(
-        (acc, profile) => {
-          if (profile.avatar) {
-            acc[profile.username] = profile.avatar;
-          }
-          return acc;
-        },
-        {} as Record<string, string>,
-      );
-
-      memosWithTags = await queryDuckDB(`
-        SELECT title, tags, file_path, date, authors
-        FROM vault
-        WHERE tags IS NOT NULL
-        ORDER BY date DESC
-      `).then(async results => {
-        const filteredResults = results.filter(
-          result => result.title && Array.isArray(result.tags),
-        );
-
-        return await Promise.all(
-          filteredResults.map(async result => {
-            const authorAvatars =
-              result.authors && Array.isArray(result.authors)
-                ? result.authors.map(author => avatarMap[author] ?? null)
-                : [];
-
-            return {
-              title: result.title as string,
-              tags: result.tags as string[],
-              filePath: result.file_path as string,
-              date: result.date as string,
-              authors: result.authors as string[],
-              authorAvatars,
-            };
-          }),
-        );
-      });
-    } catch (error) {
-      console.error('Error fetching memos with tags:', error);
-    }
-
     const mdxPath = path.join(process.cwd(), 'public/content/', `index.mdx`);
     const mdxSource = await getMdxSource({
       mdxPath,
@@ -152,10 +105,11 @@ export const getStaticProps: GetStaticProps = async () => {
         teamMemos,
         changelogMemos,
         hiringMemos,
-        // The vault's index.mdx still references this identifier when it renders
-        // <TagsMarquee />, which now reads the tree from context instead.
+        // The vault's index.mdx still references these identifiers when it
+        // renders <TagsMarquee />, <WorthReading /> and <MemoFilterList />,
+        // which now read the tree / memo list from context instead.
         directoryTree: {},
-        memosWithTags,
+        memosWithTags: [],
       },
     });
 
@@ -189,7 +143,9 @@ export default function Home({ searchIndex, mdxSource }: HomePageProps) {
       description="Knowledge sharing platform for Dwarves Foundation"
       searchIndex={searchIndex}
     >
-      <RemoteMdxRenderer mdxSource={mdxSource} />
+      <MemosWithTagsProvider>
+        <RemoteMdxRenderer mdxSource={mdxSource} />
+      </MemosWithTagsProvider>
     </RootLayout>
   );
 }

@@ -17,6 +17,7 @@
     "generate-shorten-map": "tsx scripts/generate-shorten-map.ts",
     "generate-menu": "tsx scripts/generate-menu.ts",
     "generate-directory-tree": "tsx scripts/generate-directory-tree.ts",
+    "generate-memos-with-tags": "tsx scripts/generate-memos-with-tags.ts",
     "generate-backlinks": "tsx scripts/generate-backlinks.ts",
     "generate-summary": "tsx scripts/generate-summary.ts",
     "generate-nginx-conf": "tsx scripts/generate-nginx-redirect-map.ts",

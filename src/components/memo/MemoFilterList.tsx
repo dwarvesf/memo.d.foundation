@@ -1,18 +1,18 @@
-import { IMemoItem } from '@/types';
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { formatContentPath } from '@/lib/utils/path-utils';
 import { Avatar, AvatarImage } from '../ui/avatar';
 import Jdenticon from 'react-jdenticon';
+import { MemoWithTags } from '@/lib/content/memos-with-tags';
+import { useMemosWithTags } from '@/contexts/memos-with-tags';
 
 interface MemoFilterListProps {
   title: string;
-  all: (IMemoItem & { authorAvatars: string[] })[];
   filters?: string[];
 }
 
-function List({ data }: { data: (IMemoItem & { authorAvatars: string[] })[] }) {
+function List({ data }: { data: MemoWithTags[] }) {
   return (
     <div className="flex flex-col">
       {data.map(memo => (
@@ -62,7 +62,10 @@ function List({ data }: { data: (IMemoItem & { authorAvatars: string[] })[] }) {
   );
 }
 
-function MemoFilterList({ title, all, filters }: MemoFilterListProps) {
+// Rendered from vault MDX, which still passes an `all` prop sourced from the
+// mdxSource scope. The real data comes from context; the prop is ignored.
+function MemoFilterList({ title, filters }: MemoFilterListProps) {
+  const all = useMemosWithTags() ?? [];
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   return (

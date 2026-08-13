@@ -4,6 +4,7 @@ import { BlocksIcon, BookOpenIcon, BrainIcon, SproutIcon } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { useMemosWithTags } from '@/contexts/memos-with-tags';
 
 interface BlockProps {
   title: string;
@@ -12,7 +13,6 @@ interface BlockProps {
 }
 
 interface WorthReadingProps {
-  memos: { title: string; tags: string[]; filePath: string; date: string }[];
   blocks: BlockProps[];
 }
 
@@ -33,7 +33,10 @@ const dummyTexts = [
   "I'm not sure why you're reading this",
 ];
 
-const WorthReading = ({ blocks, memos }: WorthReadingProps) => {
+// Rendered from vault MDX, which still passes a `memos` prop sourced from the
+// mdxSource scope. The real data comes from context; the prop is ignored.
+const WorthReading = ({ blocks }: WorthReadingProps) => {
+  const memos = useMemosWithTags() ?? [];
   return (
     <div className="relative flex flex-col">
       <h2>Worth Reading</h2>
