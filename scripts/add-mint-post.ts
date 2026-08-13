@@ -1,14 +1,23 @@
-import { ethers } from 'ethers';
 import fs from 'fs';
 import matter from 'gray-matter';
 import * as yaml from 'js-yaml';
+import {
+  createPublicClient,
+  createWalletClient,
+  http,
+  parseEventLogs,
+  type Address,
+  type PublicClient,
+  type WalletClient,
+} from 'viem';
+import { privateKeyToAccount, type PrivateKeyAccount } from 'viem/accounts';
 
 /**
  * Extracts frontmatter data from a markdown file
  * @param {string} filePath - Path to the markdown file
  * @returns {Object} - The frontmatter data and content
  */
-function extractFrontmatter(filePath: string): {
+export function extractFrontmatter(filePath: string): {
   data: Record<string, unknown>;
   content: string;
 } {
@@ -26,7 +35,7 @@ function extractFrontmatter(filePath: string): {
  * @param {string} filePath - Path to the markdown file
  * @param {Object} newFrontmatter - New frontmatter data to merge with existing
  */
-function updateFrontmatter(
+export function updateFrontmatter(
   filePath: string,
   newFrontmatter: Record<string, unknown>,
 ): void {
@@ -57,20 +66,91 @@ function updateFrontmatter(
  * Gets the current date in YYYY-MM-DD format
  * @returns {string} - Current date string
  */
-function getCurrentDate(): string {
+export function getCurrentDate(): string {
   const now = new Date();
   return now.toISOString().split('T')[0]; // YYYY-MM-DD format
+}
+
+// Contract ABI: createTokenType (write), getTokenId (read), and the
+// TokenTypeCreated event minted transactions emit. `as const` so viem can
+// infer arg/return types from the ABI instead of falling back to `unknown`.
+export const contractAbi = [
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'arweaveTxId',
+        type: 'string',
+      },
+    ],
+    name: 'createTokenType',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'arweaveTxId',
+        type: 'string',
+      },
+    ],
+    name: 'getTokenId',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  // Event for TokenTypeCreated
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'arweaveTxId',
+        type: 'string',
+      },
+    ],
+    name: 'TokenTypeCreated',
+    type: 'event',
+  },
+] as const;
+
+export interface MintClients {
+  publicClient: PublicClient;
+  walletClient: WalletClient;
+  account: PrivateKeyAccount;
+  contractAddress: Address;
 }
 
 /**
  * Processes a single file and calls createTokenType with its perma_storage_id
  * @param {string} filePath - Path to the markdown file
- * @param {ethers.Contract} contract - The contract instance
+ * @param {MintClients} clients - viem clients + account + contract address to mint with
  * @returns {Promise<Object>} - Transaction receipt
  */
-async function processFile(
+export async function processFile(
   filePath: string,
-  contract: ethers.Contract,
+  clients: MintClients,
 ): Promise<unknown> {
   console.log(`Processing file: ${filePath}`);
 
@@ -91,14 +171,21 @@ async function processFile(
     return;
   }
 
-  const arweaveTxId = frontmatter.perma_storage_id;
+  const arweaveTxId = frontmatter.perma_storage_id as string;
   console.log(`Found perma_storage_id: ${arweaveTxId}`);
+
+  const { publicClient, walletClient, account, contractAddress } = clients;
 
   try {
     // Check if token ID already exists for this arweaveTxId
     // This is optional and can be used to avoid unnecessary transactions
     try {
-      const existingTokenId = await contract.getTokenId(arweaveTxId);
+      const existingTokenId = await publicClient.readContract({
+        address: contractAddress,
+        abi: contractAbi,
+        functionName: 'getTokenId',
+        args: [arweaveTxId],
+      });
       if (existingTokenId && existingTokenId.toString() !== '0') {
         console.log(`Token ID already exists: ${existingTokenId.toString()}`);
 
@@ -121,28 +208,43 @@ async function processFile(
 
     // Call the createTokenType function
     console.log(`Creating token type with arweaveTxId: ${arweaveTxId}`);
-    const tx = await contract.createTokenType(arweaveTxId);
+    const hash = await walletClient.writeContract({
+      address: contractAddress,
+      abi: contractAbi,
+      functionName: 'createTokenType',
+      args: [arweaveTxId],
+      account,
+      // No chain object is configured on the client (see main()); pass
+      // `null` explicitly to skip viem's chain-match assertion instead of
+      // pinning a chain, so this keeps working against whatever chain
+      // RPC_URL actually points at.
+      chain: null,
+    });
 
-    console.log(`Transaction submitted: ${tx.hash}`);
+    console.log(`Transaction submitted: ${hash}`);
     console.log('Waiting for confirmation...');
 
     // Wait for the transaction to be mined
-    const receipt = await tx.wait();
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
 
     console.log(`Transaction confirmed in block ${receipt.blockNumber}`);
     console.log(`Gas used: ${receipt.gasUsed.toString()}`);
 
     // Extract token ID from the transaction response
     // Since createTokenType now returns the token ID directly
-    let tokenId;
+    let tokenId: string | undefined;
 
     // First try to get tokenId from the event
     try {
-      const tokenTypeCreatedEvent = receipt.events?.find(
-        (event: { event: string }) => event.event === 'TokenTypeCreated',
-      );
+      const decodedLogs = parseEventLogs({
+        abi: contractAbi,
+        eventName: 'TokenTypeCreated',
+        logs: receipt.logs,
+      });
 
-      if (tokenTypeCreatedEvent && tokenTypeCreatedEvent.args) {
+      const tokenTypeCreatedEvent = decodedLogs[0];
+
+      if (tokenTypeCreatedEvent) {
         tokenId = tokenTypeCreatedEvent.args.tokenId.toString();
         console.log(`Token ID from event: ${tokenId}`);
       }
@@ -157,8 +259,13 @@ async function processFile(
     if (!tokenId) {
       try {
         // Try to get tokenId using getTokenId function after creation
-        tokenId = await contract.getTokenId(arweaveTxId);
-        tokenId = tokenId.toString();
+        const fetchedTokenId = await publicClient.readContract({
+          address: contractAddress,
+          abi: contractAbi,
+          functionName: 'getTokenId',
+          args: [arweaveTxId],
+        });
+        tokenId = fetchedTokenId.toString();
         console.log(`Token ID from getTokenId: ${tokenId}`);
       } catch (error) {
         console.log('Could not get token ID from getTokenId function: ', error);
@@ -196,7 +303,7 @@ async function processFile(
 /**
  * Main function to process all files and interact with the contract
  */
-async function main() {
+export async function main() {
   try {
     // Get command line arguments (file paths)
     const filePaths = process.argv[2]
@@ -211,94 +318,45 @@ async function main() {
     }
 
     // Get private key from environment variable (set by GitHub Actions)
-    const privateKey = process.env.WALLET_PRIVATE_KEY;
+    const rawPrivateKey = process.env.WALLET_PRIVATE_KEY;
 
-    if (!privateKey) {
+    if (!rawPrivateKey) {
       throw new Error('Private key is not set in environment variables');
     }
 
+    // ethers.Wallet accepted a private key with or without the `0x` prefix;
+    // viem's privateKeyToAccount requires it, so normalize.
+    const privateKey = (
+      rawPrivateKey.startsWith('0x') ? rawPrivateKey : `0x${rawPrivateKey}`
+    ) as `0x${string}`;
+
     // Contract address - replace with your actual contract address
-    const contractAddress =
-      process.env.CONTRACT_ADDRESS || '0xYourContractAddressHere';
+    const contractAddress = (process.env.CONTRACT_ADDRESS ||
+      '0xYourContractAddressHere') as Address;
 
     // RPC URL - replace with your preferred provider
     const rpcUrl =
       process.env.RPC_URL || 'https://ethereum-mainnet-rpc.allthatnode.com';
 
-    // Connect to the Ethereum network
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const account = privateKeyToAccount(privateKey);
+    const transport = http(rpcUrl);
 
-    // Create a wallet from the private key
-    const wallet = new ethers.Wallet(privateKey, provider);
+    // No `chain` is passed here on purpose: it mirrors ethers.JsonRpcProvider's
+    // auto network detection, so RPC_URL alone decides which chain (chainId,
+    // fees, nonce) every read/write targets, same as the pre-viem script.
+    const publicClient = createPublicClient({ transport });
+    const walletClient = createWalletClient({ account, transport });
 
-    // Updated contract ABI to reflect the new function signature
-    const contractAbi = [
-      {
-        inputs: [
-          {
-            internalType: 'string',
-            name: 'arweaveTxId',
-            type: 'string',
-          },
-        ],
-        name: 'createTokenType',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-        ],
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-      {
-        inputs: [
-          {
-            internalType: 'string',
-            name: 'arweaveTxId',
-            type: 'string',
-          },
-        ],
-        name: 'getTokenId',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-      },
-      // Event for TokenTypeCreated
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: 'uint256',
-            name: 'tokenId',
-            type: 'uint256',
-          },
-          {
-            indexed: false,
-            internalType: 'string',
-            name: 'arweaveTxId',
-            type: 'string',
-          },
-        ],
-        name: 'TokenTypeCreated',
-        type: 'event',
-      },
-    ];
-
-    // Create a contract instance
-    const contract = new ethers.Contract(contractAddress, contractAbi, wallet);
+    const clients: MintClients = {
+      publicClient,
+      walletClient,
+      account,
+      contractAddress,
+    };
 
     // Process each file sequentially
     for (const filePath of filePaths) {
-      await processFile(filePath, contract);
+      await processFile(filePath, clients);
     }
 
     console.log('All files processed successfully');
@@ -310,12 +368,14 @@ async function main() {
 }
 
 // Execute the function
-main()
-  .then(() => {
-    console.log('Function executed successfully');
-    process.exit(0);
-  })
-  .catch(error => {
-    console.error('Error in main execution:', error);
-    process.exit(1);
-  });
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main()
+    .then(() => {
+      console.log('Function executed successfully');
+      process.exit(0);
+    })
+    .catch(error => {
+      console.error('Error in main execution:', error);
+      process.exit(1);
+    });
+}
