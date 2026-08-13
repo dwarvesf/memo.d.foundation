@@ -15,6 +15,10 @@ const commands = [
   'pnpm run generate-search-index',
   // Must run before `next build` so the emitted JSON is copied out of public/.
   'pnpm run generate-directory-tree',
+  // Needs contributors.json (fetch-contributors) and db/vault.parquet
+  // (duckdb-export, already run before this script). Must also run before
+  // `next build`.
+  'pnpm run generate-memos-with-tags',
   'next build',
   'pnpm run generate-rss',
   'pnpm run copy-404',

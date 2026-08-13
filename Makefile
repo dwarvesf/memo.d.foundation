@@ -47,6 +47,7 @@ run:
 	@pnpm run fetch-prompts
 	@pnpm run fetch-contributors
 	@pnpm run generate-directory-tree
+	@pnpm run generate-memos-with-tags
 	@pnpm run dev
 
 duckdb-export:
