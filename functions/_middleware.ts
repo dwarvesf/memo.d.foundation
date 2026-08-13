@@ -6,13 +6,23 @@
 //     cap here, unlike out/_redirects, which Cloudflare limits to 2,000 static
 //     rules; this Function is what actually guarantees no redirect rule is
 //     dropped on cutover.
-//  2. The `?limit=N` query param on /rss.xml, /atom.xml, /feed.xml, /index.xml,
-//     and /feed/index.xml: nginx served one of the pre-generated `{type}_N.xml`
-//     static files (scripts/generate-rss.ts already generates every N from 10
-//     to 100 in steps of 5, plus the unlimited feed) instead of rendering
-//     anything dynamically. This Function reproduces the exact same file
-//     selection, still against pre-generated static files, so it's a request
-//     rewrite, not a runtime RSS render.
+//  2. The `?limit=N` query param on /rss.xml, /atom.xml, /feed.xml,
+//     /index.xml, and /feed/index.xml: nginx served one of the pre-generated
+//     `{type}_N.xml` static files (scripts/generate-rss.ts generates every N
+//     from 10 to 100 in steps of 5, plus the unlimited feed) instead of
+//     rendering anything dynamically. This Function reproduces the exact
+//     same file selection, still against pre-generated static files, so
+//     it's a request rewrite, not a runtime RSS render. `rss`/`index` are
+//     aliases of `feed`: generate-rss.ts only writes the `feed`/`atom`
+//     files now (see scripts/feed-config.ts), so a request to /rss.xml or
+//     /index.xml resolves against the `feed` file here, in-Function,
+//     instead of redirecting, since Cloudflare Pages' `_redirects` doesn't
+//     document whether it forwards an incoming `?limit=` to the
+//     destination and dropping it would silently serve the wrong item
+//     count. The literal pre-generated filenames (`/rss_N.xml`,
+//     `/index_N.xml`, no query string involved) DO redirect to `/feed_N.xml`
+//     via REDIRECT_MAP/`_redirects` instead of keeping a byte-identical
+//     copy on disk.
 //
 // REDIRECT_MAP is generated at build time by scripts/generate-cf-redirects.ts
 // (gitignored, not hand-edited).
@@ -24,6 +34,16 @@
 import { REDIRECT_MAP } from './_generated-redirect-map.js';
 import { feedLimitFilename } from './lib/feed-limit.js';
 import { OVERSIZE_ASSET_MAP } from './lib/oversize-assets.js';
+
+// `rss` and `index` are aliases of `feed` (scripts/feed-config.ts); only
+// `feed`/`atom` are written to disk, so both basenames resolve to the same
+// physical `feed_N.xml` file here.
+const FEED_BASENAME_ALIASES: Record<string, string> = {
+  rss: 'feed',
+  index: 'feed',
+  feed: 'feed',
+  atom: 'atom',
+};
 
 async function serveWithFallback(
   assets: { fetch: (req: Request) => Promise<Response> },
@@ -78,15 +98,16 @@ export const onRequest = async (context: any): Promise<Response> => {
 
   const feedMatch = pathname.match(/^\/(rss|atom|feed|index)\.xml$/);
   if (feedMatch) {
+    const canonicalBasename = FEED_BASENAME_ALIASES[feedMatch[1]];
     const limitedPath = feedLimitFilename(
-      feedMatch[1],
+      canonicalBasename,
       url.searchParams.get('limit'),
     );
     return serveWithFallback(
       env.ASSETS,
       url.origin,
       limitedPath,
-      pathname,
+      `/${canonicalBasename}.xml`,
       request,
     );
   }
