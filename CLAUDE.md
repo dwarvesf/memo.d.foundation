@@ -171,3 +171,12 @@ Retiring `backup.yml` and `dispatch.yml` also removed two Discord failure alarms
 - **MiniSearch**: the site's search engine, lexical, over a pre-generated index.
 - **TypeScript**: throughout the stack (scripts, functions, Next.js app).
 - **Cloudflare Workers/Pages types**: not yet added as a dependency; `functions/_middleware.ts` currently types its Pages Function context loosely as `any` pending that.
+
+<!-- kit:adopt -->
+## Operating layer (dwarves-kit)
+
+@AGENTS.md
+
+Before touching code, classify the lane: `bash /Users/tieubao/.claude/dwarves-kit/bin/classify lane classify "<task>"`.
+A full-lane change records its gates via `/Users/tieubao/.claude/dwarves-kit/bin/gate ledger` or the ship-gate blocks the push.
+<!-- /kit:adopt -->

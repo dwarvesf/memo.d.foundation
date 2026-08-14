@@ -1,0 +1,17 @@
+# .kit.toml -- this PROJECT's override of the kit-root defaults (SPEC-192).
+# Only the keys you set here matter; every key you omit inherits the kit-root
+# default at /Users/tieubao/.claude/dwarves-kit/kit.toml (lib/config/kit-config.sh: project keys WIN).
+# Re-run `bash /Users/tieubao/.claude/dwarves-kit/lib/adopt.sh --refresh <this repo>` (or /kit:adopt) after
+# editing [modules] to re-wire this project's .claude/settings.json to match --
+# adopt reads this file at adopt time; no hook reads it at hook-fire time.
+
+[modules]
+board = true
+session = false
+advisor = false
+cosmetic = false
+queue = false
+stats = false
+quiz_gate = false
+weekend_batch = false
+bridge = false
