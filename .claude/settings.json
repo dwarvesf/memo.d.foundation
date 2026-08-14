@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "Notification": [],
+    "PermissionRequest": [],
+    "PostToolUse": [],
+    "PreCompact": [],
+    "PreToolUse": [],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "bash $HOME/.claude/dwarves-kit/hooks/backlog-stage.sh",
+            "timeout": 30,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [],
+    "Stop": [],
+    "SubagentStop": [],
+    "UserPromptSubmit": []
+  }
+}
