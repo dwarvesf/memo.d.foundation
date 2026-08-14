@@ -109,6 +109,24 @@ reindex() {
   make duckdb-export
 }
 
+# db/vault.parquet is no longer git-tracked (see .gitignore) and is served from
+# R2 at the public URL. A full reindex regenerates it, but a SKIP_REINDEX build
+# or a clean checkout has no local copy, so fetch the served one. Fail loudly:
+# the build must never proceed without the content DB.
+ensure_parquet() {
+  if [ -f db/vault.parquet ]; then
+    return 0
+  fi
+  echo "db/vault.parquet not present; fetching from the served R2 copy..."
+  mkdir -p db
+  if curl -fsSL -o db/vault.parquet https://memo.d.foundation/db/vault.parquet; then
+    echo "Fetched db/vault.parquet from https://memo.d.foundation/db/vault.parquet"
+  else
+    echo "ERROR: failed to fetch db/vault.parquet from https://memo.d.foundation/db/vault.parquet" >&2
+    exit 1
+  fi
+}
+
 compile_markdown() {
   pnpm exec tsx scripts/export-markdown.ts --vault vault --output public/content --db db
 }
@@ -201,6 +219,8 @@ main() {
   install_deps
   stage "Reindex vault into db/vault.parquet"
   reindex
+  stage "Ensure db/vault.parquet present"
+  ensure_parquet
   stage "Compile markdown from vault"
   compile_markdown
   stage "Build static site"

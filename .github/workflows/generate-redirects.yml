@@ -2,11 +2,6 @@ name: Generate Redirects
 
 on:
   workflow_dispatch: # Keep manual trigger
-  push:
-    branches:
-      - main
-    paths:
-      - 'db/vault.parquet'
 
 concurrency:
   group: ${{ github.repository }}-gen-redirect-workflow
@@ -24,6 +19,11 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 1
+
+      - name: Fetch vault.parquet from public site
+        run: |
+          mkdir -p db
+          curl -fsSL -o db/vault.parquet https://memo.d.foundation/db/vault.parquet
 
       - name: Get changed files from Memo
         id: changed-files
