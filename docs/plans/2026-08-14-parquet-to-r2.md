@@ -1,6 +1,6 @@
 # Evacuate vault.parquet to R2 Implementation Plan
 
-> **For agentic workers:** Steps use checkbox (`- [ ]`) syntax. Execute task-by-task via subagent-driven development. Each task ends in a testable deliverable and a commit.
+> **For agentic workers:** Implement task-by-task through the dwarves-kit SDD lane. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Stop git-tracking `db/*.parquet` (esp. the 22MB `db/vault.parquet`) in `dwarvesf/memo.d.foundation`, and make the build plus the three downstream workflows consume the parquet from Cloudflare R2 / the served `/db/vault.parquet` URL instead of the repo tree.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Bash (build-and-deploy.sh), TypeScript (DuckDB via @duckdb/node-api), GitHub Actions.
 
-**Spec:** `docs/superpowers/plans/2026-08-14-parquet-to-r2.md` (this file).
+**Spec:** `docs/plans/2026-08-14-parquet-to-r2.md` (this file).
 
 ## Global Constraints
 
