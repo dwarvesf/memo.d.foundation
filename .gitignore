@@ -120,3 +120,6 @@ tsconfig.tsbuildinfo
 
 # wrangler local state (created by wrangler pages/r2/d1 commands)
 .wrangler/
+
+# Derived DuckDB content DB. Regenerated at publish; served from R2. Not committed.
+db/*.parquet
